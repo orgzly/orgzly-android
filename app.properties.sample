@@ -1,0 +1,16 @@
+# You should copy this file to "app.properties" which is required by build.
+# 
+# If you don't modify the values below, you will still be able to run the app.
+# Some tests will fail and you won't be able to use Dropbox as a repository,
+# but everything else should be working fine.
+
+# Dropbox token used by tests when working with Dropbox.
+# Create it on https://www.dropbox.com/developers/apps.
+dropbox.token="token"
+
+# Dropbox app key.
+# Create it on https://www.dropbox.com/developers/apps.
+dropbox.app_key = "appkey"
+
+# Same as above, but prefixed with "db-"
+dropbox.app_key_schema = "db-appkey"

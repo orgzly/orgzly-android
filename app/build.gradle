@@ -19,9 +19,15 @@ android {
     }
 
     buildTypes {
-        // Read from local.properties file.
         Properties properties = new Properties()
-        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+        /*
+         * Read properties from the file.
+         *
+         * This file contains credentials and is not checked into Git.
+         * You should create it -- see "app.properties.sample".
+         */
+        properties.load(project.rootProject.file('app.properties').newDataInputStream())
 
         release {
             shrinkResources true
@@ -31,7 +37,6 @@ android {
 
             buildConfigField "boolean", "LOG_DEBUG", "false"
 
-            // Dropbox app key (https://www.dropbox.com/developers/apps)
             buildConfigField "String", "DROPBOX_APP_KEY", properties.getProperty("dropbox.app_key")
             resValue "string", "dropbox_app_key_schema", properties.getProperty("dropbox.app_key_schema")
         }
@@ -39,10 +44,8 @@ android {
         debug {
             buildConfigField "boolean", "LOG_DEBUG", "true"
 
-            // Dropbox access token used by tests (https://www.dropbox.com/developers/apps)
             buildConfigField "String", "DROPBOX_TOKEN", properties.getProperty("dropbox.token")
 
-            // Dropbox app key (https://www.dropbox.com/developers/apps)
             buildConfigField "String", "DROPBOX_APP_KEY", properties.getProperty("dropbox.app_key")
             resValue "string", "dropbox_app_key_schema", properties.getProperty("dropbox.app_key_schema")
         }

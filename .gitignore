@@ -1,3 +1,6 @@
+# Properties loaded by Gradle build (e.g. credentials)
+app.properties
+
 
 # Created by https://www.gitignore.io/api/gradle,intellij,android,emacs
 
