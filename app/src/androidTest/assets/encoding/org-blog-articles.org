@@ -1,0 +1,65 @@
+#+TITLE: Interesting blog posts about Org mode
+#+AUTHOR:
+#+EMAIL:
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 num:nil toc:nil \n:nil ::t |:t ^:t -:t f:t *:t tex:t d:nil tags:not-in-toc author:nil creator:nil
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+LINK_UP:
+#+LINK_HOME:
+
+[[file:index.org][{Back to Worg's index}]]
+
+This file contains a list of blog posts that talk about Org-mode in
+interesting ways.
+
+* tycho garen at http://tychoish.com
+  - [[http://tychoish.com/essay/org-mode/][Org-mode]]
+  - [[http://tychoish.com/essay/org-system/][Org system]]
+  - [[http://tychoish.com/essay/useful-emacs-and-orgmode-hacks/][Useful Emacs and Org-mode hacks]]
+  - [[http://tychoish.com/essay/writing-in-org-mode/][Writing in Org-mode]]
+  - [[http://tychoish.com/essay/org-mode-snippets/][Org-mode snippets]]
+  - [[http://tychoish.com/essay/beyond-lists-in-org-mode/][Beyond Lists in Org-mode]]
+* John Wiegley at http://www.newartisans.com
+  - [[http://www.newartisans.com/2007/08/using-org-mode-as-a-day-planner.html][Using Org-mode as a day planner]]
+* Sacha Chua at http://sachachua.com
+  - [[http://sachachua.com/wp/2009/04/nothing-quite-like-org-for-emacs/][Nothing quite like Org-mode for Emacs]]
+  - http://sachachua.com/wp/2009/06/thoughts-on-toodledo-versus-emacs-org/
+  - http://sachachua.com/wp/2007/10/clocking-work-time-under-org/
+* T.F. Torrey at http://www.tftorrey.com
+  - [[http://www.tftorrey.com/weblog/archives/2009/11/30/great_and_glorious_progress/][Great and Glorious Progress]]
+* http://emacs-fu.blogspot.com
+  - [[http://emacs-fu.blogspot.com/2009/10/writing-presentations-with-org-mode-and.html][Writing Presentations with Org-mode and Beamer]]
+  - [[http://emacs-fu.blogspot.com/2009/05/writing-and-blogging-with-org-mode.html][Writing and Blogging with Org-mode]]
+* http://dynamic-thinking.blogspot.com
+  - [[http://dynamic-thinking.blogspot.com/2009/11/orgtbl-mode.html][Orgtbl-mode]]
+* http://nflath.com
+  - [[http://nflath.com/2009/10/org-mode/][Org-mode]]
+* Peter Jones at http://www.contextualdevelopment.com
+  - [[http://www.contextualdevelopment.com/articles/2008/project-planning][Project Planning]]
+* Greg Newman at http://gregnewman.org
+  - [[http://gregnewman.org/journal/2009/jun/19/org-mode-logo-refresh/][Org-mode logo refresh]]
+  - [[http://gregnewman.org/journal/2009/sep/5/backing-org-mode-files/][Backing up Org-mode Files]]
+  - [[http://gregnewman.org/journal/2010/jan/24/let-org-mode-manage-your-emacs-dot-files/][Let Org-Mode Manage Your Emacs Dot Files]]
+* Manoj Srivastava
+  - [[http://www.golden-gryphon.com/blog/manoj/blog/2008/06/08/Using_org-mode_with_Ikiwiki/][Using org-mode with Ikiwiki]]
+* Stefano Zacchiroli
+  - [[http://upsilon.cc/~zack/blog/posts/2010/02/integrating_Mutt_with_Org-mode/][Integrating Mutt with Org-mode]]
+* http://mph.puddingbowl.org/
+  - [[http://mph.puddingbowl.org/2010/02/org-mode-in-your-pocket-is-a-gnu-shaped-devil/][Org-mode in your pocket is a gnu shaped devil]]
+
+* Dave Täht at http://the-edge.blogspot.com/
+  - [[http://the-edge.blogspot.com/2009/08/going-retro-re-adopting-emacs.html][Going retro, re-adopting Emacs!]]
+* Joey Doll at http://guyslikedolls.com
+  - [[http://guyslikedolls.com/2009/02/24/set-phasers-to-org-mode/][Set phasers to Org-Mode]]
+* Thomas Parslow at http://almostobsolete.net/
+  - [[http://almostobsolete.net/daypage.html][A day page for Org-mode]]
+* Urpo Lankinen at http://beastwithin.org/users/wwwwolf/fantasy/avarthrel/blog
+  :PROPERTIES:
+  :ID:       ECA488FE-002F-431F-B5DE-C33BD87F98DE
+  :END:
+  - [[http://beastwithin.org/users/wwwwolf/fantasy/avarthrel/blog/2011/05/lets-just-use-emacs.html][Let's just use Emacs]], a great rant about (among other stuff) Org
+    mode awesomeness
+* Juan Reyero at http://juanreyero.com
+  - Write your book in orgmode and publish it with [[http://leanpub.com][Leanpub]] and the [[http://juanreyero.com/open/ox-leanpub/index.html][ox-leanpub exporter]].
+  - Export your org-mode blog with [[http://jekyllrb.com][jekyll]] and [[http://juanreyero.com/open/org-jekyll/index.html][org-jekyll]].
+  - Orgmode [[http://juanreyero.com/article/emacs/org-teams.html][tricks for team management]].

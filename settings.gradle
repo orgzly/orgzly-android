@@ -1,0 +1,5 @@
+// Used when developing
+include ':org-java'
+project(':org-java').projectDir = new File(settingsDir, '../org-java')
+
+include ':app'

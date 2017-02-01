@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Use a minimum number of different colors. -->
+
+<resources>
+    <color name="drawer_title_bg_color">#06000000</color>
+
+    <!-- http://www.google.com/design/spec/style/color.html#color-themes -->
+    <color name="dark_theme_status_bar">#000000</color>
+    <color name="dark_theme_app_bar">#212121</color>
+    <color name="dark_theme_bg">#303030</color>
+    <color name="dark_theme_cards_dialogs">#424242</color>
+
+    <!-- http://www.google.com/design/spec/style/color.html#color-ui-color-application -->
+    <color name="dark_bg_text_primary">#ffffff</color>
+    <color name="dark_bg_text_secondary">#b4ffffff</color>
+    <color name="dark_bg_text_mute">#4dffffff</color>
+
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray17">#fff5f5f5</color>
+    <color name="gray25">#ffe6e6e6</color>
+    <color name="gray45">#ffd2d2d2</color>
+    <color name="gray50">#ffcdcdcd</color>
+    <color name="gray100">#ff9b9b9b</color>
+    <color name="gray150">#ff696969</color>
+
+    <!-- Different shades, from tools such as http://colorschemedesigner.com/ or https://kuler.adobe.com -->
+    <!--<color name="color1">#4234FF</color>-->
+    <!--<color name="color2">#3B2FE5</color>-->
+    <!--<color name="color3">#3127BF</color>-->
+    <!--<color name="color4">#211A7F</color>-->
+    <!--<color name="color5">#100D40</color>-->
+
+    <!-- -->
+
+    <!-- Action bar background colors, depending on displayed fragments. -->
+    <!--<color name="action_bar_misc">@color/primary</color>-->
+    <!--<color name="action_bar_in_settings">#ff380b12</color>-->
+    <!--<color name="action_bar_in_query">#ff001f37</color>-->
+    <!--<color name="action_bar_in_settings">@color/primary</color>-->
+    <!--<color name="action_bar_in_query">@color/primary</color>-->
+    <!-- Colors from org-mode logo. -->
+    <!--<color name="action_bar_in_settings">#ff923a2e</color>-->
+    <!--<color name="action_bar_in_query">#3d696a</color>-->
+
+    <!-- Colors from Bootstrap. -->
+    <color name="alert_info_text">#31708f</color>
+    <color name="alert_info_bg">#d9edf7</color>
+    <color name="alert_info_border">#bce8f1</color>
+    <color name="alert_success_text">#3c763d</color>
+    <color name="alert_success_bg">#dff0d8</color>
+    <color name="alert_success_border">#d6e9c6</color>
+    <color name="alert_warning_text">#8a6d3b</color>
+    <color name="alert_warning_bg">#fcf8e3</color>
+    <color name="alert_warning_border">#faebcc</color>
+    <color name="alert_danger_text">#a94442</color>
+    <color name="alert_danger_bg">#f2dede</color>
+    <color name="alert_danger_border">#ebccd1</color>
+
+    <color name="item_book_title">@color/black</color>
+    <color name="item_book_horizontal_line">@color/gray50</color>
+    <color name="item_book_normal_bg">@android:color/transparent</color>
+    <color name="item_book_normal_stroke">@color/gray50</color>
+    <color name="item_book_focused_bg">@color/gray45</color>
+    <color name="item_book_focused_stroke">@color/gray50</color>
+    <color name="item_book_pressed_bg">@color/gray50</color>
+
+    <color name="item_head_selected_bg">#3238caff</color>
+</resources>
+

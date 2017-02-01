@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Key for preferences containing user-settable values. -->
+    <string name="pref_key_is_reverse_click_action" translatable="false">pref_key_is_reverse_click_action</string>
+    <string name="pref_key_is_notes_content_displayed_in_list" translatable="false">pref_key_is_notes_content_displayed_in_list</string>
+    <string name="pref_key_display_planning" translatable="false">pref_key_display_planning</string>
+    <string name="pref_key_book_name_in_search" translatable="false">pref_key_book_name_in_search</string>
+    <string name="pref_key_is_notes_content_displayed_in_search" translatable="false">pref_key_is_notes_content_displayed_in_search</string>
+    <string name="pref_key_is_notes_content_foldable" translatable="false">pref_key_is_notes_content_foldable</string>
+    <string name="pref_key_is_font_monospaced" translatable="false">pref_key_is_font_monospaced</string>
+    <string name="pref_key_notebooks_sort_order" translatable="false">pref_key_notebooks_sort_order</string>
+    <string name="pref_key_notes_list_density" translatable="false">pref_key_notes_list_density</string>
+    <string name="pref_key_color_scheme" translatable="false">pref_key_color_scheme</string>
+    <string name="pref_key_font_size" translatable="false">pref_key_font_size</string>
+    <string name="pref_key_displayed_book_details" translatable="false">pref_key_displayed_book_details</string>
+    <string name="pref_key_new_note_state" translatable="false">pref_key_new_note_state</string>
+    <string name="pref_key_is_new_note_scheduled" translatable="false">pref_key_is_new_note_scheduled</string>
+    <string name="pref_key_is_created_at_added" translatable="false">pref_key_is_created_at_added</string>
+    <string name="pref_key_created_at_property" translatable="false">pref_key_created_at_property</string>
+    <string name="pref_key_new_note_notification" translatable="false">pref_key_new_note_notification</string>
+    <string name="pref_key_states" translatable="false">pref_key_states</string>
+    <!--<string name="pref_key_states_todo" translatable="false">pref_key_states_todo</string>-->
+    <!--<string name="pref_key_states_done" translatable="false">pref_key_states_done</string>-->
+    <string name="pref_key_default_priority" translatable="false">pref_key_default_priority</string>
+    <string name="pref_key_min_priority" translatable="false">pref_key_min_priority</string>
+    <string name="pref_key_separate_notes_with_new_line" translatable="false">pref_key_separate_notes_with_new_line</string>
+
+    <!-- These do not store any data. -->
+    <string name="pref_key_repos" translatable="false">pref_key_repos</string>
+    <string name="pref_key_version" translatable="false">pref_key_version</string>
+    <string name="pref_key_reload_getting_started" translatable="false">pref_key_reload_getting_started</string>
+    <string name="pref_key_clear_database" translatable="false">pref_key_clear_database</string>
+
+    <!-- State-type preferences, not changeable by user. They have no defaults. -->
+    <string name="pref_key_dropbox_token" translatable="false">pref_key_dropbox_token</string>
+    <string name="pref_key_is_getting_started_notebook_loaded" translatable="false">pref_key_is_getting_started_notebook_loaded</string>
+    <string name="pref_key_last_used_version_code" translatable="false">pref_key_last_used_version_code</string>
+    <string name="pref_key_last_successful_sync_time" translatable="false">pref_key_last_successful_sync_time</string>
+
+
+    <!-- Default values -->
+    <bool name="pref_default_is_reverse_click_action">false</bool>
+    <bool name="pref_default_is_notes_content_displayed_in_list">true</bool>
+    <bool name="pref_default_display_planning">true</bool>
+    <bool name="pref_default_is_notes_content_displayed_in_search">false</bool>
+    <bool name="pref_default_is_notes_content_foldable">true</bool>
+    <bool name="pref_default_is_font_monospaced">false</bool>
+    <string name="pref_default_notebooks_sort_order">@string/pref_value_notebooks_sort_order_name</string>
+    <string name="pref_default_notes_list_density">@string/pref_value_list_density_cozy</string>
+    <string name="pref_default_value_color_scheme">@string/pref_value_color_scheme_light</string>
+    <string name="pref_default_value_font_size">@string/pref_value_font_size_default</string>
+    <string-array name="displayed_book_details_default">
+        <item>@string/book_details_mtime</item>
+        <item>@string/book_details_last_action</item>
+    </string-array>
+    <string name="pref_default_value_new_note_state">NOTE</string>
+    <bool name="pref_default_value_is_new_note_scheduled">false</bool>
+    <bool name="pref_default_value_is_created_at_added">false</bool>
+    <string name="pref_default_created_at_property">CREATED</string>
+    <bool name="pref_default_value_new_note_notification">false</bool>
+    <string name="pref_default_states">TODO NEXT | DONE</string>
+    <string name="pref_default_default_priority">B</string>
+    <string name="pref_default_min_priority">C</string>
+    <string name="pref_default_separate_notes_with_new_line">@string/separate_notes_with_new_line_multi_line_notes_only</string>
+
+    <!-- Notebooks' sort order. -->
+    <string name="pref_value_notebooks_sort_order_name">name</string>
+    <string name="pref_value_notebooks_sort_order_modification_time">mtime</string>
+    <string-array name="notebooks_sort_order">
+        <item>@string/notebooks_sort_order_name</item>
+        <item>@string/notebooks_sort_order_modification_time</item>
+    </string-array>
+    <string-array name="notebooks_sort_order_values">
+        <item>@string/pref_value_notebooks_sort_order_name</item>
+        <item>@string/pref_value_notebooks_sort_order_modification_time</item>
+    </string-array>
+
+    <!-- Notes' list density. -->
+    <string name="pref_value_list_density_comfortable">comfortable</string>
+    <string name="pref_value_list_density_cozy">cozy</string>
+    <string name="pref_value_list_density_compact">compact</string>
+    <string-array name="list_density">
+        <item>@string/list_density_comfortable</item>
+        <item>@string/list_density_cozy</item>
+        <item>@string/list_density_compact</item>
+    </string-array>
+    <string-array name="list_density_values">
+        <item>@string/pref_value_list_density_comfortable</item>
+        <item>@string/pref_value_list_density_cozy</item>
+        <item>@string/pref_value_list_density_compact</item>
+    </string-array>
+
+    <!-- Color scheme. -->
+    <string name="pref_value_color_scheme_light" translatable="false">light</string>
+    <string name="pref_value_color_scheme_dark" translatable="false">dark</string>
+    <string-array name="color_scheme">
+        <item>@string/color_scheme_light</item>
+        <item>@string/color_scheme_dark</item>
+    </string-array>
+    <string-array name="color_scheme_values">
+        <item>@string/pref_value_color_scheme_light</item>
+        <item>@string/pref_value_color_scheme_dark</item>
+    </string-array>
+
+    <!-- Font size. -->
+    <string name="pref_value_font_size_small">small</string>
+    <string name="pref_value_font_size_default">default</string>
+    <string name="pref_value_font_size_large">large</string>
+    <string-array name="font_sizes">
+        <item>@string/font_size_small</item>
+        <item>@string/font_size_default</item>
+        <item>@string/font_size_large</item>
+    </string-array>
+    <string-array name="font_sizes_values">
+        <item>@string/pref_value_font_size_small</item>
+        <item>@string/pref_value_font_size_default</item>
+        <item>@string/pref_value_font_size_large</item>
+    </string-array>
+
+    <!-- Book name in search results. -->
+    <string name="pref_value_book_name_in_search_0" translatable="false">0</string>
+    <string name="pref_value_book_name_in_search_1" translatable="false">1</string>
+    <string name="pref_value_book_name_in_search_2" translatable="false">2</string>
+    <string-array name="book_name_in_search_entries">
+        <item>@string/book_name_in_search_hide</item>
+        <item>@string/book_name_in_search_before_note</item>
+        <item>@string/book_name_in_search_under_note</item>
+    </string-array>
+    <string-array name="book_name_in_search_entry_values">
+        <item>@string/pref_value_book_name_in_search_0</item>
+        <item>@string/pref_value_book_name_in_search_1</item>
+        <item>@string/pref_value_book_name_in_search_2</item>
+    </string-array>
+    <string name="pref_default_value_book_name_in_search" translatable="false">@string/pref_value_book_name_in_search_2</string>
+
+    <!-- Displayed book details. -->
+    <string name="book_details_mtime" translatable="false">book_details_mtime</string>
+    <string name="book_details_link_url" translatable="false">book_details_link_url</string>
+    <string name="book_details_sync_url" translatable="false">book_details_sync_url</string>
+    <string name="book_details_sync_mtime" translatable="false">book_details_sync_mtime</string>
+    <string name="book_details_sync_revision" translatable="false">book_details_sync_revision</string>
+    <string name="book_details_encoding_detected" translatable="false">book_details_encoding_detected</string>
+    <string name="book_details_encoding_used" translatable="false">book_details_encoding_used</string>
+    <string name="book_details_last_action" translatable="false">book_details_last_action</string>
+    <string-array name="displayed_book_details">
+        <item>@string/displayed_book_details_local_mtime</item>
+        <item>@string/displayed_book_details_link_url</item>
+        <item>@string/displayed_book_details_sync_url</item>
+        <item>@string/displayed_book_details_sync_mtime</item>
+        <item>@string/displayed_book_details_sync_revision</item>
+        <item>@string/displayed_book_details_detected_encoding</item>
+        <item>@string/displayed_book_details_used_encoding</item>
+        <item>@string/displayed_book_details_last_action</item>
+    </string-array>
+    <string-array name="displayed_book_details_values">
+        <item>@string/book_details_mtime</item>
+        <item>@string/book_details_link_url</item>
+        <item>@string/book_details_sync_url</item>
+        <item>@string/book_details_sync_mtime</item>
+        <item>@string/book_details_sync_revision</item>
+        <item>@string/book_details_encoding_detected</item>
+        <item>@string/book_details_encoding_used</item>
+        <item>@string/book_details_last_action</item>
+    </string-array>
+
+    <string-array name="priorities">
+        <item>@string/priority_a_highest</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+        <item>E</item>
+        <item>F</item>
+        <item>G</item>
+        <item>H</item>
+        <item>I</item>
+        <item>J</item>
+        <item>K</item>
+        <item>L</item>
+        <item>M</item>
+        <item>N</item>
+        <item>O</item>
+        <item>P</item>
+        <item>Q</item>
+        <item>R</item>
+        <item>S</item>
+        <item>T</item>
+        <item>U</item>
+        <item>V</item>
+        <item>W</item>
+        <item>X</item>
+        <item>Y</item>
+        <item>@string/priority_z_lowest</item>
+    </string-array>
+    <string-array name="priority_values">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+        <item>E</item>
+        <item>F</item>
+        <item>G</item>
+        <item>H</item>
+        <item>I</item>
+        <item>J</item>
+        <item>K</item>
+        <item>L</item>
+        <item>M</item>
+        <item>N</item>
+        <item>O</item>
+        <item>P</item>
+        <item>Q</item>
+        <item>R</item>
+        <item>S</item>
+        <item>T</item>
+        <item>U</item>
+        <item>V</item>
+        <item>W</item>
+        <item>X</item>
+        <item>Y</item>
+        <item>Z</item>
+    </string-array>
+
+
+    <string name="separate_notes_with_new_line_always">separate_notes_with_new_line_always</string>
+    <string name="separate_notes_with_new_line_multi_line_notes_only">separate_notes_with_new_line_multi_line_notes_only</string>
+    <string name="separate_notes_with_new_line_never">separate_notes_with_new_line_never</string>
+    <string name="book_name_in_search_hide">Hide</string>
+    <string name="book_name_in_search_before_note">Before note</string>
+    <string name="book_name_in_search_under_note">Under note</string>
+    <string-array name="separate_notes_with_new_line_names">
+        <item>Always</item>
+        <item>Multiline notes only</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="separate_notes_with_new_line_values">
+        <item>@string/separate_notes_with_new_line_always</item>
+        <item>@string/separate_notes_with_new_line_multi_line_notes_only</item>
+        <item>@string/separate_notes_with_new_line_never</item>
+    </string-array>
+
+</resources>

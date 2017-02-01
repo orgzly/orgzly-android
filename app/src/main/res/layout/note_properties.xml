@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/property_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/note_property"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/add_property"
+        style="@style/NoteTimeButton"
+        android:drawableStart="?attr/oic_fragment_note_property"
+        android:drawableLeft="?attr/oic_fragment_note_property"
+        android:text="@string/add_property"
+        android:freezesText="true"/>
+
+</LinearLayout>

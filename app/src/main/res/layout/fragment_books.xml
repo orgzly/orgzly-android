@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_books_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/fragment_books_bg_color">
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/ListView"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
+        android:paddingLeft="@dimen/padding_8"
+        android:paddingRight="@dimen/padding_8"
+        android:paddingTop="@dimen/padding_8"/>
+
+    <!-- Made visible programmatically if there are no notes. -->
+    <!-- TODO: Use flipper instead? Be consistent in any case. -->
+    <TextView
+        android:id="@+id/fragment_books_no_notebooks"
+        style="@style/BigCenteredText"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/no_notebooks"
+        android:visibility="gone"
+        android:paddingBottom="@dimen/fab_margin"/>
+
+</RelativeLayout>

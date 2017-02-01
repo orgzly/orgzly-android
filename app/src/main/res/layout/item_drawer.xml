@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_drawer_container"
+    style="@style/DrawerButton"
+    android:orientation="horizontal"
+    >
+
+    <!-- Marker for currently selected item. -->
+    <TextView
+        android:id="@+id/item_drawer_active_flag"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:background="?attr/drawer_marker"/>
+
+    <View
+        android:layout_width="8dp"
+        android:layout_height="match_parent"/>
+
+    <FrameLayout
+        android:layout_width="24dp"
+        android:layout_height="24dp">
+
+        <ImageView
+            android:id="@+id/item_drawer_left_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="?attr/oic_drawer_notebooks"
+            android:layout_gravity="center"
+            android:contentDescription="@string/drawer_item"
+            android:visibility="invisible"/>
+    </FrameLayout>
+
+    <!-- Actual text. -->
+    <TextView
+        android:id="@+id/item_drawer_text"
+        style="@style/DrawerButtonText"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:text="@string/book_name_sample"/>
+
+    <!-- Is the notebook modified. -->
+    <ImageView
+        android:id="@+id/item_drawer_right_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:src="?attr/oic_drawer_item_modified"
+        android:contentDescription="@string/notebook_modified"/>
+
+    <View
+        android:layout_width="10dp"
+        android:layout_height="match_parent"/>
+</LinearLayout>
+

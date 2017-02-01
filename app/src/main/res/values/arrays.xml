@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string-array name="time_units">
+        <item>@string/hour</item>
+        <item>@string/day</item>
+        <item>@string/week</item>
+        <item>@string/month</item>
+        <item>@string/year</item>
+    </string-array>
+
+    <string-array name="repeater_types">
+        <item>+</item>
+        <item>++</item>
+        <item>.+</item>
+    </string-array>
+
+    <string-array name="repeater_types_desc">
+        <item>@string/repeater_description_cumulate</item>
+        <item>@string/repeater_description_catch_up</item>
+        <item>@string/repeater_description_restart</item>
+    </string-array>
+
+</resources>

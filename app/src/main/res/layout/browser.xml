@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/browser_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/browser_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:gravity="center"
+        android:padding="@dimen/padding_4"
+        android:text="@string/directory_sample"
+        android:textSize="?attr/browser_text_size"
+        android:textStyle="bold"
+        android:background="?attr/browser_header_bg_color"
+        android:elevation="4dp" tools:targetApi="21"/>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:background="?attr/browser_footer_bg_color"
+        android:elevation="2dp" tools:targetApi="21"
+        >
+
+        <Button
+            android:id="@+id/browser_button_cancel"
+            style="@style/RaisedButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="@string/cancel"/>
+
+        <Button
+            android:id="@+id/browser_button_create"
+            style="@style/RaisedButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="@string/create"/>
+
+        <Button
+            android:id="@+id/browser_button_use"
+            style="@style/RaisedButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="@string/select"/>
+
+    </LinearLayout>
+
+</LinearLayout>

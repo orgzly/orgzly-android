@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <declare-styleable name="GesturedListView">
+        <attr name="menu_container" format="reference"/>
+        <attr name="menu_for_fling_right" format="integer"/>
+        <attr name="menu_for_fling_left" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="WhatsNewChange">
+        <attr name="text" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="FontSize">
+        <attr name="font_micro" format="dimension"/>
+        <attr name="font_small" format="dimension"/>
+        <attr name="font_medium" format="dimension"/>
+        <attr name="font_large" format="dimension"/>
+
+        <attr name="item_drawer_title_text_size" format="dimension"/>
+        <attr name="item_drawer_text_size" format="dimension"/>
+        <attr name="left_drawer_sync_text_size" format="dimension"/>
+        <attr name="item_book_title_text_size" format="dimension"/>
+        <attr name="item_book_subtitle_text_size" format="dimension"/>
+        <attr name="item_book_details_text_size" format="dimension"/>
+        <attr name="item_head_book_name_text" format="dimension"/>
+        <attr name="item_head_bullet_text_size" format="dimension"/>
+        <attr name="item_head_title_text_size" format="dimension"/>
+        <attr name="item_head_fold_button_text_size" format="dimension"/>
+        <attr name="item_head_post_title_text_size" format="dimension"/>
+        <attr name="item_head_sub_title_text" format="dimension"/>
+        <attr name="item_head_sub_title_content_text" format="dimension"/>
+        <attr name="item_repo_text_size" format="dimension"/>
+        <attr name="fragment_note_time_buttons_text_size" format="dimension"/>
+        <attr name="big_centered_text_size" format="dimension"/>
+        <attr name="browser_text_size" format="dimension"/>
+
+        <!-- Icons sizes, but depend on set font size. -->
+        <attr name="item_book_info_icon_size" format="dimension"/>
+        <attr name="item_head_info_icon_size" format="dimension"/>
+
+        <attr name="item_head_indent_width" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="ColorScheme">
+        <attr name="main_bg_color" format="color"/>
+        <attr name="main_text_color" format="color"/>
+
+        <attr name="status_bar_default" format="color"/>
+        <attr name="action_bar_default" format="color"/>
+        <attr name="status_bar_in_query" format="color"/>
+        <attr name="action_bar_in_query" format="color"/>
+        <attr name="status_bar_in_settings" format="color"/>
+        <attr name="action_bar_in_settings" format="color"/>
+
+        <attr name="fragment_books_bg_color" format="color"/>
+        <attr name="fragment_filters_bg_color" format="color"/>
+        <attr name="item_book_card_bg_color" format="color"/>
+
+        <attr name="drawer_bg" format="color"/>
+        <attr name="drawer_text" format="color"/>
+        <attr name="drawer_divider" format="color"/>
+        <attr name="drawer_sync_button_bg" format="color"/>
+        <attr name="drawer_marker" format="color"/>
+
+        <attr name="item_book_title_color" format="color"/>
+        <attr name="item_book_error_color" format="color"/>
+
+        <!-- Color of state keyword. -->
+        <attr name="item_head_state_todo_color" format="color"/>
+        <attr name="item_head_state_done_color" format="color"/>
+        <attr name="item_head_state_unknown_color" format="color"/>
+
+        <attr name="item_head_bullet_text_color" format="color"/>
+        <attr name="item_head_title_text_color" format="color"/>
+        <attr name="item_head_fold_button_text_color" format="color"/>
+
+        <attr name="item_head_post_title_text_color" format="color"/>
+        <attr name="item_head_indent_line_color" format="color"/>
+
+        <attr name="big_centered_text_color" format="color"/>
+
+        <attr name="browser_header_bg_color" format="color"/>
+        <attr name="browser_footer_bg_color" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="Icons">
+        <attr name="oic_drawer_sync_button" format="reference"/>
+        <attr name="oic_drawer_filters" format="reference"/>
+        <attr name="oic_drawer_notebooks" format="reference"/>
+        <attr name="oic_drawer_settings" format="reference"/>
+        <attr name="oic_drawer_item_modified" format="reference"/>
+
+        <attr name="oic_above_heads_action_mode" format="reference"/>
+        <attr name="oic_under_heads_action_mode" format="reference"/>
+        <attr name="oic_below_heads_action_mode" format="reference"/>
+
+        <attr name="oic_item_menu_schedule" format="reference"/>
+        <attr name="oic_item_menu_prev_state" format="reference"/>
+        <attr name="oic_item_menu_next_state" format="reference"/>
+        <attr name="oic_item_menu_done_state" format="reference"/>
+        <attr name="oic_item_menu_delete" format="reference"/>
+        <attr name="oic_item_menu_new_above" format="reference"/>
+        <attr name="oic_item_menu_new_under" format="reference"/>
+        <attr name="oic_item_menu_new_below" format="reference"/>
+        <attr name="oic_item_menu_open_note" format="reference"/>
+
+        <attr name="oic_new_item" format="reference"/>
+        <attr name="oic_delete_item" format="reference"/>
+        <attr name="oic_edit_item" format="reference"/>
+
+        <attr name="oic_edit_scheduled_time_action_mode" format="reference"/>
+        <attr name="oic_edit_state_action_mode" format="reference"/>
+
+        <attr name="oic_move_heads_left_action_mode" format="reference"/>
+        <attr name="oic_move_heads_down_action_mode" format="reference"/>
+        <attr name="oic_move_heads_up_action_mode" format="reference"/>
+        <attr name="oic_move_heads_right_action_mode" format="reference"/>
+
+        <attr name="oic_search_option" format="reference"/>
+
+        <attr name="oic_load_book_option" format="reference"/>
+
+        <attr name="oic_done" format="reference"/>
+        <attr name="oic_close" format="reference"/>
+
+        <attr name="oic_fragment_note_tags" format="reference"/>
+        <attr name="oic_fragment_note_scheduled_time" format="reference"/>
+        <attr name="oic_fragment_note_deadline_time" format="reference"/>
+        <attr name="oic_fragment_note_closed_time" format="reference"/>
+        <attr name="oic_fragment_note_property" format="reference"/>
+
+        <attr name="oic_timestamp_dialog_today" format="reference"/>
+        <attr name="oic_timestamp_dialog_tomorrow" format="reference"/>
+        <attr name="oic_timestamp_dialog_next_week" format="reference"/>
+
+        <attr name="oic_dropbox_not_linked" format="reference"/>
+        <attr name="oic_dropbox_linked" format="reference"/>
+
+        <attr name="oic_browse_directory" format="reference"/>
+        <attr name="oic_browser_up" format="reference"/>
+        <attr name="oic_browser_directory" format="reference"/>
+        <attr name="oic_browser_file" format="reference"/>
+
+        <attr name="oic_item_alpha" format="float"/>
+
+        <attr name="oic_fragment_book_cycle_visibility" format="reference"/>
+
+        <attr name="oic_item_book_item_sync_needed" format="reference"/>
+        <attr name="oic_item_book_mtime_item" format="reference"/>
+        <attr name="oic_item_book_link_item" format="reference"/>
+        <attr name="oic_item_book_versioned_rook_item" format="reference"/>
+        <attr name="oic_item_book_sync_status_item" format="reference"/>
+        <attr name="oic_item_book_encoding_item" format="reference"/>
+        <attr name="oic_item_book_sync_last_action_item" format="reference"/>
+
+        <attr name="oic_item_head_book_name" format="reference"/>
+        <attr name="oic_item_head_scheduled_item" format="reference"/>
+        <attr name="oic_item_head_deadline_item" format="reference"/>
+        <attr name="oic_item_head_closed_item" format="reference"/>
+    </declare-styleable>
+</resources>

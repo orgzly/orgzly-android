@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--
+         Custom light themes should inherit from AppLightTheme, dark themes from AppDarkTheme.
+         They both contain same default font and icon sizes. TODO: DRY (how?)
+
+         The Android framework uses the following limited set of type sizes:
+
+         Micro  - 12sp
+         Small  - 14sp
+         Medium - 18sp
+         Large  - 22sp
+
+         See also http://developer.android.com/design/style/typography.html.
+    -->
+    <style name="AppLightTheme" parent="Theme.Design.Light">
+        <!-- Font sizes (defaults) -->
+        <item name="font_micro">12sp</item>
+        <item name="font_small">14sp</item>
+        <item name="font_medium">18sp</item>
+        <item name="font_large">22sp</item>
+        <item name="item_drawer_title_text_size">18sp</item>
+        <item name="item_drawer_text_size">14sp</item>
+        <item name="left_drawer_sync_text_size">12sp</item>
+        <item name="item_book_title_text_size">22sp</item>
+        <item name="item_book_subtitle_text_size">18sp</item>
+        <item name="item_book_details_text_size">12sp</item>
+
+        <item name="item_head_book_name_text">14sp</item>
+        <item name="item_head_bullet_text_size">16sp</item>
+        <item name="item_head_title_text_size">16sp</item>
+        <item name="item_head_fold_button_text_size">16sp</item>
+        <item name="item_head_post_title_text_size">14sp</item>
+        <item name="item_head_sub_title_text">14sp</item>
+        <item name="item_head_sub_title_content_text">14sp</item>
+
+        <item name="item_repo_text_size">14sp</item>
+        <item name="fragment_note_time_buttons_text_size">14sp</item>
+        <item name="big_centered_text_size">22sp</item>
+        <item name="browser_text_size">18sp</item>
+
+        <!-- Icon sizes -->
+        <item name="item_book_info_icon_size">14dp</item>
+        <item name="item_head_info_icon_size">14dp</item>
+
+        <item name="item_head_indent_width">20dp</item>
+
+
+        <!-- For some reason, cursor is invisible (or was it black on black?) on Nexus 7 (API 19).
+             With this, it's white. -->
+        <item tools:targetApi="12" name="android:textCursorDrawable">@null</item>
+
+        <!-- Either use this or color the fragments. Lint complains if both are used-->
+        <item name="android:windowBackground">@color/white</item>
+        <item name="main_bg_color">@color/white</item>
+
+        <item name="main_text_color">@color/black</item>
+
+
+        <!-- http://www.google.com/design/spec/style/color.html#color-color-palette -->
+        <item name="status_bar_default">#87877c</item>
+        <item name="action_bar_default">#cfcfc4</item>
+        <item name="status_bar_in_query">#607D8B</item>
+        <item name="action_bar_in_query">#B0BEC5</item>
+        <item name="status_bar_in_settings">#795548</item>
+        <item name="action_bar_in_settings">#BCAAA4</item>
+
+        <item name="fragment_books_bg_color">@color/gray25</item>
+        <item name="fragment_filters_bg_color">@color/gray25</item>
+        <item name="item_book_card_bg_color">@color/white</item>
+
+        <item name="drawer_text">#333333</item>
+        <item name="drawer_bg">@color/white</item>
+        <item name="drawer_divider">@color/gray25</item>
+        <item name="drawer_sync_button_bg">@color/gray17</item>
+        <item name="drawer_marker">@color/black</item>
+
+        <item name="item_book_title_color">@color/black</item>
+        <item name="item_book_error_color">#dc0000</item>
+
+        <item name="item_head_state_todo_color">#dc0000</item>
+        <item name="item_head_state_done_color">#ff008000</item>
+        <item name="item_head_state_unknown_color">#ff0000ff</item>
+
+        <item name="item_head_bullet_text_color">@color/black</item>
+        <item name="item_head_title_text_color">@color/black</item>
+        <item name="item_head_fold_button_text_color">@color/black</item>
+        <item name="item_head_post_title_text_color">#696969</item>
+        <item name="item_head_indent_line_color">#0c000000</item>
+
+        <item name="big_centered_text_color">#696969</item>
+
+        <item name="browser_header_bg_color">@color/gray17</item>
+        <item name="browser_footer_bg_color">@color/white</item>
+
+        <!--<item name="windowActionBarOverlay">true</item>-->
+
+        <!-- TODO: Are these needed? Status bar background is set programmatically. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/black</item>
+
+        <!-- colorAccent is used as the default value for colorControlActivated, which is used to tint widgets. -->
+        <!--<item name="colorAccent">#1e6b87</item>-->
+
+        <!-- TODO: Why was this added, are buttons too dark? -->
+        <item name="android:colorButtonNormal" tools:targetApi="21">@color/gray17</item>
+
+        <!--<item tools:targetApi="21" name="android:colorControlNormal">#ff33b5e5</item>-->
+        <!--<item tools:targetApi="21" name="android:colorControlActivated">#ff33b5e5</item>-->
+        <!--<item tools:targetApi="21" name="android:colorControlHighlight">#ff33b5e5</item>-->
+
+        <!-- You can also set colorControlNormal, colorControlActivated, colorControlHighlight, and colorSwitchThumbNormal. -->
+
+        <!--<item name="android:windowTranslucentStatus" tools:targetApi="19">true</item>-->
+        <!--<item name="android:windowTranslucentNavigation" tools:targetApi="19">true</item>-->
+
+
+        <item name="oic_drawer_sync_button">@drawable/ic_sync_black_24dp</item>
+        <item name="oic_drawer_filters">@drawable/ic_search_black_24dp</item>
+        <item name="oic_drawer_notebooks">@drawable/ic_my_library_books_black_24dp</item>
+        <item name="oic_drawer_settings">@drawable/ic_settings_black_24dp</item>
+        <item name="oic_drawer_item_modified">@drawable/ic_sync_grey600_18dp</item>
+
+        <item name="oic_above_heads_action_mode">@drawable/cic_new_above_black_24dp</item>
+        <item name="oic_under_heads_action_mode">@drawable/cic_new_under_black_24dp</item>
+        <item name="oic_below_heads_action_mode">@drawable/cic_new_below_black_24dp</item>
+
+        <item name="oic_item_menu_schedule">@drawable/ic_today_black_24dp</item>
+        <item name="oic_item_menu_prev_state">@drawable/ic_rotate_left_black_24dp</item>
+        <item name="oic_item_menu_next_state">@drawable/ic_rotate_right_black_24dp</item>
+        <item name="oic_item_menu_done_state">@drawable/ic_done_black_24dp</item>
+        <item name="oic_item_menu_delete">@drawable/ic_delete_black_24dp</item>
+        <item name="oic_item_menu_new_above">@drawable/cic_new_above_black_24dp</item>
+        <item name="oic_item_menu_new_under">@drawable/cic_new_under_black_24dp</item>
+        <item name="oic_item_menu_new_below">@drawable/cic_new_below_black_24dp</item>
+        <item name="oic_item_menu_open_note">@drawable/ic_center_focus_strong_black_24dp</item>
+
+        <item name="oic_new_item">@drawable/ic_add_black_24dp</item>
+        <item name="oic_delete_item">@drawable/ic_delete_black_24dp</item>
+        <item name="oic_edit_item">@drawable/ic_edit_black_24dp</item>
+
+        <item name="oic_edit_scheduled_time_action_mode">@drawable/ic_today_black_24dp</item>
+        <item name="oic_edit_state_action_mode">@drawable/ic_storage_black_24dp</item>
+
+        <item name="oic_move_heads_left_action_mode">@drawable/ic_keyboard_arrow_left_black_24dp</item>
+        <item name="oic_move_heads_down_action_mode">@drawable/ic_keyboard_arrow_down_black_24dp</item>
+        <item name="oic_move_heads_up_action_mode">@drawable/ic_keyboard_arrow_up_black_24dp</item>
+        <item name="oic_move_heads_right_action_mode">@drawable/ic_keyboard_arrow_right_black_24dp</item>
+
+        <item name="oic_search_option">@drawable/ic_search_black_24dp</item>
+
+        <item name="oic_load_book_option">@drawable/ic_folder_open_black_24dp</item>
+
+        <item name="oic_done">@drawable/ic_done_black_24dp</item>
+        <item name="oic_close">@drawable/ic_close_black_24dp</item>
+
+        <item name="oic_fragment_note_tags">@drawable/ic_label_outline_black_24dp</item>
+        <item name="oic_fragment_note_scheduled_time">@drawable/ic_today_black_24dp</item>
+        <item name="oic_fragment_note_deadline_time">@drawable/ic_alarm_black_24dp</item>
+        <item name="oic_fragment_note_closed_time">@drawable/ic_done_black_24dp</item>
+        <item name="oic_fragment_note_property">@drawable/ic_info_outline_black_24dp</item>
+
+        <item name="oic_timestamp_dialog_today">@drawable/cic_today_black_36dp</item>
+        <item name="oic_timestamp_dialog_tomorrow">@drawable/cic_tomorrow_black_36dp</item>
+        <item name="oic_timestamp_dialog_next_week">@drawable/cic_next_week_black_36dp</item>
+
+        <item name="oic_dropbox_not_linked">@drawable/cic_dropbox_black_48px</item>
+        <item name="oic_dropbox_linked">@drawable/cic_dropbox_blue_48px</item>
+
+        <item name="oic_browse_directory">@drawable/ic_folder_open_black_48dp</item>
+        <item name="oic_browser_up">@drawable/ic_keyboard_arrow_up_black_24dp</item>
+        <item name="oic_browser_directory">@drawable/ic_folder_open_black_24dp</item>
+        <item name="oic_browser_file">@drawable/ic_insert_drive_file_black_24dp</item>
+
+        <item name="oic_item_alpha">0.55</item>
+
+        <item name="oic_fragment_book_cycle_visibility">@drawable/ic_unfold_more_black_24dp</item>
+
+        <item name="oic_item_book_item_sync_needed">@drawable/ic_sync_black_18dp</item>
+        <item name="oic_item_book_mtime_item">@drawable/ic_access_time_black_18dp</item>
+        <item name="oic_item_book_link_item">@drawable/ic_link_black_18dp</item>
+        <item name="oic_item_book_versioned_rook_item">@drawable/ic_sync_black_18dp</item>
+        <item name="oic_item_book_sync_status_item">@drawable/ic_sync_black_18dp</item>
+        <item name="oic_item_book_encoding_item">@drawable/ic_language_black_18dp</item>
+        <item name="oic_item_book_sync_last_action_item">@drawable/ic_info_outline_black_18dp</item>
+
+        <item name="oic_item_head_book_name">@drawable/ic_folder_open_black_18dp</item>
+        <item name="oic_item_head_scheduled_item">@drawable/ic_today_black_18dp</item>
+        <item name="oic_item_head_deadline_item">@drawable/ic_alarm_black_18dp</item>
+        <item name="oic_item_head_closed_item">@drawable/ic_done_black_18dp</item>
+    </style>
+
+    <style name="AppDarkTheme" parent="Theme.Design">
+        <!-- Font sizes (defaults) -->
+        <item name="font_micro">12sp</item>
+        <item name="font_small">14sp</item>
+        <item name="font_medium">18sp</item>
+        <item name="font_large">22sp</item>
+        <item name="item_drawer_title_text_size">18sp</item>
+        <item name="item_drawer_text_size">14sp</item>
+        <item name="left_drawer_sync_text_size">12sp</item>
+        <item name="item_book_title_text_size">22sp</item>
+        <item name="item_book_subtitle_text_size">18sp</item>
+        <item name="item_book_details_text_size">12sp</item>
+
+        <item name="item_head_book_name_text">14sp</item>
+        <item name="item_head_bullet_text_size">16sp</item>
+        <item name="item_head_title_text_size">16sp</item>
+        <item name="item_head_fold_button_text_size">16sp</item>
+        <item name="item_head_post_title_text_size">14sp</item>
+        <item name="item_head_sub_title_text">14sp</item>
+        <item name="item_head_sub_title_content_text">14sp</item>
+
+        <item name="item_repo_text_size">14sp</item>
+        <item name="fragment_note_time_buttons_text_size">14sp</item>
+        <item name="big_centered_text_size">22sp</item>
+        <item name="browser_text_size">18sp</item>
+
+        <!-- Icon sizes -->
+        <item name="item_book_info_icon_size">14dp</item>
+        <item name="item_head_info_icon_size">14dp</item>
+
+        <item name="item_head_indent_width">20dp</item>
+
+        <!-- For some reason, cursor is invisible (or was it black on black?) on Nexus 7 (API 19).
+             With this, it's white. -->
+        <item tools:targetApi="12" name="android:textCursorDrawable">@null</item>
+
+        <!--<item name="colorAccent">#1e6b87</item>-->
+
+        <item name="android:windowBackground">@color/dark_theme_cards_dialogs</item>
+        <item name="main_bg_color">@color/dark_theme_cards_dialogs</item>
+
+        <item name="main_text_color">@color/dark_bg_text_primary</item>
+
+        <item name="status_bar_default">@color/dark_theme_status_bar</item>
+        <item name="action_bar_default">@color/dark_theme_app_bar</item>
+
+        <!-- http://www.google.com/design/spec/style/color.html#color-color-palette -->
+        <item name="status_bar_in_query">#263238</item>
+        <item name="action_bar_in_query">#455A64</item>
+        <item name="status_bar_in_settings">#3E2723</item>
+        <item name="action_bar_in_settings">#5D4037</item>
+
+        <item name="fragment_books_bg_color">@color/dark_theme_bg</item>
+        <item name="fragment_filters_bg_color">@color/dark_theme_bg</item>
+        <item name="item_book_card_bg_color">@color/dark_theme_cards_dialogs</item>
+
+        <item name="drawer_text">@color/dark_bg_text_primary</item>
+        <item name="drawer_bg">@color/dark_theme_cards_dialogs</item>
+        <item name="drawer_divider">@color/dark_bg_text_mute</item>
+        <item name="drawer_sync_button_bg">@color/dark_theme_cards_dialogs</item>
+        <item name="drawer_marker">@color/dark_bg_text_primary</item>
+
+        <item name="item_book_title_color">@color/dark_bg_text_primary</item>
+        <item name="item_book_error_color">#ff9999</item>
+
+        <item name="item_head_state_todo_color">#ff9999</item>
+        <item name="item_head_state_done_color">#67ab67</item>
+        <item name="item_head_state_unknown_color">#9999ff</item>
+
+        <item name="item_head_bullet_text_color">@color/dark_bg_text_primary</item>
+        <item name="item_head_title_text_color">@color/dark_bg_text_primary</item>
+        <item name="item_head_fold_button_text_color">@color/dark_bg_text_primary</item>
+        <item name="item_head_post_title_text_color">@color/dark_bg_text_secondary</item>
+        <item name="item_head_indent_line_color">#0cffffff</item>
+
+        <item name="big_centered_text_color">@color/dark_bg_text_primary</item>
+
+        <item name="browser_header_bg_color">@color/dark_theme_cards_dialogs</item>
+        <item name="browser_footer_bg_color">@color/dark_theme_cards_dialogs</item>
+
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="android:colorButtonNormal" tools:targetApi="21">#696969</item>
+
+        <item name="oic_drawer_sync_button">@drawable/ic_sync_white_24dp</item>
+        <item name="oic_drawer_filters">@drawable/ic_search_white_24dp</item>
+        <item name="oic_drawer_notebooks">@drawable/ic_my_library_books_white_24dp</item>
+        <item name="oic_drawer_settings">@drawable/ic_settings_white_24dp</item>
+        <item name="oic_drawer_item_modified">@drawable/ic_sync_white_18dp</item>
+
+        <item name="oic_above_heads_action_mode">@drawable/cic_new_above_white_24dp</item>
+        <item name="oic_under_heads_action_mode">@drawable/cic_new_under_white_24dp</item>
+        <item name="oic_below_heads_action_mode">@drawable/cic_new_below_white_24dp</item>
+
+        <item name="oic_item_menu_schedule">@drawable/ic_today_white_24dp</item>
+        <item name="oic_item_menu_prev_state">@drawable/ic_rotate_left_white_24dp</item>
+        <item name="oic_item_menu_next_state">@drawable/ic_rotate_right_white_24dp</item>
+        <item name="oic_item_menu_done_state">@drawable/ic_done_white_24dp</item>
+        <item name="oic_item_menu_delete">@drawable/ic_delete_white_24dp</item>
+        <item name="oic_item_menu_new_above">@drawable/cic_new_above_white_24dp</item>
+        <item name="oic_item_menu_new_under">@drawable/cic_new_under_white_24dp</item>
+        <item name="oic_item_menu_new_below">@drawable/cic_new_below_white_24dp</item>
+        <item name="oic_item_menu_open_note">@drawable/ic_center_focus_strong_white_24dp</item>
+
+        <item name="oic_new_item">@drawable/ic_add_white_24dp</item>
+        <item name="oic_delete_item">@drawable/ic_delete_white_24dp</item>
+        <item name="oic_edit_item">@drawable/ic_edit_white_24dp</item>
+
+        <item name="oic_edit_scheduled_time_action_mode">@drawable/ic_today_white_24dp</item>
+        <item name="oic_edit_state_action_mode">@drawable/ic_storage_white_24dp</item>
+
+        <item name="oic_move_heads_left_action_mode">@drawable/ic_keyboard_arrow_left_white_24dp</item>
+        <item name="oic_move_heads_down_action_mode">@drawable/ic_keyboard_arrow_down_white_24dp</item>
+        <item name="oic_move_heads_up_action_mode">@drawable/ic_keyboard_arrow_up_white_24dp</item>
+        <item name="oic_move_heads_right_action_mode">@drawable/ic_keyboard_arrow_right_white_24dp</item>
+
+        <item name="oic_search_option">@drawable/ic_search_white_24dp</item>
+
+        <item name="oic_load_book_option">@drawable/ic_folder_open_white_24dp</item>
+
+        <item name="oic_done">@drawable/ic_done_white_24dp</item>
+        <item name="oic_close">@drawable/ic_close_white_24dp</item>
+
+        <item name="oic_fragment_note_tags">@drawable/ic_label_outline_white_24dp</item>
+        <item name="oic_fragment_note_scheduled_time">@drawable/ic_today_white_24dp</item>
+        <item name="oic_fragment_note_deadline_time">@drawable/ic_alarm_white_24dp</item>
+        <item name="oic_fragment_note_closed_time">@drawable/ic_done_white_24dp</item>
+        <item name="oic_fragment_note_property">@drawable/ic_info_outline_white_24dp</item>
+
+        <item name="oic_timestamp_dialog_today">@drawable/cic_today_white_36dp</item>
+        <item name="oic_timestamp_dialog_tomorrow">@drawable/cic_tomorrow_white_36dp</item>
+        <item name="oic_timestamp_dialog_next_week">@drawable/cic_next_week_white_36dp</item>
+
+        <item name="oic_dropbox_not_linked">@drawable/cic_dropbox_white_48px</item>
+        <item name="oic_dropbox_linked">@drawable/cic_dropbox_blue_48px</item>
+
+        <item name="oic_browse_directory">@drawable/ic_folder_open_white_48dp</item>
+        <item name="oic_browser_up">@drawable/ic_keyboard_arrow_up_white_24dp</item>
+        <item name="oic_browser_directory">@drawable/ic_folder_open_white_24dp</item>
+        <item name="oic_browser_file">@drawable/ic_insert_drive_file_white_24dp</item>
+
+        <item name="oic_item_alpha">0.7</item>
+
+        <item name="oic_fragment_book_cycle_visibility">@drawable/ic_unfold_more_white_24dp</item>
+
+        <item name="oic_item_book_item_sync_needed">@drawable/ic_sync_white_18dp</item>
+        <item name="oic_item_book_mtime_item">@drawable/ic_access_time_white_18dp</item>
+        <item name="oic_item_book_link_item">@drawable/ic_link_white_18dp</item>
+        <item name="oic_item_book_versioned_rook_item">@drawable/ic_sync_white_18dp</item>
+        <item name="oic_item_book_sync_status_item">@drawable/ic_sync_white_18dp</item>
+        <item name="oic_item_book_encoding_item">@drawable/ic_language_white_18dp</item>
+        <item name="oic_item_book_sync_last_action_item">@drawable/ic_info_outline_white_18dp</item>
+
+        <item name="oic_item_head_book_name">@drawable/ic_folder_open_white_18dp</item>
+        <item name="oic_item_head_scheduled_item">@drawable/ic_today_white_18dp</item>
+        <item name="oic_item_head_deadline_item">@drawable/ic_alarm_white_18dp</item>
+        <item name="oic_item_head_closed_item">@drawable/ic_done_white_18dp</item>
+    </style>
+
+    <!-- Color schemes -->
+
+    <style name="AppLightTheme.Light">
+    </style>
+
+    <style name="AppDarkTheme.Dark">
+    </style>
+
+    <style name="AppLightTheme.Solarized">
+    </style>
+
+    <style name="AppDarkTheme.Solarized">
+    </style>
+
+
+    <style name="FontSize"/>
+
+    <style name="FontSize.Small">
+        <item name="font_micro">12sp</item>
+        <item name="font_small">14sp</item>
+        <item name="font_medium">18sp</item>
+        <item name="font_large">22sp</item>
+        <item name="item_drawer_title_text_size">18sp</item>
+        <item name="item_drawer_text_size">14sp</item>
+        <item name="left_drawer_sync_text_size">12sp</item>
+        <item name="item_book_title_text_size">22sp</item>
+        <item name="item_book_subtitle_text_size">18sp</item>
+        <item name="item_book_details_text_size">12sp</item>
+
+        <item name="item_head_book_name_text">12sp</item>
+        <item name="item_head_bullet_text_size">14sp</item>
+        <item name="item_head_title_text_size">14sp</item>
+        <item name="item_head_fold_button_text_size">14sp</item>
+        <item name="item_head_post_title_text_size">12sp</item>
+        <item name="item_head_sub_title_text">12sp</item>
+        <item name="item_head_sub_title_content_text">12sp</item>
+
+        <item name="item_repo_text_size">14sp</item>
+        <item name="fragment_note_time_buttons_text_size">14sp</item>
+        <item name="big_centered_text_size">22sp</item>
+        <item name="browser_text_size">18sp</item>
+
+        <!-- Icon sizes -->
+        <item name="item_book_info_icon_size">14dp</item>
+        <item name="item_head_info_icon_size">14dp</item>
+
+        <item name="item_head_indent_width">16dp</item>
+
+    </style>
+
+    <style name="FontSize.Large">
+        <item name="font_micro">16sp</item>
+        <item name="font_small">18sp</item>
+        <item name="font_medium">22sp</item>
+        <item name="font_large">33sp</item>
+
+        <item name="item_drawer_title_text_size">22sp</item>
+        <item name="item_drawer_text_size">18sp</item>
+        <item name="left_drawer_sync_text_size">16sp</item>
+
+        <item name="item_book_title_text_size">25sp</item>
+        <item name="item_book_subtitle_text_size">20sp</item>
+        <item name="item_book_details_text_size">18sp</item>
+
+        <item name="item_head_book_name_text">18sp</item>
+        <item name="item_head_bullet_text_size">20sp</item>
+        <item name="item_head_title_text_size">20sp</item>
+        <item name="item_head_fold_button_text_size">20sp</item>
+        <item name="item_head_post_title_text_size">18sp</item>
+        <item name="item_head_sub_title_text">18sp</item>
+        <item name="item_head_sub_title_content_text">18sp</item>
+
+        <item name="item_repo_text_size">20sp</item>
+
+        <item name="fragment_note_time_buttons_text_size">18sp</item>
+
+        <item name="big_centered_text_size">28sp</item>
+        <item name="browser_text_size">22sp</item>
+
+        <item name="android:textSize">20sp</item>
+
+        <item name="item_book_info_icon_size">18dp</item>
+        <item name="item_head_info_icon_size">18dp</item>
+
+        <item name="item_head_indent_width">24dp</item>
+
+        <!--<item name="android:textAppearanceButton">@style/TextAppearance.AppCompat.Button</item>-->
+        <!--<item name="android:textAppearanceSmall">@style/TextAppearance.AppCompat.Medium</item>-->
+        <!--<item name="android:textAppearanceMedium">@style/TextAppearance.AppCompat.Large</item>-->
+    </style>
+
+    <style name="RaisedButton" parent="Base.Widget.AppCompat.Button">
+        <item name="android:layout_marginLeft">1dp</item>
+        <item name="android:layout_marginRight">1dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+    </style>
+
+    <style name="DrawerButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/left_drawer_button_min_height</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">?attr/drawer_text</item>
+    </style>
+
+    <!--<style name="DrawerButtonIcon">-->
+    <!--&lt;!&ndash;<item name="android:layout_marginLeft">12dp</item>&ndash;&gt;-->
+    <!--<item name="android:layout_width">wrap_content</item>-->
+    <!--<item name="android:layout_height">wrap_content</item>-->
+    <!--&lt;!&ndash;<item name="android:layout_width">24dp</item>&ndash;&gt;-->
+    <!--&lt;!&ndash;<item name="android:layout_height">24dp</item>&ndash;&gt;-->
+
+    <!--<item name="android:background">@android:color/transparent</item>-->
+    <!--</style>-->
+
+    <style name="DrawerButtonText" parent="DrawerButton">
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <!--<item name="android:background">@android:color/transparent</item>-->
+    </style>
+
+    <!-- Timestamp dialog. -->
+    <style name="TimestampDialogShortcutButton" parent="android:style/Widget.Holo.Button.Borderless"/>
+    <style name="TimestampDialogButton" parent="android:style/Widget.Holo.Button.Borderless"/>
+
+    <style name="TimestampDialogShortcutButton.Common">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <!--<item name="android:layout_weight">1</item>-->
+        <!--<item name="android:layout_marginLeft">8dp</item>-->
+        <!--<item name="android:layout_marginRight">8dp</item>-->
+        <!--<item name="android:layout_gravity">center_vertical</item>-->
+        <!--<item name="android:padding">8dp</item>-->
+    </style>
+
+    <style name="TimestampDialogButton.Common">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center</item>
+
+        <item name="android:minHeight">48dp</item>
+
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:textColor">?attr/main_text_color</item>
+        <!--<item name="android:textStyle">bold</item>-->
+    </style>
+
+    <style name="TimestampDialogLabel">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center</item>
+
+        <item name="android:minHeight">48dp</item>
+
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:textColor">?attr/main_text_color</item>
+        <!--<item name="android:textStyle">bold</item>-->
+    </style>
+
+
+    <!-- Note fragment. -->
+
+    <style name="BorderlessButton" parent="Base.Widget.AppCompat.Button.Borderless">
+
+    </style>
+
+    <style name="NoteTimeButton" parent="BorderlessButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:minHeight">@dimen/left_drawer_button_min_height</item> <!-- TODO: This doesn't make sense -->
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:textSize">?fragment_note_time_buttons_text_size</item>
+        <!-- From Lollipop button text is all caps? -->
+        <item name="android:textAllCaps">false</item>
+
+    </style>
+
+    <style name="BookItemInfoIcon">
+        <item name="android:layout_width">?attr/item_book_info_icon_size</item>
+        <item name="android:layout_height">?attr/item_book_info_icon_size</item>
+        <!--<item name="android:paddingTop">1dp</item>-->
+
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginStart" tools:targetApi="17">2dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginEnd" tools:targetApi="17">8dp</item>
+
+    </style>
+
+    <style name="HeadItemInfoIcon">
+        <item name="android:layout_width">?attr/item_head_info_icon_size</item>
+        <item name="android:layout_height">?attr/item_head_info_icon_size</item>
+        <!--<item name="android:paddingTop">1dp</item>-->
+    </style>
+
+    <style name="ListView">
+        <item name="android:clipToPadding">false</item>
+        <item name="android:choiceMode">multipleChoice</item>
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:fastScrollEnabled">true</item>
+        <item name="android:scrollbarStyle">outsideOverlay</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+    </style>
+
+    <style name="ListViewItemPadding">
+        <item name="android:paddingTop">@dimen/item_head_padding</item>
+        <item name="android:paddingBottom">@dimen/item_head_padding</item>
+        <item name="android:paddingLeft">@dimen/fragment_horizontal_padding</item>
+        <item name="android:paddingRight">@dimen/fragment_horizontal_padding</item>
+    </style>
+
+    <style name="BigCenteredText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/fragment_padding</item>
+
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">?attr/big_centered_text_size</item>
+        <item name="android:textColor">?attr/big_centered_text_color</item>
+    </style>
+
+    <style name="ItemQuickMenuButton" parent="android:style/Widget.Holo.Button.Borderless">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+
+    <style name="WhatsNewVersion">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginBottom">6dp</item>
+    </style>
+
+    <style name="WhatsNewChange">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/padding_8</item>
+    </style>
+
+</resources>

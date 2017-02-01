@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/prefs_interface">
+        <CheckBoxPreference
+            android:key="@string/pref_key_is_reverse_click_action"
+            android:title="@string/reversed_note_click_action"
+            android:summary="@string/reversed_note_click_action_summary"
+            android:defaultValue="@bool/pref_default_is_reverse_click_action"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/look_and_feel">
+        <CheckBoxPreference
+            android:key="@string/pref_key_is_font_monospaced"
+            android:title="@string/monospaced_font"
+            android:summary="@string/monospaced_font_summary"
+            android:defaultValue="@bool/pref_default_is_font_monospaced"/>
+
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_color_scheme"
+            android:title="@string/color_scheme"
+            android:entries="@array/color_scheme"
+            android:entryValues="@array/color_scheme_values"
+            android:defaultValue="@string/pref_default_value_color_scheme"/>
+
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_font_size"
+            android:title="@string/font_size"
+            android:entries="@array/font_sizes"
+            android:entryValues="@array/font_sizes_values"
+            android:defaultValue="@string/pref_default_value_font_size"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_title_notebooks">
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_notebooks_sort_order"
+            android:title="@string/sort_order"
+            android:dialogTitle="@string/notebooks_sort_order"
+            android:entries="@array/notebooks_sort_order"
+            android:entryValues="@array/notebooks_sort_order_values"
+            android:defaultValue="@string/pref_default_notebooks_sort_order"/>
+
+        <MultiSelectListPreference
+            android:key="@string/pref_key_displayed_book_details"
+            android:title="@string/details"
+            android:dialogTitle="@string/notebook_details"
+            android:summary="@string/displayed_details_about_notebook"
+            android:entries="@array/displayed_book_details"
+            android:entryValues="@array/displayed_book_details_values"
+            android:defaultValue="@array/displayed_book_details_default"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/notes_list">
+
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_notes_list_density"
+            android:title="@string/density"
+            android:entries="@array/list_density"
+            android:entryValues="@array/list_density_values"
+            android:defaultValue="@string/pref_default_notes_list_density"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_key_display_planning"
+            android:title="@string/display_planning_times"
+            android:summary="@string/display_planning_times_summary"
+            android:defaultValue="@bool/pref_default_display_planning"/>
+
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_book_name_in_search"
+            android:title="@string/book_name_in_search"
+            android:entries="@array/book_name_in_search_entries"
+            android:entryValues="@array/book_name_in_search_entry_values"
+            android:defaultValue="@string/pref_default_value_book_name_in_search"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_key_is_notes_content_displayed_in_list"
+            android:title="@string/display_content"
+            android:summary="@string/display_both_title_and_content"
+            android:defaultValue="@bool/pref_default_is_notes_content_displayed_in_list"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_key_is_notes_content_displayed_in_search"
+            android:title="@string/display_content_in_search"
+            android:summary="@string/display_content_in_search_results"
+            android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
+            android:defaultValue="@bool/pref_default_is_notes_content_displayed_in_search"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_key_is_notes_content_foldable"
+            android:title="@string/fold_content"
+            android:summary="@string/allow_folding_of_content"
+            android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
+            android:defaultValue="@bool/pref_default_is_notes_content_foldable"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/notes">
+        <com.orgzly.android.prefs.StatesPreference
+            android:key="@string/pref_key_states"
+            android:title="@string/states"
+            android:dialogTitle="@string/states"
+            android:defaultValue="@string/pref_default_states"/>
+
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_default_priority"
+            android:title="@string/default_priority"
+            android:entries="@array/priorities"
+            android:entryValues="@array/priority_values"
+            android:defaultValue="@string/pref_default_default_priority"/>
+
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_min_priority"
+            android:title="@string/lowest_priority"
+            android:entries="@array/priorities"
+            android:entryValues="@array/priority_values"
+            android:defaultValue="@string/pref_default_min_priority"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/prefs_title_new_note">
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_new_note_state"
+            android:title="@string/state"
+            android:defaultValue="@string/pref_default_value_new_note_state"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_key_is_new_note_scheduled"
+            android:title="@string/scheduled"
+            android:summary="@string/scheduled_new_notes_for_today"
+            android:defaultValue="@bool/pref_default_value_is_new_note_scheduled"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_key_is_created_at_added"
+            android:title="@string/created_at"
+            android:summary="@string/insert_note_creation_time"
+            android:defaultValue="@bool/pref_default_value_is_created_at_added"/>
+
+        <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
+            android:key="@string/pref_key_created_at_property"
+            android:dependency="@string/pref_key_is_created_at_added"
+            android:title="@string/created_at_property"
+            android:dialogTitle="@string/property_name"
+            android:inputType="text"
+            android:defaultValue="@string/pref_default_created_at_property"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_key_new_note_notification"
+            android:title="@string/new_note_notification"
+            android:summary="@string/new_note_notification_summary"
+            android:defaultValue="@bool/pref_default_value_new_note_notification"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/org_file_format">
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_separate_notes_with_new_line"
+            android:title="@string/separate_notes_with_new_line"
+            android:entries="@array/separate_notes_with_new_line_names"
+            android:entryValues="@array/separate_notes_with_new_line_values"
+            android:defaultValue="@string/pref_default_separate_notes_with_new_line"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/sync">
+        <Preference android:title="@string/repos_preference_title" android:key="@string/pref_key_repos">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.orgzly"
+                android:targetClass="com.orgzly.android.ui.ReposActivity"/>
+        </Preference>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/app">
+        <Preference
+            android:title="@string/reload_getting_started"
+            android:summary="@string/reload_getting_started_summary"
+            android:key="@string/pref_key_reload_getting_started"/>
+
+        <Preference
+            android:title="@string/clear_database"
+            android:summary="@string/clear_database_summary"
+            android:key="@string/pref_key_clear_database"/>
+
+        <Preference
+            android:title="@string/version"
+            android:key="@string/pref_key_version"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.orgzly">
+
+    <!-- Initially added for Dropbox sync. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- Initially added for checking available connections (for sync). -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <!-- Required for: exporting files (Downloads), creating temporary files -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <!-- For BroadcastReceiver below -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+    <application
+        android:allowBackup="true"
+        android:supportsRtl="true"
+        android:icon="@drawable/cic_orgzly_logo"
+        android:label="@string/app_name"
+        android:theme="@style/AppLightTheme.Light">
+
+        <activity
+            android:name="com.orgzly.android.ui.ShareActivity"
+            android:windowSoftInputMode="stateUnchanged">
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="com.google.android.voicesearch.SELF_NOTE"/>
+                <action android:name="com.google.android.gm.action.AUTO_SEND"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+
+            <!--<intent-filter>-->
+                <!--<action android:name="com.google.android.gm.action.AUTO_SEND"/>-->
+                <!--<category android:name="com.google.android.voicesearch.SELF_NOTE"/>-->
+            <!--</intent-filter>-->
+
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.SEND"/>-->
+                <!--<category android:name="com.google.android.voicesearch.SELF_NOTE"/>-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity
+            android:name="com.orgzly.android.ui.MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.orgzly.android.ui.ReposActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+
+
+        </activity>
+        <!--<activity android:name="com.orgzly.android.ui.ReposActivity"-->
+            <!--android:parentActivityName="com.orgzly.android.ui.MainActivity">-->
+
+            <!--&lt;!&ndash; Parent activity meta-data to support 4.0 and lower &ndash;&gt;-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="com.orgzly.android.ui.MainActivity"/>-->
+
+        <!--</activity>-->
+
+        <activity
+            android:name="com.dropbox.core.android.AuthActivity"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <data android:scheme="@string/dropbox_app_key_schema"/>
+
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Not exported (not made available to other applications). -->
+        <provider android:name=".android.provider.Provider"
+            android:exported="false"
+            android:authorities="com.orgzly">
+        </provider>
+
+        <service android:name=".android.sync.SyncService"/>
+
+        <receiver android:name=".android.BootCompletedReceiver">
+            <intent-filter>
+                <!-- Useless now (http://stackoverflow.com/a/19856367) -->
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

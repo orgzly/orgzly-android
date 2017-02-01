@@ -1,0 +1,103 @@
+Welcome to Orgzly!
+
+* Notes
+** Click on the note to open it
+** Click and hold the note to select it
+
+You can select multiple notes.
+
+** Fling note right to open its quick-menu
+
+Fling it left to open a different menu.
+
+** Fold a note which contains sub-notes by clicking the icon next to it
+*** There is no limit in number of levels you can have
+**** Use this to better organize your notes
+** Note can have tags :tutorial:help:tags:
+** [#A] Note can have a priority
+** TODO Task is a type of note with a TODO state
+
+You can have any number of different states (NEXT, WAIT, ...). You can configure states in Settings.
+
+** TODO You can set scheduled time
+SCHEDULED: <2015-02-20 Fri 15:15>
+
+** TODO You can set deadline time
+DEADLINE: <2015-02-20 Fri> SCHEDULED: <2015-02-23 Mon>
+
+Both scheduled and deadline times can be used at the same time.
+
+** DONE Task can be marked as completed by setting its state to DONE
+CLOSED: [2015-02-20 Fri 20:17]
+
+** Note content can include clickable links
+
+- With description: [[mailto:support@orgzly.com][support@orgzly.com]]
+- Plain: http://www.orgzly.com
+- In brackets: [[http://www.orgzly.com/help]]
+
+Open note and start editing its content to see the raw format used.
+
+* Searching
+** You can search notes by clicking the search icon
+** You can search for text occurring anywhere in the note
+** You can create search queries using operators to narrow down the results
+*** Examples
+**** b.Work
+
+Search for notes contained in notebook “Work”
+
+**** i.todo
+
+Search for notes which have a state set to “TODO”
+
+**** .i.done b.Work
+
+Search for notes which do not have “DONE” state and are contained in the “Work” notebook
+
+**** s.today
+
+Search for notes which are scheduled for today or earlier
+
+**** d.tmrw .i.done
+
+Search for notes which have deadline set for tomorrow or earlier and do not have “DONE” state
+
+**** t.tip
+
+Search for notes which contain tag “tip”
+
+**** p.a
+
+Search for notes which have a priority “A”
+
+** Search queries can be saved for quick access
+
+There are two default saved searches available in the navigation drawer. Try them and notice the operators used.
+
+*** You can define your own searches by clicking on “Searches” in the navigation drawer
+* Settings
+
+Settings button is located in the navigation drawer.
+
+** Go through available settings
+
+Modify them to your liking to improve your experience with Orgzly. Check out the dark color scheme!
+
+* Syncing
+** Sync method
+
+Notebooks can be synced with a directory on your device or Dropbox. Soon, additional repository types will be supported such as Git, Google Drive, SSH and more.
+
+** Your notebooks are saved as plain-text files
+
+Files are in the format used by “Org mode”.
+
+** Add a repository from Settings
+
+Repository is just a directory on your device or Dropbox.
+
+** Start sync
+
+Syncing is currently manual. Button is located in the navigation drawer.
+

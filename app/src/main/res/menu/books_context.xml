@@ -1,0 +1,38 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/books_context_menu_rename"
+        android:title="@string/books_context_menu_item_rename">
+    </item>
+
+    <item
+        android:id="@+id/books_context_menu_set_link"
+        android:title="@string/books_context_menu_item_set_link">
+    </item>
+
+    <item
+        android:id="@+id/books_context_menu_force_load"
+        android:title="@string/books_context_menu_item_force_load">
+    </item>
+
+    <item
+        android:id="@+id/books_context_menu_force_save"
+        android:title="@string/books_context_menu_item_force_save">
+    </item>
+
+    <item
+        android:id="@+id/books_context_menu_export"
+        android:title="@string/books_context_menu_item_export">
+    </item>
+
+    <!--<item-->
+    <!--android:id="@+id/books_context_menu_rename"-->
+    <!--android:icon="?attr/oic_rename_book_context"-->
+    <!--android:title="@string/books_context_menu_item_rename">-->
+    <!--</item>-->
+
+    <item
+        android:id="@+id/books_context_menu_delete"
+        android:title="@string/delete">
+    </item>
+
+</menu>

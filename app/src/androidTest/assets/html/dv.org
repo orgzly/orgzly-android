@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="dv" dir="rtl" class="client-nojs">
+<head>
+<meta charset="UTF-8" />
+<title>ސީނީ - ވިކިޕީޑިއާ</title>
+<meta name="generator" content="MediaWiki 1.25wmf4" />
+<link rel="alternate" href="android-app://org.wikipedia/http/dv.m.wikipedia.org/wiki/%DE%90%DE%A9%DE%82%DE%A9" />
+<link rel="alternate" type="application/x-wiki" title="އުނިއިތުރު ގެންނަވާ" href="/w/index.php?title=%DE%90%DE%A9%DE%82%DE%A9&amp;action=edit" />
+<link rel="edit" title="އުނިއިތުރު ގެންނަވާ" href="/w/index.php?title=%DE%90%DE%A9%DE%82%DE%A9&amp;action=edit" />
+<link rel="apple-touch-icon" href="//bits.wikimedia.org/apple-touch/wikipedia.png" />
+<link rel="shortcut icon" href="//bits.wikimedia.org/favicon/wikipedia.ico" />
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="ވިކިޕީޑިއާ (dv)" />
+<link rel="EditURI" type="application/rsd+xml" href="//dv.wikipedia.org/w/api.php?action=rsd" />
+<link rel="alternate" hreflang="x-default" href="/wiki/%DE%90%DE%A9%DE%82%DE%A9" />
+<link rel="copyright" href="//creativecommons.org/licenses/by-sa/3.0/" />
+<link rel="alternate" type="application/atom+xml" title="ވިކިޕީޑިއާ Atom feed" href="/w/index.php?title=%DE%9A%DE%A7%DE%87%DE%B0%DE%90%DE%A6:%DE%87%DE%AC%DE%82%DE%B0%DE%89%DE%AC_%DE%8A%DE%A6%DE%80%DE%AA%DE%8E%DE%AC_%DE%84%DE%A6%DE%8B%DE%A6%DE%8D%DE%AA%DE%8C%DE%A6%DE%87%DE%B0&amp;feed=atom" />
+<link rel="canonical" href="http://dv.wikipedia.org/wiki/%DE%90%DE%A9%DE%82%DE%A9" />
+<link rel="stylesheet" href="//bits.wikimedia.org/dv.wikipedia.org/load.php?debug=false&amp;lang=dv&amp;modules=ext.uls.nojs%7Cext.visualEditor.viewPageTarget.noscript%7Cext.wikihiero%2CwikimediaBadges%7Cmediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.skinning.interface%7Cmediawiki.ui.button%7Cskins.vector.styles%7Cwikibase.client.init&amp;only=styles&amp;skin=vector&amp;*" />
+<meta name="ResourceLoaderDynamicStyles" content="" />
+<link rel="stylesheet" href="//bits.wikimedia.org/dv.wikipedia.org/load.php?debug=false&amp;lang=dv&amp;modules=site&amp;only=styles&amp;skin=vector&amp;*" />
+<style>a:lang(ar),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}
+/* cache key: dvwiki:resourceloader:filter:minify-css:7:5dbb47950bb52b327ecb983042f5366c */</style>
+<script src="//bits.wikimedia.org/dv.wikipedia.org/load.php?debug=false&amp;lang=dv&amp;modules=startup&amp;only=scripts&amp;skin=vector&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"ސީނީ","wgTitle":"ސީނީ","wgCurRevisionId":116124,"wgRevisionId":116124,"wgArticleId":4730,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Chinese","Languages"],"wgBreakFrames":false,"wgPageContentLanguage":"dv","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","ޖެނުއަރީ","ފެބްރުއަރީ","މާރޗް","އެޕްރީލް","މެއި","ޖޫން","ޖުލައި","އޮގަސްޓު","ސެޕްޓެމްބަރު","އޮކްޓޫބަރު","ނޮވެމްބަރު","ޑިސެމްބަރު"],"wgMonthNamesShort":["","ޖަނަވަރީ","ފެބްރުއަރީ","މާޗް","އޭޕްރިލް","މެއި","ޖޫން","ޖުލައި","އޯގަސްޓް","ސެޕްޓެމްބަރ","އޮކްޓޯބަރ","ނޮވެމްބަރ","ޑިސެމްބަރު"],"wgRelevantPageName":"ސީނީ","wgIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgWikiEditorEnabledModules":{"toolbar":true,"dialogs":true,"hidesig":true,"preview":false,"previewDialog":false,"publish":false},"wgBetaFeaturesFeatures":[],"wgMediaViewerOnClick":true,"wgMediaViewerEnabledByDefault":true,"wgVisualEditor":{"isPageWatched":false,"pageLanguageCode":"dv","pageLanguageDir":"rtl","svgMaxSize":4096,"namespacesWithSubpages":{"1":true,"2":true,"3":true,"4":true,"5":true,"7":true,"8":true,"9":true,"10":true,"11":true,"12":true,"13":true,"15":true,"100":true,"101":true,"102":true,"103":true,"104":true,"105":true,"106":true,"107":true,"108":true,"109":true,"110":true,"111":true,"830":true,"831":true,"828":true,"829":true}},"wgHHVMStart":1412726400000,"wgULSAcceptLanguageList":["en-us","en","hr","sr"],"wgULSCurrentAutonym":"ދިވެހިބަސް","wgCategoryTreePageCategoryOptions":"{\"mode\":0,\"hideprefix\":20,\"showcount\":true,\"namespaces\":false}","wgNoticeProject":"wikipedia","wgWikibaseItemId":"Q7850"});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function($,jQuery){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"editfont":"default","editondblclick":0,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":0,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"math":0,"minordefault":0,"newpageshidepatrolled":0,"nickname":"","norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rows":25,"showhiddencats":false,"shownumberswatching":1,"showtoolbar":1,"skin":"vector","stubthreshold":0,"thumbsize":4,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":1,"watchdefault":0,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"watchrollback":0,
+"wllimit":250,"useeditwarning":1,"prefershttps":1,"usebetatoolbar":1,"usebetatoolbar-cgd":1,"visualeditor-enable":0,"visualeditor-betatempdisable":0,"visualeditor-enable-experimental":0,"visualeditor-enable-language":0,"visualeditor-hidebetawelcome":0,"echo-notify-show-link":true,"echo-show-alert":true,"echo-email-frequency":0,"echo-email-format":"html","echo-subscriptions-email-system":true,"echo-subscriptions-web-system":true,"echo-subscriptions-email-user-rights":true,"echo-subscriptions-web-user-rights":true,"echo-subscriptions-email-other":false,"echo-subscriptions-web-other":true,"echo-subscriptions-email-edit-user-talk":false,"echo-subscriptions-web-edit-user-talk":true,"echo-subscriptions-email-reverted":false,"echo-subscriptions-web-reverted":true,"echo-subscriptions-email-article-linked":false,"echo-subscriptions-web-article-linked":false,"echo-subscriptions-email-mention":false,"echo-subscriptions-web-mention":true,"echo-subscriptions-web-edit-thank":true,
+"echo-subscriptions-email-edit-thank":false,"uls-preferences":"","multimediaviewer-enable":true,"language":"dv","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"searchNs100":false,"searchNs101":false,"searchNs828":false,"searchNs829":false,"variant":"dv"});},{},{});mw.loader.implement("user.tokens",function($,jQuery){mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\"});},{},{});
+/* cache key: dvwiki:resourceloader:filter:minify-js:7:c20cd13cd96d997a32ac0eb57e869280 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax","ext.centralauth.centralautologin","mmv.head","ext.visualEditor.viewPageTarget.init","ext.uls.init","ext.uls.interface","ext.centralNotice.bannerController","skins.vector.js"]);
+}</script>
+<link rel="dns-prefetch" href="//meta.wikimedia.org" />
+<!--[if lt IE 7]><style type="text/css">body{behavior:url("/w/static-1.25wmf4/skins/Vector/csshover.min.htc")}</style><![endif]-->
+</head>
+<body class="mediawiki rtl sitedir-rtl ns-0 ns-subject page-ސީނީ skin-vector action-view vector-animateLayout">
+		<div id="mw-page-base" class="noprint"></div>
+		<div id="mw-head-base" class="noprint"></div>
+		<div id="content" class="mw-body" role="main">
+			<a id="top"></a>
+
+							<div id="siteNotice"><!-- CentralNotice --></div>
+						<h1 id="firstHeading" class="firstHeading" lang="dv"><span dir="auto">ސީނީ</span></h1>
+						<div id="bodyContent" class="mw-body-content">
+									<div id="siteSub">ވިކިޕީޑިއާ އިން</div>
+								<div id="contentSub"></div>
+												<div id="jump-to-nav" class="mw-jump">
+					ފުންމަވާ:					<a href="#mw-navigation">ސަމުގާ</a>, 					<a href="#p-search">ހޯއްދަވާ</a>
+				</div>
+				<div id="mw-content-text" lang="dv" dir="rtl" class="mw-content-rtl"><table border="1" align="left" cellpadding="4" cellspacing="0" width="300" style="margin: 0 0 1em 1em; background: #f9f9f9; border: 1px #aaaaaa solid; border-collapse: collapse; font-size: 95%;">
+<tr>
+<td align="center" colspan="2" style="background: red;"><b>ސީނީ</b>، <b>汉语, 中文 , <font face="Times">Hànyǔ, Zhōngwén</font></b>, <i><font face="Times">Chinese</font></i></td>
+</tr>
+<tr>
+<td>ވާހަކަދައްކާތަން:</td>
+<td><a href="/wiki/%DE%90%DE%A9%DE%82%DE%AA%DE%86%DE%A6%DE%83%DE%A6" title="ސީނުކަރަ">ސީނުކަރަ</a></td>
+</tr>
+<tr>
+<td>ވާހަކަދައްކާ ސަރަހައްދު:</td>
+<td><a href="/w/index.php?title=%DE%87%DE%A8%DE%83%DE%AA%DE%89%DE%A6%DE%8C%DE%A9_%DE%87%DE%AD%DE%9D%DE%A8%DE%94%DE%A7&amp;action=edit&amp;redlink=1" class="new" title="އިރުމަތީ އޭޝިޔާ (މިއީ ހުސް ޞަފްޙާއެކެވެ)">އިރުމަތީ އޭޝިޔާ</a></td>
+</tr>
+<tr>
+<td>ވާހަކަދައްކާ މީހުންގެ އަދަދު:</td>
+<td>1.3 ބިލިއަން ދޭސީން</td>
+</tr>
+<tr>
+<td><a href="/w/index.php?title=List_of_languages_by_number_of_native_speakers&amp;action=edit&amp;redlink=1" class="new" title="List of languages by number of native speakers (މިއީ ހުސް ޞަފްޙާއެކެވެ)">ވަނަ:</a></td>
+<td>1</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><a href="/w/index.php?title=Language_family&amp;action=edit&amp;redlink=1" class="new" title="Language family (މިއީ ހުސް ޞަފްޙާއެކެވެ)">ބަސް ނިސްބަތްވާ އާއިލާ:</a></td>
+<td><a href="/w/index.php?title=%DE%90%DE%A8%DE%82%DE%AF-%DE%93%DE%A8%DE%84%DE%AC%DE%93%DE%A6%DE%82%DE%B0&amp;action=edit&amp;redlink=1" class="new" title="ސިނޯ-ޓިބެޓަން (މިއީ ހުސް ޞަފްޙާއެކެވެ)">ސިނޯ-ޓިބެޓަން</a><br />
+<b>ސީނީ</b></td>
+</tr>
+<tr>
+<td><a href="/w/index.php?title=Writing_system&amp;action=edit&amp;redlink=1" class="new" title="Writing system (މިއީ ހުސް ޞަފްޙާއެކެވެ)">ލިޔުމުގެ ނިޒާމު:</a></td>
+<td><a href="/w/index.php?title=%DE%90%DE%A9%DE%82%DE%A9_%DE%86%DE%AC%DE%83%DE%AC%DE%86%DE%B0%DE%93%DE%A6%DE%83%DE%AA%DE%8C%DE%A6%DE%87%DE%B0&amp;action=edit&amp;redlink=1" class="new" title="ސީނީ ކެރެކްޓަރުތައް (މިއީ ހުސް ޞަފްޙާއެކެވެ)">ސީނީ ކެރެކްޓަރުތައް</a></td>
+</tr>
+<tr>
+<td align="center" colspan="2" style="background: red;"><b>ރަސްމީ ހައިސިއްޔަތު</b></td>
+</tr>
+<tr>
+<td>ރަސްމީބަސް:</td>
+<td><a href="/wiki/%DE%90%DE%A9%DE%82%DE%AA%DE%86%DE%A6%DE%83%DE%A6" title="ސީނުކަރަ">ސީނުކަރާގައި</a></td>
+</tr>
+<tr>
+<td><a href="//en.wikipedia.org/wiki/List_of_language_regulators" class="extiw" title="en:List of language regulators">ގަވައިދު އެކަށައަޅަނީ</a>:</td>
+<td>ވަކި އިދާރާއަކުން ނޫން</td>
+</tr>
+<tr>
+<td align="center" colspan="2" style="background: red;"><b>ބަހުގެ ކޯޑުތައް</b></td>
+</tr>
+<tr>
+<td><a href="//en.wikipedia.org/wiki/ISO_639-1" class="extiw" title="en:ISO 639-1">ISO_639-1</a></td>
+<td>zh</td>
+</tr>
+<tr>
+<td><a href="//en.wikipedia.org/wiki/ISO_639-2" class="extiw" title="en:ISO 639-2">ISO_639-2</a></td>
+<td>zho</td>
+</tr>
+<tr>
+<td><a href="//en.wikipedia.org/wiki/ISO_639-3" class="extiw" title="en:ISO 639-3">ISO_639-3</a></td>
+<td>zho</td>
+</tr>
+</table>
+<p>މި ބަހަކީ <a href="/wiki/%DE%90%DE%A9%DE%82%DE%AA%DE%86%DE%A6%DE%83%DE%A6" title="ސީނުކަރަ">ސީނުކަރަ</a>އިގެ މީހުން ވާހަކަ ދައްކާ ބަހެވެ.</p>
+<div class="infobox sisterproject">
+<div style="float: right;">
+<div class="floatnone"><a href="/wiki/%DE%8A%DE%A6%DE%87%DE%A8%DE%8D%DE%AA:Wikipedia-logo-v2.svg" class="image" title="Wikipedia"><img alt="Wikipedia" src="//upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/45px-Wikipedia-logo-v2.svg.png" width="45" height="41" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/68px-Wikipedia-logo-v2.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/90px-Wikipedia-logo-v2.svg.png 2x" data-file-width="103" data-file-height="94" /></a></div>
+</div>
+<div style="margin-right: 60px;"><b><a href="//zh.wikipedia.org/wiki/" class="extiw" title="zh:">ސީނީ ބަހުން</a></b> އެކުލަވާލެވިފައިވާ <a href="/w/index.php?title=Wikipedia&amp;action=edit&amp;redlink=1" class="new" title="Wikipedia (މިއީ ހުސް ޞަފްޙާއެކެވެ)">ވިކިޕީޑިއާ</a></div>
+</div>
+
+
+<!-- 
+NewPP limit report
+Parsed by mw1055
+CPU time usage: 0.160 seconds
+Real time usage: 0.228 seconds
+Preprocessor visited node count: 14/1000000
+Preprocessor generated node count: 54/1500000
+Post‐expand include size: 1738/2048000 bytes
+Template argument size: 2/2048000 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/500
+-->
+
+<!-- Saved in parser cache with key dvwiki:pcache:idhash:4730-0!*!0!*!*!4!* and timestamp 20141018142008 and revision id 116124
+ -->
+<noscript><img src="//dv.wikipedia.org/wiki/Special:CentralAutoLogin/start?type=1x1" alt="" title="" width="1" height="1" style="border: none; position: absolute;" /></noscript></div>									<div class="printfooter">
+						<a dir="ltr" href="http://dv.wikipedia.org/w/index.php?title=ސީނީ&amp;oldid=116124">http://dv.wikipedia.org/w/index.php?title=ސީނީ&amp;oldid=116124</a> އިން					</div>
+													<div id='catlinks' class='catlinks'><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/wiki/%DE%9A%DE%A7%DE%87%DE%B0%DE%90%DE%A6:Categories" title="ޚާއްސަ:Categories">ޤިސްމުތައް</a>: <ul><li><a href="/w/index.php?title=%DE%A4%DE%A8%DE%90%DE%B0%DE%89%DE%AA:Chinese&amp;action=edit&amp;redlink=1" class="new" title="ޤިސްމު:Chinese (މިއީ ހުސް ޞަފްޙާއެކެވެ)">Chinese</a></li><li><a href="/wiki/%DE%A4%DE%A8%DE%90%DE%B0%DE%89%DE%AA:Languages" title="ޤިސްމު:Languages">Languages</a></li></ul></div></div>												<div class="visualClear"></div>
+							</div>
+		</div>
+		<div id="mw-navigation">
+			<h2>Navigation menu</h2>
+
+			<div id="mw-head">
+									<div id="p-personal" role="navigation" class="" aria-labelledby="p-personal-label">
+						<h3 id="p-personal-label">އަމިއްލަ</h3>
+						<ul>
+							<li id="pt-login"><a href="/w/index.php?title=%DE%9A%DE%A7%DE%87%DE%B0%DE%90%DE%A6:%DE%88%DE%A6%DE%8B%DE%AC%DE%88%DE%A6%DE%91%DE%A6%DE%87%DE%A8%DE%8E%DE%A6%DE%82%DE%B0%DE%82%DE%A6%DE%88%DE%A7&amp;returnto=%DE%90%DE%A9%DE%82%DE%A9" title="ތިބޭފުޅާ ވަދެވަޑައުގަނުމަށް މަޖުބޫރެއް ނޫނެވެ. [o]" accesskey="o">Log in</a></li><li id="pt-createaccount"><a href="/w/index.php?title=%DE%9A%DE%A7%DE%87%DE%B0%DE%90%DE%A6:%DE%88%DE%A6%DE%8B%DE%AC%DE%88%DE%A6%DE%91%DE%A6%DE%87%DE%A8%DE%8E%DE%A6%DE%82%DE%B0%DE%82%DE%A6%DE%88%DE%A7&amp;returnto=%DE%90%DE%A9%DE%82%DE%A9&amp;type=signup" title="You are encouraged to create an account and log in; however, it is not mandatory">Create account</a></li>						</ul>
+					</div>
+									<div id="left-navigation">
+										<div id="p-variants" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-variants-label">
+												<h3 id="p-variants-label"><span>Variants</span><a href="#"></a></h3>
+
+						<div class="menu">
+							<ul>
+															</ul>
+						</div>
+					</div>
+										<div id="p-namespaces" role="navigation" class="vectorTabs" aria-labelledby="p-namespaces-label">
+						<h3 id="p-namespaces-label">ނަންސްޕޭސަސް</h3>
+						<ul>
+															<li  id="ca-talk" class="new"><span><a href="/w/index.php?title=%DE%9A%DE%A8%DE%94%DE%A7%DE%8D%DE%AA:%DE%90%DE%A9%DE%82%DE%A9&amp;action=edit&amp;redlink=1"  title="މަޒުމޫނު ޞަފްޙާއާ ބެހޭ ޚިޔާލު [t]" accesskey="t">ޚިޔާލު ސަފްޙާ</a></span></li>
+															<li  id="ca-nstab-main" class="selected"><span><a href="/wiki/%DE%90%DE%A9%DE%82%DE%A9"  title="މަޢުލޫމާތު ޞަފްޙާ ބައްލަވާ [c]" accesskey="c">މަޒުމޫނު</a></span></li>
+													</ul>
+					</div>
+									</div>
+				<div id="right-navigation">
+										<div id="p-search" role="search">
+						<h3>
+							<label for="searchInput">ހޯއްދަވާ</label>
+						</h3>
+
+						<form action="/w/index.php" id="searchform">
+														<div id="simpleSearch">
+															<input type="search" name="search" placeholder="ހޯއްދަވާ" title="ވިކިޕީޑިއާއިން ހޯއްދަވާ [f]" accesskey="f" id="searchInput" /><input type="hidden" value="ޚާއްސަ:ހޯއްދަވާ" name="title" /><input type="submit" name="fulltext" value="ހޯއްދަވާ" title="މި ބަސް ޞަފްޙާތަކުން ހޯއްދަވާ" id="mw-searchButton" class="searchButton mw-fallbackSearchButton" /><input type="submit" name="go" value="ދުރުވޭ" title="Go to a page with this exact name if exists" id="searchButton" class="searchButton" />								</div>
+						</form>
+					</div>
+										<div id="p-cactions" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-cactions-label">
+						<h3 id="p-cactions-label"><span>More</span><a href="#"></a></h3>
+
+						<div class="menu">
+							<ul>
+															</ul>
+						</div>
+					</div>
+										<div id="p-views" role="navigation" class="vectorTabs" aria-labelledby="p-views-label">
+						<h3 id="p-views-label">ހިޔާލުފުޅުތައް</h3>
+						<ul>
+															<li id="ca-history" class="collapsible"><span><a href="/w/index.php?title=%DE%90%DE%A9%DE%82%DE%A9&amp;action=history"  title="މި ޞަފްޙާގެ ކުރީގެ ނުސްހާތައް [h]" accesskey="h">ޞަފްޙާގެ ތާރީޚް</a></span></li>
+															<li id="ca-edit"><span><a href="/w/index.php?title=%DE%90%DE%A9%DE%82%DE%A9&amp;action=edit"  title="މި ޞަފްޙާއަށް ތިބޭފުޅާއަށް އުނިއިތުރު ގެންނެވޭނެއެވެ. ޞަފްޙާ ރައްކާކުރެއްވުމުގެ ކުރިން ނަމޫނާ ބައްލަވާލެއްވުމަށް އެދެމެވެ. [e]" accesskey="e">އުނިއިތުރު ގެންނަވާ</a></span></li>
+															<li id="ca-view" class="selected"><span><a href="/wiki/%DE%90%DE%A9%DE%82%DE%A9" >ކިޔުއްވާ</a></span></li>
+													</ul>
+					</div>
+									</div>
+			</div>
+			<div id="mw-panel">
+				<div id="p-logo" role="banner"><a class="mw-wiki-logo" href="/wiki/%DE%89%DE%A6%DE%87%DE%A8_%DE%9E%DE%A6%DE%8A%DE%B0%DE%99%DE%A7"  title="މައި ޞަފްޙާއަށް ވަޑައިގަންނަވާ"></a></div>
+						<div class="portal" role="navigation" id='p-navigation' aria-labelledby='p-navigation-label'>
+			<h3 id='p-navigation-label'>ސަމުގާ</h3>
+
+			<div class="body">
+									<ul>
+													<li id="n-mainpage-description"><a href="/wiki/%DE%89%DE%A6%DE%87%DE%A8_%DE%9E%DE%A6%DE%8A%DE%B0%DE%99%DE%A7" title="މައި ޞަފްޙާއަށް ވަޑައިގަންނަވާ [z]" accesskey="z">މައި ޞަފްޙާ</a></li>
+													<li id="n-portal"><a href="/wiki/%DE%88%DE%A8%DE%86%DE%A8%DE%95%DE%A9%DE%91%DE%A8%DE%87%DE%A7:%DE%A2%DE%A7%DE%82%DE%B0%DE%89%DE%AA_%DE%80%DE%AE%DE%85%DE%AA%DE%87%DE%A6%DE%81%DE%A8" title="މަޝްރޫއާ ބެހޭ ގޮތުން، ތިބޭފުޅާއަށް ކުރެއްވޭނެ ކަންތައްތައް، ކަންކަން ހޯދާނެ ތަން">އާންމު ހޮޅުއަށި</a></li>
+													<li id="n-currentevents"><a href="/wiki/%DE%88%DE%A8%DE%86%DE%A8%DE%95%DE%A9%DE%91%DE%A8%DE%87%DE%A7:%DE%80%DE%A8%DE%82%DE%8E%DE%A6%DE%89%DE%AA%DE%82%DE%B0%DE%8B%DE%A7_%DE%80%DE%A7%DE%8B%DE%A8%DE%90%DE%A7%DE%8C%DE%A6%DE%87%DE%B0" title="މިހާރު ހިނގަމުންދާ ހާދިސާތަކުގެ ޚުލާސާއެއް">ހިނގަމުންދާ ހާދިސާތައް</a></li>
+													<li id="n-recentchanges"><a href="/wiki/%DE%9A%DE%A7%DE%87%DE%B0%DE%90%DE%A6:%DE%87%DE%AC%DE%82%DE%B0%DE%89%DE%AC_%DE%8A%DE%A6%DE%80%DE%AA%DE%8E%DE%AC_%DE%84%DE%A6%DE%8B%DE%A6%DE%8D%DE%AA%DE%8C%DE%A6%DE%87%DE%B0" title="ފަހު ބަދަލުތައް [r]" accesskey="r">ފަހު ބަދަލުތައް</a></li>
+													<li id="n-randompage"><a href="/wiki/%DE%9A%DE%A7%DE%87%DE%B0%DE%90%DE%A6:%DE%86%DE%AE%DE%82%DE%B0%DE%89%DE%AC%DE%88%DE%AC%DE%90%DE%B0_%DE%90%DE%A6%DE%8A%DE%B0%DE%99%DE%A7%DE%87%DE%AC%DE%87%DE%B0" title="ކޮންމެވެސް ޞަފްޙާއެއް [x]" accesskey="x">ކޮންމެވެސް ޞަފްޙާއެއް</a></li>
+													<li id="n-help"><a href="/wiki/%DE%87%DE%AC%DE%80%DE%A9:%DE%8A%DE%A8%DE%80%DE%AA%DE%83%DE%A8%DE%90%DE%B0%DE%8C%DE%AA" title="އެހީގެ ޞަފްޙާ">އެހީ</a></li>
+													<li id="n-sitesupport"><a href="//donate.wikimedia.org/wiki/Special:FundraiserRedirector?utm_source=donate&amp;utm_medium=sidebar&amp;utm_campaign=C13_dv.wikipedia.org&amp;uselang=dv" title="Support us">ޚައިރާތުތައް</a></li>
+											</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id='p-tb' aria-labelledby='p-tb-label'>
+			<h3 id='p-tb-label'>އަތްމަތީފޮށި</h3>
+
+			<div class="body">
+									<ul>
+													<li id="t-whatlinkshere"><a href="/wiki/%DE%9A%DE%A7%DE%87%DE%B0%DE%90%DE%A6:WhatLinksHere/%DE%90%DE%A9%DE%82%DE%A9" title="މި ޞަފްޙާއާ ގުޅިފައިވާ ހުރިހާ ޞަފްޙާތައް. [j]" accesskey="j">މިއާ ގުޅެނީ ކޮންއެއްޗެއް</a></li>
+													<li id="t-recentchangeslinked"><a href="/wiki/%DE%9A%DE%A7%DE%87%DE%B0%DE%90%DE%A6:RecentChangesLinked/%DE%90%DE%A9%DE%82%DE%A9" title="މި ޞަފްޙާއާ ގުޅުންހުރި ބަދަލުތައް [k]" accesskey="k">ގުޅުންހުރި ބަދަލުތައް</a></li>
+													<li id="t-upload"><a href="//commons.wikimedia.org/wiki/Special:UploadWizard" title="ފައިލު ފޮނުވާ [u]" accesskey="u">ފައިލު ފޮނުވާ</a></li>
+													<li id="t-specialpages"><a href="/wiki/%DE%9A%DE%A7%DE%87%DE%B0%DE%90%DE%A6:%DE%99%DE%A7%DE%87%DE%B0%DE%90%DE%A6_%DE%90%DE%A6%DE%8A%DE%B0%DE%99%DE%A7%DE%8C%DE%A6%DE%87%DE%B0" title="ޚާއްސަ ޞަފްޙާތަކުގެ ލިސްޓު [q]" accesskey="q">ހާއްސަ ޞަފްޙާތައް</a></li>
+													<li id="t-print"><a href="/w/index.php?title=%DE%90%DE%A9%DE%82%DE%A9&amp;printable=yes" rel="alternate" title="ޕްރިންޓަށްފަހި ޞަފްޙާ [p]" accesskey="p">ޗާޕަށްފަހި ނުސްހާ</a></li>
+													<li id="t-permalink"><a href="/w/index.php?title=%DE%90%DE%A9%DE%82%DE%A9&amp;oldid=116124" title="ނުސްހާއަށް ދާއިމީ ފާލަން">ދާއިމީ ފާލަން</a></li>
+													<li id="t-info"><a href="/w/index.php?title=%DE%90%DE%A9%DE%82%DE%A9&amp;action=info" title="More information about this page">ސަފްޙާ އާއި ބެހޭ މައުލޫމާތު</a></li>
+													<li id="t-wikibase"><a href="//www.wikidata.org/wiki/Q7850" title="Link to connected data repository item [g]" accesskey="g">Wikidata item</a></li>
+						<li id="t-cite"><a href="/w/index.php?title=%DE%9A%DE%A7%DE%87%DE%B0%DE%90%DE%A6:Cite&amp;page=%DE%90%DE%A9%DE%82%DE%A9&amp;id=116124" title="Information on how to cite this page">މި މަޒުމޫނު ހަވާލާކުރައްވާ</a></li>					</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id='p-lang' aria-labelledby='p-lang-label'>
+			<h3 id='p-lang-label'>އެހެން ބަސްބަހުން</h3>
+
+			<div class="body">
+									<ul>
+													<li class="interlanguage-link interwiki-ace"><a href="//ace.wikipedia.org/wiki/Bahsa_Cina" title="Bahsa Cina – Achinese" lang="ace" hreflang="ace">Acèh</a></li>
+													<li class="interlanguage-link interwiki-af"><a href="//af.wikipedia.org/wiki/Sjinees" title="Sjinees – Afrikaans" lang="af" hreflang="af">Afrikaans</a></li>
+													<li class="interlanguage-link interwiki-als"><a href="//als.wikipedia.org/wiki/Chinesische_Sprache" title="Chinesische Sprache – Alemannisch" lang="als" hreflang="als">Alemannisch</a></li>
+													<li class="interlanguage-link interwiki-am"><a href="//am.wikipedia.org/wiki/%E1%89%BB%E1%8B%AD%E1%8A%95%E1%8A%9B" title="ቻይንኛ – Amharic" lang="am" hreflang="am">አማርኛ</a></li>
+													<li class="interlanguage-link interwiki-an"><a href="//an.wikipedia.org/wiki/Idioma_chin%C3%A9s" title="Idioma chinés – Aragonese" lang="an" hreflang="an">Aragonés</a></li>
+													<li class="interlanguage-link interwiki-ar"><a href="//ar.wikipedia.org/wiki/%D9%84%D8%BA%D8%A9_%D8%B5%D9%8A%D9%86%D9%8A%D8%A9" title="لغة صينية – Arabic" lang="ar" hreflang="ar">العربية</a></li>
+													<li class="interlanguage-link interwiki-arc"><a href="//arc.wikipedia.org/wiki/%DC%A0%DC%AB%DC%A2%DC%90_%DC%A8%DC%9D%DC%A2%DC%9D%DC%90" title="ܠܫܢܐ ܨܝܢܝܐ – Aramaic" lang="arc" hreflang="arc">ܐܪܡܝܐ</a></li>
+													<li class="interlanguage-link interwiki-arz"><a href="//arz.wikipedia.org/wiki/%D9%84%D8%BA%D9%87_%D8%B5%D9%8A%D9%86%D9%89" title="لغه صينى – Egyptian Spoken Arabic" lang="arz" hreflang="arz">مصرى</a></li>
+													<li class="interlanguage-link interwiki-az"><a href="//az.wikipedia.org/wiki/%C3%87in_dili" title="Çin dili – Azerbaijani" lang="az" hreflang="az">Azərbaycanca</a></li>
+													<li class="interlanguage-link interwiki-ba"><a href="//ba.wikipedia.org/wiki/%D2%A0%D1%8B%D1%82%D0%B0%D0%B9_%D1%82%D0%B5%D0%BB%D0%B5" title="Ҡытай теле – Bashkir" lang="ba" hreflang="ba">Башҡортса</a></li>
+													<li class="interlanguage-link interwiki-bar"><a href="//bar.wikipedia.org/wiki/Kin%C3%A4sische_Spr%C3%A5chn" title="Kinäsische Språchn – Bavarian" lang="bar" hreflang="bar">Boarisch</a></li>
+													<li class="interlanguage-link interwiki-bat-smg"><a href="//bat-smg.wikipedia.org/wiki/K%C4%97nu_kalba" title="Kėnu kalba – Samogitian" lang="bat-smg" hreflang="bat-smg">Žemaitėška</a></li>
+													<li class="interlanguage-link interwiki-bcl"><a href="//bcl.wikipedia.org/wiki/Intsik" title="Intsik – Bikol Central" lang="bcl" hreflang="bcl">Bikol Central</a></li>
+													<li class="interlanguage-link interwiki-be"><a href="//be.wikipedia.org/wiki/%D0%9A%D1%96%D1%82%D0%B0%D0%B9%D1%81%D0%BA%D0%B0%D1%8F_%D0%BC%D0%BE%D0%B2%D0%B0" title="Кітайская мова – Belarusian" lang="be" hreflang="be">Беларуская</a></li>
+													<li class="interlanguage-link interwiki-be-x-old"><a href="//be-x-old.wikipedia.org/wiki/%D0%9A%D1%96%D1%82%D0%B0%D0%B9%D1%81%D0%BA%D0%B0%D1%8F_%D0%BC%D0%BE%D0%B2%D0%B0" title="Кітайская мова – беларуская (тарашкевіца)‎" lang="be-x-old" hreflang="be-x-old">Беларуская (тарашкевіца)‎</a></li>
+													<li class="interlanguage-link interwiki-bg"><a href="//bg.wikipedia.org/wiki/%D0%9A%D0%B8%D1%82%D0%B0%D0%B9%D1%81%D0%BA%D0%B8_%D0%B5%D0%B7%D0%B8%D0%BA" title="Китайски език – Bulgarian" lang="bg" hreflang="bg">Български</a></li>
+													<li class="interlanguage-link interwiki-bh"><a href="//bh.wikipedia.org/wiki/%E0%A4%9A%E0%A5%80%E0%A4%A8%E0%A5%80_%E0%A4%AD%E0%A4%BE%E0%A4%B7%E0%A4%BE" title="चीनी भाषा – भोजपुरी" lang="bh" hreflang="bh">भोजपुरी</a></li>
+													<li class="interlanguage-link interwiki-bn"><a href="//bn.wikipedia.org/wiki/%E0%A6%9A%E0%A7%80%E0%A6%A8%E0%A6%BE_%E0%A6%AD%E0%A6%BE%E0%A6%B7%E0%A6%BE" title="চীনা ভাষা – Bengali" lang="bn" hreflang="bn">বাংলা</a></li>
+													<li class="interlanguage-link interwiki-bo"><a href="//bo.wikipedia.org/wiki/%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BC%8B%E0%BD%A6%E0%BE%90%E0%BD%91%E0%BC%8D" title="རྒྱ་སྐད། – Tibetan" lang="bo" hreflang="bo">བོད་ཡིག</a></li>
+													<li class="interlanguage-link interwiki-br"><a href="//br.wikipedia.org/wiki/Yezho%C3%B9_sinaek" title="Yezhoù sinaek – Breton" lang="br" hreflang="br">Brezhoneg</a></li>
+													<li class="interlanguage-link interwiki-bs"><a href="//bs.wikipedia.org/wiki/Kineski_jezik" title="Kineski jezik – Bosnian" lang="bs" hreflang="bs">Bosanski</a></li>
+													<li class="interlanguage-link interwiki-bxr"><a href="//bxr.wikipedia.org/wiki/%D0%A5%D0%B8%D1%82%D0%B0%D0%B4_%D1%85%D1%8D%D0%BB%D1%8D%D0%BD" title="Хитад хэлэн – буряад" lang="bxr" hreflang="bxr">Буряад</a></li>
+													<li class="interlanguage-link interwiki-ca"><a href="//ca.wikipedia.org/wiki/Lleng%C3%BCes_sin%C3%ADtiques" title="Llengües sinítiques – Catalan" lang="ca" hreflang="ca">Català</a></li>
+													<li class="interlanguage-link interwiki-ce"><a href="//ce.wikipedia.org/wiki/%D0%9A%D0%B8%D1%82%D0%B0%D0%B9%D0%BD_%D0%BC%D0%BE%D1%82%D1%82" title="Китайн мотт – Chechen" lang="ce" hreflang="ce">Нохчийн</a></li>
+													<li class="interlanguage-link interwiki-ceb"><a href="//ceb.wikipedia.org/wiki/Inintsik" title="Inintsik – Cebuano" lang="ceb" hreflang="ceb">Cebuano</a></li>
+													<li class="interlanguage-link interwiki-ckb"><a href="//ckb.wikipedia.org/wiki/%D8%B2%D9%85%D8%A7%D9%86%DB%8C_%DA%86%DB%8C%D9%86%DB%8C" title="زمانی چینی – Sorani Kurdish" lang="ckb" hreflang="ckb">کوردی</a></li>
+													<li class="interlanguage-link interwiki-crh"><a href="//crh.wikipedia.org/wiki/%C3%87in_tili" title="Çin tili – Crimean Turkish" lang="crh" hreflang="crh">Qırımtatarca</a></li>
+													<li class="interlanguage-link interwiki-cs"><a href="//cs.wikipedia.org/wiki/%C4%8C%C3%ADn%C5%A1tina" title="Čínština – Czech" lang="cs" hreflang="cs">Čeština</a></li>
+													<li class="interlanguage-link interwiki-cu"><a href="//cu.wikipedia.org/wiki/%D0%A1%D1%80%D1%A3%D0%B4%D0%B8%D0%BD%D1%8C%D1%81%D0%BA%D1%8A_%D1%A9%EA%99%81%EA%99%91%D0%BA%D1%8A" title="Срѣдиньскъ ѩꙁꙑкъ – Church Slavic" lang="cu" hreflang="cu">Словѣньскъ / ⰔⰎⰑⰂⰡⰐⰠⰔⰍⰟ</a></li>
+													<li class="interlanguage-link interwiki-cv"><a href="//cv.wikipedia.org/wiki/%D0%9A%D0%B8%D1%82%D0%B0%D0%B9_%D1%87%C4%95%D0%BB%D1%85%D0%B8" title="Китай чĕлхи – Chuvash" lang="cv" hreflang="cv">Чӑвашла</a></li>
+													<li class="interlanguage-link interwiki-cy"><a href="//cy.wikipedia.org/wiki/Tsieineeg" title="Tsieineeg – Welsh" lang="cy" hreflang="cy">Cymraeg</a></li>
+													<li class="interlanguage-link interwiki-da"><a href="//da.wikipedia.org/wiki/Kinesisk_(sproggruppe)" title="Kinesisk (sproggruppe) – Danish" lang="da" hreflang="da">Dansk</a></li>
+													<li class="interlanguage-link interwiki-de badge-Q17437798 badge-goodarticle" title=""><a href="//de.wikipedia.org/wiki/Chinesische_Sprachen" title="Chinesische Sprachen – German" lang="de" hreflang="de">Deutsch</a></li>
+													<li class="interlanguage-link interwiki-dsb"><a href="//dsb.wikipedia.org/wiki/Chin%C5%A1%C4%87ina" title="Chinšćina – Lower Sorbian" lang="dsb" hreflang="dsb">Dolnoserbski</a></li>
+													<li class="interlanguage-link interwiki-el"><a href="//el.wikipedia.org/wiki/%CE%9A%CE%B9%CE%BD%CE%B5%CE%B6%CE%B9%CE%BA%CE%AE_%CE%B3%CE%BB%CF%8E%CF%83%CF%83%CE%B1" title="Κινεζική γλώσσα – Greek" lang="el" hreflang="el">Ελληνικά</a></li>
+													<li class="interlanguage-link interwiki-en"><a href="//en.wikipedia.org/wiki/Chinese_language" title="Chinese language – English" lang="en" hreflang="en">English</a></li>
+													<li class="interlanguage-link interwiki-eo"><a href="//eo.wikipedia.org/wiki/%C4%88ina_lingvaro" title="Ĉina lingvaro – Esperanto" lang="eo" hreflang="eo">Esperanto</a></li>
+													<li class="interlanguage-link interwiki-es"><a href="//es.wikipedia.org/wiki/Idioma_chino" title="Idioma chino – Spanish" lang="es" hreflang="es">Español</a></li>
+													<li class="interlanguage-link interwiki-et"><a href="//et.wikipedia.org/wiki/Hiina_keel" title="Hiina keel – Estonian" lang="et" hreflang="et">Eesti</a></li>
+													<li class="interlanguage-link interwiki-eu"><a href="//eu.wikipedia.org/wiki/Txinera" title="Txinera – Basque" lang="eu" hreflang="eu">Euskara</a></li>
+													<li class="interlanguage-link interwiki-ext"><a href="//ext.wikipedia.org/wiki/Luenga_china" title="Luenga china – Extremaduran" lang="ext" hreflang="ext">Estremeñu</a></li>
+													<li class="interlanguage-link interwiki-fa"><a href="//fa.wikipedia.org/wiki/%D8%B2%D8%A8%D8%A7%D9%86%E2%80%8C%D9%87%D8%A7%DB%8C_%DA%86%DB%8C%D9%86%DB%8C" title="زبان‌های چینی – Persian" lang="fa" hreflang="fa">فارسی</a></li>
+													<li class="interlanguage-link interwiki-fi"><a href="//fi.wikipedia.org/wiki/Kiinan_kieli" title="Kiinan kieli – Finnish" lang="fi" hreflang="fi">Suomi</a></li>
+													<li class="interlanguage-link interwiki-fiu-vro"><a href="//fiu-vro.wikipedia.org/wiki/Hiina_kiil" title="Hiina kiil – Võro" lang="fiu-vro" hreflang="fiu-vro">Võro</a></li>
+													<li class="interlanguage-link interwiki-fo"><a href="//fo.wikipedia.org/wiki/Kinesiskt_m%C3%A1l" title="Kinesiskt mál – Faroese" lang="fo" hreflang="fo">Føroyskt</a></li>
+													<li class="interlanguage-link interwiki-fr"><a href="//fr.wikipedia.org/wiki/Langues_chinoises" title="Langues chinoises – French" lang="fr" hreflang="fr">Français</a></li>
+													<li class="interlanguage-link interwiki-fy"><a href="//fy.wikipedia.org/wiki/Sineesk" title="Sineesk – Western Frisian" lang="fy" hreflang="fy">Frysk</a></li>
+													<li class="interlanguage-link interwiki-ga"><a href="//ga.wikipedia.org/wiki/An_tS%C3%ADnis" title="An tSínis – Irish" lang="ga" hreflang="ga">Gaeilge</a></li>
+													<li class="interlanguage-link interwiki-gan"><a href="//gan.wikipedia.org/wiki/%E6%BC%A2%E8%AA%9E" title="漢語 – Gan" lang="gan" hreflang="gan">贛語</a></li>
+													<li class="interlanguage-link interwiki-gd"><a href="//gd.wikipedia.org/wiki/S%C3%AConais" title="Sìonais – Scottish Gaelic" lang="gd" hreflang="gd">Gàidhlig</a></li>
+													<li class="interlanguage-link interwiki-gl"><a href="//gl.wikipedia.org/wiki/Lingua_chinesa" title="Lingua chinesa – Galician" lang="gl" hreflang="gl">Galego</a></li>
+													<li class="interlanguage-link interwiki-gn"><a href="//gn.wikipedia.org/wiki/China%C3%B1e%27%E1%BA%BD" title="Chinañe'ẽ – Guarani" lang="gn" hreflang="gn">Avañe'ẽ</a></li>
+													<li class="interlanguage-link interwiki-got"><a href="//got.wikipedia.org/wiki/%F0%90%8C%BA%F0%90%8C%B9%F0%90%8C%BD%F0%90%8C%B9%F0%90%8D%83%F0%90%8C%BA%F0%90%8C%B0%F0%90%8D%82%F0%90%8C%B0%F0%90%8C%B6%F0%90%8C%B3%F0%90%8D%89%F0%90%8D%83" title="𐌺𐌹𐌽𐌹𐍃𐌺𐌰𐍂𐌰𐌶𐌳𐍉𐍃 – Gothic" lang="got" hreflang="got">𐌲𐌿𐍄𐌹𐍃𐌺</a></li>
+													<li class="interlanguage-link interwiki-gu"><a href="//gu.wikipedia.org/wiki/%E0%AA%9A%E0%AA%BE%E0%AA%87%E0%AA%A8%E0%AB%80%E0%AA%9D_%E0%AA%AD%E0%AA%BE%E0%AA%B7%E0%AA%BE" title="ચાઇનીઝ ભાષા – Gujarati" lang="gu" hreflang="gu">ગુજરાતી</a></li>
+													<li class="interlanguage-link interwiki-gv"><a href="//gv.wikipedia.org/wiki/%C3%87hengaghyn_Sheenagh" title="Çhengaghyn Sheenagh – Manx" lang="gv" hreflang="gv">Gaelg</a></li>
+													<li class="interlanguage-link interwiki-hak"><a href="//hak.wikipedia.org/wiki/%E6%BC%A2%E8%AA%9E" title="漢語 – Hakka" lang="hak" hreflang="hak">客家語/Hak-kâ-ngî</a></li>
+													<li class="interlanguage-link interwiki-haw"><a href="//haw.wikipedia.org/wiki/%E2%80%98%C5%8Clelo_P%C4%81k%C4%93" title="‘Ōlelo Pākē – Hawaiian" lang="haw" hreflang="haw">Hawai`i</a></li>
+													<li class="interlanguage-link interwiki-he"><a href="//he.wikipedia.org/wiki/%D7%A9%D7%A4%D7%95%D7%AA_%D7%A1%D7%99%D7%A0%D7%99%D7%95%D7%AA" title="שפות סיניות – Hebrew" lang="he" hreflang="he">עברית</a></li>
+													<li class="interlanguage-link interwiki-hi"><a href="//hi.wikipedia.org/wiki/%E0%A4%9A%E0%A5%80%E0%A4%A8%E0%A5%80_%E0%A4%AD%E0%A4%BE%E0%A4%B7%E0%A4%BE" title="चीनी भाषा – Hindi" lang="hi" hreflang="hi">हिन्दी</a></li>
+													<li class="interlanguage-link interwiki-hif"><a href="//hif.wikipedia.org/wiki/Chinese_bhasa" title="Chinese bhasa – Fiji Hindi" lang="hif" hreflang="hif">Fiji Hindi</a></li>
+													<li class="interlanguage-link interwiki-hr"><a href="//hr.wikipedia.org/wiki/Kineski_jezik" title="Kineski jezik – Croatian" lang="hr" hreflang="hr">Hrvatski</a></li>
+													<li class="interlanguage-link interwiki-hsb"><a href="//hsb.wikipedia.org/wiki/Chin%C5%A1%C4%87ina" title="Chinšćina – Upper Sorbian" lang="hsb" hreflang="hsb">Hornjoserbsce</a></li>
+													<li class="interlanguage-link interwiki-hu"><a href="//hu.wikipedia.org/wiki/K%C3%ADnai_nyelv" title="Kínai nyelv – Hungarian" lang="hu" hreflang="hu">Magyar</a></li>
+													<li class="interlanguage-link interwiki-hy"><a href="//hy.wikipedia.org/wiki/%D5%89%D5%AB%D5%B6%D5%A1%D6%80%D5%A5%D5%B6" title="Չինարեն – Armenian" lang="hy" hreflang="hy">Հայերեն</a></li>
+													<li class="interlanguage-link interwiki-id"><a href="//id.wikipedia.org/wiki/Rumpun_bahasa_Tionghoa" title="Rumpun bahasa Tionghoa – Indonesian" lang="id" hreflang="id">Bahasa Indonesia</a></li>
+													<li class="interlanguage-link interwiki-ilo"><a href="//ilo.wikipedia.org/wiki/Pagsasao_nga_Insik" title="Pagsasao nga Insik – Iloko" lang="ilo" hreflang="ilo">Ilokano</a></li>
+													<li class="interlanguage-link interwiki-io"><a href="//io.wikipedia.org/wiki/Chiniana_linguo" title="Chiniana linguo – Ido" lang="io" hreflang="io">Ido</a></li>
+													<li class="interlanguage-link interwiki-is"><a href="//is.wikipedia.org/wiki/K%C3%ADnverska" title="Kínverska – Icelandic" lang="is" hreflang="is">Íslenska</a></li>
+													<li class="interlanguage-link interwiki-it"><a href="//it.wikipedia.org/wiki/Lingua_cinese" title="Lingua cinese – Italian" lang="it" hreflang="it">Italiano</a></li>
+													<li class="interlanguage-link interwiki-ja"><a href="//ja.wikipedia.org/wiki/%E4%B8%AD%E5%9B%BD%E8%AA%9E" title="中国語 – Japanese" lang="ja" hreflang="ja">日本語</a></li>
+													<li class="interlanguage-link interwiki-jbo"><a href="//jbo.wikipedia.org/wiki/jugbau" title="jugbau – Lojban" lang="jbo" hreflang="jbo">Lojban</a></li>
+													<li class="interlanguage-link interwiki-jv"><a href="//jv.wikipedia.org/wiki/Basa_Cina" title="Basa Cina – Javanese" lang="jv" hreflang="jv">Basa Jawa</a></li>
+													<li class="interlanguage-link interwiki-ka"><a href="//ka.wikipedia.org/wiki/%E1%83%A9%E1%83%98%E1%83%9C%E1%83%A3%E1%83%A0%E1%83%98_%E1%83%94%E1%83%9C%E1%83%90" title="ჩინური ენა – Georgian" lang="ka" hreflang="ka">ქართული</a></li>
+													<li class="interlanguage-link interwiki-kbd"><a href="//kbd.wikipedia.org/wiki/%D0%A5%D1%8A%D1%83%D1%82%D0%B5%D0%B8%D0%B1%D0%B7%D1%8D" title="Хъутеибзэ – Kabardian" lang="kbd" hreflang="kbd">Адыгэбзэ</a></li>
+													<li class="interlanguage-link interwiki-kg"><a href="//kg.wikipedia.org/wiki/Kitsunkwo" title="Kitsunkwo – Kongo" lang="kg" hreflang="kg">Kongo</a></li>
+													<li class="interlanguage-link interwiki-kk"><a href="//kk.wikipedia.org/wiki/%D2%9A%D1%8B%D1%82%D0%B0%D0%B9_%D1%82%D1%96%D0%BB%D1%96" title="Қытай тілі – Kazakh" lang="kk" hreflang="kk">Қазақша</a></li>
+													<li class="interlanguage-link interwiki-kl"><a href="//kl.wikipedia.org/wiki/Kineserisut_(oqaatsit)" title="Kineserisut (oqaatsit) – Kalaallisut" lang="kl" hreflang="kl">Kalaallisut</a></li>
+													<li class="interlanguage-link interwiki-km"><a href="//km.wikipedia.org/wiki/%E1%9E%97%E1%9E%B6%E1%9E%9F%E1%9E%B6%E1%9E%85%E1%9E%B7%E1%9E%93" title="ភាសាចិន – Khmer" lang="km" hreflang="km">ភាសាខ្មែរ</a></li>
+													<li class="interlanguage-link interwiki-kn"><a href="//kn.wikipedia.org/wiki/%E0%B2%9A%E0%B3%80%E0%B2%A8%E0%B2%BF_%E0%B2%AD%E0%B2%BE%E0%B2%B7%E0%B3%86" title="ಚೀನಿ ಭಾಷೆ – Kannada" lang="kn" hreflang="kn">ಕನ್ನಡ</a></li>
+													<li class="interlanguage-link interwiki-ko"><a href="//ko.wikipedia.org/wiki/%EC%A4%91%EA%B5%AD%EC%96%B4" title="중국어 – Korean" lang="ko" hreflang="ko">한국어</a></li>
+													<li class="interlanguage-link interwiki-kv"><a href="//kv.wikipedia.org/wiki/%D0%9A%D0%B8%D1%82%D0%B0%D0%B9_%D0%BA%D1%8B%D0%B2" title="Китай кыв – Komi" lang="kv" hreflang="kv">Коми</a></li>
+													<li class="interlanguage-link interwiki-kw"><a href="//kw.wikipedia.org/wiki/Chinek" title="Chinek – Cornish" lang="kw" hreflang="kw">Kernowek</a></li>
+													<li class="interlanguage-link interwiki-ky"><a href="//ky.wikipedia.org/wiki/%D0%9A%D1%8B%D1%82%D0%B0%D0%B9_%D1%82%D0%B8%D0%BB%D0%B8" title="Кытай тили – Kyrgyz" lang="ky" hreflang="ky">Кыргызча</a></li>
+													<li class="interlanguage-link interwiki-la"><a href="//la.wikipedia.org/wiki/Lingua_Sinica" title="Lingua Sinica – Latin" lang="la" hreflang="la">Latina</a></li>
+													<li class="interlanguage-link interwiki-lez"><a href="//lez.wikipedia.org/wiki/%D0%9A%D0%B8%D1%82%D0%B0%D0%B9_%D1%87I%D0%B0%D0%BB" title="Китай чIал – Lezghian" lang="lez" hreflang="lez">Лезги</a></li>
+													<li class="interlanguage-link interwiki-li"><a href="//li.wikipedia.org/wiki/Chinees" title="Chinees – Limburgish" lang="li" hreflang="li">Limburgs</a></li>
+													<li class="interlanguage-link interwiki-lij"><a href="//lij.wikipedia.org/wiki/Lengua_cineise" title="Lengua cineise – Ligurian" lang="lij" hreflang="lij">Ligure</a></li>
+													<li class="interlanguage-link interwiki-lo"><a href="//lo.wikipedia.org/wiki/%E0%BA%9E%E0%BA%B2%E0%BA%AA%E0%BA%B2%E0%BA%88%E0%BA%B5%E0%BA%99" title="ພາສາຈີນ – Lao" lang="lo" hreflang="lo">ລາວ</a></li>
+													<li class="interlanguage-link interwiki-lt"><a href="//lt.wikipedia.org/wiki/Kin%C5%B3_kalba" title="Kinų kalba – Lithuanian" lang="lt" hreflang="lt">Lietuvių</a></li>
+													<li class="interlanguage-link interwiki-lv"><a href="//lv.wikipedia.org/wiki/%C4%B6%C4%ABnie%C5%A1u_valoda" title="Ķīniešu valoda – Latvian" lang="lv" hreflang="lv">Latviešu</a></li>
+													<li class="interlanguage-link interwiki-mg"><a href="//mg.wikipedia.org/wiki/Fiteny_sinoa" title="Fiteny sinoa – Malagasy" lang="mg" hreflang="mg">Malagasy</a></li>
+													<li class="interlanguage-link interwiki-mk badge-Q17437796 badge-featuredarticle" title=""><a href="//mk.wikipedia.org/wiki/%D0%9A%D0%B8%D0%BD%D0%B5%D1%81%D0%BA%D0%B8_%D1%98%D0%B0%D0%B7%D0%B8%D0%BA" title="Кинески јазик – Macedonian" lang="mk" hreflang="mk">Македонски</a></li>
+													<li class="interlanguage-link interwiki-ml"><a href="//ml.wikipedia.org/wiki/%E0%B4%9A%E0%B5%88%E0%B4%A8%E0%B5%80%E0%B4%B8%E0%B5%8D_%E0%B4%AD%E0%B4%BE%E0%B4%B7" title="ചൈനീസ് ഭാഷ – Malayalam" lang="ml" hreflang="ml">മലയാളം</a></li>
+													<li class="interlanguage-link interwiki-mn"><a href="//mn.wikipedia.org/wiki/%D0%A5%D1%8F%D1%82%D0%B0%D0%B4_%D1%85%D1%8D%D0%BB" title="Хятад хэл – Mongolian" lang="mn" hreflang="mn">Монгол</a></li>
+													<li class="interlanguage-link interwiki-mr"><a href="//mr.wikipedia.org/wiki/%E0%A4%9A%E0%A4%BF%E0%A4%A8%E0%A5%80_%E0%A4%AD%E0%A4%BE%E0%A4%B7%E0%A4%BE" title="चिनी भाषा – Marathi" lang="mr" hreflang="mr">मराठी</a></li>
+													<li class="interlanguage-link interwiki-ms"><a href="//ms.wikipedia.org/wiki/Bahasa_Cina" title="Bahasa Cina – Malay" lang="ms" hreflang="ms">Bahasa Melayu</a></li>
+													<li class="interlanguage-link interwiki-mwl"><a href="//mwl.wikipedia.org/wiki/Lh%C3%A9ngua_chinesa" title="Lhéngua chinesa – Mirandese" lang="mwl" hreflang="mwl">Mirandés</a></li>
+													<li class="interlanguage-link interwiki-my"><a href="//my.wikipedia.org/wiki/%E1%80%90%E1%80%9B%E1%80%AF%E1%80%90%E1%80%BA%E1%80%98%E1%80%AC%E1%80%9E%E1%80%AC" title="တရုတ်ဘာသာ – Burmese" lang="my" hreflang="my">မြန်မာဘာသာ</a></li>
+													<li class="interlanguage-link interwiki-mzn"><a href="//mzn.wikipedia.org/wiki/%DA%86%DB%8C%D9%86%DB%8C_%D8%B2%D9%88%D9%88%D9%86%D9%88%D9%86" title="چینی زوونون – Mazanderani" lang="mzn" hreflang="mzn">مازِرونی</a></li>
+													<li class="interlanguage-link interwiki-na"><a href="//na.wikipedia.org/wiki/Dorerin_Tsiene" title="Dorerin Tsiene – Nauru" lang="na" hreflang="na">Dorerin Naoero</a></li>
+													<li class="interlanguage-link interwiki-nah"><a href="//nah.wikipedia.org/wiki/Chinatlaht%C5%8Dlli" title="Chinatlahtōlli – Nāhuatl" lang="nah" hreflang="nah">Nāhuatl</a></li>
+													<li class="interlanguage-link interwiki-nds"><a href="//nds.wikipedia.org/wiki/Chineesche_Spraak" title="Chineesche Spraak – Low German" lang="nds" hreflang="nds">Plattdüütsch</a></li>
+													<li class="interlanguage-link interwiki-ne"><a href="//ne.wikipedia.org/wiki/%E0%A4%9A%E0%A5%80%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%BE%E0%A4%81_%E0%A4%AD%E0%A4%BE%E0%A4%B7%E0%A4%BE" title="चीनियाँ भाषा – Nepali" lang="ne" hreflang="ne">नेपाली</a></li>
+													<li class="interlanguage-link interwiki-nl"><a href="//nl.wikipedia.org/wiki/Chinese_talen" title="Chinese talen – Dutch" lang="nl" hreflang="nl">Nederlands</a></li>
+													<li class="interlanguage-link interwiki-nn"><a href="//nn.wikipedia.org/wiki/Kinesisk" title="Kinesisk – Norwegian Nynorsk" lang="nn" hreflang="nn">Norsk nynorsk</a></li>
+													<li class="interlanguage-link interwiki-no"><a href="//no.wikipedia.org/wiki/Kinesisk" title="Kinesisk – Norwegian (bokmål)" lang="no" hreflang="no">Norsk bokmål</a></li>
+													<li class="interlanguage-link interwiki-nov"><a href="//nov.wikipedia.org/wiki/Chinum" title="Chinum – Novial" lang="nov" hreflang="nov">Novial</a></li>
+													<li class="interlanguage-link interwiki-oc"><a href="//oc.wikipedia.org/wiki/Chin%C3%A9s" title="Chinés – Occitan" lang="oc" hreflang="oc">Occitan</a></li>
+													<li class="interlanguage-link interwiki-pa"><a href="//pa.wikipedia.org/wiki/%E0%A8%9A%E0%A9%80%E0%A8%A8%E0%A9%80_%E0%A8%AD%E0%A8%BE%E0%A8%B8%E0%A8%BC%E0%A8%BE" title="ਚੀਨੀ ਭਾਸ਼ਾ – Punjabi" lang="pa" hreflang="pa">ਪੰਜਾਬੀ</a></li>
+													<li class="interlanguage-link interwiki-pcd"><a href="//pcd.wikipedia.org/wiki/Kinos" title="Kinos – Picard" lang="pcd" hreflang="pcd">Picard</a></li>
+													<li class="interlanguage-link interwiki-pl"><a href="//pl.wikipedia.org/wiki/J%C4%99zyk_chi%C5%84ski" title="Język chiński – Polish" lang="pl" hreflang="pl">Polski</a></li>
+													<li class="interlanguage-link interwiki-pnb"><a href="//pnb.wikipedia.org/wiki/%DA%86%DB%8C%D9%86%DB%8C" title="چینی – Western Punjabi" lang="pnb" hreflang="pnb">پنجابی</a></li>
+													<li class="interlanguage-link interwiki-pt"><a href="//pt.wikipedia.org/wiki/L%C3%ADngua_chinesa" title="Língua chinesa – Portuguese" lang="pt" hreflang="pt">Português</a></li>
+													<li class="interlanguage-link interwiki-qu"><a href="//qu.wikipedia.org/wiki/Chun_simi" title="Chun simi – Quechua" lang="qu" hreflang="qu">Runa Simi</a></li>
+													<li class="interlanguage-link interwiki-ro"><a href="//ro.wikipedia.org/wiki/Limba_chinez%C4%83" title="Limba chineză – Romanian" lang="ro" hreflang="ro">Română</a></li>
+													<li class="interlanguage-link interwiki-ru"><a href="//ru.wikipedia.org/wiki/%D0%9A%D0%B8%D1%82%D0%B0%D0%B9%D1%81%D0%BA%D0%B8%D0%B9_%D1%8F%D0%B7%D1%8B%D0%BA" title="Китайский язык – Russian" lang="ru" hreflang="ru">Русский</a></li>
+													<li class="interlanguage-link interwiki-rue"><a href="//rue.wikipedia.org/wiki/%D0%9A%D1%96%D1%82%D0%B0%D0%B9%D1%81%D0%BA%D1%8B%D0%B9_%D1%8F%D0%B7%D1%8B%D0%BA" title="Кітайскый язык – Rusyn" lang="rue" hreflang="rue">Русиньскый</a></li>
+													<li class="interlanguage-link interwiki-sa"><a href="//sa.wikipedia.org/wiki/%E0%A4%9A%E0%A5%80%E0%A4%A8%E0%A5%80_%E0%A4%AD%E0%A4%BE%E0%A4%B7%E0%A4%BE" title="चीनी भाषा – Sanskrit" lang="sa" hreflang="sa">संस्कृतम्</a></li>
+													<li class="interlanguage-link interwiki-sah"><a href="//sah.wikipedia.org/wiki/%D0%9A%D1%8B%D1%82%D0%B0%D0%B9_%D1%82%D1%8B%D0%BB%D0%B0" title="Кытай тыла – Sakha" lang="sah" hreflang="sah">Саха тыла</a></li>
+													<li class="interlanguage-link interwiki-scn"><a href="//scn.wikipedia.org/wiki/Lingua_cinisa" title="Lingua cinisa – Sicilian" lang="scn" hreflang="scn">Sicilianu</a></li>
+													<li class="interlanguage-link interwiki-sco"><a href="//sco.wikipedia.org/wiki/Cheenese_leid" title="Cheenese leid – Scots" lang="sco" hreflang="sco">Scots</a></li>
+													<li class="interlanguage-link interwiki-se"><a href="//se.wikipedia.org/wiki/Kiinn%C3%A1giella" title="Kiinnágiella – Northern Sami" lang="se" hreflang="se">Sámegiella</a></li>
+													<li class="interlanguage-link interwiki-sh"><a href="//sh.wikipedia.org/wiki/Kineski_jezik" title="Kineski jezik – Serbo-Croatian" lang="sh" hreflang="sh">Srpskohrvatski / српскохрватски</a></li>
+													<li class="interlanguage-link interwiki-simple"><a href="//simple.wikipedia.org/wiki/Chinese_language" title="Chinese language – Simple English" lang="simple" hreflang="simple">Simple English</a></li>
+													<li class="interlanguage-link interwiki-sk"><a href="//sk.wikipedia.org/wiki/%C4%8C%C3%ADn%C5%A1tina" title="Čínština – Slovak" lang="sk" hreflang="sk">Slovenčina</a></li>
+													<li class="interlanguage-link interwiki-sl"><a href="//sl.wikipedia.org/wiki/Kitaj%C5%A1%C4%8Dina" title="Kitajščina – Slovenian" lang="sl" hreflang="sl">Slovenščina</a></li>
+													<li class="interlanguage-link interwiki-sq"><a href="//sq.wikipedia.org/wiki/Gjuha_kineze" title="Gjuha kineze – Albanian" lang="sq" hreflang="sq">Shqip</a></li>
+													<li class="interlanguage-link interwiki-sr"><a href="//sr.wikipedia.org/wiki/%D0%9A%D0%B8%D0%BD%D0%B5%D1%81%D0%BA%D0%B8_%D1%98%D0%B5%D0%B7%D0%B8%D0%BA" title="Кинески језик – Serbian" lang="sr" hreflang="sr">Српски / srpski</a></li>
+													<li class="interlanguage-link interwiki-st"><a href="//st.wikipedia.org/wiki/Se-china" title="Se-china – Southern Sotho" lang="st" hreflang="st">Sesotho</a></li>
+													<li class="interlanguage-link interwiki-stq"><a href="//stq.wikipedia.org/wiki/Han-Chinesiske_Sproaken" title="Han-Chinesiske Sproaken – Saterland Frisian" lang="stq" hreflang="stq">Seeltersk</a></li>
+													<li class="interlanguage-link interwiki-sv"><a href="//sv.wikipedia.org/wiki/Kinesiska" title="Kinesiska – Swedish" lang="sv" hreflang="sv">Svenska</a></li>
+													<li class="interlanguage-link interwiki-sw"><a href="//sw.wikipedia.org/wiki/Kichina" title="Kichina – Swahili" lang="sw" hreflang="sw">Kiswahili</a></li>
+													<li class="interlanguage-link interwiki-szl"><a href="//szl.wikipedia.org/wiki/Chi%C5%84sk%C5%8F_g%C5%8Fdka" title="Chińskŏ gŏdka – Silesian" lang="szl" hreflang="szl">Ślůnski</a></li>
+													<li class="interlanguage-link interwiki-ta"><a href="//ta.wikipedia.org/wiki/%E0%AE%9A%E0%AF%80%E0%AE%A9_%E0%AE%AE%E0%AF%8A%E0%AE%B4%E0%AE%BF" title="சீன மொழி – Tamil" lang="ta" hreflang="ta">தமிழ்</a></li>
+													<li class="interlanguage-link interwiki-te"><a href="//te.wikipedia.org/wiki/%E0%B0%9A%E0%B1%88%E0%B0%A8%E0%B1%80%E0%B0%B8%E0%B1%8D_%E0%B0%AD%E0%B0%BE%E0%B0%B7" title="చైనీస్ భాష – Telugu" lang="te" hreflang="te">తెలుగు</a></li>
+													<li class="interlanguage-link interwiki-tg"><a href="//tg.wikipedia.org/wiki/%D0%97%D0%B0%D0%B1%D0%BE%D0%BD%D0%B8_%D1%87%D0%B8%D0%BD%D3%A3" title="Забони чинӣ – Tajik" lang="tg" hreflang="tg">Тоҷикӣ</a></li>
+													<li class="interlanguage-link interwiki-th"><a href="//th.wikipedia.org/wiki/%E0%B8%81%E0%B8%A5%E0%B8%B8%E0%B9%88%E0%B8%A1%E0%B8%A0%E0%B8%B2%E0%B8%A9%E0%B8%B2%E0%B8%88%E0%B8%B5%E0%B8%99" title="กลุ่มภาษาจีน – Thai" lang="th" hreflang="th">ไทย</a></li>
+													<li class="interlanguage-link interwiki-tk"><a href="//tk.wikipedia.org/wiki/Hyta%C3%BD_dili" title="Hytaý dili – Turkmen" lang="tk" hreflang="tk">Türkmençe</a></li>
+													<li class="interlanguage-link interwiki-tl"><a href="//tl.wikipedia.org/wiki/Wikang_Intsik" title="Wikang Intsik – Tagalog" lang="tl" hreflang="tl">Tagalog</a></li>
+													<li class="interlanguage-link interwiki-tr"><a href="//tr.wikipedia.org/wiki/%C3%87ince" title="Çince – Turkish" lang="tr" hreflang="tr">Türkçe</a></li>
+													<li class="interlanguage-link interwiki-tt"><a href="//tt.wikipedia.org/wiki/%D0%9A%D1%8B%D1%82%D0%B0%D0%B9_%D1%82%D0%B5%D0%BB%D0%B5" title="Кытай теле – Tatar" lang="tt" hreflang="tt">Татарча/tatarça</a></li>
+													<li class="interlanguage-link interwiki-tw"><a href="//tw.wikipedia.org/wiki/Chinese" title="Chinese – Twi" lang="tw" hreflang="tw">Twi</a></li>
+													<li class="interlanguage-link interwiki-ty"><a href="//ty.wikipedia.org/wiki/Reo_Tinit%C5%8D" title="Reo Tinitō – Tahitian" lang="ty" hreflang="ty">Reo tahiti</a></li>
+													<li class="interlanguage-link interwiki-ug"><a href="//ug.wikipedia.org/wiki/%D8%AE%DB%95%D9%86%D8%B2%DB%87_%D8%AA%D9%89%D9%84%D9%89" title="خەنزۇ تىلى – Uyghur" lang="ug" hreflang="ug">ئۇيغۇرچە / Uyghurche</a></li>
+													<li class="interlanguage-link interwiki-uk"><a href="//uk.wikipedia.org/wiki/%D0%9A%D0%B8%D1%82%D0%B0%D0%B9%D1%81%D1%8C%D0%BA%D0%B0_%D0%BC%D0%BE%D0%B2%D0%B0" title="Китайська мова – Ukrainian" lang="uk" hreflang="uk">Українська</a></li>
+													<li class="interlanguage-link interwiki-ur"><a href="//ur.wikipedia.org/wiki/%DA%86%DB%8C%D9%86%DB%8C_%D8%B2%D8%A8%D8%A7%D9%86" title="چینی زبان – Urdu" lang="ur" hreflang="ur">اردو</a></li>
+													<li class="interlanguage-link interwiki-uz"><a href="//uz.wikipedia.org/wiki/Xitoy_tili" title="Xitoy tili – Uzbek" lang="uz" hreflang="uz">Oʻzbekcha</a></li>
+													<li class="interlanguage-link interwiki-vi"><a href="//vi.wikipedia.org/wiki/Ti%E1%BA%BFng_Trung_Qu%E1%BB%91c" title="Tiếng Trung Quốc – Vietnamese" lang="vi" hreflang="vi">Tiếng Việt</a></li>
+													<li class="interlanguage-link interwiki-wa"><a href="//wa.wikipedia.org/wiki/Chinw%C3%A8s_(lingaedje)" title="Chinwès (lingaedje) – Walloon" lang="wa" hreflang="wa">Walon</a></li>
+													<li class="interlanguage-link interwiki-war"><a href="//war.wikipedia.org/wiki/Tsino_(yinaknan)" title="Tsino (yinaknan) – Waray" lang="war" hreflang="war">Winaray</a></li>
+													<li class="interlanguage-link interwiki-wuu"><a href="//wuu.wikipedia.org/wiki/%E6%BC%A2%E8%AA%9E" title="漢語 – Wu" lang="wuu" hreflang="wuu">吴语</a></li>
+													<li class="interlanguage-link interwiki-xal"><a href="//xal.wikipedia.org/wiki/%D0%9A%D0%B8%D1%82%D0%B4%D0%B8%D0%BD_%D0%BA%D0%B5%D0%BB%D0%BD" title="Китдин келн – Kalmyk" lang="xal" hreflang="xal">Хальмг</a></li>
+													<li class="interlanguage-link interwiki-yi"><a href="//yi.wikipedia.org/wiki/%D7%9B%D7%99%D7%A0%D7%A2%D7%96%D7%99%D7%A9" title="כינעזיש – Yiddish" lang="yi" hreflang="yi">ייִדיש</a></li>
+													<li class="interlanguage-link interwiki-yo"><a href="//yo.wikipedia.org/wiki/%C3%88d%C3%A8_%E1%B9%A2%C3%A1%C3%ADn%C3%A0" title="Èdè Ṣáínà – Yoruba" lang="yo" hreflang="yo">Yorùbá</a></li>
+													<li class="interlanguage-link interwiki-za"><a href="//za.wikipedia.org/wiki/Vahgun" title="Vahgun – Zhuang" lang="za" hreflang="za">Vahcuengh</a></li>
+													<li class="interlanguage-link interwiki-zh"><a href="//zh.wikipedia.org/wiki/%E6%B1%89%E8%AF%AD" title="汉语 – Chinese" lang="zh" hreflang="zh">中文</a></li>
+													<li class="interlanguage-link interwiki-zh-classical badge-Q17437798 badge-goodarticle" title=""><a href="//zh-classical.wikipedia.org/wiki/%E6%BC%A2%E8%AA%9E" title="漢語 – Classical Chinese" lang="zh-classical" hreflang="zh-classical">文言</a></li>
+													<li class="interlanguage-link interwiki-zh-min-nan"><a href="//zh-min-nan.wikipedia.org/wiki/H%C3%A0n-g%C3%AD" title="Hàn-gí – Chinese (Min Nan)" lang="zh-min-nan" hreflang="zh-min-nan">Bân-lâm-gú</a></li>
+													<li class="interlanguage-link interwiki-zh-yue"><a href="//zh-yue.wikipedia.org/wiki/%E5%94%90%E6%96%87" title="唐文 – Cantonese" lang="zh-yue" hreflang="zh-yue">粵語</a></li>
+													<li class="interlanguage-link interwiki-zu"><a href="//zu.wikipedia.org/wiki/IsiShayina" title="IsiShayina – Zulu" lang="zu" hreflang="zu">IsiZulu</a></li>
+													<li class="uls-p-lang-dummy"><a href="#"></a></li>
+											</ul>
+				<div class='after-portlet after-portlet-lang'><span class="wb-langlinks-edit wb-langlinks-link"><a action="edit" href="//www.wikidata.org/wiki/Q7850#sitelinks-wikipedia" text="Edit links" title="Edit interlanguage links" class="wbc-editpage">Edit links</a></span></div>			</div>
+		</div>
+				</div>
+		</div>
+		<div id="footer" role="contentinfo">
+							<ul id="footer-info">
+											<li id="footer-info-lastmod"> މި ޞަފްހާ އަށް އެންމެ ފަހުން ބަދަލެއް ގެނެވިފައިވަނީ 16 ޖެނުއަރީ 2014، 15:58 ގައެވެ.</li>
+											<li id="footer-info-copyright">Text is available under the <a href="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike License</a>;
+additional terms may apply.
+See <a href="https://wikimediafoundation.org/wiki/Terms_of_Use">Terms of Use</a> for details.</li>
+									</ul>
+							<ul id="footer-places">
+											<li id="footer-places-privacy"><a href="/wiki/%DE%88%DE%A8%DE%86%DE%A8%DE%95%DE%A9%DE%91%DE%A8%DE%87%DE%A7:%DE%87%DE%A6%DE%89%DE%A8%DE%87%DE%B0%DE%8D%DE%A6%DE%88%DE%A6%DE%82%DE%B0%DE%8C%DE%A6_%DE%90%DE%A8%DE%94%DE%A7%DE%90%DE%A6%DE%8C%DE%AA" title="ވިކިޕީޑިއާ:އަމިއްލަވަންތަ ސިޔާސަތު">އަމިއްލަވަންތަ ސިޔާސަތު</a></li>
+											<li id="footer-places-about"><a href="/wiki/%DE%89%DE%A6%DE%9D%DE%B0%DE%83%DE%AB:%DE%8C%DE%A7%DE%83%DE%A6%DE%8A%DE%AA" title="މަޝްރޫ:ތާރަފު">ވިކިޕީޑިއާ ގެ ތާރަފު</a></li>
+											<li id="footer-places-disclaimer"><a href="/wiki/%DE%88%DE%A8%DE%86%DE%A8%DE%95%DE%A9%DE%91%DE%A8%DE%87%DE%A7:%DE%A2%DE%A7%DE%87%DE%B0%DE%89%DE%AA_%DE%A2%DE%A8%DE%87%DE%AA%DE%8D%DE%A7%DE%82%DE%AA%DE%8C%DE%A6%DE%87%DE%B0" title="ވިކިޕީޑިއާ:ޢާއްމު ޢިއުލާނުތައް">އިއުލާނުތައް</a></li>
+											<li id="footer-places-developers"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/How_to_contribute">Developers</a></li>
+											<li id="footer-places-mobileview"><a href="//dv.m.wikipedia.org/w/index.php?title=%DE%90%DE%A9%DE%82%DE%A9&amp;mobileaction=toggle_view_mobile" class="noprint stopMobileRedirectToggle">Mobile view</a></li>
+									</ul>
+										<ul id="footer-icons" class="noprint">
+											<li id="footer-copyrightico">
+															<a href="//wikimediafoundation.org/"><img src="//bits.wikimedia.org/images/wikimedia-button.png" srcset="//bits.wikimedia.org/images/wikimedia-button-1.5x.png 1.5x, //bits.wikimedia.org/images/wikimedia-button-2x.png 2x" width="88" height="31" alt="Wikimedia Foundation"/></a>
+													</li>
+											<li id="footer-poweredbyico">
+															<a href="//www.mediawiki.org/"><img src="//bits.wikimedia.org/static-1.25wmf4/resources/assets/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31" /></a>
+													</li>
+									</ul>
+						<div style="clear:both"></div>
+		</div>
+		<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"ext.globalCssJs.site":"ready","ext.globalCssJs.user":"ready","site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest","mmv.bootstrap.autostart","ext.eventLogging.subscriber","ext.navigationTiming","schema.UniversalLanguageSelector","ext.uls.eventlogger","ext.uls.interlanguage"],null,true);
+}</script>
+<script>if(window.mw){
+document.write("\u003Cscript src=\"//bits.wikimedia.org/dv.wikipedia.org/load.php?debug=false\u0026amp;lang=dv\u0026amp;modules=site\u0026amp;only=scripts\u0026amp;skin=vector\u0026amp;*\"\u003E\u003C/script\u003E");
+}</script>
+<script>if(window.mw){
+mw.config.set({"wgBackendResponseTime":322,"wgHostname":"mw1035"});
+}</script>
+	</body>
+</html>

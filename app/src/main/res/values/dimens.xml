@@ -1,0 +1,55 @@
+
+
+<resources>
+    <dimen name="padding_4">4dp</dimen>
+    <dimen name="padding_8">8dp</dimen>
+    <dimen name="padding_12">12dp</dimen>
+    <dimen name="padding_14">14dp</dimen>
+    <dimen name="padding_16">16dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="fragment_padding">16dp</dimen>
+    <!-- TODO: Remove these -->
+    <dimen name="fragment_horizontal_padding">16dp</dimen>
+    <dimen name="fragment_vertical_padding">16dp</dimen>
+
+
+    <dimen name="item_head_padding">6dp</dimen>
+
+    <dimen name="item_head_min_height">48dp</dimen>
+    <dimen name="item_head_book_name_width">80dp</dimen>
+
+    <dimen name="item_head_padding_comfortable">10dp</dimen>
+    <dimen name="item_head_padding_cozy">5dp</dimen>
+    <dimen name="item_head_padding_compact">0dp</dimen>
+
+    <dimen name="item_head_below_title_padding_comfortable">2dp</dimen>
+    <dimen name="item_head_below_title_padding_cozy">1dp</dimen>
+    <dimen name="item_head_below_title_padding_compact">0dp</dimen>
+
+    <!-- Drawer ... -->
+    <dimen name="left_drawer_divider_inset">48dp</dimen>
+    <dimen name="left_drawer_width">240dp</dimen>
+    <dimen name="left_drawer_button_min_height">48dp</dimen>
+    <!-- ... Drawer -->
+
+    <dimen name="dropdown_item_height">48dp</dimen>
+    <dimen name="dropdown_item_min_width">96dp</dimen>
+
+    <dimen name="bnt_toggle_radius">4dp</dimen>
+
+    <dimen name="item_book_padding">12dp</dimen>
+
+    <!-- Reasoning - "Spacing between each UI element is 8dp."
+         (http://developer.android.com/design/style/metrics-grids.html) -->
+
+    <dimen name="ui_element_spacing">8dp</dimen>
+    <dimen name="item_head_book_preface_min_height">48dp</dimen>
+    <dimen name="fragment_note_body_edit_min_height">48dp</dimen>
+
+    <dimen name="fragment_repo_icon">48dp</dimen>
+
+    <dimen name="list_view_with_fab_bottom_padding">88dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+</resources>

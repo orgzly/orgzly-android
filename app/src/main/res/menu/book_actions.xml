@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/books_options_menu_item_cycle_visibility"
+        android:icon="?attr/oic_fragment_book_cycle_visibility"
+        app:showAsAction="always"
+        android:title="@string/cycle_visibility"/>
+
+    <!--<item-->
+        <!--android:id="@+id/books_options_menu_item_paste"-->
+        <!--app:showAsAction="never"-->
+        <!--android:title="@string/paste"/>-->
+</menu>

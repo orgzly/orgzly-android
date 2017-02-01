@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ViewFlipper
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_note_view_flipper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/fragment_note_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_16"
+        android:clipToPadding="false"
+        android:fadeScrollbars="false"
+        android:scrollbarStyle="outsideOverlay"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- State and priority. -->
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/ui_element_spacing"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/fragment_note_priority"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:dropDownWidth="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="4dp"
+                    android:prompt="@string/priority_spinner_prompt"
+                    android:freezesText="true"/>
+
+
+                <Spinner
+                    android:id="@+id/fragment_note_state"
+                    android:layout_width="wrap_content"
+                    android:dropDownWidth="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/fragment_note_priority"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:prompt="@string/state_spinner_prompt"
+                    android:freezesText="true"/>
+
+            </RelativeLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/fragment_note_title_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ui_element_spacing"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                app:errorEnabled="true"
+                app:hintEnabled="false">
+                <EditText
+                    android:id="@+id/fragment_note_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text|textCapSentences"
+                    android:imeOptions="actionDone"
+                    android:hint="@string/fragment_note_title_hint"
+                    android:text="@string/head_title_sample"
+                    android:freezesText="true">
+                </EditText>
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Tags. -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="8dp"
+                    android:layout_gravity="center"
+                    android:src="?attr/oic_fragment_note_tags"
+                    android:contentDescription="@string/tags"/>
+
+                <!-- Text is black with dark theme (known issue). Set its color. -->
+                <MultiAutoCompleteTextView
+                    android:id="@+id/fragment_note_tags"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="@string/fragment_note_tags_hint"
+                    android:completionThreshold="2"
+                    android:freezesText="true"
+                    android:textColor="?attr/main_text_color"/>
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/fragment_note_scheduled_button"
+                style="@style/NoteTimeButton"
+                android:layout_marginTop="@dimen/padding_8"
+                android:drawableStart="?attr/oic_fragment_note_scheduled_time"
+                android:drawableLeft="?attr/oic_fragment_note_scheduled_time"
+                android:text="@string/schedule_button_hint"
+                tools:text="@string/note_scheduled_sample"
+                android:freezesText="true"/>
+
+            <Button
+                android:id="@+id/fragment_note_deadline_button"
+                style="@style/NoteTimeButton"
+                android:drawableStart="?attr/oic_fragment_note_deadline_time"
+                android:drawableLeft="?attr/oic_fragment_note_deadline_time"
+                android:text="@string/deadline_button_hint"
+                android:freezesText="true"/>
+
+            <Button
+                android:id="@+id/fragment_note_closed_button"
+                style="@style/NoteTimeButton"
+                android:drawableStart="?attr/oic_fragment_note_closed_time"
+                android:drawableLeft="?attr/oic_fragment_note_closed_time"
+                android:text="@string/closed_button_hint"
+                android:freezesText="true"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/note_properties"/>
+            </LinearLayout>
+
+            <ToggleButton
+                android:id="@+id/edit_content_toggle"
+                style="@style/NoteTimeButton"
+                android:drawableStart="?attr/oic_edit_item"
+                android:drawableLeft="?attr/oic_edit_item"
+                android:textOn="@string/note_content_finish_editing"
+                android:textOff="@string/note_content_start_editing"/>
+
+            <EditText
+                android:id="@+id/body_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="@dimen/ui_element_spacing"
+                android:minHeight="@dimen/fragment_note_body_edit_min_height"
+                android:inputType="text|textCapSentences|textMultiLine"
+                android:hint="@string/fragment_note_content_hint"
+                android:gravity="start|bottom"
+                android:freezesText="true"
+                android:padding="@dimen/item_head_padding"
+                android:visibility="gone"/>
+
+            <com.orgzly.android.ui.views.FixedTextView
+                android:id="@+id/body_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="@dimen/ui_element_spacing"
+                android:minHeight="@dimen/fragment_note_body_edit_min_height"
+                android:hint="@string/fragment_note_content_hint"
+                android:gravity="start|bottom"
+                android:freezesText="true"
+                android:padding="@dimen/item_head_padding"
+                android:textIsSelectable="true"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        style="@style/BigCenteredText"
+        android:text="@string/fragment_note_does_not_exist"/>
+</ViewFlipper>

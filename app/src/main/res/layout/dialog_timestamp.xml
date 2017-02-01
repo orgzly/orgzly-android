@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Steal focus before descendants to avoid opening keyboard on
+     on dialog popup (due to repeat value). -->
+
+<ScrollView
+    android:id="@+id/dialog_timestamp_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageButton
+            android:id="@+id/dialog_timestamp_tomorrow_shortcut"
+            style="@style/TimestampDialogShortcutButton.Common"
+            android:layout_centerHorizontal="true"
+            android:src="?attr/oic_timestamp_dialog_tomorrow"
+            android:contentDescription="@string/tomorrow"/>
+
+        <ImageButton
+            android:id="@+id/dialog_timestamp_today_shortcut"
+            style="@style/TimestampDialogShortcutButton.Common"
+            android:layout_alignTop="@id/dialog_timestamp_tomorrow_shortcut"
+            android:layout_alignBottom="@id/dialog_timestamp_tomorrow_shortcut"
+            android:layout_toLeftOf="@id/dialog_timestamp_tomorrow_shortcut"
+            android:layout_toStartOf="@id/dialog_timestamp_tomorrow_shortcut"
+            android:src="?attr/oic_timestamp_dialog_today"
+            android:contentDescription="@string/today"/>
+
+        <ImageButton
+            android:id="@+id/dialog_timestamp_next_week_shortcut"
+            style="@style/TimestampDialogShortcutButton.Common"
+            android:layout_alignTop="@id/dialog_timestamp_tomorrow_shortcut"
+            android:layout_alignBottom="@id/dialog_timestamp_tomorrow_shortcut"
+            android:layout_toRightOf="@id/dialog_timestamp_tomorrow_shortcut"
+            android:layout_toEndOf="@id/dialog_timestamp_tomorrow_shortcut"
+            android:src="?attr/oic_timestamp_dialog_next_week"
+            android:contentDescription="@string/next_week"/>
+
+        <!-- Date -->
+        <Button
+            android:id="@+id/dialog_timestamp_date_picker"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/dialog_timestamp_tomorrow_shortcut"
+            android:layout_marginTop="@dimen/padding_4"
+            style="@style/TimestampDialogButton.Common"
+            android:text="@string/dialog_timestamp_date_sample"/>
+
+        <!-- Labels for shortcuts. -->
+
+        <!--<TextView-->
+            <!--android:id="@+id/dialog_timestamp_tomorrow_shortcut_label"-->
+            <!--style="@style/TimestampDialogDesc"-->
+            <!--android:layout_below="@id/dialog_timestamp_tomorrow_shortcut"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:text="@string/tomorrow"-->
+            <!--/>-->
+
+
+        <!-- Time -->
+        <Button
+            android:id="@+id/dialog_timestamp_time_picker"
+            android:layout_below="@id/dialog_timestamp_date_picker"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/padding_4"
+            style="@style/TimestampDialogButton.Common"
+            android:text="@string/dialog_timestamp_time_sample"/>
+
+        <!-- Use time? -->
+        <CheckBox
+            android:id="@+id/dialog_timestamp_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/dialog_timestamp_time_picker"
+            android:layout_alignBottom="@id/dialog_timestamp_time_picker"
+            android:layout_toRightOf="@id/dialog_timestamp_time_picker"
+            android:checked="true"/>
+
+        <!--<TextView-->
+        <!--android:id="@+id/dialog_timestamp_time_label"-->
+        <!--style="@style/TimestampDialogLabel"-->
+        <!--android:text="@string/time"-->
+        <!--/>-->
+
+
+        <!--<TextView-->
+        <!--android:id="@+id/dialog_timestamp_repeat_label"-->
+        <!--style="@style/TimestampDialogLabel"-->
+        <!--android:text="@string/repeat"-->
+        <!--/>-->
+
+        <!-- End time -->
+        <Button
+            android:visibility="gone"
+            android:id="@+id/dialog_timestamp_end_time_picker"
+            style="@style/TimestampDialogButton.Common"
+            android:layout_below="@id/dialog_timestamp_time_picker"
+            android:layout_centerHorizontal="true"
+            android:text="@string/dialog_timestamp_end_time_sample"/>
+
+        <!-- Use end time. -->
+        <CheckBox
+            android:visibility="gone"
+            android:id="@+id/dialog_timestamp_end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/dialog_timestamp_end_time_picker"
+            android:layout_alignBottom="@id/dialog_timestamp_end_time_picker"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="@dimen/fragment_padding"
+            android:layout_marginEnd="@dimen/fragment_padding"
+            android:checked="false"/>
+
+        <!--<TextView-->
+        <!--android:id="@+id/dialog_timestamp_end_time_label"-->
+        <!--style="@style/TimestampDialogLabel"-->
+        <!--android:text="@string/end_time"-->
+        <!--/>-->
+
+        <!-- Repeater -->
+        <Button
+            android:id="@+id/dialog_timestamp_repeater"
+            style="@style/TimestampDialogButton.Common"
+            android:layout_below="@id/dialog_timestamp_end_time_picker"
+            android:layout_centerHorizontal="true"
+            android:text="@string/dialog_timestamp_repeater_default"/>
+
+        <!-- Use repeater? -->
+        <CheckBox
+            android:id="@+id/dialog_timestamp_repeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/dialog_timestamp_repeater"
+            android:layout_alignBottom="@id/dialog_timestamp_repeater"
+            android:layout_toRightOf="@id/dialog_timestamp_repeater"
+            android:checked="false"/>
+
+
+        <!-- Timestamp active label. -->
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/dialog_timestamp_is_active_label"
+            style="@style/TimestampDialogLabel"
+
+            android:layout_below="@id/dialog_timestamp_repeater_type"
+            android:layout_centerHorizontal="true"
+            android:text="@string/active"/>
+
+        <!-- Timestamp active? -->
+        <CheckBox
+            android:visibility="gone"
+            android:id="@+id/dialog_timestamp_is_active"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/dialog_timestamp_is_active_label"
+            android:layout_alignBottom="@id/dialog_timestamp_is_active_label"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/fragment_padding"
+            android:layout_marginEnd="@dimen/fragment_padding"
+            android:checked="true"/>
+    </RelativeLayout>
+</ScrollView>

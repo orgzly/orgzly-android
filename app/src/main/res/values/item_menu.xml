@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <!-- Duration of animation for opening, closing and switching an item menu. -->
+    <integer name="item_menu_animation_duration">200</integer>
+
+    <!-- Height of the menu when fully opened. Used in animation. -->
+    <dimen name="item_menu_height">48dp</dimen>
+</resources>

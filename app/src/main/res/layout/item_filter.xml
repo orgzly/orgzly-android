@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/ListViewItemPadding"
+    android:minHeight="@dimen/item_head_min_height"
+    android:gravity="center"
+    android:background="@drawable/list_item_selector"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/item_filter_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/padding_4"
+        android:paddingRight="@dimen/padding_4"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:textStyle="bold"
+        android:text="@string/filter_name_sample_long"/>
+
+    <TextView
+        android:id="@+id/item_filter_query"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/padding_4"
+        android:paddingRight="@dimen/padding_4"
+        android:text="@string/filter_query_sample_long"/>
+
+    <TextView
+        android:id="@+id/item_filter_position"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/filter_position_sample"
+        android:visibility="gone"/>
+
+</LinearLayout>

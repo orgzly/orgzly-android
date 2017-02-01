@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    Use gravity="center" or horizontal line will look like it is outside of the selected note.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_head_menu_container"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:paddingLeft="@dimen/fragment_horizontal_padding"
+    android:paddingRight="@dimen/fragment_horizontal_padding"
+    android:orientation="vertical"
+    android:visibility="visible"
+    android:gravity="center">
+
+    <ViewFlipper
+        android:id="@+id/item_head_menu_flipper"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            >
+
+            <ImageButton
+                android:id="@+id/item_menu_schedule_btn"
+                style="@style/ItemQuickMenuButton"
+                android:contentDescription="@string/schedule"
+                android:src="?attr/oic_item_menu_schedule"/>
+            <ImageButton
+                android:id="@+id/item_menu_prev_state_btn"
+                style="@style/ItemQuickMenuButton"
+                android:contentDescription="@string/prev_state"
+                android:src="?attr/oic_item_menu_prev_state"/>
+            <ImageButton
+                android:id="@+id/item_menu_next_state_btn"
+                style="@style/ItemQuickMenuButton"
+                android:contentDescription="@string/next_state"
+                android:src="?attr/oic_item_menu_next_state"/>
+            <ImageButton
+                android:id="@+id/item_menu_done_state_btn"
+                style="@style/ItemQuickMenuButton"
+                android:contentDescription="@string/done"
+                android:src="?attr/oic_item_menu_done_state"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            >
+
+            <ImageButton
+                android:id="@+id/item_menu_delete_btn"
+                style="@style/ItemQuickMenuButton"
+                android:contentDescription="@string/delete"
+                android:src="?attr/oic_item_menu_delete"/>
+
+            <ImageButton
+                android:id="@+id/item_menu_new_above_btn"
+                style="@style/ItemQuickMenuButton"
+                android:contentDescription="@string/new_above"
+                android:src="?attr/oic_item_menu_new_above"/>
+
+            <ImageButton
+                android:id="@+id/item_menu_new_under_btn"
+                style="@style/ItemQuickMenuButton"
+                android:contentDescription="@string/new_under"
+                android:src="?attr/oic_item_menu_new_under"/>
+
+            <ImageButton
+                android:id="@+id/item_menu_new_below_btn"
+                style="@style/ItemQuickMenuButton"
+                android:contentDescription="@string/new_below"
+                android:src="?attr/oic_item_menu_new_below"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            >
+
+            <ImageButton
+                android:id="@+id/item_menu_open_btn"
+                style="@style/ItemQuickMenuButton"
+                android:contentDescription="@string/edit"
+                android:src="?attr/oic_item_menu_open_note"/>
+
+        </LinearLayout>
+    </ViewFlipper>
+
+</LinearLayout>

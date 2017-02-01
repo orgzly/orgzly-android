@@ -1,0 +1,6 @@
+<resources>
+    <!-- The drawer width should be no more than 320dp so the user can always see a portion of the main content. -->
+    <dimen name="left_drawer_width">320dp</dimen>
+
+    <dimen name="item_head_book_name_width">100dp</dimen>
+</resources>

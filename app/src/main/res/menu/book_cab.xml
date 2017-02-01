@@ -1,0 +1,102 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- New note relative to selected. -->
+    <item
+        android:id="@+id/book_cab_new"
+        android:icon="?attr/oic_new_item"
+        app:showAsAction="always"
+        android:title="@string/new_note">
+
+        <menu>
+            <item
+                android:id="@+id/book_cab_new_above"
+                android:icon="?attr/oic_above_heads_action_mode"
+                app:showAsAction="ifRoom"
+                android:title="@string/heads_action_menu_item_add_above"/>
+
+            <item
+                android:id="@+id/book_cab_new_under"
+                android:icon="?attr/oic_under_heads_action_mode"
+                app:showAsAction="ifRoom"
+                android:title="@string/heads_action_menu_item_add_under"/>
+
+            <item
+                android:id="@+id/book_cab_new_below"
+                android:icon="?attr/oic_below_heads_action_mode"
+                app:showAsAction="ifRoom"
+                android:title="@string/heads_action_menu_item_add_below"/>
+        </menu>
+    </item>
+
+    <!-- Edit note parameters. -->
+    <item
+        android:id="@+id/book_cab_edit"
+        android:icon="?attr/oic_edit_item"
+        app:showAsAction="always"
+        android:title="@string/edit">
+        <menu>
+
+            <item
+                android:id="@+id/book_cab_schedule"
+                android:icon="?attr/oic_edit_scheduled_time_action_mode"
+                app:showAsAction="ifRoom"
+                android:title="@string/schedule">
+            </item>
+
+            <item
+                android:id="@+id/book_cab_state"
+                android:icon="?attr/oic_edit_state_action_mode"
+                app:showAsAction="ifRoom"
+                android:title="@string/heads_action_menu_item_state">
+
+                <menu /> <!-- Added dynamically from configured states. -->
+            </item>
+
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/book_cab_move"
+        app:showAsAction="never"
+        android:title="@string/move">
+    </item>
+
+    <item
+        android:id="@+id/book_cab_cut"
+        app:showAsAction="never"
+        android:title="@string/cut">
+    </item>
+
+    <item
+        android:id="@+id/book_cab_paste"
+        app:showAsAction="never"
+        android:title="@string/paste">
+
+        <menu>
+            <item
+                android:id="@+id/book_cab_paste_above"
+                android:icon="?attr/oic_above_heads_action_mode"
+                app:showAsAction="ifRoom"
+                android:title="@string/heads_action_menu_item_paste_above"/>
+
+            <item
+                android:id="@+id/book_cab_paste_under"
+                android:icon="?attr/oic_under_heads_action_mode"
+                app:showAsAction="ifRoom"
+                android:title="@string/heads_action_menu_item_paste_under"/>
+
+            <item
+                android:id="@+id/book_cab_paste_below"
+                android:icon="?attr/oic_below_heads_action_mode"
+                app:showAsAction="ifRoom"
+                android:title="@string/heads_action_menu_item_paste_below"/>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/book_cab_delete_note"
+        app:showAsAction="never"
+        android:title="@string/delete"/>
+
+</menu>

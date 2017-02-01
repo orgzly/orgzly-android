@@ -1,0 +1,113 @@
+package com.orgzly.android;
+
+import android.content.Context;
+import android.net.Uri;
+
+import com.orgzly.android.provider.clients.BooksClient;
+import com.orgzly.android.provider.clients.LocalDbRepoClient;
+import com.orgzly.android.provider.clients.ReposClient;
+import com.orgzly.android.repos.Repo;
+import com.orgzly.android.repos.RepoFactory;
+import com.orgzly.android.repos.VersionedRook;
+
+import java.io.IOException;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
+
+/**
+ * Utility methods used by tests.
+ * Creating and checking books, rooks, encodings etc.
+ */
+public class ShelfTestUtils {
+    private Context context;
+    private Shelf shelf;
+
+    public ShelfTestUtils(Context context, Shelf shelf) {
+        this.context = context;
+
+        this.shelf = shelf;
+    }
+
+    public Repo setupRepo(String url) {
+        ReposClient.insert(context, url);
+
+        return RepoFactory.getFromUri(context, url);
+    }
+
+    public void deleteRepo(String url) {
+        long id = ReposClient.getId(context, url);
+        ReposClient.delete(context, id);
+    }
+
+    public void renameRepo(String fromUrl, String toUrl) {
+        long id = ReposClient.getId(context, fromUrl);
+        if (id > 0) {
+            ReposClient.updateUrl(context, id, toUrl);
+        } else {
+            throw new IllegalStateException("Repo " + fromUrl + " does not exist");
+        }
+    }
+
+    public Book setupBook(String name, String content) {
+        Book book = null;
+
+        try {
+            book = shelf.loadBookFromContent(name, BookName.Format.ORG, content, null);
+        } catch (IOException e) {
+            fail(e.toString());
+        }
+
+        return book;
+    }
+
+    public Book setupBook(String name, String content, String linkRepoUrl) {
+        Book book = null;
+
+        try {
+            book = shelf.loadBookFromContent(name, BookName.Format.ORG, content, null);
+        } catch (IOException e) {
+            fail(e.toString());
+        }
+
+        String fileName = BookName.fileName(book.getName(), BookName.Format.ORG);
+        Uri rookUri = Uri.parse(linkRepoUrl).buildUpon().appendPath(fileName).build();
+
+        BooksClient.setLink(context, book.getId(), linkRepoUrl, rookUri.toString());
+
+        return book;
+    }
+
+    public void setBookLink(long bookId, String repoUrl, String rookUrl) {
+        BooksClient.setLink(context, bookId, repoUrl, rookUrl);
+    }
+
+    /**
+     * Overwrites existing repoUrl / url combinations (due to table definition).
+     */
+    public void setupRook(String repoUrl, String url, String content, String rev, long mtime) {
+        try {
+            VersionedRook vrook = new VersionedRook(Uri.parse(repoUrl), Uri.parse(url), rev, mtime);
+            LocalDbRepoClient.insert(context, vrook, content);
+        } catch (IOException e) {
+            fail(e.toString());
+        }
+
+        // RemoteBookRevision remoteBookRevision = new RemoteBookRevision(repoUrl, url, rev, mtime);
+        // RemoteBooksHelper.updateOrInsert(testContext, remoteBookRevision);
+    }
+
+    public void assertBook(String name, String expectedContent) {
+        assertEquals(expectedContent, getBookContent(name));
+    }
+
+    private String getBookContent(String name) {
+        try {
+            return shelf.getBookContent(name, BookName.Format.ORG);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+}

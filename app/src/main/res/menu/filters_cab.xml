@@ -1,0 +1,28 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- TODO: Rename icons to oic_cab_delete_item, oic_cab_up, oic_cab_down -->
+
+    <item
+        android:id="@+id/filters_cab_move_down"
+        android:icon="?attr/oic_move_heads_down_action_mode"
+        app:showAsAction="always"
+        android:showAsAction="always" tools:ignore="AppCompatResource"
+        android:title="@string/down"/>
+
+    <item
+        android:id="@+id/filters_cab_move_up"
+        android:icon="?attr/oic_move_heads_up_action_mode"
+        app:showAsAction="always"
+        android:showAsAction="always" tools:ignore="AppCompatResource"
+        android:title="@string/up"/>
+
+    <item
+        android:id="@+id/filters_cab_delete"
+        android:icon="?attr/oic_delete_item"
+        app:showAsAction="never"
+        android:showAsAction="never" tools:ignore="AppCompatResource"
+        android:title="@string/delete"/>
+
+</menu>

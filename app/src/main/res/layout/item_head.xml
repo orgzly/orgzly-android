@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:descendantFocusability="blocksDescendants">
+
+    <!-- TODO: Why do we need this layout? -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Note. -->
+        <RelativeLayout
+            android:id="@+id/item_head_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/fragment_horizontal_padding"
+            android:paddingStart="@dimen/fragment_horizontal_padding">
+
+            <!-- TODO We don't want padding right, so that the button goes to the end. But what about search view? -->
+
+            <!-- Notebook's name. -->
+            <TextView
+                android:id="@+id/item_head_book_name_before_note_text"
+                android:layout_width="@dimen/item_head_book_name_width"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_4"
+                android:layout_marginEnd="@dimen/padding_4"
+                android:layout_alignTop="@+id/item_head_payload"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="?attr/item_head_book_name_text"
+                android:textColor="?attr/item_head_title_text_color"
+                android:textStyle="italic"
+                android:text="@string/book_name_sample"
+                android:visibility="gone"/>
+
+            <!-- Fold button and its text. -->
+            <View
+                android:id="@+id/item_head_fold_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"/>
+            <TextView
+                android:id="@+id/item_head_fold_button_text"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/item_head_payload"
+                android:gravity="center_horizontal"
+                android:textSize="?attr/item_head_fold_button_text_size"
+                android:textColor="?attr/item_head_fold_button_text_color"
+                android:text="@string/unfold_button_character"/>
+
+            <!-- Title, planning times and body. -->
+            <LinearLayout
+                android:id="@+id/item_head_payload"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/item_head_bullet"
+                android:layout_toEndOf="@+id/item_head_bullet"
+                android:layout_toLeftOf="@id/item_head_fold_button"
+                android:layout_toStartOf="@id/item_head_fold_button"
+                android:layout_marginLeft="@dimen/padding_4"
+                android:layout_marginStart="@dimen/padding_4"
+                android:layout_marginTop="@dimen/item_head_padding_cozy"
+                android:orientation="vertical">
+
+
+                <!-- Title -->
+                <com.orgzly.android.ui.views.OrgTextView
+                    android:id="@+id/item_head_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/note_title_sample"
+                    android:textSize="?attr/item_head_title_text_size"
+                    android:textColor="?attr/item_head_title_text_color"/>
+
+                <!-- Notebook's name. -->
+                <LinearLayout
+                    android:id="@+id/item_head_book_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
+                    android:gravity="center_vertical"
+                    android:visibility="visible">
+                    <ImageView
+                        style="@style/HeadItemInfoIcon"
+                        android:src="?attr/oic_item_head_book_name"
+                        android:alpha="?attr/oic_item_alpha"
+                        android:contentDescription="@string/schedule"/>
+                    <TextView
+                        android:id="@+id/item_head_book_name_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/book_name_sample"
+                        android:textSize="?attr/item_head_sub_title_text"
+                        android:textColor="?attr/item_head_post_title_text_color"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginLeft="4dp"/>
+                </LinearLayout>
+
+                <!-- Scheduled time -->
+                <LinearLayout
+                    android:id="@+id/item_head_scheduled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
+                    android:gravity="center_vertical"
+                    android:visibility="visible">
+                    <ImageView
+                        style="@style/HeadItemInfoIcon"
+                        android:src="?attr/oic_item_head_scheduled_item"
+                        android:alpha="?attr/oic_item_alpha"
+                        android:contentDescription="@string/schedule"/>
+                    <TextView
+                        android:id="@+id/item_head_scheduled_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/note_scheduled_sample"
+                        android:textSize="?attr/item_head_sub_title_text"
+                        android:textColor="?attr/item_head_post_title_text_color"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginLeft="4dp"/>
+                </LinearLayout>
+
+                <!-- Deadline time -->
+                <LinearLayout
+                    android:id="@+id/item_head_deadline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"
+                    >
+                    <ImageView
+                        style="@style/HeadItemInfoIcon"
+                        android:src="?attr/oic_item_head_deadline_item"
+                        android:alpha="?attr/oic_item_alpha"
+                        android:contentDescription="@string/deadline"/>
+                    <TextView
+                        android:id="@+id/item_head_deadline_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/note_deadline_sample"
+                        android:textSize="?attr/item_head_sub_title_text"
+                        android:textColor="?attr/item_head_post_title_text_color"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginLeft="4dp"/>
+
+                </LinearLayout>
+
+                <!-- Closed time -->
+                <LinearLayout
+                    android:id="@+id/item_head_closed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"
+                    >
+
+                    <ImageView
+                        style="@style/HeadItemInfoIcon"
+                        android:src="?attr/oic_item_head_closed_item"
+                        android:alpha="?attr/oic_item_alpha"
+                        android:contentDescription="@string/closed"/>
+
+                    <TextView
+                        android:id="@+id/item_head_closed_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/note_closed_sample"
+                        android:textSize="?attr/item_head_sub_title_text"
+                        android:textColor="?attr/item_head_post_title_text_color"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginLeft="4dp"/>
+                </LinearLayout>
+
+                <!-- Content -->
+                <com.orgzly.android.ui.views.OrgTextView
+                    android:id="@+id/item_head_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
+                    android:text="@string/note_content_sample"
+                    android:textSize="?attr/item_head_sub_title_content_text"
+                    android:textColor="?attr/item_head_post_title_text_color"/>
+            </LinearLayout>
+
+            <!-- Indent. -->
+            <LinearLayout
+                android:id="@+id/item_head_indent_container"
+                android:layout_toRightOf="@id/item_head_book_name_before_note_text"
+                android:layout_toEndOf="@id/item_head_book_name_before_note_text"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <!--
+                  Optimal number of indents. We want to avoid inflating as much as possible
+                  and prefer changing visibility.
+                  -->
+                <include layout="@layout/indent"/>
+                <include layout="@layout/indent"/>
+                <include layout="@layout/indent"/>
+                <include layout="@layout/indent"/>
+
+            </LinearLayout>
+
+            <!--Bullet -->
+            <TextView
+                android:id="@+id/item_head_bullet"
+                android:layout_width="?attr/item_head_indent_width"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/item_head_indent_container"
+                android:layout_toEndOf="@id/item_head_indent_container"
+                android:layout_alignTop="@+id/item_head_payload"
+                android:gravity="center_horizontal"
+                android:textSize="?attr/item_head_bullet_text_size"
+                android:textColor="?attr/item_head_bullet_text_color"
+                android:text="@string/bullet"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <!-- Quick menu. -->
+    <include layout="@layout/item_head_quick_menu"/>
+
+</LinearLayout>

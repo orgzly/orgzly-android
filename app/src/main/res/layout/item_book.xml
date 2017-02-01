@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/item_book_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center_vertical"
+        android:layout_margin="@dimen/padding_8"
+        card_view:cardCornerRadius="0dp"
+        card_view:cardElevation="2dp"
+        card_view:cardBackgroundColor="?attr/item_book_card_bg_color"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/item_book_padding"
+            >
+
+            <!-- Title. -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/item_book_modified_after_sync_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="?attr/oic_item_book_item_sync_needed"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/drawer_item"/>
+
+                    <TextView
+                        android:id="@+id/item_book_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@id/item_book_modified_after_sync_icon"
+                        android:layout_toLeftOf="@id/item_book_modified_after_sync_icon"
+                        android:layout_alignBaseline="@id/item_book_modified_after_sync_icon"
+                        android:layout_marginRight="@dimen/item_book_padding"
+                        android:layout_marginEnd="@dimen/item_book_padding"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/book_title_sample"
+                        android:textStyle="bold"
+                        android:textSize="?attr/item_book_title_text_size"
+                        android:textColor="?attr/item_book_title_color"/>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/item_book_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/book_name_sample"
+                    android:textSize="?attr/item_book_subtitle_text_size"/>
+
+            </LinearLayout>
+
+            <!-- Book details. -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <View
+                    android:id="@+id/item_book_details_padding"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_8"/>
+
+                <!-- Modification time -->
+                <LinearLayout
+                    android:id="@+id/item_book_mtime_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    >
+
+                    <ImageView
+                        style="@style/BookItemInfoIcon"
+                        android:src="?attr/oic_item_book_mtime_item"
+                        android:alpha="?attr/oic_item_alpha"
+                        android:contentDescription="@string/book_mtime"/>
+
+                    <TextView
+                        android:id="@+id/item_book_mtime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/book_mtime_sample"
+                        android:textSize="?attr/item_book_details_text_size"/>
+                </LinearLayout>
+
+                <!-- Link details. -->
+                <LinearLayout
+                    android:id="@+id/item_book_link_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <!-- Link repository. -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:visibility="gone"
+                        >
+
+                        <ImageView
+                            style="@style/BookItemInfoIcon"
+                            android:src="?attr/oic_item_book_link_item"
+                            android:alpha="?attr/oic_item_alpha"
+                            android:contentDescription="@string/book_link_details"/>
+
+                        <TextView
+                            android:id="@+id/item_book_link_repo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start|center_vertical"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="8dp"
+                            android:text="@string/repo_url_sample"
+                            android:textSize="?attr/item_book_details_text_size"/>
+                    </LinearLayout>
+
+                    <!-- Link URL -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        >
+
+                        <ImageView
+                            style="@style/BookItemInfoIcon"
+                            android:src="?attr/oic_item_book_link_item"
+                            android:alpha="?attr/oic_item_alpha"
+                            android:contentDescription="@string/book_link"/>
+
+                        <TextView
+                            android:id="@+id/item_book_link_url"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rook_url_long_sample"
+                            android:textSize="?attr/item_book_details_text_size"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Synced remote book. -->
+                <LinearLayout
+                    android:id="@+id/item_book_synced_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    >
+
+                    <!-- Synced remote book repository -->
+                    <LinearLayout
+                        android:id="@+id/item_book_synced_repo_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:visibility="gone"
+                        >
+
+                        <ImageView
+                            style="@style/BookItemInfoIcon"
+                            android:src="?attr/oic_item_book_versioned_rook_item"
+                            android:alpha="?attr/oic_item_alpha"
+                            android:contentDescription="@string/book_link_details"/>
+
+                        <TextView
+                            android:id="@+id/item_book_synced_repo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start|center_vertical"
+                            android:text="@string/repo_url_sample"
+                            android:textSize="?attr/item_book_details_text_size"/>
+                    </LinearLayout>
+
+                    <!-- Synced remote book URL -->
+                    <LinearLayout
+                        android:id="@+id/item_book_synced_url_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        >
+
+                        <ImageView
+                            style="@style/BookItemInfoIcon"
+                            android:src="?attr/oic_item_book_versioned_rook_item"
+                            android:alpha="?attr/oic_item_alpha"
+                            android:contentDescription="@string/book_link_details"/>
+
+                        <TextView
+                            android:id="@+id/item_book_synced_url"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start|center_vertical"
+                            android:text="@string/rook_url_sample"
+                            android:textSize="?attr/item_book_details_text_size"/>
+                    </LinearLayout>
+
+                    <!-- Last synced vrook's mtime. -->
+                    <LinearLayout
+                        android:id="@+id/item_book_synced_mtime_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        >
+
+                        <ImageView
+                            style="@style/BookItemInfoIcon"
+                            android:src="?attr/oic_item_book_versioned_rook_item"
+                            android:alpha="?attr/oic_item_alpha"
+                            android:contentDescription="@string/book_link_details"/>
+
+                        <TextView
+                            android:id="@+id/item_book_synced_mtime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start|center_vertical"
+                            android:text="@string/synced_rook_mtime_sample"
+                            android:textSize="?attr/item_book_details_text_size"/>
+
+                    </LinearLayout>
+
+                    <!-- Last synced vrook's revision. -->
+                    <LinearLayout
+                        android:id="@+id/item_book_synced_revision_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        >
+
+                        <ImageView
+                            style="@style/BookItemInfoIcon"
+                            android:src="?attr/oic_item_book_versioned_rook_item"
+                            android:alpha="?attr/oic_item_alpha"
+                            android:contentDescription="@string/book_link_details"/>
+
+                        <TextView
+                            android:id="@+id/item_book_synced_revision"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/synced_rook_revision_sample"
+                            android:textSize="?attr/item_book_details_text_size"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Selected encoding. -->
+                <LinearLayout
+                    android:id="@+id/item_book_encoding_selected_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    >
+
+                    <ImageView
+                        style="@style/BookItemInfoIcon"
+                        android:src="?attr/oic_item_book_encoding_item"
+                        android:alpha="?attr/oic_item_alpha"
+                        android:contentDescription="@string/book_encoding"/>
+
+                    <TextView
+                        android:id="@+id/item_book_encoding_selected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="?attr/item_book_details_text_size"
+                        android:text="@string/selected_encoding_sample"/>
+                </LinearLayout>
+
+                <!-- Detected encoding. -->
+                <LinearLayout
+                    android:id="@+id/item_book_encoding_detected_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    >
+
+                    <ImageView
+                        style="@style/BookItemInfoIcon"
+                        android:src="?attr/oic_item_book_encoding_item"
+                        android:alpha="?attr/oic_item_alpha"
+                        android:contentDescription="@string/book_encoding"/>
+
+
+                    <TextView
+                        android:id="@+id/item_book_encoding_detected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/padding_8"
+                        android:layout_marginRight="@dimen/padding_4"
+                        android:textSize="?attr/item_book_details_text_size"
+                        android:text="@string/detected_encoding_sample"/>
+
+                </LinearLayout>
+
+                <!-- Used encoding. -->
+                <LinearLayout
+                    android:id="@+id/item_book_encoding_used_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    >
+
+                    <ImageView
+                        style="@style/BookItemInfoIcon"
+                        android:src="?attr/oic_item_book_encoding_item"
+                        android:alpha="?attr/oic_item_alpha"
+                        android:contentDescription="@string/book_encoding"/>
+
+                    <TextView
+                        android:id="@+id/item_book_encoding_used"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/padding_8"
+                        android:layout_marginRight="@dimen/padding_4"
+                        android:textSize="?attr/item_book_details_text_size"
+                        android:text="@string/used_encoding_sample"/>
+
+                </LinearLayout>
+
+                <!-- Last action. -->
+                <LinearLayout
+                    android:id="@+id/item_book_last_action_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    >
+
+                    <ImageView
+                        style="@style/BookItemInfoIcon"
+                        android:src="?attr/oic_item_book_sync_last_action_item"
+                        android:alpha="?attr/oic_item_alpha"
+                        android:contentDescription="@string/book_last_action"/>
+
+                    <TextView
+                        android:id="@+id/item_book_last_action"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start|center_vertical"
+                        android:text="@string/books_book_sync_last_action_sample"
+                        android:textSize="?attr/item_book_details_text_size"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</FrameLayout>
