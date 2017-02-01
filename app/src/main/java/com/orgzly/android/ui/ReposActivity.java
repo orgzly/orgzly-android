@@ -231,17 +231,17 @@ public class ReposActivity extends CommonActivity
 
     @Override
     public void onBrowseDirectories(String dir) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-            startActivityForResult(intent, ACTION_OPEN_DOCUMENT_TREE_REQUEST_CODE);
-
-        } else {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+//            startActivityForResult(intent, ACTION_OPEN_DOCUMENT_TREE_REQUEST_CODE);
+//
+//        } else {
             getSupportFragmentManager()
                     .beginTransaction()
                     .addToBackStack(null)
                     .replace(R.id.activity_repos_frame, FileBrowserFragment.getInstance(dir), FileBrowserFragment.FRAGMENT_TAG)
                     .commit();
-        }
+//        }
     }
 
     @Override
