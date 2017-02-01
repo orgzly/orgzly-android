@@ -233,7 +233,7 @@ public class MainActivity extends CommonActivity
                 }
             };
 
-            mDrawerLayout.setDrawerListener(mDrawerToggle);
+            mDrawerLayout.addDrawerListener(mDrawerToggle);
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -385,6 +385,10 @@ public class MainActivity extends CommonActivity
 
         LocalBroadcastManager.getInstance(this).unregisterReceiver(dbUpgradeStartedReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(dbUpgradeEndedReceiver);
+
+        if (mDrawerLayout != null && mDrawerToggle != null) {
+            mDrawerLayout.removeDrawerListener(mDrawerToggle);
+        }
     }
 
     @Override
