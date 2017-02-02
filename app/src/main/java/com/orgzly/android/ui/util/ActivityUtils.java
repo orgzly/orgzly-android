@@ -13,11 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ScrollView;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.ui.fragments.BookEditorFragment;
+import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
 import com.orgzly.android.ui.fragments.FilterFragment;
@@ -136,7 +135,7 @@ public class ActivityUtils {
                 actionBarAttr = R.attr.action_bar_default;
                 fabAttr = R.attr.oic_new_item;
 
-            } else if (BookEditorFragment.FRAGMENT_TAG.equals(fragmentTag)) {
+            } else if (BookPrefaceFragment.FRAGMENT_TAG.equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_default;
                 actionBarAttr = R.attr.action_bar_default;
                 fabAttr = 0;

@@ -14,7 +14,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
 import com.orgzly.android.SearchQuery;
-import com.orgzly.android.ui.fragments.BookEditorFragment;
+import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
 import com.orgzly.android.ui.fragments.FilterFragment;
@@ -312,14 +312,14 @@ public class DisplayManager {
 
     private void displayEditor(Book book) {
         /* Create fragment. */
-        Fragment fragment = BookEditorFragment.getInstance(book.getId(), book.getPreface());
+        Fragment fragment = BookPrefaceFragment.getInstance(book.getId(), book.getPreface());
 
         /* Add fragment. */
         mFragmentManager
                 .beginTransaction()
                 .setTransition(FRAGMENT_TRANSITION)
                 .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, BookEditorFragment.FRAGMENT_TAG)
+                .replace(R.id.single_pane_container, fragment, BookPrefaceFragment.FRAGMENT_TAG)
                 .commit();
     }
 

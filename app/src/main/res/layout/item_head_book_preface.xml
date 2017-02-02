@@ -19,7 +19,6 @@
         android:hint="@string/book_preface_hint"
         android:text="@string/book_preface_sample"
         android:textSize="?attr/item_head_title_text_size"
-        android:visibility="gone"
         android:maxLines="3"
         android:ellipsize="end"/>
 

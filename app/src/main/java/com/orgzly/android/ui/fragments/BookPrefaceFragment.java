@@ -1,5 +1,6 @@
 package com.orgzly.android.ui.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.orgzly.android.Book;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.ui.FragmentListener;
+import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 
 import java.io.BufferedReader;
@@ -27,11 +29,11 @@ import java.io.StringReader;
 /**
  * Book's preface and settings.
  */
-public class BookEditorFragment extends Fragment {
-    private static final String TAG = BookEditorFragment.class.getName();
+public class BookPrefaceFragment extends Fragment {
+    private static final String TAG = BookPrefaceFragment.class.getName();
 
     /** Name used for {@link android.app.FragmentManager}. */
-    public static final String FRAGMENT_TAG = BookEditorFragment.class.getName();
+    public static final String FRAGMENT_TAG = BookPrefaceFragment.class.getName();
 
     private static final String ARG_BOOK_ID = "book_id";
     private static final String ARG_BOOK_PREFACE = "book_preface";
@@ -42,13 +44,13 @@ public class BookEditorFragment extends Fragment {
 
     private EditorListener listener;
 
-    public static BookEditorFragment getInstance(long bookId, String bookPreface) {
-        BookEditorFragment fragment = new BookEditorFragment();
+    public static BookPrefaceFragment getInstance(long bookId, String bookPreface) {
+        BookPrefaceFragment fragment = new BookPrefaceFragment();
 
         /* Set arguments for a fragment. */
         Bundle args = new Bundle();
-        args.putLong(BookEditorFragment.ARG_BOOK_ID, bookId);
-        args.putString(BookEditorFragment.ARG_BOOK_PREFACE, bookPreface);
+        args.putLong(BookPrefaceFragment.ARG_BOOK_ID, bookId);
+        args.putString(BookPrefaceFragment.ARG_BOOK_PREFACE, bookPreface);
         fragment.setArguments(args);
 
         return fragment;
@@ -58,7 +60,7 @@ public class BookEditorFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public BookEditorFragment() {
+    public BookPrefaceFragment() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
     }
 
@@ -92,25 +94,32 @@ public class BookEditorFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, inflater, container, savedInstanceState);
 
-        View top = inflater.inflate(R.layout.fragment_book_editor, container, false);
+        View top = inflater.inflate(R.layout.fragment_book_preface, container, false);
 
-        contentView = (EditText) top.findViewById(R.id.fragment_editor_container_edit);
+        contentView = (EditText) top.findViewById(R.id.fragment_book_preface_content);
 
-        if (getActivity() != null && AppPreferences.isFontMonospaced(getContext())) {
+        Activity activity = getActivity();
+
+        if (activity != null && AppPreferences.isFontMonospaced(getContext())) {
             contentView.setTypeface(Typeface.MONOSPACE);
+        }
+
+        // Open keyboard
+        if (activity != null) {
+            ActivityUtils.openSoftKeyboard(activity, contentView);
         }
 
         /* Parse arguments - set content. */
         if (getArguments() == null) {
-            throw new IllegalArgumentException(BookEditorFragment.class.getSimpleName() + " has no arguments passed");
+            throw new IllegalArgumentException(BookPrefaceFragment.class.getSimpleName() + " has no arguments passed");
         }
 
         if (!getArguments().containsKey(ARG_BOOK_ID)) {
-            throw new IllegalArgumentException(BookEditorFragment.class.getSimpleName() + " has no book id passed");
+            throw new IllegalArgumentException(BookPrefaceFragment.class.getSimpleName() + " has no book id passed");
         }
 
         if (!getArguments().containsKey(ARG_BOOK_PREFACE)) {
-            throw new IllegalArgumentException(BookEditorFragment.class.getSimpleName() + " has no book preface passed");
+            throw new IllegalArgumentException(BookPrefaceFragment.class.getSimpleName() + " has no book preface passed");
         }
 
         bookId = getArguments().getLong(ARG_BOOK_ID);
@@ -131,7 +140,7 @@ public class BookEditorFragment extends Fragment {
     private void announceChangesToActivity() {
         if (listener != null) {
             listener.announceChanges(
-                    BookEditorFragment.FRAGMENT_TAG,
+                    BookPrefaceFragment.FRAGMENT_TAG,
                     Book.getFragmentTitleForBook(book),
                     Book.getFragmentSubtitleForBook(book),
                     0);

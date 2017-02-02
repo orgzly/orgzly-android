@@ -15,7 +15,10 @@
         android:dividerHeight="0dp"
         item-menu:menu_container="@+id/item_head_menu_container"
         item-menu:menu_for_fling_right="0"
-        item-menu:menu_for_fling_left="2"/>
+        item-menu:menu_for_fling_left="2"
+        android:clipToPadding="false"
+        android:paddingTop="12dp"
+        android:paddingBottom="@dimen/fragment_horizontal_padding"/>
 
     <TextView
         style="@style/BigCenteredText"

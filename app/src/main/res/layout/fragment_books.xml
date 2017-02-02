@@ -28,6 +28,6 @@
         android:layout_centerHorizontal="true"
         android:text="@string/no_notebooks"
         android:visibility="gone"
-        android:paddingBottom="@dimen/fab_margin"/>
+        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"/>
 
 </RelativeLayout>

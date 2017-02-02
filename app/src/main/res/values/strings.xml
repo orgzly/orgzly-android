@@ -101,8 +101,6 @@
     <string name="book_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
     <string name="synced_rook_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
     <string name="synced_rook_revision_sample" translatable="false">42f97fe238</string>
-    <string name="book_preface_hint">Notebook\'s description…</string>
-    <string name="book_preface_sample">This is notebook\'s preface. Any text before the first entry. It could be quite long and contain multiple lines.</string>
     <string name="books_context_menu_item_export">Export</string>
     <string name="books_context_menu_item_rename">Rename</string>
     <string name="books_context_menu_item_set_link">Set Link</string>
@@ -365,5 +363,9 @@
 
     <string name="book_exported">Notebook exported to %s</string>
     <string name="failed_exporting_book">Failed exporting book: %s</string>
+
+    <string name="edit_book_preface">Edit preface</string>
+    <string name="book_preface_sample">This is notebook\'s preface. Any text before the first entry. It could be quite long and contain multiple lines.</string>
+    <string name="book_preface_hint">Text displayed before the first note</string>
 
 </resources>

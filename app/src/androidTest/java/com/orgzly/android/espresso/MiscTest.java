@@ -17,7 +17,6 @@ import com.orgzly.android.ui.fragments.DrawerFragment;
 import com.orgzly.android.ui.fragments.SyncFragment;
 
 import org.hamcrest.Matcher;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -446,24 +445,24 @@ public class MiscTest extends OrgzlyTest {
 
         onView(allOf(withText("booky"), isDisplayed())).perform(click());
 
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("TODO  Note 1"), isDisplayed())));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Note 2"), isDisplayed())));
-        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Note 3"), isDisplayed())));
-        onListItem(4).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Note 4"), isDisplayed())));
-        onListItem(5).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("TODO  Note 5"), isDisplayed())));
+        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("TODO  Note 1"), isDisplayed())));
+        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Note 2"), isDisplayed())));
+        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Note 3"), isDisplayed())));
+        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Note 4"), isDisplayed())));
+        onListItem(4).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("TODO  Note 5"), isDisplayed())));
 
-        onListItem(1).perform(longClick());
+        onListItem(0).perform(longClick());
+        onListItem(1).perform(click());
         onListItem(2).perform(click());
-        onListItem(3).perform(click());
         onView(withId(R.id.book_cab_edit)).perform(click());
         onView(withText("State")).perform(click());
         onView(withText("TODO")).perform(click());
 
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("TODO  Note 1"), isDisplayed())));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("TODO  Note 2"), isDisplayed())));
-        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("TODO  Note 3"), isDisplayed())));
-        onListItem(4).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Note 4"), isDisplayed())));
-        onListItem(5).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("TODO  Note 5"), isDisplayed())));
+        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("TODO  Note 1"), isDisplayed())));
+        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("TODO  Note 2"), isDisplayed())));
+        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("TODO  Note 3"), isDisplayed())));
+        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Note 4"), isDisplayed())));
+        onListItem(4).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("TODO  Note 5"), isDisplayed())));
     }
 
     /**
@@ -485,7 +484,7 @@ public class MiscTest extends OrgzlyTest {
         fragmentTest(false, withId(R.id.fragment_note_container));
         pressBack();
         onListItem(0).perform(click());
-        fragmentTest(false, withId(R.id.fragment_editor_container));
+        fragmentTest(false, withId(R.id.fragment_book_preface_container));
         onActionItemClick(R.id.activity_action_settings, "Settings");
         fragmentTest(false, withText("Interface"));
         onListItem(EspressoUtils.SETTINGS_REPOS).perform(click());
@@ -569,8 +568,8 @@ public class MiscTest extends OrgzlyTest {
 
         /* Set #+TITLE */
         onView(allOf(withText("book-name"), isDisplayed())).perform(click());
-        onListItem(0).perform(click());
-        onView(withId(R.id.fragment_editor_container_edit))
+        onActionItemClick(R.id.books_options_menu_book_preface, "Edit preface");
+        onView(withId(R.id.fragment_book_preface_content))
                 .perform(replaceText("#+TITLE: Notebook Title"), closeSoftKeyboardWithDelay());
         onView(withId(R.id.done)).perform(click());
         pressBack();
@@ -588,7 +587,7 @@ public class MiscTest extends OrgzlyTest {
 
         onView(allOf(withText("Notebook Title"), isDisplayed())).perform(click());
         onListItem(0).perform(click());
-        onView(withId(R.id.fragment_editor_container_edit)).perform(replaceText("#+TTL: Notebook Title"), closeSoftKeyboardWithDelay());
+        onView(withId(R.id.fragment_book_preface_content)).perform(replaceText("#+TTL: Notebook Title"), closeSoftKeyboardWithDelay());
         onView(withId(R.id.done)).perform(click());
         onListItem(0).onChildView(withId(R.id.fragment_book_header_text))
                 .check(matches(withText(containsString("#+TTL: Notebook Title"))));

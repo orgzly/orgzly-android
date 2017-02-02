@@ -48,7 +48,7 @@ public class NewNoteTest extends OrgzlyTest {
                 .perform(replaceText("new note created by test"), closeSoftKeyboardWithDelay());
         onView(withId(R.id.done)).perform(click());
 
-        onListItem(1)
+        onListItem(0)
                 .onChildView(withId(R.id.item_head_title))
                 .check(matches(allOf(withText("new note created by test"), isDisplayed())));
     }

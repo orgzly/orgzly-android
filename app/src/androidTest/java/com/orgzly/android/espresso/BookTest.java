@@ -116,7 +116,7 @@ public class BookTest extends OrgzlyTest {
     @Test
     public void testOpensBookDescription() {
         onListItem(0).perform(click());
-        onView(withId(R.id.fragment_editor_container)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_book_preface_container)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -173,10 +173,10 @@ public class BookTest extends OrgzlyTest {
     @Test
     public void testUpdatingBookPreface() {
         onListItem(0).perform(click());
-        onView(withId(R.id.fragment_editor_container_edit)).perform(replaceText("New content"));
+        onView(withId(R.id.fragment_book_preface_content)).perform(replaceText("New content"));
         onView(withId(R.id.done)).perform(click());
         onListItem(0).perform(click());
-        onView(withId(R.id.fragment_editor_container_edit)).check(matches(withText("New content")));
+        onView(withId(R.id.fragment_book_preface_content)).check(matches(withText("New content")));
     }
 
     @Test

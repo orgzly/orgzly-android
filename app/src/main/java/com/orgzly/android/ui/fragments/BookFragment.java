@@ -11,6 +11,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.view.ActionMode;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -400,6 +401,10 @@ public class BookFragment extends NoteListFragment
                 listener.onCycleVisibilityRequest(mBook);
                 return true;
 
+            case R.id.books_options_menu_book_preface:
+                listener.onBookPrefaceEditRequest(mBook);
+                return true;
+
 //            case R.id.books_options_menu_item_paste:
 //                mListener.onNotesPasteRequest(mBookId, 0, null);
 //                return true;
@@ -628,12 +633,20 @@ public class BookFragment extends NoteListFragment
      * Update book's preface.
      */
     private void updatePreface() {
-        mPrefaceText.setText(mBook.getPreface());
+        if (! TextUtils.isEmpty(mBook.getPreface())) {
+            // Add header
+            if (getListView().getHeaderViewsCount() == 0) {
+                getListView().addHeaderView(mHeader);
+            }
 
-        /* Its visibility is set to GONE by default (in XML).
-         * There is a moment while the book is loaded which looks ugly if this view is displayed.
-         */
-        mPrefaceText.setVisibility(View.VISIBLE);
+            mPrefaceText.setText(mBook.getPreface());
+
+        } else {
+            // Remove header
+            if (getListView().getHeaderViewsCount() > 0) {
+                getListView().removeHeaderView(mHeader);
+            }
+        }
     }
 
     private void notesLoaded(Cursor cursor) {

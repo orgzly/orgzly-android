@@ -1,5 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/books_options_menu_item_cycle_visibility"
@@ -7,8 +7,13 @@
         app:showAsAction="always"
         android:title="@string/cycle_visibility"/>
 
+    <item
+        android:id="@+id/books_options_menu_book_preface"
+        app:showAsAction="never"
+        android:title="@string/edit_book_preface"/>
+
     <!--<item-->
-        <!--android:id="@+id/books_options_menu_item_paste"-->
-        <!--app:showAsAction="never"-->
-        <!--android:title="@string/paste"/>-->
+    <!--android:id="@+id/books_options_menu_item_paste"-->
+    <!--app:showAsAction="never"-->
+    <!--android:title="@string/paste"/>-->
 </menu>

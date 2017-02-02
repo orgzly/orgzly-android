@@ -51,7 +51,7 @@ import com.orgzly.android.provider.clients.ReposClient;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.dialogs.WhatsNewDialog;
-import com.orgzly.android.ui.fragments.BookEditorFragment;
+import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
 import com.orgzly.android.ui.fragments.FilterFragment;
@@ -88,7 +88,7 @@ public class MainActivity extends CommonActivity
         NoteFragment.NoteFragmentListener,
         SyncFragment.SyncFragmentListener,
         SimpleOneLinerDialog.SimpleOneLinerDialogListener,
-        BookEditorFragment.EditorListener,
+        BookPrefaceFragment.EditorListener,
         NoteListFragment.NoteListFragmentListener,
         SettingsFragment.SettingsFragmentListener,
         DrawerFragment.DrawerFragmentListener {
