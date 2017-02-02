@@ -7,8 +7,6 @@
 
     <dimen name="padding_4">6dp</dimen>
     <dimen name="padding_8">12dp</dimen>
-    <dimen name="padding_12">18dp</dimen>
-    <dimen name="padding_14">21dp</dimen>
     <dimen name="padding_16">24dp</dimen>
 
     <dimen name="list_view_with_fab_bottom_padding">104dp</dimen>

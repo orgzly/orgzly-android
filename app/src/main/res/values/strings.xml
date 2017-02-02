@@ -6,12 +6,9 @@
     <string name="settings">Settings</string>
     <string name="ok">OK</string>
     <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="always">Always</string>
     <string name="unlink">Unlink</string> <!-- Unlink from Dropbox -->
     <string name="cancel">Cancel</string>
     <string name="create">Create</string>
-    <string name="use">Use</string>
     <string name="select">Select</string>
     <string name="set">Set</string>
     <string name="add">Add</string>
@@ -34,11 +31,6 @@
 
     <string name="notes">Notes</string>
 
-    <plurals name="delete_notes_question">
-        <item quantity="one">Delete note?</item>
-        <item quantity="other">Delete <b>%d</b> notes?</item>
-    </plurals>
-
     <plurals name="notes_deleted">
         <item quantity="one">Note deleted</item>
         <item quantity="other">Deleted <b>%d</b> notes</item>
@@ -59,8 +51,6 @@
     </plurals>
     <string name="no_notes_pasted">Nothing to paste</string>
 
-    <string name="title_activity_display_message">My Message</string>
-    <string name="title_activity_web">WebActivity</string>
     <string name="fragment_note_title_hint">Title</string>
     <string name="fragment_note_tags_hint" tools:ignore="typos">tag tag</string>
 
@@ -71,27 +61,14 @@
     <!-- • ● ⦿ ⦾ ◦ ▸ ▾ – — -->
 
     <string name="note_title_sample">Simple sample title</string>
-    <string name="note_title_sample_long">Simple sample title Simple sample title Simple sample title Simple sample title Simple sample title Simple sample title Simple sample title Simple sample title Simple sample title</string>
     <string name="note_closed_sample">2013\-06\-10 12:00</string>
     <string name="note_deadline_sample">2013\-12\-04 Sat</string>
     <string name="note_scheduled_sample">2013\-12\-04 Sat</string>
     <string name="note_content_sample">This is a multi-line\nnote\'s content which could be quite long, so this needs to be a longer string so we can see how it would look like. There should be both new-lines here, as well as long single line, like this one.</string>
-    <string name="create_new_notebook">New Notebook</string>
     <string name="import_org_file">Import Org File</string>
-    <string name="books_options_menu_show_notes">Notes</string>
-    <string name="books_options_menu_wipe_database">Wipe Database</string>
-    <string name="books_options_menu_sync_with_dropbox">Sync</string>
     <string name="book_name_sample">notebook-name</string>
     <string name="book_title_sample">Notebook Title</string>
-    <string name="book_title_sample_rtl" translatable="false">על אנא</string>
-    <string name="book_title_sample_rtl_long" translatable="false">על אנא המקובל תבניות האטמוספירה, אנא מדעי כימיה תחבורה על. אל כניסה הגולשות מלא, את תוכל נבחרים אתה. קסאם מושגי העזרה גם שמו, ב עזרה למאמרים בהיסטוריה עזה. ב המלצת לעריכה לויקיפדים ארץ, דת ארץ קודמות שינויים.</string>
 
-    <string name="book_title_sample_long">a book with a very large titlesothatwecantestlayoutintheapplicationandifitisgoingtoscrewupsomethingimportantorjustandevencrashorjustdonot look good</string>
-    <string name="book_name_sample_long">a-book-with-a-very-large-title-so-that-we-can-test-layout-in-the-application-and-if-it-is-going-to-screw-up-something-important-or-just-and-even-crash-or-just-do-not-look-good.org</string>
-    <string name="books_status_message_initial">Initial status message.</string>
-    <string name="main_action_notes">Notes</string>
-    <string name="main_action_help">Help</string>
-    <string name="title_activity_date_time_dialog_fragment">Set Date and Time</string>
     <string name="state_spinner_prompt">State</string>
     <string name="priority_spinner_prompt">Priority</string>
 
@@ -102,19 +79,9 @@
     <string name="repos_preference_title">Repositories</string>
     <string name="message_book_has_no_link">No link.</string>
     <string name="message_book_does_not_exist">This notebook does not exist any more.</string>
-    <string name="message_task_already_running">There is a task already running.</string>
-    <string name="message_file_manager">There is a task already running.</string>
-    <string name="message_already_on_top">Already on top.</string>
-    <string name="message_already_at_the_bottom">Already at the bottom.</string>
-    <string name="message_unknown_activity_action">Unknown intent action %1$s.</string>
-    <string name="message_sync_existing_name_no_dropbox_revision">File %1$s does not have Dropbox revision: must rename it before it can be exported to Dropbox</string>
-    <string name="message_sync_no_modifications">%1$s not modified.</string>
-    <string name="message_sync_local_modification_only">%1$s has been locally modified.</string>
-    <string name="message_sync_no_local_modification">%1$s has been modified on Dropbox.</string>
     <string name="message_note_created">Note created</string>
     <string name="message_failed_creating_note">Failed to create note</string>
     <string name="message_failed_updating_note">Failed to update note</string>
-    <string name="books_book_sync_status_sample" translatable="false">BOOK_WITH_LINK_LOCAL_MODIFIED</string>
     <string name="books_book_sync_last_action_sample">May 15, 2015 11:24:47 PM: No change</string>
     <string name="head_title_sample">This is a sample title used for testing the layout of head\'s item</string>
     <string name="drawer_close">Close drawer</string>
@@ -129,14 +96,7 @@
     <string name="deadline_button_hint">Deadline time</string>
     <string name="closed_button_hint">Closed time</string>
 
-    <string name="timestamp_sample">2014\-05\-01 Wed 15:10</string>
-    <string name="fragment_note_state_label">State</string>
-    <string name="fragment_note_priority_label">Priority</string>
-    <string name="fragment_note_remove_scheduled_time_img">Remove scheduled time</string>
-    <string name="fragment_note_remove_closed_time_img">Remove closed time</string>
-    <string name="fragment_note_remove_deadline_time_img">Remove deadline time</string>
     <string name="fragment_note_content_hint">Note content</string>
-    <string name="string_fragment_sync_sync_button">Sync</string>
     <string name="sync_button_sample">Last sync: Jan 01, 01:01</string>
     <string name="book_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
     <string name="synced_rook_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
@@ -150,15 +110,9 @@
     <string name="books_context_menu_item_force_load">Force Load</string>
 
     <string name="heads_action_menu_item_state">State</string>
-    <string name="heads_action_menu_item_delete">Delete</string>
-    <string name="heads_action_menu_item_state_remove">–</string>
-    <string name="heads_action_menu_item_state_todo">TODO</string>
-    <string name="heads_action_menu_item_state_done">DONE</string>
-    <string name="priority">Priority</string>
     <string name="move">Move</string>
     <string name="cut">Cut</string>
     <string name="paste">Paste</string>
-    <string name="heads_action_menu_item_undo">Undo cut</string>
     <string name="heads_action_menu_item_add_above">New above</string>
     <string name="heads_action_menu_item_add_under">New under</string>
     <string name="heads_action_menu_item_add_below">New below</string>
@@ -172,28 +126,15 @@
     <string name="new_note">New note</string>
     <string name="options_menu_item_search">Search</string>
 
-    <string name="message_sync_failed">Syncing failed: %s</string>
-    <string name="message_saving_book_failed">Saving notebook failed: %s</string>
-    <string name="message_loading_book_failed">Loading notebook failed: %s</string>
     <string name="message_book_deleted">Notebook deleted</string>
     <string name="clear_database_dialog_message">Clear local database?</string>
-    <string name="saved_search_sample">Scheduled</string>
-    <string name="dialog_timestamp_today_button">Today</string>
-    <string name="dialog_timestamp_tomorrow_button">Tomorrow</string>
-    <string name="dialog_timestamp_next_week_button">Next week</string>
-    <string name="dialog_timestamp_repeat_value_default">1</string>
-    <string name="quick_books_books">Notebooks</string>
     <string name="no_user_repos_configured_pref_summary">None configured yet</string>
     <string name="repos_options_menu_new_repo">New Repository</string>
-    <string name="book_extension_unsupported">Unsupported notebook extension for %s.</string>
     <string name="book_name_already_exists">Notebook %s already exists.</string>
     <string name="filter_name_already_exists">Search with the same name already exists</string>
     <string name="failed_creating_directory">Failed creating directory %s</string>
-    <string name="options_debug_menu">Debug</string>
     <string name="repo_url_sample">dropbox:/Some/Path/To/Repo/Directory</string>
-    <string name="filter_name_sample">Someday/Maybe</string>
     <string name="filter_name_sample_long">Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe</string>
-    <string name="filter_query_sample">b.Home i.someday</string>
     <string name="filter_query_sample_long">b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday</string>
     <string name="rook_url_sample">dropbox:/Some/Path/To/Org/File/notebook.org</string>
     <string name="rook_url_long_sample">dropbox:/Some/Long/Path/So/Layout/Could/Be/Tested/To/Org/File/notebook.org</string>
@@ -213,7 +154,6 @@
     <string name="repo_dropbox_button_not_linked">Link to Dropbox</string>
     <string name="repo_dropbox_button_linked">Unlink from Dropbox</string>
     <string name="fragment_settings_title">Settings</string>
-    <string name="hello_blank_fragment">Hello blank fragment lalala a bit longer I am oh yes</string>
 
     <string name="updating_notes">Updating notes…</string>
     <string name="todo_keywords_configuration_changed_dialog_title">Keywords modified</string>
@@ -230,38 +170,22 @@
     <string name="dialog_timestamp_repeater_default">.+1w</string>
     <string name="dialog_timestamp_end_time_sample">12345:6789</string>
     <string name="tags">Tags</string>
-    <string name="book_downloaded">Notebook downloaded</string>
     <string name="book_mtime">Notebook modification time</string>
     <string name="book_link">Notebook link</string>
     <string name="book_link_details">Notebook link details</string>
     <string name="book_last_action">Notebook last action</string>
-    <string name="book_sync_status">Notebook\'s sync status</string>
-    <string name="repo_url">Repository URL</string>
     <string name="pref_title_notebooks">Notebooks</string>
     <string name="notebooks">Notebooks</string>
     <string name="searches">Searches</string>
-    <string name="saved_searches">Saved Searches</string>
     <string name="search">Search</string>
     <string name="new_search">New Search</string>
-    <string name="date">Date</string>
-    <string name="time">Time</string>
     <string name="active">Active</string>
-    <string name="repeat">Repeat</string>
-    <string name="repeater">Repeater</string>
-    <string name="end_time">End Time</string>
-    <string name="notebook">Notebook</string>
-    <string name="book_has_no_notes">Notebook has no notes</string>
-    <string name="no_entries">No entries</string>
     <string name="no_repos">No repositories configured</string>
     <string name="multiple_repos">Multiple repositories exist.</string>
-    <string name="create_new_repo">Create New Repo</string>
     <string name="detected_encoding_sample">UTF-8 detected</string>
     <string name="selected_encoding_sample">UTF-8 selected</string>
     <string name="used_encoding_sample">UTF-8 used</string>
-    <string name="item_book_dummy">DUMMY</string>
-    <string name="item_book_not_dummy">NOT DUMMY</string>
     <string name="book_encoding">Notebook\'s encoding</string>
-    <string name="item_book_encoding_label">Encoding (used detected selected)</string>
     <string name="syncing_in_progress">Syncing…</string>
     <string name="syncing_book">Syncing %s…</string>
     <string name="syncing_failed">Sync: %s</string> <!-- Sync: Reason -->
@@ -269,7 +193,6 @@
     <string name="canceling">Canceling…</string>
     <string name="directory">Directory</string>
 
-    <string name="fragment_repo_dropbox_directory_hint">Directory</string>
     <string name="fragment_repo_dropbox_directory_desc">Directory inside Dropbox (e.g. “/Documents/Orgzly”)</string>
 
     <string name="fragment_repo_external_storage_directory_desc">Directory location (e.g. “file:/sdcard/orgzly”)</string>
@@ -280,13 +203,10 @@
     <string name="share_type_not_set">Share type not set</string>
     <string name="share_type_not_supported">Share type %s is not supported</string>
 
-    <string name="fragment_quick_books_list_content_description">Quick Books List</string>
-
     <string name="repositories">Repositories</string>
     <string name="invalid_repo_url">Invalid repository URL %s</string>
     <string name="message_unsupported_repository_type">Unsupported repository type</string>
     <string name="also_delete_linked_book">Delete linked remote notebook</string>
-    <string name="also_rename_linked_book">Rename linked remote notebook to “%s”</string>
     <string name="message_deleting_book_failed">Deleting notebook failed: %s</string>
     <string name="fragment_left_drawer_list_view_content_description">Left Drawer</string>
     <string name="drawer_item">Drawer Item</string>
@@ -309,7 +229,6 @@
     <string name="create_new_repository_for_syncing">Create new repository for syncing your notebooks</string>
 
     <string name="no_filters">You have no saved searches</string>
-    <string name="new_filter">New Search</string>
 
     <!-- TODO: Use for note moving cab menu (xml) -->
     <string name="down">Down</string>
@@ -327,9 +246,6 @@
     <string name="running_database_update">Upgrading database…</string>
     <string name="note_has_been_modified">Note modified</string>
     <string name="discard_or_save_changes">Save changes?</string>
-    <string name="property">Property</string>
-    <string name="displayed_title">Displayed Title</string>
-    <string name="filename">File Name</string>
     <string name="rename">Rename</string>
     <string name="rename_book">Rename %s</string>
     <string name="failed_renaming_book">Failed renaming notebook</string>
