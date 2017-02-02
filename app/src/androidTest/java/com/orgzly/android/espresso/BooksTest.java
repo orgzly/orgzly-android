@@ -110,7 +110,7 @@ public class BooksTest extends OrgzlyTest {
          * export should either succeed or fail.
          */
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            onSnackbar().check(matches(withText(startsWith("Book exported to"))));
+            onSnackbar().check(matches(withText(startsWith("Notebook exported to"))));
         } else {
             onSnackbar().check(matches(withText(startsWith("Failed exporting book:"))));
         }

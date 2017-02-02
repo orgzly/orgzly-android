@@ -1298,7 +1298,7 @@ public class MainActivity extends CommonActivity
 
     @Override /* SyncFragment */
     public void onBookExported(File file) {
-        showSimpleSnackbarLong("Book exported to " + file.getAbsolutePath());
+        showSimpleSnackbarLong(getString(R.string.book_exported, file.getAbsolutePath()));
     }
 
     /**
@@ -1322,7 +1322,7 @@ public class MainActivity extends CommonActivity
 
     @Override /* SyncFragment */
     public void onBookExportFailed(Exception e) {
-        showSimpleSnackbarLong("Failed exporting book: " + e.getLocalizedMessage());
+        showSimpleSnackbarLong(getString(R.string.failed_exporting_book, e.getLocalizedMessage()));
     }
 
     @Override

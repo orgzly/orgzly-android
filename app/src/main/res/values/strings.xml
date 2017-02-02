@@ -65,7 +65,7 @@
     <string name="note_deadline_sample">2013\-12\-04 Sat</string>
     <string name="note_scheduled_sample">2013\-12\-04 Sat</string>
     <string name="note_content_sample">This is a multi-line\nnote\'s content which could be quite long, so this needs to be a longer string so we can see how it would look like. There should be both new-lines here, as well as long single line, like this one.</string>
-    <string name="import_org_file">Import Org File</string>
+    <string name="import_org_file">Import Org file</string>
     <string name="book_name_sample">notebook-name</string>
     <string name="book_title_sample">Notebook Title</string>
 
@@ -362,5 +362,8 @@
     <string name="primary_storage">Main storage</string>
     <string name="secondary_storage">SD card</string>
     <string name="secondary_storage_not_available_any_more">Secondary storage is no longer available</string>
+
+    <string name="book_exported">Notebook exported to %s</string>
+    <string name="failed_exporting_book">Failed exporting book: %s</string>
 
 </resources>
