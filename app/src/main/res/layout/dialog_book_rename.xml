@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:errorEnabled="true">
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         android:id="@+id/link_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/link"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

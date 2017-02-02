@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         app:hintEnabled="true"
         app:errorEnabled="true">
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/todo_states"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         app:hintEnabled="true"
         app:errorEnabled="true">
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/done_states"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
