@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.orgzly.R;
 import com.orgzly.android.Note;
@@ -157,46 +158,8 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
 
         setupIndentContainer(context, holder.indentContainer, inBook ? note.getPosition().getLevel() - 1 : 0);
 
-        if (inBook) {
-            /* Set folding button. */
-            if (note.getPosition().getDescendantsCount() > 0 || (note.getHead().hasContent() && AppPreferences.isNotesContentFoldable(context) && AppPreferences.isNotesContentDisplayedInList(context))) {
-                holder.foldButton.setVisibility(View.VISIBLE);
-                holder.foldButtonText.setVisibility(View.VISIBLE);
-
-                /* Type of the fold button. */
-                if (note.isFolded()) {
-                    holder.foldButtonText.setText(R.string.unfold_button_character);
-                } else {
-                    holder.foldButtonText.setText(R.string.fold_button_character);
-                }
-            } else {
-                holder.foldButton.setVisibility(View.INVISIBLE);
-                holder.foldButtonText.setVisibility(View.INVISIBLE);
-            }
-
-            /* Different type of bullet, depending on folding state. */
-            if (note.getPosition().getDescendantsCount() > 0) { // Has descendants
-                if (note.isFolded()) { //
-                    holder.bullet.setText(R.string.bullet_with_children_folded);
-                } else { //
-                    holder.bullet.setText(R.string.bullet_with_children_unfolded);
-                }
-
-//                holder.bullet.setScaleX(1f);
-//                holder.bullet.setScaleY(1f);
-
-            } else { // No descendants
-                holder.bullet.setText(R.string.bullet);
-//                holder.bullet.setScaleX(1.2f);
-//                holder.bullet.setScaleY(1.2f);
-            }
-
-        } else { /* No indentation (in search results). */
-            holder.foldButton.setVisibility(View.INVISIBLE);
-            holder.foldButtonText.setVisibility(View.INVISIBLE);
-//            holder.bullet.setScaleX(1.2f);
-//            holder.bullet.setScaleY(1.2f);
-        }
+        updateFoldingButton(context, note, holder);
+        updateBullet(context, note, holder);
 
         /* Book name. */
         if (inBook) {
@@ -284,6 +247,62 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                 new Shelf(context).toggleFoldedState(note.getId());
             }
         });
+    }
+
+    /**
+     * Change folding button appearance.
+     */
+    private void updateFoldingButton(Context context, Note note, ViewHolder holder) {
+        boolean isVisible = false;
+
+        if (inBook) {
+            boolean contentFoldable = note.getHead().hasContent() &&
+                                      AppPreferences.isNotesContentFoldable(context) &&
+                                      AppPreferences.isNotesContentDisplayedInList(context);
+
+            if (note.getPosition().getDescendantsCount() > 0 || contentFoldable) {
+                isVisible = true;
+
+                /* Type of the fold button. */
+                if (note.isFolded()) {
+                    holder.foldButtonText.setText(R.string.unfold_button_character);
+                } else {
+                    holder.foldButtonText.setText(R.string.fold_button_character);
+                }
+            }
+        } // else: No indentation (in search results)
+
+        if (isVisible) {
+            holder.foldButton.setVisibility(View.VISIBLE);
+            holder.foldButtonText.setVisibility(View.VISIBLE);
+        } else {
+            holder.foldButton.setVisibility(View.INVISIBLE);
+            holder.foldButtonText.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /**
+     * Change bullet appearance depending on folding state and number of descendants.
+     */
+    private void updateBullet(Context context, Note note, ViewHolder holder) {
+
+        if (inBook) {
+            if (note.getPosition().getDescendantsCount() > 0) { // Has descendants
+                if (note.isFolded()) {
+                    holder.bullet.setText(R.string.bullet_with_children_folded);
+                } else {
+                    holder.bullet.setText(R.string.bullet_with_children_unfolded);
+                }
+                holder.bullet.setTypeface(Typeface.DEFAULT);
+
+            } else { // Has no descendants
+                holder.bullet.setText(R.string.bullet);
+                holder.bullet.setTypeface(Typeface.DEFAULT_BOLD);
+            }
+
+        } else { // No indentation (in search results)
+            holder.bullet.setTypeface(Typeface.DEFAULT_BOLD);
+        }
     }
 
     /**
