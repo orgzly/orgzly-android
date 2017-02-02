@@ -14,31 +14,29 @@ public class RepoFactory {
     public static Repo getFromUri(Context context, String uriString) {
         Uri uri = Uri.parse(uriString);
 
-        if (uri == null || uri.getScheme() == null) {
-            throw new IllegalArgumentException("URI not valid: " + uriString);
-        }
+        if (uri != null && uri.getScheme() != null) { // Make sure uri is valid and has a scheme
+            try {
+                switch (uri.getScheme()) {
+                    case ContentRepo.SCHEME:
+                        return new ContentRepo(context, uri);
 
-        try {
-            switch (uri.getScheme()) {
-                case ContentRepo.SCHEME:
-                    return new ContentRepo(context, uri);
-
-                case DropboxRepo.SCHEME:
+                    case DropboxRepo.SCHEME:
                     /* There should be no authority. */
-                    if (uri.getAuthority() != null) {
-                        return null;
-                    }
+                        if (uri.getAuthority() != null) {
+                            return null;
+                        }
 
-                    return new DropboxRepo(context, uri);
+                        return new DropboxRepo(context, uri);
 
-                case DirectoryRepo.SCHEME:
-                    return new DirectoryRepo(uriString, false);
+                    case DirectoryRepo.SCHEME:
+                        return new DirectoryRepo(uriString, false);
 
-                case MockRepo.SCHEME:
-                    return new MockRepo(context, uriString);
+                    case MockRepo.SCHEME:
+                        return new MockRepo(context, uriString);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         return null;

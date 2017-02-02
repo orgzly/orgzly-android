@@ -92,6 +92,16 @@ public class ReposActivityTest extends OrgzlyTest {
     }
 
     @Test
+    public void testSavingWithBogusDirectoryUri() {
+        startActivityWithIntent(Intent.ACTION_VIEW, null, null);
+
+        onActionItemClick(R.id.repos_options_menu_item_new, "New Repository");
+        onView(withText(R.string.directory)).perform(click());
+        onView(withId(R.id.fragment_repo_directory)).perform(replaceText("non-existent-directory"));
+        onView(withId(R.id.done)).perform(click());
+    }
+
+    @Test
     public void testDirectoryRepoWithPercentCharacter() {
         String localBaseDir = context.getExternalCacheDir().getAbsolutePath();
         String localDir = localBaseDir + "/nextcloud/user@host%2Fdir";
