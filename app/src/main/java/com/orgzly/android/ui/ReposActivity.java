@@ -1,13 +1,10 @@
 package com.orgzly.android.ui;
 
 import android.content.Intent;
-import android.content.UriMatcher;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.provider.DocumentFile;
 import android.view.MenuItem;
 
 import com.orgzly.BuildConfig;
@@ -15,16 +12,16 @@ import com.orgzly.R;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.provider.clients.ReposClient;
 import com.orgzly.android.repos.ContentRepo;
+import com.orgzly.android.repos.DirectoryRepo;
 import com.orgzly.android.repos.DropboxClient;
 import com.orgzly.android.repos.DropboxRepo;
-import com.orgzly.android.repos.DirectoryRepo;
 import com.orgzly.android.repos.MockRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
-import com.orgzly.android.ui.fragments.FileBrowserFragment;
-import com.orgzly.android.ui.fragments.DropboxRepoFragment;
 import com.orgzly.android.ui.fragments.DirectoryRepoFragment;
+import com.orgzly.android.ui.fragments.DropboxRepoFragment;
+import com.orgzly.android.ui.fragments.browser.FileBrowserFragment;
 import com.orgzly.android.ui.fragments.ReposFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
@@ -231,26 +228,21 @@ public class ReposActivity extends CommonActivity
 
     @Override
     public void onBrowseDirectories(String dir) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-//            startActivityForResult(intent, ACTION_OPEN_DOCUMENT_TREE_REQUEST_CODE);
-//
-//        } else {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .addToBackStack(null)
-                    .replace(R.id.activity_repos_frame, FileBrowserFragment.getInstance(dir), FileBrowserFragment.FRAGMENT_TAG)
-                    .commit();
-//        }
+        // Open the browser
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.activity_repos_frame, FileBrowserFragment.getInstance(dir), FileBrowserFragment.FRAGMENT_TAG)
+                .commit();
     }
 
     @Override
-    public void browserCancelRequest() {
+    public void onBrowserCancel() {
         getSupportFragmentManager().popBackStack();
     }
 
     @Override
-    public void browserCreateRequest(String currentItem) {
+    public void onBrowserCreate(String currentItem) {
         Bundle bundle = new Bundle();
         bundle.putString(DIALOG_CREATE_DIRECTORY_ARG_DIRECTORY, currentItem);
 
@@ -260,7 +252,7 @@ public class ReposActivity extends CommonActivity
     }
 
     @Override
-    public void browserUseRequest(String item) {
+    public void onBrowserUse(String item) {
         DirectoryRepoFragment fragment =
                 (DirectoryRepoFragment) getSupportFragmentManager()
                         .findFragmentByTag(DirectoryRepoFragment.FRAGMENT_TAG);
@@ -303,7 +295,6 @@ public class ReposActivity extends CommonActivity
             case ACTION_OPEN_DOCUMENT_TREE_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     Uri treeUri = data.getData();
-                    DocumentFile docFile = DocumentFile.fromTreeUri(this, treeUri);
 
                     DirectoryRepoFragment fragment =
                             (DirectoryRepoFragment) getSupportFragmentManager()

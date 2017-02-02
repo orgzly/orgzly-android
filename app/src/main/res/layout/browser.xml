@@ -6,8 +6,16 @@
     android:id="@+id/browser_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
+
+    <!-- No shortcuts by default, they could be created by browser implementation. -->
+    <LinearLayout
+        android:id="@+id/browser_shortcuts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:elevation="4dp" tools:targetApi="21">
+    </LinearLayout>
 
     <TextView
         android:id="@+id/browser_title"
@@ -19,8 +27,8 @@
         android:text="@string/directory_sample"
         android:textSize="?attr/browser_text_size"
         android:textStyle="bold"
-        android:background="?attr/browser_header_bg_color"
-        android:elevation="4dp" tools:targetApi="21"/>
+        android:background="?attr/browser_footer_bg_color"
+        android:elevation="2dp" tools:targetApi="21"/>
 
     <ListView
         android:id="@android:id/list"
@@ -35,8 +43,7 @@
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         android:background="?attr/browser_footer_bg_color"
-        android:elevation="2dp" tools:targetApi="21"
-        >
+        android:elevation="2dp" tools:targetApi="21">
 
         <Button
             android:id="@+id/browser_button_cancel"

@@ -443,4 +443,8 @@
     <string name="new_note_notification">Ongoing notification</string>
     <string name="new_note_notification_summary">Display ongoing (persistent) notification for quickly creating new note</string>
 
+    <string name="primary_storage">Main storage</string>
+    <string name="secondary_storage">SD card</string>
+    <string name="secondary_storage_not_available_any_more">Secondary storage is no longer available</string>
+
 </resources>

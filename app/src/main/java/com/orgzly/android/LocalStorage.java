@@ -1,10 +1,8 @@
 package com.orgzly.android;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 
 import com.orgzly.BuildConfig;
@@ -145,8 +143,12 @@ public class LocalStorage {
         }
     }
 
-    public static boolean hasSecondaryStorage(Context context) {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT &&
-               context.getExternalCacheDirs().length > 1;
+    /**
+     * Assume accessible secondary storage only if new API can be used.
+     */
+    public static boolean isSecondaryStorageAccessible(Context context) {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
+               context.getExternalCacheDirs().length > 1 && // Internal and at least one more
+               context.getExternalCacheDirs()[1] != null; // Can be null if ejected
     }
 }

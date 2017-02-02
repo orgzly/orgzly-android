@@ -1,4 +1,4 @@
-package com.orgzly.android.ui.fragments;
+package com.orgzly.android.ui.fragments.browser;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,12 +20,14 @@ import java.util.ArrayList;
  * Generic fragment for browser.
  * File browser or notes browser (for refiling) could extend it.
  */
-abstract class BrowserFragment extends ListFragment {
+public abstract class BrowserFragment extends ListFragment {
     private static final String TAG = BrowserFragment.class.getName();
 
     protected static final String ARG_ITEM = "item";
 
     protected BrowserFragmentListener mListener;
+
+    private LinearLayout mShortcutsLayout;
 
     protected TextView mCurrentItemView;
     protected Item[] mItemList;
@@ -76,30 +79,42 @@ abstract class BrowserFragment extends ListFragment {
 
         View view = inflater.inflate(R.layout.browser, container, false);
 
+        // Shortcuts
+        mShortcutsLayout = (LinearLayout) view.findViewById(R.id.browser_shortcuts);
+        setupShortcuts(mShortcutsLayout);
+
+        // Current item
         mCurrentItemView = (TextView) view.findViewById(R.id.browser_title);
 
+        // Buttons on the bottom
+        setupActionButtons(view);
+
+        return view;
+    }
+
+    abstract void setupShortcuts(LinearLayout layout);
+
+    private void setupActionButtons(View view) {
         view.findViewById(R.id.browser_button_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.browserCancelRequest();
+                mListener.onBrowserCancel();
             }
         });
 
         view.findViewById(R.id.browser_button_create).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.browserCreateRequest(mCurrentItem);
+                mListener.onBrowserCreate(mCurrentItem);
             }
         });
 
         view.findViewById(R.id.browser_button_use).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.browserUseRequest(mCurrentItem);
+                mListener.onBrowserUse(mCurrentItem);
             }
         });
-
-        return view;
     }
 
     @Override
@@ -157,8 +172,8 @@ abstract class BrowserFragment extends ListFragment {
     }
 
     public interface BrowserFragmentListener {
-        void browserCancelRequest();
-        void browserCreateRequest(String currentItem);
-        void browserUseRequest(String item);
+        void onBrowserCancel();
+        void onBrowserCreate(String currentItem);
+        void onBrowserUse(String item);
     }
 }
