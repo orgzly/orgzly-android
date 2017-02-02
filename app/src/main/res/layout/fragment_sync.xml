@@ -23,6 +23,8 @@
     <LinearLayout
         android:id="@+id/sync_button_container"
         style="@android:style/Widget.Holo.Button.Borderless"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:clickable="true"

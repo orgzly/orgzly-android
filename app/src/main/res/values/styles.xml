@@ -22,7 +22,7 @@
         <item name="font_large">22sp</item>
         <item name="item_drawer_title_text_size">18sp</item>
         <item name="item_drawer_text_size">14sp</item>
-        <item name="left_drawer_sync_text_size">12sp</item>
+        <item name="left_drawer_sync_text_size">14sp</item>
         <item name="item_book_title_text_size">22sp</item>
         <item name="item_book_subtitle_text_size">18sp</item>
         <item name="item_book_details_text_size">12sp</item>
@@ -199,7 +199,7 @@
         <item name="font_large">22sp</item>
         <item name="item_drawer_title_text_size">18sp</item>
         <item name="item_drawer_text_size">14sp</item>
-        <item name="left_drawer_sync_text_size">12sp</item>
+        <item name="left_drawer_sync_text_size">14sp</item>
         <item name="item_book_title_text_size">22sp</item>
         <item name="item_book_subtitle_text_size">18sp</item>
         <item name="item_book_details_text_size">12sp</item>
@@ -374,7 +374,7 @@
         <item name="font_large">22sp</item>
         <item name="item_drawer_title_text_size">18sp</item>
         <item name="item_drawer_text_size">14sp</item>
-        <item name="left_drawer_sync_text_size">12sp</item>
+        <item name="left_drawer_sync_text_size">14sp</item>
         <item name="item_book_title_text_size">22sp</item>
         <item name="item_book_subtitle_text_size">18sp</item>
         <item name="item_book_details_text_size">12sp</item>
@@ -408,7 +408,7 @@
 
         <item name="item_drawer_title_text_size">22sp</item>
         <item name="item_drawer_text_size">18sp</item>
-        <item name="left_drawer_sync_text_size">16sp</item>
+        <item name="left_drawer_sync_text_size">18sp</item>
 
         <item name="item_book_title_text_size">25sp</item>
         <item name="item_book_subtitle_text_size">20sp</item>
