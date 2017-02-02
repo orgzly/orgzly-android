@@ -8,6 +8,7 @@ import android.support.design.widget.TextInputLayout;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -87,6 +89,14 @@ public class DirectoryRepoFragment extends RepoFragment {
         // Not working when done in XML
         mUriView.setHorizontallyScrolling(false);
         mUriView.setMaxLines(3);
+
+        mUriView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                save();
+                return true;
+            }
+        });
 
         MiscUtils.clearErrorOnTextChange(mUriView, directoryInputLayout);
 

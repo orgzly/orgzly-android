@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -104,6 +106,14 @@ public class DropboxRepoFragment extends RepoFragment {
         // Not working when done in XML
         mDirectory.setHorizontallyScrolling(false);
         mDirectory.setMaxLines(3);
+
+        mDirectory.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                save();
+                return true;
+            }
+        });
 
         setDirectoryFromArgument();
 
@@ -208,8 +218,7 @@ public class DropboxRepoFragment extends RepoFragment {
                 return true;
 
             case R.id.done:
-                String directory = mDirectory.getText().toString().trim();
-                save(directory);
+                save();
 
                 return true;
 
@@ -218,7 +227,9 @@ public class DropboxRepoFragment extends RepoFragment {
         }
     }
 
-    private void save(String directory) {
+    private void save() {
+        String directory = mDirectory.getText().toString().trim();
+
         if (TextUtils.isEmpty(directory)) {
             directoryInputLayout.setError(getString(R.string.can_not_be_empty));
             return;
