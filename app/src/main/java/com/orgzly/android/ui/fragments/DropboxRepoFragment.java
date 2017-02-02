@@ -100,7 +100,13 @@ public class DropboxRepoFragment extends RepoFragment {
         mDropboxIcon = (ImageView) view.findViewById(R.id.fragment_repo_dropbox_icon);
 
         mDirectory = (EditText) view.findViewById(R.id.fragment_repo_dropbox_directory);
+
+        // Not working when done in XML
+        mDirectory.setHorizontallyScrolling(false);
+        mDirectory.setMaxLines(3);
+
         setDirectoryFromArgument();
+
         directoryInputLayout = (TextInputLayout) view.findViewById(R.id.fragment_repo_dropbox_directory_input_layout);
 
         MiscUtils.clearErrorOnTextChange(mDirectory, directoryInputLayout);

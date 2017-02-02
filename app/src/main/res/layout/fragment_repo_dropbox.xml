@@ -53,7 +53,8 @@
             android:id="@+id/fragment_repo_dropbox_directory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text|textMultiLine"
+            android:inputType="text"
+            android:imeOptions="actionDone"
             android:hint="@string/fragment_repo_dropbox_directory_desc"/>
     </android.support.design.widget.TextInputLayout>
 

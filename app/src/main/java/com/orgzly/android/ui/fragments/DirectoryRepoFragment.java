@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import com.orgzly.BuildConfig;
@@ -79,7 +81,13 @@ public class DirectoryRepoFragment extends RepoFragment {
         View view = inflater.inflate(R.layout.fragment_repo_directory, container, false);
 
         directoryInputLayout = (TextInputLayout) view.findViewById(R.id.fragment_repo_directory_input_layout);
+
         mUriView = (EditText) view.findViewById(R.id.fragment_repo_directory);
+
+        // Not working when done in XML
+        mUriView.setHorizontallyScrolling(false);
+        mUriView.setMaxLines(3);
+
         MiscUtils.clearErrorOnTextChange(mUriView, directoryInputLayout);
 
         view.findViewById(R.id.fragment_repo_directory_browse_button).setOnClickListener(new View.OnClickListener() {
