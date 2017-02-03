@@ -154,7 +154,11 @@ public class Provider extends ContentProvider {
 
             case ProviderUris.NOTES_SEARCH_QUERIED:
                 Cursor cursor = queryNotesSearchQueried(db, uri.getQuery(), sortOrder);
-                cursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+                // Search results depend on notes and notebooks
+                cursor.setNotificationUri(getContext().getContentResolver(), ProviderContract.Notes.ContentUri.notes());
+                cursor.setNotificationUri(getContext().getContentResolver(), ProviderContract.Books.ContentUri.books());
+
                 return cursor;
 
             case ProviderUris.BOOKS_ID_NOTES:

@@ -14,17 +14,21 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerActions.open;
 import static android.support.test.espresso.contrib.PickerActions.setDate;
 import static android.support.test.espresso.contrib.PickerActions.setTime;
+import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
 import static com.orgzly.android.espresso.EspressoUtils.listViewItemCount;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.searchForText;
@@ -32,6 +36,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
 
 /**
  *
@@ -97,6 +102,7 @@ public class QueryFragmentTest extends OrgzlyTest {
     @Test
     public void testSearchFromBookOneResult() {
         defaultSetUp();
+
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
         onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
         searchForText("b.book-one another note");
@@ -108,6 +114,7 @@ public class QueryFragmentTest extends OrgzlyTest {
     @Test
     public void testSearchFromBookMultipleResults() {
         defaultSetUp();
+
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
         onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
         searchForText("b.book-one note");
@@ -118,11 +125,11 @@ public class QueryFragmentTest extends OrgzlyTest {
     @Test
     public void testSearchTwice() {
         defaultSetUp();
+
         onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
         searchForText("different");
         onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
-
         onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
         searchForText("another");
         onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
@@ -132,6 +139,7 @@ public class QueryFragmentTest extends OrgzlyTest {
     @Test
     public void testSearchExpressionTodo() {
         defaultSetUp();
+
         onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
         searchForText("i.todo");
         onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
@@ -141,6 +149,7 @@ public class QueryFragmentTest extends OrgzlyTest {
     @Test
     public void testSearchExpressionsToday() {
         defaultSetUp();
+
         onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
         searchForText("s.today");
         onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
@@ -166,6 +175,7 @@ public class QueryFragmentTest extends OrgzlyTest {
     @Test
     public void testSearchInBook() {
         defaultSetUp();
+
         onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
         searchForText("b.book-one note");
         onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
@@ -178,6 +188,7 @@ public class QueryFragmentTest extends OrgzlyTest {
     @Test
     public void testEditChangeState() {
         defaultSetUp();
+
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText("To Do")).perform(click());
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(3)));
@@ -194,6 +205,7 @@ public class QueryFragmentTest extends OrgzlyTest {
     @Test
     public void testClickingNote() {
         defaultSetUp();
+
         onView(allOf(withText("book-two"), isDisplayed())).perform(click());
         onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
         searchForText("b.book-two Note");
@@ -207,6 +219,7 @@ public class QueryFragmentTest extends OrgzlyTest {
     @Test
     public void testSchedulingNote() {
         defaultSetUp();
+
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText("Scheduled")).perform(click());
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
@@ -236,9 +249,7 @@ public class QueryFragmentTest extends OrgzlyTest {
                 "SCHEDULED: <2014-01-01>\n" +
                 "** [#C] Note D.\n" +
                 "*** TODO Note E.");
-
         shelfTestUtils.setupBook("book-two", "* Note #1.\n");
-
         activityRule.launchActivity(null);
 
         onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
@@ -257,7 +268,6 @@ public class QueryFragmentTest extends OrgzlyTest {
                 "SCHEDULED: <2014-01-01>\n" +
                 "** Note D.\n" +
                 "");
-
         shelfTestUtils.setupBook("notebook-2",
                 "* Note #1.\n" +
                 "** TODO Note #3.\n" +
@@ -265,7 +275,6 @@ public class QueryFragmentTest extends OrgzlyTest {
                 "*** DONE Note #5.\n" +
                 "CLOSED: [2014-06-03 Tue 13:34]\n" +
                 "");
-
         activityRule.launchActivity(null);
 
         onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
@@ -309,8 +318,8 @@ public class QueryFragmentTest extends OrgzlyTest {
                 "*** Note C\n" +
                 "*** Note D\n" +
                 "");
-
         activityRule.launchActivity(null);
+
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
         onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
         searchForText("t.tag");
@@ -328,13 +337,42 @@ public class QueryFragmentTest extends OrgzlyTest {
                 "*** Note C\n" +
                 "*** Note D\n" +
                 "");
-
         activityRule.launchActivity(null);
+
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
         onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
         searchForText("note o.scheduled");
         onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note B")));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note A")));
+    }
+
+    @Test
+    public void testNotebookNameInListAfterRename() {
+        defaultSetUp();
+
+        onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
+        searchForText("note");
+        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onListItem(0).onChildView(withId(R.id.item_head_book_name_text)).check(matches(withText("book-one")));
+
+        onView(withId(R.id.drawer_layout)).perform(open());
+        onView(withText("Notebooks")).perform(click());
+
+        onListItem(0).perform(longClick());
+        onView(withText("Rename")).perform(click());
+        onView(withId(R.id.name)).perform(replaceText("renamed book-one"), closeSoftKeyboardWithDelay());
+        onView(withText("Rename")).perform(click());
+
+        /* The other book is now first. Rename it too to keep the order of notes the same. */
+        onListItem(0).perform(longClick());
+        onView(withText("Rename")).perform(click());
+        onView(withId(R.id.name)).perform(replaceText("renamed book-two"), closeSoftKeyboardWithDelay());
+        onView(withText("Rename")).perform(click());
+
+        pressBack();
+
+        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onListItem(0).onChildView(withId(R.id.item_head_book_name_text)).check(matches(withText("renamed book-one")));
     }
 }
