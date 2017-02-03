@@ -163,7 +163,7 @@ public class BookPrefaceFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
 
-        inflater.inflate(R.menu.done_or_close, menu);
+        inflater.inflate(R.menu.done_close_delete, menu);
 
         /* Remove search item. */
         menu.removeItem(R.id.activity_action_search);
@@ -179,22 +179,24 @@ public class BookPrefaceFragment extends Fragment {
                 return true;
 
             case R.id.done:
-                save();
+                save(contentView.getText().toString());
                 return true;
+
+            case R.id.delete:
+                save("");
+                return true;
+
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void save() {
-        updateBookFromViews(book);
+    private void save(String preface) {
+        book.setPreface(preface);
+
+        parsePrefaceForInBufferSettings(book, preface);
+
         listener.onBookPrefaceEditSaveRequest(book);
-    }
-
-    private void updateBookFromViews(Book book) {
-        book.setPreface(contentView.getText().toString());
-
-        parsePrefaceForInBufferSettings(book, contentView.getText().toString());
     }
 
     private void parsePrefaceForInBufferSettings(Book book, String preface) {

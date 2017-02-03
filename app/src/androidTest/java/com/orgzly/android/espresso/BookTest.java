@@ -398,4 +398,19 @@ public class BookTest extends OrgzlyTest {
         onView(withText("Set")).perform(click());
         onView(withId(R.id.fragment_note_deadline_button)).check(matches(withText("2014-04-01 Tue")));
     }
+
+    @Test
+    public void testDeleteBookPreface() {
+        // Preface exists
+        onListItem(0).perform(click());
+        onView(withId(R.id.fragment_book_preface_container)).check(matches(isDisplayed()));
+
+        // Enter and delete it
+        openContextualActionModeOverflowMenu();
+        onView(withText("Delete")).perform(click());
+
+        // First list item is now a note
+        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
+        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note #1.")));
+    }
 }
