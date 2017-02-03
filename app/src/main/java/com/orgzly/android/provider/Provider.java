@@ -196,7 +196,7 @@ public class Provider extends ContentProvider {
             case ProviderUris.BOOKS_ID:
                 table = BooksView.VIEW_NAME;
                 selection = DbBook.Column._ID + "=?";
-                selectionArgs = new String[]{ uri.getLastPathSegment() };
+                selectionArgs = new String[] { uri.getLastPathSegment() };
                 break;
 
             case ProviderUris.FILTERS:
@@ -206,7 +206,7 @@ public class Provider extends ContentProvider {
             case ProviderUris.FILTERS_ID:
                 table = DbSearch.TABLE;
                 selection = DbSearch.Column._ID + "=?";
-                selectionArgs = new String[]{ uri.getLastPathSegment() };
+                selectionArgs = new String[] { uri.getLastPathSegment() };
                 break;
 
             case ProviderUris.CURRENT_ROOKS:
@@ -706,7 +706,7 @@ public class Provider extends ContentProvider {
                 db,
                 DbVersionedRook.TABLE,
                 DbVersionedRook.Column.ROOK_ID + "=? AND " + DbVersionedRook.Column.ROOK_REVISION + "=? AND " + DbVersionedRook.Column.ROOK_MTIME + "=?",
-                new String[]{String.valueOf(rookId), revision, String.valueOf(mtime)});
+                new String[] { String.valueOf(rookId), revision, String.valueOf(mtime) });
 
         if (id == 0) {
             ContentValues values = new ContentValues();
@@ -725,7 +725,7 @@ public class Provider extends ContentProvider {
                 db,
                 DbRook.TABLE,
                 DbRook.Column.ROOK_URL_ID + "=? AND " + DbRook.Column.REPO_ID + "=?",
-                new String[]{String.valueOf(rookUrlId), String.valueOf(repoId)});
+                new String[] { String.valueOf(rookUrlId), String.valueOf(repoId) });
 
         if (id == 0) {
             ContentValues values = new ContentValues();
@@ -743,7 +743,7 @@ public class Provider extends ContentProvider {
                 db,
                 DbRepo.TABLE,
                 DbRepo.Column.REPO_URL + "=?",
-                new String[]{repoUrl});
+                new String[] { repoUrl });
 
         if (id == 0) {
             ContentValues values = new ContentValues();
@@ -1160,7 +1160,7 @@ public class Provider extends ContentProvider {
         /* Get all notes that don't already have the same state. */
         Cursor cursor = db.query(
                 NotesView.VIEW_NAME,
-                new String[]{
+                new String[] {
                         NotesView.Columns._ID,
                         NotesView.Columns.SCHEDULED_RANGE_STRING,
                         NotesView.Columns.DEADLINE_RANGE_STRING,
@@ -1289,9 +1289,9 @@ public class Provider extends ContentProvider {
     private Uri getOrInsertBook(SQLiteDatabase db, String name) {
         Cursor cursor = db.query(
                 DbBook.TABLE,
-                new String[]{DbBook.Column._ID},
+                new String[] { DbBook.Column._ID },
                 DbBook.Column.NAME + "=?",
-                new String[]{name},
+                new String[] { name },
                 null,
                 null,
                 null);
@@ -1554,7 +1554,7 @@ public class Provider extends ContentProvider {
                 db,
                 DbOrgRange.TABLE,
                 DbOrgRange.Column.STRING + "=?",
-                new String[]{range.toString()});
+                new String[] { range.toString() });
 
         if (id == 0) {
             ContentValues values = new ContentValues();
@@ -1579,7 +1579,7 @@ public class Provider extends ContentProvider {
                 db,
                 DbOrgTimestamp.TABLE,
                 DbOrgTimestamp.Column.STRING + "= ?",
-                new String[]{orgDateTime.toString()});
+                new String[] { orgDateTime.toString() });
 
         if (id == 0) {
             ContentValues values = new ContentValues();

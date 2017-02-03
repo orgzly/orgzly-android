@@ -72,8 +72,7 @@
                     android:imeOptions="actionDone"
                     android:hint="@string/fragment_note_title_hint"
                     android:text="@string/head_title_sample"
-                    android:freezesText="true">
-                </android.support.design.widget.TextInputEditText>
+                    android:freezesText="true"/>
             </android.support.design.widget.TextInputLayout>
 
             <!-- Tags. -->

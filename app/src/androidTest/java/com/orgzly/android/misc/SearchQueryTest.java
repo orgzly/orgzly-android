@@ -178,22 +178,22 @@ public class SearchQueryTest {
     @Test
     public void testTokenizer() {
         assertTokens("i.done b.Word .t.tag",
-                new String[]{"i.done", "b.Word", ".t.tag"});
+                new String[] { "i.done", "b.Word", ".t.tag" });
 
         assertTokens("i.done b.\"Some Words\" .t.tag",
-                new String[]{"i.done", "b.\"Some Words\"", ".t.tag"});
+                new String[] { "i.done", "b.\"Some Words\"", ".t.tag" });
 
         assertTokens("i.done   b.\"Some  Words\"   .t.tag",
-                new String[]{"i.done", "b.\"Some  Words\"", ".t.tag"});
+                new String[] { "i.done", "b.\"Some  Words\"", ".t.tag" });
 
         assertTokens("i.done b.\"Some \\\"Quoted\\\" Words\" .t.tag",
-                new String[]{"i.done", "b.\"Some \\\"Quoted\\\" Words\"", ".t.tag"});
+                new String[] { "i.done", "b.\"Some \\\"Quoted\\\" Words\"", ".t.tag" });
 
         assertTokens("i.done b.\\Some\\Quoted\\Words t.\"tag\"",
-                new String[] {"i.done", "b.\\Some\\Quoted\\Words", "t.\"tag\""});
+                new String[] { "i.done", "b.\\Some\\Quoted\\Words", "t.\"tag\"" });
 
         assertTokens("( i.done   OR b.\"Some \\\"Quoted\\\" Words\" ) AND .t.tag",
-                new String[] {"(", "i.done", "OR", "b.\"Some \\\"Quoted\\\" Words\"", ")", "AND", ".t.tag"});
+                new String[] { "(", "i.done", "OR", "b.\"Some \\\"Quoted\\\" Words\"", ")", "AND", ".t.tag" });
     }
 
     private void assertTokens(String str, String[] expectedTokens) {

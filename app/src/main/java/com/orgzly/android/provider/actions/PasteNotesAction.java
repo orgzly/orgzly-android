@@ -37,7 +37,7 @@ public class PasteNotesAction implements Action {
 
         Cursor cursor = db.query(
                 DbNote.TABLE,
-                new String[]{"min(" + DbNote.Column.LFT + ")", "max(" + DbNote.Column.RGT + ")", "min(" + DbNote.Column.LEVEL + ")" },
+                new String[] { "min(" + DbNote.Column.LFT + ")", "max(" + DbNote.Column.RGT + ")", "min(" + DbNote.Column.LEVEL + ")" },
                 DbNote.Column.IS_CUT + " = " + batchId,
                 null, null, null, null);
 

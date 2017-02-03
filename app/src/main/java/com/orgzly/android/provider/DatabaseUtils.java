@@ -54,7 +54,7 @@ public class DatabaseUtils {
     public static String ancestorsIds(SQLiteDatabase db, long bookId, long noteId) {
         Cursor cursor = db.query(
                 DbNote.TABLE,
-                new String[] {"group_concat(" + DbNote.Column._ID + ", ',')" },
+                new String[] { "group_concat(" + DbNote.Column._ID + ", ',')" },
                 DatabaseUtils.whereAncestors(bookId, String.valueOf(noteId)),
                 null, null, null, null);
         try {

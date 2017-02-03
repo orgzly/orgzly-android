@@ -15,7 +15,7 @@ import com.orgzly.android.provider.ProviderContract;
 public class DbRepo {
     public static final String TABLE = "repos";
 
-    public static final String[] CREATE_SQL = new String[]{
+    public static final String[] CREATE_SQL = new String[] {
             "CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             Columns.REPO_URL + " TEXT NOT NULL, " +
@@ -37,7 +37,7 @@ public class DbRepo {
                 db,
                 TABLE,
                 Column.REPO_URL + "=?",
-                new String[]{url});
+                new String[] { url });
 
         if (id > 0) {
             db.update(TABLE, values, Column._ID + "=" + id, null);

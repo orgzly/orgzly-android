@@ -5,14 +5,7 @@
          Custom light themes should inherit from AppLightTheme, dark themes from AppDarkTheme.
          They both contain same default font and icon sizes. TODO: DRY (how?)
 
-         The Android framework uses the following limited set of type sizes:
-
-         Micro  - 12sp
-         Small  - 14sp
-         Medium - 18sp
-         Large  - 22sp
-
-         See also http://developer.android.com/design/style/typography.html.
+         See and try using http://developer.android.com/design/style/typography.html
     -->
     <style name="AppLightTheme" parent="Theme.Design.Light">
         <!-- Font sizes (defaults) -->

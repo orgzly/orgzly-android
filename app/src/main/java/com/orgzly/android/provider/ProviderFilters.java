@@ -18,7 +18,7 @@ class ProviderFilters {
     static void updateWithNextPosition(SQLiteDatabase db, ContentValues values) {
         Cursor cursor = db.query(
                 DbSearch.TABLE,
-                new String[] {"MAX(" + DbSearch.Column.POSITION + ")"},
+                new String[] { "MAX(" + DbSearch.Column.POSITION + ")" },
                 null,
                 null,
                 null,

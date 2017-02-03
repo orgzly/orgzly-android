@@ -241,7 +241,7 @@ public class FileBrowserFragment extends BrowserFragment {
         List<File> list = Arrays.asList(files);
         Collections.sort(list, new FileTypeComparator());
 
-        TypedArray typedArray = getActivity().obtainStyledAttributes(new int[]{
+        TypedArray typedArray = getActivity().obtainStyledAttributes(new int[] {
                 R.attr.oic_browser_up, R.attr.oic_browser_file, R.attr.oic_browser_directory});
 
         mItemList = new Item[list.size() + 1];

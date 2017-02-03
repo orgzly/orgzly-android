@@ -28,8 +28,7 @@
             android:inputType="text|textCapSentences|textMultiLine"
             android:typeface="monospace"
             android:hint="@string/book_preface_hint"
-            android:freezesText="true">
-        </android.support.design.widget.TextInputEditText>
+            android:freezesText="true"/>
     </android.support.design.widget.TextInputLayout>
 
 </ScrollView>

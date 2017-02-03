@@ -39,7 +39,7 @@ public class MoveNotesAction implements Action {
         if (direction == -1) { /* Moving up. */
             Cursor cursor = db.query(
                     DbNote.TABLE,
-                    new String[]{DbNote.Column._ID, DbNote.Column.LFT, DbNote.Column.LEVEL},
+                    new String[] { DbNote.Column._ID, DbNote.Column.LFT, DbNote.Column.LEVEL },
                     DatabaseUtils.whereUncutBookNotes(bookId) + " AND " + DbNote.Column.RGT + " < " + selectedNotePosition.getLft(),
                     null, null, null,
                     DbNote.Column.RGT + " DESC");
@@ -66,7 +66,7 @@ public class MoveNotesAction implements Action {
         } else { /* Moving down. */
             Cursor cursor = db.query(
                     DbNote.TABLE,
-                    new String[]{DbNote.Column._ID, DbNote.Column.LFT, DbNote.Column.LEVEL},
+                    new String[] { DbNote.Column._ID, DbNote.Column.LFT, DbNote.Column.LEVEL },
                     DatabaseUtils.whereUncutBookNotes(bookId) + " AND " + DbNote.Column.LFT + " > " + selectedNotePosition.getRgt(),
                     null, null, null,
                     DbNote.Column.LFT);

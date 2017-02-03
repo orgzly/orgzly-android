@@ -255,7 +255,7 @@ public class BookParsingTest extends OrgzlyTest {
     @Test
     public void testLoadingLatinLipsumHugeBookContentWithTitleTitleAndNoteContent() {
         if (runResourcesDemandingTest()) {
-            String data = LipsumBookGenerator.generateOrgString(1000000, new int[]{1000000, 1000000});
+            String data = LipsumBookGenerator.generateOrgString(1000000, new int[] { 1000000, 1000000 });
             onBook(data).onLoadFailed();
         }
     }
@@ -263,7 +263,7 @@ public class BookParsingTest extends OrgzlyTest {
     @Test
     public void testLoadingLatinLipsumHugeNoteTitle() {
         if (runResourcesDemandingTest()) {
-            String data = LipsumBookGenerator.generateOrgString(0, new int[]{2000000, 0});
+            String data = LipsumBookGenerator.generateOrgString(0, new int[] { 2000000, 0 });
             onBook(data).onLoadFailed();
         }
     }
@@ -271,7 +271,7 @@ public class BookParsingTest extends OrgzlyTest {
     @Test
     public void testLoadingLatinLipsumLargeNoteTitles() {
         if (runResourcesDemandingTest()) {
-            String data = LipsumBookGenerator.generateOrgString(0, new int[]{1000000, 0, 1500000, 1});
+            String data = LipsumBookGenerator.generateOrgString(0, new int[] { 1000000, 0, 1500000, 1 });
             onBook(data).onLoad();
         }
     }
@@ -279,7 +279,7 @@ public class BookParsingTest extends OrgzlyTest {
     @Test
     public void testLoadingLatinLipsumHugeNoteTitleWithContent() {
         if (runResourcesDemandingTest()) {
-            String data = LipsumBookGenerator.generateOrgString(0, new int[]{1000000, 1000000});
+            String data = LipsumBookGenerator.generateOrgString(0, new int[] { 1000000, 1000000 });
             onBook(data).onLoadFailed();
         }
     }

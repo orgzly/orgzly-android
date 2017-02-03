@@ -219,7 +219,7 @@ public class DrawerFragment extends ListFragment
 
                 DrawerItem item = getItem(position);
 
-                TypedArray typedArray = getContext().obtainStyledAttributes(new int[]{
+                TypedArray typedArray = getContext().obtainStyledAttributes(new int[] {
                         item.textSize, item.leftIconResource});
 
                 /* Set text size. */

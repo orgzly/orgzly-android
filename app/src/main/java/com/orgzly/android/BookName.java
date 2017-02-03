@@ -2,13 +2,9 @@ package com.orgzly.android;
 
 import android.content.Context;
 import android.net.Uri;
-import android.provider.DocumentsContract;
-import android.provider.DocumentsProvider;
 import android.support.v4.provider.DocumentFile;
 
-import com.orgzly.BuildConfig;
 import com.orgzly.android.repos.Rook;
-import com.orgzly.android.util.LogUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,6 +16,16 @@ import java.util.regex.Pattern;
 public class BookName {
     private static final Pattern PATTERN = Pattern.compile("(.*)\\.(org)(\\.txt)?$");
     private static final Pattern SKIP_PATTERN = Pattern.compile("^\\.#.*");
+
+    private final String mFileName;
+    private final String mName;
+    private final Format mFormat;
+
+    private BookName(String fileName, String name, Format format) {
+        mFileName = fileName;
+        mName = name;
+        mFormat = format;
+    }
 
     public static String getFileName(Context context, Uri uri) {
         String fileName;
@@ -40,15 +46,6 @@ public class BookName {
     public static BookName getInstance(Context context, Rook rook) {
         return fromFileName(getFileName(context, rook.getUri()));
     }
-
-    public enum Format {
-        ORG
-    }
-
-    private final String mFileName;
-    private final String mName;
-    private final Format mFormat;
-
 
     public static boolean isSupportedFormatFileName(String fileName) {
         return PATTERN.matcher(fileName).matches() && !SKIP_PATTERN.matcher(fileName).matches();
@@ -80,12 +77,6 @@ public class BookName {
         throw new IllegalArgumentException("Unsupported book file name " + fileName);
     }
 
-    private BookName(String fileName, String name, Format format) {
-        mFileName = fileName;
-        mName = name;
-        mFormat = format;
-    }
-
     public String getName() {
         return mName;
     }
@@ -96,5 +87,9 @@ public class BookName {
 
     public String getFileName() {
         return mFileName;
+    }
+
+    public enum Format {
+        ORG
     }
 }

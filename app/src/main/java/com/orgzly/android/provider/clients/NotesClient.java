@@ -609,7 +609,7 @@ public class NotesClient {
         long batchId;
         Cursor cursor = context.getContentResolver().query(
                 ProviderContract.Notes.ContentUri.notes(),
-                new String[]{"MAX(" + ProviderContract.Notes.QueryParam.IS_CUT + ")"},
+                new String[] { "MAX(" + ProviderContract.Notes.QueryParam.IS_CUT + ")" },
                 null,
                 null,
                 null);
@@ -736,7 +736,7 @@ public class NotesClient {
     private static String getBooksForNotes(Context context, String noteIdsCommaSeparated) {
         Cursor cursor = context.getContentResolver().query(
                 ProviderContract.Notes.ContentUri.notes(),
-                new String[]{"GROUP_CONCAT(DISTINCT " + ProviderContract.Notes.QueryParam.BOOK_ID + ")"},
+                new String[] { "GROUP_CONCAT(DISTINCT " + ProviderContract.Notes.QueryParam.BOOK_ID + ")" },
                 ProviderContract.Notes.QueryParam._ID + " IN (" + noteIdsCommaSeparated + ")",
                 null,
                 null);

@@ -50,6 +50,7 @@ public class AppPreferences {
         setPrefsFromValues(getStateSharedPreferences(context), values.statePrefsValues);
     }
 
+    @SuppressWarnings("unchecked")
     private static void setPrefsFromValues(SharedPreferences prefs, Map<String, ?> values) {
         SharedPreferences.Editor edit = prefs.edit();
 

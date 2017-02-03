@@ -40,7 +40,7 @@ public class GenericDatabaseUtils {
 
     public static int getCount(Context context, Uri uri, String selection) {
         Cursor cursor = context.getContentResolver().query(
-                uri, new String[] {"COUNT(*) AS count"}, selection, null, null);
+                uri, new String[] { "COUNT(*) AS count" }, selection, null, null);
 
         try {
             if (cursor.moveToFirst()) {

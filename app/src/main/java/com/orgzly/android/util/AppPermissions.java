@@ -43,7 +43,7 @@ public class AppPermissions {
 
             } else {
                 /* No explanation needed -- request the permission. */
-                ActivityCompat.requestPermissions(activity, new String[]{ permission }, requestCode);
+                ActivityCompat.requestPermissions(activity, new String[] { permission }, requestCode);
             }
 
             return false;

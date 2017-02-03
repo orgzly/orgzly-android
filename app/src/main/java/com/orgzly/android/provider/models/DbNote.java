@@ -134,7 +134,7 @@ public class DbNote {
                 db,
                 DbOrgRange.TABLE,
                 DbOrgRange.Column.STRING + "=?",
-                new String[]{range.toString()});
+                new String[] { range.toString() });
 
         if (id == 0) {
             ContentValues values = new ContentValues();
@@ -159,7 +159,7 @@ public class DbNote {
                 db,
                 DbOrgTimestamp.TABLE,
                 DbOrgTimestamp.Column.STRING + "= ?",
-                new String[]{orgDateTime.toString()});
+                new String[] { orgDateTime.toString() });
 
         if (id == 0) {
             ContentValues values = new ContentValues();

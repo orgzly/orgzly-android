@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
 public class DbSearch {
     public static final String TABLE = "searches";
 
-    public static final String[] CREATE_SQL = new String[]{
+    public static final String[] CREATE_SQL = new String[] {
             "CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             Columns.NAME + " TEXT NOT NULL, " +

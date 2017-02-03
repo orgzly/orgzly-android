@@ -435,7 +435,7 @@ public class NoteFragment extends Fragment
         if (savedInstanceState.getString(ARG_CURRENT_TAGS) != null) {
             head.setTags(savedInstanceState.getString(ARG_CURRENT_TAGS).split("\\s+"));
         } else {
-            head.setTags(new String[]{});
+            head.setTags(new String[] {});
         }
 
         if (TextUtils.isEmpty(savedInstanceState.getString(ARG_CURRENT_SCHEDULED))) {

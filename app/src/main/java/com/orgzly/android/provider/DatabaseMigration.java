@@ -353,7 +353,7 @@ public class DatabaseMigration {
      * file:/dir/file%20name.org
      */
     private static void encodeRookUris(SQLiteDatabase db) {
-        Cursor cursor = db.query("rook_urls", new String[]{"_id", "rook_url"}, null, null, null, null, null);
+        Cursor cursor = db.query("rook_urls", new String[] { "_id", "rook_url" }, null, null, null, null, null);
 
         try {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
@@ -364,7 +364,7 @@ public class DatabaseMigration {
 
                 if (! uri.equals(encodedUri)) {
                     /* Update unless same URL already exists. */
-                    Cursor c = db.query("rook_urls", new String[] {"_id"},
+                    Cursor c = db.query("rook_urls", new String[] { "_id" },
                             "rook_url = ?", new String[] { encodedUri }, null, null, null);
                     try {
                         if (!c.moveToFirst()) {
