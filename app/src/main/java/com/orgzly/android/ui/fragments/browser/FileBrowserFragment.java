@@ -123,7 +123,7 @@ public class FileBrowserFragment extends BrowserFragment {
                     if (LocalStorage.isSecondaryStorageAccessible(getContext())) {
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                            startActivityForResult(intent, ReposActivity.ACTION_OPEN_DOCUMENT_TREE_REQUEST_CODE);
+                            getActivity().startActivityForResult(intent, ReposActivity.ACTION_OPEN_DOCUMENT_TREE_REQUEST_CODE);
                         }
 
                         mListener.onBrowserCancel();
