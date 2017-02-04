@@ -188,7 +188,7 @@ public class SyncService extends Service {
     /**
      * Main sync task.
      */
-    private class SyncTask extends AsyncTask<Void, Object, IOException> {
+    private class SyncTask extends AsyncTask<Void, Object, Exception> {
         @Override
         protected void onPreExecute() {
             status.set(SyncStatus.Type.STARTING, null, 0, 0);
@@ -196,7 +196,7 @@ public class SyncService extends Service {
         }
 
         @Override
-        protected IOException doInBackground(Void... params) { /* Executing on a different thread. */
+        protected Exception doInBackground(Void... params) { /* Executing on a different thread. */
 
             /* Get the list of local and remote books from all repositories.
              * Group them by name.
@@ -205,7 +205,7 @@ public class SyncService extends Service {
             Map<String, BookNamesake> namesakes;
             try {
                 namesakes = shelf.groupAllNotebooksByName();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 return e;
             }
@@ -241,7 +241,7 @@ public class SyncService extends Service {
                     try {
                         BookAction action = shelf.syncNamesake(namesake);
                         shelf.setBookStatus(namesake.getBook(), namesake.getStatus().toString(), action);
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                         shelf.setBookStatus(namesake.getBook(), null, new BookAction(BookAction.Type.ERROR, e.getMessage()));
                     }
@@ -257,7 +257,7 @@ public class SyncService extends Service {
         }
 
         @Override
-        protected void onCancelled(IOException e) {
+        protected void onCancelled(Exception e) {
             status.set(SyncStatus.Type.CANCELED, getString(R.string.canceled), 0, 0);
             broadcastCurrentSyncStatus();
 
@@ -267,7 +267,7 @@ public class SyncService extends Service {
         }
 
         @Override
-        protected void onPostExecute(IOException exception) {
+        protected void onPostExecute(Exception exception) {
             if (exception != null) {
                 String msg = (exception.getMessage() != null ?
                         exception.getMessage() : exception.toString());

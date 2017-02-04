@@ -301,7 +301,7 @@ public class ShareActivity extends CommonActivity
     }
 
     @Override
-    public void onBookForceSavingFailed(IOException exception) {
+    public void onBookForceSavingFailed(Exception exception) {
     }
 
     @Override

@@ -337,7 +337,7 @@ public class SyncFragment extends Fragment {
 
                     return mShelf.loadBookFromRepo(rook);
 
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
 
                     mShelf.setBookStatus(
@@ -368,7 +368,7 @@ public class SyncFragment extends Fragment {
                         mListener.onBookLoaded((Book) result);
 
                     } else {
-                        mListener.onBookLoadFailed((IOException) result);
+                        mListener.onBookLoadFailed((Exception) result);
                     }
                 }
             }
@@ -506,7 +506,7 @@ public class SyncFragment extends Fragment {
 
                         return mShelf.saveBookToRepo(repoUrl, fileName, book, BookName.Format.ORG);
 
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                         mShelf.setBookStatus(book, null,
                                 new BookAction(BookAction.Type.ERROR,
@@ -535,7 +535,7 @@ public class SyncFragment extends Fragment {
                         mListener.onBookSaved(book);
 
                     } else {
-                        mListener.onBookForceSavingFailed((IOException) result);
+                        mListener.onBookForceSavingFailed((Exception) result);
                     }
                 } else {
                     Log.w(TAG, "Listener not set, not handling saveBookToRepo result");
@@ -1147,7 +1147,7 @@ public class SyncFragment extends Fragment {
         void onBookLoadFailed(Exception exception);
 
         void onBookSaved(Book book);
-        void onBookForceSavingFailed(IOException exception);
+        void onBookForceSavingFailed(Exception exception);
 
         void onSyncFinished(String msg);
 
