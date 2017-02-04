@@ -3,6 +3,7 @@ package com.orgzly.android.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
@@ -295,6 +296,16 @@ public class ReposActivity extends CommonActivity
             case ACTION_OPEN_DOCUMENT_TREE_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     Uri treeUri = data.getData();
+
+                    // Persist permissions
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        grantUriPermission(getPackageName(), treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                        final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                                              Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+
+                        getContentResolver().takePersistableUriPermission(treeUri, takeFlags);
+                    }
 
                     DirectoryRepoFragment fragment =
                             (DirectoryRepoFragment) getSupportFragmentManager()
