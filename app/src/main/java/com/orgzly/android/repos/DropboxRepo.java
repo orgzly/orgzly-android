@@ -40,8 +40,8 @@ public class DropboxRepo implements Repo {
     }
 
     @Override
-    public VersionedRook storeBook(File file, String path) throws IOException {
-        return client.upload(file, repoUri, path);
+    public VersionedRook storeBook(File file, String fileName) throws IOException {
+        return client.upload(file, repoUri, fileName);
     }
 
     @Override

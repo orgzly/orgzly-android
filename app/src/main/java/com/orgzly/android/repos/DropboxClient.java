@@ -221,8 +221,8 @@ public class DropboxClient {
 
 
     /** Upload file to Dropbox. */
-    public VersionedRook upload(File file, Uri repoUri, String path) throws IOException {
-        Uri bookUri = repoUri.buildUpon().appendPath(path).build();
+    public VersionedRook upload(File file, Uri repoUri, String fileName) throws IOException {
+        Uri bookUri = repoUri.buildUpon().appendPath(fileName).build();
 
         if (! isLinked()) {
             throw new IOException(NOT_LINKED);
@@ -231,8 +231,6 @@ public class DropboxClient {
         if (file.length() > UPLOAD_FILE_SIZE_LIMIT * 1024 * 1024) {
             throw new IOException(LARGE_FILE);
         }
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Saving " + path + " to Dropbox (overwriting) ...");
 
         FileMetadata metadata;
         InputStream in = new FileInputStream(file);

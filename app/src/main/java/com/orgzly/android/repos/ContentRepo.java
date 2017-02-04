@@ -109,24 +109,20 @@ public class ContentRepo implements Repo {
         return new VersionedRook(repoUri, uri, rev, mtime);
     }
 
-    /**
-     *
-     * @param path Full path where to store the file, including the file name
-     */
     @Override
-    public VersionedRook storeBook(File file, String path) throws IOException {
+    public VersionedRook storeBook(File file, String fileName) throws IOException {
         if (!file.exists()) {
             throw new FileNotFoundException("File " + file + " does not exist");
         }
 
         // Delete existing file
-        DocumentFile existingFile = repoDocumentFile.findFile(path);
+        DocumentFile existingFile = repoDocumentFile.findFile(fileName);
         if (existingFile != null) {
             existingFile.delete();
         }
 
         // Create new file
-        DocumentFile destinationFile = repoDocumentFile.createFile("text/*", path);
+        DocumentFile destinationFile = repoDocumentFile.createFile("text/*", fileName);
 
         Uri uri = destinationFile.getUri();
 

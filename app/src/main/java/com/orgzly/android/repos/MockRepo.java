@@ -56,12 +56,12 @@ public class MockRepo implements Repo {
     }
 
     @Override
-    public VersionedRook storeBook(File file, String path) throws IOException {
+    public VersionedRook storeBook(File file, String fileName) throws IOException {
         try {
             Thread.sleep(SLEEP_FOR_STORE_BOOK);
         } catch (InterruptedException e) { }
 
-        return localDbRepo.storeBook(file, path);
+        return localDbRepo.storeBook(file, fileName);
     }
 
     @Override

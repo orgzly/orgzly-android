@@ -105,19 +105,15 @@ public class DirectoryRepo implements Repo {
         return new VersionedRook(repoUri, uri, rev, mtime);
     }
 
-    /**
-     *
-     * @param path Full path where to store the file, including the file name
-     */
     @Override
-    public VersionedRook storeBook(File file, String path) throws IOException {
+    public VersionedRook storeBook(File file, String fileName) throws IOException {
         if (!file.exists()) {
             throw new FileNotFoundException("File " + file + " does not exist");
         }
 
-        File destinationFile = new File(mDirectory, path);
+        File destinationFile = new File(mDirectory, fileName);
 
-        /* Create directory. */
+        /* Create necessary directories. */
         createDir(destinationFile.getParentFile());
 
         String content = MiscUtils.readStringFromFile(file);
@@ -126,7 +122,7 @@ public class DirectoryRepo implements Repo {
         String rev = String.valueOf(destinationFile.lastModified());
         long mtime = destinationFile.lastModified();
 
-        Uri uri = repoUri.buildUpon().appendPath(path).build();
+        Uri uri = repoUri.buildUpon().appendPath(fileName).build();
 
         return new VersionedRook(repoUri, uri, rev, mtime);
     }

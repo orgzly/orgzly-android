@@ -33,7 +33,7 @@ public interface Repo {
     /**
      * Uploads book storing it under given filename under repo's url.
      */
-    VersionedRook storeBook(File file, String path) throws IOException;
+    VersionedRook storeBook(File file, String fileName) throws IOException;
 
     // VersionedRook renameBook(Uri from, String name) throws IOException;
 
