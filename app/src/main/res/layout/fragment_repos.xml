@@ -41,7 +41,6 @@
 
         <Button
             android:id="@+id/fragment_repos_dropbox"
-            style="@style/RaisedButton"
             android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,7 +55,6 @@
 
         <Button
             android:id="@+id/fragment_repos_directory"
-            style="@style/RaisedButton"
             android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

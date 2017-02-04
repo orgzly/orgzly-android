@@ -28,7 +28,6 @@
 
         <Button
             android:id="@+id/fragment_repo_directory_browse_button"
-            style="@style/RaisedButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/fragment_padding"
