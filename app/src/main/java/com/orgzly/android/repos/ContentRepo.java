@@ -2,6 +2,8 @@ package com.orgzly.android.repos;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
+import android.provider.DocumentsContract;
 import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 
@@ -117,13 +119,18 @@ public class ContentRepo implements Repo {
             throw new FileNotFoundException("File " + file + " does not exist");
         }
 
-//        /* Create directory. */
-//        createDir(destinationFile.getParentFile());
+        // Delete existing file
+        DocumentFile existingFile = repoDocumentFile.findFile(path);
+        if (existingFile != null) {
+            existingFile.delete();
+        }
 
+        // Create new file
         DocumentFile destinationFile = repoDocumentFile.createFile("text/*", path);
+
         Uri uri = destinationFile.getUri();
 
-        /* Write file to uri. */
+        /* Write file content to uri. */
         OutputStream out = context.getContentResolver().openOutputStream(uri);
         try {
             MiscUtils.writeFileToStream(file, out);
