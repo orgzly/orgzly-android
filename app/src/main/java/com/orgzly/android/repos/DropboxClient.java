@@ -185,14 +185,14 @@ public class DropboxClient {
     /**
      * Download file from Dropbox and store it to a local file.
      */
-    public VersionedRook download(Rook rook, File localFile) throws IOException {
+    public VersionedRook download(Uri repoUri, Uri uri, File localFile) throws IOException {
         if (! isLinked()) {
             throw new IOException(NOT_LINKED);
         }
         OutputStream out = new BufferedOutputStream(new FileOutputStream(localFile));
 
         try {
-            Metadata pathMetadata = dbxClient.files().getMetadata(rook.getUri().getPath());
+            Metadata pathMetadata = dbxClient.files().getMetadata(uri.getPath());
 
             if (pathMetadata instanceof FileMetadata) {
                 FileMetadata metadata = (FileMetadata) pathMetadata;
@@ -202,17 +202,17 @@ public class DropboxClient {
 
                 dbxClient.files().download(metadata.getPathLower(), rev).download(out);
 
-                return new VersionedRook(rook, rev, mtime);
+                return new VersionedRook(repoUri, uri, rev, mtime);
 
             } else {
-                throw new IOException("Failed downloading Dropbox file " + rook + ": Not a file");
+                throw new IOException("Failed downloading Dropbox file " + uri + ": Not a file");
             }
 
         } catch (DbxException e) {
             if (e.getMessage() != null) {
-                throw new IOException("Failed downloading Dropbox file " + rook + ": " + e.getMessage());
+                throw new IOException("Failed downloading Dropbox file " + uri + ": " + e.getMessage());
             } else {
-                throw new IOException("Failed downloading Dropbox file " + rook + ": " + e.toString());
+                throw new IOException("Failed downloading Dropbox file " + uri + ": " + e.toString());
             }
         } finally {
             out.close();

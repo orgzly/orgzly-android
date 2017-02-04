@@ -79,7 +79,7 @@ public class LocalDbRepoTest extends OrgzlyTest {
 
         File tmpFile = shelf.getTempBookFile();
         try {
-            repo.retrieveBook(vrook, tmpFile);
+            repo.retrieveBook(vrook.getUri(), tmpFile);
             String content = MiscUtils.readStringFromFile(tmpFile);
             assertEquals("book content\n" + "\n" + "* First note\n" + "** Second note", content);
         } finally {

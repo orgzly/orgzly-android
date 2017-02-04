@@ -40,8 +40,8 @@ public class LocalDbRepo implements Repo {
     }
 
     @Override
-    public VersionedRook retrieveBook(Rook rook, File file) throws IOException {
-        return LocalDbRepoClient.retrieveBook(mContext, rook, file);
+    public VersionedRook retrieveBook(Uri uri, File file) throws IOException {
+        return LocalDbRepoClient.retrieveBook(mContext, repoUri, uri, file);
     }
 
     @Override

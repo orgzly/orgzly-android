@@ -93,8 +93,8 @@ public class DirectoryRepo implements Repo {
     }
 
     @Override
-    public VersionedRook retrieveBook(Rook rook, File destinationFile) throws IOException {
-        File sourceFile = new File(rook.getUri().getPath());
+    public VersionedRook retrieveBook(Uri uri, File destinationFile) throws IOException {
+        File sourceFile = new File(uri.getPath());
 
         /* "Download" the file. */
         MiscUtils.copyFile(sourceFile, destinationFile);
@@ -102,7 +102,7 @@ public class DirectoryRepo implements Repo {
         String rev = String.valueOf(sourceFile.lastModified());
         long mtime = sourceFile.lastModified();
 
-        return new VersionedRook(rook, rev, mtime);
+        return new VersionedRook(repoUri, uri, rev, mtime);
     }
 
     /**

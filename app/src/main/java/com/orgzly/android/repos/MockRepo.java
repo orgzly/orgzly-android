@@ -47,12 +47,12 @@ public class MockRepo implements Repo {
     }
 
     @Override
-    public VersionedRook retrieveBook(Rook rook, File file) throws IOException {
+    public VersionedRook retrieveBook(Uri uri, File file) throws IOException {
         try {
             Thread.sleep(SLEEP_FOR_RETRIEVE_BOOK);
         } catch (InterruptedException e) { }
 
-        return localDbRepo.retrieveBook(rook, file);
+        return localDbRepo.retrieveBook(uri, file);
     }
 
     @Override

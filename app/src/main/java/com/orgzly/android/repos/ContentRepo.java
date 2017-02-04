@@ -92,11 +92,11 @@ public class ContentRepo implements Repo {
     }
 
     @Override
-    public VersionedRook retrieveBook(Rook rook, File destinationFile) throws IOException {
-        DocumentFile sourceFile = DocumentFile.fromSingleUri(context, rook.getUri());
+    public VersionedRook retrieveBook(Uri uri, File destinationFile) throws IOException {
+        DocumentFile sourceFile = DocumentFile.fromSingleUri(context, uri);
 
         /* "Download" the file. */
-        InputStream is = context.getContentResolver().openInputStream(rook.getUri());
+        InputStream is = context.getContentResolver().openInputStream(uri);
         try {
             MiscUtils.writeStreamToFile(is, destinationFile);
         } finally {
@@ -106,7 +106,7 @@ public class ContentRepo implements Repo {
         String rev = String.valueOf(sourceFile.lastModified());
         long mtime = sourceFile.lastModified();
 
-        return new VersionedRook(rook, rev, mtime);
+        return new VersionedRook(repoUri, uri, rev, mtime);
     }
 
     /**

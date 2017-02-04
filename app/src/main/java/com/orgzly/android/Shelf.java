@@ -510,7 +510,7 @@ public class Shelf {
 
         try {
             /* Download from repo. */
-            VersionedRook vrook = repo.retrieveBook(rook, tmpFile);
+            VersionedRook vrook = repo.retrieveBook(rook.getUri(), tmpFile);
 
             String fileName = BookName.getFileName(mContext, vrook.getUri());
             BookName bookName = BookName.fromFileName(fileName);

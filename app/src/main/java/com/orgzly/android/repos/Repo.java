@@ -26,16 +26,17 @@ public interface Repo {
     List<VersionedRook> getBooks() throws IOException;
 
     /**
-     * Download latest available revision of the book and store its content to {@code File}.
+     * Download the latest available revision of the book and store its content to {@code File}.
      */
-    VersionedRook retrieveBook(Rook rook, File file) throws IOException;
+    VersionedRook retrieveBook(Uri uri, File destination) throws IOException;
 
     /**
      * Uploads book storing it under given filename under repo's url.
      */
     VersionedRook storeBook(File file, String path) throws IOException;
 
-    // TODO: Use Rooks to know uri's repo for creating VersionedRook
+    // VersionedRook renameBook(Uri from, String name) throws IOException;
+
     VersionedRook moveBook(Uri from, Uri to) throws IOException;
 
     void delete(String path) throws IOException;

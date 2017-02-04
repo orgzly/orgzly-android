@@ -36,22 +36,22 @@ public class LocalDbRepoClient {
         context.getContentResolver().delete(ProviderContract.LocalDbRepo.ContentUri.dbRepos(), null, null);
     }
 
-    public static VersionedRook retrieveBook(Context context, Rook rook, File file) throws IOException {
+    public static VersionedRook retrieveBook(Context context, Uri repoUri, Uri uri, File file) throws IOException {
         Cursor cursor = context.getContentResolver().query(
                 ProviderContract.LocalDbRepo.ContentUri.dbRepos(),
                 null,
                 ProviderContract.LocalDbRepo.Param.URL + "=?",
-                new String[] { rook.getUri().toString() },
+                new String[] { uri.toString() },
                 null);
 
         try {
 
             if (!cursor.moveToFirst()) {
-                throw new IOException("Book " + rook.getUri() + " not found in repo");
+                throw new IOException("Book " + uri + " not found in repo");
             }
 
             if (cursor.getCount() != 1) {
-                throw new IOException("Found " + cursor.getCount() + " books matching name " + rook.getUri());
+                throw new IOException("Found " + cursor.getCount() + " books matching name " + uri);
             }
 
             /* Get data from Cursor. */
@@ -63,7 +63,7 @@ public class LocalDbRepoClient {
             MiscUtils.writeStringToFile(content, file);
 
             /* Return book. */
-            return new VersionedRook(rook, revision, mtime);
+            return new VersionedRook(repoUri, uri, revision, mtime);
 
         } finally {
             cursor.close();

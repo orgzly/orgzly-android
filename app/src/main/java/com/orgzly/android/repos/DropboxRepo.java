@@ -35,8 +35,8 @@ public class DropboxRepo implements Repo {
     }
 
     @Override
-    public VersionedRook retrieveBook(Rook rook, File file) throws IOException {
-        return client.download(rook, file);
+    public VersionedRook retrieveBook(Uri uri, File file) throws IOException {
+        return client.download(repoUri, uri, file);
     }
 
     @Override
