@@ -172,7 +172,7 @@ public class Shelf {
         if (deleteLinked) {
             Repo repo = RepoFactory.getFromUri(mContext, book.getLink().getRepoUri());
             if (repo != null) {
-                repo.delete(book.getLink().getUri().getPath());
+                repo.delete(book.getLink().getUri());
             }
         }
 

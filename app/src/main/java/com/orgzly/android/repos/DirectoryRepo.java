@@ -149,12 +149,12 @@ public class DirectoryRepo implements Repo {
     }
 
     @Override
-    public void delete(String path) throws IOException {
-        File file = new File(path);
+    public void delete(Uri uri) throws IOException {
+        File file = new File(uri.getPath());
 
         if (file.exists()) {
             if (! file.delete()) {
-                throw new IOException("Failed deleting file " + path);
+                throw new IOException("Failed deleting file " + uri.getPath());
             }
         }
     }

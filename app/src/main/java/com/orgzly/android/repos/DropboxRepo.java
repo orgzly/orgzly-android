@@ -53,10 +53,8 @@ public class DropboxRepo implements Repo {
     }
 
     @Override
-    public void delete(String uriString) throws IOException {
-        String path = Uri.parse(uriString).getPath();
-
-        client.delete(path);
+    public void delete(Uri uri) throws IOException {
+        client.delete(uri.getPath());
     }
 
     @Override

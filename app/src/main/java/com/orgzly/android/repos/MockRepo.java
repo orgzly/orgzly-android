@@ -74,7 +74,6 @@ public class MockRepo implements Repo {
     }
 
     @Override
-    public void delete(String url) throws IOException {
-
+    public void delete(Uri uri) throws IOException {
     }
 }

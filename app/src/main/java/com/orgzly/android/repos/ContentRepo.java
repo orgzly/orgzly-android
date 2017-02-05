@@ -173,12 +173,12 @@ public class ContentRepo implements Repo {
     }
 
     @Override
-    public void delete(String path) throws IOException {
-        DocumentFile file = repoDocumentFile.findFile(path);
+    public void delete(Uri uri) throws IOException {
+        DocumentFile docFile = DocumentFile.fromSingleUri(context, uri);
 
-        if (file.exists()) {
-            if (! file.delete()) {
-                throw new IOException("Failed deleting file " + path);
+        if (docFile != null && docFile.exists()) {
+            if (! docFile.delete()) {
+                throw new IOException("Failed deleting document " + uri);
             }
         }
     }
