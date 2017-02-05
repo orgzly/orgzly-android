@@ -129,7 +129,7 @@ public class DirectoryRepo implements Repo {
     }
 
     @Override
-    public VersionedRook moveBook(Uri fromUri, String name) throws IOException {
+    public VersionedRook renameBook(Uri fromUri, String name) throws IOException {
         File fromFile = new File(fromUri.getPath());
         Uri newUri = UriUtils.getUriForNewName(fromUri, name);
         File toFile = new File(newUri.getPath());

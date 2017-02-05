@@ -605,7 +605,7 @@ public class Shelf {
 
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Moving book from " + vrook.getUri() + " to " + newUri);
 
-            VersionedRook movedVrook = repo.moveBook(vrook.getUri(), name);
+            VersionedRook movedVrook = repo.renameBook(vrook.getUri(), name);
 
             book.setLastSyncedToRook(movedVrook);
 

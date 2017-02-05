@@ -60,7 +60,7 @@ public class LocalDbRepo implements Repo {
     }
 
     @Override
-    public VersionedRook moveBook(Uri fromUri, String name) throws IOException {
+    public VersionedRook renameBook(Uri fromUri, String name) throws IOException {
         Uri toUri = UriUtils.getUriForNewName(fromUri, name);
         return LocalDbRepoClient.renameBook(mContext, fromUri, toUri);
     }

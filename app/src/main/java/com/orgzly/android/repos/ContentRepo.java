@@ -143,7 +143,7 @@ public class ContentRepo implements Repo {
     }
 
     @Override
-    public VersionedRook moveBook(Uri from, String name) throws IOException {
+    public VersionedRook renameBook(Uri from, String name) throws IOException {
         throw new UnsupportedOperationException("Not yet implemented for ContentRepo");
     }
 

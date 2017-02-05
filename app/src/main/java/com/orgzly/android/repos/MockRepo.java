@@ -65,12 +65,12 @@ public class MockRepo implements Repo {
     }
 
     @Override
-    public VersionedRook moveBook(Uri fromUri, String name) throws IOException {
+    public VersionedRook renameBook(Uri fromUri, String name) throws IOException {
         try {
             Thread.sleep(SLEEP_FOR_STORE_BOOK);
         } catch (InterruptedException e) { }
 
-        return localDbRepo.moveBook(fromUri, name);
+        return localDbRepo.renameBook(fromUri, name);
     }
 
     @Override

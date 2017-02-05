@@ -387,7 +387,7 @@ public class SyncTest extends OrgzlyTest {
         shelf.renameBook(book, "BookyRenamed");
 
         // Rename rook
-        repo.moveBook(Uri.parse("mock://repo-a/Booky.org"), "BookyRenamed");
+        repo.renameBook(Uri.parse("mock://repo-a/Booky.org"), "BookyRenamed");
 
         vrooks = repo.getBooks();
 
@@ -412,7 +412,7 @@ public class SyncTest extends OrgzlyTest {
 
         assertEquals(1, repo.getBooks().size());
 
-        repo.moveBook(vrook.getUri(), "notebook-renamed");
+        repo.renameBook(vrook.getUri(), "notebook-renamed");
 
         assertEquals(1, repo.getBooks().size());
         assertEquals(repo.getUri() + "/notebook-renamed.org", repo.getBooks().get(0).getUri().toString());
@@ -433,7 +433,7 @@ public class SyncTest extends OrgzlyTest {
 
         assertEquals(1, repo.getBooks().size());
 
-        repo.moveBook(vrook.getUri(), "notebook-renamed");
+        repo.renameBook(vrook.getUri(), "notebook-renamed");
 
         assertEquals(1, repo.getBooks().size());
         assertEquals(repo.getUri() + "/notebook-renamed.org", repo.getBooks().get(0).getUri().toString());
