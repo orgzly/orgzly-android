@@ -3,6 +3,8 @@ package com.orgzly.android.repos;
 import android.content.Context;
 import android.net.Uri;
 
+import com.orgzly.android.util.UriUtils;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -45,8 +47,9 @@ public class DropboxRepo implements Repo {
     }
 
     @Override
-    public VersionedRook moveBook(Uri from, Uri to) throws IOException {
-        return client.move(repoUri, from, to);
+    public VersionedRook moveBook(Uri fromUri, String name) throws IOException {
+        Uri toUri = UriUtils.getUriForNewName(fromUri, name);
+        return client.move(repoUri, fromUri, toUri);
     }
 
     @Override

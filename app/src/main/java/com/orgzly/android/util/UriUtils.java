@@ -51,4 +51,19 @@ public class UriUtils {
         }
         return builder.build();
     }
+
+    /**
+     * Replaces the name part of the uri, leaving everything (including the extension) the same.
+     */
+    public static Uri getUriForNewName(Uri uri, String name) {
+        BookName bookName = BookName.fromFileName(uri.getLastPathSegment());
+        BookName.Format format = bookName.getFormat();
+
+        String newFilename = BookName.fileName(name, format);
+
+        return UriUtils.dirUri(uri) // Old Uri without file name
+                .buildUpon()
+                .appendPath(newFilename) // New file name
+                .build();
+    }
 }

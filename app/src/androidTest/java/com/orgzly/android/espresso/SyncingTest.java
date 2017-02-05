@@ -576,7 +576,7 @@ public class SyncingTest extends OrgzlyTest {
         sync();
 
         onListItem(0).perform(click()); // Open notebook
-        onListItem(1).perform(click()); // Open note
+        onListItem(0).perform(click()); // Open note
         onView(withId(R.id.fragment_note_title)).perform(replaceText("New title"));
         onView(withId(R.id.done)).perform(click());
 

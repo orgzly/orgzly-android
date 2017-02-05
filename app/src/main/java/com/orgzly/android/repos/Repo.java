@@ -37,7 +37,7 @@ public interface Repo {
 
     // VersionedRook renameBook(Uri from, String name) throws IOException;
 
-    VersionedRook moveBook(Uri from, Uri to) throws IOException;
+    VersionedRook moveBook(Uri from, String name) throws IOException;
 
     void delete(String path) throws IOException;
 

@@ -143,22 +143,8 @@ public class ContentRepo implements Repo {
     }
 
     @Override
-    public VersionedRook moveBook(Uri from, Uri to) throws IOException {
-        File fromFile = new File(from.getPath());
-        File toFile = new File(to.getPath());
-
-        if (toFile.exists()) {
-            throw new IOException("File " + toFile + " already exists");
-        }
-
-        if (! fromFile.renameTo(toFile)) {
-            throw new IOException("Failed renaming " + fromFile + " to " + toFile);
-        }
-
-        String rev = String.valueOf(toFile.lastModified());
-        long mtime = toFile.lastModified();
-
-        return new VersionedRook(getUri(), to, rev, mtime);
+    public VersionedRook moveBook(Uri from, String name) throws IOException {
+        throw new UnsupportedOperationException("Not yet implemented for ContentRepo");
     }
 
     @Override

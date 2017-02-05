@@ -277,7 +277,7 @@ public class DropboxClient {
             String rev = metadata.getRev();
             long mtime = metadata.getServerModified().getTime();
 
-            return new VersionedRook(new Rook(repoUri, to), rev, mtime);
+            return new VersionedRook(repoUri, to, rev, mtime);
 
         } catch (Exception e) {
             e.printStackTrace();

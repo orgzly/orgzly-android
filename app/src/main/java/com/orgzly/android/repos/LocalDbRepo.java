@@ -5,6 +5,7 @@ import android.net.Uri;
 
 import com.orgzly.android.provider.clients.LocalDbRepoClient;
 import com.orgzly.android.util.MiscUtils;
+import com.orgzly.android.util.UriUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,8 +60,9 @@ public class LocalDbRepo implements Repo {
     }
 
     @Override
-    public VersionedRook moveBook(Uri from, Uri to) throws IOException {
-        return LocalDbRepoClient.renameBook(mContext, from, to);
+    public VersionedRook moveBook(Uri fromUri, String name) throws IOException {
+        Uri toUri = UriUtils.getUriForNewName(fromUri, name);
+        return LocalDbRepoClient.renameBook(mContext, fromUri, toUri);
     }
 
     @Override
