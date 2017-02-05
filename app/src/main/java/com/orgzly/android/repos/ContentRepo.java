@@ -115,13 +115,13 @@ public class ContentRepo implements Repo {
             throw new FileNotFoundException("File " + file + " does not exist");
         }
 
-        // Delete existing file
+        /* Delete existing file. */
         DocumentFile existingFile = repoDocumentFile.findFile(fileName);
         if (existingFile != null) {
             existingFile.delete();
         }
 
-        // Create new file
+        /* Create new file. */
         DocumentFile destinationFile = repoDocumentFile.createFile("text/*", fileName);
 
         Uri uri = destinationFile.getUri();
@@ -144,7 +144,32 @@ public class ContentRepo implements Repo {
 
     @Override
     public VersionedRook renameBook(Uri from, String name) throws IOException {
-        throw new UnsupportedOperationException("Not yet implemented for ContentRepo");
+        DocumentFile fromDocFile = DocumentFile.fromSingleUri(context, from);
+        BookName bookName = BookName.fromFileName(fromDocFile.getName());
+        String newFileName = BookName.fileName(name, bookName.getFormat());
+
+        /* Check if document already exists. */
+        DocumentFile existingFile = repoDocumentFile.findFile(newFileName);
+        if (existingFile != null) {
+            throw new IOException("File at " + existingFile.getUri() + " already exists");
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Uri newUri = DocumentsContract.renameDocument(context.getContentResolver(), from, newFileName);
+
+            long mtime = fromDocFile.lastModified();
+            String rev = String.valueOf(mtime);
+
+            return new VersionedRook(getUri(), newUri, rev, mtime);
+
+        } else {
+            /*
+             * This should never happen, unless the user downgraded
+             * and uses the same repo uri.
+             */
+            throw new IOException("Renaming notebooks is not supported on your device " +
+                                  "(requires at least Lollipop)");
+        }
     }
 
     @Override
