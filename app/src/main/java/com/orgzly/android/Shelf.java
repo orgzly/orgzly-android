@@ -594,17 +594,6 @@ public class Shelf {
             VersionedRook vrook = book.getLastSyncedToRook();
             Repo repo = RepoFactory.getFromUri(mContext, vrook.getRepoUri());
 
-            String fileName = BookName.getFileName(mContext, vrook.getUri());
-            BookName bookName = BookName.fromFileName(fileName);
-            String newFilename = BookName.fileName(name, bookName.getFormat());
-
-            Uri newUri = UriUtils.dirUri(vrook.getUri()) // Old URI without file name
-                    .buildUpon()
-                    .appendPath(newFilename) // New file name
-                    .build();
-
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Moving book from " + vrook.getUri() + " to " + newUri);
-
             VersionedRook movedVrook = repo.renameBook(vrook.getUri(), name);
 
             book.setLastSyncedToRook(movedVrook);

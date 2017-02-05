@@ -202,7 +202,7 @@
     <string name="share_type_not_supported">Share type %s is not supported</string>
 
     <string name="repositories">Repositories</string>
-    <string name="invalid_repo_url">Invalid repository URL %s</string>
+    <string name="invalid_repo_url">Invalid repository URL “%s”</string>
     <string name="message_unsupported_repository_type">Unsupported repository type</string>
     <string name="also_delete_linked_book">Delete linked remote notebook</string>
     <string name="message_deleting_book_failed">Deleting notebook failed: %s</string>

@@ -124,6 +124,10 @@ public class ContentRepo implements Repo {
         /* Create new file. */
         DocumentFile destinationFile = repoDocumentFile.createFile("text/*", fileName);
 
+        if (destinationFile == null) {
+            throw new IOException("Failed creating " + fileName + " in " + repoUri);
+        }
+
         Uri uri = destinationFile.getUri();
 
         /* Write file content to uri. */

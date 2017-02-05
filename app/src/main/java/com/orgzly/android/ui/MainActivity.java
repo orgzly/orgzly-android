@@ -943,8 +943,6 @@ public class MainActivity extends CommonActivity
         final View dialogView = View.inflate(this, R.layout.dialog_book_rename, null);
         final TextInputLayout nameInputLayout = (TextInputLayout) dialogView.findViewById(R.id.name_input_layout);
         final EditText name = (EditText) dialogView.findViewById(R.id.name);
-        final TextInputLayout linkInputLayout = (TextInputLayout) dialogView.findViewById(R.id.link_input_layout);
-        final TextView linkUriText = (TextView) dialogView.findViewById(R.id.link);
 
         Uri originalLinkUri = book.getLink() != null ? book.getLink().getUri() : null;
 
@@ -970,15 +968,6 @@ public class MainActivity extends CommonActivity
                         .setView(dialogView);
 
         name.setText(book.getName());
-
-        if (originalLinkUri != null) {
-            linkInputLayout.setVisibility(View.VISIBLE);
-            linkUriText.setText(UriUtils.friendlyUri(originalLinkUri));
-            // builder.setMessage(originalLinkUri.toString());
-
-        } else {
-            linkInputLayout.setVisibility(View.GONE);
-        }
 
         final AlertDialog dialog = builder.create();
 
@@ -1009,18 +998,6 @@ public class MainActivity extends CommonActivity
         });
 
         if (originalLinkUri != null) {
-            // Get notebook format from the original link uri
-            String fileName = BookName.getFileName(this, originalLinkUri);
-            BookName bookName = BookName.fromFileName(fileName);
-            final BookName.Format fileFormat = bookName.getFormat();
-
-            List<String> pathSegments = originalLinkUri.getPathSegments();
-            Uri.Builder uriBuilder = originalLinkUri.buildUpon().path(null);
-            for (int i = 0; i < pathSegments.size() - 1; i++) {
-                uriBuilder.appendPath(pathSegments.get(i));
-            }
-            final Uri newUriBase = uriBuilder.build();
-
             name.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -1032,19 +1009,8 @@ public class MainActivity extends CommonActivity
 
                 @Override
                 public void afterTextChanged(Editable str) {
-                    /* Update link URI. */
-                    String fileName = BookName.fileName(str.toString(), fileFormat);
-                    Uri newUri = newUriBase.buildUpon().appendPath(fileName).build();
-
-                    if (! TextUtils.isEmpty(str)) {
-                        linkUriText.setText(UriUtils.friendlyUri(newUri));
-                        linkInputLayout.setVisibility(View.VISIBLE);
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-
-                    } else { /* Name empty. */
-                        linkInputLayout.setVisibility(View.GONE);
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                    }
+                    /* Disable the button is nothing is entered. */
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(!TextUtils.isEmpty(str));
                 }
             });
         }

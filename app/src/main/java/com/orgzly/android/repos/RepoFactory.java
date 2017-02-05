@@ -34,7 +34,7 @@ public class RepoFactory {
                     case MockRepo.SCHEME:
                         return new MockRepo(context, uriString);
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
