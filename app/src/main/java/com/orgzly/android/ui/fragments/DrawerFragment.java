@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.StyleableRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ListFragment;
@@ -219,25 +220,27 @@ public class DrawerFragment extends ListFragment
 
                 DrawerItem item = getItem(position);
 
-                TypedArray typedArray = getContext().obtainStyledAttributes(new int[] {
-                        item.textSize, item.leftIconResource});
+                // item.textSize, item.leftIconResource});
+                TypedArray iconAttrs = getContext().obtainStyledAttributes(R.styleable.Icons);
+                TypedArray fontSizeAttrs = getContext().obtainStyledAttributes(R.styleable.FontSize);
 
                 /* Set text size. */
-                int t = typedArray.getDimensionPixelSize(0, -1);
+                int t = fontSizeAttrs.getDimensionPixelSize(item.textSize, -1);
                 if (t != -1) {
                     holder.text.setTextSize(TypedValue.COMPLEX_UNIT_PX, t);
                 }
 
 
                 /* Set or hide left icon. */
-                if (item.leftIconResource != 0) {
-                    holder.leftIcon.setImageResource(typedArray.getResourceId(1, -1));
+                if (item.icon != 0) {
+                    holder.leftIcon.setImageResource(iconAttrs.getResourceId(item.icon, -1));
                     holder.leftIcon.setVisibility(View.VISIBLE);
                 } else {
                     holder.leftIcon.setVisibility(View.INVISIBLE);
                 }
 
-                typedArray.recycle();
+                iconAttrs.recycle();
+                fontSizeAttrs.recycle();
 
 
                 /* Set or remove right icon. */
@@ -395,13 +398,16 @@ public class DrawerFragment extends ListFragment
     }
 
     public class DrawerItem {
-        public String name;
-        public int leftIconResource = 0;
-        public boolean isModified = false;
-        public int typeface = Typeface.NORMAL;
-        public float alpha = 1;
-        public int textSize = R.attr.item_drawer_text_size;
-        public int bgColor = android.R.color.transparent;
+        String name;
+        float alpha = 1;
+        boolean isModified = false;
+
+        @StyleableRes int icon = 0; // No icon by default
+
+        int typeface = Typeface.NORMAL;
+        @StyleableRes int textSize = R.styleable.FontSize_item_drawer_text_size;
+
+        int bgColor = android.R.color.transparent;
 
         public String toString() {
             return name;
@@ -409,33 +415,33 @@ public class DrawerFragment extends ListFragment
     }
 
     public class BooksItem extends DrawerItem {
-        public BooksItem() {
-            this.leftIconResource = R.attr.oic_drawer_notebooks;
-            this.textSize = R.attr.item_drawer_title_text_size;
+        BooksItem() {
+            this.icon = R.styleable.Icons_oic_drawer_notebooks;
+            this.textSize = R.styleable.FontSize_item_drawer_title_text_size;
             this.bgColor = R.color.drawer_title_bg_color;
         }
     }
 
     public class FiltersItem extends DrawerItem {
-        public FiltersItem() {
-            this.leftIconResource = R.attr.oic_drawer_filters;
-            this.textSize = R.attr.item_drawer_title_text_size;
+        FiltersItem() {
+            this.icon = R.styleable.Icons_oic_drawer_filters;
+            this.textSize = R.styleable.FontSize_item_drawer_title_text_size;
             this.bgColor = R.color.drawer_title_bg_color;
         }
     }
 
     public class SettingsItem extends DrawerItem {
-        public SettingsItem() {
-            this.leftIconResource = R.attr.oic_drawer_settings;
+        SettingsItem() {
+            this.icon = R.styleable.Icons_oic_drawer_settings;
             this.bgColor = R.color.drawer_title_bg_color;
-            this.textSize = R.attr.item_drawer_title_text_size;
+            this.textSize = R.styleable.FontSize_item_drawer_title_text_size;
         }
     }
 
     public class FilterItem extends DrawerItem {
         public String query;
 
-        public FilterItem(String name, String query) {
+        FilterItem(String name, String query) {
             this.name = name;
             this.query = query;
         }
@@ -444,17 +450,17 @@ public class DrawerFragment extends ListFragment
     public class BookItem extends DrawerItem {
         public long id;
 
-        public BookItem(String name, long id) {
+        BookItem(String name, long id) {
             this.name = name;
             this.id = id;
         }
     }
 
     private class ViewHolder {
-        public ViewGroup container;
-        public TextView text;
-        public ImageView leftIcon;
-        public ImageView rightIcon;
-        public View activeFlag;
+        ViewGroup container;
+        TextView text;
+        ImageView leftIcon;
+        ImageView rightIcon;
+        View activeFlag;
     }
 }
