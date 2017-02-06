@@ -272,18 +272,17 @@ public class DropboxRepoFragment extends RepoFragment {
         Activity activity = getActivity();
 
         if (mListener != null && activity != null) {
-            TypedArray typedArray = activity.obtainStyledAttributes(new int[] {
-                    R.attr.oic_dropbox_linked, R.attr.oic_dropbox_not_linked});
+            TypedArray typedArray = activity.obtainStyledAttributes(R.styleable.Icons);
 
             String text;
             int imageResource;
 
             if (mListener.isDropboxLinked()) {
                 text = getString(R.string.repo_dropbox_button_linked);
-                imageResource = typedArray.getResourceId(0, 0);
+                imageResource = typedArray.getResourceId(R.styleable.Icons_oic_dropbox_linked, 0);
             } else {
                 text = getString(R.string.repo_dropbox_button_not_linked);
-                imageResource = typedArray.getResourceId(1, 0);
+                imageResource = typedArray.getResourceId(R.styleable.Icons_oic_dropbox_not_linked, 0);
             }
 
             typedArray.recycle();

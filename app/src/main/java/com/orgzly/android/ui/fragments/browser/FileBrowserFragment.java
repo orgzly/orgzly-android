@@ -241,20 +241,19 @@ public class FileBrowserFragment extends BrowserFragment {
         List<File> list = Arrays.asList(files);
         Collections.sort(list, new FileTypeComparator());
 
-        TypedArray typedArray = getActivity().obtainStyledAttributes(new int[] {
-                R.attr.oic_browser_up, R.attr.oic_browser_file, R.attr.oic_browser_directory});
+        TypedArray typedArray = getActivity().obtainStyledAttributes(R.styleable.Icons);
 
         mItemList = new Item[list.size() + 1];
 
-        mItemList[0] = new Item(typedArray.getResourceId(0, 0));
+        mItemList[0] = new Item(typedArray.getResourceId(R.styleable.Icons_oic_browser_up, 0));
 
         for (int i = 0; i < list.size(); i++) {
-            mItemList[i+1] = new Item(typedArray.getResourceId(1, 0), list.get(i).getName());
+            mItemList[i+1] = new Item(typedArray.getResourceId(R.styleable.Icons_oic_browser_file, 0), list.get(i).getName());
 
             /* Update icon if it's a directory. */
             File sel = new File(nextPath, list.get(i).getName());
             if (sel.isDirectory()) {
-                mItemList[i+1].icon = typedArray.getResourceId(2, 0);
+                mItemList[i+1].icon = typedArray.getResourceId(R.styleable.Icons_oic_browser_directory, 0);
             }
         }
 
