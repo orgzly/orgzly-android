@@ -49,6 +49,7 @@ import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.provider.clients.ReposClient;
+import com.orgzly.android.repos.ContentRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.dialogs.WhatsNewDialog;
@@ -1039,13 +1040,21 @@ public class MainActivity extends CommonActivity
             return;
         }
 
-        /* Get all possible values for spinner. */
-        List<String> repoList = new ArrayList<>(repos.keySet());
-        Collections.sort(repoList);
         LinkedHashMap<String, Integer> items = new LinkedHashMap<>();
-        items.put(getString(R.string.no_link), 0);
-        for (int i = 0; i < repoList.size(); i++) {
-            items.put(repoList.get(i), i + 1);
+        int itemIndex = 0;
+
+        /* Add "no link" item. */
+        items.put(getString(R.string.no_link), itemIndex++);
+
+        /* Add repositories.
+         * FIXME: Skipping ContentRepo for now, as we can't construct Uri for a non-existent document.
+         * Repo might need changing to be repo uri + path
+         */
+        for (String repoUri: repos.keySet()) {
+            Repo repo = repos.get(repoUri);
+            if (! (repo instanceof ContentRepo)) {
+                items.put(repoUri, itemIndex++);
+            }
         }
 
         View view = getLayoutInflater().inflate(R.layout.dialog_spinner, null, false);
