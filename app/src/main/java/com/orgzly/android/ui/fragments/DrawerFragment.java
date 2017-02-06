@@ -45,13 +45,12 @@ public class DrawerFragment extends ListFragment
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = DrawerFragment.class.getName();
 
-    private final DrawerItem filtersHeader = new FiltersItem();
+    /* Drawer list items. */
+    private FiltersItem filtersHeader;
     private final List<FilterItem> filters = new ArrayList<>();
-
-    private final DrawerItem booksHeader = new BooksItem();
+    private BooksItem booksHeader;
     private final List<BookItem> books = new ArrayList<>();
-
-    private final DrawerItem settingsHeader = new SettingsItem();
+    private SettingsItem settingsHeader;
 
     private DrawerFragmentListener mListener;
     private ArrayAdapter<DrawerItem> mListAdapter;
@@ -137,6 +136,11 @@ public class DrawerFragment extends ListFragment
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() + " must implement " + DrawerFragmentListener.class);
         }
+
+        /* Setup drawer list's header items. */
+        filtersHeader = new FiltersItem();
+        booksHeader = new BooksItem();
+        settingsHeader = new SettingsItem();
     }
 
     @Override
@@ -311,21 +315,18 @@ public class DrawerFragment extends ListFragment
 
         mListAdapter.clear();
 
-        filtersHeader.name = getString(R.string.searches);
         mListAdapter.add(filtersHeader);
 
         for (DrawerItem item: filters) {
             mListAdapter.add(item);
         }
 
-        booksHeader.name = getString(R.string.notebooks);
         mListAdapter.add(booksHeader);
 
         for (DrawerItem item: books) {
             mListAdapter.add(item);
         }
 
-        settingsHeader.name = getString(R.string.settings);
         mListAdapter.add(settingsHeader);
     }
 
@@ -397,9 +398,20 @@ public class DrawerFragment extends ListFragment
         void onDrawerItemClicked(DrawerItem item);
     }
 
+
+    private class ViewHolder {
+        ViewGroup container;
+        TextView text;
+        ImageView leftIcon;
+        ImageView rightIcon;
+        View activeFlag;
+    }
+
     public class DrawerItem {
         String name;
+
         float alpha = 1;
+
         boolean isModified = false;
 
         @StyleableRes int icon = 0; // No icon by default
@@ -407,33 +419,15 @@ public class DrawerFragment extends ListFragment
         int typeface = Typeface.NORMAL;
         @StyleableRes int textSize = R.styleable.FontSize_item_drawer_text_size;
 
-        int bgColor = android.R.color.transparent;
-
         public String toString() {
             return name;
         }
     }
 
-    public class BooksItem extends DrawerItem {
-        BooksItem() {
-            this.icon = R.styleable.Icons_oic_drawer_notebooks;
-            this.textSize = R.styleable.FontSize_item_drawer_title_text_size;
-            this.bgColor = R.color.drawer_title_bg_color;
-        }
-    }
-
     public class FiltersItem extends DrawerItem {
         FiltersItem() {
+            this.name = getString(R.string.searches);
             this.icon = R.styleable.Icons_oic_drawer_filters;
-            this.textSize = R.styleable.FontSize_item_drawer_title_text_size;
-            this.bgColor = R.color.drawer_title_bg_color;
-        }
-    }
-
-    public class SettingsItem extends DrawerItem {
-        SettingsItem() {
-            this.icon = R.styleable.Icons_oic_drawer_settings;
-            this.bgColor = R.color.drawer_title_bg_color;
             this.textSize = R.styleable.FontSize_item_drawer_title_text_size;
         }
     }
@@ -447,6 +441,14 @@ public class DrawerFragment extends ListFragment
         }
     }
 
+    public class BooksItem extends DrawerItem {
+        BooksItem() {
+            this.name = getString(R.string.notebooks);
+            this.icon = R.styleable.Icons_oic_drawer_notebooks;
+            this.textSize = R.styleable.FontSize_item_drawer_title_text_size;
+        }
+    }
+
     public class BookItem extends DrawerItem {
         public long id;
 
@@ -456,11 +458,11 @@ public class DrawerFragment extends ListFragment
         }
     }
 
-    private class ViewHolder {
-        ViewGroup container;
-        TextView text;
-        ImageView leftIcon;
-        ImageView rightIcon;
-        View activeFlag;
+    public class SettingsItem extends DrawerItem {
+        SettingsItem() {
+            this.name = getString(R.string.settings);
+            this.icon = R.styleable.Icons_oic_drawer_settings;
+            this.textSize = R.styleable.FontSize_item_drawer_title_text_size;
+        }
     }
 }

@@ -23,7 +23,7 @@
         android:id="@+id/drawer_sync_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/drawer_title_bg_color"
+        android:background="@color/sync_button_bg_color"
         android:elevation="2dp" tools:targetApi="21"/>
 
 </LinearLayout>

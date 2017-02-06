@@ -3,7 +3,7 @@
 <!-- Use a minimum number of different colors. -->
 
 <resources>
-    <color name="drawer_title_bg_color">#06000000</color>
+    <color name="sync_button_bg_color">#06000000</color>
 
     <!-- http://www.google.com/design/spec/style/color.html#color-themes -->
     <color name="dark_theme_status_bar">#000000</color>
