@@ -79,7 +79,26 @@ public class CommonActivity extends AppCompatActivity {
 
         setupTheme();
 
+        setupLayoutDirection();
+
         super.onCreate(savedInstanceState);
+    }
+
+    private void setupLayoutDirection() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            String setting = AppPreferences.layoutDirection(this);
+
+            int layoutDirection = View.LAYOUT_DIRECTION_LOCALE;
+
+            if (getString(R.string.pref_value_layout_direction_ltr).equals(setting)) {
+                layoutDirection = View.LAYOUT_DIRECTION_LTR;
+
+            } else if (getString(R.string.pref_value_layout_direction_rtl).equals(setting)) {
+                layoutDirection = View.LAYOUT_DIRECTION_RTL;
+            }
+
+            getWindow().getDecorView().setLayoutDirection(layoutDirection);
+        }
     }
 
     private void setupTheme() {

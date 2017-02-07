@@ -368,4 +368,9 @@
     <string name="book_preface_sample">This is notebook\'s preface. Any text before the first entry. It could be quite long and contain multiple lines.</string>
     <string name="book_preface_hint">Text displayed before the first note</string>
 
+    <string name="layout_direction">Layout direction</string>
+    <string name="layout_direction_locale">Default</string>
+    <string name="layout_direction_ltr">Left to Right</string>
+    <string name="layout_direction_rtl">Right to Left</string>
+
 </resources>

@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,6 +40,12 @@ public class SettingsFragment extends PreferenceFragment
     public static final String TAG = SettingsFragment.class.getName();
 
     public static final String FRAGMENT_TAG = SettingsFragment.class.getName();
+
+    private static final @StringRes int[] REQUIRE_ACTIVITY_RESTART = new int [] {
+            R.string.pref_key_font_size,
+            R.string.pref_key_color_scheme,
+            R.string.pref_key_layout_direction
+    };
 
     private Preference mReposPreference;
     private SettingsFragmentListener mListener;
@@ -79,6 +87,12 @@ public class SettingsFragment extends PreferenceFragment
         setHasOptionsMenu(true);
 
         setDefaultStateForNewNote();
+
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            Preference layoutDirectionPref = findPreference(getString(R.string.pref_key_layout_direction));
+            layoutDirectionPref.setEnabled(false);
+        }
     }
 
     @Override
@@ -235,10 +249,14 @@ public class SettingsFragment extends PreferenceFragment
             setDefaultStateForNewNote();
         }
 
-        /* Preference that requires activity restart has been changed. */
-        if (getString(R.string.pref_key_font_size).equals(key) || getString(R.string.pref_key_color_scheme).equals(key)) {
-            if (activity != null) {
-                activity.recreate();
+        /* Recreate activity if preference change requires it. */
+        if (activity != null) {
+            for (int res: REQUIRE_ACTIVITY_RESTART) {
+                if (key.equals(getString(res))) {
+                    activity.recreate();
+                    break;
+
+                }
             }
         }
 

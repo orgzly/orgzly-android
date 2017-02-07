@@ -29,6 +29,14 @@
             android:entries="@array/font_sizes"
             android:entryValues="@array/font_sizes_values"
             android:defaultValue="@string/pref_default_value_font_size"/>
+
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_layout_direction"
+            android:title="@string/layout_direction"
+            android:entries="@array/layout_direction"
+            android:entryValues="@array/layout_direction_values"
+            android:defaultValue="@string/pref_default_value_layout_direction"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_title_notebooks">

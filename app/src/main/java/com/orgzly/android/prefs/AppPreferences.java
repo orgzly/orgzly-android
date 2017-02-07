@@ -172,10 +172,17 @@ public class AppPreferences {
                 context.getResources().getString(R.string.pref_key_new_note_notification),
                 context.getResources().getBoolean(R.bool.pref_default_value_new_note_notification));
     }
+
     public static String colorScheme(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_color_scheme),
                 context.getResources().getString(R.string.pref_default_value_color_scheme));
+    }
+
+    public static String layoutDirection(Context context) {
+        return getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_layout_direction),
+                context.getResources().getString(R.string.pref_default_value_layout_direction));
     }
 
     public static String bookNameInSearchResults(Context context) {
