@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -736,7 +735,7 @@ public class NoteFragment extends Fragment
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Arguments parsed for " + this);
     }
 
-    public boolean askForConfirmationIfNoteModified() {
+    public boolean isAskingForConfirmationForModifiedNote() {
         /* It's possible that note does not exist
          * if it has been deleted and the user went back to it.
          */
@@ -1015,7 +1014,10 @@ public class NoteFragment extends Fragment
                 return true;
 
             case R.id.close:
-                cancel();
+                if (!isAskingForConfirmationForModifiedNote()) {
+                    cancel();
+                }
+
                 return true;
 
             case R.id.delete:
