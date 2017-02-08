@@ -11,7 +11,10 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openContextualActionModeOverflowMenu;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -61,5 +64,25 @@ public class FiltersFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_filter_query)).perform(typeText(" edited"));
         onView(withId(R.id.done)).perform(click());
         onView(withId(R.id.fragment_filters_flipper)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testDeletingFilterThenGoingBackToIt() {
+        onView(withId(R.id.fragment_filters_flipper)).check(matches(isDisplayed()));
+
+        onListItem(0).perform(click());
+        onView(withId(R.id.fragment_filter_flipper)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.drawer_layout)).perform(open());
+        onView(withText(R.string.searches)).perform(click());
+        onView(withId(R.id.fragment_filters_flipper)).check(matches(isDisplayed()));
+
+        onListItem(0).perform(longClick());
+        openContextualActionModeOverflowMenu();
+        onView(withText("Delete")).perform(click());
+
+        pressBack();
+
+        onView(withText(R.string.fragment_filter_does_not_exist)).check(matches(isDisplayed()));
     }
 }

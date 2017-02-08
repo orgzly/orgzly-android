@@ -170,29 +170,6 @@ public class BooksTest extends OrgzlyTest {
         onView(withText("OK")).perform(click());
     }
 
-
-    @Test
-    public void testDeletingFilterThenGoingBackToIt() {
-        onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withText(R.string.searches)).perform(click());
-        onView(withId(R.id.fragment_filters_flipper)).check(matches(isDisplayed()));
-
-        onListItem(0).perform(click());
-        onView(withId(R.id.fragment_filter_flipper)).check(matches(isDisplayed()));
-
-        onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withText(R.string.searches)).perform(click());
-        onView(withId(R.id.fragment_filters_flipper)).check(matches(isDisplayed()));
-
-        onListItem(0).perform(longClick());
-        openContextualActionModeOverflowMenu();
-        onView(withText("Delete")).perform(click());
-
-        pressBack();
-
-        onView(withText(R.string.fragment_filter_does_not_exist)).check(matches(isDisplayed()));
-    }
-
     @Test
     public void testCreateNewBookWithExistingName() {
         onView(withId(R.id.fab)).perform(click());
