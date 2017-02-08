@@ -379,10 +379,17 @@ public class BookFragment extends NoteListFragment
 
         MenuItem item;
 
-        /* Hide cycle-visibility item if book does not exist. */
-        item = menu.findItem(R.id.books_options_menu_item_cycle_visibility);
-        if (item != null && mBook == null) {
-            item.setVisible(false);
+        /* Hide some items if book doesn't exist. */
+        if (mBook == null) {
+            item = menu.findItem(R.id.books_options_menu_item_cycle_visibility);
+            if (item != null) {
+                item.setVisible(false);
+            }
+
+            item = menu.findItem(R.id.books_options_menu_book_preface);
+            if (item != null) {
+                item.setVisible(false);
+            }
         }
 
 //        /* Toggle paste item visibility. */

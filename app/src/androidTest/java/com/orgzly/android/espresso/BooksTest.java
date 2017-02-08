@@ -101,6 +101,21 @@ public class BooksTest extends OrgzlyTest {
     }
 
     @Test
+    public void testEnterPrefaceForNonExistentBook() {
+        onView(allOf(withText("book-one"), isDisplayed())).perform(click());
+        onView(withId(R.id.drawer_layout)).perform(open());
+        onView(withText("Notebooks")).perform(click());
+        onView(allOf(withText("book-one"), isDisplayed())).perform(longClick());
+        onData(hasToString(containsString("Delete"))).perform(click());
+        onView(withText(R.string.ok)).perform(click());
+        pressBack();
+        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
+
+        openContextualActionModeOverflowMenu();
+        onView(withText(R.string.edit_book_preface)).check(doesNotExist());
+    }
+
+    @Test
     public void testExport() {
         onView(allOf(withText("book-one"), isDisplayed())).perform(longClick());
         onData(hasToString(containsString("Export"))).perform(click());
