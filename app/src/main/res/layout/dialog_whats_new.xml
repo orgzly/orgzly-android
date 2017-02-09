@@ -28,6 +28,20 @@
             android:layout_marginBottom="@dimen/padding_4"
             android:text="@string/whats_new_follow"/>
 
+        <TextView style="@style/WhatsNewVersion" android:text="1.4.10" tools:ignore="HardcodedText"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Ongoing notification for creating note (new option)"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Layout direction (new option)"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Allow browsing secondary storage"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Do not display empty preface in the notebook"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Warn about modified note even on “X” press"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Minor design improvements"/>
+
         <TextView style="@style/WhatsNewVersion" android:text="1.4.9" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange" app:text="Clickable external links in notes' list (both title and content)"/>
