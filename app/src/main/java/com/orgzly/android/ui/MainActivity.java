@@ -892,10 +892,8 @@ public class MainActivity extends CommonActivity
 
         final Book book = BooksClient.get(this, bookId);
 
-        View checkBoxView = View.inflate(this, R.layout.checkbox, null);
-        final CheckBox checkBox = (CheckBox) checkBoxView.findViewById(R.id.checkbox);
-        checkBox.setText(R.string.also_delete_linked_book);
-
+        View view = View.inflate(this, R.layout.dialog_book_delete, null);
+        final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
 
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
@@ -922,7 +920,7 @@ public class MainActivity extends CommonActivity
                         .setNegativeButton(R.string.cancel, dialogClickListener);
 
         if (book.getLink() != null) {
-            builder.setView(checkBoxView);
+            builder.setView(view);
         }
 
         builder.show();
