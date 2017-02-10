@@ -18,8 +18,6 @@
         android:layout_height="wrap_content"
         android:hint="@string/book_preface_hint"
         android:text="@string/book_preface_sample"
-        android:textSize="?attr/item_head_title_text_size"
-        android:maxLines="3"
-        android:ellipsize="end"/>
+        android:textSize="?attr/item_head_title_text_size"/>
 
 </LinearLayout>
