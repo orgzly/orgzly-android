@@ -131,6 +131,12 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_is_notes_content_foldable));
     }
 
+    public static String prefaceDisplay(Context context) {
+        return getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_preface_in_book),
+                context.getResources().getString(R.string.pref_default_value_preface_in_book));
+    }
+
     public static boolean isFontMonospaced(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_is_font_monospaced),

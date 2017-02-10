@@ -373,4 +373,9 @@
     <string name="layout_direction_ltr">Left to Right</string>
     <string name="layout_direction_rtl">Right to Left</string>
 
+    <string name="preface_in_book">Notebook\'s preface</string>
+    <string name="preface_in_book_full">Display</string>
+    <string name="preface_in_book_hide">Hide</string>
+    <string name="preface_in_book_few_lines">Display few lines</string>
+
 </resources>

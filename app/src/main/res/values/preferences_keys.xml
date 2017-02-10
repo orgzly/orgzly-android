@@ -17,6 +17,23 @@
         <item>@string/pref_value_layout_direction_rtl</item>
     </string-array>
 
+    <!-- How to display notebook's preface in notebook -->
+    <string name="pref_key_preface_in_book" translatable="false">pref_key_preface_in_book</string>
+    <string name="pref_default_value_preface_in_book">@string/pref_value_preface_in_book_few_lines</string>
+    <string name="pref_value_preface_in_book_hide" translatable="false">hide</string>
+    <string name="pref_value_preface_in_book_full" translatable="false">full</string>
+    <string name="pref_value_preface_in_book_few_lines" translatable="false">few_lines</string>
+    <string-array name="preface_in_book_entries">
+        <item>@string/preface_in_book_full</item>
+        <item>@string/preface_in_book_few_lines</item>
+        <item>@string/preface_in_book_hide</item>
+    </string-array>
+    <string-array name="preface_in_book_entry_values">
+        <item>@string/pref_value_preface_in_book_full</item>
+        <item>@string/pref_value_preface_in_book_few_lines</item>
+        <item>@string/pref_value_preface_in_book_hide</item>
+    </string-array>
+
     <!-- Key for preferences containing user-settable values. -->
     <string name="pref_key_is_reverse_click_action" translatable="false">pref_key_is_reverse_click_action</string>
     <string name="pref_key_is_notes_content_displayed_in_list" translatable="false">pref_key_is_notes_content_displayed_in_list</string>

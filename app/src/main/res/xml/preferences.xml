@@ -99,6 +99,13 @@
             android:summary="@string/allow_folding_of_content"
             android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
             android:defaultValue="@bool/pref_default_is_notes_content_foldable"/>
+
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_preface_in_book"
+            android:title="@string/preface_in_book"
+            android:entries="@array/preface_in_book_entries"
+            android:entryValues="@array/preface_in_book_entry_values"
+            android:defaultValue="@string/pref_default_value_preface_in_book"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/notes">

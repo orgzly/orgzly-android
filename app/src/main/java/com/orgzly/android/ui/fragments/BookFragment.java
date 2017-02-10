@@ -640,10 +640,23 @@ public class BookFragment extends NoteListFragment
      * Update book's preface.
      */
     private void updatePreface() {
-        if (! TextUtils.isEmpty(mBook.getPreface())) {
+        boolean displayPreface = ! getString(R.string.pref_value_preface_in_book_hide)
+                .equals(AppPreferences.prefaceDisplay(getContext()));
+
+        if (! TextUtils.isEmpty(mBook.getPreface()) && displayPreface) {
             // Add header
             if (getListView().getHeaderViewsCount() == 0) {
                 getListView().addHeaderView(mHeader);
+            }
+
+            if (getString(R.string.pref_value_preface_in_book_few_lines)
+                    .equals(AppPreferences.prefaceDisplay(getContext()))) {
+                mPrefaceText.setMaxLines(3);
+                mPrefaceText.setEllipsize(TextUtils.TruncateAt.END);
+
+            } else {
+                mPrefaceText.setMaxLines(Integer.MAX_VALUE);
+                mPrefaceText.setEllipsize(null);
             }
 
             mPrefaceText.setText(mBook.getPreface());
