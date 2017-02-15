@@ -11,7 +11,12 @@ import java.util.regex.Pattern;
  *
  */
 public class OrgNoteContentFormatParser {
-    private final static String BRACKET_LINK_URL_REGEX = "https?://[^]\\s]+|mailto:[^]\\s]+";
+    private final static String LINK_SCHEMES = "https?|mailto|tel|voicemail|geo|sms|smsto|mms|mmsto";
+
+    private final static String PLAIN_LINK = "((" + LINK_SCHEMES + "):\\S+)";
+
+    // Same as the above, but ] ends the link too
+    private final static String BRACKET_LINK = "((" + LINK_SCHEMES + "):[^]\\s]+)";
 
     public static SpannableStringBuilder fromOrg(String s, boolean createLinks) {
         SpannableStringBuilder ssb = new SpannableStringBuilder(s);
@@ -27,12 +32,12 @@ public class OrgNoteContentFormatParser {
      * [[http://link.com][Link]]
      */
     private static void doOrgLinksWithName(SpannableStringBuilder ssb, boolean createLinks) {
-        Pattern p = Pattern.compile("\\[\\[(" + BRACKET_LINK_URL_REGEX + ")\\]\\[([^]]+)\\]\\]");
+        Pattern p = Pattern.compile("\\[\\[" + BRACKET_LINK + "\\]\\[([^]]+)\\]\\]");
         Matcher m = p.matcher(ssb);
 
         while (m.find()) {
             String link = m.group(1);
-            String name = m.group(2);
+            String name = m.group(3);
 
             ssb.replace(m.start(), m.end(), name);
 
@@ -50,7 +55,7 @@ public class OrgNoteContentFormatParser {
      * [[http://link.com]]
      */
     private static void doOrgLinks(SpannableStringBuilder ssb, boolean createLinks) {
-        Pattern p = Pattern.compile("\\[\\[(" + BRACKET_LINK_URL_REGEX + ")\\]\\]");
+        Pattern p = Pattern.compile("\\[\\[" + BRACKET_LINK + "\\]\\]");
         Matcher m = p.matcher(ssb);
 
         while (m.find()) {
@@ -75,7 +80,7 @@ public class OrgNoteContentFormatParser {
             return;
         }
         
-        Pattern p = Pattern.compile("(https?://\\S+|mailto:\\S+)");
+        Pattern p = Pattern.compile(PLAIN_LINK);
         Matcher m = p.matcher(ssb);
 
         while (m.find()) {
