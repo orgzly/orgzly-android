@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_book_header_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,8 +18,8 @@
         android:id="@+id/fragment_book_header_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/book_preface_hint"
-        android:text="@string/book_preface_sample"
+        tools:hint="@string/book_preface_hint"
+        tools:text="@string/book_preface_sample"
         android:textSize="?attr/item_head_title_text_size"/>
 
 </LinearLayout>
