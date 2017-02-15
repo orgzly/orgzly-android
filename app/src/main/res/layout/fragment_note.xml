@@ -171,7 +171,6 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginTop="@dimen/ui_element_spacing"
                 android:minHeight="@dimen/fragment_note_body_edit_min_height"
-                android:hint="@string/fragment_note_content_hint"
                 android:gravity="start|bottom"
                 android:freezesText="true"
                 android:padding="@dimen/item_head_padding"
