@@ -1392,110 +1392,103 @@ public class Provider extends ContentProvider {
         /* Gets a writable database. This will trigger its creation if it doesn't already exist. */
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
-        db.beginTransaction();
-        try {
+        /* Create book if it doesn't already exist. */
+        uri = getOrInsertBook(db, bookName);
 
-            /* Create book if it doesn't already exist. */
-            uri = getOrInsertBook(db, bookName);
-
-            final long bookId = ContentUris.parseId(uri);
+        final long bookId = ContentUris.parseId(uri);
 
             /* Delete all notes from book. TODO: Delete all other references to this book ID */
-            db.delete(DbNote.TABLE, DbNote.Column.BOOK_ID + "=" + bookId, null);
+        db.delete(DbNote.TABLE, DbNote.Column.BOOK_ID + "=" + bookId, null);
 
             /* Open reader. */
-            Reader reader = new BufferedReader(inReader);
-            try {
-                 /*
-                  * Create and run parser.
-                  * When multiple formats are supported, decide which parser to use here.
-                  */
-                new OrgParser.Builder()
-                        .setInput(reader)
-                        .setTodoKeywords(AppPreferences.todoKeywordsSet(getContext()))
-                        .setDoneKeywords(AppPreferences.doneKeywordsSet(getContext()))
-                        .setListener(new OrgNestedSetParserListener() {
-                            @Override
-                            public void onNode(OrgNodeInSet node) throws IOException {
-                                BookSizeValidator.validate(node);
+        Reader reader = new BufferedReader(inReader);
+        try {
+            /*
+             * Create and run parser.
+             * When multiple formats are supported, decide which parser to use here.
+             */
+            new OrgParser.Builder()
+                    .setInput(reader)
+                    .setTodoKeywords(AppPreferences.todoKeywordsSet(getContext()))
+                    .setDoneKeywords(AppPreferences.doneKeywordsSet(getContext()))
+                    .setListener(new OrgNestedSetParserListener() {
+                        @Override
+                        public void onNode(OrgNodeInSet node) throws IOException {
+                            BookSizeValidator.validate(node);
 
-                                /* Insert note with book id at specific position. */
+                            /* Insert note with book id at specific position. */
 
-                                NotePosition position = new NotePosition();
-                                position.setBookId(bookId);
-                                position.setLft(node.getLft());
-                                position.setRgt(node.getRgt());
-                                position.setLevel(node.getLevel());
-                                position.setDescendantsCount(node.getDescendantsCount());
-                                position.setFoldedUnderId(0);
+                            NotePosition position = new NotePosition();
+                            position.setBookId(bookId);
+                            position.setLft(node.getLft());
+                            position.setRgt(node.getRgt());
+                            position.setLevel(node.getLevel());
+                            position.setDescendantsCount(node.getDescendantsCount());
+                            position.setFoldedUnderId(0);
 
-                                ContentValues values = new ContentValues();
+                            ContentValues values = new ContentValues();
 
-                                DbNote.toContentValues(values, position);
-                                DbNote.toContentValues(db, values, node.getHead());
-                                // NotesClient.toContentValues(values, node.getHead());
+                            DbNote.toContentValues(values, position);
+                            DbNote.toContentValues(db, values, node.getHead());
+                            // NotesClient.toContentValues(values, node.getHead());
 
-                                long noteId = db.insertOrThrow(DbNote.TABLE, null, values);
+                            long noteId = db.insertOrThrow(DbNote.TABLE, null, values);
 
-                                // replaceTimestampRangeStringsWithIds(db, values);
-                                // replacePropertiesWithIds(db, noteId, values);
+                            // replaceTimestampRangeStringsWithIds(db, values);
+                            // replacePropertiesWithIds(db, noteId, values);
 
-                                /* Insert properties for newly created note. */
-                                int i = 0;
-                                for (OrgProperty property: node.getHead().getProperties()) {
-                                    new DbNoteProperty(
-                                            noteId,
-                                            i++,
-                                            new DbProperty(
-                                                    new DbPropertyName(property.getName()),
-                                                    new DbPropertyValue(property.getValue()))
-                                    ).save(db);
-                                }
+                            /* Insert properties for newly created note. */
+                            int i = 0;
+                            for (OrgProperty property: node.getHead().getProperties()) {
+                                new DbNoteProperty(
+                                        noteId,
+                                        i++,
+                                        new DbProperty(
+                                                new DbPropertyName(property.getName()),
+                                                new DbPropertyValue(property.getValue()))
+                                ).save(db);
                             }
+                        }
 
-                            @Override
-                            public void onFile(OrgFile file) throws IOException {
-                                BookSizeValidator.validate(file);
+                        @Override
+                        public void onFile(OrgFile file) throws IOException {
+                            BookSizeValidator.validate(file);
 
-                                ContentValues values = new ContentValues();
+                            ContentValues values = new ContentValues();
 
-                                BooksClient.toContentValues(values, file.getSettings());
+                            BooksClient.toContentValues(values, file.getSettings());
 
                                 /* Set preface. TODO: Move to and rename OrgFileSettings */
-                                values.put(DbBook.Column.PREFACE, file.getPreface());
+                            values.put(DbBook.Column.PREFACE, file.getPreface());
 
-                                values.put(DbBook.Column.USED_ENCODING, usedEncoding);
-                                values.put(DbBook.Column.DETECTED_ENCODING, detectedEncoding);
-                                values.put(DbBook.Column.SELECTED_ENCODING, selectedEncoding);
+                            values.put(DbBook.Column.USED_ENCODING, usedEncoding);
+                            values.put(DbBook.Column.DETECTED_ENCODING, detectedEncoding);
+                            values.put(DbBook.Column.SELECTED_ENCODING, selectedEncoding);
 
-                                db.update(DbBook.TABLE, values, DbBook.Column._ID + "=" + bookId, null);
-                            }
+                            db.update(DbBook.TABLE, values, DbBook.Column._ID + "=" + bookId, null);
+                        }
 
-                        })
-                        .build()
-                        .parse();
+                    })
+                    .build()
+                    .parse();
 
-            } finally {
-                reader.close();
-            }
-
-            if (rookUrl != null) {
-                updateOrInsertBookLink(db, bookId, repoUrl, rookUrl);
-                updateOrInsertBookSync(db, bookId, repoUrl, rookUrl, rookRevision, rookMtime);
-            }
-
-            DatabaseUtils.updateParentIds(db, bookId);
-
-            /* Update book with modification time and mark it as complete. */
-            ContentValues values = new ContentValues();
-            values.put(DbBook.Column.IS_DUMMY, 0);
-
-            db.update(DbBook.TABLE, values, DbBook.Column._ID + "=" + bookId, null);
-
-            db.setTransactionSuccessful();
         } finally {
-            db.endTransaction();
+            reader.close();
         }
+
+        if (rookUrl != null) {
+            updateOrInsertBookLink(db, bookId, repoUrl, rookUrl);
+            updateOrInsertBookSync(db, bookId, repoUrl, rookUrl, rookRevision, rookMtime);
+        }
+
+        DatabaseUtils.updateParentIds(db, bookId);
+
+        /* Update book with modification time and mark it as complete. */
+        ContentValues values = new ContentValues();
+        values.put(DbBook.Column.IS_DUMMY, 0);
+
+        db.update(DbBook.TABLE, values, DbBook.Column._ID + "=" + bookId, null);
+
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookName + ": " + (System.currentTimeMillis() - startedAt) + "ms");
 
