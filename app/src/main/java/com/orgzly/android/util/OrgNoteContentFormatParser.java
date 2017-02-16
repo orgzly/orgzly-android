@@ -15,15 +15,21 @@ public class OrgNoteContentFormatParser {
 
     private final static String PLAIN_LINK = "((" + LINK_SCHEMES + "):\\S+)";
 
-    // Same as the above, but ] ends the link too
+    /* Same as the above, but ] ends the link too. */
     private final static String BRACKET_LINK = "((" + LINK_SCHEMES + "):[^]\\s]+)";
 
-    public static SpannableStringBuilder fromOrg(String s, boolean createLinks) {
+    /* Allows anything as a link. Probably needs some constraints.
+     * See http://orgmode.org/manual/External-links.html and org-any-link-re
+     */
+    private final static String BRACKET_ANY_LINK = "(([^]]+))";
+
+    public static SpannableStringBuilder fromOrg(String s) {
         SpannableStringBuilder ssb = new SpannableStringBuilder(s);
 
-        doOrgLinksWithName(ssb, createLinks);
-        doOrgLinks(ssb, createLinks);
-        doPlainLinks(ssb, createLinks);
+        doOrgLinksWithName(ssb, BRACKET_LINK, true);
+        doOrgLinksWithName(ssb, BRACKET_ANY_LINK, false);
+        doOrgLinks(ssb, BRACKET_LINK, true);
+        doPlainLinks(ssb, PLAIN_LINK, true);
 
         return ssb;
     }
@@ -31,8 +37,8 @@ public class OrgNoteContentFormatParser {
     /**
      * [[http://link.com][Link]]
      */
-    private static void doOrgLinksWithName(SpannableStringBuilder ssb, boolean createLinks) {
-        Pattern p = Pattern.compile("\\[\\[" + BRACKET_LINK + "\\]\\[([^]]+)\\]\\]");
+    private static void doOrgLinksWithName(SpannableStringBuilder ssb, String linkRegex, boolean createLinks) {
+        Pattern p = Pattern.compile("\\[\\[" + linkRegex + "\\]\\[([^]]+)\\]\\]");
         Matcher m = p.matcher(ssb);
 
         while (m.find()) {
@@ -54,8 +60,8 @@ public class OrgNoteContentFormatParser {
     /**
      * [[http://link.com]]
      */
-    private static void doOrgLinks(SpannableStringBuilder ssb, boolean createLinks) {
-        Pattern p = Pattern.compile("\\[\\[" + BRACKET_LINK + "\\]\\]");
+    private static void doOrgLinks(SpannableStringBuilder ssb, String linkRegex, boolean createLinks) {
+        Pattern p = Pattern.compile("\\[\\[" + linkRegex + "\\]\\]");
         Matcher m = p.matcher(ssb);
 
         while (m.find()) {
@@ -75,12 +81,12 @@ public class OrgNoteContentFormatParser {
     /**
      * http://link.com
      */
-    private static void doPlainLinks(SpannableStringBuilder ssb, boolean createLinks) {
+    private static void doPlainLinks(SpannableStringBuilder ssb, String linkRegex, boolean createLinks) {
         if (!createLinks) {
             return;
         }
         
-        Pattern p = Pattern.compile(PLAIN_LINK);
+        Pattern p = Pattern.compile(linkRegex);
         Matcher m = p.matcher(ssb);
 
         while (m.find()) {

@@ -193,7 +193,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                 holder.content.setTypeface(Typeface.MONOSPACE);
             }
 
-            holder.content.setText(OrgNoteContentFormatParser.fromOrg(head.getContent(), true));
+            holder.content.setText(OrgNoteContentFormatParser.fromOrg(head.getContent()));
 
             holder.content.setVisibility(View.VISIBLE);
 
@@ -371,7 +371,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         }
 
         /* Title. */
-        builder.append(OrgNoteContentFormatParser.fromOrg(head.getTitle(), true));
+        builder.append(OrgNoteContentFormatParser.fromOrg(head.getTitle()));
 
 //        /* Bold everything up until now. */
 //        if (builder.length() > 0) {

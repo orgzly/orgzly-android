@@ -343,7 +343,7 @@ public class NoteFragment extends Fragment
                 } else {
                     bodyEdit.setVisibility(View.GONE);
 
-                    bodyView.setText(OrgNoteContentFormatParser.fromOrg(bodyEdit.getText().toString(), true));
+                    bodyView.setText(OrgNoteContentFormatParser.fromOrg(bodyEdit.getText().toString()));
                     bodyView.setVisibility(View.VISIBLE);
 
                     ActivityUtils.closeSoftKeyboard(getActivity());
@@ -503,7 +503,7 @@ public class NoteFragment extends Fragment
 
         /* Content. */
         bodyEdit.setText(head.getContent());
-        bodyView.setText(OrgNoteContentFormatParser.fromOrg(head.getContent(), true));
+        bodyView.setText(OrgNoteContentFormatParser.fromOrg(head.getContent()));
     }
 
     private void addPropertyToList(OrgProperty property) {

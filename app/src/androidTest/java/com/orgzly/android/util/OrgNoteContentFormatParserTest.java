@@ -107,7 +107,7 @@ public class OrgNoteContentFormatParserTest {
         OrgSpan[] spans;
 
         public OrgSpannable(String str) {
-            SpannableStringBuilder ssb = OrgNoteContentFormatParser.fromOrg(str, true);
+            SpannableStringBuilder ssb = OrgNoteContentFormatParser.fromOrg(str);
 
             string = ssb.toString();
 
