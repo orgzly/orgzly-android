@@ -819,22 +819,6 @@ public class MainActivity extends CommonActivity
     @Override
     public void onNotesDeleteRequest(final long bookId, final TreeSet<Long> noteIds) {
         mSyncFragment.deleteNotes(bookId, noteIds);
-
-//        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                if (which == DialogInterface.BUTTON_POSITIVE) {
-//                    mSyncFragment.deleteNotes(bookId, noteIds);
-//                }
-//            }
-//        };
-//
-//        new AlertDialog.Builder(this)
-//                .setTitle(R.string.notes)
-//                .setMessage(getResources().getQuantityString(R.plurals.delete_notes_question, noteIds.size(), noteIds.size()))
-//                .setPositiveButton(R.string.ok, dialogClickListener)
-//                .setNegativeButton(R.string.cancel, dialogClickListener)
-//                .show();
     }
 
     @Override

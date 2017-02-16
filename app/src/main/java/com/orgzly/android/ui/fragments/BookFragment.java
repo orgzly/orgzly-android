@@ -1,6 +1,8 @@
 package com.orgzly.android.ui.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -229,7 +231,8 @@ public class BookFragment extends NoteListFragment
                             case R.id.item_menu_delete_btn:
                                 TreeSet<Long> ids = new TreeSet<>();
                                 ids.add(noteId);
-                                listener.onNotesDeleteRequest(mBookId, ids);
+
+                                delete(ids);
 
                                 /* Remove selection. */
                                 mSelection.clearSelection();
@@ -712,6 +715,25 @@ public class BookFragment extends NoteListFragment
         } : null;
     }
 
+    private void delete(final TreeSet<Long> ids) {
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.delete_notes)
+                .setMessage(R.string.delete_notes_and_all_subnotes)
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        listener.onNotesDeleteRequest(mBookId, ids);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .create()
+                .show();
+    }
+
     public class MyActionMode implements ActionMode.Callback {
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -803,7 +825,7 @@ public class BookFragment extends NoteListFragment
                     if (menuItem.getItemId() == R.id.book_cab_cut) {
                         listener.onNotesCutRequest(mBookId, ids);
                     } else {
-                        listener.onNotesDeleteRequest(mBookId, ids);
+                        delete(ids);
                     }
 
                     /* Remove selection. */

@@ -344,8 +344,12 @@
 
     <string name="notebooks_sort_order_name">Name</string>
     <string name="notebooks_sort_order_modification_time">Modification time</string>
+
     <string name="delete_note">Delete note</string>
     <string name="delete_note_and_all_subnotes">Delete this note and all its sub-notes?</string>
+
+    <string name="delete_notes">Delete notes</string>
+    <string name="delete_notes_and_all_subnotes">Delete notes and all its sub-notes?</string>
 
     <string name="note_content_finish_editing">View content</string>
     <string name="note_content_start_editing">Edit content</string>
