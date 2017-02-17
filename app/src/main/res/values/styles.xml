@@ -44,13 +44,19 @@
              With this, it's white. -->
         <item tools:targetApi="12" name="android:textCursorDrawable">@null</item>
 
+        <!-- Color scheme -->
+
         <!-- Either use this or color the fragments. Lint complains if both are used-->
         <item name="android:windowBackground">@color/white</item>
 
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/black</item>
+
+        <!-- Make buttons lighter. -->
+        <item name="android:colorButtonNormal" tools:targetApi="21">@color/gray17</item>
+
         <item name="main_text_color">@color/black</item>
 
-
-        <!-- http://www.google.com/design/spec/style/color.html#color-color-palette -->
         <item name="status_bar_default">#87877c</item>
         <item name="action_bar_default">#cfcfc4</item>
         <item name="status_bar_in_query">#607D8B</item>
@@ -86,26 +92,7 @@
         <item name="browser_header_bg_color">@color/gray17</item>
         <item name="browser_footer_bg_color">@color/white</item>
 
-        <!--<item name="windowActionBarOverlay">true</item>-->
-
-        <!-- TODO: Are these needed? Status bar background is set programmatically. -->
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/black</item>
-
-        <!-- colorAccent is used as the default value for colorControlActivated, which is used to tint widgets. -->
-        <!--<item name="colorAccent">#1e6b87</item>-->
-
-        <!-- TODO: Why was this added, are buttons too dark? -->
-        <item name="android:colorButtonNormal" tools:targetApi="21">@color/gray17</item>
-
-        <!--<item tools:targetApi="21" name="android:colorControlNormal">#ff33b5e5</item>-->
-        <!--<item tools:targetApi="21" name="android:colorControlActivated">#ff33b5e5</item>-->
-        <!--<item tools:targetApi="21" name="android:colorControlHighlight">#ff33b5e5</item>-->
-
-        <!-- You can also set colorControlNormal, colorControlActivated, colorControlHighlight, and colorSwitchThumbNormal. -->
-
-        <!--<item name="android:windowTranslucentStatus" tools:targetApi="19">true</item>-->
-        <!--<item name="android:windowTranslucentNavigation" tools:targetApi="19">true</item>-->
+        <!-- / Color scheme -->
 
 
         <item name="oic_drawer_sync_button">@drawable/ic_sync_black_24dp</item>
@@ -219,16 +206,18 @@
              With this, it's white. -->
         <item tools:targetApi="12" name="android:textCursorDrawable">@null</item>
 
-        <!--<item name="colorAccent">#1e6b87</item>-->
+        <!-- Color scheme -->
 
-        <item name="android:windowBackground">@color/dark_theme_cards_dialogs</item>
+        <!-- Either use this or color the fragments. Lint complains if both are used-->
+        <item name="android:windowBackground">@color/dark_theme_cards_and_dialogs</item>
+
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/white</item>
 
         <item name="main_text_color">@color/dark_bg_text_primary</item>
 
         <item name="status_bar_default">@color/dark_theme_status_bar</item>
         <item name="action_bar_default">@color/dark_theme_app_bar</item>
-
-        <!-- http://www.google.com/design/spec/style/color.html#color-color-palette -->
         <item name="status_bar_in_query">#263238</item>
         <item name="action_bar_in_query">#455A64</item>
         <item name="status_bar_in_settings">#3E2723</item>
@@ -236,12 +225,12 @@
 
         <item name="fragment_books_bg_color">@color/dark_theme_bg</item>
         <item name="fragment_filters_bg_color">@color/dark_theme_bg</item>
-        <item name="item_book_card_bg_color">@color/dark_theme_cards_dialogs</item>
+        <item name="item_book_card_bg_color">@color/dark_theme_cards_and_dialogs</item>
 
         <item name="drawer_text">@color/dark_bg_text_primary</item>
-        <item name="drawer_bg">@color/dark_theme_cards_dialogs</item>
+        <item name="drawer_bg">@color/dark_theme_cards_and_dialogs</item>
         <item name="drawer_divider">@color/dark_bg_text_mute</item>
-        <item name="drawer_sync_button_bg">@color/dark_theme_cards_dialogs</item>
+        <item name="drawer_sync_button_bg">@color/dark_theme_cards_and_dialogs</item>
         <item name="drawer_marker">@color/dark_bg_text_primary</item>
 
         <item name="item_book_title_color">@color/dark_bg_text_primary</item>
@@ -259,12 +248,10 @@
 
         <item name="big_centered_text_color">@color/dark_bg_text_primary</item>
 
-        <item name="browser_header_bg_color">@color/dark_theme_cards_dialogs</item>
-        <item name="browser_footer_bg_color">@color/dark_theme_cards_dialogs</item>
+        <item name="browser_header_bg_color">@color/dark_theme_cards_and_dialogs</item>
+        <item name="browser_footer_bg_color">@color/dark_theme_cards_and_dialogs</item>
 
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryDark">@color/white</item>
-        <item name="android:colorButtonNormal" tools:targetApi="21">#696969</item>
+        <!-- / Color scheme -->
 
         <item name="oic_drawer_sync_button">@drawable/ic_sync_white_24dp</item>
         <item name="oic_drawer_filters">@drawable/ic_search_white_24dp</item>

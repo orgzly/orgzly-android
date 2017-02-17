@@ -9,7 +9,7 @@
     <color name="dark_theme_status_bar">#000000</color>
     <color name="dark_theme_app_bar">#212121</color>
     <color name="dark_theme_bg">#303030</color>
-    <color name="dark_theme_cards_dialogs">#424242</color>
+    <color name="dark_theme_cards_and_dialogs">#424242</color>
 
     <!-- http://www.google.com/design/spec/style/color.html#color-ui-color-application -->
     <color name="dark_bg_text_primary">#ffffff</color>
