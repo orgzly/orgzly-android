@@ -46,7 +46,6 @@
 
         <!-- Either use this or color the fragments. Lint complains if both are used-->
         <item name="android:windowBackground">@color/white</item>
-        <item name="main_bg_color">@color/white</item>
 
         <item name="main_text_color">@color/black</item>
 
@@ -223,7 +222,6 @@
         <!--<item name="colorAccent">#1e6b87</item>-->
 
         <item name="android:windowBackground">@color/dark_theme_cards_dialogs</item>
-        <item name="main_bg_color">@color/dark_theme_cards_dialogs</item>
 
         <item name="main_text_color">@color/dark_bg_text_primary</item>
 

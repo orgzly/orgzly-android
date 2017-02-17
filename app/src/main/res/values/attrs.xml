@@ -43,7 +43,6 @@
     </declare-styleable>
 
     <declare-styleable name="ColorScheme">
-        <attr name="main_bg_color" format="color"/>
         <attr name="main_text_color" format="color"/>
 
         <attr name="status_bar_default" format="color"/>
