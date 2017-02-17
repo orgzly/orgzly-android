@@ -333,6 +333,7 @@
 
     <string name="color_scheme_light">Light</string>
     <string name="color_scheme_dark">Dark</string>
+    <string name="color_scheme_black">Black</string>
 
     <string name="font_size_small">Small</string>
     <string name="font_size_default">Default</string>

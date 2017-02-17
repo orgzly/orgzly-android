@@ -109,6 +109,10 @@ public class CommonActivity extends AppCompatActivity {
 
         if (getString(R.string.pref_value_color_scheme_dark).equals(colorScheme)) {
             setTheme(R.style.AppDarkTheme_Dark);
+
+        } else if (getString(R.string.pref_value_color_scheme_black).equals(colorScheme)) {
+            setTheme(R.style.AppDarkTheme_Black);
+
         } else {
             setTheme(R.style.AppLightTheme_Light);
         }
