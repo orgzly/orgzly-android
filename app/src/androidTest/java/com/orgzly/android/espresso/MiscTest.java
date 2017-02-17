@@ -105,8 +105,6 @@ public class MiscTest extends OrgzlyTest {
         assertTrue(n3.getLft() < n3.getRgt());
     }
 
-    // FIXME: Started falling after switching from android_support_version 25.0.1 to 25.1.0
-    // 'with id: com.orgzly:id/fragment_books_container' matches multiple views in the hierarchy
     @Test
     public void testClearDatabaseWithFragmentsInBackStack() {
         shelfTestUtils.setupBook(
