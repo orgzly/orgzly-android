@@ -79,7 +79,6 @@
 
         <attr name="big_centered_text_color" format="color"/>
 
-        <attr name="browser_header_bg_color" format="color"/>
         <attr name="browser_footer_bg_color" format="color"/>
 
         <attr name="snackbar_bg_color" format="color"/>

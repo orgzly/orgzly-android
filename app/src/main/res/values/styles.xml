@@ -88,7 +88,6 @@
 
         <item name="big_centered_text_color">#696969</item>
 
-        <item name="browser_header_bg_color">@color/gray17</item>
         <item name="browser_footer_bg_color">@color/white</item>
 
         <item name="snackbar_bg_color">#323232</item> <!-- Default color -->
@@ -248,7 +247,6 @@
 
         <item name="big_centered_text_color">@color/dark_bg_text_primary</item>
 
-        <item name="browser_header_bg_color">@color/dark_theme_cards_and_dialogs</item>
         <item name="browser_footer_bg_color">@color/dark_theme_cards_and_dialogs</item>
 
         <item name="snackbar_bg_color">#323232</item>  <!-- Default color -->
@@ -382,7 +380,6 @@
 
         <item name="big_centered_text_color">@color/dark_bg_text_primary</item>
 
-        <item name="browser_header_bg_color">@color/dark_theme_status_bar</item>
         <item name="browser_footer_bg_color">@color/dark_theme_status_bar</item>
 
         <item name="snackbar_bg_color">@color/dark_theme_app_bar</item>

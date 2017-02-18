@@ -33,7 +33,6 @@
             android:text="@string/directory_sample"
             android:textSize="?attr/browser_text_size"
             android:textStyle="bold"/>
-
     </LinearLayout>
 
     <ListView
