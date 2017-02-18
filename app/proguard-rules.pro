@@ -39,6 +39,7 @@
 -dontwarn com.dropbox.core.http.GoogleAppEngineRequestor
 -dontwarn com.dropbox.core.http.OkHttp3Requestor*
 -dontwarn com.dropbox.core.http.GoogleAppEngineRequestor$Uploader
+-dontwarn com.dropbox.core.http.GoogleAppEngineRequestor$FetchServiceUploader
 
 # Support classes for compatibility with older API versions
 
