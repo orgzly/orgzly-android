@@ -1,6 +1,7 @@
 package com.orgzly.android.ui;
 
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -56,7 +57,19 @@ public class CommonActivity extends AppCompatActivity {
         }
 
         snackbar = s;
+
+        /* Set background color from attribute. */
+        int bgColor = getSnackbarBackgroundColor();
+        snackbar.getView().setBackgroundColor(bgColor);
+
         snackbar.show();
+    }
+
+    private int getSnackbarBackgroundColor() {
+        TypedArray arr = obtainStyledAttributes(R.styleable.ColorScheme);
+        int color = arr.getColor(R.styleable.ColorScheme_snackbar_bg_color, 0);
+        arr.recycle();
+        return color;
     }
 
     @Override

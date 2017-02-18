@@ -91,6 +91,8 @@
         <item name="browser_header_bg_color">@color/gray17</item>
         <item name="browser_footer_bg_color">@color/white</item>
 
+        <item name="snackbar_bg_color">#323232</item> <!-- Default color -->
+
         <!-- / Color scheme -->
 
         <item name="oic_drawer_sync_button">@drawable/ic_sync_black_24dp</item>
@@ -249,6 +251,8 @@
         <item name="browser_header_bg_color">@color/dark_theme_cards_and_dialogs</item>
         <item name="browser_footer_bg_color">@color/dark_theme_cards_and_dialogs</item>
 
+        <item name="snackbar_bg_color">#323232</item>  <!-- Default color -->
+
         <!-- / Color scheme -->
 
         <item name="oic_drawer_sync_button">@drawable/ic_sync_white_24dp</item>
@@ -380,6 +384,8 @@
 
         <item name="browser_header_bg_color">@color/dark_theme_status_bar</item>
         <item name="browser_footer_bg_color">@color/dark_theme_status_bar</item>
+
+        <item name="snackbar_bg_color">@color/dark_theme_app_bar</item>
 
         <!-- / Color scheme -->
     </style>
