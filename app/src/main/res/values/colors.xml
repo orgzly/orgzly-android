@@ -3,8 +3,6 @@
 <!-- Use a minimum number of different colors. -->
 
 <resources>
-    <color name="sync_button_bg_color">#06000000</color>
-
     <!-- http://www.google.com/design/spec/style/color.html#color-themes -->
     <color name="dark_theme_status_bar">#000000</color>
     <color name="dark_theme_app_bar">#212121</color>
@@ -20,27 +18,6 @@
     <color name="white">#FFFFFF</color>
     <color name="gray17">#fff5f5f5</color>
     <color name="gray25">#ffe6e6e6</color>
-
-    <!-- Different shades, from tools such as http://colorschemedesigner.com/ or https://kuler.adobe.com -->
-    <!--<color name="color1">#4234FF</color>-->
-    <!--<color name="color2">#3B2FE5</color>-->
-    <!--<color name="color3">#3127BF</color>-->
-    <!--<color name="color4">#211A7F</color>-->
-    <!--<color name="color5">#100D40</color>-->
-
-    <!-- -->
-
-    <!-- Action bar background colors, depending on displayed fragments. -->
-    <!--<color name="action_bar_misc">@color/primary</color>-->
-    <!--<color name="action_bar_in_settings">#ff380b12</color>-->
-    <!--<color name="action_bar_in_query">#ff001f37</color>-->
-    <!--<color name="action_bar_in_settings">@color/primary</color>-->
-    <!--<color name="action_bar_in_query">@color/primary</color>-->
-    <!-- Colors from org-mode logo. -->
-    <!--<color name="action_bar_in_settings">#ff923a2e</color>-->
-    <!--<color name="action_bar_in_query">#3d696a</color>-->
-
-    <!-- Colors from Bootstrap. -->
 
     <color name="item_head_selected_bg">#3238caff</color>
 </resources>

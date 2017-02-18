@@ -42,7 +42,7 @@
 
         <!-- For some reason, cursor is invisible (or was it black on black?) on Nexus 7 (API 19).
              With this, it's white. -->
-        <item tools:targetApi="12" name="android:textCursorDrawable">@null</item>
+        <item name="android:textCursorDrawable">@null</item>
 
         <!-- Color scheme -->
 
@@ -70,7 +70,6 @@
         <item name="drawer_text">#333333</item>
         <item name="drawer_bg">@color/white</item>
         <item name="drawer_divider">@color/gray25</item>
-        <item name="drawer_sync_button_bg">@color/gray17</item>
         <item name="drawer_marker">@color/black</item>
 
         <item name="item_book_title_color">@color/black</item>
@@ -203,11 +202,10 @@
 
         <!-- For some reason, cursor is invisible (or was it black on black?) on Nexus 7 (API 19).
              With this, it's white. -->
-        <item tools:targetApi="12" name="android:textCursorDrawable">@null</item>
+        <item name="android:textCursorDrawable">@null</item>
 
         <!-- Color scheme -->
 
-        <!-- Either use this or color the fragments. Lint complains if both are used-->
         <item name="android:windowBackground">@color/dark_theme_cards_and_dialogs</item>
 
         <item name="colorPrimary">@color/black</item>
@@ -229,7 +227,6 @@
         <item name="drawer_text">@color/dark_bg_text_primary</item>
         <item name="drawer_bg">@color/dark_theme_cards_and_dialogs</item>
         <item name="drawer_divider">@color/dark_bg_text_mute</item>
-        <item name="drawer_sync_button_bg">@color/dark_theme_cards_and_dialogs</item>
         <item name="drawer_marker">@color/dark_bg_text_primary</item>
 
         <item name="item_book_title_color">@color/dark_bg_text_primary</item>
@@ -337,16 +334,9 @@
     </style>
 
     <style name="AppDarkTheme.Black">
-        <!-- Color scheme -->
-
         <item name="android:windowBackground">@color/dark_theme_status_bar</item>
         <item name="android:itemBackground">@color/dark_theme_status_bar</item>
         <item name="android:colorButtonNormal" tools:targetApi="21">@color/dark_theme_app_bar</item>
-
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryDark">@color/white</item>
-
-        <item name="main_text_color">@color/dark_bg_text_primary</item>
 
         <item name="status_bar_default">@color/dark_theme_status_bar</item>
         <item name="action_bar_default">@color/dark_theme_status_bar</item>
@@ -359,40 +349,12 @@
         <item name="fragment_filters_bg_color">@color/dark_theme_status_bar</item>
         <item name="item_book_card_bg_color">@color/dark_theme_status_bar</item>
 
-        <item name="drawer_text">@color/dark_bg_text_primary</item>
         <item name="drawer_bg">@color/dark_theme_status_bar</item>
-        <item name="drawer_divider">@color/dark_bg_text_mute</item>
-        <item name="drawer_sync_button_bg">@color/dark_theme_cards_and_dialogs</item>
-        <item name="drawer_marker">@color/dark_bg_text_primary</item>
-
-        <item name="item_book_title_color">@color/dark_bg_text_primary</item>
-        <item name="item_book_error_color">#ff9999</item>
-
-        <item name="item_head_state_todo_color">#ff9999</item>
-        <item name="item_head_state_done_color">#67ab67</item>
-        <item name="item_head_state_unknown_color">#9999ff</item>
-
-        <item name="item_head_bullet_text_color">@color/dark_bg_text_primary</item>
-        <item name="item_head_title_text_color">@color/dark_bg_text_primary</item>
-        <item name="item_head_fold_button_text_color">@color/dark_bg_text_primary</item>
-        <item name="item_head_post_title_text_color">@color/dark_bg_text_secondary</item>
-        <item name="item_head_indent_line_color">#0cffffff</item>
-
-        <item name="big_centered_text_color">@color/dark_bg_text_primary</item>
 
         <item name="browser_footer_bg_color">@color/dark_theme_status_bar</item>
 
         <item name="snackbar_bg_color">@color/dark_theme_app_bar</item>
-
-        <!-- / Color scheme -->
     </style>
-
-    <style name="AppLightTheme.Solarized">
-    </style>
-
-    <style name="AppDarkTheme.Solarized">
-    </style>
-
 
     <style name="FontSize"/>
 
