@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -35,6 +36,10 @@ public class Database extends SQLiteOpenHelper {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "");
 
         this.context = context;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            setWriteAheadLoggingEnabled(true);
+        }
     }
 
     /**
