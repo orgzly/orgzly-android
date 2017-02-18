@@ -14,9 +14,9 @@ allprojects {
     repositories {
         jcenter()
 
-//        maven {
-//            url "https://oss.sonatype.org/content/groups/public"
-//        }
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+        }
     }
 
     tasks.withType(JavaCompile) {
