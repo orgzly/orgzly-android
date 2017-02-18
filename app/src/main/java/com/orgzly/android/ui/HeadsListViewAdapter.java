@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -16,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.orgzly.R;
 import com.orgzly.android.Note;
@@ -243,10 +243,19 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         holder.foldButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Do it async though MainActivity.
-                new Shelf(context).toggleFoldedState(note.getId());
+                toggleFoldedState(context, note.getId());
             }
         });
+    }
+
+    private void toggleFoldedState(final Context context, final long id) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                new Shelf(context).toggleFoldedState(id);
+                return null;
+            }
+        }.execute();
     }
 
     /**
