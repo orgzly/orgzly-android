@@ -145,8 +145,7 @@
     <string name="permissions_rationale_for_book_export">导出笔记本需要存储权限</string>
     <string name="permissions_rationale_for_local_repo">与本地同步需要存储权限</string>
     <string name="permissions_rationale_for_sync_start">与本地仓库同步需要存储权限</string>
-    <string name="pref_default_created_at_property">生成</string>
-    <string name="pref_default_value_new_note_state">笔记</string>
+    <string name="created_property_name">生成</string>
     <string name="pref_title_notebooks">笔记本</string>
     <string name="prefs_interface">交互</string>
     <string name="prefs_title_new_note">新建笔记</string>

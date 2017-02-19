@@ -339,6 +339,10 @@
     <string name="font_size_default">Default</string>
     <string name="font_size_large">Large</string>
 
+    <string name="book_name_in_search_hide">Hide</string>
+    <string name="book_name_in_search_before_note">Before note</string>
+    <string name="book_name_in_search_under_note">Under note</string>
+
     <string name="list_density_comfortable">Comfortable</string>
     <string name="list_density_cozy">Cozy</string>
     <string name="list_density_compact">Compact</string>
@@ -383,4 +387,5 @@
     <string name="preface_in_book_hide">Hide</string>
     <string name="preface_in_book_few_lines">Display few lines</string>
 
+    <string name="created_property_name">CREATED</string>
 </resources>
