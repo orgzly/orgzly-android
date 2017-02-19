@@ -71,6 +71,8 @@ dependencies {
 
     compile "com.dropbox.core:dropbox-core-sdk:$dropbox_core_sdk_version"
 
+    compile "com.googlecode.juniversalchardet:juniversalchardet:1.0.3"
+
     compile("com.github.machinarius:preferencefragment:$preference_fragment_version") {
         exclude module: 'support-v4'
     }
@@ -81,14 +83,6 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$android_support_version"
     compile "com.android.support:design:$android_support_version"
     androidTestCompile "com.android.support:support-annotations:$android_support_version"
-
-    // Too big. Maybe strip it?
-    // compile 'com.ibm.icu:icu4j:54.1.1'
-
-    // Did not detect encoding for worg/org-blog-articles.org
-    // compile fileTree(dir: 'libs', include: ['chardet.jar'])
-
-    compile fileTree(include: ['juniversalchardet-1.0.3.jar'], dir: 'libs')
 
     testCompile "junit:junit:$junit_version"
 

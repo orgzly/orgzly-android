@@ -9,8 +9,8 @@ import java.io.InputStream;
 public class EncodingDetect {
 
     public enum Method {
-        // ICU,
-        // JCHARDET,
+        // ICU,              // Too big. Maybe strip it?
+        // JCHARDET,         // Did not detect encoding for worg/org-blog-articles.org
         JUNIVERSALCHARDET
     }
 
