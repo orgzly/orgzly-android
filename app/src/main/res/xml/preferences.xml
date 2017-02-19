@@ -10,12 +10,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/look_and_feel">
-        <CheckBoxPreference
-            android:key="@string/pref_key_is_font_monospaced"
-            android:title="@string/monospaced_font"
-            android:summary="@string/monospaced_font_summary"
-            android:defaultValue="@bool/pref_default_is_font_monospaced"/>
-
         <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
             android:key="@string/pref_key_color_scheme"
             android:title="@string/color_scheme"
@@ -29,6 +23,12 @@
             android:entries="@array/font_sizes"
             android:entryValues="@array/font_sizes_values"
             android:defaultValue="@string/pref_default_value_font_size"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_key_is_font_monospaced"
+            android:title="@string/monospaced_font"
+            android:summary="@string/monospaced_font_summary"
+            android:defaultValue="@bool/pref_default_is_font_monospaced"/>
 
         <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
             android:key="@string/pref_key_layout_direction"
