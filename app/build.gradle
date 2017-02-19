@@ -36,16 +36,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField "boolean", "LOG_DEBUG", "false"
-
-            buildConfigField "String", "DROPBOX_APP_KEY", properties.getProperty("dropbox.app_key")
-            resValue "string", "dropbox_app_key_schema", properties.getProperty("dropbox.app_key_schema")
         }
 
         debug {
             buildConfigField "boolean", "LOG_DEBUG", "true"
 
             buildConfigField "String", "DROPBOX_TOKEN", properties.getProperty("dropbox.token")
+        }
 
+        all {
             buildConfigField "String", "DROPBOX_APP_KEY", properties.getProperty("dropbox.app_key")
             resValue "string", "dropbox_app_key_schema", properties.getProperty("dropbox.app_key_schema")
         }
