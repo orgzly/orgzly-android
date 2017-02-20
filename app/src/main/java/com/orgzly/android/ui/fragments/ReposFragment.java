@@ -2,6 +2,7 @@ package com.orgzly.android.ui.fragments;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
@@ -86,12 +87,19 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
 
         mViewFlipper = (ViewFlipper) view.findViewById(R.id.fragment_repos_flipper);
 
-        view.findViewById(R.id.fragment_repos_dropbox).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onRepoNewRequest(R.id.repos_options_menu_item_new_dropbox);
-            }
-        });
+        /* Hide or setup new Dropbox repo button. */
+        View newDropboxRepoButton = view.findViewById(R.id.fragment_repos_dropbox);
+        if (BuildConfig.IS_DROPBOX_ENABLED) {
+            newDropboxRepoButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onRepoNewRequest(R.id.repos_options_menu_item_new_dropbox);
+                }
+            });
+        } else {
+            newDropboxRepoButton.setVisibility(View.GONE);
+        }
+
         view.findViewById(R.id.fragment_repos_directory).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,8 +204,10 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
 
         inflater.inflate(R.menu.repos_actions, menu);
 
-        /* Remove search item. */
-        // menu.removeItem(R.id.options_menu_item_search);
+        if (! BuildConfig.IS_DROPBOX_ENABLED) {
+            menu.findItem(R.id.repos_options_menu_item_new).getSubMenu()
+                    .removeItem(R.id.repos_options_menu_item_new_dropbox);
+        }
     }
 
     /**

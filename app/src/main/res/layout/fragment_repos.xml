@@ -41,23 +41,18 @@
 
         <Button
             android:id="@+id/fragment_repos_dropbox"
-            android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_marginBottom="48dp"
             android:drawableTop="?attr/oic_dropbox_not_linked"
             android:text="@string/dropbox"/>
 
-        <Space
-            android:layout_height="0dp"
-            android:layout_width="0dp"
-            android:layout_weight="0.5">
-        </Space>
-
         <Button
             android:id="@+id/fragment_repos_directory"
-            android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="16dp"
             android:drawableTop="?attr/oic_browse_directory"
             android:text="@string/directory"/>
 

@@ -45,6 +45,8 @@ android {
         }
 
         all {
+            buildConfigField "boolean", "IS_DROPBOX_ENABLED", "true"
+
             buildConfigField "String", "DROPBOX_APP_KEY", properties.getProperty("dropbox.app_key")
             resValue "string", "dropbox_app_key_schema", properties.getProperty("dropbox.app_key_schema")
         }
