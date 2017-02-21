@@ -57,6 +57,8 @@ android {
              * Properties file which contains the required API key is not included with the code.
              */
             buildConfigField "boolean", "IS_DROPBOX_ENABLED", "false"
+
+            versionNameSuffix ' (fdroid)'
         }
     }
 
