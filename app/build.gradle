@@ -9,6 +9,14 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
 
+    /*
+     * Read properties from the file.
+     *
+     * This file contains credentials and it is not checked into Git.
+     * You should create it -- see "app.properties.sample".
+     */
+    Properties properties = loadProperties(project.rootProject.file('app.properties'))
+
     defaultConfig {
         applicationId "com.orgzly"
         minSdkVersion 14 // Ice Cream Sandwich (4.0)
@@ -16,19 +24,12 @@ android {
         versionCode 56
         versionName "1.4.10"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "DROPBOX_APP_KEY", properties.getProperty("dropbox.app_key", '""')
+        resValue "string", "dropbox_app_key_schema", properties.getProperty("dropbox.app_key_schema", '')
     }
 
     buildTypes {
-        Properties properties = new Properties()
-
-        /*
-         * Read properties from the file.
-         *
-         * This file contains credentials and is not checked into Git.
-         * You should create it -- see "app.properties.sample".
-         */
-        properties.load(project.rootProject.file('app.properties').newDataInputStream())
-
         release {
             shrinkResources true
             minifyEnabled true
@@ -41,24 +42,20 @@ android {
         debug {
             buildConfigField "boolean", "LOG_DEBUG", "true"
 
-            buildConfigField "String", "DROPBOX_TOKEN", properties.getProperty("dropbox.token")
-        }
-
-        all {
-            buildConfigField "String", "DROPBOX_APP_KEY", properties.getProperty("dropbox.app_key")
-            resValue "string", "dropbox_app_key_schema", properties.getProperty("dropbox.app_key_schema")
+            buildConfigField "String", "DROPBOX_TOKEN", properties.getProperty("dropbox.token", '""')
         }
     }
 
     productFlavors {
-        // Free with all features available
         premium {
             buildConfigField "boolean", "IS_DROPBOX_ENABLED", "true"
         }
 
-        // Free with all features available
         fdroid {
-            // Disable Dropbox -- not including required API key with the source code
+            /*
+             * Disable Dropbox.
+             * Properties file which contains the required API key is not included with the code.
+             */
             buildConfigField "boolean", "IS_DROPBOX_ENABLED", "false"
         }
     }
@@ -105,4 +102,17 @@ dependencies {
     androidTestCompile "com.android.support.test.espresso:espresso-contrib:$android_test_espresso_version"
 
     androidTestCompile "de.sven-jacobs:loremipsum:$loremipsum_version"
+}
+
+
+def loadProperties(file) {
+    Properties properties = new Properties()
+
+    if (file.exists()) {
+        properties.load(file.newDataInputStream())
+    } else {
+        logger.warn("Properties file ${file} does not exist")
+    }
+
+    return properties
 }
