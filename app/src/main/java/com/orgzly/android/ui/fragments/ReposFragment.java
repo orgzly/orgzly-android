@@ -180,7 +180,8 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
         new android.os.Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                getActivity().getSupportLoaderManager().initLoader(Loaders.REPOS_FRAGMENT, null, ReposFragment.this);
+                getActivity().getSupportLoaderManager()
+                        .initLoader(Loaders.REPOS_FRAGMENT, null, ReposFragment.this);
 
             }
         }, 100);
@@ -258,7 +259,13 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(getActivity(), ProviderContract.Repos.ContentUri.repos(), null, null, null, null);
+        return new CursorLoader(
+                getActivity(),
+                ProviderContract.Repos.ContentUri.repos(),
+                null,
+                null,
+                null,
+                ProviderContract.Repos.Param.REPO_URL);
     }
 
     @Override
