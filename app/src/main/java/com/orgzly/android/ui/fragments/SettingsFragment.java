@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.support.annotation.StringRes;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,7 +29,10 @@ import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -207,11 +211,12 @@ public class SettingsFragment extends PreferenceFragment
             mReposPreference.setSummary(R.string.no_user_repos_configured_pref_summary);
 
         } else {
-            StringBuilder s = new StringBuilder();
+            List<String> list = new ArrayList<>();
             for (Repo repo : repos.values()) {
-                s.append(repo.toString()).append("\n");
+                list.add(repo.toString());
             }
-            mReposPreference.setSummary(s.toString().trim());
+            Collections.sort(list);
+            mReposPreference.setSummary(TextUtils.join("\n", list));
         }
     }
 
