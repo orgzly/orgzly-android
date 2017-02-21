@@ -225,8 +225,11 @@ public class SettingsFragment extends PreferenceFragment
      */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        /* Remove search item. */
-        menu.removeItem(R.id.activity_action_search);
+        /*
+         * Clear the menu. We want new SettingsActivity anyway,
+         * to remove as much code from MainActivity as possible.
+         */
+        menu.clear();
     }
 
     /**
