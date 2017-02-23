@@ -28,6 +28,20 @@
             android:layout_marginBottom="@dimen/padding_4"
             android:text="@string/whats_new_follow"/>
 
+        <TextView style="@style/WhatsNewVersion" android:text="1.4.11" tools:ignore="HardcodedText"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Black color scheme"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Hide preface (new option)"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Support links for “tel”, “sms”, “geo” and more"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Always display link's description instead of link"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Ask for confirmation to delete notes everywhere"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Keep list of repos sorted"/>
+
         <TextView style="@style/WhatsNewVersion" android:text="1.4.10" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange" app:text="Ongoing notification for creating note (new option)"/>
