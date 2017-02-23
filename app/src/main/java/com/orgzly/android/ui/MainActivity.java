@@ -1133,16 +1133,9 @@ public class MainActivity extends CommonActivity
                 ACTIVITY_REQUEST_CODE_FOR_FILE_CHOOSER);
     }
 
-    /**
-     * Clears few preferences' flags.
-     */
     @Override
     public void onGettingStartedNotebookReload() {
         importGettingStartedNotebook();
-
-//        mAppPrefs.setLastUsedVersionCode(0);
-//        mAppPrefs.setIsGettingStartedNotebookLoaded(false);
-//        performIntros();
     }
 
     @Override

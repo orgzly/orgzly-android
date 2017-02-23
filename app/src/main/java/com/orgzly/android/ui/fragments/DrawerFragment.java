@@ -389,8 +389,9 @@ public class DrawerFragment extends ListFragment
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         /* Restart loader if notebooks sort order changed. */
-        if (getString(R.string.pref_key_notebooks_sort_order).equals(key)) {
-            getActivity().getSupportLoaderManager().restartLoader(Loaders.DRAWER_BOOKS, null, this);
+        FragmentActivity activity = getActivity();
+        if (activity != null && getString(R.string.pref_key_notebooks_sort_order).equals(key)) {
+            activity.getSupportLoaderManager().restartLoader(Loaders.DRAWER_BOOKS, null, this);
         }
     }
 
