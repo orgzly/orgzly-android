@@ -138,17 +138,17 @@
     <!-- Displayed book details. -->
     <string name="pref_key_displayed_book_details" translatable="false">pref_key_displayed_book_details</string>
     <string-array name="displayed_book_details_default">
-        <item>@string/book_details_mtime</item>
-        <item>@string/book_details_last_action</item>
+        <item>@string/pref_value_book_details_mtime</item>
+        <item>@string/pref_value_book_details_last_action</item>
     </string-array>
-    <string name="book_details_mtime" translatable="false">book_details_mtime</string>
-    <string name="book_details_link_url" translatable="false">book_details_link_url</string>
-    <string name="book_details_sync_url" translatable="false">book_details_sync_url</string>
-    <string name="book_details_sync_mtime" translatable="false">book_details_sync_mtime</string>
-    <string name="book_details_sync_revision" translatable="false">book_details_sync_revision</string>
-    <string name="book_details_encoding_detected" translatable="false">book_details_encoding_detected</string>
-    <string name="book_details_encoding_used" translatable="false">book_details_encoding_used</string>
-    <string name="book_details_last_action" translatable="false">book_details_last_action</string>
+    <string name="pref_value_book_details_mtime" translatable="false">book_details_mtime</string>
+    <string name="pref_value_book_details_link_url" translatable="false">book_details_link_url</string>
+    <string name="pref_value_book_details_sync_url" translatable="false">book_details_sync_url</string>
+    <string name="pref_value_book_details_sync_mtime" translatable="false">book_details_sync_mtime</string>
+    <string name="pref_value_book_details_sync_revision" translatable="false">book_details_sync_revision</string>
+    <string name="pref_value_book_details_encoding_detected" translatable="false">book_details_encoding_detected</string>
+    <string name="pref_value_book_details_encoding_used" translatable="false">book_details_encoding_used</string>
+    <string name="pref_value_book_details_last_action" translatable="false">book_details_last_action</string>
     <string-array name="displayed_book_details">
         <item>@string/displayed_book_details_local_mtime</item>
         <item>@string/displayed_book_details_link_url</item>
@@ -160,14 +160,14 @@
         <item>@string/displayed_book_details_last_action</item>
     </string-array>
     <string-array name="displayed_book_details_values">
-        <item>@string/book_details_mtime</item>
-        <item>@string/book_details_link_url</item>
-        <item>@string/book_details_sync_url</item>
-        <item>@string/book_details_sync_mtime</item>
-        <item>@string/book_details_sync_revision</item>
-        <item>@string/book_details_encoding_detected</item>
-        <item>@string/book_details_encoding_used</item>
-        <item>@string/book_details_last_action</item>
+        <item>@string/pref_value_book_details_mtime</item>
+        <item>@string/pref_value_book_details_link_url</item>
+        <item>@string/pref_value_book_details_sync_url</item>
+        <item>@string/pref_value_book_details_sync_mtime</item>
+        <item>@string/pref_value_book_details_sync_revision</item>
+        <item>@string/pref_value_book_details_encoding_detected</item>
+        <item>@string/pref_value_book_details_encoding_used</item>
+        <item>@string/pref_value_book_details_last_action</item>
     </string-array>
 
     <string name="pref_key_new_note_state" translatable="false">pref_key_new_note_state</string>
@@ -254,19 +254,19 @@
 
     <!-- Separate notes with an empty line -->
     <string name="pref_key_separate_notes_with_new_line" translatable="false">pref_key_separate_notes_with_new_line</string>
-    <string name="pref_default_separate_notes_with_new_line" translatable="false">@string/separate_notes_with_new_line_multi_line_notes_only</string>
-    <string name="separate_notes_with_new_line_always" translatable="false">separate_notes_with_new_line_always</string>
-    <string name="separate_notes_with_new_line_multi_line_notes_only" translatable="false">separate_notes_with_new_line_multi_line_notes_only</string>
-    <string name="separate_notes_with_new_line_never" translatable="false">separate_notes_with_new_line_never</string>
+    <string name="pref_default_separate_notes_with_new_line" translatable="false">@string/pref_value_separate_notes_with_new_line_multi_line_notes_only</string>
+    <string name="pref_value_separate_notes_with_new_line_always" translatable="false">separate_notes_with_new_line_always</string>
+    <string name="pref_value_separate_notes_with_new_line_multi_line_notes_only" translatable="false">separate_notes_with_new_line_multi_line_notes_only</string>
+    <string name="pref_value_separate_notes_with_new_line_never" translatable="false">separate_notes_with_new_line_never</string>
     <string-array name="separate_notes_with_new_line_names">
-        <item>Always</item>
-        <item>Multiline notes only</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="separate_notes_with_new_line_values">
         <item>@string/separate_notes_with_new_line_always</item>
         <item>@string/separate_notes_with_new_line_multi_line_notes_only</item>
         <item>@string/separate_notes_with_new_line_never</item>
+    </string-array>
+    <string-array name="separate_notes_with_new_line_values">
+        <item>@string/pref_value_separate_notes_with_new_line_always</item>
+        <item>@string/pref_value_separate_notes_with_new_line_multi_line_notes_only</item>
+        <item>@string/pref_value_separate_notes_with_new_line_never</item>
     </string-array>
 
 

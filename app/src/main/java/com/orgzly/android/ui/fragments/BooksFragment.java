@@ -284,7 +284,7 @@ public class BooksFragment extends ListFragment
                 /*
                  * Modification time.
                  */
-                if (AppPreferences.displayedBookDetails(context).contains(getString(R.string.book_details_mtime))) {
+                if (AppPreferences.displayedBookDetails(context).contains(getString(R.string.pref_value_book_details_mtime))) {
                     holder.mtimeContainer.setVisibility(View.VISIBLE);
                     isBookDetailDisplayed = true;
                 } else {
@@ -292,7 +292,7 @@ public class BooksFragment extends ListFragment
                 }
 
                 /* If book has no link - remove related rows. */
-                if (book.getLink() != null && AppPreferences.displayedBookDetails(context).contains(getString(R.string.book_details_link_url))) {
+                if (book.getLink() != null && AppPreferences.displayedBookDetails(context).contains(getString(R.string.pref_value_book_details_link_url))) {
                     holder.linkDetailsContainer.setVisibility(View.VISIBLE);
                     isBookDetailDisplayed = true;
                 } else {
@@ -303,21 +303,21 @@ public class BooksFragment extends ListFragment
                 if (book.getLastSyncedToRook() != null) {
                     holder.versionedRookContainer.setVisibility(View.VISIBLE);
 
-                    if (AppPreferences.displayedBookDetails(context).contains(getString(R.string.book_details_sync_url))) {
+                    if (AppPreferences.displayedBookDetails(context).contains(getString(R.string.pref_value_book_details_sync_url))) {
                         holder.versionedRookUrlContainer.setVisibility(View.VISIBLE);
                         isBookDetailDisplayed = true;
                     } else {
                         holder.versionedRookUrlContainer.setVisibility(View.GONE);
                     }
 
-                    if (AppPreferences.displayedBookDetails(context).contains(getString(R.string.book_details_sync_mtime))) {
+                    if (AppPreferences.displayedBookDetails(context).contains(getString(R.string.pref_value_book_details_sync_mtime))) {
                         holder.versionedRookMtimeContainer.setVisibility(View.VISIBLE);
                         isBookDetailDisplayed = true;
                     } else {
                         holder.versionedRookMtimeContainer.setVisibility(View.GONE);
                     }
 
-                    if (AppPreferences.displayedBookDetails(context).contains(getString(R.string.book_details_sync_revision))) {
+                    if (AppPreferences.displayedBookDetails(context).contains(getString(R.string.pref_value_book_details_sync_revision))) {
                         holder.versionedRookRevisionContainer.setVisibility(View.VISIBLE);
                         isBookDetailDisplayed = true;
                     } else {
@@ -333,7 +333,7 @@ public class BooksFragment extends ListFragment
                  *   OR
                  * - action is INFO but user choose not to display it
                  */
-                if (book.getLastAction() == null || (book.getLastAction().getType() == BookAction.Type.INFO && !AppPreferences.displayedBookDetails(context).contains(getString(R.string.book_details_last_action)))) {
+                if (book.getLastAction() == null || (book.getLastAction().getType() == BookAction.Type.INFO && !AppPreferences.displayedBookDetails(context).contains(getString(R.string.pref_value_book_details_last_action)))) {
                     holder.lastActionContainer.setVisibility(View.GONE);
 
                 } else {
@@ -365,14 +365,14 @@ public class BooksFragment extends ListFragment
                 }
 
                 /* If encoding is not set, removed it. */
-                if (book.getUsedEncoding() != null && AppPreferences.displayedBookDetails(context).contains(getString(R.string.book_details_encoding_used))) {
+                if (book.getUsedEncoding() != null && AppPreferences.displayedBookDetails(context).contains(getString(R.string.pref_value_book_details_encoding_used))) {
                     holder.usedEncodingContainer.setVisibility(View.VISIBLE);
                     isBookDetailDisplayed = true;
                 } else {
                     holder.usedEncodingContainer.setVisibility(View.GONE);
                 }
 
-                if (book.getDetectedEncoding() != null && AppPreferences.displayedBookDetails(context).contains(getString(R.string.book_details_encoding_detected))) {
+                if (book.getDetectedEncoding() != null && AppPreferences.displayedBookDetails(context).contains(getString(R.string.pref_value_book_details_encoding_detected))) {
                     holder.detectedEncodingContainer.setVisibility(View.VISIBLE);
                     isBookDetailDisplayed = true;
                 } else {

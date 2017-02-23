@@ -237,11 +237,11 @@ public class Shelf {
 
             OrgParserSettings parserSettings = OrgParserSettings.getBasic();
 
-            if (mContext.getString(R.string.separate_notes_with_new_line_always).equals(prefValue)) {
+            if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_always).equals(prefValue)) {
                 parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.ALWAYS;
-            } else if (mContext.getString(R.string.separate_notes_with_new_line_multi_line_notes_only).equals(prefValue)) {
+            } else if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_multi_line_notes_only).equals(prefValue)) {
                 parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.MULTI_LINE_NOTES_ONLY;
-            } else if (mContext.getString(R.string.separate_notes_with_new_line_never).equals(prefValue)) {
+            } else if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_never).equals(prefValue)) {
                 parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.NEVER;
             }
 

@@ -388,4 +388,8 @@
     <string name="preface_in_book_few_lines">Display few lines</string>
 
     <string name="created_property_name">CREATED</string>
+
+    <string name="separate_notes_with_new_line_always">Always</string>
+    <string name="separate_notes_with_new_line_multi_line_notes_only">Multiline notes only</string>
+    <string name="separate_notes_with_new_line_never">Never</string>
 </resources>
