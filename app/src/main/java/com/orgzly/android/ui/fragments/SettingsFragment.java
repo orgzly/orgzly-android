@@ -79,7 +79,7 @@ public class SettingsFragment extends PreferenceFragment
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                         if (mListener != null) {
-                            mListener.onGettingStartedNotebookReload();
+                            mListener.onGettingStartedNotebookReloadRequest();
                         }
                         return true;
                     }
@@ -335,8 +335,10 @@ public class SettingsFragment extends PreferenceFragment
 
     public interface SettingsFragmentListener extends FragmentListener {
         void onStateKeywordsPreferenceChanged();
+
         void onDatabaseClearRequest();
-        void onGettingStartedNotebookReload();
+
+        void onGettingStartedNotebookReloadRequest();
 
         void onWhatsNewDisplayRequest();
     }

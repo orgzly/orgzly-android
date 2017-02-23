@@ -348,7 +348,10 @@ public class MainActivity extends CommonActivity
     }
 
     private void importGettingStartedNotebook() {
-        mSyncFragment.loadBook(GETTING_STARTED_NOTEBOOK_NAME, getResources(), GETTING_STARTED_NOTEBOOK_RESOURCE_ID);
+        mSyncFragment.loadBook(
+                GETTING_STARTED_NOTEBOOK_NAME,
+                getResources(),
+                GETTING_STARTED_NOTEBOOK_RESOURCE_ID);
     }
 
     private boolean checkIfNewAndUpdateVersion() {
@@ -1134,7 +1137,7 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onGettingStartedNotebookReload() {
+    public void onGettingStartedNotebookReloadRequest() {
         importGettingStartedNotebook();
     }
 

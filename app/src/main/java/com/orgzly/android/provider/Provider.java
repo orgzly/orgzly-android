@@ -74,7 +74,9 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Provider extends ContentProvider {
     private static final String TAG = Provider.class.getName();
@@ -387,17 +389,22 @@ public class Provider extends ContentProvider {
         /* Gets a writable database. This will trigger its creation if it doesn't already exist. */
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
+        Set<Uri> notifyUris = new HashSet<>();
+        notifyUris.add(uri);
+
         db.beginTransaction();
         try {
             for (int i = 0; i < values.length; i++) {
-                insertUnderTransaction(db, uri, values[i], false);
+                insertUnderTransaction(db, uri, values[i], notifyUris);
             }
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
         }
 
-        notifyChange(getContext(), uri);
+        for (Uri notifyUri: notifyUris) {
+            notifyChange(getContext(), notifyUri);
+        }
 
         return values.length;
     }
@@ -411,21 +418,25 @@ public class Provider extends ContentProvider {
 
         Uri resultUri;
 
+        Set<Uri> notifyUris = new HashSet<>();
+        notifyUris.add(uri); // FIXME: This notifies for urls such as content://com.orgzly/load-from-file
+
         db.beginTransaction();
         try {
-            resultUri = insertUnderTransaction(db, uri, contentValues, false);
+            resultUri = insertUnderTransaction(db, uri, contentValues, notifyUris);
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
         }
 
-        // FIXME: This notifies for urls such as content://com.orgzly/load-from-file
-        notifyChange(getContext(), uri);
+        for (Uri notifyUri: notifyUris) {
+            notifyChange(getContext(), notifyUri);
+        }
 
         return resultUri;
     }
 
-    private Uri insertUnderTransaction(SQLiteDatabase db, Uri uri, ContentValues contentValues, boolean notify) {
+    private Uri insertUnderTransaction(SQLiteDatabase db, Uri uri, ContentValues contentValues, Set<Uri> notifyUris) {
         long id, noteId;
         String table;
         Uri resultUri;
@@ -479,19 +490,19 @@ public class Provider extends ContentProvider {
             case ProviderUris.LOAD_BOOK_FROM_FILE:
                 resultUri = loadBookFromFile(contentValues);
 
-                notifyChange(getContext(), ProviderContract.Notes.ContentUri.notes());
-                notifyChange(getContext(), ProviderContract.Books.ContentUri.books());
+                notifyUris.add(ProviderContract.Notes.ContentUri.notes());
+                notifyUris.add(ProviderContract.Books.ContentUri.books());
 
                 return resultUri;
 
             case ProviderUris.CURRENT_ROOKS:
                 resultUri = insertCurrentRook(db, uri, contentValues);
-                notifyChange(getContext(), ProviderContract.Books.ContentUri.books());
+                notifyUris.add(ProviderContract.Books.ContentUri.books());
                 return resultUri;
 
             case ProviderUris.BOOKS_ID_SAVED:
                 resultUri = bookSavedToRepo(db, uri, contentValues);
-                notifyChange(getContext(), ProviderContract.Books.ContentUri.books());
+                notifyUris.add(ProviderContract.Books.ContentUri.books());
                 return resultUri;
 
             default:
@@ -598,8 +609,6 @@ public class Provider extends ContentProvider {
         replaceTimestampRangeStringsWithIds(db, values);
 
         long id = db.insertOrThrow(DbNote.TABLE, null, values);
-
-        notifyChange(getContext(), ProviderContract.Notes.ContentUri.notes());
 
         return ContentUris.withAppendedId(uri, id);
     }
@@ -1397,10 +1406,10 @@ public class Provider extends ContentProvider {
 
         final long bookId = ContentUris.parseId(uri);
 
-            /* Delete all notes from book. TODO: Delete all other references to this book ID */
+        /* Delete all notes from book. TODO: Delete all other references to this book ID */
         db.delete(DbNote.TABLE, DbNote.Column.BOOK_ID + "=" + bookId, null);
 
-            /* Open reader. */
+        /* Open reader. */
         Reader reader = new BufferedReader(inReader);
         try {
             /*
