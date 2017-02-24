@@ -18,6 +18,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.SearchQuery;
+import com.orgzly.android.StateChangeLogic;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.actions.Action;
 import com.orgzly.android.provider.actions.ActionRunner;
@@ -38,27 +39,26 @@ import com.orgzly.android.provider.models.DbBookSync;
 import com.orgzly.android.provider.models.DbCurrentVersionedRook;
 import com.orgzly.android.provider.models.DbDbRepo;
 import com.orgzly.android.provider.models.DbNote;
-import com.orgzly.android.provider.models.DbOrgRange;
 import com.orgzly.android.provider.models.DbNoteProperty;
+import com.orgzly.android.provider.models.DbOrgRange;
 import com.orgzly.android.provider.models.DbOrgTimestamp;
+import com.orgzly.android.provider.models.DbProperty;
+import com.orgzly.android.provider.models.DbPropertyName;
+import com.orgzly.android.provider.models.DbPropertyValue;
 import com.orgzly.android.provider.models.DbRepo;
 import com.orgzly.android.provider.models.DbRook;
 import com.orgzly.android.provider.models.DbRookUrl;
 import com.orgzly.android.provider.models.DbSearch;
 import com.orgzly.android.provider.models.DbVersionedRook;
-import com.orgzly.android.provider.models.DbProperty;
-import com.orgzly.android.provider.models.DbPropertyName;
-import com.orgzly.android.provider.models.DbPropertyValue;
 import com.orgzly.android.provider.views.BooksView;
 import com.orgzly.android.provider.views.NotesView;
 import com.orgzly.android.ui.Placement;
 import com.orgzly.android.util.EncodingDetect;
 import com.orgzly.android.util.LogUtils;
+import com.orgzly.org.OrgFile;
 import com.orgzly.org.OrgProperty;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgRange;
-import com.orgzly.org.OrgFile;
-import com.orgzly.android.StateChangeLogic;
 import com.orgzly.org.parser.OrgNestedSetParserListener;
 import com.orgzly.org.parser.OrgNode;
 import com.orgzly.org.parser.OrgNodeInSet;
@@ -395,7 +395,7 @@ public class Provider extends ContentProvider {
         db.beginTransaction();
         try {
             for (int i = 0; i < values.length; i++) {
-                insertUnderTransaction(db, uri, values[i], notifyUris);
+                insertUnderTransaction(db, notifyUris, uri, values[i]);
             }
             db.setTransactionSuccessful();
         } finally {
@@ -423,7 +423,7 @@ public class Provider extends ContentProvider {
 
         db.beginTransaction();
         try {
-            resultUri = insertUnderTransaction(db, uri, contentValues, notifyUris);
+            resultUri = insertUnderTransaction(db, notifyUris, uri, contentValues);
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -436,7 +436,7 @@ public class Provider extends ContentProvider {
         return resultUri;
     }
 
-    private Uri insertUnderTransaction(SQLiteDatabase db, Uri uri, ContentValues contentValues, Set<Uri> notifyUris) {
+    private Uri insertUnderTransaction(SQLiteDatabase db, Set<Uri> notifyUris, Uri uri, ContentValues contentValues) {
         long id, noteId;
         String table;
         Uri resultUri;
@@ -447,7 +447,7 @@ public class Provider extends ContentProvider {
                 break;
 
             case ProviderUris.REPOS:
-                id = DbRepo.insert(getContext(), db, contentValues.getAsString(ProviderContract.Repos.Param.REPO_URL));
+                id = DbRepo.insert(db, notifyUris, contentValues.getAsString(ProviderContract.Repos.Param.REPO_URL));
                 return ContentUris.withAppendedId(uri, id);
 
             case ProviderUris.BOOKS:
@@ -776,10 +776,18 @@ public class Provider extends ContentProvider {
         /* Gets a writable database. This will trigger its creation if it doesn't already exist. */
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
-        return delete(db, uri, selection, selectionArgs);
+        Set<Uri> notifyUris = new HashSet<>();
+
+        int result = delete(db, notifyUris, uri, selection, selectionArgs);
+
+        for (Uri notifyUri: notifyUris) {
+            notifyChange(getContext(), notifyUri);
+        }
+
+        return result;
     }
 
-    private int delete(SQLiteDatabase db, Uri uri, String selection, String[] selectionArgs) {
+    private int delete(SQLiteDatabase db, Set<Uri> notifyUris, Uri uri, String selection, String[] selectionArgs) {
         int result;
         long noteId;
         String table;
@@ -790,7 +798,7 @@ public class Provider extends ContentProvider {
                 break;
 
             case ProviderUris.REPOS:
-                result = DbRepo.delete(getContext(), db, selection, selectionArgs);
+                result = DbRepo.delete(db, notifyUris, selection, selectionArgs);
                 return result;
 
             /* Delete repo by just marking it as such. */
@@ -802,7 +810,7 @@ public class Provider extends ContentProvider {
                 removeBooksLinksForRepo(db, uri.getLastPathSegment());
 
                 /* Delete repo itself. */
-                result = DbRepo.delete(getContext(), db, selection, selectionArgs);
+                result = DbRepo.delete(db, notifyUris, selection, selectionArgs);
 
                 return result;
 
@@ -839,7 +847,7 @@ public class Provider extends ContentProvider {
                 selection = DbBookLink.Column.BOOK_ID + " = " + Long.parseLong(uri.getPathSegments().get(1));
                 selectionArgs = null;
                 result = db.delete(table, selection, selectionArgs);
-                notifyChange(getContext(), ProviderContract.Books.ContentUri.books());
+                notifyUris.add(ProviderContract.Books.ContentUri.books());
                 return result;
 
             case ProviderUris.NOTES_ID_PROPERTIES:
@@ -860,7 +868,7 @@ public class Provider extends ContentProvider {
 
         result = db.delete(table, selection, selectionArgs);
 
-        notifyChange(getContext(), uri);
+        notifyUris.add(uri);
 
         return result;
     }
@@ -881,11 +889,19 @@ public class Provider extends ContentProvider {
         /* Gets a writable database. This will trigger its creation if it doesn't already exist. */
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
-        return updateUnderTransaction(db, uri, contentValues, selection, selectionArgs);
+        Set<Uri> notifyUris = new HashSet<>();
+
+        int result = updateUnderTransaction(db, notifyUris, uri, contentValues, selection, selectionArgs);
+
+        for (Uri notifyUri: notifyUris) {
+            notifyChange(getContext(), notifyUri);
+        }
+
+        return result;
     }
 
     // TODO: Make sure everything is done under transaction. Careful not to close db
-    private int updateUnderTransaction(SQLiteDatabase db, Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+    private int updateUnderTransaction(SQLiteDatabase db, Set<Uri> notifyUris, Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         int result;
         long noteId;
         int match = uris.matcher.match(uri);
@@ -898,13 +914,13 @@ public class Provider extends ContentProvider {
                 break;
 
             case ProviderUris.REPOS:
-                result = DbRepo.update(getContext(), db, contentValues, selection, selectionArgs);
+                result = DbRepo.update(db, notifyUris, contentValues, selection, selectionArgs);
                 return result;
 
             case ProviderUris.REPOS_ID:
                 selection = DbRepo.Column._ID + " = " + uri.getLastPathSegment();
                 selectionArgs = null;
-                result = DbRepo.update(getContext(), db, contentValues, selection, selectionArgs);
+                result = DbRepo.update(db, notifyUris, contentValues, selection, selectionArgs);
                 return result;
 
             case ProviderUris.FILTERS:
@@ -919,12 +935,12 @@ public class Provider extends ContentProvider {
 
             case ProviderUris.FILTER_UP:
                 result = ProviderFilters.moveFilterUp(db, Long.parseLong(uri.getPathSegments().get(1)));
-                notifyChange(getContext(), ProviderContract.Filters.ContentUri.filters());
+                notifyUris.add(ProviderContract.Filters.ContentUri.filters());
                 return result;
 
             case ProviderUris.FILTER_DOWN:
                 result = ProviderFilters.moveFilterDown(db, Long.parseLong(uri.getPathSegments().get(1)));
-                notifyChange(getContext(), ProviderContract.Filters.ContentUri.filters());
+                notifyUris.add(ProviderContract.Filters.ContentUri.filters());
                 return result;
 
             case ProviderUris.BOOKS:
@@ -955,8 +971,8 @@ public class Provider extends ContentProvider {
                     DatabaseUtils.updateBookMtime(db, Long.parseLong(uri.getQueryParameter("book-id")));
                 }
 
-                notifyChange(getContext(), ProviderContract.Notes.ContentUri.notes());
-                notifyChange(getContext(), ProviderContract.Books.ContentUri.books());
+                notifyUris.add(ProviderContract.Notes.ContentUri.notes());
+                notifyUris.add(ProviderContract.Books.ContentUri.books());
 
                 return result;
 
@@ -967,8 +983,8 @@ public class Provider extends ContentProvider {
                 result = setStateForNotes(db, ids, state);
 
                 if (result > 0) {
-                    notifyChange(getContext(), ProviderContract.Notes.ContentUri.notes());
-                    notifyChange(getContext(), ProviderContract.Books.ContentUri.books()); /* mtime updated. */
+                    notifyUris.add(ProviderContract.Notes.ContentUri.notes());
+                    notifyUris.add(ProviderContract.Books.ContentUri.books());
                 }
 
                 return result;
@@ -979,8 +995,8 @@ public class Provider extends ContentProvider {
                     return ActionRunner.run(db, action);
 
                 } finally {
-                    notifyChange(getContext(), ProviderContract.Notes.ContentUri.notes());
-                    notifyChange(getContext(), ProviderContract.Books.ContentUri.books());
+                    notifyUris.add(ProviderContract.Notes.ContentUri.notes());
+                    notifyUris.add(ProviderContract.Books.ContentUri.books());
                 }
 
             case ProviderUris.PASTE:
@@ -989,8 +1005,8 @@ public class Provider extends ContentProvider {
                     return ActionRunner.run(db, action);
 
                 } finally {
-                    notifyChange(getContext(), ProviderContract.Notes.ContentUri.notes());
-                    notifyChange(getContext(), ProviderContract.Books.ContentUri.books());
+                    notifyUris.add(ProviderContract.Notes.ContentUri.notes());
+                    notifyUris.add(ProviderContract.Books.ContentUri.books());
                 }
 
             case ProviderUris.DELETE:
@@ -999,8 +1015,8 @@ public class Provider extends ContentProvider {
                     return ActionRunner.run(db, action);
 
                 } finally {
-                    notifyChange(getContext(), ProviderContract.Notes.ContentUri.notes());
-                    notifyChange(getContext(), ProviderContract.Books.ContentUri.books());
+                    notifyUris.add(ProviderContract.Notes.ContentUri.notes());
+                    notifyUris.add(ProviderContract.Books.ContentUri.books());
                 }
 
             case ProviderUris.PROMOTE:
@@ -1009,8 +1025,8 @@ public class Provider extends ContentProvider {
                     return ActionRunner.run(db, action);
 
                 } finally {
-                    notifyChange(getContext(), ProviderContract.Notes.ContentUri.notes());
-                    notifyChange(getContext(), ProviderContract.Books.ContentUri.books());
+                    notifyUris.add(ProviderContract.Notes.ContentUri.notes());
+                    notifyUris.add(ProviderContract.Books.ContentUri.books());
                 }
 
             case ProviderUris.DEMOTE:
@@ -1019,8 +1035,8 @@ public class Provider extends ContentProvider {
                     return ActionRunner.run(db, action);
 
                 } finally {
-                    notifyChange(getContext(), ProviderContract.Notes.ContentUri.notes());
-                    notifyChange(getContext(), ProviderContract.Books.ContentUri.books());
+                    notifyUris.add(ProviderContract.Notes.ContentUri.notes());
+                    notifyUris.add(ProviderContract.Books.ContentUri.books());
                 }
 
             case ProviderUris.MOVE:
@@ -1029,8 +1045,8 @@ public class Provider extends ContentProvider {
                     return ActionRunner.run(db, action);
 
                 } finally {
-                    notifyChange(getContext(), ProviderContract.Notes.ContentUri.notes());
-                    notifyChange(getContext(), ProviderContract.Books.ContentUri.books());
+                    notifyUris.add(ProviderContract.Notes.ContentUri.notes());
+                    notifyUris.add(ProviderContract.Books.ContentUri.books());
                 }
 
             case ProviderUris.NOTE_TOGGLE_FOLDED_STATE:
@@ -1041,7 +1057,7 @@ public class Provider extends ContentProvider {
                     return ActionRunner.run(db, action);
 
                 } finally {
-                    notifyChange(getContext(), ProviderContract.Notes.ContentUri.notes());
+                    notifyUris.add(ProviderContract.Notes.ContentUri.notes());
                 }
 
             case ProviderUris.BOOKS_ID_CYCLE_VISIBILITY:
@@ -1052,7 +1068,7 @@ public class Provider extends ContentProvider {
                     return ActionRunner.run(db, action);
 
                 } finally {
-                    notifyChange(getContext(), ProviderContract.Notes.ContentUri.notes());
+                    notifyUris.add(ProviderContract.Notes.ContentUri.notes());
                 }
 
             case ProviderUris.BOOKS_ID_SPARSE_TREE:
@@ -1063,24 +1079,23 @@ public class Provider extends ContentProvider {
                     return ActionRunner.run(db, action);
 
                 } finally {
-                    if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Notifying change after sparse tree");
-                    notifyChange(getContext(), ProviderContract.Notes.ContentUri.notes());
+                    notifyUris.add(ProviderContract.Notes.ContentUri.notes());
                 }
 
             case ProviderUris.LINKS_FOR_BOOK:
                 result = updateLinkForBook(db, uri, contentValues);
-                notifyChange(getContext(), ProviderContract.Books.ContentUri.books());
+                notifyUris.add(ProviderContract.Books.ContentUri.books());
                 return result;
 
             case ProviderUris.DB_RECREATE:
                 mOpenHelper.reCreateTables(db);
 
                 // TODO: Forgetting to update this code after new table is added - move to Database at least
-                notifyChange(getContext(), ProviderContract.Books.ContentUri.books());
-                notifyChange(getContext(), ProviderContract.Notes.ContentUri.notes());
-                notifyChange(getContext(), ProviderContract.Repos.ContentUri.repos());
-                notifyChange(getContext(), ProviderContract.Filters.ContentUri.filters());
-                notifyChange(getContext(), ProviderContract.LocalDbRepo.ContentUri.dbRepos());
+                notifyUris.add(ProviderContract.Books.ContentUri.books());
+                notifyUris.add(ProviderContract.Notes.ContentUri.notes());
+                notifyUris.add(ProviderContract.Repos.ContentUri.repos());
+                notifyUris.add(ProviderContract.Filters.ContentUri.filters());
+                notifyUris.add(ProviderContract.LocalDbRepo.ContentUri.dbRepos());
 
                 return 0;
 
@@ -1100,7 +1115,7 @@ public class Provider extends ContentProvider {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, table, contentValues, selection, selectionArgs);
         result = db.update(table, contentValues, selection, selectionArgs);
 
-        notifyChange(getContext(), uri);
+        notifyUris.add(uri);
 
         return result;
     }
@@ -1600,7 +1615,7 @@ public class Provider extends ContentProvider {
     /**
      * Notify observers (such as {@link android.widget.CursorAdapter}) that the data changed.
      */
-    public static void notifyChange(Context context, Uri uri) {
+    private static void notifyChange(Context context, Uri uri) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, uri.toString());
         context.getContentResolver().notifyChange(uri, null);
     }

@@ -1,13 +1,14 @@
 package com.orgzly.android.provider.models;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.orgzly.android.provider.DatabaseUtils;
-import com.orgzly.android.provider.Provider;
 import com.orgzly.android.provider.ProviderContract;
+
+import java.util.Set;
 
 /**
  * User-configured repositories.
@@ -28,7 +29,7 @@ public class DbRepo {
     /**
      * Inserts new URL or updates existing marking it as active.
      */
-    public static long insert(Context context, SQLiteDatabase db, String url) {
+    public static long insert(SQLiteDatabase db, Set<Uri> notifyUris, String url) {
         ContentValues values = new ContentValues();
         values.put(Column.REPO_URL, url);
         values.put(Column.IS_REPO_ACTIVE, 1);
@@ -45,7 +46,7 @@ public class DbRepo {
             id = db.insertOrThrow(TABLE, null, values);
         }
 
-        notify(context);
+        notify(notifyUris);
 
         return id;
     }
@@ -53,32 +54,32 @@ public class DbRepo {
     /**
      * Delete repos by marking them as inactive.
      */
-    public static int delete(Context context, SQLiteDatabase db, String selection, String[] selectionArgs) {
+    public static int delete(SQLiteDatabase db, Set<Uri> notifyUris, String selection, String[] selectionArgs) {
         ContentValues values = new ContentValues();
         values.put(Column.IS_REPO_ACTIVE, 0);
 
         int result = db.update(TABLE, values, selection, selectionArgs);
 
-        notify(context);
+        notify(notifyUris);
 
         return result;
     }
 
-    public static int update(Context context, SQLiteDatabase db, ContentValues contentValues, String selection, String[] selectionArgs) {
+    public static int update(SQLiteDatabase db, Set<Uri> notifyUris, ContentValues contentValues, String selection, String[] selectionArgs) {
         int result = db.update(TABLE, contentValues, selection, selectionArgs);
-        notify(context);
+
+        notify(notifyUris);
+
         return result;
     }
 
-    /*
-     * TODO: Try doing notifyChange in all models, instead of Provider
-     * It's easy to search for it and find all table uses and notifications are at one place.
-     */
-    private static void notify(Context context) {
-        Provider.notifyChange(context, ProviderContract.Repos.ContentUri.repos());
+    private static void notify(Set<Uri> notifyUris) {
+        if (notifyUris != null) {
+            notifyUris.add(ProviderContract.Repos.ContentUri.repos());
 
-        /* Books view is using repo table. */
-        Provider.notifyChange(context, ProviderContract.Books.ContentUri.books());
+            /* Books view is using repo table. */
+            notifyUris.add(ProviderContract.Books.ContentUri.books());
+        }
     }
 
     public interface Columns {
