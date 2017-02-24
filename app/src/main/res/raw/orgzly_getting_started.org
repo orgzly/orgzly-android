@@ -13,7 +13,12 @@ Fling it left to open a different menu.
 ** Fold a note which contains sub-notes by clicking the icon next to it
 *** There is no limit in number of levels you can have
 **** Use this to better organize your notes
-** Note can have tags :tutorial:help:tags:
+
+** Note can have tags :tag1:tag2:
+*** Sub-note inherits the tags :tag3:
+
+If you search for notes tagged “tag1”, this note will be returned as well.
+
 ** [#A] Note can have a priority
 ** TODO Task is a type of note with a TODO state
 
