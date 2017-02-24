@@ -246,15 +246,5 @@
 
         <TextView style="@style/WhatsNewVersion" android:text="1.0" tools:ignore="HardcodedText"/>
         <TextView style="@style/WhatsNewChange" android:text="This is the first version of Orgzly."/>
-        <TextView style="@style/WhatsNewChange" android:layout_marginTop="6dp" android:layout_marginBottom="6dp" android:text="Stay tuned for:"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Collapsing (folding) notes"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Additional sync options"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Calendar integration"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Repeating times"/>
-        <TextView style="@style/WhatsNewChange" android:layout_marginTop="6dp" android:text="and much more&#8230;"/>
     </LinearLayout>
 </ScrollView>
