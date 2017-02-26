@@ -166,16 +166,17 @@ public class DropboxClient {
         } catch (DbxException e) {
             e.printStackTrace();
 
+            /* If we get NOT_FOUND from Dropbox, just return the empty list. */
             if (e instanceof GetMetadataErrorException) {
                 if (((GetMetadataErrorException) e).errorValue.getPathValue() == LookupError.NOT_FOUND) {
                     return list;
                 }
-
             }
+
             if (e.getMessage() != null) {
-                throw new IOException("Failed getting the list of Dropbox files: " + e.getMessage());
+                throw new IOException("Failed getting the list of files in " + repoUri + ": " + e.getMessage());
             } else {
-                throw new IOException("Failed getting the list of Dropbox files: " + e.toString());
+                throw new IOException("Failed getting the list of files in " + repoUri + ": " + e.toString());
             }
         }
 
