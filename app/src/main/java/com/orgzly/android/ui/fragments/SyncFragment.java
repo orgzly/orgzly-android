@@ -804,6 +804,18 @@ public class SyncFragment extends Fragment {
                     onSyncButton();
                 }
             });
+
+            buttonContainer.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    new AlertDialog.Builder(getContext())
+                            .setPositiveButton(R.string.ok, null)
+                            .setMessage(buttonText.getText())
+                            .show();
+
+                    return true;
+                }
+            });
         }
 
         private void setButtonTextToLastSynced() {
