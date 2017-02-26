@@ -36,12 +36,12 @@ import com.orgzly.android.Filter;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotesBatch;
 import com.orgzly.android.Shelf;
-import com.orgzly.android.sync.SyncService;
-import com.orgzly.android.sync.SyncStatus;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.Rook;
+import com.orgzly.android.sync.SyncService;
+import com.orgzly.android.sync.SyncStatus;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.NotePlacement;
 import com.orgzly.android.ui.Placement;
@@ -84,19 +84,11 @@ public class SyncFragment extends Fragment {
     private BroadcastReceiver syncServiceReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
-            SyncStatus status = new SyncStatus();
-            status.set(
-                    SyncStatus.Type.valueOf(intent.getStringExtra(SyncStatus.EXTRA_TYPE)),
-                    intent.getStringExtra(SyncStatus.EXTRA_MESSAGE),
-                    intent.getIntExtra(SyncStatus.EXTRA_CURRENT_BOOK, 0),
-                    intent.getIntExtra(SyncStatus.EXTRA_TOTAL_BOOKS, 0)
-            );
-
+            SyncStatus status = SyncStatus.fromIntent(intent);
 
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent, status);
 
-            /* Update sync button and notification based on current sync status. */
+            /* Update sync button based on sync status. */
             mSyncButton.update(status);
 
             switch (status.type) {
@@ -192,7 +184,7 @@ public class SyncFragment extends Fragment {
         super.onStart();
 
         /*
-         * Bind to sync service to receive the sync status.
+         * Bind to sync service to request and receive the sync status.
          * We're doing this after button is initialized.
          */
         bindToSyncService();
@@ -830,7 +822,7 @@ public class SyncFragment extends Fragment {
                     progressBar.setIndeterminate(true);
                     progressBar.setVisibility(View.VISIBLE);
 
-                    animate(true);
+                    setAnimation(true);
 
                     buttonText.setText(R.string.syncing_in_progress);
 
@@ -840,7 +832,7 @@ public class SyncFragment extends Fragment {
                     progressBar.setIndeterminate(true);
                     progressBar.setVisibility(View.VISIBLE);
 
-                    animate(true);
+                    setAnimation(true);
 
                     buttonText.setText(R.string.canceling);
 
@@ -852,7 +844,7 @@ public class SyncFragment extends Fragment {
                     progressBar.setProgress(0);
                     progressBar.setVisibility(View.VISIBLE);
 
-                    animate(true);
+                    setAnimation(true);
 
                     buttonText.setText(R.string.syncing_in_progress);
 
@@ -864,7 +856,7 @@ public class SyncFragment extends Fragment {
                     progressBar.setProgress(status.currentBook);
                     progressBar.setVisibility(View.VISIBLE);
 
-                    animate(true);
+                    setAnimation(true);
 
                     buttonText.setText(getString(R.string.syncing_book, status.message));
 
@@ -876,7 +868,7 @@ public class SyncFragment extends Fragment {
                     progressBar.setProgress(status.currentBook);
                     progressBar.setVisibility(View.VISIBLE);
 
-                    animate(true);
+                    setAnimation(true);
 
                     buttonText.setText(R.string.syncing_in_progress);
 
@@ -886,7 +878,7 @@ public class SyncFragment extends Fragment {
                 case FINISHED:
                     progressBar.setVisibility(View.GONE);
 
-                    animate(false);
+                    setAnimation(false);
 
                     setButtonTextToLastSynced();
 
@@ -896,7 +888,7 @@ public class SyncFragment extends Fragment {
                 case FAILED:
                     progressBar.setVisibility(View.GONE);
 
-                    animate(false);
+                    setAnimation(false);
 
                     buttonText.setText(getString(R.string.last_sync_prefix, status.message));
 
@@ -904,7 +896,7 @@ public class SyncFragment extends Fragment {
             }
         }
 
-        private void animate(boolean shouldAnimate) {
+        private void setAnimation(boolean shouldAnimate) {
             if (shouldAnimate) {
                 if (buttonIcon.getAnimation() == null) {
                     buttonIcon.startAnimation(rotation);
@@ -1128,7 +1120,9 @@ public class SyncFragment extends Fragment {
 
             SyncService.LocalBinder binder = (SyncService.LocalBinder) serviceBinder;
 
-            binder.getService().broadcastCurrentSyncStatus();
+            /* Get current sync status from the service and update the button. */
+            SyncStatus status = binder.getService().getStatus();
+            mSyncButton.update(status);
 
             unbindFromSyncService();
         }

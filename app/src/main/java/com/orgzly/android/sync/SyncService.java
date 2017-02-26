@@ -15,7 +15,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.BookAction;
-import com.orgzly.android.Broadcasts;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.repos.DirectoryRepo;
@@ -51,6 +50,8 @@ public class SyncService extends Service {
         // notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // startForeground();
+
+        status.loadFromPreferences(this);
     }
 
 //    private void startForeground() {
@@ -175,14 +176,14 @@ public class SyncService extends Service {
         if (BuildConfig.LOG_DEBUG)
             LogUtils.d(TAG, status.type, status.message, status.currentBook, status.totalBooks);
 
-        Intent intent = new Intent(Broadcasts.SYNC)
-                .putExtra(SyncStatus.EXTRA_TYPE, status.type.name())
-                .putExtra(SyncStatus.EXTRA_MESSAGE, status.message)
-                .putExtra(SyncStatus.EXTRA_TOTAL_BOOKS, status.totalBooks)
-                .putExtra(SyncStatus.EXTRA_CURRENT_BOOK, status.currentBook);
-
         /* Broadcast the intent. */
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(status.intent());
+
+        status.saveToPreferences(this);
+    }
+
+    public SyncStatus getStatus() {
+        return status;
     }
 
     /**
