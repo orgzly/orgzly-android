@@ -6,46 +6,40 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/padding_16"
-        android:clipToPadding="false"
-        android:fadeScrollbars="false"
-        android:scrollbarStyle="outsideOverlay">
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_16"
+
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/fragment_filter_name_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/fragment_filter_name_input_layout"
+            app:errorEnabled="true">
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/fragment_filter_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:errorEnabled="true">
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/fragment_filter_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text|textCapSentences"
-                    android:hint="@string/name"/>
-            </android.support.design.widget.TextInputLayout>
+                android:inputType="text|textCapSentences"
+                android:hint="@string/name"/>
+        </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/fragment_filter_query_input_layout"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/fragment_filter_query_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true">
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/fragment_filter_query"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:errorEnabled="true">
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/fragment_filter_query"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:hint="@string/query"/>
-            </android.support.design.widget.TextInputLayout>
-        </LinearLayout>
-    </ScrollView>
+                android:inputType="text"
+                android:hint="@string/query"/>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
 
     <TextView
         style="@style/BigCenteredText"
