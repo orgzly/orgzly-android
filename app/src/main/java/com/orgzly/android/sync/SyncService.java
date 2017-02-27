@@ -66,7 +66,7 @@ public class SyncService extends Service {
         /* If syncing is already in progress, cancel it. */
         if (syncTask != null) {
             status.set(SyncStatus.Type.CANCELING, null, status.currentBook, status.totalBooks);
-            broadcastCurrentSyncStatus();
+            announceActiveSyncStatus();
 
             syncTask.cancel(false);
 
@@ -78,7 +78,7 @@ public class SyncService extends Service {
         /* There are no repositories configured. */
         if (repos.size() == 0) {
             status.set(SyncStatus.Type.FAILED, getString(R.string.no_repos_configured), 0, 0);
-            broadcastCurrentSyncStatus();
+            announceActiveSyncStatus();
             stopSelf();
             return super.onStartCommand(intent, flags, startId);
         }
@@ -86,7 +86,7 @@ public class SyncService extends Service {
         /* If one of the repositories requires internet connection, check for it. */
         if (reposRequireConnection(repos.values()) && !haveNetworkConnection()) {
             status.set(SyncStatus.Type.FAILED, getString(R.string.no_connection), 0, 0);
-            broadcastCurrentSyncStatus();
+            announceActiveSyncStatus();
             stopSelf();
             return super.onStartCommand(intent, flags, startId);
         }
@@ -97,7 +97,7 @@ public class SyncService extends Service {
         if (reposRequireStoragePermission(repos.values())) {
             if (AppPermissions.isNotGranted(this, AppPermissions.FOR_SYNC_START)) {
                 status.set(SyncStatus.Type.NO_STORAGE_PERMISSION, null, 0, 0);
-                broadcastCurrentSyncStatus();
+                announceActiveSyncStatus();
                 stopSelf();
                 return super.onStartCommand(intent, flags, startId);
             }
@@ -172,7 +172,7 @@ public class SyncService extends Service {
     /**
      * Announce current sync status.
      */
-    public void broadcastCurrentSyncStatus() {
+    public void announceActiveSyncStatus() {
         if (BuildConfig.LOG_DEBUG)
             LogUtils.d(TAG, status.type, status.message, status.currentBook, status.totalBooks);
 
@@ -193,7 +193,7 @@ public class SyncService extends Service {
         @Override
         protected void onPreExecute() {
             status.set(SyncStatus.Type.STARTING, null, 0, 0);
-            broadcastCurrentSyncStatus();
+            announceActiveSyncStatus();
         }
 
         @Override
@@ -216,7 +216,7 @@ public class SyncService extends Service {
             }
 
             status.set(SyncStatus.Type.BOOKS_COLLECTED, null, 0, namesakes.size());
-            broadcastCurrentSyncStatus();
+            announceActiveSyncStatus();
 
             /*
              * Update books' statuses, before starting to sync them.
@@ -237,7 +237,7 @@ public class SyncService extends Service {
 
                 } else {
                     status.set(SyncStatus.Type.BOOK_STARTED, namesake.getName(), curr, namesakes.size());
-                    broadcastCurrentSyncStatus();
+                    announceActiveSyncStatus();
 
                     try {
                         BookAction action = shelf.syncNamesake(namesake);
@@ -248,7 +248,7 @@ public class SyncService extends Service {
                     }
 
                     status.set(SyncStatus.Type.BOOK_ENDED, namesake.getName(), curr + 1, namesakes.size());
-                    broadcastCurrentSyncStatus();
+                    announceActiveSyncStatus();
                 }
 
                 curr++;
@@ -260,7 +260,7 @@ public class SyncService extends Service {
         @Override
         protected void onCancelled(Exception e) {
             status.set(SyncStatus.Type.CANCELED, getString(R.string.canceled), 0, 0);
-            broadcastCurrentSyncStatus();
+            announceActiveSyncStatus();
 
             syncTask = null;
 
@@ -283,7 +283,7 @@ public class SyncService extends Service {
                 AppPreferences.lastSuccessfulSyncTime(getApplicationContext(), time);
             }
 
-            broadcastCurrentSyncStatus();
+            announceActiveSyncStatus();
 
             syncTask = null;
 
