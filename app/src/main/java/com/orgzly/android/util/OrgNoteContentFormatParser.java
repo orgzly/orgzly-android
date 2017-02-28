@@ -100,7 +100,6 @@ public class OrgNoteContentFormatParser {
     }
 
     private static void setUrlSpan(SpannableStringBuilder ssb, String link, int start, int end) {
-        ssb.setSpan(new URLSpan(link), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        // ssb.setSpan(new BackgroundColorSpan(0xFFCCCCCC), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new URLSpan(link), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 }
