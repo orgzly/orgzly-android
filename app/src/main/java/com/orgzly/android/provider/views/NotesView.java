@@ -21,24 +21,20 @@ public class NotesView {
             "SELECT " + DbNote.TABLE + ".*, " +
 
             "t_scheduled_range." + DbOrgRange.Column.STRING + " AS " + Columns.SCHEDULED_RANGE_STRING + ", " +
-            "t_scheduled_range." + DbOrgRange.Column.STRING_WITHOUT_BRACKETS + " AS " + Columns.SCHEDULED_RANGE_STRING_WITHOUT_BRACKETS + ", " +
             "t_scheduled_timestamps_start." + DbOrgTimestamp.Column.STRING + " AS " + Columns.SCHEDULED_TIME_STRING + ", " +
             "t_scheduled_timestamps_end." + DbOrgTimestamp.Column.STRING + " AS " + Columns.SCHEDULED_TIME_END_STRING + ", " +
             "t_scheduled_timestamps_start." + DbOrgTimestamp.Column.TIMESTAMP + " AS " + Columns.SCHEDULED_TIME_TIMESTAMP + ", " +
 
             "t_deadline_range." + DbOrgRange.Column.STRING + " AS " + Columns.DEADLINE_RANGE_STRING + ", " +
-            "t_deadline_range." + DbOrgRange.Column.STRING_WITHOUT_BRACKETS + " AS " + Columns.DEADLINE_RANGE_STRING_WITHOUT_BRACKETS + ", " +
             "t_deadline_timestamps_start." + DbOrgTimestamp.Column.STRING + " AS " + Columns.DEADLINE_TIME_STRING + ", " +
             "t_deadline_timestamps_end." + DbOrgTimestamp.Column.STRING + " AS " + Columns.DEADLINE_TIME_END_STRING + ", " +
             "t_deadline_timestamps_start." + DbOrgTimestamp.Column.TIMESTAMP + " AS " + Columns.DEADLINE_TIME_TIMESTAMP + ", " +
 
             "t_closed_range." + DbOrgRange.Column.STRING + " AS " + Columns.CLOSED_RANGE_STRING + ", " +
-            "t_closed_range." + DbOrgRange.Column.STRING_WITHOUT_BRACKETS + " AS " + Columns.CLOSED_RANGE_STRING_WITHOUT_BRACKETS + ", " +
             "t_closed_timestamps_start." + DbOrgTimestamp.Column.STRING + " AS " + Columns.CLOSED_TIME_STRING + ", " +
             "t_closed_timestamps_end." + DbOrgTimestamp.Column.STRING + " AS " + Columns.CLOSED_TIME_END_STRING + ", " +
 
             "t_clock_range." + DbOrgRange.Column.STRING + " AS " + Columns.CLOCK_RANGE_STRING + ", " +
-            "t_clock_range." + DbOrgRange.Column.STRING_WITHOUT_BRACKETS + " AS " + Columns.CLOCK_RANGE_STRING_WITHOUT_BRACKETS + ", " +
             "t_clock_timestamps_start." + DbOrgTimestamp.Column.STRING + " AS " + Columns.CLOCK_TIME_STRING + ", " +
             "t_clock_timestamps_end." + DbOrgTimestamp.Column.STRING + " AS " + Columns.CLOCK_TIME_END_STRING + ", " +
 
@@ -70,24 +66,20 @@ public class NotesView {
         public static String BOOK_NAME = "book_name";
 
         public static String SCHEDULED_RANGE_STRING = "scheduled_range_string"; // rename to just scheduled string
-        public static String SCHEDULED_RANGE_STRING_WITHOUT_BRACKETS = "scheduled_range_string_without_brackets";
         public static String SCHEDULED_TIME_STRING = "scheduled_time_string";
         public static String SCHEDULED_TIME_END_STRING = "scheduled_time_string";
         public static String SCHEDULED_TIME_TIMESTAMP = "scheduled_time_timestamp";
 
         public static String DEADLINE_RANGE_STRING = "deadline_range_string";
-        public static String DEADLINE_RANGE_STRING_WITHOUT_BRACKETS = "deadline_range_string_without_brackets";
         public static String DEADLINE_TIME_STRING = "deadline_time_string";
         public static String DEADLINE_TIME_END_STRING = "deadline_time_end_string";
         public static String DEADLINE_TIME_TIMESTAMP = "deadline_time_timestamp";
 
         public static String CLOSED_RANGE_STRING = "closed_range_string";
-        public static String CLOSED_RANGE_STRING_WITHOUT_BRACKETS = "closed_range_string_without_brackets";
         public static String CLOSED_TIME_STRING = "closed_time_string";
         public static String CLOSED_TIME_END_STRING = "closed_time_end_string";
 
         public static String CLOCK_RANGE_STRING = "clock_range_string";
-        public static String CLOCK_RANGE_STRING_WITHOUT_BRACKETS = "clock_range_string_without_brackets";
         public static String CLOCK_TIME_STRING = "clock_time_string";
         public static String CLOCK_TIME_END_STRING = "clock_time_end_string";
     }

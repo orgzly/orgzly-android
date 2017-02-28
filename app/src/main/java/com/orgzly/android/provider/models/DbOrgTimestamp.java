@@ -16,7 +16,6 @@ public class DbOrgTimestamp {
             BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 
             Columns.STRING + " TEXT UNIQUE," +
-            Columns.STRING_WITHOUT_BRACKETS + " TEXT," +
 
             Columns.IS_ACTIVE + " INTEGER," +
 
@@ -42,7 +41,6 @@ public class DbOrgTimestamp {
 
     public interface Columns {
         String STRING = "string";
-        String STRING_WITHOUT_BRACKETS = "string_without_brackets";
 
         String IS_ACTIVE = "is_active";
 
@@ -67,7 +65,6 @@ public class DbOrgTimestamp {
     public static void toContentValues(ContentValues values, OrgDateTime orgDateTime) {
         values.put(Column.STRING, orgDateTime.toString());
 
-        values.put(Column.STRING_WITHOUT_BRACKETS, orgDateTime.toStringWithoutBrackets());
         values.put(Column.IS_ACTIVE, orgDateTime.isActive() ? 1 : 0);
 
         values.put(Column.TIMESTAMP, orgDateTime.getCalendar().getTimeInMillis());

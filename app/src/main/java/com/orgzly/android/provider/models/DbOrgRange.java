@@ -11,7 +11,6 @@ public class DbOrgRange {
             Column._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 
             Column.STRING + " TEXT UNIQUE," +
-            Column.STRING_WITHOUT_BRACKETS + " TEXT," +
 
             Column.START_TIMESTAMP_ID + " INTEGER," +
             Column.END_TIMESTAMP_ID + " INTEGER," +
@@ -25,7 +24,6 @@ public class DbOrgRange {
         String DIFFERENCE = "difference";
         String END_TIMESTAMP_ID = "end_timestamp_id";
         String START_TIMESTAMP_ID = "start_timestamp_id";
-        String STRING_WITHOUT_BRACKETS = "string_without_brackets";
         String STRING = "string";
     }
 
@@ -35,7 +33,6 @@ public class DbOrgRange {
         values.put(Column.START_TIMESTAMP_ID, startId);
 
         values.put(Column.STRING, range.toString());
-        values.put(Column.STRING_WITHOUT_BRACKETS, range.toStringWithoutBrackets());
 
         if (endId != 0) {
             values.put(Column.END_TIMESTAMP_ID, endId);
