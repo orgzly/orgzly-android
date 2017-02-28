@@ -153,9 +153,9 @@ public class MainActivity extends CommonActivity
         super.onCreate(savedInstanceState);
 
         LocalBroadcastManager.getInstance(this)
-                .registerReceiver(dbUpgradeStartedReceiver, new IntentFilter(Broadcasts.DATABASE_UPGRADE_STARTED));
+                .registerReceiver(dbUpgradeStartedReceiver, new IntentFilter(Broadcasts.ACTION_DB_UPGRADE_STARTED));
         LocalBroadcastManager.getInstance(this)
-                .registerReceiver(dbUpgradeEndedReceiver, new IntentFilter(Broadcasts.DATABASE_UPGRADE_ENDED));
+                .registerReceiver(dbUpgradeEndedReceiver, new IntentFilter(Broadcasts.ACTION_DB_UPGRADE_ENDED));
 
         /*
          * Set defaults.

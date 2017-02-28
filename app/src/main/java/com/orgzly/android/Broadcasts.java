@@ -1,8 +1,8 @@
 package com.orgzly.android;
 
 public class Broadcasts {
-    public static final String DATABASE_UPGRADE_STARTED = "com.orgzly.broadcast.db.upgrade.started";
-    public static final String DATABASE_UPGRADE_ENDED = "com.orgzly.broadcast.db.upgrade.ended";
+    public static final String ACTION_DB_UPGRADE_STARTED = "com.orgzly.intent.action.DB_UPGRADE_STARTED";
+    public static final String ACTION_DB_UPGRADE_ENDED = "com.orgzly.intent.action.DB_UPGRADE_ENDED";
 
-    public static final String SYNC = "com.orgzly.broadcast.sync";
+    public static final String ACTION_SYNC_STATUS = "com.orgzly.intent.action.SYNC_STATUS";
 }

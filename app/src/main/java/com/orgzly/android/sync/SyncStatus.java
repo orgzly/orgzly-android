@@ -38,7 +38,7 @@ public class SyncStatus {
     }
 
     public Intent intent() {
-        return new Intent(Broadcasts.SYNC)
+        return new Intent(Broadcasts.ACTION_SYNC_STATUS)
                 .putExtra(SyncStatus.EXTRA_TYPE, type.name())
                 .putExtra(SyncStatus.EXTRA_MESSAGE, message)
                 .putExtra(SyncStatus.EXTRA_TOTAL_BOOKS, totalBooks)

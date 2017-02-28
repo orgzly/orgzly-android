@@ -164,7 +164,7 @@ public class SyncFragment extends Fragment {
         setRetainInstance(true);
 
         LocalBroadcastManager.getInstance(getContext())
-                .registerReceiver(syncServiceReceiver, new IntentFilter(Broadcasts.SYNC));
+                .registerReceiver(syncServiceReceiver, new IntentFilter(Broadcasts.ACTION_SYNC_STATUS));
     }
 
     @Override

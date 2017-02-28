@@ -64,14 +64,14 @@ public class Database extends SQLiteOpenHelper {
             @Override
             public void run() {
                 LocalBroadcastManager.getInstance(context)
-                        .sendBroadcast(new Intent(Broadcasts.DATABASE_UPGRADE_STARTED));
+                        .sendBroadcast(new Intent(Broadcasts.ACTION_DB_UPGRADE_STARTED));
             }
         });
 
         createAllViews(db);
 
         LocalBroadcastManager.getInstance(context)
-                .sendBroadcast(new Intent(Broadcasts.DATABASE_UPGRADE_ENDED));
+                .sendBroadcast(new Intent(Broadcasts.ACTION_DB_UPGRADE_ENDED));
     }
 
     /**
