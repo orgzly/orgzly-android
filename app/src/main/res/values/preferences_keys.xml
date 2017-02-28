@@ -20,7 +20,7 @@
 
     <!-- How to display notebook's preface in notebook -->
     <string name="pref_key_preface_in_book" translatable="false">pref_key_preface_in_book</string>
-    <string name="pref_default_value_preface_in_book" translatable="false">@string/pref_value_preface_in_book_few_lines</string>
+    <string name="pref_default_value_preface_in_book" translatable="false">@string/pref_value_preface_in_book_hide</string>
     <string name="pref_value_preface_in_book_hide" translatable="false">hide</string>
     <string name="pref_value_preface_in_book_full" translatable="false">full</string>
     <string name="pref_value_preface_in_book_few_lines" translatable="false">few_lines</string>
