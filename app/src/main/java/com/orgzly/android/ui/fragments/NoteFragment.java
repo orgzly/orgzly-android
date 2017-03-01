@@ -306,7 +306,6 @@ public class NoteFragment extends Fragment
         bodyEdit = (EditText) top.findViewById(R.id.body_edit);
 
         bodyView = (TextView) top.findViewById(R.id.body_view);
-        bodyView.setMovementMethod(LinkMovementMethod.getInstance());
 
 //        bodyView.setOnTouchListener(new View.OnTouchListener() {
 //            @Override

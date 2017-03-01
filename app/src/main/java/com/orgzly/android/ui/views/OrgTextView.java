@@ -14,6 +14,9 @@ import android.widget.TextView;
 import com.orgzly.BuildConfig;
 import com.orgzly.android.util.LogUtils;
 
+/**
+ * {@link TextView} with links support.
+ */
 public class OrgTextView extends TextView {
     public static final String TAG = OrgTextView.class.getName();
 
@@ -42,10 +45,10 @@ public class OrgTextView extends TextView {
         Layout layout = this.getLayout();
 
         if (layout != null) {
-            int line = layout.getLineForVertical((int) event.getY());
-            int offset = layout.getOffsetForHorizontal(line, event.getX());
+            int line = layout.getLineForVertical((int) event.getY() - getTotalPaddingTop());
+            int offset = getOffsetForPosition(event.getX(), event.getY());
 
-            if (getText() != null && getText() instanceof Spanned) {
+            if (isEventOnText(event, layout, line) && getText() != null && getText() instanceof Spanned) {
                 Spanned spanned = (Spanned) getText();
 
                 ClickableSpan[] links = spanned.getSpans(offset, offset, ClickableSpan.class);
@@ -65,5 +68,21 @@ public class OrgTextView extends TextView {
         }
 
         return super.onTouchEvent(event);
+    }
+
+    /**
+     * Check if event's coordinates are within line's text.
+     *
+     * Needed as getOffsetForHorizontal will return closest character,
+     * which is an issue when clicking the empty space next to the text.
+     */
+    private boolean isEventOnText(MotionEvent event, Layout layout, int line) {
+        float left = layout.getLineLeft(line) + getTotalPaddingLeft();
+        float right = layout.getLineRight(line) + getTotalPaddingRight();
+        float bottom = layout.getLineBottom(line) + getTotalPaddingTop();
+        float top = layout.getLineTop(line) + getTotalPaddingTop();
+
+        return left <= event.getX() && event.getX() <= right &&
+               top <= event.getY() && event.getY() <= bottom;
     }
 }
