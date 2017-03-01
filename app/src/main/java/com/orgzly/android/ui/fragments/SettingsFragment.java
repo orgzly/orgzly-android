@@ -184,8 +184,8 @@ public class SettingsFragment extends PreferenceFragment
     private void setupVersionPreference() {
         Preference versionPreference = findPreference(getString(R.string.pref_key_version));
 
-        /* Set summary to current version string from manifest. */
-        versionPreference.setSummary(BuildConfig.VERSION_NAME);
+        /* Set summary to the current version string, appending suffix for the flavor. */
+        versionPreference.setSummary(BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_SUFFIX);
 
         /* Display changelog dialog when version is clicked. */
         versionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

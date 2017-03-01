@@ -49,6 +49,8 @@ android {
     productFlavors {
         premium {
             buildConfigField "boolean", "IS_DROPBOX_ENABLED", "true"
+
+            buildConfigField "String", "VERSION_NAME_SUFFIX", '""'
         }
 
         fdroid {
@@ -58,7 +60,7 @@ android {
              */
             buildConfigField "boolean", "IS_DROPBOX_ENABLED", "false"
 
-            versionNameSuffix ' (fdroid)'
+            buildConfigField "String", "VERSION_NAME_SUFFIX", '" (fdroid)"'
         }
     }
 
