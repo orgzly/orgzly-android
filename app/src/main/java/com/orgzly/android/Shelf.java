@@ -124,27 +124,6 @@ public class Shelf {
     }
 
     /**
-     * Imports book to database.
-     * Overwrites existing book with the same name.
-     * Used only by tests.
-     * @param name Notebook name
-     * @param content Notebook's content
-     */
-    public Book loadBookFromContent(String name, BookName.Format format, String content, VersionedRook vrook) throws IOException {
-        /* Save content to temporary file. */
-        File tmpFile = getTempBookFile();
-        MiscUtils.writeStringToFile(content, tmpFile);
-
-        try {
-            return loadBookFromFile(name, format, tmpFile, vrook);
-
-        } finally {
-            /* Delete temporary file. */
-            tmpFile.delete();
-        }
-    }
-
-    /**
      * Imports {@code File} to database under specified book name.
      * Overwrites existing book with the same name.
      */

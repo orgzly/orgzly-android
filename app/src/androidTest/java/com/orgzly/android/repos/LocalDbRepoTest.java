@@ -21,7 +21,7 @@ public class LocalDbRepoTest extends OrgzlyTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        shelf.loadBookFromContent("local-book-1", BookName.Format.ORG, "Content\n\n* Note", null);
+        shelfTestUtils.setupBook("local-book-1", "Content\n\n* Note");
     }
 
     @Test

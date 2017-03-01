@@ -9,7 +9,9 @@ import com.orgzly.android.provider.clients.ReposClient;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.repos.VersionedRook;
+import com.orgzly.android.util.MiscUtils;
 
+import java.io.File;
 import java.io.IOException;
 
 import static junit.framework.Assert.assertEquals;
@@ -53,7 +55,7 @@ public class ShelfTestUtils {
         Book book = null;
 
         try {
-            book = shelf.loadBookFromContent(name, BookName.Format.ORG, content, null);
+            book = loadBookFromContent(name, BookName.Format.ORG, content, null);
         } catch (IOException e) {
             fail(e.toString());
         }
@@ -65,7 +67,7 @@ public class ShelfTestUtils {
         Book book = null;
 
         try {
-            book = shelf.loadBookFromContent(name, BookName.Format.ORG, content, null);
+            book = loadBookFromContent(name, BookName.Format.ORG, content, null);
         } catch (IOException e) {
             fail(e.toString());
         }
@@ -110,4 +112,22 @@ public class ShelfTestUtils {
         return null;
     }
 
+    /**
+     * Imports book to database overwriting the existing one with the same name.
+     * @param name Notebook name
+     * @param content Notebook's content
+     */
+    private Book loadBookFromContent(String name, BookName.Format format, String content, VersionedRook vrook) throws IOException {
+        /* Save content to temporary file. */
+        File tmpFile = shelf.getTempBookFile();
+        MiscUtils.writeStringToFile(content, tmpFile);
+
+        try {
+            return shelf.loadBookFromFile(name, format, tmpFile, vrook);
+
+        } finally {
+            /* Delete temporary file. */
+            tmpFile.delete();
+        }
+    }
 }
