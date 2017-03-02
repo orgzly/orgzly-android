@@ -13,7 +13,7 @@
 * Create and save searches for quick access
 * Synchronize notebooks
 
-Notebooks can be synchronized with one or more directories. Directories on your mobile device (like SD card) or Dropbox and are currently supported. Git, Google Drive, SSH and more are coming soon.
+Notebooks can be synchronized with one or more directories. Directories on your mobile device (like SD card) or Dropbox are currently supported. Git, Google Drive, SSH and more are coming soon.
 
 
 Notebooks are saved in Org mode's file format. “Org mode is for keeping notes, maintaining TODO lists, planning projects, and authoring documents with a fast and effective plain-text system.”
