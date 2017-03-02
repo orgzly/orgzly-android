@@ -137,6 +137,11 @@ public class AppPreferences {
                 context.getResources().getString(R.string.pref_default_value_preface_in_book));
     }
 
+    public static void prefaceDisplay(Context context, String value) {
+        String key = context.getResources().getString(R.string.pref_key_preface_in_book);
+        getDefaultSharedPreferences(context).edit().putString(key, value).apply();
+    }
+
     public static boolean isFontMonospaced(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_is_font_monospaced),

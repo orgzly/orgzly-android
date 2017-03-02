@@ -100,6 +100,9 @@ public class OrgzlyTest {
         /* Display *all* notebook info. */
         AppPreferences.displayedBookDetails(context,
                 Arrays.asList(context.getResources().getStringArray(R.array.displayed_book_details_values)));
+
+        /* Display first few lines of preface. */
+        AppPreferences.prefaceDisplay(context, context.getString(R.string.pref_value_preface_in_book_few_lines));
     }
 
     /**
