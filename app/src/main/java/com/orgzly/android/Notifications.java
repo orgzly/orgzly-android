@@ -48,6 +48,7 @@ public class Notifications {
                         .setSmallIcon(R.drawable.cic_orgzly_notification)
                         .setContentTitle(context.getString(R.string.new_note))
                         .setContentText(context.getString(R.string.tap_to_create_new_note))
+                        .setColor(ContextCompat.getColor(context, R.color.notification))
                         .setContentIntent(resultPendingIntent)
                         .setPriority(NotificationCompat.PRIORITY_MIN) // Don't show icon on status bar
                         .build();

@@ -20,5 +20,7 @@
     <color name="gray25">#ffe6e6e6</color>
 
     <color name="item_head_selected_bg">#3238caff</color>
+
+    <color name="notification">#607D8B</color>
 </resources>
 
