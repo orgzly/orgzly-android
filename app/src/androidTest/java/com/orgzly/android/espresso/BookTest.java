@@ -202,6 +202,19 @@ public class BookTest extends OrgzlyTest {
     }
 
     @Test
+    public void testFoldUnfoldAllButtonWhenBookIsEmpty() {
+        // Create new empty notebook
+        pressBack();
+        onView(withId(R.id.fab)).perform(click());
+        onView(withId(R.id.dialog_input)).perform(replaceText("book-created-from-scratch"));
+        onView(withText("Create")).perform(click());
+
+        onView(allOf(withText("book-created-from-scratch"), isDisplayed())).perform(click());
+
+        onView(withId(R.id.books_options_menu_item_cycle_visibility)).check(doesNotExist());
+    }
+
+    @Test
     public void testBackFromSettingsShouldReturnToPreviousFragment() {
         onActionItemClick(R.id.activity_action_settings, "Settings");
         pressBack();

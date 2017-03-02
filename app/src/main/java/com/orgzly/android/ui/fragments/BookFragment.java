@@ -380,19 +380,14 @@ public class BookFragment extends NoteListFragment
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        MenuItem item;
+        /* Remove some menu items if book doesn't exist or it doesn't contain any notes. */
 
-        /* Hide some items if book doesn't exist. */
+        if (mBook == null || mListAdapter.getCount() == 0) {
+            menu.removeItem(R.id.books_options_menu_item_cycle_visibility);
+        }
+
         if (mBook == null) {
-            item = menu.findItem(R.id.books_options_menu_item_cycle_visibility);
-            if (item != null) {
-                item.setVisible(false);
-            }
-
-            item = menu.findItem(R.id.books_options_menu_book_preface);
-            if (item != null) {
-                item.setVisible(false);
-            }
+            menu.removeItem(R.id.books_options_menu_book_preface);
         }
 
 //        /* Toggle paste item visibility. */
