@@ -101,6 +101,9 @@ public class MainActivity extends CommonActivity
     private static final int DIALOG_NEW_BOOK = 1;
     private static final int DIALOG_IMPORT_BOOK = 5;
 
+    public static final String EXTRA_BOOK_ID = "book_id";
+    public static final String EXTRA_NOTE_ID = "note_id";
+
     public SyncFragment mSyncFragment;
 
     private DrawerLayout mDrawerLayout;
@@ -172,10 +175,32 @@ public class MainActivity extends CommonActivity
 
         setupDrawer();
 
-        mDisplayManager = new DisplayManager(this, savedInstanceState, mDrawerLayout);
+        setupDisplay(savedInstanceState);
 
         if (AppPreferences.newNoteNotification(this)) {
             Notifications.createNewNoteNotification(this);
+        }
+    }
+
+    /**
+     * Adds initial set of fragments, depending on intent extras
+     */
+    private void setupDisplay(Bundle savedInstanceState) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, getIntent().getExtras());
+
+        mDisplayManager = new DisplayManager(this, mDrawerLayout);
+
+        if (savedInstanceState == null) { // Not a configuration change.
+            long bookId = getIntent().getLongExtra(EXTRA_BOOK_ID, 0L);
+            long noteId = getIntent().getLongExtra(EXTRA_NOTE_ID, 0L);
+
+            mDisplayManager.displayBooks(false);
+
+            /* Display requested note. */
+            if (bookId > 0 && noteId > 0) {
+                mDisplayManager.displayBook(bookId, noteId);
+                mDisplayManager.displayNote(bookId, noteId);
+            }
         }
     }
 
@@ -513,7 +538,7 @@ public class MainActivity extends CommonActivity
                 /* Close search. */
                 MenuItemCompat.collapseActionView(searchItem);
 
-                mDisplayManager.drawerSearchRequest(str);
+                mDisplayManager.displayQuery(str);
 
                 return true;
             }
@@ -557,7 +582,7 @@ public class MainActivity extends CommonActivity
                 return true;
 
             case R.id.activity_action_settings:
-                mDisplayManager.settingsRequest();
+                mDisplayManager.displaySettings();
                 return true;
 
             default:
@@ -673,7 +698,7 @@ public class MainActivity extends CommonActivity
         Note note = shelf.getNote(noteId);
         long bookId = note.getPosition().getBookId();
 
-        mDisplayManager.viewNoteRequest(bookId, noteId);
+        mDisplayManager.displayNote(bookId, noteId);
     }
 
     @Override
@@ -685,7 +710,7 @@ public class MainActivity extends CommonActivity
         long bookId = note.getPosition().getBookId();
 
         mSyncFragment.sparseTree(bookId, noteId);
-        mDisplayManager.bookRequest(bookId, noteId);
+        mDisplayManager.displayBook(bookId, noteId);
     }
 
     /**
@@ -704,7 +729,7 @@ public class MainActivity extends CommonActivity
     public void onNoteNewRequest(NotePlacement target) {
         finishActionMode();
 
-        mDisplayManager.newNoteRequest(target);
+        mDisplayManager.displayNewNote(target);
     }
 
     /* Save note. */
@@ -734,7 +759,7 @@ public class MainActivity extends CommonActivity
                                     note.getId(),
                                     Placement.BELOW);
 
-                            mDisplayManager.newNoteRequest(placement);
+                            mDisplayManager.displayNewNote(placement);
                         }
                     }));
         }
@@ -816,7 +841,7 @@ public class MainActivity extends CommonActivity
     public void onBookPrefaceEditRequest(Book book) {
         finishActionMode();
 
-        mDisplayManager.bookPrefaceRequest(book);
+        mDisplayManager.displayEditor(book);
     }
 
     @Override
@@ -1327,7 +1352,7 @@ public class MainActivity extends CommonActivity
     public void onBookClicked(long bookId) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookId);
 
-        mDisplayManager.bookRequest(bookId, 0);
+        mDisplayManager.displayBook(bookId, 0);
     }
 
 //    private void animateNotesAfterEdit(Set<Long> noteIds) {
@@ -1541,13 +1566,17 @@ public class MainActivity extends CommonActivity
         } else if (item instanceof DrawerFragment.SettingsItem) {
             finishActionMode();
 
-            mDisplayManager.settingsRequest();
+            mDisplayManager.drawerSettingsRequest();
 
         } else if (item instanceof DrawerFragment.BookItem) {
-            mDisplayManager.drawerBookRequest(((DrawerFragment.BookItem) item).id);
+            long bookId = ((DrawerFragment.BookItem) item).id;
+
+            mDisplayManager.drawerBookRequest(bookId);
 
         } else if (item instanceof DrawerFragment.FilterItem) {
-            mDisplayManager.drawerSearchRequest(((DrawerFragment.FilterItem) item).query);
+            String query = ((DrawerFragment.FilterItem) item).query;
+
+            mDisplayManager.drawerSearchRequest(query);
         }
     }
 }

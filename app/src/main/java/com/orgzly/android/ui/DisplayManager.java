@@ -41,31 +41,10 @@ public class DisplayManager {
     private final FragmentManager mFragmentManager;
     private final DrawerLayout mDrawerLayout;
 
-    public DisplayManager(AppCompatActivity activity, Bundle savedInstanceState, DrawerLayout drawerLayout) {
+    public DisplayManager(AppCompatActivity activity, DrawerLayout drawerLayout) {
         mFragmentManager = activity.getSupportFragmentManager();
         mDrawerLayout = drawerLayout;
-
-        /* Display books if not a configuration change - starting for the first time. */
-        if (savedInstanceState == null) {
-            displayBooks(false);
-        }
     }
-
-    public void viewNoteRequest(long bookId, long noteId) {
-        displayNote(false, bookId, noteId, Placement.UNDEFINED);
-    }
-
-    public void newNoteRequest(NotePlacement target) {
-        displayNote(true, target.getBookId(), target.getNoteId(), target.getPlacement());
-    }
-
-    public void bookPrefaceRequest(Book book) {
-        displayEditor(book);
-    }
-
-//    public void reposSettingsRequest() {
-//        displayReposSettings();
-//    }
 
     public void drawerFiltersRequest() {
         /* Close drawer. */
@@ -123,17 +102,19 @@ public class DisplayManager {
         }, DELAY_FRAGMENT_TRANSACTION_AFTER_DRAWER_CLOSE);
     }
 
-    public void settingsRequest() {
+    public void drawerSettingsRequest() {
         /* Close drawer. */
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         }
 
-        displaySettings();
-    }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                displaySettings();
+            }
+        }, DELAY_FRAGMENT_TRANSACTION_AFTER_DRAWER_CLOSE);
 
-    public void bookRequest(long bookId, long noteId) {
-        displayBook(bookId, noteId);
     }
 
     /**
@@ -201,7 +182,7 @@ public class DisplayManager {
      * Show fragments listing books.
      * @param addToBackStack add to back stack or not
      */
-    private void displayBooks(boolean addToBackStack) {
+    public void displayBooks(boolean addToBackStack) {
         if (isFragmentDisplayed(BooksFragment.FRAGMENT_TAG) != null) {
             return;
         }
@@ -223,7 +204,7 @@ public class DisplayManager {
     /**
      * Add fragment for book, unless the same book is already being displayed.
      */
-    private void displayBook(long bookId, long noteId) {
+    public void displayBook(long bookId, long noteId) {
         BookFragment f = getFragmentDisplayingBook(bookId);
 
         if (f == null) {
@@ -240,6 +221,14 @@ public class DisplayManager {
         } else {
             Log.w(TAG, "Fragment displaying book " + bookId + " already exists");
         }
+    }
+
+    public void displayNote(long bookId, long noteId) {
+        displayNote(false, bookId, noteId, Placement.UNDEFINED);
+    }
+
+    public void displayNewNote(NotePlacement target) {
+        displayNote(true, target.getBookId(), target.getNoteId(), target.getPlacement());
     }
 
     private void displayNote(boolean isNew, long bookId, long noteId, Placement placement) {
@@ -265,7 +254,7 @@ public class DisplayManager {
         // .setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
     }
 
-    private void displayQuery(String query) {
+    public void displayQuery(String query) {
         /* If the same query is already displayed, don't do anything. */
         SearchQuery displayedQuery = getDisplayedQuery();
         if (displayedQuery != null && displayedQuery.toString().equals(query)) {
@@ -295,7 +284,7 @@ public class DisplayManager {
 //                .commit();
 //    }
 
-    private void displaySettings() {
+    public void displaySettings() {
         if (isFragmentDisplayed(SettingsFragment.FRAGMENT_TAG) != null) {
             return;
         }
@@ -310,7 +299,7 @@ public class DisplayManager {
                 .commit();
     }
 
-    private void displayEditor(Book book) {
+    public void displayEditor(Book book) {
         /* Create fragment. */
         Fragment fragment = BookPrefaceFragment.getInstance(book.getId(), book.getPreface());
 
