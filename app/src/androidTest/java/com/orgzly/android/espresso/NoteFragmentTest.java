@@ -175,45 +175,45 @@ public class NoteFragmentTest extends OrgzlyTest {
 
     @Test
     public void testSettingStateRemainsSetAfterRotation() {
-        toPortrait();
+        toPortrait(activityRule);
         onListItem(1).perform(click());
         onView(withId(R.id.fragment_note_state)).perform(click()); // Open spinner
         onSpinnerString("TODO").perform(click());
         onView(withText("TODO")).check(matches(isDisplayed()));
-        toLandscape();
+        toLandscape(activityRule);
         onView(withText("TODO")).check(matches(isDisplayed()));
     }
 
     @Test
     public void testSettingPriorityRemainsSetAfterRotation() {
-        toPortrait();
+        toPortrait(activityRule);
         onListItem(1).perform(click());
         onView(withId(R.id.fragment_note_priority)).perform(click()); // Open spinner
         onSpinnerString("B").perform(click());
         onView(withText("B")).check(matches(isDisplayed()));
-        toLandscape();
+        toLandscape(activityRule);
         onView(withText("B")).check(matches(isDisplayed()));
     }
 
     @Test
     public void testSettingScheduledTimeRemainsSetAfterRotation() {
-        toPortrait();
+        toPortrait(activityRule);
         onListItem(1).perform(click());
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(not(containsString("-")))));
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
         onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(withPattern("^\\d{4}-\\d{2}-\\d{2} .*")), isDisplayed())));
-        toLandscape();
+        toLandscape(activityRule);
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(withPattern("^\\d{4}-\\d{2}-\\d{2} .*")), isDisplayed())));
     }
 
     @Test
     public void testSetScheduledTimeAfterRotation() {
         onListItem(1).perform(click());
-        toPortrait();
+        toPortrait(activityRule);
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(not(containsString("-")))));
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
-        toLandscape();
+        toLandscape(activityRule);
         onView(withText("Set")).perform(closeSoftKeyboardWithDelay(), click());
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(withPattern("^\\d{4}-\\d{2}-\\d{2} .*")), isDisplayed())));
     }
@@ -255,7 +255,7 @@ public class NoteFragmentTest extends OrgzlyTest {
 
         onView(withId(R.id.fragment_note_deadline_button)).check(matches(allOf(withText(R.string.deadline_button_hint), isDisplayed())));
 
-        toPortrait();
+        toPortrait(activityRule);
 
         onView(withText("Deadline time")).perform(click());
 
@@ -270,7 +270,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
 
         /* Rotate screen. */
-        toLandscape();
+        toLandscape(activityRule);
 
         /* Set time. */
         onView(withText("Set")).perform(click());

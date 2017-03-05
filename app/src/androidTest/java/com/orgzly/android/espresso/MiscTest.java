@@ -278,10 +278,10 @@ public class MiscTest extends OrgzlyTest {
     @Test
     public void testNewBookDialogShouldSurviveScreenRotation() {
         activityRule.launchActivity(null);
-        toLandscape();
+        toLandscape(activityRule);
         onView(withId(R.id.fab)).perform(click()); // Failing here
         onView(withId(R.id.dialog_new_book_container)).check(matches(isDisplayed()));
-        toPortrait();
+        toPortrait(activityRule);
         onView(withId(R.id.dialog_new_book_container)).check(matches(isDisplayed()));
         onView(withId(R.id.dialog_input)).perform(replaceText("notebook"), closeSoftKeyboardWithDelay());
         onView(withText("Create")).perform(click());
@@ -465,8 +465,6 @@ public class MiscTest extends OrgzlyTest {
 
     /**
      * Visits every fragment used in the app and calls {@link #fragmentTest} on it.
-     *
-     * FIXME: Fails randomly
      */
     @Test
     public void testFragments() {
@@ -515,15 +513,15 @@ public class MiscTest extends OrgzlyTest {
 
     private void fragmentTest(boolean hasSearchMenuItem, Matcher<View> matcher) {
         onView(matcher).check(matches(isDisplayed()));
-        toPortrait();
+        toPortrait(activityRule);
         onView(matcher).check(matches(isDisplayed()));
-        toLandscape();
+        toLandscape(activityRule);
         onView(matcher).check(matches(isDisplayed()));
-        toPortrait();
+        toPortrait(activityRule);
         onView(matcher).check(matches(isDisplayed()));
-        toLandscape();
+        toLandscape(activityRule);
         onView(matcher).check(matches(isDisplayed()));
-        toPortrait();
+        toPortrait(activityRule);
 
         if (hasSearchMenuItem) {
             onView(withId(R.id.activity_action_search)).check(matches(isDisplayed()));

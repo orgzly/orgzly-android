@@ -80,11 +80,11 @@ public class ActionModeTest extends OrgzlyTest {
 
     @Test
     public void testCabStaysOpenOnRotation() {
-        toPortrait();
+        toPortrait(activityRule);
 
         onListItem(3).perform(longClick());
 
-        toLandscape();
+        toLandscape(activityRule);
 
         onView(withId(R.id.book_cab_new)).check(matches(isDisplayed()));
 
@@ -93,18 +93,18 @@ public class ActionModeTest extends OrgzlyTest {
 
     @Test
     public void testCabStaysOpenOnRotationInQueryFragment() {
-        toPortrait();
+        toPortrait(activityRule);
 
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText("Scheduled")).perform(click());
 
         onListItem(1).perform(longClick());
 
-        toLandscape();
+        toLandscape(activityRule);
 
         // TODO: Check *the expected* note is selected.
 
-        toPortrait();
+        toPortrait(activityRule);
 
         onView(withId(R.id.query_cab_edit)).check(matches(isDisplayed()));
     }

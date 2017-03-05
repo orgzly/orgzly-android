@@ -181,9 +181,9 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testScrollPositionKeptOnRotation() {
-        toLandscape();
+        toLandscape(activityRule);
         onListItem(40).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note #40."))); // Scroll
-        toPortrait();
+        toPortrait(activityRule);
         onView(withText("Note #40.")).check(matches(isDisplayed()));
     }
 
@@ -258,7 +258,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testActionModeMovingStaysOpenAfterRotation() {
-        toPortrait();
+        toPortrait(activityRule);
 
         onView(withId(R.id.notes_action_move_down)).check(doesNotExist());
 
@@ -269,7 +269,7 @@ public class BookTest extends OrgzlyTest {
 
         onView(withId(R.id.notes_action_move_down)).check(matches(isDisplayed()));
 
-        toLandscape();
+        toLandscape(activityRule);
 
         onView(withId(R.id.notes_action_move_down)).check(matches(isDisplayed()));
     }

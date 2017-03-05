@@ -59,12 +59,12 @@ public class ShareActivityTest extends OrgzlyTest {
     @Test
     public void testDefaultBookRemainsSetAfterRotation() {
         startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text");
-        toPortrait();
+        toPortrait(activityRule);
         onData(anything())
                 .inAdapterView(allOf(withId(R.id.activity_share_books_spinner), isDisplayed()))
                 .atPosition(0)
                 .check(matches(withText("Share")));
-        toLandscape();
+        toLandscape(activityRule);
         onData(anything())
                 .inAdapterView(allOf(withId(R.id.activity_share_books_spinner), isDisplayed()))
                 .atPosition(0)
@@ -77,11 +77,11 @@ public class ShareActivityTest extends OrgzlyTest {
         shelfTestUtils.setupBook("book-two", "");
         shelfTestUtils.setupBook("book-three", "");
         startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text");
-        toPortrait();
+        toPortrait(activityRule);
         onView(withId(R.id.activity_share_books_spinner)).perform(click()); // Open spinner
         onView(withText("book-two")).perform(click());
         onView(withText("book-two")).check(matches(isDisplayed()));
-        toLandscape();
+        toLandscape(activityRule);
         onView(withText("book-two")).check(matches(isDisplayed()));
     }
 
@@ -104,8 +104,8 @@ public class ShareActivityTest extends OrgzlyTest {
     @Test
     public void testSaveAfterRotation() {
         startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text");
-        toLandscape();
-        toPortrait();
+        toLandscape(activityRule);
+        toPortrait(activityRule);
         onView(withId(R.id.done)).perform(click());
     }
 
@@ -142,12 +142,12 @@ public class ShareActivityTest extends OrgzlyTest {
     @Test
     public void testSettingStateRemainsSetAfterRotation() {
         startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text");
-        toPortrait();
+        toPortrait(activityRule);
         onView(withId(R.id.fragment_note_state)).perform(click()); // Open spinner
         onSpinnerString("TODO").perform(click());
         onView(withId(R.id.fragment_note_state)).perform(scrollTo());
         onView(withText("TODO")).check(matches(isDisplayed()));
-        toLandscape();
+        toLandscape(activityRule);
         onView(withId(R.id.fragment_note_state)).perform(scrollTo());
         onView(withText("TODO")).check(matches(isDisplayed()));
     }
@@ -155,12 +155,12 @@ public class ShareActivityTest extends OrgzlyTest {
     @Test
     public void testSettingPriorityRemainsSetAfterRotation() {
         startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text");
-        toPortrait();
+        toPortrait(activityRule);
         onView(withId(R.id.fragment_note_priority)).perform(click()); // Open spinner
         onSpinnerString("B").perform(click());
         onView(withId(R.id.fragment_note_priority)).perform(scrollTo());
         onView(withText("B")).check(matches(isDisplayed()));
-        toLandscape();
+        toLandscape(activityRule);
         onView(withId(R.id.fragment_note_priority)).perform(scrollTo());
         onView(withText("B")).check(matches(isDisplayed()));
     }
@@ -168,12 +168,12 @@ public class ShareActivityTest extends OrgzlyTest {
     @Test
     public void testSettingScheduledTimeRemainsSetAfterRotation() {
         startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text");
-        toPortrait();
+        toPortrait(activityRule);
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(not(containsString("-")))));
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
         onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(withPattern("^\\d{4}-\\d{2}-\\d{2} .*")), isDisplayed())));
-        toLandscape();
+        toLandscape(activityRule);
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(withPattern("^\\d{4}-\\d{2}-\\d{2} .*")), isDisplayed())));
     }
 

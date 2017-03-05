@@ -1,6 +1,5 @@
 package com.orgzly.android.espresso;
 
-import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.support.test.InstrumentationRegistry;
@@ -9,7 +8,7 @@ import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.action.CloseKeyboardAction;
-import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
+import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -20,7 +19,6 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-import java.util.Collection;
 import java.util.regex.Pattern;
 
 import static android.support.test.espresso.Espresso.onData;
@@ -32,7 +30,6 @@ import static android.support.test.espresso.action.ViewActions.pressKey;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withHint;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -116,85 +113,23 @@ class EspressoUtils {
         }
     }
 
-    /**
-     */
-    static void toLandscape() {
-        onView(isRoot()).perform(
-                new ViewAction() {
-                    @Override
-                    public Matcher<View> getConstraints() {
-                        return isRoot();
-                    }
-
-                    @Override
-                    public String getDescription() {
-                        return " rotate screen to landscape";
-                    }
-
-                    @Override
-                    public void perform(UiController uiController, View view) {
-                        uiController.loopMainThreadUntilIdle();
-
-                        final Activity activity = getCurrentActivity();
-
-                        if (activity != null) {
-                            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                        }
-
-                        // ActivityUtils.closeSoftKeyboard(activity);
-
-                        // closeKeyboardAndSleep(activity);
-
-//                        while (activity.getResources().getConfiguration().orientation != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-//                            uiController.loopMainThreadForAtLeast(50);
-//                        }
-                    }
-                });
+    static void toLandscape(ActivityTestRule activityRule) {
+        toOrientation(activityRule, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
-    /**
-     */
-    static void toPortrait() {
-        onView(isRoot()).perform(
-                new ViewAction() {
-                    @Override
-                    public Matcher<View> getConstraints() {
-                        return isRoot();
-                    }
-
-                    @Override
-                    public String getDescription() {
-                        return " rotate screen to portrait";
-                    }
-
-                    @Override
-                    public void perform(UiController uiController, View view) {
-                        uiController.loopMainThreadUntilIdle();
-
-                        final Activity activity = getCurrentActivity();
-
-                        if (activity != null) {
-                            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                        }
-
-                        // ActivityUtils.closeSoftKeyboard(activity);
-
-                        // closeKeyboardAndSleep(activity);
-
-//                        while (activity.getResources().getConfiguration().orientation != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-//                            uiController.loopMainThreadForAtLeast(50);
-//                        }
-                    }
-                });
+    static void toPortrait(ActivityTestRule activityRule) {
+        toOrientation(activityRule, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
-    static Activity getCurrentActivity() {
-        Collection resumedActivities = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(android.support.test.runner.lifecycle.Stage.RESUMED);
-        if (resumedActivities.iterator().hasNext()){
-            return (Activity) resumedActivities.iterator().next();
+    private static void toOrientation(ActivityTestRule activityRule, int requestedOrientation) {
+        activityRule.getActivity().setRequestedOrientation(requestedOrientation);
+
+        /* Not pretty, but it does seem to fix testFragments from randomly failing. */
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-
-        return null;
     }
 
     static DataInteraction onSpinnerString(String value) {
