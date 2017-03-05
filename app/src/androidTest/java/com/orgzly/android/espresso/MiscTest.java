@@ -487,14 +487,14 @@ public class MiscTest extends OrgzlyTest {
         fragmentTest(false, withText("Interface"));
         onListItem(EspressoUtils.SETTINGS_REPOS).perform(click());
         fragmentTest(false, withId(R.id.fragment_repos_flipper));
-        onListItem(0).perform(click());
+        onListItem(1).perform(click());
         fragmentTest(false, withId(R.id.fragment_repo_directory_container));
         onView(withId(R.id.fragment_repo_directory_browse_button)).perform(click());
         fragmentTest(false, withId(R.id.browser_container));
         pressBack();
         pressBack();
         onView(withId(R.id.fragment_repos_flipper)).check(matches(isDisplayed()));
-        onListItem(1).perform(click());
+        onListItem(0).perform(click());
         fragmentTest(false, withId(R.id.fragment_repo_dropbox_container));
         pressBack();
         pressBack();
