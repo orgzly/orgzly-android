@@ -79,12 +79,12 @@ configurations.all {
 }
 
 dependencies {
-    compile "com.orgzly:org-java:1.0.1-SNAPSHOT"
+    compile "com.orgzly:org-java:$org_java_version"
     // compile project(':org-java') // Used when developing, defined in settings.gradle
 
     compile "com.dropbox.core:dropbox-core-sdk:$dropbox_core_sdk_version"
 
-    compile "com.googlecode.juniversalchardet:juniversalchardet:1.0.3"
+    compile "com.googlecode.juniversalchardet:juniversalchardet:$juniversalchardet_version"
 
     compile("com.github.machinarius:preferencefragment:$preference_fragment_version") {
         exclude module: 'support-v4'
