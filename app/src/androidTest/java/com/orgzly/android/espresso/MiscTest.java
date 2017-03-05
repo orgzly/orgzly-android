@@ -68,27 +68,6 @@ public class MiscTest extends OrgzlyTest {
     public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class, true, false);
 
     @Test
-    public void testBooksFragmentExists() {
-        activityRule.launchActivity(null);
-        Fragment f = ((MainActivity) activityRule.getActivity()).getSupportFragmentManager().findFragmentByTag(BooksFragment.FRAGMENT_TAG);
-        assertTrue(f instanceof BooksFragment);
-    }
-
-    @Test
-    public void testDrawerFragmentExists() {
-        activityRule.launchActivity(null);
-        Fragment f = ((MainActivity) activityRule.getActivity()).getSupportFragmentManager().findFragmentByTag(DrawerFragment.FRAGMENT_TAG);
-        assertTrue(f instanceof DrawerFragment);
-    }
-
-    @Test
-    public void testSyncFragmentExists() {
-        activityRule.launchActivity(null);
-        Fragment f = ((MainActivity) activityRule.getActivity()).getSupportFragmentManager().findFragmentByTag(SyncFragment.FRAGMENT_TAG);
-        assertTrue(f instanceof SyncFragment);
-    }
-
-    @Test
     public void testLftRgt() {
         shelfTestUtils.setupBook("booky", "Preface\n* Note 1\n** Note 2\n* Note 3\n");
 
