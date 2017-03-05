@@ -8,7 +8,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.provider.models.DbBook;
 import com.orgzly.android.provider.models.DbNote;
-import com.orgzly.android.ui.Placement;
+import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.LogUtils;
 
 /**
@@ -126,7 +126,7 @@ public class DatabaseUtils {
      *
      * @return available lft and rgt which can be occupied by new notes.
      */
-    public static long[] makeSpaceForNewNotes(SQLiteDatabase db, int numberOfNotes, NotePosition targetNotePosition, Placement placement) { // TODO: Book ID not checked
+    public static long[] makeSpaceForNewNotes(SQLiteDatabase db, int numberOfNotes, NotePosition targetNotePosition, Place place) { // TODO: Book ID not checked
         long lft;
         int level;
 
@@ -136,7 +136,7 @@ public class DatabaseUtils {
 
         String bookSelection = whereUncutBookNotes(targetNotePosition.getBookId());
 
-        switch (placement) {
+        switch (place) {
 
             case ABOVE:
                 selection = bookSelection + " AND " + DbNote.Column.LFT + " >= " + targetNotePosition.getLft();
@@ -188,7 +188,7 @@ public class DatabaseUtils {
                 break;
 
             default:
-                throw new IllegalArgumentException("Unsupported paste relative position " + placement);
+                throw new IllegalArgumentException("Unsupported paste relative position " + place);
         }
 
         return new long[] { lft, level };

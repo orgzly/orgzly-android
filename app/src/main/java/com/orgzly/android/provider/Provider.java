@@ -52,7 +52,7 @@ import com.orgzly.android.provider.models.DbSearch;
 import com.orgzly.android.provider.models.DbVersionedRook;
 import com.orgzly.android.provider.views.BooksView;
 import com.orgzly.android.provider.views.NotesView;
-import com.orgzly.android.ui.Placement;
+import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.EncodingDetect;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.org.OrgFile;
@@ -462,16 +462,16 @@ public class Provider extends ContentProvider {
                 break;
 
             case ProviderUris.NOTES:
-                return insertNote(db, uri, contentValues, Placement.UNDEFINED);
+                return insertNote(db, uri, contentValues, Place.UNDEFINED);
 
             case ProviderUris.NOTE_ABOVE:
-                return insertNote(db, uri, contentValues, Placement.ABOVE);
+                return insertNote(db, uri, contentValues, Place.ABOVE);
 
             case ProviderUris.NOTE_UNDER:
-                return insertNote(db, uri, contentValues, Placement.UNDER);
+                return insertNote(db, uri, contentValues, Place.UNDER);
 
             case ProviderUris.NOTE_BELOW:
-                return insertNote(db, uri, contentValues, Placement.BELOW);
+                return insertNote(db, uri, contentValues, Place.BELOW);
 
             case ProviderUris.NOTES_PROPERTIES:
                 noteId = contentValues.getAsLong(ProviderContract.NoteProperties.Param.NOTE_ID);
@@ -524,7 +524,7 @@ public class Provider extends ContentProvider {
         return db.insertOrThrow(DbNote.TABLE, null, values);
     }
 
-    private Uri insertNote(SQLiteDatabase db, Uri uri, ContentValues values, Placement placement) {
+    private Uri insertNote(SQLiteDatabase db, Uri uri, ContentValues values, Place place) {
         NotePosition notePos = new NotePosition();
 
         long bookId = values.getAsLong(ProviderContract.Notes.UpdateParam.BOOK_ID);
@@ -532,12 +532,12 @@ public class Provider extends ContentProvider {
         /* If new note is inserted relative to some other note, get info about that target note. */
         long refNoteId = 0;
         NotePosition refNotePos = null;
-        if (placement != Placement.UNDEFINED) {
+        if (place != Place.UNDEFINED) {
             refNoteId = Long.valueOf(uri.getPathSegments().get(1));
             refNotePos = DbNote.getPosition(db, refNoteId);
         }
 
-        switch (placement) {
+        switch (place) {
             case ABOVE:
                 notePos.setLevel(refNotePos.getLevel());
                 notePos.setLft(refNotePos.getLft());
@@ -583,15 +583,15 @@ public class Provider extends ContentProvider {
                 break;
 
             default:
-                throw new IllegalArgumentException("Unsupported placement for new note: " + placement);
+                throw new IllegalArgumentException("Unsupported place for new note: " + place);
         }
 
-        switch (placement) {
+        switch (place) {
             case ABOVE:
             case UNDER:
             case BELOW:
                 /* Make space for new note - increment notes' LFT and RGT. */
-                DatabaseUtils.makeSpaceForNewNotes(db, 1, refNotePos, placement);
+                DatabaseUtils.makeSpaceForNewNotes(db, 1, refNotePos, place);
 
                 /* Update number of descendants. */
                 updateDescendantsCountOfAncestors(db, bookId, notePos.getLft(), notePos.getRgt());

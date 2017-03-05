@@ -11,9 +11,9 @@ import com.orgzly.android.Shelf;
 import com.orgzly.android.ui.ActionModeListener;
 import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.HeadsListViewAdapter;
-import com.orgzly.android.ui.Placement;
+import com.orgzly.android.ui.Place;
 import com.orgzly.android.ui.Selection;
-import com.orgzly.android.ui.NotePlacement;
+import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.views.GesturedListView;
 import com.orgzly.org.datetime.OrgDateTime;
@@ -107,14 +107,14 @@ public abstract class NoteListFragment extends ListFragment {
      * If location is above the selected notes, use the first selected note.
      * Otherwise, use the last selected note.
      */
-    protected long getTargetNoteIdFromSelection(Placement placement) {
-        return placement == Placement.ABOVE ?
+    protected long getTargetNoteIdFromSelection(Place place) {
+        return place == Place.ABOVE ?
                 mSelection.getIds().first() : mSelection.getIds().last();
     }
 
     public interface NoteListFragmentListener extends FragmentListener {
         void onNoteScrollToRequest(long noteId);
-        void onNoteNewRequest(NotePlacement target);
+        void onNoteNewRequest(NotePlace target);
         void onNoteClick(NoteListFragment fragment, View view, int position, long noteId);
         void onNoteLongClick(NoteListFragment fragment, View view, int position, long noteId);
 

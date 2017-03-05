@@ -184,7 +184,7 @@ public class ShareActivity extends CommonActivity
                     .add(mSyncFragment, SyncFragment.FRAGMENT_TAG)
                     .commit();
 
-            mNoteFragment = NoteFragment.getInstance(true, 0, 0, Placement.UNDEFINED, data.title, data.content);
+            mNoteFragment = NoteFragment.getInstance(true, 0, 0, Place.UNDEFINED, data.title, data.content);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.activity_share_main, mNoteFragment, NoteFragment.FRAGMENT_TAG)
@@ -263,8 +263,8 @@ public class ShareActivity extends CommonActivity
     }
 
     @Override
-    public void onNoteCreateRequest(Note note, NotePlacement notePlacement) {
-        mSyncFragment.createNote(note, notePlacement);
+    public void onNoteCreateRequest(Note note, NotePlace notePlace) {
+        mSyncFragment.createNote(note, notePlace);
     }
 
     @Override
@@ -345,7 +345,7 @@ public class ShareActivity extends CommonActivity
     }
 
     @Override
-    public void onNoteCreated(Note note, NotePlacement notePlacement) {
+    public void onNoteCreated(Note note) {
         finish();
     }
 

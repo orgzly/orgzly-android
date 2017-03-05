@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,9 +42,9 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.NotePrioritySpinner;
-import com.orgzly.android.ui.Placement;
+import com.orgzly.android.ui.Place;
 import com.orgzly.android.ui.NoteStateSpinner;
-import com.orgzly.android.ui.NotePlacement;
+import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
@@ -83,7 +82,7 @@ public class NoteFragment extends Fragment
     private static final String ARG_IS_NEW = "is_new";
     private static final String ARG_BOOK_ID = "book_id";
     private static final String ARG_NOTE_ID = "note_id";
-    private static final String ARG_PLACEMENT = "placement";
+    private static final String ARG_PLACE = "place";
     private static final String ARG_TITLE = "title";
     private static final String ARG_CONTENT = "content";
 
@@ -106,7 +105,7 @@ public class NoteFragment extends Fragment
     private boolean mIsNew;
     private long mBookId;
     private long mNoteId; /* Could be null if new note is being created. */
-    private Placement placement; /* Relative location, used for new notes. */
+    private Place place; /* Relative location, used for new notes. */
     private String mInitialTitle; /* Initial title (used for when sharing to Orgzly) */
     private String mInitialContent; /* Initial content (used when sharing to Orgzly) */
 
@@ -139,7 +138,7 @@ public class NoteFragment extends Fragment
 
     private OrgTimeUserFormatter mOrgTimeUserFormatter;
 
-    public static NoteFragment getInstance(boolean isNew, long bookId, long noteId, Placement placement, String initialTitle, String initialContent) {
+    public static NoteFragment getInstance(boolean isNew, long bookId, long noteId, Place place, String initialTitle, String initialContent) {
         NoteFragment fragment = new NoteFragment();
         Bundle args = new Bundle();
 
@@ -147,7 +146,7 @@ public class NoteFragment extends Fragment
 
         args.putLong(ARG_BOOK_ID, bookId);
         if (noteId > 0) args.putLong(ARG_NOTE_ID, noteId);
-        args.putString(ARG_PLACEMENT, placement.toString());
+        args.putString(ARG_PLACE, place.toString());
 
         if (initialTitle   != null) args.putString(ARG_TITLE, initialTitle);
         if (initialContent != null) args.putString(ARG_CONTENT, initialContent);
@@ -726,7 +725,7 @@ public class NoteFragment extends Fragment
         }
 
         /* Location (used for new notes). */
-        placement = Placement.valueOf(getArguments().getString(ARG_PLACEMENT));
+        place = Place.valueOf(getArguments().getString(ARG_PLACE));
 
         mInitialTitle = getArguments().getString(ARG_TITLE);
         mInitialContent = getArguments().getString(ARG_CONTENT);
@@ -1065,8 +1064,8 @@ public class NoteFragment extends Fragment
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Saving new note " + mNote);
 
             if (updateNoteFromViewsAndVerify()) {
-                mListener.onNoteCreateRequest(mNote, placement != Placement.UNDEFINED ?
-                        new NotePlacement(mNote.getPosition().getBookId(), mNoteId, placement) : null);
+                mListener.onNoteCreateRequest(mNote, place != Place.UNDEFINED ?
+                        new NotePlace(mNote.getPosition().getBookId(), mNoteId, place) : null);
             }
 
         } else {
@@ -1133,7 +1132,7 @@ public class NoteFragment extends Fragment
     }
 
     public interface NoteFragmentListener extends FragmentListener {
-        void onNoteCreateRequest(Note note, NotePlacement notePlacement);
+        void onNoteCreateRequest(Note note, NotePlace notePlace);
         void onNoteUpdateRequest(Note note);
         void onNoteCancelRequest(Note note);
         void onNoteDeleteRequest(Note note);

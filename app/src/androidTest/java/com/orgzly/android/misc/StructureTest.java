@@ -8,8 +8,8 @@ import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.provider.clients.NotesClient;
-import com.orgzly.android.ui.NotePlacement;
-import com.orgzly.android.ui.Placement;
+import com.orgzly.android.ui.NotePlace;
+import com.orgzly.android.ui.Place;
 import com.orgzly.org.OrgHead;
 
 import org.junit.Test;
@@ -178,7 +178,7 @@ public class StructureTest extends OrgzlyTest {
         shelf.cut(book2.getId(), shelf.getNote("Note A.A").getId());
 
         Note n = shelf.getNote("Note 1.1.1");
-        shelf.paste(n.getPosition().getBookId(), n.getId(), Placement.UNDER);
+        shelf.paste(n.getPosition().getBookId(), n.getId(), Place.UNDER);
 
         assertEquals("description\n" +
                         "\n" +
@@ -211,7 +211,7 @@ public class StructureTest extends OrgzlyTest {
         /* Cut & paste 1.1 under 1.2. */
         shelf.cut(book.getId(), shelf.getNote("Note 1.1").getId());
         Note n = shelf.getNote("Note 1.2");
-        shelf.paste(n.getPosition().getBookId(), n.getId(), Placement.UNDER);
+        shelf.paste(n.getPosition().getBookId(), n.getId(), Place.UNDER);
 
         assertEquals("description\n" +
                         "\n" +
@@ -281,7 +281,7 @@ public class StructureTest extends OrgzlyTest {
         shelf.cut(book.getId(), shelf.getNote("Note 2").getId());
         shelf.toggleFoldedState(shelf.getNote("Note 1.1").getId());
         Note n = shelf.getNote("Note 1.1");
-        shelf.paste(n.getPosition().getBookId(), n.getId(), Placement.UNDER);
+        shelf.paste(n.getPosition().getBookId(), n.getId(), Place.UNDER);
 
         assertEquals("description\n" +
                         "\n" +
@@ -352,7 +352,7 @@ public class StructureTest extends OrgzlyTest {
         shelf.toggleFoldedState(shelf.getNote("Note 1.1").getId());
         shelf.cut(book.getId(), shelf.getNote("Note 1.1.1").getId());
         Note n = shelf.getNote("Note 1");
-        shelf.paste(n.getPosition().getBookId(), n.getId(), Placement.UNDER);
+        shelf.paste(n.getPosition().getBookId(), n.getId(), Place.UNDER);
 
         assertEquals("description\n" +
                         "\n" +
@@ -585,7 +585,7 @@ public class StructureTest extends OrgzlyTest {
 
         shelf.createNote(
                 newNote,
-                new NotePlacement(book.getId(), shelf.getNote("Note 1").getId(), Placement.BELOW)
+                new NotePlace(book.getId(), shelf.getNote("Note 1").getId(), Place.BELOW)
         );
 
         assertEquals("description\n" +
@@ -621,7 +621,7 @@ public class StructureTest extends OrgzlyTest {
         shelf.toggleFoldedState(shelf.getNote("Note 1").getId());
         shelf.cut(book.getId(), shelf.getNote("Note 1").getId());
         Note n = shelf.getNote("Note 2");
-        shelf.paste(n.getPosition().getBookId(), n.getId(), Placement.ABOVE);
+        shelf.paste(n.getPosition().getBookId(), n.getId(), Place.ABOVE);
 
         /* Remains folded. */
         assertTrue(shelf.getNote("Note 1").getPosition().isFolded());
@@ -640,7 +640,7 @@ public class StructureTest extends OrgzlyTest {
         shelf.toggleFoldedState(shelf.getNote("Note 1").getId());
         shelf.cut(book.getId(), shelf.getNote("Note 2").getId());
         Note n = shelf.getNote("Note 1.1");
-        shelf.paste(n.getPosition().getBookId(), n.getId(), Placement.UNDER);
+        shelf.paste(n.getPosition().getBookId(), n.getId(), Place.UNDER);
 
         assertEquals("description\n" +
                         "\n" +
@@ -713,7 +713,7 @@ public class StructureTest extends OrgzlyTest {
         Note n = new Note();
         n.getPosition().setBookId(book.getId());
         n.getHead().setTitle("Note 1.1.2");
-        NotePlacement target = new NotePlacement(book.getId(), shelf.getNote("Note 1.1").getId(), Placement.UNDER);
+        NotePlace target = new NotePlace(book.getId(), shelf.getNote("Note 1.1").getId(), Place.UNDER);
         shelf.createNote(n, target);
 
 
@@ -755,7 +755,7 @@ public class StructureTest extends OrgzlyTest {
         Note n = new Note();
         n.getPosition().setBookId(book.getId());
         n.getHead().setTitle("Note 1.0");
-        NotePlacement target = new NotePlacement(book.getId(), shelf.getNote("Note 1.1").getId(), Placement.ABOVE);
+        NotePlace target = new NotePlace(book.getId(), shelf.getNote("Note 1.1").getId(), Place.ABOVE);
         shelf.createNote(n, target);
 
         note1 = shelf.getNote("Note 1").getPosition();
@@ -854,7 +854,7 @@ public class StructureTest extends OrgzlyTest {
         shelf.cut(book.getId(), shelf.getNote("Note 1.1").getId());
         shelf.cut(book.getId(), shelf.getNote("Note 1").getId());
         Note n = shelf.getNote("Note 2");
-        shelf.paste(n.getPosition().getBookId(), n.getId(), Placement.UNDER);
+        shelf.paste(n.getPosition().getBookId(), n.getId(), Place.UNDER);
 
         assertEquals("description\n" +
                         "\n" +
@@ -891,7 +891,7 @@ public class StructureTest extends OrgzlyTest {
 
         shelf.createNote(
                 newNote,
-                new NotePlacement(book.getId(), shelf.getNote("Note 1").getId(), Placement.UNDER)
+                new NotePlace(book.getId(), shelf.getNote("Note 1").getId(), Place.UNDER)
         );
 
         assertEquals(1, shelf.getNote("Note 1").getPosition().getDescendantsCount());

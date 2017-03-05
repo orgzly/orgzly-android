@@ -8,7 +8,7 @@ import com.orgzly.android.NotePosition;
 import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.models.DbNote;
-import com.orgzly.android.ui.Placement;
+import com.orgzly.android.ui.Place;
 
 public class PromoteNotesAction implements Action {
     private long bookId;
@@ -63,7 +63,7 @@ public class PromoteNotesAction implements Action {
         values.put(ProviderContract.Paste.Param.BATCH_ID, batchId);
         values.put(ProviderContract.Paste.Param.BOOK_ID, bookId);
         values.put(ProviderContract.Paste.Param.NOTE_ID, note.getParentId());
-        values.put(ProviderContract.Paste.Param.SPOT, Placement.BELOW.toString());
+        values.put(ProviderContract.Paste.Param.SPOT, Place.BELOW.toString());
         new PasteNotesAction(values).run(db);
 
         DatabaseUtils.updateBookMtime(db, bookId);

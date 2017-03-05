@@ -12,7 +12,7 @@ import com.orgzly.android.provider.models.DbRepo;
 import com.orgzly.android.provider.models.DbSearch;
 import com.orgzly.android.provider.views.BooksView;
 import com.orgzly.android.provider.views.NotesView;
-import com.orgzly.android.ui.NotePlacement;
+import com.orgzly.android.ui.NotePlace;
 
 /**
  * Content provider's contract.
@@ -165,10 +165,10 @@ public class ProviderContract {
             }
 
 
-            public static Uri notesIdTarget(NotePlacement target) {
+            public static Uri notesIdTarget(NotePlace target) {
                 Uri.Builder builder = notesId(target.getNoteId()).buildUpon();
 
-                switch (target.getPlacement()) {
+                switch (target.getPlace()) {
                     case ABOVE:
                         builder.appendPath("above");
                         break;

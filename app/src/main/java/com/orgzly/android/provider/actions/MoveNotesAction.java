@@ -10,7 +10,7 @@ import com.orgzly.android.NotePosition;
 import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.models.DbNote;
-import com.orgzly.android.ui.Placement;
+import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.LogUtils;
 
 public class MoveNotesAction implements Action {
@@ -34,7 +34,7 @@ public class MoveNotesAction implements Action {
 
 
         long targetNoteId = 0;
-        Placement placement = null;
+        Place place = null;
 
         if (direction == -1) { /* Moving up. */
             Cursor cursor = db.query(
@@ -54,7 +54,7 @@ public class MoveNotesAction implements Action {
 
                     if (prevLevel == selectedNotePosition.getLevel()) {
                         targetNoteId = prevId;
-                        placement = Placement.ABOVE;
+                        place = Place.ABOVE;
                     }
                 }
 
@@ -78,7 +78,7 @@ public class MoveNotesAction implements Action {
 
                     if (prevLevel == selectedNotePosition.getLevel()) {
                         targetNoteId = prevId;
-                        placement = Placement.BELOW;
+                        place = Place.BELOW;
                     }
                 }
 
@@ -101,7 +101,7 @@ public class MoveNotesAction implements Action {
             values.put(ProviderContract.Paste.Param.BATCH_ID, batchId);
             values.put(ProviderContract.Paste.Param.BOOK_ID, bookId);
             values.put(ProviderContract.Paste.Param.NOTE_ID, targetNoteId);
-            values.put(ProviderContract.Paste.Param.SPOT, placement.toString());
+            values.put(ProviderContract.Paste.Param.SPOT, place.toString());
             new PasteNotesAction(values).run(db);
 
             DatabaseUtils.updateBookMtime(db, bookId);

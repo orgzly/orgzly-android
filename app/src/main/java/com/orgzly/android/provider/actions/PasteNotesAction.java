@@ -10,19 +10,19 @@ import com.orgzly.android.provider.GenericDatabaseUtils;
 import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.models.DbNote;
-import com.orgzly.android.ui.Placement;
+import com.orgzly.android.ui.Place;
 
 
 public class PasteNotesAction implements Action {
     private static final String TAG = PasteNotesAction.class.getName();
 
-    private Placement placement;
+    private Place place;
     private long bookId;
     private long targetNoteId;
     private long batchId;
 
     public PasteNotesAction(ContentValues values) {
-        placement = Placement.valueOf(values.getAsString(ProviderContract.Paste.Param.SPOT));
+        place = Place.valueOf(values.getAsString(ProviderContract.Paste.Param.SPOT));
         bookId = values.getAsLong(ProviderContract.Paste.Param.BOOK_ID);
         targetNoteId = values.getAsLong(ProviderContract.Paste.Param.NOTE_ID);
         batchId = values.getAsLong(ProviderContract.Paste.Param.BATCH_ID);
@@ -63,7 +63,7 @@ public class PasteNotesAction implements Action {
             foldedUnder = targetNotePosition.getFoldedUnderId();
         }
 
-        switch (placement) {
+        switch (place) {
             case ABOVE:
                 pastedLft = targetNotePosition.getLft();
                 pastedLevel = targetNotePosition.getLevel();
@@ -99,7 +99,7 @@ public class PasteNotesAction implements Action {
                 break;
 
             default:
-                throw new IllegalArgumentException("Unsupported placement for paste: " + placement);
+                throw new IllegalArgumentException("Unsupported place for paste: " + place);
         }
 
         int positionsRequired = (int) (batchMaxRgt - batchMinLft + 1);

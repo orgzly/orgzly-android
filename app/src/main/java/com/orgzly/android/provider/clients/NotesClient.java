@@ -23,9 +23,9 @@ import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.GenericDatabaseUtils;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.models.DbNote;
-import com.orgzly.android.ui.Placement;
+import com.orgzly.android.ui.Place;
 import com.orgzly.android.ui.NoteStateSpinner;
-import com.orgzly.android.ui.NotePlacement;
+import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 import com.orgzly.org.OrgProperty;
@@ -262,7 +262,7 @@ public class NotesClient {
     /**
      * Insert as last note if position is not specified.
      */
-    public static Note create(Context context, Note note, NotePlacement target) {
+    public static Note create(Context context, Note note, NotePlace target) {
 
         ContentValues values = new ContentValues();
         toContentValues(values, note);
@@ -573,13 +573,13 @@ public class NotesClient {
         return context.getContentResolver().update(ProviderContract.Cut.ContentUri.cut(), values, null, null);
     }
 
-    public static NotesBatch paste(Context context, long bookId, long noteId, Placement placement) {
+    public static NotesBatch paste(Context context, long bookId, long noteId, Place place) {
         NotesBatch batch = getLatestNotesBatch(context);
 
         if (batch != null) {
             ContentValues values = new ContentValues();
 
-            values.put(ProviderContract.Paste.Param.SPOT, placement.toString());
+            values.put(ProviderContract.Paste.Param.SPOT, place.toString());
             values.put(ProviderContract.Paste.Param.BOOK_ID, bookId);
             values.put(ProviderContract.Paste.Param.NOTE_ID, noteId);
             values.put(ProviderContract.Paste.Param.BATCH_ID, batch.getId());

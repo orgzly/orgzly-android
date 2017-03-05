@@ -4,20 +4,20 @@ package com.orgzly.android.ui;
  * Selected target note.
  * Used when pasting or creating new notes.
  */
-public class NotePlacement {
+public class NotePlace {
     private long bookId;
     private long noteId;
-    private Placement placement;
+    private Place place;
 
-    public NotePlacement(long bookId) {
+    public NotePlace(long bookId) {
         this.bookId = bookId;
-        placement = Placement.UNDEFINED;
+        place = Place.UNDEFINED;
     }
 
-    public NotePlacement(long bookId, long noteId, Placement placement) {
+    public NotePlace(long bookId, long noteId, Place place) {
         this.bookId = bookId;
         this.noteId = noteId;
-        this.placement = placement;
+        this.place = place;
     }
 
     public long getBookId() {
@@ -28,12 +28,12 @@ public class NotePlacement {
         return noteId;
     }
 
-    public Placement getPlacement() {
-        return placement;
+    public Place getPlace() {
+        return place;
     }
 
     public String toString() {
-        return "Book#" + bookId + " Note#" + noteId + " Placement#" + placement;
+        return "Book#" + bookId + " Note#" + noteId + " Place#" + place;
     }
 }
 

@@ -728,7 +728,7 @@ public class MainActivity extends CommonActivity
 
     /* Open note fragment to create a new note. */
     @Override
-    public void onNoteNewRequest(NotePlacement target) {
+    public void onNoteNewRequest(NotePlace target) {
         finishActionMode();
 
         mDisplayManager.displayNewNote(target);
@@ -736,16 +736,16 @@ public class MainActivity extends CommonActivity
 
     /* Save note. */
     @Override
-    public void onNoteCreateRequest(Note note, NotePlacement notePlacement) {
+    public void onNoteCreateRequest(Note note, NotePlace notePlace) {
         finishActionMode();
 
         popBackStackAndCloseKeyboard();
 
-        mSyncFragment.createNote(note, notePlacement);
+        mSyncFragment.createNote(note, notePlace);
     }
 
     @Override
-    public void onNoteCreated(final Note note, final NotePlacement notePlacement) {
+    public void onNoteCreated(final Note note) {
         /*
          * Display Snackbar with an action - create new note below just created one.
          */
@@ -756,12 +756,12 @@ public class MainActivity extends CommonActivity
                     .setAction(R.string.new_below, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            NotePlacement placement = new NotePlacement(
+                            NotePlace notePlace = new NotePlace(
                                     note.getPosition().getBookId(),
                                     note.getId(),
-                                    Placement.BELOW);
+                                    Place.BELOW);
 
-                            mDisplayManager.displayNewNote(placement);
+                            mDisplayManager.displayNewNote(notePlace);
                         }
                     }));
         }
@@ -1303,8 +1303,8 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onNotesPasteRequest(long bookId, long noteId, Placement placement) {
-        mSyncFragment.pasteNotes(bookId, noteId, placement);
+    public void onNotesPasteRequest(long bookId, long noteId, Place place) {
+        mSyncFragment.pasteNotes(bookId, noteId, place);
     }
 
     @Override

@@ -399,12 +399,6 @@ public class QueryFragment extends NoteListFragment
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, actionMode, menuItem);
 
             switch (menuItem.getItemId()) {
-//                case R.id.query_cab_new_under:
-//                    long targetNoteId = getTargetNoteIdFromSelection(Placement.UNDER);
-//                    mListener.onNoteNewRequest(new NotePlacement(mShelf.getNote(targetNoteId).getBookId(), targetNoteId, Placement.UNDER));
-//                    actionMode.finish(); /* Close action mode. */
-//                    break;
-
                 case R.id.query_cab_schedule:
                     displayScheduleTimestampDialog(R.id.query_cab_schedule, mSelection.getIds());
                     break;

@@ -39,9 +39,9 @@ import com.orgzly.android.ui.ActionModeListener;
 import com.orgzly.android.ui.Fab;
 import com.orgzly.android.ui.HeadsListViewAdapter;
 import com.orgzly.android.ui.Loaders;
-import com.orgzly.android.ui.NotePlacement;
+import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.NoteStateSpinner;
-import com.orgzly.android.ui.Placement;
+import com.orgzly.android.ui.Place;
 import com.orgzly.android.ui.Selection;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.views.GesturedListView;
@@ -240,15 +240,15 @@ public class BookFragment extends NoteListFragment
                                 break;
 
                             case R.id.item_menu_new_above_btn:
-                                listener.onNoteNewRequest(new NotePlacement(mBookId, noteId, Placement.ABOVE));
+                                listener.onNoteNewRequest(new NotePlace(mBookId, noteId, Place.ABOVE));
                                 break;
 
                             case R.id.item_menu_new_under_btn:
-                                listener.onNoteNewRequest(new NotePlacement(mBookId, noteId, Placement.UNDER));
+                                listener.onNoteNewRequest(new NotePlace(mBookId, noteId, Place.UNDER));
                                 break;
 
                             case R.id.item_menu_new_below_btn:
-                                listener.onNoteNewRequest(new NotePlacement(mBookId, noteId, Placement.BELOW));
+                                listener.onNoteNewRequest(new NotePlace(mBookId, noteId, Place.BELOW));
                                 break;
                         }
 
@@ -452,9 +452,9 @@ public class BookFragment extends NoteListFragment
     * Actions
     */
 
-    private void newNoteRelativeToSelection(Placement placement) {
-        long targetNoteId = getTargetNoteIdFromSelection(placement);
-        listener.onNoteNewRequest(new NotePlacement(mBookId, targetNoteId, placement));
+    private void newNoteRelativeToSelection(Place place) {
+        long targetNoteId = getTargetNoteIdFromSelection(place);
+        listener.onNoteNewRequest(new NotePlace(mBookId, targetNoteId, place));
     }
 
     // TODO: Go through main activity and do it in background.
@@ -470,15 +470,15 @@ public class BookFragment extends NoteListFragment
 
     /**
      * Paste notes.
-     * @param placement {@link Placement}
+     * @param place {@link Place}
      */
-    private void pasteNotes(Placement placement) {
-        long noteId = getTargetNoteIdFromSelection(placement);
+    private void pasteNotes(Place place) {
+        long noteId = getTargetNoteIdFromSelection(place);
 
         /* Remove selection. */
         mSelection.clearSelection();
 
-        listener.onNotesPasteRequest(mBookId, noteId, placement);
+        listener.onNotesPasteRequest(mBookId, noteId, place);
     }
 
     private void scrollToNoteIfSet() {
@@ -705,7 +705,7 @@ public class BookFragment extends NoteListFragment
         return mBook != null ? new Runnable() {
             @Override
             public void run() {
-                listener.onNoteNewRequest(new NotePlacement(mBookId));
+                listener.onNoteNewRequest(new NotePlace(mBookId));
             }
         } : null;
     }
@@ -785,17 +785,17 @@ public class BookFragment extends NoteListFragment
 
             switch (menuItem.getItemId()) {
                 case R.id.book_cab_new_above:
-                    newNoteRelativeToSelection(Placement.ABOVE);
+                    newNoteRelativeToSelection(Place.ABOVE);
                     actionMode.finish(); /* Close action mode. */
                     break;
 
                 case R.id.book_cab_new_under:
-                    newNoteRelativeToSelection(Placement.UNDER);
+                    newNoteRelativeToSelection(Place.UNDER);
                     actionMode.finish(); /* Close action mode. */
                     break;
 
                 case R.id.book_cab_new_below:
-                    newNoteRelativeToSelection(Placement.BELOW);
+                    newNoteRelativeToSelection(Place.BELOW);
                     actionMode.finish(); /* Close action mode. */
                     break;
 
@@ -836,17 +836,17 @@ public class BookFragment extends NoteListFragment
 //                    break;
 
                 case R.id.book_cab_paste_above:
-                    pasteNotes(Placement.ABOVE);
+                    pasteNotes(Place.ABOVE);
                     actionMode.finish(); /* Close action mode. */
                     break;
 
                 case R.id.book_cab_paste_under:
-                    pasteNotes(Placement.UNDER);
+                    pasteNotes(Place.UNDER);
                     actionMode.finish(); /* Close action mode. */
                     break;
 
                 case R.id.book_cab_paste_below:
-                    pasteNotes(Placement.BELOW);
+                    pasteNotes(Place.BELOW);
                     actionMode.finish(); /* Close action mode. */
                     break;
 
@@ -913,7 +913,7 @@ public class BookFragment extends NoteListFragment
 
         void onNotesDeleteRequest(long bookId, TreeSet<Long> noteIds);
         void onNotesCutRequest(long bookId, TreeSet<Long> noteIds);
-        void onNotesPasteRequest(long bookId, long noteId, Placement placement);
+        void onNotesPasteRequest(long bookId, long noteId, Place place);
         void onNotesPromoteRequest(long bookId, Set<Long> noteIds);
         void onNotesDemoteRequest(long bookId, Set<Long> noteIds);
 

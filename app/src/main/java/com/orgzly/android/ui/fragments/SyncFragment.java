@@ -43,8 +43,8 @@ import com.orgzly.android.repos.Rook;
 import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.sync.SyncStatus;
 import com.orgzly.android.ui.CommonActivity;
-import com.orgzly.android.ui.NotePlacement;
-import com.orgzly.android.ui.Placement;
+import com.orgzly.android.ui.NotePlace;
+import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.UriUtils;
@@ -946,17 +946,17 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
-    public void createNote(final Note note, final NotePlacement notePlacement) {
+    public void createNote(final Note note, final NotePlace notePlace) {
         new AsyncTask<Void, Void, Note>() {
             @Override
             protected Note doInBackground(Void... dummy) {
-                return mShelf.createNote(note, notePlacement);
+                return mShelf.createNote(note, notePlace);
             }
 
             @Override
             protected void onPostExecute(Note createdNote) {
                 if (createdNote != null) {
-                    mListener.onNoteCreated(createdNote, notePlacement);
+                    mListener.onNoteCreated(createdNote);
                 } else {
                     mListener.onNoteCreatingFailed();
                 }
@@ -1013,11 +1013,11 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
-    public void pasteNotes(final long bookId, final long noteId, final Placement placement) {
+    public void pasteNotes(final long bookId, final long noteId, final Place place) {
         new AsyncTask<Void, Void, NotesBatch>() {
             @Override
             protected NotesBatch doInBackground(Void... voids) {
-                return mShelf.paste(bookId, noteId, placement);
+                return mShelf.paste(bookId, noteId, place);
             }
 
             @Override
@@ -1172,7 +1172,7 @@ public class SyncFragment extends Fragment {
 
         void onStateChanged(Set<Long> noteIds, String state);
 
-        void onNoteCreated(Note note, NotePlacement notePlacement);
+        void onNoteCreated(Note note);
         void onNoteCreatingFailed();
 
         void onNoteUpdated(Note note);

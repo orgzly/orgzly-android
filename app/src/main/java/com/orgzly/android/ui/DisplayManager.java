@@ -1,13 +1,8 @@
 package com.orgzly.android.ui;
 
-import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.orgzly.BuildConfig;
@@ -145,14 +140,14 @@ public class DisplayManager {
     }
 
     public void displayNote(long bookId, long noteId) {
-        displayNote(false, bookId, noteId, Placement.UNDEFINED);
+        displayNote(false, bookId, noteId, Place.UNDEFINED);
     }
 
-    public void displayNewNote(NotePlacement target) {
-        displayNote(true, target.getBookId(), target.getNoteId(), target.getPlacement());
+    public void displayNewNote(NotePlace target) {
+        displayNote(true, target.getBookId(), target.getNoteId(), target.getPlace());
     }
 
-    private void displayNote(boolean isNew, long bookId, long noteId, Placement placement) {
+    private void displayNote(boolean isNew, long bookId, long noteId, Place place) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookId, noteId);
 
         if (bookId <= 0) {
@@ -160,7 +155,7 @@ public class DisplayManager {
         }
 
         /* Create fragment. */
-        Fragment fragment = NoteFragment.getInstance(isNew, bookId, noteId, placement, null, null);
+        Fragment fragment = NoteFragment.getInstance(isNew, bookId, noteId, place, null, null);
 
         /* Add fragment. */
         mFragmentManager

@@ -27,8 +27,8 @@ import com.orgzly.android.repos.Rook;
 import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.sync.BookNamesake;
 import com.orgzly.android.sync.BookSyncStatus;
-import com.orgzly.android.ui.NotePlacement;
-import com.orgzly.android.ui.Placement;
+import com.orgzly.android.ui.NotePlace;
+import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.CircularArrayList;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
@@ -267,7 +267,7 @@ public class Shelf {
         return NotesClient.update(mContext, note);
     }
 
-    public Note createNote(Note note, NotePlacement target) {
+    public Note createNote(Note note, NotePlace target) {
         /* Create new note. */
         Note insertedNote = NotesClient.create(mContext, note, target);
 
@@ -317,8 +317,8 @@ public class Shelf {
         return NotesClient.cut(mContext, bookId, noteIds);
     }
 
-    public NotesBatch paste(long bookId, long noteId, Placement placement) {
-        return NotesClient.paste(mContext, bookId, noteId, placement);
+    public NotesBatch paste(long bookId, long noteId, Place place) {
+        return NotesClient.paste(mContext, bookId, noteId, place);
     }
 
     public int delete(long bookId, Set<Long> noteIds) {
