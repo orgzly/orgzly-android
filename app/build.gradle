@@ -95,6 +95,7 @@ dependencies {
     compile "com.android.support:cardview-v7:$android_support_version"
     compile "com.android.support:recyclerview-v7:$android_support_version"
     compile "com.android.support:design:$android_support_version"
+
     androidTestCompile "com.android.support:support-annotations:$android_support_version"
 
     testCompile "junit:junit:$junit_version"
