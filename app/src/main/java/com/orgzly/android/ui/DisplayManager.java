@@ -31,90 +31,11 @@ public class DisplayManager {
     // private static final int FRAGMENT_TRANSITION = FragmentTransaction.TRANSIT_NONE;
     private static final int FRAGMENT_TRANSITION = FragmentTransaction.TRANSIT_FRAGMENT_FADE;
 
-    /* To avoid jerky drawer close.
-     * Previous title might be displayed if loading of the new fragment takes too long and it
-     * might look ugly, showing for only a fraction of a second before being replaced with new one.
-     * FIXME: Maybe move drawer handling here and add a flag for *not* changing the title.
-     */
-    private static final int DELAY_FRAGMENT_TRANSACTION_AFTER_DRAWER_CLOSE = 300;
 
     private final FragmentManager mFragmentManager;
-    private final DrawerLayout mDrawerLayout;
 
-    public DisplayManager(AppCompatActivity activity, DrawerLayout drawerLayout) {
-        mFragmentManager = activity.getSupportFragmentManager();
-        mDrawerLayout = drawerLayout;
-    }
-
-    public void drawerFiltersRequest() {
-        /* Close drawer. */
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        }
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                displayFilters();
-            }
-        }, DELAY_FRAGMENT_TRANSACTION_AFTER_DRAWER_CLOSE);
-    }
-
-    public void drawerBooksRequest() {
-        /* Close drawer. */
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        }
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                displayBooks(true);
-            }
-        }, DELAY_FRAGMENT_TRANSACTION_AFTER_DRAWER_CLOSE);
-    }
-
-    public void drawerBookRequest(final long bookId) {
-        /* Close drawer. */
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        }
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                displayBook(bookId, 0);
-            }
-        }, DELAY_FRAGMENT_TRANSACTION_AFTER_DRAWER_CLOSE);
-    }
-
-    public void drawerSearchRequest(final String query) {
-        /* Close drawer. */
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        }
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                displayQuery(query);
-            }
-        }, DELAY_FRAGMENT_TRANSACTION_AFTER_DRAWER_CLOSE);
-    }
-
-    public void drawerSettingsRequest() {
-        /* Close drawer. */
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        }
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                displaySettings();
-            }
-        }, DELAY_FRAGMENT_TRANSACTION_AFTER_DRAWER_CLOSE);
-
+    public DisplayManager(FragmentManager fragmentManager) {
+        mFragmentManager = fragmentManager;
     }
 
     /**
@@ -161,7 +82,7 @@ public class DisplayManager {
         displayBooks(false);
     }
 
-    private void displayFilters() {
+    public void displayFilters() {
         if (isFragmentDisplayed(FiltersFragment.FRAGMENT_TAG) != null) {
             return;
         }

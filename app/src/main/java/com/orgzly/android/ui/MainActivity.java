@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -188,7 +189,7 @@ public class MainActivity extends CommonActivity
     private void setupDisplay(Bundle savedInstanceState) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, getIntent().getExtras());
 
-        mDisplayManager = new DisplayManager(this, mDrawerLayout);
+        mDisplayManager = new DisplayManager(getSupportFragmentManager());
 
         if (savedInstanceState == null) { // Not a configuration change.
             long bookId = getIntent().getLongExtra(EXTRA_BOOK_ID, 0L);
@@ -296,7 +297,8 @@ public class MainActivity extends CommonActivity
     private SyncFragment addSyncFragment() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
-        SyncFragment fragment = (SyncFragment) getSupportFragmentManager().findFragmentByTag(SyncFragment.FRAGMENT_TAG);
+        SyncFragment fragment = (SyncFragment) getSupportFragmentManager()
+                .findFragmentByTag(SyncFragment.FRAGMENT_TAG);
 
         /* If the Fragment is non-null, then it is currently being
          * retained across a configuration change.
@@ -1552,31 +1554,47 @@ public class MainActivity extends CommonActivity
 //    }
 
     @Override
-    public void onDrawerItemClicked(DrawerFragment.DrawerItem item) {
-        if (item instanceof DrawerFragment.BooksItem) {
+    public void onDrawerItemClicked(final DrawerFragment.DrawerItem item) {
+        /* Don't end action mode if the click was on book - it could be the same book. */
+        if (! (item instanceof DrawerFragment.BookItem)) {
             finishActionMode();
-
-            mDisplayManager.drawerBooksRequest();
-
-        } else if (item instanceof DrawerFragment.FiltersItem) {
-            finishActionMode();
-
-            mDisplayManager.drawerFiltersRequest();
-
-        } else if (item instanceof DrawerFragment.SettingsItem) {
-            finishActionMode();
-
-            mDisplayManager.drawerSettingsRequest();
-
-        } else if (item instanceof DrawerFragment.BookItem) {
-            long bookId = ((DrawerFragment.BookItem) item).id;
-
-            mDisplayManager.drawerBookRequest(bookId);
-
-        } else if (item instanceof DrawerFragment.FilterItem) {
-            String query = ((DrawerFragment.FilterItem) item).query;
-
-            mDisplayManager.drawerSearchRequest(query);
         }
+
+        /* Close drawer. */
+        if (mDrawerLayout != null) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        }
+
+        runDelayedAfterDrawerClose(new Runnable() {
+            @Override
+            public void run() {
+                if (item instanceof DrawerFragment.BooksItem) {
+                    mDisplayManager.displayBooks(true);
+
+                } else if (item instanceof DrawerFragment.FiltersItem) {
+                    mDisplayManager.displayFilters();
+
+                } else if (item instanceof DrawerFragment.SettingsItem) {
+                    mDisplayManager.displaySettings();
+
+                } else if (item instanceof DrawerFragment.BookItem) {
+                    long bookId = ((DrawerFragment.BookItem) item).id;
+                    mDisplayManager.displayBook(bookId, 0);
+
+                } else if (item instanceof DrawerFragment.FilterItem) {
+                    String query = ((DrawerFragment.FilterItem) item).query;
+                    mDisplayManager.displayQuery(query);
+                }
+            }
+        });
+    }
+
+    /* Avoid jerky drawer close by displaying new fragment with a delay.
+     * Previous title might be displayed if loading of the new fragment takes too long and it
+     * might look ugly, showing for only a fraction of a second before being replaced with new one.
+     * FIXME: Maybe move drawer handling here and add a flag for *not* changing the title.
+     */
+    private void runDelayedAfterDrawerClose(Runnable runnable) {
+        new Handler().postDelayed(runnable, 300);
     }
 }
