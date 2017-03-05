@@ -470,7 +470,7 @@ public class MiscTest extends OrgzlyTest {
      */
     @Test
     public void testFragments() {
-        shelfTestUtils.setupBook("book-one", "* Note");
+        shelfTestUtils.setupBook("book-one", "Preface\n\n* Note");
         shelfTestUtils.setupRepo("file:/");
         shelfTestUtils.setupRepo("dropbox:/orgzly");
         activityRule.launchActivity(null);
