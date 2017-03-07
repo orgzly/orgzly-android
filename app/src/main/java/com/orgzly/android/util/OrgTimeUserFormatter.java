@@ -45,11 +45,11 @@ public class OrgTimeUserFormatter {
 
         if (time.hasTime()) {
             s.append(" ");
-            s.append(formatTime(time));
 
             if (time.hasEndTime()) {
-                s.append("–");
-                s.append(formatEndTime(time));
+                s.append(formatTimeAndEndTime(time));
+            } else {
+                s.append(formatTime(time));
             }
         }
 
@@ -74,7 +74,7 @@ public class OrgTimeUserFormatter {
                     DateUtils.FORMAT_SHOW_WEEKDAY |
                     DateUtils.FORMAT_ABBREV_WEEKDAY;
 
-        return format(timestamp, flags);
+        return format(timestamp, timestamp, flags);
     }
 
     public String formatTime(OrgDateTime time) {
@@ -82,15 +82,16 @@ public class OrgTimeUserFormatter {
 
         int flags = DateUtils.FORMAT_SHOW_TIME;
 
-        return format(timestamp, flags);
+        return format(timestamp, timestamp, flags);
     }
 
-    public String formatEndTime(OrgDateTime time) {
-        long timestamp = time.getEndCalendar().getTimeInMillis();
+    public String formatTimeAndEndTime(OrgDateTime time) {
+        long t1 = time.getCalendar().getTimeInMillis();
+        long t2 = time.getEndCalendar().getTimeInMillis();
 
         int flags = DateUtils.FORMAT_SHOW_TIME;
 
-        return format(timestamp, flags);
+        return format(t1, t2, flags);
     }
 
     public String formatRepeater(OrgDateTime time) {
@@ -105,7 +106,7 @@ public class OrgTimeUserFormatter {
      * Reuse formatter, for speed. See comment in
      * {@link DateUtils#formatDateRange(Context, long, long, int)}.
      */
-    private String format(long timestamp, int flags) {
+    private String format(long startMillis, long endMillis, int flags) {
         if (formatter == null) {
             formatterString = new StringBuilder(50);
             formatter = new Formatter(formatterString, Locale.getDefault());
@@ -114,6 +115,6 @@ public class OrgTimeUserFormatter {
             formatterString.setLength(0);
         }
 
-        return DateUtils.formatDateRange(mContext, formatter, timestamp, timestamp, flags).toString();
+        return DateUtils.formatDateRange(mContext, formatter, startMillis, endMillis, flags).toString();
     }
 }
