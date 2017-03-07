@@ -7,11 +7,19 @@ import android.text.format.DateUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgRange;
 
+import java.util.Formatter;
+import java.util.Locale;
+
 /**
  * Formats time to be displayed to user.
  */
 public class OrgTimeUserFormatter {
     private Context mContext;
+
+    /* Reuse Formatter, for speed.
+     */
+    private StringBuilder formatterString;
+    private Formatter formatter;
 
     public OrgTimeUserFormatter(Context context) {
         mContext = context;
@@ -66,7 +74,7 @@ public class OrgTimeUserFormatter {
                     DateUtils.FORMAT_SHOW_WEEKDAY |
                     DateUtils.FORMAT_ABBREV_WEEKDAY;
 
-        return DateUtils.formatDateTime(mContext, timestamp, flags);
+        return format(timestamp, flags);
     }
 
     public String formatTime(OrgDateTime time) {
@@ -74,7 +82,7 @@ public class OrgTimeUserFormatter {
 
         int flags = DateUtils.FORMAT_SHOW_TIME;
 
-        return DateUtils.formatDateTime(mContext, timestamp, flags);
+        return format(timestamp, flags);
     }
 
     public String formatEndTime(OrgDateTime time) {
@@ -82,7 +90,7 @@ public class OrgTimeUserFormatter {
 
         int flags = DateUtils.FORMAT_SHOW_TIME;
 
-        return DateUtils.formatDateTime(mContext, timestamp, flags);
+        return format(timestamp, flags);
     }
 
     public String formatRepeater(OrgDateTime time) {
@@ -91,5 +99,21 @@ public class OrgTimeUserFormatter {
 
     public String formatDelay(OrgDateTime time) {
         return time.getDelay().toString();
+    }
+
+    /**
+     * Reuse formatter, for speed. See comment in
+     * {@link DateUtils#formatDateRange(Context, long, long, int)}.
+     */
+    private String format(long timestamp, int flags) {
+        if (formatter == null) {
+            formatterString = new StringBuilder(50);
+            formatter = new Formatter(formatterString, Locale.getDefault());
+
+        } else {
+            formatterString.setLength(0);
+        }
+
+        return DateUtils.formatDateRange(mContext, formatter, timestamp, timestamp, flags).toString();
     }
 }
