@@ -76,25 +76,25 @@ class EspressoUtils {
         return onView(withId(android.support.design.R.id.snackbar_text));
     }
 
-    /**
+    /*
      * Regular expression matching.
      * https://github.com/hamcrest/JavaHamcrest/issues/65
      */
-    static TypeSafeMatcher<String> withPattern(final String pattern) {
-        checkNotNull(pattern);
-
-        return new TypeSafeMatcher<String>() {
-            @Override
-            public boolean matchesSafely(String s) {
-                return Pattern.compile(pattern).matcher(s).matches();
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("a string matching the pattern '" + pattern + "'");
-            }
-        };
-    }
+//    static TypeSafeMatcher<String> withPattern(final String pattern) {
+//        checkNotNull(pattern);
+//
+//        return new TypeSafeMatcher<String>() {
+//            @Override
+//            public boolean matchesSafely(String s) {
+//                return Pattern.compile(pattern).matcher(s).matches();
+//            }
+//
+//            @Override
+//            public void describeTo(Description description) {
+//                description.appendText("a string matching the pattern '" + pattern + "'");
+//            }
+//        };
+//    }
 
     /**
      * Item could either be on the action bar (visible) or in the overflow menu.

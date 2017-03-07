@@ -235,7 +235,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withText("Set")).perform(click());
 
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
-        onView(withText("2014-04-01 Tue 09:15")).check(matches(isDisplayed()));
+        onView(withText(userDateTime("<2014-04-01 Tue 09:15>"))).check(matches(isDisplayed()));
     }
 
     @Test

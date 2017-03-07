@@ -80,7 +80,7 @@ configurations.all {
 
 dependencies {
     compile "com.orgzly:org-java:$org_java_version"
-    // compile project(':org-java') // Used when developing, defined in settings.gradle
+//    compile project(':org-java') // Used when developing, defined in settings.gradle
 
     compile "com.dropbox.core:dropbox-core-sdk:$dropbox_core_sdk_version"
 

@@ -789,7 +789,7 @@ public class NoteFragment extends Fragment
         switch (timeType) {
             case SCHEDULED:
                 if (range != null) {
-                    button.setText(mOrgTimeUserFormatter.format(range));
+                    button.setText(mOrgTimeUserFormatter.formatAll(range));
                 } else {
                     button.setText(getString(R.string.schedule_button_hint));
                 }
@@ -801,7 +801,7 @@ public class NoteFragment extends Fragment
                  * It will be updated on state change.
                  */
                 if (range != null) {
-                    button.setText(mOrgTimeUserFormatter.format(range));
+                    button.setText(mOrgTimeUserFormatter.formatAll(range));
                     button.setVisibility(View.VISIBLE);
                 } else {
                     button.setVisibility(View.GONE);
@@ -810,7 +810,7 @@ public class NoteFragment extends Fragment
 
             case DEADLINE:
                 if (range != null) {
-                    button.setText(mOrgTimeUserFormatter.format(range));
+                    button.setText(mOrgTimeUserFormatter.formatAll(range));
                 } else {
                     button.setText(getString(R.string.deadline_button_hint));
                 }

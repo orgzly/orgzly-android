@@ -22,13 +22,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.onSpinnerString;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
-import static com.orgzly.android.espresso.EspressoUtils.withPattern;
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.startsWith;
 
 /**
  *
@@ -169,12 +167,12 @@ public class ShareActivityTest extends OrgzlyTest {
     public void testSettingScheduledTimeRemainsSetAfterRotation() {
         startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text");
         toPortrait(activityRule);
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(not(containsString("-")))));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(R.string.schedule_button_hint)));
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
         onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(withPattern("^\\d{4}-\\d{2}-\\d{2} .*")), isDisplayed())));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
         toLandscape(activityRule);
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(withPattern("^\\d{4}-\\d{2}-\\d{2} .*")), isDisplayed())));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
     }
 
     @Test

@@ -229,9 +229,9 @@ public class MiscTest extends OrgzlyTest {
         onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
         onView(withText("Set")).perform(click());
 
-        onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(isDisplayed(), withText("2014-04-01 Tue 09:15"))));
-        onListItem(2).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(isDisplayed(), withText("2014-04-01 Tue 09:15"))));
-        onListItem(3).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(isDisplayed(), withText("2014-04-01 Tue 09:15"))));
+        onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(isDisplayed(), withText(userDateTime("<2014-04-01 Tue 09:15>")))));
+        onListItem(2).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(isDisplayed(), withText(userDateTime("<2014-04-01 Tue 09:15>")))));
+        onListItem(3).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(isDisplayed(), withText(userDateTime("<2014-04-01 Tue 09:15>")))));
         onListItem(4).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(not(isDisplayed())));
         onListItem(5).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(not(isDisplayed())));
     }
@@ -320,7 +320,7 @@ public class MiscTest extends OrgzlyTest {
 
         onView(allOf(withText("book-name"), isDisplayed())).perform(click());
 
-        onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(isDisplayed(), withText("2015-01-18 Sun 04:05 .+6d"))));
+        onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(isDisplayed(), withText(userDateTime("<2015-01-18 Sun 04:05 .+6d>")))));
     }
 
     @Test
@@ -344,7 +344,7 @@ public class MiscTest extends OrgzlyTest {
         onView(withText("DONE")).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("TODO"))));
         onListItem(1).onChildView(withId(R.id.item_head_closed)).check(matches(not(isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(withText("2015-01-24 Sat 04:05 +6d")));
+        onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
 
         /* DONE -> NOTE */
         onView(withId(R.id.book_cab_edit)).perform(click());
@@ -352,7 +352,7 @@ public class MiscTest extends OrgzlyTest {
         onView(withText("NOTE")).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("Note"))));
         onListItem(1).onChildView(withId(R.id.item_head_closed)).check(matches(not(isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(withText("2015-01-24 Sat 04:05 +6d")));
+        onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
 
         /* NOTE -> DONE */
         onView(withId(R.id.book_cab_edit)).perform(click());
@@ -360,7 +360,7 @@ public class MiscTest extends OrgzlyTest {
         onView(withText("DONE")).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("DONE"))));
         onListItem(1).onChildView(withId(R.id.item_head_closed)).check(matches(isDisplayed()));
-        onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(withText("2015-01-24 Sat 04:05 +6d")));
+        onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
 
         /* DONE -> OLD */
         onView(withId(R.id.book_cab_edit)).perform(click());
@@ -368,7 +368,7 @@ public class MiscTest extends OrgzlyTest {
         onView(withText("OLD")).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("OLD"))));
         onListItem(1).onChildView(withId(R.id.item_head_closed)).check(matches(isDisplayed()));
-        onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(withText("2015-01-24 Sat 04:05 +6d")));
+        onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
     }
 
     @Test
@@ -390,29 +390,26 @@ public class MiscTest extends OrgzlyTest {
         /* TO DO -> DONE */
         onView(withId(R.id.fragment_note_state)).perform(click()); // Open spinner
         onData(allOf(instanceOf(String.class), is("DONE"))).perform(click());
-        onView(withId(R.id.fragment_note_closed_button)).check(matches(withText(not(containsString("-")))));
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText("2015-01-24 Sat 04:05 +6d")));
+        onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
 
         /* DONE -> NOTE */
         onView(withId(R.id.fragment_note_state)).perform(click()); // Open spinner
         onData(allOf(instanceOf(String.class), is("NOTE"))).perform(click());
-        onView(withId(R.id.fragment_note_closed_button)).check(matches(withText(not(containsString("-")))));
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText("2015-01-24 Sat 04:05 +6d")));
+        onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
 
         /* NOTE -> DONE */
         onView(withId(R.id.fragment_note_state)).perform(click()); // Open spinner
         onData(allOf(instanceOf(String.class), is("DONE"))).perform(click());
-        onView(withId(R.id.fragment_note_closed_button)).check(matches(withText(containsString("-"))));
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText("2015-01-24 Sat 04:05 +6d")));
+        onView(withId(R.id.fragment_note_closed_button)).check(matches(withText(startsWith(userDate()))));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
 
         /* DONE -> OLD */
         onView(withId(R.id.fragment_note_state)).perform(click()); // Open spinner
         onData(allOf(instanceOf(String.class), is("OLD"))).perform(click());
-        onView(withId(R.id.fragment_note_closed_button)).check(matches(withText(containsString("-"))));
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText("2015-01-24 Sat 04:05 +6d")));
-
-        // onListItem().atPosition(1).perform(click(), click()); // failing with one click
-        // onView(withId(R.id.fragment_note_content_edit)).check(matches(withText(withPattern("\\- State \"DONE\"       from \"TODO\"       [2015-01-24 Sat 19:05]\n"))));
+        onView(withId(R.id.fragment_note_closed_button)).check(matches(withText(startsWith(userDate()))));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
     }
 
     @Test

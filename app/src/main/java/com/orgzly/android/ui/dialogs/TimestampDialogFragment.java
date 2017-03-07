@@ -69,7 +69,7 @@ public class TimestampDialogFragment extends DialogFragment {
 
     private CompoundButton mIsActive;
 
-    private Button mDate;
+    private Button mDatePicker;
 
     private Button mTimePicker;
     private CompoundButton mIsTimeUsed;
@@ -209,7 +209,7 @@ public class TimestampDialogFragment extends DialogFragment {
 
         mIsActive = (CompoundButton) view.findViewById(R.id.dialog_timestamp_is_active);
 
-        mDate = (Button) view.findViewById(R.id.dialog_timestamp_date_picker);
+        mDatePicker = (Button) view.findViewById(R.id.dialog_timestamp_date_picker);
 
         mTimePicker = (Button) view.findViewById(R.id.dialog_timestamp_time_picker);
         mIsTimeUsed = (CompoundButton) view.findViewById(R.id.dialog_timestamp_time);
@@ -405,7 +405,7 @@ public class TimestampDialogFragment extends DialogFragment {
     }
 
     private void setupPickerButtons() {
-        mDate.setOnClickListener(new View.OnClickListener() {
+        mDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDatePickerDialog = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
@@ -556,7 +556,7 @@ public class TimestampDialogFragment extends DialogFragment {
         if (mDialog != null) {
             OrgDateTime time = getCurrentOrgTime();
 
-            mDate.setText(mOrgTimeUserFormatter.formatDate(time));
+            mDatePicker.setText(mOrgTimeUserFormatter.formatDate(time));
             mTimePicker.setText(mOrgTimeUserFormatter.formatTime(time));
 
             if (time.hasRepeater()) {
@@ -565,7 +565,7 @@ public class TimestampDialogFragment extends DialogFragment {
 
             // mEndTimePicker.setText(mOrgTimeFormatter.formatEndTime(time));
 
-            mDialog.setTitle(mOrgTimeUserFormatter.format(time));
+            mDialog.setTitle(mOrgTimeUserFormatter.formatAll(time));
         }
     }
 

@@ -127,7 +127,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testScheduledNoteTimeStaysTheSameAfterSetting() {
-        onListItem(9).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(withText("2014-05-26 Mon"), isDisplayed())));
+        onListItem(9).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(withText(userDateTime("<2014-05-26 Mon>")), isDisplayed())));
 
         onListItem(9).perform(longClick());
 
@@ -135,7 +135,7 @@ public class BookTest extends OrgzlyTest {
         onView(withText("Schedule")).perform(click());
         onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
 
-        onListItem(9).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(withText("2014-05-26 Mon"), isDisplayed())));
+        onListItem(9).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(withText(userDateTime("<2014-05-26 Mon>")), isDisplayed())));
     }
 
     @Test
@@ -409,7 +409,7 @@ public class BookTest extends OrgzlyTest {
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
         onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
         onView(withText("Set")).perform(click());
-        onView(withId(R.id.fragment_note_deadline_button)).check(matches(withText("2014-04-01 Tue")));
+        onView(withId(R.id.fragment_note_deadline_button)).check(matches(withText(userDateTime("<2014-04-01 Tue>"))));
     }
 
     @Test

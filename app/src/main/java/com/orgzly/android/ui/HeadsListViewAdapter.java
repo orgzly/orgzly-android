@@ -203,7 +203,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
 
         /* Closed time. */
         if (head.hasClosed() && AppPreferences.displayPlanning(context)) {
-            holder.closedText.setText(orgTimeUserFormatter.format(head.getClosed()));
+            holder.closedText.setText(orgTimeUserFormatter.formatAll(head.getClosed()));
             holder.closed.setVisibility(View.VISIBLE);
 
         } else {
@@ -212,7 +212,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
 
         /* Deadline time. */
         if (head.hasDeadline() && AppPreferences.displayPlanning(context)) {
-            holder.deadlineText.setText(orgTimeUserFormatter.format(head.getDeadline()));
+            holder.deadlineText.setText(orgTimeUserFormatter.formatAll(head.getDeadline()));
             holder.deadline.setVisibility(View.VISIBLE);
 
         } else {
@@ -221,7 +221,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
 
         /* Scheduled time. */
         if (head.hasScheduled() && AppPreferences.displayPlanning(context)) {
-            holder.scheduledText.setText(orgTimeUserFormatter.format(head.getScheduled()));
+            holder.scheduledText.setText(orgTimeUserFormatter.formatAll(head.getScheduled()));
             holder.scheduled.setVisibility(View.VISIBLE);
 
         } else {

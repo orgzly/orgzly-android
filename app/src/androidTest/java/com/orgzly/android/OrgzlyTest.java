@@ -10,6 +10,8 @@ import com.orgzly.android.prefs.AppPreferencesValues;
 import com.orgzly.android.provider.clients.DbClient;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
+import com.orgzly.android.util.OrgTimeUserFormatter;
+import com.orgzly.org.datetime.OrgDateTime;
 
 import org.junit.After;
 import org.junit.Before;
@@ -29,12 +31,16 @@ public class OrgzlyTest {
 
     private AppPreferencesValues prefValues;
 
+    private OrgTimeUserFormatter orgTimeUserFormatter;
+
     @Before
     public void setUp() throws Exception {
         context = InstrumentationRegistry.getTargetContext();
 
         shelf = new Shelf(context);
         shelfTestUtils = new ShelfTestUtils(context, shelf);
+
+         orgTimeUserFormatter = new OrgTimeUserFormatter(context);
 
         // new LocalFileStorage(context).cleanup();
 
@@ -115,5 +121,15 @@ public class OrgzlyTest {
     protected static Repo randomDropboxRepo(Context context) {
         String uuid = UUID.randomUUID().toString();
         return RepoFactory.getFromUri(context, "dropbox:/orgzly/tests/" + uuid);
+    }
+
+    /**
+     * Local-dependent date and time strings displayed to user.
+     */
+    protected String userDateTime(String s) {
+        return orgTimeUserFormatter.formatAll(OrgDateTime.getInstance(s));
+    }
+    protected String userDate() {
+        return orgTimeUserFormatter.formatDate(OrgDateTime.getInstance(true));
     }
 }
