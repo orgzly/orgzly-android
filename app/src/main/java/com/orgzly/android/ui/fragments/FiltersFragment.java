@@ -47,6 +47,8 @@ public class FiltersFragment extends ListFragment implements Fab, LoaderManager.
 
     private ViewFlipper mViewFlipper;
 
+    private ActionMode mActionMode;
+
     public static FiltersFragment getInstance() {
         return new FiltersFragment();
     }
@@ -104,6 +106,10 @@ public class FiltersFragment extends ListFragment implements Fab, LoaderManager.
         super.onDestroyView();
 
         mIsViewCreated = false;
+
+        if (mActionMode != null) {
+            mActionMode.finish();
+        }
     }
 
     @Override
@@ -218,6 +224,8 @@ public class FiltersFragment extends ListFragment implements Fab, LoaderManager.
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, getListView().getCheckedItemCount());
 
+            mActionMode = mode;
+
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.filters_cab, menu);
 
@@ -279,6 +287,8 @@ public class FiltersFragment extends ListFragment implements Fab, LoaderManager.
             getListView().clearChoices();
 
             announceChangesToActivity();
+
+            mActionMode = null;
         }
 
         @Override

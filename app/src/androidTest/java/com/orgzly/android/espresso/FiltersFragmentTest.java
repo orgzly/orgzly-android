@@ -11,6 +11,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.Espresso.openContextualActionModeOverflowMenu;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -23,6 +24,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.not;
 
 public class FiltersFragmentTest extends OrgzlyTest {
     @Rule
@@ -31,6 +34,8 @@ public class FiltersFragmentTest extends OrgzlyTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
+
+        shelfTestUtils.setupBook("book-one", "Preface\n* Note A.\n");
 
         activityRule.launchActivity(null);
 
@@ -84,5 +89,14 @@ public class FiltersFragmentTest extends OrgzlyTest {
         pressBack();
 
         onView(withText(R.string.fragment_filter_does_not_exist)).check(matches(isDisplayed()));
+    }
+
+
+    @Test
+    public void testActionModeWhenSelectingFilterThenOpeningBook() {
+        onListItem(0).perform(longClick());
+        onView(withId(R.id.drawer_layout)).perform(open());
+        onView(allOf(withText("book-one"), isDisplayed())).perform(click());
+        onView(withId(R.id.filters_cab_move_up)).check(matches(not(isDisplayed())));
     }
 }
