@@ -8,6 +8,7 @@ import com.orgzly.android.SearchQuery;
 import com.orgzly.android.provider.models.DbBook;
 import com.orgzly.android.provider.models.DbDbRepo;
 import com.orgzly.android.provider.models.DbNote;
+import com.orgzly.android.provider.models.DbOrgTimestamp;
 import com.orgzly.android.provider.models.DbRepo;
 import com.orgzly.android.provider.models.DbSearch;
 import com.orgzly.android.provider.views.BooksView;
@@ -433,6 +434,40 @@ public class ProviderContract {
                 builder = builder.appendPath("saved");
                 return builder.build();
 
+            }
+        }
+    }
+
+    public interface Times {
+        class Param {
+            public static final String NOTE_ID = "note_id";
+            public static final String NOTE_TITLE = "note_title";
+            public static final String TIMESTAMP = "timestamp";
+        }
+
+        String[] PROJECTION = new String[] {
+                DbNote.TABLE + "." + DbNote.Column._ID,
+                DbNote.TABLE + "." + DbNote.Column.TITLE,
+                DbOrgTimestamp.TABLE + "." + DbOrgTimestamp.Column.TIMESTAMP
+        };
+
+        class ColumnIndex {
+            public static final int NOTE_ID = 0;
+            public static final int NOTE_TITLE = 1;
+            public static final int TIMESTAMP = 2;
+        }
+
+
+        interface MatcherUri {
+            String TIMES = "times";
+        }
+
+        class ContentUri {
+            public static Uri times(long timestamp) {
+                return Uri.withAppendedPath(AUTHORITY_URI, "times")
+                        .buildUpon()
+                        .appendQueryParameter(Param.TIMESTAMP, String.valueOf(timestamp))
+                        .build();
             }
         }
     }

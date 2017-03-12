@@ -90,6 +90,8 @@ dependencies {
         exclude module: 'support-v4'
     }
 
+    compile "com.evernote:android-job:$evernote_jobs_version"
+
     compile "com.android.support:support-v4:$android_support_version"
     compile "com.android.support:appcompat-v7:$android_support_version"
     compile "com.android.support:cardview-v7:$android_support_version"

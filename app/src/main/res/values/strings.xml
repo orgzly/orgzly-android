@@ -28,7 +28,6 @@
     <string name="imported">Imported</string>
     <string name="created">Created</string>
     <string name="states">States</string>
-
     <string name="notes">Notes</string>
 
     <plurals name="notes_deleted">
@@ -393,4 +392,6 @@
     <string name="separate_notes_with_new_line_always">Always</string>
     <string name="separate_notes_with_new_line_multi_line_notes_only">Multiline notes only</string>
     <string name="separate_notes_with_new_line_never">Never</string>
+
+    <string name="tap_to_view_notes">Tap to view your notes</string>
 </resources>

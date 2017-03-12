@@ -5,4 +5,6 @@ public class Broadcasts {
     public static final String ACTION_DB_UPGRADE_ENDED = "com.orgzly.intent.action.DB_UPGRADE_ENDED";
 
     public static final String ACTION_SYNC_STATUS = "com.orgzly.intent.action.SYNC_STATUS";
+
+    public static final String ACTION_NOTE_CHANGED = "com.orgzly.intent.action.NOTE_CHANGED";
 }

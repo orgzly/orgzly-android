@@ -5,8 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Icon;
-import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
@@ -19,7 +17,8 @@ import com.orgzly.android.util.LogUtils;
 public class Notifications {
     public static final String TAG = Notifications.class.getName();
 
-    private final static int NEW_NOTE_NOTIFICATION_ID = 1;
+    public final static int NEW_NOTE_NOTIFICATION_ID = 1;
+    public final static int REMINDER_ID = 1;
 
     public static void createNewNoteNotification(Context context) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, context);
@@ -65,4 +64,5 @@ public class Notifications {
 
         notificationManager.cancel(NEW_NOTE_NOTIFICATION_ID);
     }
+
 }

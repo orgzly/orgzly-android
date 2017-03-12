@@ -54,6 +54,9 @@ class ProviderUris {
         matcher.addURI(ProviderContract.AUTHORITY, Demote.MatcherUri.DEMOTE, DEMOTE);
         matcher.addURI(ProviderContract.AUTHORITY, Move.MatcherUri.MOVE, MOVE);
         matcher.addURI(ProviderContract.AUTHORITY, LoadBookFromFile.MatcherUri.LOAD_FROM_FILE, LOAD_BOOK_FROM_FILE);
+
+        matcher.addURI(ProviderContract.AUTHORITY, Times.MatcherUri.TIMES, TIMES);
+
     }
 
     static final int REPOS = 1;
@@ -90,4 +93,5 @@ class ProviderUris {
     static final int DEMOTE = 32;
     static final int DELETE = 33;
     static final int BOOKS_ID_SPARSE_TREE = 34;
+    static final int TIMES = 35;
 }

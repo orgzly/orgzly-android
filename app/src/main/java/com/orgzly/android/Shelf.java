@@ -4,6 +4,7 @@ import android.content.ContentProviderOperation;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -21,6 +22,7 @@ import com.orgzly.android.provider.clients.DbClient;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.provider.clients.ReposClient;
+import com.orgzly.android.reminders.ReminderService;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.repos.Rook;
@@ -245,6 +247,7 @@ public class Shelf {
 
     public void setNotesScheduledTime(Set<Long> noteIds, OrgDateTime time) {
         NotesClient.updateScheduledTime(mContext, noteIds, time);
+        notifyReminderServiceAboutChange();
     }
 
     public void setNotesState(Set<Long> noteIds, String state) {
@@ -264,7 +267,9 @@ public class Shelf {
     }
 
     public int updateNote(Note note) {
-        return NotesClient.update(mContext, note);
+        int result = NotesClient.update(mContext, note);
+        notifyReminderServiceAboutChange();
+        return result;
     }
 
     public Note createNote(Note note, NotePlace target) {
@@ -272,6 +277,8 @@ public class Shelf {
         Note insertedNote = NotesClient.create(mContext, note, target);
 
         BooksClient.setModifiedTime(mContext, note.getPosition().getBookId(), System.currentTimeMillis());
+
+        notifyReminderServiceAboutChange();
 
         return insertedNote;
     }
@@ -814,5 +821,14 @@ public class Shelf {
         }
 
         return null;
+    }
+
+    /**
+     * Notify reminder service about changes that might affect scheduling of reminders.
+     */
+    private void notifyReminderServiceAboutChange() {
+//        Intent reminderIntent = new Intent(mContext, ReminderService.class);
+//        reminderIntent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_NOTE_CHANGED);
+//        mContext.startService(reminderIntent);
     }
 }

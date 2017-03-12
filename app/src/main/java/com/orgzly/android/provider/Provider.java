@@ -231,6 +231,16 @@ public class Provider extends ContentProvider {
                         "";
                 break;
 
+            case ProviderUris.TIMES:
+                projection = ProviderContract.Times.PROJECTION;
+
+                table = DbOrgTimestamp.TABLE +
+                        " LEFT JOIN " + DbOrgRange.TABLE + " ON (" + DbOrgRange.TABLE + "." + DbOrgRange.Column.START_TIMESTAMP_ID + "=" + DbOrgTimestamp.TABLE + "." + DbOrgRange.Column._ID + ")" +
+                        " LEFT JOIN " + DbNote.TABLE + " ON (" + DbNote.TABLE + "." + DbNote.Column.SCHEDULED_RANGE_ID + "=" + DbOrgRange.TABLE + "." + DbOrgRange.Column._ID + " OR " + DbNote.TABLE + "." + DbNote.Column.DEADLINE_RANGE_ID + " = " + DbOrgRange.TABLE + "." + DbOrgRange.Column._ID + ")" +
+                        " LEFT JOIN " + DbBook.TABLE + " ON (" + DbBook.TABLE + "." + DbBook.Column._ID + "=" + DbNote.TABLE + "." + DbNote.Column.BOOK_ID + ")" +
+                        "";
+                break;
+
             default:
                 throw new IllegalArgumentException("URI is not recognized: " + uri);
         }
@@ -1653,5 +1663,4 @@ public class Provider extends ContentProvider {
             }
         }
     }
-
 }

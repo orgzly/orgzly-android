@@ -284,4 +284,6 @@
     <string name="pref_key_is_getting_started_notebook_loaded" translatable="false">pref_key_is_getting_started_notebook_loaded</string>
     <string name="pref_key_last_used_version_code" translatable="false">pref_key_last_used_version_code</string>
     <string name="pref_key_last_successful_sync_time" translatable="false">pref_key_last_successful_sync_time</string>
+    <string name="pref_key_reminder_service_job_id" translatable="false">pref_key_reminder_service_job_id</string>
+    <string name="pref_key_reminder_service_last_run" translatable="false">pref_key_reminder_service_last_run</string>
 </resources>

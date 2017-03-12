@@ -1,10 +1,13 @@
 package com.orgzly.android.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +16,7 @@ import android.view.View;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.Broadcasts;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.AppPermissions;
@@ -95,6 +99,7 @@ public class CommonActivity extends AppCompatActivity {
         setupLayoutDirection();
 
         super.onCreate(savedInstanceState);
+
     }
 
     private void setupLayoutDirection() {
@@ -140,11 +145,6 @@ public class CommonActivity extends AppCompatActivity {
         } else if (getString(R.string.pref_value_font_size_small).equals(fontSizePref)) {
             getTheme().applyStyle(R.style.FontSize_Small, true);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     protected Runnable actionAfterPermissionGrant;

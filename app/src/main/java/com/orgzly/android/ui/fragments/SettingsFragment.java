@@ -19,6 +19,7 @@ import android.widget.ListView;
 import com.github.machinarius.preferencefragment.PreferenceFragment;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.reminders.ReminderJob;
 import com.orgzly.android.Notifications;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.prefs.ListPreferenceWithValueAsSummary;
