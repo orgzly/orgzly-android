@@ -48,17 +48,17 @@ import static org.hamcrest.Matchers.not;
 class EspressoUtils {
     static final int SETTINGS_REVERSED_NOTE_CLICK_ACTION = 1;
 
-    static final int SETTINGS_STATE_KEYWORDS = 19;
-    static final int SETTINGS_DEFAULT_PRIORITY = 20;
-    static final int SETTINGS_LOWEST_PRIORITY = 21;
+    static final int SETTINGS_STATE_KEYWORDS = 20;
+    static final int SETTINGS_DEFAULT_PRIORITY = 21;
+    static final int SETTINGS_LOWEST_PRIORITY = 22;
 
-    static final int SETTINGS_NEW_NOTE_STATE = 23;
-    static final int SETTINGS_CREATED_AT = 25;
+    static final int SETTINGS_NEW_NOTE_STATE = 24;
+    static final int SETTINGS_CREATED_AT = 26;
 
-    static final int SETTINGS_REPOS = 31;
+    static final int SETTINGS_REPOS = 32;
 
-    static final int IMPORT_GETTING_STARTED = 33;
-    static final int SETTINGS_CLEAR_DATABASE = 34;
+    static final int IMPORT_GETTING_STARTED = 34;
+    static final int SETTINGS_CLEAR_DATABASE = 35;
 
     /**
      */

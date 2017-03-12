@@ -393,5 +393,6 @@
     <string name="separate_notes_with_new_line_always">Always</string>
     <string name="separate_notes_with_new_line_multi_line_notes_only">Multiline notes only</string>
     <string name="separate_notes_with_new_line_never">Never</string>
-    <string name="default_share_notebook">Share</string>
+    <string name="default_share_notebook" translatable="false">Inbox</string>
+    <string name="share_notebook">Share notebook</string>
 </resources>
