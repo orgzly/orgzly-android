@@ -182,6 +182,9 @@
     <string name="pref_key_created_at_property" translatable="false">pref_key_created_at_property</string>
     <string name="pref_default_created_at_property" translatable="false">@string/created_property_name</string>
 
+    <string name="pref_key_share_notebook" translatable="false">pref_key_share_notebook</string>
+    <string name="pref_default_share_notebook" translatable="false">@string/default_share_notebook</string>
+
     <string name="pref_key_new_note_notification" translatable="false">pref_key_new_note_notification</string>
     <bool name="pref_default_value_new_note_notification" translatable="false">false</bool>
 

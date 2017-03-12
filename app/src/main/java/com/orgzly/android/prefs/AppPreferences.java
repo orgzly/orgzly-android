@@ -178,6 +178,12 @@ public class AppPreferences {
                 context.getResources().getString(R.string.pref_default_created_at_property));
     }
 
+    public static String shareNotebook(Context context) {
+        return getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_share_notebook),
+                context.getResources().getString(R.string.pref_default_share_notebook));
+    }
+
     public static boolean newNoteNotification(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_new_note_notification),

@@ -15,6 +15,7 @@ import com.orgzly.android.Book;
 import com.orgzly.android.NotesBatch;
 import com.orgzly.android.Note;
 import com.orgzly.android.Shelf;
+import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.fragments.NoteFragment;
 import com.orgzly.android.ui.fragments.SyncFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
@@ -41,12 +42,6 @@ public class ShareActivity extends CommonActivity
         SyncFragment.SyncFragmentListener {
 
     public static final String TAG = ShareActivity.class.getName();
-
-    /**
-     * This book is created if none exist. Probably a temporary solution,
-     * until implementing the ability to create a book.
-     */
-    private static final String CREATED_BOOK_NAME_IF_NONE_EXIST = "Share";
 
     /** Shared text files are read and their content is stored as note content. */
     private static final long MAX_TEXT_FILE_LENGTH_FOR_CONTENT = 1024 * 1024 * 2; // 2 MB
@@ -169,6 +164,14 @@ public class ShareActivity extends CommonActivity
 
                 if (savedInstanceState != null && savedInstanceState.containsKey(SPINNER_POSITION_KEY)) {
                     mBooksSpinner.setSelection(savedInstanceState.getInt(SPINNER_POSITION_KEY, 0));
+                } else {
+                    String defaultBook = AppPreferences.shareNotebook(getApplicationContext());
+                    for (int i=0; i<books.size(); i++) {
+                        if (defaultBook.equals(books.get(i).getName())) {
+                            mBooksSpinner.setSelection(i);
+                            break;
+                        }
+                    }
                 }
             }
         }.execute();
@@ -246,7 +249,7 @@ public class ShareActivity extends CommonActivity
 
         if (books.size() == 0) {
             try {
-                Book book = shelf.createBook(CREATED_BOOK_NAME_IF_NONE_EXIST);
+                Book book = shelf.createBook(AppPreferences.shareNotebook(getApplicationContext()));
                 books.add(book);
             } catch (IOException e) {
                 // TODO: Test and handle better.
