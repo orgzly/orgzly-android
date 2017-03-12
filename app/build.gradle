@@ -21,8 +21,8 @@ android {
         applicationId "com.orgzly"
         minSdkVersion 14 // Ice Cream Sandwich (4.0)
         targetSdkVersion 25 // Nougat (7.1)
-        versionCode 58
-        versionName "1.4.11"
+        versionCode 59
+        versionName "1.4.12-beta.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "DROPBOX_APP_KEY", properties.getProperty("dropbox.app_key", '""')
