@@ -1,7 +1,5 @@
 package com.orgzly.android.util;
 
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -13,25 +11,6 @@ import android.util.Log;
  */
 public class LogUtils {
     private static final int LOGCAT_BUFFER_SIZE = 1024;
-
-    /**
-     * Logs number of fragments and fragments in back stack.
-     */
-    public static void fragments(String tag, FragmentActivity activity) {
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-        int backStackCount = fragmentManager.getBackStackEntryCount();
-        int fragmentsCount = fragmentManager.getFragments().size();
-
-        /* Get all back stack entries. */
-//        List<FragmentManager.BackStackEntry> backStack = new ArrayList<FragmentManager.BackStackEntry>();
-//        for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
-//            backStack.add(fragmentManager.getBackStackEntryAt(i));
-//        }
-//        String entries = TextUtils.join(" ", backStack);
-
-        d(tag, "Fragments: " + fragmentsCount + " Back stack: " + backStackCount);
-    }
     
     /**
      * Logs caller's method name followed by specified parameters.

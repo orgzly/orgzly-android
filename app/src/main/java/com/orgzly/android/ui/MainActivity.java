@@ -422,7 +422,6 @@ public class MainActivity extends CommonActivity
     @Override
     public void onBackPressed() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
-        if (BuildConfig.LOG_DEBUG) LogUtils.fragments(TAG, this);
 
         /* Close drawer if opened. */
         if (mDrawerLayout != null) {
@@ -449,7 +448,6 @@ public class MainActivity extends CommonActivity
     @Override
     public void onAttachFragment(Fragment fragment) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, fragment);
-        if (BuildConfig.LOG_DEBUG) LogUtils.fragments(TAG, this);
 
         super.onAttachFragment(fragment);
     }
