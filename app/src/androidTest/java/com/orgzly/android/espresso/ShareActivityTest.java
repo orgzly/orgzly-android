@@ -61,12 +61,12 @@ public class ShareActivityTest extends OrgzlyTest {
         onData(anything())
                 .inAdapterView(allOf(withId(R.id.activity_share_books_spinner), isDisplayed()))
                 .atPosition(0)
-                .check(matches(withText("Share")));
+                .check(matches(withText(context.getString(R.string.default_share_notebook))));
         toLandscape(activityRule);
         onData(anything())
                 .inAdapterView(allOf(withId(R.id.activity_share_books_spinner), isDisplayed()))
                 .atPosition(0)
-                .check(matches(withText("Share")));
+                .check(matches(withText(context.getString(R.string.default_share_notebook))));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class ShareActivityTest extends OrgzlyTest {
         onData(anything())
                 .inAdapterView(allOf(withId(R.id.activity_share_books_spinner), isDisplayed()))
                 .atPosition(0)
-                .check(matches(withText("Share")));
+                .check(matches(withText(context.getString(R.string.default_share_notebook))));
     }
 
     @Test
