@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.Layout;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
@@ -17,7 +18,7 @@ import com.orgzly.android.util.LogUtils;
 /**
  * {@link TextView} with links support.
  */
-public class OrgTextView extends TextView {
+public class OrgTextView extends AppCompatTextView {
     public static final String TAG = OrgTextView.class.getName();
 
     public OrgTextView(Context context) {
@@ -31,12 +32,6 @@ public class OrgTextView extends TextView {
     public OrgTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public OrgTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
