@@ -56,6 +56,14 @@
             android:entries="@array/displayed_book_details"
             android:entryValues="@array/displayed_book_details_values"
             android:defaultValue="@array/displayed_book_details_default"/>
+
+        <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
+            android:defaultValue="@string/default_share_notebook"
+            android:key="@string/pref_key_share_notebook"
+            android:selectAllOnFocus="true"
+            android:inputType="text"
+            android:singleLine="true"
+            android:title="@string/share_notebook" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/notes_list">
