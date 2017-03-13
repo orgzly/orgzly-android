@@ -1,4 +1,4 @@
-* Orgzly is an outliner for notes and tasks
+* Orgzly
 
 #+BEGIN_HTML
 <a href="https://play.google.com/store/apps/details?id=com.orgzly">
@@ -9,9 +9,18 @@
 </a>
 #+END_HTML
 
-** Features:
+Orgzly is an outliner for taking notes and managing to-do lists.
 
-- Store notebooks in plain-text and keep them where you choose to
+You can keep notebooks stored in plain-text and have them synchronized
+with a directory on your mobile device, SD card or Dropbox.
+
+Notebooks are saved in /Org mode/'s file format. “Org mode is for
+keeping notes, maintaining TODO lists, planning projects, and
+authoring documents with a fast and effective plain-text system.” See
+http://orgmode.org for more information.
+
+** Features
+
 - Create, edit and delete notes and tasks
 - Collapse and expand sub-notes
 - Schedule tasks and set their deadlines
@@ -19,17 +28,6 @@
 - Fling notes left or right to open quick-menus
 - Search notes by various properties
 - Create and save searches for quick access
-- Synchronize notebooks
-
-Notebooks can be synchronized with one or more
-directories. Directories on your mobile device (like SD card) or
-Dropbox are currently supported.  Git, Google Drive, SSH and more are
-coming soon.
-
-Notebooks are saved in Org mode's file format. “Org mode is for
-keeping notes, maintaining TODO lists, planning projects, and
-authoring documents with a fast and effective plain-text system.” See
-http://orgmode.org for more information.
 
 ** Documentation
 
@@ -37,15 +35,14 @@ Find out more here: https://github.com/orgzly/documentation
 
 ** Building & testing
 
-If you don't use Android Studio and wish to [[https://developer.android.com/studio/build/building-cmdline.html][build]] and [[https://developer.android.com/studio/test/command-line.html][test]] from
-command line, the standard set of tasks is available.
-
-For example:
+If you don't use Android Studio and wish to [[https://developer.android.com/studio/build/building-cmdline.html][build]] and [[https://developer.android.com/studio/test/command-line.html][test]] the app
+from command line, the standard set of Gradle tasks is available.  For
+example:
 
 - ~./gradlew build~ builds the project and generates APK files
 - ~./gradlew connectedAndroidTest~ runs instrumented unit tests
 
-Make sure you [[http://goo.gl/qVu1yV][turn off animations]] on the device you're testing on.
+Make sure you [[http://goo.gl/qVu1yV][turn off animations]] for the device you're testing on.
 
 ** License
 
