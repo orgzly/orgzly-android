@@ -65,8 +65,14 @@ android {
     }
 
     lintOptions {
-        disable 'ResourceType'
         disable 'MissingTranslation'
+
+        /*
+         * Added for:
+         * Invalid package reference in library; not included in Android:
+         * javax.servlet.http. Referenced from com.dropbox.core.DbxStandardSessionStore.
+         */
+        disable 'InvalidPackage'
     }
 }
 
