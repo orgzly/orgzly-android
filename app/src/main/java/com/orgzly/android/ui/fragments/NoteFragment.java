@@ -48,8 +48,8 @@ import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
-import com.orgzly.android.util.OrgNoteContentFormatParser;
-import com.orgzly.android.util.OrgTimeUserFormatter;
+import com.orgzly.android.util.NoteContentParser;
+import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.android.util.SpaceTokenizer;
 import com.orgzly.android.util.MiscUtils;
 import com.orgzly.org.OrgProperty;
@@ -136,7 +136,7 @@ public class NoteFragment extends Fragment
     /** Used to switch to note-does-not-exist view, if the note has been deleted. */
     private ViewFlipper mViewFlipper;
 
-    private OrgTimeUserFormatter mOrgTimeUserFormatter;
+    private UserTimeFormatter mUserTimeFormatter;
 
     public static NoteFragment getInstance(boolean isNew, long bookId, long noteId, Place place, String initialTitle, String initialContent) {
         NoteFragment fragment = new NoteFragment();
@@ -182,7 +182,7 @@ public class NoteFragment extends Fragment
 
         parseArguments();
 
-        mOrgTimeUserFormatter = new OrgTimeUserFormatter(getActivity().getApplicationContext());
+        mUserTimeFormatter = new UserTimeFormatter(getActivity().getApplicationContext());
     }
 
     @Override
@@ -341,7 +341,7 @@ public class NoteFragment extends Fragment
                 } else {
                     bodyEdit.setVisibility(View.GONE);
 
-                    bodyView.setText(OrgNoteContentFormatParser.fromOrg(bodyEdit.getText().toString()));
+                    bodyView.setText(NoteContentParser.fromOrg(bodyEdit.getText().toString()));
                     bodyView.setVisibility(View.VISIBLE);
 
                     ActivityUtils.closeSoftKeyboard(getActivity());
@@ -501,7 +501,7 @@ public class NoteFragment extends Fragment
 
         /* Content. */
         bodyEdit.setText(head.getContent());
-        bodyView.setText(OrgNoteContentFormatParser.fromOrg(head.getContent()));
+        bodyView.setText(NoteContentParser.fromOrg(head.getContent()));
     }
 
     private void addPropertyToList(OrgProperty property) {
@@ -789,7 +789,7 @@ public class NoteFragment extends Fragment
         switch (timeType) {
             case SCHEDULED:
                 if (range != null) {
-                    button.setText(mOrgTimeUserFormatter.formatAll(range));
+                    button.setText(mUserTimeFormatter.formatAll(range));
                 } else {
                     button.setText(getString(R.string.schedule_button_hint));
                 }
@@ -801,7 +801,7 @@ public class NoteFragment extends Fragment
                  * It will be updated on state change.
                  */
                 if (range != null) {
-                    button.setText(mOrgTimeUserFormatter.formatAll(range));
+                    button.setText(mUserTimeFormatter.formatAll(range));
                     button.setVisibility(View.VISIBLE);
                 } else {
                     button.setVisibility(View.GONE);
@@ -810,7 +810,7 @@ public class NoteFragment extends Fragment
 
             case DEADLINE:
                 if (range != null) {
-                    button.setText(mOrgTimeUserFormatter.formatAll(range));
+                    button.setText(mUserTimeFormatter.formatAll(range));
                 } else {
                     button.setText(getString(R.string.deadline_button_hint));
                 }

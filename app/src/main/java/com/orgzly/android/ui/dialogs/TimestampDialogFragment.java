@@ -19,7 +19,7 @@ import android.widget.TimePicker;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.util.LogUtils;
-import com.orgzly.android.util.OrgTimeUserFormatter;
+import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgRepeater;
 
@@ -60,7 +60,7 @@ public class TimestampDialogFragment extends DialogFragment {
 
     private OnDateTimeSetListener mActivityListener;
     private Context mContext;
-    private OrgTimeUserFormatter mOrgTimeUserFormatter;
+    private UserTimeFormatter mUserTimeFormatter;
 
 
     /*
@@ -184,7 +184,7 @@ public class TimestampDialogFragment extends DialogFragment {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
 
 
-        mOrgTimeUserFormatter = new OrgTimeUserFormatter(getActivity());
+        mUserTimeFormatter = new UserTimeFormatter(getActivity());
 
         /* This makes sure that the fragment has implemented
          * the callback interface. If not, it throws an exception
@@ -556,16 +556,16 @@ public class TimestampDialogFragment extends DialogFragment {
         if (mDialog != null) {
             OrgDateTime time = getCurrentOrgTime();
 
-            mDatePicker.setText(mOrgTimeUserFormatter.formatDate(time));
-            mTimePicker.setText(mOrgTimeUserFormatter.formatTime(time));
+            mDatePicker.setText(mUserTimeFormatter.formatDate(time));
+            mTimePicker.setText(mUserTimeFormatter.formatTime(time));
 
             if (time.hasRepeater()) {
-                mRepeaterPicker.setText(mOrgTimeUserFormatter.formatRepeater(time));
+                mRepeaterPicker.setText(mUserTimeFormatter.formatRepeater(time));
             }
 
             // mEndTimePicker.setText(mOrgTimeFormatter.formatEndTime(time));
 
-            mDialog.setTitle(mOrgTimeUserFormatter.formatAll(time));
+            mDialog.setTitle(mUserTimeFormatter.formatAll(time));
         }
     }
 

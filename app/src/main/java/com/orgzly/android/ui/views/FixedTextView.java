@@ -9,7 +9,7 @@ import android.view.MotionEvent;
  * Workaround for https://code.google.com/p/android/issues/detail?id=191430
  * (IllegalArgumentException when marking text and then clicking on the view)
  */
-public class FixedTextView extends OrgTextView {
+public class FixedTextView extends TextViewWithLinks {
     public FixedTextView(Context context) {
         super(context);
     }

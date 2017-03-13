@@ -10,7 +10,7 @@ import com.orgzly.android.prefs.AppPreferencesValues;
 import com.orgzly.android.provider.clients.DbClient;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
-import com.orgzly.android.util.OrgTimeUserFormatter;
+import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.datetime.OrgDateTime;
 
 import org.junit.After;
@@ -31,7 +31,7 @@ public class OrgzlyTest {
 
     private AppPreferencesValues prefValues;
 
-    private OrgTimeUserFormatter orgTimeUserFormatter;
+    private UserTimeFormatter userTimeFormatter;
 
     @Before
     public void setUp() throws Exception {
@@ -40,7 +40,7 @@ public class OrgzlyTest {
         shelf = new Shelf(context);
         shelfTestUtils = new ShelfTestUtils(context, shelf);
 
-         orgTimeUserFormatter = new OrgTimeUserFormatter(context);
+         userTimeFormatter = new UserTimeFormatter(context);
 
         // new LocalFileStorage(context).cleanup();
 
@@ -127,9 +127,9 @@ public class OrgzlyTest {
      * Local-dependent date and time strings displayed to user.
      */
     protected String userDateTime(String s) {
-        return orgTimeUserFormatter.formatAll(OrgDateTime.getInstance(s));
+        return userTimeFormatter.formatAll(OrgDateTime.getInstance(s));
     }
     protected String userDate() {
-        return orgTimeUserFormatter.formatDate(OrgDateTime.getInstance(true));
+        return userTimeFormatter.formatDate(OrgDateTime.getInstance(true));
     }
 }

@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 /**
  *
  */
-public class OrgNoteContentFormatParser {
+public class NoteContentParser {
     private final static String LINK_SCHEMES = "https?|mailto|tel|voicemail|geo|sms|smsto|mms|mmsto";
 
     private final static String PLAIN_LINK = "((" + LINK_SCHEMES + "):\\S+)";

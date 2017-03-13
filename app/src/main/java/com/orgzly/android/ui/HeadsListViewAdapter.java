@@ -25,8 +25,8 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.ui.views.GesturedListViewItemMenus;
-import com.orgzly.android.util.OrgNoteContentFormatParser;
-import com.orgzly.android.util.OrgTimeUserFormatter;
+import com.orgzly.android.util.NoteContentParser;
+import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.OrgHead;
 
 public class HeadsListViewAdapter extends SimpleCursorAdapter {
@@ -44,7 +44,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
     /** Can be in book or search results. */
     private final boolean inBook;
 
-    private final OrgTimeUserFormatter orgTimeUserFormatter;
+    private final UserTimeFormatter userTimeFormatter;
     private final TypedArrayAttributeSpans attributes;
 
 
@@ -83,7 +83,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         this.quickMenu = toolbars;
         this.inBook = inBook;
 
-        this.orgTimeUserFormatter = new OrgTimeUserFormatter(context);
+        this.userTimeFormatter = new UserTimeFormatter(context);
 
         this.attributes = new TypedArrayAttributeSpans();
     }
@@ -193,7 +193,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                 holder.content.setTypeface(Typeface.MONOSPACE);
             }
 
-            holder.content.setText(OrgNoteContentFormatParser.fromOrg(head.getContent()));
+            holder.content.setText(NoteContentParser.fromOrg(head.getContent()));
 
             holder.content.setVisibility(View.VISIBLE);
 
@@ -203,7 +203,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
 
         /* Closed time. */
         if (head.hasClosed() && AppPreferences.displayPlanning(context)) {
-            holder.closedText.setText(orgTimeUserFormatter.formatAll(head.getClosed()));
+            holder.closedText.setText(userTimeFormatter.formatAll(head.getClosed()));
             holder.closed.setVisibility(View.VISIBLE);
 
         } else {
@@ -212,7 +212,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
 
         /* Deadline time. */
         if (head.hasDeadline() && AppPreferences.displayPlanning(context)) {
-            holder.deadlineText.setText(orgTimeUserFormatter.formatAll(head.getDeadline()));
+            holder.deadlineText.setText(userTimeFormatter.formatAll(head.getDeadline()));
             holder.deadline.setVisibility(View.VISIBLE);
 
         } else {
@@ -221,7 +221,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
 
         /* Scheduled time. */
         if (head.hasScheduled() && AppPreferences.displayPlanning(context)) {
-            holder.scheduledText.setText(orgTimeUserFormatter.formatAll(head.getScheduled()));
+            holder.scheduledText.setText(userTimeFormatter.formatAll(head.getScheduled()));
             holder.scheduled.setVisibility(View.VISIBLE);
 
         } else {
@@ -380,7 +380,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         }
 
         /* Title. */
-        builder.append(OrgNoteContentFormatParser.fromOrg(head.getTitle()));
+        builder.append(NoteContentParser.fromOrg(head.getTitle()));
 
 //        /* Bold everything up until now. */
 //        if (builder.length() > 0) {

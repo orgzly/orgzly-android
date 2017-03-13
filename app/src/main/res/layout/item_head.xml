@@ -78,7 +78,7 @@
 
 
                 <!-- Title -->
-                <com.orgzly.android.ui.views.OrgTextView
+                <com.orgzly.android.ui.views.TextViewWithLinks
                     android:id="@+id/item_head_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -192,7 +192,7 @@
                 </LinearLayout>
 
                 <!-- Content -->
-                <com.orgzly.android.ui.views.OrgTextView
+                <com.orgzly.android.ui.views.TextViewWithLinks
                     android:id="@+id/item_head_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

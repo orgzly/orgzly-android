@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 
-public class OrgNoteContentFormatParserTest {
+public class NoteContentParserTest {
     @Test
     public void testLinksMultiLine() throws Exception {
         OrgSpannable spannable = new OrgSpannable(
@@ -107,7 +107,7 @@ public class OrgNoteContentFormatParserTest {
         OrgSpan[] spans;
 
         public OrgSpannable(String str) {
-            SpannableStringBuilder ssb = OrgNoteContentFormatParser.fromOrg(str);
+            SpannableStringBuilder ssb = NoteContentParser.fromOrg(str);
 
             string = ssb.toString();
 

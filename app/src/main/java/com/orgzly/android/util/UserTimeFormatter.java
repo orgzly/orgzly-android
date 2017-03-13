@@ -13,7 +13,7 @@ import java.util.Locale;
 /**
  * Formats time to be displayed to user.
  */
-public class OrgTimeUserFormatter {
+public class UserTimeFormatter {
     private Context mContext;
 
     /* Reuse Formatter, for speed.
@@ -21,7 +21,7 @@ public class OrgTimeUserFormatter {
     private StringBuilder formatterString;
     private Formatter formatter;
 
-    public OrgTimeUserFormatter(Context context) {
+    public UserTimeFormatter(Context context) {
         mContext = context;
     }
 

@@ -1,8 +1,6 @@
 package com.orgzly.android.ui.views;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.Layout;
@@ -18,18 +16,18 @@ import com.orgzly.android.util.LogUtils;
 /**
  * {@link TextView} with links support.
  */
-public class OrgTextView extends AppCompatTextView {
-    public static final String TAG = OrgTextView.class.getName();
+public class TextViewWithLinks extends AppCompatTextView {
+    public static final String TAG = TextViewWithLinks.class.getName();
 
-    public OrgTextView(Context context) {
+    public TextViewWithLinks(Context context) {
         super(context);
     }
 
-    public OrgTextView(Context context, AttributeSet attrs) {
+    public TextViewWithLinks(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public OrgTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TextViewWithLinks(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
