@@ -28,10 +28,10 @@ public class Database extends SQLiteOpenHelper {
     /**
      * Instantiates an open helper for the provider's SQLite data repository.
      */
-    public Database(Context context) {
-        super(context, BuildConfig.DATABASE_NAME, null, DatabaseMigration.DB_VER_CURRENT);
+    public Database(Context context, String name) {
+        super(context, name, null, DatabaseMigration.DB_VER_CURRENT);
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "");
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, name, DatabaseMigration.DB_VER_CURRENT);
 
         this.context = context;
 

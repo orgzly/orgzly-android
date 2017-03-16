@@ -5,12 +5,10 @@ import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.test.RenamingDelegatingContext;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -78,6 +76,9 @@ import java.util.List;
 public class Provider extends ContentProvider {
     private static final String TAG = Provider.class.getName();
 
+    public static String DATABASE_NAME = "orgzly.db";
+    public static String DATABASE_NAME_FOR_TESTS = "orgzly_test.db";
+
     protected Database mOpenHelper;
 
     private final ProviderUris uris = new ProviderUris();
@@ -85,7 +86,6 @@ public class Provider extends ContentProvider {
     private final ThreadLocal<Boolean> inBatch = new ThreadLocal<>();
 
     private boolean isInBatch() {
-//        if (true) return true;
         return inBatch.get() != null && inBatch.get();
     }
 
@@ -98,7 +98,7 @@ public class Provider extends ContentProvider {
          * Notice that the database itself isn't created or opened
          * until SQLiteOpenHelper.getWritableDatabase is called
          */
-        mOpenHelper = new Database(getContext());
+        mOpenHelper = new Database(getContext(), DATABASE_NAME);
 
         return true;
     }
@@ -888,6 +888,12 @@ public class Provider extends ContentProvider {
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, uri.toString(), contentValues, selection, selectionArgs);
 
+        /* Only used by tests. Changing database name so we don't overwrite user's real data. */
+        if (uris.matcher.match(uri) == ProviderUris.DB_SWITCH) {
+            reopenDatabaseWithDifferentName();
+            return 1;
+        }
+
         /* Gets a writable database. This will trigger its creation if it doesn't already exist. */
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
@@ -909,6 +915,12 @@ public class Provider extends ContentProvider {
         }
 
         return result;
+    }
+
+    private void reopenDatabaseWithDifferentName() {
+        mOpenHelper.close();
+
+        mOpenHelper = new Database(getContext(), DATABASE_NAME_FOR_TESTS);
     }
 
     private int updateUnderTransaction(SQLiteDatabase db, Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
@@ -1025,14 +1037,6 @@ public class Provider extends ContentProvider {
 
             case ProviderUris.DB_RECREATE:
                 mOpenHelper.reCreateTables(db);
-
-                return 0;
-
-            case ProviderUris.DB_SWITCH:
-                Context testContext = new RenamingDelegatingContext(getContext(), "test_");
-
-                mOpenHelper.close();
-                mOpenHelper = new Database(testContext);
 
                 return 0;
 

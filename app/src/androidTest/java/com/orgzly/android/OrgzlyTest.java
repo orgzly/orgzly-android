@@ -45,8 +45,10 @@ public class OrgzlyTest {
 
         // new LocalFileStorage(context).cleanup();
 
-        /* Request from content provider's to change context to use test database.*/
-        // DbClient.toTest(context);
+        /* Request content provider to close the current database
+         * and open a new one with a different name.
+         */
+        DbClient.toTest(context);
 
         /* Recreate all tables. */
         DbClient.recreateTables(context);
