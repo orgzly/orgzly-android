@@ -36,10 +36,14 @@ android {
 
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
+            buildConfigField "String", "DATABASE_NAME", '"orgzly.db"'
+
             buildConfigField "boolean", "LOG_DEBUG", "false"
         }
 
         debug {
+            buildConfigField "String", "DATABASE_NAME", '"orgzly_debug.db"'
+
             buildConfigField "boolean", "LOG_DEBUG", "true"
 
             buildConfigField "String", "DROPBOX_TOKEN", properties.getProperty("dropbox.token", '""')

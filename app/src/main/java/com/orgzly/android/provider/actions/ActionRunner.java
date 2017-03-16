@@ -12,20 +12,11 @@ public class ActionRunner {
     private static final String TAG = ActionRunner.class.getName();
 
     public static int run(SQLiteDatabase db, Action action) {
-        int result = -1;
+        int result;
 
         long t = System.currentTimeMillis();
 
-        db.beginTransaction();
-
-        try {
-            result = action.run(db);
-
-            db.setTransactionSuccessful();
-
-        } finally {
-            db.endTransaction();
-        }
+        result = action.run(db);
 
         if (BuildConfig.LOG_DEBUG)
             LogUtils.d(TAG, action.getClass() + ": " + (System.currentTimeMillis() - t) + "ms");

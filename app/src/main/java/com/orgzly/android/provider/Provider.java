@@ -20,7 +20,6 @@ import com.orgzly.android.NotePosition;
 import com.orgzly.android.SearchQuery;
 import com.orgzly.android.StateChangeLogic;
 import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.provider.actions.Action;
 import com.orgzly.android.provider.actions.ActionRunner;
 import com.orgzly.android.provider.actions.CutNotesAction;
 import com.orgzly.android.provider.actions.CycleVisibilityAction;
@@ -74,16 +73,21 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Provider extends ContentProvider {
     private static final String TAG = Provider.class.getName();
 
     protected Database mOpenHelper;
 
-    private static final ProviderUris uris = new ProviderUris();
+    private final ProviderUris uris = new ProviderUris();
+
+    private final ThreadLocal<Boolean> inBatch = new ThreadLocal<>();
+
+    private boolean isInBatch() {
+//        if (true) return true;
+        return inBatch.get() != null && inBatch.get();
+    }
 
     @Override
     public boolean onCreate() {
@@ -105,9 +109,6 @@ public class Provider extends ContentProvider {
         return null;
     }
 
-    /**
-     * Apply operations under single transaction.
-     */
     @Override
     public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation> operations) throws OperationApplicationException {
         ContentProviderResult[] results;
@@ -116,7 +117,9 @@ public class Provider extends ContentProvider {
 
         db.beginTransaction();
         try {
+            inBatch.set(true);
             results = super.applyBatch(operations);
+            inBatch.set(false);
 
             db.setTransactionSuccessful();
         } finally {
@@ -416,15 +419,20 @@ public class Provider extends ContentProvider {
 
         Uri resultUri;
 
-        db.beginTransaction();
-        try {
+        if (isInBatch()) {
             resultUri = insertUnderTransaction(db, uri, contentValues);
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-        }
 
-        notifyChange();
+        } else {
+            db.beginTransaction();
+            try {
+                resultUri = insertUnderTransaction(db, uri, contentValues);
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+
+            notifyChange();
+        }
 
         return resultUri;
     }
@@ -764,14 +772,27 @@ public class Provider extends ContentProvider {
         /* Gets a writable database. This will trigger its creation if it doesn't already exist. */
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
-        int result = delete(db, uri, selection, selectionArgs);
+        int result;
 
-        notifyChange();
+        if (isInBatch()) {
+            result = deleteUnderTransaction(db, uri, selection, selectionArgs);
+
+        } else {
+            db.beginTransaction();
+            try {
+                result = deleteUnderTransaction(db, uri, selection, selectionArgs);
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+
+            notifyChange();
+        }
 
         return result;
     }
 
-    private int delete(SQLiteDatabase db, Uri uri, String selection, String[] selectionArgs) {
+    private int deleteUnderTransaction(SQLiteDatabase db, Uri uri, String selection, String[] selectionArgs) {
         int result;
         long noteId;
         String table;
@@ -870,14 +891,26 @@ public class Provider extends ContentProvider {
         /* Gets a writable database. This will trigger its creation if it doesn't already exist. */
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
-        int result = updateUnderTransaction(db, uri, contentValues, selection, selectionArgs);
+        int result;
 
-        notifyChange();
+        if (isInBatch()) {
+            result = updateUnderTransaction(db, uri, contentValues, selection, selectionArgs);
+
+        } else {
+            db.beginTransaction();
+            try {
+                result = updateUnderTransaction(db, uri, contentValues, selection, selectionArgs);
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+
+            notifyChange();
+        }
 
         return result;
     }
 
-    // TODO: Make sure everything is done under transaction. Careful not to close db
     private int updateUnderTransaction(SQLiteDatabase db, Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         int result;
         long noteId;
@@ -1023,34 +1056,26 @@ public class Provider extends ContentProvider {
 
         int notesUpdated;
 
-        db.beginTransaction();
-        try {
             /* Select only notes which don't already have the target state. */
-            String notesSelection = DbNote.Column._ID + " IN (" + ids + ") AND (" +
-                                    NotesView.Columns.STATE + " IS NULL OR " + NotesView.Columns.STATE + " != ?)";
+        String notesSelection = DbNote.Column._ID + " IN (" + ids + ") AND (" +
+                                NotesView.Columns.STATE + " IS NULL OR " + NotesView.Columns.STATE + " != ?)";
 
-            String[] selectionArgs = new String[] { targetState };
+        String[] selectionArgs = new String[] { targetState };
 
             /* Select notebooks which will be affected. */
-            String booksSelection = DbBook.Column._ID + " IN (SELECT DISTINCT " +
-                                    DbNote.Column.BOOK_ID + " FROM " + DbNote.TABLE + " WHERE " + notesSelection + ")";
+        String booksSelection = DbBook.Column._ID + " IN (SELECT DISTINCT " +
+                                DbNote.Column.BOOK_ID + " FROM " + DbNote.TABLE + " WHERE " + notesSelection + ")";
 
             /* Notebooks must be updated before notes, because selection checks
              * for notes what will be affected.
              */
-            DatabaseUtils.updateBookMtime(db, booksSelection, selectionArgs);
+        DatabaseUtils.updateBookMtime(db, booksSelection, selectionArgs);
 
             /* Update notes. */
-            if (AppPreferences.isDoneKeyword(getContext(), targetState)) {
-                notesUpdated = setDoneStateForNotes(db, targetState, notesSelection, selectionArgs);
-            } else {
-                notesUpdated = setOtherStateForNotes(db, targetState, notesSelection, selectionArgs);
-            }
-
-            db.setTransactionSuccessful();
-
-        } finally {
-            db.endTransaction();
+        if (AppPreferences.isDoneKeyword(getContext(), targetState)) {
+            notesUpdated = setDoneStateForNotes(db, targetState, notesSelection, selectionArgs);
+        } else {
+            notesUpdated = setOtherStateForNotes(db, targetState, notesSelection, selectionArgs);
         }
 
         return notesUpdated;

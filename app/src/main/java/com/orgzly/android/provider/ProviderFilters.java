@@ -50,57 +50,51 @@ class ProviderFilters {
      * FIXME: Slow and horrible.
      */
     static int moveFilter(SQLiteDatabase db, long id, boolean up) {
-        db.beginTransaction();
+        Map<Long, Integer> originalPositions = new HashMap<>();
+        Map<Long, Integer> newPositions = new HashMap<>();
+
+        Cursor cursor = queryAll(db);
+
         try {
-            Map<Long, Integer> originalPositions = new HashMap<>();
-            Map<Long, Integer> newPositions = new HashMap<>();
+            int i = 1;
+            long lastId = 0;
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                long thisId = cursor.getLong(0);
+                int thisPos = cursor.getInt(1);
 
-            Cursor cursor = queryAll(db);
+                originalPositions.put(thisId, thisPos);
+                newPositions.put(thisId, i);
 
-            try {
-                int i = 1;
-                long lastId = 0;
-                for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                    long thisId = cursor.getLong(0);
-                    int thisPos = cursor.getInt(1);
-
-                    originalPositions.put(thisId, thisPos);
-                    newPositions.put(thisId, i);
-
-                    if (up) {
-                        if (thisId == id && lastId != 0) {
-                            newPositions.put(thisId, i - 1);
-                            newPositions.put(lastId, i);
-                        }
-
-                        lastId = thisId;
-                        i++;
-
-                    } else {
-                        if (lastId != 0) {
-                            newPositions.put(thisId, i - 1);
-                            newPositions.put(lastId, i);
-                            lastId = 0;
-                        }
-
-                        if (thisId == id) {
-                            lastId = thisId;
-                        }
-
-                        i++;
+                if (up) {
+                    if (thisId == id && lastId != 0) {
+                        newPositions.put(thisId, i - 1);
+                        newPositions.put(lastId, i);
                     }
+
+                    lastId = thisId;
+                    i++;
+
+                } else {
+                    if (lastId != 0) {
+                        newPositions.put(thisId, i - 1);
+                        newPositions.put(lastId, i);
+                        lastId = 0;
+                    }
+
+                    if (thisId == id) {
+                        lastId = thisId;
+                    }
+
+                    i++;
                 }
-            } finally {
-                cursor.close();
             }
-
-            updateChangedPositions(db, originalPositions, newPositions);
-
-            db.setTransactionSuccessful();
-
         } finally {
-            db.endTransaction();
+            cursor.close();
         }
+
+        updateChangedPositions(db, originalPositions, newPositions);
+
+        db.setTransactionSuccessful();
 
         return 1;
     }

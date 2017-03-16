@@ -22,8 +22,6 @@ import com.orgzly.android.util.LogUtils;
 public class Database extends SQLiteOpenHelper {
     private static final String TAG = Database.class.getName();
 
-    private static final String NAME = "orgzly.db";
-
     /** Context kept for broadcasts. */
     private Context context;
 
@@ -31,7 +29,7 @@ public class Database extends SQLiteOpenHelper {
      * Instantiates an open helper for the provider's SQLite data repository.
      */
     public Database(Context context) {
-        super(context, NAME, null, DatabaseMigration.DB_VER_CURRENT);
+        super(context, BuildConfig.DATABASE_NAME, null, DatabaseMigration.DB_VER_CURRENT);
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "");
 
@@ -80,19 +78,10 @@ public class Database extends SQLiteOpenHelper {
     public void reCreateTables(SQLiteDatabase db) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, db.getPath());
 
-        db.beginTransaction();
+        dropAllViews(db);
+        dropAllTables(db);
 
-        try {
-            dropAllViews(db);
-            dropAllTables(db);
-
-            onCreate(db);
-
-            db.setTransactionSuccessful();
-
-        } finally {
-            db.endTransaction();
-        }
+        onCreate(db);
     }
 
     private void createAllTables(SQLiteDatabase db) {
