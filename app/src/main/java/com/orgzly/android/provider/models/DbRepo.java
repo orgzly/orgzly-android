@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.orgzly.android.provider.DatabaseUtils;
-import com.orgzly.android.provider.ProviderContract;
 
 import java.util.Set;
 
@@ -29,7 +28,7 @@ public class DbRepo {
     /**
      * Inserts new URL or updates existing marking it as active.
      */
-    public static long insert(SQLiteDatabase db, Set<Uri> notifyUris, String url) {
+    public static long insert(SQLiteDatabase db, String url) {
         ContentValues values = new ContentValues();
         values.put(Column.REPO_URL, url);
         values.put(Column.IS_REPO_ACTIVE, 1);
@@ -46,40 +45,21 @@ public class DbRepo {
             id = db.insertOrThrow(TABLE, null, values);
         }
 
-        notify(notifyUris);
-
         return id;
     }
 
     /**
      * Delete repos by marking them as inactive.
      */
-    public static int delete(SQLiteDatabase db, Set<Uri> notifyUris, String selection, String[] selectionArgs) {
+    public static int delete(SQLiteDatabase db, String selection, String[] selectionArgs) {
         ContentValues values = new ContentValues();
         values.put(Column.IS_REPO_ACTIVE, 0);
 
-        int result = db.update(TABLE, values, selection, selectionArgs);
-
-        notify(notifyUris);
-
-        return result;
+        return db.update(TABLE, values, selection, selectionArgs);
     }
 
-    public static int update(SQLiteDatabase db, Set<Uri> notifyUris, ContentValues contentValues, String selection, String[] selectionArgs) {
-        int result = db.update(TABLE, contentValues, selection, selectionArgs);
-
-        notify(notifyUris);
-
-        return result;
-    }
-
-    private static void notify(Set<Uri> notifyUris) {
-        if (notifyUris != null) {
-            notifyUris.add(ProviderContract.Repos.ContentUri.repos());
-
-            /* Books view is using repo table. */
-            notifyUris.add(ProviderContract.Books.ContentUri.books());
-        }
+    public static int update(SQLiteDatabase db, ContentValues contentValues, String selection, String[] selectionArgs) {
+        return db.update(TABLE, contentValues, selection, selectionArgs);
     }
 
     public interface Columns {
