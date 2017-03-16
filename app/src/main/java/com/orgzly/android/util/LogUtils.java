@@ -38,6 +38,10 @@ public class LogUtils {
         }
         s.insert(0, getCallerMethodName());
 
+        /* Prefix with thread. */
+        Thread curr = Thread.currentThread();
+        s.insert(0, "T#" + curr.getId() + "#" + curr.getName() + ": ");
+
         doLog(tag, s.toString());
     }
 
