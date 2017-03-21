@@ -29,6 +29,8 @@ import com.orgzly.android.util.NoteContentParser;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.OrgHead;
 
+import java.util.List;
+
 public class HeadsListViewAdapter extends SimpleCursorAdapter {
     private static final String TAG = HeadsListViewAdapter.class.getName();
 
@@ -393,7 +395,14 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
 
         /* Tags. */
         if (head.hasTags()) {
-            builder.append(TITLE_SEPARATOR).append(generateTags(head));
+            builder.append(TITLE_SEPARATOR).append(generateTags(head.getTags()));
+            hasPostTitleText = true;
+        }
+
+        if (head.hasInheritedTags()) {
+            builder.append(TITLE_SEPARATOR).append("(")
+                    .append(generateTags(head.getInheritedTags()))
+                    .append(")");
             hasPostTitleText = true;
         }
 
@@ -418,8 +427,8 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         return builder;
     }
 
-    private CharSequence generateTags(OrgHead head) {
-        return new SpannableString(TextUtils.join(TAGS_SEPARATOR, head.getTags()));
+    private CharSequence generateTags(List<String> tags) {
+        return new SpannableString(TextUtils.join(TAGS_SEPARATOR, tags));
     }
 
     private CharSequence generateState(OrgHead head) {

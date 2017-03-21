@@ -105,6 +105,7 @@ public class Database extends SQLiteOpenHelper {
         for (String sql : DbPropertyName.CREATE_SQL) db.execSQL(sql);
         for (String sql : DbPropertyValue.CREATE_SQL) db.execSQL(sql);
         for (String sql : DbProperty.CREATE_SQL) db.execSQL(sql);
+        for (String sql : DbNoteAncestor.CREATE_SQL) db.execSQL(sql);
     }
 
     private void dropAllTables(SQLiteDatabase db) {
@@ -128,6 +129,8 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(DbPropertyName.DROP_SQL);
         db.execSQL(DbPropertyValue.DROP_SQL);
         db.execSQL(DbProperty.DROP_SQL);
+        db.execSQL(DbNoteAncestor.DROP_SQL);
+
     }
 
     /** DROP views */

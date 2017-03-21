@@ -201,6 +201,11 @@ public class NotesClient {
             head.setTags(DbNote.dbDeSerializeTags(tags));
         }
 
+        String inheritedTags = cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.INHERITED_TAGS));
+        if (! TextUtils.isEmpty(inheritedTags)) {
+            head.setInheritedTags(DbNote.dbDeSerializeTags(inheritedTags));
+        }
+
         return head;
     }
 
