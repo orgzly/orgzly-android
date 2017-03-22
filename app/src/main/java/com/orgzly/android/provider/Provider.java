@@ -121,8 +121,6 @@ public class Provider extends ContentProvider {
             results = super.applyBatch(operations);
             inBatch.set(false);
 
-            updateNoteAncestors(db, 0);
-
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -394,8 +392,6 @@ public class Provider extends ContentProvider {
                 insertUnderTransaction(db, uri, values[i]);
             }
 
-            updateNoteAncestors(db, 0);
-
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -422,8 +418,6 @@ public class Provider extends ContentProvider {
             db.beginTransaction();
             try {
                 resultUri = insertUnderTransaction(db, uri, contentValues);
-
-                updateNoteAncestors(db, 0);
 
                 db.setTransactionSuccessful();
             } finally {
@@ -588,8 +582,11 @@ public class Provider extends ContentProvider {
                 /* Make space for new note - increment notes' LFT and RGT. */
                 DatabaseUtils.makeSpaceForNewNotes(db, 1, refNotePos, place);
 
-                /* Update number of descendants. */
-                updateDescendantsCountOfAncestors(db, bookId, notePos.getLft(), notePos.getRgt());
+                /*
+                 * If new note can be an ancestor, increment descendants count of all
+                 * its ancestors.
+                 */
+                incrementDescendantsCountForAncestors(db, bookId, notePos.getLft(), notePos.getRgt());
 
             case UNDEFINED:
                 /* Make space for new note - increment root's RGT. */
@@ -605,10 +602,12 @@ public class Provider extends ContentProvider {
 
         long id = db.insertOrThrow(DbNote.TABLE, null, values);
 
+        DatabaseUtils.updateNoteAncestors(db, bookId);
+
         return ContentUris.withAppendedId(uri, id);
     }
 
-    private void updateDescendantsCountOfAncestors(SQLiteDatabase db, long bookId, long lft, long rgt) {
+    private void incrementDescendantsCountForAncestors(SQLiteDatabase db, long bookId, long lft, long rgt) {
         db.execSQL("UPDATE " + DbNote.TABLE +
                    " SET " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " = " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " + 1 " +
                    "WHERE " + DatabaseUtils.whereAncestors(bookId, lft, rgt));
@@ -781,8 +780,6 @@ public class Provider extends ContentProvider {
             try {
                 result = deleteUnderTransaction(db, uri, selection, selectionArgs);
 
-                updateNoteAncestors(db, 0);
-
                 db.setTransactionSuccessful();
             } finally {
                 db.endTransaction();
@@ -908,8 +905,6 @@ public class Provider extends ContentProvider {
             db.beginTransaction();
             try {
                 result = updateUnderTransaction(db, uri, contentValues, selection, selectionArgs);
-
-                updateNoteAncestors(db, 0);
 
                 db.setTransactionSuccessful();
             } finally {
@@ -1439,29 +1434,11 @@ public class Provider extends ContentProvider {
 
         db.update(DbBook.TABLE, values, DbBook.Column._ID + "=" + bookId, null);
 
+        DatabaseUtils.updateNoteAncestors(db, bookId);
+
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookName + ": " + (System.currentTimeMillis() - startedAt) + "ms");
 
         return uri;
-    }
-
-    private void updateNoteAncestors(SQLiteDatabase db, long bookId) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Started refreshing note_ancestors for " + bookId);
-
-        long t = System.currentTimeMillis();
-
-        db.execSQL("DELETE FROM note_ancestors");
-
-        db.execSQL("INSERT INTO note_ancestors (note_id, ancestor_note_id) " +
-                   "select notes._id, n2._id as ancestor from notes " +
-                   "left join notes n2 on (notes.book_id = n2.book_id AND n2.is_visible < notes.is_visible AND notes.parent_position < n2.parent_position) " +
-                   "where n2._id is not null");
-
-//        db.execSQL("INSERT INTO note_ancestors (note_id, ancestor_note_id) " +
-//                   "select notes._id, n2._id as ancestor from notes " +
-//                   "left join notes n2 on (n2.is_visible < notes.is_visible AND notes.parent_position < n2.parent_position) " +
-//                   "where notes.book_id = "+bookId+" AND n2.book_id = "+bookId+" and n2._id is not null");
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Done refreshing note_ancestors for " + bookId + " in " + + (System.currentTimeMillis() - t) + " ms");
     }
 
     private void replaceTimestampRangeStringsWithIds(SQLiteDatabase db, ContentValues values) {

@@ -35,6 +35,8 @@ public class CutNotesAction implements Action {
         String whereAncestors = DatabaseUtils.whereAncestors(bookId, ids);
         DatabaseUtils.updateDescendantsCount(db, whereAncestors);
 
+        DatabaseUtils.updateNoteAncestors(db, bookId);
+
         DatabaseUtils.updateBookMtime(db, bookId);
 
         return result;

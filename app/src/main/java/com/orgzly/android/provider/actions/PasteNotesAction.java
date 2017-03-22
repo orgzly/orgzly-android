@@ -71,12 +71,12 @@ public class PasteNotesAction implements Action {
                 break;
 
             case UNDER:
-                NotePosition firstHighestLevelDescendant = getLastHighestLevelDescendant(db, targetNotePosition);
+                NotePosition lastHighestLevelDescendant = getLastHighestLevelDescendant(db, targetNotePosition);
 
-                if (firstHighestLevelDescendant != null) {
+                if (lastHighestLevelDescendant != null) {
                     /* Insert batch after last descendant with highest level. */
-                    pastedLft = firstHighestLevelDescendant.getRgt() + 1;
-                    pastedLevel = firstHighestLevelDescendant.getLevel();
+                    pastedLft = lastHighestLevelDescendant.getRgt() + 1;
+                    pastedLevel = lastHighestLevelDescendant.getLevel();
 
                 } else {
                     /* Insert batch just under the target note. */
@@ -138,7 +138,7 @@ public class PasteNotesAction implements Action {
             db.update(DbNote.TABLE, values, where, null);
         }
 
-        /* Update parent of the first note. */
+        /* Update parent of the root of the batch. */
         ContentValues values = new ContentValues();
         values.put(DbNote.Column.PARENT_ID, pastedParentId);
         db.update(DbNote.TABLE, values, DbNote.Column.IS_CUT + " = " + batchId + " AND " + DbNote.Column.LFT + " = " + batchMinLft, null);
@@ -156,6 +156,8 @@ public class PasteNotesAction implements Action {
         /* Update number of descendants for ancestors and the note itself. */
         String where = DatabaseUtils.whereAncestors(targetNotePosition.getBookId(), "" + targetNoteId) + " OR (" + DbNote.Column._ID + " = " + targetNoteId + ")";
         DatabaseUtils.updateDescendantsCount(db, where);
+
+        DatabaseUtils.updateNoteAncestors(db, bookId);
 
         /* Delete all other cut batches. */
         db.execSQL("DELETE FROM " + DbNote.TABLE + " WHERE " + DbNote.Column.IS_CUT + " != 0");

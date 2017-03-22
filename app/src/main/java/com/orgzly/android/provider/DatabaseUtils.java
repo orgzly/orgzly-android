@@ -259,6 +259,27 @@ public class DatabaseUtils {
         db.execSQL("UPDATE " + DbNote.TABLE + " SET " + DbNote.Column.PARENT_ID + " = " + parentId + " WHERE " + whereUncutBookNotes(bookId));
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "" + (System.currentTimeMillis() - t) + "ms");
+    }
 
+    public static void updateNoteAncestors(SQLiteDatabase db, long bookId) {
+        long t = System.currentTimeMillis();
+
+        if (bookId > 0) {
+            db.execSQL("DELETE FROM note_ancestors where book_id = " + bookId);
+
+            db.execSQL("INSERT INTO note_ancestors (book_id, note_id, ancestor_note_id) " +
+                       "select notes.book_id, notes._id, n2._id as ancestor from notes " +
+                       "join notes n2 on (notes.book_id = n2.book_id AND n2.is_visible < notes.is_visible AND notes.parent_position < n2.parent_position) " +
+                       "WHERE notes.book_id = " + bookId);
+
+        } else {
+            db.execSQL("DELETE FROM note_ancestors");
+
+            db.execSQL("INSERT INTO note_ancestors (book_id, note_id, ancestor_note_id) " +
+                       "select notes.book_id, notes._id, n2._id as ancestor from notes " +
+                       "join notes n2 on (notes.book_id = n2.book_id AND n2.is_visible < notes.is_visible AND notes.parent_position < n2.parent_position)");
+        }
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Done for " + bookId + " in " + + (System.currentTimeMillis() - t) + " ms");
     }
 }
