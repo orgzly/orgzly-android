@@ -15,7 +15,7 @@ android {
      * This file contains credentials and it is not checked into Git.
      * You should create it -- see "app.properties.sample".
      */
-    Properties properties = loadProperties(project.rootProject.file('app.properties'))
+    Properties properties = loadProperties(getRootProject().file('app.properties'))
 
     defaultConfig {
         applicationId "com.orgzly"
@@ -85,8 +85,7 @@ configurations.all {
 }
 
 dependencies {
-    compile "com.orgzly:org-java:$org_java_version"
-//    compile project(':org-java') // Used when developing, defined in settings.gradle
+    compile orgJavaLocation()
 
     compile "com.dropbox.core:dropbox-core-sdk:$dropbox_core_sdk_version"
 
@@ -115,6 +114,19 @@ dependencies {
     androidTestCompile "de.sven-jacobs:loremipsum:$loremipsum_version"
 }
 
+/*
+ * Use local org-java directory if it exists to ease developing.
+ * Being more specific with ../../orgzly/ on purpose.
+ */
+def orgJavaLocation() {
+    File localOrgJavaDir = getRootProject().file('../../orgzly/org-java')
+
+    if (localOrgJavaDir.exists()) {
+        return project(':org-java') // Defined in settings.gradle
+    } else {
+        return "com.orgzly:org-java:$org_java_version"
+    }
+}
 
 def loadProperties(file) {
     Properties properties = new Properties()
