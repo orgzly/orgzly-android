@@ -4,9 +4,12 @@ package com.orgzly.android.provider.actions;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.orgzly.BuildConfig;
 import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.models.DbNote;
+import com.orgzly.android.provider.models.DbNoteAncestor;
+import com.orgzly.android.util.LogUtils;
 
 /**
  * Marks notes as cut and returns their number.
@@ -15,6 +18,8 @@ import com.orgzly.android.provider.models.DbNote;
 public class CutNotesAction implements Action {
     private long bookId;
     private String ids;
+
+    protected long batchId;
 
     public CutNotesAction(ContentValues values) {
         bookId = values.getAsLong(ProviderContract.Cut.Param.BOOK_ID);
@@ -25,17 +30,26 @@ public class CutNotesAction implements Action {
     public int run(SQLiteDatabase db) {
         int result;
 
+        batchId = System.currentTimeMillis();
+
         ContentValues values = new ContentValues();
-        values.put(DbNote.Column.IS_CUT, System.currentTimeMillis());
+        values.put(DbNote.Column.IS_CUT, batchId);
+
+        /* Delete affected notes from ancestors table. */
+        String sql = "DELETE FROM " + DbNoteAncestor.TABLE + " WHERE " + DbNoteAncestor.Column.NOTE_ID +
+                     " = (SELECT " + DbNote.Column._ID + " FROM " + DbNote.TABLE + " WHERE " +
+                     DatabaseUtils.whereDescendantsAndNotes(bookId, ids) + ")";
+        if (BuildConfig.LOG_DEBUG) LogUtils.d("SQL", sql);
+        db.execSQL(sql);
 
         /* Mark as cut. */
-        result = db.update(DbNote.TABLE, values, DatabaseUtils.whereDescendantsAndNotes(bookId, ids), null);
+        String where = DatabaseUtils.whereDescendantsAndNotes(bookId, ids);
+        result = db.update(DbNote.TABLE, values, where, null);
 
         /* Update number of descendants. */
         String whereAncestors = DatabaseUtils.whereAncestors(bookId, ids);
         DatabaseUtils.updateDescendantsCount(db, whereAncestors);
 
-        DatabaseUtils.updateNoteAncestors(db, bookId);
 
         DatabaseUtils.updateBookMtime(db, bookId);
 

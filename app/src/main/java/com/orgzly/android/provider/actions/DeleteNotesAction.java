@@ -4,40 +4,17 @@ package com.orgzly.android.provider.actions;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.orgzly.android.provider.DatabaseUtils;
-import com.orgzly.android.provider.ProviderContract;
-import com.orgzly.android.provider.models.DbNote;
-
 /**
- * Same as Cut, but deletes the marked batch afterwords
+ * Same as Cut, but deletes marked batch afterwords.
  */
-public class DeleteNotesAction implements Action {
-    private long bookId;
-    private String ids;
-
+public class DeleteNotesAction extends CutNotesAction {
     public DeleteNotesAction(ContentValues values) {
-        bookId = values.getAsLong(ProviderContract.Delete.Param.BOOK_ID);
-        ids = values.getAsString(ProviderContract.Delete.Param.IDS);
+        super(values);
     }
 
     @Override
     public int run(SQLiteDatabase db) {
-        int result;
-
-        long batchId = System.currentTimeMillis();
-
-        ContentValues values = new ContentValues();
-        values.put(DbNote.Column.IS_CUT, batchId);
-
-        String where = DatabaseUtils.whereDescendantsAndNotes(bookId, ids);
-        result = db.update(DbNote.TABLE, values, where, null);
-
-        String whereAncestors = DatabaseUtils.whereAncestors(bookId, ids);
-        DatabaseUtils.updateDescendantsCount(db, whereAncestors);
-
-        DatabaseUtils.updateNoteAncestors(db, bookId);
-
-        DatabaseUtils.updateBookMtime(db, bookId);
+        int result = super.run(db);
 
         db.execSQL("DELETE FROM notes WHERE is_cut = " + batchId);
 
