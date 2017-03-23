@@ -583,6 +583,12 @@ public class BookFragment extends NoteListFragment
             } else if (cursorLoader.getId() == Loaders.BOOK_FRAGMENT_NOTES) {
                 notesLoaded(cursor);
             }
+
+            /* Refresh action bar items (hide or display, depending on if the book has been loaded. */
+            FragmentActivity activity = getActivity();
+            if (activity != null) {
+                activity.supportInvalidateOptionsMenu();
+            }
         }
     }
 
@@ -607,13 +613,6 @@ public class BookFragment extends NoteListFragment
          * non-existent book id.
          */
         mBook = book;
-
-        FragmentActivity activity = getActivity();
-
-        /* Refresh action bar items (hide or display, depending on if the book has been loaded. */
-        if (activity != null) {
-            activity.supportInvalidateOptionsMenu();
-        }
 
         if (mBook != null) {
             updatePreface();
