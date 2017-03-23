@@ -242,14 +242,17 @@ public class SettingsFragment extends PreferenceFragment
 
         Activity activity = getActivity();
 
+        if (activity == null) {
+            return;
+        }
+
         /* State keywords. */
         if (getString(R.string.pref_key_states).equals(key)) {
             AppPreferences.updateStaticKeywords(getContext());
 
             /* Re-parse notes. */
-            if (activity != null) {
-                ActivityUtils.closeSoftKeyboard(activity);
-            }
+            ActivityUtils.closeSoftKeyboard(activity);
+
             if (mListener != null) {
                 mListener.onStateKeywordsPreferenceChanged();
             }
@@ -258,13 +261,11 @@ public class SettingsFragment extends PreferenceFragment
         }
 
         /* Recreate activity if preference change requires it. */
-        if (activity != null) {
-            for (int res: REQUIRE_ACTIVITY_RESTART) {
-                if (key.equals(getString(res))) {
-                    activity.recreate();
-                    break;
+        for (int res: REQUIRE_ACTIVITY_RESTART) {
+            if (key.equals(getString(res))) {
+                activity.recreate();
+                break;
 
-                }
             }
         }
 
