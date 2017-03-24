@@ -1,8 +1,8 @@
 package com.orgzly.android.provider;
 
 import android.content.Context;
-import android.content.Intent;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;

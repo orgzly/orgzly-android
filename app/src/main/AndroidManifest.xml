@@ -89,7 +89,7 @@
             android:authorities="com.orgzly">
         </provider>
 
-        <service android:name=".android.sync.SyncService"/>
+        <service android:name=".android.sync.SyncService" android:exported="true"/>
 
         <receiver android:name=".android.BootCompletedReceiver">
             <intent-filter>

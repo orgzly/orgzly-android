@@ -15,6 +15,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.BookAction;
+import com.orgzly.android.Broadcasts;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.repos.DirectoryRepo;
@@ -60,18 +61,35 @@ public class SyncService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
+        if (Broadcasts.ACTION_SYNC_START.equals(intent.getAction())) {
+            if (!isRunning()) {
+                start();
+            }
 
-        /* If syncing is already in progress, cancel it. */
-        if (syncTask != null) {
-            status.set(SyncStatus.Type.CANCELING, null, status.currentBook, status.totalBooks);
-            announceActiveSyncStatus();
+        } else if (Broadcasts.ACTION_SYNC_STOP.equals(intent.getAction())) {
+            if (isRunning()) {
+                stop();
+            }
 
-            syncTask.cancel(false);
-
-            return super.onStartCommand(intent, flags, startId);
+        } else {
+            if (isRunning()) {
+                stop();
+            } else {
+                start();
+            }
         }
+
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    private boolean isRunning() {
+        return syncTask != null;
+    }
+
+    private void start() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         Map<String, Repo> repos = shelf.getAllRepos();
 
@@ -80,7 +98,7 @@ public class SyncService extends Service {
             status.set(SyncStatus.Type.FAILED, getString(R.string.no_repos_configured), 0, 0);
             announceActiveSyncStatus();
             stopSelf();
-            return super.onStartCommand(intent, flags, startId);
+            return;
         }
 
         /* If one of the repositories requires internet connection, check for it. */
@@ -88,7 +106,7 @@ public class SyncService extends Service {
             status.set(SyncStatus.Type.FAILED, getString(R.string.no_connection), 0, 0);
             announceActiveSyncStatus();
             stopSelf();
-            return super.onStartCommand(intent, flags, startId);
+            return;
         }
 
         /* Make sure we have permission to access local storage,
@@ -99,16 +117,22 @@ public class SyncService extends Service {
                 status.set(SyncStatus.Type.NO_STORAGE_PERMISSION, null, 0, 0);
                 announceActiveSyncStatus();
                 stopSelf();
-                return super.onStartCommand(intent, flags, startId);
+                return;
             }
         }
 
         syncTask = new SyncTask();
         syncTask.execute();
-
-        return super.onStartCommand(intent, flags, startId);
     }
 
+    private void stop() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+
+        status.set(SyncStatus.Type.CANCELING, null, status.currentBook, status.totalBooks);
+        announceActiveSyncStatus();
+
+        syncTask.cancel(false);
+    }
 
     private boolean reposRequireConnection(Collection<Repo> repos) {
         for (Repo repo: repos) {
