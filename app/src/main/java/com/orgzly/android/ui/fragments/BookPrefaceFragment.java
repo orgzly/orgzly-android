@@ -163,10 +163,9 @@ public class BookPrefaceFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
 
-        inflater.inflate(R.menu.done_close_delete, menu);
+        menu.clear();
 
-        /* Remove search item. */
-        menu.removeItem(R.id.activity_action_search);
+        inflater.inflate(R.menu.done_close_delete, menu);
     }
 
     @Override
