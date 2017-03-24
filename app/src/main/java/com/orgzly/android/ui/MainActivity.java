@@ -441,7 +441,6 @@ public class MainActivity extends CommonActivity
             }
         }
 
-
         super.onBackPressed();
     }
 

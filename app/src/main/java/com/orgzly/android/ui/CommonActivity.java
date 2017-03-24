@@ -73,6 +73,13 @@ public class CommonActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        dismissSnackbar();
+    }
+
+    @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         boolean consumed = super.dispatchTouchEvent(ev);
 
