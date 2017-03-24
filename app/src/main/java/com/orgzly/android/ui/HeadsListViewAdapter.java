@@ -375,7 +375,6 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
             builder.setSpan(new StyleSpan(Typeface.BOLD), 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
-
         /* Space before title, unless there's nothing added. */
         if (builder.length() > 0) {
             builder.append(TITLE_SEPARATOR);
@@ -384,10 +383,8 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         /* Title. */
         builder.append(NoteContentParser.fromOrg(head.getTitle()));
 
-//        /* Bold everything up until now. */
-//        if (builder.length() > 0) {
-//            builder.setSpan(new StyleSpan(Typeface.BOLD), 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        }
+        /* Append note ID. */
+        // builder.append(TITLE_SEPARATOR).append("#").append(String.valueOf(note.getId()));
 
         int mark = builder.length();
 

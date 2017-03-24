@@ -113,7 +113,6 @@ public class DatabaseMigration {
 
             case DB_VER_8:
                 for (String sql : DbNoteAncestor.CREATE_SQL) db.execSQL(sql);
-
                 populateNoteAncestors(db);
         }
     }
@@ -122,7 +121,7 @@ public class DatabaseMigration {
         db.execSQL("INSERT INTO note_ancestors (book_id, note_id, ancestor_note_id) " +
                    "select notes.book_id, notes._id, n2._id as ancestor from notes " +
                    "left join notes n2 on (notes.book_id = n2.book_id AND n2.is_visible < notes.is_visible AND notes.parent_position < n2.parent_position) " +
-                   "where n2._id is not null");
+                   "where n2._id is not null and n2.level > 0");
     }
 
     private static void movePropertiesFromBody(SQLiteDatabase db) {

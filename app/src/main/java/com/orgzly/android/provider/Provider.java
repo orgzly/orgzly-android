@@ -36,6 +36,7 @@ import com.orgzly.android.provider.models.DbBookSync;
 import com.orgzly.android.provider.models.DbCurrentVersionedRook;
 import com.orgzly.android.provider.models.DbDbRepo;
 import com.orgzly.android.provider.models.DbNote;
+import com.orgzly.android.provider.models.DbNoteAncestor;
 import com.orgzly.android.provider.models.DbNoteProperty;
 import com.orgzly.android.provider.models.DbOrgRange;
 import com.orgzly.android.provider.models.DbOrgTimestamp;
@@ -602,7 +603,17 @@ public class Provider extends ContentProvider {
 
         long id = db.insertOrThrow(DbNote.TABLE, null, values);
 
-        DatabaseUtils.updateNoteAncestors(db, bookId);
+        db.execSQL("INSERT INTO " + DbNoteAncestor.TABLE +
+                   " (" + DbNoteAncestor.Column.BOOK_ID + ", " +
+                   DbNoteAncestor.Column.NOTE_ID +
+                   ", " + DbNoteAncestor.Column.ANCESTOR_NOTE_ID + ") " +
+                   "SELECT " + DbNote.TABLE + "." + DbNote.Column.BOOK_ID + ", " + DbNote.TABLE + "._id, a._id FROM " + DbNote.TABLE +
+                   " JOIN " + DbNote.TABLE + " a ON (" +
+                   DbNote.TABLE + "."  + DbNote.Column.BOOK_ID + " = a." + DbNote.Column.BOOK_ID +
+                   " AND a." + DbNote.Column.LFT + " < "+  DbNote.TABLE + "." + DbNote.Column.LFT +
+                   " AND " +  DbNote.TABLE + "." + DbNote.Column.RGT + " < a." + DbNote.Column.RGT + ") " +
+                   "WHERE " +  DbNote.TABLE + "." + DbNote.Column._ID + " = " + id + " AND " +
+                   "a." + DbNote.Columns.LEVEL + " > 0");
 
         return ContentUris.withAppendedId(uri, id);
     }

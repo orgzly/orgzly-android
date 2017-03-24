@@ -270,14 +270,15 @@ public class DatabaseUtils {
             db.execSQL("INSERT INTO note_ancestors (book_id, note_id, ancestor_note_id) " +
                        "select notes.book_id, notes._id, n2._id as ancestor from notes " +
                        "join notes n2 on (notes.book_id = n2.book_id AND n2.is_visible < notes.is_visible AND notes.parent_position < n2.parent_position) " +
-                       "WHERE notes.book_id = " + bookId);
+                       "WHERE notes.book_id = " + bookId + " AND n2." + DbNote.Columns.LEVEL + " > 0");
 
         } else {
             db.execSQL("DELETE FROM note_ancestors");
 
             db.execSQL("INSERT INTO note_ancestors (book_id, note_id, ancestor_note_id) " +
                        "select notes.book_id, notes._id, n2._id as ancestor from notes " +
-                       "join notes n2 on (notes.book_id = n2.book_id AND n2.is_visible < notes.is_visible AND notes.parent_position < n2.parent_position)");
+                       "join notes n2 on (notes.book_id = n2.book_id AND n2.is_visible < notes.is_visible AND notes.parent_position < n2.parent_position) " +
+                       "WHERE n2." + DbNote.Columns.LEVEL + " > 0");
         }
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Done for " + bookId + " in " + + (System.currentTimeMillis() - t) + " ms");
