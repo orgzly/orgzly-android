@@ -15,7 +15,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.BookAction;
-import com.orgzly.android.Broadcasts;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.repos.DirectoryRepo;
@@ -63,12 +63,12 @@ public class SyncService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
-        if (Broadcasts.ACTION_SYNC_START.equals(intent.getAction())) {
+        if (AppIntent.ACTION_SYNC_START.equals(intent.getAction())) {
             if (!isRunning()) {
                 start();
             }
 
-        } else if (Broadcasts.ACTION_SYNC_STOP.equals(intent.getAction())) {
+        } else if (AppIntent.ACTION_SYNC_STOP.equals(intent.getAction())) {
             if (isRunning()) {
                 stop();
             }

@@ -10,7 +10,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.orgzly.BuildConfig;
-import com.orgzly.android.Broadcasts;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.provider.models.*;
 import com.orgzly.android.provider.views.BooksView;
 import com.orgzly.android.provider.views.NotesView;
@@ -62,14 +62,14 @@ public class Database extends SQLiteOpenHelper {
             @Override
             public void run() {
                 LocalBroadcastManager.getInstance(context)
-                        .sendBroadcast(new Intent(Broadcasts.ACTION_DB_UPGRADE_STARTED));
+                        .sendBroadcast(new Intent(AppIntent.ACTION_DB_UPGRADE_STARTED));
             }
         });
 
         createAllViews(db);
 
         LocalBroadcastManager.getInstance(context)
-                .sendBroadcast(new Intent(Broadcasts.ACTION_DB_UPGRADE_ENDED));
+                .sendBroadcast(new Intent(AppIntent.ACTION_DB_UPGRADE_ENDED));
     }
 
     /**

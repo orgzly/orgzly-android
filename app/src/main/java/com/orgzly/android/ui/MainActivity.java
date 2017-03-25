@@ -39,7 +39,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
 import com.orgzly.android.BookName;
-import com.orgzly.android.Broadcasts;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Filter;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotesBatch;
@@ -157,9 +157,9 @@ public class MainActivity extends CommonActivity
         super.onCreate(savedInstanceState);
 
         LocalBroadcastManager.getInstance(this)
-                .registerReceiver(dbUpgradeStartedReceiver, new IntentFilter(Broadcasts.ACTION_DB_UPGRADE_STARTED));
+                .registerReceiver(dbUpgradeStartedReceiver, new IntentFilter(AppIntent.ACTION_DB_UPGRADE_STARTED));
         LocalBroadcastManager.getInstance(this)
-                .registerReceiver(dbUpgradeEndedReceiver, new IntentFilter(Broadcasts.ACTION_DB_UPGRADE_ENDED));
+                .registerReceiver(dbUpgradeEndedReceiver, new IntentFilter(AppIntent.ACTION_DB_UPGRADE_ENDED));
 
         /*
          * Set defaults.

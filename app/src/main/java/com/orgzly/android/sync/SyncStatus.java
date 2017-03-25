@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.orgzly.android.Broadcasts;
+import com.orgzly.android.AppIntent;
 
 public class SyncStatus {
     private static final String SHARED_PREF_NAME = "sync-service";
@@ -38,7 +38,7 @@ public class SyncStatus {
     }
 
     public Intent intent() {
-        return new Intent(Broadcasts.ACTION_SYNC_STATUS)
+        return new Intent(AppIntent.ACTION_SYNC_STATUS)
                 .putExtra(SyncStatus.EXTRA_TYPE, type.name())
                 .putExtra(SyncStatus.EXTRA_MESSAGE, message)
                 .putExtra(SyncStatus.EXTRA_TOTAL_BOOKS, totalBooks)

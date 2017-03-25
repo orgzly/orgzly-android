@@ -31,7 +31,7 @@ import com.orgzly.R;
 import com.orgzly.android.Book;
 import com.orgzly.android.BookAction;
 import com.orgzly.android.BookName;
-import com.orgzly.android.Broadcasts;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Filter;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotesBatch;
@@ -164,7 +164,7 @@ public class SyncFragment extends Fragment {
         setRetainInstance(true);
 
         LocalBroadcastManager.getInstance(getContext())
-                .registerReceiver(syncServiceReceiver, new IntentFilter(Broadcasts.ACTION_SYNC_STATUS));
+                .registerReceiver(syncServiceReceiver, new IntentFilter(AppIntent.ACTION_SYNC_STATUS));
     }
 
     @Override
