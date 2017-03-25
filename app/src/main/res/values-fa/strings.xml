@@ -54,12 +54,6 @@
     <string name="fragment_note_title_hint">عنوان</string>
     <string name="fragment_note_tags_hint" tools:ignore="typos">برچسب برچسب</string>
 
-    <!-- Note bullets -->
-    <string name="bullet" translatable="false">•</string>
-    <string name="bullet_with_children_folded" translatable="false">+</string>
-    <string name="bullet_with_children_unfolded" translatable="false">–</string>
-    <!-- • ● ⦿ ⦾ ◦ ▸ ▾ – — -->
-
     <string name="note_title_sample">یه عنوان نمونه ساده</string>
     <string name="note_closed_sample">2013\-06\-10 12:00</string>
     <string name="note_deadline_sample">2013\-12\-04 Sat</string>
@@ -100,7 +94,6 @@
     <string name="sync_button_sample">آخرین همگام‌سازی: Jan 01, 01:01</string>
     <string name="book_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
     <string name="synced_rook_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
-    <string name="synced_rook_revision_sample" translatable="false">42f97fe238</string>
     <string name="books_context_menu_item_export">استخراج</string>
     <string name="books_context_menu_item_rename">تغییر نام</string>
     <string name="books_context_menu_item_set_link">تنظیم پیوند</string>
@@ -239,8 +232,6 @@
     <string name="permissions_rationale_for_book_export">استخراج دفترچه‌ها به دسترسی حافظه نیاز دارد</string>
     <string name="permissions_rationale_for_sync_start">همگام‌سازی مخزن محلی به دسترسی حافظه نیاز دارد</string>
 
-    <string name="unfold_button_character" translatable="false">+</string>
-    <string name="fold_button_character" translatable="false">–</string>
     <string name="cycle_visibility">جمع کردن/گشودن همه</string>
     <string name="running_database_update">ارتقاء مخزن محلی…</string>
     <string name="note_has_been_modified">یادداشت ویرایش شد</string>
@@ -393,6 +384,5 @@
     <string name="separate_notes_with_new_line_always">همیشه</string>
     <string name="separate_notes_with_new_line_multi_line_notes_only">فقط یادداشت‌های چند-خطی</string>
     <string name="separate_notes_with_new_line_never">هیچ‌گاه</string>
-    <string name="default_share_notebook" translatable="false">Inbox</string>
     <string name="share_notebook">اشتراک‌گذاری دفترچه</string>
 </resources>
