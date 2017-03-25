@@ -119,9 +119,9 @@ public class DatabaseMigration {
 
     private static void populateNoteAncestors(SQLiteDatabase db) {
         db.execSQL("INSERT INTO note_ancestors (book_id, note_id, ancestor_note_id) " +
-                   "select notes.book_id, notes._id, n2._id as ancestor from notes " +
-                   "left join notes n2 on (notes.book_id = n2.book_id AND n2.is_visible < notes.is_visible AND notes.parent_position < n2.parent_position) " +
-                   "where n2._id is not null and n2.level > 0");
+                   "SELECT n.book_id, n._id, a._id FROM notes n " +
+                   "JOIN notes a on (n.book_id = a.book_id AND a.is_visible < n.is_visible AND n.parent_position < a.parent_position) " +
+                   "WHERE a.level > 0");
     }
 
     private static void movePropertiesFromBody(SQLiteDatabase db) {

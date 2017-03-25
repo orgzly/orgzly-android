@@ -8,6 +8,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.provider.models.DbBook;
 import com.orgzly.android.provider.models.DbNote;
+import com.orgzly.android.provider.models.DbNoteAncestor;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.LogUtils;
 
@@ -264,22 +265,12 @@ public class DatabaseUtils {
     public static void updateNoteAncestors(SQLiteDatabase db, long bookId) {
         long t = System.currentTimeMillis();
 
-        if (bookId > 0) {
-            db.execSQL("DELETE FROM note_ancestors where book_id = " + bookId);
+        db.execSQL("DELETE FROM " + DbNoteAncestor.TABLE + " WHERE " + DbNoteAncestor.Column.BOOK_ID + " = " + bookId);
 
-            db.execSQL("INSERT INTO note_ancestors (book_id, note_id, ancestor_note_id) " +
-                       "select notes.book_id, notes._id, n2._id as ancestor from notes " +
-                       "join notes n2 on (notes.book_id = n2.book_id AND n2.is_visible < notes.is_visible AND notes.parent_position < n2.parent_position) " +
-                       "WHERE notes.book_id = " + bookId + " AND n2." + DbNote.Columns.LEVEL + " > 0");
-
-        } else {
-            db.execSQL("DELETE FROM note_ancestors");
-
-            db.execSQL("INSERT INTO note_ancestors (book_id, note_id, ancestor_note_id) " +
-                       "select notes.book_id, notes._id, n2._id as ancestor from notes " +
-                       "join notes n2 on (notes.book_id = n2.book_id AND n2.is_visible < notes.is_visible AND notes.parent_position < n2.parent_position) " +
-                       "WHERE n2." + DbNote.Columns.LEVEL + " > 0");
-        }
+        db.execSQL("INSERT INTO " + DbNoteAncestor.TABLE + " (book_id, note_id, ancestor_note_id) " +
+                   "SELECT n." + DbNote.Column.BOOK_ID + ", n." + DbNote.Column._ID + ", a." + DbNote.Column._ID + " FROM " + DbNote.TABLE + " n " +
+                   "JOIN " + DbNote.TABLE + " a ON (n." + DbNote.Column.BOOK_ID + " = a." + DbNote.Column.BOOK_ID + " AND a." + DbNote.Column.LFT + " < n." + DbNote.Column.LFT + " AND n." + DbNote.Column.RGT + " < a." + DbNote.Column.RGT + ") " +
+                   "WHERE n." + DbNote.Column.BOOK_ID + " = " + bookId + " AND a." + DbNote.Column.LEVEL + " > 0");
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Done for " + bookId + " in " + + (System.currentTimeMillis() - t) + " ms");
     }
