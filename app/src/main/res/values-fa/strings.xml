@@ -32,21 +32,21 @@
     <string name="notes">یادداشت‌ها</string>
 
     <plurals name="notes_deleted">
-        <item quantity="one">یادداشت حذف شد</item>
+        <item quantity="one">%d یادداشت حذف شد</item>
         <item quantity="other"><b>%d</b> یادداشت حذف شد</item>
     </plurals>
 
     <string name="no_notes_deleted">هیچ یادداشتی پاک نشد</string>
 
     <plurals name="notes_cut">
-        <item quantity="one">یادداشت بریده‌شد</item>
+        <item quantity="one">%d یادداشت بریده‌شد</item>
         <item quantity="other"><b>%d</b> یادداشت بریده‌شد</item>
     </plurals>
 
     <string name="no_notes_cut">هیچ یادداشتی بریده نشد</string>
 
     <plurals name="notes_pasted">
-        <item quantity="one">یادداشت چسبانده‌شد</item>
+        <item quantity="one">%d یادداشت چسبانده‌شد</item>
         <item quantity="other"><b>%d</b> یادداشت چسبانده‌شد</item>
     </plurals>
     <string name="no_notes_pasted">چیزی برای چسباندن وجود ندارد</string>
