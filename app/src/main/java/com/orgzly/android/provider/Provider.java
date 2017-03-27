@@ -72,7 +72,9 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Provider extends ContentProvider {
     private static final String TAG = Provider.class.getName();
@@ -1355,6 +1357,30 @@ public class Provider extends ContentProvider {
         /* Delete all notes from book. TODO: Delete all other references to this book ID */
         db.delete(DbNote.TABLE, DbNote.Column.BOOK_ID + "=" + bookId, null);
 
+        final Map<String, Long> propertyNames = new HashMap<>();
+        {
+            Cursor cursor = db.query(DbPropertyName.TABLE, new String[] {DbPropertyName.Column._ID, DbPropertyName.Column.NAME}, null, null, null, null, null);
+            try {
+                for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                    propertyNames.put(cursor.getString(1), cursor.getLong(0));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+
+        final Map<String, Long> propertyValues = new HashMap<>();
+        {
+            Cursor cursor = db.query(DbPropertyValue.TABLE, new String[] {DbPropertyValue.Column._ID, DbPropertyValue.Column.VALUE}, null, null, null, null, null);
+            try {
+                for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                    propertyValues.put(cursor.getString(1), cursor.getLong(0));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+
         /* Open reader. */
         Reader reader = new BufferedReader(inReader);
         try {
@@ -1395,9 +1421,20 @@ public class Provider extends ContentProvider {
                             /* Insert properties for newly created note. */
                             int i = 0;
                             for (OrgProperty property: node.getHead().getProperties()) {
-                                long nameId = DbPropertyName.getOrInsert(db, property.getName());
-                                long valueId = DbPropertyValue.getOrInsert(db, property.getValue());
+                                Long nameId = propertyNames.get(property.getName());
+                                if (nameId == null) {
+                                    nameId = DbPropertyName.getOrInsert(db, property.getName());
+                                    propertyNames.put(property.getName(), nameId);
+                                }
+
+                                Long valueId = propertyValues.get(property.getValue());
+                                if (valueId == null) {
+                                    valueId = DbPropertyValue.getOrInsert(db, property.getValue());
+                                    propertyValues.put(property.getValue(), valueId);
+                                }
+
                                 long propertyId = DbProperty.getOrInsert(db, nameId, valueId);
+
                                 DbNoteProperty.getOrInsert(db, noteId, i, propertyId);
                             }
                         }
