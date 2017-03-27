@@ -457,6 +457,8 @@ public class MiscTest extends OrgzlyTest {
         pressBack();
         onListItem(0).perform(click());
         fragmentTest(false, withId(R.id.fragment_book_preface_container));
+        pressBack();
+        pressBack();
         onActionItemClick(R.id.activity_action_settings, "Settings");
         fragmentTest(false, withText("Interface"));
         onListItem(EspressoUtils.SETTINGS_REPOS).perform(click());
