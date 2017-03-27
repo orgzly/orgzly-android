@@ -134,13 +134,15 @@ public class DatabaseMigration {
 
                 if (!TextUtils.isEmpty(content)) {
                     StringBuilder newContent = new StringBuilder();
-                    List<DbProperty> properties = getPropertiesFromContent(content, newContent);
+                    List<String[]> properties = getPropertiesFromContent(content, newContent);
 
                     if (properties.size() > 0) {
                         int pos = 0;
-                        for (DbProperty property : properties) {
-                            DbNoteProperty np = new DbNoteProperty(noteId, pos, property);
-                            np.save(db);
+                        for (String[] property: properties) {
+                            long nameId = DbPropertyName.getOrInsert(db, property[0]);
+                            long valueId = DbPropertyValue.getOrInsert(db, property[1]);
+                            long propertyId = DbProperty.getOrInsert(db, nameId, valueId);
+                            DbNoteProperty.getOrInsert(db, noteId, pos, propertyId);
                         }
 
                         /* Update content and its line count */
@@ -156,8 +158,8 @@ public class DatabaseMigration {
         }
     }
 
-    public static List<DbProperty> getPropertiesFromContent(String content, StringBuilder newContent) {
-        List<DbProperty> properties = new ArrayList<>();
+    public static List<String[]> getPropertiesFromContent(String content, StringBuilder newContent) {
+        List<String[]> properties = new ArrayList<>();
 
         final Pattern propertiesPattern = Pattern.compile("^\\s*:PROPERTIES:(.*?):END: *\n*(.*)", Pattern.DOTALL);
         final Pattern propertyPattern = Pattern.compile("^:([^:\\s]+):\\s+(.*)\\s*$");
@@ -169,8 +171,8 @@ public class DatabaseMigration {
                 Matcher pm = propertyPattern.matcher(propertyLine.trim());
 
                 if (pm.find()) {
-                    properties.add(new DbProperty(
-                            new DbPropertyName(pm.group(1)), new DbPropertyValue(pm.group(2))));
+                    // Add name-value pair
+                    properties.add(new String[] { pm.group(1), pm.group(2) });
                 }
             }
 

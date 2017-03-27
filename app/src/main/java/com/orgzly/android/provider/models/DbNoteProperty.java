@@ -35,25 +35,7 @@ public class DbNoteProperty {
 
     public static class Column implements Columns, BaseColumns {}
 
-    public Long noteId;
-    public Integer position;
-    public DbProperty property;
-
-    /**
-     *
-     * @param noteId
-     * @param position Starts from 0
-     * @param property
-     */
-    public DbNoteProperty(Long noteId, Integer position, DbProperty property) {
-        this.noteId = noteId;
-        this.position = position;
-        this.property = property;
-    }
-
-    public long save(SQLiteDatabase db) {
-        long propertyId = property.save(db);
-
+    public static long getOrInsert(SQLiteDatabase db, long noteId, int position, long propertyId) {
         long id = DatabaseUtils.getId(
                 db,
                 TABLE,
@@ -62,7 +44,6 @@ public class DbNoteProperty {
 
         if (id == 0) {
             ContentValues values = new ContentValues();
-
             values.put("note_id", noteId);
             values.put("position", position);
             values.put("property_id", propertyId);

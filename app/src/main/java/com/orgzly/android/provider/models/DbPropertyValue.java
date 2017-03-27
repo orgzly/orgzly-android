@@ -26,13 +26,7 @@ public class DbPropertyValue {
 
     public static class Column implements Columns, BaseColumns {}
 
-    public String value;
-
-    public DbPropertyValue(String value) {
-        this.value = value;
-    }
-
-    public long save(SQLiteDatabase db) {
+    public static long getOrInsert(SQLiteDatabase db, String value) {
         long id = DatabaseUtils.getId(
                 db,
                 TABLE,
@@ -41,7 +35,6 @@ public class DbPropertyValue {
 
         if (id == 0) {
             ContentValues values = new ContentValues();
-
             values.put("value", value);
 
             id = db.insertOrThrow(TABLE, null, values);

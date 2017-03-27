@@ -188,9 +188,9 @@ public class Provider extends ContentProvider {
 
 
                 table = DbNoteProperty.TABLE + " " +
-                        GenericDatabaseUtils.join(DbProperty.TABLE, "tproperties", DbProperty._ID, DbNoteProperty.TABLE, DbNoteProperty.Column.PROPERTY_ID) +
-                        GenericDatabaseUtils.join(DbPropertyName.TABLE, "tpropertyname", DbPropertyName._ID, "tproperties", DbProperty.Column.NAME_ID) +
-                        GenericDatabaseUtils.join(DbPropertyValue.TABLE, "tpropertyvalue", DbPropertyValue._ID, "tproperties", DbProperty.Column.VALUE_ID);
+                        GenericDatabaseUtils.join(DbProperty.TABLE, "tproperties", DbProperty.Column._ID, DbNoteProperty.TABLE, DbNoteProperty.Column.PROPERTY_ID) +
+                        GenericDatabaseUtils.join(DbPropertyName.TABLE, "tpropertyname", DbPropertyName.Column._ID, "tproperties", DbProperty.Column.NAME_ID) +
+                        GenericDatabaseUtils.join(DbPropertyValue.TABLE, "tpropertyvalue", DbPropertyValue.Column._ID, "tproperties", DbProperty.Column.VALUE_ID);
 
                 projection = new String[] {
                         "tpropertyname." + DbPropertyName.Column.NAME,
@@ -472,15 +472,14 @@ public class Provider extends ContentProvider {
                 noteId = contentValues.getAsLong(ProviderContract.NoteProperties.Param.NOTE_ID);
                 String name = contentValues.getAsString(ProviderContract.NoteProperties.Param.NAME);
                 String value = contentValues.getAsString(ProviderContract.NoteProperties.Param.VALUE);
-                int position = contentValues.getAsInteger(ProviderContract.NoteProperties.Param.POSITION);
+                int pos = contentValues.getAsInteger(ProviderContract.NoteProperties.Param.POSITION);
 
-                id = new DbNoteProperty(
-                        noteId,
-                        position,
-                        new DbProperty(new DbPropertyName(name), new DbPropertyValue(value))
-                ).save(db);
+                long nameId = DbPropertyName.getOrInsert(db, name);
+                long valueId = DbPropertyValue.getOrInsert(db, value);
+                long propertyId = DbProperty.getOrInsert(db, nameId, valueId);
+                long notePropertyId = DbNoteProperty.getOrInsert(db, noteId, pos, propertyId);
 
-                return ContentUris.withAppendedId(uri, id);
+                return ContentUris.withAppendedId(uri, notePropertyId);
 
             case ProviderUris.LOAD_BOOK_FROM_FILE:
                 resultUri = loadBookFromFile(contentValues);
@@ -1396,13 +1395,10 @@ public class Provider extends ContentProvider {
                             /* Insert properties for newly created note. */
                             int i = 0;
                             for (OrgProperty property: node.getHead().getProperties()) {
-                                new DbNoteProperty(
-                                        noteId,
-                                        i++,
-                                        new DbProperty(
-                                                new DbPropertyName(property.getName()),
-                                                new DbPropertyValue(property.getValue()))
-                                ).save(db);
+                                long nameId = DbPropertyName.getOrInsert(db, property.getName());
+                                long valueId = DbPropertyValue.getOrInsert(db, property.getValue());
+                                long propertyId = DbProperty.getOrInsert(db, nameId, valueId);
+                                DbNoteProperty.getOrInsert(db, noteId, i, propertyId);
                             }
                         }
 

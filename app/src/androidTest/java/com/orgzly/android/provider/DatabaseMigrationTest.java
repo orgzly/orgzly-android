@@ -1,7 +1,5 @@
 package com.orgzly.android.provider;
 
-import com.orgzly.android.provider.models.DbProperty;
-
 import org.junit.Test;
 
 import java.util.List;
@@ -13,7 +11,7 @@ public class DatabaseMigrationTest {
     public void testParsePropertiesInNote1() {
         StringBuilder newContent = new StringBuilder();
 
-        List<DbProperty> properties = DatabaseMigration.getPropertiesFromContent(
+        List<String[]> properties = DatabaseMigration.getPropertiesFromContent(
                 "  :PROPERTIES:\n" +
                 "  :CREATED:  [2016-05-23 Mon 11:31]\n" +
                 "  :VOTES: 1\n" +
@@ -22,10 +20,10 @@ public class DatabaseMigrationTest {
                 newContent);
 
         assertEquals(2, properties.size());
-        assertEquals("CREATED", properties.get(0).name.name);
-        assertEquals("[2016-05-23 Mon 11:31]", properties.get(0).value.value);
-        assertEquals("VOTES", properties.get(1).name.name);
-        assertEquals("1", properties.get(1).value.value);
+        assertEquals("CREATED", properties.get(0)[0]);
+        assertEquals("[2016-05-23 Mon 11:31]", properties.get(0)[1]);
+        assertEquals("VOTES", properties.get(1)[0]);
+        assertEquals("1", properties.get(1)[1]);
         assertEquals("  Whatever", newContent.toString());
     }
 
@@ -33,7 +31,7 @@ public class DatabaseMigrationTest {
     public void testParsePropertiesInNote2() {
         StringBuilder newContent = new StringBuilder();
 
-        List<DbProperty> properties = DatabaseMigration.getPropertiesFromContent(
+        List<String[]> properties = DatabaseMigration.getPropertiesFromContent(
                 "Blah\n" +
                 ":PROPERTIES:\n" +
                 ":CREATED:  [2016-05-23 Mon 11:31]\n" +
@@ -49,7 +47,7 @@ public class DatabaseMigrationTest {
     public void testParsePropertiesInNote3() {
         StringBuilder newContent = new StringBuilder();
 
-        List<DbProperty> properties = DatabaseMigration.getPropertiesFromContent(
+        List<String[]> properties = DatabaseMigration.getPropertiesFromContent(
                 ":PROPERTIES:\n" +
                 ":CREATED:  [2016-05-23 Mon 11:31]\n" +
                 ":END:\n" +
