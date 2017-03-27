@@ -35,6 +35,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.startsWith;
 
 /**
  *
@@ -323,6 +324,26 @@ public class QueryFragmentTest extends OrgzlyTest {
         searchForText("t.tag");
         onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(4)));
+    }
+
+    @Test
+    public void testInheritedAndOwnTag() {
+        shelfTestUtils.setupBook("notebook-1",
+                "* Note A :tag1:\n" +
+                "** Note B :tag2:\n" +
+                "*** Note C\n" +
+                "*** Note D\n" +
+                "");
+        activityRule.launchActivity(null);
+
+        onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
+        onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
+        searchForText("t.tag1 t.tag2");
+        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(3)));
+        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note B")), isDisplayed())));
+        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note C")), isDisplayed())));
+        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note D")), isDisplayed())));
     }
 
     @Test

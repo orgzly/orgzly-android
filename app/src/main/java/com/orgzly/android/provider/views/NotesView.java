@@ -5,6 +5,7 @@ import android.provider.BaseColumns;
 import com.orgzly.android.provider.GenericDatabaseUtils;
 import com.orgzly.android.provider.models.DbBook;
 import com.orgzly.android.provider.models.DbNote;
+import com.orgzly.android.provider.models.DbNoteAncestor;
 import com.orgzly.android.provider.models.DbOrgRange;
 import com.orgzly.android.provider.models.DbOrgTimestamp;
 
@@ -18,7 +19,10 @@ public class NotesView {
 
     static public final String CREATE_SQL =
             "CREATE VIEW " + VIEW_NAME + " AS " +
+
             "SELECT " + DbNote.TABLE + ".*, " +
+
+            "group_concat(t_notes_with_inherited_tags." + DbNote.Column.TAGS + ",' ') AS " + Columns.INHERITED_TAGS + ", " +
 
             "t_scheduled_range." + DbOrgRange.Column.STRING + " AS " + Columns.SCHEDULED_RANGE_STRING + ", " +
             "t_scheduled_timestamps_start." + DbOrgTimestamp.Column.STRING + " AS " + Columns.SCHEDULED_TIME_STRING + ", " +
@@ -60,10 +64,20 @@ public class NotesView {
 
             GenericDatabaseUtils.join(DbBook.TABLE, "t_books", DbBook.Column._ID, DbNote.TABLE, DbNote.Column.BOOK_ID) +
 
-            "";
+            GenericDatabaseUtils.join(DbNoteAncestor.TABLE, "t_note_ancestors", DbNoteAncestor.Column.NOTE_ID, DbNote.TABLE, DbNote.Column._ID) +
+            GenericDatabaseUtils.join(DbNote.TABLE, "t_notes_with_inherited_tags", DbNote.Column._ID, "t_note_ancestors", DbNoteAncestor.Column.ANCESTOR_NOTE_ID) +
+
+            " GROUP BY " + f(DbNote.TABLE, DbNote.Column._ID);
+
+    public static String f(String table, String column) {
+        return table + "." + column;
+    }
 
     public static class Columns implements DbNote.Columns, BaseColumns {
         public static String BOOK_NAME = "book_name";
+
+        public static String INHERITED_TAGS = "inherited_tags";
+
 
         public static String SCHEDULED_RANGE_STRING = "scheduled_range_string"; // rename to just scheduled string
         public static String SCHEDULED_TIME_STRING = "scheduled_time_string";

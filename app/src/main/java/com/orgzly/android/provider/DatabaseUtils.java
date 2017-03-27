@@ -8,6 +8,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.provider.models.DbBook;
 import com.orgzly.android.provider.models.DbNote;
+import com.orgzly.android.provider.models.DbNoteAncestor;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.LogUtils;
 
@@ -79,13 +80,13 @@ public class DatabaseUtils {
     }
 
     public static String whereDescendantsAndNotes(long bookId, String ids) {
-        return DbNote.Column._ID + " IN (SELECT DISTINCT a." + DbNote.Column._ID + " FROM " +
-               DbNote.TABLE + " b, " + DbNote.TABLE + " a WHERE " +
-               "a." + DbNote.Column.BOOK_ID + " = " + bookId + " AND " +
-               "b." + DbNote.Column.BOOK_ID + " = " + bookId + " AND " +
-               "b." + DbNote.Column._ID + " IN (" + ids + ") AND " +
-               "a." + DbNote.Column.IS_CUT + " = 0 AND " +
-               "b." + DbNote.Column.LFT + " <= a." + DbNote.Column.LFT + " AND a." + DbNote.Column.RGT + " <= b." + DbNote.Column.RGT + ")";
+        return DbNote.Column._ID + " IN (SELECT DISTINCT d." + DbNote.Column._ID + " FROM " +
+               DbNote.TABLE + " n, " + DbNote.TABLE + " d WHERE " +
+               "d." + DbNote.Column.BOOK_ID + " = " + bookId + " AND " +
+               "n." + DbNote.Column.BOOK_ID + " = " + bookId + " AND " +
+               "n." + DbNote.Column._ID + " IN (" + ids + ") AND " +
+               "d." + DbNote.Column.IS_CUT + " = 0 AND " +
+               "n." + DbNote.Column.LFT + " <= d." + DbNote.Column.LFT + " AND d." + DbNote.Column.RGT + " <= n." + DbNote.Column.RGT + ")";
     }
 
     public static long getId(SQLiteDatabase db, String table, String selection, String[] selectionArgs) {
@@ -259,6 +260,18 @@ public class DatabaseUtils {
         db.execSQL("UPDATE " + DbNote.TABLE + " SET " + DbNote.Column.PARENT_ID + " = " + parentId + " WHERE " + whereUncutBookNotes(bookId));
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "" + (System.currentTimeMillis() - t) + "ms");
+    }
 
+    public static void updateNoteAncestors(SQLiteDatabase db, long bookId) {
+        long t = System.currentTimeMillis();
+
+        db.execSQL("DELETE FROM " + DbNoteAncestor.TABLE + " WHERE " + DbNoteAncestor.Column.BOOK_ID + " = " + bookId);
+
+        db.execSQL("INSERT INTO " + DbNoteAncestor.TABLE + " (book_id, note_id, ancestor_note_id) " +
+                   "SELECT n." + DbNote.Column.BOOK_ID + ", n." + DbNote.Column._ID + ", a." + DbNote.Column._ID + " FROM " + DbNote.TABLE + " n " +
+                   "JOIN " + DbNote.TABLE + " a ON (n." + DbNote.Column.BOOK_ID + " = a." + DbNote.Column.BOOK_ID + " AND a." + DbNote.Column.LFT + " < n." + DbNote.Column.LFT + " AND n." + DbNote.Column.RGT + " < a." + DbNote.Column.RGT + ") " +
+                   "WHERE n." + DbNote.Column.BOOK_ID + " = " + bookId + " AND a." + DbNote.Column.LEVEL + " > 0");
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Done for " + bookId + " in " + + (System.currentTimeMillis() - t) + " ms");
     }
 }

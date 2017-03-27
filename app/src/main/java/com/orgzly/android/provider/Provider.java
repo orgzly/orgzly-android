@@ -36,6 +36,7 @@ import com.orgzly.android.provider.models.DbBookSync;
 import com.orgzly.android.provider.models.DbCurrentVersionedRook;
 import com.orgzly.android.provider.models.DbDbRepo;
 import com.orgzly.android.provider.models.DbNote;
+import com.orgzly.android.provider.models.DbNoteAncestor;
 import com.orgzly.android.provider.models.DbNoteProperty;
 import com.orgzly.android.provider.models.DbOrgRange;
 import com.orgzly.android.provider.models.DbOrgTimestamp;
@@ -255,35 +256,26 @@ public class Provider extends ContentProvider {
     private Cursor queryNotesSearchQueried(SQLiteDatabase db, String query, String sortOrder) {
         SearchQuery searchQuery = new SearchQuery(query);
 
-        String table;
         StringBuilder selection = new StringBuilder();
         List<String> selectionArgs = new ArrayList<>();
 
-        table = NotesView.VIEW_NAME;
+        /* Skip cut notes. */
+        selection.append(DatabaseUtils.WHERE_EXISTING_NOTES);
 
         if (searchQuery.hasTags()) {
-            List<String> whereTags = new ArrayList<>();
-
             /*
              * We are only searching for a tag within a string of tags.
              * "tag" will be found in "few tagy ones"
              */
             for (String tag: searchQuery.getTags()) {
-                whereTags.add("n1." + DbNote.Column.TAGS + " LIKE ?");
+                selection.append(" AND (")
+                        .append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ? OR ")
+                        .append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(" LIKE ?)");
+
+                selectionArgs.add("%" + tag + "%");
                 selectionArgs.add("%" + tag + "%");
             }
-
-            table = "(select n2.* from " + NotesView.VIEW_NAME +
-                    " n1 LEFT OUTER JOIN " + NotesView.VIEW_NAME +
-                    " n2 WHERE " + TextUtils.join(" AND ", whereTags) + " AND " +
-                    " n1." + DbNote.Column.BOOK_ID + " = n2." + DbNote.Column.BOOK_ID + " AND " +
-                    " n1." + DbNote.Column.IS_CUT + " = 0 AND n2." + DbNote.Column.IS_CUT + " = 0 AND " +
-                    "(n1." + DbNote.Column.LFT + " <= n2." + DbNote.Column.LFT +
-                    " and n2." + DbNote.Column.RGT + " <= n1." + DbNote.Column.RGT + ") GROUP BY n2._id) n";
         }
-
-        /* Skip cut notes. */
-        selection.append(DatabaseUtils.WHERE_EXISTING_NOTES);
 
         if (searchQuery.hasBookName()) {
             selection.append(" AND ").append(ProviderContract.Notes.QueryParam.BOOK_NAME).append(" = ?");
@@ -350,7 +342,7 @@ public class Provider extends ContentProvider {
             }
         }
 
-        String sql = "SELECT * FROM " + table + " WHERE " + selection.toString() + " ORDER BY " + sortOrder;
+        String sql = "SELECT * FROM " + NotesView.VIEW_NAME + " WHERE " + selection.toString() + " ORDER BY " + sortOrder;
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, sql, selectionArgs);
         return db.rawQuery(sql, selectionArgs.toArray(new String[selectionArgs.size()]));
@@ -390,7 +382,7 @@ public class Provider extends ContentProvider {
 
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, uri.toString(), values);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, uri.toString());
 
         /* Gets a writable database. This will trigger its creation if it doesn't already exist. */
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
@@ -400,6 +392,7 @@ public class Provider extends ContentProvider {
             for (int i = 0; i < values.length; i++) {
                 insertUnderTransaction(db, uri, values[i]);
             }
+
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -412,7 +405,7 @@ public class Provider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, uri.toString(), contentValues);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, uri.toString());
 
         /* Gets a writable database. This will trigger its creation if it doesn't already exist. */
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
@@ -426,6 +419,7 @@ public class Provider extends ContentProvider {
             db.beginTransaction();
             try {
                 resultUri = insertUnderTransaction(db, uri, contentValues);
+
                 db.setTransactionSuccessful();
             } finally {
                 db.endTransaction();
@@ -589,8 +583,11 @@ public class Provider extends ContentProvider {
                 /* Make space for new note - increment notes' LFT and RGT. */
                 DatabaseUtils.makeSpaceForNewNotes(db, 1, refNotePos, place);
 
-                /* Update number of descendants. */
-                updateDescendantsCountOfAncestors(db, bookId, notePos.getLft(), notePos.getRgt());
+                /*
+                 * If new note can be an ancestor, increment descendants count of all
+                 * its ancestors.
+                 */
+                incrementDescendantsCountForAncestors(db, bookId, notePos.getLft(), notePos.getRgt());
 
             case UNDEFINED:
                 /* Make space for new note - increment root's RGT. */
@@ -606,10 +603,22 @@ public class Provider extends ContentProvider {
 
         long id = db.insertOrThrow(DbNote.TABLE, null, values);
 
+        db.execSQL("INSERT INTO " + DbNoteAncestor.TABLE +
+                   " (" + DbNoteAncestor.Column.BOOK_ID + ", " +
+                   DbNoteAncestor.Column.NOTE_ID +
+                   ", " + DbNoteAncestor.Column.ANCESTOR_NOTE_ID + ") " +
+                   "SELECT " + DbNote.TABLE + "." + DbNote.Column.BOOK_ID + ", " + DbNote.TABLE + "._id, a._id FROM " + DbNote.TABLE +
+                   " JOIN " + DbNote.TABLE + " a ON (" +
+                   DbNote.TABLE + "."  + DbNote.Column.BOOK_ID + " = a." + DbNote.Column.BOOK_ID +
+                   " AND a." + DbNote.Column.LFT + " < "+  DbNote.TABLE + "." + DbNote.Column.LFT +
+                   " AND " +  DbNote.TABLE + "." + DbNote.Column.RGT + " < a." + DbNote.Column.RGT + ") " +
+                   "WHERE " +  DbNote.TABLE + "." + DbNote.Column._ID + " = " + id + " AND " +
+                   "a." + DbNote.Columns.LEVEL + " > 0");
+
         return ContentUris.withAppendedId(uri, id);
     }
 
-    private void updateDescendantsCountOfAncestors(SQLiteDatabase db, long bookId, long lft, long rgt) {
+    private void incrementDescendantsCountForAncestors(SQLiteDatabase db, long bookId, long lft, long rgt) {
         db.execSQL("UPDATE " + DbNote.TABLE +
                    " SET " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " = " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " + 1 " +
                    "WHERE " + DatabaseUtils.whereAncestors(bookId, lft, rgt));
@@ -781,6 +790,7 @@ public class Provider extends ContentProvider {
             db.beginTransaction();
             try {
                 result = deleteUnderTransaction(db, uri, selection, selectionArgs);
+
                 db.setTransactionSuccessful();
             } finally {
                 db.endTransaction();
@@ -886,7 +896,7 @@ public class Provider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, uri.toString(), contentValues, selection, selectionArgs);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, uri.toString(), selection, selectionArgs);
 
         /* Only used by tests. Changing database name so we don't overwrite user's real data. */
         if (uris.matcher.match(uri) == ProviderUris.DB_SWITCH) {
@@ -906,6 +916,7 @@ public class Provider extends ContentProvider {
             db.beginTransaction();
             try {
                 result = updateUnderTransaction(db, uri, contentValues, selection, selectionArgs);
+
                 db.setTransactionSuccessful();
             } finally {
                 db.endTransaction();
@@ -1434,6 +1445,7 @@ public class Provider extends ContentProvider {
 
         db.update(DbBook.TABLE, values, DbBook.Column._ID + "=" + bookId, null);
 
+        DatabaseUtils.updateNoteAncestors(db, bookId);
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookName + ": " + (System.currentTimeMillis() - startedAt) + "ms");
 

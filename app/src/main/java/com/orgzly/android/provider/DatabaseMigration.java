@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.orgzly.BuildConfig;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.provider.models.DbNote;
+import com.orgzly.android.provider.models.DbNoteAncestor;
 import com.orgzly.android.provider.models.DbNoteProperty;
 import com.orgzly.android.provider.models.DbProperty;
 import com.orgzly.android.provider.models.DbPropertyName;
@@ -45,8 +46,9 @@ public class DatabaseMigration {
     private static final int DB_VER_6 = 135;
     private static final int DB_VER_7 = 136;
     private static final int DB_VER_8 = 137;
+    private static final int DB_VER_9 = 138;
 
-    static final int DB_VER_CURRENT = DB_VER_8;
+    static final int DB_VER_CURRENT = DB_VER_9;
 
     /**
      * Start from the old version and go through all changes. No breaks.
@@ -108,7 +110,18 @@ public class DatabaseMigration {
 
             case DB_VER_7:
                 encodeRookUris(db);
+
+            case DB_VER_8:
+                for (String sql : DbNoteAncestor.CREATE_SQL) db.execSQL(sql);
+                populateNoteAncestors(db);
         }
+    }
+
+    private static void populateNoteAncestors(SQLiteDatabase db) {
+        db.execSQL("INSERT INTO note_ancestors (book_id, note_id, ancestor_note_id) " +
+                   "SELECT n.book_id, n._id, a._id FROM notes n " +
+                   "JOIN notes a on (n.book_id = a.book_id AND a.is_visible < n.is_visible AND n.parent_position < a.parent_position) " +
+                   "WHERE a.level > 0");
     }
 
     private static void movePropertiesFromBody(SQLiteDatabase db) {
