@@ -6,7 +6,7 @@ import android.provider.BaseColumns;
 
 import com.orgzly.android.provider.DatabaseUtils;
 
-public class DbPropertyValue extends Model {
+public class DbPropertyValue {
     public static final String TABLE = "property_values";
 
     public static final String[] CREATE_SQL = new String[] {

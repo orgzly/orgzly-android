@@ -1,7 +1,7 @@
 package com.orgzly.android.provider.models;
 
 
-public class DbNoteAncestor extends Model {
+public class DbNoteAncestor {
     public static final String TABLE = "note_ancestors";
 
     public static final String[] CREATE_SQL = new String[] {
