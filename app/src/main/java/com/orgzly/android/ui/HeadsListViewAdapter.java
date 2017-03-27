@@ -396,9 +396,9 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
             hasPostTitleText = true;
         }
 
-        if (head.hasInheritedTags()) {
+        if (note.hasInheritedTags()) {
             builder.append(TITLE_SEPARATOR).append("(")
-                    .append(generateTags(head.getInheritedTags()))
+                    .append(generateTags(note.getInheritedTags()))
                     .append(")");
             hasPostTitleText = true;
         }

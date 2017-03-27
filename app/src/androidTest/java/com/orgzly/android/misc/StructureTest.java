@@ -932,7 +932,7 @@ public class StructureTest extends OrgzlyTest {
         shelf.cut(book.getId(), shelf.getNote("B").getId());
          shelf.paste(book.getId(), shelf.getNote("D").getId(), Place.UNDER);
 
-        assertEquals(1, shelf.getNote("B").getHead().getInheritedTags().size());
-        assertEquals(2, shelf.getNote("C").getHead().getInheritedTags().size());
+        assertEquals(1, shelf.getNote("B").getInheritedTags().size());
+        assertEquals(2, shelf.getNote("C").getInheritedTags().size());
     }
 }

@@ -164,10 +164,15 @@ public class NotesClient {
         note.setContentLines(contentLines);
         note.setFolded(isFolded);
 
+        String inheritedTags = cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.INHERITED_TAGS));
+        if (! TextUtils.isEmpty(inheritedTags)) {
+            note.setInheritedTags(DbNote.dbDeSerializeTags(inheritedTags));
+        }
+
         return note;
     }
 
-    public static OrgHead headFromCursor(Cursor cursor) {
+    private static OrgHead headFromCursor(Cursor cursor) {
         OrgHead head = new OrgHead();
 
         String state = cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.STATE));
@@ -199,11 +204,6 @@ public class NotesClient {
         String tags = cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.TAGS));
         if (! TextUtils.isEmpty(tags)) {
             head.setTags(DbNote.dbDeSerializeTags(tags));
-        }
-
-        String inheritedTags = cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.INHERITED_TAGS));
-        if (! TextUtils.isEmpty(inheritedTags)) {
-            head.setInheritedTags(DbNote.dbDeSerializeTags(inheritedTags));
         }
 
         return head;

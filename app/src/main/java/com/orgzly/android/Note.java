@@ -1,6 +1,10 @@
 package com.orgzly.android;
 
 import com.orgzly.org.OrgHead;
+import com.orgzly.org.OrgStringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Note with {@link OrgHead} and {@link NotePosition} in the notebook.
@@ -17,6 +21,8 @@ public class Note {
 
     /** Is the note folded (collapsed) or unfolded (expanded). */
     private boolean isFolded; // FIXME: Already in NotePosition
+
+    private List<String> inheritedTags;
 
 
     public Note() {
@@ -76,6 +82,39 @@ public class Note {
 
     public void setFolded(boolean folded) {
         isFolded = folded;
+    }
+
+
+    /**
+     * Inherited tags.
+     *
+     * @return list of tags
+     */
+    public List<String> getInheritedTags() {
+        if (inheritedTags == null) {
+            return new ArrayList<>();
+        } else {
+            return inheritedTags;
+        }
+    }
+
+    public boolean hasInheritedTags() {
+        return inheritedTags != null && !inheritedTags.isEmpty();
+    }
+
+    public void setInheritedTags(String[] tags) {
+        if (tags == null) {
+            throw new IllegalArgumentException("Tags passed to setTags cannot be null");
+        }
+
+        this.inheritedTags = new ArrayList<>();
+
+        /* Only add non-null and non-empty strings. */
+        for (String tag: tags) {
+            if (!OrgStringUtils.isEmpty(tag)) {
+                this.inheritedTags.add(tag);
+            }
+        }
     }
 
     public String toString() {
