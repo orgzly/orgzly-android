@@ -1432,12 +1432,18 @@ public class Provider extends ContentProvider {
             reader.close();
         }
 
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookName + ": Parsing done: " + (System.currentTimeMillis() - startedAt) + " ms");
+
         if (rookUrl != null) {
             updateOrInsertBookLink(db, bookId, repoUrl, rookUrl);
             updateOrInsertBookSync(db, bookId, repoUrl, rookUrl, rookRevision, rookMtime);
         }
 
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookName + ": Book link and sync updated: " + (System.currentTimeMillis() - startedAt) + " ms");
+
         DatabaseUtils.updateParentIds(db, bookId);
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookName + ": Parents updated: " + (System.currentTimeMillis() - startedAt) + " ms");
 
         /* Update book with modification time and mark it as complete. */
         ContentValues values = new ContentValues();
@@ -1447,7 +1453,7 @@ public class Provider extends ContentProvider {
 
         DatabaseUtils.updateNoteAncestors(db, bookId);
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookName + ": " + (System.currentTimeMillis() - startedAt) + "ms");
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookName + ": Ancestors updated: " + (System.currentTimeMillis() - startedAt) + " ms");
 
         return uri;
     }
