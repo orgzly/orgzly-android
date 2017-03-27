@@ -156,12 +156,11 @@ public class PasteNotesAction implements Action {
         /* Insert ancestors for all notes of the batch. */
         db.execSQL("INSERT INTO " + DbNoteAncestor.TABLE +
                    " (" + DbNoteAncestor.Column.BOOK_ID + ", " + DbNoteAncestor.Column.NOTE_ID + ", " + DbNoteAncestor.Column.ANCESTOR_NOTE_ID + ") " +
-                   "SELECT " + DbNote.TABLE + "." + DbNote.Column.BOOK_ID + ", " + DbNote.TABLE + "._id, a._id FROM " + DbNote.TABLE +
-                   " JOIN " + DbNote.TABLE + " a ON (" +
-                   DbNote.TABLE + "." + DbNote.Column.BOOK_ID + " = a." + DbNote.Column.BOOK_ID +
-                   " AND a." + DbNote.Column.LFT + " < " + DbNote.TABLE + "." + DbNote.Column.LFT +
-                   " AND " + DbNote.TABLE + "." + DbNote.Column.RGT + " < a." + DbNote.Column.RGT + ") " +
-                   "WHERE " + DbNote.TABLE + "." + DbNote.Column.IS_CUT + " = " + batchId + " AND " +
+                   "SELECT n." + DbNote.Column.BOOK_ID + ", n." + DbNote.Column._ID + ", a." + DbNote.Column._ID + " FROM " + DbNote.TABLE + " n " +
+                   " JOIN " + DbNote.TABLE + " a ON (n." + DbNote.Column.BOOK_ID + " = a." + DbNote.Column.BOOK_ID +
+                   " AND a." + DbNote.Column.LFT + " < n." + DbNote.Column.LFT +
+                   " AND n." + DbNote.Column.RGT + " < a." + DbNote.Column.RGT + ") " +
+                   "WHERE n." + DbNote.Column.IS_CUT + " = " + batchId + "  AND " +
                    "a." + DbNote.Columns.LEVEL + " > 0");
 
         /* Make the batch visible. */

@@ -80,13 +80,13 @@ public class DatabaseUtils {
     }
 
     public static String whereDescendantsAndNotes(long bookId, String ids) {
-        return DbNote.Column._ID + " IN (SELECT DISTINCT a." + DbNote.Column._ID + " FROM " +
-               DbNote.TABLE + " b, " + DbNote.TABLE + " a WHERE " +
-               "a." + DbNote.Column.BOOK_ID + " = " + bookId + " AND " +
-               "b." + DbNote.Column.BOOK_ID + " = " + bookId + " AND " +
-               "b." + DbNote.Column._ID + " IN (" + ids + ") AND " +
-               "a." + DbNote.Column.IS_CUT + " = 0 AND " +
-               "b." + DbNote.Column.LFT + " <= a." + DbNote.Column.LFT + " AND a." + DbNote.Column.RGT + " <= b." + DbNote.Column.RGT + ")";
+        return DbNote.Column._ID + " IN (SELECT DISTINCT d." + DbNote.Column._ID + " FROM " +
+               DbNote.TABLE + " n, " + DbNote.TABLE + " d WHERE " +
+               "d." + DbNote.Column.BOOK_ID + " = " + bookId + " AND " +
+               "n." + DbNote.Column.BOOK_ID + " = " + bookId + " AND " +
+               "n." + DbNote.Column._ID + " IN (" + ids + ") AND " +
+               "d." + DbNote.Column.IS_CUT + " = 0 AND " +
+               "n." + DbNote.Column.LFT + " <= d." + DbNote.Column.LFT + " AND d." + DbNote.Column.RGT + " <= n." + DbNote.Column.RGT + ")";
     }
 
     public static long getId(SQLiteDatabase db, String table, String selection, String[] selectionArgs) {
