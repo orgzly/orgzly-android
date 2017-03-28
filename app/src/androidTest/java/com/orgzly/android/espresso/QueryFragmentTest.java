@@ -193,7 +193,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(3)));
         onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(longClick());
         onView(withId(R.id.query_cab_edit)).perform(click());
-        onView(withText("State")).perform(click());
+        onView(withText(R.string.state)).perform(click());
         onView(withText("NOTE")).perform(click());
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
     }
@@ -225,15 +225,15 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(longClick());
         onView(withId(R.id.query_cab_edit)).perform(click());
-        onView(withText("Schedule")).perform(click());
+        onView(withText(R.string.schedule)).perform(click());
 
         onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
-        onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
+        onView(withText(R.string.ok)).perform(click());
         onView(withId(R.id.dialog_timestamp_time_picker)).perform(scrollTo(), click());
         onView(withClassName(equalTo(TimePicker.class.getName()))).perform(setTime(9, 15));
-        onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
-        onView(withText("Set")).perform(click());
+        onView(withText(R.string.ok)).perform(click());
+        onView(withText(R.string.set)).perform(click());
 
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
         onView(withText(userDateTime("<2014-04-01 Tue 09:15>"))).check(matches(isDisplayed()));
@@ -376,18 +376,18 @@ public class QueryFragmentTest extends OrgzlyTest {
         onListItem(0).onChildView(withId(R.id.item_head_book_name_text)).check(matches(withText("book-one")));
 
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withText("Notebooks")).perform(click());
+        onView(withText(R.string.notebooks)).perform(click());
 
         onListItem(0).perform(longClick());
-        onView(withText("Rename")).perform(click());
+        onView(withText(R.string.books_context_menu_item_rename)).perform(click());
         onView(withId(R.id.name)).perform(replaceText("renamed book-one"), closeSoftKeyboardWithDelay());
-        onView(withText("Rename")).perform(click());
+        onView(withText(R.string.rename)).perform(click());
 
         /* The other book is now first. Rename it too to keep the order of notes the same. */
         onListItem(0).perform(longClick());
-        onView(withText("Rename")).perform(click());
+        onView(withText(R.string.books_context_menu_item_rename)).perform(click());
         onView(withId(R.id.name)).perform(replaceText("renamed book-two"), closeSoftKeyboardWithDelay());
-        onView(withText("Rename")).perform(click());
+        onView(withText(R.string.rename)).perform(click());
 
         pressBack();
 

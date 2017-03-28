@@ -48,7 +48,7 @@
                 android:id="@+id/book_cab_state"
                 android:icon="?attr/oic_edit_state_action_mode"
                 app:showAsAction="ifRoom"
-                android:title="@string/heads_action_menu_item_state">
+                android:title="@string/state">
 
                 <menu /> <!-- Added dynamically from configured states. -->
             </item>

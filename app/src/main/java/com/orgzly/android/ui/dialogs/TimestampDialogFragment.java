@@ -264,7 +264,7 @@ public class TimestampDialogFragment extends DialogFragment {
         mDialog = new AlertDialog.Builder(mContext)
                 .setTitle(getArguments().getInt(ARG_TITLE))
                 .setView(view)
-                .setPositiveButton("Set", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (mActivityListener != null) {
@@ -273,7 +273,7 @@ public class TimestampDialogFragment extends DialogFragment {
                         }
                     }
                 })
-                .setNeutralButton("Clear", new DialogInterface.OnClickListener() {
+                .setNeutralButton(R.string.clear, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (mActivityListener != null) {
@@ -281,7 +281,7 @@ public class TimestampDialogFragment extends DialogFragment {
                         }
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (mActivityListener != null) {

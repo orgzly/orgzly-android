@@ -90,7 +90,6 @@
     <string name="heads_action_menu_item_paste_above">在上面粘贴</string>
     <string name="heads_action_menu_item_paste_below">在下面粘贴</string>
     <string name="heads_action_menu_item_paste_under">在底下粘贴</string>
-    <string name="heads_action_menu_item_state">标记</string>
     <string name="heads_moving_action_menu_item_demote">降级</string>
     <string name="heads_moving_action_menu_item_down">向下移</string>
     <string name="heads_moving_action_menu_item_promote">提升</string>

@@ -58,7 +58,7 @@ public class ReposActivityTest extends OrgzlyTest {
         String d = Environment.getExternalStorageDirectory().getPath();
         String repoUri = "file:" + d;
 
-        onActionItemClick(R.id.repos_options_menu_item_new, "New Repository");
+        onActionItemClick(R.id.repos_options_menu_item_new, R.string.repos_options_menu_new_repo);
         onView(withText(R.string.directory)).perform(click());
         onView(withId(R.id.fragment_repo_directory_browse_button)).perform(click());
         onView(withId(R.id.browser_title)).check(matches(withText(d)));
@@ -85,7 +85,7 @@ public class ReposActivityTest extends OrgzlyTest {
     public void testDirectoryRepoBrowsingStartsWithInvalidDirectory() {
         startActivityWithIntent(Intent.ACTION_VIEW, null, null);
 
-        onActionItemClick(R.id.repos_options_menu_item_new, "New Repository");
+        onActionItemClick(R.id.repos_options_menu_item_new, R.string.repos_options_menu_new_repo);
         onView(withText(R.string.directory)).perform(click());
         onView(withId(R.id.fragment_repo_directory)).perform(replaceText("non-existent-directory"));
         onView(withId(R.id.fragment_repo_directory_browse_button)).perform(click());
@@ -95,7 +95,7 @@ public class ReposActivityTest extends OrgzlyTest {
     public void testSavingWithBogusDirectoryUri() {
         startActivityWithIntent(Intent.ACTION_VIEW, null, null);
 
-        onActionItemClick(R.id.repos_options_menu_item_new, "New Repository");
+        onActionItemClick(R.id.repos_options_menu_item_new, R.string.repos_options_menu_new_repo);
         onView(withText(R.string.directory)).perform(click());
         onView(withId(R.id.fragment_repo_directory)).perform(replaceText("non-existent-directory"));
         onView(withId(R.id.done)).perform(click());
@@ -111,7 +111,7 @@ public class ReposActivityTest extends OrgzlyTest {
 
         startActivityWithIntent(Intent.ACTION_VIEW, null, null);
 
-        onActionItemClick(R.id.repos_options_menu_item_new, "New Repository");
+        onActionItemClick(R.id.repos_options_menu_item_new, R.string.repos_options_menu_new_repo);
         onView(withText(R.string.directory)).perform(click());
         onView(withId(R.id.fragment_repo_directory)).perform(replaceText(repoUri));
         onView(withId(R.id.done)).perform(click());
@@ -129,7 +129,7 @@ public class ReposActivityTest extends OrgzlyTest {
 
         startActivityWithIntent(Intent.ACTION_VIEW, null, null);
 
-        onActionItemClick(R.id.repos_options_menu_item_new, "New Repository");
+        onActionItemClick(R.id.repos_options_menu_item_new, R.string.repos_options_menu_new_repo);
         onView(withText(R.string.dropbox)).perform(click());
         onView(withId(R.id.fragment_repo_dropbox_directory)).perform(replaceText(localDir));
         onView(withId(R.id.done)).perform(click());

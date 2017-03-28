@@ -96,7 +96,7 @@ class EspressoUtils {
     /**
      * Item could either be on the action bar (visible) or in the overflow menu.
      */
-    static void onActionItemClick(int id, String text) {
+    static void onActionItemClick(int id, int resourceId) {
         try {
             onView(withId(id)).perform(click());
 
@@ -106,7 +106,7 @@ class EspressoUtils {
             // Open the overflow menu OR open the options menu,
             // depending on if the device has a hardware or software overflow menu button.
             openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-            onView(withText(text)).perform(click());
+            onView(withText(resourceId)).perform(click());
         }
     }
 
@@ -146,7 +146,7 @@ class EspressoUtils {
     }
 
     private static void settingsSetKeywords(int viewId, String keywords) {
-        onActionItemClick(R.id.activity_action_settings, "Settings");
+        onActionItemClick(R.id.activity_action_settings, R.string.settings);
 
         onListItem(SETTINGS_STATE_KEYWORDS).perform(click());
 

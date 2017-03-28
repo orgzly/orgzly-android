@@ -128,7 +128,7 @@ public class MiscTest extends OrgzlyTest {
                 .atPosition(5)
                 .perform(click());
         onView(withText("Note #2.")).perform(click());
-        onActionItemClick(R.id.activity_action_settings, "Settings");
+        onActionItemClick(R.id.activity_action_settings, R.string.settings);
         onListItem(EspressoUtils.SETTINGS_CLEAR_DATABASE).perform(click());
         onView(withText(R.string.ok)).perform(click());
 
@@ -171,7 +171,7 @@ public class MiscTest extends OrgzlyTest {
         onListItem(2).perform(click());
         onListItem(3).perform(click());
         onView(withId(R.id.book_cab_edit)).perform(click());
-        onView(withText("State")).perform(click());
+        onView(withText(R.string.state)).perform(click());
         onView(withText("DONE")).perform(click());
 
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("DONE  Note #1."), isDisplayed())));
@@ -220,14 +220,14 @@ public class MiscTest extends OrgzlyTest {
         onListItem(2).perform(click());
         onListItem(3).perform(click());
         onView(withId(R.id.book_cab_edit)).perform(click());
-        onView(withText("Schedule")).perform(click());
+        onView(withText(R.string.schedule)).perform(click());
         onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
-        onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
+        onView(withText(R.string.ok)).perform(click());
         onView(withId(R.id.dialog_timestamp_time_picker)).perform(scrollTo(), click());
         onView(withClassName(equalTo(TimePicker.class.getName()))).perform(setTime(9, 15));
-        onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
-        onView(withText("Set")).perform(click());
+        onView(withText(R.string.ok)).perform(click());
+        onView(withText(R.string.set)).perform(click());
 
         onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(isDisplayed(), withText(userDateTime("<2014-04-01 Tue 09:15>")))));
         onListItem(2).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(isDisplayed(), withText(userDateTime("<2014-04-01 Tue 09:15>")))));
@@ -279,7 +279,7 @@ public class MiscTest extends OrgzlyTest {
     public void testBookTitleMustBeDisplayedWhenOpeningBookFromDrawer() {
         shelfTestUtils.setupBook("book-one", "Sample book used for tests\n* 1\n* 2\n* 3\n");
         activityRule.launchActivity(null);
-        onView(allOf(isDescendantOfA(withClassName(containsString("ActionBarContainer"))), withText("Notebooks"))).check(matches(isDisplayed()));
+        onView(allOf(isDescendantOfA(withClassName(containsString("ActionBarContainer"))), withText(R.string.notebooks))).check(matches(isDisplayed()));
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(allOf(isDescendantOfA(withId(R.id.fragment_left_drawer_container)), withText("book-one"), isDisplayed())).perform(click());
         onView(allOf(isDescendantOfA(withClassName(containsString("ActionBarContainer"))), withText("book-one"))).check(matches(isDisplayed()));
@@ -340,7 +340,7 @@ public class MiscTest extends OrgzlyTest {
 
         /* TO DO -> DONE */
         onView(withId(R.id.book_cab_edit)).perform(click());
-        onView(withText("State")).perform(click());
+        onView(withText(R.string.state)).perform(click());
         onView(withText("DONE")).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("TODO"))));
         onListItem(1).onChildView(withId(R.id.item_head_closed)).check(matches(not(isDisplayed())));
@@ -348,7 +348,7 @@ public class MiscTest extends OrgzlyTest {
 
         /* DONE -> NOTE */
         onView(withId(R.id.book_cab_edit)).perform(click());
-        onView(withText("State")).perform(click());
+        onView(withText(R.string.state)).perform(click());
         onView(withText("NOTE")).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("Note"))));
         onListItem(1).onChildView(withId(R.id.item_head_closed)).check(matches(not(isDisplayed())));
@@ -356,7 +356,7 @@ public class MiscTest extends OrgzlyTest {
 
         /* NOTE -> DONE */
         onView(withId(R.id.book_cab_edit)).perform(click());
-        onView(withText("State")).perform(click());
+        onView(withText(R.string.state)).perform(click());
         onView(withText("DONE")).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("DONE"))));
         onListItem(1).onChildView(withId(R.id.item_head_closed)).check(matches(isDisplayed()));
@@ -364,7 +364,7 @@ public class MiscTest extends OrgzlyTest {
 
         /* DONE -> OLD */
         onView(withId(R.id.book_cab_edit)).perform(click());
-        onView(withText("State")).perform(click());
+        onView(withText(R.string.state)).perform(click());
         onView(withText("OLD")).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("OLD"))));
         onListItem(1).onChildView(withId(R.id.item_head_closed)).check(matches(isDisplayed()));
@@ -429,7 +429,7 @@ public class MiscTest extends OrgzlyTest {
         onListItem(1).perform(click());
         onListItem(2).perform(click());
         onView(withId(R.id.book_cab_edit)).perform(click());
-        onView(withText("State")).perform(click());
+        onView(withText(R.string.state)).perform(click());
         onView(withText("TODO")).perform(click());
 
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("TODO  Note 1"), isDisplayed())));
@@ -459,8 +459,8 @@ public class MiscTest extends OrgzlyTest {
         fragmentTest(false, withId(R.id.fragment_book_preface_container));
         pressBack();
         pressBack();
-        onActionItemClick(R.id.activity_action_settings, "Settings");
-        fragmentTest(false, withText("Interface"));
+        onActionItemClick(R.id.activity_action_settings, R.string.settings);
+        fragmentTest(false, withText(R.string.prefs_interface));
         onListItem(EspressoUtils.SETTINGS_REPOS).perform(click());
         fragmentTest(false, withId(R.id.fragment_repos_flipper));
         onListItem(1).perform(click());
@@ -542,7 +542,7 @@ public class MiscTest extends OrgzlyTest {
 
         /* Set #+TITLE */
         onView(allOf(withText("book-name"), isDisplayed())).perform(click());
-        onActionItemClick(R.id.books_options_menu_book_preface, "Edit preface");
+        onActionItemClick(R.id.books_options_menu_book_preface, R.string.edit_book_preface);
         onView(withId(R.id.fragment_book_preface_content))
                 .perform(replaceText("#+TITLE: Notebook Title"), closeSoftKeyboardWithDelay());
         onView(withId(R.id.done)).perform(click());

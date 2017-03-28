@@ -100,7 +100,6 @@
     <string name="books_context_menu_item_force_save">ذخیره اجباری</string>
     <string name="books_context_menu_item_force_load">بارکردن اجباری</string>
 
-    <string name="heads_action_menu_item_state">وضعیت</string>
     <string name="move">انتقال</string>
     <string name="cut">برش</string>
     <string name="paste">چسباندن</string>

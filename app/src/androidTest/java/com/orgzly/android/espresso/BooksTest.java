@@ -78,35 +78,35 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testOpenSettings() {
-        onActionItemClick(R.id.activity_action_settings, "Settings");
-        onView(withText("Interface")).check(matches(isDisplayed()));
+        onActionItemClick(R.id.activity_action_settings, R.string.settings);
+        onView(withText(R.string.prefs_interface)).check(matches(isDisplayed()));
     }
 
     @Test
     public void testReturnToNonExistentBookByPressingBack() {
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withText("Notebooks")).perform(click());
+        onView(withText(R.string.notebooks)).perform(click());
         onView(allOf(withText("book-one"), isDisplayed())).perform(longClick());
-        onData(hasToString(containsString("Delete"))).perform(click());
+        onData(hasToString(containsString(context.getString(R.string.delete)))).perform(click());
         onView(withText(R.string.ok)).perform(click());
         pressBack();
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
-        onView(withText("This notebook does not exist any more.")).check(matches(isDisplayed()));
+        onView(withText(R.string.message_book_does_not_exist)).check(matches(isDisplayed()));
         onView(withId(R.id.fab)).check(matches(not(isDisplayed())));
         pressBack();
         onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
         onView(allOf(withText("book-two"), isDisplayed())).perform(click());
-        onView(allOf(withText("This notebook does not exist any more."), isDisplayed())).check(doesNotExist());
+        onView(allOf(withText(R.string.message_book_does_not_exist), isDisplayed())).check(doesNotExist());
     }
 
     @Test
     public void testEnterPrefaceForNonExistentBook() {
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withText("Notebooks")).perform(click());
+        onView(withText(R.string.notebooks)).perform(click());
         onView(allOf(withText("book-one"), isDisplayed())).perform(longClick());
-        onData(hasToString(containsString("Delete"))).perform(click());
+        onData(hasToString(containsString(context.getString(R.string.delete)))).perform(click());
         onView(withText(R.string.ok)).perform(click());
         pressBack();
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
@@ -118,16 +118,16 @@ public class BooksTest extends OrgzlyTest {
     @Test
     public void testExport() {
         onView(allOf(withText("book-one"), isDisplayed())).perform(longClick());
-        onData(hasToString(containsString("Export"))).perform(click());
+        onData(hasToString(containsString(context.getString(R.string.books_context_menu_item_export)))).perform(click());
 
         /*
          * Depending on whether external storage is available or not,
          * export should either succeed or fail.
          */
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            onSnackbar().check(matches(withText(startsWith("Notebook exported to"))));
+            onSnackbar().check(matches(withText(startsWith(context.getString(R.string.book_exported, "")))));
         } else {
-            onSnackbar().check(matches(withText(startsWith("Failed exporting book:"))));
+            onSnackbar().check(matches(withText(startsWith(context.getString(R.string.failed_exporting_book, "")))));
         }
     }
 
@@ -158,8 +158,8 @@ public class BooksTest extends OrgzlyTest {
         onView(allOf(withText("book-created-from-scratch"), isDisplayed())).check(matches(isDisplayed()));
 
         onListItem(0).perform(longClick());
-        onView(withText("Delete")).perform(click());
-        onView(withText("OK")).perform(click());
+        onView(withText(R.string.delete)).perform(click());
+        onView(withText(R.string.ok)).perform(click());
 
         onView(withText("book-created-from-scratch")).check(doesNotExist());
     }
@@ -178,11 +178,11 @@ public class BooksTest extends OrgzlyTest {
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
 
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withText("Notebooks")).perform(click());
+        onView(withText(R.string.notebooks)).perform(click());
 
         onListItem(1).perform(longClick());
-        onView(withText("Delete")).perform(click());
-        onView(withText("OK")).perform(click());
+        onView(withText(R.string.delete)).perform(click());
+        onView(withText(R.string.ok)).perform(click());
     }
 
     @Test
@@ -210,9 +210,9 @@ public class BooksTest extends OrgzlyTest {
     @Test
     public void testRenameBookToExistingName() {
         onListItem(0).perform(longClick());
-        onView(withText("Rename")).perform(click());
+        onView(withText(R.string.books_context_menu_item_rename)).perform(click());
         onView(withId(R.id.name)).perform(replaceText("book-two"), closeSoftKeyboardWithDelay());
-        onView(withText("Rename")).perform(click());
+        onView(withText(R.string.rename)).perform(click());
 
         onListItem(0).onChildView(withId(R.id.item_book_last_action))
                 .check(matches(withText(endsWith("Notebook with that name already exists"))));

@@ -60,7 +60,7 @@ public class NewNoteTest extends OrgzlyTest {
         onView(allOf(withText("booky"), isDisplayed())).perform(click());
 
         /* Enable "Created at" in settings. */
-        onActionItemClick(R.id.activity_action_settings, "Settings");
+        onActionItemClick(R.id.activity_action_settings, R.string.settings);
         onListItem(EspressoUtils.SETTINGS_CREATED_AT).perform(click());
         pressBack();
 
@@ -80,7 +80,7 @@ public class NewNoteTest extends OrgzlyTest {
 
         onListItem(2).perform(longClick());
         onView(withId(R.id.book_cab_new)).perform(click());
-        onView(withText("New under")).perform(click());
+        onView(withText(R.string.heads_action_menu_item_add_under)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceText("A"), closeSoftKeyboardWithDelay());
         onView(withId(R.id.done)).perform(click());
         onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText("2")));
@@ -98,7 +98,7 @@ public class NewNoteTest extends OrgzlyTest {
 
         onListItem(2).perform(longClick());
         onView(withId(R.id.book_cab_new)).perform(click());
-        onView(withText("New above")).perform(click());
+        onView(withText(R.string.heads_action_menu_item_add_above)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceText("A"), closeSoftKeyboardWithDelay());
         onView(withId(R.id.done)).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText("1")));
@@ -122,7 +122,7 @@ public class NewNoteTest extends OrgzlyTest {
 
         onListItem(2).perform(longClick());
         onView(withId(R.id.book_cab_new)).perform(click());
-        onView(withText("New below")).perform(click());
+        onView(withText(R.string.heads_action_menu_item_add_below)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceText("A"), closeSoftKeyboardWithDelay());
         onView(withId(R.id.done)).perform(click());
         onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText("2")));

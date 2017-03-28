@@ -78,7 +78,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onListItem(1).perform(click());
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(R.string.schedule_button_hint)));
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
-        onView(withText("Set")).perform(click());
+        onView(withText(R.string.set)).perform(click());
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
     }
 
@@ -105,7 +105,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onListItem(1).perform(click());
         onView(withId(R.id.fragment_note_deadline_button)).check(matches(withText(R.string.deadline_button_hint)));
         onView(withId(R.id.fragment_note_deadline_button)).perform(click());
-        onView(withText("Set")).perform(click());
+        onView(withText(R.string.set)).perform(click());
         onView(withId(R.id.fragment_note_deadline_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
     }
 
@@ -201,7 +201,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onListItem(1).perform(click());
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(R.string.schedule_button_hint)));
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
-        onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
+        onView(withText(R.string.set)).perform(click());
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
         toLandscape(activityRule);
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
@@ -214,7 +214,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(R.string.schedule_button_hint)));
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
         toLandscape(activityRule);
-        onView(withText("Set")).perform(closeSoftKeyboardWithDelay(), click());
+        onView(withText(R.string.set)).perform(closeSoftKeyboardWithDelay(), click());
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
     }
 
@@ -237,14 +237,14 @@ public class NoteFragmentTest extends OrgzlyTest {
         /* Set date. */
         onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
-        onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
+        onView(withText(R.string.ok)).perform(click());
 
         /* Set time. */
         onView(withId(R.id.dialog_timestamp_time_picker)).perform(scrollTo(), click());
         onView(withClassName(equalTo(TimePicker.class.getName()))).perform(setTime(15, 15));
-        onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
+        onView(withText(R.string.ok)).perform(click());
 
-        onView(withText("Set")).perform(click());
+        onView(withText(R.string.set)).perform(click());
 
         onView(withId(R.id.fragment_note_deadline_button)).check(matches(allOf(withText(userDateTime("<2014-04-01 Tue 15:15>")), isDisplayed())));
     }
@@ -257,23 +257,23 @@ public class NoteFragmentTest extends OrgzlyTest {
 
         toPortrait(activityRule);
 
-        onView(withText("Deadline time")).perform(click());
+        onView(withText(R.string.deadline_button_hint)).perform(click());
 
         /* Set date. */
         onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
-        onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
+        onView(withText(R.string.ok)).perform(click());
 
         /* Set time. */
         onView(withId(R.id.dialog_timestamp_time_picker)).perform(scrollTo(), click());
         onView(withClassName(equalTo(TimePicker.class.getName()))).perform(setTime(9, 15));
-        onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
+        onView(withText(R.string.ok)).perform(click());
 
         /* Rotate screen. */
         toLandscape(activityRule);
 
         /* Set time. */
-        onView(withText("Set")).perform(click());
+        onView(withText(R.string.set)).perform(click());
 
         onView(withId(R.id.fragment_note_deadline_button)).check(matches(allOf(withText(userDateTime("<2014-04-01 Tue 09:15>")), isDisplayed())));
     }
@@ -284,7 +284,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onListItem(1).perform(click());
 
         /* Change lowest priority to A. */
-        onActionItemClick(R.id.activity_action_settings, "Settings");
+        onActionItemClick(R.id.activity_action_settings, R.string.settings);
         onListItem(EspressoUtils.SETTINGS_LOWEST_PRIORITY).perform(click());
         onData(hasToString(containsString("A"))).perform(click());
         pressBack();
@@ -292,7 +292,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_priority)).check(matches(spinnerItemCount(2)));
 
         /* Change lowest priority to C. */
-        onActionItemClick(R.id.activity_action_settings, "Settings");
+        onActionItemClick(R.id.activity_action_settings, R.string.settings);
         onListItem(EspressoUtils.SETTINGS_LOWEST_PRIORITY).perform(click());
         onData(hasToString(containsString("C"))).perform(click());
         pressBack();

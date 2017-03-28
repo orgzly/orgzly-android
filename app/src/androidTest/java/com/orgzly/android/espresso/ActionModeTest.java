@@ -114,7 +114,7 @@ public class ActionModeTest extends OrgzlyTest {
         onListItem(3).perform(longClick());
 
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withText("Notebooks")).perform(click());
+        onView(withText(R.string.notebooks)).perform(click());
 
         onView(withId(R.id.book_cab_new)).check(matches(not(isDisplayed())));
     }
@@ -134,7 +134,7 @@ public class ActionModeTest extends OrgzlyTest {
      */
     @Test
     public void testSelectingNoteThenOpeningNoteAndGoingBack() {
-        onActionItemClick(R.id.activity_action_settings, "Settings");
+        onActionItemClick(R.id.activity_action_settings, R.string.settings);
         onListItem(EspressoUtils.SETTINGS_REVERSED_NOTE_CLICK_ACTION).perform(click());
         pressBack();
         onListItem(3).perform(click()); // Selects

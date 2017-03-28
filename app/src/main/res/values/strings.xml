@@ -7,6 +7,7 @@
     <string name="ok">OK</string>
     <string name="yes">Yes</string>
     <string name="unlink">Unlink</string> <!-- Unlink from Dropbox -->
+    <string name="clear">Clear</string>
     <string name="cancel">Cancel</string>
     <string name="create">Create</string>
     <string name="select">Select</string>
@@ -107,7 +108,6 @@
     <string name="books_context_menu_item_force_save">Force Save</string>
     <string name="books_context_menu_item_force_load">Force Load</string>
 
-    <string name="heads_action_menu_item_state">State</string>
     <string name="move">Move</string>
     <string name="cut">Cut</string>
     <string name="paste">Paste</string>
@@ -180,7 +180,7 @@
     <string name="new_search">New Search</string>
     <string name="active">Active</string>
     <string name="no_repos">No repositories configured</string>
-    <string name="multiple_repos">Multiple repositories exist.</string>
+    <string name="multiple_repos">Multiple repositories exist</string>
     <string name="detected_encoding_sample">UTF-8 detected</string>
     <string name="selected_encoding_sample">UTF-8 selected</string>
     <string name="used_encoding_sample">UTF-8 used</string>

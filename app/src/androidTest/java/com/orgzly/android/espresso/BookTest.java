@@ -132,8 +132,8 @@ public class BookTest extends OrgzlyTest {
         onListItem(9).perform(longClick());
 
         onView(withId(R.id.book_cab_edit)).perform(click());
-        onView(withText("Schedule")).perform(click());
-        onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
+        onView(withText(R.string.schedule)).perform(click());
+        onView(withText(R.string.set)).perform(click());
 
         onListItem(9).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(withText(userDateTime("<2014-05-26 Mon>")), isDisplayed())));
     }
@@ -147,8 +147,8 @@ public class BookTest extends OrgzlyTest {
         onListItem(9).perform(click());
 
         onView(withId(R.id.book_cab_edit)).perform(click());
-        onView(withText("Schedule")).perform(click());
-        onView(withText("Clear")).perform(click());
+        onView(withText(R.string.schedule)).perform(click());
+        onView(withText(R.string.clear)).perform(click());
 
         onListItem(8).onChildView(withId(R.id.item_head_scheduled)).check(matches(not(isDisplayed())));
         onListItem(9).onChildView(withId(R.id.item_head_scheduled)).check(matches(not(isDisplayed())));
@@ -163,7 +163,7 @@ public class BookTest extends OrgzlyTest {
         onListItem(8).perform(click());
 
         onView(withId(R.id.book_cab_edit)).perform(click());
-        onView(withText("State")).perform(click());
+        onView(withText(R.string.state)).perform(click());
         onView(withText("TODO")).perform(click());
 
         onListItem(5).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("TODO"))));
@@ -216,7 +216,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testBackFromSettingsShouldReturnToPreviousFragment() {
-        onActionItemClick(R.id.activity_action_settings, "Settings");
+        onActionItemClick(R.id.activity_action_settings, R.string.settings);
         pressBack();
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
     }
@@ -226,7 +226,7 @@ public class BookTest extends OrgzlyTest {
         onListItem(2).perform(longClick());
 
         openContextualActionModeOverflowMenu();
-        onView(withText("Cut")).perform(click());
+        onView(withText(R.string.cut)).perform(click());
 
         /* Open note at the same position as the cut one. */
         onListItem(2).perform(click());
@@ -236,7 +236,7 @@ public class BookTest extends OrgzlyTest {
     public void testCabForMovingNotesDisplayed() {
         onListItem(1).perform(longClick());
         openContextualActionModeOverflowMenu();
-        onView(withText("Move")).perform(click());
+        onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).check(matches(isDisplayed()));
     }
 
@@ -245,7 +245,7 @@ public class BookTest extends OrgzlyTest {
         onListItem(3).perform(longClick());
 
         openContextualActionModeOverflowMenu();
-        onView(withText("Move")).perform(click());
+        onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).perform(click());
 
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #1."))));
@@ -265,7 +265,7 @@ public class BookTest extends OrgzlyTest {
         onListItem(2).perform(longClick());
 
         openContextualActionModeOverflowMenu();
-        onView(withText("Move")).perform(click());
+        onView(withText(R.string.move)).perform(click());
 
         onView(withId(R.id.notes_action_move_down)).check(matches(isDisplayed()));
 
@@ -279,7 +279,7 @@ public class BookTest extends OrgzlyTest {
         onListItem(2).perform(longClick());
 
         openContextualActionModeOverflowMenu();
-        onView(withText("Move")).perform(click());
+        onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_left)).perform(click());
     }
 
@@ -288,7 +288,7 @@ public class BookTest extends OrgzlyTest {
         onListItem(2).perform(longClick());
 
         openContextualActionModeOverflowMenu();
-        onView(withText("Cut")).perform(click());
+        onView(withText(R.string.cut)).perform(click());
 
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #1."))));
         onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #8."))));
@@ -296,8 +296,8 @@ public class BookTest extends OrgzlyTest {
 
         onListItem(1).perform(longClick());
         openContextualActionModeOverflowMenu();
-        onView(withText("Paste")).perform(click());
-        onView(withText("Paste above")).perform(click());
+        onView(withText(R.string.paste)).perform(click());
+        onView(withText(R.string.heads_action_menu_item_paste_above)).perform(click());
 
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #2."))));
         onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #3."))));
@@ -311,11 +311,11 @@ public class BookTest extends OrgzlyTest {
     }
 
     @Test
-    public void testPastUnder() {
+    public void testPasteUnder() {
         onListItem(2).perform(longClick());
 
         openContextualActionModeOverflowMenu();
-        onView(withText("Cut")).perform(click());
+        onView(withText(R.string.cut)).perform(click());
 
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #1."))));
         onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #8."))));
@@ -323,8 +323,8 @@ public class BookTest extends OrgzlyTest {
 
         onListItem(2).perform(longClick());
         openContextualActionModeOverflowMenu();
-        onView(withText("Paste")).perform(click());
-        onView(withText("Paste under")).perform(click());
+        onView(withText(R.string.paste)).perform(click());
+        onView(withText(R.string.heads_action_menu_item_paste_under)).perform(click());
 
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #1."))));
         onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #8."))));
@@ -351,7 +351,7 @@ public class BookTest extends OrgzlyTest {
         /* Create new note under folded. */
         onListItem(2).perform(longClick());
         onView(withId(R.id.book_cab_new)).perform(click());
-        onView(withText("New under")).perform(click());
+        onView(withText(R.string.heads_action_menu_item_add_under)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceText("Created"));
         onView(withId(R.id.done)).perform(click());
 
@@ -364,7 +364,7 @@ public class BookTest extends OrgzlyTest {
     @Test
     public void testNewNoteWithCreatedTimestamp() {
         /* Enable "Created at" in settings. */
-        onActionItemClick(R.id.activity_action_settings, "Settings");
+        onActionItemClick(R.id.activity_action_settings, R.string.settings);
         onListItem(EspressoUtils.SETTINGS_CREATED_AT).perform(click());
         pressBack();
 
@@ -373,20 +373,20 @@ public class BookTest extends OrgzlyTest {
         onView(withId(R.id.done)).perform(click());
 
         onListItem(41).perform(click());
-        onView(withId(R.id.name)).check(matches(allOf(isDisplayed(), withText(CoreMatchers.startsWith("CREATED")))));
+        onView(withId(R.id.name)).check(matches(allOf(isDisplayed(), withText(R.string.created_property_name))));
     }
 
     @Test
     public void testReturnToNonExistentNoteByPressingBack() {
         onListItem(1).perform(click());
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withText("Notebooks")).perform(click());
+        onView(withText(R.string.notebooks)).perform(click());
         onView(allOf(withText("book-name"), isDisplayed())).perform(longClick());
-        onData(hasToString(containsString("Delete"))).perform(click());
-        onView(withText("OK")).perform(click());
+        onData(hasToString(containsString(context.getString(R.string.delete)))).perform(click());
+        onView(withText(R.string.ok)).perform(click());
         pressBack();
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
-        onView(withText("This note does not exist any more.")).check(matches(isDisplayed()));
+        onView(withText(R.string.fragment_note_does_not_exist)).check(matches(isDisplayed()));
         onView(withId(R.id.done)).check(doesNotExist());
         onView(withId(R.id.close)).check(doesNotExist());
         pressBack(); // Leave the note
@@ -407,8 +407,8 @@ public class BookTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_deadline_button)).perform(closeSoftKeyboardWithDelay(), scrollTo(), click());
         onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
-        onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
-        onView(withText("Set")).perform(click());
+        onView(withText(R.string.ok)).perform(click());
+        onView(withText(R.string.set)).perform(click());
         onView(withId(R.id.fragment_note_deadline_button)).check(matches(withText(userDateTime("<2014-04-01 Tue>"))));
     }
 
@@ -420,7 +420,7 @@ public class BookTest extends OrgzlyTest {
 
         // Enter and delete it
         openContextualActionModeOverflowMenu();
-        onView(withText("Delete")).perform(click());
+        onView(withText(R.string.delete)).perform(click());
 
         // First list item is now a note
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));

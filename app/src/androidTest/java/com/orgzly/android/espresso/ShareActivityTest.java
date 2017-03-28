@@ -124,14 +124,14 @@ public class ShareActivityTest extends OrgzlyTest {
         startActivityWithIntent(Intent.ACTION_SEND, "image/png", null);
 
         onView(withId(R.id.fragment_note_title))
-                .check(matches(withText("Share type image/png is not supported")));
+                .check(matches(withText(context.getString(R.string.share_type_not_supported, "image/png"))));
     }
 
     @Test
     public void testNoActionSend() {
         startActivityWithIntent(null, null, null);
 
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Share action not set")));
+        onView(withId(R.id.fragment_note_title)).check(matches(withText(R.string.share_action_not_set)));
     }
 
 
@@ -169,7 +169,7 @@ public class ShareActivityTest extends OrgzlyTest {
         toPortrait(activityRule);
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(R.string.schedule_button_hint)));
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
-        onView(anyOf(withText("OK"), withText("Set"), withText("Done"))).perform(click());
+        onView(withText(R.string.set)).perform(click());
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
         toLandscape(activityRule);
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
