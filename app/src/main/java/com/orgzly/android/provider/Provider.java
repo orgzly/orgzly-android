@@ -1,5 +1,6 @@
 package com.orgzly.android.provider;
 
+import android.annotation.SuppressLint;
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
@@ -73,8 +74,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Provider extends ContentProvider {
     private static final String TAG = Provider.class.getName();
@@ -1381,6 +1384,16 @@ public class Provider extends ContentProvider {
             }
         }
 
+        /*
+         * Maps node's lft to database id.
+         * Used to update parent id and insert ancestors.
+         * Not using SparseArray as speed is preferred over memory here.
+         */
+        @SuppressLint("UseSparseArrays") final HashMap<Long,Long> lft2id = new HashMap<>();
+
+        /* Set of ids for which parent is already set. */
+        final Set<Long> notesWithParentSet = new HashSet<>();
+
         /* Open reader. */
         Reader reader = new BufferedReader(inReader);
         try {
@@ -1411,12 +1424,8 @@ public class Provider extends ContentProvider {
 
                             DbNote.toContentValues(values, position);
                             DbNote.toContentValues(db, values, node.getHead());
-                            // NotesClient.toContentValues(values, node.getHead());
 
                             long noteId = db.insertOrThrow(DbNote.TABLE, null, values);
-
-                            // replaceTimestampRangeStringsWithIds(db, values);
-                            // replacePropertiesWithIds(db, noteId, values);
 
                             /* Insert properties for newly created note. */
                             int i = 0;
@@ -1437,6 +1446,33 @@ public class Provider extends ContentProvider {
 
                                 DbNoteProperty.getOrInsert(db, noteId, i, propertyId);
                             }
+
+                            /*
+                             * Update parent ID and insert ancestors.
+                             * Going through all descendants - nodes between lft and rgt.
+                             *
+                             *  lft:  1    2    3    4    5   6
+                             *            L2   l1   r2   R2
+                             */
+                            lft2id.put(node.getLft(), noteId);
+                            for (long index = node.getLft() + 1; index < node.getRgt(); index++) {
+                                Long descendantId = lft2id.get(index);
+                                if (descendantId != null) {
+
+                                    if (! notesWithParentSet.contains(descendantId)) {
+                                        values = new ContentValues();
+                                        values.put(DbNote.Column.PARENT_ID, noteId);
+                                        db.update(DbNote.TABLE, values, DbNote.Column._ID + " = " + descendantId, null);
+                                        notesWithParentSet.add(descendantId);
+                                    }
+
+                                    values = new ContentValues();
+                                    values.put(DbNoteAncestor.Column.NOTE_ID, descendantId);
+                                    values.put(DbNoteAncestor.Column.ANCESTOR_NOTE_ID, noteId);
+                                    values.put(DbNoteAncestor.Column.BOOK_ID, bookId);
+                                    db.insert(DbNoteAncestor.TABLE, null, values);
+                                }
+                            }
                         }
 
                         @Override
@@ -1447,7 +1483,7 @@ public class Provider extends ContentProvider {
 
                             BooksClient.toContentValues(values, file.getSettings());
 
-                                /* Set preface. TODO: Move to and rename OrgFileSettings */
+                            /* Set preface. TODO: Move to and rename OrgFileSettings */
                             values.put(DbBook.Column.PREFACE, file.getPreface());
 
                             values.put(DbBook.Column.USED_ENCODING, usedEncoding);
@@ -1465,28 +1501,19 @@ public class Provider extends ContentProvider {
             reader.close();
         }
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookName + ": Parsing done: " + (System.currentTimeMillis() - startedAt) + " ms");
+        if (BuildConfig.LOG_DEBUG)
+            LogUtils.d(TAG, bookName + ": Parsing done in " +
+                            (System.currentTimeMillis() - startedAt) + " ms");
 
         if (rookUrl != null) {
             updateOrInsertBookLink(db, bookId, repoUrl, rookUrl);
             updateOrInsertBookSync(db, bookId, repoUrl, rookUrl, rookRevision, rookMtime);
         }
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookName + ": Book link and sync updated: " + (System.currentTimeMillis() - startedAt) + " ms");
-
-        DatabaseUtils.updateParentIds(db, bookId);
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookName + ": Parents updated: " + (System.currentTimeMillis() - startedAt) + " ms");
-
-        /* Update book with modification time and mark it as complete. */
+        /* Mark book as complete. */
         ContentValues values = new ContentValues();
         values.put(DbBook.Column.IS_DUMMY, 0);
-
         db.update(DbBook.TABLE, values, DbBook.Column._ID + "=" + bookId, null);
-
-        DatabaseUtils.updateNoteAncestors(db, bookId);
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookName + ": Ancestors updated: " + (System.currentTimeMillis() - startedAt) + " ms");
 
         return uri;
     }
