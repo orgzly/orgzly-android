@@ -396,12 +396,12 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
             hasPostTitleText = true;
         }
 
-        if (note.hasInheritedTags()) {
-            builder.append(TITLE_SEPARATOR).append("(")
-                    .append(generateTags(note.getInheritedTags()))
-                    .append(")");
-            hasPostTitleText = true;
-        }
+//        if (note.hasInheritedTags()) {
+//            builder.append(TITLE_SEPARATOR).append("(")
+//                    .append(generateTags(note.getInheritedTags()))
+//                    .append(")");
+//            hasPostTitleText = true;
+//        }
 
         /* Content length. */
         if (head.hasContent() && (!AppPreferences.isNotesContentDisplayedInList(mContext) || (note.isFolded() && AppPreferences.isNotesContentFoldable(mContext)))) {
