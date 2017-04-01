@@ -1,7 +1,5 @@
 package com.orgzly.android;
 
-import android.util.Log;
-
 import com.orgzly.android.util.QuotedStringTokenizer;
 import com.orgzly.org.datetime.OrgInterval;
 
@@ -35,6 +33,7 @@ public class SearchQuery {
     private Set<String> notBookName = new TreeSet<>();
     private Set<String> noteTags = new TreeSet<>();
     private Set<String> tags = new TreeSet<>();
+    private Set<String> notTags = new TreeSet<>();
     private String priority;
     private String state;
     private Set<String> notState = new TreeSet<>();
@@ -92,6 +91,11 @@ public class SearchQuery {
             } else if (token.startsWith("tn.")) { // note tag
                 if (token.length() > 3) {
                     noteTags.add(token.substring(3));
+                }
+
+            } else if (token.startsWith(".t.")) { // has no tag
+                if (token.length() > 3) {
+                    notTags.add(token.substring(3));
                 }
 
             } else if (token.startsWith("t.")) { // tag
@@ -155,6 +159,10 @@ public class SearchQuery {
 
     public boolean hasTags() {
         return !tags.isEmpty();
+    }
+
+    public Set<String> getNotTags() {
+        return notTags;
     }
 
     public String getPriority() {
@@ -247,6 +255,12 @@ public class SearchQuery {
         if (! noteTags.isEmpty()) {
             for (String tag: noteTags) {
                 s.append(" tn.").append(tag);
+            }
+        }
+
+        if (! notTags.isEmpty()) {
+            for (String tag : notTags) {
+                s.append(" .t.").append(tag);
             }
         }
 

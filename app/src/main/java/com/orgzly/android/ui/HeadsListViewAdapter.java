@@ -37,6 +37,12 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
     /* Separator for heading parts (state, priority, title, tags). */
     private final static String TITLE_SEPARATOR = "  ";
 
+    /*
+     * Separator between note's tags and inherited tags.
+     * Not used if note doesn't have its own tags.
+     */
+    private final static String INHERITED_TAGS_SEPARATOR = " • ";
+
     /* Separator for individual tags. */
     private final static String TAGS_SEPARATOR = " ";
 
@@ -396,12 +402,14 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
             hasPostTitleText = true;
         }
 
-//        if (note.hasInheritedTags()) {
-//            builder.append(TITLE_SEPARATOR).append("(")
-//                    .append(generateTags(note.getInheritedTags()))
-//                    .append(")");
-//            hasPostTitleText = true;
-//        }
+        /* Inherited tags in search results. */
+        if (!inBook && note.hasInheritedTags()) {
+            if (head.hasTags()) {
+                builder.append(INHERITED_TAGS_SEPARATOR);
+            }
+            builder.append(generateTags(note.getInheritedTags()));
+            hasPostTitleText = true;
+        }
 
         /* Content length. */
         if (head.hasContent() && (!AppPreferences.isNotesContentDisplayedInList(mContext) || (note.isFolded() && AppPreferences.isNotesContentFoldable(mContext)))) {

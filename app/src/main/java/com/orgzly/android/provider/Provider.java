@@ -267,19 +267,26 @@ public class Provider extends ContentProvider {
         /* Skip cut notes. */
         selection.append(DatabaseUtils.WHERE_EXISTING_NOTES);
 
-        if (searchQuery.hasTags()) {
-            /*
-             * We are only searching for a tag within a string of tags.
-             * "tag" will be found in "few tagy ones"
-             */
-            for (String tag: searchQuery.getTags()) {
-                selection.append(" AND (")
-                        .append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ? OR ")
-                        .append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(" LIKE ?)");
+        /*
+         * We are only searching for a tag within a string of tags.
+         * "tag" will be found in "few tagy ones"
+         */
+        for (String tag: searchQuery.getTags()) {
+            selection.append(" AND (")
+                    .append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ? OR ")
+                    .append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(" LIKE ?)");
 
-                selectionArgs.add("%" + tag + "%");
-                selectionArgs.add("%" + tag + "%");
-            }
+            selectionArgs.add("%" + tag + "%");
+            selectionArgs.add("%" + tag + "%");
+        }
+
+        for (String tag: searchQuery.getNotTags()) {
+            selection.append(" AND (")
+                    .append("COALESCE(" + ProviderContract.Notes.QueryParam.TAGS + ", '')").append(" NOT LIKE ? AND ")
+                    .append("COALESCE(" + ProviderContract.Notes.QueryParam.INHERITED_TAGS+ ", '')").append(" NOT LIKE ?)");
+
+            selectionArgs.add("%" + tag + "%");
+            selectionArgs.add("%" + tag + "%");
         }
 
         if (searchQuery.hasBookName()) {

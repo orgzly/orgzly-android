@@ -32,7 +32,6 @@ import static com.orgzly.android.espresso.EspressoUtils.listViewItemCount;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.startsWith;
@@ -393,5 +392,39 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
         onListItem(0).onChildView(withId(R.id.item_head_book_name_text)).check(matches(withText("renamed book-one")));
+    }
+
+    @Test
+    public void testSearchForNonExistentTagShouldReturnAllNotes() {
+        shelfTestUtils.setupBook("notebook",
+                "* Note A :a:\n" +
+                "** Note B :b:\n" +
+                "*** Note C\n" +
+                "* Note D\n");
+        activityRule.launchActivity(null);
+
+        onView(allOf(withText("notebook"), isDisplayed())).perform(click());
+        onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
+        searchForText(".t.c");
+        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(4)));
+    }
+
+    @Test
+    public void testNotTagShouldReturnSomeNotes() {
+        shelfTestUtils.setupBook("notebook",
+                "* Note A :a:\n" +
+                "** Note B :b:\n" +
+                "*** Note C\n" +
+                "* Note D\n");
+        activityRule.launchActivity(null);
+
+        onView(allOf(withText("notebook"), isDisplayed())).perform(click());
+        onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
+        searchForText(".t.b");
+        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
+        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Note A  a"), isDisplayed())));
+        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Note D"), isDisplayed())));
     }
 }
