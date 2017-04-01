@@ -99,4 +99,10 @@ public class FiltersFragmentTest extends OrgzlyTest {
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
         onView(withId(R.id.filters_cab_move_up)).check(matches(not(isDisplayed())));
     }
+
+    @Test
+    public void testMovingFilterDown() {
+        onListItem(0).perform(longClick());
+        onView(withId(R.id.filters_cab_move_down)).perform(click());
+    }
 }

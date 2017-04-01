@@ -94,8 +94,6 @@ class ProviderFilters {
 
         updateChangedPositions(db, originalPositions, newPositions);
 
-        db.setTransactionSuccessful();
-
         return 1;
     }
 
