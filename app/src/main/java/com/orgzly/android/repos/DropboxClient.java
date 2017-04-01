@@ -18,7 +18,6 @@ import com.dropbox.core.v2.files.WriteMode;
 import com.orgzly.BuildConfig;
 import com.orgzly.android.BookName;
 import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.util.LogUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -125,13 +124,14 @@ public class DropboxClient {
 
         try {
             String path = repoUri.getPath();
-            if (path == null) {
-                path = "/";
+
+            // The empty string ("") represents the root folder in Dropbox API
+
+            if (path == null || path.equals("/")) {
+                path = "";
             }
 
-            Metadata pathMeta = dbxClient.files().getMetadata(path);
-
-            if (pathMeta instanceof FolderMetadata) {
+            if ("".equals(path) || dbxClient.files().getMetadata(path) instanceof FolderMetadata) {
                 /* Get folder content. */
                 ListFolderResult result = dbxClient.files().listFolder(path);
                 while (true) {
