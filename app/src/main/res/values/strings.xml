@@ -61,14 +61,7 @@
     <string name="bullet_with_children_unfolded" translatable="false">–</string>
     <!-- • ● ⦿ ⦾ ◦ ▸ ▾ – — -->
 
-    <string name="note_title_sample">Simple sample title</string>
-    <string name="note_closed_sample">2013\-06\-10 12:00</string>
-    <string name="note_deadline_sample">2013\-12\-04 Sat</string>
-    <string name="note_scheduled_sample">2013\-12\-04 Sat</string>
-    <string name="note_content_sample">This is a multi-line\nnote\'s content which could be quite long, so this needs to be a longer string so we can see how it would look like. There should be both new-lines here, as well as long single line, like this one.</string>
     <string name="import_org_file">Import Org file</string>
-    <string name="book_name_sample">notebook-name</string>
-    <string name="book_title_sample">Notebook Title</string>
 
     <string name="state_spinner_prompt">State</string>
     <string name="priority_spinner_prompt">Priority</string>
@@ -83,8 +76,6 @@
     <string name="message_note_created">Note created</string>
     <string name="message_failed_creating_note">Failed to create note</string>
     <string name="message_failed_updating_note">Failed to update note</string>
-    <string name="books_book_sync_last_action_sample">May 15, 2015 11:24:47 PM: No change</string>
-    <string name="head_title_sample">This is a sample title used for testing the layout of head\'s item</string>
     <string name="drawer_close">Close drawer</string>
     <string name="drawer_open">Open drawer</string>
 
@@ -98,10 +89,6 @@
     <string name="closed_button_hint">Closed time</string>
 
     <string name="fragment_note_content_hint">Note content</string>
-    <string name="sync_button_sample">Last sync: Jan 01, 01:01</string>
-    <string name="book_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
-    <string name="synced_rook_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
-    <string name="synced_rook_revision_sample" translatable="false">42f97fe238</string>
     <string name="books_context_menu_item_export">Export</string>
     <string name="books_context_menu_item_rename">Rename</string>
     <string name="books_context_menu_item_set_link">Set Link</string>
@@ -132,12 +119,6 @@
     <string name="book_name_already_exists">Notebook %s already exists.</string>
     <string name="filter_name_already_exists">Search with the same name already exists</string>
     <string name="failed_creating_directory">Failed creating directory %s</string>
-    <string name="repo_url_sample">dropbox:/Some/Path/To/Repo/Directory</string>
-    <string name="filter_name_sample_long">Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe</string>
-    <string name="filter_query_sample_long">b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday</string>
-    <string name="rook_url_sample">dropbox:/Some/Path/To/Org/File/notebook.org</string>
-    <string name="rook_url_long_sample">dropbox:/Some/Long/Path/So/Layout/Could/Be/Tested/To/Org/File/notebook.org</string>
-    <string name="directory_sample">/storage/emulated/0/org</string>
     <string name="version">What\'s new</string>
     <string name="search_hint">Search notes</string>
     <string name="clear_database">Clear database</string>
@@ -164,10 +145,7 @@
     <string name="tomorrow">Tomorrow</string>
     <string name="next_week">Next Week</string>
 
-    <string name="dialog_timestamp_date_sample">7/27/2015</string>
-    <string name="dialog_timestamp_time_sample">14:32</string>
     <string name="dialog_timestamp_repeater_default">.+1w</string>
-    <string name="dialog_timestamp_end_time_sample">12345:6789</string>
     <string name="tags">Tags</string>
     <string name="book_mtime">Notebook modification time</string>
     <string name="book_link">Notebook link</string>
@@ -181,9 +159,7 @@
     <string name="active">Active</string>
     <string name="no_repos">No repositories configured</string>
     <string name="multiple_repos">Multiple repositories exist</string>
-    <string name="detected_encoding_sample">UTF-8 detected</string>
-    <string name="selected_encoding_sample">UTF-8 selected</string>
-    <string name="used_encoding_sample">UTF-8 used</string>
+
     <string name="book_encoding">Notebook\'s encoding</string>
     <string name="syncing_in_progress">Syncing…</string>
     <string name="syncing_book">Syncing %s…</string>
@@ -232,7 +208,6 @@
     <!-- TODO: Use for note moving cab menu (xml) -->
     <string name="down">Down</string>
     <string name="up">Up</string>
-    <string name="filter_position_sample">1</string>
     <string name="notebook_modified">Notebook modified</string>
 
     <string name="permissions_rationale_for_local_repo">Syncing with a local directory requires storage permission</string>
@@ -375,7 +350,6 @@
     <string name="failed_exporting_book">Failed exporting book: %s</string>
 
     <string name="edit_book_preface">Edit preface</string>
-    <string name="book_preface_sample">This is notebook\'s preface. Any text before the first entry. It could be quite long and contain multiple lines.</string>
     <string name="book_preface_hint">Text displayed before the first note</string>
 
     <string name="layout_direction">Layout direction</string>
@@ -395,4 +369,35 @@
     <string name="separate_notes_with_new_line_never">Never</string>
     <string name="default_share_notebook" translatable="false">Inbox</string>
     <string name="share_notebook">Share notebook</string>
+
+
+    <!-- These are just used in tools:text for layout preview and don't have to be translated,
+         unless layout look depends on the translation. -->
+    <string name="book_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
+    <string name="book_name_sample">notebook-name</string>
+    <string name="book_preface_sample">This is notebook\'s preface. Any text before the first entry. It could be quite long and contain multiple lines.</string>
+    <string name="book_title_sample">Notebook Title</string>
+    <string name="books_book_sync_last_action_sample">May 15, 2015 11:24:47 PM: No change</string>
+    <string name="dialog_timestamp_date_sample">7/27/2015</string>
+    <string name="dialog_timestamp_end_time_sample">12345:6789</string>
+    <string name="dialog_timestamp_time_sample">14:32</string>
+    <string name="directory_sample">/storage/emulated/0/org</string>
+    <string name="encoding_detected_sample">UTF-8 detected</string>
+    <string name="encoding_selected_sample">UTF-8 selected</string>
+    <string name="encoding_used_sample">UTF-8 used</string>
+    <string name="filter_name_sample_long">Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe</string>
+    <string name="filter_position_sample">1</string>
+    <string name="filter_query_sample_long">b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday</string>
+    <string name="head_title_sample">This is a sample title used for testing the layout of head\'s item</string>
+    <string name="note_closed_sample">2013\-06\-10 12:00</string>
+    <string name="note_content_sample">This is a multi-line\nnote\'s content which could be quite long, so this needs to be a longer string so we can see how it would look like. There should be both new-lines here, as well as long single line, like this one.</string>
+    <string name="note_deadline_sample">2013\-12\-04 Sat</string>
+    <string name="note_scheduled_sample">2013\-12\-04 Sat</string>
+    <string name="note_title_sample">Simple sample title</string>
+    <string name="repo_url_sample">dropbox:/Some/Path/To/Repo/Directory</string>
+    <string name="rook_url_long_sample">dropbox:/Some/Long/Path/So/Layout/Could/Be/Tested/To/Org/File/notebook.org</string>
+    <string name="rook_url_sample">dropbox:/Some/Path/To/Org/File/notebook.org</string>
+    <string name="sync_button_sample">Last sync: Jan 01, 01:01</string>
+    <string name="synced_rook_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
+    <string name="synced_rook_revision_sample">42f97fe238</string>
 </resources>

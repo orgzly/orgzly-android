@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/item_drawer_container"
-    style="@style/DrawerButton"
-    android:orientation="horizontal"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/item_drawer_container"
+              style="@style/DrawerButton"
+              android:orientation="horizontal"
     >
 
     <!-- Marker for currently selected item. -->
@@ -37,7 +38,7 @@
         style="@style/DrawerButtonText"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:text="@string/book_name_sample"/>
+        tools:text="@string/book_name_sample"/>
 
     <!-- Is the notebook modified. -->
     <ImageView

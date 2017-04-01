@@ -54,14 +54,7 @@
     <string name="fragment_note_title_hint">عنوان</string>
     <string name="fragment_note_tags_hint" tools:ignore="typos">برچسب برچسب</string>
 
-    <string name="note_title_sample">یه عنوان نمونه ساده</string>
-    <string name="note_closed_sample">2013\-06\-10 12:00</string>
-    <string name="note_deadline_sample">2013\-12\-04 Sat</string>
-    <string name="note_scheduled_sample">2013\-12\-04 Sat</string>
-    <string name="note_content_sample">این متن یک یادداشت\nچند خطی است که می‌تواند بسیار بلند باشد، و این باید خطی طولانی باشد تا شکل آن مشخص شود. این‌جا باید علاوه بر دو خط جدید، یه خط بلند هم باشد، مثل همین.</string>
     <string name="import_org_file">وارد کردن پرونده Org</string>
-    <string name="book_name_sample">نام دفترچه</string>
-    <string name="book_title_sample">عنوان دفترچه</string>
 
     <string name="state_spinner_prompt">وضعیت</string>
     <string name="priority_spinner_prompt">اولویت</string>
@@ -76,8 +69,6 @@
     <string name="message_note_created">یادداشت ایجاد شد</string>
     <string name="message_failed_creating_note">نمی‌توان یادداشت را ایجاد کرد</string>
     <string name="message_failed_updating_note">نمی‌توان یادداشت را به‌روز کرد</string>
-    <string name="books_book_sync_last_action_sample">May 15, 2015 11:24:47 PM: بدون تغییر</string>
-    <string name="head_title_sample">این یک عنوان نمونه است که برای بررسی طرح عنوان مورد به‌کار می‌رود</string>
     <string name="drawer_close">بستن کشو</string>
     <string name="drawer_open">بازکردن کشو</string>
 
@@ -91,9 +82,6 @@
     <string name="closed_button_hint">زمان بسته شدن</string>
 
     <string name="fragment_note_content_hint">متن یادداشت</string>
-    <string name="sync_button_sample">آخرین همگام‌سازی: Jan 01, 01:01</string>
-    <string name="book_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
-    <string name="synced_rook_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
     <string name="books_context_menu_item_export">استخراج</string>
     <string name="books_context_menu_item_rename">تغییر نام</string>
     <string name="books_context_menu_item_set_link">تنظیم پیوند</string>
@@ -124,12 +112,6 @@
     <string name="book_name_already_exists">دفترچه %s هم‌اکنون وجود دارد.</string>
     <string name="filter_name_already_exists">جستجو با همین نام در حال حاضر وجود دارد</string>
     <string name="failed_creating_directory">ناتوان در ایجاد پوشه %s</string>
-    <string name="repo_url_sample">dropbox:/مسیری/به/پوشه/مخزن</string>
-    <string name="filter_name_sample_long">روزی/شاید روزی/شاید روزی/شاید روزی/شاید روزی/شاید روزی/شاید روزی/شاید روزی/شاید</string>
-    <string name="filter_query_sample_long">b.خانه i.روزی b.خانه i.روزی b.خانه i.روزی b.خانه i.روزی b.خانه i.روزی b.خانه i.روزی b.خانه i.روزی b.خانه i.روزی</string>
-    <string name="rook_url_sample">dropbox:/مسیری/به/پرونده/Org/notebook.org</string>
-    <string name="rook_url_long_sample">dropbox:/مسیری/طولانی/برای/آزمودن/به/notebook.org</string>
-    <string name="directory_sample">/storage/emulated/0/org</string>
     <string name="version">چه چیز جدید است</string>
     <string name="search_hint">جستجوی یادداشت‌ها</string>
     <string name="clear_database">حذف اطلاعات</string>
@@ -156,10 +138,7 @@
     <string name="tomorrow">فردا</string>
     <string name="next_week">هفته بعد</string>
 
-    <string name="dialog_timestamp_date_sample">7/27/2015</string>
-    <string name="dialog_timestamp_time_sample">14:32</string>
     <string name="dialog_timestamp_repeater_default">.+1w</string>
-    <string name="dialog_timestamp_end_time_sample">12345:6789</string>
     <string name="tags">برچسب‌ها</string>
     <string name="book_mtime">زمان ویرایش دفترچه</string>
     <string name="book_link">پیوند دفترچه</string>
@@ -173,9 +152,6 @@
     <string name="active">فعال</string>
     <string name="no_repos">هیچ مخزنی پیکربندی نشده‌است</string>
     <string name="multiple_repos">چندین مخزن وجود دارد.</string>
-    <string name="detected_encoding_sample">UTF-8 شناسایی شد</string>
-    <string name="selected_encoding_sample">UTF-8 انتخاب شد</string>
-    <string name="used_encoding_sample">UTF-8 استفاده شد</string>
     <string name="book_encoding">رمزگذاری دفترچه</string>
     <string name="syncing_in_progress">در حال همگام‌سازی…</string>
     <string name="syncing_book">هم‌گام سازی %s…</string>
@@ -224,7 +200,6 @@
     <!-- TODO: Use for note moving cab menu (xml) -->
     <string name="down">پایین</string>
     <string name="up">بالا</string>
-    <string name="filter_position_sample">۱</string>
     <string name="notebook_modified">دفترچه ویرایش شد</string>
 
     <string name="permissions_rationale_for_local_repo">همگام‌سازی با پوشه محلی به دسترسی حافظه نیاز دارد</string>
@@ -365,7 +340,6 @@
     <string name="failed_exporting_book">استخراج دفترچه شکست خورد: %s</string>
 
     <string name="edit_book_preface">ویرایش مقدمه</string>
-    <string name="book_preface_sample">این مقدمه دفترچه است؛ هر متنی قبل از اولین مورد. می‌تواند بسیار بلند و دارای چندین خط باشد.</string>
     <string name="book_preface_hint">متن نمایش داده شده قبل از اولین یادداشت</string>
 
     <string name="layout_direction">جهت چیدمان</string>
@@ -384,4 +358,33 @@
     <string name="separate_notes_with_new_line_multi_line_notes_only">فقط یادداشت‌های چند-خطی</string>
     <string name="separate_notes_with_new_line_never">هیچ‌گاه</string>
     <string name="share_notebook">اشتراک‌گذاری دفترچه</string>
+
+    <!-- These are just used in tools:text for layout preview and don't have to be translated,
+         unless layout look depends on the translation. -->
+    <string name="book_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
+    <string name="book_name_sample">نام دفترچه</string>
+    <string name="book_preface_sample">این مقدمه دفترچه است؛ هر متنی قبل از اولین مورد. می‌تواند بسیار بلند و دارای چندین خط باشد.</string>
+    <string name="book_title_sample">عنوان دفترچه</string>
+    <string name="books_book_sync_last_action_sample">May 15, 2015 11:24:47 PM: بدون تغییر</string>
+    <string name="dialog_timestamp_date_sample">7/27/2015</string>
+    <string name="dialog_timestamp_end_time_sample">12345:6789</string>
+    <string name="dialog_timestamp_time_sample">14:32</string>
+    <string name="directory_sample">/storage/emulated/0/org</string>
+    <string name="encoding_detected_sample">UTF-8 شناسایی شد</string>
+    <string name="encoding_selected_sample">UTF-8 انتخاب شد</string>
+    <string name="encoding_used_sample">UTF-8 استفاده شد</string>
+    <string name="filter_name_sample_long">روزی/شاید روزی/شاید روزی/شاید روزی/شاید روزی/شاید روزی/شاید روزی/شاید روزی/شاید</string>
+    <string name="filter_position_sample">۱</string>
+    <string name="filter_query_sample_long">b.خانه i.روزی b.خانه i.روزی b.خانه i.روزی b.خانه i.روزی b.خانه i.روزی b.خانه i.روزی b.خانه i.روزی b.خانه i.روزی</string>
+    <string name="head_title_sample">این یک عنوان نمونه است که برای بررسی طرح عنوان مورد به‌کار می‌رود</string>
+    <string name="note_closed_sample">2013\-06\-10 12:00</string>
+    <string name="note_content_sample">این متن یک یادداشت\nچند خطی است که می‌تواند بسیار بلند باشد، و این باید خطی طولانی باشد تا شکل آن مشخص شود. این‌جا باید علاوه بر دو خط جدید، یه خط بلند هم باشد، مثل همین.</string>
+    <string name="note_deadline_sample">2013\-12\-04 Sat</string>
+    <string name="note_scheduled_sample">2013\-12\-04 Sat</string>
+    <string name="note_title_sample">یه عنوان نمونه ساده</string>
+    <string name="repo_url_sample">dropbox:/مسیری/به/پوشه/مخزن</string>
+    <string name="rook_url_long_sample">dropbox:/مسیری/طولانی/برای/آزمودن/به/notebook.org</string>
+    <string name="rook_url_sample">dropbox:/مسیری/به/پرونده/Org/notebook.org</string>
+    <string name="sync_button_sample">آخرین همگام‌سازی: Jan 01, 01:01</string>
+    <string name="synced_rook_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
 </resources>

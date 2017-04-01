@@ -54,15 +54,6 @@
     <string name="fragment_note_title_hint">Başlık</string>
     <string name="fragment_note_tags_hint" tools:ignore="typos">Etiket etiketi</string>
 
-    <string name="note_title_sample">Basit örnek başlık</string>
-    <string name="note_closed_sample">2013\-06\-10 12:00</string>
-    <string name="note_deadline_sample">2013\-12\-04 Sat</string>
-    <string name="note_scheduled_sample">2013\-12\-04 Sat</string>
-    <string name="note_content_sample">Bu, oldukça uzun olabilen çok satırlı bir\nnote\'s belgesinin içeriğidir, Bu yüzden daha uzun bir dize olması gerekiyor, böylece neye benzeyeceğini görebiliriz. Burada hem yeni satırlar hem de bunun gibi uzun tek satır olması gerekir..</string>
-    <string name="import_org_file">Org dosyasını yükle</string>
-    <string name="book_name_sample">Not Defteri adı</string>
-    <string name="book_title_sample">Not Defteri Başlığı</string>
-
     <string name="state_spinner_prompt">Durum</string>
     <string name="priority_spinner_prompt">Öncelik</string>
 
@@ -76,8 +67,6 @@
     <string name="message_note_created">Not Oluşturuldu.</string>
     <string name="message_failed_creating_note">Not oluşturma başarısız oldu</string>
     <string name="message_failed_updating_note">Not güncelleme işlemi başarısız oldu</string>
-    <string name="books_book_sync_last_action_sample">May 15, 2015 11:24:47 PM: değişiklik yok</string>
-    <string name="head_title_sample">Bu, başlık\'s düzenini test etmek için kullanılan örnek bir başlıktır</string>
     <string name="drawer_close">Çekmeyi kapat</string>
     <string name="drawer_open">Çekmeyi aç</string>
 
@@ -91,9 +80,6 @@
     <string name="closed_button_hint">Kapanış saati</string>
 
     <string name="fragment_note_content_hint">Not İçeriği</string>
-    <string name="sync_button_sample">Son Senkranizasyon: Jan 01, 01:01</string>
-    <string name="book_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
-    <string name="synced_rook_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
     <string name="books_context_menu_item_export">Dışarı Ver</string>
     <string name="books_context_menu_item_rename">Yeniden Adlandır</string>
     <string name="books_context_menu_item_set_link">Bağlantıyı Ayarla</string>
@@ -124,12 +110,6 @@
     <string name="book_name_already_exists">Not defter %s zaten var.</string>
     <string name="filter_name_already_exists">Aynı isim ile arama zaten var</string>
     <string name="failed_creating_directory">Dizin %s oluşturulamadı.</string>
-    <string name="repo_url_sample">dropbox:/Some/Path/To/Repo/Directory</string>
-    <string name="filter_name_sample_long">Birgün/Belki Birgün/Belki Birgün/Belki Birgün/Belki Birgün/Belki Birgün/Belki Birgün/Belki Birgün/Belki</string>
-    <string name="filter_query_sample_long">b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday</string>
-    <string name="rook_url_sample">dropbox:/Some/Path/To/Org/File/notebook.org</string>
-    <string name="rook_url_long_sample">dropbox:/Some/Long/Path/So/Layout/Could/Be/Tested/To/Org/File/notebook.org</string>
-    <string name="directory_sample">/storage/emulated/0/org</string>
     <string name="version">Ne\'s Yeni</string>
     <string name="search_hint">Notları ara</string>
     <string name="clear_database">Veritabanını temizle</string>
@@ -156,10 +136,7 @@
     <string name="tomorrow">Yarın</string>
     <string name="next_week">Gelecek hafta</string>
 
-    <string name="dialog_timestamp_date_sample">7/27/2015</string>
-    <string name="dialog_timestamp_time_sample">14:32</string>
     <string name="dialog_timestamp_repeater_default">.+1w</string>
-    <string name="dialog_timestamp_end_time_sample">12345:6789</string>
     <string name="tags">Etiketler</string>
     <string name="book_mtime">Not defterini değiştirme Zamanı</string>
     <string name="book_link">Not Defteri Linki</string>
@@ -173,9 +150,6 @@
     <string name="active">Aktif</string>
     <string name="no_repos">Depolar yapılandırılmadı</string>
     <string name="multiple_repos">Birden çok depo var.</string>
-    <string name="detected_encoding_sample">UTF-8 Algılandı</string>
-    <string name="selected_encoding_sample">UTF-8 Algılandı</string>
-    <string name="used_encoding_sample">UTF-8 Kullanılan</string>
     <string name="book_encoding">Not defter\'s Kodlama</string>
     <string name="syncing_in_progress">Senkronize ediliyor …</string>
     <string name="syncing_book">Senkronize ediliyor %s…</string>
@@ -224,7 +198,6 @@
     <!-- TODO: Use for note moving cab menu (xml) -->
     <string name="down">Aşağı</string>
     <string name="up">Yukarı</string>
-    <string name="filter_position_sample">1</string>
     <string name="notebook_modified">Not defteri değiştirildi</string>
 
     <string name="permissions_rationale_for_local_repo">Yerel bir dizine senkronize etmek için depolama izniniz gerekiyor</string>
@@ -365,7 +338,6 @@
     <string name="failed_exporting_book">Dışa aktarma olmadı: %s</string>
 
     <string name="edit_book_preface">Önsöz düzenle</string>
-    <string name="book_preface_sample">Bu defter\'lerin önsözüdür. İlk girişten önceki herhangi bir metin… Oldukça uzun olabilir ve birden çok satır içerebilir.</string>
     <string name="book_preface_hint">İlk nottan önce görüntülenen metin</string>
 
     <string name="layout_direction">Yerleşim yönü</string>
@@ -384,4 +356,36 @@
     <string name="separate_notes_with_new_line_multi_line_notes_only">Yalnızca çok satırlı notlar</string>
     <string name="separate_notes_with_new_line_never">Asla</string>
     <string name="share_notebook">Defteri paylaş</string>
+
+
+    <!-- These are just used in tools:text for layout preview and don't have to be translated,
+         unless layout look depends on the translation. -->
+    <string name="book_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
+    <string name="book_name_sample">Not Defteri adı</string>
+    <string name="book_preface_sample">Bu defter\'lerin önsözüdür. İlk girişten önceki herhangi bir metin… Oldukça uzun olabilir ve birden çok satır içerebilir.</string>
+    <string name="book_title_sample">Not Defteri Başlığı</string>
+    <string name="books_book_sync_last_action_sample">May 15, 2015 11:24:47 PM: değişiklik yok</string>
+    <string name="dialog_timestamp_date_sample">7/27/2015</string>
+    <string name="dialog_timestamp_end_time_sample">12345:6789</string>
+    <string name="dialog_timestamp_time_sample">14:32</string>
+    <string name="directory_sample">/storage/emulated/0/org</string>
+    <string name="encoding_detected_sample">UTF-8 Algılandı</string>
+    <string name="encoding_selected_sample">UTF-8 Algılandı</string>
+    <string name="encoding_used_sample">UTF-8 Kullanılan</string>
+    <string name="filter_name_sample_long">Birgün/Belki Birgün/Belki Birgün/Belki Birgün/Belki Birgün/Belki Birgün/Belki Birgün/Belki Birgün/Belki</string>
+    <string name="filter_position_sample">1</string>
+    <string name="filter_query_sample_long">b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday</string>
+    <string name="head_title_sample">Bu, başlık\'s düzenini test etmek için kullanılan örnek bir başlıktır</string>
+    <string name="import_org_file">Org dosyasını yükle</string>
+    <string name="note_closed_sample">2013\-06\-10 12:00</string>
+    <string name="note_content_sample">Bu, oldukça uzun olabilen çok satırlı bir\nnote\'s belgesinin içeriğidir, Bu yüzden daha uzun bir dize olması gerekiyor, böylece neye benzeyeceğini görebiliriz. Burada hem yeni satırlar hem de bunun gibi uzun tek satır olması gerekir..</string>
+    <string name="note_deadline_sample">2013\-12\-04 Sat</string>
+    <string name="note_scheduled_sample">2013\-12\-04 Sat</string>
+    <string name="note_title_sample">Basit örnek başlık</string>
+    <string name="repo_url_sample">dropbox:/Some/Path/To/Repo/Directory</string>
+    <string name="rook_url_long_sample">dropbox:/Some/Long/Path/So/Layout/Could/Be/Tested/To/Org/File/notebook.org</string>
+    <string name="rook_url_sample">dropbox:/Some/Path/To/Org/File/notebook.org</string>
+    <string name="sync_button_sample">Son Senkranizasyon: Jan 01, 01:01</string>
+    <string name="synced_rook_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
+
 </resources>

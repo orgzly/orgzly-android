@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_sync_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/fragment_sync_container"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <ProgressBar
         android:id="@+id/sync_progress_bar"
@@ -42,7 +43,7 @@
         <TextView
             android:id="@+id/sync_button_text"
             style="@style/DrawerButtonText"
-            android:text="@string/sync_button_sample"
+            tools:text="@string/sync_button_sample"
             android:textSize="?attr/left_drawer_sync_text_size"
             android:scrollHorizontally="true"
             android:ellipsize="end"

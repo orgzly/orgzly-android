@@ -4,8 +4,9 @@
      on dialog popup (due to repeat value). -->
 
 <ScrollView
-    android:id="@+id/dialog_timestamp_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_timestamp_container"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
     android:layout_width="match_parent"
@@ -50,7 +51,7 @@
             android:layout_below="@id/dialog_timestamp_tomorrow_shortcut"
             android:layout_marginTop="@dimen/padding_4"
             style="@style/TimestampDialogButton.Common"
-            android:text="@string/dialog_timestamp_date_sample"/>
+            tools:text="@string/dialog_timestamp_date_sample"/>
 
         <!-- Labels for shortcuts. -->
 
@@ -70,7 +71,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/padding_4"
             style="@style/TimestampDialogButton.Common"
-            android:text="@string/dialog_timestamp_time_sample"/>
+            tools:text="@string/dialog_timestamp_time_sample"/>
 
         <!-- Use time? -->
         <CheckBox
@@ -102,7 +103,7 @@
             style="@style/TimestampDialogButton.Common"
             android:layout_below="@id/dialog_timestamp_time_picker"
             android:layout_centerHorizontal="true"
-            android:text="@string/dialog_timestamp_end_time_sample"/>
+            tools:text="@string/dialog_timestamp_end_time_sample"/>
 
         <!-- Use end time. -->
         <CheckBox

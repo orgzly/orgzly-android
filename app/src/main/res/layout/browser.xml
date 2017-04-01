@@ -30,7 +30,7 @@
             android:minHeight="48dp"
             android:gravity="center"
             android:padding="@dimen/padding_4"
-            android:text="@string/directory_sample"
+            tools:text="@string/directory_sample"
             android:textSize="?attr/browser_text_size"
             android:textStyle="bold"/>
     </LinearLayout>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    style="@style/ListViewItemPadding"
-    android:minHeight="@dimen/item_head_min_height"
-    android:orientation="horizontal"
-    >
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              style="@style/ListViewItemPadding"
+              android:minHeight="@dimen/item_head_min_height"
+              android:orientation="horizontal">
 
     <!--<ImageView-->
         <!--style="@style/BookItemInfoIcon"-->
@@ -19,7 +19,7 @@
         android:id="@+id/item_repo_url"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/repo_url_sample"
+        tools:text="@string/repo_url_sample"
         android:textSize="?attr/item_repo_text_size"
         android:layout_gravity="center_vertical"/>
 

@@ -4,7 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <android.support.v7.widget.CardView
         android:id="@+id/item_book_card_view"
@@ -14,22 +15,19 @@
         android:layout_margin="@dimen/padding_8"
         card_view:cardCornerRadius="0dp"
         card_view:cardElevation="2dp"
-        card_view:cardBackgroundColor="?attr/item_book_card_bg_color"
-        >
+        card_view:cardBackgroundColor="?attr/item_book_card_bg_color">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/item_book_padding"
-            >
+            android:padding="@dimen/item_book_padding">
 
             <!-- Title. -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -57,7 +55,7 @@
                         android:layout_marginEnd="@dimen/item_book_padding"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentLeft="true"
-                        android:text="@string/book_title_sample"
+                        tools:text="@string/book_title_sample"
                         android:textStyle="bold"
                         android:textSize="?attr/item_book_title_text_size"
                         android:textColor="?attr/item_book_title_color"/>
@@ -67,7 +65,7 @@
                     android:id="@+id/item_book_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/book_name_sample"
+                    tools:text="@string/book_name_sample"
                     android:textSize="?attr/item_book_subtitle_text_size"/>
 
             </LinearLayout>
@@ -76,8 +74,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <View
                     android:id="@+id/item_book_details_padding"
@@ -90,8 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    >
+                    android:gravity="center_vertical">
 
                     <ImageView
                         style="@style/BookItemInfoIcon"
@@ -103,7 +99,7 @@
                         android:id="@+id/item_book_mtime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/book_mtime_sample"
+                        tools:text="@string/book_mtime_sample"
                         android:textSize="?attr/item_book_details_text_size"/>
                 </LinearLayout>
 
@@ -112,8 +108,7 @@
                     android:id="@+id/item_book_link_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
 
                     <!-- Link repository. -->
                     <LinearLayout
@@ -121,8 +116,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:visibility="gone"
-                        >
+                        android:visibility="gone">
 
                         <ImageView
                             style="@style/BookItemInfoIcon"
@@ -137,7 +131,7 @@
                             android:gravity="start|center_vertical"
                             android:layout_marginEnd="8dp"
                             android:layout_marginRight="8dp"
-                            android:text="@string/repo_url_sample"
+                            tools:text="@string/repo_url_sample"
                             android:textSize="?attr/item_book_details_text_size"/>
                     </LinearLayout>
 
@@ -146,8 +140,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        >
+                        android:gravity="center_vertical">
 
                         <ImageView
                             style="@style/BookItemInfoIcon"
@@ -159,7 +152,7 @@
                             android:id="@+id/item_book_link_url"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/rook_url_long_sample"
+                            tools:text="@string/rook_url_long_sample"
                             android:textSize="?attr/item_book_details_text_size"/>
                     </LinearLayout>
 
@@ -171,8 +164,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:gravity="center_vertical"
-                    >
+                    android:gravity="center_vertical">
 
                     <!-- Synced remote book repository -->
                     <LinearLayout
@@ -181,8 +173,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:visibility="gone"
-                        >
+                        android:visibility="gone">
 
                         <ImageView
                             style="@style/BookItemInfoIcon"
@@ -195,7 +186,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="start|center_vertical"
-                            android:text="@string/repo_url_sample"
+                            tools:text="@string/repo_url_sample"
                             android:textSize="?attr/item_book_details_text_size"/>
                     </LinearLayout>
 
@@ -205,8 +196,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        >
+                        android:gravity="center_vertical">
 
                         <ImageView
                             style="@style/BookItemInfoIcon"
@@ -219,7 +209,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="start|center_vertical"
-                            android:text="@string/rook_url_sample"
+                            tools:text="@string/rook_url_sample"
                             android:textSize="?attr/item_book_details_text_size"/>
                     </LinearLayout>
 
@@ -229,8 +219,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        >
+                        android:gravity="center_vertical">
 
                         <ImageView
                             style="@style/BookItemInfoIcon"
@@ -243,7 +232,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="start|center_vertical"
-                            android:text="@string/synced_rook_mtime_sample"
+                            tools:text="@string/synced_rook_mtime_sample"
                             android:textSize="?attr/item_book_details_text_size"/>
 
                     </LinearLayout>
@@ -254,8 +243,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        >
+                        android:gravity="center_vertical">
 
                         <ImageView
                             style="@style/BookItemInfoIcon"
@@ -267,7 +255,7 @@
                             android:id="@+id/item_book_synced_revision"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/synced_rook_revision_sample"
+                            tools:text="@string/synced_rook_revision_sample"
                             android:textSize="?attr/item_book_details_text_size"/>
 
                     </LinearLayout>
@@ -280,8 +268,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    >
+                    android:gravity="center_vertical">
 
                     <ImageView
                         style="@style/BookItemInfoIcon"
@@ -294,7 +281,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="?attr/item_book_details_text_size"
-                        android:text="@string/selected_encoding_sample"/>
+                        tools:text="@string/encoding_selected_sample"/>
                 </LinearLayout>
 
                 <!-- Detected encoding. -->
@@ -303,15 +290,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    >
+                    android:gravity="center_vertical">
 
                     <ImageView
                         style="@style/BookItemInfoIcon"
                         android:src="?attr/oic_item_book_encoding_item"
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/book_encoding"/>
-
 
                     <TextView
                         android:id="@+id/item_book_encoding_detected"
@@ -320,7 +305,7 @@
                         android:layout_marginEnd="@dimen/padding_8"
                         android:layout_marginRight="@dimen/padding_4"
                         android:textSize="?attr/item_book_details_text_size"
-                        android:text="@string/detected_encoding_sample"/>
+                        tools:text="@string/encoding_detected_sample"/>
 
                 </LinearLayout>
 
@@ -330,8 +315,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    >
+                    android:gravity="center_vertical">
 
                     <ImageView
                         style="@style/BookItemInfoIcon"
@@ -346,7 +330,7 @@
                         android:layout_marginEnd="@dimen/padding_8"
                         android:layout_marginRight="@dimen/padding_4"
                         android:textSize="?attr/item_book_details_text_size"
-                        android:text="@string/used_encoding_sample"/>
+                        tools:text="@string/encoding_used_sample"/>
 
                 </LinearLayout>
 
@@ -356,8 +340,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    >
+                    android:gravity="center_vertical">
 
                     <ImageView
                         style="@style/BookItemInfoIcon"
@@ -370,7 +353,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start|center_vertical"
-                        android:text="@string/books_book_sync_last_action_sample"
+                        tools:text="@string/books_book_sync_last_action_sample"
                         android:textSize="?attr/item_book_details_text_size"/>
                 </LinearLayout>
             </LinearLayout>

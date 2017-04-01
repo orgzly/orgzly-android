@@ -13,10 +13,7 @@
     <string name="book_link_details">笔记本链接细节</string>
     <string name="book_mtime">笔记本修改时间</string>
     <string name="book_name_already_exists">笔记本 %s 已存在</string>
-    <string name="book_name_sample">笔记本</string>
     <string name="book_preface_hint">"笔记本描述…"</string>
-    <string name="book_preface_sample">"这是笔记本的前言。 在第一个入口前的任意字符. 可能包含很多行."</string>
-    <string name="book_title_sample">笔记本标题</string>
     <string name="books_context_menu_item_export">导出</string>
     <string name="books_context_menu_item_force_load">强制加载</string>
     <string name="books_context_menu_item_force_save">强制保存</string>
@@ -64,8 +61,6 @@
     <string name="edit">编辑</string>
     <string name="failed_creating_directory">生成目录失败 %s</string>
     <string name="failure">Uh oh</string>
-    <string name="filter_name_sample_long">将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能</string>
-    <string name="filter_position_sample">1</string>
     <string name="fold_content">收起内容</string>
     <string name="font_size">字体大小</string>
     <string name="fragment_filter_does_not_exist">这个查找将不再存在。</string>
@@ -80,7 +75,6 @@
     <string name="fragment_repo_external_storage_directory_desc">你的设备中的目录(例如 “/sdcard/orgzly”)</string>
     <string name="fragment_settings_title">设置</string>
     <string name="getting_started_loaded">笔记本 “Getting Started with Orgzly” 已加载</string>
-    <string name="head_title_sample">"这是一个用于测试开始显示的标题示例"</string>
     <string name="heads_action_menu_item_add_above">在上面新建</string>
     <string name="heads_action_menu_item_add_below">在下面新建</string>
     <string name="heads_action_menu_item_add_under">在底下新建</string>
@@ -95,7 +89,6 @@
     <string name="heads_moving_action_menu_item_promote">提升</string>
     <string name="heads_moving_action_menu_item_up">向上移</string>
     <string name="insert_note_creation_time">插入笔记的生成时间</string>
-    <string name="note_title_sample">简单的示例标题</string>
     <string name="look_and_feel"><![CDATA["外观 & 感觉]]></string>
     <string name="message_book_deleted">笔记本已删除</string>
     <string name="message_book_does_not_exist">这个笔记本将不再存在。</string>
@@ -130,11 +123,7 @@
     <string name="no_user_repos_configured_pref_summary">尚未配置</string>
     <string name="not_now">不是现在</string>
     <string name="note_book_not_set">笔记本未设置</string>
-    <string name="note_closed_sample">20130610 12:00</string>
-    <string name="note_content_sample">"这是一个多行笔记，笔记可能很长所有有好几行，就像我们现在看到的这样. 这里也应该有新的一行."</string>
-    <string name="note_deadline_sample">20131204 Sat</string>
     <string name="note_has_been_modified">笔记已修改</string>
-    <string name="note_scheduled_sample">20131204 Sat</string>
     <string name="notebook_modified">笔记本已修改</string>
     <string name="notebooks">笔记本集合</string>
     <string name="notes">笔记</string>
@@ -170,7 +159,6 @@
     <string name="search_hint">查找笔记</string>
     <string name="searches">查找</string>
     <string name="select">选择</string>
-    <string name="selected_encoding_sample">选择UTF-8</string>
     <string name="set">设置</string>
     <string name="settings">设置</string>
     <string name="share_action_not_set">未设置分享动作</string>
@@ -181,7 +169,6 @@
     <string name="state">状态</string>
     <string name="state_spinner_prompt">状态</string>
     <string name="sync">同步</string>
-    <string name="sync_button_sample">最近的同步: Jan 01, 01:01</string>
     <string name="canceled">取消</string>
     <string name="syncing_in_progress">正在同步</string>
     <string name="tags">标签</string>
@@ -193,7 +180,6 @@
     <string name="unlink">断开连接</string>
     <string name="up">向上</string>
     <string name="updating_notes">正在更新笔记</string>
-    <string name="used_encoding_sample">已使用UTF-8</string>
     <string name="version">"更新内容"</string>
     <string name="whats_new_follow">关注我们： &lt;a href=https://twitter.com/Orgzly>Twitter&lt;/a> and &lt;a href=https://www.facebook.com/Orgzly>Facebook&lt;/a> 或加入 &lt;a href=https://plus.google.com/communities/104387367636243222968>Google+ Community&lt;/a>.</string>
     <string name="whats_new_info">如有问题或建议，请登陆 &lt;a href=http://www.orgzly.com>Orgzly.com&lt;/a> 与我们联系</string>
@@ -235,4 +221,21 @@
     <string name="notebooks_sort_order_name">名词</string>
     <string name="notebooks_sort_order_modification_time">修改时间</string>
 
+
+    <!-- These are just used in tools:text for layout preview and don't have to be translated,
+         unless layout look depends on the translation. -->
+    <string name="book_name_sample">笔记本</string>
+    <string name="book_preface_sample">"这是笔记本的前言。 在第一个入口前的任意字符. 可能包含很多行."</string>
+    <string name="book_title_sample">笔记本标题</string>
+    <string name="encoding_selected_sample">选择UTF-8</string>
+    <string name="encoding_used_sample">已使用UTF-8</string>
+    <string name="filter_name_sample_long">将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能</string>
+    <string name="filter_position_sample">1</string>
+    <string name="head_title_sample">"这是一个用于测试开始显示的标题示例"</string>
+    <string name="note_closed_sample">20130610 12:00</string>
+    <string name="note_content_sample">"这是一个多行笔记，笔记可能很长所有有好几行，就像我们现在看到的这样. 这里也应该有新的一行."</string>
+    <string name="note_deadline_sample">20131204 Sat</string>
+    <string name="note_scheduled_sample">20131204 Sat</string>
+    <string name="note_title_sample">简单的示例标题</string>
+    <string name="sync_button_sample">最近的同步: Jan 01, 01:01</string>
 </resources>
