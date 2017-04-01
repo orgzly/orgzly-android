@@ -17,6 +17,7 @@ import com.orgzly.R;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 
 import static android.support.test.espresso.Espresso.onData;
@@ -158,6 +159,7 @@ class EspressoUtils {
     }
 
     static void searchForText(String str) {
+        onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
         onView(withHint(R.string.search_hint)).perform(replaceText(str), pressKey(66));
 
         /* TODO: Ugh. */

@@ -282,8 +282,8 @@ public class Provider extends ContentProvider {
 
         for (String tag: searchQuery.getNotTags()) {
             selection.append(" AND (")
-                    .append("COALESCE(" + ProviderContract.Notes.QueryParam.TAGS + ", '')").append(" NOT LIKE ? AND ")
-                    .append("COALESCE(" + ProviderContract.Notes.QueryParam.INHERITED_TAGS+ ", '')").append(" NOT LIKE ?)");
+                    .append("COALESCE(").append(ProviderContract.Notes.QueryParam.TAGS).append(", '')").append(" NOT LIKE ? AND ")
+                    .append("COALESCE(").append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(", '')").append(" NOT LIKE ?)");
 
             selectionArgs.add("%" + tag + "%");
             selectionArgs.add("%" + tag + "%");
@@ -314,11 +314,11 @@ public class Provider extends ContentProvider {
         }
 
         for (String token: searchQuery.getTextSearch()) {
-            selection.append(" AND (" + ProviderContract.Notes.QueryParam.TITLE + " LIKE ?");
+            selection.append(" AND (").append(ProviderContract.Notes.QueryParam.TITLE).append(" LIKE ?");
             selectionArgs.add("%" + token + "%");
-            selection.append(" OR " + ProviderContract.Notes.QueryParam.CONTENT + " LIKE ?");
+            selection.append(" OR ").append(ProviderContract.Notes.QueryParam.CONTENT).append(" LIKE ?");
             selectionArgs.add("%" + token + "%");
-            selection.append(" OR " + ProviderContract.Notes.QueryParam.TAGS + " LIKE ?");
+            selection.append(" OR ").append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ?");
             selectionArgs.add("%" + token + "%");
             selection.append(")");
         }
@@ -349,7 +349,7 @@ public class Provider extends ContentProvider {
              * Tags must be kept separately so we can match them exactly.
              */
             for (String tag: searchQuery.getNoteTags()) {
-                selection.append(" AND " + ProviderContract.Notes.QueryParam.TAGS + " LIKE ?");
+                selection.append(" AND ").append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ?");
                 selectionArgs.add("%" + tag + "%");
             }
         }
