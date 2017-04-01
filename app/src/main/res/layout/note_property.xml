@@ -10,9 +10,8 @@
 
 
     <ImageView
-        android:id="@+id/add"
         android:layout_gravity="center"
-        android:contentDescription="@string/add"
+        android:contentDescription="@string/property"
         android:paddingLeft="8dp"
         android:paddingRight="12dp"
         android:src="?attr/oic_fragment_note_property"
@@ -29,6 +28,7 @@
         android:textSize="?fragment_note_time_buttons_text_size"
         android:hint="@string/name"
         tools:text="CREATED"
+        android:saveEnabled="false"
         android:text=""/>
 
     <Space
@@ -45,6 +45,7 @@
         android:textSize="?fragment_note_time_buttons_text_size"
         android:hint="@string/value"
         tools:text="[2016-06-29 Wed 09:34]"
+        android:saveEnabled="false"
         android:text=""/>
 
     <ImageButton

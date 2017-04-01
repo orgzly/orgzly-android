@@ -34,7 +34,6 @@ import static com.orgzly.android.espresso.EspressoUtils.spinnerItemCount;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasToString;
@@ -298,5 +297,26 @@ public class NoteFragmentTest extends OrgzlyTest {
         pressBack();
 
         onView(withId(R.id.fragment_note_priority)).check(matches(spinnerItemCount(4)));
+    }
+
+    @Test
+    public void testPropertiesAfterRotatingDevice() {
+        onListItem(1).perform(click());
+
+        onView(withId(R.id.add_property)).perform(click());
+        onView(withId(R.id.name)).perform(replaceText("prop-name-1"));
+        onView(withId(R.id.value)).perform(replaceText("prop-value-1"), closeSoftKeyboardWithDelay());
+
+        onView(withId(R.id.add_property)).perform(click());
+        onView(allOf(withId(R.id.name), not(withText("prop-name-1")))).perform(replaceText("prop-name-2"));
+        onView(allOf(withId(R.id.value), not(withText("prop-value-1")))).perform(replaceText("prop-value-2"), closeSoftKeyboardWithDelay());
+
+        toLandscape(activityRule);
+        toPortrait(activityRule);
+
+        onView(allOf(withId(R.id.name), withText("prop-name-1"))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.value), withText("prop-value-1"))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.name), withText("prop-name-2"))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.value), withText("prop-value-2"))).check(matches(isDisplayed()));
     }
 }

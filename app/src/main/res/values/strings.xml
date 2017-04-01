@@ -29,8 +29,8 @@
     <string name="imported">Imported</string>
     <string name="created">Created</string>
     <string name="states">States</string>
-
     <string name="notes">Notes</string>
+    <string name="property">Property</string>
 
     <plurals name="notes_deleted">
         <item quantity="one">Note deleted</item>
