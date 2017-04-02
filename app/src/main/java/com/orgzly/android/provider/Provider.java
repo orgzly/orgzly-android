@@ -79,6 +79,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.orgzly.android.provider.GenericDatabaseUtils.field;
+
 public class Provider extends ContentProvider {
     private static final String TAG = Provider.class.getName();
 
@@ -186,7 +188,7 @@ public class Provider extends ContentProvider {
             case ProviderUris.NOTES_ID_PROPERTIES:
                 id = Long.parseLong(uri.getPathSegments().get(1));
 
-                selection = DbNoteProperty.TABLE + "." + DbNoteProperty.Column.NOTE_ID + "=" + id;
+                selection = field(DbNoteProperty.TABLE, DbNoteProperty.Column.NOTE_ID) + "=" + id;
                 selectionArgs = null;
 
                 sortOrder = DbNoteProperty.Column.POSITION;
@@ -226,17 +228,17 @@ public class Provider extends ContentProvider {
 
             case ProviderUris.CURRENT_ROOKS:
                 projection = new String[] {
-                        DbRepo.TABLE + "." + DbRepo.Column.REPO_URL,
-                        DbRookUrl.TABLE + "." + DbRookUrl.Column.ROOK_URL,
-                        DbVersionedRook.TABLE + "." + DbVersionedRook.Column.ROOK_REVISION,
-                        DbVersionedRook.TABLE + "." + DbVersionedRook.Column.ROOK_MTIME,
+                        field(DbRepo.TABLE, DbRepo.Column.REPO_URL),
+                        field(DbRookUrl.TABLE, DbRookUrl.Column.ROOK_URL),
+                        field(DbVersionedRook.TABLE, DbVersionedRook.Column.ROOK_REVISION),
+                        field(DbVersionedRook.TABLE, DbVersionedRook.Column.ROOK_MTIME),
                 };
 
                 table = DbCurrentVersionedRook.TABLE +
-                        " LEFT JOIN " + DbVersionedRook.TABLE + " ON (" + DbVersionedRook.TABLE + "." + DbVersionedRook.Column._ID + "=" + DbCurrentVersionedRook.TABLE + "." + DbCurrentVersionedRook.Column.VERSIONED_ROOK_ID + ")" +
-                        " LEFT JOIN " + DbRook.TABLE + " ON (" + DbRook.TABLE + "." + DbRook.Column._ID + "=" + DbVersionedRook.TABLE + "." + DbVersionedRook.Column.ROOK_ID + ")" +
-                        " LEFT JOIN " + DbRookUrl.TABLE + " ON (" + DbRookUrl.TABLE + "." + DbRookUrl.Column._ID + "=" + DbRook.TABLE + "." + DbRook.Column.ROOK_URL_ID + ")" +
-                        " LEFT JOIN " + DbRepo.TABLE + " ON (" + DbRepo.TABLE + "." + DbRepo.Column._ID + "=" + DbRook.TABLE + "." + DbRook.Column.REPO_ID + ")" +
+                        " LEFT JOIN " + DbVersionedRook.TABLE + " ON (" + field(DbVersionedRook.TABLE, DbVersionedRook.Column._ID) + "=" + field(DbCurrentVersionedRook.TABLE, DbCurrentVersionedRook.Column.VERSIONED_ROOK_ID) + ")" +
+                        " LEFT JOIN " + DbRook.TABLE + " ON (" + field(DbRook.TABLE, DbRook.Column._ID) + "=" + field(DbVersionedRook.TABLE, DbVersionedRook.Column.ROOK_ID) + ")" +
+                        " LEFT JOIN " + DbRookUrl.TABLE + " ON (" + field(DbRookUrl.TABLE, DbRookUrl.Column._ID) + "=" + field(DbRook.TABLE, DbRook.Column.ROOK_URL_ID) + ")" +
+                        " LEFT JOIN " + DbRepo.TABLE + " ON (" + field(DbRepo.TABLE, DbRepo.Column._ID) + "=" + field(DbRook.TABLE, DbRook.Column.REPO_ID) + ")" +
                         "";
                 break;
 
@@ -618,13 +620,15 @@ public class Provider extends ContentProvider {
                    " (" + DbNoteAncestor.Column.BOOK_ID + ", " +
                    DbNoteAncestor.Column.NOTE_ID +
                    ", " + DbNoteAncestor.Column.ANCESTOR_NOTE_ID + ") " +
-                   "SELECT " + DbNote.TABLE + "." + DbNote.Column.BOOK_ID + ", " + DbNote.TABLE + "._id, a._id FROM " + DbNote.TABLE +
+                   "SELECT " + field(DbNote.TABLE, DbNote.Column.BOOK_ID) + ", " +
+                   field(DbNote.TABLE, DbNote.Column._ID) + ", " +
+                   field("a", DbNote.Column._ID) +
+                   " FROM " + DbNote.TABLE +
                    " JOIN " + DbNote.TABLE + " a ON (" +
-                   DbNote.TABLE + "."  + DbNote.Column.BOOK_ID + " = a." + DbNote.Column.BOOK_ID +
-                   " AND a." + DbNote.Column.LFT + " < "+  DbNote.TABLE + "." + DbNote.Column.LFT +
-                   " AND " +  DbNote.TABLE + "." + DbNote.Column.RGT + " < a." + DbNote.Column.RGT + ") " +
-                   "WHERE " +  DbNote.TABLE + "." + DbNote.Column._ID + " = " + id + " AND " +
-                   "a." + DbNote.Columns.LEVEL + " > 0");
+                   field(DbNote.TABLE, DbNote.Column.BOOK_ID) + " = " + field("a", DbNote.Column.BOOK_ID) + " AND " +
+                   field("a", DbNote.Column.LFT) + " < " + field(DbNote.TABLE, DbNote.Column.LFT) + " AND " +
+                   field(DbNote.TABLE, DbNote.Column.RGT) + " < " + field("a", DbNote.Column.RGT) + ")" +
+                   " WHERE " + field(DbNote.TABLE, DbNote.Column._ID) + " = " + id + " AND " + field("a", DbNote.Columns.LEVEL) + " > 0");
 
         return ContentUris.withAppendedId(uri, id);
     }

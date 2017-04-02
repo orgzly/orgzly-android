@@ -2,8 +2,8 @@ package com.orgzly.android.ui.fragments;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -180,8 +180,11 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
         new android.os.Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                getActivity().getSupportLoaderManager()
-                        .initLoader(Loaders.REPOS_FRAGMENT, null, ReposFragment.this);
+                FragmentActivity activity = getActivity();
+                if (activity != null) {
+                    activity.getSupportLoaderManager()
+                            .initLoader(Loaders.REPOS_FRAGMENT, null, ReposFragment.this);
+                }
 
             }
         }, 100);

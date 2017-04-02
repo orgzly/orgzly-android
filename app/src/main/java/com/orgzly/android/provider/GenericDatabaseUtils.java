@@ -12,6 +12,11 @@ import java.util.List;
 
 /**
  * Generic database utilities, not specific to Orgzly database schema.
+ *
+ * TODO: Consider creating DSL for constructing queries.
+ *
+ * Check existing libraries - something like this (no code generators or such):
+ * http://www.jooq.org/doc/latest/manual/getting-started/use-cases/jooq-as-a-standalone-sql-builder/
  */
 public class GenericDatabaseUtils {
     public static void incrementFields(SQLiteDatabase db, String table, String selection, int count, String... fields) {
@@ -34,8 +39,12 @@ public class GenericDatabaseUtils {
         return "(" + field + " IS NULL OR " + field + " = 0 )";
     }
 
-    public static String join(String table, String alias, String field, String onTable, String onField) {
-        return " LEFT OUTER JOIN " + table + " " + alias + " ON " + alias + "." + field + " = " + onTable + "." + onField + " ";
+    public static String join(String table, String alias, String field1, String onTable, String field2) {
+        return " LEFT OUTER JOIN " + table + " " + alias + " ON " + field(alias, field1) + " = " + field(onTable, field2) + " ";
+    }
+
+    public static String field(String table, String name) {
+        return table + "." + name;
     }
 
     public static int getCount(Context context, Uri uri, String selection) {

@@ -8,7 +8,6 @@ import com.orgzly.BuildConfig;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.provider.models.DbBook;
 import com.orgzly.android.provider.models.DbNote;
-import com.orgzly.android.provider.models.DbNoteAncestor;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.LogUtils;
 

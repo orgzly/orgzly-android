@@ -9,6 +9,8 @@ import com.orgzly.android.provider.models.DbNoteAncestor;
 import com.orgzly.android.provider.models.DbOrgRange;
 import com.orgzly.android.provider.models.DbOrgTimestamp;
 
+import static com.orgzly.android.provider.GenericDatabaseUtils.field;
+
 /**
  * Notes with book name and times.
  */
@@ -67,11 +69,7 @@ public class NotesView {
             GenericDatabaseUtils.join(DbNoteAncestor.TABLE, "t_note_ancestors", DbNoteAncestor.Column.NOTE_ID, DbNote.TABLE, DbNote.Column._ID) +
             GenericDatabaseUtils.join(DbNote.TABLE, "t_notes_with_inherited_tags", DbNote.Column._ID, "t_note_ancestors", DbNoteAncestor.Column.ANCESTOR_NOTE_ID) +
 
-            " GROUP BY " + f(DbNote.TABLE, DbNote.Column._ID);
-
-    public static String f(String table, String column) {
-        return table + "." + column;
-    }
+            " GROUP BY " + field(DbNote.TABLE, DbNote.Column._ID);
 
     public static class Columns implements DbNote.Columns, BaseColumns {
         public static String BOOK_NAME = "book_name";
