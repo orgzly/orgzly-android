@@ -63,7 +63,8 @@
             android:selectAllOnFocus="true"
             android:inputType="text"
             android:singleLine="true"
-            android:title="@string/share_notebook" />
+            android:dialogMessage="@string/default_notebook_desc"
+            android:title="@string/default_notebook" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/notes_list">

@@ -368,7 +368,8 @@
     <string name="separate_notes_with_new_line_multi_line_notes_only">Multiline notes only</string>
     <string name="separate_notes_with_new_line_never">Never</string>
     <string name="default_share_notebook" translatable="false">Inbox</string>
-    <string name="share_notebook">Share notebook</string>
+    <string name="default_notebook">Default notebook</string>
+    <string name="default_notebook_desc">Notebook used when sharing to Orgzly or creating a new note from the ongoing notification</string>
 
 
     <!-- These are just used in tools:text for layout preview and don't have to be translated,

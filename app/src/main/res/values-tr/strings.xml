@@ -355,7 +355,7 @@
     <string name="separate_notes_with_new_line_always">Her zaman</string>
     <string name="separate_notes_with_new_line_multi_line_notes_only">Yalnızca çok satırlı notlar</string>
     <string name="separate_notes_with_new_line_never">Asla</string>
-    <string name="share_notebook">Defteri paylaş</string>
+    <string name="default_notebook">Defteri paylaş</string>
 
 
     <!-- These are just used in tools:text for layout preview and don't have to be translated,

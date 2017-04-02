@@ -357,7 +357,7 @@
     <string name="separate_notes_with_new_line_always">همیشه</string>
     <string name="separate_notes_with_new_line_multi_line_notes_only">فقط یادداشت‌های چند-خطی</string>
     <string name="separate_notes_with_new_line_never">هیچ‌گاه</string>
-    <string name="share_notebook">اشتراک‌گذاری دفترچه</string>
+    <string name="default_notebook">اشتراک‌گذاری دفترچه</string>
 
     <!-- These are just used in tools:text for layout preview and don't have to be translated,
          unless layout look depends on the translation. -->
