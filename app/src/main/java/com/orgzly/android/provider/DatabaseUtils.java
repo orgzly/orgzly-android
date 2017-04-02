@@ -39,6 +39,10 @@ public class DatabaseUtils {
                DbNote.Column.LFT + "< " + lft + " AND " + rgt + " < " + DbNote.Column.RGT + ")";
     }
 
+    public static String whereAncestorsAndNote(long bookId, long id) {
+        return "(" + whereAncestors(bookId, String.valueOf(id)) + " OR (" + DbNote.Column._ID + " = " + id + "))";
+    }
+
     public static String whereAncestors(long bookId, String ids) {
         String sql = "(" + DbNote.Column._ID + " IN (SELECT DISTINCT b." + DbNote.Column._ID + " FROM " +
                      DbNote.TABLE + " a, " + DbNote.TABLE + " b WHERE " +

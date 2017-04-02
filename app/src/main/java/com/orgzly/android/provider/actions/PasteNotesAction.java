@@ -167,7 +167,7 @@ public class PasteNotesAction implements Action {
         db.execSQL("UPDATE " + DbNote.TABLE + " SET " + DbNote.Column.IS_CUT  + " = 0 WHERE " + DbNote.Column.IS_CUT + " = " + batchId);
 
         /* Update number of descendants for ancestors and the note itself. */
-        String where = DatabaseUtils.whereAncestors(targetNotePosition.getBookId(), String.valueOf(targetNoteId)) + " OR (" + DbNote.Column._ID + " = " + targetNoteId + ")";
+        String where = DatabaseUtils.whereAncestorsAndNote(targetNotePosition.getBookId(), targetNoteId);
         DatabaseUtils.updateDescendantsCount(db, where);
 
         /* Delete other batches. */
