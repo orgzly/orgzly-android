@@ -18,13 +18,11 @@ public class PasteNotesAction implements Action {
     private static final String TAG = PasteNotesAction.class.getName();
 
     private Place place;
-    private long bookId;
     private long targetNoteId;
     private long batchId;
 
     public PasteNotesAction(ContentValues values) {
         place = Place.valueOf(values.getAsString(ProviderContract.Paste.Param.SPOT));
-        bookId = values.getAsLong(ProviderContract.Paste.Param.BOOK_ID);
         targetNoteId = values.getAsLong(ProviderContract.Paste.Param.NOTE_ID);
         batchId = values.getAsLong(ProviderContract.Paste.Param.BATCH_ID);
     }

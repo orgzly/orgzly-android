@@ -585,7 +585,6 @@ public class NotesClient {
             ContentValues values = new ContentValues();
 
             values.put(ProviderContract.Paste.Param.SPOT, place.toString());
-            values.put(ProviderContract.Paste.Param.BOOK_ID, bookId);
             values.put(ProviderContract.Paste.Param.NOTE_ID, noteId);
             values.put(ProviderContract.Paste.Param.BATCH_ID, batch.getId());
 

@@ -99,7 +99,6 @@ public class MoveNotesAction implements Action {
             /* Paste. */
             values = new ContentValues();
             values.put(ProviderContract.Paste.Param.BATCH_ID, batchId);
-            values.put(ProviderContract.Paste.Param.BOOK_ID, bookId);
             values.put(ProviderContract.Paste.Param.NOTE_ID, targetNoteId);
             values.put(ProviderContract.Paste.Param.SPOT, place.toString());
             new PasteNotesAction(values).run(db);

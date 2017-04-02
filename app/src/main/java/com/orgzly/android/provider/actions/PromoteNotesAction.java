@@ -61,7 +61,6 @@ public class PromoteNotesAction implements Action {
         /* Paste below parent. */
         values = new ContentValues();
         values.put(ProviderContract.Paste.Param.BATCH_ID, batchId);
-        values.put(ProviderContract.Paste.Param.BOOK_ID, bookId);
         values.put(ProviderContract.Paste.Param.NOTE_ID, note.getParentId());
         values.put(ProviderContract.Paste.Param.SPOT, Place.BELOW.toString());
         new PasteNotesAction(values).run(db);

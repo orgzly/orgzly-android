@@ -62,7 +62,6 @@ public class DemoteNotesAction implements Action {
         /* Paste under previous sibling. */
         values = new ContentValues();
         values.put(ProviderContract.Paste.Param.BATCH_ID, batchId);
-        values.put(ProviderContract.Paste.Param.BOOK_ID, bookId);
         values.put(ProviderContract.Paste.Param.NOTE_ID, previousSiblingId);
         values.put(ProviderContract.Paste.Param.SPOT, Place.UNDER.toString());
         new PasteNotesAction(values).run(db);

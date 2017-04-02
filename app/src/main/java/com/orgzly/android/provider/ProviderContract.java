@@ -235,7 +235,6 @@ public class ProviderContract {
 
     public interface Paste {
         class Param {
-            public static final String BOOK_ID = "book_id";
             public static final String NOTE_ID = "note_id";
             public static final String BATCH_ID = "batch_id";
             public static final String SPOT = "spot";
