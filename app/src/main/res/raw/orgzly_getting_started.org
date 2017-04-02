@@ -35,46 +35,19 @@ Both scheduled and deadline times can be used at the same time.
 ** DONE Task can be marked as completed by setting its state to DONE
 CLOSED: [2015-02-20 Fri 20:17]
 
-** Note content can include clickable links
+** Note can include different types of links
 
-- With description: [[mailto:support@orgzly.com][support@orgzly.com]]
-- Plain: http://www.orgzly.com
-- In brackets: [[http://www.orgzly.com/help]]
+Dial a phone number (tel:555-2368) or [[sms:555-2368][send SMS]].
 
-Open note and start editing its content to see the raw format used.
+Send email to [[mailto:support@orgzly.com][support@orgzly.com]], visit http://www.orgzly.com or read [[http://www.orgzly.com/help][documentation]].
+
+Start editing this content to check the syntax.
 
 * Searching
 ** You can search notes by clicking the search icon
-** You can search for text occurring anywhere in the note
-** You can create search queries using operators to narrow down the results
-*** Examples
-**** b.Work
+** You can search for text occurring anywhere in the note or narrow down the results using search operators
 
-Search for notes contained in notebook “Work”
-
-**** i.todo
-
-Search for notes which have a state set to “TODO”
-
-**** .i.done b.Work
-
-Search for notes which do not have “DONE” state and are contained in the “Work” notebook
-
-**** s.today
-
-Search for notes which are scheduled for today or earlier
-
-**** d.tmrw .i.done
-
-Search for notes which have deadline set for tomorrow or earlier and do not have “DONE” state
-
-**** t.tip
-
-Search for notes which contain tag “tip”
-
-**** p.a
-
-Search for notes which have a priority “A”
+See http://www.orgzly.com/help#Search for more info.
 
 ** Search queries can be saved for quick access
 
