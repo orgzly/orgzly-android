@@ -248,30 +248,4 @@ public class DatabaseUtils {
 
         return 0;
     }
-
-    public static void updateParentIds(SQLiteDatabase db, long bookId) {
-        long t = System.currentTimeMillis();
-
-        String parentId = "(SELECT " + DbNote.Column._ID + " FROM " + DbNote.TABLE + " AS n WHERE " +
-                          DbNote.Column.BOOK_ID + " = " + bookId + " AND " +
-                          "n." + DbNote.Column.LFT + " < " + DbNote.TABLE + "." + DbNote.Column.LFT + " AND " +
-                          DbNote.TABLE + "." + DbNote.Column.RGT + " < n." + DbNote.Column.RGT + " ORDER BY n." + DbNote.Column.LFT + " DESC LIMIT 1)";
-
-        db.execSQL("UPDATE " + DbNote.TABLE + " SET " + DbNote.Column.PARENT_ID + " = " + parentId + " WHERE " + whereUncutBookNotes(bookId));
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "" + (System.currentTimeMillis() - t) + "ms");
-    }
-
-    public static void updateNoteAncestors(SQLiteDatabase db, long bookId) {
-        long t = System.currentTimeMillis();
-
-        db.execSQL("DELETE FROM " + DbNoteAncestor.TABLE + " WHERE " + DbNoteAncestor.Column.BOOK_ID + " = " + bookId);
-
-        db.execSQL("INSERT INTO " + DbNoteAncestor.TABLE + " (book_id, note_id, ancestor_note_id) " +
-                   "SELECT n." + DbNote.Column.BOOK_ID + ", n." + DbNote.Column._ID + ", a." + DbNote.Column._ID + " FROM " + DbNote.TABLE + " n " +
-                   "JOIN " + DbNote.TABLE + " a ON (n." + DbNote.Column.BOOK_ID + " = a." + DbNote.Column.BOOK_ID + " AND a." + DbNote.Column.LFT + " < n." + DbNote.Column.LFT + " AND n." + DbNote.Column.RGT + " < a." + DbNote.Column.RGT + ") " +
-                   "WHERE n." + DbNote.Column.BOOK_ID + " = " + bookId + " AND a." + DbNote.Column.LEVEL + " > 0");
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Done for " + bookId + " in " + + (System.currentTimeMillis() - t) + " ms");
-    }
 }

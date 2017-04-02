@@ -189,7 +189,7 @@ public class DatabaseMigration {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 long bookId = cursor.getLong(0);
                 convertNotebookFromPositionToNestedSet(db, bookId);
-                DatabaseUtils.updateParentIds(db, bookId);
+                updateParentIds(db, bookId);
             }
         } finally {
             cursor.close();
@@ -219,6 +219,16 @@ public class DatabaseMigration {
         } finally {
             cursor.close();
         }
+    }
+
+    private static void updateParentIds(SQLiteDatabase db, long bookId) {
+        String parentId = "(SELECT _id FROM notes AS n WHERE " +
+                          "book_id = " + bookId + " AND " +
+                          "n.is_visible < notes.is_visible AND " +
+                          "notes.parent_position < n.parent_position ORDER BY n.is_visible DESC LIMIT 1)";
+
+        db.execSQL("UPDATE notes SET parent_id = " + parentId +
+                   " WHERE book_id = " + bookId + " AND is_cut = 0 AND level > 0");
     }
 
     private static void updateNotesPositionsFromLevel(SQLiteDatabase db, Cursor cursor) {
