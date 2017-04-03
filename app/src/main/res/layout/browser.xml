@@ -62,7 +62,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="@string/create"/>
+            android:text="@string/new_"/>
 
         <Button
             android:id="@+id/browser_button_use"

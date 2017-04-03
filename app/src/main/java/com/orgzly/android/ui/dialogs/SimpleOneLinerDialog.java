@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -23,7 +24,6 @@ public class SimpleOneLinerDialog extends DialogFragment {
     private static final String ARG_TITLE = "title";
     private static final String ARG_HINT = "hint";
     private static final String ARG_VALUE = "value";
-    private static final String ARG_DESCRIPTION = "description";
     private static final String ARG_POSITIVE_BUTTON_TEXT = "pos";
     private static final String ARG_NEGATIVE_BUTTON_TEXT = "neg";
     private static final String ARG_USER_DATA = "bundle";
@@ -34,33 +34,34 @@ public class SimpleOneLinerDialog extends DialogFragment {
     private SimpleOneLinerDialogListener mListener;
 
     private int mId;
-    private String mTitle;
-    private String mHint;
+    private int mTitle;
+    private int mHint;
     private String mValue;
-    private String mDescription;
-    private String mPositiveButtonText;
-    private String mNegativeButtonText;
+    private int mPositiveButtonText;
+    private int mNegativeButtonText;
     private Bundle mUserData;
 
-    public static SimpleOneLinerDialog getInstance(int id, String title, String hint, String value, String description, String positiveButtonText, String negativeButtonText, Bundle userData) {
+    public static SimpleOneLinerDialog getInstance(
+            int id,
+            @StringRes int title,
+            @StringRes int hint,
+            @StringRes int positiveButtonText,
+            @StringRes int negativeButtonText,
+            String defaultValue,
+            Bundle userData) {
+
         SimpleOneLinerDialog dialog = new SimpleOneLinerDialog();
 
         Bundle args = new Bundle();
 
-        if (title != null) {
-            args.putString(ARG_TITLE, title);
+        args.putInt(ARG_TITLE, title);
+
+        if (hint != 0) {
+            args.putInt(ARG_HINT, hint);
         }
 
-        if (hint != null) {
-            args.putString(ARG_HINT, hint);
-        }
-
-        if (value != null) {
-            args.putString(ARG_VALUE, value);
-        }
-
-        if (description != null) {
-            args.putString(ARG_DESCRIPTION, description);
+        if (defaultValue != null) {
+            args.putString(ARG_VALUE, defaultValue);
         }
 
         args.putInt(ARG_ID, id);
@@ -69,8 +70,8 @@ public class SimpleOneLinerDialog extends DialogFragment {
             args.putBundle(ARG_USER_DATA, userData);
         }
 
-        args.putString(ARG_POSITIVE_BUTTON_TEXT, positiveButtonText);
-        args.putString(ARG_NEGATIVE_BUTTON_TEXT, negativeButtonText);
+        args.putInt(ARG_POSITIVE_BUTTON_TEXT, positiveButtonText);
+        args.putInt(ARG_NEGATIVE_BUTTON_TEXT, negativeButtonText);
 
         dialog.setArguments(args);
 
@@ -99,14 +100,13 @@ public class SimpleOneLinerDialog extends DialogFragment {
         }
 
         mId = getArguments().getInt(ARG_ID);
-        mTitle = getArguments().getString(ARG_TITLE);
-        mHint = getArguments().getString(ARG_HINT);
+        mTitle = getArguments().getInt(ARG_TITLE);
+        mHint = getArguments().getInt(ARG_HINT);
         mValue = getArguments().getString(ARG_VALUE);
-        mDescription = getArguments().getString(ARG_DESCRIPTION);
         mUserData = getArguments().getBundle(ARG_USER_DATA);
 
-        mPositiveButtonText = getArguments().getString(ARG_POSITIVE_BUTTON_TEXT);
-        mNegativeButtonText = getArguments().getString(ARG_NEGATIVE_BUTTON_TEXT);
+        mPositiveButtonText = getArguments().getInt(ARG_POSITIVE_BUTTON_TEXT);
+        mNegativeButtonText = getArguments().getInt(ARG_NEGATIVE_BUTTON_TEXT);
     }
 
     @Override
@@ -117,21 +117,12 @@ public class SimpleOneLinerDialog extends DialogFragment {
 
         final EditText input = (EditText) view.findViewById(R.id.dialog_input);
 
-        if (mHint != null) {
+        if (mHint != 0) {
             input.setHint(mHint);
         }
 
         if (mValue != null) {
             input.setText(mValue);
-        }
-
-
-        TextView description = (TextView) view.findViewById(R.id.dialog_description);
-        if (mDescription != null) {
-            description.setText(mDescription);
-            description.setVisibility(View.VISIBLE);
-        } else {
-            description.setVisibility(View.GONE);
         }
 
         final AlertDialog dialog = new AlertDialog.Builder(getActivity())

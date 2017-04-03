@@ -615,7 +615,7 @@ public class MainActivity extends CommonActivity
         String guessedBookName = guessBookNameFromUri(uri);
 
         SimpleOneLinerDialog
-                .getInstance(DIALOG_IMPORT_BOOK, "Notebook Name", null, guessedBookName, null, "Import", "Cancel", bundle)
+                .getInstance(DIALOG_IMPORT_BOOK, R.string.import_as, R.string.name, R.string.import_, R.string.cancel, guessedBookName, bundle)
                 .show(getSupportFragmentManager(), SimpleOneLinerDialog.FRAGMENT_TAG);
     }
 
@@ -1222,7 +1222,7 @@ public class MainActivity extends CommonActivity
     @Override
     public void onBookCreateRequest() {
         SimpleOneLinerDialog
-                .getInstance(DIALOG_NEW_BOOK, "New Notebook", "Name", null, null, "Create", "Cancel", null)
+                .getInstance(DIALOG_NEW_BOOK, R.string.new_notebook, R.string.name, R.string.create, R.string.cancel, null, null)
                 .show(getSupportFragmentManager(), SimpleOneLinerDialog.FRAGMENT_TAG);
     }
 

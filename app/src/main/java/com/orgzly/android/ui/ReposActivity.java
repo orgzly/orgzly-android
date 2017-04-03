@@ -248,7 +248,7 @@ public class ReposActivity extends CommonActivity
         bundle.putString(DIALOG_CREATE_DIRECTORY_ARG_DIRECTORY, currentItem);
 
         SimpleOneLinerDialog
-                .getInstance(DIALOG_CREATE_DIRECTORY_ID, "Name", null, null, null, "Create", "Cancel", bundle)
+                .getInstance(DIALOG_CREATE_DIRECTORY_ID, R.string.new_folder, R.string.name, R.string.create, R.string.cancel, null, bundle)
                 .show(getSupportFragmentManager(), SimpleOneLinerDialog.FRAGMENT_TAG);
     }
 
