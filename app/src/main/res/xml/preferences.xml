@@ -90,6 +90,12 @@
             android:defaultValue="@string/pref_default_value_book_name_in_search"/>
 
         <CheckBoxPreference
+            android:key="@string/pref_key_display_inherited_tags_in_search_results"
+            android:title="@string/display_inherited_tags_in_search_results"
+            android:summary="@string/display_inherited_tags_in_search_results_summary"
+            android:defaultValue="@bool/pref_default_display_inherited_tags_in_search_results"/>
+
+        <CheckBoxPreference
             android:key="@string/pref_key_is_notes_content_displayed_in_list"
             android:title="@string/display_content"
             android:summary="@string/display_both_title_and_content"

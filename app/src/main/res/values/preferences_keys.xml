@@ -61,6 +61,9 @@
         <item>@string/pref_value_book_name_in_search_2</item>
     </string-array>
 
+    <string name="pref_key_display_inherited_tags_in_search_results" translatable="false">pref_key_display_inherited_tags_in_search_results</string>
+    <bool name="pref_default_display_inherited_tags_in_search_results" translatable="false">false</bool>
+
     <string name="pref_key_is_notes_content_displayed_in_search" translatable="false">pref_key_is_notes_content_displayed_in_search</string>
     <bool name="pref_default_is_notes_content_displayed_in_search" translatable="false">false</bool>
 

@@ -344,6 +344,9 @@
     <string name="no_states_defined">No states defined</string>
     <string name="book_name_in_search">Notebook name in search results</string>
 
+    <string name="display_inherited_tags_in_search_results">Inherited tags in search results</string>
+    <string name="display_inherited_tags_in_search_results_summary">Display inherited tags in search results</string>
+
     <string name="new_note_notification">Ongoing notification</string>
     <string name="new_note_notification_summary">Display ongoing (persistent) notification for quickly creating new note</string>
 

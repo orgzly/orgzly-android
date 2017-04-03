@@ -403,7 +403,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         }
 
         /* Inherited tags in search results. */
-        if (!inBook && note.hasInheritedTags()) {
+        if (!inBook && note.hasInheritedTags() && AppPreferences.inheritedTagsInSearchResults(mContext)) {
             if (head.hasTags()) {
                 builder.append(INHERITED_TAGS_SEPARATOR);
             }

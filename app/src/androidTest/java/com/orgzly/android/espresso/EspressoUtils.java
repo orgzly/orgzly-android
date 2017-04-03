@@ -17,7 +17,6 @@ import com.orgzly.R;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 
 import static android.support.test.espresso.Espresso.onData;
@@ -49,17 +48,17 @@ import static org.hamcrest.Matchers.not;
 class EspressoUtils {
     static final int SETTINGS_REVERSED_NOTE_CLICK_ACTION = 1;
 
-    static final int SETTINGS_STATE_KEYWORDS = 20;
-    static final int SETTINGS_DEFAULT_PRIORITY = 21;
-    static final int SETTINGS_LOWEST_PRIORITY = 22;
+    static final int SETTINGS_STATE_KEYWORDS = 21;
+    static final int SETTINGS_DEFAULT_PRIORITY = 22;
+    static final int SETTINGS_LOWEST_PRIORITY = 23;
 
-    static final int SETTINGS_NEW_NOTE_STATE = 24;
-    static final int SETTINGS_CREATED_AT = 26;
+    static final int SETTINGS_NEW_NOTE_STATE = 25;
+    static final int SETTINGS_CREATED_AT = 27;
 
-    static final int SETTINGS_REPOS = 32;
+    static final int SETTINGS_REPOS = 33;
 
-    static final int IMPORT_GETTING_STARTED = 34;
-    static final int SETTINGS_CLEAR_DATABASE = 35;
+    static final int IMPORT_GETTING_STARTED = 35;
+    static final int SETTINGS_CLEAR_DATABASE = 36;
 
     /**
      */
