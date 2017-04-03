@@ -787,20 +787,20 @@ public class StructureTest extends OrgzlyTest {
         /* Fold all. */
         shelf.cycleVisibility(book);
 
-        assertTrue(shelf.getNote("Note 1").isFolded());
-        assertTrue(shelf.getNote("Note 2").isFolded());
-        assertTrue(shelf.getNote("Note 3").isFolded());
-        assertTrue(shelf.getNote("Note 4").isFolded());
-        assertTrue(shelf.getNote("Note 5").isFolded());
+        assertTrue(shelf.getNote("Note 1").getPosition().isFolded());
+        assertTrue(shelf.getNote("Note 2").getPosition().isFolded());
+        assertTrue(shelf.getNote("Note 3").getPosition().isFolded());
+        assertTrue(shelf.getNote("Note 4").getPosition().isFolded());
+        assertTrue(shelf.getNote("Note 5").getPosition().isFolded());
 
         /* Unfold all. */
         shelf.cycleVisibility(book);
 
-        assertFalse(shelf.getNote("Note 1").isFolded());
-        assertFalse(shelf.getNote("Note 2").isFolded());
-        assertFalse(shelf.getNote("Note 3").isFolded());
-        assertFalse(shelf.getNote("Note 4").isFolded());
-        assertFalse(shelf.getNote("Note 5").isFolded());
+        assertFalse(shelf.getNote("Note 1").getPosition().isFolded());
+        assertFalse(shelf.getNote("Note 2").getPosition().isFolded());
+        assertFalse(shelf.getNote("Note 3").getPosition().isFolded());
+        assertFalse(shelf.getNote("Note 4").getPosition().isFolded());
+        assertFalse(shelf.getNote("Note 5").getPosition().isFolded());
     }
 
     @Test
@@ -838,8 +838,8 @@ public class StructureTest extends OrgzlyTest {
         /* Unfold Note 1. */
         shelf.toggleFoldedState(shelf.getNote("Note 1").getId());
 
-        assertFalse(shelf.getNote("Note 1").isFolded());
-        assertTrue(shelf.getNote("Note 2").isFolded());
+        assertFalse(shelf.getNote("Note 1").getPosition().isFolded());
+        assertTrue(shelf.getNote("Note 2").getPosition().isFolded());
     }
 
     @Test
@@ -916,9 +916,9 @@ public class StructureTest extends OrgzlyTest {
         /* Fold all. */
         shelf.cycleVisibility(book);
 
-        assertTrue(shelf.getNote("Note 1").isFolded());
-        assertTrue(shelf.getNote("Note 2").isFolded());
-        assertTrue(shelf.getNote("Note 3").isFolded());
+        assertTrue(shelf.getNote("Note 1").getPosition().isFolded());
+        assertTrue(shelf.getNote("Note 2").getPosition().isFolded());
+        assertTrue(shelf.getNote("Note 3").getPosition().isFolded());
     }
 
     @Test

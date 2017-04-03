@@ -19,9 +19,6 @@ public class Note {
     /** Number of lines in content. */
     private int mContentLines;
 
-    /** Is the note folded (collapsed) or unfolded (expanded). */
-    private boolean isFolded; // FIXME: Already in NotePosition
-
     private List<String> inheritedTags;
 
 
@@ -75,16 +72,6 @@ public class Note {
         this.mContentLines = mContentLines;
     }
 
-
-    public boolean isFolded() {
-        return isFolded;
-    }
-
-    public void setFolded(boolean folded) {
-        isFolded = folded;
-    }
-
-
     /**
      * Inherited tags.
      *
@@ -124,7 +111,7 @@ public class Note {
                 position.getRgt(),
                 position.getLevel(),
                 position.getDescendantsCount(),
-                this.isFolded(),
+                position.isFolded(),
                 position.getFoldedUnderId(),
                 id);
     }

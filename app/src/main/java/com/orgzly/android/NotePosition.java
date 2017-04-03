@@ -22,7 +22,7 @@ public class NotePosition {
 
     private long parentId;
 
-    /** Folded or not. */
+    /** Is the note folded (collapsed) or unfolded (expanded). */
     private boolean isFolded;
 
     public long getFoldedUnderId() {

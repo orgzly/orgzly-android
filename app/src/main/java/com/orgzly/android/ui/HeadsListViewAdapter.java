@@ -196,7 +196,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         holder.title.setText(generateTitle(note, head));
 
         /* Content. */
-        if (head.hasContent() && AppPreferences.isNotesContentDisplayedInList(context) && (!note.isFolded() || !AppPreferences.isNotesContentFoldable(context)) && (inBook || AppPreferences.isNotesContentDisplayedInSearch(context))) {
+        if (head.hasContent() && AppPreferences.isNotesContentDisplayedInList(context) && (!note.getPosition().isFolded() || !AppPreferences.isNotesContentFoldable(context)) && (inBook || AppPreferences.isNotesContentDisplayedInSearch(context))) {
             if (AppPreferences.isFontMonospaced(context)) {
                 holder.content.setTypeface(Typeface.MONOSPACE);
             }
@@ -281,7 +281,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                 isVisible = true;
 
                 /* Type of the fold button. */
-                if (note.isFolded()) {
+                if (note.getPosition().isFolded()) {
                     holder.foldButtonText.setText(R.string.unfold_button_character);
                 } else {
                     holder.foldButtonText.setText(R.string.fold_button_character);
@@ -305,7 +305,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
 
         if (inBook) {
             if (note.getPosition().getDescendantsCount() > 0) { // Has descendants
-                if (note.isFolded()) {
+                if (note.getPosition().isFolded()) {
                     holder.bullet.setText(R.string.bullet_with_children_folded);
                 } else {
                     holder.bullet.setText(R.string.bullet_with_children_unfolded);
@@ -412,7 +412,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         }
 
         /* Content length. */
-        if (head.hasContent() && (!AppPreferences.isNotesContentDisplayedInList(mContext) || (note.isFolded() && AppPreferences.isNotesContentFoldable(mContext)))) {
+        if (head.hasContent() && (!AppPreferences.isNotesContentDisplayedInList(mContext) || (note.getPosition().isFolded() && AppPreferences.isNotesContentFoldable(mContext)))) {
             builder.append(TITLE_SEPARATOR).append(String.valueOf(note.getContentLines()));
             hasPostTitleText = true;
         }

@@ -1429,7 +1429,6 @@ public class Provider extends ContentProvider {
                             position.setRgt(node.getRgt());
                             position.setLevel(node.getLevel());
                             position.setDescendantsCount(node.getDescendantsCount());
-                            position.setFoldedUnderId(0);
 
                             ContentValues values = new ContentValues();
 
@@ -1438,7 +1437,7 @@ public class Provider extends ContentProvider {
 
                             long noteId = db.insertOrThrow(DbNote.TABLE, null, values);
 
-                            /* Insert properties for newly created note. */
+                            /* Insert note's properties. */
                             int i = 0;
                             for (OrgProperty property: node.getHead().getProperties()) {
                                 Long nameId = propertyNames.get(property.getName());
@@ -1469,7 +1468,6 @@ public class Provider extends ContentProvider {
                             for (long index = node.getLft() + 1; index < node.getRgt(); index++) {
                                 Long descendantId = lft2id.get(index);
                                 if (descendantId != null) {
-
                                     if (! notesWithParentSet.contains(descendantId)) {
                                         values = new ContentValues();
                                         values.put(DbNote.Column.PARENT_ID, noteId);

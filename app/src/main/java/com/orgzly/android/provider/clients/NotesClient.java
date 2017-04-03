@@ -91,7 +91,7 @@ public class NotesClient {
         values.put(ProviderContract.Notes.UpdateParam.LFT, note.getPosition().getLft());
         values.put(ProviderContract.Notes.UpdateParam.RGT, note.getPosition().getRgt());
         values.put(ProviderContract.Notes.UpdateParam.LEVEL, note.getPosition().getLevel());
-        values.put(ProviderContract.Notes.UpdateParam.IS_FOLDED, note.isFolded());
+        values.put(ProviderContract.Notes.UpdateParam.IS_FOLDED, note.getPosition().isFolded());
         values.put(ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT, note.getPosition().getDescendantsCount());
         values.put(ProviderContract.Notes.UpdateParam.FOLDED_UNDER_ID, note.getPosition().getFoldedUnderId());
 
@@ -162,7 +162,6 @@ public class NotesClient {
         note.setId(id);
         note.setPosition(position);
         note.setContentLines(contentLines);
-        note.setFolded(isFolded);
 
         String inheritedTags = cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.INHERITED_TAGS));
         if (! TextUtils.isEmpty(inheritedTags)) {
