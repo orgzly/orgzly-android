@@ -89,6 +89,7 @@
         <attr name="oic_drawer_notebooks" format="reference"/>
         <attr name="oic_drawer_settings" format="reference"/>
         <attr name="oic_drawer_item_modified" format="reference"/>
+        <attr name="oic_drawer_agenda" format="reference"/>
 
         <attr name="oic_above_heads_action_mode" format="reference"/>
         <attr name="oic_under_heads_action_mode" format="reference"/>

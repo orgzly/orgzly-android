@@ -40,6 +40,7 @@
     <string name="new_notebook">New notebook</string>
     <string name="new_folder">New folder</string>
     <string name="scheduled">Scheduled</string>
+    <string name="agenda">Agenda</string>
 
     <plurals name="notes_deleted">
         <item quantity="one">Note deleted</item>
@@ -138,6 +139,7 @@
     <string name="repo_dropbox_button_not_linked">Link to Dropbox</string>
     <string name="repo_dropbox_button_linked">Unlink from Dropbox</string>
     <string name="fragment_settings_title">Settings</string>
+    <string name="fragment_agenda_title">Agenda</string>
 
     <string name="updating_notes">Updating notes…</string>
     <string name="todo_keywords_configuration_changed_dialog_title">Keywords modified</string>

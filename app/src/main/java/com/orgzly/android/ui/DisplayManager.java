@@ -10,6 +10,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
 import com.orgzly.android.SearchQuery;
+import com.orgzly.android.ui.fragments.AgendaFragment;
 import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
@@ -219,6 +220,25 @@ public class DisplayManager {
                 .setTransition(FRAGMENT_TRANSITION)
                 .addToBackStack(null)
                 .replace(R.id.single_pane_container, fragment, SettingsFragment.FRAGMENT_TAG)
+                .commit();
+    }
+
+    public void displayAgenda(String query) {
+        /* If the same query is already displayed, don't do anything. */
+        SearchQuery displayedQuery = getDisplayedQuery();
+        if (displayedQuery != null && displayedQuery.toString().equals(query)) {
+            return;
+        }
+
+        /* Create fragment. */
+        Fragment fragment = AgendaFragment.getInstance(query);
+
+        /* Add fragment. */
+        mFragmentManager
+                .beginTransaction()
+                .setTransition(FRAGMENT_TRANSITION)
+                .addToBackStack(null)
+                .replace(R.id.single_pane_container, fragment, AgendaFragment.FRAGMENT_TAG)
                 .commit();
     }
 

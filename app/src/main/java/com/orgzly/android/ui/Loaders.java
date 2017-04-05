@@ -15,7 +15,9 @@ public class Loaders {
     public static final int DRAWER_FILTERS = 6;
     public static final int DRAWER_BOOKS = 7;
 
-    private static int nextAvailableId = 8;
+    public static final int AGENDA_FRAGMENT = 8;
+
+    private static int nextAvailableId = 9;
 
     private static SparseArray<HashMap<String, Integer>> ids = new SparseArray<>(5);
 

@@ -1615,6 +1615,9 @@ public class MainActivity extends CommonActivity
                 } else if (item instanceof DrawerFragment.FilterItem) {
                     String query = ((DrawerFragment.FilterItem) item).query;
                     mDisplayManager.displayQuery(query);
+                } else if (item instanceof DrawerFragment.AgendaItem) {
+                    String query = ((DrawerFragment.AgendaItem) item).defaultQuery;
+                    mDisplayManager.displayAgenda(query);
                 }
             }
         });
