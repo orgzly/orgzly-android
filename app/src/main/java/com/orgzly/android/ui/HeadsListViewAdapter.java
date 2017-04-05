@@ -406,6 +406,8 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         if (!inBook && note.hasInheritedTags() && AppPreferences.inheritedTagsInSearchResults(mContext)) {
             if (head.hasTags()) {
                 builder.append(INHERITED_TAGS_SEPARATOR);
+            } else {
+                builder.append(TITLE_SEPARATOR);
             }
             builder.append(generateTags(note.getInheritedTags()));
             hasPostTitleText = true;
