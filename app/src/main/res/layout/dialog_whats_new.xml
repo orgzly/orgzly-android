@@ -28,6 +28,31 @@
             android:layout_marginBottom="@dimen/padding_4"
             android:text="@string/whats_new_follow"/>
 
+
+        <TextView style="@style/WhatsNewVersion" android:text="1.4.13" tools:ignore="HardcodedText"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Support for .t search operator"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Display inherited tags in search results (new option)"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Default notebook when sharing to Orgzly (new option)"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Persian translation"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Turkish translation"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Few syncing speed optimizations"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Support for using root folder as a Dropbox repo"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Exported SyncService for starting it from outside the app"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Fix “Fold/Unfold All” button sometimes not being displayed"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Fix searching for tags when inherited tags are used"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Fix corrupted properties in note on rotation"/>
+
         <TextView style="@style/WhatsNewVersion" android:text="1.4.12" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange" app:text="Various bug fixes and improvements"/>
