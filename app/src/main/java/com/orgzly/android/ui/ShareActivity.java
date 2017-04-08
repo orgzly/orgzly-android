@@ -12,8 +12,8 @@ import android.widget.Spinner;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
-import com.orgzly.android.NotesBatch;
 import com.orgzly.android.Note;
+import com.orgzly.android.NotesBatch;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.fragments.NoteFragment;
@@ -53,6 +53,8 @@ public class ShareActivity extends CommonActivity
 
     private Spinner mBooksSpinner;
 
+    private String mError;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,15 +80,16 @@ public class ShareActivity extends CommonActivity
 
     public Data getDataFromIntent(Intent intent) {
         Data data = new Data();
+        mError = null;
 
         String action = intent.getAction();
         String type = intent.getType();
 
         if (action == null) {
-            data.title = getString(R.string.share_action_not_set);
+            // mError = getString(R.string.share_action_not_set);
 
         } else if (type == null) {
-            data.title = getString(R.string.share_type_not_set);
+            // mError = getString(R.string.share_type_not_set);
 
         } else if (action.equals(Intent.ACTION_SEND)) {
             if (type.startsWith("text/")) {
@@ -107,7 +110,7 @@ public class ShareActivity extends CommonActivity
 
                         /* Don't read large files. */
                         if (file.length() > MAX_TEXT_FILE_LENGTH_FOR_CONTENT) {
-                            data.content = "File has " + file.length() +
+                            mError = "File has " + file.length() +
                                     " bytes (refusing to read files larger then " +
                                     MAX_TEXT_FILE_LENGTH_FOR_CONTENT + " bytes)";
 
@@ -117,7 +120,7 @@ public class ShareActivity extends CommonActivity
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                        data.content = "Failed reading the content of " + uri.toString() + ": " + e.toString();
+                        mError = "Failed reading the content of " + uri.toString() + ": " + e.toString();
                     }
                 }
 
@@ -127,7 +130,7 @@ public class ShareActivity extends CommonActivity
                 }
 
             } else {
-                data.title = getString(R.string.share_type_not_supported, type);
+                mError = getString(R.string.share_type_not_supported, type);
             }
 
         } else if (action.equals("com.google.android.gm.action.AUTO_SEND")) {
@@ -136,12 +139,12 @@ public class ShareActivity extends CommonActivity
             }
 
         } else {
-            data.title = getString(R.string.share_action_not_supported, action);
+            mError = getString(R.string.share_action_not_supported, action);
         }
 
         /* Make sure that title is never empty. */
         if (data.title == null) {
-            data.title = "No text (type " + type + " action " + action + ")";
+            data.title = "";
         }
 
         return data;
@@ -225,6 +228,16 @@ public class ShareActivity extends CommonActivity
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mError != null) {
+            showSimpleSnackbarLong(mError);
+            mError = null;
+        }
     }
 
     @Override
