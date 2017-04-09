@@ -14,6 +14,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openContextualActionModeOverflowMenu;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
@@ -328,6 +329,94 @@ public class QueryFragmentTest extends OrgzlyTest {
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note B")), isDisplayed())));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note C")), isDisplayed())));
         onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note D")), isDisplayed())));
+    }
+
+    @Test
+    public void testInheritedTagsAfterMovingNote() {
+        shelfTestUtils.setupBook("notebook-1",
+                "* Note A :tag1:\n" +
+                "** Note B :tag2:\n" +
+                "*** Note C :tag3:\n" +
+                "*** Note D :tag3:\n" +
+                "");
+        activityRule.launchActivity(null);
+
+        onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
+
+        /* Move Note C down. */
+        onListItem(2).perform(longClick());
+        openContextualActionModeOverflowMenu();
+        onView(withText(R.string.move)).perform(click());
+        onView(withId(R.id.notes_action_move_down)).perform(click());
+        pressBack();
+
+        searchForText("t.tag3");
+        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
+        onListItem(0).onChildView(withId(R.id.item_head_title))
+                .check(matches(allOf(withText("Note D  tag3 • tag2 tag1"), isDisplayed())));
+        onListItem(1).onChildView(withId(R.id.item_head_title))
+                .check(matches(allOf(withText("Note C  tag3 • tag2 tag1"), isDisplayed())));
+    }
+
+    @Test
+    public void testInheritedTagsAfterDemotingSubtree() {
+        shelfTestUtils.setupBook("notebook-1",
+                "* Note A :tag1:\n" +
+                "* Note B :tag2:\n" +
+                "** Note C :tag3:\n" +
+                "** Note D :tag3:\n" +
+                "");
+        activityRule.launchActivity(null);
+
+        onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
+
+        /* Demote Note B. */
+        onListItem(1).perform(longClick());
+        openContextualActionModeOverflowMenu();
+        onView(withText(R.string.move)).perform(click());
+        onView(withId(R.id.notes_action_move_right)).perform(click());
+        pressBack();
+
+        searchForText("t.tag3");
+        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
+        onListItem(0).onChildView(withId(R.id.item_head_title))
+                .check(matches(allOf(withText("Note C  tag3 • tag1 tag2"), isDisplayed())));
+        onListItem(1).onChildView(withId(R.id.item_head_title))
+                .check(matches(allOf(withText("Note D  tag3 • tag1 tag2"), isDisplayed())));
+    }
+
+    @Test
+    public void testInheritedTagsAfterCutAndPasting() {
+        shelfTestUtils.setupBook("notebook-1",
+                "* Note A :tag1:\n" +
+                "* Note B :tag2:\n" +
+                "** Note C :tag3:\n" +
+                "** Note D :tag3:\n" +
+                "");
+        activityRule.launchActivity(null);
+
+        onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
+
+        /* Cut Note B. */
+        onListItem(1).perform(longClick());
+        openContextualActionModeOverflowMenu();
+        onView(withText(R.string.cut)).perform(click());
+
+        /* Paste under Note A. */
+        onListItem(0).perform(longClick());
+        openContextualActionModeOverflowMenu();
+        onView(withText(R.string.paste)).perform(click());
+        onView(withText(R.string.heads_action_menu_item_paste_under)).perform(click());
+
+        searchForText("t.tag3");
+        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
+        onListItem(0).onChildView(withId(R.id.item_head_title))
+                .check(matches(allOf(withText("Note C  tag3 • tag1 tag2"), isDisplayed())));
+        onListItem(1).onChildView(withId(R.id.item_head_title))
+                .check(matches(allOf(withText("Note D  tag3 • tag1 tag2"), isDisplayed())));
     }
 
     @Test
