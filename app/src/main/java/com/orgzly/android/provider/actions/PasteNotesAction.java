@@ -106,20 +106,26 @@ public class PasteNotesAction implements Action {
         long levelOffset = pastedLevel - batchMinLevel;
 
 
-        String bookSelection = DatabaseUtils.whereUncutBookNotes(targetNotePosition.getBookId());
-
         /*
          * Make space for new notes incrementing lft and rgt.
          * FIXME: This could be slow.
          */
 
-        GenericDatabaseUtils.incrementFields(db, DbNote.TABLE,
-                bookSelection + " AND " + DbNote.Column.LFT + " >= " + pastedLft,
-                positionsRequired, ProviderContract.Notes.UpdateParam.LFT);
+        String bookSelection = DatabaseUtils.whereUncutBookNotes(targetNotePosition.getBookId());
 
-        GenericDatabaseUtils.incrementFields(db, DbNote.TABLE,
-                bookSelection + " AND " + DbNote.Column.RGT + " >= " + pastedLft,
-                positionsRequired, ProviderContract.Notes.UpdateParam.RGT);
+        GenericDatabaseUtils.incrementFields(
+                db,
+                DbNote.TABLE,
+                bookSelection + " AND " + DbNote.Column.LFT + " >= " + pastedLft,
+                positionsRequired,
+                ProviderContract.Notes.UpdateParam.LFT);
+
+        GenericDatabaseUtils.incrementFields(
+                db,
+                DbNote.TABLE,
+                "(" + bookSelection + " AND " + DbNote.Column.RGT + " >= " + pastedLft + ") OR " + DbNote.Column.LEVEL + " = 0",
+                positionsRequired,
+                ProviderContract.Notes.UpdateParam.RGT);
 
         /* Make sure batch has no no FOLDED_UNDER_ID IDs which do not belong to the batch itself. */
         db.execSQL("UPDATE " + DbNote.TABLE + " SET " + DbNote.Column.FOLDED_UNDER_ID + " = 0 WHERE " +

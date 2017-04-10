@@ -935,4 +935,33 @@ public class StructureTest extends OrgzlyTest {
         assertEquals(1, shelf.getNote("B").getInheritedTags().size());
         assertEquals(2, shelf.getNote("C").getInheritedTags().size());
     }
+
+
+    /* Make sure root node's rgt is larger then notes'. */
+    @Test
+    public void testCutAndPaste() throws IOException {
+        Book book = shelfTestUtils.setupBook("notebook", "* Note 1\n* Note 2");
+        shelf.cut(book.getId(), shelf.getNote("Note 1").getId());
+        shelf.paste(book.getId(), shelf.getNote("Note 2").getId(), Place.BELOW);
+
+        // Note with ID 3 is root note
+        assertTrue(shelf.getNote(3).getPosition().getRgt() > shelf.getNote("Note 1").getPosition().getRgt());
+        assertTrue(shelf.getNote(3).getPosition().getRgt() > shelf.getNote("Note 2").getPosition().getRgt());
+    }
+
+    /* After moving one note under another, test lft and rgt od third newly created note. */
+    @Test
+    public void testNewNoteAfterMovingUnder() throws IOException {
+        Book book = shelfTestUtils.setupBook("notebook", "* Note 1\n* Note 2");
+        shelf.cut(book.getId(), shelf.getNote("Note 1").getId());
+        shelf.paste(book.getId(), shelf.getNote("Note 2").getId(), Place.UNDER);
+
+        Note newNote = new Note();
+        newNote.getPosition().setBookId(book.getId());
+        newNote.getHead().setTitle("Note 3");
+
+        shelf.createNote(newNote, null);
+
+        assertTrue(shelf.getNote("Note 2").getPosition().getRgt() < shelf.getNote("Note 3").getPosition().getLft());
+    }
 }

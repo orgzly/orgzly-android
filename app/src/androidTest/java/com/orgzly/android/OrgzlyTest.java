@@ -112,6 +112,9 @@ public class OrgzlyTest {
 
         /* Display first few lines of preface. */
         AppPreferences.prefaceDisplay(context, context.getString(R.string.pref_value_preface_in_book_few_lines));
+
+        /* Display inherited tags in search results. */
+        AppPreferences.inheritedTagsInSearchResults(context, true);
     }
 
     /**
