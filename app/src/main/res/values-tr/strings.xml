@@ -7,15 +7,17 @@
     <string name="ok">Tamam</string>
     <string name="yes">Evet</string>
     <string name="unlink">Bağlantıyı kaldır</string> <!-- Unlink from Dropbox -->
-    <string name="cancel">İptal Et</string>
+    <string name="clear">Temizle</string>
+    <string name="cancel">İptal</string>
     <string name="create">Oluştur</string>
+    <string name="new_">Yeni</string> <!-- "new" is reserved -->
     <string name="select">Seç</string>
     <string name="set">Ayarla</string>
     <string name="add">Ekle</string>
     <string name="not_now">Şimdi değil</string>
     <string name="save">Kaydet</string>
-    <string name="discard">Ayır-At</string>
-    <string name="no_link">Bağlantı Yok</string>
+    <string name="discard">At-iptal et</string>
+    <string name="no_link">Bağlantı yok</string>
     <string name="browse">Gözat</string>
     <string name="dropbox">Dropbox</string>
     <string name="edit">Düzenle</string>
@@ -23,36 +25,48 @@
     <string name="name">İsim</string>
     <string name="value">Değer</string>
     <string name="query">Sorgula</string>
-    <string name="done">Bitti</string>
+    <string name="done">Uygula</string>
     <string name="close">Kapat</string>
-    <string name="imported">İçeri Al</string>
-    <string name="created">Oluşturuldu</string>
+    <string name="import_">İçeri al</string> <!-- "import" is reserved -->
+    <string name="imported">İçeri alındı</string>
+    <string name="created">Oluştur</string>
     <string name="states">Durum</string>
-
     <string name="notes">Notlar</string>
+    <string name="property">Özellik</string>
+    <string name="import_as">Olarak içe aktar…</string>
+    <string name="new_notebook">Yeni Not</string>
+    <string name="new_folder">Yeni Dosya</string>
 
     <plurals name="notes_deleted">
-        <item quantity="one">Not silindi</item>
-        <item quantity="other">silindi <b>%d</b> notlar</item>
+        <item quantity="one">Not Silindi</item>
+        <item quantity="other">Silindi <b>%d</b> notlar</item>
     </plurals>
 
     <string name="no_notes_deleted">Silinen not yok</string>
 
     <plurals name="notes_cut">
         <item quantity="one">Notu kes</item>
-        <item quantity="other">kes <b>%d</b> Notları</item>
+        <item quantity="other">Kes <b>%d</b> notları</item>
     </plurals>
 
-    <string name="no_notes_cut">Notlar Kesilmedi</string>
+    <string name="no_notes_cut">Notlar kesilmedi</string>
 
     <plurals name="notes_pasted">
-        <item quantity="one">Not Yapıştırıldı</item>
-        <item quantity="other">Yapıştırıldı <b>%d</b> Notlar</item>
+        <item quantity="one">Not yapıştırıldı</item>
+        <item quantity="other">Yapıştırıldı <b>%d</b> notlar</item>
     </plurals>
     <string name="no_notes_pasted">Yapışacak bir şey yok</string>
 
     <string name="fragment_note_title_hint">Başlık</string>
-    <string name="fragment_note_tags_hint" tools:ignore="typos">Etiket etiketi</string>
+    <string name="fragment_note_tags_hint" tools:ignore="typos">etiket tag</string>
+
+    <!-- Note bullets -->
+    <string name="bullet" translatable="false">•</string>
+    <string name="bullet_with_children_folded" translatable="false">+</string>
+    <string name="bullet_with_children_unfolded" translatable="false">–</string>
+    <!-- • ● ⦿ ⦾ ◦ ▸ ▾ – — -->
+
+    <string name="import_org_file">Org dosyasını içeri al</string>
 
     <string name="state_spinner_prompt">Durum</string>
     <string name="priority_spinner_prompt">Öncelik</string>
@@ -63,28 +77,28 @@
     <!-- Preferences (Settings). -->
     <string name="repos_preference_title">Depolar</string>
     <string name="message_book_has_no_link">Bağlantı yok.</string>
-    <string name="message_book_does_not_exist">Bu not defteri artık yok.</string>
-    <string name="message_note_created">Not Oluşturuldu.</string>
+    <string name="message_book_does_not_exist">Bu defter artık yok.</string>
+    <string name="message_note_created">Not Oluşturuldu</string>
     <string name="message_failed_creating_note">Not oluşturma başarısız oldu</string>
     <string name="message_failed_updating_note">Not güncelleme işlemi başarısız oldu</string>
-    <string name="drawer_close">Çekmeyi kapat</string>
+    <string name="drawer_close">Çekmeyi kapa</string>
     <string name="drawer_open">Çekmeyi aç</string>
 
-    <string name="schedule">Zamanlama</string>
+    <string name="schedule">Planlama</string>
     <string name="deadline">Son tarih</string>
     <string name="closed">Kapalı</string>
 
     <!-- TODO: Not hints, rename -->
-    <string name="schedule_button_hint">Planlanmış zaman</string>
-    <string name="deadline_button_hint">Sona Erme tarihi</string>
-    <string name="closed_button_hint">Kapanış saati</string>
+    <string name="schedule_button_hint">Zaman Planla</string>
+    <string name="deadline_button_hint">Bitiş tarihi</string>
+    <string name="closed_button_hint">Zamanı Kapa</string>
 
     <string name="fragment_note_content_hint">Not İçeriği</string>
-    <string name="books_context_menu_item_export">Dışarı Ver</string>
+    <string name="books_context_menu_item_export">Dşarı Aktar</string>
     <string name="books_context_menu_item_rename">Yeniden Adlandır</string>
-    <string name="books_context_menu_item_set_link">Bağlantıyı Ayarla</string>
-    <string name="books_context_menu_item_force_save">Zorla Kaydet</string>
-    <string name="books_context_menu_item_force_load">Zorla Yükle</string>
+    <string name="books_context_menu_item_set_link">Bağlantı kur</string>
+    <string name="books_context_menu_item_force_save">Kaydetmeye Zorla</string>
+    <string name="books_context_menu_item_force_load">Yüklemeye Zorla</string>
 
     <string name="move">Taşı</string>
     <string name="cut">Kes</string>
@@ -95,27 +109,27 @@
     <string name="heads_action_menu_item_paste_above">Üstüne Yapıştır</string>
     <string name="heads_action_menu_item_paste_under">Altına Yapıştır</string>
     <string name="heads_action_menu_item_paste_below">En Alta Yapıştır</string>
-    <string name="heads_moving_action_menu_item_promote">Destekle</string>
+    <string name="heads_moving_action_menu_item_promote">Tanıt</string>
     <string name="heads_moving_action_menu_item_down">Aşağı</string>
-    <string name="heads_moving_action_menu_item_up">Yükselt</string>
+    <string name="heads_moving_action_menu_item_up">Yukarı</string>
     <string name="heads_moving_action_menu_item_demote">Düşür</string>
-    <string name="new_note">Yeni Not</string>
+    <string name="new_note">Yeni not</string>
     <string name="tap_to_create_new_note">Yeni bir not oluşturmak için dokunun</string>
     <string name="options_menu_item_search">Arama</string>
 
-    <string name="message_book_deleted">Not Defteri silindi</string>
+    <string name="message_book_deleted">Not Defteri Silindi</string>
     <string name="clear_database_dialog_message">Yerel veritabanını temizle?</string>
     <string name="no_user_repos_configured_pref_summary">Henüz yapılandırılmadı</string>
     <string name="repos_options_menu_new_repo">Yeni Depo</string>
-    <string name="book_name_already_exists">Not defter %s zaten var.</string>
+    <string name="book_name_already_exists">NotDefteri %s zaten var</string>
     <string name="filter_name_already_exists">Aynı isim ile arama zaten var</string>
     <string name="failed_creating_directory">Dizin %s oluşturulamadı.</string>
-    <string name="version">Ne\'s Yeni</string>
+    <string name="version">Ne\ler yeni</string>
     <string name="search_hint">Notları ara</string>
-    <string name="clear_database">Veritabanını temizle</string>
+    <string name="clear_database">Veritabanını Temizle</string>
     <string name="clear_database_summary">Yerel veritabanını temizle</string>
 
-    <string name="reload_getting_started">İçe Aktar "Orgzly'ye Başlarken"</string>
+    <string name="reload_getting_started">"Orgzly'ye Başlarken" öğreticisini içeri aktar</string>
     <string name="reload_getting_started_summary">Not defterinin son sürümünü içe aktarın</string>
     <string name="getting_started_loaded">Not Defteri "Orgzly Başlarken" yüklendi</string>
 
@@ -126,41 +140,42 @@
     <string name="repo_dropbox_button_linked">Dropbox ile bağlantısını kaldır</string>
     <string name="fragment_settings_title">Ayarlar</string>
 
-    <string name="updating_notes">Notlar güncelleniyor …</string>
+    <string name="updating_notes">Notlar güncelleniyor…</string>
     <string name="todo_keywords_configuration_changed_dialog_title">Anahtar kelimeler değiştirildi</string>
     <string name="todo_keywords_configuration_changed_dialog_message">Değişiklikleri yansıtmak için notları yenileyin?</string>
-    <string name="failure">Olmadı</string>
+    <string name="failure">Ah ah</string>
     <string name="no_notes_found_after_search">Aramanız herhangi bir notla eşleşmedi</string>
 
     <string name="today">Bugün</string>
     <string name="tomorrow">Yarın</string>
-    <string name="next_week">Gelecek hafta</string>
+    <string name="next_week">Gelecek Hafta</string>
 
-    <string name="dialog_timestamp_repeater_default">.+1w</string>
+    <string name="dialog_timestamp_repeater_default">.+1 hafta</string>
     <string name="tags">Etiketler</string>
-    <string name="book_mtime">Not defterini değiştirme Zamanı</string>
-    <string name="book_link">Not Defteri Linki</string>
-    <string name="book_link_details">Not Defteri Link Ayrıntıları</string>
-    <string name="book_last_action">Not Defteri Son Erişim</string>
+    <string name="book_mtime">Note Defteri Düzenleme Zamanı</string>
+    <string name="book_link">Not Defteri Bağlantı</string>
+    <string name="book_link_details">Not Defteri Bağlantı ayrıntıları</string>
+    <string name="book_last_action">Not Defteri son eylem</string>
     <string name="pref_title_notebooks">Not Defterleri</string>
     <string name="notebooks">Not Defterleri</string>
     <string name="searches">Aramalar</string>
     <string name="search">Arama</string>
     <string name="new_search">Yeni Arama</string>
     <string name="active">Aktif</string>
-    <string name="no_repos">Depolar yapılandırılmadı</string>
-    <string name="multiple_repos">Birden çok depo var.</string>
-    <string name="book_encoding">Not defter\'s Kodlama</string>
-    <string name="syncing_in_progress">Senkronize ediliyor …</string>
+    <string name="no_repos">Depolamalar yapılandırılmadı</string>
+    <string name="multiple_repos">Birden fazla depo var</string>
+
+    <string name="book_encoding">NotDefter\'leri kodlamaları</string>
+    <string name="syncing_in_progress">Senkronize ediliyor…</string>
     <string name="syncing_book">Senkronize ediliyor %s…</string>
-    <string name="syncing_failed">Senkronize et: %s…</string> <!-- Sync: Reason -->
+    <string name="syncing_failed">Senkronize: %s</string> <!-- Sync: Reason -->
     <string name="canceled">İptal edildi</string>
     <string name="canceling">İptal ediliyor…</string>
     <string name="directory">Dizin</string>
 
     <string name="fragment_repo_dropbox_directory_desc">Dropbox içindeki Dizin (Örneğin. “/Documents/Orgzly”)</string>
 
-    <string name="fragment_repo_external_storage_directory_desc">Dizin yeri (Örneğin. “file:/sdcard/orgzly”)</string>
+    <string name="fragment_repo_external_storage_directory_desc">Dizin yeri (e.g. “file:/sdcard/orgzly”)</string>
 
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Paylaşma ayarlı değil</string>
@@ -168,7 +183,7 @@
     <string name="share_type_not_set">Paylaşım türü ayarlanmadı</string>
     <string name="share_type_not_supported">Paylaşım tür %s Desteklenmiyor</string>
 
-    <string name="repositories">Depolar</string>
+    <string name="repositories">Depolamalar</string>
     <string name="invalid_repo_url">Geçersiz depo URL “%s”</string>
     <string name="message_unsupported_repository_type">Desteklenmeyen depo türü</string>
     <string name="also_delete_linked_book">Uzak not defteri Linkini sil</string>
@@ -177,20 +192,20 @@
     <string name="drawer_item">Çekme Öğesi</string>
     <string name="prev_state">Önceki Durum</string>
     <string name="next_state">Sonraki Durum</string>
-    <string name="new_above">Yeni Üstüne</string>
-    <string name="new_under">Yeni Altına</string>
-    <string name="new_below">Yeni Aşağı</string>
+    <string name="new_above">Yeni üstüne</string>
+    <string name="new_under">Yeni altına</string>
+    <string name="new_below">Yeni aşağı</string>
 
     <string name="confirm_unlinking_from_dropbox_title">Dropbox ile bağlantı kaldırılsın mı?</string>
     <string name="confirm_unlinking_from_dropbox_message">Dropbox\'a tekrar bağlanana kadar senkronize edemezsiniz.</string>
 
-    <string name="note_book_not_set">Not Defteri Ayarlanmadı</string>
+    <string name="note_book_not_set">Not defteri ayarlanmadı</string>
     <string name="can_not_be_empty">Boş olamaz</string>
 
     <string name="fragment_note_deadline_alarms_not_implemented">Not: Alarmlar henüz uygulanmadı</string>
 
-    <string name="no_notebooks">Defteriniz yok</string>
-    <string name="no_notes">Defterinizde notlar yok</string>
+    <string name="no_notebooks">Not Defteriniz yok</string>
+    <string name="no_notes">Not Defterinizde notlar yok</string>
     <string name="create_new_repository_for_syncing">Not defterlerinizi senkronize etmek için yeni depo oluşturun</string>
 
     <string name="no_filters">Kaydettiğiniz aramanız yok</string>
@@ -204,28 +219,30 @@
     <string name="permissions_rationale_for_book_export">Not defteri dışa aktarmak için depolama izni gerekiyor</string>
     <string name="permissions_rationale_for_sync_start">Yerel depolarla senkronize etmek depolama iznini gerektirir</string>
 
-    <string name="cycle_visibility">Hepsini Katla / Aç</string>
-    <string name="running_database_update">Veritabanı yükseltiliyor …</string>
+    <string name="unfold_button_character" translatable="false">+</string>
+    <string name="fold_button_character" translatable="false">–</string>
+    <string name="cycle_visibility">Hepsini Katla/Aç</string>
+    <string name="running_database_update">Veritabanı yükseltiliyor…</string>
     <string name="note_has_been_modified">Not değiştirildi</string>
     <string name="discard_or_save_changes">Değişiklikleri Kaydet?</string>
     <string name="rename">Adını değiştir</string>
-    <string name="rename_book">Ad %s değiştir </string>
+    <string name="rename_book">Ad değiştir %s</string>
     <string name="failed_renaming_book">Not defterini yeniden adlandırma başarısız oldu</string>
-    <string name="failed_renaming_book_with_reason">Yeniden adlandırma başarısız oldu: %s</string>
+    <string name="failed_renaming_book_with_reason">Yeniden adlandırma başarısız oldu %s</string>
     <string name="renamed_book_from">Yeniden adlandırıldı “%s”</string>
 
     <string name="default_priority">Varsayılan öncelik</string>
-    <string name="lowest_priority">En düşük öncelik</string>
+    <string name="lowest_priority">Düşük Öncelik</string>
 
-    <string name="todo_states">Etkin (Yapılacak) görevler için anahtar kelimeler</string>
-    <string name="done_states">Anahtar kelimeler için görevler(bitti)</string>
+    <string name="todo_states">Etkin (yapılacak) görevler için anahtar kelimeler</string>
+    <string name="done_states">Tamamlanmış görevler için (Biten) anahtar kelimeler</string>
 
     <string name="created_at_property">Özellik Oluşturuldu</string>
     <string name="property_name">Özellik Adı</string>
     <string name="created_at">Oluşturuldu</string>
-    <string name="insert_note_creation_time">Not\'s oluşturma saati ekle</string>
-    <string name="scheduled">Zamanla</string>
-    <string name="scheduled_new_notes_for_today">Bugün için yeni notlar zamanla</string>
+    <string name="insert_note_creation_time">Not\'s oluşturma zamanı ekle</string>
+    <string name="scheduled">Planlama</string>
+    <string name="scheduled_new_notes_for_today">Bugün için yeni notlar planla</string>
     <string name="state">Durum</string>
     <string name="fold_content">Katlanır içerik</string>
     <string name="allow_folding_of_content">Içeriğin katlanmasına izin ver</string>
@@ -233,43 +250,43 @@
     <string name="display_content_in_search_results">Arama sonuçlarında içeriği göster</string>
     <string name="display_content">İçeriği göster</string>
     <string name="display_both_title_and_content">Hem başlık hem de içeriği görüntüle</string>
-    <string name="display_planning_times">Görüntüleme planlama süreleri</string>
-    <string name="display_planning_times_summary">Planlanan, son tarihi ve kapalı saatleri göster</string>
-    <string name="density">Yoğunluk</string>
+    <string name="display_planning_times">Planlama sürelerini Görüntüle</string>
+    <string name="display_planning_times_summary">Planlamaları, sona erenleri ve zamanı dolanları göster</string>
+    <string name="density">Sıkışık</string>
     <string name="details">Ayrıntılar</string>
-    <string name="notebook_details">Not Defteri Ayrıntılar</string>
+    <string name="notebook_details">NotDefteri ayrıntıları</string>
     <string name="displayed_details_about_notebook">Defterle ilgili ayrıntıları göster</string>
     <string name="sort_order">Sıralama düzeni</string>
     <string name="notebooks_sort_order">Not defterleri sıralama düzeni</string>
     <string name="font_size">Yazı Boyutu</string>
-    <string name="color_scheme">Renk şema</string>
-    <string name="monospaced_font">Boşluklu yazı tipi</string>
-    <string name="monospaced_font_summary">Not\'s Içerik ve kitap\'s Önsöz için  Boşluklu yazı tipi Kullanın.</string>
-    <string name="reversed_note_click_action">Tıkla ve İşlemi geri çevir</string>
-    <string name="reversed_note_click_action_summary">Notu seçmek için tıkla, açmak için basılı tut</string>
+    <string name="color_scheme">Tema Rengi</string>
+    <string name="monospaced_font">Eş aralıklı yazı tipi</string>
+    <string name="monospaced_font_summary">Not içeriği\'s ve kitap\'s önsözü için eş aralıklı font kullanın</string>
+    <string name="reversed_note_click_action">Nota tıklamaları tersine çevir</string>
+    <string name="reversed_note_click_action_summary">Notu seçmek için tıklatın, açmak için uzun basınız</string>
     <string name="prefs_interface">Arayüz</string>
-    <string name="look_and_feel"><![CDATA[Bak & hisset]]></string>
+    <string name="look_and_feel"><![CDATA[Look & Feel]]></string>
     <string name="notes_list">Notlar listesi</string>
     <string name="prefs_title_new_note">Yeni Not</string>
     <string name="app">Uygulama</string>
-    <string name="no_repos_configured">Depo yapılandırılmadı</string>
-    <string name="no_connection">Bağlantı yok</string>
-    <string name="last_sync_prefix">Son senkronizasyon: %s</string> <!-- Last-sync time or reason in the case of failure -->
+    <string name="no_repos_configured">Depolar Yapılandırılmadı.</string>
+    <string name="no_connection">Bağlantı Yok.</string>
+    <string name="last_sync_prefix">Son senkronize: %s</string> <!-- Last-sync time or reason in the case of failure -->
 
-    <string name="force_loading_from_uri">Zorla-Yükleniyor %s …</string>
-    <string name="force_loaded_from_uri">Zorla-Yüklü %s</string>
-    <string name="force_saving_to_uri">Zorla-Kaydetmeye %s …</string>
-    <string name="force_saved_to_uri">Zorla-Kaydedildi to %s</string>
-    <string name="force_saving_failed">Zorla-Kaydetme Başarısız: %s</string>
-    <string name="force_loading_failed">Zorla-Yükleme Başarısız: %s</string>
-    <string name="loaded_from_resource">Kaynaktan yüklendi: %s</string>
+    <string name="force_loading_from_uri">Tarafından zorla yükleniyor %s …</string>
+    <string name="force_loaded_from_uri">Tarafından zorla yüklendi %s</string>
+    <string name="force_saving_to_uri">Kaydetmek için zorla %s …</string>
+    <string name="force_saved_to_uri">Için zorla kaydedildi %s</string>
+    <string name="force_saving_failed">Zorla kaydetme başarısız oldu: %s</string>
+    <string name="force_loading_failed">Zorla yükleme başarısız oldu: %s</string>
+    <string name="loaded_from_resource">Kaynaktan yüklendi %s</string>
 
     <string name="org_file_format">Org dosya formatı</string>
-    <string name="separate_notes_with_new_line">Boş bir satır ile notları ayır</string>
-    <string name="add_property">Seçenek Ekle</string>
+    <string name="separate_notes_with_new_line">Yeni satırla notları ayır</string>
+    <string name="add_property">Özellik Ekle</string>
 
-    <string name="priority_a_highest">A (yüksek öncelik)</string>
-    <string name="priority_z_lowest">Z (düşük öncelik)</string>
+    <string name="priority_a_highest">A (Yüksek Öncelik)</string>
+    <string name="priority_z_lowest">Z (Düşük Öncelik)</string>
 
     <string name="hour">Saat</string>
     <string name="day">Gün</string>
@@ -277,26 +294,26 @@
     <string name="month">Ay</string>
     <string name="year">Yıl</string>
 
-    <string name="repeat_dialog_title">Bitince TEKRARLA</string>
+    <string name="repeat_dialog_title">Bitince, Tekrarla</string>
 
-    <string name="repeater_description_cumulate">Bir önceki zamana aralık ekle (biriktir)</string> <!-- + -->
-    <string name="repeater_description_catch_up">Geçmişteki önceki zamana aralık eklemeye devam et (yakala)</string> <!-- ++ -->
+    <string name="repeater_description_cumulate">Önceki zamana aralık ekle (biriktir)</string> <!-- + -->
+    <string name="repeater_description_catch_up">Geçmişte bir önceki zamana aralık eklemeye devam edin (Yakala)</string> <!-- ++ -->
     <string name="repeater_description_restart">Geçerli zamana aralık ekle (yeniden başlat)</string> <!-- .+ -->
 
     <!-- Used to take enough space to avoid dialog resizing when current values are being changed. -->
     <string name="repeater_longest_type_desc">@string/repeater_description_catch_up</string>
 
-    <string name="displayed_book_details_local_mtime">Yerel modifikasyon süresi</string>
-    <string name="displayed_book_details_link_url">Bağlantı URL\'si</string>
-    <string name="displayed_book_details_sync_url">URL\'yi senkronize et</string>
-    <string name="displayed_book_details_sync_mtime">Senkronizasyon modifikasyonu zamanı</string>
-    <string name="displayed_book_details_sync_revision">Senkronizasyon revizyonu</string>
+    <string name="displayed_book_details_local_mtime">Yerel değişiklik zamanı</string>
+    <string name="displayed_book_details_link_url">URL Bağlantısı</string>
+    <string name="displayed_book_details_sync_url">URL Senkronizasyonu</string>
+    <string name="displayed_book_details_sync_mtime">Senkronizasyon değiştirme zamanı</string>
+    <string name="displayed_book_details_sync_revision">Senkronizasyon gözden geçirme</string>
     <string name="displayed_book_details_detected_encoding">Algılanan kodlama</string>
-    <string name="displayed_book_details_used_encoding">Kullanılan kodlama</string>
-    <string name="displayed_book_details_last_action">Son eylem</string>
+    <string name="displayed_book_details_used_encoding">Kullanılanan kodlama</string>
+    <string name="displayed_book_details_last_action">Son Eylem</string>
 
-    <string name="color_scheme_light">Parlak</string>
-    <string name="color_scheme_dark">Karanlık</string>
+    <string name="color_scheme_light">Beyaz - Parlak</string>
+    <string name="color_scheme_dark">Hafif karanlık</string>
     <string name="color_scheme_black">Siyah</string>
 
     <string name="font_size_small">Küçük</string>
@@ -304,7 +321,7 @@
     <string name="font_size_large">Büyük</string>
 
     <string name="book_name_in_search_hide">Gizle</string>
-    <string name="book_name_in_search_before_note">Not önüne</string>
+    <string name="book_name_in_search_before_note">Nottan önce</string>
     <string name="book_name_in_search_under_note">Not altına</string>
 
     <string name="list_density_comfortable">Konforlu</string>
@@ -315,29 +332,32 @@
     <string name="notebooks_sort_order_modification_time">Değiştirme zamanı</string>
 
     <string name="delete_note">Not sil</string>
-    <string name="delete_note_and_all_subnotes">Bu not ve alt notlar silinsin mi?</string>
+    <string name="delete_note_and_all_subnotes">Bu not ve alt notları silinsin mi?</string>
 
     <string name="delete_notes">Notları sil</string>
-    <string name="delete_notes_and_all_subnotes">Bu notlar ve alt notlar silinsin mi?</string>
+    <string name="delete_notes_and_all_subnotes">Notlar ve alt notlar silinsin mi?</string>
 
     <string name="note_content_finish_editing">Içeriği göster</string>
     <string name="note_content_start_editing">Içeriği düzenle</string>
 
-    <string name="duplicate_keywords_not_allowed">Zaten kullanılan anahtar kelime %s</string>
-    <string name="no_states_defined">Tanımlı Sınıf Yok</string>
-    <string name="book_name_in_search">Not Defteri içinde arama sonuçları</string>
+    <string name="duplicate_keywords_not_allowed">Anahtar kelime %s zaten kullanılıyor</string>
+    <string name="no_states_defined">Tanımlanan sınıf yok</string>
+    <string name="book_name_in_search">NotDefteri içinde arama sonuçları</string>
+
+    <string name="display_inherited_tags_in_search_results">Arama sonuçlarında devralınan etiketler</string>
+    <string name="display_inherited_tags_in_search_results_summary">Devralınan etiketleri arama sonuçlarında göster</string>
 
     <string name="new_note_notification">Devam eden bildirim</string>
-    <string name="new_note_notification_summary">Hızlıca yeni not oluşturmak için (sürekli) bildirim göster</string>
+    <string name="new_note_notification_summary">Hızlıca yeni not oluşturmak için devamlı (kalıcı) bildirim görüntüleyin</string>
 
-    <string name="primary_storage">Telefon Hafızası</string>
+    <string name="primary_storage">Ana Depolama</string>
     <string name="secondary_storage">SD card</string>
-    <string name="secondary_storage_not_available_any_more">İkincil depolama (sdkart) artık mevcut değil</string>
+    <string name="secondary_storage_not_available_any_more">İkincil depolama artık mevcut değil</string>
 
     <string name="book_exported">Not defteri dışa aktarıldı %s</string>
-    <string name="failed_exporting_book">Dışa aktarma olmadı: %s</string>
+    <string name="failed_exporting_book">Kitap ihraç edilemedi: %s</string>
 
-    <string name="edit_book_preface">Önsöz düzenle</string>
+    <string name="edit_book_preface">Önsözü düzenle</string>
     <string name="book_preface_hint">İlk nottan önce görüntülenen metin</string>
 
     <string name="layout_direction">Yerleşim yönü</string>
@@ -345,47 +365,48 @@
     <string name="layout_direction_ltr">Soldan sağa</string>
     <string name="layout_direction_rtl">Sağdan sola</string>
 
-    <string name="preface_in_book">NotDefter\'leri Önsöz</string>
-    <string name="preface_in_book_full">Görüntüle</string>
+    <string name="preface_in_book">NotDefteri\'s Önsözü</string>
+    <string name="preface_in_book_full">Göster</string>
     <string name="preface_in_book_hide">Gizle</string>
-    <string name="preface_in_book_few_lines">Birkaç satır görüntüle</string>
+    <string name="preface_in_book_few_lines">Birkaç satır göster</string>
 
-    <string name="created_property_name">OLUŞTURULDU</string>
+    <string name="created_property_name">OLUŞTURULUYOR</string>
 
     <string name="separate_notes_with_new_line_always">Her zaman</string>
     <string name="separate_notes_with_new_line_multi_line_notes_only">Yalnızca çok satırlı notlar</string>
     <string name="separate_notes_with_new_line_never">Asla</string>
-    <string name="default_notebook">Defteri paylaş</string>
+    <string name="default_share_notebook" translatable="false">Gelen kutusu</string>
+    <string name="default_notebook">Varsayılan NotDefteri</string>
+    <string name="default_notebook_desc">Orgzly kullanıcısı ile NotDefteri paylaşıldı veya devam eden bildirim yeni bir not oluştur</string>
 
 
     <!-- These are just used in tools:text for layout preview and don't have to be translated,
          unless layout look depends on the translation. -->
     <string name="book_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
-    <string name="book_name_sample">Not Defteri adı</string>
-    <string name="book_preface_sample">Bu defter\'lerin önsözüdür. İlk girişten önceki herhangi bir metin… Oldukça uzun olabilir ve birden çok satır içerebilir.</string>
-    <string name="book_title_sample">Not Defteri Başlığı</string>
-    <string name="books_book_sync_last_action_sample">May 15, 2015 11:24:47 PM: değişiklik yok</string>
+    <string name="book_name_sample">notdefteri-adı</string>
+    <string name="book_preface_sample">Bu Notdefteri\'s Önsözü. İlk girişten önceki herhangi bir yazı. Oldukça uzun olabilir ve birden çok satır içerebilir.</string>
+    <string name="book_title_sample">NoteDefteri Başlığı</string>
+    <string name="books_book_sync_last_action_sample">May 15, 2015 11:24:47 PM: Değişiklik yok</string>
     <string name="dialog_timestamp_date_sample">7/27/2015</string>
     <string name="dialog_timestamp_end_time_sample">12345:6789</string>
     <string name="dialog_timestamp_time_sample">14:32</string>
     <string name="directory_sample">/storage/emulated/0/org</string>
-    <string name="encoding_detected_sample">UTF-8 Algılandı</string>
-    <string name="encoding_selected_sample">UTF-8 Algılandı</string>
-    <string name="encoding_used_sample">UTF-8 Kullanılan</string>
-    <string name="filter_name_sample_long">Birgün/Belki Birgün/Belki Birgün/Belki Birgün/Belki Birgün/Belki Birgün/Belki Birgün/Belki Birgün/Belki</string>
+    <string name="encoding_detected_sample">UTF-8 tespit edildi</string>
+    <string name="encoding_selected_sample">UTF-8 seçildi</string>
+    <string name="encoding_used_sample">UTF-8 kullanıldı</string>
+    <string name="filter_name_sample_long">Belki/Olabilir Belki/Olabilir Belki/Olabilir Belki/Olabilir Belki/Olabilir Belki/Olabilir Belki/Olabilir Belki/Olabilir</string>
     <string name="filter_position_sample">1</string>
     <string name="filter_query_sample_long">b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday</string>
-    <string name="head_title_sample">Bu, başlık\'s düzenini test etmek için kullanılan örnek bir başlıktır</string>
-    <string name="import_org_file">Org dosyasını yükle</string>
+    <string name="head_title_sample">Bu, başlığın\'s düzenini test etmek için kullanılan örnek bir parçadır</string>
     <string name="note_closed_sample">2013\-06\-10 12:00</string>
-    <string name="note_content_sample">Bu, oldukça uzun olabilen çok satırlı bir\nnote\'s belgesinin içeriğidir, Bu yüzden daha uzun bir dize olması gerekiyor, böylece neye benzeyeceğini görebiliriz. Burada hem yeni satırlar hem de bunun gibi uzun tek satır olması gerekir..</string>
+    <string name="note_content_sample">Bu çok satırlı\nnot\'s Içeriği oldukça uzun olabilir, bu nedenle daha uzun bir dizge olması gerekir, böylece nasıl görüneceğini görebiliriz Burada hem yeni satırlar hem de bunun gibi uzun tek satır olması gerekir.</string>
     <string name="note_deadline_sample">2013\-12\-04 Sat</string>
     <string name="note_scheduled_sample">2013\-12\-04 Sat</string>
     <string name="note_title_sample">Basit örnek başlık</string>
     <string name="repo_url_sample">dropbox:/Some/Path/To/Repo/Directory</string>
     <string name="rook_url_long_sample">dropbox:/Some/Long/Path/So/Layout/Could/Be/Tested/To/Org/File/notebook.org</string>
     <string name="rook_url_sample">dropbox:/Some/Path/To/Org/File/notebook.org</string>
-    <string name="sync_button_sample">Son Senkranizasyon: Jan 01, 01:01</string>
+    <string name="sync_button_sample">Last sync: Jan 01, 01:01</string>
     <string name="synced_rook_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
-
+    <string name="synced_rook_revision_sample">42f97fe238</string>
 </resources>
