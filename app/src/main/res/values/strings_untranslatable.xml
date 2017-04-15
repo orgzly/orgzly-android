@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Note bullets -->
+    <string name="bullet" translatable="false">•</string>
+    <string name="bullet_with_children_folded" translatable="false">+</string>
+    <string name="bullet_with_children_unfolded" translatable="false">–</string>
+    <!-- • ● ⦿ ⦾ ◦ ▸ ▾ – — -->
+
+    <string name="unfold_button_character" translatable="false">+</string>
+    <string name="fold_button_character" translatable="false">–</string>
+
+    <string name="default_share_notebook" translatable="false">Inbox</string>
+</resources>

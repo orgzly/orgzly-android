@@ -60,12 +60,6 @@
     <string name="fragment_note_title_hint">Title</string>
     <string name="fragment_note_tags_hint" tools:ignore="typos">tag tag</string>
 
-    <!-- Note bullets -->
-    <string name="bullet" translatable="false">•</string>
-    <string name="bullet_with_children_folded" translatable="false">+</string>
-    <string name="bullet_with_children_unfolded" translatable="false">–</string>
-    <!-- • ● ⦿ ⦾ ◦ ▸ ▾ – — -->
-
     <string name="import_org_file">Import Org file</string>
 
     <string name="state_spinner_prompt">State</string>
@@ -219,8 +213,6 @@
     <string name="permissions_rationale_for_book_export">Exporting notebook requires storage permission</string>
     <string name="permissions_rationale_for_sync_start">Syncing with local repositories requires storage permission</string>
 
-    <string name="unfold_button_character" translatable="false">+</string>
-    <string name="fold_button_character" translatable="false">–</string>
     <string name="cycle_visibility">Fold/Unfold All</string>
     <string name="running_database_update">Upgrading database…</string>
     <string name="note_has_been_modified">Note modified</string>
@@ -375,7 +367,6 @@
     <string name="separate_notes_with_new_line_always">Always</string>
     <string name="separate_notes_with_new_line_multi_line_notes_only">Multiline notes only</string>
     <string name="separate_notes_with_new_line_never">Never</string>
-    <string name="default_share_notebook" translatable="false">Inbox</string>
     <string name="default_notebook">Default notebook</string>
     <string name="default_notebook_desc">Notebook used when sharing to Orgzly or creating a new note from the ongoing notification</string>
 
