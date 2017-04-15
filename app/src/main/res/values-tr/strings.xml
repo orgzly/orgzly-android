@@ -60,12 +60,6 @@
     <string name="fragment_note_title_hint">Başlık</string>
     <string name="fragment_note_tags_hint" tools:ignore="typos">etiket tag</string>
 
-    <!-- Note bullets -->
-    <string name="bullet" translatable="false">•</string>
-    <string name="bullet_with_children_folded" translatable="false">+</string>
-    <string name="bullet_with_children_unfolded" translatable="false">–</string>
-    <!-- • ● ⦿ ⦾ ◦ ▸ ▾ – — -->
-
     <string name="import_org_file">Org dosyasını içeri al</string>
 
     <string name="state_spinner_prompt">Durum</string>
@@ -219,8 +213,6 @@
     <string name="permissions_rationale_for_book_export">Not defteri dışa aktarmak için depolama izni gerekiyor</string>
     <string name="permissions_rationale_for_sync_start">Yerel depolarla senkronize etmek depolama iznini gerektirir</string>
 
-    <string name="unfold_button_character" translatable="false">+</string>
-    <string name="fold_button_character" translatable="false">–</string>
     <string name="cycle_visibility">Hepsini Katla/Aç</string>
     <string name="running_database_update">Veritabanı yükseltiliyor…</string>
     <string name="note_has_been_modified">Not değiştirildi</string>
@@ -375,7 +367,6 @@
     <string name="separate_notes_with_new_line_always">Her zaman</string>
     <string name="separate_notes_with_new_line_multi_line_notes_only">Yalnızca çok satırlı notlar</string>
     <string name="separate_notes_with_new_line_never">Asla</string>
-    <string name="default_share_notebook" translatable="false">Gelen kutusu</string>
     <string name="default_notebook">Varsayılan NotDefteri</string>
     <string name="default_notebook_desc">Orgzly kullanıcısı ile NotDefteri paylaşıldı veya devam eden bildirim yeni bir not oluştur</string>
 
