@@ -19,6 +19,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
 import static com.orgzly.android.espresso.EspressoUtils.onSpinnerString;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
@@ -123,15 +124,15 @@ public class ShareActivityTest extends OrgzlyTest {
     public void testNoMatchingType() {
         startActivityWithIntent(Intent.ACTION_SEND, "image/png", null);
 
-        onView(withId(R.id.fragment_note_title))
-                .check(matches(withText(context.getString(R.string.share_type_not_supported, "image/png"))));
+        onView(withId(R.id.fragment_note_title)).check(matches(withText("")));
+        onSnackbar().check(matches(withText(context.getString(R.string.share_type_not_supported, "image/png"))));
     }
 
     @Test
     public void testNoActionSend() {
         startActivityWithIntent(null, null, null);
 
-        onView(withId(R.id.fragment_note_title)).check(matches(withText(R.string.share_action_not_set)));
+        onView(withId(R.id.fragment_note_title)).check(matches(withText("")));
     }
 
 
