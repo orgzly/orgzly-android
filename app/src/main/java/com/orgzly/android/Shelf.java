@@ -141,6 +141,8 @@ public class Shelf {
     public Book loadBookFromFile(String name, BookName.Format format, File file, VersionedRook vrook, String selectedEncoding) throws IOException {
         Uri uri = BooksClient.loadFromFile(mContext, name, format, file, vrook, selectedEncoding);
 
+        notifyReminderServiceAboutChange();
+
         return BooksClient.get(mContext, ContentUris.parseId(uri));
     }
 
@@ -160,6 +162,8 @@ public class Shelf {
         NotesClient.deleteFromBook(mContext, book.getId());
 
         BooksClient.delete(mContext, book.getId());
+
+        notifyReminderServiceAboutChange();
     }
 
     // TODO: This is used in tests, check if we are even deleting these books.
@@ -252,6 +256,7 @@ public class Shelf {
 
     public void setNotesState(Set<Long> noteIds, String state) {
         NotesClient.setState(mContext, noteIds, state);
+        notifyReminderServiceAboutChange();
     }
 
     public Note getNote(long id) {
@@ -317,19 +322,26 @@ public class Shelf {
         Set<Long> noteIds = new HashSet<>();
         noteIds.add(noteId);
 
-        return NotesClient.cut(mContext, bookId, noteIds);
+        return cut(bookId, noteIds);
     }
 
     public int cut(long bookId, Set<Long> noteIds) {
-        return NotesClient.cut(mContext, bookId, noteIds);
+        int result = NotesClient.cut(mContext, bookId, noteIds);
+        notifyReminderServiceAboutChange();
+        return result;
     }
 
     public NotesBatch paste(long bookId, long noteId, Place place) {
-        return NotesClient.paste(mContext, bookId, noteId, place);
+        NotesBatch batch = NotesClient.paste(mContext, bookId, noteId, place);
+        notifyReminderServiceAboutChange();
+        return batch;
+
     }
 
     public int delete(long bookId, Set<Long> noteIds) {
-        return NotesClient.delete(mContext, bookId, noteIds);
+        int result = NotesClient.delete(mContext, bookId, noteIds);
+        notifyReminderServiceAboutChange();
+        return result;
     }
 
     /**
@@ -340,6 +352,8 @@ public class Shelf {
 
         /* Clear last sync time. */
         AppPreferences.lastSuccessfulSyncTime(mContext, 0L);
+
+        notifyReminderServiceAboutChange();
     }
 
     /**
@@ -475,7 +489,6 @@ public class Shelf {
         }
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Syncing " + namesake + ": " + bookAction);
-
         return bookAction;
     }
 
@@ -632,7 +645,6 @@ public class Shelf {
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Setting state for " + note.getHead().getTitle() + " to " + nextState +
                                                    ": " + currentIndex + " -> " + nextIndex + " (" + allStates.size() + " total states)");
-
 
         setNotesState(noteIds, nextState);
     }
@@ -801,6 +813,8 @@ public class Shelf {
             throw new RuntimeException(e);
         }
 
+        notifyReminderServiceAboutChange();
+
         return modifiedNotesCount;
     }
 
@@ -828,7 +842,7 @@ public class Shelf {
      */
     private void notifyReminderServiceAboutChange() {
 //        Intent reminderIntent = new Intent(mContext, ReminderService.class);
-//        reminderIntent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_NOTE_CHANGED);
+//        reminderIntent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_DATA_CHANGED);
 //        mContext.startService(reminderIntent);
     }
 }

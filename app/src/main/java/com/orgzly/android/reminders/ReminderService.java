@@ -38,7 +38,7 @@ public class ReminderService extends IntentService {
     public static final String EXTRA_EVENT = "event";
     public static final String EXTRA_JOB_START_AT = "start_at";
 
-    public static final int EVENT_NOTE_CHANGED = 0;
+    public static final int EVENT_DATA_CHANGED = 0;
     public static final int EVENT_JOB_TRIGGERED = 1;
     public static final int EVENT_UNKNOWN = -1;
 
@@ -67,8 +67,8 @@ public class ReminderService extends IntentService {
         int event = intent.getIntExtra(EXTRA_EVENT, EVENT_UNKNOWN);
 
         switch (event) {
-            case EVENT_NOTE_CHANGED:
-                onNoteChanged(now, prevRun, jobId);
+            case EVENT_DATA_CHANGED:
+                onDataChanged(now, prevRun, jobId);
                 break;
 
             case EVENT_JOB_TRIGGERED:
@@ -92,7 +92,7 @@ public class ReminderService extends IntentService {
      *
      * Schedule job to run for the first time after min(now, currently scheduled job).
      */
-    private void onNoteChanged(long now, long prevRun, int prevJobId) {
+    private void onDataChanged(long now, long prevRun, int prevJobId) {
         Set<JobRequest> jobRequests = JobManager.instance().getAllJobRequestsForTag(ReminderJob.TAG);
 
         long jobTime;
@@ -120,7 +120,7 @@ public class ReminderService extends IntentService {
             long exactMs = firstNote.time - now;
 
             if (exactMs < 0) {
-                exactMs = 0;
+                exactMs = 1;
             }
 
             int jobId = ReminderJob.scheduleJob(exactMs);
