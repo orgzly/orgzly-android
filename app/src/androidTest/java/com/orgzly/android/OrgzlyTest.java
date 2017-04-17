@@ -1,22 +1,22 @@
 package com.orgzly.android;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.test.InstrumentationRegistry;
-
 import com.orgzly.R;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.prefs.AppPreferencesValues;
-import com.orgzly.android.provider.Database;
 import com.orgzly.android.provider.clients.DbClient;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.datetime.OrgDateTime;
-
 import org.junit.After;
 import org.junit.Before;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -137,5 +137,19 @@ public class OrgzlyTest {
     }
     protected String userDate() {
         return userTimeFormatter.formatDate(OrgDateTime.getInstance(true));
+    }
+
+    protected int getActivityResultCode(Activity activity) throws NoSuchFieldException, IllegalAccessException {
+        // see http://stackoverflow.com/a/33805663
+        Field f = Activity.class.getDeclaredField("mResultCode");
+        f.setAccessible(true);
+        return f.getInt(activity);
+    }
+
+    protected Intent getActivityResultData(Activity activity) throws NoSuchFieldException, IllegalAccessException {
+        // see http://stackoverflow.com/a/33805663
+        Field f = Activity.class.getDeclaredField("mResultData");
+        f.setAccessible(true);
+        return (Intent) f.get(activity);
     }
 }
