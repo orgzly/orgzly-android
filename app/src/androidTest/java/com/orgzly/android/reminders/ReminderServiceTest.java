@@ -28,7 +28,7 @@ public class ReminderServiceTest extends OrgzlyTest {
     }
 
 //    @Test
-//    public void testNotesWithTimes() {
+//    public void testNotesWithTimesWithRepeater() {
 //        shelfTestUtils.setupBook("notebook",
 //                "* Note 1\n"+
 //                "SCHEDULED: <2017-03-10 +1w>\n" +
@@ -38,7 +38,7 @@ public class ReminderServiceTest extends OrgzlyTest {
 //
 //        long now = Instant.parse("2017-03-15T13:00:00").getMillis();
 //
-//        List<ReminderService.NoteWithTime> notes = ReminderService.getNotesWithTimes(context, 0, now);
+//        List<ReminderService.NoteWithTime> notes = ReminderService.getNotesWithTimes(context, now, now);
 //
 //        assertEquals(2, notes.size());
 //

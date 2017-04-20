@@ -22,6 +22,7 @@ import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.ui.MainActivity;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.org.datetime.OrgDateTime;
+import com.orgzly.org.datetime.OrgDateTimeUtils;
 
 import org.joda.time.DateTime;
 
@@ -207,10 +208,17 @@ public class ReminderService extends IntentService {
 
                     OrgDateTime orgDateTime = OrgDateTime.getInstance(orgTimestampString);
 
-                    DateTime dateTime = getTimeIfCandidateForReminder(context, orgDateTime, noteState, afterTime, 0);
+                    /* Skip if it's done-type state. */
+                    if (noteState == null || !AppPreferences.doneKeywordsSet(context).contains(noteState)) {
+                        List<DateTime> times = OrgDateTimeUtils.getAllInstantsInInterval(
+                                orgDateTime,
+                                new DateTime(afterTime),
+                                null,
+                                1);
 
-                    if (dateTime != null) {
-                        result.add(new NoteWithTime(noteId, noteTitle, dateTime));
+                        if (times.size() == 1) {
+                            result.add(new NoteWithTime(noteId, noteTitle, times.get(0)));
+                        }
                     }
                 }
             } finally {
@@ -245,37 +253,6 @@ public class ReminderService extends IntentService {
             this.title = title;
             this.time = time;
         }
-    }
-
-    private static DateTime getTimeIfCandidateForReminder(
-            Context context,
-            OrgDateTime orgDateTime,
-            String noteState,
-            long afterTimeMillis,
-            long untilTimeMillis) {
-
-        /* Skip if it's done-type state. */
-        if (noteState != null && AppPreferences.doneKeywordsSet(context).contains(noteState)) {
-            return null;
-        }
-
-        DateTime afterTime = new DateTime(afterTimeMillis);
-        DateTime untilTime = null;
-        if (untilTimeMillis > 0) {
-            untilTime = new DateTime(untilTimeMillis);
-        }
-        DateTime noteTime = new DateTime(orgDateTime.getCalendar());
-
-        /* If there is no repeater, simply check if time is within bounds. */
-        if (! orgDateTime.hasRepeater()) {
-            if (noteTime.isAfter(afterTime) && (untilTime == null || !noteTime.isAfter(untilTime))) {
-                return noteTime;
-            } else {
-                return null;
-            }
-        }
-
-        return noteTime;
     }
 
     public static void showNotification(Context context, List<NoteWithTime> notes) {

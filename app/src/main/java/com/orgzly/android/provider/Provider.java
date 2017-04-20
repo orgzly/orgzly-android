@@ -240,8 +240,9 @@ public class Provider extends ContentProvider {
                                    "  CASE WHEN t.hour IS NOT NULL\n" +
                                    "       THEN t.timestamp/1000\n" +
                                    "       -- If timestamp doesn't have a time part set,\n" +
-                                   "       -- use 9am. TODO: Get time from prefs\n" +
-                                   "       ELSE CAST(strftime('%s', t.timestamp/1000, 'unixepoch', '+9 hour') AS INTEGER) END >= ? / 1000\n" +
+                                   "       -- assume end-of-day for the purposes of querying\n" +
+                                   "       -- to make sure they are picked up here.\n" +
+                                   "       ELSE CAST(strftime('%s', t.timestamp/1000, 'unixepoch', '+1 day') AS INTEGER) END >= ? / 1000\n" +
                                    ")", new String[] { now });
                 break;
 
@@ -252,7 +253,7 @@ public class Provider extends ContentProvider {
         if (cursor == null) {
             cursor = db.query(table, projection, selection, selectionArgs, null, null, sortOrder);
         }
-
+        
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Cursor count: " + cursor.getCount() + " for " + table + " " + selection + " " + selectionArgs);
 
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
