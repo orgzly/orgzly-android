@@ -130,8 +130,8 @@ public class Provider extends ContentProvider {
         /* Gets a readable database. This will trigger its creation if it doesn't already exist. */
         SQLiteDatabase db = mOpenHelper.getReadableDatabase();
 
-        long id;
-        String table;
+        String table = null;
+        Cursor cursor = null;
 
         switch (uris.matcher.match(uri)) {
             case ProviderUris.LOCAL_DB_REPO:
@@ -155,29 +155,24 @@ public class Provider extends ContentProvider {
                 break;
 
             case ProviderUris.NOTES_SEARCH_QUERIED:
-                Cursor cursor = queryNotesSearchQueried(db, uri.getQuery(), sortOrder);
-
-                // Search results depend on notes and notebooks
-                cursor.setNotificationUri(getContext().getContentResolver(), ProviderContract.Notes.ContentUri.notes());
-                cursor.setNotificationUri(getContext().getContentResolver(), ProviderContract.Books.ContentUri.books());
-
-                return cursor;
+                cursor = queryNotesSearchQueried(db, uri.getQuery(), sortOrder);
+                break;
 
             case ProviderUris.BOOKS_ID_NOTES:
                 table = NotesView.VIEW_NAME;
 
-                id = Long.parseLong(uri.getPathSegments().get(1));
+                long bookId = Long.parseLong(uri.getPathSegments().get(1));
 
-                selection = NotesView.Columns.BOOK_ID + "=" + id + " AND " + DatabaseUtils.WHERE_VISIBLE_NOTES;
+                selection = NotesView.Columns.BOOK_ID + "=" + bookId + " AND " + DatabaseUtils.WHERE_VISIBLE_NOTES;
                 selectionArgs = null;
 
                 uri = ProviderContract.Notes.ContentUri.notes();
                 break;
 
             case ProviderUris.NOTES_ID_PROPERTIES:
-                id = Long.parseLong(uri.getPathSegments().get(1));
+                long noteId = Long.parseLong(uri.getPathSegments().get(1));
 
-                selection = DbNoteProperty.TABLE + "." + DbNoteProperty.Column.NOTE_ID + "=" + id;
+                selection = DbNoteProperty.TABLE + "." + DbNoteProperty.Column.NOTE_ID + "=" + noteId;
                 selectionArgs = null;
 
                 sortOrder = DbNoteProperty.Column.POSITION;
@@ -232,20 +227,32 @@ public class Provider extends ContentProvider {
                 break;
 
             case ProviderUris.TIMES:
-                projection = ProviderContract.Times.PROJECTION;
+                String now = uri.getQueryParameter(ProviderContract.Times.ContentUri.PARAM_NOW);
 
-                table = DbOrgTimestamp.TABLE +
-                        " LEFT JOIN " + DbOrgRange.TABLE + " ON (" + DbOrgRange.TABLE + "." + DbOrgRange.Column.START_TIMESTAMP_ID + "=" + DbOrgTimestamp.TABLE + "." + DbOrgRange.Column._ID + ")" +
-                        " LEFT JOIN " + DbNote.TABLE + " ON (" + DbNote.TABLE + "." + DbNote.Column.SCHEDULED_RANGE_ID + "=" + DbOrgRange.TABLE + "." + DbOrgRange.Column._ID + " OR " + DbNote.TABLE + "." + DbNote.Column.DEADLINE_RANGE_ID + " = " + DbOrgRange.TABLE + "." + DbOrgRange.Column._ID + ")" +
-                        " LEFT JOIN " + DbBook.TABLE + " ON (" + DbBook.TABLE + "." + DbBook.Column._ID + "=" + DbNote.TABLE + "." + DbNote.Column.BOOK_ID + ")" +
-                        "";
+                cursor = db.rawQuery("SELECT n._id as note_id, n.state as note_state, t.string as org_timestamp_string, n.title as note_title\n" +
+                                   "FROM org_ranges r\n" +
+                                   "JOIN org_timestamp t ON (r.start_timestamp_id = t._id)\n" +
+                                   "JOIN notes n ON (r._id = n.scheduled_range_id)\n" +
+                                   "WHERE t.is_active = 1 AND\n" +
+                                   "-- Times which either have repeater or are in the future\n" +
+                                   "-- i.e. times without repeater that are in the past are ignored\n" +
+                                   "( t.repeater_type IS NOT NULL OR\n" +
+                                   "  CASE WHEN t.hour IS NOT NULL\n" +
+                                   "       THEN t.timestamp/1000\n" +
+                                   "       -- If timestamp doesn't have a time part set,\n" +
+                                   "       -- use 9am. TODO: Get time from prefs\n" +
+                                   "       ELSE CAST(strftime('%s', t.timestamp/1000, 'unixepoch', '+9 hour') AS INTEGER) END >= ? / 1000\n" +
+                                   ")", new String[] { now });
                 break;
 
             default:
                 throw new IllegalArgumentException("URI is not recognized: " + uri);
         }
 
-        Cursor cursor = db.query(table, projection, selection, selectionArgs, null, null, sortOrder);
+        if (cursor == null) {
+            cursor = db.query(table, projection, selection, selectionArgs, null, null, sortOrder);
+        }
+
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Cursor count: " + cursor.getCount() + " for " + table + " " + selection + " " + selectionArgs);
 
         cursor.setNotificationUri(getContext().getContentResolver(), uri);

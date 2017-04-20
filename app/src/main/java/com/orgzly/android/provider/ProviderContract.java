@@ -441,20 +441,16 @@ public class ProviderContract {
     public interface Times {
         class Param {
             public static final String NOTE_ID = "note_id";
+            public static final String NOTE_STATE = "note_state";
             public static final String NOTE_TITLE = "note_title";
-            public static final String TIMESTAMP = "timestamp";
+            public static final String ORG_TIMESTAMP_STRING = "org_timestamp_string";
         }
-
-        String[] PROJECTION = new String[] {
-                DbNote.TABLE + "." + DbNote.Column._ID,
-                DbNote.TABLE + "." + DbNote.Column.TITLE,
-                DbOrgTimestamp.TABLE + "." + DbOrgTimestamp.Column.TIMESTAMP
-        };
 
         class ColumnIndex {
             public static final int NOTE_ID = 0;
-            public static final int NOTE_TITLE = 1;
-            public static final int TIMESTAMP = 2;
+            public static final int NOTE_STATE = 1;
+            public static final int ORG_TIMESTAMP_STRING = 2;
+            public static final int NOTE_TITLE = 3;
         }
 
 
@@ -463,10 +459,12 @@ public class ProviderContract {
         }
 
         class ContentUri {
-            public static Uri times(long timestamp) {
+            public static final String PARAM_NOW = "now";
+
+            public static Uri times(long now) {
                 return Uri.withAppendedPath(AUTHORITY_URI, "times")
                         .buildUpon()
-                        .appendQueryParameter(Param.TIMESTAMP, String.valueOf(timestamp))
+                        .appendQueryParameter(PARAM_NOW, String.valueOf(now))
                         .build();
             }
         }

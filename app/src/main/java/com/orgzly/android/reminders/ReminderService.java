@@ -21,8 +21,13 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.ui.MainActivity;
 import com.orgzly.android.util.LogUtils;
+import com.orgzly.org.datetime.OrgDateTime;
+
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -113,11 +118,11 @@ public class ReminderService extends IntentService {
 
         long searchFromTime = Math.min(jobTime, now);
 
-        List<ReminderNote> notes = notesByTimes(searchFromTime, 0, 1);
+        List<NoteWithTime> notes = ReminderService.getNotesWithTimes(this, searchFromTime, now);
 
         if (! notes.isEmpty()) {
-            ReminderNote firstNote = notes.get(0);
-            long exactMs = firstNote.time - now;
+            NoteWithTime firstNote = notes.get(0);
+            long exactMs = firstNote.time.getMillis() - now;
 
             if (exactMs < 0) {
                 exactMs = 1;
@@ -134,7 +139,7 @@ public class ReminderService extends IntentService {
         }
     }
 
-    private void announceScheduledJob(final int jobId, final ReminderNote firstNote) {
+    private void announceScheduledJob(final int jobId, final NoteWithTime firstNote) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG,
                 "Scheduled for " + jobRunTimeString(jobId) + " (" + firstNote.title + ")");
 
@@ -167,7 +172,7 @@ public class ReminderService extends IntentService {
         // TODO: jobStartTime could be 0
 
         /* Create notification for all notes from job's time until now. */
-        List<ReminderNote> notes = notesByTimes(0, 0, 10); // TODO: Limit?
+        List<NoteWithTime> notes = ReminderService.getNotesWithTimes(this, 0, now);
 
         if (! notes.isEmpty()) {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found " + notes.size() + " notes with times");
@@ -182,11 +187,11 @@ public class ReminderService extends IntentService {
         return jobRequest.getScheduledAt() + jobRequest.getStartMs();
     }
 
-    private List<ReminderNote> notesByTimes(long from, long to, int limit) {
-        List<ReminderNote> result = new ArrayList<>();
+    public static List<NoteWithTime> getNotesWithTimes(Context context, long afterTime, long now) {
+        List<NoteWithTime> result = new ArrayList<>();
 
-        Cursor cursor = getContentResolver().query(
-                ProviderContract.Times.ContentUri.times(from),
+        Cursor cursor = context.getContentResolver().query(
+                ProviderContract.Times.ContentUri.times(now),
                 null,
                 null,
                 null,
@@ -195,14 +200,17 @@ public class ReminderService extends IntentService {
         if (cursor != null) {
             try {
                 for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                    result.add(new ReminderNote(
-                            cursor.getLong(ProviderContract.Times.ColumnIndex.NOTE_ID),
-                            cursor.getString(ProviderContract.Times.ColumnIndex.NOTE_TITLE),
-                            cursor.getLong(ProviderContract.Times.ColumnIndex.TIMESTAMP)
-                    ));
+                    long noteId = cursor.getLong(ProviderContract.Times.ColumnIndex.NOTE_ID);
+                    String noteState = cursor.getString(ProviderContract.Times.ColumnIndex.NOTE_STATE);
+                    String noteTitle = cursor.getString(ProviderContract.Times.ColumnIndex.NOTE_TITLE);
+                    String orgTimestampString = cursor.getString(ProviderContract.Times.ColumnIndex.ORG_TIMESTAMP_STRING);
 
-                    if (limit > 0 && result.size() >= limit) {
-                        break;
+                    OrgDateTime orgDateTime = OrgDateTime.getInstance(orgTimestampString);
+
+                    DateTime dateTime = getTimeIfCandidateForReminder(context, orgDateTime, noteState, afterTime, 0);
+
+                    if (dateTime != null) {
+                        result.add(new NoteWithTime(noteId, noteTitle, dateTime));
                     }
                 }
             } finally {
@@ -210,22 +218,67 @@ public class ReminderService extends IntentService {
             }
         }
 
+        /* Sort by time, older first. */
+        Collections.sort(result, new Comparator<NoteWithTime>() {
+            @Override
+            public int compare(NoteWithTime o1, NoteWithTime o2) {
+                if (o1.time == o2.time) {
+                    return 0;
+                } else if (o1.time.isBefore(o2.time)) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            }
+        });
+
         return result;
     }
 
-    public class ReminderNote {
-        private long id;
-        private String title;
-        private long time;
+    public static class NoteWithTime {
+        public long id;
+        public String title;
+        public DateTime time;
 
-        public ReminderNote(long id, String title, long time) {
+        public NoteWithTime(long id, String title, DateTime time) {
             this.id = id;
             this.title = title;
             this.time = time;
         }
     }
 
-    public static void showNotification(Context context, List<ReminderNote> notes) {
+    private static DateTime getTimeIfCandidateForReminder(
+            Context context,
+            OrgDateTime orgDateTime,
+            String noteState,
+            long afterTimeMillis,
+            long untilTimeMillis) {
+
+        /* Skip if it's done-type state. */
+        if (noteState != null && AppPreferences.doneKeywordsSet(context).contains(noteState)) {
+            return null;
+        }
+
+        DateTime afterTime = new DateTime(afterTimeMillis);
+        DateTime untilTime = null;
+        if (untilTimeMillis > 0) {
+            untilTime = new DateTime(untilTimeMillis);
+        }
+        DateTime noteTime = new DateTime(orgDateTime.getCalendar());
+
+        /* If there is no repeater, simply check if time is within bounds. */
+        if (! orgDateTime.hasRepeater()) {
+            if (noteTime.isAfter(afterTime) && (untilTime == null || !noteTime.isAfter(untilTime))) {
+                return noteTime;
+            } else {
+                return null;
+            }
+        }
+
+        return noteTime;
+    }
+
+    public static void showNotification(Context context, List<NoteWithTime> notes) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, context, notes);
 
         // TODO: Open relevant notes, agenda or search results
@@ -250,7 +303,7 @@ public class ReminderService extends IntentService {
          * Reminder will be formatted differently depending on the number of notes.
          */
         if (notes.size() == 1) { // Single note
-            ReminderService.ReminderNote note = notes.get(0);
+            NoteWithTime note = notes.get(0);
 
             style.setBigContentTitle(note.title);
 
