@@ -1,9 +1,15 @@
 package com.orgzly.android.ui;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.Book;
+import com.orgzly.android.Shelf;
 import com.orgzly.android.ui.fragments.BooksFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
@@ -54,15 +60,26 @@ public class BookChooserActivity extends CommonActivity
     @Override
     public void onBookClicked(long bookId) {
         if (action.equals(Intent.ACTION_CREATE_SHORTCUT)) {
-            Intent.ShortcutIconResource icon = Intent.ShortcutIconResource.fromContext(this, R.drawable.cic_orgzly_logo);
 
             Intent launchIntent = new Intent(this, MainActivity.class);
             launchIntent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
 
             Intent shortcut = new Intent(Intent.ACTION_CREATE_SHORTCUT);
-            // TODO add correct title
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, "TODO TITLE");
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
+            Shelf shelf = new Shelf(this);
+            String title = Book.getFragmentTitleForBook(shelf.getBook(bookId));
+            if(title == null) {
+                setResult(RESULT_CANCELED, shortcut);
+                finish();
+                return;
+            }
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, title);
+
+            Bitmap unscaledLogo = BitmapFactory.decodeResource(getResources(), R.drawable.cic_orgzly_logo);
+            ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            int launcherIconSize = activityManager.getLauncherLargeIconSize();
+            Bitmap scaledLogo = Bitmap.createScaledBitmap(unscaledLogo, launcherIconSize, launcherIconSize, false);
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON, scaledLogo);
+
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, launchIntent);
 
             setResult(RESULT_OK, shortcut);
