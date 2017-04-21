@@ -34,6 +34,7 @@ public class BookChooserActivity extends CommonActivity
         action = getIntent().getAction();
 
         setContentView(R.layout.activity_bookchooser);
+        getSupportActionBar().setTitle("");
 
          /* Set status and action bar colors depending on the fragment. */
         ActivityUtils.setColorsForFragment(this, null);
