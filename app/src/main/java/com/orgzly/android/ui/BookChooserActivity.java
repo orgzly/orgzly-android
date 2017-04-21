@@ -67,7 +67,7 @@ public class BookChooserActivity extends CommonActivity
             }
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, title);
 
-            Intent.ShortcutIconResource icon = Intent.ShortcutIconResource.fromContext(this, R.drawable.cic_orgzly_logo);
+            Intent.ShortcutIconResource icon = Intent.ShortcutIconResource.fromContext(this, R.drawable.cic_orgzly_logo_with_notebook);
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
 
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, launchIntent);
