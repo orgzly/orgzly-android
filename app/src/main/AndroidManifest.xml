@@ -71,7 +71,8 @@
 
         <activity
             android:name="com.orgzly.android.ui.BookChooserActivity"
-            android:label="@string/book_shortcut_label">
+            android:label="@string/book_shortcut_label"
+            android:icon="@drawable/cic_orgzly_logo_with_notebook">
 
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
