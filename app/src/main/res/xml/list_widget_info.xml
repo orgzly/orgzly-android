@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="146dip"
+    android:minHeight="146dip"
+    android:updatePeriodMillis="0"
+    android:initialLayout="@layout/list_widget"
+    android:resizeMode="horizontal|vertical">
+    <!-- TODO: android:previewImage="@drawable/preview"-->
+</appwidget-provider>

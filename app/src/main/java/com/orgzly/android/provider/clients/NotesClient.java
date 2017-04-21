@@ -12,26 +12,25 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
-
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.NotesBatch;
-import com.orgzly.android.Note;
 import com.orgzly.android.SearchQuery;
 import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.GenericDatabaseUtils;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.models.DbNote;
-import com.orgzly.android.ui.Place;
-import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.NotePlace;
+import com.orgzly.android.ui.NoteStateSpinner;
+import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
-import com.orgzly.org.OrgProperty;
-import com.orgzly.org.datetime.OrgRange;
 import com.orgzly.org.OrgHead;
+import com.orgzly.org.OrgProperty;
 import com.orgzly.org.datetime.OrgDateTime;
+import com.orgzly.org.datetime.OrgRange;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -444,6 +443,15 @@ public class NotesClient {
     public static CursorLoader getLoaderForQuery(Context context, SearchQuery searchQuery) throws SQLException {
         return new CursorLoader(
                 context,
+                ProviderContract.Notes.ContentUri.notesSearchQueried(searchQuery),
+                null, // TODO: Do not fetch content if it is not required, for speed.
+                null,
+                null,
+                getOrderForQuery(context, searchQuery));
+    }
+
+    public static Cursor getCursorForQuery(Context context, SearchQuery searchQuery) throws SQLException {
+        return context.getContentResolver().query(
                 ProviderContract.Notes.ContentUri.notesSearchQueried(searchQuery),
                 null, // TODO: Do not fetch content if it is not required, for speed.
                 null,
