@@ -204,7 +204,7 @@
 
     <string name="no_filters">You have no saved searches</string>
 
-    <string name="pick_book_for_shortcut">Pick a notebook for the shortcut</string>
+    <string name="book_shortcut_label">Notebook</string>
 
     <!-- TODO: Use for note moving cab menu (xml) -->
     <string name="down">Down</string>

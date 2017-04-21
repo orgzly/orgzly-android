@@ -31,13 +31,9 @@ public class BookChooserActivity extends CommonActivity
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
 
-        setContentView(R.layout.activity_bookchooser);
+        action = getIntent().getAction();
 
-        Intent intent = getIntent();
-        action = intent.getAction();
-        if (action.equals(Intent.ACTION_CREATE_SHORTCUT)) {
-            getSupportActionBar().setTitle(R.string.pick_book_for_shortcut);
-        }
+        setContentView(R.layout.activity_bookchooser);
 
          /* Set status and action bar colors depending on the fragment. */
         ActivityUtils.setColorsForFragment(this, null);
