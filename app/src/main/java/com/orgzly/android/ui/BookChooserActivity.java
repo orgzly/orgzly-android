@@ -1,10 +1,6 @@
 package com.orgzly.android.ui;
 
-import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -34,7 +30,7 @@ public class BookChooserActivity extends CommonActivity
         action = getIntent().getAction();
 
         setContentView(R.layout.activity_bookchooser);
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setTitle(R.string.pick_a_notebook);
 
          /* Set status and action bar colors depending on the fragment. */
         ActivityUtils.setColorsForFragment(this, null);
@@ -71,11 +67,8 @@ public class BookChooserActivity extends CommonActivity
             }
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, title);
 
-            Bitmap unscaledLogo = BitmapFactory.decodeResource(getResources(), R.drawable.cic_orgzly_logo);
-            ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-            int launcherIconSize = activityManager.getLauncherLargeIconSize();
-            Bitmap scaledLogo = Bitmap.createScaledBitmap(unscaledLogo, launcherIconSize, launcherIconSize, false);
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON, scaledLogo);
+            Intent.ShortcutIconResource icon = Intent.ShortcutIconResource.fromContext(this, R.drawable.cic_orgzly_logo);
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
 
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, launchIntent);
 
