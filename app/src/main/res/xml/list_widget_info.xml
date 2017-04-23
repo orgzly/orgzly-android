@@ -3,7 +3,7 @@
     android:minWidth="146dip"
     android:minHeight="146dip"
     android:updatePeriodMillis="0"
-    android:initialLayout="@layout/list_widget"
+    android:initialLayout="@layout/widget_list"
     android:resizeMode="horizontal|vertical">
     <!-- TODO: android:previewImage="@drawable/preview"-->
 </appwidget-provider>

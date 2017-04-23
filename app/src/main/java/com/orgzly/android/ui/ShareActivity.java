@@ -1,14 +1,16 @@
 package com.orgzly.android.ui;
 
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.TaskStackBuilder;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
@@ -54,6 +56,24 @@ public class ShareActivity extends CommonActivity
     private Spinner mBooksSpinner;
 
     private String mError;
+
+    public static PendingIntent createNewNoteIntent(Context context) {
+        Intent resultIntent = new Intent(context, ShareActivity.class);
+        resultIntent.setAction(Intent.ACTION_SEND);
+        resultIntent.setType("text/plain");
+        resultIntent.putExtra(Intent.EXTRA_TEXT, "");
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(ShareActivity.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

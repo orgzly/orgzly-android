@@ -94,6 +94,12 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.orgzly.android.widgets.FilterSelectDialogActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"
+            android:excludeFromRecents="true"/>
+
         <receiver android:name="com.orgzly.android.widgets.ListWidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
