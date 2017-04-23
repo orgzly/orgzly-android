@@ -1,6 +1,7 @@
 package com.orgzly.android.widgets;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -14,15 +15,19 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Note;
 import com.orgzly.android.SearchQuery;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.NotesClient;
+import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.NoteContentParser;
 import com.orgzly.org.OrgHead;
 
 public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+
+    private static final String TAG = ListWidgetViewsFactory.class.getName();
 
     private final static String TITLE_SEPARATOR = "  ";
 
@@ -97,15 +102,31 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public RemoteViews getViewAt(int position) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "getViewAt", position);
+
+        Note note = null;
         CharSequence title = "not found!";
         if (mCursor.moveToPosition(position)) {
-            Note note = NotesClient.fromCursor(mCursor);
+            note = NotesClient.fromCursor(mCursor);
             title = generateTitle(note);
         }
 
 
         RemoteViews row = new RemoteViews(mContext.getPackageName(), R.layout.item_list_widget);
         row.setTextViewText(R.id.item_list_widget_title, title); // TODO
+
+        if (note != null) {
+            final Intent openIntent = new Intent();
+            openIntent.putExtra(ListWidgetProvider.EXTRA_CLICK_TYPE, ListWidgetProvider.OPEN_CLICK_TYPE);
+            openIntent.putExtra(ListWidgetProvider.EXTRA_NOTE_ID, note.getId());
+            openIntent.putExtra(ListWidgetProvider.EXTRA_BOOK_ID, note.getPosition().getBookId());
+            row.setOnClickFillInIntent(R.id.item_list_widget_title, openIntent);
+
+            final Intent doneIntent = new Intent();
+            doneIntent.putExtra(ListWidgetProvider.EXTRA_CLICK_TYPE, ListWidgetProvider.DONE_CLICK_TYPE);
+            doneIntent.putExtra(ListWidgetProvider.EXTRA_NOTE_ID, note.getId());
+            row.setOnClickFillInIntent(R.id.widget_list_header_add, doneIntent);
+        }
 
         return row;
     }
@@ -167,8 +188,15 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public long getItemId(int position) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "getItemId", position);
+
         // TODO is this correct?
-        return position;
+//        return position;
+        if (mCursor.moveToPosition(position)) {
+            Note note = NotesClient.fromCursor(mCursor);
+            return note.getId();
+        }
+        return -position;
     }
 
     @Override

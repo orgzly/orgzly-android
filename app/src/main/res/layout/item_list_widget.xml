@@ -5,7 +5,24 @@
     android:orientation="horizontal">
     <TextView
         android:id="@+id/item_list_widget_title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/book_name_sample"/>
+        android:ellipsize="end"
+        android:layout_weight="1"
+        android:text="@string/book_name_sample"
+        android:maxLines="1"
+        android:clickable="true"/>
+
+    <TextView
+        android:id="@+id/widget_list_header_add"
+        android:layout_weight="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:drawableLeft="@drawable/ic_done_black_24dp"
+        android:drawablePadding="5dp"
+        android:paddingLeft="5dp"
+        android:maxLines="1"
+        android:text=""
+        android:clickable="true"/>
 </LinearLayout>

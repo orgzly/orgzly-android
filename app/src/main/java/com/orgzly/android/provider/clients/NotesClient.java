@@ -27,6 +27,7 @@ import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
+import com.orgzly.android.widgets.ListWidgetProvider;
 import com.orgzly.org.OrgHead;
 import com.orgzly.org.OrgProperty;
 import com.orgzly.org.datetime.OrgDateTime;
@@ -259,6 +260,8 @@ public class NotesClient {
             throw new RuntimeException(e);
         }
 
+        ListWidgetProvider.updateListContents(context);
+
         return result[0].count;
     }
 
@@ -320,6 +323,8 @@ public class NotesClient {
 
         /* Update ID of newly inserted note. */
         note.setId(noteId);
+
+        ListWidgetProvider.updateListContents(context);
 
         return note;
     }
@@ -717,6 +722,8 @@ public class NotesClient {
                 state != null ? state : NoteStateSpinner.NO_STATE_KEYWORD);
 
         context.getContentResolver().update(ProviderContract.NotesState.ContentUri.notesState(), values, null, null);
+
+        ListWidgetProvider.updateListContents(context);
 
         /* Affected books' mtime will be modified in content provider. */
     }
