@@ -63,12 +63,12 @@ public class SyncService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
-        if (AppIntent.ACTION_SYNC_START.equals(intent.getAction())) {
+        if (intent != null && AppIntent.ACTION_SYNC_START.equals(intent.getAction())) {
             if (!isRunning()) {
                 start();
             }
 
-        } else if (AppIntent.ACTION_SYNC_STOP.equals(intent.getAction())) {
+        } else if (intent != null && AppIntent.ACTION_SYNC_STOP.equals(intent.getAction())) {
             if (isRunning()) {
                 stop();
             }
@@ -81,7 +81,7 @@ public class SyncService extends Service {
             }
         }
 
-        return super.onStartCommand(intent, flags, startId);
+        return Service.START_REDELIVER_INTENT;
     }
 
     private boolean isRunning() {
