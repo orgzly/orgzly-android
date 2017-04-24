@@ -34,7 +34,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
@@ -197,10 +196,12 @@ public class MainActivity extends CommonActivity
 
             mDisplayManager.displayBooks(false);
 
-            /* Display requested note. */
-            if (bookId > 0 && noteId > 0) {
+            /* Display requested book and note. */
+            if (bookId > 0) {
                 mDisplayManager.displayBook(bookId, noteId);
-                mDisplayManager.displayNote(bookId, noteId);
+                if(noteId > 0) {
+                    mDisplayManager.displayNote(bookId, noteId);
+                }
             }
         }
     }

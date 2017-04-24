@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
@@ -32,8 +31,8 @@ import com.orgzly.android.BookAction;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.BooksClient;
-import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.Fab;
+import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.UriUtils;
@@ -55,14 +54,30 @@ public class BooksFragment extends ListFragment
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = BooksFragment.class.getName();
 
+    private static final String ARG_ADD_OPTIONS = "add_options";
+    private static final String ARG_SHOW_CONTEXT_MENU = "show_context_menu";
+
     private BooksFragmentListener mListener;
     private SimpleCursorAdapter mListAdapter;
     private View mNoNotebookText;
     private boolean mIsViewCreated = false;
+    private boolean mAddOptions = true;
+    private boolean mShowContextMenu = true;
 
 
     public static BooksFragment getInstance() {
-        return new BooksFragment();
+        return getInstance(true, true);
+    }
+
+    public static BooksFragment getInstance(boolean addOptions, boolean showContextMenu) {
+        BooksFragment fragment = new BooksFragment();
+        Bundle args = new Bundle();
+
+        args.putBoolean(ARG_ADD_OPTIONS, addOptions);
+        args.putBoolean(ARG_SHOW_CONTEXT_MENU, showContextMenu);
+
+        fragment.setArguments(args);
+        return fragment;
     }
 
     /**
@@ -86,6 +101,17 @@ public class BooksFragment extends ListFragment
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() + " must implement " + BooksFragmentListener.class);
         }
+
+        parseArguments();
+    }
+
+    private void parseArguments() {
+        if (getArguments() == null) {
+            throw new IllegalArgumentException("No arguments found to " + BooksFragment.class.getSimpleName());
+        }
+
+        mAddOptions = getArguments().getBoolean(ARG_ADD_OPTIONS);
+        mShowContextMenu = getArguments().getBoolean(ARG_SHOW_CONTEXT_MENU);
     }
 
     @Override
@@ -96,7 +122,7 @@ public class BooksFragment extends ListFragment
         /* Would like to add items to the Options Menu.
          * Required (for fragments only) to receive onCreateOptionsMenu() call.
          */
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(mAddOptions);
 
         mListAdapter = createAdapter();
     }
@@ -526,7 +552,9 @@ public class BooksFragment extends ListFragment
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        getActivity().getMenuInflater().inflate(R.menu.books_context, menu);
+        if (mShowContextMenu) {
+            getActivity().getMenuInflater().inflate(R.menu.books_context, menu);
+        }
     }
 
     @Override
