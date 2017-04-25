@@ -24,6 +24,7 @@ import com.orgzly.android.Notifications;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.prefs.ListPreferenceWithValueAsSummary;
 import com.orgzly.android.provider.clients.ReposClient;
+import com.orgzly.android.reminders.ReminderService;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.NoteStateSpinner;
@@ -307,6 +308,10 @@ public class SettingsFragment extends PreferenceFragment
                                 findPreference(getString(R.string.pref_key_min_priority));
                 pref.setValue(defPri);
             }
+        }
+
+        if (getString(R.string.pref_key_use_reminders_for_scheduled_times).equals(key)) {
+            ReminderService.notifyDataChanged(getContext());
         }
     }
 

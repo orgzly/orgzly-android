@@ -165,6 +165,13 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/prefs_title_reminders">
+        <CheckBoxPreference
+            android:key="@string/pref_key_use_reminders_for_scheduled_times"
+            android:title="@string/scheduled_times"
+            android:defaultValue="@bool/pref_default_value_use_reminders_for_scheduled_times"/>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/org_file_format">
         <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
             android:key="@string/pref_key_separate_notes_with_new_line"
