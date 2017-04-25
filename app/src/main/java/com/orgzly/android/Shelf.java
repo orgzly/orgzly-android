@@ -4,7 +4,6 @@ import android.content.ContentProviderOperation;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -141,7 +140,7 @@ public class Shelf {
     public Book loadBookFromFile(String name, BookName.Format format, File file, VersionedRook vrook, String selectedEncoding) throws IOException {
         Uri uri = BooksClient.loadFromFile(mContext, name, format, file, vrook, selectedEncoding);
 
-        notifyReminderServiceAboutChange();
+        ReminderService.notifyDataChanged(mContext);
 
         return BooksClient.get(mContext, ContentUris.parseId(uri));
     }
@@ -163,7 +162,7 @@ public class Shelf {
 
         BooksClient.delete(mContext, book.getId());
 
-        notifyReminderServiceAboutChange();
+        ReminderService.notifyDataChanged(mContext);
     }
 
     // TODO: This is used in tests, check if we are even deleting these books.
@@ -251,12 +250,12 @@ public class Shelf {
 
     public void setNotesScheduledTime(Set<Long> noteIds, OrgDateTime time) {
         NotesClient.updateScheduledTime(mContext, noteIds, time);
-        notifyReminderServiceAboutChange();
+        ReminderService.notifyDataChanged(mContext);
     }
 
     public void setNotesState(Set<Long> noteIds, String state) {
         NotesClient.setState(mContext, noteIds, state);
-        notifyReminderServiceAboutChange();
+        ReminderService.notifyDataChanged(mContext);
     }
 
     public Note getNote(long id) {
@@ -273,7 +272,7 @@ public class Shelf {
 
     public int updateNote(Note note) {
         int result = NotesClient.update(mContext, note);
-        notifyReminderServiceAboutChange();
+        ReminderService.notifyDataChanged(mContext);
         return result;
     }
 
@@ -283,7 +282,7 @@ public class Shelf {
 
         BooksClient.setModifiedTime(mContext, note.getPosition().getBookId(), System.currentTimeMillis());
 
-        notifyReminderServiceAboutChange();
+        ReminderService.notifyDataChanged(mContext);
 
         return insertedNote;
     }
@@ -327,20 +326,20 @@ public class Shelf {
 
     public int cut(long bookId, Set<Long> noteIds) {
         int result = NotesClient.cut(mContext, bookId, noteIds);
-        notifyReminderServiceAboutChange();
+        ReminderService.notifyDataChanged(mContext);
         return result;
     }
 
     public NotesBatch paste(long bookId, long noteId, Place place) {
         NotesBatch batch = NotesClient.paste(mContext, bookId, noteId, place);
-        notifyReminderServiceAboutChange();
+        ReminderService.notifyDataChanged(mContext);
         return batch;
 
     }
 
     public int delete(long bookId, Set<Long> noteIds) {
         int result = NotesClient.delete(mContext, bookId, noteIds);
-        notifyReminderServiceAboutChange();
+        ReminderService.notifyDataChanged(mContext);
         return result;
     }
 
@@ -353,7 +352,7 @@ public class Shelf {
         /* Clear last sync time. */
         AppPreferences.lastSuccessfulSyncTime(mContext, 0L);
 
-        notifyReminderServiceAboutChange();
+        ReminderService.notifyDataChanged(mContext);
     }
 
     /**
@@ -813,7 +812,7 @@ public class Shelf {
             throw new RuntimeException(e);
         }
 
-        notifyReminderServiceAboutChange();
+        ReminderService.notifyDataChanged(mContext);
 
         return modifiedNotesCount;
     }
@@ -835,14 +834,5 @@ public class Shelf {
         }
 
         return null;
-    }
-
-    /**
-     * Notify reminder service about changes that might affect scheduling of reminders.
-     */
-    private void notifyReminderServiceAboutChange() {
-        Intent reminderIntent = new Intent(mContext, ReminderService.class);
-        reminderIntent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_DATA_CHANGED);
-        mContext.startService(reminderIntent);
     }
 }

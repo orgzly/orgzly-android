@@ -1,6 +1,5 @@
 package com.orgzly.android.reminders;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.evernote.android.job.Job;
@@ -11,11 +10,7 @@ public class ReminderJob extends Job {
 
     @Override @NonNull
     protected Result onRunJob(Params params) {
-        /* Notify ReminderService about the triggered job. */
-        Intent intent = new Intent(getContext(), ReminderService.class);
-        intent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_JOB_TRIGGERED);
-        intent.putExtra(ReminderService.EXTRA_JOB_START_AT, params.getStartMs());
-        getContext().startService(intent);
+        ReminderService.notifyJobTriggered(getContext());
 
         return Result.SUCCESS;
     }

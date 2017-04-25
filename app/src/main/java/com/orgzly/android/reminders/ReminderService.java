@@ -41,7 +41,6 @@ public class ReminderService extends IntentService {
     public static final String TAG = ReminderService.class.getName();
 
     public static final String EXTRA_EVENT = "event";
-    public static final String EXTRA_JOB_START_AT = "start_at";
 
     public static final int EVENT_DATA_CHANGED = 1;
     public static final int EVENT_JOB_TRIGGERED = 2;
@@ -86,8 +85,7 @@ public class ReminderService extends IntentService {
                 break;
 
             case EVENT_JOB_TRIGGERED:
-                long jobStartTime = intent.getLongExtra(EXTRA_JOB_START_AT, 0L);
-                onJobTriggered(now, prevRun, jobId, jobStartTime);
+                onJobTriggered(now, prevRun, jobId);
                 break;
 
             default:
@@ -164,7 +162,7 @@ public class ReminderService extends IntentService {
      *
      * Schedule next job to run for the first time after now.
      */
-    private void onJobTriggered(DateTime now, DateTime prevRun, int prevJobId, long jobStartTime) {
+    private void onJobTriggered(DateTime now, DateTime prevRun, int prevJobId) {
         /* Make sure the id of triggered job is still stored (i.e. active).
          * It's possible that we tried to remove it after note update,
          * but it already got triggered. If it doesn't exist anymore, ignore it.
@@ -319,5 +317,21 @@ public class ReminderService extends IntentService {
 
         Notification notification = builder.build();
         notificationManager.notify(Notifications.REMINDER_ID, notification);
+    }
+
+
+
+    /** Notify reminder service about changes that might affect scheduling of reminders. */
+    public static void notifyDataChanged(Context context) {
+        Intent intent = new Intent(context, ReminderService.class);
+        intent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_DATA_CHANGED);
+        context.startService(intent);
+    }
+
+    /** Notify ReminderService about the triggered job. */
+    public static void notifyJobTriggered(Context context) {
+        Intent intent = new Intent(context, ReminderService.class);
+        intent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_JOB_TRIGGERED);
+        context.startService(intent);
     }
 }
