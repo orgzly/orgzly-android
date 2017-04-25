@@ -217,7 +217,14 @@ public class ReminderService extends IntentService {
                                 1);
 
                         if (times.size() == 1) {
-                            result.add(new NoteWithTime(noteId, noteTitle, times.get(0)));
+                            DateTime time = times.get(0);
+
+                            if (!orgDateTime.hasTime()) {
+                                // TODO: Move to preferences
+                                time = time.plusHours(9);
+                            }
+
+                            result.add(new NoteWithTime(noteId, noteTitle, time));
                         }
                     }
                 }

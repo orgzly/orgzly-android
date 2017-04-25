@@ -27,25 +27,25 @@ public class ReminderServiceTest extends OrgzlyTest {
         assertEquals(1, notes.size());
     }
 
-//    @Test
-//    public void testNotesWithTimesWithRepeater() {
-//        shelfTestUtils.setupBook("notebook",
-//                "* Note 1\n"+
-//                "SCHEDULED: <2017-03-10 +1w>\n" +
-//                "* Note 2\n"+
-//                "SCHEDULED: <2017-03-20 16:00>\n" +
-//                "* Note 3");
-//
-//        long now = Instant.parse("2017-03-15T13:00:00").getMillis();
-//
-//        List<ReminderService.NoteWithTime> notes = ReminderService.getNotesWithTimes(context, now, now);
-//
-//        assertEquals(2, notes.size());
-//
-//        assertEquals("Note 1", notes.get(0).title);
-//        assertEquals("2017-03-17T09:00:00", new LocalDateTime(notes.get(0).time).toString("yyyy-MM-dd'T'HH:mm:ss"));
-//
-//        assertEquals("Note 2", notes.get(1).title);
-//        assertEquals("2017-03-20T16:00:00", new LocalDateTime(notes.get(1).time).toString("yyyy-MM-dd'T'HH:mm:ss"));
-//    }
+    @Test
+    public void testNotesWithTimesWithRepeater() {
+        shelfTestUtils.setupBook("notebook",
+                "* Note 1\n"+
+                "SCHEDULED: <2017-03-10 Fri +1w>\n" +
+                "* Note 2\n"+
+                "SCHEDULED: <2017-03-20 Mon 16:00>\n" +
+                "* Note 3");
+
+        long now = Instant.parse("2017-03-15T13:00:00").getMillis(); // Wed
+
+        List<ReminderService.NoteWithTime> notes = ReminderService.getNotesWithTimes(context, now, now);
+
+        assertEquals(2, notes.size());
+
+        assertEquals("Note 1", notes.get(0).title);
+        assertEquals("2017-03-17T09:00:00", new LocalDateTime(notes.get(0).time).toString("yyyy-MM-dd'T'HH:mm:ss"));
+
+        assertEquals("Note 2", notes.get(1).title);
+        assertEquals("2017-03-20T16:00:00", new LocalDateTime(notes.get(1).time).toString("yyyy-MM-dd'T'HH:mm:ss"));
+    }
 }
