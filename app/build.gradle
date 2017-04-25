@@ -90,7 +90,7 @@ dependencies {
         exclude module: 'support-v4'
     }
 
-    compile "com.evernote:android-job:$evernote_jobs_version"
+    compile "com.evernote:android-job:$evernote_android_job_version"
 
     compile "joda-time:joda-time:$joda_time_version"
 
