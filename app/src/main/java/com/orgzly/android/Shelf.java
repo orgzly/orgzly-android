@@ -841,8 +841,8 @@ public class Shelf {
      * Notify reminder service about changes that might affect scheduling of reminders.
      */
     private void notifyReminderServiceAboutChange() {
-//        Intent reminderIntent = new Intent(mContext, ReminderService.class);
-//        reminderIntent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_DATA_CHANGED);
-//        mContext.startService(reminderIntent);
+        Intent reminderIntent = new Intent(mContext, ReminderService.class);
+        reminderIntent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_DATA_CHANGED);
+        mContext.startService(reminderIntent);
     }
 }

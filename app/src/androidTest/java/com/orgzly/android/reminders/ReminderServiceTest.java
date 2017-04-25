@@ -20,9 +20,9 @@ public class ReminderServiceTest extends OrgzlyTest {
                 "SCHEDULED: <2017-03-20>\n" +
                 "* Note 3");
 
-        long now = Instant.parse("2017-03-15").getMillis();
+        Instant now = Instant.parse("2017-03-15");
 
-        List<ReminderService.NoteWithTime> notes = ReminderService.getNotesWithTimes(context, 0, now);
+        List<ReminderService.NoteWithTime> notes = ReminderService.getNotesWithTimes(context, now, null);
 
         assertEquals(1, notes.size());
     }
@@ -36,9 +36,9 @@ public class ReminderServiceTest extends OrgzlyTest {
                 "SCHEDULED: <2017-03-20 Mon 16:00>\n" +
                 "* Note 3");
 
-        long now = Instant.parse("2017-03-15T13:00:00").getMillis(); // Wed
+        Instant now = Instant.parse("2017-03-15T13:00:00"); // Wed
 
-        List<ReminderService.NoteWithTime> notes = ReminderService.getNotesWithTimes(context, now, now);
+        List<ReminderService.NoteWithTime> notes = ReminderService.getNotesWithTimes(context, now, null);
 
         assertEquals(2, notes.size());
 

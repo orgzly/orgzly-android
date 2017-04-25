@@ -227,7 +227,7 @@ public class Provider extends ContentProvider {
                 break;
 
             case ProviderUris.TIMES:
-                String now = uri.getQueryParameter(ProviderContract.Times.ContentUri.PARAM_NOW);
+                String afterTime = uri.getQueryParameter(ProviderContract.Times.ContentUri.PARAM_AFTER_TIME);
 
                 cursor = db.rawQuery("SELECT n._id as note_id, n.state as note_state, t.string as org_timestamp_string, n.title as note_title\n" +
                                    "FROM org_ranges r\n" +
@@ -235,7 +235,7 @@ public class Provider extends ContentProvider {
                                    "JOIN notes n ON (r._id = n.scheduled_range_id)\n" +
                                    "WHERE t.is_active = 1 AND\n" +
                                    "-- Times which either have repeater or are in the future\n" +
-                                   "-- i.e. times without repeater that are in the past are ignored\n" +
+                                   "-- i.e. times without repeater that are before given time are ignored\n" +
                                    "( t.repeater_type IS NOT NULL OR\n" +
                                    "  CASE WHEN t.hour IS NOT NULL\n" +
                                    "       THEN t.timestamp/1000\n" +
@@ -243,7 +243,7 @@ public class Provider extends ContentProvider {
                                    "       -- assume end-of-day for the purposes of querying\n" +
                                    "       -- to make sure they are picked up here.\n" +
                                    "       ELSE CAST(strftime('%s', t.timestamp/1000, 'unixepoch', '+1 day') AS INTEGER) END >= ? / 1000\n" +
-                                   ")", new String[] { now });
+                                   ")", new String[] { afterTime });
                 break;
 
             default:
@@ -985,8 +985,8 @@ public class Provider extends ContentProvider {
                 result = db.update(DbNote.TABLE, contentValues, selection, selectionArgs);
 
                 // TODO: Ugh: Use /books/1/notes/23/ or just move to constant
-                if (uri.getQueryParameter("book-id") != null) {
-                    DatabaseUtils.updateBookMtime(db, Long.parseLong(uri.getQueryParameter("book-id")));
+                if (uri.getQueryParameter("bookId") != null) {
+                    DatabaseUtils.updateBookMtime(db, Long.parseLong(uri.getQueryParameter("bookId")));
                 }
 
                 notifyUris.add(ProviderContract.Notes.ContentUri.notes());

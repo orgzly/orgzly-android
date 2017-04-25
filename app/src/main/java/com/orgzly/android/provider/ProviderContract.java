@@ -8,7 +8,6 @@ import com.orgzly.android.SearchQuery;
 import com.orgzly.android.provider.models.DbBook;
 import com.orgzly.android.provider.models.DbDbRepo;
 import com.orgzly.android.provider.models.DbNote;
-import com.orgzly.android.provider.models.DbOrgTimestamp;
 import com.orgzly.android.provider.models.DbRepo;
 import com.orgzly.android.provider.models.DbSearch;
 import com.orgzly.android.provider.views.BooksView;
@@ -459,12 +458,12 @@ public class ProviderContract {
         }
 
         class ContentUri {
-            public static final String PARAM_NOW = "now";
+            public static final String PARAM_AFTER_TIME = "after_time";
 
-            public static Uri times(long now) {
+            public static Uri times(long time) {
                 return Uri.withAppendedPath(AUTHORITY_URI, "times")
                         .buildUpon()
-                        .appendQueryParameter(PARAM_NOW, String.valueOf(now))
+                        .appendQueryParameter(PARAM_AFTER_TIME, String.valueOf(time))
                         .build();
             }
         }

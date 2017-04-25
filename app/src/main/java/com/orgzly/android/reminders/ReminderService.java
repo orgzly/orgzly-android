@@ -25,13 +25,12 @@ import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgDateTimeUtils;
 
 import org.joda.time.DateTime;
+import org.joda.time.ReadableInstant;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Everything related to reminders goes through this service.
@@ -44,8 +43,8 @@ public class ReminderService extends IntentService {
     public static final String EXTRA_EVENT = "event";
     public static final String EXTRA_JOB_START_AT = "start_at";
 
-    public static final int EVENT_DATA_CHANGED = 0;
-    public static final int EVENT_JOB_TRIGGERED = 1;
+    public static final int EVENT_DATA_CHANGED = 1;
+    public static final int EVENT_JOB_TRIGGERED = 2;
     public static final int EVENT_UNKNOWN = -1;
 
     public ReminderService() {
@@ -62,15 +61,24 @@ public class ReminderService extends IntentService {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
         /* Time to use for deciding if reminders should be scheduled or not. */
-        long now = System.currentTimeMillis();
+        DateTime now = new DateTime();
 
         /* Previous run time. */
-        long prevRun = AppPreferences.reminderServiceLastRun(this);
+        DateTime prevRun = null;
+        long prevRunMillis = AppPreferences.reminderServiceLastRun(this);
+        if (prevRunMillis > 0) {
+            prevRun = new DateTime(prevRunMillis);
+        }
 
         /* Currently scheduled Job, if any. */
         int jobId = AppPreferences.reminderServiceJobId(this);
 
         int event = intent.getIntExtra(EXTRA_EVENT, EVENT_UNKNOWN);
+
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Event: " + event);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, " Prev: " + prevRun);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "  Now: " + now);
 
         switch (event) {
             case EVENT_DATA_CHANGED:
@@ -87,7 +95,7 @@ public class ReminderService extends IntentService {
                 return;
         }
 
-        AppPreferences.reminderServiceLastRun(this, now);
+        AppPreferences.reminderServiceLastRun(this, now.getMillis());
     }
 
     /**
@@ -98,33 +106,25 @@ public class ReminderService extends IntentService {
      *
      * Schedule job to run for the first time after min(now, currently scheduled job).
      */
-    private void onDataChanged(long now, long prevRun, int prevJobId) {
-        Set<JobRequest> jobRequests = JobManager.instance().getAllJobRequestsForTag(ReminderJob.TAG);
-
-        long jobTime;
-        if (!jobRequests.isEmpty()) {
-            JobRequest jobRequest = jobRequests.iterator().next();
-            jobTime = jobRequest.getScheduledAt() + jobRequest.getStartMs();
-        } else {
-            jobTime = Long.MAX_VALUE;
-        }
-
+    private void onDataChanged(DateTime now, DateTime prevRun, int prevJobId) {
         /* Cancel all jobs. */
         JobManager.instance().cancelAllForTag(ReminderJob.TAG);
 
-        /*
-         * Schedule a reminder to run immediately,
-         * if there was a time between previously scheduled job time and now.
-         */
+        /* Schedule first time between previous run and now. */
 
-        long searchFromTime = Math.min(jobTime, now);
+        DateTime fromTime = prevRun;
+        if (prevRun == null) {
+            fromTime = now;
+        }
 
-        List<NoteWithTime> notes = ReminderService.getNotesWithTimes(this, searchFromTime, now);
+        List<NoteWithTime> notes = ReminderService.getNotesWithTimes(this, fromTime, null);
 
         if (! notes.isEmpty()) {
+            /* Schedule only the first upcoming time. */
             NoteWithTime firstNote = notes.get(0);
-            long exactMs = firstNote.time.getMillis() - now;
 
+            /* Schedule *in* exactMs. */
+            long exactMs = firstNote.time.getMillis() - now.getMillis();
             if (exactMs < 0) {
                 exactMs = 1;
             }
@@ -136,7 +136,7 @@ public class ReminderService extends IntentService {
             AppPreferences.reminderServiceJobId(this, jobId);
 
         } else {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "No next note found");
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "No notes found after " + fromTime);
         }
     }
 
@@ -148,8 +148,8 @@ public class ReminderService extends IntentService {
 
     private String jobRunTimeString(int jobId) {
         long jobTime = getJobRunTime(jobId);
-        Date date = new Date(jobTime);
-        return date.toString();
+        DateTime dateTime = new DateTime(jobTime);
+        return dateTime.toString();
     }
 
     /**
@@ -164,22 +164,23 @@ public class ReminderService extends IntentService {
      *
      * Schedule next job to run for the first time after now.
      */
-    private void onJobTriggered(long now, long prevRun, int prevJobId, long jobStartTime) {
+    private void onJobTriggered(DateTime now, DateTime prevRun, int prevJobId, long jobStartTime) {
         /* Make sure the id of triggered job is still stored (i.e. active).
          * It's possible that we tried to remove it after note update,
          * but it already got triggered. If it doesn't exist anymore, ignore it.
          */
 
-        // TODO: jobStartTime could be 0
+        /* Cancel all jobs. */
+        JobManager.instance().cancelAllForTag(ReminderJob.TAG);
 
-        /* Create notification for all notes from job's time until now. */
-        List<NoteWithTime> notes = ReminderService.getNotesWithTimes(this, 0, now);
+        /* Create notifications for all notes from previous run until now. */
+        List<NoteWithTime> notes = ReminderService.getNotesWithTimes(this, prevRun, now);
 
         if (! notes.isEmpty()) {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found " + notes.size() + " notes with times");
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found " + notes.size() + " notes between " + prevRun + " and " + now);
             showNotification(this, notes);
         } else {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "No notes found");
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "No notes found between " + prevRun + " and " + now);
         }
     }
 
@@ -188,11 +189,13 @@ public class ReminderService extends IntentService {
         return jobRequest.getScheduledAt() + jobRequest.getStartMs();
     }
 
-    public static List<NoteWithTime> getNotesWithTimes(Context context, long afterTime, long now) {
+    public static List<NoteWithTime> getNotesWithTimes(
+            Context context, ReadableInstant fromTime, ReadableInstant beforeTime) {
+
         List<NoteWithTime> result = new ArrayList<>();
 
         Cursor cursor = context.getContentResolver().query(
-                ProviderContract.Times.ContentUri.times(now),
+                ProviderContract.Times.ContentUri.times(fromTime.getMillis()),
                 null,
                 null,
                 null,
@@ -211,17 +214,11 @@ public class ReminderService extends IntentService {
                     /* Skip if it's done-type state. */
                     if (noteState == null || !AppPreferences.doneKeywordsSet(context).contains(noteState)) {
                         List<DateTime> times = OrgDateTimeUtils.getAllInstantsInInterval(
-                                orgDateTime,
-                                new DateTime(afterTime),
-                                null,
-                                1);
+                                orgDateTime, fromTime, beforeTime, 1);
 
-                        if (times.size() == 1) {
-                            DateTime time = times.get(0);
-
-                            if (!orgDateTime.hasTime()) {
-                                // TODO: Move to preferences
-                                time = time.plusHours(9);
+                        for (DateTime time: times) {
+                            if (! orgDateTime.hasTime()) {
+                                time = time.plusHours(9); // TODO: Move to preferences
                             }
 
                             result.add(new NoteWithTime(noteId, noteTitle, time));
