@@ -45,3 +45,5 @@
 
 -dontwarn android.support.**
 -dontnote android.support.**
+
+-dontwarn org.joda.convert.**
