@@ -2,7 +2,10 @@ package com.orgzly.android.ui.fragments;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.database.MergeCursor;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -24,7 +27,9 @@ import com.orgzly.android.SearchQuery;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.NotesClient;
+import com.orgzly.android.provider.views.NotesView;
 import com.orgzly.android.ui.ActionModeListener;
+import com.orgzly.android.ui.AgendaListViewAdapter;
 import com.orgzly.android.ui.HeadsListViewAdapter;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.NoteStateSpinner;
@@ -33,7 +38,14 @@ import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.views.GesturedListView;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.org.datetime.OrgDateTime;
+import com.orgzly.org.datetime.OrgInterval;
+import com.orgzly.org.datetime.OrgRange;
 
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -45,8 +57,13 @@ public class AgendaFragment extends NoteListFragment
 
     private static final String TAG = DrawerFragment.AgendaItem.class.getName();
 
+    // TODO: add fromCal to OrgDateTime or make the format public
+    private static final SimpleDateFormat DATE_FORMAT =
+            new SimpleDateFormat("yyyy-MM-dd EEE", Locale.ENGLISH);
+
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = AgendaFragment.class.getName();
+    public static final String DEFAULT_AGENDA_QUERY = ".i.done s.7d";
 
     /* Arguments. */
     private static final String ARG_QUERY = "query";
@@ -54,7 +71,7 @@ public class AgendaFragment extends NoteListFragment
 
     private static final int STATE_ITEM_GROUP = 1;
 
-    private SimpleCursorAdapter mListAdapter;
+    private AgendaListViewAdapter mListAdapter;
 
     /* Currently active query. */
     private SearchQuery mQuery;
@@ -180,7 +197,8 @@ public class AgendaFragment extends NoteListFragment
         /* Create a selection. */
         mSelection = new Selection();
 
-        mListAdapter = new HeadsListViewAdapter(getActivity(), mSelection, getListView().getItemMenus(), false);
+        mListAdapter = new AgendaListViewAdapter(getActivity(), mSelection,
+                getListView().getItemMenus(), false, mQuery);
 
         setListAdapter(mListAdapter);
 
@@ -260,7 +278,8 @@ public class AgendaFragment extends NoteListFragment
 
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
-        mListener.onNoteClick(this, view, position, id);
+        if (mListAdapter.getItemViewType(position) == AgendaListViewAdapter.TYPE_ITEM)
+            mListener.onNoteClick(this, view, position, id);
     }
 
     /**
@@ -323,6 +342,19 @@ public class AgendaFragment extends NoteListFragment
         return NotesClient.getLoaderForQuery(getActivity(), mQuery);
     }
 
+    private MatrixCursor cloneCursor(Cursor cursor, OrgDateTime schedTime) {
+        String[] cols = cursor.getColumnNames();
+        MatrixCursor cloned = new MatrixCursor(cols);
+        MatrixCursor.RowBuilder b = cloned.newRow();
+        for(String col: cols) {
+            if(col.equals(NotesView.Columns.SCHEDULED_TIME_STRING))
+                b.add(schedTime.toString());
+            else
+                b.add(cursor.getString(cursor.getColumnIndex(col)));
+        }
+        return cloned;
+    }
+
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader, cursor);
@@ -332,12 +364,81 @@ public class AgendaFragment extends NoteListFragment
             return;
         }
 
+        MatrixCursor header = new MatrixCursor(new String[]{BaseColumns._ID, "day", "separator"});
+        MatrixCursor.RowBuilder headerRow = header.newRow();
+        headerRow.add(-1);
+        headerRow.add(getQuery().getScheduled().toString());
+        headerRow.add(1);
+
+        MatrixCursor extras = null;
+        cursor.moveToPosition(-1);
+        int schedTimeIdx = cursor.getColumnIndex(NotesView.Columns.SCHEDULED_TIME_STRING);
+        int schedRangeIdx = cursor.getColumnIndex(NotesView.Columns.SCHEDULED_RANGE_STRING);
+        int schedTimeEndIdx = cursor.getColumnIndex(NotesView.Columns.SCHEDULED_TIME_END_STRING);
+        int schedTimestampIdx = cursor.getColumnIndex(NotesView.Columns.SCHEDULED_TIME_TIMESTAMP);
+        while(cursor.moveToNext()) {
+            System.out.println("position: " + cursor.getPosition());
+            System.out.println("sched time: " + cursor.getString(schedTimeIdx));
+            System.out.println("sched time range: " + cursor.getString(schedRangeIdx));
+            String rangeStr = cursor.getString(schedRangeIdx);
+            // normal timestamp, range or repeater
+            if (rangeStr.contains("--")) {
+                OrgRange range = OrgRange.getInstanceOrNull(rangeStr);
+                if( range != null) {
+                    OrgDateTime end = range.getEndTime();
+                    System.out.println("range end: " + end);
+                    OrgDateTime start = range.getStartTime();
+                    Calendar cal = range.getStartTime().getCalendar();
+                    cal.add(Calendar.DAY_OF_YEAR, 1);
+                    start = OrgDateTime.getInstance(DATE_FORMAT.format(cal.getTime()));
+                    extras = cloneCursor(cursor, start);
+                    System.out.println("start+1: " + start);
+                }
+            }
+            System.out.println("sched time end: " + cursor.getString(schedTimeEndIdx));
+            System.out.println("sched timestamp:" + cursor.getString(schedTimestampIdx));
+        }
+
+        MatrixCursor tail = new MatrixCursor(new String[]{BaseColumns._ID, "day", "separator"});
+        MatrixCursor.RowBuilder endRow = tail.newRow();
+        endRow.add(-1);
+        endRow.add("29-Jul Mon");
+        endRow.add(1);
+
+        cursor.moveToFirst();
+        MergeCursor mCursor = new MergeCursor(new Cursor[]{cursor, header, extras, tail});
+
+        // go through expanded and sorted cursors and collect separators
+        for(mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor.moveToNext()) {
+            int idx = mCursor.getColumnIndex("separator");
+            if (idx != -1 && mCursor.getInt(idx) > 0)
+                mListAdapter.addSeparatorItem(mCursor.getPosition());
+        }
+
+
+        System.out.println("************************");
+        for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor.moveToNext()) {
+            switch (mListAdapter.getItemViewType(mCursor.getPosition())) {
+                case AgendaListViewAdapter.TYPE_ITEM:
+                    System.out.println(mCursor.getPosition() + " ) " + cursor.getString(schedTimeIdx));
+                    break;
+                case AgendaListViewAdapter.TYPE_SEPARATOR:
+                    int idx = mCursor.getColumnIndex("day");
+                    System.out.println(mCursor.getPosition() + " -- " + cursor.getString(idx));
+            }
+
+
+        }
+        System.out.println("************************");
+        mCursor.moveToFirst();
+
         /**
          * Swapping instead of changing Cursor here, to keep the old one open.
          * Loader should release the old Cursor - see note in
          * {@link LoaderManager.LoaderCallbacks#onLoadFinished).
          */
-        mListAdapter.swapCursor(cursor);
+//        mListAdapter.swapCursor(cursor);
+        mListAdapter.swapCursor(mCursor);
 
         mActionModeListener.updateActionModeForSelection(mSelection, new MyActionMode());
 

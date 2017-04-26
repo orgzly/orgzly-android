@@ -53,6 +53,7 @@ import com.orgzly.android.repos.ContentRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.dialogs.WhatsNewDialog;
+import com.orgzly.android.ui.fragments.AgendaFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
@@ -1616,7 +1617,7 @@ public class MainActivity extends CommonActivity
                     String query = ((DrawerFragment.FilterItem) item).query;
                     mDisplayManager.displayQuery(query);
                 } else if (item instanceof DrawerFragment.AgendaItem) {
-                    String query = ((DrawerFragment.AgendaItem) item).defaultQuery;
+                    String query = AgendaFragment.DEFAULT_AGENDA_QUERY;
                     mDisplayManager.displayAgenda(query);
                 }
             }
