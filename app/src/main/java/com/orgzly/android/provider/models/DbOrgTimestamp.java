@@ -19,7 +19,7 @@ import java.util.Calendar;
  * <2006-11-02 Thu 20:00-22:00>
  */
 public class DbOrgTimestamp {
-    public static final String TABLE = "org_timestamp";
+    public static final String TABLE = "org_timestamps";
 
 //    public static final int UNIT_SECOND = 101;
 //    public static final int UNIT_MINUTE = 260;

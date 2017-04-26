@@ -231,7 +231,7 @@ public class Provider extends ContentProvider {
 
                 cursor = db.rawQuery("SELECT n._id as note_id, n.state as note_state, t.string as org_timestamp_string, n.title as note_title\n" +
                                    "FROM org_ranges r\n" +
-                                   "JOIN org_timestamp t ON (r.start_timestamp_id = t._id)\n" +
+                                   "JOIN org_timestamps t ON (r.start_timestamp_id = t._id)\n" +
                                    "JOIN notes n ON (r._id = n.scheduled_range_id)\n" +
                                    "WHERE t.is_active = 1 AND\n" +
                                    "-- Times which either have repeater or are in the future\n" +

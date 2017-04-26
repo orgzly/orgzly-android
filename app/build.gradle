@@ -21,7 +21,7 @@ android {
         applicationId "com.orgzly"
         minSdkVersion 14 // Ice Cream Sandwich (4.0)
         targetSdkVersion 25 // Nougat (7.1)
-        versionCode 59
+        versionCode 61
         versionName "1.4.12-beta.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -79,8 +79,8 @@ configurations.all {
 }
 
 dependencies {
-    compile "com.orgzly:org-java:$org_java_version"
-//    compile project(':org-java') // Used when developing, defined in settings.gradle
+//    compile "com.orgzly:org-java:$org_java_version"
+    compile project(':org-java') // Used when developing, defined in settings.gradle
 
     compile "com.dropbox.core:dropbox-core-sdk:$dropbox_core_sdk_version"
 
