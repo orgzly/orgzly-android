@@ -97,23 +97,21 @@ public class ReminderService extends IntentService {
     }
 
     /**
-     *     prev    scheduled
-     *     run        job        now
-     *      |          |          |
-     *  ------------------------------->
-     *
-     * Schedule job to run for the first time after min(now, currently scheduled job).
+     * Schedule the next job for times after last run.
      */
     private void onDataChanged(DateTime now, DateTime prevRun) {
         /* Cancel all jobs. */
         JobManager.instance().cancelAllForTag(ReminderJob.TAG);
 
-        /* Schedule first time between previous run and now. */
-
         DateTime fromTime = prevRun;
         if (prevRun == null) {
             fromTime = now;
         }
+
+        scheduleNextJob(now, fromTime);
+    }
+
+    private void scheduleNextJob(DateTime now, DateTime fromTime) {
 
         List<NoteWithTime> notes = ReminderService.getNotesWithTimes(this, fromTime, null);
 
@@ -152,29 +150,27 @@ public class ReminderService extends IntentService {
 
     /**
      * Display reminders for all notes with times between
-     * scheduled job and now.
-     *
-     *     prev    scheduled
-     *     run        job        now
-     *      |          |          |
-     *  ------------------------------->
-     *                 |----------|
-     *
-     * Schedule next job to run for the first time after now.
+     * last run and now. Then schedule the next job for times after now.
      */
     private void onJobTriggered(DateTime now, DateTime prevRun) {
         /* Cancel all jobs. */
         JobManager.instance().cancelAllForTag(ReminderJob.TAG);
 
-        /* Create notifications for all notes from previous run until now. */
-        List<NoteWithTime> notes = ReminderService.getNotesWithTimes(this, prevRun, now);
+        if (prevRun != null) {
+            /* Show notifications for all notes with times from previous run until now. */
+            List<NoteWithTime> notes = ReminderService.getNotesWithTimes(this, prevRun, now);
 
-        if (! notes.isEmpty()) {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found " + notes.size() + " notes between " + prevRun + " and " + now);
-            showNotification(this, notes);
-        } else {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "No notes found between " + prevRun + " and " + now);
+            if (!notes.isEmpty()) {
+                if (BuildConfig.LOG_DEBUG)
+                    LogUtils.d(TAG, "Found " + notes.size() + " notes between " + prevRun + " and " + now);
+                showNotification(this, notes);
+            } else {
+                if (BuildConfig.LOG_DEBUG)
+                    LogUtils.d(TAG, "No notes found between " + prevRun + " and " + now);
+            }
         }
+
+        scheduleNextJob(now, now);
     }
 
     private long getJobRunTime(int jobId) {
