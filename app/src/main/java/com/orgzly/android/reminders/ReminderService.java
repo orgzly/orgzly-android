@@ -59,7 +59,10 @@ public class ReminderService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
-        /* Time to use for deciding if reminders should be scheduled or not. */
+        if (! AppPreferences.remindersForScheduledTimes(this)) {
+            return;
+        }
+
         DateTime now = new DateTime();
 
         /* Previous run time. */
@@ -68,9 +71,6 @@ public class ReminderService extends IntentService {
         if (prevRunMillis > 0) {
             prevRun = new DateTime(prevRunMillis);
         }
-
-        /* Currently scheduled Job, if any. */
-        int jobId = AppPreferences.reminderServiceJobId(this);
 
         int event = intent.getIntExtra(EXTRA_EVENT, EVENT_UNKNOWN);
 
@@ -81,11 +81,11 @@ public class ReminderService extends IntentService {
 
         switch (event) {
             case EVENT_DATA_CHANGED:
-                onDataChanged(now, prevRun, jobId);
+                onDataChanged(now, prevRun);
                 break;
 
             case EVENT_JOB_TRIGGERED:
-                onJobTriggered(now, prevRun, jobId);
+                onJobTriggered(now, prevRun);
                 break;
 
             default:
@@ -104,7 +104,7 @@ public class ReminderService extends IntentService {
      *
      * Schedule job to run for the first time after min(now, currently scheduled job).
      */
-    private void onDataChanged(DateTime now, DateTime prevRun, int prevJobId) {
+    private void onDataChanged(DateTime now, DateTime prevRun) {
         /* Cancel all jobs. */
         JobManager.instance().cancelAllForTag(ReminderJob.TAG);
 
@@ -162,12 +162,7 @@ public class ReminderService extends IntentService {
      *
      * Schedule next job to run for the first time after now.
      */
-    private void onJobTriggered(DateTime now, DateTime prevRun, int prevJobId) {
-        /* Make sure the id of triggered job is still stored (i.e. active).
-         * It's possible that we tried to remove it after note update,
-         * but it already got triggered. If it doesn't exist anymore, ignore it.
-         */
-
+    private void onJobTriggered(DateTime now, DateTime prevRun) {
         /* Cancel all jobs. */
         JobManager.instance().cancelAllForTag(ReminderJob.TAG);
 

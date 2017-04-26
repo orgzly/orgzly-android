@@ -311,6 +311,8 @@ public class SettingsFragment extends PreferenceFragment
         }
 
         if (getString(R.string.pref_key_use_reminders_for_scheduled_times).equals(key)) {
+            AppPreferences.reminderServiceLastRun(getContext(), 0L);
+
             ReminderService.notifyDataChanged(getContext());
         }
     }
