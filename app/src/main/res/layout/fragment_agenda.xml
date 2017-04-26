@@ -24,4 +24,10 @@
         style="@style/BigCenteredText"
         android:text="@string/no_notes_found_after_search"/>
 
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
 </ViewFlipper>

@@ -474,7 +474,6 @@ public class DrawerFragment extends ListFragment
     }
 
     public class AgendaItem extends DrawerItem {
-        public String defaultQuery = ".i.done s.1w";
         AgendaItem() {
             this.name = getString(R.string.agenda);
             this.icon = R.styleable.Icons_oic_drawer_agenda;
