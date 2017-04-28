@@ -37,6 +37,7 @@ import com.orgzly.android.ui.Selection;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.views.GesturedListView;
 import com.orgzly.android.util.LogUtils;
+import com.orgzly.android.util.OrgDataTimeHelper;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgInterval;
 import com.orgzly.org.datetime.OrgRange;
@@ -45,7 +46,11 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -387,10 +392,9 @@ public class AgendaFragment extends NoteListFragment
                 if( range != null) {
                     OrgDateTime end = range.getEndTime();
                     System.out.println("range end: " + end);
-                    OrgDateTime start = range.getStartTime();
                     Calendar cal = range.getStartTime().getCalendar();
                     cal.add(Calendar.DAY_OF_YEAR, 1);
-                    start = OrgDateTime.getInstance(DATE_FORMAT.format(cal.getTime()));
+                    OrgDateTime start = OrgDataTimeHelper.buildFromCal(cal);
                     extras = cloneCursor(cursor, start);
                     System.out.println("start+1: " + start);
                 }
@@ -398,6 +402,11 @@ public class AgendaFragment extends NoteListFragment
             System.out.println("sched time end: " + cursor.getString(schedTimeEndIdx));
             System.out.println("sched timestamp:" + cursor.getString(schedTimestampIdx));
         }
+
+        // keep all expanded scheduled events in a LinkedHashset
+        Map<Date, MatrixCursor> agenda = new LinkedHashMap<>();
+        // create entries from today to today+agenda_len
+        // for each cursor: expand shedRange, add ag.entrySched to agenda[ag.agendaDate]
 
         MatrixCursor tail = new MatrixCursor(new String[]{BaseColumns._ID, "day", "separator"});
         MatrixCursor.RowBuilder endRow = tail.newRow();
