@@ -266,6 +266,7 @@ public class ReminderService extends IntentService {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setAutoCancel(true)
+                .setColor(ContextCompat.getColor(context, R.color.notification))
                 .setSmallIcon(R.drawable.cic_orgzly_notification)
                 .setContentIntent(resultPendingIntent);
 
