@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.evernote.android.job.JobManager;
@@ -60,6 +61,7 @@ public class ReminderService extends IntentService {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
         if (! AppPreferences.remindersForScheduledTimes(this)) {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Reminders are disabled");
             return;
         }
 
@@ -307,7 +309,7 @@ public class ReminderService extends IntentService {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Notification notification = builder.build();
-        notificationManager.notify(Notifications.REMINDER_ID, notification);
+        notificationManager.notify(Notifications.REMINDER, notification);
     }
 
 
