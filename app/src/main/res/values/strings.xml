@@ -373,6 +373,7 @@
     <string name="default_notebook">Default notebook</string>
     <string name="default_notebook_desc">Notebook used when sharing to Orgzly or creating a new note from the ongoing notification</string>
 
+    <string name="list_widget_name">Search</string>
     <string name="select_a_filter">Select a filter</string>
 
     <!-- These are just used in tools:text for layout preview and don't have to be translated,

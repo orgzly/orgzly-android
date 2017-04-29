@@ -100,7 +100,8 @@
             android:theme="@style/Theme.AppCompat.Light.Dialog"
             android:excludeFromRecents="true"/>
 
-        <receiver android:name="com.orgzly.android.widgets.ListWidgetProvider" >
+        <receiver android:name="com.orgzly.android.widgets.ListWidgetProvider"
+            android:label="@string/list_widget_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
