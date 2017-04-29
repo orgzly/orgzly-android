@@ -1,27 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal">
-    <TextView
-        android:id="@+id/item_list_widget_title"
+
+    <LinearLayout
+        android:id="@+id/item_list_widget_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
+        android:orientation="vertical"
         android:layout_weight="1"
-        android:text="@string/book_name_sample"
-        android:maxLines="1"
-        android:clickable="true"/>
+        android:clickable="true">
+
+        <TextView
+            android:id="@+id/item_list_widget_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:text="@string/book_name_sample"
+            android:textSize="15sp"
+            android:maxLines="1" />
+
+        <LinearLayout
+            android:id="@+id/item_list_widget_scheduled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
+            android:gravity="center_vertical"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_height="14dp"
+                android:layout_width="14dp"
+                android:src="@drawable/ic_today_black_18dp"
+                android:contentDescription="@string/schedule" />
+
+            <TextView
+                android:id="@+id/item_list_widget_scheduled_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/note_scheduled_sample"
+                android:textColor="#696969"
+                android:textSize="14sp"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_list_widget_deadline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
+            android:gravity="center_vertical"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_height="14dp"
+                android:layout_width="14dp"
+                android:src="@drawable/ic_alarm_black_18dp"
+                android:contentDescription="@string/deadline" />
+
+            <TextView
+                android:id="@+id/item_list_widget_deadline_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/note_deadline_sample"
+                android:textColor="#696969"
+                android:textSize="14sp"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_list_widget_closed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
+            android:gravity="center_vertical"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_height="14dp"
+                android:layout_width="14dp"
+                android:src="@drawable/ic_done_black_18dp"
+                android:contentDescription="@string/closed" />
+
+            <TextView
+                android:id="@+id/item_list_widget_closed_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/note_closed_sample"
+                android:textColor="#696969"
+                android:textSize="14sp"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp" />
+        </LinearLayout>
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/widget_list_header_add"
+        android:id="@+id/item_list_widget_done"
         android:layout_weight="0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:drawableLeft="@drawable/ic_done_black_24dp"
+        android:drawableStart="@drawable/ic_done_black_24dp"
         android:drawablePadding="5dp"
         android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:maxLines="1"
         android:text=""
         android:clickable="true"/>

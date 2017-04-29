@@ -2,17 +2,12 @@ package com.orgzly.android.widgets;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Binder;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
+import android.util.TypedValue;
+import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 import com.orgzly.BuildConfig;
@@ -21,53 +16,34 @@ import com.orgzly.android.Note;
 import com.orgzly.android.SearchQuery;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.NotesClient;
+import com.orgzly.android.ui.util.TitleGenerator;
 import com.orgzly.android.util.LogUtils;
-import com.orgzly.android.util.NoteContentParser;
+import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.OrgHead;
 
 public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private static final String TAG = ListWidgetViewsFactory.class.getName();
 
-    private final static String TITLE_SEPARATOR = "  ";
-
-    private final TypedArrayAttributeSpans attributes;
     private Cursor mCursor;
     private Context mContext;
     private SearchQuery query;
-
-    private class TypedArrayAttributeSpans {
-        ForegroundColorSpan colorTodo;
-        ForegroundColorSpan colorDone;
-        ForegroundColorSpan colorUnknown;
-        AbsoluteSizeSpan postTitleTextSize;
-        ForegroundColorSpan postTitleTextColor;
-
-        public TypedArrayAttributeSpans() {
-            TypedArray typedArray = mContext.obtainStyledAttributes(new int[] {
-                    R.attr.item_head_state_todo_color,
-                    R.attr.item_head_state_done_color,
-                    R.attr.item_head_state_unknown_color,
-                    R.attr.item_head_post_title_text_size,
-                    R.attr.item_head_post_title_text_color
-            });
-
-            colorTodo = new ForegroundColorSpan(typedArray.getColor(0, 0));
-            colorDone = new ForegroundColorSpan(typedArray.getColor(1, 0));
-            colorUnknown = new ForegroundColorSpan(typedArray.getColor(2, 0));
-
-            postTitleTextSize = new AbsoluteSizeSpan(typedArray.getDimensionPixelSize(3, 0));
-            postTitleTextColor = new ForegroundColorSpan(typedArray.getColor(4, 0));
-
-            typedArray.recycle();
-        }
-    }
+    private TitleGenerator titleGenerator;
+    private UserTimeFormatter userTimeFormatter;
 
     public ListWidgetViewsFactory(Context mContext, String queryString) {
         this.mContext = mContext;
         this.query = new SearchQuery(queryString != null ? queryString : "");
 
-        this.attributes = new TypedArrayAttributeSpans();
+        this.userTimeFormatter = new UserTimeFormatter(mContext);
+        this.titleGenerator = new TitleGenerator(mContext, false, new TitleGenerator.TitleAttributes(
+                Color.rgb(0xdc, 0,0),
+                Color.rgb(0, 0x80,0),
+                Color.rgb(0, 0,0xff),
+                // see http://stackoverflow.com/a/8296048/7757713
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, Resources.getSystem().getDisplayMetrics()),
+                Color.rgb(0x69, 0x69,0x69)
+        ));
     }
 
     @Override
@@ -105,75 +81,65 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "getViewAt", position);
 
         Note note = null;
-        CharSequence title = "not found!";
         if (mCursor.moveToPosition(position)) {
             note = NotesClient.fromCursor(mCursor);
-            title = generateTitle(note);
         }
 
-
         RemoteViews row = new RemoteViews(mContext.getPackageName(), R.layout.item_list_widget);
-        row.setTextViewText(R.id.item_list_widget_title, title); // TODO
 
         if (note != null) {
+            setContent(row, note);
+
             final Intent openIntent = new Intent();
             openIntent.putExtra(ListWidgetProvider.EXTRA_CLICK_TYPE, ListWidgetProvider.OPEN_CLICK_TYPE);
             openIntent.putExtra(ListWidgetProvider.EXTRA_NOTE_ID, note.getId());
             openIntent.putExtra(ListWidgetProvider.EXTRA_BOOK_ID, note.getPosition().getBookId());
-            row.setOnClickFillInIntent(R.id.item_list_widget_title, openIntent);
+            row.setOnClickFillInIntent(R.id.item_list_widget_layout, openIntent);
 
             final Intent doneIntent = new Intent();
             doneIntent.putExtra(ListWidgetProvider.EXTRA_CLICK_TYPE, ListWidgetProvider.DONE_CLICK_TYPE);
             doneIntent.putExtra(ListWidgetProvider.EXTRA_NOTE_ID, note.getId());
-            row.setOnClickFillInIntent(R.id.widget_list_header_add, doneIntent);
+            row.setOnClickFillInIntent(R.id.item_list_widget_done, doneIntent);
         }
 
         return row;
     }
 
-    private CharSequence generateTitle(Note note) {
-        // TODO
-        final OrgHead head = note.getHead();
+    private void setContent(RemoteViews row, Note note) {
+        /* see also HeadsListViewAdapter.bindView */
+        OrgHead head = note.getHead();
+        row.setTextViewText(R.id.item_list_widget_title, titleGenerator.generateTitle(note, head));
 
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-
-        /* State. */
-        if (head.getState() != null) {
-            builder.append(generateState(head));
+        /* Closed time. */
+        if (head.hasClosed() && AppPreferences.displayPlanning(mContext)) {
+            row.setTextViewText(R.id.item_list_widget_closed_text, userTimeFormatter.formatAll(head.getClosed()));
+            row.setViewVisibility(R.id.item_list_widget_closed, View.VISIBLE);
+        } else {
+            row.setViewVisibility(R.id.item_list_widget_closed, View.GONE);
         }
 
-        /* Bold everything up until now. */
-        if (builder.length() > 0) {
-            builder.setSpan(new StyleSpan(Typeface.BOLD), 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        /* Deadline time. */
+        if (head.hasDeadline() && AppPreferences.displayPlanning(mContext)) {
+            row.setTextViewText(R.id.item_list_widget_deadline_text, userTimeFormatter.formatAll(head.getDeadline()));
+            row.setViewVisibility(R.id.item_list_widget_deadline, View.VISIBLE);
+        } else {
+            row.setViewVisibility(R.id.item_list_widget_deadline, View.GONE);
         }
 
-        /* Space before title, unless there's nothing added. */
-        if (builder.length() > 0) {
-            builder.append(TITLE_SEPARATOR);
+        /* Scheduled time. */
+        if (head.hasScheduled() && AppPreferences.displayPlanning(mContext)) {
+            row.setTextViewText(R.id.item_list_widget_scheduled_text, userTimeFormatter.formatAll(head.getScheduled()));
+            row.setViewVisibility(R.id.item_list_widget_scheduled, View.VISIBLE);
+        } else {
+            row.setViewVisibility(R.id.item_list_widget_scheduled, View.GONE);
         }
-
-        /* Title. */
-        builder.append(NoteContentParser.fromOrg(head.getTitle()));
-
-        return builder;
-    }
-
-    private CharSequence generateState(OrgHead head) {
-        SpannableString str = new SpannableString(head.getState());
-
-        ForegroundColorSpan color;
 
         if (AppPreferences.todoKeywordsSet(mContext).contains(head.getState())) {
-            color = attributes.colorTodo;
-        } else if (AppPreferences.doneKeywordsSet(mContext).contains(head.getState())) {
-            color = attributes.colorDone;
+            LogUtils.d(TAG, head.getState());
+            row.setViewVisibility(R.id.item_list_widget_done, View.VISIBLE);
         } else {
-            color = attributes.colorUnknown;
+            row.setViewVisibility(R.id.item_list_widget_done, View.GONE);
         }
-
-        str.setSpan(new ForegroundColorSpan(Color.rgb(200, 0, 0)), 0, str.length(), 0);
-
-        return str;
     }
 
     @Override
@@ -190,8 +156,6 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
     public long getItemId(int position) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "getItemId", position);
 
-        // TODO is this correct?
-//        return position;
         if (mCursor.moveToPosition(position)) {
             Note note = NotesClient.fromCursor(mCursor);
             return note.getId();
@@ -201,7 +165,6 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public boolean hasStableIds() {
-        // TODO is this correct?
         return true;
     }
 }

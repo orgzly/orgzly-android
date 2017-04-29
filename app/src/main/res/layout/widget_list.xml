@@ -18,22 +18,32 @@
         android:background="@color/gray25"
         android:clickable="true">
 
-        <TextView
-            android:id="@+id/widget_list_header_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:text="@string/select_a_filter"
-            android:textColor="#232323"
-            android:textSize="17sp"
-            android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
-            android:drawablePadding="5dp"/>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/widget_list_header_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/select_a_filter"
+                android:textColor="#232323"
+                android:textSize="17sp"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
+                android:drawableEnd="@drawable/ic_keyboard_arrow_down_black_24dp"
+                android:drawablePadding="5dp"
+                android:ellipsize="end"
+                android:maxLines="1" />
+        </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="right"
+            android:gravity="end"
             android:orientation="horizontal">
 
             <TextView
@@ -42,12 +52,13 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:drawableLeft="@drawable/ic_add_black_24dp"
-                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_add_black_24dp"
                 android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:maxLines="1"
                 android:text=""
                 android:background="@color/gray17"
-                android:clickable="true"/>
+                android:clickable="true" />
         </LinearLayout>
     </LinearLayout>
 
@@ -55,28 +66,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/white">
 
-        <FrameLayout
+        <ListView
+            android:id="@+id/widget_list_list_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:background="@color/white">
+            android:layout_height="match_parent" />
 
-            <ListView
-                android:id="@+id/widget_list_list_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TextView
-                android:id="@+id/widget_list_empty_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="@string/no_notes_found_after_search"
-                android:textSize="20sp" />
-        </FrameLayout>
+        <TextView
+            android:id="@+id/widget_list_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="@string/no_notes_found_after_search"
+            android:textSize="20sp" />
     </LinearLayout>
 </LinearLayout>
