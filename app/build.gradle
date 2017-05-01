@@ -111,6 +111,8 @@ dependencies {
     androidTestCompile "com.android.support.test.espresso:espresso-core:$android_test_espresso_version"
     androidTestCompile "com.android.support.test.espresso:espresso-contrib:$android_test_espresso_version"
 
+    androidTestCompile "com.android.support.test.uiautomator:uiautomator-v18:$android_test_uiautomator_version"
+
     androidTestCompile "de.sven-jacobs:loremipsum:$loremipsum_version"
 }
 
