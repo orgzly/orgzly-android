@@ -3,13 +3,9 @@ package com.orgzly.android.misc;
 import com.orgzly.android.SearchQuery;
 import com.orgzly.android.util.QuotedStringTokenizer;
 import com.orgzly.org.datetime.OrgInterval;
-
 import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 
 public class SearchQueryTest {
     @Test
@@ -257,6 +253,14 @@ public class SearchQueryTest {
         assertTrue(query.hasDeadline());
         assertEquals(2, query.getDeadline().getValue());
         assertEquals(OrgInterval.Unit.DAY, query.getDeadline().getUnit());
+    }
+
+    @Test
+    public void testScheduledNone() {
+        SearchQuery query = new SearchQuery("s.none");
+        assertEquals("s.none", query.toString());
+        assertTrue(query.hasScheduled());
+        assertTrue(query.getScheduled().none());
     }
 
     @Test
