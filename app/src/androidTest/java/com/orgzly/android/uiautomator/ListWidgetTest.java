@@ -36,17 +36,6 @@ public class ListWidgetTest {
 
         device.pressHome();
         device.pressHome();
-//        // simulate long click on background
-//        device.swipe(0, device.getDisplayHeight() / 2, 0, device.getDisplayHeight() / 2, 100);
-//
-//        UiObject2 widgetsButton = device.findObject(By.text("WIDGETS"));
-//        widgetsButton.click();
-//
-//        UiScrollable widgetsView = new UiScrollable(new UiSelector().resourceId("com.google.android.apps.nexuslauncher:id/widgets_list_view"));
-//        widgetsView.scrollTextIntoView("Search");
-//
-//        UiObject2 listWidgetButton = device.findObject(By.text("Search"));
-//        listWidgetButton.swipe(Direction.UP, 0, 300);
     }
 
     @Test

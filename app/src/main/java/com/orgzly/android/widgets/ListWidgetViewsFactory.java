@@ -135,7 +135,6 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
         }
 
         if (AppPreferences.todoKeywordsSet(mContext).contains(head.getState())) {
-            LogUtils.d(TAG, head.getState());
             row.setViewVisibility(R.id.item_list_widget_done, View.VISIBLE);
         } else {
             row.setViewVisibility(R.id.item_list_widget_done, View.GONE);
