@@ -14,45 +14,54 @@ import java.util.List;
  * Created by pxsalehi on 27.04.17.
  */
 
-public class OrgDataTimeHelper {
-    /**
-     * return a list of dates where the rangeStr expands to within the time range now to now + days
-     * @param rangeStr
-     * @param days
-     * @return
-     */
+public class AgendaHelper {
+
     public static List<Date> expandOrgRange(String rangeStr, int days) {
+        List<Date> entries = new LinkedList<>();
+        OrgRange range = OrgRange.getInstanceOrNull(rangeStr);
+        if (range == null)
+            return entries;
+        return expandOrgRange(range, days);
+    }
+    /**
+     * Expand the given OrgRange to dates it occurs on, within the time range [today : today + days]
+     * @param range OrgRange object to be expanded
+     * @param days  Number of days
+     * @return List of dates where this OrgRange occurs
+     */
+    public static List<Date> expandOrgRange(OrgRange range, int days) {
         if (days < 1)
             throw new IllegalStateException("Agenda must be at least one day long!");
         List<Date> entries = new LinkedList<>();
-        OrgRange schedRange = OrgRange.getInstanceOrNull(rangeStr);
-        if (schedRange == null)
-            return entries;
-
         Calendar agendaToday = Calendar.getInstance();
         resetJustTime(agendaToday);
         Calendar nextAgendaDay = Calendar.getInstance();
         nextAgendaDay.setTime(agendaToday.getTime());
+        nextAgendaDay.add(Calendar.DAY_OF_YEAR, 1);
         Calendar agendaEnd = Calendar.getInstance();
         agendaEnd.add(Calendar.DAY_OF_YEAR, days - 1);
         resetJustTime(agendaEnd);
 
-        OrgDateTime scheduledStart = schedRange.getStartTime();
+        OrgDateTime scheduledStart = range.getStartTime();
         Date scheduledStartDate = getJustDate(scheduledStart.getCalendar().getTime());
 
-        if (schedRange.getEndTime() == null) {
+        if (range.getEndTime() == null) {
             if (!scheduledStart.hasRepeater()) {
                 entries.add(scheduledStartDate);
             } else {
-                // scheduled for before today, add to today's agenda
-                if (scheduledStartDate.before(agendaToday.getTime()))
-                    entries.add(agendaToday.getTime());
                 OrgRepeater repeater = scheduledStart.getRepeater();
-                // move to today
+                Date scheduledDate = scheduledStart.getCalendar().getTime();
                 Calendar nextOccur = Calendar.getInstance();
-                nextOccur.setTime(scheduledStart.getCalendar().getTime());
-                while (nextOccur.before(nextAgendaDay))
-                    repeater.shiftCalendar(nextOccur, nextAgendaDay);
+                nextOccur.setTime(scheduledDate);
+                // scheduled for today or before today, add to today's agenda
+                if (!scheduledStartDate.after(agendaToday.getTime())) {
+                    entries.add(agendaToday.getTime());
+                    // find next occurrence after today
+                    if (repeater.getType() == OrgRepeater.Type.RESTART)
+                        repeater.shiftCalendar(nextOccur, Calendar.getInstance());
+                    while(nextOccur.before(nextAgendaDay))
+                        shiftByInterval(repeater, nextOccur);
+                }
                 while (!nextOccur.after(agendaEnd)) {
                     entries.add(getJustDate(nextOccur.getTime()));
                     nextAgendaDay.add(Calendar.DAY_OF_YEAR, 1);
@@ -63,7 +72,7 @@ public class OrgDataTimeHelper {
             }
         } else {
             // a range
-            OrgDateTime scheduledEnd = schedRange.getEndTime();
+            OrgDateTime scheduledEnd = range.getEndTime();
             Date scheduledEndDate = getJustDate(scheduledEnd.getCalendar().getTime());
             // move to today
             Calendar nextOccur = Calendar.getInstance();
@@ -124,7 +133,7 @@ public class OrgDataTimeHelper {
         List<Date> rangeDates = expandOrgRange(range, 5);
         System.out.println(OrgStringUtils.join(rangeDates, ", "));
 
-        String date = "<2017-05-02 Tue .+2d>";
+        String date = "<2017-05-02 Tue ++3d>";
         List<Date> dateDates = expandOrgRange(date, 5);
         System.out.println(OrgStringUtils.join(dateDates, ", "));
 
@@ -132,8 +141,16 @@ public class OrgDataTimeHelper {
         List<Date> singleDates = expandOrgRange(single, 5);
         System.out.println(OrgStringUtils.join(singleDates, ", "));
 
-        String hourly = "<2017-05-03 Wed 09:00 .+12h>";
+        String hourly = "<2017-05-03 Wed 09:00 ++12h>";
         List<Date> hourlyDates = expandOrgRange(hourly, 5);
         System.out.println(OrgStringUtils.join(hourlyDates, ", "));
+
+        String hourlyRestart = "<2017-05-03 Wed 09:00 .+12h>";
+        List<Date> hourlyRestartDates = expandOrgRange(hourlyRestart, 5);
+        System.out.println(OrgStringUtils.join(hourlyRestartDates, ", "));
+
+        String weeklyCumulate = "<2017-05-06 Sat +1w>";
+        List<Date> weeklyCumulateDates = expandOrgRange(weeklyCumulate, 10);
+        System.out.println(OrgStringUtils.join(weeklyCumulateDates, ", "));
     }
 }
