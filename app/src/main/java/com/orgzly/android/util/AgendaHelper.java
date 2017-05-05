@@ -16,12 +16,12 @@ import java.util.List;
 
 public class AgendaHelper {
 
-    public static List<Date> expandOrgRange(String rangeStr, int days) {
+    public static List<Date> expandOrgRange(String rangeStr, Calendar now, int days) {
         List<Date> entries = new LinkedList<>();
         OrgRange range = OrgRange.getInstanceOrNull(rangeStr);
         if (range == null)
             return entries;
-        return expandOrgRange(range, days);
+        return expandOrgRange(range, now, days);
     }
     /**
      * Expand the given OrgRange to dates it occurs on, within the time range [today : today + days]
@@ -29,17 +29,18 @@ public class AgendaHelper {
      * @param days  Number of days
      * @return List of dates where this OrgRange occurs
      */
-    public static List<Date> expandOrgRange(OrgRange range, int days) {
+    public static List<Date> expandOrgRange(OrgRange range, Calendar now, int days) {
         if (days < 1)
             throw new IllegalStateException("Agenda must be at least one day long!");
         List<Date> entries = new LinkedList<>();
         Calendar agendaToday = Calendar.getInstance();
-        resetJustTime(agendaToday);
+        agendaToday.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+        agendaToday.set(Calendar.MILLISECOND, 0);
         Calendar nextAgendaDay = Calendar.getInstance();
         nextAgendaDay.setTime(agendaToday.getTime());
         nextAgendaDay.add(Calendar.DAY_OF_YEAR, 1);
         Calendar agendaEnd = Calendar.getInstance();
-        agendaEnd.add(Calendar.DAY_OF_YEAR, days - 1);
+        agendaEnd.add(Calendar.DAY_OF_YEAR, days);
         resetJustTime(agendaEnd);
 
         OrgDateTime scheduledStart = range.getStartTime();
@@ -50,19 +51,18 @@ public class AgendaHelper {
                 entries.add(scheduledStartDate);
             } else {
                 OrgRepeater repeater = scheduledStart.getRepeater();
-                Date scheduledDate = scheduledStart.getCalendar().getTime();
                 Calendar nextOccur = Calendar.getInstance();
-                nextOccur.setTime(scheduledDate);
+                nextOccur.setTime(scheduledStart.getCalendar().getTime());
                 // scheduled for today or before today, add to today's agenda
                 if (!scheduledStartDate.after(agendaToday.getTime())) {
                     entries.add(agendaToday.getTime());
                     // find next occurrence after today
                     if (repeater.getType() == OrgRepeater.Type.RESTART)
-                        repeater.shiftCalendar(nextOccur, Calendar.getInstance());
+                        repeater.shiftCalendar(nextOccur, now);
                     while(nextOccur.before(nextAgendaDay))
                         shiftByInterval(repeater, nextOccur);
                 }
-                while (!nextOccur.after(agendaEnd)) {
+                while (nextOccur.before(agendaEnd)) {
                     entries.add(getJustDate(nextOccur.getTime()));
                     nextAgendaDay.add(Calendar.DAY_OF_YEAR, 1);
                     do {
@@ -74,10 +74,14 @@ public class AgendaHelper {
             // a range
             OrgDateTime scheduledEnd = range.getEndTime();
             Date scheduledEndDate = getJustDate(scheduledEnd.getCalendar().getTime());
-            // move to today
             Calendar nextOccur = Calendar.getInstance();
-            nextOccur.setTime(nextAgendaDay.getTime());
-            while(!nextOccur.after(agendaEnd) && !nextOccur.getTime().after(scheduledEndDate)) {
+            nextOccur.setTime(scheduledStart.getCalendar().getTime());
+            if (scheduledStartDate.before(nextAgendaDay.getTime())) {
+                // add today and move to tomorrow
+                entries.add(agendaToday.getTime());
+                nextOccur.setTime(nextAgendaDay.getTime());
+            }
+            while(nextOccur.before(agendaEnd) && !nextOccur.getTime().after(scheduledEndDate)) {
                 entries.add(getJustDate(nextOccur.getTime()));
                 nextOccur.add(Calendar.DAY_OF_YEAR, 1);
             }
@@ -129,28 +133,39 @@ public class AgendaHelper {
     }
 
     public static void main(String[] args) {
+        Calendar agendaToday = Calendar.getInstance();
+        agendaToday.set(2017, Calendar.MAY, 5, 13, 0, 0);
+
         String range = "<2017-05-03 Wed>--<2017-05-11 Do>";
-        List<Date> rangeDates = expandOrgRange(range, 5);
-        System.out.println(OrgStringUtils.join(rangeDates, ", "));
+        List<Date> rangeDates = expandOrgRange(range, agendaToday, 2);
+        System.out.println("Result: " + OrgStringUtils.join(rangeDates, ", "));
 
         String date = "<2017-05-02 Tue ++3d>";
-        List<Date> dateDates = expandOrgRange(date, 5);
-        System.out.println(OrgStringUtils.join(dateDates, ", "));
+        List<Date> dateDates = expandOrgRange(date, agendaToday, 5);
+        System.out.println("Result: " + OrgStringUtils.join(dateDates, ", "));
 
         String single = "<2017-05-04 Do>";
-        List<Date> singleDates = expandOrgRange(single, 5);
-        System.out.println(OrgStringUtils.join(singleDates, ", "));
+        List<Date> singleDates = expandOrgRange(single, agendaToday, 5);
+        System.out.println("Result: " + OrgStringUtils.join(singleDates, ", "));
 
         String hourly = "<2017-05-03 Wed 09:00 ++12h>";
-        List<Date> hourlyDates = expandOrgRange(hourly, 5);
-        System.out.println(OrgStringUtils.join(hourlyDates, ", "));
+        List<Date> hourlyDates = expandOrgRange(hourly, agendaToday, 5);
+        System.out.println("Result: " + OrgStringUtils.join(hourlyDates, ", "));
+
+        String hourlyFromToday = "<2017-05-05 Fri 09:00 ++12h>";
+        List<Date> hourlyFromTodayDates = expandOrgRange(hourlyFromToday, agendaToday, 5);
+        System.out.println("Result: " + OrgStringUtils.join(hourlyFromTodayDates, ", "));
 
         String hourlyRestart = "<2017-05-03 Wed 09:00 .+12h>";
-        List<Date> hourlyRestartDates = expandOrgRange(hourlyRestart, 5);
-        System.out.println(OrgStringUtils.join(hourlyRestartDates, ", "));
+        List<Date> hourlyRestartDates = expandOrgRange(hourlyRestart, agendaToday, 5);
+        System.out.println("Result: " + OrgStringUtils.join(hourlyRestartDates, ", "));
 
         String weeklyCumulate = "<2017-05-06 Sat +1w>";
-        List<Date> weeklyCumulateDates = expandOrgRange(weeklyCumulate, 10);
-        System.out.println(OrgStringUtils.join(weeklyCumulateDates, ", "));
+        List<Date> weeklyCumulateDates = expandOrgRange(weeklyCumulate, agendaToday, 10);
+        System.out.println("Result: " + OrgStringUtils.join(weeklyCumulateDates, ", "));
+
+        String range2 = "<2017-05-03 Wed>--<2017-05-11 Do>";
+        List<Date> range2Dates = expandOrgRange(range2, agendaToday, 1);
+        System.out.println("Result: " + OrgStringUtils.join(range2Dates, ", "));
     }
 }
