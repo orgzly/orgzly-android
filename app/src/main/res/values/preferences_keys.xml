@@ -275,6 +275,9 @@
         <item>@string/pref_value_separate_notes_with_new_line_never</item>
     </string-array>
 
+    <!-- Separate header and content with an empty line -->
+    <string name="pref_key_separate_header_and_content_with_new_line" translatable="false">pref_key_separate_header_and_content_with_new_line</string>
+    <bool name="pref_default_separate_header_and_content_with_new_line" translatable="false">true</bool>
 
 
     <!-- These do not store any data. -->
