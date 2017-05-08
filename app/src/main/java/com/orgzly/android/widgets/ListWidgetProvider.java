@@ -14,6 +14,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Filter;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.provider.clients.FiltersClient;
@@ -27,10 +28,7 @@ import com.orgzly.android.util.LogUtils;
 public class ListWidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = ListWidgetProvider.class.getName();
-    private static final String ACTION_UPDATE = "com.orgzly.action.ACTION_UPDATE_LIST_WIDGET";
-    private static final String ACTION_CLICK = "com.orgzly.action.ACTION_CLICK_LIST_WIDGET";
-    private static final String PREFERENCES_ID = "com.orgzly.action.ACTION_UPDATE_LIST_WIDGET";
-    public static final String ACTION_SET_FILTER = "com.orgzly.action.ACTION_SET_FILTER_LIST_WIDGET";
+    private static final String PREFERENCES_ID = "list-widget";
     public static final String EXTRA_CLICK_TYPE = "click_type";
     public static final int OPEN_CLICK_TYPE = 1;
     public static final int DONE_CLICK_TYPE = 2;
@@ -63,10 +61,15 @@ public class ListWidgetProvider extends AppWidgetProvider {
         remoteViews.setRemoteAdapter(R.id.widget_list_list_view, serviceIntent);
 
         remoteViews.setEmptyView(R.id.widget_list_list_view, R.id.widget_list_empty_view);
+        if (filter.getQuery() == null) {
+            remoteViews.setTextViewText(R.id.widget_list_empty_view, context.getString(R.string.select_a_filter_long));
+        } else {
+            remoteViews.setTextViewText(R.id.widget_list_empty_view, context.getString(R.string.no_notes_found_after_search));
+        }
 
         /* Set the PendingIntent template for the clicks on the rows */
         final Intent onClickIntent = new Intent(context, ListWidgetProvider.class);
-        onClickIntent.setAction(ListWidgetProvider.ACTION_CLICK);
+        onClickIntent.setAction(AppIntent.ACTION_LIST_WIDGET_CLICK);
         onClickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         onClickIntent.setData(Uri.parse(onClickIntent.toUri(Intent.URI_INTENT_SCHEME)));
         final PendingIntent onClickPendingIntent = PendingIntent.getBroadcast(context, 0,
@@ -119,6 +122,15 @@ public class ListWidgetProvider extends AppWidgetProvider {
         clearUpdate(context);
     }
 
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        for (int id : appWidgetIds) {
+            SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_ID, Context.MODE_PRIVATE).edit();
+            editor.remove(getFilterPreferenceKey(id));
+            editor.apply();
+        }
+    }
+
     private static void scheduleUpdate(Context context) {
         /*
          schedule updates via AlarmManager, because we don't want to wake the device on every update
@@ -147,7 +159,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     private static PendingIntent getAlarmIntent(Context context) {
         Intent intent = new Intent(context, ListWidgetProvider.class);
-        intent.setAction(ACTION_UPDATE);
+        intent.setAction(AppIntent.ACTION_LIST_WIDGET_UPDATE);
         return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -162,7 +174,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
     }
 
     private static Filter getFilter(Context context, int appWidgetId) {
-        long filterId = context.getSharedPreferences(PREFERENCES_ID, Context.MODE_PRIVATE).getLong("Filter" + appWidgetId, -1);
+        long filterId = context.getSharedPreferences(PREFERENCES_ID, Context.MODE_PRIVATE).getLong(getFilterPreferenceKey(appWidgetId), -1);
         Filter filter = null;
         if (filterId != -1) {
             filter = FiltersClient.get(context, filterId);
@@ -176,8 +188,12 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     private static void setFilter(Context context, int appWidgetId, long id) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_ID, Context.MODE_PRIVATE).edit();
-        editor.putLong("Filter" + appWidgetId, id);
+        editor.putLong(getFilterPreferenceKey(appWidgetId), id);
         editor.apply();
+    }
+
+    private static String getFilterPreferenceKey(int appWidgetId) {
+        return "widget-filter-" + appWidgetId;
     }
 
     private void setNoteDone(Context context, Intent intent) {
@@ -212,11 +228,11 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (ACTION_UPDATE.equals(intent.getAction())) {
+        if (AppIntent.ACTION_LIST_WIDGET_UPDATE.equals(intent.getAction())) {
             updateListContents(context);
-        } else if (ACTION_SET_FILTER.equals(intent.getAction())) {
+        } else if (AppIntent.ACTION_LIST_WIDGET_SET_FILTER.equals(intent.getAction())) {
             setFilterFromIntent(context, intent);
-        } else if (ACTION_CLICK.equals(intent.getAction())) {
+        } else if (AppIntent.ACTION_LIST_WIDGET_CLICK.equals(intent.getAction())) {
             switch (intent.getIntExtra(EXTRA_CLICK_TYPE, -1)) {
                 case OPEN_CLICK_TYPE:
                     openNote(context, intent);

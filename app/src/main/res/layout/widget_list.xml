@@ -80,7 +80,6 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:visibility="gone"
-            android:text="@string/no_notes_found_after_search"
             android:textSize="20sp" />
     </LinearLayout>
 </LinearLayout>

@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.ui.fragments.FiltersFragment;
 import com.orgzly.android.util.LogUtils;
@@ -68,7 +69,7 @@ public class FilterSelectDialogActivity extends AppCompatActivity implements Loa
 
         /* notify Widget */
         Intent intent = new Intent(this, ListWidgetProvider.class);
-        intent.setAction(ListWidgetProvider.ACTION_SET_FILTER);
+        intent.setAction(AppIntent.ACTION_LIST_WIDGET_SET_FILTER);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID));
         intent.putExtra(ListWidgetProvider.EXTRA_FILTER_ID, id);
         sendBroadcast(intent);

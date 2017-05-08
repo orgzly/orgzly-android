@@ -33,7 +33,8 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     public ListWidgetViewsFactory(Context mContext, String queryString) {
         this.mContext = mContext;
-        this.query = new SearchQuery(queryString != null ? queryString : "");
+        // this should be a query string, which doesn't match anything
+        this.query = new SearchQuery(queryString != null ? queryString : ".b.a b.a");
 
         this.userTimeFormatter = new UserTimeFormatter(mContext);
         this.titleGenerator = new TitleGenerator(mContext, false, new TitleGenerator.TitleAttributes(

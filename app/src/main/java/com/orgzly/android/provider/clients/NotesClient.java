@@ -335,6 +335,8 @@ public class NotesClient {
     public static void deleteFromBook(Context context, long bookId) {
         int deleted = context.getContentResolver().delete(ProviderContract.Notes.ContentUri.notes(), ProviderContract.Notes.UpdateParam.BOOK_ID + "=" + bookId, null);
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Deleted all (" + deleted + ") notes from book " + bookId);
+
+        ListWidgetProvider.updateListContents(context);
     }
 
     public static int delete(Context context, long[] noteIds) {
@@ -358,6 +360,8 @@ public class NotesClient {
         }
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Deleted " + deleted + " notes");
+
+        ListWidgetProvider.updateListContents(context);
 
         return deleted;
     }
@@ -612,7 +616,11 @@ public class NotesClient {
         values.put(ProviderContract.Delete.Param.BOOK_ID, bookId);
         values.put(ProviderContract.Delete.Param.IDS, TextUtils.join(",", noteIds));
 
-        return context.getContentResolver().update(ProviderContract.Delete.ContentUri.delete(), values, null, null);
+        int updateResult = context.getContentResolver().update(ProviderContract.Delete.ContentUri.delete(), values, null, null);
+
+        ListWidgetProvider.updateListContents(context);
+
+        return updateResult;
     }
 
 
@@ -703,6 +711,8 @@ public class NotesClient {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+
+        ListWidgetProvider.updateListContents(context);
     }
 
     /**
