@@ -2,7 +2,6 @@ package com.orgzly.android.prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import com.orgzly.R;
 import com.orgzly.org.OrgStatesWorkflow;
 
@@ -240,6 +239,12 @@ public class AppPreferences {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_separate_notes_with_new_line),
                 context.getResources().getString(R.string.pref_default_separate_notes_with_new_line));
+    }
+
+    public static boolean separateHeaderAndContentWithNewLine(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_separate_header_and_content_with_new_line),
+                context.getResources().getBoolean(R.bool.pref_default_separate_header_and_content_with_new_line));
     }
 
     /*

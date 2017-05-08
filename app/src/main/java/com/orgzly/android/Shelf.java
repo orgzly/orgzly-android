@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.text.TextUtils;
-
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.prefs.AppPreferences;
@@ -223,6 +222,8 @@ public class Shelf {
             } else if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_never).equals(prefValue)) {
                 parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.NEVER;
             }
+
+            parserSettings.separateHeaderAndContentWithNewLine = AppPreferences.separateHeaderAndContentWithNewLine(mContext);
 
             final OrgParserWriter parserWriter = new OrgParserWriter(parserSettings);
 

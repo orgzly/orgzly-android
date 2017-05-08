@@ -278,6 +278,8 @@
 
     <string name="org_file_format">Org file format</string>
     <string name="separate_notes_with_new_line">Separate notes with an empty line</string>
+    <string name="separate_header_and_content_with_new_line">Separate header and content</string>
+    <string name="separate_header_and_content_with_new_line_summary">Separate header and content with an empty line</string>
     <string name="add_property">Add property</string>
 
     <string name="priority_a_highest">A (highest priority)</string>

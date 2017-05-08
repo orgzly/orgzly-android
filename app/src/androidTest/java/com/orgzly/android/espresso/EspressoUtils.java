@@ -12,30 +12,18 @@ import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Spinner;
-
 import com.orgzly.R;
-
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-import static android.support.test.espresso.Espresso.onData;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static android.support.test.espresso.Espresso.*;
 import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.pressKey;
-import static android.support.test.espresso.action.ViewActions.replaceText;
+import static android.support.test.espresso.action.ViewActions.*;
 import static android.support.test.espresso.matcher.RootMatchers.isDialog;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withHint;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 
 /*
  * Few espresso-related notes:
@@ -55,10 +43,10 @@ class EspressoUtils {
     static final int SETTINGS_NEW_NOTE_STATE = 25;
     static final int SETTINGS_CREATED_AT = 27;
 
-    static final int SETTINGS_REPOS = 33;
+    static final int SETTINGS_REPOS = 34;
 
-    static final int IMPORT_GETTING_STARTED = 35;
-    static final int SETTINGS_CLEAR_DATABASE = 36;
+    static final int IMPORT_GETTING_STARTED = 36;
+    static final int SETTINGS_CLEAR_DATABASE = 37;
 
     /**
      */
