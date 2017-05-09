@@ -1,5 +1,7 @@
 package com.orgzly.android.util;
 
+import com.orgzly.org.OrgStringUtils;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +40,71 @@ public class AgendaHelperTest {
                 { "<2017-05-03 Wed>--<2017-05-11 Do>", 2, Arrays.asList(
                         new GregorianCalendar(2017, Calendar.MAY, 5).getTime(),
                         new GregorianCalendar(2017, Calendar.MAY, 6).getTime())
+                },
+                { "<2017-05-03 Wed>--<2017-05-11 Do>", 1, Arrays.asList(
+                        new GregorianCalendar(2017, Calendar.MAY, 5).getTime())
+                },
+                { "<2017-05-06 Sat>--<2017-05-08 Mon>", 10, Arrays.asList(
+                        new GregorianCalendar(2017, Calendar.MAY, 6).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 7).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 8).getTime())
+                },
+                { "<2017-05-02 Tue ++3d>", 5, Arrays.asList(
+                        new GregorianCalendar(2017, Calendar.MAY, 5).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 8).getTime())
+                },
+                { "<2017-05-04 Do>", 5, Arrays.asList(
+                        new GregorianCalendar(2017, Calendar.MAY, 5).getTime())
+                },
+                { "<2017-05-05 Do>", 5, Arrays.asList(
+                        new GregorianCalendar(2017, Calendar.MAY, 5).getTime())
+                },
+                { "<2017-05-06 Do>", 5, Arrays.asList(
+                        new GregorianCalendar(2017, Calendar.MAY, 6).getTime())
+                },
+                { "<2017-05-03 Wed 09:00 ++12h>", 5, Arrays.asList(
+                        new GregorianCalendar(2017, Calendar.MAY, 5).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 6).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 7).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 8).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 9).getTime())
+                },
+                { "<2017-05-05 Fri 09:00 ++12h>", 5, Arrays.asList(
+                        new GregorianCalendar(2017, Calendar.MAY, 5).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 6).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 7).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 8).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 9).getTime())
+                },
+                { "<2017-05-07 Sun 09:00 ++6h>", 5, Arrays.asList(
+                        new GregorianCalendar(2017, Calendar.MAY, 7).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 8).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 9).getTime())
+                },
+                { "<2017-05-03 Wed 09:00 .+12h>", 5, Arrays.asList(
+                        new GregorianCalendar(2017, Calendar.MAY, 5).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 6).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 7).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 8).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 9).getTime())
+                },
+                { "<2017-05-03 Wed 09:00 +12h>", 5, Arrays.asList(
+                        new GregorianCalendar(2017, Calendar.MAY, 5).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 6).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 7).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 8).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 9).getTime())
+                },
+                { "<2017-05-08 Mon 09:00 +12h>", 5, Arrays.asList(
+                        new GregorianCalendar(2017, Calendar.MAY, 8).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 9).getTime())
+                },
+                { "<2017-05-06 Sat +1w>", 5, Arrays.asList(
+                        new GregorianCalendar(2017, Calendar.MAY, 6).getTime())
+                },
+                { "<2017-05-06 Sat +1w>", 10, Arrays.asList(
+                        new GregorianCalendar(2017, Calendar.MAY, 6).getTime(),
+                        new GregorianCalendar(2017, Calendar.MAY, 13).getTime())
                 }
         });
     }
