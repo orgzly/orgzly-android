@@ -49,8 +49,9 @@ public class DatabaseMigration {
     private static final int DB_VER_7 = 136;
     private static final int DB_VER_8 = 137;
     private static final int DB_VER_9 = 138;
+    private static final int DB_VER_10 = 139;
 
-    static final int DB_VER_CURRENT = DB_VER_9;
+    static final int DB_VER_CURRENT = DB_VER_10;
 
     /**
      * Start from the old version and go through all changes. No breaks.
@@ -117,6 +118,7 @@ public class DatabaseMigration {
                 for (String sql : DbNoteAncestor.CREATE_SQL) db.execSQL(sql);
                 populateNoteAncestors(db);
 
+            case DB_VER_9:
                 migrateOrgTimestamps(db);
         }
     }
