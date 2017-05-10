@@ -139,7 +139,7 @@ public class Shelf {
     public Book loadBookFromFile(String name, BookName.Format format, File file, VersionedRook vrook, String selectedEncoding) throws IOException {
         Uri uri = BooksClient.loadFromFile(mContext, name, format, file, vrook, selectedEncoding);
 
-        ReminderService.notifyDataChanged(mContext);
+        notifyDataChanged(mContext);
 
         return BooksClient.get(mContext, ContentUris.parseId(uri));
     }
@@ -161,7 +161,7 @@ public class Shelf {
 
         BooksClient.delete(mContext, book.getId());
 
-        ReminderService.notifyDataChanged(mContext);
+        notifyDataChanged(mContext);
     }
 
     // TODO: This is used in tests, check if we are even deleting these books.
@@ -251,12 +251,12 @@ public class Shelf {
 
     public void setNotesScheduledTime(Set<Long> noteIds, OrgDateTime time) {
         NotesClient.updateScheduledTime(mContext, noteIds, time);
-        ReminderService.notifyDataChanged(mContext);
+        notifyDataChanged(mContext);
     }
 
     public void setNotesState(Set<Long> noteIds, String state) {
         NotesClient.setState(mContext, noteIds, state);
-        ReminderService.notifyDataChanged(mContext);
+        notifyDataChanged(mContext);
     }
 
     public Note getNote(long id) {
@@ -273,7 +273,7 @@ public class Shelf {
 
     public int updateNote(Note note) {
         int result = NotesClient.update(mContext, note);
-        ReminderService.notifyDataChanged(mContext);
+        notifyDataChanged(mContext);
         return result;
     }
 
@@ -283,7 +283,7 @@ public class Shelf {
 
         BooksClient.setModifiedTime(mContext, note.getPosition().getBookId(), System.currentTimeMillis());
 
-        ReminderService.notifyDataChanged(mContext);
+        notifyDataChanged(mContext);
 
         return insertedNote;
     }
@@ -327,20 +327,20 @@ public class Shelf {
 
     public int cut(long bookId, Set<Long> noteIds) {
         int result = NotesClient.cut(mContext, bookId, noteIds);
-        ReminderService.notifyDataChanged(mContext);
+        notifyDataChanged(mContext);
         return result;
     }
 
     public NotesBatch paste(long bookId, long noteId, Place place) {
         NotesBatch batch = NotesClient.paste(mContext, bookId, noteId, place);
-        ReminderService.notifyDataChanged(mContext);
+        notifyDataChanged(mContext);
         return batch;
 
     }
 
     public int delete(long bookId, Set<Long> noteIds) {
         int result = NotesClient.delete(mContext, bookId, noteIds);
-        ReminderService.notifyDataChanged(mContext);
+        notifyDataChanged(mContext);
         return result;
     }
 
@@ -353,7 +353,7 @@ public class Shelf {
         /* Clear last sync time. */
         AppPreferences.lastSuccessfulSyncTime(mContext, 0L);
 
-        ReminderService.notifyDataChanged(mContext);
+        notifyDataChanged(mContext);
     }
 
     /**
@@ -708,6 +708,10 @@ public class Shelf {
         }
     }
 
+    public static void notifyDataChanged(Context context) {
+        ReminderService.notifyDataChanged(context);
+    }
+
     public interface ReParsingNotesListener {
         void noteParsed(int current, int total, String msg);
     }
@@ -813,7 +817,7 @@ public class Shelf {
             throw new RuntimeException(e);
         }
 
-        ReminderService.notifyDataChanged(mContext);
+        notifyDataChanged(mContext);
 
         return modifiedNotesCount;
     }
