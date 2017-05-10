@@ -8,7 +8,7 @@
     android:minResizeWidth="180dp"
     android:minResizeHeight="110dp"
     android:updatePeriodMillis="0"
-    android:initialLayout="@layout/widget_list"
+    android:initialLayout="@layout/list_widget"
     android:previewImage="@drawable/list_widget_preview"
     android:resizeMode="horizontal|vertical">
 </appwidget-provider>

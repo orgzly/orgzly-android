@@ -24,8 +24,8 @@ import static org.hamcrest.Matchers.notNullValue;
  */
 public class ListWidgetTest {
 
-    private static final String HEADER_FILTER = "com.orgzly:id/widget_list_header_filter";
-    private static final String HEADER_ADD = "com.orgzly:id/widget_list_header_add";
+    private static final String HEADER_FILTER = "com.orgzly:id/list_widget_header_filter";
+    private static final String HEADER_ADD = "com.orgzly:id/list_widget_header_add";
     private static final String ITEM_DONE = "com.orgzly:id/item_list_widget_done";
     private static final String ITEM_TITLE = "com.orgzly:id/item_list_widget_title";
     private UiDevice device;

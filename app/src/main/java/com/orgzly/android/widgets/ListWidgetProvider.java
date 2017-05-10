@@ -57,14 +57,14 @@ public class ListWidgetProvider extends AppWidgetProvider {
         serviceIntent.putExtra(ListWidgetService.EXTRA_QUERY_STRING, filter.getQuery());
         serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_list);
-        remoteViews.setRemoteAdapter(R.id.widget_list_list_view, serviceIntent);
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.list_widget);
+        remoteViews.setRemoteAdapter(R.id.list_widget_list_view, serviceIntent);
 
-        remoteViews.setEmptyView(R.id.widget_list_list_view, R.id.widget_list_empty_view);
+        remoteViews.setEmptyView(R.id.list_widget_list_view, R.id.list_widget_empty_view);
         if (filter.getQuery() == null) {
-            remoteViews.setTextViewText(R.id.widget_list_empty_view, context.getString(R.string.select_a_filter_long));
+            remoteViews.setTextViewText(R.id.list_widget_empty_view, context.getString(R.string.select_a_filter_long));
         } else {
-            remoteViews.setTextViewText(R.id.widget_list_empty_view, context.getString(R.string.no_notes_found_after_search));
+            remoteViews.setTextViewText(R.id.list_widget_empty_view, context.getString(R.string.no_notes_found_after_search));
         }
 
         /* Set the PendingIntent template for the clicks on the rows */
@@ -74,17 +74,17 @@ public class ListWidgetProvider extends AppWidgetProvider {
         onClickIntent.setData(Uri.parse(onClickIntent.toUri(Intent.URI_INTENT_SCHEME)));
         final PendingIntent onClickPendingIntent = PendingIntent.getBroadcast(context, 0,
                 onClickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        remoteViews.setPendingIntentTemplate(R.id.widget_list_list_view, onClickPendingIntent);
+        remoteViews.setPendingIntentTemplate(R.id.list_widget_list_view, onClickPendingIntent);
 
-        remoteViews.setOnClickPendingIntent(R.id.widget_list_header_add, ShareActivity.createNewNoteIntent(context));
+        remoteViews.setOnClickPendingIntent(R.id.list_widget_header_add, ShareActivity.createNewNoteIntent(context));
 
         Intent filterSelectIntent = new Intent(context, FilterSelectDialogActivity.class);
         filterSelectIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         filterSelectIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
-        remoteViews.setOnClickPendingIntent(R.id.widget_list_header_filter, PendingIntent.getActivity(context, 0, filterSelectIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+        remoteViews.setOnClickPendingIntent(R.id.list_widget_header_filter, PendingIntent.getActivity(context, 0, filterSelectIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
         remoteViews.setTextViewText(
-                R.id.widget_list_header_filter,
+                R.id.list_widget_header_filter,
                 filter.getName());
 
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
@@ -109,7 +109,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
         ComponentName thisAppWidgetComponentName = new ComponentName(context.getPackageName(), ListWidgetProvider.class.getName());
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidgetComponentName);
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list_list_view);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.list_widget_list_view);
     }
 
     @Override

@@ -24,7 +24,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/widget_list_header_filter"
+                android:id="@+id/list_widget_header_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -41,7 +41,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/widget_list_header_add"
+            android:id="@+id/list_widget_header_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
@@ -57,12 +57,12 @@
         android:background="@color/white">
 
         <ListView
-            android:id="@+id/widget_list_list_view"
+            android:id="@+id/list_widget_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <TextView
-            android:id="@+id/widget_list_empty_view"
+            android:id="@+id/list_widget_empty_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp"
