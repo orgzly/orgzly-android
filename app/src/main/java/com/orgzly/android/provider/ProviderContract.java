@@ -435,4 +435,36 @@ public class ProviderContract {
             }
         }
     }
+
+    public interface Times {
+        class Param {
+            public static final String NOTE_ID = "note_id";
+            public static final String NOTE_STATE = "note_state";
+            public static final String NOTE_TITLE = "note_title";
+            public static final String ORG_TIMESTAMP_STRING = "org_timestamp_string";
+        }
+
+        class ColumnIndex {
+            public static final int NOTE_ID = 0;
+            public static final int NOTE_STATE = 1;
+            public static final int ORG_TIMESTAMP_STRING = 2;
+            public static final int NOTE_TITLE = 3;
+        }
+
+
+        interface MatcherUri {
+            String TIMES = "times";
+        }
+
+        class ContentUri {
+            public static final String PARAM_AFTER_TIME = "after_time";
+
+            public static Uri times(long time) {
+                return Uri.withAppendedPath(AUTHORITY_URI, "times")
+                        .buildUpon()
+                        .appendQueryParameter(PARAM_AFTER_TIME, String.valueOf(time))
+                        .build();
+            }
+        }
+    }
 }

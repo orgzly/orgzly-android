@@ -21,6 +21,6 @@
 
     <color name="item_head_selected_bg">#3238caff</color>
 
-    <color name="notification">#000000</color>
+    <color name="notification">#000</color>
 </resources>
 

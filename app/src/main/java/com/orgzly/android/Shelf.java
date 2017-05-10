@@ -20,6 +20,7 @@ import com.orgzly.android.provider.clients.DbClient;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.provider.clients.ReposClient;
+import com.orgzly.android.reminders.ReminderService;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.repos.Rook;
@@ -138,6 +139,8 @@ public class Shelf {
     public Book loadBookFromFile(String name, BookName.Format format, File file, VersionedRook vrook, String selectedEncoding) throws IOException {
         Uri uri = BooksClient.loadFromFile(mContext, name, format, file, vrook, selectedEncoding);
 
+        ReminderService.notifyDataChanged(mContext);
+
         return BooksClient.get(mContext, ContentUris.parseId(uri));
     }
 
@@ -157,6 +160,8 @@ public class Shelf {
         NotesClient.deleteFromBook(mContext, book.getId());
 
         BooksClient.delete(mContext, book.getId());
+
+        ReminderService.notifyDataChanged(mContext);
     }
 
     // TODO: This is used in tests, check if we are even deleting these books.
@@ -246,10 +251,12 @@ public class Shelf {
 
     public void setNotesScheduledTime(Set<Long> noteIds, OrgDateTime time) {
         NotesClient.updateScheduledTime(mContext, noteIds, time);
+        ReminderService.notifyDataChanged(mContext);
     }
 
     public void setNotesState(Set<Long> noteIds, String state) {
         NotesClient.setState(mContext, noteIds, state);
+        ReminderService.notifyDataChanged(mContext);
     }
 
     public Note getNote(long id) {
@@ -265,7 +272,9 @@ public class Shelf {
     }
 
     public int updateNote(Note note) {
-        return NotesClient.update(mContext, note);
+        int result = NotesClient.update(mContext, note);
+        ReminderService.notifyDataChanged(mContext);
+        return result;
     }
 
     public Note createNote(Note note, NotePlace target) {
@@ -273,6 +282,8 @@ public class Shelf {
         Note insertedNote = NotesClient.create(mContext, note, target);
 
         BooksClient.setModifiedTime(mContext, note.getPosition().getBookId(), System.currentTimeMillis());
+
+        ReminderService.notifyDataChanged(mContext);
 
         return insertedNote;
     }
@@ -311,19 +322,26 @@ public class Shelf {
         Set<Long> noteIds = new HashSet<>();
         noteIds.add(noteId);
 
-        return NotesClient.cut(mContext, bookId, noteIds);
+        return cut(bookId, noteIds);
     }
 
     public int cut(long bookId, Set<Long> noteIds) {
-        return NotesClient.cut(mContext, bookId, noteIds);
+        int result = NotesClient.cut(mContext, bookId, noteIds);
+        ReminderService.notifyDataChanged(mContext);
+        return result;
     }
 
     public NotesBatch paste(long bookId, long noteId, Place place) {
-        return NotesClient.paste(mContext, bookId, noteId, place);
+        NotesBatch batch = NotesClient.paste(mContext, bookId, noteId, place);
+        ReminderService.notifyDataChanged(mContext);
+        return batch;
+
     }
 
     public int delete(long bookId, Set<Long> noteIds) {
-        return NotesClient.delete(mContext, bookId, noteIds);
+        int result = NotesClient.delete(mContext, bookId, noteIds);
+        ReminderService.notifyDataChanged(mContext);
+        return result;
     }
 
     /**
@@ -334,6 +352,8 @@ public class Shelf {
 
         /* Clear last sync time. */
         AppPreferences.lastSuccessfulSyncTime(mContext, 0L);
+
+        ReminderService.notifyDataChanged(mContext);
     }
 
     /**
@@ -469,7 +489,6 @@ public class Shelf {
         }
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Syncing " + namesake + ": " + bookAction);
-
         return bookAction;
     }
 
@@ -626,7 +645,6 @@ public class Shelf {
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Setting state for " + note.getHead().getTitle() + " to " + nextState +
                                                    ": " + currentIndex + " -> " + nextIndex + " (" + allStates.size() + " total states)");
-
 
         setNotesState(noteIds, nextState);
     }
@@ -794,6 +812,8 @@ public class Shelf {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+
+        ReminderService.notifyDataChanged(mContext);
 
         return modifiedNotesCount;
     }

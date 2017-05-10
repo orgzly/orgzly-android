@@ -216,7 +216,7 @@ public class NotesClient {
         toContentValues(values, note.getHead());
 
         Uri noteUri = ContentUris.withAppendedId(ProviderContract.Notes.ContentUri.notes(), note.getId());
-        Uri uri = noteUri.buildUpon().appendQueryParameter("book-id", String.valueOf(note.getPosition().getBookId())).build();
+        Uri uri = noteUri.buildUpon().appendQueryParameter("bookId", String.valueOf(note.getPosition().getBookId())).build();
 
         ArrayList<ContentProviderOperation> ops = new ArrayList<>();
 

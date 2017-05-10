@@ -191,6 +191,9 @@
     <string name="pref_key_new_note_notification" translatable="false">pref_key_new_note_notification</string>
     <bool name="pref_default_value_new_note_notification" translatable="false">false</bool>
 
+    <string name="pref_key_use_reminders_for_scheduled_times" translatable="false">pref_key_use_reminders_for_scheduled_times</string>
+    <bool name="pref_default_value_use_reminders_for_scheduled_times" translatable="false">false</bool>
+
     <string name="pref_key_states" translatable="false">pref_key_states</string>
     <string name="pref_default_states" translatable="false">TODO NEXT | DONE</string>
 
@@ -293,4 +296,6 @@
     <string name="pref_key_is_getting_started_notebook_loaded" translatable="false">pref_key_is_getting_started_notebook_loaded</string>
     <string name="pref_key_last_used_version_code" translatable="false">pref_key_last_used_version_code</string>
     <string name="pref_key_last_successful_sync_time" translatable="false">pref_key_last_successful_sync_time</string>
+    <string name="pref_key_reminder_service_job_id" translatable="false">pref_key_reminder_service_job_id</string>
+    <string name="pref_key_reminder_service_last_run" translatable="false">pref_key_reminder_service_last_run</string>
 </resources>

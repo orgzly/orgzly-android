@@ -189,6 +189,12 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_value_new_note_notification));
     }
 
+    public static boolean remindersForScheduledTimes(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_use_reminders_for_scheduled_times),
+                context.getResources().getBoolean(R.bool.pref_default_value_use_reminders_for_scheduled_times));
+    }
+
     public static String colorScheme(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_color_scheme),
@@ -430,6 +436,25 @@ public class AppPreferences {
 
     public static long lastSuccessfulSyncTime(Context context) {
         String key = context.getResources().getString(R.string.pref_key_last_successful_sync_time);
+        return getStateSharedPreferences(context).getLong(key, 0L);
+    }
+
+    /*
+     * ReminderService
+     */
+
+    public static void reminderServiceJobId(Context context, int value) {
+        String key = context.getResources().getString(R.string.pref_key_reminder_service_job_id);
+        getStateSharedPreferences(context).edit().putInt(key, value).apply();
+    }
+
+    public static void reminderServiceLastRun(Context context, long value) {
+        String key = context.getResources().getString(R.string.pref_key_reminder_service_last_run);
+        getStateSharedPreferences(context).edit().putLong(key, value).apply();
+    }
+
+    public static long reminderServiceLastRun(Context context) {
+        String key = context.getResources().getString(R.string.pref_key_reminder_service_last_run);
         return getStateSharedPreferences(context).getLong(key, 0L);
     }
 }

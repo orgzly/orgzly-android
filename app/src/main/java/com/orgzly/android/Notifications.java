@@ -14,7 +14,8 @@ import com.orgzly.android.util.LogUtils;
 public class Notifications {
     public static final String TAG = Notifications.class.getName();
 
-    private final static int NEW_NOTE_NOTIFICATION_ID = 1;
+    public final static int ONGOING_NEW_NOTE = 1;
+    public final static int REMINDER = 2;
 
     public static void createNewNoteNotification(Context context) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, context);
@@ -36,13 +37,14 @@ public class Notifications {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(NEW_NOTE_NOTIFICATION_ID, notification);
+        notificationManager.notify(ONGOING_NEW_NOTE, notification);
     }
 
     public static void cancelNewNoteNotification(Context context) {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.cancel(NEW_NOTE_NOTIFICATION_ID);
+        notificationManager.cancel(ONGOING_NEW_NOTE);
     }
+
 }

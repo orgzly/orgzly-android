@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -36,6 +38,7 @@ import android.widget.ViewFlipper;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
+import com.orgzly.android.Broadcasts;
 import com.orgzly.android.Note;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
@@ -1060,20 +1063,16 @@ public class NoteFragment extends Fragment
             return;
         }
 
-        if (mIsNew) {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Saving new note " + mNote);
-
-            if (updateNoteFromViewsAndVerify()) {
+        if (updateNoteFromViewsAndVerify()) {
+            if (mIsNew) {
                 mListener.onNoteCreateRequest(mNote, place != Place.UNDEFINED ?
                         new NotePlace(mNote.getPosition().getBookId(), mNoteId, place) : null);
-            }
-
-        } else {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Updating note " + mNote);
-
-            if (updateNoteFromViewsAndVerify()) {
+            } else {
                 mListener.onNoteUpdateRequest(mNote);
             }
+
+            LocalBroadcastManager.getInstance(getContext())
+                    .sendBroadcast(new Intent(Broadcasts.ACTION_NOTE_CHANGED));
         }
     }
 

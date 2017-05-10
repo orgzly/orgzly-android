@@ -10,11 +10,13 @@ import com.orgzly.android.NotePosition;
 import com.orgzly.android.provider.models.DbNote;
 import com.orgzly.android.provider.models.DbNoteAncestor;
 import com.orgzly.android.provider.models.DbNoteProperty;
+import com.orgzly.android.provider.models.DbOrgTimestamp;
 import com.orgzly.android.provider.models.DbProperty;
 import com.orgzly.android.provider.models.DbPropertyName;
 import com.orgzly.android.provider.models.DbPropertyValue;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
+import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.parser.OrgNestedSetParser;
 
 import java.util.ArrayList;
@@ -114,7 +116,36 @@ public class DatabaseMigration {
             case DB_VER_8:
                 for (String sql : DbNoteAncestor.CREATE_SQL) db.execSQL(sql);
                 populateNoteAncestors(db);
+
+                migrateOrgTimestamps(db);
         }
+    }
+
+    private static void migrateOrgTimestamps(SQLiteDatabase db) {
+        db.execSQL("ALTER TABLE org_timestamps RENAME TO org_timestamps_prev");
+
+        for (String sql : DbOrgTimestamp.CREATE_SQL) db.execSQL(sql);
+
+        Cursor cursor = db.query(
+                "org_timestamps_prev", new String[] { "_id", "string" }, null, null, null, null, null);
+        try {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                long id = cursor.getLong(0);
+                String string = cursor.getString(1);
+
+                OrgDateTime orgDateTime = OrgDateTime.getInstance(string);
+
+                ContentValues values = new ContentValues();
+                values.put("_id", id);
+                DbOrgTimestamp.toContentValues(values, orgDateTime);
+
+                db.insert("org_timestamps", null, values);
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.execSQL("DROP TABLE org_timestamps_prev");
     }
 
     private static void populateNoteAncestors(SQLiteDatabase db) {
