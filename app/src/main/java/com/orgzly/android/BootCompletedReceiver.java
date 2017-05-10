@@ -18,8 +18,5 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         if (AppPreferences.newNoteNotification(context)) {
             Notifications.createNewNoteNotification(context);
         }
-
-        /* restart update timer for widgets */
-        ListWidgetProvider.scheduleUpdateIfNeeded(context);
     }
 }

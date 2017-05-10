@@ -3,9 +3,12 @@ package com.orgzly.android.provider.clients;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.content.CursorLoader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.util.LongSparseArray;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Filter;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.widgets.ListWidgetProvider;
@@ -99,7 +102,8 @@ public class FiltersClient {
 
         context.getContentResolver().update(ContentUris.withAppendedId(ProviderContract.Filters.ContentUri.filters(), id), values, null, null);
 
-        ListWidgetProvider.updateAppWidgetLayouts(context);
+        LocalBroadcastManager.getInstance(context)
+                .sendBroadcast(new Intent(AppIntent.ACTION_LIST_WIDGET_UPDATE_LAYOUT));
     }
 
     public static void create(Context context, Filter filter) {
