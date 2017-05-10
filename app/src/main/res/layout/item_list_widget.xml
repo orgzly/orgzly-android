@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/item_list_widget_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_weight="1"
+        android:clickable="true">
+
+        <TextView
+            android:id="@+id/item_list_widget_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:text="@string/book_name_sample"
+            android:textSize="16sp"
+            android:maxLines="1" />
+
+        <LinearLayout
+            android:id="@+id/item_list_widget_scheduled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
+            android:gravity="center_vertical"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_height="14dp"
+                android:layout_width="14dp"
+                android:alpha="0.55"
+                android:src="@drawable/ic_today_black_18dp"
+                android:contentDescription="@string/schedule" />
+
+            <TextView
+                android:id="@+id/item_list_widget_scheduled_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/note_scheduled_sample"
+                android:textColor="#696969"
+                android:textSize="14sp"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_list_widget_deadline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
+            android:gravity="center_vertical"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_height="14dp"
+                android:layout_width="14dp"
+                android:alpha="0.55"
+                android:src="@drawable/ic_alarm_black_18dp"
+                android:contentDescription="@string/deadline" />
+
+            <TextView
+                android:id="@+id/item_list_widget_deadline_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/note_deadline_sample"
+                android:textColor="#696969"
+                android:textSize="14sp"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_list_widget_closed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
+            android:gravity="center_vertical"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_height="14dp"
+                android:layout_width="14dp"
+                android:alpha="0.55"
+                android:src="@drawable/ic_done_black_18dp"
+                android:contentDescription="@string/closed" />
+
+            <TextView
+                android:id="@+id/item_list_widget_closed_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/note_closed_sample"
+                android:textColor="#696969"
+                android:textSize="14sp"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/item_list_widget_done"
+        android:layout_weight="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:alpha="0.55"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_done_black_24dp"
+        android:clickable="true"/>
+</LinearLayout>

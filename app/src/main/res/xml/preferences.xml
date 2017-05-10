@@ -187,6 +187,12 @@
             android:entries="@array/separate_notes_with_new_line_names"
             android:entryValues="@array/separate_notes_with_new_line_values"
             android:defaultValue="@string/pref_default_separate_notes_with_new_line"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_key_separate_header_and_content_with_new_line"
+            android:title="@string/separate_header_and_content_with_new_line"
+            android:summary="@string/separate_header_and_content_with_new_line_summary"
+            android:defaultValue="@bool/pref_default_separate_header_and_content_with_new_line"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/sync">

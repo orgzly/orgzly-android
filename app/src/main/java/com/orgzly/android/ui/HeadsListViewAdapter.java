@@ -6,83 +6,33 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import com.orgzly.R;
 import com.orgzly.android.Note;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.NotesClient;
+import com.orgzly.android.ui.util.TitleGenerator;
 import com.orgzly.android.ui.views.GesturedListViewItemMenus;
 import com.orgzly.android.util.NoteContentParser;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.OrgHead;
 
-import java.util.List;
-
 public class HeadsListViewAdapter extends SimpleCursorAdapter {
     private static final String TAG = HeadsListViewAdapter.class.getName();
-
-    /* Separator for heading parts (state, priority, title, tags). */
-    private final static String TITLE_SEPARATOR = "  ";
-
-    /*
-     * Separator between note's tags and inherited tags.
-     * Not used if note doesn't have its own tags.
-     */
-    private final static String INHERITED_TAGS_SEPARATOR = " • ";
-
-    /* Separator for individual tags. */
-    private final static String TAGS_SEPARATOR = " ";
 
     private final Selection selection;
     private final GesturedListViewItemMenus quickMenu;
 
     /** Can be in book or search results. */
     private final boolean inBook;
+    private TitleGenerator titleGenerator;
 
     private final UserTimeFormatter userTimeFormatter;
-    private final TypedArrayAttributeSpans attributes;
-
-
-    private class TypedArrayAttributeSpans {
-        ForegroundColorSpan colorTodo;
-        ForegroundColorSpan colorDone;
-        ForegroundColorSpan colorUnknown;
-        AbsoluteSizeSpan postTitleTextSize;
-        ForegroundColorSpan postTitleTextColor;
-
-        public TypedArrayAttributeSpans() {
-            TypedArray typedArray = mContext.obtainStyledAttributes(new int[] {
-                    R.attr.item_head_state_todo_color,
-                    R.attr.item_head_state_done_color,
-                    R.attr.item_head_state_unknown_color,
-                    R.attr.item_head_post_title_text_size,
-                    R.attr.item_head_post_title_text_color
-            });
-
-            colorTodo = new ForegroundColorSpan(typedArray.getColor(0, 0));
-            colorDone = new ForegroundColorSpan(typedArray.getColor(1, 0));
-            colorUnknown = new ForegroundColorSpan(typedArray.getColor(2, 0));
-
-            postTitleTextSize = new AbsoluteSizeSpan(typedArray.getDimensionPixelSize(3, 0));
-            postTitleTextColor = new ForegroundColorSpan(typedArray.getColor(4, 0));
-
-            typedArray.recycle();
-        }
-    }
-
 
     public HeadsListViewAdapter(Context context, Selection selection, GesturedListViewItemMenus toolbars, boolean inBook) {
         super(context, R.layout.item_head, null, new String[0], new int[0], 0);
@@ -92,8 +42,28 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         this.inBook = inBook;
 
         this.userTimeFormatter = new UserTimeFormatter(context);
+        this.titleGenerator = new TitleGenerator(context, inBook, getTitleAttributes());
+    }
 
-        this.attributes = new TypedArrayAttributeSpans();
+    private TitleGenerator.TitleAttributes getTitleAttributes() {
+        TypedArray typedArray = mContext.obtainStyledAttributes(new int[] {
+                R.attr.item_head_state_todo_color,
+                R.attr.item_head_state_done_color,
+                R.attr.item_head_state_unknown_color,
+                R.attr.item_head_post_title_text_size,
+                R.attr.item_head_post_title_text_color
+        });
+
+        TitleGenerator.TitleAttributes attributes = new TitleGenerator.TitleAttributes(
+                typedArray.getColor(0, 0),
+                typedArray.getColor(1, 0),
+                typedArray.getColor(2, 0),
+                typedArray.getDimensionPixelSize(3, 0),
+                typedArray.getColor(4, 0));
+
+        typedArray.recycle();
+
+        return attributes;
     }
 
     @Override
@@ -193,7 +163,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         }
 
         /* Title. */
-        holder.title.setText(generateTitle(note, head));
+        holder.title.setText(titleGenerator.generateTitle(note, head));
 
         /* Content. */
         if (head.hasContent() && AppPreferences.isNotesContentDisplayedInList(context) && (!note.getPosition().isFolded() || !AppPreferences.isNotesContentFoldable(context)) && (inBook || AppPreferences.isNotesContentDisplayedInSearch(context))) {
@@ -218,6 +188,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
             holder.closed.setVisibility(View.GONE);
         }
 
+        /* see also ListWidgetViewsFactory.setContent */
         /* Deadline time. */
         if (head.hasDeadline() && AppPreferences.displayPlanning(context)) {
             holder.deadlineText.setText(userTimeFormatter.formatAll(head.getDeadline()));
@@ -358,106 +329,6 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                 container.getChildAt(i - 1).setVisibility(View.VISIBLE);
             }
         }
-    }
-
-    private CharSequence generateTitle(Note note, OrgHead head) {
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-
-        /* State. */
-        if (head.getState() != null) {
-            builder.append(generateState(head));
-        }
-
-        /* Priority. */
-        if (head.getPriority() != null) {
-            if (builder.length() > 0) {
-                builder.append(TITLE_SEPARATOR);
-            }
-            builder.append(generatePriority(head));
-        }
-
-        /* Bold everything up until now. */
-        if (builder.length() > 0) {
-            builder.setSpan(new StyleSpan(Typeface.BOLD), 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-
-        /* Space before title, unless there's nothing added. */
-        if (builder.length() > 0) {
-            builder.append(TITLE_SEPARATOR);
-        }
-
-        /* Title. */
-        builder.append(NoteContentParser.fromOrg(head.getTitle()));
-
-        /* Append note ID. */
-        // builder.append(TITLE_SEPARATOR).append("#").append(String.valueOf(note.getId()));
-
-        int mark = builder.length();
-
-        boolean hasPostTitleText = false;
-
-        /* Tags. */
-        if (head.hasTags()) {
-            builder.append(TITLE_SEPARATOR).append(generateTags(head.getTags()));
-            hasPostTitleText = true;
-        }
-
-        /* Inherited tags in search results. */
-        if (!inBook && note.hasInheritedTags() && AppPreferences.inheritedTagsInSearchResults(mContext)) {
-            if (head.hasTags()) {
-                builder.append(INHERITED_TAGS_SEPARATOR);
-            } else {
-                builder.append(TITLE_SEPARATOR);
-            }
-            builder.append(generateTags(note.getInheritedTags()));
-            hasPostTitleText = true;
-        }
-
-        /* Content length. */
-        if (head.hasContent() && (!AppPreferences.isNotesContentDisplayedInList(mContext) || (note.getPosition().isFolded() && AppPreferences.isNotesContentFoldable(mContext)))) {
-            builder.append(TITLE_SEPARATOR).append(String.valueOf(note.getContentLines()));
-            hasPostTitleText = true;
-        }
-
-        /* Debug folding. */
-        if (false) {
-            builder.append("  ").append(note.toString());
-            hasPostTitleText = true;
-        }
-
-        /* Change font style of text after title. */
-        if (hasPostTitleText) {
-            builder.setSpan(attributes.postTitleTextSize, mark, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            builder.setSpan(attributes.postTitleTextColor, mark, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-
-        return builder;
-    }
-
-    private CharSequence generateTags(List<String> tags) {
-        return new SpannableString(TextUtils.join(TAGS_SEPARATOR, tags));
-    }
-
-    private CharSequence generateState(OrgHead head) {
-        SpannableString str = new SpannableString(head.getState());
-
-        ForegroundColorSpan color;
-
-        if (AppPreferences.todoKeywordsSet(mContext).contains(head.getState())) {
-            color = attributes.colorTodo;
-        } else if (AppPreferences.doneKeywordsSet(mContext).contains(head.getState())) {
-            color = attributes.colorDone;
-        } else {
-            color = attributes.colorUnknown;
-        }
-
-        str.setSpan(color, 0, str.length(), 0);
-
-        return str;
-    }
-
-    private CharSequence generatePriority(OrgHead head) {
-        return "#" + head.getPriority();
     }
 }
 

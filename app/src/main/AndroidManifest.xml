@@ -94,6 +94,26 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.orgzly.android.widgets.FilterSelectDialogActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"
+            android:excludeFromRecents="true"/>
+
+        <receiver android:name="com.orgzly.android.widgets.ListWidgetProvider"
+            android:label="@string/list_widget_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/list_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".android.widgets.ListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="false" />
+
         <!-- Not exported (not made available to other applications). -->
         <provider android:name=".android.provider.Provider"
             android:exported="false"

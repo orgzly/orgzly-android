@@ -8,4 +8,8 @@ public class AppIntent {
 
     public static final String ACTION_SYNC_START = "com.orgzly.intent.action.SYNC_START";
     public static final String ACTION_SYNC_STOP = "com.orgzly.intent.action.SYNC_STOP";
+
+    public static final String ACTION_LIST_WIDGET_UPDATE = "com.orgzly.intent.action.ACTION_UPDATE_LIST_WIDGET";
+    public static final String ACTION_LIST_WIDGET_CLICK = "com.orgzly.intent.action.ACTION_CLICK_LIST_WIDGET";
+    public static final String ACTION_LIST_WIDGET_SET_FILTER = "com.orgzly.intent.action.ACTION_SET_FILTER_LIST_WIDGET";
 }

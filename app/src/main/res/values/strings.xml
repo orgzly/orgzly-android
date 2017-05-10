@@ -204,7 +204,7 @@
 
     <string name="no_filters">You have no saved searches</string>
 
-    <string name="book_shortcut_label">Notebook</string>
+    <string name="book_shortcut_label">Orgzly Notebook</string>
     <string name="pick_a_notebook">Pick a notebook</string>
 
     <!-- TODO: Use for note moving cab menu (xml) -->
@@ -278,6 +278,8 @@
 
     <string name="org_file_format">Org file format</string>
     <string name="separate_notes_with_new_line">Separate notes with an empty line</string>
+    <string name="separate_header_and_content_with_new_line">Separate header and content</string>
+    <string name="separate_header_and_content_with_new_line_summary">Separate header and content with an empty line</string>
     <string name="add_property">Add property</string>
 
     <string name="priority_a_highest">A (highest priority)</string>
@@ -373,6 +375,9 @@
     <string name="default_notebook">Default notebook</string>
     <string name="default_notebook_desc">Notebook used when sharing to Orgzly or creating a new note from the ongoing notification</string>
 
+    <string name="list_widget_name">Orgzly Search</string>
+    <string name="select_a_filter">Select a filter</string>
+    <string name="select_a_filter_long">Select a filter by clicking on the title bar</string>
 
     <!-- These are just used in tools:text for layout preview and don't have to be translated,
          unless layout look depends on the translation. -->

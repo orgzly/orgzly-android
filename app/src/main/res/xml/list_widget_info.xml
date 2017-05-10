@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Sizes from https://developer.android.com/guide/practices/ui_guidelines/widget_design.html -->
+<appwidget-provider
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="250dp"
+    android:minHeight="180dp"
+    android:minResizeWidth="180dp"
+    android:minResizeHeight="110dp"
+    android:updatePeriodMillis="0"
+    android:initialLayout="@layout/widget_list"
+    android:previewImage="@drawable/list_widget_preview"
+    android:resizeMode="horizontal|vertical">
+</appwidget-provider>

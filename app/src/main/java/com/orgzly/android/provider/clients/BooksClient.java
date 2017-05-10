@@ -19,6 +19,7 @@ import com.orgzly.android.provider.actions.SparseTreeAction;
 import com.orgzly.android.repos.Rook;
 import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.util.ExceptionUtils;
+import com.orgzly.android.widgets.ListWidgetProvider;
 import com.orgzly.org.OrgFileSettings;
 
 import java.io.File;
@@ -329,7 +330,9 @@ public class BooksClient {
         }
 
         try {
-            return context.getContentResolver().insert(ProviderContract.LoadBookFromFile.ContentUri.loadBookFromFile(), values);
+            Uri insertResult = context.getContentResolver().insert(ProviderContract.LoadBookFromFile.ContentUri.loadBookFromFile(), values);
+            ListWidgetProvider.updateListContents(context);
+            return insertResult;
         } catch (IllegalArgumentException e) {
             throw ExceptionUtils.IOException(e, "Failed loading book " + name);
             // FIXME: We sometimes catch these exceptions from content provider, sometimes not

@@ -12,26 +12,26 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
-
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.NotesBatch;
-import com.orgzly.android.Note;
 import com.orgzly.android.SearchQuery;
 import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.GenericDatabaseUtils;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.models.DbNote;
-import com.orgzly.android.ui.Place;
-import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.NotePlace;
+import com.orgzly.android.ui.NoteStateSpinner;
+import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
-import com.orgzly.org.OrgProperty;
-import com.orgzly.org.datetime.OrgRange;
+import com.orgzly.android.widgets.ListWidgetProvider;
 import com.orgzly.org.OrgHead;
+import com.orgzly.org.OrgProperty;
 import com.orgzly.org.datetime.OrgDateTime;
+import com.orgzly.org.datetime.OrgRange;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -260,6 +260,8 @@ public class NotesClient {
             throw new RuntimeException(e);
         }
 
+        ListWidgetProvider.updateListContents(context);
+
         return result[0].count;
     }
 
@@ -322,6 +324,8 @@ public class NotesClient {
         /* Update ID of newly inserted note. */
         note.setId(noteId);
 
+        ListWidgetProvider.updateListContents(context);
+
         return note;
     }
 
@@ -331,6 +335,8 @@ public class NotesClient {
     public static void deleteFromBook(Context context, long bookId) {
         int deleted = context.getContentResolver().delete(ProviderContract.Notes.ContentUri.notes(), ProviderContract.Notes.UpdateParam.BOOK_ID + "=" + bookId, null);
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Deleted all (" + deleted + ") notes from book " + bookId);
+
+        ListWidgetProvider.updateListContents(context);
     }
 
     public static int delete(Context context, long[] noteIds) {
@@ -354,6 +360,8 @@ public class NotesClient {
         }
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Deleted " + deleted + " notes");
+
+        ListWidgetProvider.updateListContents(context);
 
         return deleted;
     }
@@ -444,6 +452,15 @@ public class NotesClient {
     public static CursorLoader getLoaderForQuery(Context context, SearchQuery searchQuery) throws SQLException {
         return new CursorLoader(
                 context,
+                ProviderContract.Notes.ContentUri.notesSearchQueried(searchQuery),
+                null, // TODO: Do not fetch content if it is not required, for speed.
+                null,
+                null,
+                getOrderForQuery(context, searchQuery));
+    }
+
+    public static Cursor getCursorForQuery(Context context, SearchQuery searchQuery) throws SQLException {
+        return context.getContentResolver().query(
                 ProviderContract.Notes.ContentUri.notesSearchQueried(searchQuery),
                 null, // TODO: Do not fetch content if it is not required, for speed.
                 null,
@@ -599,7 +616,11 @@ public class NotesClient {
         values.put(ProviderContract.Delete.Param.BOOK_ID, bookId);
         values.put(ProviderContract.Delete.Param.IDS, TextUtils.join(",", noteIds));
 
-        return context.getContentResolver().update(ProviderContract.Delete.ContentUri.delete(), values, null, null);
+        int updateResult = context.getContentResolver().update(ProviderContract.Delete.ContentUri.delete(), values, null, null);
+
+        ListWidgetProvider.updateListContents(context);
+
+        return updateResult;
     }
 
 
@@ -690,6 +711,8 @@ public class NotesClient {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+
+        ListWidgetProvider.updateListContents(context);
     }
 
     /**
@@ -709,6 +732,8 @@ public class NotesClient {
                 state != null ? state : NoteStateSpinner.NO_STATE_KEYWORD);
 
         context.getContentResolver().update(ProviderContract.NotesState.ContentUri.notesState(), values, null, null);
+
+        ListWidgetProvider.updateListContents(context);
 
         /* Affected books' mtime will be modified in content provider. */
     }

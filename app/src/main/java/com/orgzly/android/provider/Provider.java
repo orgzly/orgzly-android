@@ -12,7 +12,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.orgzly.BuildConfig;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
@@ -363,6 +362,11 @@ public class Provider extends ContentProvider {
     }
 
     private static void appendBeforeInterval(StringBuilder selection, String column, SearchQuery.SearchQueryInterval interval) {
+        if (interval.none()) {
+            selection.append(" AND ").append(column).append(" IS NULL");
+            return;
+        }
+
         Calendar before = new GregorianCalendar();
 
         switch (interval.getUnit()) {

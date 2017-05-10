@@ -17,13 +17,12 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.ViewFlipper;
-
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.FiltersClient;
-import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.Fab;
+import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.util.ListViewUtils;
 import com.orgzly.android.util.LogUtils;
@@ -127,6 +126,13 @@ public class FiltersFragment extends ListFragment implements Fab, LoaderManager.
     }
 
     private void setupAdapter() {
+        /* Create adapter using Cursor. */
+        mListAdapter = createFilterCursorAdapter(getActivity());
+
+        setListAdapter(mListAdapter);
+    }
+
+    public static SimpleCursorAdapter createFilterCursorAdapter(Context context) {
         /* Column field names to be bound. */
         String[] columns = new String[] {
                 ProviderContract.Filters.Param.NAME,
@@ -142,15 +148,13 @@ public class FiltersFragment extends ListFragment implements Fab, LoaderManager.
         };
 
         /* Create adapter using Cursor. */
-        mListAdapter = new SimpleCursorAdapter(
-                getActivity(),
+        return new SimpleCursorAdapter(
+                context,
                 R.layout.item_filter,
                 null,
                 columns,
                 to,
                 0);
-
-        setListAdapter(mListAdapter);
     }
 
     @Override
