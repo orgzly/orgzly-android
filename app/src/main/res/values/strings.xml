@@ -204,7 +204,7 @@
 
     <string name="no_filters">You have no saved searches</string>
 
-    <string name="book_shortcut_label">Orgzly Notebook</string>
+    <string name="book_shortcut_label">Orgzly notebook</string>
     <string name="pick_a_notebook">Pick a notebook</string>
 
     <!-- TODO: Use for note moving cab menu (xml) -->
@@ -375,7 +375,7 @@
     <string name="default_notebook">Default notebook</string>
     <string name="default_notebook_desc">Notebook used when sharing to Orgzly or creating a new note from the ongoing notification</string>
 
-    <string name="list_widget_name">Orgzly Search</string>
+    <string name="list_widget_name">Orgzly search</string>
     <string name="select_a_filter">Select a filter</string>
     <string name="select_a_filter_long">Select a filter by clicking on the title bar</string>
 
