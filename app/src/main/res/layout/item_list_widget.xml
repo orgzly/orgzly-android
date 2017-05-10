@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -8,7 +10,14 @@
         android:id="@+id/item_list_widget_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:orientation="vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:layout_weight="1"
         android:clickable="true">
 
@@ -18,7 +27,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:text="@string/book_name_sample"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:maxLines="1" />
 
         <LinearLayout
@@ -33,6 +42,7 @@
             <ImageView
                 android:layout_height="14dp"
                 android:layout_width="14dp"
+                android:alpha="0.55"
                 android:src="@drawable/ic_today_black_18dp"
                 android:contentDescription="@string/schedule" />
 
@@ -44,7 +54,9 @@
                 android:textColor="#696969"
                 android:textSize="14sp"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp" />
+                android:layout_marginLeft="4dp"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
 
         <LinearLayout
@@ -59,6 +71,7 @@
             <ImageView
                 android:layout_height="14dp"
                 android:layout_width="14dp"
+                android:alpha="0.55"
                 android:src="@drawable/ic_alarm_black_18dp"
                 android:contentDescription="@string/deadline" />
 
@@ -70,7 +83,9 @@
                 android:textColor="#696969"
                 android:textSize="14sp"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp" />
+                android:layout_marginLeft="4dp"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
 
         <LinearLayout
@@ -85,6 +100,7 @@
             <ImageView
                 android:layout_height="14dp"
                 android:layout_width="14dp"
+                android:alpha="0.55"
                 android:src="@drawable/ic_done_black_18dp"
                 android:contentDescription="@string/closed" />
 
@@ -96,22 +112,21 @@
                 android:textColor="#696969"
                 android:textSize="14sp"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp" />
+                android:layout_marginLeft="4dp"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
+    <ImageView
         android:id="@+id/item_list_widget_done"
         android:layout_weight="0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:alpha="0.55"
         android:layout_gravity="center_vertical"
-        android:drawableLeft="@drawable/ic_done_black_24dp"
-        android:drawableStart="@drawable/ic_done_black_24dp"
-        android:drawablePadding="5dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:maxLines="1"
-        android:text=""
+        android:src="@drawable/ic_done_black_24dp"
         android:clickable="true"/>
 </LinearLayout>

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginTop="3dp"
-    android:layout_marginLeft="3dp"
-    android:layout_marginStart="3dp"
-    android:layout_marginRight="3dp"
-    android:layout_marginEnd="3dp"
-    android:background="#80F8F8F8">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/widget_list_header"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:orientation="horizontal"
-        android:background="@color/gray25"
-        android:clickable="true">
+        android:background="#B0BEC5">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/cic_orgzly_logo" />
 
         <LinearLayout
             android:layout_weight="1"
@@ -31,41 +31,28 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="@string/select_a_filter"
-                android:textColor="#232323"
+                android:textColor="@color/black"
                 android:textSize="17sp"
                 android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
                 android:drawableEnd="@drawable/ic_keyboard_arrow_down_black_24dp"
                 android:drawablePadding="5dp"
                 android:ellipsize="end"
-                android:maxLines="1" />
+                android:maxLines="1"/>
         </LinearLayout>
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/widget_list_header_add"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="end"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/widget_list_header_add"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:drawableLeft="@drawable/ic_add_black_24dp"
-                android:drawableStart="@drawable/ic_add_black_24dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:maxLines="1"
-                android:text=""
-                android:background="@color/gray17"
-                android:clickable="true" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_add_black_24dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
         android:orientation="vertical"
         android:background="@color/white">
 
@@ -78,6 +65,7 @@
             android:id="@+id/widget_list_empty_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="16dp"
             android:gravity="center"
             android:visibility="gone"
             android:textSize="20sp" />

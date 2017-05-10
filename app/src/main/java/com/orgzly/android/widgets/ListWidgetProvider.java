@@ -81,7 +81,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
         Intent filterSelectIntent = new Intent(context, FilterSelectDialogActivity.class);
         filterSelectIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         filterSelectIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
-        remoteViews.setOnClickPendingIntent(R.id.widget_list_header, PendingIntent.getActivity(context, 0, filterSelectIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+        remoteViews.setOnClickPendingIntent(R.id.widget_list_header_filter, PendingIntent.getActivity(context, 0, filterSelectIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
         remoteViews.setTextViewText(
                 R.id.widget_list_header_filter,
