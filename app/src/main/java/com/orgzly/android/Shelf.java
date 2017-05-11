@@ -4,11 +4,13 @@ import android.content.ContentProviderOperation;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -710,6 +712,9 @@ public class Shelf {
 
     public static void notifyDataChanged(Context context) {
         ReminderService.notifyDataChanged(context);
+
+        LocalBroadcastManager.getInstance(context)
+                .sendBroadcast(new Intent(AppIntent.ACTION_LIST_WIDGET_UPDATE));
     }
 
     public interface ReParsingNotesListener {

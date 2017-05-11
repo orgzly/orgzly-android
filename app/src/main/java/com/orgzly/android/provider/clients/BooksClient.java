@@ -330,9 +330,7 @@ public class BooksClient {
         }
 
         try {
-            Uri insertResult = context.getContentResolver().insert(ProviderContract.LoadBookFromFile.ContentUri.loadBookFromFile(), values);
-            ListWidgetProvider.updateListContents(context);
-            return insertResult;
+            return context.getContentResolver().insert(ProviderContract.LoadBookFromFile.ContentUri.loadBookFromFile(), values);
         } catch (IllegalArgumentException e) {
             throw ExceptionUtils.IOException(e, "Failed loading book " + name);
             // FIXME: We sometimes catch these exceptions from content provider, sometimes not

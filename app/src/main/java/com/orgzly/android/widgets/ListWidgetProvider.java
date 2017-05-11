@@ -1,17 +1,19 @@
 package com.orgzly.android.widgets;
 
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.RemoteViews;
+import com.evernote.android.job.JobManager;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
@@ -35,8 +37,6 @@ public class ListWidgetProvider extends AppWidgetProvider {
     public static final String EXTRA_NOTE_ID = "note_id";
     public static final String EXTRA_BOOK_ID = "book_id";
     public static final String EXTRA_FILTER_ID = "filter_id";
-    /* Setting this to a lower value doesn't have an effect */
-    private static final int UPDATE_INTERVAL_MILLIS = 60 * 1000;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -90,7 +90,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
     }
 
-    public static void updateAppWidgetLayouts(Context context) {
+    private static void updateAppWidgetLayouts(Context context) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "updateAppWidgetLayouts");
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -102,7 +102,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    public static void updateListContents(Context context) {
+    private static void updateListContents(Context context) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "updateListContents");
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -114,12 +114,18 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onEnabled(Context context) {
-        scheduleUpdate(context);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(AppIntent.ACTION_LIST_WIDGET_UPDATE);
+        filter.addAction(AppIntent.ACTION_LIST_WIDGET_UPDATE_LAYOUT);
+
+        LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
+        ListWidgetUpdateJob.ensureScheduled();
     }
 
     @Override
     public void onDisabled(Context context) {
-        clearUpdate(context);
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
+        JobManager.instance().cancelAllForTag(ListWidgetUpdateJob.TAG);
     }
 
     @Override
@@ -129,38 +135,6 @@ public class ListWidgetProvider extends AppWidgetProvider {
             editor.remove(getFilterPreferenceKey(id));
             editor.apply();
         }
-    }
-
-    private static void scheduleUpdate(Context context) {
-        /*
-         schedule updates via AlarmManager, because we don't want to wake the device on every update
-         see https://developer.android.com/guide/topics/appwidgets/index.html#MetaData
-         */
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        PendingIntent intent = getAlarmIntent(context);
-        alarmManager.cancel(intent);
-        alarmManager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), UPDATE_INTERVAL_MILLIS, intent);
-    }
-
-    private static void clearUpdate(Context context) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        alarmManager.cancel(getAlarmIntent(context));
-    }
-
-    public static void scheduleUpdateIfNeeded(Context context) {
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(context, ListWidgetProvider.class));
-        if (ids.length > 0) {
-            scheduleUpdate(context);
-        }
-    }
-
-    private static PendingIntent getAlarmIntent(Context context) {
-        Intent intent = new Intent(context, ListWidgetProvider.class);
-        intent.setAction(AppIntent.ACTION_LIST_WIDGET_UPDATE);
-        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private static void setFilterFromIntent(Context context, Intent intent) {
@@ -230,6 +204,8 @@ public class ListWidgetProvider extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         if (AppIntent.ACTION_LIST_WIDGET_UPDATE.equals(intent.getAction())) {
             updateListContents(context);
+        } else if (AppIntent.ACTION_LIST_WIDGET_UPDATE_LAYOUT.equals(intent.getAction())) {
+            updateAppWidgetLayouts(context);
         } else if (AppIntent.ACTION_LIST_WIDGET_SET_FILTER.equals(intent.getAction())) {
             setFilterFromIntent(context, intent);
         } else if (AppIntent.ACTION_LIST_WIDGET_CLICK.equals(intent.getAction())) {

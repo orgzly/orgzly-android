@@ -146,7 +146,7 @@ public class NotesClient {
     }
 
     public static Note fromCursor(Cursor cursor) {
-        long id = cursor.getLong(cursor.getColumnIndex(ProviderContract.Notes.QueryParam._ID));
+        long id = idFromCursor(cursor);
 
         boolean isFolded = cursor.getInt(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.IS_FOLDED)) != 0;
 
@@ -169,6 +169,10 @@ public class NotesClient {
         }
 
         return note;
+    }
+
+    public static long idFromCursor(Cursor cursor) {
+        return cursor.getLong(cursor.getColumnIndex(ProviderContract.Notes.QueryParam._ID));
     }
 
     private static OrgHead headFromCursor(Cursor cursor) {
@@ -260,8 +264,6 @@ public class NotesClient {
             throw new RuntimeException(e);
         }
 
-        ListWidgetProvider.updateListContents(context);
-
         return result[0].count;
     }
 
@@ -324,8 +326,6 @@ public class NotesClient {
         /* Update ID of newly inserted note. */
         note.setId(noteId);
 
-        ListWidgetProvider.updateListContents(context);
-
         return note;
     }
 
@@ -335,8 +335,6 @@ public class NotesClient {
     public static void deleteFromBook(Context context, long bookId) {
         int deleted = context.getContentResolver().delete(ProviderContract.Notes.ContentUri.notes(), ProviderContract.Notes.UpdateParam.BOOK_ID + "=" + bookId, null);
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Deleted all (" + deleted + ") notes from book " + bookId);
-
-        ListWidgetProvider.updateListContents(context);
     }
 
     public static int delete(Context context, long[] noteIds) {
@@ -360,8 +358,6 @@ public class NotesClient {
         }
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Deleted " + deleted + " notes");
-
-        ListWidgetProvider.updateListContents(context);
 
         return deleted;
     }
@@ -616,11 +612,7 @@ public class NotesClient {
         values.put(ProviderContract.Delete.Param.BOOK_ID, bookId);
         values.put(ProviderContract.Delete.Param.IDS, TextUtils.join(",", noteIds));
 
-        int updateResult = context.getContentResolver().update(ProviderContract.Delete.ContentUri.delete(), values, null, null);
-
-        ListWidgetProvider.updateListContents(context);
-
-        return updateResult;
+        return context.getContentResolver().update(ProviderContract.Delete.ContentUri.delete(), values, null, null);
     }
 
 
@@ -711,8 +703,6 @@ public class NotesClient {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-
-        ListWidgetProvider.updateListContents(context);
     }
 
     /**
@@ -732,8 +722,6 @@ public class NotesClient {
                 state != null ? state : NoteStateSpinner.NO_STATE_KEYWORD);
 
         context.getContentResolver().update(ProviderContract.NotesState.ContentUri.notesState(), values, null, null);
-
-        ListWidgetProvider.updateListContents(context);
 
         /* Affected books' mtime will be modified in content provider. */
     }
