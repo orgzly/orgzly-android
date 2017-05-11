@@ -278,11 +278,13 @@ public class ReminderService extends IntentService {
         if (notes.size() == 1) { // Single note
             NoteWithTime note = notes.get(0);
 
-            style.setBigContentTitle(note.title);
+            style.setBigContentTitle(context.getString(R.string.scheduled));
+            style.addLine(note.title);
+            style.setSummaryText(context.getString(R.string.tap_to_view_notes));
 
             // Used if Style is not supported (API < 16)
-            builder.setContentTitle(note.title);
-            // No content text
+            builder.setContentTitle(context.getString(R.string.scheduled));
+            builder.setContentText(note.title);
 
         } else { // Multiple notes
 

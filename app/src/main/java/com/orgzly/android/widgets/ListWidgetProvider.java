@@ -202,12 +202,17 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
+
         if (AppIntent.ACTION_LIST_WIDGET_UPDATE.equals(intent.getAction())) {
             updateListContents(context);
+
         } else if (AppIntent.ACTION_LIST_WIDGET_UPDATE_LAYOUT.equals(intent.getAction())) {
             updateAppWidgetLayouts(context);
+
         } else if (AppIntent.ACTION_LIST_WIDGET_SET_FILTER.equals(intent.getAction())) {
             setFilterFromIntent(context, intent);
+
         } else if (AppIntent.ACTION_LIST_WIDGET_CLICK.equals(intent.getAction())) {
             switch (intent.getIntExtra(EXTRA_CLICK_TYPE, -1)) {
                 case OPEN_CLICK_TYPE:
@@ -217,6 +222,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
                     setNoteDone(context, intent);
                     break;
             }
+
         } else {
             super.onReceive(context, intent);
         }

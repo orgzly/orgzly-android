@@ -711,6 +711,8 @@ public class Shelf {
     }
 
     public static void notifyDataChanged(Context context) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+
         ReminderService.notifyDataChanged(context);
 
         LocalBroadcastManager.getInstance(context)
