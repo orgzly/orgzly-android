@@ -26,7 +26,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:text="@string/book_name_sample"
+            android:text="@string/head_title_sample"
+            android:textColor="@color/black"
             android:textSize="16sp"
             android:maxLines="1" />
 
