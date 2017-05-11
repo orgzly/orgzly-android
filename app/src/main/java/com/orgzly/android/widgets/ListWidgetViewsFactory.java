@@ -157,8 +157,7 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "getItemId", position);
 
         if (mCursor.moveToPosition(position)) {
-            Note note = NotesClient.fromCursor(mCursor);
-            return note.getId();
+            return NotesClient.idFromCursor(mCursor);
         }
         return -position;
     }
