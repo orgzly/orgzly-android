@@ -35,9 +35,7 @@ public class Database extends SQLiteOpenHelper {
 
         this.context = context;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            setWriteAheadLoggingEnabled(true);
-        }
+        setWriteAheadLoggingEnabled(true);
     }
 
     /**

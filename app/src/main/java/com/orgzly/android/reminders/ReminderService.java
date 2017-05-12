@@ -7,7 +7,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
@@ -266,6 +265,7 @@ public class ReminderService extends IntentService {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setAutoCancel(true)
+                .setPriority(Notification.PRIORITY_MAX)
                 .setColor(ContextCompat.getColor(context, R.color.notification))
                 .setSmallIcon(R.drawable.cic_orgzly_notification)
                 .setContentIntent(resultPendingIntent);
@@ -278,40 +278,27 @@ public class ReminderService extends IntentService {
         if (notes.size() == 1) { // Single note
             NoteWithTime note = notes.get(0);
 
-            style.setBigContentTitle(context.getString(R.string.scheduled));
-            style.addLine(note.title);
-            style.setSummaryText(context.getString(R.string.tap_to_view_notes));
-
-            // Used if Style is not supported (API < 16)
-            builder.setContentTitle(context.getString(R.string.scheduled));
-            builder.setContentText(note.title);
+            style.setBigContentTitle(note.title);
+            style.addLine(context.getString(R.string.tap_to_view_notes));
 
         } else { // Multiple notes
+            style.setBigContentTitle(notes.size() + " scheduled notes");
 
-            style.setBigContentTitle("You have " + notes.size() + " scheduled tasks, or something");
-            String[] lines = new String[notes.size()];
-            for (int i = 0; i < lines.length; i++) {
+            for (int i = 0; i < notes.size(); i++) {
                 if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Note: " + notes.get(i).title);
-                style.addLine(notes.get(i).id + ": " + notes.get(i).title);
+                style.addLine(notes.get(i).title);
             }
-            style.setSummaryText(context.getString(R.string.tap_to_view_notes));
-
-            // Used if Style is not supported (API < 16)
-            builder.setContentTitle("You have " + notes.size() + " scheduled tasks, or something");
-            builder.setContentText(context.getString(R.string.tap_to_view_notes));
         }
+
 
         builder.setStyle(style);
 
-        /* Reminders are important, mmmk? */
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            builder.setPriority(Notification.PRIORITY_MAX);
-        }
+        Notification notification = builder.build();
 
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Notification notification = builder.build();
+        // TODO: Do not overwrite, add to it or use a different ID.
         notificationManager.notify(Notifications.REMINDER, notification);
     }
 

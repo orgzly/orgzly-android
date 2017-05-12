@@ -19,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId "com.orgzly"
-        minSdkVersion 14 // Ice Cream Sandwich (4.0)
+        minSdkVersion 16 // JELLY_BEAN
         targetSdkVersion 25 // Nougat (7.1)
         versionCode 63
         versionName "1.4.13"

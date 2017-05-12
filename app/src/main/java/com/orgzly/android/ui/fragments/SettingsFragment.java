@@ -95,7 +95,7 @@ public class SettingsFragment extends PreferenceFragment
 
         setDefaultStateForNewNote();
 
-
+        /* Disable preference for changing the layout, if not on API version that supports that. */
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
             Preference layoutDirectionPref = findPreference(getString(R.string.pref_key_layout_direction));
             layoutDirectionPref.setEnabled(false);
