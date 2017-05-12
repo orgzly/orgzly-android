@@ -1,14 +1,5 @@
 * Orgzly
 
-#+BEGIN_HTML
-<a href="https://play.google.com/store/apps/details?id=com.orgzly">
-<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Get it on Google Play" height="60">
-</a>
-<a href="https://f-droid.org/app/com.orgzly">
-<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="60">
-</a>
-#+END_HTML
-
 Orgzly is an outliner for taking notes and managing to-do lists.
 
 You can keep notebooks stored in plain-text and have them synchronized
@@ -18,6 +9,15 @@ Notebooks are saved in /Org mode/'s file format. “Org mode is for
 keeping notes, maintaining TODO lists, planning projects, and
 authoring documents with a fast and effective plain-text system.” See
 http://orgmode.org for more information.
+
+#+BEGIN_HTML
+<a href="https://play.google.com/store/apps/details?id=com.orgzly">
+<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Get it on Google Play" height="70">
+</a>
+<a href="https://f-droid.org/app/com.orgzly">
+<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="70">
+</a>
+#+END_HTML
 
 ** Features
 
