@@ -41,6 +41,7 @@
     <string name="new_folder">New folder</string>
     <string name="scheduled">Scheduled</string>
     <string name="agenda">Agenda</string>
+    <item type="id" name="IS_AGENDA_ITEM_SEPARATOR"/>
 
     <plurals name="notes_deleted">
         <item quantity="one">Note deleted</item>
