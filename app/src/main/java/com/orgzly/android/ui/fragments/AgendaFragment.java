@@ -280,7 +280,9 @@ public class AgendaFragment extends NoteListFragment
 
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
-        if (mListAdapter.getItemViewType(position) == AgendaListViewAdapter.TYPE_ITEM)
+        if (id > Integer.MAX_VALUE)
+            throw new RuntimeException("Cannot cast row ID to int!");
+        if (mListAdapter.getItemViewType((int) id) == AgendaListViewAdapter.TYPE_ITEM)
             mListener.onNoteClick(this, view, position, id);
     }
 
@@ -388,6 +390,7 @@ public class AgendaFragment extends NoteListFragment
                 // clone the item
                 MatrixCursor matrixCursor = agenda.get(date);
                 MatrixCursor.RowBuilder rowBuilder = matrixCursor.newRow();
+                System.out.println("ID: " + cursor.getString(cursor.getColumnIndex(BaseColumns._ID)));
                 for (String col: cols)
                     rowBuilder.add(cursor.getString(cursor.getColumnIndex(col)));
             }
@@ -397,10 +400,12 @@ public class AgendaFragment extends NoteListFragment
         for(Date date: agenda.keySet()) {
             MatrixCursor dateCursor = new MatrixCursor(new String[]{BaseColumns._ID, "day", "separator"});
             MatrixCursor.RowBuilder dateRow = dateCursor.newRow();
-            dateRow.add(date.getTime());
+            int id = (int) (date.getTime() / 1000);
+            dateRow.add(id);
             dateRow.add(date.toString());
             dateRow.add(1);
             allCursors.add(dateCursor);
+            mListAdapter.addSeparatorItem(id);
             allCursors.add(agenda.get(date));
         }
         MergeCursor mCursor = new MergeCursor(allCursors.toArray(new Cursor[allCursors.size()]));
@@ -451,11 +456,11 @@ public class AgendaFragment extends NoteListFragment
 //        MergeCursor mCursor = new MergeCursor(new Cursor[]{cursor, header, extras, tail});
 
         // go through expanded and sorted cursors and collect separators
-        for(mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor.moveToNext()) {
-            int idx = mCursor.getColumnIndex("separator");
-            if (idx != -1 && mCursor.getInt(idx) > 0)
-                mListAdapter.addSeparatorItem(mCursor.getPosition());
-        }
+//        for(mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor.moveToNext()) {
+//            int idx = mCursor.getColumnIndex("separator");
+//            if (idx != -1 && mCursor.getInt(idx) > 0)
+//                mListAdapter.addSeparatorItem((int) mCursor.getLong(mCursor.getColumnIndex(BaseColumns._ID)) / 1000);
+//        }
 
 
         System.out.println("************************");
