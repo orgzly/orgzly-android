@@ -295,10 +295,7 @@ public class ReminderService extends IntentService {
             builder.setContentText(context.getString(
                     R.string.scheduled_using_time, note.orgDateTime.toStringWithoutBrackets()));
 
-            // FIXME: This is hackish - perhaps remember last ID
-            int id = (int) note.id;
-
-            notificationManager.notify(id, builder.build());
+            notificationManager.notify(String.valueOf(note.id), Notifications.REMINDER, builder.build());
         }
     }
 
