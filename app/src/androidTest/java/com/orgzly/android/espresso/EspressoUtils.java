@@ -43,7 +43,7 @@ class EspressoUtils {
     static final int SETTINGS_NEW_NOTE_STATE = 25;
     static final int SETTINGS_CREATED_AT = 27;
 
-    static final int SETTINGS_REPOS = 36;
+    static final int SETTINGS_REPOS = 33;
 
     static final int IMPORT_GETTING_STARTED = 38;
     static final int SETTINGS_CLEAR_DATABASE = 39;

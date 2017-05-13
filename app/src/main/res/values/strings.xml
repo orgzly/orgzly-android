@@ -264,6 +264,7 @@
     <string name="look_and_feel"><![CDATA[Look & Feel]]></string>
     <string name="notes_list">Notes list</string>
     <string name="prefs_title_new_note">New note</string>
+    <string name="prefs_title_notifications">Notifications</string>
     <string name="app">App</string>
     <string name="no_repos_configured">No repos configured</string>
     <string name="no_connection">No connection</string>
@@ -345,8 +346,8 @@
     <string name="display_inherited_tags_in_search_results">Inherited tags in search results</string>
     <string name="display_inherited_tags_in_search_results_summary">Display inherited tags in search results</string>
 
-    <string name="new_note_notification">Ongoing notification</string>
-    <string name="new_note_notification_summary">Display ongoing (persistent) notification for quickly creating new note</string>
+    <string name="new_note_notification">New note</string>
+    <string name="new_note_notification_summary">Quickly create new note from notification drawer</string>
 
     <string name="primary_storage">Main storage</string>
     <string name="secondary_storage">SD card</string>
@@ -411,6 +412,5 @@
     <string name="synced_rook_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
     <string name="synced_rook_revision_sample">42f97fe238</string>
     <string name="tap_to_view_notes">Tap to view your notes</string>
-    <string name="prefs_title_reminders">Reminders (beta)</string>
-    <string name="scheduled_times">Scheduled times</string>
+    <string name="pref_title_scheduled_times">Scheduled times (beta)</string>
 </resources>

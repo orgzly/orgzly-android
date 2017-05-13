@@ -339,9 +339,6 @@
     <string name="display_inherited_tags_in_search_results">Arama sonuçlarında devralınan etiketler</string>
     <string name="display_inherited_tags_in_search_results_summary">Devralınan etiketleri arama sonuçlarında göster</string>
 
-    <string name="new_note_notification">Devam eden bildirim</string>
-    <string name="new_note_notification_summary">Hızlıca yeni not oluşturmak için devamlı (kalıcı) bildirim görüntüleyin</string>
-
     <string name="primary_storage">Ana Depolama</string>
     <string name="secondary_storage">SD card</string>
     <string name="secondary_storage_not_available_any_more">İkincil depolama artık mevcut değil</string>

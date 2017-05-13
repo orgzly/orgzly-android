@@ -7,6 +7,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
@@ -281,6 +283,10 @@ public class ReminderService extends IntentService {
                 .setColor(ContextCompat.getColor(context, R.color.notification))
                 .setSmallIcon(R.drawable.cic_orgzly_notification)
                 .setContentIntent(resultPendingIntent);
+
+        /* Set notification sound. */
+//        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//        builder.setSound(alarmSound);
 
         for (int i = 0; i < notes.size(); i++) {
             NoteWithTime note = notes.get(i);
