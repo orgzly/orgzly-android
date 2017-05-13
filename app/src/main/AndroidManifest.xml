@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:icon="@drawable/cic_orgzly_logo"
         android:label="@string/app_name"
-        android:theme="@style/AppLightTheme.Light">
+        android:theme="@style/AppLightTheme.Light"
+        android:fullBackupContent="@xml/backup_config">
 
         <activity
             android:name="com.orgzly.android.ui.ShareActivity"
