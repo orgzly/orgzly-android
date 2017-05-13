@@ -48,6 +48,8 @@ public class ReminderService extends IntentService {
 
     public ReminderService() {
         super(TAG);
+
+        setIntentRedelivery(true);
     }
 
     /**
@@ -101,6 +103,8 @@ public class ReminderService extends IntentService {
      * Schedule the next job for times after last run.
      */
     private void onDataChanged(DateTime now, DateTime prevRun) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, prevRun);
+
         /* Cancel all jobs. */
         JobManager.instance().cancelAllForTag(ReminderJob.TAG);
 
@@ -113,8 +117,9 @@ public class ReminderService extends IntentService {
     }
 
     private void scheduleNextJob(DateTime now, DateTime fromTime) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, fromTime);
 
-        List<NoteWithTime> notes = ReminderService.getNotesWithTimes(this, fromTime, null);
+        List<NoteWithTime> notes = ReminderService.getNotesWithTimeInInterval(this, fromTime, null);
 
         if (! notes.isEmpty()) {
             /* Schedule only the first upcoming time. */
@@ -128,19 +133,14 @@ public class ReminderService extends IntentService {
 
             int jobId = ReminderJob.scheduleJob(exactMs);
 
-            announceScheduledJob(jobId, firstNote);
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG,
+                    "Scheduled for " + jobRunTimeString(jobId) + " (" + firstNote.title + ")");
 
             AppPreferences.reminderServiceJobId(this, jobId);
 
         } else {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "No notes found after " + fromTime);
         }
-    }
-
-    private void announceScheduledJob(final int jobId, final NoteWithTime firstNote) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG,
-                "Scheduled for " + jobRunTimeString(jobId) + " (" + firstNote.title + ")");
-
     }
 
     private String jobRunTimeString(int jobId) {
@@ -154,21 +154,23 @@ public class ReminderService extends IntentService {
      * last run and now. Then schedule the next job for times after now.
      */
     private void onJobTriggered(DateTime now, DateTime prevRun) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, prevRun);
+
         /* Cancel all jobs. */
         JobManager.instance().cancelAllForTag(ReminderJob.TAG);
 
         if (prevRun != null) {
             /* Show notifications for all notes with times from previous run until now. */
-            List<NoteWithTime> notes = ReminderService.getNotesWithTimes(this, prevRun, now);
+            List<NoteWithTime> notes = ReminderService.getNotesWithTimeInInterval(this, prevRun, now);
 
             if (!notes.isEmpty()) {
-                if (BuildConfig.LOG_DEBUG)
-                    LogUtils.d(TAG, "Found " + notes.size() + " notes between " + prevRun + " and " + now);
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found " + notes.size() + " notes between " + prevRun + " and " + now);
                 showNotification(this, notes);
             } else {
-                if (BuildConfig.LOG_DEBUG)
-                    LogUtils.d(TAG, "No notes found between " + prevRun + " and " + now);
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "No notes found between " + prevRun + " and " + now);
             }
+        } else {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "No previous run");
         }
 
         scheduleNextJob(now, now);
@@ -179,8 +181,10 @@ public class ReminderService extends IntentService {
         return jobRequest.getScheduledAt() + jobRequest.getStartMs();
     }
 
-    public static List<NoteWithTime> getNotesWithTimes(
+    public static List<NoteWithTime> getNotesWithTimeInInterval(
             Context context, ReadableInstant fromTime, ReadableInstant beforeTime) {
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         List<NoteWithTime> result = new ArrayList<>();
 
@@ -206,12 +210,12 @@ public class ReminderService extends IntentService {
                         List<DateTime> times = OrgDateTimeUtils.getTimesInInterval(
                                 orgDateTime, fromTime, beforeTime, 1);
 
-                        for (DateTime time: times) {
-                            if (! orgDateTime.hasTime()) {
+                        for (DateTime time : times) {
+                            if (!orgDateTime.hasTime()) {
                                 time = time.plusHours(9); // TODO: Move to preferences
                             }
 
-                            result.add(new NoteWithTime(noteId, noteTitle, time));
+                            result.add(new NoteWithTime(noteId, noteTitle, time, orgDateTime));
                         }
                     }
                 }
@@ -219,6 +223,8 @@ public class ReminderService extends IntentService {
                 cursor.close();
             }
         }
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Fetched times, now sorting " + result.size() + " entries by time...");
 
         /* Sort by time, older first. */
         Collections.sort(result, new Comparator<NoteWithTime>() {
@@ -234,6 +240,8 @@ public class ReminderService extends IntentService {
             }
         });
 
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Times sorted, total " + result.size());
+
         return result;
     }
 
@@ -241,16 +249,21 @@ public class ReminderService extends IntentService {
         public long id;
         public String title;
         public DateTime time;
+        OrgDateTime orgDateTime;
 
-        public NoteWithTime(long id, String title, DateTime time) {
+        public NoteWithTime(long id, String title, DateTime time, OrgDateTime orgDateTime) {
             this.id = id;
             this.title = title;
             this.time = time;
+            this.orgDateTime = orgDateTime;
         }
     }
 
     public static void showNotification(Context context, List<NoteWithTime> notes) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, context, notes);
+
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         // TODO: Open relevant notes, agenda or search results
         Intent resultIntent = new Intent(context, MainActivity.class);
@@ -262,7 +275,6 @@ public class ReminderService extends IntentService {
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setAutoCancel(true)
                 .setPriority(Notification.PRIORITY_MAX)
@@ -270,39 +282,19 @@ public class ReminderService extends IntentService {
                 .setSmallIcon(R.drawable.cic_orgzly_notification)
                 .setContentIntent(resultPendingIntent);
 
-        NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
+        for (int i = 0; i < notes.size(); i++) {
+            NoteWithTime note = notes.get(i);
 
-        /*
-         * Reminder will be formatted differently depending on the number of notes.
-         */
-        if (notes.size() == 1) { // Single note
-            NoteWithTime note = notes.get(0);
+            builder.setContentTitle(note.title);
+            builder.setContentText(context.getString(
+                    R.string.scheduled_using_time, note.orgDateTime.toStringWithoutBrackets()));
 
-            style.setBigContentTitle(note.title);
-            style.addLine(context.getString(R.string.tap_to_view_notes));
+            // FIXME: This is hackish - perhaps remember last ID
+            int id = (int) note.id;
 
-        } else { // Multiple notes
-            style.setBigContentTitle(notes.size() + " scheduled notes");
-
-            for (int i = 0; i < notes.size(); i++) {
-                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Note: " + notes.get(i).title);
-                style.addLine(notes.get(i).title);
-            }
+            notificationManager.notify(id, builder.build());
         }
-
-
-        builder.setStyle(style);
-
-        Notification notification = builder.build();
-
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // TODO: Do not overwrite, add to it or use a different ID.
-        notificationManager.notify(Notifications.REMINDER, notification);
     }
-
-
 
     /** Notify reminder service about changes that might affect scheduling of reminders. */
     public static void notifyDataChanged(Context context) {
