@@ -106,6 +106,7 @@
             android:label="@string/list_widget_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.orgzly.intent.action.ACTION_UPDATE_LIST_WIDGET" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/list_widget_info" />

@@ -715,8 +715,7 @@ public class Shelf {
 
         ReminderService.notifyDataChanged(context);
 
-        LocalBroadcastManager.getInstance(context)
-                .sendBroadcast(new Intent(AppIntent.ACTION_LIST_WIDGET_UPDATE));
+        context.sendBroadcast(new Intent(AppIntent.ACTION_LIST_WIDGET_UPDATE));
     }
 
     public interface ReParsingNotesListener {
