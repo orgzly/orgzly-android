@@ -35,9 +35,9 @@
                 android:text="@string/select_a_filter"
                 android:textColor="@color/black"
                 android:textSize="17sp"
-                android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
-                android:drawableEnd="@drawable/ic_keyboard_arrow_down_black_24dp"
-                android:drawablePadding="5dp"
+                android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
+                android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
+                android:drawablePadding="2dp"
                 android:ellipsize="end"
                 android:maxLines="1"/>
         </LinearLayout>

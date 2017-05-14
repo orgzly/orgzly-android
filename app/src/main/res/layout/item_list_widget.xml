@@ -126,8 +126,8 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
-        android:alpha="0.55"
-        android:layout_gravity="center_vertical"
+        android:layout_marginTop="4dp"
+        android:layout_gravity="top"
         android:src="@drawable/ic_done_black_24dp"
         android:clickable="true"/>
 </LinearLayout>
