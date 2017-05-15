@@ -29,6 +29,14 @@
             android:text="@string/whats_new_follow"/>
 
 
+        <TextView style="@style/WhatsNewVersion" android:text="1.5" tools:ignore="HardcodedText"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Reminders"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Widget for saved searches"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange" app:text="Creating shortcuts to notebooks"/>
+
         <TextView style="@style/WhatsNewVersion" android:text="1.4.13" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange" app:text="Support for .t search operator"/>
