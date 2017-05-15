@@ -78,6 +78,13 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
         remoteViews.setOnClickPendingIntent(R.id.list_widget_header_add, ShareActivity.createNewNoteIntent(context));
 
+        /* bring orgzly back to front, see http://stackoverflow.com/a/5502950/7757713 */
+        Intent openIntent = new Intent(context, MainActivity.class);
+        openIntent.setAction(Intent.ACTION_MAIN);
+        openIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        openIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        remoteViews.setOnClickPendingIntent(R.id.list_widget_header_icon, PendingIntent.getActivity(context, 0, openIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+
         Intent filterSelectIntent = new Intent(context, FilterSelectDialogActivity.class);
         filterSelectIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         filterSelectIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));

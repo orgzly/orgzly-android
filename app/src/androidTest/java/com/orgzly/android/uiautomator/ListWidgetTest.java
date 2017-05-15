@@ -21,13 +21,17 @@ import static org.hamcrest.Matchers.notNullValue;
  * tested on an Nexus 5 Emulator with Android 25
  * Must have an instance of the ListWidget on the Homescreen, when starting this test
  * Also the default version of Getting Started with Orgzly must be the only notebook
+ *
+ * see also https://developer.android.com/training/testing/ui-testing/uiautomator-testing.html
  */
 public class ListWidgetTest {
 
     private static final String HEADER_FILTER = "com.orgzly:id/list_widget_header_filter";
+    private static final String HEADER_ICON = "com.orgzly:id/list_widget_header_icon";
     private static final String HEADER_ADD = "com.orgzly:id/list_widget_header_add";
     private static final String ITEM_DONE = "com.orgzly:id/item_list_widget_done";
     private static final String ITEM_TITLE = "com.orgzly:id/item_list_widget_title";
+    private static final String ORGZLY_SEARCH = "com.orgzly:id/activity_action_search";
     private UiDevice device;
 
     @Before
@@ -63,6 +67,13 @@ public class ListWidgetTest {
         findObject(By.res(ITEM_TITLE)).click();
 
         assertThat(findObject(By.text("Getting Started with Orgzly")), notNullValue());
+    }
+
+    @Test
+    public void openOrgzly() throws Exception {
+        findObject(By.res(HEADER_ICON)).click();
+
+        assertThat(findObject(By.res(ORGZLY_SEARCH)), notNullValue());
     }
 
     private UiObject2 findObject(BySelector by) {

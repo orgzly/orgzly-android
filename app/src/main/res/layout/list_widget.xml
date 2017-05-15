@@ -13,6 +13,7 @@
         android:elevation="1dp" tools:targetApi="21">
 
         <ImageView
+            android:id="@+id/list_widget_header_icon"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginLeft="6dp"
