@@ -229,12 +229,12 @@ public class BookParsingTest extends OrgzlyTest {
      * Loading images as books ...
      */
 
-    @Test
-    public void testLoadingLargerJpg() {
-        if (runResourcesDemandingTest()) {
-            onBookFile("images/IMG_2932.org").onLoadFailed();
-        }
-    }
+//    @Test
+//    public void testLoadingLargerJpg() {
+//        if (runResourcesDemandingTest()) {
+//            onBookFile("images/IMG_2932.org").onLoadFailed();
+//        }
+//    }
 
     @Test
     public void testLoadingSmallPng() {
