@@ -1,5 +1,6 @@
 package com.orgzly.android.widgets;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -13,7 +14,6 @@ import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.RemoteViews;
-import com.evernote.android.job.JobManager;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
@@ -23,6 +23,8 @@ import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.ui.MainActivity;
 import com.orgzly.android.ui.ShareActivity;
 import com.orgzly.android.util.LogUtils;
+
+import java.util.Calendar;
 
 /**
  * The AppWidgetProvider for the list widget
@@ -119,13 +121,14 @@ public class ListWidgetProvider extends AppWidgetProvider {
         filter.addAction(AppIntent.ACTION_LIST_WIDGET_UPDATE_LAYOUT);
 
         LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
-        ListWidgetUpdateJob.ensureScheduled();
+
+        scheduleUpdate(context);
     }
 
     @Override
     public void onDisabled(Context context) {
         LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
-        JobManager.instance().cancelAllForTag(ListWidgetUpdateJob.TAG);
+        clearUpdate(context);
     }
 
     @Override
@@ -137,6 +140,38 @@ public class ListWidgetProvider extends AppWidgetProvider {
         }
     }
 
+    private static void scheduleUpdate(Context context) {
+        /*
+         schedule updates via AlarmManager, because we don't want to wake the device on every update
+         see https://developer.android.com/guide/topics/appwidgets/index.html#MetaData
+         */
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        PendingIntent intent = getAlarmIntent(context);
+        alarmManager.cancel(intent);
+
+        /* repeat after every full hour because results of search can change on new day
+            because of timezones repeat every hour instead of every day */
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.HOUR_OF_DAY, 1);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 1);
+        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR, intent);
+    }
+
+    private static void clearUpdate(Context context) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        alarmManager.cancel(getAlarmIntent(context));
+    }
+
+    private static PendingIntent getAlarmIntent(Context context) {
+        Intent intent = new Intent(context, ListWidgetProvider.class);
+        intent.setAction(AppIntent.ACTION_LIST_WIDGET_UPDATE);
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
     private static void setFilterFromIntent(Context context, Intent intent) {
         int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         long filterId = intent.getLongExtra(EXTRA_FILTER_ID, 0);
@@ -145,6 +180,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         updateAppWidgetLayout(context, appWidgetManager, appWidgetId);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.list_widget_list_view);
     }
 
     private static Filter getFilter(Context context, int appWidgetId) {
