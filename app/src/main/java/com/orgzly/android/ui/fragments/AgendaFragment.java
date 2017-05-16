@@ -157,6 +157,8 @@ public class AgendaFragment extends NoteListFragment
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (mListAdapter.getItemViewType((int) id) == AgendaListViewAdapter.TYPE_SEPARATOR)
+                    return true;
                 mListener.onNoteLongClick(AgendaFragment.this, view, position, id);
                 return true;
             }
@@ -409,82 +411,13 @@ public class AgendaFragment extends NoteListFragment
             allCursors.add(agenda.get(date));
         }
         MergeCursor mCursor = new MergeCursor(allCursors.toArray(new Cursor[allCursors.size()]));
-
-
-//        MatrixCursor header = new MatrixCursor(new String[]{BaseColumns._ID, "day", "separator"});
-//        MatrixCursor.RowBuilder headerRow = header.newRow();
-//        headerRow.add(-1);
-//        headerRow.add(getQuery().getScheduled().toString());
-//        headerRow.add(1);
-//
-//        MatrixCursor extras = null;
-//        cursor.moveToPosition(-1);
-        int schedTimeIdx = cursor.getColumnIndex(NotesView.Columns.SCHEDULED_TIME_STRING);
-//        int schedTimeEndIdx = cursor.getColumnIndex(NotesView.Columns.SCHEDULED_TIME_END_STRING);
-//        int schedTimestampIdx = cursor.getColumnIndex(NotesView.Columns.SCHEDULED_TIME_TIMESTAMP);
-//        while(cursor.moveToNext()) {
-//            System.out.println("position: " + cursor.getPosition());
-//            System.out.println("sched time: " + cursor.getString(schedTimeIdx));
-//            System.out.println("sched time range: " + cursor.getString(schedRangeIdx));
-//            String rangeStr = cursor.getString(schedRangeIdx);
-//            // normal timestamp, range or repeater
-//            if (rangeStr.contains("--")) {
-//                OrgRange range = OrgRange.getInstanceOrNull(rangeStr);
-//                if( range != null) {
-//                    OrgDateTime end = range.getEndTime();
-//                    System.out.println("range end: " + end);
-//                    Calendar cal = range.getStartTime().getCalendar();
-//                    cal.add(Calendar.DAY_OF_YEAR, 1);
-//                    OrgDateTime start = AgendaHelper.buildFromCal(cal);
-//                    extras = cloneCursor(cursor, start);
-//                    System.out.println("start+1: " + start);
-//                }
-//            }
-//            System.out.println("sched time end: " + cursor.getString(schedTimeEndIdx));
-//            System.out.println("sched timestamp:" + cursor.getString(schedTimestampIdx));
-//        }
-//
-//
-//
-//        MatrixCursor tail = new MatrixCursor(new String[]{BaseColumns._ID, "day", "separator"});
-//        MatrixCursor.RowBuilder endRow = tail.newRow();
-//        endRow.add(-1);
-//        endRow.add("29-Jul Mon");
-//        endRow.add(1);
-//
-//        cursor.moveToFirst();
-//        MergeCursor mCursor = new MergeCursor(new Cursor[]{cursor, header, extras, tail});
-
-        // go through expanded and sorted cursors and collect separators
-//        for(mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor.moveToNext()) {
-//            int idx = mCursor.getColumnIndex("separator");
-//            if (idx != -1 && mCursor.getInt(idx) > 0)
-//                mListAdapter.addSeparatorItem((int) mCursor.getLong(mCursor.getColumnIndex(BaseColumns._ID)) / 1000);
-//        }
-
-
-        System.out.println("************************");
-//        for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor.moveToNext()) {
-//            switch (mListAdapter.getItemViewType(mCursor.getPosition())) {
-//                case AgendaListViewAdapter.TYPE_ITEM:
-//                    System.out.println(mCursor.getPosition() + " ) " + mCursor.getString(schedTimeIdx));
-//                    break;
-//                case AgendaListViewAdapter.TYPE_SEPARATOR:
-//                    int idx = mCursor.getColumnIndex("day");
-//                    System.out.println(mCursor.getPosition() + " -- " + mCursor.getString(idx));
-//            }
-//
-//
-//        }
-        System.out.println("************************");
+        // do I need to move to first?
         mCursor.moveToFirst();
-
         /**
          * Swapping instead of changing Cursor here, to keep the old one open.
          * Loader should release the old Cursor - see note in
          * {@link LoaderManager.LoaderCallbacks#onLoadFinished).
          */
-//        mListAdapter.swapCursor(cursor);
         mListAdapter.swapCursor(mCursor);
 
         mActionModeListener.updateActionModeForSelection(mSelection, new MyActionMode());
@@ -496,11 +429,11 @@ public class AgendaFragment extends NoteListFragment
             mActionModeTag = null;
         }
 
-        if (mListAdapter.getCount() > 0) {
+//        if (mListAdapter.getCount() > 0) {
             mViewFlipper.setDisplayedChild(0);
-        } else {
-            mViewFlipper.setDisplayedChild(1);
-        }
+//        } else {
+//            mViewFlipper.setDisplayedChild(1);
+//        }
     }
 
     @Override

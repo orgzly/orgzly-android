@@ -29,7 +29,6 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
     private static final int TYPE_COUNT = 2;
     public static final int TYPE_ITEM = 0;
     public static final int TYPE_SEPARATOR = 1;
-//    public static final int IS_ITEM_SEPARATOR_TAG = 1000;
     private Set<Integer> separators = new HashSet<>();
     private LayoutInflater inflater;
 
@@ -56,9 +55,10 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
         // otherwise create a new view
         boolean isSeperator = (boolean) convertView.getTag(R.id.IS_AGENDA_ITEM_SEPARATOR);
         int id = getCursor().getInt(getCursor().getColumnIndex(BaseColumns._ID));
-        if (separators.contains(id) != isSeperator)
+        if (separators.contains(id) != isSeperator) {
             // do not use @convertView
             convertView = null;
+        }
         System.out.println("Position is: " + position);
         return super.getView(position, convertView, parent);
     }
@@ -67,8 +67,6 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         int id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
         if (separators.contains(id)) {
-//            View view = inflater.inflate(R.layout.agenda_day_head, parent);
-//            TextView textView = (TextView) view.findViewById(R.id.agenda_day_head);
             TextView textView = new TextView(context);
             textView.setId(id);
             textView.setText(cursor.getString(cursor.getColumnIndex("day")));
@@ -87,8 +85,7 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
         if (view == null)
             System.out.println();
         if (separators.contains(id)) {
-            
-            TextView textView = (TextView) view.findViewById(id);
+            TextView textView = (TextView) view;
             if (textView == null)
                 System.out.println();
             textView.setText(cursor.getString(cursor.getColumnIndex("day")));
