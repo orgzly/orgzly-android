@@ -551,11 +551,12 @@
         <item name="android:paddingRight">0dp</item>
     </style>
 
-    <style name="ListViewItemPadding">
+    <style name="ListViewItem">
         <item name="android:paddingTop">@dimen/item_head_padding</item>
         <item name="android:paddingBottom">@dimen/item_head_padding</item>
         <item name="android:paddingLeft">@dimen/fragment_horizontal_padding</item>
         <item name="android:paddingRight">@dimen/fragment_horizontal_padding</item>
+        <item name="android:minHeight">@dimen/item_head_min_height</item>
     </style>
 
     <style name="BigCenteredText">

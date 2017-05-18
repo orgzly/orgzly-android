@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -7,8 +8,8 @@
 
     <ListView
         android:id="@+id/filter_select_list"
+        style="@style/ListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        style="@style/ListView"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
