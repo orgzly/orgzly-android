@@ -7,10 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -21,7 +18,7 @@ import com.orgzly.R;
 import com.orgzly.android.Notifications;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
-import com.orgzly.android.ui.MainActivity;
+import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgDateTimeUtils;
@@ -54,11 +51,6 @@ public class ReminderService extends IntentService {
         setIntentRedelivery(true);
     }
 
-    /**
-     * Receives events
-     *
-     * @param intent
-     */
     @Override
     protected void onHandleIntent(Intent intent) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
@@ -201,6 +193,7 @@ public class ReminderService extends IntentService {
             try {
                 for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                     long noteId = cursor.getLong(ProviderContract.Times.ColumnIndex.NOTE_ID);
+                    long bookId = cursor.getLong(ProviderContract.Times.ColumnIndex.BOOK_ID);
                     String noteState = cursor.getString(ProviderContract.Times.ColumnIndex.NOTE_STATE);
                     String noteTitle = cursor.getString(ProviderContract.Times.ColumnIndex.NOTE_TITLE);
                     String orgTimestampString = cursor.getString(ProviderContract.Times.ColumnIndex.ORG_TIMESTAMP_STRING);
@@ -217,7 +210,7 @@ public class ReminderService extends IntentService {
                                 time = time.plusHours(9); // TODO: Move to preferences
                             }
 
-                            result.add(new NoteWithTime(noteId, noteTitle, time, orgDateTime));
+                            result.add(new NoteWithTime(noteId, bookId, noteTitle, time, orgDateTime));
                         }
                     }
                 }
@@ -247,14 +240,16 @@ public class ReminderService extends IntentService {
         return result;
     }
 
-    public static class NoteWithTime {
+    static class NoteWithTime {
         public long id;
+        public long bookId;
         public String title;
         public DateTime time;
         OrgDateTime orgDateTime;
 
-        public NoteWithTime(long id, String title, DateTime time, OrgDateTime orgDateTime) {
+        NoteWithTime(long id, long bookId, String title, DateTime time, OrgDateTime orgDateTime) {
             this.id = id;
+            this.bookId = bookId;
             this.title = title;
             this.time = time;
             this.orgDateTime = orgDateTime;
@@ -267,22 +262,11 @@ public class ReminderService extends IntentService {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // TODO: Open relevant notes, agenda or search results
-        Intent resultIntent = new Intent(context, MainActivity.class);
-        resultIntent.setAction(Intent.ACTION_MAIN);
-
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addParentStack(MainActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setAutoCancel(true)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setColor(ContextCompat.getColor(context, R.color.notification))
-                .setSmallIcon(R.drawable.cic_orgzly_notification)
-                .setContentIntent(resultPendingIntent);
+                .setSmallIcon(R.drawable.cic_orgzly_notification);
 
         /* Set notification sound. */
 //        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -294,6 +278,10 @@ public class ReminderService extends IntentService {
             builder.setContentTitle(note.title);
             builder.setContentText(context.getString(
                     R.string.scheduled_using_time, note.orgDateTime.toStringWithoutBrackets()));
+
+            /* Open note on notification click. */
+            PendingIntent intent = ActivityUtils.mainActivityPendingIntent(context, note.bookId, note.id);
+            builder.setContentIntent(intent);
 
             notificationManager.notify(String.valueOf(note.id), Notifications.REMINDER, builder.build());
         }

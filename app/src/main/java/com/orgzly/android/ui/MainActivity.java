@@ -199,7 +199,7 @@ public class MainActivity extends CommonActivity
             /* Display requested book and note. */
             if (bookId > 0) {
                 mDisplayManager.displayBook(bookId, noteId);
-                if(noteId > 0) {
+                if (noteId > 0) {
                     mDisplayManager.displayNote(bookId, noteId);
                 }
             }

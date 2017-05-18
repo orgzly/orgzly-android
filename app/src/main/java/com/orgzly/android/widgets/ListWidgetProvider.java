@@ -20,8 +20,8 @@ import com.orgzly.android.AppIntent;
 import com.orgzly.android.Filter;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.provider.clients.FiltersClient;
-import com.orgzly.android.ui.MainActivity;
 import com.orgzly.android.ui.ShareActivity;
+import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 
 import java.util.Calendar;
@@ -223,14 +223,8 @@ public class ListWidgetProvider extends AppWidgetProvider {
         long noteId = intent.getLongExtra(ListWidgetProvider.EXTRA_NOTE_ID, 0L);
         long bookId = intent.getLongExtra(ListWidgetProvider.EXTRA_BOOK_ID, 0L);
 
-        Intent launchIntent = new Intent(context, MainActivity.class);
-        launchIntent.putExtra(MainActivity.EXTRA_NOTE_ID, noteId);
-        launchIntent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
-        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        launchIntent.setData(Uri.parse(launchIntent.toUri(Intent.URI_INTENT_SCHEME)));
-
         try {
-            PendingIntent.getActivity(context, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT).send();
+            ActivityUtils.mainActivityPendingIntent(context, bookId, noteId).send();
         } catch (PendingIntent.CanceledException e) {
             Log.e(TAG, "Error opening note: " + e);
         }

@@ -1,6 +1,7 @@
 package com.orgzly.android.ui.util;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -16,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.ui.MainActivity;
 import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
@@ -49,8 +51,8 @@ public class ActivityUtils {
 //        new Handler().postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
-                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(finalView.getWindowToken(), 0);
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(finalView.getWindowToken(), 0);
 //            }
 //        }, 100);
     }
@@ -174,5 +176,18 @@ public class ActivityUtils {
         intent.setData(Uri.parse("package:" + BuildConfig.APPLICATION_ID));
 
         activity.startActivity(intent);
+    }
+
+    public static PendingIntent mainActivityPendingIntent(Context context, long bookId, long noteId) {
+        Intent intent = new Intent(context, MainActivity.class);
+
+        intent.putExtra(MainActivity.EXTRA_NOTE_ID, noteId);
+        intent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+
+        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
