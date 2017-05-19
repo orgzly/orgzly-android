@@ -6,6 +6,8 @@ import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.view.ActionMode;
@@ -164,6 +166,8 @@ public class AgendaFragment extends NoteListFragment
             }
         });
 
+        // noteId needs to be translated since they are different now!
+
         getListView().setOnItemMenuButtonClickListener(
                 new GesturedListView.OnItemMenuButtonClickListener() {
                     @Override
@@ -193,6 +197,10 @@ public class AgendaFragment extends NoteListFragment
                                 mListener.onNoteScrollToRequest(noteId);
                                 break;
                         }
+                        // refresh fragment
+                        Fragment fragment = AgendaFragment.this;
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.detach(fragment).attach(fragment).commit();
 
                         return false;
                     }
@@ -384,6 +392,7 @@ public class AgendaFragment extends NoteListFragment
             day.add(Calendar.DAY_OF_YEAR, 1);
         } while (++i < AGENDAY_DAYS);
 
+        int nextID = Integer.MAX_VALUE;
         int schedRangeIdx = cursor.getColumnIndex(NotesView.Columns.SCHEDULED_RANGE_STRING);
         for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             String schedRangeStr = cursor.getString(schedRangeIdx);
@@ -393,8 +402,12 @@ public class AgendaFragment extends NoteListFragment
                 MatrixCursor matrixCursor = agenda.get(date);
                 MatrixCursor.RowBuilder rowBuilder = matrixCursor.newRow();
                 System.out.println("ID: " + cursor.getString(cursor.getColumnIndex(BaseColumns._ID)));
-                for (String col: cols)
-                    rowBuilder.add(cursor.getString(cursor.getColumnIndex(col)));
+                for (String col: cols) {
+//                    if (col.equalsIgnoreCase(BaseColumns._ID) && dates.size() > 1)
+//                        rowBuilder.add(nextID--);
+//                    else
+                        rowBuilder.add(cursor.getString(cursor.getColumnIndex(col)));
+                }
             }
         }
         // merge all together
