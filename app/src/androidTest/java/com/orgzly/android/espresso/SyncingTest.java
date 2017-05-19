@@ -26,6 +26,7 @@ import static android.support.test.espresso.contrib.DrawerActions.open;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.onSpinnerString;
@@ -72,6 +73,38 @@ public class SyncingTest extends OrgzlyTest {
 
         onView(allOf(withText("booky"), isDisplayed())).perform(click());
         onView(withText("New content")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testSyncAfterNoteCreatedPreference() {
+        shelfTestUtils.setupRepo("mock://repo-a");
+        shelfTestUtils.setupRook("mock://repo-a", "mock://repo-a/booky.org", "", "abc", 1234567890000L);
+        activityRule.launchActivity(null);
+        sync();
+
+        // Set preference
+        onActionItemClick(R.id.activity_action_settings, R.string.settings);
+        onListItem(EspressoUtils.SETTINGS_SYNC_AFTER).perform(click());
+
+        // Open book
+        onView(withId(R.id.drawer_layout)).perform(open());
+        onView(allOf(withText(R.string.notebooks), isDisplayed())).perform(click());
+        onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
+        onView(allOf(withText("booky"), isDisplayed())).check(matches(isDisplayed()));
+        onListItem(0).perform(click());
+
+        // Add note
+        onView(withId(R.id.fab)).perform(click());
+        onView(withId(R.id.fragment_note_title))
+                .perform(replaceText("new note created by test"), closeSoftKeyboardWithDelay());
+        onView(withId(R.id.done)).perform(click());
+
+        // Check it is synced
+        onView(withId(R.id.drawer_layout)).perform(open());
+        onView(allOf(withText(R.string.notebooks), isDisplayed())).perform(click());
+        onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
+        onView(allOf(withText("booky"), isDisplayed())).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.item_book_modified_after_sync_icon))).check(matches(not(isDisplayed())));
     }
 
     @Test

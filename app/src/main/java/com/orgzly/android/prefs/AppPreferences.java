@@ -457,4 +457,10 @@ public class AppPreferences {
         String key = context.getResources().getString(R.string.pref_key_reminder_service_last_run);
         return getStateSharedPreferences(context).getLong(key, 0L);
     }
+
+    public static boolean syncAfterNewNoteCreated(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_sync_after),
+                context.getResources().getBoolean(R.bool.pref_default_value_sync_after));
+    }
 }

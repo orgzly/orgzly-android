@@ -195,6 +195,13 @@
                 android:targetPackage="com.orgzly"
                 android:targetClass="com.orgzly.android.ui.ReposActivity"/>
         </Preference>
+
+        <CheckBoxPreference
+            android:title="@string/sync_after_preference_title"
+            android:key="@string/pref_key_sync_after"
+            android:summary="@string/sync_after_summary"
+            android:defaultValue="@bool/pref_default_value_sync_after"
+            />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefs_title_notifications">
