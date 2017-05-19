@@ -3,6 +3,7 @@ package com.orgzly.android.reminders;
 import android.support.annotation.NonNull;
 
 import com.evernote.android.job.Job;
+import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
 
 public class ReminderJob extends Job {
@@ -21,5 +22,9 @@ public class ReminderJob extends Job {
                 .setPersisted(true)
                 .build()
                 .schedule();
+    }
+
+    public static void cancelAll() {
+        JobManager.instance().cancelAllForTag(ReminderJob.TAG);
     }
 }

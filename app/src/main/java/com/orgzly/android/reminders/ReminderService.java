@@ -99,8 +99,7 @@ public class ReminderService extends IntentService {
     private void onDataChanged(DateTime now, DateTime prevRun) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, prevRun);
 
-        /* Cancel all jobs. */
-        JobManager.instance().cancelAllForTag(ReminderJob.TAG);
+        ReminderJob.cancelAll();
 
         DateTime fromTime = prevRun;
         if (prevRun == null) {
@@ -150,8 +149,7 @@ public class ReminderService extends IntentService {
     private void onJobTriggered(DateTime now, DateTime prevRun) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, prevRun);
 
-        /* Cancel all jobs. */
-        JobManager.instance().cancelAllForTag(ReminderJob.TAG);
+        ReminderJob.cancelAll();
 
         if (prevRun != null) {
             /* Show notifications for all notes with times from previous run until now. */
