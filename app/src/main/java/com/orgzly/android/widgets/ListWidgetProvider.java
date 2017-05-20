@@ -78,17 +78,16 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
         remoteViews.setOnClickPendingIntent(R.id.list_widget_header_add, ShareActivity.createNewNoteIntent(context));
 
-        /* bring orgzly back to front, see http://stackoverflow.com/a/5502950/7757713 */
+        /* open query on click on orgzly logo */
         Intent openIntent = new Intent(context, MainActivity.class);
-        openIntent.setAction(Intent.ACTION_MAIN);
-        openIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        openIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        openIntent.putExtra(MainActivity.EXTRA_QUERY_STRING, filter.getQuery());
+        serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
         remoteViews.setOnClickPendingIntent(R.id.list_widget_header_icon, PendingIntent.getActivity(context, 0, openIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
         Intent filterSelectIntent = new Intent(context, FilterSelectDialogActivity.class);
         filterSelectIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         filterSelectIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
-        remoteViews.setOnClickPendingIntent(R.id.list_widget_header_filter, PendingIntent.getActivity(context, 0, filterSelectIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+        remoteViews.setOnClickPendingIntent(R.id.list_widget_header_bar, PendingIntent.getActivity(context, 0, filterSelectIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
         remoteViews.setTextViewText(
                 R.id.list_widget_header_filter,

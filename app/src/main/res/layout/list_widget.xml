@@ -22,6 +22,7 @@
             android:src="@drawable/cic_orgzly_logo" />
 
         <LinearLayout
+            android:id="@+id/list_widget_header_bar"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent">
