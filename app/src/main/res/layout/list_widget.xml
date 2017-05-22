@@ -13,6 +13,7 @@
         android:elevation="1dp" tools:targetApi="21">
 
         <ImageView
+            android:id="@+id/list_widget_header_icon"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginLeft="6dp"
@@ -21,6 +22,7 @@
             android:src="@drawable/cic_orgzly_logo" />
 
         <LinearLayout
+            android:id="@+id/list_widget_header_bar"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent">

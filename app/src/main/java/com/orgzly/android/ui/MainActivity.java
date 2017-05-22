@@ -36,9 +36,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Book;
 import com.orgzly.android.BookName;
-import com.orgzly.android.AppIntent;
 import com.orgzly.android.Filter;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotesBatch;
@@ -103,6 +103,7 @@ public class MainActivity extends CommonActivity
 
     public static final String EXTRA_BOOK_ID = "book_id";
     public static final String EXTRA_NOTE_ID = "note_id";
+    public static final String EXTRA_QUERY_STRING = "query_string";
 
     public SyncFragment mSyncFragment;
 
@@ -193,6 +194,7 @@ public class MainActivity extends CommonActivity
         if (savedInstanceState == null) { // Not a configuration change.
             long bookId = getIntent().getLongExtra(EXTRA_BOOK_ID, 0L);
             long noteId = getIntent().getLongExtra(EXTRA_NOTE_ID, 0L);
+            String queryString = getIntent().getStringExtra(EXTRA_QUERY_STRING);
 
             mDisplayManager.displayBooks(false);
 
@@ -202,6 +204,8 @@ public class MainActivity extends CommonActivity
                 if (noteId > 0) {
                     mDisplayManager.displayNote(bookId, noteId);
                 }
+            } else if (queryString != null) {
+                mDisplayManager.displayQuery(queryString);
             }
         }
     }
