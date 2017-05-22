@@ -20,6 +20,7 @@ import com.orgzly.android.AppIntent;
 import com.orgzly.android.Filter;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.provider.clients.FiltersClient;
+import com.orgzly.android.ui.MainActivity;
 import com.orgzly.android.ui.ShareActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
