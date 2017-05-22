@@ -59,7 +59,7 @@ import com.orgzly.org.OrgProperty;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgRange;
 import com.orgzly.org.OrgHead;
-import com.orgzly.android.StateChangeLogic;
+import com.orgzly.org.utils.StateChangeLogic;
 import com.orgzly.org.parser.OrgParserWriter;
 
 import java.util.ArrayList;

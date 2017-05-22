@@ -16,7 +16,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.SearchQuery;
-import com.orgzly.android.StateChangeLogic;
+import com.orgzly.org.utils.StateChangeLogic;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.actions.ActionRunner;
 import com.orgzly.android.provider.actions.CutNotesAction;
