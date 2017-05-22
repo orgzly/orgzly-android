@@ -9,7 +9,6 @@ import java.util.Set;
  * State setting logic.
  */
 public class StateChangeLogic {
-    final private Set<String> todoKeywords;
     final private Set<String> doneKeywords;
 
     private String state;
@@ -18,8 +17,7 @@ public class StateChangeLogic {
     private OrgRange deadline;
     private OrgRange closed;
 
-    public StateChangeLogic(Set<String> todoKeywords, Set<String> doneKeywords) {
-        this.todoKeywords = todoKeywords;
+    public StateChangeLogic(Set<String> doneKeywords) {
         this.doneKeywords = doneKeywords;
     }
 
@@ -32,7 +30,7 @@ public class StateChangeLogic {
         this.deadline = deadlineTime;
 
         if (doneKeywords.contains(targetState)) { /* Target state is a done state. */
-            if (todoKeywords.contains(originalState)) {
+            if (! doneKeywords.contains(originalState)) { /* Original state is not done. */
                 boolean shifted = false;
 
                 if (scheduled != null) {
@@ -55,11 +53,6 @@ public class StateChangeLogic {
                     state = targetState;
                     closed = OrgRange.getInstance(OrgDateTime.getInstance(false));
                 }
-
-            } else {
-                /* Set state and update closed time. */
-                state = targetState;
-                closed = OrgRange.getInstance(OrgDateTime.getInstance(false));
             }
 
         } else { /* Target keyword is a to-do state.

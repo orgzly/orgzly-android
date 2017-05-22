@@ -1107,10 +1107,7 @@ public class NoteFragment extends Fragment
     }
 
     private void updateNoteForStateChange(Context context, Note note, String state) {
-        StateChangeLogic stateSetOp = new StateChangeLogic(
-                AppPreferences.todoKeywordsSet(context),
-                AppPreferences.doneKeywordsSet(context)
-        );
+        StateChangeLogic stateSetOp = new StateChangeLogic(AppPreferences.doneKeywordsSet(context));
 
         stateSetOp.setState(state,
                 note.getHead().getState(),

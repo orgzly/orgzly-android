@@ -1174,10 +1174,7 @@ public class Provider extends ContentProvider {
 
         try {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                StateChangeLogic stateSetOp = new StateChangeLogic(
-                        AppPreferences.todoKeywordsSet(getContext()),
-                        AppPreferences.doneKeywordsSet(getContext())
-                );
+                StateChangeLogic stateSetOp = new StateChangeLogic(AppPreferences.doneKeywordsSet(getContext()));
 
                 stateSetOp.setState(state,
                         cursor.getString(3),

@@ -137,6 +137,22 @@ public class NoteFragmentTest extends OrgzlyTest {
     }
 
     @Test
+    public void testStateToDoneForNoteShouldShiftTime() {
+        onListItem(4).perform(click());
+
+        onView(withText("NOTE")).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(userDateTime("<2015-01-11 Sun .+1d/2d>")), isDisplayed())));
+        onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
+
+        onView(withId(R.id.fragment_note_state)).perform(click());
+        onView(withText("DONE")).perform(click());
+
+        onView(withText("NOTE")).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(not(withText(userDateTime("<2015-01-11 Sun .+1d/2d>")))));
+        onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
+    }
+
+    @Test
     public void testChangingStateSettingsFromNoteFragment() {
         onListItem(1).perform(click());
         settingsSetTodoKeywords("");
