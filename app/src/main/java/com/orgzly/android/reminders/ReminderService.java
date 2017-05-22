@@ -193,6 +193,7 @@ public class ReminderService extends IntentService {
                 for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                     long noteId = cursor.getLong(ProviderContract.Times.ColumnIndex.NOTE_ID);
                     long bookId = cursor.getLong(ProviderContract.Times.ColumnIndex.BOOK_ID);
+                    String bookName = cursor.getString(ProviderContract.Times.ColumnIndex.BOOK_NAME);
                     String noteState = cursor.getString(ProviderContract.Times.ColumnIndex.NOTE_STATE);
                     String noteTitle = cursor.getString(ProviderContract.Times.ColumnIndex.NOTE_TITLE);
                     String orgTimestampString = cursor.getString(ProviderContract.Times.ColumnIndex.ORG_TIMESTAMP_STRING);
@@ -209,7 +210,7 @@ public class ReminderService extends IntentService {
                                 time = time.plusHours(9); // TODO: Move to preferences
                             }
 
-                            result.add(new NoteWithTime(noteId, bookId, noteTitle, time, orgDateTime));
+                            result.add(new NoteWithTime(noteId, bookId, bookName, noteTitle, time, orgDateTime));
                         }
                     }
                 }
@@ -242,13 +243,15 @@ public class ReminderService extends IntentService {
     static class NoteWithTime {
         public long id;
         public long bookId;
+        public String bookName;
         public String title;
         public DateTime time;
         OrgDateTime orgDateTime;
 
-        NoteWithTime(long id, long bookId, String title, DateTime time, OrgDateTime orgDateTime) {
+        NoteWithTime(long id, long bookId, String bookName, String title, DateTime time, OrgDateTime orgDateTime) {
             this.id = id;
             this.bookId = bookId;
+            this.bookName = bookName;
             this.title = title;
             this.time = time;
             this.orgDateTime = orgDateTime;
@@ -278,18 +281,22 @@ public class ReminderService extends IntentService {
             String notificationTag = String.valueOf(note.id);
             int notificationId = Notifications.REMINDER;
 
-            builder.setContentTitle(note.title);
-            builder.setContentText(context.getString(
-                    R.string.scheduled_using_time, note.orgDateTime.toStringWithoutBrackets()));
+            String line = context.getString(R.string.scheduled_using_time, note.orgDateTime.toStringWithoutBrackets());
 
-            // builder.setStyle(new NotificationCompat.InboxStyle().setSummaryText(note.bookName));
+            builder.setContentTitle(note.title);
+            builder.setContentText(line);
+
+            builder.setStyle(new NotificationCompat.InboxStyle()
+                    .setSummaryText(note.bookName)
+                    .addLine(line)
+            );
 
             /* Open note on notification click. */
             PendingIntent openPi = ActivityUtils.mainActivityPendingIntent(context, note.bookId, note.id);
             builder.setContentIntent(openPi);
 
             builder.addAction(
-                    R.drawable.ic_done_black_24dp,
+                    R.drawable.ic_done_white_24dp,
                     getString(R.string.done),
                     markNoteAsDonePendingIntent(context, note.id, notificationTag, notificationId));
 

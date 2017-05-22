@@ -447,9 +447,10 @@ public class ProviderContract {
         class ColumnIndex {
             public static final int NOTE_ID = 0;
             public static final int BOOK_ID = 1;
-            public static final int NOTE_STATE = 2;
-            public static final int ORG_TIMESTAMP_STRING = 3;
-            public static final int NOTE_TITLE = 4;
+            public static final int BOOK_NAME = 2;
+            public static final int NOTE_STATE = 3;
+            public static final int ORG_TIMESTAMP_STRING = 4;
+            public static final int NOTE_TITLE = 5;
         }
 
 
