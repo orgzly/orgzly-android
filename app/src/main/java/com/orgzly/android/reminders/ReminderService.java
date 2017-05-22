@@ -1,7 +1,6 @@
 package com.orgzly.android.reminders;
 
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -15,6 +14,8 @@ import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.ActionService;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Notifications;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
@@ -254,7 +255,7 @@ public class ReminderService extends IntentService {
         }
     }
 
-    public static void showNotification(Context context, List<NoteWithTime> notes) {
+    private void showNotification(Context context, List<NoteWithTime> notes) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, context, notes);
 
         NotificationManager notificationManager =
@@ -262,7 +263,8 @@ public class ReminderService extends IntentService {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setAutoCancel(true)
-                .setPriority(Notification.PRIORITY_MAX)
+                .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setColor(ContextCompat.getColor(context, R.color.notification))
                 .setSmallIcon(R.drawable.cic_orgzly_notification);
 
@@ -273,16 +275,44 @@ public class ReminderService extends IntentService {
         for (int i = 0; i < notes.size(); i++) {
             NoteWithTime note = notes.get(i);
 
+            String notificationTag = String.valueOf(note.id);
+            int notificationId = Notifications.REMINDER;
+
             builder.setContentTitle(note.title);
             builder.setContentText(context.getString(
                     R.string.scheduled_using_time, note.orgDateTime.toStringWithoutBrackets()));
 
-            /* Open note on notification click. */
-            PendingIntent intent = ActivityUtils.mainActivityPendingIntent(context, note.bookId, note.id);
-            builder.setContentIntent(intent);
+            // builder.setStyle(new NotificationCompat.InboxStyle().setSummaryText(note.bookName));
 
-            notificationManager.notify(String.valueOf(note.id), Notifications.REMINDER, builder.build());
+            /* Open note on notification click. */
+            PendingIntent openPi = ActivityUtils.mainActivityPendingIntent(context, note.bookId, note.id);
+            builder.setContentIntent(openPi);
+
+            builder.addAction(
+                    R.drawable.ic_done_black_24dp,
+                    getString(R.string.done),
+                    markNoteAsDonePendingIntent(context, note.id, notificationTag, notificationId));
+
+            notificationManager.notify(notificationTag, notificationId, builder.build());
         }
+    }
+
+    private PendingIntent markNoteAsDonePendingIntent(
+            Context context, long noteId, String notificationTag, int notificationId) {
+        Intent intent = new Intent(context, ActionService.class);
+
+        intent.setAction(AppIntent.ACTION_NOTE_MARK_AS_DONE);
+
+        intent.putExtra(ActionService.EXTRA_NOTE_ID, noteId);
+
+        intent.putExtra(ActionService.EXTRA_NOTIFICATION_TAG, notificationTag);
+        intent.putExtra(ActionService.EXTRA_NOTIFICATION_ID, notificationId);
+
+        return PendingIntent.getService(
+                context,
+                Long.valueOf(noteId).intValue(),
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     /** Notify reminder service about changes that might affect scheduling of reminders. */

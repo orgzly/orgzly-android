@@ -699,13 +699,14 @@ public class Shelf {
     }
 
     public void setStateToDone(long noteId) {
+        /* Get the *first* DONE state from preferences. */
         Set<String> doneStates = AppPreferences.doneKeywordsSet(mContext);
-
         String firstState = doneStates.iterator().hasNext() ? doneStates.iterator().next() : null;
 
         if (firstState != null) {
             Set<Long> ids = new TreeSet<>();
             ids.add(noteId);
+
             setNotesState(ids, firstState);
         }
     }

@@ -58,9 +58,8 @@
 
         <activity android:name="com.orgzly.android.ui.ReposActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
-
-
         </activity>
+
         <!--<activity android:name="com.orgzly.android.ui.ReposActivity"-->
             <!--android:parentActivityName="com.orgzly.android.ui.MainActivity">-->
 
@@ -123,8 +122,11 @@
             android:authorities="com.orgzly">
         </provider>
 
-        <service android:name=".android.sync.SyncService" android:exported="true"/>
-        <service android:name=".android.reminders.ReminderService"/>
+
+        <service android:name=".android.reminders.ReminderService" />
+        <service android:name=".android.sync.SyncService" android:exported="true" />
+        <service android:name=".android.ActionService" />
+
 
         <receiver android:name=".android.BootCompletedReceiver">
             <intent-filter>

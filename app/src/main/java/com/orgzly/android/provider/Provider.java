@@ -1109,22 +1109,22 @@ public class Provider extends ContentProvider {
 
         int notesUpdated;
 
-            /* Select only notes which don't already have the target state. */
+        /* Select only notes which don't already have the target state. */
         String notesSelection = DbNote.Column._ID + " IN (" + ids + ") AND (" +
                                 NotesView.Columns.STATE + " IS NULL OR " + NotesView.Columns.STATE + " != ?)";
 
         String[] selectionArgs = new String[] { targetState };
 
-            /* Select notebooks which will be affected. */
+        /* Select notebooks which will be affected. */
         String booksSelection = DbBook.Column._ID + " IN (SELECT DISTINCT " +
                                 DbNote.Column.BOOK_ID + " FROM " + DbNote.TABLE + " WHERE " + notesSelection + ")";
 
-            /* Notebooks must be updated before notes, because selection checks
-             * for notes what will be affected.
-             */
+        /* Notebooks must be updated before notes, because selection checks
+         * for notes what will be affected.
+         */
         DatabaseUtils.updateBookMtime(db, booksSelection, selectionArgs);
 
-            /* Update notes. */
+        /* Update notes. */
         if (AppPreferences.isDoneKeyword(getContext(), targetState)) {
             notesUpdated = setDoneStateForNotes(db, targetState, notesSelection, selectionArgs);
         } else {
