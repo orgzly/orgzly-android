@@ -203,7 +203,7 @@ public class ReminderService extends IntentService {
                     /* Skip if it's done-type state. */
                     if (noteState == null || !AppPreferences.doneKeywordsSet(context).contains(noteState)) {
                         List<DateTime> times = OrgDateTimeUtils.getTimesInInterval(
-                                orgDateTime, fromTime, beforeTime, 1);
+                                orgDateTime, fromTime, beforeTime, false, 1);
 
                         for (DateTime time : times) {
                             if (!orgDateTime.hasTime()) {

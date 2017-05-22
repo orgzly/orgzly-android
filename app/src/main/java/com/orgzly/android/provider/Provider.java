@@ -243,22 +243,39 @@ public class Provider extends ContentProvider {
                 String afterTime = uri.getQueryParameter(ProviderContract.Times.ContentUri.PARAM_AFTER_TIME);
 
                 table = null;
+
+//                cursor = db.rawQuery("SELECT n._id as note_id, n.book_id, b.name, n.state as note_state, t.string as org_timestamp_string, n.title as note_title\n" +
+//                                   "FROM org_ranges r\n" +
+//                                   "JOIN org_timestamps t ON (r.start_timestamp_id = t._id)\n" +
+//                                   "JOIN notes n ON (r._id = n.scheduled_range_id)\n" +
+//                                   "JOIN books b ON (b._id = n.book_id)\n" +
+//                                   "WHERE t.is_active = 1 AND\n" +
+//                                   "-- Times which either have repeater or are in the future\n" +
+//                                   "-- i.e. times without repeater that are before given time are ignored\n" +
+//                                   "( t.repeater_type IS NOT NULL OR\n" +
+//                                   "  CASE WHEN t.hour IS NOT NULL\n" +
+//                                   "       THEN t.timestamp/1000\n" +
+//                                   "       -- If timestamp doesn't have a time part set,\n" +
+//                                   "       -- assume end-of-day for the purposes of querying\n" +
+//                                   "       -- to make sure they are picked up here.\n" +
+//                                   "       ELSE CAST(strftime('%s', t.timestamp/1000, 'unixepoch', '+1 day') AS INTEGER) END >= ? / 1000\n" +
+//                                   ")", new String[] { afterTime });
+
                 cursor = db.rawQuery("SELECT n._id as note_id, n.book_id, b.name, n.state as note_state, t.string as org_timestamp_string, n.title as note_title\n" +
-                                   "FROM org_ranges r\n" +
-                                   "JOIN org_timestamps t ON (r.start_timestamp_id = t._id)\n" +
-                                   "JOIN notes n ON (r._id = n.scheduled_range_id)\n" +
-                                   "JOIN books b ON (b._id = n.book_id)\n" +
-                                   "WHERE t.is_active = 1 AND\n" +
-                                   "-- Times which either have repeater or are in the future\n" +
-                                   "-- i.e. times without repeater that are before given time are ignored\n" +
-                                   "( t.repeater_type IS NOT NULL OR\n" +
-                                   "  CASE WHEN t.hour IS NOT NULL\n" +
-                                   "       THEN t.timestamp/1000\n" +
-                                   "       -- If timestamp doesn't have a time part set,\n" +
-                                   "       -- assume end-of-day for the purposes of querying\n" +
-                                   "       -- to make sure they are picked up here.\n" +
-                                   "       ELSE CAST(strftime('%s', t.timestamp/1000, 'unixepoch', '+1 day') AS INTEGER) END >= ? / 1000\n" +
-                                   ")", new String[] { afterTime });
+                                     "FROM org_ranges r\n" +
+                                     "JOIN org_timestamps t ON (r.start_timestamp_id = t._id)\n" +
+                                     "JOIN notes n ON (r._id = n.scheduled_range_id)\n" +
+                                     "JOIN books b ON (b._id = n.book_id)\n" +
+                                     "WHERE t.is_active = 1 AND\n" +
+                                     "-- Times that are in the future\n" +
+                                     "( CASE WHEN t.hour IS NOT NULL\n" +
+                                     "       THEN t.timestamp/1000\n" +
+                                     "       -- If timestamp doesn't have a time part set,\n" +
+                                     "       -- assume end-of-day for the purposes of querying\n" +
+                                     "       -- to make sure they are picked up here.\n" +
+                                     "       ELSE CAST(strftime('%s', t.timestamp/1000, 'unixepoch', '+1 day') AS INTEGER) END >= ? / 1000\n" +
+                                     ")", new String[] { afterTime });
+
                 break;
 
             default:
