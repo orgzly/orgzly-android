@@ -264,17 +264,6 @@ public class ReminderService extends IntentService {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .setAutoCancel(true)
-                .setCategory(NotificationCompat.CATEGORY_REMINDER)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setColor(ContextCompat.getColor(context, R.color.notification))
-                .setSmallIcon(R.drawable.cic_orgzly_notification);
-
-        /* Set notification sound. */
-//        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//        builder.setSound(alarmSound);
-
         for (int i = 0; i < notes.size(); i++) {
             NoteWithTime note = notes.get(i);
 
@@ -282,6 +271,17 @@ public class ReminderService extends IntentService {
             int notificationId = Notifications.REMINDER;
 
             String line = context.getString(R.string.scheduled_using_time, note.orgDateTime.toStringWithoutBrackets());
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                    .setAutoCancel(true)
+                    .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                    .setPriority(NotificationCompat.PRIORITY_MAX)
+                    .setColor(ContextCompat.getColor(context, R.color.notification))
+                    .setSmallIcon(R.drawable.cic_orgzly_notification);
+
+            /* Set notification sound. */
+//            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//            builder.setSound(alarmSound);
 
             builder.setContentTitle(note.title);
             builder.setContentText(line);
