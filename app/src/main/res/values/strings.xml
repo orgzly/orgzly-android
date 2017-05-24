@@ -26,6 +26,8 @@
     <string name="value">Value</string>
     <string name="query">Query</string>
     <string name="done">Done</string>
+    <string name="complete">Complete</string>
+    <string name="complete_with_repeater">Complete %s</string>
     <string name="close">Close</string>
     <string name="import_">Import</string> <!-- "import" is reserved -->
     <string name="imported">Imported</string>

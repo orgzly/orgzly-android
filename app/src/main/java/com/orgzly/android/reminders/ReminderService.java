@@ -295,9 +295,14 @@ public class ReminderService extends IntentService {
             PendingIntent openPi = ActivityUtils.mainActivityPendingIntent(context, note.bookId, note.id);
             builder.setContentIntent(openPi);
 
+            /* Action text depending on repeater. */
+            String doneActionText = note.orgDateTime.hasRepeater() ?
+                    getString(R.string.complete_with_repeater, note.orgDateTime.getRepeater().toString()) :
+                    getString(R.string.complete);
+
             builder.addAction(
                     R.drawable.ic_done_white_24dp,
-                    getString(R.string.done),
+                    doneActionText,
                     markNoteAsDonePendingIntent(context, note.id, notificationTag, notificationId));
 
             notificationManager.notify(notificationTag, notificationId, builder.build());
