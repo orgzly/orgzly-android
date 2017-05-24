@@ -295,11 +295,13 @@
     <string name="month">Month</string>
     <string name="year">Year</string>
 
-    <string name="repeat_dialog_title">Repeat After DONE</string>
+    <string name="repeat_dialog_title">Repeat</string>
 
-    <string name="repeater_description_cumulate">Add interval to the previous time (cumulate)</string> <!-- + -->
-    <string name="repeater_description_catch_up">Keep adding interval to the previous time while in past (catch-up)</string> <!-- ++ -->
-    <string name="repeater_description_restart">Add interval to current time (restart)</string> <!-- .+ -->
+    <string name="repeater_explained">After task is marked complete, this repeater will be applied to update the time</string>
+
+    <string name="repeater_description_cumulate">Add period to time</string> <!-- + -->
+    <string name="repeater_description_catch_up">Keep adding period to time until time reaches future</string> <!-- ++ -->
+    <string name="repeater_description_restart">Add period to current time</string> <!-- .+ -->
 
     <!-- Used to take enough space to avoid dialog resizing when current values are being changed. -->
     <string name="repeater_longest_type_desc">@string/repeater_description_catch_up</string>
