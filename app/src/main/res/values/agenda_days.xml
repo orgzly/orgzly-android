@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="agenda_days">
+        <item>1 day</item>
+        <item>1 week</item>
+    </string-array>
+</resources>
