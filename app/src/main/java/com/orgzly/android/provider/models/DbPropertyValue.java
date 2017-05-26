@@ -30,12 +30,12 @@ public class DbPropertyValue {
         long id = DatabaseUtils.getId(
                 db,
                 TABLE,
-                "value = ?",
+                Column.VALUE + " = ?",
                 new String[] { value });
 
         if (id == 0) {
             ContentValues values = new ContentValues();
-            values.put("value", value);
+            values.put(Column.VALUE, value);
 
             id = db.insertOrThrow(TABLE, null, values);
         }

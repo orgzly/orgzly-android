@@ -170,12 +170,12 @@ public class DatabaseMigration {
                     List<String[]> properties = getPropertiesFromContent(content, newContent);
 
                     if (properties.size() > 0) {
-                        int pos = 0;
+                        int pos = 1;
                         for (String[] property: properties) {
                             long nameId = DbPropertyName.getOrInsert(db, property[0]);
                             long valueId = DbPropertyValue.getOrInsert(db, property[1]);
                             long propertyId = DbProperty.getOrInsert(db, nameId, valueId);
-                            DbNoteProperty.getOrInsert(db, noteId, pos, propertyId);
+                            DbNoteProperty.getOrInsert(db, noteId, pos++, propertyId);
                         }
 
                         /* Update content and its line count */

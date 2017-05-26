@@ -39,14 +39,17 @@ public class DbNoteProperty {
         long id = DatabaseUtils.getId(
                 db,
                 TABLE,
-                "note_id = " + noteId + " AND position = " + position + " AND property_id = " + propertyId, null);
+                Column.NOTE_ID + " = " + noteId + " AND " +
+                Column.POSITION + " = " + position + " AND " +
+                Column.PROPERTY_ID + " = " + propertyId,
+                null);
 
 
         if (id == 0) {
             ContentValues values = new ContentValues();
-            values.put("note_id", noteId);
-            values.put("position", position);
-            values.put("property_id", propertyId);
+            values.put(Column.NOTE_ID, noteId);
+            values.put(Column.POSITION, position);
+            values.put(Column.PROPERTY_ID, propertyId);
 
             id = db.insertOrThrow(TABLE, null, values);
         }

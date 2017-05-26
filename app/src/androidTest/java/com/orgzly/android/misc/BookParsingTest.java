@@ -24,11 +24,11 @@ public class BookParsingTest extends OrgzlyTest {
         if (true) return false;
 
         Log.d(TAG, "Deciding whether to run test for" +
-                " MODEL:" + android.os.Build.MODEL +
-                " FINGERPRINT:" + android.os.Build.FINGERPRINT +
-                " BRAND:" + android.os.Build.BRAND +
-                " DEVICE:" + android.os.Build.DEVICE +
-                " HARDWARE:" + android.os.Build.HARDWARE
+                   " MODEL:" + android.os.Build.MODEL +
+                   " FINGERPRINT:" + android.os.Build.FINGERPRINT +
+                   " BRAND:" + android.os.Build.BRAND +
+                   " DEVICE:" + android.os.Build.DEVICE +
+                   " HARDWARE:" + android.os.Build.HARDWARE
         );
 
         switch (android.os.Build.MODEL) {
@@ -116,34 +116,64 @@ public class BookParsingTest extends OrgzlyTest {
     @Test
     public void testProperties() throws IOException {
         onBook("* Note 1\n" +
-                "  :PROPERTIES:\n" +
-                "  :name: value\n" +
-                "  :END:").onLoad()
+               "  :PROPERTIES:\n" +
+               "  :name: value\n" +
+               "  :END:").onLoad()
                 .isWhenSaved("* Note 1\n" +
-                        "  :PROPERTIES:\n" +
-                        "  :name:     value\n" +
-                        "  :END:\n\n");
+                             "  :PROPERTIES:\n" +
+                             "  :name:     value\n" +
+                             "  :END:\n\n");
     }
 
     @Test
     public void testPropertiesMultiple() throws IOException {
         onBook("* Note 1\n" +
-                "  :PROPERTIES:\n" +
-                "  :name2: value2\n" +
-                "  :name1: value1\n" +
-                "  :END:").onLoad()
+               "  :PROPERTIES:\n" +
+               "  :name2: value2\n" +
+               "  :name1: value1\n" +
+               "  :END:").onLoad()
                 .isWhenSaved("* Note 1\n" +
-                        "  :PROPERTIES:\n" +
-                        "  :name2:    value2\n" +
-                        "  :name1:    value1\n" +
-                        "  :END:\n\n");
+                             "  :PROPERTIES:\n" +
+                             "  :name2:    value2\n" +
+                             "  :name1:    value1\n" +
+                             "  :END:\n\n");
+    }
+
+    @Test
+    public void testPropertiesOrder() throws IOException {
+        onBook("* Note 1\n" +
+               "  :PROPERTIES:\n" +
+               "  :LAST_REPEAT: [2017-04-03 Mon 10:26]\n" +
+               "  :STYLE:    habit\n" +
+               "  :CREATED:  [2015-11-23 Mon 01:33]\n" +
+               "  :END:\n" +
+               "* Note 2\n" +
+               "  :PROPERTIES:\n" +
+               "  :CREATED:  [2015-11-23 Mon 01:33]\n" +
+               "  :LAST_REPEAT: [2017-04-03 Mon 10:26]\n" +
+               "  :STYLE:    habit\n" +
+               "  :END:\n").onLoad()
+                .isWhenSaved("* Note 1\n" +
+                             "  :PROPERTIES:\n" +
+                             "  :LAST_REPEAT: [2017-04-03 Mon 10:26]\n" +
+                             "  :STYLE:    habit\n" +
+                             "  :CREATED:  [2015-11-23 Mon 01:33]\n" +
+                             "  :END:\n" +
+                             "\n" +
+                             "* Note 2\n" +
+                             "  :PROPERTIES:\n" +
+                             "  :CREATED:  [2015-11-23 Mon 01:33]\n" +
+                             "  :LAST_REPEAT: [2017-04-03 Mon 10:26]\n" +
+                             "  :STYLE:    habit\n" +
+                             "  :END:\n" +
+                             "\n");
     }
 
     @Test
     public void testPropertiesEmpty() throws IOException {
         onBook("* Note 1\n" +
-                "  :PROPERTIES:\n" +
-                "  :END:").onLoad()
+               "  :PROPERTIES:\n" +
+               "  :END:").onLoad()
                 .isWhenSaved("* Note 1\n");
     }
 

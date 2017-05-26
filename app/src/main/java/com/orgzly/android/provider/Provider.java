@@ -1476,7 +1476,7 @@ public class Provider extends ContentProvider {
                             long noteId = db.insertOrThrow(DbNote.TABLE, null, values);
 
                             /* Insert note's properties. */
-                            int i = 0;
+                            int pos = 1;
                             for (OrgProperty property: node.getHead().getProperties()) {
                                 Long nameId = propertyNames.get(property.getName());
                                 if (nameId == null) {
@@ -1492,7 +1492,7 @@ public class Provider extends ContentProvider {
 
                                 long propertyId = DbProperty.getOrInsert(db, nameId, valueId);
 
-                                DbNoteProperty.getOrInsert(db, noteId, i, propertyId);
+                                DbNoteProperty.getOrInsert(db, noteId, pos++, propertyId);
                             }
 
                             /*
