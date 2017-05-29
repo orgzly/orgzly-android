@@ -195,6 +195,12 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_value_use_reminders_for_scheduled_times));
     }
 
+    public static boolean showSyncNotifications(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_show_sync_notifications),
+                context.getResources().getBoolean(R.bool.pref_default_value_show_sync_notifications));
+    }
+
     public static String colorScheme(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_color_scheme),

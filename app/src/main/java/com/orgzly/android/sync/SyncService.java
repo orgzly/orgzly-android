@@ -16,6 +16,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.BookAction;
 import com.orgzly.android.AppIntent;
+import com.orgzly.android.Notifications;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.repos.DirectoryRepo;
@@ -90,6 +91,8 @@ public class SyncService extends Service {
 
     private void start() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+
+        Notifications.ensureSyncNotificationSetup(this);
 
         Map<String, Repo> repos = shelf.getAllRepos();
 
