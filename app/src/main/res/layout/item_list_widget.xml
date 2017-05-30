@@ -124,10 +124,10 @@
         android:layout_weight="0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="7dp"
         android:layout_gravity="top"
-        android:src="@drawable/ic_done_black_24dp"
+        android:src="@drawable/ic_done_black_18dp"
         android:clickable="true"/>
 </LinearLayout>
