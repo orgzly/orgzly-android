@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,7 +20,9 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.ViewFlipper;
 
 import com.orgzly.BuildConfig;
@@ -38,13 +41,14 @@ import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.views.GesturedListView;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.AgendaHelper;
+import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.datetime.OrgDateTime;
-import com.orgzly.org.datetime.OrgRange;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -56,7 +60,8 @@ import java.util.TreeSet;
 public class AgendaFragment extends NoteListFragment
         implements
         TimestampDialogFragment.OnDateTimeSetListener,
-        LoaderManager.LoaderCallbacks<Cursor> {
+        LoaderManager.LoaderCallbacks<Cursor>,
+        AdapterView.OnItemSelectedListener {
 
     private static final String TAG = DrawerFragment.AgendaItem.class.getName();
 
@@ -66,8 +71,19 @@ public class AgendaFragment extends NoteListFragment
 
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = AgendaFragment.class.getName();
-    public static final String DEFAULT_AGENDA_QUERY = ".i.done s.7d";
-    public static final int AGENDAY_DAYS = 7;
+//    public static final String DEFAULT_AGENDA_QUERY = ".i.done s.14d";
+//    public static final int AGENDAY_DAYS = 7;
+//    public static final String AGENDA_QUERY_DAY = ".i.done s.1d";
+    public static final String AGENDA_QUERY_DAY = ".i.done s.tomorrow";
+    public static final String AGENDA_QUERY_WEEK = ".i.done s.1w";
+    public static final String AGENDA_QUERY_FORTNIGHT = ".i.done s.2w";
+    public static final String AGENDA_QUERY_MONTH = ".i.done s.30d";
+
+    private int agendaDays = 0;
+
+    private UserTimeFormatter userTimeFormatter;
+
+    private static String[] agendaPeriods;
 
     /* Arguments. */
     private static final String ARG_QUERY = "query";
@@ -81,6 +97,7 @@ public class AgendaFragment extends NoteListFragment
     private SearchQuery mQuery;
 
     private NoteListFragmentListener mListener;
+    private AgendaFragmentListener mAgendaListener;
 
     private String mActionModeTag;
 
@@ -125,6 +142,14 @@ public class AgendaFragment extends NoteListFragment
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() + " must implement " + ActionModeListener.class);
         }
+
+        try {
+            mAgendaListener = (AgendaFragmentListener) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString() + " must implement " + AgendaFragmentListener.class);
+        }
+
+        userTimeFormatter = new UserTimeFormatter(context);
     }
 
     @Override
@@ -132,11 +157,15 @@ public class AgendaFragment extends NoteListFragment
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onCreate(savedInstanceState);
 
+        setHasOptionsMenu(true);
+
         parseArguments();
 
         if (savedInstanceState != null && savedInstanceState.getBoolean("actionModeMove", false)) {
             mActionModeTag = "M";
         }
+
+        agendaPeriods = getContext().getResources().getStringArray(R.array.agenda_periods);
     }
 
     @Override
@@ -286,6 +315,21 @@ public class AgendaFragment extends NoteListFragment
         }
 
         mQuery = new SearchQuery(getArguments().getString(ARG_QUERY));
+
+        switch (mQuery.toString()) {
+            case AGENDA_QUERY_DAY:
+                agendaDays = 1;
+                break;
+            case AGENDA_QUERY_WEEK:
+                agendaDays = 7;
+                break;
+            case AGENDA_QUERY_FORTNIGHT:
+                agendaDays = 14;
+                break;
+            case AGENDA_QUERY_MONTH:
+                agendaDays = 30;
+                break;
+        }
     }
 
     @Override
@@ -309,6 +353,29 @@ public class AgendaFragment extends NoteListFragment
 //         */
 //        getListAdapter().notifyDataSetChanged();
 //    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
+
+        inflater.inflate(R.menu.agenda_spinner, menu);
+
+        /* Remove search item. */
+        menu.removeItem(R.id.activity_action_search);
+
+        MenuItem item = menu.findItem(R.id.agenda_spinner);
+        Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.agenda_periods, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        spinner.setSelection(1, false);
+        spinner.setOnItemSelectedListener(this);
+    }
+
+
 
     @Override
     public void onDateTimeSet(int id, TreeSet<Long> noteIds, OrgDateTime time) {
@@ -390,13 +457,13 @@ public class AgendaFragment extends NoteListFragment
             MatrixCursor matrixCursor = new MatrixCursor(cols);
             agenda.put(day.getTime(), matrixCursor);
             day.add(Calendar.DAY_OF_YEAR, 1);
-        } while (++i < AGENDAY_DAYS);
+        } while (++i < agendaDays);
 
         int nextID = Integer.MAX_VALUE;
         int schedRangeIdx = cursor.getColumnIndex(NotesView.Columns.SCHEDULED_RANGE_STRING);
         for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             String schedRangeStr = cursor.getString(schedRangeIdx);
-            List<Date> dates = AgendaHelper.expandOrgRange(schedRangeStr, Calendar.getInstance(), AGENDAY_DAYS);
+            List<Date> dates = AgendaHelper.expandOrgRange(schedRangeStr, Calendar.getInstance(), agendaDays);
             for (Date date: dates) {
                 // clone the item
                 MatrixCursor matrixCursor = agenda.get(date);
@@ -417,7 +484,9 @@ public class AgendaFragment extends NoteListFragment
             MatrixCursor.RowBuilder dateRow = dateCursor.newRow();
             int id = (int) (date.getTime() / 1000);
             dateRow.add(id);
-            dateRow.add(date.toString());
+            Calendar dateCalendar = Calendar.getInstance();
+            dateCalendar.setTime(date);
+            dateRow.add(userTimeFormatter.formatDate(AgendaHelper.buildFromCal(dateCalendar)));
             dateRow.add(1);
             allCursors.add(dateCursor);
             mListAdapter.addSeparatorItem(id);
@@ -457,6 +526,35 @@ public class AgendaFragment extends NoteListFragment
         }
 
         mListAdapter.changeCursor(null);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        System.out.println("ITEM SELECTED ********************");
+        String selectedStr = agendaPeriods[position];
+        String selectedQuery;
+        // TODO: currently relies on comparing the queries, might not be a good idea
+        if (selectedStr.equalsIgnoreCase(getResources().getString(R.string.agenda_day))) {
+            System.out.println(selectedStr);
+            selectedQuery = AGENDA_QUERY_DAY;
+        } else if (selectedStr.equalsIgnoreCase(getResources().getString(R.string.agenda_week))) {
+            System.out.println(selectedStr);
+            selectedQuery = AGENDA_QUERY_WEEK;
+        } else if (selectedStr.equalsIgnoreCase(getResources().getString(R.string.agenda_fortnight))) {
+            System.out.println(selectedStr);
+            selectedQuery = AGENDA_QUERY_FORTNIGHT;
+        } else if (selectedStr.equalsIgnoreCase(getResources().getString(R.string.agenda_month))) {
+            System.out.println(selectedStr);
+            selectedQuery = AGENDA_QUERY_MONTH;
+        } else {
+            throw new RuntimeException("Invalid agenda period item selected!");
+        }
+        mAgendaListener.onAgendaPeriodChanged(selectedQuery);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // nothing to do here!
     }
 
     public class MyActionMode implements ActionMode.Callback {
@@ -538,5 +636,9 @@ public class AgendaFragment extends NoteListFragment
 
     public SearchQuery getQuery() {
         return mQuery;
+    }
+
+    public interface AgendaFragmentListener {
+        void onAgendaPeriodChanged(String query);
     }
 }

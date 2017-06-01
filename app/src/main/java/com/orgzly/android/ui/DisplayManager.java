@@ -225,8 +225,8 @@ public class DisplayManager {
 
     public void displayAgenda(String query) {
         /* If the same query is already displayed, don't do anything. */
-        SearchQuery displayedQuery = getDisplayedQuery();
-        if (displayedQuery != null && displayedQuery.toString().equals(query)) {
+        SearchQuery agendaQuery = getAgendaQuery();
+        if (agendaQuery != null && agendaQuery.toString().equals(query)) {
             return;
         }
 
@@ -286,6 +286,16 @@ public class DisplayManager {
 
         if (f != null && f.isVisible()) {
             return ((QueryFragment) f).getQuery();
+        }
+
+        return null;
+    }
+
+    public SearchQuery getAgendaQuery() {
+        Fragment f = mFragmentManager.findFragmentByTag(AgendaFragment.FRAGMENT_TAG);
+
+        if (f != null && f.isVisible()) {
+            return ((AgendaFragment) f).getQuery();
         }
 
         return null;

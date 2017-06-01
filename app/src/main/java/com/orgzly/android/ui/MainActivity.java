@@ -91,7 +91,8 @@ public class MainActivity extends CommonActivity
         BookPrefaceFragment.EditorListener,
         NoteListFragment.NoteListFragmentListener,
         SettingsFragment.SettingsFragmentListener,
-        DrawerFragment.DrawerFragmentListener {
+        DrawerFragment.DrawerFragmentListener,
+        AgendaFragment.AgendaFragmentListener {
 
     public static final String TAG = MainActivity.class.getName();
 
@@ -1617,7 +1618,7 @@ public class MainActivity extends CommonActivity
                     String query = ((DrawerFragment.FilterItem) item).query;
                     mDisplayManager.displayQuery(query);
                 } else if (item instanceof DrawerFragment.AgendaItem) {
-                    String query = AgendaFragment.DEFAULT_AGENDA_QUERY;
+                    String query = AgendaFragment.AGENDA_QUERY_WEEK;
                     mDisplayManager.displayAgenda(query);
                 }
             }
@@ -1631,5 +1632,10 @@ public class MainActivity extends CommonActivity
      */
     private void runDelayedAfterDrawerClose(Runnable runnable) {
         new Handler().postDelayed(runnable, 300);
+    }
+
+    @Override
+    public void onAgendaPeriodChanged(String query) {
+        mDisplayManager.displayAgenda(query);
     }
 }
