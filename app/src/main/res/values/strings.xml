@@ -382,6 +382,11 @@
     <string name="default_notebook">Default notebook</string>
     <string name="default_notebook_desc">Notebook used when sharing to Orgzly or creating a new note from the ongoing notification</string>
 
+    <string name="agenda_day">Day</string>
+    <string name="agenda_week">Week</string>
+    <string name="agenda_fortnight">Fortnight</string>
+    <string name="agenda_month">Month</string>
+
 
     <!-- These are just used in tools:text for layout preview and don't have to be translated,
          unless layout look depends on the translation. -->
