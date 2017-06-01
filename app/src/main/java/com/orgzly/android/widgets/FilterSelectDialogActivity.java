@@ -29,23 +29,21 @@ public class FilterSelectDialogActivity extends AppCompatActivity implements Loa
         super.onCreate(savedInstanceState);
 
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
 
         setContentView(R.layout.activity_filter_select_dialog);
 
-        setupAdapter();
-        ListView list = (ListView) findViewById(R.id.filter_select_list);
-        list.setOnItemClickListener(this);
-
-        getSupportLoaderManager().initLoader(0, null, this);
-    }
-
-    private void setupAdapter() {
         /* Create adapter using Cursor. */
         mListAdapter = FiltersFragment.createFilterCursorAdapter(this);
 
         ListView list = (ListView) findViewById(R.id.filter_select_list);
+
         list.setAdapter(mListAdapter);
+
+        list.setEmptyView(findViewById(R.id.filter_select_no_filters));
+
+        list.setOnItemClickListener(this);
+
+        getSupportLoaderManager().initLoader(0, null, this);
     }
 
     @Override

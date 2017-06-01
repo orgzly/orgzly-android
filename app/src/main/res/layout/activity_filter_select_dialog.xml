@@ -9,7 +9,20 @@
     <ListView
         android:id="@+id/filter_select_list"
         style="@style/ListView"
+        android:divider="@color/gray25"
+        android:dividerHeight="1dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/filter_select_no_filters"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/no_filters"
+        android:textColor="#696969"
+        android:textSize="22sp"
+        android:visibility="gone" />
 
 </LinearLayout>
