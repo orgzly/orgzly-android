@@ -2,21 +2,15 @@ package com.orgzly.android.ui;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.provider.BaseColumns;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.orgzly.R;
-import com.orgzly.android.SearchQuery;
 import com.orgzly.android.ui.views.GesturedListViewItemMenus;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,28 +19,14 @@ import java.util.Set;
  */
 
 public class AgendaListViewAdapter extends HeadsListViewAdapter {
-    // assuming query always uses days
-    private SearchQuery query;
-    private Date start, end, cur;
     private static final int TYPE_COUNT = 2;
     public static final int TYPE_ITEM = 0;
     public static final int TYPE_SEPARATOR = 1;
     private Set<Integer> separators = new HashSet<>();
-    private LayoutInflater inflater;
 
     public AgendaListViewAdapter(Context context, Selection selection,
-                                 GesturedListViewItemMenus toolbars, boolean inBook,
-                                 SearchQuery query) {
+                                 GesturedListViewItemMenus toolbars, boolean inBook) {
         super(context, selection, toolbars, inBook);
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.query = query;
-        start = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(start);
-        c.add(Calendar.DAY_OF_YEAR, query.getScheduled().getValue());
-        end = c.getTime();
-        System.out.println("Start: " + start);
-        System.out.println("End: " + end);
     }
 
     @Override
@@ -55,29 +35,30 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
             return super.getView(position, convertView, parent);
         // make sure @convertView is a separator if cursor is a separator
         // otherwise create a new view
-        boolean isSeperator = (boolean) convertView.getTag(R.id.IS_AGENDA_ITEM_SEPARATOR);
+        boolean isSeparator = (boolean) convertView.getTag(R.id.AGENDA_ITEM_SEPARATOR_TAG);
         int id = getCursor().getInt(getCursor().getColumnIndex(BaseColumns._ID));
-        if (separators.contains(id) != isSeperator) {
+        if (separators.contains(id) != isSeparator) {
             // do not use @convertView
             convertView = null;
         }
         System.out.println("Position is: " + position);
+
         return super.getView(position, convertView, parent);
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         int id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
+
         if (separators.contains(id)) {
-            TextView textView = new TextView(context);
-            textView.setId(id);
+            TextView textView = createAgendaDateTextView(context);
+            textView.setId(id);  // why is id needed
             textView.setText(cursor.getString(cursor.getColumnIndex("day")));
-            textView.setGravity(Gravity.CENTER);
-            textView.setTag(R.id.IS_AGENDA_ITEM_SEPARATOR, Boolean.TRUE);
+            textView.setTag(R.id.AGENDA_ITEM_SEPARATOR_TAG, Boolean.TRUE);
             return textView;
         } else {
             View v = super.newView(context, cursor, parent);
-            v.setTag(R.id.IS_AGENDA_ITEM_SEPARATOR, Boolean.FALSE);
+            v.setTag(R.id.AGENDA_ITEM_SEPARATOR_TAG, Boolean.FALSE);
             return v;
         }
     }
@@ -85,10 +66,10 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         int id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
+
         if (separators.contains(id)) {
-            TextView textView = (TextView) view;
+            TextView textView = createAgendaDateTextView(context);
             textView.setText(cursor.getString(cursor.getColumnIndex("day")));
-            textView.setGravity(Gravity.CENTER);
         } else {
             super.bindView(view, context, cursor);
         }
@@ -106,5 +87,13 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
 
     public void addSeparatorItem(int id) {
         separators.add(id);
+    }
+
+    private TextView createAgendaDateTextView(Context context) {
+        TextView textView = new TextView(context);
+
+        textView.setGravity(Gravity.CENTER);
+
+        return textView;
     }
 }

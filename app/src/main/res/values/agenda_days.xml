@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="agenda_days">
-        <item>@string/agenda_day</item>
-        <item>@string/agenda_week</item>
-        <item>@string/agenda_fortnight</item>
-        <item>@string/agenda_month</item>
-    </string-array>
-</resources>
