@@ -101,7 +101,7 @@ public class AgendaFragment extends NoteListFragment
 
     private String mActionModeTag;
 
-    private ViewFlipper mViewFlipper;
+//    private ViewFlipper mViewFlipper;
 
 
     public static AgendaFragment getInstance(String query) {
@@ -174,7 +174,7 @@ public class AgendaFragment extends NoteListFragment
 
         View view = inflater.inflate(R.layout.fragment_agenda, container, false);
 
-        mViewFlipper = (ViewFlipper) view.findViewById(R.id.fragment_agenda_view_flipper);
+//        mViewFlipper = (ViewFlipper) view.findViewById(R.id.fragment_agenda_view_flipper);
 
         return view;
     }
@@ -512,7 +512,7 @@ public class AgendaFragment extends NoteListFragment
         }
 
 //        if (mListAdapter.getCount() > 0) {
-            mViewFlipper.setDisplayedChild(0);
+//            mViewFlipper.setDisplayedChild(0);
 //        } else {
 //            mViewFlipper.setDisplayedChild(1);
 //        }
