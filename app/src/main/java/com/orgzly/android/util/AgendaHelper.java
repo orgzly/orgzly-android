@@ -142,21 +142,18 @@ public class AgendaHelper {
         cal.set(Calendar.MILLISECOND, 0);
     }
 
-    public static OrgDateTime buildFromCal(Calendar cal) {
+    public static OrgDateTime buildOrgDateTimeFromDate(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return buildOrgDateTimeFromCal(cal);
+    }
+
+    public static OrgDateTime buildOrgDateTimeFromCal(Calendar cal) {
         return new OrgDateTime.Builder()
                 .setYear(cal.get(Calendar.YEAR))
                 .setMonth(cal.get(Calendar.MONTH))
                 .setDay(cal.get(Calendar.DAY_OF_MONTH))
                 .setHour(cal.get(Calendar.HOUR_OF_DAY))
                 .setMinute(cal.get(Calendar.MINUTE)).build();
-    }
-
-    public static void main(String[] args) {
-        Calendar agendaToday = Calendar.getInstance();
-        agendaToday.set(2017, Calendar.MAY, 5, 13, 0, 0);
-
-        String str = "<2017-05-03 Wed>--<2017-05-11 Do>";
-        List<Date> dates = expandOrgRange(str, agendaToday, 2);
-        System.out.println("Result: " + OrgStringUtils.join(dates, ", "));
     }
 }

@@ -23,7 +23,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.ViewFlipper;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -48,7 +47,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -239,7 +237,7 @@ public class AgendaFragment extends NoteListFragment
         mSelection = new Selection();
 
         mListAdapter = new AgendaListViewAdapter(getActivity(), mSelection,
-                getListView().getItemMenus(), false, mQuery);
+                getListView().getItemMenus(), false);
 
         setListAdapter(mListAdapter);
 
@@ -423,18 +421,18 @@ public class AgendaFragment extends NoteListFragment
         return NotesClient.getLoaderForQuery(getActivity(), mQuery);
     }
 
-    private MatrixCursor cloneCursor(Cursor cursor, OrgDateTime schedTime) {
-        String[] cols = cursor.getColumnNames();
-        MatrixCursor cloned = new MatrixCursor(cols);
-        MatrixCursor.RowBuilder b = cloned.newRow();
-        for(String col: cols) {
-            if(col.equals(NotesView.Columns.SCHEDULED_TIME_STRING))
-                b.add(schedTime.toString());
-            else
-                b.add(cursor.getString(cursor.getColumnIndex(col)));
-        }
-        return cloned;
-    }
+//    private MatrixCursor cloneCursor(Cursor cursor, OrgDateTime schedTime) {
+//        String[] cols = cursor.getColumnNames();
+//        MatrixCursor cloned = new MatrixCursor(cols);
+//        MatrixCursor.RowBuilder b = cloned.newRow();
+//        for(String col: cols) {
+//            if(col.equals(NotesView.Columns.SCHEDULED_TIME_STRING))
+//                b.add(schedTime.toString());
+//            else
+//                b.add(cursor.getString(cursor.getColumnIndex(col)));
+//        }
+//        return cloned;
+//    }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
@@ -484,9 +482,7 @@ public class AgendaFragment extends NoteListFragment
             MatrixCursor.RowBuilder dateRow = dateCursor.newRow();
             int id = (int) (date.getTime() / 1000);
             dateRow.add(id);
-            Calendar dateCalendar = Calendar.getInstance();
-            dateCalendar.setTime(date);
-            dateRow.add(userTimeFormatter.formatDate(AgendaHelper.buildFromCal(dateCalendar)));
+            dateRow.add(userTimeFormatter.formatDate(AgendaHelper.buildOrgDateTimeFromDate(date)));
             dateRow.add(1);
             allCursors.add(dateCursor);
             mListAdapter.addSeparatorItem(id);
