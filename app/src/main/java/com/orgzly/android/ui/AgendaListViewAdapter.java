@@ -2,7 +2,9 @@ package com.orgzly.android.ui;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.provider.BaseColumns;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +72,7 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
             TextView textView = new TextView(context);
             textView.setId(id);
             textView.setText(cursor.getString(cursor.getColumnIndex("day")));
+            textView.setGravity(Gravity.CENTER);
             textView.setTag(R.id.IS_AGENDA_ITEM_SEPARATOR, Boolean.TRUE);
             return textView;
         } else {
@@ -82,15 +85,13 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         int id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
-        if (view == null)
-            System.out.println();
         if (separators.contains(id)) {
             TextView textView = (TextView) view;
-            if (textView == null)
-                System.out.println();
             textView.setText(cursor.getString(cursor.getColumnIndex("day")));
-        } else
+            textView.setGravity(Gravity.CENTER);
+        } else {
             super.bindView(view, context, cursor);
+        }
     }
 
     @Override
