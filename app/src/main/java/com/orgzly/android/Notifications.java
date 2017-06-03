@@ -104,6 +104,7 @@ public class Notifications {
                 new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .setAutoCancel(true)
                 .setSmallIcon(R.drawable.cic_orgzly_notification)
                 .setContentTitle(context.getString(R.string.syncing_failed_title))
                 .setColor(ContextCompat.getColor(context, R.color.notification))
