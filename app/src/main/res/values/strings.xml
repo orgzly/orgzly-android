@@ -351,8 +351,11 @@
     <string name="display_inherited_tags_in_search_results">Inherited tags in search results</string>
     <string name="display_inherited_tags_in_search_results_summary">Display inherited tags in search results</string>
 
-    <string name="new_note_notification">New note and sync</string>
-    <string name="new_note_notification_summary">Quickly create new note and sync from notification drawer</string>
+    <string name="new_note_notification">Create note and sync</string>
+    <string name="new_note_notification_summary">Quickly create new note or sync notebooks from notification drawer</string>
+
+    <string name="show_sync_notifications_title">Sync status</string>
+    <string name="show_sync_notifications_summary">Display notification during sync and after sync failure</string>
 
     <string name="primary_storage">Main storage</string>
     <string name="secondary_storage">SD card</string>
@@ -421,6 +424,4 @@
     <string name="synced_rook_revision_sample">42f97fe238</string>
     <string name="tap_to_view_notes">Tap to view your notes</string>
     <string name="pref_title_scheduled_times">Scheduled times (beta)</string>
-    <string name="show_sync_notifications_title">Show sync notifications</string>
-    <string name="show_sync_notifications_summary">Show a notification during sync and on sync failure</string>
 </resources>

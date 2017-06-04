@@ -212,15 +212,15 @@
             android:defaultValue="@bool/pref_default_value_new_note_notification"/>
 
         <CheckBoxPreference
+            android:key="@string/pref_key_show_sync_notifications"
+            android:title="@string/show_sync_notifications_title"
+            android:summary="@string/show_sync_notifications_summary"
+            android:defaultValue="@bool/pref_default_value_show_sync_notifications"/>
+
+        <CheckBoxPreference
             android:key="@string/pref_key_use_reminders_for_scheduled_times"
             android:title="@string/pref_title_scheduled_times"
             android:defaultValue="@bool/pref_default_value_use_reminders_for_scheduled_times"/>
-
-        <CheckBoxPreference
-                android:key="@string/pref_key_show_sync_notifications"
-                android:title="@string/show_sync_notifications_title"
-                android:summary="@string/show_sync_notifications_summary"
-                android:defaultValue="@bool/pref_default_value_show_sync_notifications"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/app">
