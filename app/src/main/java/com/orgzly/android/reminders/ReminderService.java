@@ -198,7 +198,7 @@ public class ReminderService extends IntentService {
                     String noteTitle = cursor.getString(ProviderContract.Times.ColumnIndex.NOTE_TITLE);
                     String orgTimestampString = cursor.getString(ProviderContract.Times.ColumnIndex.ORG_TIMESTAMP_STRING);
 
-                    OrgDateTime orgDateTime = OrgDateTime.getInstance(orgTimestampString);
+                    OrgDateTime orgDateTime = OrgDateTime.parse(orgTimestampString);
 
                     /* Skip if it's done-type state. */
                     if (noteState == null || !AppPreferences.doneKeywordsSet(context).contains(noteState)) {

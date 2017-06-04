@@ -27,7 +27,6 @@ import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
-import com.orgzly.android.widgets.ListWidgetProvider;
 import com.orgzly.org.OrgHead;
 import com.orgzly.org.OrgProperty;
 import com.orgzly.org.datetime.OrgDateTime;
@@ -195,13 +194,13 @@ public class NotesClient {
         head.setContent(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CONTENT)));
 
         if (! TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.SCHEDULED_RANGE_STRING))))
-            head.setScheduled(OrgRange.getInstance(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.SCHEDULED_RANGE_STRING))));
+            head.setScheduled(OrgRange.parse(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.SCHEDULED_RANGE_STRING))));
         if (! TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.DEADLINE_RANGE_STRING))))
-            head.setDeadline(OrgRange.getInstance(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.DEADLINE_RANGE_STRING))));
+            head.setDeadline(OrgRange.parse(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.DEADLINE_RANGE_STRING))));
         if (! TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CLOSED_RANGE_STRING))))
-            head.setClosed(OrgRange.getInstance(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CLOSED_RANGE_STRING))));
+            head.setClosed(OrgRange.parse(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CLOSED_RANGE_STRING))));
         if (! TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CLOCK_RANGE_STRING))))
-            head.setClock(OrgRange.getInstance(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CLOCK_RANGE_STRING))));
+            head.setClock(OrgRange.parse(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CLOCK_RANGE_STRING))));
 
         // TODO: This is probably slowing UI down when scrolling fast, use strings from db directly?
         String tags = cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.TAGS));
@@ -681,7 +680,7 @@ public class NotesClient {
         ContentValues values = new ContentValues();
 
         if (time != null) {
-            values.put(ProviderContract.Notes.UpdateParam.SCHEDULED_STRING, OrgRange.getInstance(time).toString());
+            values.put(ProviderContract.Notes.UpdateParam.SCHEDULED_STRING, new OrgRange(time).toString());
         } else {
             values.putNull(ProviderContract.Notes.UpdateParam.SCHEDULED_STRING);
         }

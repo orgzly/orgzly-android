@@ -258,7 +258,7 @@ public class TimestampDialogFragment extends DialogFragment {
 
 
         /* Set before toggle buttons are setup, as they trigger dialog title update .*/
-        setValues(OrgDateTime.getInstanceOrNull(getArguments().getString(ARG_TIME)));
+        setValues(OrgDateTime.parseOrNull(getArguments().getString(ARG_TIME)));
 
 //        mDialog = new AlertDialog.Builder(new ContextThemeWrapper(mContext, R.style.TimestampDialog))
         mDialog = new AlertDialog.Builder(mContext)
@@ -539,7 +539,7 @@ public class TimestampDialogFragment extends DialogFragment {
                 .setMinute(mCurrentMinute);
 
         if (mIsRepeaterUsed.isChecked()) {
-            OrgRepeater repeater = OrgRepeater.getInstance(mRepeaterPicker.getText().toString());
+            OrgRepeater repeater = OrgRepeater.parse(mRepeaterPicker.getText().toString());
             builder.setHasRepeater(true);
             builder.setRepeater(repeater);
         }

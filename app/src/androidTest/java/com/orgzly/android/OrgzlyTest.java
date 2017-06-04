@@ -133,10 +133,10 @@ public class OrgzlyTest {
      * Local-dependent date and time strings displayed to user.
      */
     protected String userDateTime(String s) {
-        return userTimeFormatter.formatAll(OrgDateTime.getInstance(s));
+        return userTimeFormatter.formatAll(OrgDateTime.parse(s));
     }
     protected String userDate() {
-        return userTimeFormatter.formatDate(OrgDateTime.getInstance(true));
+        return userTimeFormatter.formatDate(new OrgDateTime(true));
     }
 
     protected int getActivityResultCode(Activity activity) throws NoSuchFieldException, IllegalAccessException {

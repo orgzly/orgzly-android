@@ -135,7 +135,7 @@ public class DatabaseMigration {
                 long id = cursor.getLong(0);
                 String string = cursor.getString(1);
 
-                OrgDateTime orgDateTime = OrgDateTime.getInstance(string);
+                OrgDateTime orgDateTime = OrgDateTime.parse(string);
 
                 ContentValues values = new ContentValues();
                 values.put("_id", id);
