@@ -11,11 +11,11 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
-
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.BookAction;
 import com.orgzly.android.AppIntent;
+import com.orgzly.android.BookAction;
+import com.orgzly.android.Notifications;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.repos.DirectoryRepo;
@@ -90,6 +90,12 @@ public class SyncService extends Service {
 
     private void start() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+
+        Notifications.ensureSyncNotificationSetup(this);
+
+        if (AppPreferences.showSyncNotifications(getApplicationContext())) {
+            startForeground(Notifications.SYNC_IN_PROGRESS, Notifications.createSyncInProgressNotification(getApplicationContext()));
+        }
 
         Map<String, Repo> repos = shelf.getAllRepos();
 
