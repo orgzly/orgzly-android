@@ -284,11 +284,15 @@ public class ReminderService extends IntentService {
                     .setSmallIcon(R.drawable.cic_orgzly_notification);
 
             /* Set vibration. */
-            builder.setVibrate(SCHEDULED_NOTE_VIBRATE_PATTERN);
+            if (AppPreferences.remindersVibrate(context)) {
+                builder.setVibrate(SCHEDULED_NOTE_VIBRATE_PATTERN);
+            }
 
             /* Set notification sound. */
-            Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            builder.setSound(sound);
+            if (AppPreferences.remindersSound(context)) {
+                Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                builder.setSound(sound);
+            }
 
             builder.setContentTitle(note.title);
             builder.setContentText(line);

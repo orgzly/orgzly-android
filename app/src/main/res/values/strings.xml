@@ -357,6 +357,12 @@
     <string name="show_sync_notifications_title">Sync status</string>
     <string name="show_sync_notifications_summary">Display notification during sync and after sync failure</string>
 
+    <string name="prefs_title_reminders">Reminders (beta)</string>
+    <string name="pref_title_reminders_sound">Sound</string>
+    <string name="pref_title_reminders_vibrate">Vibrate</string>
+    <string name="pref_title_reminders_for_scheduled_times">Scheduled notes</string>
+    <string name="pref_title_summary_reminders_for_scheduled_times">Display notification for note with scheduled time</string>
+
     <string name="primary_storage">Main storage</string>
     <string name="secondary_storage">SD card</string>
     <string name="secondary_storage_not_available_any_more">Secondary storage is no longer available</string>
@@ -423,5 +429,4 @@
     <string name="synced_rook_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
     <string name="synced_rook_revision_sample">42f97fe238</string>
     <string name="tap_to_view_notes">Tap to view your notes</string>
-    <string name="pref_title_scheduled_times">Scheduled times (beta)</string>
 </resources>

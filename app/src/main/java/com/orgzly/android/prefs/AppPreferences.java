@@ -195,6 +195,18 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_value_use_reminders_for_scheduled_times));
     }
 
+    public static boolean remindersSound(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_reminders_sound),
+                context.getResources().getBoolean(R.bool.pref_default_value_reminders_sound));
+    }
+
+    public static boolean remindersVibrate(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_reminders_vibrate),
+                context.getResources().getBoolean(R.bool.pref_default_value_reminders_vibrate));
+    }
+
     public static boolean showSyncNotifications(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_show_sync_notifications),
