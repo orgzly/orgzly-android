@@ -1,4 +1,4 @@
-package com.orgzly.android.misc;
+package com.orgzly.android.provider;
 
 import android.database.Cursor;
 
@@ -7,7 +7,6 @@ import com.orgzly.android.BookName;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.repos.VersionedRook;
 
