@@ -51,7 +51,7 @@ import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
-import com.orgzly.android.util.NoteContentParser;
+import com.orgzly.android.util.OrgFormatter;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.android.util.SpaceTokenizer;
 import com.orgzly.android.util.MiscUtils;
@@ -344,7 +344,7 @@ public class NoteFragment extends Fragment
                 } else {
                     bodyEdit.setVisibility(View.GONE);
 
-                    bodyView.setText(NoteContentParser.fromOrg(bodyEdit.getText().toString()));
+                    bodyView.setText(OrgFormatter.parse(bodyEdit.getText().toString()));
                     bodyView.setVisibility(View.VISIBLE);
 
                     ActivityUtils.closeSoftKeyboard(getActivity());
@@ -504,7 +504,7 @@ public class NoteFragment extends Fragment
 
         /* Content. */
         bodyEdit.setText(head.getContent());
-        bodyView.setText(NoteContentParser.fromOrg(head.getContent()));
+        bodyView.setText(OrgFormatter.parse(head.getContent()));
     }
 
     private void addPropertyToList(OrgProperty property) {

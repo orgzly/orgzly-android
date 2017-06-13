@@ -11,7 +11,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import com.orgzly.android.Note;
 import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.util.NoteContentParser;
+import com.orgzly.android.util.OrgFormatter;
 import com.orgzly.org.OrgHead;
 
 import java.util.List;
@@ -67,7 +67,7 @@ public class TitleGenerator {
         }
 
         /* Title. */
-        builder.append(NoteContentParser.fromOrg(head.getTitle()));
+        builder.append(OrgFormatter.parse(head.getTitle()));
 
         /* Append note ID. */
         // builder.append(TITLE_SEPARATOR).append("#").append(String.valueOf(note.getId()));

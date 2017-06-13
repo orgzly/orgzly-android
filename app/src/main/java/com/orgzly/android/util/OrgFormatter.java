@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 /**
  *
  */
-public class NoteContentParser {
+public class OrgFormatter {
     private final static String LINK_SCHEMES = "https?|mailto|tel|voicemail|geo|sms|smsto|mms|mmsto";
 
     private final static String PLAIN_LINK = "((" + LINK_SCHEMES + "):\\S+)";
@@ -23,13 +23,17 @@ public class NoteContentParser {
      */
     private final static String BRACKET_ANY_LINK = "(([^]]+))";
 
-    public static SpannableStringBuilder fromOrg(String s) {
+    public static SpannableStringBuilder parse(String s) {
+        return parse(s, true);
+    }
+
+    public static SpannableStringBuilder parse(String s, boolean linkify) {
         SpannableStringBuilder ssb = new SpannableStringBuilder(s);
 
-        doOrgLinksWithName(ssb, BRACKET_LINK, true);
+        doOrgLinksWithName(ssb, BRACKET_LINK, linkify);
         doOrgLinksWithName(ssb, BRACKET_ANY_LINK, false);
-        doOrgLinks(ssb, BRACKET_LINK, true);
-        doPlainLinks(ssb, PLAIN_LINK, true);
+        doOrgLinks(ssb, BRACKET_LINK, linkify);
+        doPlainLinks(ssb, PLAIN_LINK, linkify);
 
         return ssb;
     }

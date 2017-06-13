@@ -6,14 +6,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ImageSpan;
 import android.util.Log;
 
 import com.evernote.android.job.JobManager;
@@ -27,6 +23,7 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
+import com.orgzly.android.util.OrgFormatter;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgDateTimeUtils;
 
@@ -298,7 +295,7 @@ public class ReminderService extends IntentService {
                 builder.setSound(sound);
             }
 
-            builder.setContentTitle(note.title);
+            builder.setContentTitle(OrgFormatter.parse(note.title, false));
             builder.setContentText(line);
 
             builder.setStyle(new NotificationCompat.InboxStyle()
