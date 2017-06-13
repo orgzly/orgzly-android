@@ -6,10 +6,14 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.util.Log;
 
 import com.evernote.android.job.JobManager;
@@ -308,8 +312,8 @@ public class ReminderService extends IntentService {
 
             /* Action text depending on repeater. */
             String doneActionText = note.orgDateTime.hasRepeater() ?
-                    getString(R.string.complete_with_repeater, note.orgDateTime.getRepeater().toString()) :
-                    getString(R.string.complete);
+                    getString(R.string.mark_as_done_with_repeater, note.orgDateTime.getRepeater().toString()) :
+                    getString(R.string.mark_as_done);
 
             builder.addAction(
                     R.drawable.ic_done_white_24dp,
