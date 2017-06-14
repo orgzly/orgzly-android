@@ -258,7 +258,7 @@ public class TimestampDialogFragment extends DialogFragment {
 
 
         /* Set before toggle buttons are setup, as they trigger dialog title update .*/
-        setValues(OrgDateTime.getInstanceOrNull(getArguments().getString(ARG_TIME)));
+        setValues(OrgDateTime.parseOrNull(getArguments().getString(ARG_TIME)));
 
 //        mDialog = new AlertDialog.Builder(new ContextThemeWrapper(mContext, R.style.TimestampDialog))
         mDialog = new AlertDialog.Builder(mContext)
@@ -328,10 +328,13 @@ public class TimestampDialogFragment extends DialogFragment {
     private void setValues(OrgDateTime time) {
         Calendar cal;
 
+        Calendar nextMinute = Calendar.getInstance();
+        nextMinute.add(Calendar.MINUTE, 1);
+
         if (time != null) {
             cal = time.getCalendar();
         } else {
-            cal = Calendar.getInstance();
+            cal = nextMinute;
         }
 
         mIsActive.setChecked(time == null || time.isActive());
@@ -341,8 +344,15 @@ public class TimestampDialogFragment extends DialogFragment {
         mCurrentDay = cal.get(Calendar.DAY_OF_MONTH);
 
         mIsTimeUsed.setChecked(time != null && time.hasTime());
-        mCurrentHour = cal.get(Calendar.HOUR_OF_DAY);
-        mCurrentMinute = cal.get(Calendar.MINUTE);
+
+        /* If date/time is set but there's no time part, use next minute for the time as default. */
+        if (time != null && !time.hasTime()) {
+            mCurrentHour = nextMinute.get(Calendar.HOUR_OF_DAY);
+            mCurrentMinute = nextMinute.get(Calendar.MINUTE);
+        } else {
+            mCurrentHour = cal.get(Calendar.HOUR_OF_DAY);
+            mCurrentMinute = cal.get(Calendar.MINUTE);
+        }
 
         mEndTime.setChecked(false);
         mCurrentEndTimeHour = cal.get(Calendar.HOUR_OF_DAY);
@@ -529,7 +539,7 @@ public class TimestampDialogFragment extends DialogFragment {
                 .setMinute(mCurrentMinute);
 
         if (mIsRepeaterUsed.isChecked()) {
-            OrgRepeater repeater = OrgRepeater.getInstance(mRepeaterPicker.getText().toString());
+            OrgRepeater repeater = OrgRepeater.parse(mRepeaterPicker.getText().toString());
             builder.setHasRepeater(true);
             builder.setRepeater(repeater);
         }

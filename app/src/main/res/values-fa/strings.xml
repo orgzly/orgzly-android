@@ -329,9 +329,6 @@
     <string name="no_states_defined">هیچ وضعیتی تعریف نشده است</string>
     <string name="book_name_in_search">نام دفترچه در نتایج جستجو</string>
 
-    <string name="new_note_notification">اعلان دائمی</string>
-    <string name="new_note_notification_summary">نمایش یک اعلان دائمی برای ایجاد سریع یادداشت‌ها</string>
-
     <string name="primary_storage">حافظه اصلی</string>
     <string name="secondary_storage">کارت SD</string>
     <string name="secondary_storage_not_available_any_more">حافظه ثانوی دیگر در دسترس نیست</string>

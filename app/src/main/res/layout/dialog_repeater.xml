@@ -12,17 +12,15 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/padding_16"
     android:gravity="center"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/dialog_timestamp_repeater_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/padding_4"
         android:gravity="center"
-        android:hint="@string/repeater_longest_type_desc"
-        android:text="@string/repeater_longest_type_desc"/>
+        android:text="@string/repeater_explained"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,6 +46,16 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
+
+    <TextView
+        android:id="@+id/dialog_timestamp_repeater_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_4"
+        android:gravity="center"
+        android:hint="@string/repeater_longest_type_desc"
+        android:text="@string/repeater_longest_type_desc"
+        android:lines="2"/>
 
     <!--<Spinner-->
     <!--android:id="@+id/dialog_timestamp_repeater_habit_deadline_unit"-->

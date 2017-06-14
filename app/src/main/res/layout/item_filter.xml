@@ -4,8 +4,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              style="@style/ListViewItemPadding"
-              android:minHeight="@dimen/item_head_min_height"
+              style="@style/ListViewItem"
               android:gravity="center"
               android:background="@drawable/list_item_selector"
               android:orientation="vertical">

@@ -12,26 +12,25 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
-
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.NotesBatch;
-import com.orgzly.android.Note;
 import com.orgzly.android.SearchQuery;
 import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.GenericDatabaseUtils;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.models.DbNote;
-import com.orgzly.android.ui.Place;
-import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.NotePlace;
+import com.orgzly.android.ui.NoteStateSpinner;
+import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
-import com.orgzly.org.OrgProperty;
-import com.orgzly.org.datetime.OrgRange;
 import com.orgzly.org.OrgHead;
+import com.orgzly.org.OrgProperty;
 import com.orgzly.org.datetime.OrgDateTime;
+import com.orgzly.org.datetime.OrgRange;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -146,7 +145,7 @@ public class NotesClient {
     }
 
     public static Note fromCursor(Cursor cursor) {
-        long id = cursor.getLong(cursor.getColumnIndex(ProviderContract.Notes.QueryParam._ID));
+        long id = idFromCursor(cursor);
 
         boolean isFolded = cursor.getInt(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.IS_FOLDED)) != 0;
 
@@ -171,6 +170,10 @@ public class NotesClient {
         return note;
     }
 
+    public static long idFromCursor(Cursor cursor) {
+        return cursor.getLong(cursor.getColumnIndex(ProviderContract.Notes.QueryParam._ID));
+    }
+
     private static OrgHead headFromCursor(Cursor cursor) {
         OrgHead head = new OrgHead();
 
@@ -191,13 +194,13 @@ public class NotesClient {
         head.setContent(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CONTENT)));
 
         if (! TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.SCHEDULED_RANGE_STRING))))
-            head.setScheduled(OrgRange.getInstance(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.SCHEDULED_RANGE_STRING))));
+            head.setScheduled(OrgRange.parse(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.SCHEDULED_RANGE_STRING))));
         if (! TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.DEADLINE_RANGE_STRING))))
-            head.setDeadline(OrgRange.getInstance(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.DEADLINE_RANGE_STRING))));
+            head.setDeadline(OrgRange.parse(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.DEADLINE_RANGE_STRING))));
         if (! TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CLOSED_RANGE_STRING))))
-            head.setClosed(OrgRange.getInstance(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CLOSED_RANGE_STRING))));
+            head.setClosed(OrgRange.parse(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CLOSED_RANGE_STRING))));
         if (! TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CLOCK_RANGE_STRING))))
-            head.setClock(OrgRange.getInstance(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CLOCK_RANGE_STRING))));
+            head.setClock(OrgRange.parse(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CLOCK_RANGE_STRING))));
 
         // TODO: This is probably slowing UI down when scrolling fast, use strings from db directly?
         String tags = cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.TAGS));
@@ -216,7 +219,7 @@ public class NotesClient {
         toContentValues(values, note.getHead());
 
         Uri noteUri = ContentUris.withAppendedId(ProviderContract.Notes.ContentUri.notes(), note.getId());
-        Uri uri = noteUri.buildUpon().appendQueryParameter("book-id", String.valueOf(note.getPosition().getBookId())).build();
+        Uri uri = noteUri.buildUpon().appendQueryParameter("bookId", String.valueOf(note.getPosition().getBookId())).build();
 
         ArrayList<ContentProviderOperation> ops = new ArrayList<>();
 
@@ -451,6 +454,15 @@ public class NotesClient {
                 getOrderForQuery(context, searchQuery));
     }
 
+    public static Cursor getCursorForQuery(Context context, SearchQuery searchQuery) throws SQLException {
+        return context.getContentResolver().query(
+                ProviderContract.Notes.ContentUri.notesSearchQueried(searchQuery),
+                null, // TODO: Do not fetch content if it is not required, for speed.
+                null,
+                null,
+                getOrderForQuery(context, searchQuery));
+    }
+
     /**
      * Determines order of notes depending on {@link SearchQuery}.
      */
@@ -668,7 +680,7 @@ public class NotesClient {
         ContentValues values = new ContentValues();
 
         if (time != null) {
-            values.put(ProviderContract.Notes.UpdateParam.SCHEDULED_STRING, OrgRange.getInstance(time).toString());
+            values.put(ProviderContract.Notes.UpdateParam.SCHEDULED_STRING, new OrgRange(time).toString());
         } else {
             values.putNull(ProviderContract.Notes.UpdateParam.SCHEDULED_STRING);
         }

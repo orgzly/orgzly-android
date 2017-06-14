@@ -191,6 +191,18 @@
     <string name="pref_key_new_note_notification" translatable="false">pref_key_new_note_notification</string>
     <bool name="pref_default_value_new_note_notification" translatable="false">false</bool>
 
+    <string name="pref_key_reminders_sound" translatable="false">pref_key_reminders_sound</string>
+    <bool name="pref_default_value_reminders_sound" translatable="false">true</bool>
+
+    <string name="pref_key_reminders_vibrate" translatable="false">pref_key_reminders_vibrate</string>
+    <bool name="pref_default_value_reminders_vibrate" translatable="false">false</bool>
+
+    <string name="pref_key_use_reminders_for_scheduled_times" translatable="false">pref_key_use_reminders_for_scheduled_times</string>
+    <bool name="pref_default_value_use_reminders_for_scheduled_times" translatable="false">false</bool>
+
+    <string name="pref_key_show_sync_notifications" translatable="false">pref_key_show_sync_notifications</string>
+    <bool name="pref_default_value_show_sync_notifications" translatable="false">false</bool>
+
     <string name="pref_key_states" translatable="false">pref_key_states</string>
     <string name="pref_default_states" translatable="false">TODO NEXT | DONE</string>
 
@@ -199,6 +211,9 @@
 
     <string name="pref_key_min_priority" translatable="false">pref_key_min_priority</string>
     <string name="pref_default_min_priority" translatable="false">C</string>
+
+    <string name="pref_key_sync_after">pref_key_sync_after</string>
+    <bool name="pref_default_value_sync_after" translatable="false">false</bool>
 
     <string-array name="priorities">
         <item>@string/priority_a_highest</item>
@@ -275,6 +290,9 @@
         <item>@string/pref_value_separate_notes_with_new_line_never</item>
     </string-array>
 
+    <!-- Separate header and content with an empty line -->
+    <string name="pref_key_separate_header_and_content_with_new_line" translatable="false">pref_key_separate_header_and_content_with_new_line</string>
+    <bool name="pref_default_separate_header_and_content_with_new_line" translatable="false">true</bool>
 
 
     <!-- These do not store any data. -->
@@ -290,4 +308,6 @@
     <string name="pref_key_is_getting_started_notebook_loaded" translatable="false">pref_key_is_getting_started_notebook_loaded</string>
     <string name="pref_key_last_used_version_code" translatable="false">pref_key_last_used_version_code</string>
     <string name="pref_key_last_successful_sync_time" translatable="false">pref_key_last_successful_sync_time</string>
+    <string name="pref_key_reminder_service_job_id" translatable="false">pref_key_reminder_service_job_id</string>
+    <string name="pref_key_reminder_service_last_run" translatable="false">pref_key_reminder_service_last_run</string>
 </resources>

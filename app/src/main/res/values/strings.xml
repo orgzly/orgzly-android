@@ -26,6 +26,8 @@
     <string name="value">Value</string>
     <string name="query">Query</string>
     <string name="done">Done</string>
+    <string name="mark_as_done">Mark as done</string>
+    <string name="mark_as_done_with_repeater">Reschedule %s</string>
     <string name="close">Close</string>
     <string name="import_">Import</string> <!-- "import" is reserved -->
     <string name="imported">Imported</string>
@@ -61,12 +63,6 @@
 
     <string name="fragment_note_title_hint">Title</string>
     <string name="fragment_note_tags_hint" tools:ignore="typos">tag tag</string>
-
-    <!-- Note bullets -->
-    <string name="bullet" translatable="false">•</string>
-    <string name="bullet_with_children_folded" translatable="false">+</string>
-    <string name="bullet_with_children_unfolded" translatable="false">–</string>
-    <!-- • ● ⦿ ⦾ ◦ ▸ ▾ – — -->
 
     <string name="import_org_file">Import Org file</string>
 
@@ -141,6 +137,7 @@
     <string name="repo_dropbox_button_not_linked">Link to Dropbox</string>
     <string name="repo_dropbox_button_linked">Unlink from Dropbox</string>
     <string name="fragment_settings_title">Settings</string>
+
     <string name="fragment_agenda_title">Agenda</string>
 
     <string name="updating_notes">Updating notes…</string>
@@ -172,6 +169,7 @@
     <string name="syncing_in_progress">Syncing…</string>
     <string name="syncing_book">Syncing %s…</string>
     <string name="syncing_failed">Sync: %s</string> <!-- Sync: Reason -->
+    <string name="syncing_failed_title">Sync failed</string>
     <string name="canceled">Canceled</string>
     <string name="canceling">Canceling…</string>
     <string name="directory">Directory</string>
@@ -213,6 +211,9 @@
 
     <string name="no_filters">You have no saved searches</string>
 
+    <string name="book_shortcut_label">Orgzly notebook</string>
+    <string name="pick_a_notebook">Pick a notebook</string>
+
     <!-- TODO: Use for note moving cab menu (xml) -->
     <string name="down">Down</string>
     <string name="up">Up</string>
@@ -222,8 +223,6 @@
     <string name="permissions_rationale_for_book_export">Exporting notebook requires storage permission</string>
     <string name="permissions_rationale_for_sync_start">Syncing with local repositories requires storage permission</string>
 
-    <string name="unfold_button_character" translatable="false">+</string>
-    <string name="fold_button_character" translatable="false">–</string>
     <string name="cycle_visibility">Fold/Unfold All</string>
     <string name="running_database_update">Upgrading database…</string>
     <string name="note_has_been_modified">Note modified</string>
@@ -244,7 +243,10 @@
     <string name="property_name">Property Name</string>
     <string name="created_at">Created at</string>
     <string name="insert_note_creation_time">Insert note\'s creation time</string>
+
     <string name="scheduled">Scheduled</string>
+    <string name="scheduled_using_time">Scheduled using %s</string>
+
     <string name="scheduled_new_notes_for_today">Schedule new notes for today</string>
     <string name="state">State</string>
     <string name="fold_content">Fold content</string>
@@ -271,6 +273,7 @@
     <string name="look_and_feel"><![CDATA[Look & Feel]]></string>
     <string name="notes_list">Notes list</string>
     <string name="prefs_title_new_note">New note</string>
+    <string name="prefs_title_notifications">Notifications</string>
     <string name="app">App</string>
     <string name="no_repos_configured">No repos configured</string>
     <string name="no_connection">No connection</string>
@@ -286,6 +289,8 @@
 
     <string name="org_file_format">Org file format</string>
     <string name="separate_notes_with_new_line">Separate notes with an empty line</string>
+    <string name="separate_header_and_content_with_new_line">Separate header and content</string>
+    <string name="separate_header_and_content_with_new_line_summary">Separate header and content with an empty line</string>
     <string name="add_property">Add property</string>
 
     <string name="priority_a_highest">A (highest priority)</string>
@@ -297,11 +302,13 @@
     <string name="month">Month</string>
     <string name="year">Year</string>
 
-    <string name="repeat_dialog_title">Repeat After DONE</string>
+    <string name="repeat_dialog_title">Repeat</string>
 
-    <string name="repeater_description_cumulate">Add interval to the previous time (cumulate)</string> <!-- + -->
-    <string name="repeater_description_catch_up">Keep adding interval to the previous time while in past (catch-up)</string> <!-- ++ -->
-    <string name="repeater_description_restart">Add interval to current time (restart)</string> <!-- .+ -->
+    <string name="repeater_explained">After task is marked complete, this repeater will be applied to update the time</string>
+
+    <string name="repeater_description_cumulate">Add period to time</string> <!-- + -->
+    <string name="repeater_description_catch_up">Keep adding period to time until time reaches future</string> <!-- ++ -->
+    <string name="repeater_description_restart">Add period to current time</string> <!-- .+ -->
 
     <!-- Used to take enough space to avoid dialog resizing when current values are being changed. -->
     <string name="repeater_longest_type_desc">@string/repeater_description_catch_up</string>
@@ -350,8 +357,17 @@
     <string name="display_inherited_tags_in_search_results">Inherited tags in search results</string>
     <string name="display_inherited_tags_in_search_results_summary">Display inherited tags in search results</string>
 
-    <string name="new_note_notification">Ongoing notification</string>
-    <string name="new_note_notification_summary">Display ongoing (persistent) notification for quickly creating new note</string>
+    <string name="new_note_notification">Create note and sync</string>
+    <string name="new_note_notification_summary">Quickly create new note or sync notebooks from notification drawer</string>
+
+    <string name="show_sync_notifications_title">Sync status</string>
+    <string name="show_sync_notifications_summary">Display notification during sync and after sync failure</string>
+
+    <string name="prefs_title_reminders">Reminders (beta)</string>
+    <string name="pref_title_reminders_sound">Sound</string>
+    <string name="pref_title_reminders_vibrate">Vibrate</string>
+    <string name="pref_title_reminders_for_scheduled_times">Scheduled notes</string>
+    <string name="pref_title_summary_reminders_for_scheduled_times">Display notification for note with scheduled time</string>
 
     <string name="primary_storage">Main storage</string>
     <string name="secondary_storage">SD card</string>
@@ -378,9 +394,16 @@
     <string name="separate_notes_with_new_line_always">Always</string>
     <string name="separate_notes_with_new_line_multi_line_notes_only">Multiline notes only</string>
     <string name="separate_notes_with_new_line_never">Never</string>
-    <string name="default_share_notebook" translatable="false">Inbox</string>
+
     <string name="default_notebook">Default notebook</string>
     <string name="default_notebook_desc">Notebook used when sharing to Orgzly or creating a new note from the ongoing notification</string>
+
+    <string name="list_widget_name">Orgzly search</string>
+    <string name="select_a_filter">Select a filter</string>
+    <string name="select_a_filter_long">Select a filter by clicking on the title bar</string>
+
+    <string name="sync_after_preference_title">Automatically sync after new notes</string>
+    <string name="sync_after_summary">Automatically sync after new note is created.</string>
 
     <string name="agenda_day">Day</string>
     <string name="agenda_week">Week</string>
@@ -417,4 +440,5 @@
     <string name="sync_button_sample">Last sync: Jan 01, 01:01</string>
     <string name="synced_rook_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
     <string name="synced_rook_revision_sample">42f97fe238</string>
+    <string name="tap_to_view_notes">Tap to view your notes</string>
 </resources>

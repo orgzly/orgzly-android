@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -36,6 +38,7 @@ import android.widget.ViewFlipper;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
+import com.orgzly.android.Broadcasts;
 import com.orgzly.android.Note;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
@@ -48,7 +51,7 @@ import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
-import com.orgzly.android.util.NoteContentParser;
+import com.orgzly.android.util.OrgFormatter;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.android.util.SpaceTokenizer;
 import com.orgzly.android.util.MiscUtils;
@@ -56,7 +59,7 @@ import com.orgzly.org.OrgProperty;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgRange;
 import com.orgzly.org.OrgHead;
-import com.orgzly.android.StateChangeLogic;
+import com.orgzly.org.utils.StateChangeLogic;
 import com.orgzly.org.parser.OrgParserWriter;
 
 import java.util.ArrayList;
@@ -341,7 +344,7 @@ public class NoteFragment extends Fragment
                 } else {
                     bodyEdit.setVisibility(View.GONE);
 
-                    bodyView.setText(NoteContentParser.fromOrg(bodyEdit.getText().toString()));
+                    bodyView.setText(OrgFormatter.parse(bodyEdit.getText().toString()));
                     bodyView.setVisibility(View.VISIBLE);
 
                     ActivityUtils.closeSoftKeyboard(getActivity());
@@ -438,19 +441,19 @@ public class NoteFragment extends Fragment
         if (TextUtils.isEmpty(savedInstanceState.getString(ARG_CURRENT_SCHEDULED))) {
             head.setScheduled(null);
         } else {
-            head.setScheduled(OrgRange.getInstance(savedInstanceState.getString(ARG_CURRENT_SCHEDULED)));
+            head.setScheduled(OrgRange.parse(savedInstanceState.getString(ARG_CURRENT_SCHEDULED)));
         }
 
         if (TextUtils.isEmpty(savedInstanceState.getString(ARG_CURRENT_DEADLINE))) {
             head.setDeadline(null);
         } else {
-            head.setDeadline(OrgRange.getInstance(savedInstanceState.getString(ARG_CURRENT_DEADLINE)));
+            head.setDeadline(OrgRange.parse(savedInstanceState.getString(ARG_CURRENT_DEADLINE)));
         }
 
         if (TextUtils.isEmpty(savedInstanceState.getString(ARG_CURRENT_CLOSED))) {
             head.setClosed(null);
         } else {
-            head.setClosed(OrgRange.getInstance(savedInstanceState.getString(ARG_CURRENT_CLOSED)));
+            head.setClosed(OrgRange.parse(savedInstanceState.getString(ARG_CURRENT_CLOSED)));
         }
 
         head.removeProperties();
@@ -501,7 +504,7 @@ public class NoteFragment extends Fragment
 
         /* Content. */
         bodyEdit.setText(head.getContent());
-        bodyView.setText(NoteContentParser.fromOrg(head.getContent()));
+        bodyView.setText(OrgFormatter.parse(head.getContent()));
     }
 
     private void addPropertyToList(OrgProperty property) {
@@ -835,7 +838,7 @@ public class NoteFragment extends Fragment
                     .setDay(cal.get(Calendar.DAY_OF_MONTH))
                     .build();
 
-            OrgRange time = OrgRange.getInstance(timestamp);
+            OrgRange time = new OrgRange(timestamp);
 
             head.setScheduled(time);
         }
@@ -860,7 +863,7 @@ public class NoteFragment extends Fragment
         /* Prepend content with created-at property. */
         if (AppPreferences.createdAt(getContext())) {
             String propertyName = AppPreferences.createdAtProperty(getContext());
-            String time = OrgDateTime.getInstance(false).toString(); /* Inactive time. */
+            String time = new OrgDateTime(false).toString(); /* Inactive time. */
 
             head.addProperty(new OrgProperty(propertyName, time));
         }
@@ -925,7 +928,7 @@ public class NoteFragment extends Fragment
 
     @Override /* TimestampDialog */
     public void onDateTimeSet(int id, TreeSet<Long> noteIds, OrgDateTime time) {
-        OrgRange range = OrgRange.getInstance(time);
+        OrgRange range = new OrgRange(time);
 
         switch (id) {
             case R.id.fragment_note_scheduled_button:
@@ -1060,20 +1063,16 @@ public class NoteFragment extends Fragment
             return;
         }
 
-        if (mIsNew) {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Saving new note " + mNote);
-
-            if (updateNoteFromViewsAndVerify()) {
+        if (updateNoteFromViewsAndVerify()) {
+            if (mIsNew) {
                 mListener.onNoteCreateRequest(mNote, place != Place.UNDEFINED ?
                         new NotePlace(mNote.getPosition().getBookId(), mNoteId, place) : null);
-            }
-
-        } else {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Updating note " + mNote);
-
-            if (updateNoteFromViewsAndVerify()) {
+            } else {
                 mListener.onNoteUpdateRequest(mNote);
             }
+
+            LocalBroadcastManager.getInstance(getContext())
+                    .sendBroadcast(new Intent(Broadcasts.ACTION_NOTE_CHANGED));
         }
     }
 
@@ -1108,10 +1107,7 @@ public class NoteFragment extends Fragment
     }
 
     private void updateNoteForStateChange(Context context, Note note, String state) {
-        StateChangeLogic stateSetOp = new StateChangeLogic(
-                AppPreferences.todoKeywordsSet(context),
-                AppPreferences.doneKeywordsSet(context)
-        );
+        StateChangeLogic stateSetOp = new StateChangeLogic(AppPreferences.doneKeywordsSet(context));
 
         stateSetOp.setState(state,
                 note.getHead().getState(),

@@ -526,21 +526,16 @@ public class AgendaFragment extends NoteListFragment
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        System.out.println("ITEM SELECTED ********************");
         String selectedStr = agendaPeriods[position];
         String selectedQuery;
         // TODO: currently relies on comparing the queries, might not be a good idea
         if (selectedStr.equalsIgnoreCase(getResources().getString(R.string.agenda_day))) {
-            System.out.println(selectedStr);
             selectedQuery = AGENDA_QUERY_DAY;
         } else if (selectedStr.equalsIgnoreCase(getResources().getString(R.string.agenda_week))) {
-            System.out.println(selectedStr);
             selectedQuery = AGENDA_QUERY_WEEK;
         } else if (selectedStr.equalsIgnoreCase(getResources().getString(R.string.agenda_fortnight))) {
-            System.out.println(selectedStr);
             selectedQuery = AGENDA_QUERY_FORTNIGHT;
         } else if (selectedStr.equalsIgnoreCase(getResources().getString(R.string.agenda_month))) {
-            System.out.println(selectedStr);
             selectedQuery = AGENDA_QUERY_MONTH;
         } else {
             throw new RuntimeException("Invalid agenda period item selected!");

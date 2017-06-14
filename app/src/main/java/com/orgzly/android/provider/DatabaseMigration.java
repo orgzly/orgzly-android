@@ -10,11 +10,13 @@ import com.orgzly.android.NotePosition;
 import com.orgzly.android.provider.models.DbNote;
 import com.orgzly.android.provider.models.DbNoteAncestor;
 import com.orgzly.android.provider.models.DbNoteProperty;
+import com.orgzly.android.provider.models.DbOrgTimestamp;
 import com.orgzly.android.provider.models.DbProperty;
 import com.orgzly.android.provider.models.DbPropertyName;
 import com.orgzly.android.provider.models.DbPropertyValue;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
+import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.parser.OrgNestedSetParser;
 
 import java.util.ArrayList;
@@ -47,8 +49,9 @@ public class DatabaseMigration {
     private static final int DB_VER_7 = 136;
     private static final int DB_VER_8 = 137;
     private static final int DB_VER_9 = 138;
+    private static final int DB_VER_10 = 139;
 
-    static final int DB_VER_CURRENT = DB_VER_9;
+    static final int DB_VER_CURRENT = DB_VER_10;
 
     /**
      * Start from the old version and go through all changes. No breaks.
@@ -114,7 +117,37 @@ public class DatabaseMigration {
             case DB_VER_8:
                 for (String sql : DbNoteAncestor.CREATE_SQL) db.execSQL(sql);
                 populateNoteAncestors(db);
+
+            case DB_VER_9:
+                migrateOrgTimestamps(db);
         }
+    }
+
+    private static void migrateOrgTimestamps(SQLiteDatabase db) {
+        db.execSQL("ALTER TABLE org_timestamps RENAME TO org_timestamps_prev");
+
+        for (String sql : DbOrgTimestamp.CREATE_SQL) db.execSQL(sql);
+
+        Cursor cursor = db.query(
+                "org_timestamps_prev", new String[] { "_id", "string" }, null, null, null, null, null);
+        try {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                long id = cursor.getLong(0);
+                String string = cursor.getString(1);
+
+                OrgDateTime orgDateTime = OrgDateTime.parse(string);
+
+                ContentValues values = new ContentValues();
+                values.put("_id", id);
+                DbOrgTimestamp.toContentValues(values, orgDateTime);
+
+                db.insert("org_timestamps", null, values);
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.execSQL("DROP TABLE org_timestamps_prev");
     }
 
     private static void populateNoteAncestors(SQLiteDatabase db) {
@@ -137,12 +170,12 @@ public class DatabaseMigration {
                     List<String[]> properties = getPropertiesFromContent(content, newContent);
 
                     if (properties.size() > 0) {
-                        int pos = 0;
+                        int pos = 1;
                         for (String[] property: properties) {
                             long nameId = DbPropertyName.getOrInsert(db, property[0]);
                             long valueId = DbPropertyValue.getOrInsert(db, property[1]);
                             long propertyId = DbProperty.getOrInsert(db, nameId, valueId);
-                            DbNoteProperty.getOrInsert(db, noteId, pos, propertyId);
+                            DbNoteProperty.getOrInsert(db, noteId, pos++, propertyId);
                         }
 
                         /* Update content and its line count */

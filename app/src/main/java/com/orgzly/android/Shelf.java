@@ -4,13 +4,14 @@ import android.content.ContentProviderOperation;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
-
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.prefs.AppPreferences;
@@ -21,6 +22,7 @@ import com.orgzly.android.provider.clients.DbClient;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.provider.clients.ReposClient;
+import com.orgzly.android.reminders.ReminderService;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.repos.Rook;
@@ -139,6 +141,8 @@ public class Shelf {
     public Book loadBookFromFile(String name, BookName.Format format, File file, VersionedRook vrook, String selectedEncoding) throws IOException {
         Uri uri = BooksClient.loadFromFile(mContext, name, format, file, vrook, selectedEncoding);
 
+        notifyDataChanged(mContext);
+
         return BooksClient.get(mContext, ContentUris.parseId(uri));
     }
 
@@ -158,6 +162,8 @@ public class Shelf {
         NotesClient.deleteFromBook(mContext, book.getId());
 
         BooksClient.delete(mContext, book.getId());
+
+        notifyDataChanged(mContext);
     }
 
     // TODO: This is used in tests, check if we are even deleting these books.
@@ -224,6 +230,8 @@ public class Shelf {
                 parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.NEVER;
             }
 
+            parserSettings.separateHeaderAndContentWithNewLine = AppPreferences.separateHeaderAndContentWithNewLine(mContext);
+
             final OrgParserWriter parserWriter = new OrgParserWriter(parserSettings);
 
             out.write(parserWriter.whiteSpacedFilePreface(book.getPreface()));
@@ -245,10 +253,12 @@ public class Shelf {
 
     public void setNotesScheduledTime(Set<Long> noteIds, OrgDateTime time) {
         NotesClient.updateScheduledTime(mContext, noteIds, time);
+        notifyDataChanged(mContext);
     }
 
     public void setNotesState(Set<Long> noteIds, String state) {
         NotesClient.setState(mContext, noteIds, state);
+        notifyDataChanged(mContext);
     }
 
     public Note getNote(long id) {
@@ -264,7 +274,9 @@ public class Shelf {
     }
 
     public int updateNote(Note note) {
-        return NotesClient.update(mContext, note);
+        int result = NotesClient.update(mContext, note);
+        notifyDataChanged(mContext);
+        return result;
     }
 
     public Note createNote(Note note, NotePlace target) {
@@ -272,6 +284,8 @@ public class Shelf {
         Note insertedNote = NotesClient.create(mContext, note, target);
 
         BooksClient.setModifiedTime(mContext, note.getPosition().getBookId(), System.currentTimeMillis());
+
+        notifyDataChanged(mContext);
 
         return insertedNote;
     }
@@ -310,19 +324,26 @@ public class Shelf {
         Set<Long> noteIds = new HashSet<>();
         noteIds.add(noteId);
 
-        return NotesClient.cut(mContext, bookId, noteIds);
+        return cut(bookId, noteIds);
     }
 
     public int cut(long bookId, Set<Long> noteIds) {
-        return NotesClient.cut(mContext, bookId, noteIds);
+        int result = NotesClient.cut(mContext, bookId, noteIds);
+        notifyDataChanged(mContext);
+        return result;
     }
 
     public NotesBatch paste(long bookId, long noteId, Place place) {
-        return NotesClient.paste(mContext, bookId, noteId, place);
+        NotesBatch batch = NotesClient.paste(mContext, bookId, noteId, place);
+        notifyDataChanged(mContext);
+        return batch;
+
     }
 
     public int delete(long bookId, Set<Long> noteIds) {
-        return NotesClient.delete(mContext, bookId, noteIds);
+        int result = NotesClient.delete(mContext, bookId, noteIds);
+        notifyDataChanged(mContext);
+        return result;
     }
 
     /**
@@ -333,6 +354,8 @@ public class Shelf {
 
         /* Clear last sync time. */
         AppPreferences.lastSuccessfulSyncTime(mContext, 0L);
+
+        notifyDataChanged(mContext);
     }
 
     /**
@@ -468,7 +491,6 @@ public class Shelf {
         }
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Syncing " + namesake + ": " + bookAction);
-
         return bookAction;
     }
 
@@ -626,7 +648,6 @@ public class Shelf {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Setting state for " + note.getHead().getTitle() + " to " + nextState +
                                                    ": " + currentIndex + " -> " + nextIndex + " (" + allStates.size() + " total states)");
 
-
         setNotesState(noteIds, nextState);
     }
 
@@ -678,15 +699,24 @@ public class Shelf {
     }
 
     public void setStateToDone(long noteId) {
+        /* Get the *first* DONE state from preferences. */
         Set<String> doneStates = AppPreferences.doneKeywordsSet(mContext);
-
         String firstState = doneStates.iterator().hasNext() ? doneStates.iterator().next() : null;
 
         if (firstState != null) {
             Set<Long> ids = new TreeSet<>();
             ids.add(noteId);
+
             setNotesState(ids, firstState);
         }
+    }
+
+    public static void notifyDataChanged(Context context) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+
+        ReminderService.notifyDataChanged(context);
+
+        context.sendBroadcast(new Intent(AppIntent.ACTION_LIST_WIDGET_UPDATE));
     }
 
     public interface ReParsingNotesListener {
@@ -793,6 +823,8 @@ public class Shelf {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+
+        notifyDataChanged(mContext);
 
         return modifiedNotesCount;
     }

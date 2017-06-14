@@ -1,19 +1,21 @@
 package com.orgzly.android.ui;
 
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.TaskStackBuilder;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
-import com.orgzly.android.NotesBatch;
 import com.orgzly.android.Note;
+import com.orgzly.android.NotesBatch;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.fragments.NoteFragment;
@@ -53,6 +55,26 @@ public class ShareActivity extends CommonActivity
 
     private Spinner mBooksSpinner;
 
+    private String mError;
+
+    public static PendingIntent createNewNoteIntent(Context context) {
+        Intent resultIntent = new Intent(context, ShareActivity.class);
+        resultIntent.setAction(Intent.ACTION_SEND);
+        resultIntent.setType("text/plain");
+        resultIntent.putExtra(Intent.EXTRA_TEXT, "");
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(ShareActivity.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,15 +100,16 @@ public class ShareActivity extends CommonActivity
 
     public Data getDataFromIntent(Intent intent) {
         Data data = new Data();
+        mError = null;
 
         String action = intent.getAction();
         String type = intent.getType();
 
         if (action == null) {
-            data.title = getString(R.string.share_action_not_set);
+            // mError = getString(R.string.share_action_not_set);
 
         } else if (type == null) {
-            data.title = getString(R.string.share_type_not_set);
+            // mError = getString(R.string.share_type_not_set);
 
         } else if (action.equals(Intent.ACTION_SEND)) {
             if (type.startsWith("text/")) {
@@ -107,7 +130,7 @@ public class ShareActivity extends CommonActivity
 
                         /* Don't read large files. */
                         if (file.length() > MAX_TEXT_FILE_LENGTH_FOR_CONTENT) {
-                            data.content = "File has " + file.length() +
+                            mError = "File has " + file.length() +
                                     " bytes (refusing to read files larger then " +
                                     MAX_TEXT_FILE_LENGTH_FOR_CONTENT + " bytes)";
 
@@ -117,7 +140,7 @@ public class ShareActivity extends CommonActivity
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                        data.content = "Failed reading the content of " + uri.toString() + ": " + e.toString();
+                        mError = "Failed reading the content of " + uri.toString() + ": " + e.toString();
                     }
                 }
 
@@ -127,7 +150,7 @@ public class ShareActivity extends CommonActivity
                 }
 
             } else {
-                data.title = getString(R.string.share_type_not_supported, type);
+                mError = getString(R.string.share_type_not_supported, type);
             }
 
         } else if (action.equals("com.google.android.gm.action.AUTO_SEND")) {
@@ -136,12 +159,12 @@ public class ShareActivity extends CommonActivity
             }
 
         } else {
-            data.title = getString(R.string.share_action_not_supported, action);
+            mError = getString(R.string.share_action_not_supported, action);
         }
 
         /* Make sure that title is never empty. */
         if (data.title == null) {
-            data.title = "No text (type " + type + " action " + action + ")";
+            data.title = "";
         }
 
         return data;
@@ -225,6 +248,16 @@ public class ShareActivity extends CommonActivity
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mError != null) {
+            showSimpleSnackbarLong(mError);
+            mError = null;
+        }
     }
 
     @Override

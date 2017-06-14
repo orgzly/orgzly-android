@@ -10,6 +10,8 @@ import com.orgzly.android.NotePosition;
 import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.models.DbNote;
+import com.orgzly.android.provider.models.DbNoteAncestor;
+import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.LogUtils;
 
@@ -30,31 +32,23 @@ public class MoveNotesAction implements Action {
     public int run(SQLiteDatabase db) {
         NotePosition selectedNotePosition = DbNote.getPosition(db, id);
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Moving note " + id + " (" + selectedNotePosition + ") from book " + bookId + " in direction " + direction);
+        NotePlace notePlace = null;
 
-
-        long targetNoteId = 0;
-        Place place = null;
-
-        if (direction == -1) { /* Moving up. */
+        if (direction == -1) { /* Move up - paste above previous sibling. */
             Cursor cursor = db.query(
                     DbNote.TABLE,
-                    new String[] { DbNote.Column._ID, DbNote.Column.LFT, DbNote.Column.LEVEL },
+                    new String[] { DbNote.Column._ID, DbNote.Column.LEVEL },
                     DatabaseUtils.whereUncutBookNotes(bookId) + " AND " + DbNote.Column.RGT + " < " + selectedNotePosition.getLft(),
                     null, null, null,
                     DbNote.Column.RGT + " DESC");
 
             try {
                 if (cursor.moveToFirst()) {
+                    long prevNoteId = cursor.getLong(0);
+                    long prevNoteLevel = cursor.getLong(1);
 
-                    long prevId = cursor.getLong(0);
-                    long prevLevel = cursor.getLong(2);
-
-                    if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Moving note " + id + " up: prevId: " + prevId + " prevLevel: " + prevLevel);
-
-                    if (prevLevel == selectedNotePosition.getLevel()) {
-                        targetNoteId = prevId;
-                        place = Place.ABOVE;
+                    if (prevNoteLevel == selectedNotePosition.getLevel()) {
+                        notePlace = new NotePlace(bookId, prevNoteId, Place.ABOVE);
                     }
                 }
 
@@ -63,22 +57,21 @@ public class MoveNotesAction implements Action {
             }
 
 
-        } else { /* Moving down. */
+        } else { /* Move down - paste below next sibling. */
             Cursor cursor = db.query(
                     DbNote.TABLE,
-                    new String[] { DbNote.Column._ID, DbNote.Column.LFT, DbNote.Column.LEVEL },
+                    new String[] { DbNote.Column._ID, DbNote.Column.LEVEL },
                     DatabaseUtils.whereUncutBookNotes(bookId) + " AND " + DbNote.Column.LFT + " > " + selectedNotePosition.getRgt(),
                     null, null, null,
                     DbNote.Column.LFT);
 
             try {
                 if (cursor.moveToFirst()) {
-                    long prevId = cursor.getLong(0);
-                    long prevLevel = cursor.getLong(2);
+                    long nextNoteId = cursor.getLong(0);
+                    long nextNoteLevel = cursor.getLong(1);
 
-                    if (prevLevel == selectedNotePosition.getLevel()) {
-                        targetNoteId = prevId;
-                        place = Place.BELOW;
+                    if (nextNoteLevel == selectedNotePosition.getLevel()) {
+                        notePlace = new NotePlace(bookId, nextNoteId, Place.BELOW);
                     }
                 }
 
@@ -87,8 +80,14 @@ public class MoveNotesAction implements Action {
             }
         }
 
-        if (targetNoteId != 0) {
+        if (notePlace != null) {
             ContentValues values;
+
+            /* Delete affected notes from ancestors table. */
+            String w = "(SELECT " + DbNote.Column._ID + " FROM " + DbNote.TABLE + " WHERE " + DatabaseUtils.whereDescendantsAndNote(bookId, selectedNotePosition.getLft(), selectedNotePosition.getRgt()) + ")";
+            String sql = "DELETE FROM " + DbNoteAncestor.TABLE + " WHERE " + DbNoteAncestor.Column.NOTE_ID + " IN " + w;
+            if (BuildConfig.LOG_DEBUG) LogUtils.d("SQL", sql);
+            db.execSQL(sql);
 
             /* Cut note and all its descendants. */
             long batchId = System.currentTimeMillis();
@@ -99,8 +98,8 @@ public class MoveNotesAction implements Action {
             /* Paste. */
             values = new ContentValues();
             values.put(ProviderContract.Paste.Param.BATCH_ID, batchId);
-            values.put(ProviderContract.Paste.Param.NOTE_ID, targetNoteId);
-            values.put(ProviderContract.Paste.Param.SPOT, place.toString());
+            values.put(ProviderContract.Paste.Param.NOTE_ID, notePlace.getNoteId());
+            values.put(ProviderContract.Paste.Param.SPOT, notePlace.getPlace().toString());
             new PasteNotesAction(values).run(db);
 
             DatabaseUtils.updateBookMtime(db, bookId);

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
@@ -14,11 +15,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.github.machinarius.preferencefragment.PreferenceFragment;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.Shelf;
 import com.orgzly.android.Notifications;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.prefs.ListPreferenceWithValueAsSummary;
@@ -92,11 +95,14 @@ public class SettingsFragment extends PreferenceFragment
 
         setDefaultStateForNewNote();
 
-
+        /* Disable preference for changing the layout, if not on API version that supports that. */
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
             Preference layoutDirectionPref = findPreference(getString(R.string.pref_key_layout_direction));
             layoutDirectionPref.setEnabled(false);
         }
+
+        /* Update preferences which depend on multiple others. */
+        updateRemindersPreferences();
     }
 
     @Override
@@ -308,6 +314,28 @@ public class SettingsFragment extends PreferenceFragment
                 pref.setValue(defPri);
             }
         }
+
+        if (getString(R.string.pref_key_use_reminders_for_scheduled_times).equals(key)) {
+            /* Reset last run time if reminders are being enabled or disabled. */
+            AppPreferences.reminderServiceLastRun(getContext(), 0L);
+        }
+
+        if (getString(R.string.pref_key_use_reminders_for_scheduled_times).equals(key)) {
+            updateRemindersPreferences();
+        }
+
+
+        /* Always notify if settings are modified.
+         * Changing states or priorities can affect the displayed data for example.
+         */
+        Shelf.notifyDataChanged(getContext());
+    }
+
+    private void updateRemindersPreferences() {
+        boolean remindersEnabled = ((CheckBoxPreference) findPreference(getString(R.string.pref_key_use_reminders_for_scheduled_times))).isChecked();
+
+        findPreference(getString(R.string.pref_key_reminders_sound)).setEnabled(remindersEnabled);
+        findPreference(getString(R.string.pref_key_reminders_vibrate)).setEnabled(remindersEnabled);
     }
 
     /**

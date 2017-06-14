@@ -19,10 +19,10 @@ android {
 
     defaultConfig {
         applicationId "com.orgzly"
-        minSdkVersion 14 // Ice Cream Sandwich (4.0)
+        minSdkVersion 16 // JELLY_BEAN
         targetSdkVersion 25 // Nougat (7.1)
-        versionCode 60
-        versionName "1.4.12"
+        versionCode 64
+        versionName "1.5-alpha.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "DROPBOX_APP_KEY", properties.getProperty("dropbox.app_key", '""')
@@ -95,6 +95,10 @@ dependencies {
         exclude module: 'support-v4'
     }
 
+    compile "com.evernote:android-job:$evernote_android_job_version"
+
+    compile "joda-time:joda-time:$joda_time_version"
+
     compile "com.android.support:support-v4:$android_support_version"
     compile "com.android.support:appcompat-v7:$android_support_version"
     compile "com.android.support:cardview-v7:$android_support_version"
@@ -110,6 +114,8 @@ dependencies {
 
     androidTestCompile "com.android.support.test.espresso:espresso-core:$android_test_espresso_version"
     androidTestCompile "com.android.support.test.espresso:espresso-contrib:$android_test_espresso_version"
+
+    androidTestCompile "com.android.support.test.uiautomator:uiautomator-v18:$android_test_uiautomator_version"
 
     androidTestCompile "de.sven-jacobs:loremipsum:$loremipsum_version"
 }

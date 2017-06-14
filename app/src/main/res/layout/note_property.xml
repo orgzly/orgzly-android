@@ -8,7 +8,6 @@
     android:orientation="horizontal"
     android:gravity="center_vertical">
 
-
     <ImageView
         android:layout_gravity="center"
         android:contentDescription="@string/property"
@@ -50,10 +49,10 @@
 
     <ImageButton
         android:id="@+id/delete"
-        style="@style/BorderlessButton"
+        style="?android:attr/borderlessButtonStyle"
         android:contentDescription="@string/new_above"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="?attr/oic_delete_item"/>
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="?attr/oic_close"/>
 
 </LinearLayout>

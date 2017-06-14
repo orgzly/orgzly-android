@@ -342,13 +342,18 @@ public class SearchQuery {
     public static class SearchQueryInterval extends OrgInterval {
         public static final Pattern PATTERN = Pattern.compile("^(\\d+)(h|d|w|m|y)$");
 
+        private boolean none = false;
+
         public static SearchQueryInterval getInstance(String str) {
             SearchQueryInterval interval = null;
 
             if (str != null) {
                 str = str.toLowerCase();
 
-                if ("today".equals(str) || "tod".equals(str)) {
+                if ("none".equals(str) || "no".equals(str)) {
+                    interval = new SearchQueryInterval();
+                    interval.none = true;
+                } else if ("today".equals(str) || "tod".equals(str)) {
                     interval = new SearchQueryInterval();
                     interval.setValue(0);
                     interval.setUnit(Unit.DAY);
@@ -376,7 +381,9 @@ public class SearchQuery {
         }
 
         public String toString() {
-            if (unit == Unit.DAY && value == 0) {
+            if (none()) {
+                return "none";
+            } else if (unit == Unit.DAY && value == 0) {
                 return "today";
 
             } else if (unit == Unit.DAY && value == 1) {
@@ -384,6 +391,10 @@ public class SearchQuery {
             }
 
             return super.toString();
+        }
+
+        public boolean none() {
+            return none;
         }
     }
 }

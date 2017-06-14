@@ -19,6 +19,7 @@ import com.orgzly.android.provider.actions.SparseTreeAction;
 import com.orgzly.android.repos.Rook;
 import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.util.ExceptionUtils;
+import com.orgzly.android.widgets.ListWidgetProvider;
 import com.orgzly.org.OrgFileSettings;
 
 import java.io.File;

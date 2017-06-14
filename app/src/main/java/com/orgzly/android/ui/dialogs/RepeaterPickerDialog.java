@@ -134,7 +134,7 @@ public class RepeaterPickerDialog extends AlertDialog
     }
 
     private void setViewsFromString(String repeaterValue) {
-        OrgRepeater repeater = OrgRepeater.getInstance(repeaterValue);
+        OrgRepeater repeater = OrgRepeater.parse(repeaterValue);
 
         mRepeaterType.setValue(repeater.getType().ordinal());
 
@@ -196,7 +196,7 @@ public class RepeaterPickerDialog extends AlertDialog
                 throw new IllegalArgumentException("Unexpected spinner position for current repeater unit: " + mRepeaterType.getValue());
         }
 
-        return OrgRepeater.getInstance(type, value, unit);
+        return new OrgRepeater(type, value, unit);
     }
 
     /**

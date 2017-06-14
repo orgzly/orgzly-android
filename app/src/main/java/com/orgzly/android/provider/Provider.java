@@ -12,12 +12,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.orgzly.BuildConfig;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.SearchQuery;
-import com.orgzly.android.StateChangeLogic;
+import com.orgzly.org.utils.StateChangeLogic;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.actions.ActionRunner;
 import com.orgzly.android.provider.actions.CutNotesAction;
@@ -146,7 +145,6 @@ public class Provider extends ContentProvider {
         /* Gets a readable database. This will trigger its creation if it doesn't already exist. */
         SQLiteDatabase db = mOpenHelper.getReadableDatabase();
 
-        long id;
         String table;
         Cursor cursor = null;
 
@@ -179,20 +177,19 @@ public class Provider extends ContentProvider {
             case ProviderUris.BOOKS_ID_NOTES:
                 table = NotesView.VIEW_NAME;
 
-                id = Long.parseLong(uri.getPathSegments().get(1));
+                long bookId = Long.parseLong(uri.getPathSegments().get(1));
 
-                selection = NotesView.Columns.BOOK_ID + "=" + id + " AND " + DatabaseUtils.WHERE_VISIBLE_NOTES;
+                selection = NotesView.Columns.BOOK_ID + "=" + bookId + " AND " + DatabaseUtils.WHERE_VISIBLE_NOTES;
                 selectionArgs = null;
                 break;
 
             case ProviderUris.NOTES_ID_PROPERTIES:
-                id = Long.parseLong(uri.getPathSegments().get(1));
+                long noteId = Long.parseLong(uri.getPathSegments().get(1));
 
-                selection = field(DbNoteProperty.TABLE, DbNoteProperty.Column.NOTE_ID) + "=" + id;
+                selection = field(DbNoteProperty.TABLE, DbNoteProperty.Column.NOTE_ID) + "=" + noteId;
                 selectionArgs = null;
 
                 sortOrder = DbNoteProperty.Column.POSITION;
-
 
                 table = DbNoteProperty.TABLE + " " +
                         GenericDatabaseUtils.join(DbProperty.TABLE, "tproperties", DbProperty.Column._ID, DbNoteProperty.TABLE, DbNoteProperty.Column.PROPERTY_ID) +
@@ -240,6 +237,45 @@ public class Provider extends ContentProvider {
                         " LEFT JOIN " + DbRookUrl.TABLE + " ON (" + field(DbRookUrl.TABLE, DbRookUrl.Column._ID) + "=" + field(DbRook.TABLE, DbRook.Column.ROOK_URL_ID) + ")" +
                         " LEFT JOIN " + DbRepo.TABLE + " ON (" + field(DbRepo.TABLE, DbRepo.Column._ID) + "=" + field(DbRook.TABLE, DbRook.Column.REPO_ID) + ")" +
                         "";
+                break;
+
+            case ProviderUris.TIMES:
+                String afterTime = uri.getQueryParameter(ProviderContract.Times.ContentUri.PARAM_AFTER_TIME);
+
+                table = null;
+
+//                cursor = db.rawQuery("SELECT n._id as note_id, n.book_id, b.name, n.state as note_state, t.string as org_timestamp_string, n.title as note_title\n" +
+//                                   "FROM org_ranges r\n" +
+//                                   "JOIN org_timestamps t ON (r.start_timestamp_id = t._id)\n" +
+//                                   "JOIN notes n ON (r._id = n.scheduled_range_id)\n" +
+//                                   "JOIN books b ON (b._id = n.book_id)\n" +
+//                                   "WHERE t.is_active = 1 AND\n" +
+//                                   "-- Times which either have repeater or are in the future\n" +
+//                                   "-- i.e. times without repeater that are before given time are ignored\n" +
+//                                   "( t.repeater_type IS NOT NULL OR\n" +
+//                                   "  CASE WHEN t.hour IS NOT NULL\n" +
+//                                   "       THEN t.timestamp/1000\n" +
+//                                   "       -- If timestamp doesn't have a time part set,\n" +
+//                                   "       -- assume end-of-day for the purposes of querying\n" +
+//                                   "       -- to make sure they are picked up here.\n" +
+//                                   "       ELSE CAST(strftime('%s', t.timestamp/1000, 'unixepoch', '+1 day') AS INTEGER) END >= ? / 1000\n" +
+//                                   ")", new String[] { afterTime });
+
+                cursor = db.rawQuery("SELECT n._id as note_id, n.book_id, b.name, n.state as note_state, t.string as org_timestamp_string, n.title as note_title\n" +
+                                     "FROM org_ranges r\n" +
+                                     "JOIN org_timestamps t ON (r.start_timestamp_id = t._id)\n" +
+                                     "JOIN notes n ON (r._id = n.scheduled_range_id)\n" +
+                                     "JOIN books b ON (b._id = n.book_id)\n" +
+                                     "WHERE t.is_active = 1 AND\n" +
+                                     "-- Times that are in the future\n" +
+                                     "( CASE WHEN t.hour IS NOT NULL\n" +
+                                     "       THEN t.timestamp/1000\n" +
+                                     "       -- If timestamp doesn't have a time part set,\n" +
+                                     "       -- assume end-of-day for the purposes of querying\n" +
+                                     "       -- to make sure they are picked up here.\n" +
+                                     "       ELSE CAST(strftime('%s', t.timestamp/1000, 'unixepoch', '+1 day') AS INTEGER) END >= ? / 1000\n" +
+                                     ")", new String[] { afterTime });
+
                 break;
 
             default:
@@ -363,6 +399,11 @@ public class Provider extends ContentProvider {
     }
 
     private static void appendBeforeInterval(StringBuilder selection, String column, SearchQuery.SearchQueryInterval interval) {
+        if (interval.none()) {
+            selection.append(" AND ").append(column).append(" IS NULL");
+            return;
+        }
+
         Calendar before = new GregorianCalendar();
 
         switch (interval.getUnit()) {
@@ -1012,8 +1053,8 @@ public class Provider extends ContentProvider {
                 result = db.update(DbNote.TABLE, contentValues, selection, selectionArgs);
 
                 // TODO: Ugh: Use /books/1/notes/23/ or just move to constant
-                if (uri.getQueryParameter("book-id") != null) {
-                    DatabaseUtils.updateBookMtime(db, Long.parseLong(uri.getQueryParameter("book-id")));
+                if (uri.getQueryParameter("bookId") != null) {
+                    DatabaseUtils.updateBookMtime(db, Long.parseLong(uri.getQueryParameter("bookId")));
                 }
 
                 return result;
@@ -1086,22 +1127,22 @@ public class Provider extends ContentProvider {
 
         int notesUpdated;
 
-            /* Select only notes which don't already have the target state. */
+        /* Select only notes which don't already have the target state. */
         String notesSelection = DbNote.Column._ID + " IN (" + ids + ") AND (" +
                                 NotesView.Columns.STATE + " IS NULL OR " + NotesView.Columns.STATE + " != ?)";
 
         String[] selectionArgs = new String[] { targetState };
 
-            /* Select notebooks which will be affected. */
+        /* Select notebooks which will be affected. */
         String booksSelection = DbBook.Column._ID + " IN (SELECT DISTINCT " +
                                 DbNote.Column.BOOK_ID + " FROM " + DbNote.TABLE + " WHERE " + notesSelection + ")";
 
-            /* Notebooks must be updated before notes, because selection checks
-             * for notes what will be affected.
-             */
+        /* Notebooks must be updated before notes, because selection checks
+         * for notes what will be affected.
+         */
         DatabaseUtils.updateBookMtime(db, booksSelection, selectionArgs);
 
-            /* Update notes. */
+        /* Update notes. */
         if (AppPreferences.isDoneKeyword(getContext(), targetState)) {
             notesUpdated = setDoneStateForNotes(db, targetState, notesSelection, selectionArgs);
         } else {
@@ -1151,15 +1192,12 @@ public class Provider extends ContentProvider {
 
         try {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                StateChangeLogic stateSetOp = new StateChangeLogic(
-                        AppPreferences.todoKeywordsSet(getContext()),
-                        AppPreferences.doneKeywordsSet(getContext())
-                );
+                StateChangeLogic stateSetOp = new StateChangeLogic(AppPreferences.doneKeywordsSet(getContext()));
 
                 stateSetOp.setState(state,
                         cursor.getString(3),
-                        OrgRange.getInstanceOrNull(cursor.getString(1)),
-                        OrgRange.getInstanceOrNull(cursor.getString(2)));
+                        OrgRange.parseOrNull(cursor.getString(1)),
+                        OrgRange.parseOrNull(cursor.getString(2)));
 
                 ContentValues values = new ContentValues();
 
@@ -1438,7 +1476,7 @@ public class Provider extends ContentProvider {
                             long noteId = db.insertOrThrow(DbNote.TABLE, null, values);
 
                             /* Insert note's properties. */
-                            int i = 0;
+                            int pos = 1;
                             for (OrgProperty property: node.getHead().getProperties()) {
                                 Long nameId = propertyNames.get(property.getName());
                                 if (nameId == null) {
@@ -1454,7 +1492,7 @@ public class Provider extends ContentProvider {
 
                                 long propertyId = DbProperty.getOrInsert(db, nameId, valueId);
 
-                                DbNoteProperty.getOrInsert(db, noteId, i, propertyId);
+                                DbNoteProperty.getOrInsert(db, noteId, pos++, propertyId);
                             }
 
                             /*
@@ -1532,7 +1570,7 @@ public class Provider extends ContentProvider {
         if (values.containsKey(ProviderContract.Notes.UpdateParam.SCHEDULED_STRING)) {
             String str = values.getAsString(ProviderContract.Notes.UpdateParam.SCHEDULED_STRING);
             if (! TextUtils.isEmpty(str)) {
-                values.put(DbNote.Column.SCHEDULED_RANGE_ID, getOrInsertOrgRange(db, OrgRange.getInstance(str)));
+                values.put(DbNote.Column.SCHEDULED_RANGE_ID, getOrInsertOrgRange(db, OrgRange.parse(str)));
             } else {
                 values.putNull(DbNote.Column.SCHEDULED_RANGE_ID);
             }
@@ -1543,7 +1581,7 @@ public class Provider extends ContentProvider {
         if (values.containsKey(ProviderContract.Notes.UpdateParam.DEADLINE_STRING)) {
             String str = values.getAsString(ProviderContract.Notes.UpdateParam.DEADLINE_STRING);
             if (! TextUtils.isEmpty(str)) {
-                values.put(DbNote.Column.DEADLINE_RANGE_ID, getOrInsertOrgRange(db, OrgRange.getInstance(str)));
+                values.put(DbNote.Column.DEADLINE_RANGE_ID, getOrInsertOrgRange(db, OrgRange.parse(str)));
             } else {
                 values.putNull(DbNote.Column.DEADLINE_RANGE_ID);
             }
@@ -1554,7 +1592,7 @@ public class Provider extends ContentProvider {
         if (values.containsKey(ProviderContract.Notes.UpdateParam.CLOSED_STRING)) {
             String str = values.getAsString(ProviderContract.Notes.UpdateParam.CLOSED_STRING);
             if (! TextUtils.isEmpty(str)) {
-                values.put(DbNote.Column.CLOSED_RANGE_ID, getOrInsertOrgRange(db, OrgRange.getInstance(str)));
+                values.put(DbNote.Column.CLOSED_RANGE_ID, getOrInsertOrgRange(db, OrgRange.parse(str)));
             } else {
                 values.putNull(DbNote.Column.CLOSED_RANGE_ID);
             }
@@ -1565,7 +1603,7 @@ public class Provider extends ContentProvider {
         if (values.containsKey(ProviderContract.Notes.UpdateParam.CLOCK_STRING)) {
             String str = values.getAsString(ProviderContract.Notes.UpdateParam.CLOCK_STRING);
             if (! TextUtils.isEmpty(str)) {
-                values.put(DbNote.Column.CLOCK_RANGE_ID, getOrInsertOrgRange(db, OrgRange.getInstance(str)));
+                values.put(DbNote.Column.CLOCK_RANGE_ID, getOrInsertOrgRange(db, OrgRange.parse(str)));
             } else {
                 values.putNull(DbNote.Column.CLOCK_RANGE_ID);
             }
@@ -1659,5 +1697,4 @@ public class Provider extends ContentProvider {
             }
         }
     }
-
 }

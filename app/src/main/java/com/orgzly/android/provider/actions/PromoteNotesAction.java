@@ -4,11 +4,14 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.orgzly.BuildConfig;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.models.DbNote;
+import com.orgzly.android.provider.models.DbNoteAncestor;
 import com.orgzly.android.ui.Place;
+import com.orgzly.android.util.LogUtils;
 
 public class PromoteNotesAction implements Action {
     private long bookId;
@@ -51,6 +54,13 @@ public class PromoteNotesAction implements Action {
         if (note.getLevel() <= 1 || note.getParentId() <= 0) {
             return 0;
         }
+
+        /* Delete affected notes from ancestors table. */
+        String w = "(SELECT " + DbNote.Column._ID + " FROM " + DbNote.TABLE + " WHERE " + DatabaseUtils.whereDescendantsAndNotes(bookId, ids) + ")";
+        String sql = "DELETE FROM " + DbNoteAncestor.TABLE + " WHERE " + DbNoteAncestor.Column.NOTE_ID + " IN " + w;
+        if (BuildConfig.LOG_DEBUG) LogUtils.d("SQL", sql);
+        db.execSQL(sql);
+
 
         /* Cut note and all its descendants. */
         long batchId = System.currentTimeMillis();
