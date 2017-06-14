@@ -442,7 +442,6 @@
     <string name="agenda_week">Week</string>
     <string name="agenda_fortnight">Fortnight</string>
     <string name="agenda_month">Month</string>
-    
     <!-- These are just used in tools:text for layout preview and don't have to be translated,
          unless layout look depends on the translation. -->
     <string name="book_mtime_sample">Jul 3, 2013 9:45:37 PM</string>

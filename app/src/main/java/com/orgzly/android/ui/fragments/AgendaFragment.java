@@ -38,18 +38,16 @@ import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.Selection;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.views.GesturedListView;
-import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.AgendaHelper;
+import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.datetime.OrgDateTime;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -63,15 +61,9 @@ public class AgendaFragment extends NoteListFragment
 
     private static final String TAG = DrawerFragment.AgendaItem.class.getName();
 
-    // TODO: add fromCal to OrgDateTime or make the format public
-    private static final SimpleDateFormat DATE_FORMAT =
-            new SimpleDateFormat("yyyy-MM-dd EEE", Locale.ENGLISH);
-
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = AgendaFragment.class.getName();
-//    public static final String DEFAULT_AGENDA_QUERY = ".i.done s.14d";
-//    public static final int AGENDAY_DAYS = 7;
-//    public static final String AGENDA_QUERY_DAY = ".i.done s.1d";
+
     public static final String AGENDA_QUERY_DAY = ".i.done s.tomorrow";
     public static final String AGENDA_QUERY_WEEK = ".i.done s.1w";
     public static final String AGENDA_QUERY_FORTNIGHT = ".i.done s.2w";
@@ -457,7 +449,6 @@ public class AgendaFragment extends NoteListFragment
             day.add(Calendar.DAY_OF_YEAR, 1);
         } while (++i < agendaDays);
 
-        int nextID = Integer.MAX_VALUE;
         int schedRangeIdx = cursor.getColumnIndex(NotesView.Columns.SCHEDULED_RANGE_STRING);
         for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             String schedRangeStr = cursor.getString(schedRangeIdx);
@@ -468,10 +459,7 @@ public class AgendaFragment extends NoteListFragment
                 MatrixCursor.RowBuilder rowBuilder = matrixCursor.newRow();
                 System.out.println("ID: " + cursor.getString(cursor.getColumnIndex(BaseColumns._ID)));
                 for (String col: cols) {
-//                    if (col.equalsIgnoreCase(BaseColumns._ID) && dates.size() > 1)
-//                        rowBuilder.add(nextID--);
-//                    else
-                        rowBuilder.add(cursor.getString(cursor.getColumnIndex(col)));
+                    rowBuilder.add(cursor.getString(cursor.getColumnIndex(col)));
                 }
             }
         }
