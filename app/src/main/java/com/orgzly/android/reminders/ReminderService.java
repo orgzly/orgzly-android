@@ -143,8 +143,6 @@ public class ReminderService extends IntentService {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG,
                     "Scheduled for " + jobRunTimeString(jobId) + " (" + firstNote.title + ")");
 
-            AppPreferences.reminderServiceJobId(this, jobId);
-
         } else {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "No notes found after " + fromTime);
         }

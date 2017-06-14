@@ -461,11 +461,6 @@ public class AppPreferences {
      * ReminderService
      */
 
-    public static void reminderServiceJobId(Context context, int value) {
-        String key = context.getResources().getString(R.string.pref_key_reminder_service_job_id);
-        getStateSharedPreferences(context).edit().putInt(key, value).apply();
-    }
-
     public static void reminderServiceLastRun(Context context, long value) {
         String key = context.getResources().getString(R.string.pref_key_reminder_service_last_run);
         getStateSharedPreferences(context).edit().putLong(key, value).apply();
