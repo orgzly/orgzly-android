@@ -38,6 +38,7 @@
     <string name="import_as">Import as…</string>
     <string name="new_notebook">New notebook</string>
     <string name="new_folder">New folder</string>
+
     <string name="agenda">Agenda</string>
     <item type="id" name="AGENDA_ITEM_SEPARATOR_TAG"/>
 
@@ -409,7 +410,6 @@
     <string name="agenda_week">Week</string>
     <string name="agenda_fortnight">Fortnight</string>
     <string name="agenda_month">Month</string>
-
 
     <!-- These are just used in tools:text for layout preview and don't have to be translated,
          unless layout look depends on the translation. -->
