@@ -67,16 +67,9 @@ public class ReminderService extends IntentService {
         }
 
         DateTime now = new DateTime();
-
-        /* Previous run time. */
-        DateTime prevRun = null;
-        long prevRunMillis = AppPreferences.reminderServiceLastRun(this);
-        if (prevRunMillis > 0) {
-            prevRun = new DateTime(prevRunMillis);
-        }
+        DateTime prevRun = readLastRun();
 
         int event = intent.getIntExtra(EXTRA_EVENT, EVENT_UNKNOWN);
-
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Event: " + event);
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, " Prev: " + prevRun);
@@ -96,6 +89,21 @@ public class ReminderService extends IntentService {
                 return;
         }
 
+        writeLastRun(now);
+    }
+
+    private DateTime readLastRun() {
+        DateTime lastRun = null;
+
+        long lastRunMs = AppPreferences.reminderServiceLastRun(this);
+        if (lastRunMs > 0) {
+            lastRun = new DateTime(lastRunMs);
+        }
+
+        return lastRun;
+    }
+
+    private void writeLastRun(DateTime now) {
         AppPreferences.reminderServiceLastRun(this, now.getMillis());
     }
 
@@ -351,5 +359,11 @@ public class ReminderService extends IntentService {
         Intent intent = new Intent(context, ReminderService.class);
         intent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_JOB_TRIGGERED);
         context.startService(intent);
+    }
+
+
+    public static void scheduledTimesToggled(Context context) {
+        /* Reset last run time if reminders are being enabled or disabled. */
+        AppPreferences.reminderServiceLastRun(context, 0L);
     }
 }
