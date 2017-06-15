@@ -16,6 +16,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.SearchQuery;
+import com.orgzly.android.provider.views.TimesView;
 import com.orgzly.org.utils.StateChangeLogic;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.actions.ActionRunner;
@@ -240,41 +241,25 @@ public class Provider extends ContentProvider {
                 break;
 
             case ProviderUris.TIMES:
-                String afterTime = uri.getQueryParameter(ProviderContract.Times.ContentUri.PARAM_AFTER_TIME);
+                String fromTime = uri.getQueryParameter(ProviderContract.Times.Param.FROM_TIME);
+                int timeType = Integer.valueOf(uri.getQueryParameter(ProviderContract.Times.Param.TIME_TYPE));
 
                 table = null;
 
-//                cursor = db.rawQuery("SELECT n._id as note_id, n.book_id, b.name, n.state as note_state, t.string as org_timestamp_string, n.title as note_title\n" +
-//                                   "FROM org_ranges r\n" +
-//                                   "JOIN org_timestamps t ON (r.start_timestamp_id = t._id)\n" +
-//                                   "JOIN notes n ON (r._id = n.scheduled_range_id)\n" +
-//                                   "JOIN books b ON (b._id = n.book_id)\n" +
-//                                   "WHERE t.is_active = 1 AND\n" +
-//                                   "-- Times which either have repeater or are in the future\n" +
-//                                   "-- i.e. times without repeater that are before given time are ignored\n" +
-//                                   "( t.repeater_type IS NOT NULL OR\n" +
-//                                   "  CASE WHEN t.hour IS NOT NULL\n" +
-//                                   "       THEN t.timestamp/1000\n" +
-//                                   "       -- If timestamp doesn't have a time part set,\n" +
-//                                   "       -- assume end-of-day for the purposes of querying\n" +
-//                                   "       -- to make sure they are picked up here.\n" +
-//                                   "       ELSE CAST(strftime('%s', t.timestamp/1000, 'unixepoch', '+1 day') AS INTEGER) END >= ? / 1000\n" +
-//                                   ")", new String[] { afterTime });
+                String query = "SELECT note_id, book_id, book_name, note_state, org_timestamp_string, note_title\n" +
+                               "FROM " + TimesView.VIEW_NAME + "\n" +
+                               "WHERE\n" +
+                               TimesView.Columns.TIME_TYPE + " = " + timeType + " AND\n" +
+                               "-- Times that are in the future\n" +
+                               "( CASE WHEN has_time_part\n" +
+                               "       THEN timestamp/1000\n" +
+                               "       -- If timestamp doesn't have a time part set,\n" +
+                               "       -- assume end-of-day for the purposes of querying\n" +
+                               "       -- to make sure they are picked up here.\n" +
+                               "       ELSE CAST(strftime('%s', timestamp/1000, 'unixepoch', '+1 day') AS INTEGER) END >= ? / 1000\n" +
+                               ")";
 
-                cursor = db.rawQuery("SELECT n._id as note_id, n.book_id, b.name, n.state as note_state, t.string as org_timestamp_string, n.title as note_title\n" +
-                                     "FROM org_ranges r\n" +
-                                     "JOIN org_timestamps t ON (r.start_timestamp_id = t._id)\n" +
-                                     "JOIN notes n ON (r._id = n.scheduled_range_id)\n" +
-                                     "JOIN books b ON (b._id = n.book_id)\n" +
-                                     "WHERE t.is_active = 1 AND\n" +
-                                     "-- Times that are in the future\n" +
-                                     "( CASE WHEN t.hour IS NOT NULL\n" +
-                                     "       THEN t.timestamp/1000\n" +
-                                     "       -- If timestamp doesn't have a time part set,\n" +
-                                     "       -- assume end-of-day for the purposes of querying\n" +
-                                     "       -- to make sure they are picked up here.\n" +
-                                     "       ELSE CAST(strftime('%s', t.timestamp/1000, 'unixepoch', '+1 day') AS INTEGER) END >= ? / 1000\n" +
-                                     ")", new String[] { afterTime });
+                cursor = db.rawQuery(query, new String[] { fromTime });
 
                 break;
 

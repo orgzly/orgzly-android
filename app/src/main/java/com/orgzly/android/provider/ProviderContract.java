@@ -437,11 +437,13 @@ public class ProviderContract {
     }
 
     public interface Times {
+        interface MatcherUri {
+            String TIMES = "times";
+        }
+
         class Param {
-            public static final String NOTE_ID = "note_id";
-            public static final String NOTE_STATE = "note_state";
-            public static final String NOTE_TITLE = "note_title";
-            public static final String ORG_TIMESTAMP_STRING = "org_timestamp_string";
+            public static final String FROM_TIME = "from_time";
+            public static final String TIME_TYPE = "time_type";
         }
 
         class ColumnIndex {
@@ -453,18 +455,12 @@ public class ProviderContract {
             public static final int NOTE_TITLE = 5;
         }
 
-
-        interface MatcherUri {
-            String TIMES = "times";
-        }
-
         class ContentUri {
-            public static final String PARAM_AFTER_TIME = "after_time";
-
-            public static Uri times(long time) {
-                return Uri.withAppendedPath(AUTHORITY_URI, "times")
+            public static Uri times(long fromTime, int timeType) {
+                return Uri.withAppendedPath(AUTHORITY_URI, MatcherUri.TIMES)
                         .buildUpon()
-                        .appendQueryParameter(PARAM_AFTER_TIME, String.valueOf(time))
+                        .appendQueryParameter(Times.Param.FROM_TIME, String.valueOf(fromTime))
+                        .appendQueryParameter(Param.TIME_TYPE, String.valueOf(timeType))
                         .build();
             }
         }

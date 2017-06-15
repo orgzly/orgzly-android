@@ -1,17 +1,33 @@
 package com.orgzly.android.provider;
 
 import android.content.Context;
-
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.android.AppIntent;
-import com.orgzly.android.provider.models.*;
+import com.orgzly.android.provider.models.DbBook;
+import com.orgzly.android.provider.models.DbBookLink;
+import com.orgzly.android.provider.models.DbBookSync;
+import com.orgzly.android.provider.models.DbCurrentVersionedRook;
+import com.orgzly.android.provider.models.DbDbRepo;
+import com.orgzly.android.provider.models.DbNote;
+import com.orgzly.android.provider.models.DbNoteAncestor;
+import com.orgzly.android.provider.models.DbNoteProperty;
+import com.orgzly.android.provider.models.DbOrgRange;
+import com.orgzly.android.provider.models.DbOrgTimestamp;
+import com.orgzly.android.provider.models.DbProperty;
+import com.orgzly.android.provider.models.DbPropertyName;
+import com.orgzly.android.provider.models.DbPropertyValue;
+import com.orgzly.android.provider.models.DbRepo;
+import com.orgzly.android.provider.models.DbRook;
+import com.orgzly.android.provider.models.DbRookUrl;
+import com.orgzly.android.provider.models.DbSearch;
+import com.orgzly.android.provider.models.DbVersionedRook;
+import com.orgzly.android.provider.views.TimesView;
 import com.orgzly.android.provider.views.BooksView;
 import com.orgzly.android.provider.views.NotesView;
 import com.orgzly.android.util.LogUtils;
@@ -137,6 +153,7 @@ public class Database extends SQLiteOpenHelper {
 
         db.execSQL(NotesView.DROP_SQL);
         db.execSQL(BooksView.DROP_SQL);
+        db.execSQL(TimesView.DROP_SQL);
     }
 
     /** CREATE views */
@@ -145,5 +162,6 @@ public class Database extends SQLiteOpenHelper {
 
         db.execSQL(NotesView.CREATE_SQL);
         db.execSQL(BooksView.CREATE_SQL);
+        db.execSQL(TimesView.CREATE_SQL);
     }
 }

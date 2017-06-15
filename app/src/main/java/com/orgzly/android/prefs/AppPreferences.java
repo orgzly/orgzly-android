@@ -189,10 +189,16 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_value_new_note_notification));
     }
 
-    public static boolean remindersForScheduledTimes(Context context) {
+    public static boolean remindersForScheduledEnabled(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_use_reminders_for_scheduled_times),
                 context.getResources().getBoolean(R.bool.pref_default_value_use_reminders_for_scheduled_times));
+    }
+
+    public static boolean remindersForDeadlineEnabled(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_use_reminders_for_deadline_times),
+                context.getResources().getBoolean(R.bool.pref_default_value_use_reminders_for_deadline_times));
     }
 
     public static boolean remindersSound(Context context) {
@@ -461,15 +467,30 @@ public class AppPreferences {
      * ReminderService
      */
 
-    public static void reminderServiceLastRun(Context context, long value) {
-        String key = context.getResources().getString(R.string.pref_key_reminder_service_last_run);
+    public static void reminderLastRunForScheduled(Context context, long value) {
+        String key = context.getResources().getString(R.string.pref_key_reminder_service_last_run_for_scheduled);
         getStateSharedPreferences(context).edit().putLong(key, value).apply();
     }
 
-    public static long reminderServiceLastRun(Context context) {
-        String key = context.getResources().getString(R.string.pref_key_reminder_service_last_run);
+    public static long reminderLastRunForScheduled(Context context) {
+        String key = context.getResources().getString(R.string.pref_key_reminder_service_last_run_for_scheduled);
         return getStateSharedPreferences(context).getLong(key, 0L);
     }
+
+    public static void reminderLastRunForDeadline(Context context, long value) {
+        String key = context.getResources().getString(R.string.pref_key_reminder_service_last_run_for_deadline);
+        getStateSharedPreferences(context).edit().putLong(key, value).apply();
+    }
+
+    public static long reminderLastRunForDeadline(Context context) {
+        String key = context.getResources().getString(R.string.pref_key_reminder_service_last_run_for_deadline);
+        return getStateSharedPreferences(context).getLong(key, 0L);
+    }
+
+
+    /*
+     *
+     */
 
     public static boolean syncAfterNewNoteCreated(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(

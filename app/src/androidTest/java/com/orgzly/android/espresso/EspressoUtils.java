@@ -47,8 +47,8 @@ class EspressoUtils {
 
     static final int SETTINGS_SYNC_AFTER = 34;
 
-    static final int IMPORT_GETTING_STARTED = 43;
-    static final int SETTINGS_CLEAR_DATABASE = 44;
+    static final int IMPORT_GETTING_STARTED = 44;
+    static final int SETTINGS_CLEAR_DATABASE = 45;
 
     /**
      */

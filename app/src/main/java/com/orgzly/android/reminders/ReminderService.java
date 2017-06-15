@@ -51,6 +51,24 @@ public class ReminderService extends IntentService {
 
     private static final long[] SCHEDULED_NOTE_VIBRATE_PATTERN = new long[] { 500, 50, 50, 300 };
 
+    private class LastRun {
+        DateTime scheduled;
+        DateTime deadline;
+
+        DateTime minimum() {
+            if (scheduled == null || deadline == null) {
+                return scheduled == null ? deadline : scheduled;
+            }
+
+            return scheduled.isBefore(deadline) ? scheduled : deadline;
+        }
+
+        @Override
+        public String toString() {
+            return "Scheduled: " + scheduled + "  Deadline: " + deadline;
+        }
+    }
+
     public ReminderService() {
         super(TAG);
 
@@ -61,27 +79,28 @@ public class ReminderService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
-        if (! AppPreferences.remindersForScheduledTimes(this)) {
+        if (! AppPreferences.remindersForScheduledEnabled(this)) {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Reminders are disabled");
             return;
         }
 
         DateTime now = new DateTime();
-        DateTime prevRun = readLastRun();
+
+        LastRun lastRun = readLastRun();
 
         int event = intent.getIntExtra(EXTRA_EVENT, EVENT_UNKNOWN);
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Event: " + event);
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, " Prev: " + prevRun);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, " Last: " + lastRun);
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "  Now: " + now);
 
         switch (event) {
             case EVENT_DATA_CHANGED:
-                onDataChanged(now, prevRun);
+                onDataChanged(now, lastRun);
                 break;
 
             case EVENT_JOB_TRIGGERED:
-                onJobTriggered(now, prevRun);
+                onJobTriggered(now, lastRun);
                 break;
 
             default:
@@ -92,31 +111,45 @@ public class ReminderService extends IntentService {
         writeLastRun(now);
     }
 
-    private DateTime readLastRun() {
-        DateTime lastRun = null;
+    private LastRun readLastRun() {
+        LastRun lastRun = new LastRun();
+        long ms;
 
-        long lastRunMs = AppPreferences.reminderServiceLastRun(this);
-        if (lastRunMs > 0) {
-            lastRun = new DateTime(lastRunMs);
+        ms = AppPreferences.reminderLastRunForScheduled(this);
+        if (ms > 0) {
+            lastRun.scheduled = new DateTime(ms);
+        }
+
+        ms = AppPreferences.reminderLastRunForDeadline(this);
+        if (ms > 0) {
+            lastRun.deadline= new DateTime(ms);
         }
 
         return lastRun;
     }
 
     private void writeLastRun(DateTime now) {
-        AppPreferences.reminderServiceLastRun(this, now.getMillis());
+        Context context = this;
+
+        if (AppPreferences.remindersForScheduledEnabled(context)) {
+            AppPreferences.reminderLastRunForScheduled(context, now.getMillis());
+        }
+
+        if (AppPreferences.remindersForDeadlineEnabled(context)) {
+            AppPreferences.reminderLastRunForDeadline(context, now.getMillis());
+        }
     }
 
     /**
      * Schedule the next job for times after last run.
      */
-    private void onDataChanged(DateTime now, DateTime prevRun) {
+    private void onDataChanged(DateTime now, LastRun prevRun) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, prevRun);
 
         ReminderJob.cancelAll();
 
-        DateTime fromTime = prevRun;
-        if (prevRun == null) {
+        DateTime fromTime = prevRun.minimum();
+        if (fromTime == null) {
             fromTime = now;
         }
 
@@ -158,14 +191,14 @@ public class ReminderService extends IntentService {
      * Display reminders for all notes with times between
      * last run and now. Then schedule the next job for times after now.
      */
-    private void onJobTriggered(DateTime now, DateTime prevRun) {
+    private void onJobTriggered(DateTime now, LastRun prevRun) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, prevRun);
 
         ReminderJob.cancelAll();
 
         if (prevRun != null) {
             /* Show notifications for all notes with times from previous run until now. */
-            List<NoteWithTime> notes = ReminderService.getNotesWithTimeInInterval(this, prevRun, now);
+            List<NoteWithTime> notes = ReminderService.getNotesWithTimeInInterval(this, prevRun.scheduled, now);
 
             if (!notes.isEmpty()) {
                 if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found " + notes.size() + " notes between " + prevRun + " and " + now);
@@ -193,7 +226,7 @@ public class ReminderService extends IntentService {
         List<NoteWithTime> result = new ArrayList<>();
 
         Cursor cursor = context.getContentResolver().query(
-                ProviderContract.Times.ContentUri.times(fromTime.getMillis()),
+                ProviderContract.Times.ContentUri.times(fromTime.getMillis(), 1),
                 null,
                 null,
                 null,
@@ -359,9 +392,13 @@ public class ReminderService extends IntentService {
         context.startService(intent);
     }
 
-
     public static void scheduledTimesToggled(Context context) {
         /* Reset last run time if reminders are being enabled or disabled. */
-        AppPreferences.reminderServiceLastRun(context, 0L);
+        AppPreferences.reminderLastRunForScheduled(context, 0L);
+    }
+
+    public static void deadlineTimesToggled(Context context) {
+        /* Reset last run time if reminders are being enabled or disabled. */
+        AppPreferences.reminderLastRunForScheduled(context, 0L);
     }
 }
