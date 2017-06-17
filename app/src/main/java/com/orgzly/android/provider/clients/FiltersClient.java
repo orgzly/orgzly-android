@@ -6,12 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.content.CursorLoader;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.util.LongSparseArray;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.Filter;
 import com.orgzly.android.provider.ProviderContract;
-import com.orgzly.android.widgets.ListWidgetProvider;
 
 public class FiltersClient {
     public static String SORT_ORDER =  ProviderContract.Filters.Param.POSITION + ", " + ProviderContract.Filters.Param._ID;
@@ -92,6 +90,8 @@ public class FiltersClient {
      */
     public static void delete(Context context, long id) {
         context.getContentResolver().delete(ContentUris.withAppendedId(ProviderContract.Filters.ContentUri.filters(), id), null, null);
+
+        updateWidgets(context);
     }
 
     public static void update(Context context, long id, Filter filter) {
@@ -102,8 +102,7 @@ public class FiltersClient {
 
         context.getContentResolver().update(ContentUris.withAppendedId(ProviderContract.Filters.ContentUri.filters(), id), values, null, null);
 
-        LocalBroadcastManager.getInstance(context)
-                .sendBroadcast(new Intent(AppIntent.ACTION_LIST_WIDGET_UPDATE_LAYOUT));
+        updateWidgets(context);
     }
 
     public static void create(Context context, Filter filter) {
@@ -121,5 +120,9 @@ public class FiltersClient {
 
     public static void moveDown(Context context, long id) {
         context.getContentResolver().update(ProviderContract.Filters.ContentUri.filtersIdDown(id), null, null, null);
+    }
+
+    private static void updateWidgets(Context context) {
+        context.sendBroadcast(new Intent(AppIntent.ACTION_LIST_WIDGET_UPDATE_LAYOUT));
     }
 }
