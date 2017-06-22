@@ -36,9 +36,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Everything related to reminders goes through this service.
- *
- * FIXME: Work in progress, logic below is incomplete and/or broken.
+ * Every event that can affect reminders is going through this service.
  */
 public class ReminderService extends IntentService {
     public static final String TAG = ReminderService.class.getName();
@@ -49,25 +47,7 @@ public class ReminderService extends IntentService {
     public static final int EVENT_JOB_TRIGGERED = 2;
     public static final int EVENT_UNKNOWN = -1;
 
-    private static final long[] SCHEDULED_NOTE_VIBRATE_PATTERN = new long[] { 500, 50, 50, 300 };
-
-    private class LastRun {
-        DateTime scheduled;
-        DateTime deadline;
-
-        DateTime minimum() {
-            if (scheduled == null || deadline == null) {
-                return scheduled == null ? deadline : scheduled;
-            }
-
-            return scheduled.isBefore(deadline) ? scheduled : deadline;
-        }
-
-        @Override
-        public String toString() {
-            return "Scheduled: " + scheduled + "  Deadline: " + deadline;
-        }
-    }
+    private static final long[] SCHEDULED_NOTE_VIBRATE_PATTERN = new long[]{500, 50, 50, 300};
 
     public ReminderService() {
         super(TAG);
@@ -75,11 +55,96 @@ public class ReminderService extends IntentService {
         setIntentRedelivery(true);
     }
 
+    public static List<NoteReminder> getNotesWithTimeInInterval(
+            Context context, ReadableInstant fromTime, ReadableInstant beforeTime) {
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+
+        List<NoteReminder> result = new ArrayList<>();
+
+        Cursor cursor = context.getContentResolver().query(
+                ProviderContract.Times.ContentUri.times(fromTime.getMillis(), 1),
+                null,
+                null,
+                null,
+                null);
+
+        if (cursor != null) {
+            try {
+                for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                    long noteId = cursor.getLong(ProviderContract.Times.ColumnIndex.NOTE_ID);
+                    long bookId = cursor.getLong(ProviderContract.Times.ColumnIndex.BOOK_ID);
+                    String bookName = cursor.getString(ProviderContract.Times.ColumnIndex.BOOK_NAME);
+                    String noteState = cursor.getString(ProviderContract.Times.ColumnIndex.NOTE_STATE);
+                    String noteTitle = cursor.getString(ProviderContract.Times.ColumnIndex.NOTE_TITLE);
+                    String orgTimestampString = cursor.getString(ProviderContract.Times.ColumnIndex.ORG_TIMESTAMP_STRING);
+
+                    OrgDateTime orgDateTime = OrgDateTime.parse(orgTimestampString);
+
+                    /* Skip if it's done-type state. */
+                    if (noteState == null || !AppPreferences.doneKeywordsSet(context).contains(noteState)) {
+                        List<DateTime> times = OrgDateTimeUtils.getTimesInInterval(
+                                orgDateTime, fromTime, beforeTime, false, 1);
+
+                        for (DateTime time : times) {
+                            if (!orgDateTime.hasTime()) {
+                                time = time.plusHours(9); // TODO: Move to preferences
+                            }
+
+                            result.add(new NoteReminder(time, noteId, bookId, bookName, noteTitle, orgDateTime));
+                        }
+                    }
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+
+        if (BuildConfig.LOG_DEBUG)
+            LogUtils.d(TAG, "Fetched times, now sorting " + result.size() + " entries by time...");
+
+        /* Sort by time, older first. */
+        Collections.sort(result, new Comparator<NoteReminder>() {
+            @Override
+            public int compare(NoteReminder o1, NoteReminder o2) {
+                if (o1.triggerTime == o2.triggerTime) {
+                    return 0;
+                } else if (o1.triggerTime.isBefore(o2.triggerTime)) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            }
+        });
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Times sorted, total " + result.size());
+
+        return result;
+    }
+
+    /**
+     * Notify reminder service about changes that might affect scheduling of reminders.
+     */
+    public static void notifyDataChanged(Context context) {
+        Intent intent = new Intent(context, ReminderService.class);
+        intent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_DATA_CHANGED);
+        context.startService(intent);
+    }
+
+    /**
+     * Notify ReminderService about the triggered job.
+     */
+    public static void notifyJobTriggered(Context context) {
+        Intent intent = new Intent(context, ReminderService.class);
+        intent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_JOB_TRIGGERED);
+        context.startService(intent);
+    }
+
     @Override
     protected void onHandleIntent(Intent intent) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
-        if (! AppPreferences.remindersForScheduledEnabled(this)) {
+        if (!AppPreferences.remindersForScheduledEnabled(this)) {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Reminders are disabled");
             return;
         }
@@ -122,7 +187,7 @@ public class ReminderService extends IntentService {
 
         ms = AppPreferences.reminderLastRunForDeadline(this);
         if (ms > 0) {
-            lastRun.deadline= new DateTime(ms);
+            lastRun.deadline = new DateTime(ms);
         }
 
         return lastRun;
@@ -159,14 +224,14 @@ public class ReminderService extends IntentService {
     private void scheduleNextJob(DateTime now, DateTime fromTime) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, fromTime);
 
-        List<NoteWithTime> notes = ReminderService.getNotesWithTimeInInterval(this, fromTime, null);
+        List<NoteReminder> notes = ReminderService.getNotesWithTimeInInterval(this, fromTime, null);
 
-        if (! notes.isEmpty()) {
+        if (!notes.isEmpty()) {
             /* Schedule only the first upcoming time. */
-            NoteWithTime firstNote = notes.get(0);
+            NoteReminder firstNote = notes.get(0);
 
             /* Schedule *in* exactMs. */
-            long exactMs = firstNote.time.getMillis() - now.getMillis();
+            long exactMs = firstNote.triggerTime.getMillis() - now.getMillis();
             if (exactMs < 0) {
                 exactMs = 1;
             }
@@ -198,13 +263,15 @@ public class ReminderService extends IntentService {
 
         if (prevRun != null) {
             /* Show notifications for all notes with times from previous run until now. */
-            List<NoteWithTime> notes = ReminderService.getNotesWithTimeInInterval(this, prevRun.scheduled, now);
+            List<NoteReminder> notes = ReminderService.getNotesWithTimeInInterval(this, prevRun.scheduled, now);
 
             if (!notes.isEmpty()) {
-                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found " + notes.size() + " notes between " + prevRun + " and " + now);
+                if (BuildConfig.LOG_DEBUG)
+                    LogUtils.d(TAG, "Found " + notes.size() + " notes between " + prevRun + " and " + now);
                 showNotification(this, notes);
             } else {
-                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "No notes found between " + prevRun + " and " + now);
+                if (BuildConfig.LOG_DEBUG)
+                    LogUtils.d(TAG, "No notes found between " + prevRun + " and " + now);
             }
         } else {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "No previous run");
@@ -218,98 +285,14 @@ public class ReminderService extends IntentService {
         return jobRequest.getScheduledAt() + jobRequest.getStartMs();
     }
 
-    public static List<NoteWithTime> getNotesWithTimeInInterval(
-            Context context, ReadableInstant fromTime, ReadableInstant beforeTime) {
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
-
-        List<NoteWithTime> result = new ArrayList<>();
-
-        Cursor cursor = context.getContentResolver().query(
-                ProviderContract.Times.ContentUri.times(fromTime.getMillis(), 1),
-                null,
-                null,
-                null,
-                null);
-
-        if (cursor != null) {
-            try {
-                for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                    long noteId = cursor.getLong(ProviderContract.Times.ColumnIndex.NOTE_ID);
-                    long bookId = cursor.getLong(ProviderContract.Times.ColumnIndex.BOOK_ID);
-                    String bookName = cursor.getString(ProviderContract.Times.ColumnIndex.BOOK_NAME);
-                    String noteState = cursor.getString(ProviderContract.Times.ColumnIndex.NOTE_STATE);
-                    String noteTitle = cursor.getString(ProviderContract.Times.ColumnIndex.NOTE_TITLE);
-                    String orgTimestampString = cursor.getString(ProviderContract.Times.ColumnIndex.ORG_TIMESTAMP_STRING);
-
-                    OrgDateTime orgDateTime = OrgDateTime.parse(orgTimestampString);
-
-                    /* Skip if it's done-type state. */
-                    if (noteState == null || !AppPreferences.doneKeywordsSet(context).contains(noteState)) {
-                        List<DateTime> times = OrgDateTimeUtils.getTimesInInterval(
-                                orgDateTime, fromTime, beforeTime, false, 1);
-
-                        for (DateTime time : times) {
-                            if (!orgDateTime.hasTime()) {
-                                time = time.plusHours(9); // TODO: Move to preferences
-                            }
-
-                            result.add(new NoteWithTime(noteId, bookId, bookName, noteTitle, time, orgDateTime));
-                        }
-                    }
-                }
-            } finally {
-                cursor.close();
-            }
-        }
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Fetched times, now sorting " + result.size() + " entries by time...");
-
-        /* Sort by time, older first. */
-        Collections.sort(result, new Comparator<NoteWithTime>() {
-            @Override
-            public int compare(NoteWithTime o1, NoteWithTime o2) {
-                if (o1.time == o2.time) {
-                    return 0;
-                } else if (o1.time.isBefore(o2.time)) {
-                    return -1;
-                } else {
-                    return 1;
-                }
-            }
-        });
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Times sorted, total " + result.size());
-
-        return result;
-    }
-
-    static class NoteWithTime {
-        public long id;
-        public long bookId;
-        public String bookName;
-        public String title;
-        public DateTime time;
-        OrgDateTime orgDateTime;
-
-        NoteWithTime(long id, long bookId, String bookName, String title, DateTime time, OrgDateTime orgDateTime) {
-            this.id = id;
-            this.bookId = bookId;
-            this.bookName = bookName;
-            this.title = title;
-            this.time = time;
-            this.orgDateTime = orgDateTime;
-        }
-    }
-
-    private void showNotification(Context context, List<NoteWithTime> notes) {
+    private void showNotification(Context context, List<NoteReminder> notes) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, context, notes);
 
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         for (int i = 0; i < notes.size(); i++) {
-            NoteWithTime note = notes.get(i);
+            NoteReminder note = notes.get(i);
 
             String notificationTag = String.valueOf(note.id);
             int notificationId = Notifications.REMINDER;
@@ -378,27 +361,21 @@ public class ReminderService extends IntentService {
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    /** Notify reminder service about changes that might affect scheduling of reminders. */
-    public static void notifyDataChanged(Context context) {
-        Intent intent = new Intent(context, ReminderService.class);
-        intent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_DATA_CHANGED);
-        context.startService(intent);
-    }
+    private class LastRun {
+        DateTime scheduled;
+        DateTime deadline;
 
-    /** Notify ReminderService about the triggered job. */
-    public static void notifyJobTriggered(Context context) {
-        Intent intent = new Intent(context, ReminderService.class);
-        intent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_JOB_TRIGGERED);
-        context.startService(intent);
-    }
+        DateTime minimum() {
+            if (scheduled == null || deadline == null) {
+                return scheduled == null ? deadline : scheduled;
+            }
 
-    public static void scheduledTimesToggled(Context context) {
-        /* Reset last run time if reminders are being enabled or disabled. */
-        AppPreferences.reminderLastRunForScheduled(context, 0L);
-    }
+            return scheduled.isBefore(deadline) ? scheduled : deadline;
+        }
 
-    public static void deadlineTimesToggled(Context context) {
-        /* Reset last run time if reminders are being enabled or disabled. */
-        AppPreferences.reminderLastRunForScheduled(context, 0L);
+        @Override
+        public String toString() {
+            return "Scheduled: " + scheduled + "  Deadline: " + deadline;
+        }
     }
 }

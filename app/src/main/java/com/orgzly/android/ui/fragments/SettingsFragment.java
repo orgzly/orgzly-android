@@ -315,14 +315,14 @@ public class SettingsFragment extends PreferenceFragment
             }
         }
 
-        /* Reminders for scheduled notes. */
+        /* Reminders for scheduled notes. Reset last run time. */
         if (getString(R.string.pref_key_use_reminders_for_scheduled_times).equals(key)) {
-            ReminderService.scheduledTimesToggled(getContext());
+            AppPreferences.reminderLastRunForScheduled(getContext(), 0L);
         }
 
-        /* Reminders for deadlines. */
+        /* Reminders for deadlines. Reset last run time. */
         if (getString(R.string.pref_key_use_reminders_for_deadline_times).equals(key)) {
-            ReminderService.deadlineTimesToggled(getContext());
+            AppPreferences.reminderLastRunForDeadline(getContext(), 0L);
         }
 
         updateOtherPreferencesForReminders();
