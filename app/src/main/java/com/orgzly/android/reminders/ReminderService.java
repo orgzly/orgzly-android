@@ -74,7 +74,7 @@ public class ReminderService extends IntentService {
                     OrgDateTime orgDateTime = OrgDateTime.parse(noteTime.orgTimestampString);
 
                     NoteReminderPayload payload = new NoteReminderPayload(
-                            noteTime.id, noteTime.bookId, noteTime.bookName, noteTime.title, orgDateTime);
+                            noteTime.id, noteTime.bookId, noteTime.bookName, noteTime.title, noteTime.timeType, orgDateTime);
 
                     DateTime time = OrgDateTimeUtils.getFirstTriggerTimeInInterval(
                             noteTime.timeType,
@@ -294,7 +294,9 @@ public class ReminderService extends IntentService {
             String notificationTag = String.valueOf(noteReminder.getPayload().id);
             int notificationId = Notifications.REMINDER;
 
-            String line = context.getString(R.string.scheduled_using_time, noteReminder.getPayload().orgDateTime.toStringWithoutBrackets());
+            String line = context.getString(
+                    noteReminder.getPayload().timeType == 1 ? R.string.reminder_for_scheduled : R.string.reminder_for_deadline,
+                    noteReminder.getPayload().orgDateTime.toStringWithoutBrackets());
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                     .setAutoCancel(true)
