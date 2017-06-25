@@ -189,8 +189,6 @@
     <string name="note_book_not_set">دفترچه انتخاب نشده است</string>
     <string name="can_not_be_empty">نمی‌تواند خالی باشد</string>
 
-    <string name="fragment_note_deadline_alarms_not_implemented">نکته: هشدارها هنوز پیاده‌سازی نشده‌اند</string>
-
     <string name="no_notebooks">شما دفترچه‌ای ندارید</string>
     <string name="no_notes">دفترچه، یادداشتی ندارد</string>
     <string name="create_new_repository_for_syncing">مخزن جدیدی برای همگام‌سازی ایجاد کنید</string>

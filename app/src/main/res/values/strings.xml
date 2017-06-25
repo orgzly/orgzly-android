@@ -199,8 +199,6 @@
     <string name="note_book_not_set">Notebook not set</string>
     <string name="can_not_be_empty">Cannot be empty</string>
 
-    <string name="fragment_note_deadline_alarms_not_implemented">Note: Alarms are not implemented yet</string>
-
     <string name="no_notebooks">You have no notebooks</string>
     <string name="no_notes">Notebook has no notes</string>
     <string name="create_new_repository_for_syncing">Create new repository for syncing your notebooks</string>

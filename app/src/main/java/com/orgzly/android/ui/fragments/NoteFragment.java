@@ -939,14 +939,6 @@ public class NoteFragment extends Fragment
             case R.id.fragment_note_deadline_button:
                 updateTimestampView(TimeType.DEADLINE, mDeadlineButton, range);
                 mNote.getHead().setDeadline(range);
-
-                /* Warn about alerts not being implemented yet. */
-                Activity activity = getActivity();
-                if (activity != null) {
-                    ((CommonActivity) activity).showSimpleSnackbarLong(
-                            R.string.fragment_note_deadline_alarms_not_implemented);
-                }
-
                 break;
 
             case R.id.fragment_note_closed_button:
