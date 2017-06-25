@@ -441,26 +441,20 @@ public class ProviderContract {
             String TIMES = "times";
         }
 
-        class Param {
-            public static final String FROM_TIME = "from_time";
-            public static final String TIME_TYPE = "time_type";
-        }
-
         class ColumnIndex {
             public static final int NOTE_ID = 0;
             public static final int BOOK_ID = 1;
             public static final int BOOK_NAME = 2;
             public static final int NOTE_STATE = 3;
-            public static final int ORG_TIMESTAMP_STRING = 4;
-            public static final int NOTE_TITLE = 5;
+            public static final int NOTE_TITLE = 4;
+            public static final int TIME_TYPE = 5;
+            public static final int ORG_TIMESTAMP_STRING = 6;
         }
 
         class ContentUri {
-            public static Uri times(long fromTime, int timeType) {
+            public static Uri times() {
                 return Uri.withAppendedPath(AUTHORITY_URI, MatcherUri.TIMES)
                         .buildUpon()
-                        .appendQueryParameter(Times.Param.FROM_TIME, String.valueOf(fromTime))
-                        .appendQueryParameter(Param.TIME_TYPE, String.valueOf(timeType))
                         .build();
             }
         }

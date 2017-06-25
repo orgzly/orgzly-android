@@ -1,25 +1,21 @@
 package com.orgzly.android.reminders;
 
-import com.orgzly.org.datetime.OrgDateTime;
-
 import org.joda.time.DateTime;
 
 class NoteReminder {
-    DateTime triggerTime;
+    private DateTime runTime;
+    private NoteReminderPayload payload;
 
-    long id;
-    long bookId;
-    String bookName;
-    String title;
-    OrgDateTime orgDateTime;
+    NoteReminder(DateTime runTime, NoteReminderPayload payload) {
+        this.runTime = runTime;
+        this.payload = payload;
+    }
 
-    NoteReminder(DateTime triggerTime, long id, long bookId, String bookName, String title, OrgDateTime orgDateTime) {
-        this.triggerTime = triggerTime;
+    public DateTime getRunTime() {
+        return runTime;
+    }
 
-        this.id = id;
-        this.bookId = bookId;
-        this.bookName = bookName;
-        this.title = title;
-        this.orgDateTime = orgDateTime;
+    public NoteReminderPayload getPayload() {
+        return payload;
     }
 }

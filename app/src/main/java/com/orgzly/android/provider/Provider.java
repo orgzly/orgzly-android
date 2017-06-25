@@ -241,25 +241,19 @@ public class Provider extends ContentProvider {
                 break;
 
             case ProviderUris.TIMES:
-                String fromTime = uri.getQueryParameter(ProviderContract.Times.Param.FROM_TIME);
-                int timeType = Integer.valueOf(uri.getQueryParameter(ProviderContract.Times.Param.TIME_TYPE));
-
                 table = null;
 
-                String query = "SELECT note_id, book_id, book_name, note_state, org_timestamp_string, note_title\n" +
-                               "FROM " + TimesView.VIEW_NAME + "\n" +
-                               "WHERE\n" +
-                               TimesView.Columns.TIME_TYPE + " = " + timeType + " AND\n" +
-                               "-- Times that are in the future\n" +
-                               "( CASE WHEN has_time_part\n" +
-                               "       THEN timestamp/1000\n" +
-                               "       -- If timestamp doesn't have a time part set,\n" +
-                               "       -- assume end-of-day for the purposes of querying\n" +
-                               "       -- to make sure they are picked up here.\n" +
-                               "       ELSE CAST(strftime('%s', timestamp/1000, 'unixepoch', '+1 day') AS INTEGER) END >= ? / 1000\n" +
-                               ")";
+                String query = "SELECT " +
+                               TimesView.Columns.NOTE_ID + ", " +
+                               TimesView.Columns.BOOK_ID + ", " +
+                               TimesView.Columns.BOOK_NAME + ", " +
+                               TimesView.Columns.NOTE_STATE + ", " +
+                               TimesView.Columns.NOTE_TITLE + ", " +
+                               TimesView.Columns.TIME_TYPE + ", " +
+                               TimesView.Columns.ORG_TIMESTAMP_STRING +
+                               " FROM " + TimesView.VIEW_NAME;
 
-                cursor = db.rawQuery(query, new String[] { fromTime });
+                cursor = db.rawQuery(query, null);
 
                 break;
 

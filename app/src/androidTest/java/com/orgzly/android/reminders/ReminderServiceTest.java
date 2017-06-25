@@ -44,10 +44,10 @@ public class ReminderServiceTest extends OrgzlyTest {
 
         assertEquals(2, notes.size());
 
-        assertEquals("Note 4", notes.get(0).title);
-        assertEquals("2017-03-16T09:00:00", new LocalDateTime(notes.get(0).triggerTime).toString("yyyy-MM-dd'T'HH:mm:ss"));
+        assertEquals("Note 4", notes.get(0).getPayload().title);
+        assertEquals("2017-03-16T09:00:00", new LocalDateTime(notes.get(0).getRunTime()).toString("yyyy-MM-dd'T'HH:mm:ss"));
 
-        assertEquals("Note 2", notes.get(1).title);
-        assertEquals("2017-03-20T16:00:00", new LocalDateTime(notes.get(1).triggerTime).toString("yyyy-MM-dd'T'HH:mm:ss"));
+        assertEquals("Note 2", notes.get(1).getPayload().title);
+        assertEquals("2017-03-20T16:00:00", new LocalDateTime(notes.get(1).getRunTime()).toString("yyyy-MM-dd'T'HH:mm:ss"));
     }
 }

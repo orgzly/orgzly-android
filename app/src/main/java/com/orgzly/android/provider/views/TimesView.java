@@ -42,11 +42,11 @@ public class TimesView {
 
     public interface Columns {
         String NOTE_ID = "note_id";
-        String BOOK_NAME = "link_rook_url";
+        String BOOK_ID = "book_id";
+        String BOOK_NAME = "book_name";
         String NOTE_STATE = "note_state";
         String NOTE_TITLE = "note_title";
         String TIME_TYPE = "time_type";
         String ORG_TIMESTAMP_STRING = "org_timestamp_string";
-        String HAS_TIME_PART = "has_time_part";
     }
 }
