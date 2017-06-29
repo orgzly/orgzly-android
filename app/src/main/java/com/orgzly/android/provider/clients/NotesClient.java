@@ -514,8 +514,8 @@ public class NotesClient {
                 } else if (so.getType() == SearchQuery.SortOrder.Type.PRIORITY) {
                     orderByColumns.add("COALESCE(" + ProviderContract.Notes.QueryParam.PRIORITY + ", '" + defaultPriority + "')" + (so.isAscending() ? "" : " DESC"));
                 } else if (so.getType() == SearchQuery.SortOrder.Type.CREATED) {
-                    orderByColumns.add(ProviderContract.Notes.QueryParam.CREATED_TIME_ID + " IS NULL");
-                    orderByColumns.add(ProviderContract.Notes.QueryParam.CREATED_TIME_ID + (so.isAscending() ? "" : " DESC"));
+                    orderByColumns.add(ProviderContract.Notes.QueryParam.CREATED_TIME_TIMESTAMP + " IS NULL");
+                    orderByColumns.add(ProviderContract.Notes.QueryParam.CREATED_TIME_TIMESTAMP + (so.isAscending() ? "" : " DESC"));
                 }
             }
         } else {

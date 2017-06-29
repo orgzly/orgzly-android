@@ -43,6 +43,7 @@ public class NotesView {
             "t_created_range." + DbOrgRange.Column.STRING + " AS " + Columns.CREATED_RANGE_STRING + ", " +
             "t_created_timestamps_start." + DbOrgTimestamp.Column.STRING + " AS " + Columns.CREATED_TIME_STRING + ", " +
             "t_created_timestamps_end." + DbOrgTimestamp.Column.STRING + " AS " + Columns.CREATED_TIME_END_STRING + ", " +
+            "t_created_timestamps_start." + DbOrgTimestamp.Column.TIMESTAMP + " AS " + Columns.CREATED_TIME_TIMESTAMP + ", " +
 
             "t_clock_range." + DbOrgRange.Column.STRING + " AS " + Columns.CLOCK_RANGE_STRING + ", " +
             "t_clock_timestamps_start." + DbOrgTimestamp.Column.STRING + " AS " + Columns.CLOCK_TIME_STRING + ", " +
@@ -84,7 +85,6 @@ public class NotesView {
 
         public static String INHERITED_TAGS = "inherited_tags";
 
-
         public static String SCHEDULED_RANGE_STRING = "scheduled_range_string"; // rename to just scheduled string
         public static String SCHEDULED_TIME_STRING = "scheduled_time_string";
         public static String SCHEDULED_TIME_END_STRING = "scheduled_time_string";
@@ -102,6 +102,7 @@ public class NotesView {
         public static String CREATED_RANGE_STRING = "created_range_string";
         public static String CREATED_TIME_STRING = "created_time_string";
         public static String CREATED_TIME_END_STRING = "created_time_end_string";
+        public static String CREATED_TIME_TIMESTAMP = "created_time_timestamp";
 
         public static String CLOCK_RANGE_STRING = "clock_range_string";
         public static String CLOCK_TIME_STRING = "clock_time_string";
