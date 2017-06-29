@@ -195,10 +195,20 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_value_use_reminders_for_scheduled_times));
     }
 
+    public static void remindersForScheduledEnabled(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_use_reminders_for_scheduled_times);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
+
     public static boolean remindersForDeadlineEnabled(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_use_reminders_for_deadline_times),
                 context.getResources().getBoolean(R.bool.pref_default_value_use_reminders_for_deadline_times));
+    }
+
+    public static void remindersForDeadlineEnabled(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_use_reminders_for_deadline_times);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
     }
 
     public static boolean remindersSound(Context context) {

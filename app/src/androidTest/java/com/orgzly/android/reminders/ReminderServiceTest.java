@@ -1,6 +1,7 @@
 package com.orgzly.android.reminders;
 
 import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.prefs.AppPreferences;
 
 import org.joda.time.Instant;
 import org.joda.time.LocalDateTime;
@@ -20,9 +21,12 @@ public class ReminderServiceTest extends OrgzlyTest {
                 "SCHEDULED: <2017-03-20>\n" +
                 "* Note 3");
 
+        ReminderService.LastRun lastRun = new ReminderService.LastRun();
         Instant now = Instant.parse("2017-03-15");
+        AppPreferences.remindersForScheduledEnabled(context, true);
 
-        List<NoteReminder> notes = ReminderService.getNotesWithTimeInInterval(context, now, null);
+        List<NoteReminder> notes = ReminderService.getNoteReminders(
+                context, now, lastRun, ReminderService.TIME_FROM_NOW);
 
         assertEquals(1, notes.size());
     }
@@ -38,9 +42,12 @@ public class ReminderServiceTest extends OrgzlyTest {
                 "* Note 4\n"+
                 "SCHEDULED: <2017-03-16 Fri +1w>\n");
 
+        ReminderService.LastRun lastRun = new ReminderService.LastRun();
         Instant now = Instant.parse("2017-03-15T13:00:00"); // Wed
+        AppPreferences.remindersForScheduledEnabled(context, true);
 
-        List<NoteReminder> notes = ReminderService.getNotesWithTimeInInterval(context, now, null);
+        List<NoteReminder> notes = ReminderService.getNoteReminders(
+                context, now, lastRun, ReminderService.TIME_FROM_NOW);
 
         assertEquals(2, notes.size());
 

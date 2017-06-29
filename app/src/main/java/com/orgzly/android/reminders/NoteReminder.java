@@ -11,11 +11,11 @@ class NoteReminder {
         this.payload = payload;
     }
 
-    public DateTime getRunTime() {
+    DateTime getRunTime() {
         return runTime;
     }
 
-    public NoteReminderPayload getPayload() {
+    NoteReminderPayload getPayload() {
         return payload;
     }
 }

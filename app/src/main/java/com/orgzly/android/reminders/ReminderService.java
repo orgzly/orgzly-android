@@ -1,18 +1,15 @@
 package com.orgzly.android.reminders;
 
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
@@ -33,12 +30,12 @@ import com.orgzly.org.datetime.OrgInterval;
 import org.joda.time.DateTime;
 import org.joda.time.ReadableInstant;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.PeriodFormat;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Every event that can affect reminders is going through this service.
@@ -52,6 +49,9 @@ public class ReminderService extends IntentService {
     public static final int EVENT_JOB_TRIGGERED = 2;
     public static final int EVENT_UNKNOWN = -1;
 
+    static final int TIME_BEFORE_NOW = 1;
+    static final int TIME_FROM_NOW = 2;
+
     private static final long[] SCHEDULED_NOTE_VIBRATE_PATTERN = new long[]{500, 50, 50, 300};
 
     public ReminderService() {
@@ -60,8 +60,8 @@ public class ReminderService extends IntentService {
         setIntentRedelivery(true);
     }
 
-    public static List<NoteReminder> getNotesWithTimeInInterval(
-            final Context context, final ReadableInstant fromTime, final ReadableInstant beforeTime) {
+    public static List<NoteReminder> getNoteReminders(
+            final Context context, final ReadableInstant now, final LastRun lastRun, final int beforeOrAfter) {
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
@@ -70,17 +70,19 @@ public class ReminderService extends IntentService {
         TimesClient.forEachTime(context, new TimesClient.TimesClientInterface() {
             @Override
             public void onTime(TimesClient.NoteTime noteTime) {
-                if (noteTime.state == null || !AppPreferences.doneKeywordsSet(context).contains(noteTime.state)) {
+                if (isRelevantNoteTime(context, noteTime)) {
                     OrgDateTime orgDateTime = OrgDateTime.parse(noteTime.orgTimestampString);
 
                     NoteReminderPayload payload = new NoteReminderPayload(
                             noteTime.id, noteTime.bookId, noteTime.bookName, noteTime.title, noteTime.timeType, orgDateTime);
 
-                    DateTime time = OrgDateTimeUtils.getFirstTriggerTimeInInterval(
+                    ReadableInstant[] interval = getInterval(beforeOrAfter, now, lastRun, noteTime.timeType);
+
+                    DateTime time = OrgDateTimeUtils.getFirstWarningTime(
                             noteTime.timeType,
                             orgDateTime,
-                            fromTime,
-                            beforeTime,
+                            interval[0],
+                            interval[1],
                             new OrgInterval(9, OrgInterval.Unit.HOUR), // Default time of day
                             new OrgInterval(1, OrgInterval.Unit.DAY) // Warning period for deadlines
                     );
@@ -114,6 +116,17 @@ public class ReminderService extends IntentService {
         return result;
     }
 
+    private static boolean isRelevantNoteTime(Context context, TimesClient.NoteTime noteTime) {
+        /* Not done-type state. */
+        Set<String> doneStateKeywords = AppPreferences.doneKeywordsSet(context);
+        boolean state = noteTime.state == null || !doneStateKeywords.contains(noteTime.state);
+
+        boolean scheduled = AppPreferences.remindersForScheduledEnabled(context) && noteTime.timeType == 1;
+        boolean deadline = AppPreferences.remindersForDeadlineEnabled(context) && noteTime.timeType == 2;
+
+        return state && (scheduled || deadline);
+    }
+
     /**
      * Notify reminder service about changes that might affect scheduling of reminders.
      */
@@ -132,12 +145,36 @@ public class ReminderService extends IntentService {
         context.startService(intent);
     }
 
+    private static ReadableInstant[] getInterval(int beforeOrAfter, ReadableInstant now, LastRun lastRun, int timeType) {
+        ReadableInstant[] res = new ReadableInstant[2];
+
+        switch (beforeOrAfter) {
+            case TIME_BEFORE_NOW: // Before now, starting from lastRun, depending on timeType
+                res[0] = timeType == 1 ? lastRun.scheduled : lastRun.deadline;
+                if (res[0] == null) {
+                    res[0] = now;
+                }
+                res[1] = now;
+                break;
+
+            case TIME_FROM_NOW:
+                res[0] = now;
+                res[1] = null;
+                break;
+
+            default:
+                throw new IllegalArgumentException("Before or after now?");
+        }
+
+        return res;
+    }
+
     @Override
     protected void onHandleIntent(Intent intent) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
-        if (!AppPreferences.remindersForScheduledEnabled(this)) {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Reminders are disabled");
+        if (!AppPreferences.remindersForScheduledEnabled(this) && !AppPreferences.remindersForDeadlineEnabled(this)) {
+            showScheduledAtNotification("Reminders are disabled");
             return;
         }
 
@@ -200,27 +237,23 @@ public class ReminderService extends IntentService {
     /**
      * Schedule the next job for times after last run.
      */
-    private void onDataChanged(DateTime now, LastRun prevRun) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, prevRun);
+    private void onDataChanged(DateTime now, LastRun lastRun) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, lastRun);
 
         ReminderJob.cancelAll();
 
-        DateTime fromTime = prevRun.minimum();
-        if (fromTime == null) {
-            fromTime = now;
-        }
-
-        scheduleNextJob(now, fromTime);
+        scheduleNextJob(now, lastRun);
     }
 
-    private void scheduleNextJob(DateTime now, DateTime fromTime) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, fromTime);
+    private void scheduleNextJob(DateTime now, LastRun lastRun) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, lastRun);
 
-        List<NoteReminder> notes = ReminderService.getNotesWithTimeInInterval(this, fromTime, null);
+        List<NoteReminder> notes = ReminderService.getNoteReminders(
+                this, now, lastRun, TIME_FROM_NOW);
 
         String log;
 
-        if (! notes.isEmpty()) {
+        if (!notes.isEmpty()) {
             /* Schedule only the first upcoming time. */
             NoteReminder firstNote = notes.get(0);
 
@@ -235,10 +268,8 @@ public class ReminderService extends IntentService {
             log = jobRunTimeString(jobId) + " for “" + firstNote.getPayload().title + "”";
 
         } else {
-            log = "No notes found after " + fromTime;
+            log = "No notes found";
         }
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, log);
 
         showScheduledAtNotification(log);
     }
@@ -253,28 +284,32 @@ public class ReminderService extends IntentService {
      * Display reminders for all notes with times between
      * last run and now. Then schedule the next job for times after now.
      */
-    private void onJobTriggered(DateTime now, LastRun prevRun) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, prevRun);
+    private void onJobTriggered(DateTime now, LastRun lastRun) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, lastRun);
 
         ReminderJob.cancelAll();
 
-        if (prevRun != null) {
+        String msg;
+
+        if (lastRun != null) {
             /* Show notifications for all notes with times from previous run until now. */
-            List<NoteReminder> notes = ReminderService.getNotesWithTimeInInterval(this, prevRun.scheduled, now);
+            List<NoteReminder> notes = ReminderService.getNoteReminders(
+                    this, now, lastRun, TIME_BEFORE_NOW);
 
             if (!notes.isEmpty()) {
-                if (BuildConfig.LOG_DEBUG)
-                    LogUtils.d(TAG, "Found " + notes.size() + " notes between " + prevRun + " and " + now);
+                msg = "Found " + notes.size() + " notes between " + lastRun + " and " + now;
                 showNotification(this, notes);
             } else {
-                if (BuildConfig.LOG_DEBUG)
-                    LogUtils.d(TAG, "No notes found between " + prevRun + " and " + now);
+                msg = "No notes found between " + lastRun + " and " + now;
             }
         } else {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "No previous run");
+            msg = "No previous run";
         }
 
-        scheduleNextJob(now, now);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, msg);
+
+        /* Schedule from now. */
+        scheduleNextJob(now, lastRun);
     }
 
     private long getJobRunTime(int jobId) {
@@ -347,6 +382,8 @@ public class ReminderService extends IntentService {
      * Used for debugging.
      */
     private void showScheduledAtNotification(String msg) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, msg);
+
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -379,17 +416,9 @@ public class ReminderService extends IntentService {
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private class LastRun {
+    static class LastRun {
         DateTime scheduled;
         DateTime deadline;
-
-        DateTime minimum() {
-            if (scheduled == null || deadline == null) {
-                return scheduled == null ? deadline : scheduled;
-            }
-
-            return scheduled.isBefore(deadline) ? scheduled : deadline;
-        }
 
         @Override
         public String toString() {

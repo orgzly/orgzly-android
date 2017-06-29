@@ -2,7 +2,7 @@ package com.orgzly.android.reminders;
 
 import com.orgzly.org.datetime.OrgDateTime;
 
-public class NoteReminderPayload {
+class NoteReminderPayload {
     long id;
     long bookId;
     String bookName;
