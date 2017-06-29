@@ -34,6 +34,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
@@ -888,6 +889,21 @@ public class MainActivity extends CommonActivity
     public void onStateKeywordsPreferenceChanged() {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.todo_keywords_configuration_changed_dialog_title)
+                .setMessage(R.string.todo_keywords_configuration_changed_dialog_message)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mSyncFragment.reParseNotes();
+                    }
+                })
+                .setNegativeButton(R.string.not_now, null)
+                .show();
+    }
+
+    @Override
+    public void onCreatedKeywordPreferenceChanged() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.created_keyword_configuration_changed_dialog_title)
                 .setMessage(R.string.todo_keywords_configuration_changed_dialog_message)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override

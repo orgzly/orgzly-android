@@ -266,6 +266,18 @@ public class SettingsFragment extends PreferenceFragment
             setDefaultStateForNewNote();
         }
 
+        /* Created keyword. */
+        if (getString(R.string.pref_key_created_at_property).equals(key)) {
+            AppPreferences.updateStaticKeywords(getContext());
+
+            /* Re-parse notes. */
+            ActivityUtils.closeSoftKeyboard(activity);
+
+            if (mListener != null) {
+                mListener.onCreatedKeywordPreferenceChanged();
+            }
+        }
+
         /* Recreate activity if preference change requires it. */
         for (int res: REQUIRE_ACTIVITY_RESTART) {
             if (key.equals(getString(res))) {
@@ -363,6 +375,8 @@ public class SettingsFragment extends PreferenceFragment
     }
 
     public interface SettingsFragmentListener extends FragmentListener {
+        void onCreatedKeywordPreferenceChanged();
+
         void onStateKeywordsPreferenceChanged();
 
         void onDatabaseClearRequest();

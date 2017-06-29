@@ -113,11 +113,10 @@ public class DbNote {
                     values.put(Column.CREATED_TIME_ID, getOrInsertOrgRange(db, x));
                     break;
                 } catch (IllegalArgumentException e) {
-                    // Parsing failed, give up immediately and insert null
+                    // Parsing failed, give up immediately
                     break;
                 }
             }
-
         }
 
         if (head.hasContent()) {

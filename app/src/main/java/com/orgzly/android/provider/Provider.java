@@ -147,7 +147,7 @@ public class Provider extends ContentProvider {
 
         String table;
         Cursor cursor = null;
-        
+
         switch (uris.matcher.match(uri)) {
             case ProviderUris.LOCAL_DB_REPO:
                 table = DbDbRepo.TABLE;

@@ -10,8 +10,8 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
+
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.prefs.AppPreferences;
@@ -38,6 +38,7 @@ import com.orgzly.android.util.UriUtils;
 import com.orgzly.org.OrgHead;
 import com.orgzly.org.OrgProperty;
 import com.orgzly.org.datetime.OrgDateTime;
+import com.orgzly.org.datetime.OrgRange;
 import com.orgzly.org.parser.OrgParsedFile;
 import com.orgzly.org.parser.OrgParser;
 import com.orgzly.org.parser.OrgParserSettings;
@@ -725,6 +726,8 @@ public class Shelf {
 
     /**
      * Using current states configuration, update states and titles for all notes.
+     * Also updates created time in the database for all notes based on the created property keyword,
+     * but does not affect the property itself in the org file.
      * Keywords that were part of the title can become states and vice versa.
      * Affected books' mtime will *not* be updated.
      *
@@ -782,6 +785,8 @@ public class Shelf {
 
                 OrgHead newHead = file.getHeadsInList().get(0).getHead();
 
+                ContentValues values = new ContentValues();
+
                 /* Update if state, title or priority are different. */
                 if (! TextUtils.equals(newHead.getState(), head.getState()) ||
                     ! TextUtils.equals(newHead.getTitle(), head.getTitle()) ||
@@ -789,17 +794,36 @@ public class Shelf {
 
                     modifiedNotesCount++;
 
-                    ContentValues values = new ContentValues();
                     values.put(ProviderContract.Notes.UpdateParam.TITLE, newHead.getTitle());
                     values.put(ProviderContract.Notes.UpdateParam.STATE, newHead.getState());
                     values.put(ProviderContract.Notes.UpdateParam.PRIORITY, newHead.getPriority());
-
-                    ops.add(ContentProviderOperation
-                            .newUpdate(ContentUris.withAppendedId(ProviderContract.Notes.ContentUri.notes(), cursor.getLong(0)))
-                            .withValues(values)
-                            .build()
-                    );
                 }
+
+                /* Update created time.
+                 * Because the note was only modified in the internal database, modifiedNotesCount
+                 * isn't incremented.
+                 */
+                found: {
+                    for (int i = 0; i < head.getProperties().size(); i++) {
+                        if (head.getProperties().get(i).getName().equals(AppPreferences.createdAtProperty(mContext))) {
+                            try {
+                                OrgRange x = OrgRange.parse(head.getProperties().get(i).getValue());
+                                values.put(ProviderContract.Notes.UpdateParam.CREATED_STRING, x.toString());
+                                break found;
+                            } catch (IllegalArgumentException e) {
+                                // Parsing failed, give up immediately and insert null
+                                break;
+                            }
+                        }
+                    }
+                    values.putNull(ProviderContract.Notes.UpdateParam.CREATED_STRING);
+                }
+
+                ops.add(ContentProviderOperation
+                        .newUpdate(ContentUris.withAppendedId(ProviderContract.Notes.ContentUri.notes(), cursor.getLong(0)))
+                        .withValues(values)
+                        .build()
+                );
 
                 if (listener != null) {
                     listener.noteParsed(current, total, "Updating notes...");
