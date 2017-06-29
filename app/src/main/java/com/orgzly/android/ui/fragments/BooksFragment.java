@@ -479,7 +479,7 @@ public class BooksFragment extends ListFragment
                             /* Format time. */
                             textView.setText(timeString(cursor.getLong(columnIndex)));
                         } else {
-                            textView.setText("Never modified locally");
+                            textView.setText(R.string.book_never_modified_locally);
                         }
                         return true;
 

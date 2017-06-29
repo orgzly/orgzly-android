@@ -435,4 +435,5 @@
     <string name="synced_rook_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
     <string name="synced_rook_revision_sample">42f97fe238</string>
     <string name="tap_to_view_notes">Tap to view your notes</string>
+    <string name="book_never_modified_locally">Never modified locally</string>
 </resources>
