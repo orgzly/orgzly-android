@@ -299,6 +299,7 @@ public class SearchQuery {
         public enum Type {
             SCHEDULED,
             DEADLINE,
+            CREATED,
             NOTEBOOK,
             PRIORITY
         }
@@ -328,6 +329,8 @@ public class SearchQuery {
                 return Type.PRIORITY;
             } else if ("notebook".equals(name) || "book".equals(name) || "b".equals(name)) {
                 return Type.NOTEBOOK;
+            } else if ("created".equals(name) || "create".equals(name) || "c".equals(name)) {
+                return Type.CREATED;
             } else {
                 return null;
             }

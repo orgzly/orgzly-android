@@ -12,12 +12,14 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
+
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.NotesBatch;
 import com.orgzly.android.SearchQuery;
+import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.GenericDatabaseUtils;
 import com.orgzly.android.provider.ProviderContract;
@@ -84,7 +86,7 @@ public class NotesClient {
         return properties;
     }
 
-    public static void toContentValues(ContentValues values, Note note) {
+    public static void toContentValues(ContentValues values, Note note, String createdProp) {
         values.put(ProviderContract.Notes.UpdateParam.BOOK_ID, note.getPosition().getBookId());
 
         values.put(ProviderContract.Notes.UpdateParam.LFT, note.getPosition().getLft());
@@ -96,10 +98,10 @@ public class NotesClient {
 
         values.put(ProviderContract.Notes.UpdateParam.POSITION, 0); // TODO: Remove
 
-        toContentValues(values, note.getHead());
+        toContentValues(values, note.getHead(), createdProp);
     }
 
-    private static void toContentValues(ContentValues values, OrgHead head) {
+    private static void toContentValues(ContentValues values, OrgHead head, String createdProp) {
         values.put(ProviderContract.Notes.UpdateParam.TITLE, head.getTitle());
 
         if (head.hasScheduled()) {
@@ -124,6 +126,22 @@ public class NotesClient {
             values.put(ProviderContract.Notes.UpdateParam.DEADLINE_STRING, head.getDeadline().toString());
         } else {
             values.putNull(ProviderContract.Notes.UpdateParam.DEADLINE_STRING);
+        }
+
+        found: {
+            for (int i = 0; i < head.getProperties().size(); i++) {
+                if (head.getProperties().get(i).getName().equals(createdProp)) {
+                    try {
+                        OrgRange x = OrgRange.parse(head.getProperties().get(i).getValue());
+                        values.put(ProviderContract.Notes.UpdateParam.CREATED_STRING, x.toString());
+                        break found;
+                    } catch (IllegalArgumentException e) {
+                        // Parsing failed, give up immediately and insert null
+                        break;
+                    }
+                }
+            }
+            values.putNull(ProviderContract.Notes.UpdateParam.CREATED_STRING);
         }
 
         values.put(ProviderContract.Notes.UpdateParam.PRIORITY, head.getPriority());
@@ -215,8 +233,11 @@ public class NotesClient {
      * Updates note by its ID.
      */
     public static int update(Context context, Note note) {
+        // Get created prop name
+        String createdProp = AppPreferences.createdAtProperty(context);
+
         ContentValues values = new ContentValues();
-        toContentValues(values, note.getHead());
+        toContentValues(values, note, createdProp);
 
         Uri noteUri = ContentUris.withAppendedId(ProviderContract.Notes.ContentUri.notes(), note.getId());
         Uri uri = noteUri.buildUpon().appendQueryParameter("bookId", String.valueOf(note.getPosition().getBookId())).build();
@@ -270,9 +291,11 @@ public class NotesClient {
      * Insert as last note if position is not specified.
      */
     public static Note create(Context context, Note note, NotePlace target) {
+        // Get created prop name
+        String createdProp = AppPreferences.createdAtProperty(context);
 
         ContentValues values = new ContentValues();
-        toContentValues(values, note);
+        toContentValues(values, note, createdProp);
 
         Uri insertUri;
 
@@ -490,6 +513,9 @@ public class NotesClient {
 
                 } else if (so.getType() == SearchQuery.SortOrder.Type.PRIORITY) {
                     orderByColumns.add("COALESCE(" + ProviderContract.Notes.QueryParam.PRIORITY + ", '" + defaultPriority + "')" + (so.isAscending() ? "" : " DESC"));
+                } else if (so.getType() == SearchQuery.SortOrder.Type.CREATED) {
+                    orderByColumns.add(ProviderContract.Notes.QueryParam.CREATED_TIME_ID + " IS NULL");
+                    orderByColumns.add(ProviderContract.Notes.QueryParam.CREATED_TIME_ID + (so.isAscending() ? "" : " DESC"));
                 }
             }
         } else {

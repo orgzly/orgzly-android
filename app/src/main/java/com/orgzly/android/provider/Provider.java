@@ -148,6 +148,7 @@ public class Provider extends ContentProvider {
         String table;
         Cursor cursor = null;
 
+        // TODO: Use a rawQuery when searching for properties
         switch (uris.matcher.match(uri)) {
             case ProviderUris.LOCAL_DB_REPO:
                 table = DbDbRepo.TABLE;
@@ -296,6 +297,7 @@ public class Provider extends ContentProvider {
     /**
      * Builds query parameters from {@link SearchQuery}.
      */
+    // TODO: Deal with properties in sorting
     private Cursor queryNotesSearchQueried(SQLiteDatabase db, String query, String sortOrder) {
         SearchQuery searchQuery = new SearchQuery(query);
 
@@ -562,7 +564,7 @@ public class Provider extends ContentProvider {
         Note rootNote = Note.newRootNote(bookId);
 
         ContentValues values = new ContentValues();
-        NotesClient.toContentValues(values, rootNote);
+        NotesClient.toContentValues(values, rootNote, AppPreferences.createdAtProperty(getContext()));
         replaceTimestampRangeStringsWithIds(db, values);
 
         return db.insertOrThrow(DbNote.TABLE, null, values);
@@ -1471,7 +1473,7 @@ public class Provider extends ContentProvider {
                             ContentValues values = new ContentValues();
 
                             DbNote.toContentValues(values, position);
-                            DbNote.toContentValues(db, values, node.getHead());
+                            DbNote.toContentValues(db, values, node.getHead(), AppPreferences.createdAtProperty(getContext()));
 
                             long noteId = db.insertOrThrow(DbNote.TABLE, null, values);
 
@@ -1609,6 +1611,17 @@ public class Provider extends ContentProvider {
             }
 
             values.remove(ProviderContract.Notes.UpdateParam.CLOCK_STRING);
+        }
+
+        if (values.containsKey(ProviderContract.Notes.UpdateParam.CREATED_STRING)) {
+            String str = values.getAsString(ProviderContract.Notes.UpdateParam.CREATED_STRING);
+            if (! TextUtils.isEmpty(str)) {
+                values.put(DbNote.Column.CREATED_TIME_ID, getOrInsertOrgRange(db, OrgRange.parse(str)));
+            } else {
+                values.putNull(DbNote.Column.CREATED_TIME_ID);
+            }
+
+            values.remove(ProviderContract.Notes.UpdateParam.CREATED_STRING);
         }
     }
 

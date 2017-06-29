@@ -48,6 +48,7 @@ public class DbNote {
             /* Times */
             Columns.SCHEDULED_RANGE_ID + " INTEGER," +
             Columns.DEADLINE_RANGE_ID + " INTEGER," +
+            Columns.CREATED_TIME_ID + " INTEGER," +
             Columns.CLOSED_RANGE_ID + " INTEGER," +
             Columns.CLOCK_RANGE_ID + " INTEGER)",
 
@@ -78,7 +79,7 @@ public class DbNote {
             Column.IS_FOLDED
     };
 
-    public static void toContentValues(SQLiteDatabase db, ContentValues values, OrgHead head) {
+    public static void toContentValues(SQLiteDatabase db, ContentValues values, OrgHead head, String createdProp) {
         values.put(Column.TITLE, head.getTitle());
 
         values.put(Column.PRIORITY, head.getPriority());
@@ -103,6 +104,20 @@ public class DbNote {
 
         if (head.hasDeadline()) {
             values.put(Column.DEADLINE_RANGE_ID, getOrInsertOrgRange(db, head.getDeadline()));
+        }
+
+        for (int i = 0; i < head.getProperties().size(); i++) {
+            if (head.getProperties().get(i).getName().equals(createdProp)) {
+                try {
+                    OrgRange x = OrgRange.parse(head.getProperties().get(i).getValue());
+                    values.put(Column.CREATED_TIME_ID, getOrInsertOrgRange(db, x));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    // Parsing failed, give up immediately and insert null
+                    break;
+                }
+            }
+
         }
 
         if (head.hasContent()) {
@@ -239,6 +254,7 @@ public class DbNote {
 
         String SCHEDULED_RANGE_ID = "scheduled_range_id";
         String DEADLINE_RANGE_ID = "deadline_range_id";
+        String CREATED_TIME_ID = "created_time_id";
         String CLOSED_RANGE_ID = "closed_range_id";
         String CLOCK_RANGE_ID = "clock_range_id";
 
