@@ -226,6 +226,12 @@
             android:defaultValue="@bool/pref_default_value_use_reminders_for_scheduled_times"/>
 
         <CheckBoxPreference
+            android:key="@string/pref_key_use_reminders_for_deadline_times"
+            android:title="@string/pref_title_reminders_for_deadline_times"
+            android:summary="@string/pref_title_summary_reminders_for_deadline_times"
+            android:defaultValue="@bool/pref_default_value_use_reminders_for_deadline_times"/>
+
+        <CheckBoxPreference
             android:key="@string/pref_key_reminders_sound"
             android:title="@string/pref_title_reminders_sound"
             android:defaultValue="@bool/pref_default_value_reminders_sound"/>

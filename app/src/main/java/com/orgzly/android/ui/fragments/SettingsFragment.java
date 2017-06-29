@@ -315,12 +315,17 @@ public class SettingsFragment extends PreferenceFragment
             }
         }
 
-        /* Reminders for scheduled notes. */
+        /* Reminders for scheduled notes. Reset last run time. */
         if (getString(R.string.pref_key_use_reminders_for_scheduled_times).equals(key)) {
-            ReminderService.scheduledTimesToggled(getContext());
-
-            updateOtherPreferencesForReminders();
+            AppPreferences.reminderLastRunForScheduled(getContext(), 0L);
         }
+
+        /* Reminders for deadlines. Reset last run time. */
+        if (getString(R.string.pref_key_use_reminders_for_deadline_times).equals(key)) {
+            AppPreferences.reminderLastRunForDeadline(getContext(), 0L);
+        }
+
+        updateOtherPreferencesForReminders();
 
         /* Always notify about possibly changed data, if settings are modified.
          *
@@ -332,7 +337,9 @@ public class SettingsFragment extends PreferenceFragment
     }
 
     private void updateOtherPreferencesForReminders() {
-        boolean remindersEnabled = ((CheckBoxPreference) findPreference(getString(R.string.pref_key_use_reminders_for_scheduled_times))).isChecked();
+        boolean remindersEnabled =
+                ((CheckBoxPreference) findPreference(getString(R.string.pref_key_use_reminders_for_scheduled_times))).isChecked() ||
+                ((CheckBoxPreference) findPreference(getString(R.string.pref_key_use_reminders_for_deadline_times))).isChecked();
 
         findPreference(getString(R.string.pref_key_reminders_sound)).setEnabled(remindersEnabled);
         findPreference(getString(R.string.pref_key_reminders_vibrate)).setEnabled(remindersEnabled);

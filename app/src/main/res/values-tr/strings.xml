@@ -196,8 +196,6 @@
     <string name="note_book_not_set">Not defteri ayarlanmadı</string>
     <string name="can_not_be_empty">Boş olamaz</string>
 
-    <string name="fragment_note_deadline_alarms_not_implemented">Not: Alarmlar henüz uygulanmadı</string>
-
     <string name="no_notebooks">Not Defteriniz yok</string>
     <string name="no_notes">Not Defterinizde notlar yok</string>
     <string name="create_new_repository_for_syncing">Not defterlerinizi senkronize etmek için yeni depo oluşturun</string>

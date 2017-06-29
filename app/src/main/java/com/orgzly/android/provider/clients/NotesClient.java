@@ -147,8 +147,6 @@ public class NotesClient {
     public static Note fromCursor(Cursor cursor) {
         long id = idFromCursor(cursor);
 
-        boolean isFolded = cursor.getInt(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.IS_FOLDED)) != 0;
-
         int contentLines = cursor.getInt(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CONTENT_LINE_COUNT));
 
         OrgHead head = headFromCursor(cursor);
