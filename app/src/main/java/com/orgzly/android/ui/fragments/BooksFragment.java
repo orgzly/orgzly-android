@@ -12,6 +12,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.format.DateUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.ContextMenu;
@@ -228,15 +229,7 @@ public class BooksFragment extends ListFragment
                 R.id.item_book_encoding_selected
         };
 
-        adapter = new SimpleCursorAdapter(
-                getActivity(),
-                R.layout.item_book,
-                null,
-                columns,
-                to,
-                0) {
-
-
+        adapter = new SimpleCursorAdapter(getActivity(), R.layout.item_book, null, columns, to, 0) {
             class ViewHolder {
                 TextView title;
                 View modifiedAfterSyncIcon;
@@ -368,7 +361,7 @@ public class BooksFragment extends ListFragment
 
                     SpannableStringBuilder builder = new SpannableStringBuilder();
 
-                    builder.append(DateFormat.getDateTimeInstance().format(new Date(book.getLastAction().getTimestamp())));
+                    builder.append(timeString(book.getLastAction().getTimestamp()));
                     builder.append(": ");
                     int pos = builder.length();
                     builder.append(book.getLastAction().getMessage());
@@ -474,7 +467,7 @@ public class BooksFragment extends ListFragment
                         textView = (TextView) view;
                         if (! cursor.isNull(columnIndex) && cursor.getLong(columnIndex) > 0) {
                             /* Format time. */
-                            textView.setText(DateFormat.getDateTimeInstance().format(new Date(cursor.getLong(columnIndex))));
+                            textView.setText(timeString(cursor.getLong(columnIndex)));
                         } else {
                             textView.setText("N/A");
                         }
@@ -484,7 +477,7 @@ public class BooksFragment extends ListFragment
                         textView = (TextView) view;
                         if (! cursor.isNull(columnIndex) && cursor.getLong(columnIndex) > 0) {
                             /* Format time. */
-                            textView.setText(DateFormat.getDateTimeInstance().format(new Date(cursor.getLong(columnIndex))));
+                            textView.setText(timeString(cursor.getLong(columnIndex)));
                         } else {
                             textView.setText("Never modified locally");
                         }
@@ -505,6 +498,16 @@ public class BooksFragment extends ListFragment
         });
 
         return adapter;
+    }
+
+    private String timeString(long ts) {
+        int flags = DateUtils.FORMAT_SHOW_DATE |
+                    DateUtils.FORMAT_SHOW_TIME |
+                    DateUtils.FORMAT_ABBREV_MONTH |
+                    DateUtils.FORMAT_SHOW_WEEKDAY |
+                    DateUtils.FORMAT_ABBREV_WEEKDAY;
+
+        return DateUtils.formatDateTime(getContext(), ts, flags);
     }
 
     /**
