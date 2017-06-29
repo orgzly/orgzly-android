@@ -39,6 +39,9 @@ public class DropboxClient {
     private static final String NOT_LINKED = "Not linked to Dropbox";
     private static final String LARGE_FILE = "File larger then " + UPLOAD_FILE_SIZE_LIMIT + " MB";
 
+    /* The empty string ("") represents the root folder in Dropbox API v2. */
+    private static final String ROOT_PATH = "";
+
     private Context mContext;
     private DbxClientV2 dbxClient;
     private boolean tryLinking = false;
@@ -122,16 +125,18 @@ public class DropboxClient {
 
         List<VersionedRook> list = new ArrayList<>();
 
+        String path = repoUri.getPath();
+
+        /* Fix root path. */
+        if (path == null || path.equals("/")) {
+            path = ROOT_PATH;
+        }
+
+        /* Strip trailing slashes. */
+        path = path.replaceAll("/+$", "");
+
         try {
-            String path = repoUri.getPath();
-
-            // The empty string ("") represents the root folder in Dropbox API
-
-            if (path == null || path.equals("/")) {
-                path = "";
-            }
-
-            if ("".equals(path) || dbxClient.files().getMetadata(path) instanceof FolderMetadata) {
+            if (ROOT_PATH.equals(path) || dbxClient.files().getMetadata(path) instanceof FolderMetadata) {
                 /* Get folder content. */
                 ListFolderResult result = dbxClient.files().listFolder(path);
                 while (true) {
@@ -173,11 +178,9 @@ public class DropboxClient {
                 }
             }
 
-            if (e.getMessage() != null) {
-                throw new IOException("Failed getting the list of files in " + repoUri + ": " + e.getMessage());
-            } else {
-                throw new IOException("Failed getting the list of files in " + repoUri + ": " + e.toString());
-            }
+            throw new IOException("Failed getting the list of files in " + repoUri +
+                                  " listing " + path + ": " +
+                                  (e.getMessage() != null ? e.getMessage() : e.toString()));
         }
 
         return list;
