@@ -147,8 +147,7 @@ public class Provider extends ContentProvider {
 
         String table;
         Cursor cursor = null;
-
-        // TODO: Use a rawQuery when searching for properties
+        
         switch (uris.matcher.match(uri)) {
             case ProviderUris.LOCAL_DB_REPO:
                 table = DbDbRepo.TABLE;
@@ -297,7 +296,6 @@ public class Provider extends ContentProvider {
     /**
      * Builds query parameters from {@link SearchQuery}.
      */
-    // TODO: Deal with properties in sorting
     private Cursor queryNotesSearchQueried(SQLiteDatabase db, String query, String sortOrder) {
         SearchQuery searchQuery = new SearchQuery(query);
 
