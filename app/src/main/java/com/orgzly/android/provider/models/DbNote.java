@@ -49,6 +49,7 @@ public class DbNote {
             Columns.SCHEDULED_RANGE_ID + " INTEGER," +
             Columns.DEADLINE_RANGE_ID + " INTEGER," +
             Columns.CREATED_AT + " INTEGER," +
+            Columns.CREATED_AT_INTERNAL + " INTEGER," +
             Columns.CLOSED_RANGE_ID + " INTEGER," +
             Columns.CLOCK_RANGE_ID + " INTEGER)",
 
@@ -111,6 +112,7 @@ public class DbNote {
                 try {
                     OrgDateTime x = OrgDateTime.parse(head.getProperties().get(i).getValue());
                     values.put(Column.CREATED_AT, x.getCalendar().getTimeInMillis());
+                    values.put(Column.CREATED_AT_INTERNAL, x.getCalendar().getTimeInMillis());
                     break;
                 } catch (IllegalArgumentException e) {
                     // Parsing failed, give up immediately
@@ -254,6 +256,7 @@ public class DbNote {
         String SCHEDULED_RANGE_ID = "scheduled_range_id";
         String DEADLINE_RANGE_ID = "deadline_range_id";
         String CREATED_AT = "created_at";
+        String CREATED_AT_INTERNAL = "created_at_internal";
         String CLOSED_RANGE_ID = "closed_range_id";
         String CLOCK_RANGE_ID = "clock_range_id";
 

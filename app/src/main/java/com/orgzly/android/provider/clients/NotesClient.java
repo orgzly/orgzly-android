@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -134,6 +135,7 @@ public class NotesClient {
                 try {
                     OrgDateTime x = OrgDateTime.parse(head.getProperties().get(i).getValue());
                     values.put(DbNote.Column.CREATED_AT, x.getCalendar().getTimeInMillis());
+                    values.put(DbNote.Column.CREATED_AT_INTERNAL, x.getCalendar().getTimeInMillis());
                     break;
                 } catch (IllegalArgumentException e) {
                     // Parsing failed, give up immediately
@@ -240,6 +242,22 @@ public class NotesClient {
         Uri noteUri = ContentUris.withAppendedId(ProviderContract.Notes.ContentUri.notes(), note.getId());
         Uri uri = noteUri.buildUpon().appendQueryParameter("bookId", String.valueOf(note.getPosition().getBookId())).build();
 
+        if (!values.containsKey(DbNote.Column.CREATED_AT)) {
+            Cursor cursor = context.getContentResolver().query(
+                    ProviderContract.Notes.ContentUri.notes(), null,
+                    ProviderContract.Notes.QueryParam._ID + "=" + note.getId(), null, null);
+
+            try {
+                if (cursor.moveToFirst()) {
+                    values.put(DbNote.Column.CREATED_AT, cursor.getLong(cursor.getColumnIndex(DbNote.Column.CREATED_AT_INTERNAL)));
+                } else {
+                    throw new NoSuchElementException("Note with id " + note.getId() + " was not found in " + ProviderContract.Notes.ContentUri.notes());
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+
         ArrayList<ContentProviderOperation> ops = new ArrayList<>();
 
         /* Update note. */
@@ -296,7 +314,9 @@ public class NotesClient {
         toContentValues(values, note, createdProp);
 
         if (!values.containsKey(DbNote.Column.CREATED_AT)) {
-            values.put(DbNote.Column.CREATED_AT, new Date().getTime());
+            long d = new Date().getTime();
+            values.put(DbNote.Column.CREATED_AT, d);
+            values.put(DbNote.Column.CREATED_AT_INTERNAL, d);
         }
 
         Uri insertUri;

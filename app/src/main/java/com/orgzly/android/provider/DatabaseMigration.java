@@ -123,12 +123,13 @@ public class DatabaseMigration {
                 migrateOrgTimestamps(db);
 
             case DB_VER_10:
-                addCreatedAt(db);
+                // addCreatedAt(db);
         }
     }
 
     private static void addCreatedAt(SQLiteDatabase db) {
         db.execSQL("ALTER TABLE notes ADD COLUMN created_at INTEGER");
+        db.execSQL("ALTER TABLE notes ADD COLUMN created_at_internal INTEGER");
     }
 
     private static void migrateOrgTimestamps(SQLiteDatabase db) {
