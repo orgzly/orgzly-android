@@ -805,27 +805,26 @@ public class Shelf {
                  * We use the properties from the database because NotesClient.fromCursor returns
                  * a note without any properties
                  */
-                found: {
-                    for (OrgProperty prop: NotesClient.getNoteProperties(mContext, NotesClient.idFromCursor(cursor))) {
-                        if (prop.getName().equals(AppPreferences.createdAtProperty(mContext))) {
-                            try {
-                                OrgDateTime x = OrgDateTime.parse(prop.getValue());
-                                values.put(DbNote.Column.CREATED_AT, x.getCalendar().getTimeInMillis());
-                                break found;
-                            } catch (IllegalArgumentException e) {
-                                // Parsing failed, give up immediately and insert null
-                                break;
-                            }
+                for (OrgProperty prop: NotesClient.getNoteProperties(mContext, NotesClient.idFromCursor(cursor))) {
+                    if (prop.getName().equals(AppPreferences.createdAtProperty(mContext))) {
+                        try {
+                            OrgDateTime x = OrgDateTime.parse(prop.getValue());
+                            values.put(DbNote.Column.CREATED_AT, x.getCalendar().getTimeInMillis());
+                            break;
+                        } catch (IllegalArgumentException e) {
+                            // Parsing failed, give up immediately and insert null
+                            break;
                         }
                     }
-                    values.putNull(DbNote.Column.CREATED_AT);
                 }
 
-                ops.add(ContentProviderOperation
-                        .newUpdate(ContentUris.withAppendedId(ProviderContract.Notes.ContentUri.notes(), cursor.getLong(0)))
-                        .withValues(values)
-                        .build()
-                );
+                if (values.size() > 0) {
+                    ops.add(ContentProviderOperation
+                            .newUpdate(ContentUris.withAppendedId(ProviderContract.Notes.ContentUri.notes(), cursor.getLong(0)))
+                            .withValues(values)
+                            .build()
+                    );
+                }
 
                 if (listener != null) {
                     listener.noteParsed(current, total, "Updating notes...");

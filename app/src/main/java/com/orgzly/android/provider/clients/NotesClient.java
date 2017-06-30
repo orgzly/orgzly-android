@@ -36,6 +36,7 @@ import com.orgzly.org.datetime.OrgRange;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -128,20 +129,17 @@ public class NotesClient {
             values.putNull(ProviderContract.Notes.UpdateParam.DEADLINE_STRING);
         }
 
-        found: {
-            for (int i = 0; i < head.getProperties().size(); i++) {
-                if (head.getProperties().get(i).getName().equals(createdProp)) {
-                    try {
-                        OrgDateTime x = OrgDateTime.parse(head.getProperties().get(i).getValue());
-                        values.put(DbNote.Column.CREATED_AT, x.getCalendar().getTimeInMillis());
-                        break found;
-                    } catch (IllegalArgumentException e) {
-                        // Parsing failed, give up immediately and insert null
-                        break;
-                    }
+        for (int i = 0; i < head.getProperties().size(); i++) {
+            if (head.getProperties().get(i).getName().equals(createdProp)) {
+                try {
+                    OrgDateTime x = OrgDateTime.parse(head.getProperties().get(i).getValue());
+                    values.put(DbNote.Column.CREATED_AT, x.getCalendar().getTimeInMillis());
+                    break;
+                } catch (IllegalArgumentException e) {
+                    // Parsing failed, give up immediately
+                    break;
                 }
             }
-            values.putNull(DbNote.Column.CREATED_AT);
         }
 
         values.put(ProviderContract.Notes.UpdateParam.PRIORITY, head.getPriority());
@@ -296,6 +294,10 @@ public class NotesClient {
 
         ContentValues values = new ContentValues();
         toContentValues(values, note, createdProp);
+
+        if (!values.containsKey(DbNote.Column.CREATED_AT)) {
+            values.put(DbNote.Column.CREATED_AT, new Date().getTime());
+        }
 
         Uri insertUri;
 
