@@ -112,7 +112,6 @@ public class DbNote {
                 try {
                     OrgDateTime x = OrgDateTime.parse(head.getProperties().get(i).getValue());
                     values.put(Column.CREATED_AT, x.getCalendar().getTimeInMillis());
-                    values.put(Column.CREATED_AT_INTERNAL, x.getCalendar().getTimeInMillis());
                     break;
                 } catch (IllegalArgumentException e) {
                     // Parsing failed, give up immediately

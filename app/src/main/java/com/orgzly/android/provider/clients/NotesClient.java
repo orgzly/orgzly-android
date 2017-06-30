@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -135,7 +134,6 @@ public class NotesClient {
                 try {
                     OrgDateTime x = OrgDateTime.parse(head.getProperties().get(i).getValue());
                     values.put(DbNote.Column.CREATED_AT, x.getCalendar().getTimeInMillis());
-                    values.put(DbNote.Column.CREATED_AT_INTERNAL, x.getCalendar().getTimeInMillis());
                     break;
                 } catch (IllegalArgumentException e) {
                     // Parsing failed, give up immediately
@@ -313,10 +311,11 @@ public class NotesClient {
         ContentValues values = new ContentValues();
         toContentValues(values, note, createdProp);
 
+        long d = new Date().getTime();
+        values.put(DbNote.Column.CREATED_AT_INTERNAL, d);
+
         if (!values.containsKey(DbNote.Column.CREATED_AT)) {
-            long d = new Date().getTime();
             values.put(DbNote.Column.CREATED_AT, d);
-            values.put(DbNote.Column.CREATED_AT_INTERNAL, d);
         }
 
         Uri insertUri;
