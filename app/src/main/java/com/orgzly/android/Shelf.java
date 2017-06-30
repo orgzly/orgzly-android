@@ -38,7 +38,6 @@ import com.orgzly.android.util.UriUtils;
 import com.orgzly.org.OrgHead;
 import com.orgzly.org.OrgProperty;
 import com.orgzly.org.datetime.OrgDateTime;
-import com.orgzly.org.datetime.OrgRange;
 import com.orgzly.org.parser.OrgParsedFile;
 import com.orgzly.org.parser.OrgParser;
 import com.orgzly.org.parser.OrgParserSettings;
@@ -807,7 +806,7 @@ public class Shelf {
                     for (int i = 0; i < head.getProperties().size(); i++) {
                         if (head.getProperties().get(i).getName().equals(AppPreferences.createdAtProperty(mContext))) {
                             try {
-                                OrgRange x = OrgRange.parse(head.getProperties().get(i).getValue());
+                                OrgDateTime x = OrgDateTime.parse(head.getProperties().get(i).getValue());
                                 values.put(ProviderContract.Notes.UpdateParam.CREATED_STRING, x.toString());
                                 break found;
                             } catch (IllegalArgumentException e) {

@@ -132,7 +132,7 @@ public class NotesClient {
             for (int i = 0; i < head.getProperties().size(); i++) {
                 if (head.getProperties().get(i).getName().equals(createdProp)) {
                     try {
-                        OrgRange x = OrgRange.parse(head.getProperties().get(i).getValue());
+                        OrgDateTime x = OrgDateTime.parse(head.getProperties().get(i).getValue());
                         values.put(ProviderContract.Notes.UpdateParam.CREATED_STRING, x.toString());
                         break found;
                     } catch (IllegalArgumentException e) {
@@ -514,8 +514,8 @@ public class NotesClient {
                 } else if (so.getType() == SearchQuery.SortOrder.Type.PRIORITY) {
                     orderByColumns.add("COALESCE(" + ProviderContract.Notes.QueryParam.PRIORITY + ", '" + defaultPriority + "')" + (so.isAscending() ? "" : " DESC"));
                 } else if (so.getType() == SearchQuery.SortOrder.Type.CREATED) {
-                    orderByColumns.add(ProviderContract.Notes.QueryParam.CREATED_TIME_TIMESTAMP + " IS NULL");
-                    orderByColumns.add(ProviderContract.Notes.QueryParam.CREATED_TIME_TIMESTAMP + (so.isAscending() ? "" : " DESC"));
+                    orderByColumns.add(ProviderContract.Notes.QueryParam.CREATED_AT_TIME + " IS NULL");
+                    orderByColumns.add(ProviderContract.Notes.QueryParam.CREATED_AT_TIME + (so.isAscending() ? "" : " DESC"));
                 }
             }
         } else {

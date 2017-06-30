@@ -109,8 +109,8 @@ public class DbNote {
         for (int i = 0; i < head.getProperties().size(); i++) {
             if (head.getProperties().get(i).getName().equals(createdProp)) {
                 try {
-                    OrgRange x = OrgRange.parse(head.getProperties().get(i).getValue());
-                    values.put(Column.CREATED_TIME_ID, getOrInsertOrgRange(db, x));
+                    OrgDateTime x = OrgDateTime.parse(head.getProperties().get(i).getValue());
+                    values.put(Column.CREATED_TIME_ID, getOrInsertOrgTime(db, x));
                     break;
                 } catch (IllegalArgumentException e) {
                     // Parsing failed, give up immediately
