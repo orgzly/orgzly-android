@@ -375,7 +375,6 @@ public class DatabaseMigration {
         String[] notesFields = new String[] {
                 "scheduled_range_id",
                 "deadline_range_id",
-                "created_time_id",
                 "closed_range_id",
                 "clock_range_id"
         };

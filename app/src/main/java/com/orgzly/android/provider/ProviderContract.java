@@ -139,7 +139,6 @@ public class ProviderContract {
         class UpdateParam implements DbNote.Columns, BaseColumns {
             public static final String SCHEDULED_STRING = "scheduled_string"; // TODO: This is range, rename.
             public static final String DEADLINE_STRING = "deadline_string";
-            public static final String CREATED_STRING = "created_string";
             public static final String CLOSED_STRING = "closed_string";
             public static final String CLOCK_STRING = "clock_string";
         }

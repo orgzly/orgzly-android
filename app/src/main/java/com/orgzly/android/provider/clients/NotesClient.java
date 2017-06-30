@@ -133,7 +133,7 @@ public class NotesClient {
                 if (head.getProperties().get(i).getName().equals(createdProp)) {
                     try {
                         OrgDateTime x = OrgDateTime.parse(head.getProperties().get(i).getValue());
-                        values.put(ProviderContract.Notes.UpdateParam.CREATED_STRING, x.toString());
+                        values.put(DbNote.Column.CREATED_AT, x.getCalendar().getTimeInMillis());
                         break found;
                     } catch (IllegalArgumentException e) {
                         // Parsing failed, give up immediately and insert null
@@ -141,7 +141,7 @@ public class NotesClient {
                     }
                 }
             }
-            values.putNull(ProviderContract.Notes.UpdateParam.CREATED_STRING);
+            values.putNull(DbNote.Column.CREATED_AT);
         }
 
         values.put(ProviderContract.Notes.UpdateParam.PRIORITY, head.getPriority());
@@ -514,8 +514,8 @@ public class NotesClient {
                 } else if (so.getType() == SearchQuery.SortOrder.Type.PRIORITY) {
                     orderByColumns.add("COALESCE(" + ProviderContract.Notes.QueryParam.PRIORITY + ", '" + defaultPriority + "')" + (so.isAscending() ? "" : " DESC"));
                 } else if (so.getType() == SearchQuery.SortOrder.Type.CREATED) {
-                    orderByColumns.add(ProviderContract.Notes.QueryParam.CREATED_AT_TIME + " IS NULL");
-                    orderByColumns.add(ProviderContract.Notes.QueryParam.CREATED_AT_TIME + (so.isAscending() ? "" : " DESC"));
+                    orderByColumns.add(DbNote.Column.CREATED_AT + " IS NULL");
+                    orderByColumns.add(DbNote.Column.CREATED_AT + (so.isAscending() ? "" : " DESC"));
                 }
             }
         } else {

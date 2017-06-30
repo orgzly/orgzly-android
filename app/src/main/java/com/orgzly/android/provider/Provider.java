@@ -1610,17 +1610,6 @@ public class Provider extends ContentProvider {
 
             values.remove(ProviderContract.Notes.UpdateParam.CLOCK_STRING);
         }
-
-        if (values.containsKey(ProviderContract.Notes.UpdateParam.CREATED_STRING)) {
-            String str = values.getAsString(ProviderContract.Notes.UpdateParam.CREATED_STRING);
-            if (! TextUtils.isEmpty(str)) {
-                values.put(DbNote.Column.CREATED_TIME_ID, getOrInsertOrgTime(db, OrgDateTime.parse(str)));
-            } else {
-                values.putNull(DbNote.Column.CREATED_TIME_ID);
-            }
-
-            values.remove(ProviderContract.Notes.UpdateParam.CREATED_STRING);
-        }
     }
 
     /**

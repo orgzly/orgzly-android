@@ -22,6 +22,7 @@ import com.orgzly.android.provider.clients.DbClient;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.provider.clients.ReposClient;
+import com.orgzly.android.provider.models.DbNote;
 import com.orgzly.android.reminders.ReminderService;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
@@ -809,7 +810,7 @@ public class Shelf {
                         if (prop.getName().equals(AppPreferences.createdAtProperty(mContext))) {
                             try {
                                 OrgDateTime x = OrgDateTime.parse(prop.getValue());
-                                values.put(ProviderContract.Notes.UpdateParam.CREATED_STRING, x.toString());
+                                values.put(DbNote.Column.CREATED_AT, x.getCalendar().getTimeInMillis());
                                 break found;
                             } catch (IllegalArgumentException e) {
                                 // Parsing failed, give up immediately and insert null
@@ -817,7 +818,7 @@ public class Shelf {
                             }
                         }
                     }
-                    values.putNull(ProviderContract.Notes.UpdateParam.CREATED_STRING);
+                    values.putNull(DbNote.Column.CREATED_AT);
                 }
 
                 ops.add(ContentProviderOperation

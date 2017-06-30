@@ -40,8 +40,6 @@ public class NotesView {
             "t_closed_timestamps_start." + DbOrgTimestamp.Column.STRING + " AS " + Columns.CLOSED_TIME_STRING + ", " +
             "t_closed_timestamps_end." + DbOrgTimestamp.Column.STRING + " AS " + Columns.CLOSED_TIME_END_STRING + ", " +
 
-            "t_created_at." + DbOrgTimestamp.Column.TIMESTAMP + " AS " + Columns.CREATED_AT_TIME + ", " +
-
             "t_clock_range." + DbOrgRange.Column.STRING + " AS " + Columns.CLOCK_RANGE_STRING + ", " +
             "t_clock_timestamps_start." + DbOrgTimestamp.Column.STRING + " AS " + Columns.CLOCK_TIME_STRING + ", " +
             "t_clock_timestamps_end." + DbOrgTimestamp.Column.STRING + " AS " + Columns.CLOCK_TIME_END_STRING + ", " +
@@ -65,8 +63,6 @@ public class NotesView {
             GenericDatabaseUtils.join(DbOrgRange.TABLE, "t_clock_range", DbOrgRange.Column._ID, DbNote.TABLE, DbNote.Column.CLOCK_RANGE_ID) +
             GenericDatabaseUtils.join(DbOrgTimestamp.TABLE, "t_clock_timestamps_start", DbOrgTimestamp.Column._ID, "t_clock_range", DbOrgRange.Column.START_TIMESTAMP_ID) +
             GenericDatabaseUtils.join(DbOrgTimestamp.TABLE, "t_clock_timestamps_end", DbOrgTimestamp.Column._ID, "t_clock_range", DbOrgRange.Column.END_TIMESTAMP_ID) +
-
-            GenericDatabaseUtils.join(DbOrgTimestamp.TABLE, "t_created_at", DbOrgTimestamp.Column._ID, DbNote.TABLE, DbNote.Column.CREATED_TIME_ID) +
 
             GenericDatabaseUtils.join(DbBook.TABLE, "t_books", DbBook.Column._ID, DbNote.TABLE, DbNote.Column.BOOK_ID) +
 
@@ -93,8 +89,6 @@ public class NotesView {
         public static String CLOSED_RANGE_STRING = "closed_range_string";
         public static String CLOSED_TIME_STRING = "closed_time_string";
         public static String CLOSED_TIME_END_STRING = "closed_time_end_string";
-
-        public static String CREATED_AT_TIME = "created_time_string";
 
         public static String CLOCK_RANGE_STRING = "clock_range_string";
         public static String CLOCK_TIME_STRING = "clock_time_string";
