@@ -801,12 +801,14 @@ public class Shelf {
                 /* Update created time.
                  * Because the note was only modified in the internal database, modifiedNotesCount
                  * isn't incremented.
+                 * We use the properties from the database because NotesClient.fromCursor returns
+                 * a note without any properties
                  */
                 found: {
-                    for (int i = 0; i < head.getProperties().size(); i++) {
-                        if (head.getProperties().get(i).getName().equals(AppPreferences.createdAtProperty(mContext))) {
+                    for (OrgProperty prop: NotesClient.getNoteProperties(mContext, NotesClient.idFromCursor(cursor))) {
+                        if (prop.getName().equals(AppPreferences.createdAtProperty(mContext))) {
                             try {
-                                OrgDateTime x = OrgDateTime.parse(head.getProperties().get(i).getValue());
+                                OrgDateTime x = OrgDateTime.parse(prop.getValue());
                                 values.put(ProviderContract.Notes.UpdateParam.CREATED_STRING, x.toString());
                                 break found;
                             } catch (IllegalArgumentException e) {
