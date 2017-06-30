@@ -51,8 +51,9 @@ public class DatabaseMigration {
     private static final int DB_VER_9 = 138;
     private static final int DB_VER_10 = 139;
     private static final int DB_VER_11 = 140;
+    private static final int DB_VER_12 = 141;
 
-    static final int DB_VER_CURRENT = DB_VER_11;
+    static final int DB_VER_CURRENT = DB_VER_12;
 
     /**
      * Start from the old version and go through all changes. No breaks.
@@ -123,7 +124,10 @@ public class DatabaseMigration {
                 migrateOrgTimestamps(db);
 
             case DB_VER_10:
-                // addCreatedAt(db);
+                /* Views-only updates */
+
+            case DB_VER_11:
+                addCreatedAt(db);
         }
     }
 
