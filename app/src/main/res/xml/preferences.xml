@@ -166,7 +166,6 @@
 
         <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
             android:key="@string/pref_key_created_at_property"
-            android:dependency="@string/pref_key_is_created_at_added"
             android:title="@string/created_at_property"
             android:dialogTitle="@string/property_name"
             android:inputType="text"
