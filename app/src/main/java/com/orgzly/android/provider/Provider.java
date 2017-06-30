@@ -71,6 +71,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1472,6 +1473,10 @@ public class Provider extends ContentProvider {
 
                             DbNote.toContentValues(values, position);
                             DbNote.toContentValues(db, values, node.getHead(), AppPreferences.createdAtProperty(getContext()));
+
+                            if (!values.containsKey(DbNote.Column.CREATED_AT)) {
+                                values.put(DbNote.Column.CREATED_AT, new Date().getTime());
+                            }
 
                             long noteId = db.insertOrThrow(DbNote.TABLE, null, values);
 
