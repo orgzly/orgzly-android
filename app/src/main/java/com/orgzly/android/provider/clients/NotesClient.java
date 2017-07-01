@@ -247,7 +247,13 @@ public class NotesClient {
 
             try {
                 if (cursor.moveToFirst()) {
-                    values.put(DbNote.Column.CREATED_AT, cursor.getLong(cursor.getColumnIndex(DbNote.Column.CREATED_AT_INTERNAL)));
+                    if (cursor.getColumnIndex(DbNote.Column.CREATED_AT_INTERNAL) != -1) {
+                        values.put(DbNote.Column.CREATED_AT, cursor.getLong(cursor.getColumnIndex(DbNote.Column.CREATED_AT_INTERNAL)));
+                    } else {
+                        long d = new Date().getTime();
+                        values.put(DbNote.Column.CREATED_AT, d);
+                        values.put(DbNote.Column.CREATED_AT_INTERNAL, d);
+                    }
                 } else {
                     throw new NoSuchElementException("Note with id " + note.getId() + " was not found in " + ProviderContract.Notes.ContentUri.notes());
                 }
