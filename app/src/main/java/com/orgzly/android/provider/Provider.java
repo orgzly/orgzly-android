@@ -1474,12 +1474,11 @@ public class Provider extends ContentProvider {
                             DbNote.toContentValues(values, position);
                             DbNote.toContentValues(db, values, node.getHead(), AppPreferences.createdAtProperty(getContext()));
 
-                            long d = new Date().getTime();
-                            values.put(DbNote.Column.CREATED_AT_INTERNAL, d);
-
                             if (!values.containsKey(DbNote.Column.CREATED_AT)) {
+                                long d = new Date().getTime();
                                 values.put(DbNote.Column.CREATED_AT, d);
                             }
+                            values.put(DbNote.Column.CREATED_AT_INTERNAL, values.getAsLong(DbNote.Column.CREATED_AT));
 
                             long noteId = db.insertOrThrow(DbNote.TABLE, null, values);
 
