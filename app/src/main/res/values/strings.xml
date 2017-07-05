@@ -402,8 +402,8 @@
     <string name="select_a_filter">Select a filter</string>
     <string name="select_a_filter_long">Select a filter by clicking on the title bar</string>
 
-    <string name="sync_after_preference_title">Automatically sync after new notes</string>
-    <string name="sync_after_summary">Automatically sync after new note is created.</string>
+    <string name="sync_after_preference_title">Start sync after new note is created</string>
+    <string name="sync_after_summary">Note that entire notebook will be exported and transferred over the network each time</string>
 
     <!-- These are just used in tools:text for layout preview and don't have to be translated,
          unless layout look depends on the translation. -->
