@@ -12,6 +12,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.view.ActionMode;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -276,7 +277,7 @@ public class AgendaFragment extends NoteListFragment
             mListener.announceChanges(
                     AgendaFragment.FRAGMENT_TAG,
                     getString(R.string.fragment_agenda_title),
-                    mQuery.toString(),
+                    null, //mQuery.toString(),
                     mSelection.getCount());
         }
     }
@@ -351,6 +352,8 @@ public class AgendaFragment extends NoteListFragment
         inflater.inflate(R.menu.agenda_spinner, menu);
 
         /* Remove search item. */
+        MenuItem menuItem = menu.findItem(R.id.activity_action_search);
+        menuItem.collapseActionView();
         menu.removeItem(R.id.activity_action_search);
 
         MenuItem item = menu.findItem(R.id.agenda_spinner);
@@ -436,10 +439,10 @@ public class AgendaFragment extends NoteListFragment
         }
 
         // generate agenda days
-        // keep all expanded scheduled events in a LinkedHashset
+        // keep all expanded scheduled events in a LinkedHashMap
         Map<Date, MatrixCursor> agenda = new LinkedHashMap<>();
         // create entries from today to today+agenda_len
-        // for each cursor: expand shedRange, add ag.entrySched to agenda[ag.agendaDate]
+        // for each cursor: expand shedRange, add agenda.entrySched to agenda[agenda.agendaDate]
         String[] cols = cursor.getColumnNames();
         Calendar day = AgendaHelper.getTodayDate();
         int i = 0;
@@ -457,7 +460,7 @@ public class AgendaFragment extends NoteListFragment
                 // clone the item
                 MatrixCursor matrixCursor = agenda.get(date);
                 MatrixCursor.RowBuilder rowBuilder = matrixCursor.newRow();
-                System.out.println("ID: " + cursor.getString(cursor.getColumnIndex(BaseColumns._ID)));
+//                System.out.println("ID: " + cursor.getString(cursor.getColumnIndex(BaseColumns._ID)));
                 for (String col: cols) {
                     rowBuilder.add(cursor.getString(cursor.getColumnIndex(col)));
                 }
@@ -468,6 +471,7 @@ public class AgendaFragment extends NoteListFragment
         for(Date date: agenda.keySet()) {
             MatrixCursor dateCursor = new MatrixCursor(new String[]{BaseColumns._ID, "day", "separator"});
             MatrixCursor.RowBuilder dateRow = dateCursor.newRow();
+            // use date as number of secodns as id
             int id = (int) (date.getTime() / 1000);
             dateRow.add(id);
             dateRow.add(userTimeFormatter.formatDate(AgendaHelper.buildOrgDateTimeFromDate(date)));
@@ -477,7 +481,7 @@ public class AgendaFragment extends NoteListFragment
             allCursors.add(agenda.get(date));
         }
         MergeCursor mCursor = new MergeCursor(allCursors.toArray(new Cursor[allCursors.size()]));
-        // do I need to move to first?
+
         mCursor.moveToFirst();
         /**
          * Swapping instead of changing Cursor here, to keep the old one open.
@@ -494,12 +498,6 @@ public class AgendaFragment extends NoteListFragment
             actionMode.invalidate();
             mActionModeTag = null;
         }
-
-//        if (mListAdapter.getCount() > 0) {
-//            mViewFlipper.setDisplayedChild(0);
-//        } else {
-//            mViewFlipper.setDisplayedChild(1);
-//        }
     }
 
     @Override
