@@ -384,6 +384,8 @@ public class ReminderService extends IntentService {
     private void showScheduledAtNotification(String msg) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, msg);
 
+        if (true) return;
+
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
