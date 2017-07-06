@@ -12,7 +12,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.view.ActionMode;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,6 +46,7 @@ import com.orgzly.org.datetime.OrgDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +91,8 @@ public class AgendaFragment extends NoteListFragment
     private AgendaFragmentListener mAgendaListener;
 
     private String mActionModeTag;
+
+    private Map<Long, Long> originalNoteIDs = new HashMap<>();
 
 //    private ViewFlipper mViewFlipper;
 
@@ -192,17 +194,30 @@ public class AgendaFragment extends NoteListFragment
                 new GesturedListView.OnItemMenuButtonClickListener() {
                     @Override
                     public boolean onMenuButtonClick(int buttonId, long noteId) {
+                        noteId = originalNoteIDs.get(noteId);
+                        Fragment fragment = AgendaFragment.this;
+                        FragmentTransaction ft;
+
                         switch (buttonId) {
                             case R.id.item_menu_schedule_btn:
                                 displayScheduleTimestampDialog(R.id.item_menu_schedule_btn, noteId);
+                                // refresh fragment
+                                ft = getFragmentManager().beginTransaction();
+                                ft.detach(fragment).attach(fragment).commit();
                                 break;
 
                             case R.id.item_menu_prev_state_btn:
                                 mListener.onStateCycleRequest(noteId, -1);
+                                // refresh fragment
+                                ft = getFragmentManager().beginTransaction();
+                                ft.detach(fragment).attach(fragment).commit();
                                 break;
 
                             case R.id.item_menu_next_state_btn:
                                 mListener.onStateCycleRequest(noteId, 1);
+                                // refresh fragment
+                                ft = getFragmentManager().beginTransaction();
+                                ft.detach(fragment).attach(fragment).commit();
                                 break;
 
                             case R.id.item_menu_done_state_btn:
@@ -211,16 +226,16 @@ public class AgendaFragment extends NoteListFragment
                                     set.add(noteId);
                                     mListener.onStateChangeRequest(set, "DONE");
                                 }
+                                // refresh fragment
+                                ft = getFragmentManager().beginTransaction();
+                                ft.detach(fragment).attach(fragment).commit();
                                 break;
 
                             case R.id.item_menu_open_btn:
                                 mListener.onNoteScrollToRequest(noteId);
                                 break;
                         }
-                        // refresh fragment
-                        Fragment fragment = AgendaFragment.this;
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.detach(fragment).attach(fragment).commit();
+
 
                         return false;
                     }
@@ -325,6 +340,7 @@ public class AgendaFragment extends NoteListFragment
 
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
+        id = originalNoteIDs.get(id);
         if (id > Integer.MAX_VALUE)
             throw new RuntimeException("Cannot cast row ID to int!");
         if (mListAdapter.getItemViewType((int) id) == AgendaListViewAdapter.TYPE_ITEM)
@@ -446,6 +462,7 @@ public class AgendaFragment extends NoteListFragment
         String[] cols = cursor.getColumnNames();
         Calendar day = AgendaHelper.getTodayDate();
         int i = 0;
+        long nextID = Long.MAX_VALUE;
         do {
             MatrixCursor matrixCursor = new MatrixCursor(cols);
             agenda.put(day.getTime(), matrixCursor);
@@ -462,7 +479,13 @@ public class AgendaFragment extends NoteListFragment
                 MatrixCursor.RowBuilder rowBuilder = matrixCursor.newRow();
 //                System.out.println("ID: " + cursor.getString(cursor.getColumnIndex(BaseColumns._ID)));
                 for (String col: cols) {
-                    rowBuilder.add(cursor.getString(cursor.getColumnIndex(col)));
+                    if (col.equalsIgnoreCase(BaseColumns._ID)) {
+                        // record the mapping from agenda note ID to original note ID
+                        long noteId = cursor.getLong(cursor.getColumnIndex(col));
+                        originalNoteIDs.put(nextID, noteId);
+                        rowBuilder.add(nextID--);
+                    } else
+                        rowBuilder.add(cursor.getString(cursor.getColumnIndex(col)));
                 }
             }
         }
