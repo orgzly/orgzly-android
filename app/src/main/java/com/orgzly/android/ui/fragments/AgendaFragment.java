@@ -167,8 +167,6 @@ public class AgendaFragment extends NoteListFragment
 
         View view = inflater.inflate(R.layout.fragment_agenda, container, false);
 
-//        mViewFlipper = (ViewFlipper) view.findViewById(R.id.fragment_agenda_view_flipper);
-
         return view;
     }
 
@@ -195,29 +193,17 @@ public class AgendaFragment extends NoteListFragment
                     @Override
                     public boolean onMenuButtonClick(int buttonId, long noteId) {
                         noteId = originalNoteIDs.get(noteId);
-                        Fragment fragment = AgendaFragment.this;
-                        FragmentTransaction ft;
-
                         switch (buttonId) {
                             case R.id.item_menu_schedule_btn:
                                 displayScheduleTimestampDialog(R.id.item_menu_schedule_btn, noteId);
-                                // refresh fragment
-                                ft = getFragmentManager().beginTransaction();
-                                ft.detach(fragment).attach(fragment).commit();
                                 break;
 
                             case R.id.item_menu_prev_state_btn:
                                 mListener.onStateCycleRequest(noteId, -1);
-                                // refresh fragment
-                                ft = getFragmentManager().beginTransaction();
-                                ft.detach(fragment).attach(fragment).commit();
                                 break;
 
                             case R.id.item_menu_next_state_btn:
                                 mListener.onStateCycleRequest(noteId, 1);
-                                // refresh fragment
-                                ft = getFragmentManager().beginTransaction();
-                                ft.detach(fragment).attach(fragment).commit();
                                 break;
 
                             case R.id.item_menu_done_state_btn:
@@ -227,6 +213,8 @@ public class AgendaFragment extends NoteListFragment
                                     mListener.onStateChangeRequest(set, "DONE");
                                 }
                                 // refresh fragment
+                                Fragment fragment = AgendaFragment.this;
+                                FragmentTransaction ft;
                                 ft = getFragmentManager().beginTransaction();
                                 ft.detach(fragment).attach(fragment).commit();
                                 break;
@@ -477,7 +465,6 @@ public class AgendaFragment extends NoteListFragment
                 // clone the item
                 MatrixCursor matrixCursor = agenda.get(date);
                 MatrixCursor.RowBuilder rowBuilder = matrixCursor.newRow();
-//                System.out.println("ID: " + cursor.getString(cursor.getColumnIndex(BaseColumns._ID)));
                 for (String col: cols) {
                     if (col.equalsIgnoreCase(BaseColumns._ID)) {
                         // record the mapping from agenda note ID to original note ID

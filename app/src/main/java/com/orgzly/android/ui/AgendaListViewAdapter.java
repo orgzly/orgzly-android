@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Paint;
 import android.provider.BaseColumns;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -41,7 +42,6 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
         int id = cursor.getInt(getCursor().getColumnIndex(BaseColumns._ID));
         if (separatorIDs.contains(id) != isSeparator) {
             // do not use @convertView
-//            convertView = null;
             return super.getView(position, null, parent);
         }
         System.out.println("Position is: " + position);
@@ -71,7 +71,7 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
         boolean isSeparator = (boolean) view.getTag(R.id.AGENDA_ITEM_SEPARATOR_TAG);
 
         if (separatorIDs.contains(id) != isSeparator)
-            throw new IllegalStateException("Is it a separator or not!?");
+            throw new IllegalStateException("Cannot convert between agenda entry and header view types!");
 
         if (separatorIDs.contains(id) && isSeparator) {
             // reuse an agenda header
@@ -86,13 +86,7 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
     public int getItemViewType(int position) {
         Cursor cursor = (Cursor) getItem(position);
         int id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
-        if (separatorIDs.contains(id)) {
-            System.out.println("item is separator");
-            return TYPE_SEPARATOR;
-        }
-        System.out.println("item is NOT separator");
-        return TYPE_ITEM;
-//        return separatorIDs.contains(position) ? TYPE_SEPARATOR : TYPE_ITEM;
+        return separatorIDs.contains(id) ? TYPE_SEPARATOR : TYPE_ITEM;
     }
 
     @Override
@@ -105,11 +99,7 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
     }
 
     private TextView createAgendaDateTextView(Context context) {
-        TextView textView = new TextView(context);
-
-        textView.setGravity(Gravity.CENTER);
-        textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
-        return textView;
+        View header = LayoutInflater.from(context).inflate(R.layout.agenda_day_head, null);
+        return (TextView) header;
     }
 }

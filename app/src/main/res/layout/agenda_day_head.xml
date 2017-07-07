@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:descendantFocusability="blocksDescendants">
-
-            <!-- agenda day. -->
-    <TextView
-        android:id="@+id/agenda_day_head"
-        android:layout_width="@dimen/item_head_book_name_width"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/padding_4"
-        android:layout_marginRight="@dimen/padding_4"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:maxLines="1"
-        android:textAlignment="center"
-        android:textColor="?attr/item_head_indent_line_color"
-        android:textSize="?attr/item_head_book_name_text"
-        android:textStyle="bold|italic"
-        android:visibility="gone"
-        tools:background="@color/dark_theme_status_bar" />
-
-</LinearLayout>
+    
+<!-- agenda day -->
+<TextView android:id="@+id/agenda_day_head"
+    android:layout_width="@dimen/item_head_book_name_width"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/padding_4"
+    android:layout_marginRight="@dimen/padding_4"
+    android:paddingTop="@dimen/fragment_padding"
+    android:gravity="center_vertical"
+    android:maxLines="1"
+    android:textAlignment="center"
+    android:textStyle="bold"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+</TextView>
