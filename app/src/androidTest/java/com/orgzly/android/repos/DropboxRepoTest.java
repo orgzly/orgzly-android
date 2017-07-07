@@ -2,19 +2,23 @@ package com.orgzly.android.repos;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.android.Book;
+import com.orgzly.android.BookName;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.prefs.AppPreferences;
+import com.orgzly.android.util.MiscUtils;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 
 public class DropboxRepoTest extends OrgzlyTest {
-
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -27,9 +31,13 @@ public class DropboxRepoTest extends OrgzlyTest {
         assertEquals("dropbox:/dir", RepoFactory.getFromUri(context, "dropbox:/dir").getUri().toString());
     }
 
-    /**
-     * Dropbox repo url should not have authority.
-     */
+    @Test
+    public void testSyncingUrlWithTrailingSlash() throws IOException {
+        shelfTestUtils.setupRepo(randomUrl() + "/");
+        assertNotNull(shelf.sync());
+    }
+
+    /* Dropbox repo url should *not* have authority. */
     @Test
     public void testAuthority() {
         assertNull(RepoFactory.getFromUri(context, "dropbox://authority"));
@@ -38,7 +46,7 @@ public class DropboxRepoTest extends OrgzlyTest {
     @Test
     public void testRenameBook() throws IOException {
         Book book;
-        String repoUriString = randomDropboxRepo(context).getUri().toString();
+        String repoUriString = RepoFactory.getFromUri(context, randomUrl()).getUri().toString();
 
         shelfTestUtils.setupRepo(repoUriString);
         shelfTestUtils.setupBook("booky", "");
@@ -56,5 +64,30 @@ public class DropboxRepoTest extends OrgzlyTest {
         assertEquals(repoUriString, book.getLastSyncedToRook().getRepoUri().toString());
         assertEquals(repoUriString + "/booky-renamed.org", book.getLastSyncedToRook().getUri().toString());
         assertEquals(repoUriString + "/booky-renamed.org", book.getLink().getUri().toString());
+    }
+
+    @Test
+    public void testDropboxFileRename() throws IOException {
+        Repo repo = RepoFactory.getFromUri(context, "dropbox:/orgzly/tests/" + UUID.randomUUID().toString());
+
+        assertNotNull(repo);
+        assertEquals(0, repo.getBooks().size());
+
+        File file = File.createTempFile("notebook.", ".org");
+        MiscUtils.writeStringToFile("1 2 3", file);
+
+        VersionedRook vrook = repo.storeBook(file, file.getName());
+
+        assertEquals(1, repo.getBooks().size());
+
+        repo.renameBook(vrook.getUri(), "notebook-renamed");
+
+        assertEquals(1, repo.getBooks().size());
+        assertEquals(repo.getUri() + "/notebook-renamed.org", repo.getBooks().get(0).getUri().toString());
+        assertEquals("notebook-renamed.org", BookName.getInstance(context, repo.getBooks().get(0)).getFileName());
+    }
+
+    private String randomUrl() {
+        return "dropbox:/orgzly/tests/" + UUID.randomUUID().toString();
     }
 }

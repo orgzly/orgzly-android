@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -446,7 +447,7 @@ public class TimestampDialogFragment extends DialogFragment {
 
                         setViewsFromCurrentValues();
                     }
-                }, mCurrentHour, mCurrentMinute, true);
+                }, mCurrentHour, mCurrentMinute, DateFormat.is24HourFormat(getContext()));
 
                 mTimePickerDialog.show();
             }
@@ -462,15 +463,12 @@ public class TimestampDialogFragment extends DialogFragment {
                         mIsRepeaterUsed.setChecked(true);
 
                         setViewsFromCurrentValues();
-
                     }
                 }, mRepeaterPicker.getText().toString());
 
                 mRepeaterPickerDialog.show();
-
             }
         });
-
 
         mEndTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -485,7 +483,7 @@ public class TimestampDialogFragment extends DialogFragment {
 
                         setViewsFromCurrentValues();
                     }
-                }, mCurrentEndTimeHour, mCurrentEndTimeMinute, true);
+                }, mCurrentEndTimeHour, mCurrentEndTimeMinute, DateFormat.is24HourFormat(getContext()));
 
                 mEndTimePickerDialog.show();
             }

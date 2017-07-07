@@ -437,11 +437,8 @@ public class ProviderContract {
     }
 
     public interface Times {
-        class Param {
-            public static final String NOTE_ID = "note_id";
-            public static final String NOTE_STATE = "note_state";
-            public static final String NOTE_TITLE = "note_title";
-            public static final String ORG_TIMESTAMP_STRING = "org_timestamp_string";
+        interface MatcherUri {
+            String TIMES = "times";
         }
 
         class ColumnIndex {
@@ -449,22 +446,15 @@ public class ProviderContract {
             public static final int BOOK_ID = 1;
             public static final int BOOK_NAME = 2;
             public static final int NOTE_STATE = 3;
-            public static final int ORG_TIMESTAMP_STRING = 4;
-            public static final int NOTE_TITLE = 5;
-        }
-
-
-        interface MatcherUri {
-            String TIMES = "times";
+            public static final int NOTE_TITLE = 4;
+            public static final int TIME_TYPE = 5;
+            public static final int ORG_TIMESTAMP_STRING = 6;
         }
 
         class ContentUri {
-            public static final String PARAM_AFTER_TIME = "after_time";
-
-            public static Uri times(long time) {
-                return Uri.withAppendedPath(AUTHORITY_URI, "times")
+            public static Uri times() {
+                return Uri.withAppendedPath(AUTHORITY_URI, MatcherUri.TIMES)
                         .buildUpon()
-                        .appendQueryParameter(PARAM_AFTER_TIME, String.valueOf(time))
                         .build();
             }
         }

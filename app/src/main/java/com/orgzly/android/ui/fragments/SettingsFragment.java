@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.github.machinarius.preferencefragment.PreferenceFragment;
@@ -26,6 +25,7 @@ import com.orgzly.android.Notifications;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.prefs.ListPreferenceWithValueAsSummary;
 import com.orgzly.android.provider.clients.ReposClient;
+import com.orgzly.android.reminders.ReminderService;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.NoteStateSpinner;
@@ -102,7 +102,7 @@ public class SettingsFragment extends PreferenceFragment
         }
 
         /* Update preferences which depend on multiple others. */
-        updateRemindersPreferences();
+        updateOtherPreferencesForReminders();
     }
 
     @Override
@@ -315,24 +315,31 @@ public class SettingsFragment extends PreferenceFragment
             }
         }
 
+        /* Reminders for scheduled notes. Reset last run time. */
         if (getString(R.string.pref_key_use_reminders_for_scheduled_times).equals(key)) {
-            /* Reset last run time if reminders are being enabled or disabled. */
-            AppPreferences.reminderServiceLastRun(getContext(), 0L);
+            AppPreferences.reminderLastRunForScheduled(getContext(), 0L);
         }
 
-        if (getString(R.string.pref_key_use_reminders_for_scheduled_times).equals(key)) {
-            updateRemindersPreferences();
+        /* Reminders for deadlines. Reset last run time. */
+        if (getString(R.string.pref_key_use_reminders_for_deadline_times).equals(key)) {
+            AppPreferences.reminderLastRunForDeadline(getContext(), 0L);
         }
 
+        updateOtherPreferencesForReminders();
 
-        /* Always notify if settings are modified.
-         * Changing states or priorities can affect the displayed data for example.
+        /* Always notify about possibly changed data, if settings are modified.
+         *
+         * For example:
+         * - Changing states or priorities can affect the displayed data
+         * - Enabling or disabling reminders need to trigger service notification
          */
         Shelf.notifyDataChanged(getContext());
     }
 
-    private void updateRemindersPreferences() {
-        boolean remindersEnabled = ((CheckBoxPreference) findPreference(getString(R.string.pref_key_use_reminders_for_scheduled_times))).isChecked();
+    private void updateOtherPreferencesForReminders() {
+        boolean remindersEnabled =
+                ((CheckBoxPreference) findPreference(getString(R.string.pref_key_use_reminders_for_scheduled_times))).isChecked() ||
+                ((CheckBoxPreference) findPreference(getString(R.string.pref_key_use_reminders_for_deadline_times))).isChecked();
 
         findPreference(getString(R.string.pref_key_reminders_sound)).setEnabled(remindersEnabled);
         findPreference(getString(R.string.pref_key_reminders_vibrate)).setEnabled(remindersEnabled);

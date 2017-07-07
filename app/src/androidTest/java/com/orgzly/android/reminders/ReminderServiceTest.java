@@ -1,6 +1,7 @@
 package com.orgzly.android.reminders;
 
 import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.prefs.AppPreferences;
 
 import org.joda.time.Instant;
 import org.joda.time.LocalDateTime;
@@ -20,9 +21,12 @@ public class ReminderServiceTest extends OrgzlyTest {
                 "SCHEDULED: <2017-03-20>\n" +
                 "* Note 3");
 
+        ReminderService.LastRun lastRun = new ReminderService.LastRun();
         Instant now = Instant.parse("2017-03-15");
+        AppPreferences.remindersForScheduledEnabled(context, true);
 
-        List<ReminderService.NoteWithTime> notes = ReminderService.getNotesWithTimeInInterval(context, now, null);
+        List<NoteReminder> notes = ReminderService.getNoteReminders(
+                context, now, lastRun, ReminderService.TIME_FROM_NOW);
 
         assertEquals(1, notes.size());
     }
@@ -38,16 +42,19 @@ public class ReminderServiceTest extends OrgzlyTest {
                 "* Note 4\n"+
                 "SCHEDULED: <2017-03-16 Fri +1w>\n");
 
+        ReminderService.LastRun lastRun = new ReminderService.LastRun();
         Instant now = Instant.parse("2017-03-15T13:00:00"); // Wed
+        AppPreferences.remindersForScheduledEnabled(context, true);
 
-        List<ReminderService.NoteWithTime> notes = ReminderService.getNotesWithTimeInInterval(context, now, null);
+        List<NoteReminder> notes = ReminderService.getNoteReminders(
+                context, now, lastRun, ReminderService.TIME_FROM_NOW);
 
         assertEquals(2, notes.size());
 
-        assertEquals("Note 4", notes.get(0).title);
-        assertEquals("2017-03-16T09:00:00", new LocalDateTime(notes.get(0).time).toString("yyyy-MM-dd'T'HH:mm:ss"));
+        assertEquals("Note 4", notes.get(0).getPayload().title);
+        assertEquals("2017-03-16T09:00:00", new LocalDateTime(notes.get(0).getRunTime()).toString("yyyy-MM-dd'T'HH:mm:ss"));
 
-        assertEquals("Note 2", notes.get(1).title);
-        assertEquals("2017-03-20T16:00:00", new LocalDateTime(notes.get(1).time).toString("yyyy-MM-dd'T'HH:mm:ss"));
+        assertEquals("Note 2", notes.get(1).getPayload().title);
+        assertEquals("2017-03-20T16:00:00", new LocalDateTime(notes.get(1).getRunTime()).toString("yyyy-MM-dd'T'HH:mm:ss"));
     }
 }

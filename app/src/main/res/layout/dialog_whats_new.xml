@@ -24,264 +24,576 @@
             android:id="@+id/dialog_whats_new_follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_8"
             android:layout_marginBottom="@dimen/padding_4"
+            android:layout_marginTop="@dimen/padding_8"
             android:text="@string/whats_new_follow"/>
 
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.5" tools:ignore="HardcodedText"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Reminders"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Widget for saved searches"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Creating shortcuts to notebooks"/>
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.5"
+            tools:ignore="HardcodedText"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.4.13" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Support for .t search operator"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Display inherited tags in search results (new option)"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Default notebook when sharing to Orgzly (new option)"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Persian translation"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Turkish translation"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Few syncing speed optimizations"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Support for using root folder as a Dropbox repo"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Exported SyncService for starting it from outside the app"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Fix “Fold/Unfold All” button sometimes not being displayed"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Fix searching for tags when inherited tags are used"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Fix corrupted properties in note on rotation"/>
+            style="@style/WhatsNewChange"
+            app:text="Reminders"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.4.12" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Various bug fixes and improvements"/>
+            style="@style/WhatsNewChange"
+            app:text="Widget for saved searches"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.4.11" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Black color scheme"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Hide preface (new option)"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Support links for “tel”, “sms”, “geo” and more"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Always display link's description instead of link"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Ask for confirmation to delete notes everywhere"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Keep list of repos sorted"/>
+            style="@style/WhatsNewChange"
+            app:text="Widget for notebooks"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.4.10" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Ongoing notification for creating note (new option)"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Layout direction (new option)"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Allow browsing secondary storage"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Do not display empty preface in the notebook"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Warn about modified note even on “X” press"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Minor design improvements"/>
+            style="@style/WhatsNewChange"
+            app:text="s.none and d.none search expressions"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.4.9" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Clickable external links in notes' list (both title and content)"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Additional font size (slightly larger then default)"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Configurable location of notebook name in search results"/>
+            style="@style/WhatsNewChange"
+            app:text="Separate header and content with an empty line (new option)"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.4.8" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Fix possible crash when duplicate states are added to settings"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Hide FAB when items are selected"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="New dialog for configuring states in Settings"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Minor design improvements in note editor"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Make folding button bold if there are hidden notes"/>
+            style="@style/WhatsNewChange"
+            app:text="Sync after new note is created (new option)"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.4.7" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Delete note from note editor"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="All Toasts replaced with Snackbars"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Various bug fixes and improvements"/>
+            style="@style/WhatsNewChange"
+            app:text="Sync button in ongoing notification"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.4.6" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Search operators for sorting (o and .o)"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Save note on keyboard's action button press"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Separate notes with new-line or not (new option)"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Dismiss Snackbar on any touch"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Close drawer when Snackbar is displayed"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Fix b search operator parsing (dot as a book name)"/>
+            style="@style/WhatsNewChange"
+            app:text="Sync status notifications"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.4.5" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Various bug fixes and improvements"/>
+            style="@style/WhatsNewChange"
+            app:text="Fix using Dropbox URL with trailing slash"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.4.4" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Links (http and mailto) support in note editor"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Tags inheritance (t operator)"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Search by note's tag only (new tn operator)"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Floating action button"/>
+            style="@style/WhatsNewChange"
+            app:text="Shift times of notes without state when marked done"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.4.3" tools:ignore="HardcodedText"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Encode links of notebooks synced by older versions"/>
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.4.13"
+            tools:ignore="HardcodedText"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.4.2" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Renaming notebooks"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="UI for PROPERTIES"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Chinese translation"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Use first configured keyword when marking note as done"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Notebooks encoding fix when using directory repo type"/>
+            style="@style/WhatsNewChange"
+            app:text="Support for .t search operator"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.4.1" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Sort notebooks by name (new option)"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Support .b.notebook search expression"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Prompt to save or discard changes on back press"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Show snackbar on sync errors"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Skip files starting with .# when syncing"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Display new repo buttons instead of empty repository list"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Display titles of notebooks in a list when sharing to Orgzly"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Use Dropbox API v2"/>
+            style="@style/WhatsNewChange"
+            app:text="Display inherited tags in search results (new option)"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.4" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Folding notes"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="List density: Comfortable, Cozy, Compact"/>
+            style="@style/WhatsNewChange"
+            app:text="Default notebook when sharing to Orgzly (new option)"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.3.5" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Support “d” (deadline) search operator"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="New setting to select displayed notebook details"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Bug fixes and smaller improvements"/>
+            style="@style/WhatsNewChange"
+            app:text="Persian translation"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.3.4" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Fixed quick-menu opening (issue on some devices)"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Shift time at least once for ++ repeater"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Support using Orgzly for “Note to self” voice action"/>
+            style="@style/WhatsNewChange"
+            app:text="Turkish translation"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.3.3" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Handle storage permission on Marshmallow"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Fixed title's auto-correction"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Smaller improvements"/>
+            style="@style/WhatsNewChange"
+            app:text="Few syncing speed optimizations"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.3.2" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Support for right-to-left layouts"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Various bug fixes and improvements"/>
+            style="@style/WhatsNewChange"
+            app:text="Support for using root folder as a Dropbox repo"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.3.1" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Dark color scheme"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Multiple .i expressions supported"/>
+            style="@style/WhatsNewChange"
+            app:text="Exported SyncService for starting it from outside the app"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.3" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Recurring tasks (repeater editing)"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Saved searches editing"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Done button in note's quick-menu"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Settings button in drawer"/>
+            style="@style/WhatsNewChange"
+            app:text="Fix “Fold/Unfold All” button sometimes not being displayed"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.2.2" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Large font size setting"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Search operator p.priority added"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Search operator s.day upgraded"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Tags parsing fix"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Delete-note added to quick-menu"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Smaller design improvements"/>
+            style="@style/WhatsNewChange"
+            app:text="Fix searching for tags when inherited tags are used"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.2.1" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Bug fixes"/>
+            style="@style/WhatsNewChange"
+            app:text="Fix corrupted properties in note on rotation"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.2" tools:ignore="HardcodedText"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Swipe notes to open menus"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Current location in app marked in drawer"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Use web page title when sharing to Orgzly"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="States' letters-only requirement removed"/>
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.4.12"
+            tools:ignore="HardcodedText"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.1.1" tools:ignore="HardcodedText"/>
         <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Flagged unsynced notebooks"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Create directories from file browser"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Set creation time for notes (new option)"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Delete remote notebooks (check-box)"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Bug fixes and smaller improvements"/>
+            style="@style/WhatsNewChange"
+            app:text="Various bug fixes and improvements"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.1" tools:ignore="HardcodedText"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Sync with directories on your device"/>
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange" app:text="Options for more compact note list"/>
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.4.11"
+            tools:ignore="HardcodedText"/>
 
-        <TextView style="@style/WhatsNewVersion" android:text="1.0" tools:ignore="HardcodedText"/>
-        <TextView style="@style/WhatsNewChange" android:text="This is the first version of Orgzly."/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Black color scheme"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Hide preface (new option)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support links for “tel”, “sms”, “geo” and more"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Always display link's description instead of link"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Ask for confirmation to delete notes everywhere"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Keep list of repos sorted"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.4.10"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Ongoing notification for creating note (new option)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Layout direction (new option)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Allow browsing secondary storage"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Do not display empty preface in the notebook"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Warn about modified note even on “X” press"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Minor design improvements"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.4.9"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Clickable external links in notes' list (both title and content)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Additional font size (slightly larger then default)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Configurable location of notebook name in search results"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.4.8"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix possible crash when duplicate states are added to settings"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Hide FAB when items are selected"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="New dialog for configuring states in Settings"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Minor design improvements in note editor"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Make folding button bold if there are hidden notes"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.4.7"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Delete note from note editor"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="All Toasts replaced with Snackbars"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Various bug fixes and improvements"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.4.6"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Search operators for sorting (o and .o)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Save note on keyboard's action button press"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Separate notes with new-line or not (new option)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Dismiss Snackbar on any touch"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Close drawer when Snackbar is displayed"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix b search operator parsing (dot as a book name)"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.4.5"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Various bug fixes and improvements"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.4.4"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Links (http and mailto) support in note editor"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Tags inheritance (t operator)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Search by note's tag only (new tn operator)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Floating action button"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.4.3"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Encode links of notebooks synced by older versions"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.4.2"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Renaming notebooks"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="UI for PROPERTIES"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Chinese translation"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Use first configured keyword when marking note as done"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Notebooks encoding fix when using directory repo type"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.4.1"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Sort notebooks by name (new option)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support .b.notebook search expression"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Prompt to save or discard changes on back press"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Show snackbar on sync errors"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Skip files starting with .# when syncing"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Display new repo buttons instead of empty repository list"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Display titles of notebooks in a list when sharing to Orgzly"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Use Dropbox API v2"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.4"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Folding notes"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="List density: Comfortable, Cozy, Compact"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.3.5"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support “d” (deadline) search operator"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="New setting to select displayed notebook details"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Bug fixes and smaller improvements"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.3.4"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fixed quick-menu opening (issue on some devices)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Shift time at least once for ++ repeater"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support using Orgzly for “Note to self” voice action"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.3.3"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Handle storage permission on Marshmallow"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fixed title's auto-correction"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Smaller improvements"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.3.2"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support for right-to-left layouts"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Various bug fixes and improvements"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.3.1"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Dark color scheme"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Multiple .i expressions supported"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.3"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Recurring tasks (repeater editing)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Saved searches editing"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Done button in note's quick-menu"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Settings button in drawer"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.2.2"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Large font size setting"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Search operator p.priority added"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Search operator s.day upgraded"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Tags parsing fix"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Delete-note added to quick-menu"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Smaller design improvements"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.2.1"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Bug fixes"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.2"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Swipe notes to open menus"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Current location in app marked in drawer"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Use web page title when sharing to Orgzly"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="States' letters-only requirement removed"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.1.1"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Flagged unsynced notebooks"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Create directories from file browser"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Set creation time for notes (new option)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Delete remote notebooks (check-box)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Bug fixes and smaller improvements"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.1"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Sync with directories on your device"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Options for more compact note list"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.0"
+            tools:ignore="HardcodedText"/>
+
+        <TextView
+            style="@style/WhatsNewChange"
+            android:text="This is the first version of Orgzly."/>
     </LinearLayout>
 </ScrollView>

@@ -26,8 +26,9 @@ public class Notifications {
 
     public final static int ONGOING_NEW_NOTE = 1;
     public final static int REMINDER = 2;
-    public final static int SYNC_IN_PROGRESS = 3;
-    public final static int SYNC_FAILED = 4;
+    public final static int REMINDER_SCHEDULED = 3;
+    public final static int SYNC_IN_PROGRESS = 4;
+    public final static int SYNC_FAILED = 5;
 
     public static void createNewNoteNotification(Context context) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, context);
