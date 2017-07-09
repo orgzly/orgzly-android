@@ -179,7 +179,7 @@ public class AgendaFragment extends NoteListFragment
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mListAdapter.getItemViewType((int) id) == AgendaListViewAdapter.TYPE_SEPARATOR)
+                if (mListAdapter.getItemViewType(position) == AgendaListViewAdapter.TYPE_SEPARATOR)
                     return true;
                 mListener.onNoteLongClick(AgendaFragment.this, view, position, id);
                 return true;

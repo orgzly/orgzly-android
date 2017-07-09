@@ -232,8 +232,20 @@ public class DisplayManager {
 
         /* Create fragment. */
         Fragment fragment = AgendaFragment.getInstance(query);
-
         /* Add fragment. */
+//        FragmentTransaction ftx = mFragmentManager
+//                .beginTransaction()
+//                .setTransition(FRAGMENT_TRANSITION);
+//        int stackCount = mFragmentManager.getBackStackEntryCount();
+//        if (stackCount == 0)
+//            ftx.addToBackStack(AgendaFragment.FRAGMENT_TAG);
+//        else {
+//            String lastFragmentName = mFragmentManager.getBackStackEntryAt(stackCount - 1).getName();
+//            if (lastFragmentName == null || ! lastFragmentName.equals(AgendaFragment.FRAGMENT_TAG))
+//                ftx.addToBackStack(AgendaFragment.FRAGMENT_TAG);
+//        }
+//        ftx.replace(R.id.single_pane_container, fragment, AgendaFragment.FRAGMENT_TAG)
+//                .commit();
         mFragmentManager
                 .beginTransaction()
                 .setTransition(FRAGMENT_TRANSITION)
