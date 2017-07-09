@@ -328,10 +328,8 @@ public class AgendaFragment extends NoteListFragment
 
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
-        id = originalNoteIDs.get(id);
-        if (id > Integer.MAX_VALUE)
-            throw new RuntimeException("Cannot cast row ID to int!");
-        if (mListAdapter.getItemViewType((int) id) == AgendaListViewAdapter.TYPE_ITEM)
+        int itemViewType = mListAdapter.getItemViewType(position);
+        if (itemViewType == AgendaListViewAdapter.TYPE_ITEM)
             mListener.onNoteClick(this, view, position, id);
     }
 
