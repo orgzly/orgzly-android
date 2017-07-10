@@ -88,13 +88,10 @@ public class AgendaFragment extends NoteListFragment
     private SearchQuery mQuery;
 
     private NoteListFragmentListener mListener;
-    private AgendaFragmentListener mAgendaListener;
 
     private String mActionModeTag;
 
     private Map<Long, Long> originalNoteIDs = new HashMap<>();
-
-//    private ViewFlipper mViewFlipper;
 
 
     public static AgendaFragment getInstance(String query) {
@@ -134,12 +131,6 @@ public class AgendaFragment extends NoteListFragment
             mActionModeListener = (ActionModeListener) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() + " must implement " + ActionModeListener.class);
-        }
-
-        try {
-            mAgendaListener = (AgendaFragmentListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString() + " must implement " + AgendaFragmentListener.class);
         }
 
         userTimeFormatter = new UserTimeFormatter(context);
@@ -254,6 +245,10 @@ public class AgendaFragment extends NoteListFragment
 
         mActionModeListener.updateActionModeForSelection(mSelection, new MyActionMode());
 
+        loadQuery();
+    }
+
+    private void loadQuery() {
         /* If query did not change - reuse loader. Otherwise - restart it. */
         String newQuery = mQuery.toString();
         int id = Loaders.generateLoaderId(Loaders.AGENDA_FRAGMENT, newQuery);
@@ -307,8 +302,13 @@ public class AgendaFragment extends NoteListFragment
         if (getArguments() == null) {
             throw new IllegalArgumentException("No arguments found to " + AgendaFragment.class.getSimpleName());
         }
+        String query = getArguments().getString(ARG_QUERY);
 
-        mQuery = new SearchQuery(getArguments().getString(ARG_QUERY));
+        parseQuery(query);
+    }
+
+    private void parseQuery(String query) {
+        mQuery = new SearchQuery(query);
 
         switch (mQuery.toString()) {
             case AGENDA_QUERY_DAY:
@@ -364,9 +364,8 @@ public class AgendaFragment extends NoteListFragment
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.agenda_periods, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    // Apply the adapter to the spinner
+        // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
-        spinner.setSelection(1, false);
         spinner.setOnItemSelectedListener(this);
     }
 
@@ -417,19 +416,6 @@ public class AgendaFragment extends NoteListFragment
 
         return NotesClient.getLoaderForQuery(getActivity(), mQuery);
     }
-
-//    private MatrixCursor cloneCursor(Cursor cursor, OrgDateTime schedTime) {
-//        String[] cols = cursor.getColumnNames();
-//        MatrixCursor cloned = new MatrixCursor(cols);
-//        MatrixCursor.RowBuilder b = cloned.newRow();
-//        for(String col: cols) {
-//            if(col.equals(NotesView.Columns.SCHEDULED_TIME_STRING))
-//                b.add(schedTime.toString());
-//            else
-//                b.add(cursor.getString(cursor.getColumnIndex(col)));
-//        }
-//        return cloned;
-//    }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
@@ -518,6 +504,8 @@ public class AgendaFragment extends NoteListFragment
         mListAdapter.changeCursor(null);
     }
 
+
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         System.out.println("ITEM SELECTED ********************");
@@ -539,7 +527,8 @@ public class AgendaFragment extends NoteListFragment
         } else {
             throw new RuntimeException("Invalid agenda period item selected!");
         }
-        mAgendaListener.onAgendaPeriodChanged(selectedQuery);
+        parseQuery(selectedQuery);
+        loadQuery();
     }
 
     @Override
@@ -626,9 +615,5 @@ public class AgendaFragment extends NoteListFragment
 
     public SearchQuery getQuery() {
         return mQuery;
-    }
-
-    public interface AgendaFragmentListener {
-        void onAgendaPeriodChanged(String query);
     }
 }

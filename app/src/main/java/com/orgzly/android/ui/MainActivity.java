@@ -91,8 +91,7 @@ public class MainActivity extends CommonActivity
         BookPrefaceFragment.EditorListener,
         NoteListFragment.NoteListFragmentListener,
         SettingsFragment.SettingsFragmentListener,
-        DrawerFragment.DrawerFragmentListener,
-        AgendaFragment.AgendaFragmentListener {
+        DrawerFragment.DrawerFragmentListener {
 
     public static final String TAG = MainActivity.class.getName();
 
@@ -1632,10 +1631,5 @@ public class MainActivity extends CommonActivity
      */
     private void runDelayedAfterDrawerClose(Runnable runnable) {
         new Handler().postDelayed(runnable, 300);
-    }
-
-    @Override
-    public void onAgendaPeriodChanged(String query) {
-        mDisplayManager.displayAgenda(query);
     }
 }
