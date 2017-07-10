@@ -6,11 +6,11 @@ import com.orgzly.android.provider.models.DbOrgRange;
 import com.orgzly.android.provider.models.DbOrgTimestamp;
 
 public class TimesView {
-    static public final String VIEW_NAME = "times_view";
+    public static final String VIEW_NAME = "times_view";
 
-    static public final String DROP_SQL = "DROP VIEW IF EXISTS " + VIEW_NAME;
+    public static final String DROP_SQL = "DROP VIEW IF EXISTS " + VIEW_NAME;
 
-    static public final String CREATE_SQL =
+    public static final String CREATE_SQL =
             "CREATE VIEW " + VIEW_NAME + " AS " +
             "  SELECT\n" +
             "  n." + DbNote.Column._ID + " as " + Columns.NOTE_ID + ",\n" +

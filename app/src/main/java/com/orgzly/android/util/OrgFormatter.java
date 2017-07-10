@@ -11,17 +11,17 @@ import java.util.regex.Pattern;
  *
  */
 public class OrgFormatter {
-    private final static String LINK_SCHEMES = "https?|mailto|tel|voicemail|geo|sms|smsto|mms|mmsto";
+    private static final String LINK_SCHEMES = "https?|mailto|tel|voicemail|geo|sms|smsto|mms|mmsto";
 
-    private final static String PLAIN_LINK = "((" + LINK_SCHEMES + "):\\S+)";
+    private static final String PLAIN_LINK = "((" + LINK_SCHEMES + "):\\S+)";
 
     /* Same as the above, but ] ends the link too. */
-    private final static String BRACKET_LINK = "((" + LINK_SCHEMES + "):[^]\\s]+)";
+    private static final String BRACKET_LINK = "((" + LINK_SCHEMES + "):[^]\\s]+)";
 
     /* Allows anything as a link. Probably needs some constraints.
      * See http://orgmode.org/manual/External-links.html and org-any-link-re
      */
-    private final static String BRACKET_ANY_LINK = "(([^]]+))";
+    private static final String BRACKET_ANY_LINK = "(([^]]+))";
 
     public static SpannableStringBuilder parse(String s) {
         return parse(s, true);

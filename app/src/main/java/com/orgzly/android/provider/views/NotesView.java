@@ -17,9 +17,9 @@ import static com.orgzly.android.provider.GenericDatabaseUtils.field;
 public class NotesView {
     public static final String VIEW_NAME = "notes_view";
 
-    static public final String DROP_SQL = "DROP VIEW IF EXISTS " + VIEW_NAME;
+    public static final String DROP_SQL = "DROP VIEW IF EXISTS " + VIEW_NAME;
 
-    static public final String CREATE_SQL =
+    public static final String CREATE_SQL =
             "CREATE VIEW " + VIEW_NAME + " AS " +
 
             "SELECT " + DbNote.TABLE + ".*, " +

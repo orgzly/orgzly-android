@@ -21,18 +21,18 @@ import java.util.HashMap;
 class GesturedListViewItemMenu {
     private static final String TAG = GesturedListViewItemMenu.class.getName();
 
-    private final static Interpolator MENU_OPEN_INTERPOLATOR = new DecelerateInterpolator();
-    private final static Interpolator MENU_CLOSE_INTERPOLATOR = new DecelerateInterpolator();
+    private static final Interpolator MENU_OPEN_INTERPOLATOR = new DecelerateInterpolator();
+    private static final Interpolator MENU_CLOSE_INTERPOLATOR = new DecelerateInterpolator();
 
-    private final static int FLING_RIGHT_OUT_ANIMATION = R.anim.slide_out_to_right;
-    private final static int FLING_RIGHT_IN_ANIMATION = R.anim.slide_in_from_left;
-    private final static int FLING_LEFT_OUT_ANIMATION = R.anim.slide_out_to_left;
-    private final static int FLING_LEFT_IN_ANIMATION = R.anim.slide_in_from_right;
+    private static final int FLING_RIGHT_OUT_ANIMATION = R.anim.slide_out_to_right;
+    private static final int FLING_RIGHT_IN_ANIMATION = R.anim.slide_in_from_left;
+    private static final int FLING_LEFT_OUT_ANIMATION = R.anim.slide_out_to_left;
+    private static final int FLING_LEFT_IN_ANIMATION = R.anim.slide_in_from_right;
 
-//    private final static int FLING_RIGHT_OUT_ANIMATION = R.anim.fade_out;
-//    private final static int FLING_RIGHT_IN_ANIMATION = R.anim.fade_in;
-//    private final static int FLING_LEFT_OUT_ANIMATION = R.anim.fade_out;
-//    private final static int FLING_LEFT_IN_ANIMATION = R.anim.fade_in;
+//    private static final int FLING_RIGHT_OUT_ANIMATION = R.anim.fade_out;
+//    private static final int FLING_RIGHT_IN_ANIMATION = R.anim.fade_in;
+//    private static final int FLING_LEFT_OUT_ANIMATION = R.anim.fade_out;
+//    private static final int FLING_LEFT_IN_ANIMATION = R.anim.fade_in;
 
     private final int animationDuration;
     private final float containerHeight;

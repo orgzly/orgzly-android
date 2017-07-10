@@ -15,11 +15,11 @@ import com.orgzly.android.provider.models.DbVersionedRook;
  * Books with link's data.
  */
 public class BooksView {
-    static public final String VIEW_NAME = "books_view";
+    public static final String VIEW_NAME = "books_view";
 
-    static public final String DROP_SQL = "DROP VIEW IF EXISTS " + VIEW_NAME;
+    public static final String DROP_SQL = "DROP VIEW IF EXISTS " + VIEW_NAME;
 
-    static public final String CREATE_SQL =
+    public static final String CREATE_SQL =
             "CREATE VIEW " + VIEW_NAME + " AS " +
             "SELECT " + DbBook.TABLE + ".*, " +
 
