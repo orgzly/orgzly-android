@@ -93,6 +93,10 @@ public class AgendaFragment extends NoteListFragment
 
     private Map<Long, Long> originalNoteIDs = new HashMap<>();
 
+    private String selectedQuery;
+
+    private int spinnerSelection = -1;
+
 
     public static AgendaFragment getInstance(String query) {
         AgendaFragment fragment = new AgendaFragment();
@@ -184,9 +188,17 @@ public class AgendaFragment extends NoteListFragment
                     @Override
                     public boolean onMenuButtonClick(int buttonId, long noteId) {
                         noteId = originalNoteIDs.get(noteId);
+                        Fragment fragment = AgendaFragment.this;
                         switch (buttonId) {
                             case R.id.item_menu_schedule_btn:
                                 displayScheduleTimestampDialog(R.id.item_menu_schedule_btn, noteId);
+                                // refresh fragment, this way swipe menue is closed
+                                getFragmentManager().beginTransaction()
+                                        .detach(fragment)
+                                        .attach(fragment)
+                                        .commit();
+//                                getListView().getItemMenus().closeAll();
+//                                loadQuery();
                                 break;
 
                             case R.id.item_menu_prev_state_btn:
@@ -203,11 +215,13 @@ public class AgendaFragment extends NoteListFragment
                                     set.add(noteId);
                                     mListener.onStateChangeRequest(set, "DONE");
                                 }
-                                // refresh fragment
-                                Fragment fragment = AgendaFragment.this;
-                                FragmentTransaction ft;
-                                ft = getFragmentManager().beginTransaction();
-                                ft.detach(fragment).attach(fragment).commit();
+                                // refresh fragment, this way swipe menue is closed
+                                getFragmentManager().beginTransaction()
+                                        .detach(fragment)
+                                        .attach(fragment)
+                                        .commit();
+//                                getListView().getItemMenus().closeAll();
+//                                loadQuery();
                                 break;
 
                             case R.id.item_menu_open_btn:
@@ -253,7 +267,7 @@ public class AgendaFragment extends NoteListFragment
         String newQuery = mQuery.toString();
         int id = Loaders.generateLoaderId(Loaders.AGENDA_FRAGMENT, newQuery);
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Loader #" + id + " for: " + newQuery);
-        getActivity().getSupportLoaderManager().initLoader(id, null, this);
+        getActivity().getSupportLoaderManager().restartLoader(id, null, this);
     }
 
     @Override
@@ -275,7 +289,7 @@ public class AgendaFragment extends NoteListFragment
             mListener.announceChanges(
                     AgendaFragment.FRAGMENT_TAG,
                     getString(R.string.fragment_agenda_title),
-                    null, //mQuery.toString(),
+                    mQuery.toString(),
                     mSelection.getCount());
         }
     }
@@ -329,8 +343,10 @@ public class AgendaFragment extends NoteListFragment
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
         int itemViewType = mListAdapter.getItemViewType(position);
-        if (itemViewType == AgendaListViewAdapter.TYPE_ITEM)
+        if (itemViewType == AgendaListViewAdapter.TYPE_ITEM) {
+            id = originalNoteIDs.get(id);
             mListener.onNoteClick(this, view, position, id);
+        }
     }
 
     /**
@@ -366,6 +382,8 @@ public class AgendaFragment extends NoteListFragment
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+        if (spinnerSelection > -1)
+            spinner.setSelection(spinnerSelection);
         spinner.setOnItemSelectedListener(this);
     }
 
@@ -510,7 +528,7 @@ public class AgendaFragment extends NoteListFragment
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         System.out.println("ITEM SELECTED ********************");
         String selectedStr = agendaPeriods[position];
-        String selectedQuery;
+        spinnerSelection = position;
         // TODO: currently relies on comparing the queries, might not be a good idea
         if (selectedStr.equalsIgnoreCase(getResources().getString(R.string.agenda_day))) {
             System.out.println(selectedStr);
@@ -527,8 +545,13 @@ public class AgendaFragment extends NoteListFragment
         } else {
             throw new RuntimeException("Invalid agenda period item selected!");
         }
+        reloadAgenda();
+    }
+
+    private void reloadAgenda() {
         parseQuery(selectedQuery);
         loadQuery();
+        announceChangesToActivity();
     }
 
     @Override
