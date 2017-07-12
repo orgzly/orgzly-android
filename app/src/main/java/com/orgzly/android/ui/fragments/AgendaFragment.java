@@ -192,21 +192,29 @@ public class AgendaFragment extends NoteListFragment
                         switch (buttonId) {
                             case R.id.item_menu_schedule_btn:
                                 displayScheduleTimestampDialog(R.id.item_menu_schedule_btn, noteId);
+                                // refresh fragment, this way swipe menu is closed
+                                getFragmentManager().beginTransaction()
+                                        .detach(fragment)
+                                        .attach(fragment)
+                                        .commit();
+                                break;
+
+                            case R.id.item_menu_prev_state_btn:
+                                mListener.onStateCycleRequest(noteId, -1);
                                 // refresh fragment, this way swipe menue is closed
                                 getFragmentManager().beginTransaction()
                                         .detach(fragment)
                                         .attach(fragment)
                                         .commit();
-//                                getListView().getItemMenus().closeAll();
-//                                loadQuery();
-                                break;
-
-                            case R.id.item_menu_prev_state_btn:
-                                mListener.onStateCycleRequest(noteId, -1);
                                 break;
 
                             case R.id.item_menu_next_state_btn:
                                 mListener.onStateCycleRequest(noteId, 1);
+                                // refresh fragment, this way swipe menue is closed
+                                getFragmentManager().beginTransaction()
+                                        .detach(fragment)
+                                        .attach(fragment)
+                                        .commit();
                                 break;
 
                             case R.id.item_menu_done_state_btn:
@@ -220,8 +228,6 @@ public class AgendaFragment extends NoteListFragment
                                         .detach(fragment)
                                         .attach(fragment)
                                         .commit();
-//                                getListView().getItemMenus().closeAll();
-//                                loadQuery();
                                 break;
 
                             case R.id.item_menu_open_btn:
@@ -588,10 +594,13 @@ public class AgendaFragment extends NoteListFragment
         @Override
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, actionMode, menuItem);
-
+            TreeSet<Long> selectionIds;
             switch (menuItem.getItemId()) {
                 case R.id.query_cab_schedule:
-                    displayScheduleTimestampDialog(R.id.query_cab_schedule, mSelection.getIds());
+                    selectionIds = new TreeSet<>();
+                    for(Long id: mSelection.getIds())
+                        selectionIds.add(originalNoteIDs.get(id));
+                    displayScheduleTimestampDialog(R.id.query_cab_schedule, selectionIds);
                     break;
 
                 case R.id.query_cab_state:
@@ -609,7 +618,10 @@ public class AgendaFragment extends NoteListFragment
                     /* Click on one of the state keywords. */
                     if (menuItem.getGroupId() == STATE_ITEM_GROUP) {
                         if (mListener != null) {
-                            mListener.onStateChangeRequest(mSelection.getIds(), menuItem.getTitle().toString());
+                            selectionIds = new TreeSet<>();
+                            for(Long id: mSelection.getIds())
+                                selectionIds.add(originalNoteIDs.get(id));
+                            mListener.onStateChangeRequest(selectionIds, menuItem.getTitle().toString());
                         }
                         return true;
                     }

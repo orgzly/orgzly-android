@@ -159,16 +159,6 @@ public class GesturedListViewItemMenus {
         }
     }
 
-//    public void closeAll() {
-//        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Close all item menus!");
-//
-//        for (int i = 0; i < openedMenus.size(); i++) {
-//            long id = openedMenus.keyAt(i);
-//            GesturedListViewItemMenu menu = openedMenus.get(id);
-//            menu.startClosing();
-//        }
-//    }
-
     /**
      * Called when binding views from the adapter.
      */
