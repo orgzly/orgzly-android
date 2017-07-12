@@ -185,7 +185,7 @@ public class DisplayManager {
         mFragmentManager
                 .beginTransaction()
                 .setTransition(FRAGMENT_TRANSITION)
-//                .addToBackStack(null)
+                .addToBackStack(null)
                 .replace(R.id.single_pane_container, fragment, QueryFragment.FRAGMENT_TAG)
                 .commit();
     }
