@@ -145,6 +145,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         selectAgendaSpinner(1);  // week
         onListItem(2).perform(swipeRight());
         onListItem(2).onChildView(withId(R.id.item_menu_next_state_btn)).perform(click());
+        onListItem(2).perform(swipeRight());
         onListItem(2).onChildView(withId(R.id.item_menu_next_state_btn)).perform(click());
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(21)));
     }
