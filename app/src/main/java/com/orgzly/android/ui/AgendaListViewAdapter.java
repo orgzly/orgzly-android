@@ -2,29 +2,25 @@ package com.orgzly.android.ui;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Paint;
 import android.provider.BaseColumns;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.orgzly.R;
+import com.orgzly.android.ui.fragments.AgendaFragment;
 import com.orgzly.android.ui.views.GesturedListViewItemMenus;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by pxsalehi on 11.04.17.
  */
 
 public class AgendaListViewAdapter extends HeadsListViewAdapter {
+
     private static final int TYPE_COUNT = 2;
-    public static final int TYPE_ITEM = 0;
+    public static final int TYPE_NOTE = 0;
     public static final int TYPE_SEPARATOR = 1;
-    private Set<Integer> separatorIDs = new HashSet<>();
 
     public AgendaListViewAdapter(Context context, Selection selection,
                                  GesturedListViewItemMenus toolbars, boolean inBook) {
@@ -37,10 +33,10 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
             return super.getView(position, convertView, parent);
         // make sure @convertView is a separator if cursor is a separator
         // otherwise create a new view
-        boolean isSeparator = (boolean) convertView.getTag(R.id.AGENDA_ITEM_SEPARATOR_TAG);
+        boolean isViewSeparator = (boolean) convertView.getTag(R.id.AGENDA_ITEM_SEPARATOR_TAG);
         Cursor cursor = (Cursor) getItem(position);
-        int id = cursor.getInt(getCursor().getColumnIndex(BaseColumns._ID));
-        if (separatorIDs.contains(id) != isSeparator) {
+        boolean isCursorSeparator = getCursorType(cursor) == TYPE_SEPARATOR;
+        if (isCursorSeparator != isViewSeparator) {
             // do not use @convertView
             return super.getView(position, null, parent);
         }
@@ -51,11 +47,13 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        int id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
+//        int id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
+        int isSeparator = cursor.getInt(cursor.getColumnIndex(AgendaFragment.Columns.IS_SEPARATOR));
 
-        if (separatorIDs.contains(id)) {
+//        if (separatorIDs.contains(id)) {
+        if (isSeparator == 1) {
             TextView textView = createAgendaDateTextView(context);
-            textView.setText(cursor.getString(cursor.getColumnIndex("day")));
+            textView.setText(cursor.getString(cursor.getColumnIndex(AgendaFragment.Columns.AGENDA_DAY)));
             textView.setTag(R.id.AGENDA_ITEM_SEPARATOR_TAG, Boolean.TRUE);
             return textView;
         } else {
@@ -67,16 +65,16 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        int id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
-        boolean isSeparator = (boolean) view.getTag(R.id.AGENDA_ITEM_SEPARATOR_TAG);
+        boolean isCursorSeparator = getCursorType(cursor) == TYPE_SEPARATOR;
+        boolean isViewSeparator = (boolean) view.getTag(R.id.AGENDA_ITEM_SEPARATOR_TAG);
 
-        if (separatorIDs.contains(id) != isSeparator)
+        if (isCursorSeparator != isViewSeparator)
             throw new IllegalStateException("Cannot convert between agenda entry and header view types!");
 
-        if (separatorIDs.contains(id) && isSeparator) {
+        if (isCursorSeparator && isViewSeparator) {
             // reuse an agenda header
             TextView textView = (TextView) view;
-            textView.setText(cursor.getString(cursor.getColumnIndex("day")));
+            textView.setText(cursor.getString(cursor.getColumnIndex(AgendaFragment.Columns.AGENDA_DAY)));
         } else {
             super.bindView(view, context, cursor);
         }
@@ -85,8 +83,7 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
     @Override
     public int getItemViewType(int position) {
         Cursor cursor = (Cursor) getItem(position);
-        int id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
-        return separatorIDs.contains(id) ? TYPE_SEPARATOR : TYPE_ITEM;
+        return getCursorType(cursor);
     }
 
     @Override
@@ -94,8 +91,10 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
         return TYPE_COUNT;
     }
 
-    public void addSeparatorItem(int id) {
-        separatorIDs.add(id);
+    private int getCursorType(Cursor cursor) {
+        if (cursor.getInt(cursor.getColumnIndex(AgendaFragment.Columns.IS_SEPARATOR)) == 1)
+            return TYPE_SEPARATOR;
+        return TYPE_NOTE;
     }
 
     private TextView createAgendaDateTextView(Context context) {

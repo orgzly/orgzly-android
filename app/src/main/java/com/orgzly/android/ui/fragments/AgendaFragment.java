@@ -7,7 +7,6 @@ import android.database.MergeCursor;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
@@ -30,6 +29,7 @@ import com.orgzly.android.SearchQuery;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.NotesClient;
+import com.orgzly.android.provider.models.DbNote;
 import com.orgzly.android.provider.views.NotesView;
 import com.orgzly.android.ui.ActionModeListener;
 import com.orgzly.android.ui.AgendaListViewAdapter;
@@ -349,7 +349,7 @@ public class AgendaFragment extends NoteListFragment
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
         int itemViewType = mListAdapter.getItemViewType(position);
-        if (itemViewType == AgendaListViewAdapter.TYPE_ITEM) {
+        if (itemViewType == AgendaListViewAdapter.TYPE_NOTE) {
             id = originalNoteIDs.get(id);
             mListener.onNoteClick(this, view, position, id);
         }
@@ -455,7 +455,10 @@ public class AgendaFragment extends NoteListFragment
         Map<Date, MatrixCursor> agenda = new LinkedHashMap<>();
         // create entries from today to today+agenda_len
         // for each cursor: expand shedRange, add agenda.entrySched to agenda[agenda.agendaDate]
-        String[] cols = cursor.getColumnNames();
+        // add is_separator column to the cursors
+        String[] cols = new String[cursor.getColumnNames().length + 1];
+        System.arraycopy(cursor.getColumnNames(), 0, cols, 0, cursor.getColumnNames().length);
+        cols[cols.length - 1] = Columns.IS_SEPARATOR;
         Calendar day = AgendaHelper.getTodayDate();
         int i = 0;
         long nextID = Long.MAX_VALUE;
@@ -474,20 +477,25 @@ public class AgendaFragment extends NoteListFragment
                 MatrixCursor matrixCursor = agenda.get(date);
                 MatrixCursor.RowBuilder rowBuilder = matrixCursor.newRow();
                 for (String col: cols) {
-                    if (col.equalsIgnoreCase(BaseColumns._ID)) {
+                    if (col.equalsIgnoreCase(Columns._ID)) {
                         // record the mapping from agenda note ID to original note ID
                         long noteId = cursor.getLong(cursor.getColumnIndex(col));
                         originalNoteIDs.put(nextID, noteId);
                         rowBuilder.add(nextID--);
-                    } else
+                    } else if (col.equalsIgnoreCase(Columns.IS_SEPARATOR)) {
+                           rowBuilder.add(0);
+                    } else {
                         rowBuilder.add(cursor.getString(cursor.getColumnIndex(col)));
+                    }
                 }
             }
         }
         // merge all together
         List<Cursor> allCursors = new ArrayList<>();
         for(Date date: agenda.keySet()) {
-            MatrixCursor dateCursor = new MatrixCursor(new String[]{BaseColumns._ID, "day", "separator"});
+            MatrixCursor dateCursor = new MatrixCursor(new String[]{
+                    Columns._ID, Columns.AGENDA_DAY, Columns.IS_SEPARATOR});
+
             MatrixCursor.RowBuilder dateRow = dateCursor.newRow();
             // use date as number of secodns as id
             int id = (int) (date.getTime() / 1000);
@@ -495,7 +503,7 @@ public class AgendaFragment extends NoteListFragment
             dateRow.add(userTimeFormatter.formatDate(AgendaHelper.buildOrgDateTimeFromDate(date)));
             dateRow.add(1);
             allCursors.add(dateCursor);
-            mListAdapter.addSeparatorItem(id);
+//            mListAdapter.addSeparatorItem(id);
             allCursors.add(agenda.get(date));
         }
         MergeCursor mCursor = new MergeCursor(allCursors.toArray(new Cursor[allCursors.size()]));
@@ -650,5 +658,10 @@ public class AgendaFragment extends NoteListFragment
 
     public SearchQuery getQuery() {
         return mQuery;
+    }
+
+    public static class Columns implements BaseColumns, DbNote.Columns {
+        public static String IS_SEPARATOR = "is_separator";
+        public static String AGENDA_DAY = "day";
     }
 }
