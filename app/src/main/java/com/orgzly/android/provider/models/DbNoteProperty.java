@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
 
 import com.orgzly.android.provider.DatabaseUtils;
 
-public class DbNoteProperty {
+public class DbNoteProperty implements DbNotePropertyColumns, BaseColumns {
     public static final String TABLE = "note_properties";
 
     public static final String[] CREATE_SQL = new String[] {
@@ -27,29 +27,21 @@ public class DbNoteProperty {
 
     public static final String DROP_SQL = "DROP TABLE IF EXISTS " + TABLE;
 
-    public interface Columns {
-        String POSITION = "position";
-        String NOTE_ID = "note_id";
-        String PROPERTY_ID = "property_id";
-    }
-
-    public static class Column implements Columns, BaseColumns {}
-
     public static long getOrInsert(SQLiteDatabase db, long noteId, int position, long propertyId) {
         long id = DatabaseUtils.getId(
                 db,
                 TABLE,
-                Column.NOTE_ID + " = " + noteId + " AND " +
-                Column.POSITION + " = " + position + " AND " +
-                Column.PROPERTY_ID + " = " + propertyId,
+                NOTE_ID + " = " + noteId + " AND " +
+                POSITION + " = " + position + " AND " +
+                PROPERTY_ID + " = " + propertyId,
                 null);
 
 
         if (id == 0) {
             ContentValues values = new ContentValues();
-            values.put(Column.NOTE_ID, noteId);
-            values.put(Column.POSITION, position);
-            values.put(Column.PROPERTY_ID, propertyId);
+            values.put(NOTE_ID, noteId);
+            values.put(POSITION, position);
+            values.put(PROPERTY_ID, propertyId);
 
             id = db.insertOrThrow(TABLE, null, values);
         }

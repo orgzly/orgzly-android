@@ -33,7 +33,7 @@ public class CycleVisibilityAction implements Action {
     /** Check if unfolded notes exist. */
     private boolean unfoldedNotesExist(SQLiteDatabase db, long bookId) {
         String selection = DatabaseUtils.whereUncutBookNotes(bookId) + " AND " +
-                GenericDatabaseUtils.whereNullOrZero(DbNote.Column.IS_FOLDED);
+                GenericDatabaseUtils.whereNullOrZero(DbNote.IS_FOLDED);
 
         Cursor cursor = db.query(DbNote.TABLE, DatabaseUtils.PROJECTION_FOR_COUNT, selection, null, null, null, null);
         try {
@@ -50,22 +50,22 @@ public class CycleVisibilityAction implements Action {
 
     private static void unFoldAllNotes(SQLiteDatabase db, long bookId) {
         ContentValues values = new ContentValues();
-        values.put(DbNote.Column.IS_FOLDED, 0);
-        values.put(DbNote.Column.FOLDED_UNDER_ID, 0);
+        values.put(DbNote.IS_FOLDED, 0);
+        values.put(DbNote.FOLDED_UNDER_ID, 0);
 
-        String selection = DbNote.Column.BOOK_ID + " = " + bookId;
+        String selection = DbNote.BOOK_ID + " = " + bookId;
         db.update(DbNote.TABLE, values, selection, null);
     }
 
     public static void foldAllNotes(SQLiteDatabase db, long bookId) {
-        String minLevel = "(SELECT min(" + DbNote.Column.LEVEL + ") FROM " + DbNote.TABLE + " WHERE " + DatabaseUtils.whereUncutBookNotes(bookId) + ")";
+        String minLevel = "(SELECT min(" + DbNote.LEVEL + ") FROM " + DbNote.TABLE + " WHERE " + DatabaseUtils.whereUncutBookNotes(bookId) + ")";
 
         /* Fold under parent all except for top level notes. */
-        db.execSQL("UPDATE " + DbNote.TABLE + " SET " + DbNote.Column.FOLDED_UNDER_ID + " = " + DbNote.Column.PARENT_ID +
-                   " WHERE " + DatabaseUtils.whereUncutBookNotes(bookId) + " AND " + DbNote.Column.LEVEL + " > " + minLevel);
+        db.execSQL("UPDATE " + DbNote.TABLE + " SET " + DbNote.FOLDED_UNDER_ID + " = " + DbNote.PARENT_ID +
+                   " WHERE " + DatabaseUtils.whereUncutBookNotes(bookId) + " AND " + DbNote.LEVEL + " > " + minLevel);
 
         /* Set folded flag. */
-        db.execSQL("UPDATE " + DbNote.TABLE + " SET " + DbNote.Column.IS_FOLDED + " = 1" +
+        db.execSQL("UPDATE " + DbNote.TABLE + " SET " + DbNote.IS_FOLDED + " = 1" +
                    " WHERE " + DatabaseUtils.whereUncutBookNotes(bookId));
     }
 

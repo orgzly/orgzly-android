@@ -18,96 +18,96 @@ import java.util.List;
 /**
  * Notes.
  */
-public class DbNote {
+public class DbNote implements DbNoteColumns, BaseColumns {
     public static final String TABLE = "notes";
 
     public static final String[] CREATE_SQL = new String[] {
             "CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
-            BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 
             /* Position/structure */
-            Columns.BOOK_ID + " INTEGER NOT NULL," +
-            Columns.POSITION + " INTEGER NOT NULL," +
-            Columns.LFT + " INTEGER," +
-            Columns.RGT + " INTEGER," +
-            Columns.LEVEL + " INTEGER NOT NULL," +
-            Columns.PARENT_ID + " INTEGER," +
-            Columns.DESCENDANTS_COUNT + " INTEGER," +
-            Columns.IS_FOLDED + " INTEGER," +
-            Columns.FOLDED_UNDER_ID + " INTEGER," +
-            Columns.IS_CUT + " INTEGER NOT NULL DEFAULT 0," +
+            BOOK_ID + " INTEGER NOT NULL," +
+            POSITION + " INTEGER NOT NULL," +
+            LFT + " INTEGER," +
+            RGT + " INTEGER," +
+            LEVEL + " INTEGER NOT NULL," +
+            PARENT_ID + " INTEGER," +
+            DESCENDANTS_COUNT + " INTEGER," +
+            IS_FOLDED + " INTEGER," +
+            FOLDED_UNDER_ID + " INTEGER," +
+            IS_CUT + " INTEGER NOT NULL DEFAULT 0," +
 
             /* Payload */
-            Columns.TITLE + " TEXT NOT NULL DEFAULT ''," +
-            Columns.TAGS + " TEXT," +
-            Columns.STATE + " TEXT," +
-            Columns.PRIORITY + " TEXT," +
-            Columns.CONTENT + " TEXT," +
-            Columns.CONTENT_LINE_COUNT + " INTEGER," +
+            TITLE + " TEXT NOT NULL DEFAULT ''," +
+            TAGS + " TEXT," +
+            STATE + " TEXT," +
+            PRIORITY + " TEXT," +
+            CONTENT + " TEXT," +
+            CONTENT_LINE_COUNT + " INTEGER," +
 
             /* Times */
-            Columns.SCHEDULED_RANGE_ID + " INTEGER," +
-            Columns.DEADLINE_RANGE_ID + " INTEGER," +
-            Columns.CLOSED_RANGE_ID + " INTEGER," +
-            Columns.CLOCK_RANGE_ID + " INTEGER)",
+            SCHEDULED_RANGE_ID + " INTEGER," +
+            DEADLINE_RANGE_ID + " INTEGER," +
+            CLOSED_RANGE_ID + " INTEGER," +
+            CLOCK_RANGE_ID + " INTEGER)",
 
             /* For search. */
-            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + Columns.TITLE + " ON " + TABLE + "(" + Columns.TITLE + ")",
-            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + Columns.TAGS + " ON " + TABLE + "(" + Columns.TAGS + ")",
-            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + Columns.CONTENT + " ON " + TABLE + "(" + Columns.CONTENT + ")",
+            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + TITLE + " ON " + TABLE + "(" + TITLE + ")",
+            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + TAGS + " ON " + TABLE + "(" + TAGS + ")",
+            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + CONTENT + " ON " + TABLE + "(" + CONTENT + ")",
 
-            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + Columns.BOOK_ID + " ON " + TABLE + "(" + Columns.BOOK_ID + ")",
-            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + Columns.IS_CUT + " ON " + TABLE + "(" + Columns.IS_CUT + ")",
-            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + Columns.LFT + " ON " + TABLE + "(" + Columns.LFT + ")",
-            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + Columns.RGT + " ON " + TABLE + "(" + Columns.RGT + ")",
-            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + Columns.IS_FOLDED + " ON " + TABLE + "(" + Columns.IS_FOLDED + ")",
-            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + Columns.FOLDED_UNDER_ID + " ON " + TABLE + "(" + Columns.FOLDED_UNDER_ID + ")",
-            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + Columns.PARENT_ID + " ON " + TABLE + "(" + Columns.PARENT_ID + ")",
-            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + Columns.DESCENDANTS_COUNT + " ON " + TABLE + "(" + Columns.DESCENDANTS_COUNT + ")"
+            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + BOOK_ID + " ON " + TABLE + "(" + BOOK_ID + ")",
+            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + IS_CUT + " ON " + TABLE + "(" + IS_CUT + ")",
+            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + LFT + " ON " + TABLE + "(" + LFT + ")",
+            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + RGT + " ON " + TABLE + "(" + RGT + ")",
+            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + IS_FOLDED + " ON " + TABLE + "(" + IS_FOLDED + ")",
+            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + FOLDED_UNDER_ID + " ON " + TABLE + "(" + FOLDED_UNDER_ID + ")",
+            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + PARENT_ID + " ON " + TABLE + "(" + PARENT_ID + ")",
+            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + DESCENDANTS_COUNT + " ON " + TABLE + "(" + DESCENDANTS_COUNT + ")"
     };
 
     public static final String DROP_SQL = "DROP TABLE IF EXISTS " + TABLE;
     public static String[] POSITION_PROJECTION = new String[] {
-            Column.BOOK_ID,
-            Column.LEVEL,
-            Column.LFT,
-            Column.RGT,
-            Column.DESCENDANTS_COUNT,
-            Column.FOLDED_UNDER_ID,
-            Column.PARENT_ID,
-            Column.IS_FOLDED
+            BOOK_ID,
+            LEVEL,
+            LFT,
+            RGT,
+            DESCENDANTS_COUNT,
+            FOLDED_UNDER_ID,
+            PARENT_ID,
+            IS_FOLDED
     };
 
     public static void toContentValues(SQLiteDatabase db, ContentValues values, OrgHead head) {
-        values.put(Column.TITLE, head.getTitle());
+        values.put(TITLE, head.getTitle());
 
-        values.put(Column.PRIORITY, head.getPriority());
+        values.put(PRIORITY, head.getPriority());
 
-        values.put(Column.STATE, head.getState());
+        values.put(STATE, head.getState());
 
         if (head.hasTags()) {
-            values.put(Column.TAGS, dbSerializeTags(head.getTags()));
+            values.put(TAGS, dbSerializeTags(head.getTags()));
         }
 
         if (head.hasScheduled()) {
-            values.put(Column.SCHEDULED_RANGE_ID, getOrInsertOrgRange(db, head.getScheduled()));
+            values.put(SCHEDULED_RANGE_ID, getOrInsertOrgRange(db, head.getScheduled()));
         }
 
         if (head.hasClosed()) {
-            values.put(Column.CLOSED_RANGE_ID, getOrInsertOrgRange(db, head.getClosed()));
+            values.put(CLOSED_RANGE_ID, getOrInsertOrgRange(db, head.getClosed()));
         }
 
         if (head.hasClock()) {
-            values.put(Column.CLOCK_RANGE_ID, getOrInsertOrgRange(db, head.getClock()));
+            values.put(CLOCK_RANGE_ID, getOrInsertOrgRange(db, head.getClock()));
         }
 
         if (head.hasDeadline()) {
-            values.put(Column.DEADLINE_RANGE_ID, getOrInsertOrgRange(db, head.getDeadline()));
+            values.put(DEADLINE_RANGE_ID, getOrInsertOrgRange(db, head.getDeadline()));
         }
 
         if (head.hasContent()) {
-            values.put(Column.CONTENT, head.getContent());
-            values.put(Column.CONTENT_LINE_COUNT, MiscUtils.lineCount(head.getContent()));
+            values.put(CONTENT, head.getContent());
+            values.put(CONTENT_LINE_COUNT, MiscUtils.lineCount(head.getContent()));
         }
     }
 
@@ -133,7 +133,7 @@ public class DbNote {
         long id = DatabaseUtils.getId(
                 db,
                 DbOrgRange.TABLE,
-                DbOrgRange.Column.STRING + "=?",
+                DbOrgRange.STRING + "=?",
                 new String[] { range.toString() });
 
         if (id == 0) {
@@ -158,7 +158,7 @@ public class DbNote {
         long id = DatabaseUtils.getId(
                 db,
                 DbOrgTimestamp.TABLE,
-                DbOrgTimestamp.Column.STRING + "= ?",
+                DbOrgTimestamp.STRING + "= ?",
                 new String[] { orgDateTime.toString() });
 
         if (id == 0) {
@@ -172,26 +172,26 @@ public class DbNote {
     }
 
     public static void toContentValues(ContentValues values, NotePosition position) {
-        values.put(Column.BOOK_ID, position.getBookId());
-        values.put(Column.LEVEL, position.getLevel());
-        values.put(Column.LFT, position.getLft());
-        values.put(Column.RGT, position.getRgt());
-        values.put(Column.DESCENDANTS_COUNT, position.getDescendantsCount());
-        values.put(Column.FOLDED_UNDER_ID, position.getFoldedUnderId());
-        values.put(Column.PARENT_ID, position.getParentId());
-        values.put(Column.IS_FOLDED, position.isFolded() ? 1 : 0);
-        values.put(Column.POSITION, 0); // TODO: Remove
+        values.put(BOOK_ID, position.getBookId());
+        values.put(LEVEL, position.getLevel());
+        values.put(LFT, position.getLft());
+        values.put(RGT, position.getRgt());
+        values.put(DESCENDANTS_COUNT, position.getDescendantsCount());
+        values.put(FOLDED_UNDER_ID, position.getFoldedUnderId());
+        values.put(PARENT_ID, position.getParentId());
+        values.put(IS_FOLDED, position.isFolded() ? 1 : 0);
+        values.put(POSITION, 0); // TODO: Remove
     }
 
     public static NotePosition positionFromCursor(Cursor cursor) {
-        long bookId = cursor.getLong(cursor.getColumnIndex(Column.BOOK_ID));
-        int level = cursor.getInt(cursor.getColumnIndex(Column.LEVEL));
-        long lft = cursor.getLong(cursor.getColumnIndex(Column.LFT));
-        long rgt = cursor.getLong(cursor.getColumnIndex(Column.RGT));
-        int descendantsCount = cursor.getInt(cursor.getColumnIndex(Column.DESCENDANTS_COUNT));
-        long foldedUnderId = cursor.getLong(cursor.getColumnIndex(Column.FOLDED_UNDER_ID));
-        long parentId = cursor.getLong(cursor.getColumnIndex(Column.PARENT_ID));
-        int isFolded = cursor.getInt(cursor.getColumnIndex(Column.IS_FOLDED));
+        long bookId = cursor.getLong(cursor.getColumnIndex(BOOK_ID));
+        int level = cursor.getInt(cursor.getColumnIndex(LEVEL));
+        long lft = cursor.getLong(cursor.getColumnIndex(LFT));
+        long rgt = cursor.getLong(cursor.getColumnIndex(RGT));
+        int descendantsCount = cursor.getInt(cursor.getColumnIndex(DESCENDANTS_COUNT));
+        long foldedUnderId = cursor.getLong(cursor.getColumnIndex(FOLDED_UNDER_ID));
+        long parentId = cursor.getLong(cursor.getColumnIndex(PARENT_ID));
+        int isFolded = cursor.getInt(cursor.getColumnIndex(IS_FOLDED));
 
         NotePosition position = new NotePosition();
 
@@ -211,7 +211,7 @@ public class DbNote {
         Cursor cursor = db.query(
                 TABLE,
                 POSITION_PROJECTION,
-                Column._ID + " = " + noteId,
+                _ID + " = " + noteId,
                 null, null, null, null);
 
         try {
@@ -226,34 +226,4 @@ public class DbNote {
             cursor.close();
         }
     }
-
-    public interface Columns {
-        String BOOK_ID = "book_id";
-        String POSITION = "position";
-
-        String LEVEL = "level";
-        String TITLE = "title";
-        String TAGS = "tags";
-        String STATE = "state";
-        String PRIORITY = "priority";
-
-        String SCHEDULED_RANGE_ID = "scheduled_range_id";
-        String DEADLINE_RANGE_ID = "deadline_range_id";
-        String CLOSED_RANGE_ID = "closed_range_id";
-        String CLOCK_RANGE_ID = "clock_range_id";
-
-        String LFT = "is_visible";
-        String RGT = "parent_position";
-        String IS_FOLDED = "is_collapsed"; /** Toggleable flag. */
-        String FOLDED_UNDER_ID = "is_under_collapsed"; /** Hidden due to ancestor being folded. */
-        String PARENT_ID = "parent_id";
-        String DESCENDANTS_COUNT = "has_children";
-
-        String IS_CUT = "is_cut";
-
-        String CONTENT = "content";
-        String CONTENT_LINE_COUNT = "content_line_count";
-    }
-
-    public static class Column implements Columns, BaseColumns {}
 }

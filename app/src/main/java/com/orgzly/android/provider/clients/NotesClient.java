@@ -384,9 +384,9 @@ public class NotesClient {
 //        int pasted = 0;
 //
 //        ContentValues values = new ContentValues();
-//        values.put(Contract.Notes.Column.IS_CUT, 0);
+//        values.put(Contract.Notes.IS_CUT, 0);
 //
-//        pasted += context.getContentResolver().update(Contract.Notes.CONTENT_URI, values, Contract.Notes.Column.IS_CUT + "=" + batch.getId(), null);
+//        pasted += context.getContentResolver().update(Contract.Notes.CONTENT_URI, values, Contract.Notes.IS_CUT + "=" + batch.getId(), null);
 //
 //        if (BuildConfig.LOG_DEBUG) Dlog.d(TAG, "Pasted " + pasted + " notes with " + batch);
 //

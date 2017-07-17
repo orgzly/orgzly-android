@@ -277,7 +277,7 @@ public class DatabaseMigration {
 
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             NotePositionWithId note = new NotePositionWithId();
-            note.id = cursor.getLong(cursor.getColumnIndex(DbNote.Column._ID));
+            note.id = cursor.getLong(cursor.getColumnIndex(DbNote._ID));
             note.position = DbNote.positionFromCursor(cursor);
 
             if (prevLevel < note.position.getLevel()) {
@@ -358,7 +358,7 @@ public class DatabaseMigration {
         ContentValues values = new ContentValues();
         DbNote.toContentValues(values, note.position);
 
-        return db.update(DbNote.TABLE, values, DbNote.Column._ID + " = " + note.id, null);
+        return db.update(DbNote.TABLE, values, DbNote._ID + " = " + note.id, null);
     }
 
     private static void calculateAndSetDescendantsCount(NotePosition node, int gap) {

@@ -1,7 +1,7 @@
 package com.orgzly.android.provider.models;
 
 
-public class DbNoteAncestor {
+public class DbNoteAncestor implements DbNoteAncestorColumns {
     public static final String TABLE = "note_ancestors";
 
     public static final String[] CREATE_SQL = new String[] {
@@ -17,12 +17,4 @@ public class DbNoteAncestor {
     };
 
     public static final String DROP_SQL = "DROP TABLE IF EXISTS " + TABLE;
-
-    public interface Columns {
-        String BOOK_ID = "book_id";
-        String NOTE_ID = "note_id";
-        String ANCESTOR_NOTE_ID = "ancestor_note_id";
-    }
-
-    public static class Column implements Columns {}
 }

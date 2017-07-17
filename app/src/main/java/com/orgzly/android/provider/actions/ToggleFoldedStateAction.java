@@ -32,12 +32,12 @@ public class ToggleFoldedStateAction implements Action {
         Cursor cursor = db.query(
                 DbNote.TABLE,
                 new String[] {
-                        DbNote.Column.IS_FOLDED,
-                        DbNote.Column.LFT,
-                        DbNote.Column.RGT,
-                        DbNote.Column.BOOK_ID
+                        DbNote.IS_FOLDED,
+                        DbNote.LFT,
+                        DbNote.RGT,
+                        DbNote.BOOK_ID
                 },
-                DbNote.Column._ID + " = " + noteId,
+                DbNote._ID + " = " + noteId,
                 null,
                 null,
                 null,
@@ -64,8 +64,8 @@ public class ToggleFoldedStateAction implements Action {
 
         /* Toggle folded flag for the note. */
         values = new ContentValues();
-        values.put(DbNote.Column.IS_FOLDED, isFolded ? 0 : 1);
-        selection = DbNote.Column._ID + " = " + noteId;
+        values.put(DbNote.IS_FOLDED, isFolded ? 0 : 1);
+        selection = DbNote._ID + " = " + noteId;
         db.update(DbNote.TABLE, values, selection, null);
 
         /* Toggle visibility of descendants. */
@@ -73,19 +73,19 @@ public class ToggleFoldedStateAction implements Action {
         if (isFolded) {
             /* Unfold. */
             values = new ContentValues();
-            values.put(DbNote.Column.FOLDED_UNDER_ID, 0);
+            values.put(DbNote.FOLDED_UNDER_ID, 0);
 
             /*
              * All descendants which are hidden because of this note being folded.
              */
             selection =
                     DatabaseUtils.whereDescendants(bookId, lft, rgt) + " AND " +
-                    DbNote.Column.FOLDED_UNDER_ID + " = " + noteId;
+                    DbNote.FOLDED_UNDER_ID + " = " + noteId;
 
         } else {
             /* Fold. */
             values = new ContentValues();
-            values.put(DbNote.Column.FOLDED_UNDER_ID, noteId);
+            values.put(DbNote.FOLDED_UNDER_ID, noteId);
 
             /*
              * All descendants which are not already hidden
@@ -93,7 +93,7 @@ public class ToggleFoldedStateAction implements Action {
              */
             selection =
                     DatabaseUtils.whereDescendants(bookId, lft, rgt) + " AND " +
-                    GenericDatabaseUtils.whereNullOrZero(DbNote.Column.FOLDED_UNDER_ID);
+                    GenericDatabaseUtils.whereNullOrZero(DbNote.FOLDED_UNDER_ID);
         }
 
         return db.update(DbNote.TABLE, values, selection, null);

@@ -18,7 +18,7 @@ class ProviderFilters {
     static void updateWithNextPosition(SQLiteDatabase db, ContentValues values) {
         Cursor cursor = db.query(
                 DbSearch.TABLE,
-                new String[] { "MAX(" + DbSearch.Column.POSITION + ")" },
+                new String[] { "MAX(" + DbSearch.POSITION + ")" },
                 null,
                 null,
                 null,
@@ -28,7 +28,7 @@ class ProviderFilters {
         try {
             if (cursor.moveToFirst()) {
                 int maxPosition = cursor.getInt(0);
-                values.put(DbSearch.Column.POSITION, maxPosition + 1);
+                values.put(DbSearch.POSITION, maxPosition + 1);
             }
         } finally {
             cursor.close();
@@ -101,8 +101,8 @@ class ProviderFilters {
         return db.query(
                 DbSearch.TABLE,
                 new String[] {
-                        DbSearch.Column._ID,
-                        DbSearch.Column.POSITION
+                        DbSearch._ID,
+                        DbSearch.POSITION
                 },
                 null,
                 null,
@@ -115,8 +115,8 @@ class ProviderFilters {
         for (long thisId: newPositions.keySet()) {
             if (originalPositions.get(thisId).intValue() != newPositions.get(thisId).intValue()) {
                 db.execSQL("UPDATE " + DbSearch.TABLE + " SET " +
-                           DbSearch.Column.POSITION + " = " + newPositions.get(thisId) +
-                           " WHERE " + DbSearch.Column._ID + " = " + thisId);
+                           DbSearch.POSITION + " = " + newPositions.get(thisId) +
+                           " WHERE " + DbSearch._ID + " = " + thisId);
             }
         }
     }
