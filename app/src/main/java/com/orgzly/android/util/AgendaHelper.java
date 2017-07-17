@@ -2,9 +2,13 @@ package com.orgzly.android.util;
 
 import com.orgzly.org.OrgStringUtils;
 import com.orgzly.org.datetime.OrgDateTime;
+import com.orgzly.org.datetime.OrgDateTimeUtils;
 import com.orgzly.org.datetime.OrgRange;
 import com.orgzly.org.datetime.OrgRepeater;
 
+import org.joda.time.DateTime;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -99,6 +103,49 @@ public class AgendaHelper {
         return entries;
     }
 
+    public static List<DateTime> expandOrgDateTime(String rangeStr, Calendar now, int days) {
+        List<DateTime> result = new ArrayList<>();
+        OrgRange range = OrgRange.parseOrNull(rangeStr);
+        if (range == null)
+            return result;
+        return expandOrgDateTime(range, now, days);
+    }
+
+    public static List<DateTime> expandOrgDateTime(OrgRange range, Calendar now, int days) {
+        List<DateTime> result = new ArrayList<>();
+        DateTime from = new DateTime(now.getTime());
+        OrgDateTime rangeStart = range.getStartTime();
+        OrgDateTime rangeEnd = range.getEndTime();
+
+        // add an entry for overdue item
+        if (rangeStart.getCalendar().before(from.toGregorianCalendar()))
+            result.add(DateTime.now().withTimeAtStartOfDay());
+
+        if (rangeEnd == null) {
+            DateTime to = from.plusDays(days).withTimeAtStartOfDay();
+            result.addAll(OrgDateTimeUtils.getTimesInInterval(rangeStart, from, to, true, 100));
+        } else {
+            // a time range
+            DateTime to = new DateTime(rangeEnd.getCalendar().getTime()).withTimeAtStartOfDay();
+            // if start time has no repeater, use a daily repeater
+            if (!rangeStart.hasRepeater()) {
+                Calendar start = rangeStart.getCalendar();
+                rangeStart = new OrgDateTime.Builder()
+                        .setYear(start.get(Calendar.YEAR))
+                        .setMonth(start.get(Calendar.MONTH))
+                        .setDay(start.get(Calendar.DAY_OF_YEAR))
+                        .setHour(start.get(Calendar.HOUR_OF_DAY))
+                        .setMinute(start.get(Calendar.MINUTE))
+                        .setRepeater(OrgRepeater.parse("++1d"))
+                        .build();
+
+            }
+            result.addAll(OrgDateTimeUtils.getTimesInInterval(rangeStart, from, to, true, 100));
+        }
+
+        return result;
+    }
+
     public static Calendar getTodayDate() {
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);
@@ -155,5 +202,25 @@ public class AgendaHelper {
                 .setDay(cal.get(Calendar.DAY_OF_MONTH))
                 .setHour(cal.get(Calendar.HOUR_OF_DAY))
                 .setMinute(cal.get(Calendar.MINUTE)).build();
+    }
+
+    public static void main(String[] args) {
+        String orgRangeStr = "<2017-05-03 Wed>--<2017-05-11 Do>";
+        List<Date> dates = AgendaHelper.expandOrgRange(orgRangeStr, Calendar.getInstance(), 5);
+        for(Date d: dates)
+            System.out.println(d);
+
+        System.out.println();
+
+//        OrgDateTime orgDate = OrgDateTime.parseOrNull(orgRangeStr);
+//        DateTime from = DateTime.now();
+//        DateTime to = from.plusDays(2).withTime(0, 0, 0, 0);
+//        List<DateTime> ds = new ArrayList<>();
+//        if (orgDate.getCalendar().before(from.toGregorianCalendar()))
+//            ds.add(DateTime.now().withTime(0, 0, 0, 0));
+//        ds.addAll(OrgDateTimeUtils.getTimesInInterval(orgDate, from, to, true, 1000));
+        List<DateTime> ds = expandOrgDateTime(orgRangeStr, Calendar.getInstance(), 2);
+        for(DateTime d: ds)
+            System.out.println(d);
     }
 }

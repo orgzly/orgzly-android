@@ -1617,7 +1617,7 @@ public class MainActivity extends CommonActivity
                     String query = ((DrawerFragment.FilterItem) item).query;
                     mDisplayManager.displayQuery(query);
                 } else if (item instanceof DrawerFragment.AgendaItem) {
-                    String query = AgendaFragment.AGENDA_QUERY_WEEK;
+                    String query = AgendaFragment.AGENDA_QUERY_DAY;
                     mDisplayManager.displayAgenda(query);
                 }
             }
