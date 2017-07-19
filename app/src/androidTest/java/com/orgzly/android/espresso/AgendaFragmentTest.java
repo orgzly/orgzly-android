@@ -7,12 +7,10 @@ import android.widget.DatePicker;
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.MainActivity;
-import com.orgzly.android.util.AgendaHelper;
 
+import org.joda.time.DateTime;
 import org.junit.Rule;
 import org.junit.Test;
-
-import java.util.Calendar;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -152,8 +150,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
 
     @Test
     public void testShiftRepeaterTaskToTomorrow() {
-        Calendar tomorrow = AgendaHelper.getTodayDate();
-        tomorrow.add(Calendar.DAY_OF_YEAR, 1);
+        DateTime tomorrow = DateTime.now().withTimeAtStartOfDay().plusDays(1);
 
         defaultSetUp();
         openAgenda();
@@ -163,9 +160,9 @@ public class AgendaFragmentTest extends OrgzlyTest {
         onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName())))
                 .perform(PickerActions.setDate(
-                        tomorrow.get(Calendar.YEAR),
-                        tomorrow.get(Calendar.MONTH) + 1,  // setDate subtracts one!
-                        tomorrow.get(Calendar.DAY_OF_MONTH)));
+                        tomorrow.getYear(),
+                        tomorrow.getMonthOfYear(),
+                        tomorrow.getDayOfMonth()));
         onView(withText(R.string.ok)).perform(click());
         onView(withText(R.string.set)).perform(click());
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(21)));
