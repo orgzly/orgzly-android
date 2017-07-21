@@ -640,7 +640,7 @@ public class MiscTest extends OrgzlyTest {
         onView(withId(R.id.drawer_layout)).perform(open());
         onData(anything())
                 .inAdapterView(withContentDescription(activityRule.getActivity().getString(R.string.fragment_left_drawer_list_view_content_description)))
-                .atPosition(5)
+                .atPosition(6)
                 .perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
 
