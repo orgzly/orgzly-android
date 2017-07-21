@@ -126,7 +126,7 @@ public class MiscTest extends OrgzlyTest {
         onView(withId(R.id.drawer_layout)).perform(open());
         onData(anything())
                 .inAdapterView(withContentDescription(activityRule.getActivity().getString(R.string.fragment_left_drawer_list_view_content_description)))
-                .atPosition(5)
+                .atPosition(6)
                 .perform(click());
         onView(withText("Note #2.")).perform(click());
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
