@@ -67,7 +67,7 @@
             android:orientation="horizontal"
             android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
             android:gravity="center_vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:layout_height="14dp"
@@ -96,7 +96,7 @@
             android:orientation="horizontal"
             android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
             android:gravity="center_vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:layout_height="14dp"
@@ -124,10 +124,11 @@
         android:layout_weight="0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="3dp"
         android:layout_gravity="top"
-        android:src="@drawable/ic_done_black_18dp"
+        android:src="@drawable/ic_done_black_24dp"
+        android:tint="#333"
         android:clickable="true"/>
 </LinearLayout>
