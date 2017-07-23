@@ -91,11 +91,15 @@ public class Notifications {
     };
 
     public static Notification createSyncInProgressNotification(Context context) {
+        PendingIntent openOrgzlyPendingIntent = PendingIntent.getActivity(context, 0,
+                new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_sync_white_24dp)
                 .setContentTitle(context.getString(R.string.syncing_in_progress))
-                .setColor(ContextCompat.getColor(context, R.color.notification));
+                .setColor(ContextCompat.getColor(context, R.color.notification))
+                .setContentIntent(openOrgzlyPendingIntent);
 
         return builder.build();
     }
