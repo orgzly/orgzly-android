@@ -157,5 +157,8 @@
         <attr name="oic_item_head_scheduled_item" format="reference"/>
         <attr name="oic_item_head_deadline_item" format="reference"/>
         <attr name="oic_item_head_closed_item" format="reference"/>
+
+        <attr name="oic_cut" format="reference"/>
+        <attr name="oic_paste" format="reference"/>
     </declare-styleable>
 </resources>

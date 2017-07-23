@@ -166,6 +166,9 @@
         <item name="oic_item_head_scheduled_item">@drawable/ic_today_black_18dp</item>
         <item name="oic_item_head_deadline_item">@drawable/ic_alarm_black_18dp</item>
         <item name="oic_item_head_closed_item">@drawable/ic_done_black_18dp</item>
+
+        <item name="oic_cut">@drawable/ic_content_cut_black_24dp</item>
+        <item name="oic_paste">@drawable/ic_content_paste_black_24dp</item>
     </style>
 
     <style name="AppDarkTheme" parent="Theme.Design">
@@ -323,6 +326,9 @@
         <item name="oic_item_head_scheduled_item">@drawable/ic_today_white_18dp</item>
         <item name="oic_item_head_deadline_item">@drawable/ic_alarm_white_18dp</item>
         <item name="oic_item_head_closed_item">@drawable/ic_done_white_18dp</item>
+
+        <item name="oic_cut">@drawable/ic_content_cut_white_24dp</item>
+        <item name="oic_paste">@drawable/ic_content_paste_white_24dp</item>
     </style>
 
     <!-- Color schemes -->

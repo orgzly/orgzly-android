@@ -1,5 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- New note relative to selected. -->
     <item
@@ -28,6 +28,37 @@
                 android:title="@string/heads_action_menu_item_add_below"/>
         </menu>
     </item>
+
+    <group app:showAsAction="ifRoom">
+        <item
+            android:id="@+id/book_cab_cut"
+            android:icon="?attr/oic_cut"
+            android:title="@string/cut">
+        </item>
+
+        <item
+            android:id="@+id/book_cab_paste"
+            android:icon="?attr/oic_paste"
+            android:title="@string/paste">
+
+            <menu>
+                <item
+                    android:id="@+id/book_cab_paste_above"
+                    android:icon="?attr/oic_above_heads_action_mode"
+                    android:title="@string/heads_action_menu_item_paste_above"/>
+
+                <item
+                    android:id="@+id/book_cab_paste_under"
+                    android:icon="?attr/oic_under_heads_action_mode"
+                    android:title="@string/heads_action_menu_item_paste_under"/>
+
+                <item
+                    android:id="@+id/book_cab_paste_below"
+                    android:icon="?attr/oic_below_heads_action_mode"
+                    android:title="@string/heads_action_menu_item_paste_below"/>
+            </menu>
+        </item>
+    </group>
 
     <!-- Edit note parameters. -->
     <item
@@ -60,38 +91,6 @@
         android:id="@+id/book_cab_move"
         app:showAsAction="never"
         android:title="@string/move">
-    </item>
-
-    <item
-        android:id="@+id/book_cab_cut"
-        app:showAsAction="never"
-        android:title="@string/cut">
-    </item>
-
-    <item
-        android:id="@+id/book_cab_paste"
-        app:showAsAction="never"
-        android:title="@string/paste">
-
-        <menu>
-            <item
-                android:id="@+id/book_cab_paste_above"
-                android:icon="?attr/oic_above_heads_action_mode"
-                app:showAsAction="ifRoom"
-                android:title="@string/heads_action_menu_item_paste_above"/>
-
-            <item
-                android:id="@+id/book_cab_paste_under"
-                android:icon="?attr/oic_under_heads_action_mode"
-                app:showAsAction="ifRoom"
-                android:title="@string/heads_action_menu_item_paste_under"/>
-
-            <item
-                android:id="@+id/book_cab_paste_below"
-                android:icon="?attr/oic_below_heads_action_mode"
-                app:showAsAction="ifRoom"
-                android:title="@string/heads_action_menu_item_paste_below"/>
-        </menu>
     </item>
 
     <item
