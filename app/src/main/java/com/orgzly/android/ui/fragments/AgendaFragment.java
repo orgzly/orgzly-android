@@ -333,7 +333,9 @@ public class AgendaFragment extends NoteListFragment
     public void onListItemClick(ListView listView, View view, int position, long id) {
         int itemViewType = mListAdapter.getItemViewType(position);
         if (itemViewType == AgendaListViewAdapter.TYPE_NOTE) {
-            id = originalNoteIDs.get(id);
+            /* if some notes are selected, do not translate IDs */
+            if (mSelection.getIds().isEmpty())
+                id = originalNoteIDs.get(id);
             mListener.onNoteClick(this, view, position, id);
         }
     }
