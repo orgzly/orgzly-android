@@ -10,6 +10,9 @@ public class TimesView {
 
     static public final String DROP_SQL = "DROP VIEW IF EXISTS " + VIEW_NAME;
 
+    public static final int SCHEDULED_TIME = 1;
+    public static final int DEADLINE_TIME = 2;
+
     static public final String CREATE_SQL =
             "CREATE VIEW " + VIEW_NAME + " AS " +
             "  SELECT\n" +
@@ -18,7 +21,7 @@ public class TimesView {
             "  coalesce(b." + DbBook.Column.TITLE + ", b." + DbBook.Column.NAME + ") as " + Columns.BOOK_NAME + ",\n" +
             "  n." + DbNote.Column.STATE + " as " + Columns.NOTE_STATE + ",\n" +
             "  n." + DbNote.Column.TITLE + " as " + Columns.NOTE_TITLE + ",\n" +
-            "  1 as " + Columns.TIME_TYPE + ",\n" +
+            "  " + SCHEDULED_TIME + " as " + Columns.TIME_TYPE + ",\n" +
             "  t." + DbOrgTimestamp.Column.STRING + " as " + Columns.ORG_TIMESTAMP_STRING + "\n" +
             "  FROM " + DbOrgRange.TABLE + " r\n" +
             "  JOIN " + DbOrgTimestamp.TABLE + " t ON (r." + DbOrgRange.Column.START_TIMESTAMP_ID + " = t." + DbOrgTimestamp.Column._ID + " )\n" +
@@ -32,7 +35,7 @@ public class TimesView {
             "  coalesce(b." + DbBook.Column.TITLE + ", b." + DbBook.Column.NAME + ") as " + Columns.BOOK_NAME + ",\n" +
             "  n." + DbNote.Column.STATE + " as " + Columns.NOTE_STATE + ",\n" +
             "  n." + DbNote.Column.TITLE + " as " + Columns.NOTE_TITLE + ",\n" +
-            "  1 as " + Columns.TIME_TYPE + ",\n" +
+            "  " + DEADLINE_TIME + " as " + Columns.TIME_TYPE + ",\n" +
             "  t." + DbOrgTimestamp.Column.STRING + " as " + Columns.ORG_TIMESTAMP_STRING + "\n" +
             "  FROM " + DbOrgRange.TABLE + " r\n" +
             "  JOIN " + DbOrgTimestamp.TABLE + " t ON (r." + DbOrgRange.Column.START_TIMESTAMP_ID + " = t." + DbOrgTimestamp.Column._ID + " )\n" +
