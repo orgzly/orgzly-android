@@ -20,12 +20,11 @@ import android.widget.ListView;
 import com.github.machinarius.preferencefragment.PreferenceFragment;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.Shelf;
 import com.orgzly.android.Notifications;
+import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.prefs.ListPreferenceWithValueAsSummary;
 import com.orgzly.android.provider.clients.ReposClient;
-import com.orgzly.android.reminders.ReminderService;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.NoteStateSpinner;
@@ -37,6 +36,8 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+
+import static android.R.attr.key;
 
 /**
  * Displays settings.
@@ -268,6 +269,18 @@ public class SettingsFragment extends PreferenceFragment
 
         /* Created keyword. */
         if (getString(R.string.pref_key_created_at_property).equals(key)) {
+            AppPreferences.updateStaticKeywords(getContext());
+
+            /* Re-parse notes. */
+            ActivityUtils.closeSoftKeyboard(activity);
+
+            if (mListener != null) {
+                mListener.onCreatedKeywordPreferenceChanged();
+            }
+        }
+
+        /* Insert created keyword on note creation? */
+        if (getString(R.string.pref_key_is_created_at_added).equals(key)) {
             AppPreferences.updateStaticKeywords(getContext());
 
             /* Re-parse notes. */
