@@ -89,6 +89,7 @@ public class AgendaFragment extends NoteListFragment
 
     private String mActionModeTag;
 
+    /* Maps a copy note ID to the original note ID */
     private Map<Long, Long> originalNoteIDs = new HashMap<>();
 
     private String selectedQuery;
@@ -185,33 +186,17 @@ public class AgendaFragment extends NoteListFragment
                     @Override
                     public boolean onMenuButtonClick(int buttonId, long noteId) {
                         noteId = originalNoteIDs.get(noteId);
-                        Fragment fragment = AgendaFragment.this;
                         switch (buttonId) {
                             case R.id.item_menu_schedule_btn:
                                 displayScheduleTimestampDialog(R.id.item_menu_schedule_btn, noteId);
-                                // refresh fragment, this way swipe menu is closed
-                                getFragmentManager().beginTransaction()
-                                        .detach(fragment)
-                                        .attach(fragment)
-                                        .commit();
                                 break;
 
                             case R.id.item_menu_prev_state_btn:
                                 mListener.onStateCycleRequest(noteId, -1);
-                                // refresh fragment, this way swipe menu is closed
-                                getFragmentManager().beginTransaction()
-                                        .detach(fragment)
-                                        .attach(fragment)
-                                        .commit();
                                 break;
 
                             case R.id.item_menu_next_state_btn:
                                 mListener.onStateCycleRequest(noteId, 1);
-                                // refresh fragment, this way swipe menu is closed
-                                getFragmentManager().beginTransaction()
-                                        .detach(fragment)
-                                        .attach(fragment)
-                                        .commit();
                                 break;
 
                             case R.id.item_menu_done_state_btn:
@@ -220,11 +205,6 @@ public class AgendaFragment extends NoteListFragment
                                     set.add(noteId);
                                     mListener.onStateChangeRequest(set, "DONE");
                                 }
-                                // refresh fragment, this way swipe menu is closed
-                                getFragmentManager().beginTransaction()
-                                        .detach(fragment)
-                                        .attach(fragment)
-                                        .commit();
                                 break;
 
                             case R.id.item_menu_open_btn:
@@ -524,7 +504,7 @@ public class AgendaFragment extends NoteListFragment
         reloadAgenda();
     }
 
-    private void reloadAgenda() {
+    public void reloadAgenda() {
         parseQuery(selectedQuery);
         loadQuery();
         announceChangesToActivity();
