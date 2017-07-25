@@ -714,7 +714,9 @@ public class SyncFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                if (mListener == null) {
+                if (mListener != null) {
+                    mListener.onStateShifted(id, direction);
+                } else {
                     Log.w(TAG, "Listener not set, not calling onStateChanged");
                 }
             }
@@ -1191,6 +1193,7 @@ public class SyncFragment extends Fragment {
         void onScheduledTimeUpdated(Set<Long> noteIds, OrgDateTime time);
 
         void onStateChanged(Set<Long> noteIds, String state);
+        void onStateShifted(long id, int direction);
 
         void onNoteCreated(Note note);
         void onNoteCreatingFailed();

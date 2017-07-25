@@ -384,6 +384,10 @@ public class ShareActivity extends CommonActivity
     }
 
     @Override
+    public void onStateShifted(long id, int direction) {
+    }
+
+    @Override
     public void onNoteCreated(Note note) {
         finish();
     }
