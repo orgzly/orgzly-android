@@ -200,6 +200,9 @@
     <string name="pref_key_use_reminders_for_scheduled_times" translatable="false">pref_key_use_reminders_for_scheduled_times</string>
     <bool name="pref_default_value_use_reminders_for_scheduled_times" translatable="false">false</bool>
 
+    <string name="pref_key_use_reminders_for_deadline_times" translatable="false">pref_key_use_reminders_for_deadline_times</string>
+    <bool name="pref_default_value_use_reminders_for_deadline_times" translatable="false">false</bool>
+
     <string name="pref_key_show_sync_notifications" translatable="false">pref_key_show_sync_notifications</string>
     <bool name="pref_default_value_show_sync_notifications" translatable="false">false</bool>
 
@@ -308,5 +311,6 @@
     <string name="pref_key_is_getting_started_notebook_loaded" translatable="false">pref_key_is_getting_started_notebook_loaded</string>
     <string name="pref_key_last_used_version_code" translatable="false">pref_key_last_used_version_code</string>
     <string name="pref_key_last_successful_sync_time" translatable="false">pref_key_last_successful_sync_time</string>
-    <string name="pref_key_reminder_service_last_run" translatable="false">pref_key_reminder_service_last_run</string>
+    <string name="pref_key_reminder_service_last_run_for_scheduled" translatable="false">pref_key_reminder_service_last_run_for_scheduled</string>
+    <string name="pref_key_reminder_service_last_run_for_deadline" translatable="false">pref_key_reminder_service_last_run_for_deadline</string>
 </resources>

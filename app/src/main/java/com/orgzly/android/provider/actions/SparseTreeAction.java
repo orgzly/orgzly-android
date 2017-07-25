@@ -34,12 +34,12 @@ public class SparseTreeAction implements Action {
                 ContentValues v;
 
                 v = new ContentValues();
-                v.put(DbNote.Column.IS_FOLDED, 0);
-                result = db.update(DbNote.TABLE, v, DbNote.Column._ID + " IN (" + ancestorsIds + ")", null);
+                v.put(DbNote.IS_FOLDED, 0);
+                result = db.update(DbNote.TABLE, v, DbNote._ID + " IN (" + ancestorsIds + ")", null);
 
                 v = new ContentValues();
-                v.put(DbNote.Column.FOLDED_UNDER_ID, 0);
-                db.update(DbNote.TABLE, v, DbNote.Column.FOLDED_UNDER_ID + " IN (" + ancestorsIds + ")", null);
+                v.put(DbNote.FOLDED_UNDER_ID, 0);
+                db.update(DbNote.TABLE, v, DbNote.FOLDED_UNDER_ID + " IN (" + ancestorsIds + ")", null);
             }
         }
 

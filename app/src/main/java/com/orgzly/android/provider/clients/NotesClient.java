@@ -133,7 +133,7 @@ public class NotesClient {
             if (head.getProperties().get(i).getName().equals(createdProp)) {
                 try {
                     OrgDateTime x = OrgDateTime.parse(head.getProperties().get(i).getValue());
-                    values.put(DbNote.Column.CREATED_AT, x.getCalendar().getTimeInMillis());
+                    values.put(DbNote.CREATED_AT, x.getCalendar().getTimeInMillis());
                     break;
                 } catch (IllegalArgumentException e) {
                     // Parsing failed, give up immediately
@@ -162,8 +162,6 @@ public class NotesClient {
 
     public static Note fromCursor(Cursor cursor) {
         long id = idFromCursor(cursor);
-
-        boolean isFolded = cursor.getInt(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.IS_FOLDED)) != 0;
 
         int contentLines = cursor.getInt(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CONTENT_LINE_COUNT));
 
@@ -240,28 +238,6 @@ public class NotesClient {
         Uri noteUri = ContentUris.withAppendedId(ProviderContract.Notes.ContentUri.notes(), note.getId());
         Uri uri = noteUri.buildUpon().appendQueryParameter("bookId", String.valueOf(note.getPosition().getBookId())).build();
 
-        if (!values.containsKey(DbNote.Column.CREATED_AT)) {
-            Cursor cursor = context.getContentResolver().query(
-                    ProviderContract.Notes.ContentUri.notes(), null,
-                    ProviderContract.Notes.QueryParam._ID + "=" + note.getId(), null, null);
-
-            try {
-                if (cursor.moveToFirst()) {
-                    if (cursor.getColumnIndex(DbNote.Column.CREATED_AT_INTERNAL) != -1) {
-                        values.put(DbNote.Column.CREATED_AT, cursor.getLong(cursor.getColumnIndex(DbNote.Column.CREATED_AT_INTERNAL)));
-                    } else {
-                        long d = new Date().getTime();
-                        values.put(DbNote.Column.CREATED_AT, d);
-                        values.put(DbNote.Column.CREATED_AT_INTERNAL, d);
-                    }
-                } else {
-                    throw new NoSuchElementException("Note with id " + note.getId() + " was not found in " + ProviderContract.Notes.ContentUri.notes());
-                }
-            } finally {
-                cursor.close();
-            }
-        }
-
         ArrayList<ContentProviderOperation> ops = new ArrayList<>();
 
         /* Update note. */
@@ -307,6 +283,7 @@ public class NotesClient {
         return result[0].count;
     }
 
+
     /**
      * Insert as last note if position is not specified.
      */
@@ -317,11 +294,10 @@ public class NotesClient {
         ContentValues values = new ContentValues();
         toContentValues(values, note, createdProp);
 
-        if (!values.containsKey(DbNote.Column.CREATED_AT)) {
+        if (!values.containsKey(DbNote.CREATED_AT)) {
             long d = new Date().getTime();
-            values.put(DbNote.Column.CREATED_AT, d);
+            values.put(DbNote.CREATED_AT, d);
         }
-        values.put(DbNote.Column.CREATED_AT_INTERNAL, values.getAsLong(DbNote.Column.CREATED_AT));
 
         Uri insertUri;
 
@@ -435,9 +411,9 @@ public class NotesClient {
 //        int pasted = 0;
 //
 //        ContentValues values = new ContentValues();
-//        values.put(Contract.Notes.Column.IS_CUT, 0);
+//        values.put(Contract.Notes.IS_CUT, 0);
 //
-//        pasted += context.getContentResolver().update(Contract.Notes.CONTENT_URI, values, Contract.Notes.Column.IS_CUT + "=" + batch.getId(), null);
+//        pasted += context.getContentResolver().update(Contract.Notes.CONTENT_URI, values, Contract.Notes.IS_CUT + "=" + batch.getId(), null);
 //
 //        if (BuildConfig.LOG_DEBUG) Dlog.d(TAG, "Pasted " + pasted + " notes with " + batch);
 //
@@ -540,8 +516,8 @@ public class NotesClient {
                 } else if (so.getType() == SearchQuery.SortOrder.Type.PRIORITY) {
                     orderByColumns.add("COALESCE(" + ProviderContract.Notes.QueryParam.PRIORITY + ", '" + defaultPriority + "')" + (so.isAscending() ? "" : " DESC"));
                 } else if (so.getType() == SearchQuery.SortOrder.Type.CREATED) {
-                    orderByColumns.add(DbNote.Column.CREATED_AT + " IS NULL");
-                    orderByColumns.add(DbNote.Column.CREATED_AT + (so.isAscending() ? "" : " DESC"));
+                    orderByColumns.add(DbNote.CREATED_AT + " IS NULL");
+                    orderByColumns.add(DbNote.CREATED_AT + (so.isAscending() ? "" : " DESC"));
                 }
             }
         } else {

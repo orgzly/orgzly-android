@@ -66,7 +66,6 @@
     <string name="fragment_filter_does_not_exist">这个查找将不再存在。</string>
     <string name="fragment_left_drawer_list_view_content_description">左侧抽屉</string>
     <string name="fragment_note_content_hint">笔记</string>
-    <string name="fragment_note_deadline_alarms_not_implemented">已设定最后期限但没设置闹钟.</string>
     <string name="fragment_note_does_not_exist">这条笔记将不再存在。</string>
     <string name="fragment_note_tags_hint">标签</string>
     <string name="fragment_note_title_hint">标题</string>

@@ -50,7 +50,6 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -806,25 +805,16 @@ public class Shelf {
                  * We use the properties from the database because NotesClient.fromCursor returns
                  * a note without any properties
                  */
-                found: {
-                    for (OrgProperty prop : NotesClient.getNoteProperties(mContext, NotesClient.idFromCursor(cursor))) {
-                        if (prop.getName().equals(AppPreferences.createdAtProperty(mContext))) {
-                            try {
-                                OrgDateTime x = OrgDateTime.parse(prop.getValue());
-                                values.put(DbNote.Column.CREATED_AT, x.getCalendar().getTimeInMillis());
-                                break found;
-                            } catch (IllegalArgumentException e) {
-                                // Parsing failed, give up immediately and insert null
-                                break;
-                            }
+                for (OrgProperty prop : NotesClient.getNoteProperties(mContext, NotesClient.idFromCursor(cursor))) {
+                    if (prop.getName().equals(AppPreferences.createdAtProperty(mContext))) {
+                        try {
+                            OrgDateTime x = OrgDateTime.parse(prop.getValue());
+                            values.put(DbNote.CREATED_AT, x.getCalendar().getTimeInMillis());
+                            break;
+                        } catch (IllegalArgumentException e) {
+                            // Parsing failed, give up immediately and insert null
+                            break;
                         }
-                    }
-                    if (cursor.getColumnIndex(DbNote.Column.CREATED_AT_INTERNAL) != -1) {
-                        values.put(DbNote.Column.CREATED_AT, cursor.getLong(cursor.getColumnIndex(DbNote.Column.CREATED_AT_INTERNAL)));
-                    } else {
-                        long d = new Date().getTime();
-                        values.put(DbNote.Column.CREATED_AT, d);
-                        values.put(DbNote.Column.CREATED_AT_INTERNAL, d);
                     }
                 }
 

@@ -36,8 +36,8 @@ public class PasteNotesAction implements Action {
 
         Cursor cursor = db.query(
                 DbNote.TABLE,
-                new String[] { "min(" + DbNote.Column.LFT + ")", "max(" + DbNote.Column.RGT + ")", "min(" + DbNote.Column.LEVEL + ")" },
-                DbNote.Column.IS_CUT + " = " + batchId,
+                new String[] { "min(" + DbNote.LFT + ")", "max(" + DbNote.RGT + ")", "min(" + DbNote.LEVEL + ")" },
+                DbNote.IS_CUT + " = " + batchId,
                 null, null, null, null);
 
         try {
@@ -116,66 +116,66 @@ public class PasteNotesAction implements Action {
         GenericDatabaseUtils.incrementFields(
                 db,
                 DbNote.TABLE,
-                bookSelection + " AND " + DbNote.Column.LFT + " >= " + pastedLft,
+                bookSelection + " AND " + DbNote.LFT + " >= " + pastedLft,
                 positionsRequired,
                 ProviderContract.Notes.UpdateParam.LFT);
 
         GenericDatabaseUtils.incrementFields(
                 db,
                 DbNote.TABLE,
-                "(" + bookSelection + " AND " + DbNote.Column.RGT + " >= " + pastedLft + ") OR " + DbNote.Column.LEVEL + " = 0",
+                "(" + bookSelection + " AND " + DbNote.RGT + " >= " + pastedLft + ") OR " + DbNote.LEVEL + " = 0",
                 positionsRequired,
                 ProviderContract.Notes.UpdateParam.RGT);
 
         /* Make sure batch has no no FOLDED_UNDER_ID IDs which do not belong to the batch itself. */
-        db.execSQL("UPDATE " + DbNote.TABLE + " SET " + DbNote.Column.FOLDED_UNDER_ID + " = 0 WHERE " +
-                   DbNote.Column.IS_CUT + " = " + batchId + " AND " +
-                   DbNote.Column.FOLDED_UNDER_ID +
-                   " NOT IN (SELECT " + DbNote.Column._ID +
+        db.execSQL("UPDATE " + DbNote.TABLE + " SET " + DbNote.FOLDED_UNDER_ID + " = 0 WHERE " +
+                   DbNote.IS_CUT + " = " + batchId + " AND " +
+                   DbNote.FOLDED_UNDER_ID +
+                   " NOT IN (SELECT " + DbNote._ID +
                    " FROM " + DbNote.TABLE +
-                   " WHERE " + DbNote.Column.IS_CUT + " = " + batchId + ")");
+                   " WHERE " + DbNote.IS_CUT + " = " + batchId + ")");
 
         /* Mark batch as folded. */
         if (foldedUnder != 0) {
             ContentValues values = new ContentValues();
-            values.put(DbNote.Column.FOLDED_UNDER_ID, foldedUnder);
-            String where = DbNote.Column.IS_CUT + " = " + batchId + " AND " + DbNote.Column.FOLDED_UNDER_ID + " = 0";
+            values.put(DbNote.FOLDED_UNDER_ID, foldedUnder);
+            String where = DbNote.IS_CUT + " = " + batchId + " AND " + DbNote.FOLDED_UNDER_ID + " = 0";
             db.update(DbNote.TABLE, values, where, null);
         }
 
         /* Update parent of the root of the batch. */
         ContentValues values = new ContentValues();
-        values.put(DbNote.Column.PARENT_ID, pastedParentId);
-        db.update(DbNote.TABLE, values, DbNote.Column.IS_CUT + " = " + batchId + " AND " + DbNote.Column.LFT + " = " + batchMinLft, null);
+        values.put(DbNote.PARENT_ID, pastedParentId);
+        db.update(DbNote.TABLE, values, DbNote.IS_CUT + " = " + batchId + " AND " + DbNote.LFT + " = " + batchMinLft, null);
 
 
         /* Move batch to the new position. */
-        String set = DbNote.Column.LFT + " = " + DbNote.Column.LFT + " + " + positionOffset + ", " +
-                     DbNote.Column.RGT + " = " + DbNote.Column.RGT + " + " + positionOffset + ", " +
-                     DbNote.Column.LEVEL + " = " + DbNote.Column.LEVEL + " + " + levelOffset + ", " +
-                     DbNote.Column.BOOK_ID + "= " + targetNotePosition.getBookId();
-        String sql = "UPDATE " + DbNote.TABLE + " SET " + set + " WHERE " + DbNote.Column.IS_CUT + " = " + batchId;
+        String set = DbNote.LFT + " = " + DbNote.LFT + " + " + positionOffset + ", " +
+                     DbNote.RGT + " = " + DbNote.RGT + " + " + positionOffset + ", " +
+                     DbNote.LEVEL + " = " + DbNote.LEVEL + " + " + levelOffset + ", " +
+                     DbNote.BOOK_ID + "= " + targetNotePosition.getBookId();
+        String sql = "UPDATE " + DbNote.TABLE + " SET " + set + " WHERE " + DbNote.IS_CUT + " = " + batchId;
         db.execSQL(sql);
 
         /* Insert ancestors for all notes of the batch. */
         db.execSQL("INSERT INTO " + DbNoteAncestor.TABLE +
-                   " (" + DbNoteAncestor.Column.BOOK_ID + ", " + DbNoteAncestor.Column.NOTE_ID + ", " + DbNoteAncestor.Column.ANCESTOR_NOTE_ID + ") " +
-                   "SELECT n." + DbNote.Column.BOOK_ID + ", n." + DbNote.Column._ID + ", a." + DbNote.Column._ID + " FROM " + DbNote.TABLE + " n " +
-                   " JOIN " + DbNote.TABLE + " a ON (n." + DbNote.Column.BOOK_ID + " = a." + DbNote.Column.BOOK_ID +
-                   " AND a." + DbNote.Column.LFT + " < n." + DbNote.Column.LFT +
-                   " AND n." + DbNote.Column.RGT + " < a." + DbNote.Column.RGT + ") " +
-                   "WHERE n." + DbNote.Column.IS_CUT + " = " + batchId + "  AND " +
-                   "a." + DbNote.Columns.LEVEL + " > 0");
+                   " (" + DbNoteAncestor.BOOK_ID + ", " + DbNoteAncestor.NOTE_ID + ", " + DbNoteAncestor.ANCESTOR_NOTE_ID + ") " +
+                   "SELECT n." + DbNote.BOOK_ID + ", n." + DbNote._ID + ", a." + DbNote._ID + " FROM " + DbNote.TABLE + " n " +
+                   " JOIN " + DbNote.TABLE + " a ON (n." + DbNote.BOOK_ID + " = a." + DbNote.BOOK_ID +
+                   " AND a." + DbNote.LFT + " < n." + DbNote.LFT +
+                   " AND n." + DbNote.RGT + " < a." + DbNote.RGT + ") " +
+                   "WHERE n." + DbNote.IS_CUT + " = " + batchId + "  AND " +
+                   "a." + DbNote.LEVEL + " > 0");
 
         /* Make the batch visible. */
-        db.execSQL("UPDATE " + DbNote.TABLE + " SET " + DbNote.Column.IS_CUT  + " = 0 WHERE " + DbNote.Column.IS_CUT + " = " + batchId);
+        db.execSQL("UPDATE " + DbNote.TABLE + " SET " + DbNote.IS_CUT  + " = 0 WHERE " + DbNote.IS_CUT + " = " + batchId);
 
         /* Update number of descendants for ancestors and the note itself. */
         String where = DatabaseUtils.whereAncestorsAndNote(targetNotePosition.getBookId(), targetNoteId);
         DatabaseUtils.updateDescendantsCount(db, where);
 
         /* Delete other batches. */
-        db.execSQL("DELETE FROM " + DbNote.TABLE + " WHERE " + DbNote.Column.IS_CUT + " != 0");
+        db.execSQL("DELETE FROM " + DbNote.TABLE + " WHERE " + DbNote.IS_CUT + " != 0");
 
         DatabaseUtils.updateBookMtime(db, targetNotePosition.getBookId());
 
@@ -189,7 +189,7 @@ public class PasteNotesAction implements Action {
                 DbNote.TABLE,
                 DbNote.POSITION_PROJECTION,
                 DatabaseUtils.whereDescendants(note.getBookId(), note.getLft(), note.getRgt()),
-                null, null, null, DbNote.Column.LEVEL + ", " + DbNote.Column.LFT + " DESC");
+                null, null, null, DbNote.LEVEL + ", " + DbNote.LFT + " DESC");
 
         try {
             if (cursor.moveToFirst()) {

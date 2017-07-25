@@ -399,27 +399,6 @@ public class SyncTest extends OrgzlyTest {
     }
 
     @Test
-    public void testDropboxFileRename() throws IOException {
-        Repo repo = DropboxRepoTest.randomDropboxRepo(context);
-
-        assertNotNull(repo);
-        assertEquals(0, repo.getBooks().size());
-
-        File file = File.createTempFile("notebook.", ".org");
-        MiscUtils.writeStringToFile("1 2 3", file);
-
-        VersionedRook vrook = repo.storeBook(file, file.getName());
-
-        assertEquals(1, repo.getBooks().size());
-
-        repo.renameBook(vrook.getUri(), "notebook-renamed");
-
-        assertEquals(1, repo.getBooks().size());
-        assertEquals(repo.getUri() + "/notebook-renamed.org", repo.getBooks().get(0).getUri().toString());
-        assertEquals("notebook-renamed.org", BookName.getInstance(context, repo.getBooks().get(0)).getFileName());
-    }
-
-    @Test
     public void testDirectoryFileRename() throws IOException {
         Repo repo = randomDirectoryRepo();
 

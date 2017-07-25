@@ -18,7 +18,7 @@ import java.util.Calendar;
  * <2017-04-16 Sun .+1d -0d>
  * <2006-11-02 Thu 20:00-22:00>
  */
-public class DbOrgTimestamp {
+public class DbOrgTimestamp implements DbOrgTimestampColumns, BaseColumns {
     public static final String TABLE = "org_timestamps";
 
 //    public static final int UNIT_SECOND = 101;
@@ -38,142 +38,107 @@ public class DbOrgTimestamp {
 
     public static final String[] CREATE_SQL = new String[] {
             "CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
-            BaseColumns._ID              + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 
-            Columns.STRING               + " TEXT NOT NULL UNIQUE," +
+            STRING + " TEXT NOT NULL UNIQUE," +
 
-            Columns.IS_ACTIVE            + " INTEGER NOT NULL," +
+            IS_ACTIVE + " INTEGER NOT NULL," +
 
-            Columns.YEAR                 + " INTEGER NOT NULL," +
-            Columns.MONTH                + " INTEGER NOT NULL," +
-            Columns.DAY                  + " INTEGER NOT NULL," +
+            YEAR + " INTEGER NOT NULL," +
+            MONTH + " INTEGER NOT NULL," +
+            DAY + " INTEGER NOT NULL," +
 
-            Columns.HOUR                 + " INTEGER," +
-            Columns.MINUTE               + " INTEGER," +
-            Columns.SECOND               + " INTEGER," +
+            HOUR + " INTEGER," +
+            MINUTE + " INTEGER," +
+            SECOND + " INTEGER," +
 
-            Columns.END_HOUR             + " INTEGER," +
-            Columns.END_MINUTE           + " INTEGER," +
-            Columns.END_SECOND           + " INTEGER," +
+            END_HOUR + " INTEGER," +
+            END_MINUTE + " INTEGER," +
+            END_SECOND + " INTEGER," +
 
-            Columns.REPEATER_TYPE        + " INTEGER," +
-            Columns.REPEATER_VALUE       + " INTEGER," +
-            Columns.REPEATER_UNIT        + " INTEGER," +
+            REPEATER_TYPE + " INTEGER," +
+            REPEATER_VALUE + " INTEGER," +
+            REPEATER_UNIT + " INTEGER," +
 
-            Columns.HABIT_DEADLINE_VALUE + " INTEGER," +
-            Columns.HABIT_DEADLINE_UNIT  + " INTEGER," +
+            HABIT_DEADLINE_VALUE + " INTEGER," +
+            HABIT_DEADLINE_UNIT + " INTEGER," +
 
-            Columns.DELAY_TYPE           + " INTEGER," +
-            Columns.DELAY_VALUE          + " INTEGER," +
-            Columns.DELAY_UNIT           + " INTEGER," +
+            DELAY_TYPE + " INTEGER," +
+            DELAY_VALUE + " INTEGER," +
+            DELAY_UNIT + " INTEGER," +
 
-            Columns.TIMESTAMP            + " INTEGER," +
-            Columns.END_TIMESTAMP        + " INTEGER)",
+            TIMESTAMP + " INTEGER," +
+            END_TIMESTAMP + " INTEGER)",
 
-            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + Columns.STRING + " ON " + TABLE + "(" + Columns.STRING + ")",
-            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + Columns.TIMESTAMP + " ON " + TABLE + "(" + Columns.TIMESTAMP + ")",
-            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + Columns.END_TIMESTAMP + " ON " + TABLE + "(" + Columns.END_TIMESTAMP + ")",
+            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + STRING + " ON " + TABLE + "(" + STRING + ")",
+            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + TIMESTAMP + " ON " + TABLE + "(" + TIMESTAMP + ")",
+            "CREATE INDEX IF NOT EXISTS i_" + TABLE + "_" + END_TIMESTAMP + " ON " + TABLE + "(" + END_TIMESTAMP + ")",
     };
 
     public static final String DROP_SQL = "DROP TABLE IF EXISTS " + TABLE;
 
-    public interface Columns {
-        String IS_ACTIVE = "is_active";
-
-        String STRING = "string";
-
-        String YEAR = "year";
-        String MONTH = "month";
-        String DAY = "day";
-
-        String HOUR = "hour";
-        String MINUTE = "minute";
-        String SECOND = "second";
-
-        String END_HOUR = "end_hour";
-        String END_MINUTE = "end_minute";
-        String END_SECOND = "end_second";
-
-        String REPEATER_TYPE = "repeater_type";
-        String REPEATER_VALUE = "repeater_value";
-        String REPEATER_UNIT = "repeater_unit";
-
-        String HABIT_DEADLINE_VALUE = "habit_deadline_value";
-        String HABIT_DEADLINE_UNIT = "habit_deadline_unit";
-
-        String DELAY_TYPE = "delay_type";
-        String DELAY_VALUE = "delay_value";
-        String DELAY_UNIT = "delay_unit";
-
-        /* Unix timestamp, when string value is used as if it were in the local time zone. */
-        String TIMESTAMP = "timestamp";
-        String END_TIMESTAMP = "end_timestamp";
-    }
-
-    public static class Column implements Columns, BaseColumns {}
-
     public static void toContentValues(ContentValues values, OrgDateTime orgDateTime) {
-        values.put(Column.STRING, orgDateTime.toString());
+        values.put(STRING, orgDateTime.toString());
 
-        values.put(Column.IS_ACTIVE, orgDateTime.isActive() ? 1 : 0);
+        values.put(IS_ACTIVE, orgDateTime.isActive() ? 1 : 0);
 
-        values.put(Column.YEAR, orgDateTime.getCalendar().get(Calendar.YEAR));
-        values.put(Column.MONTH, orgDateTime.getCalendar().get(Calendar.MONTH) + 1);
-        values.put(Column.DAY, orgDateTime.getCalendar().get(Calendar.DAY_OF_MONTH));
+        values.put(YEAR, orgDateTime.getCalendar().get(Calendar.YEAR));
+        values.put(MONTH, orgDateTime.getCalendar().get(Calendar.MONTH) + 1);
+        values.put(DAY, orgDateTime.getCalendar().get(Calendar.DAY_OF_MONTH));
 
         if (orgDateTime.hasTime()) {
-            values.put(Column.HOUR, orgDateTime.getCalendar().get(Calendar.HOUR_OF_DAY));
-            values.put(Column.MINUTE, orgDateTime.getCalendar().get(Calendar.MINUTE));
-            values.put(Column.SECOND, orgDateTime.getCalendar().get(Calendar.SECOND));
+            values.put(HOUR, orgDateTime.getCalendar().get(Calendar.HOUR_OF_DAY));
+            values.put(MINUTE, orgDateTime.getCalendar().get(Calendar.MINUTE));
+            values.put(SECOND, orgDateTime.getCalendar().get(Calendar.SECOND));
         } else {
-            values.putNull(Column.HOUR);
-            values.putNull(Column.MINUTE);
-            values.putNull(Column.SECOND);
+            values.putNull(HOUR);
+            values.putNull(MINUTE);
+            values.putNull(SECOND);
         }
 
-        values.put(Column.TIMESTAMP, orgDateTime.getCalendar().getTimeInMillis());
+        values.put(TIMESTAMP, orgDateTime.getCalendar().getTimeInMillis());
 
         if (orgDateTime.hasEndTime()) {
-            values.put(Column.END_HOUR, orgDateTime.getEndCalendar().get(Calendar.HOUR_OF_DAY));
-            values.put(Column.END_MINUTE, orgDateTime.getEndCalendar().get(Calendar.MINUTE));
-            values.put(Column.END_SECOND, orgDateTime.getEndCalendar().get(Calendar.SECOND));
-            values.put(Column.END_TIMESTAMP, orgDateTime.getEndCalendar().getTimeInMillis());
+            values.put(END_HOUR, orgDateTime.getEndCalendar().get(Calendar.HOUR_OF_DAY));
+            values.put(END_MINUTE, orgDateTime.getEndCalendar().get(Calendar.MINUTE));
+            values.put(END_SECOND, orgDateTime.getEndCalendar().get(Calendar.SECOND));
+            values.put(END_TIMESTAMP, orgDateTime.getEndCalendar().getTimeInMillis());
         } else {
-            values.putNull(Column.END_HOUR);
-            values.putNull(Column.END_MINUTE);
-            values.putNull(Column.END_SECOND);
-            values.putNull(Column.END_TIMESTAMP);
+            values.putNull(END_HOUR);
+            values.putNull(END_MINUTE);
+            values.putNull(END_SECOND);
+            values.putNull(END_TIMESTAMP);
         }
 
         if (orgDateTime.hasRepeater()) {
-            values.put(Column.REPEATER_TYPE, repeaterType(orgDateTime.getRepeater().getType()));
-            values.put(Column.REPEATER_VALUE, orgDateTime.getRepeater().getValue());
-            values.put(Column.REPEATER_UNIT, timeUnit(orgDateTime.getRepeater().getUnit()));
+            values.put(REPEATER_TYPE, repeaterType(orgDateTime.getRepeater().getType()));
+            values.put(REPEATER_VALUE, orgDateTime.getRepeater().getValue());
+            values.put(REPEATER_UNIT, timeUnit(orgDateTime.getRepeater().getUnit()));
 
             if (orgDateTime.getRepeater().hasHabitDeadline()) {
-                values.put(Column.HABIT_DEADLINE_VALUE, orgDateTime.getRepeater().getHabitDeadline().getValue());
-                values.put(Column.HABIT_DEADLINE_UNIT, timeUnit(orgDateTime.getRepeater().getHabitDeadline().getUnit()));
+                values.put(HABIT_DEADLINE_VALUE, orgDateTime.getRepeater().getHabitDeadline().getValue());
+                values.put(HABIT_DEADLINE_UNIT, timeUnit(orgDateTime.getRepeater().getHabitDeadline().getUnit()));
             } else {
-                values.putNull(Column.HABIT_DEADLINE_VALUE);
-                values.putNull(Column.HABIT_DEADLINE_UNIT);
+                values.putNull(HABIT_DEADLINE_VALUE);
+                values.putNull(HABIT_DEADLINE_UNIT);
             }
 
         } else {
-            values.putNull(Column.REPEATER_TYPE);
-            values.putNull(Column.REPEATER_VALUE);
-            values.putNull(Column.REPEATER_UNIT);
-            values.putNull(Column.HABIT_DEADLINE_VALUE);
-            values.putNull(Column.HABIT_DEADLINE_UNIT);
+            values.putNull(REPEATER_TYPE);
+            values.putNull(REPEATER_VALUE);
+            values.putNull(REPEATER_UNIT);
+            values.putNull(HABIT_DEADLINE_VALUE);
+            values.putNull(HABIT_DEADLINE_UNIT);
         }
 
         if (orgDateTime.hasDelay()) {
-            values.put(Column.DELAY_TYPE, delayType(orgDateTime.getDelay().getType()));
-            values.put(Column.DELAY_VALUE, orgDateTime.getDelay().getValue());
-            values.put(Column.DELAY_UNIT, timeUnit(orgDateTime.getDelay().getUnit()));
+            values.put(DELAY_TYPE, delayType(orgDateTime.getDelay().getType()));
+            values.put(DELAY_VALUE, orgDateTime.getDelay().getValue());
+            values.put(DELAY_UNIT, timeUnit(orgDateTime.getDelay().getUnit()));
         } else {
-            values.putNull(Column.DELAY_TYPE);
-            values.putNull(Column.DELAY_VALUE);
-            values.putNull(Column.DELAY_UNIT);
+            values.putNull(DELAY_TYPE);
+            values.putNull(DELAY_VALUE);
+            values.putNull(DELAY_UNIT);
         }
     }
 

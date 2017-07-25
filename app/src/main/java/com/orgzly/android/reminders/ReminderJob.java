@@ -16,7 +16,7 @@ public class ReminderJob extends Job {
         return Result.SUCCESS;
     }
 
-    public static int scheduleJob(long exactMs) {
+    static int scheduleJob(long exactMs) {
         return new JobRequest.Builder(ReminderJob.TAG)
                 .setExact(exactMs)
                 .setPersisted(true)
@@ -24,7 +24,7 @@ public class ReminderJob extends Job {
                 .schedule();
     }
 
-    public static void cancelAll() {
+    static void cancelAll() {
         JobManager.instance().cancelAllForTag(ReminderJob.TAG);
     }
 }

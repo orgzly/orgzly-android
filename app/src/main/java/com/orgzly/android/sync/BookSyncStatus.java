@@ -32,6 +32,7 @@ public enum BookSyncStatus {
         return msg("");
     }
 
+    // TODO: Extract string resources
     public String msg(Object arg) {
         switch (this) {
             case NO_CHANGE:

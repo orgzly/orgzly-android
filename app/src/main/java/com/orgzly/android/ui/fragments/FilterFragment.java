@@ -200,18 +200,35 @@ public class FilterFragment extends Fragment {
      * Sends current values to listener.
      */
     private void save() {
+        Filter filter = validateFields();
+
+        if (filter != null) {
+            if (isEditingExistingFilter()) {
+                long id = getArguments().getLong(ARG_ID);
+                if (mListener != null) {
+                    mListener.onFilterUpdateRequest(id, filter);
+                }
+            } else {
+                if (mListener != null) {
+                    mListener.onFilterCreateRequest(filter);
+                }
+            }
+        }
+    }
+
+    private Filter validateFields() {
         String name = mName.getText().toString();
         String query = mQuery.getText().toString();
 
-        boolean canSave = true;
+        boolean isValid = true;
 
         /* Validate name. */
         if (TextUtils.isEmpty(name)) {
             nameInputLayout.setError(getString(R.string.can_not_be_empty));
-            canSave = false;
+            isValid = false;
         } else if (sameNameFilterExists(name)) {
             nameInputLayout.setError(getString(R.string.filter_name_already_exists));
-            canSave = false;
+            isValid = false;
         } else {
             nameInputLayout.setError(null);
         }
@@ -219,30 +236,16 @@ public class FilterFragment extends Fragment {
         /* Validate query. */
         if (TextUtils.isEmpty(query)) {
             queryInputLayout.setError(getString(R.string.can_not_be_empty));
-            canSave = false;
+            isValid = false;
         } else {
             queryInputLayout.setError(null);
         }
 
-        if (! canSave) {
-            return;
+        if (!isValid) {
+            return null;
         }
 
-        Filter filter = new Filter(name, query);
-
-        /* Editing existing record. */
-        if (isEditingExistingFilter()) {
-            long id = getArguments().getLong(ARG_ID);
-
-            if (mListener != null) {
-                mListener.onFilterUpdateRequest(id, filter);
-            }
-
-        } else {
-            if (mListener != null) {
-                mListener.onFilterCreateRequest(filter);
-            }
-        }
+        return new Filter(name, query);
     }
 
     /**

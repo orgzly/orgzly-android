@@ -41,7 +41,7 @@ public class OrgzlyTest {
         shelf = new Shelf(context);
         shelfTestUtils = new ShelfTestUtils(context, shelf);
 
-         userTimeFormatter = new UserTimeFormatter(context);
+        userTimeFormatter = new UserTimeFormatter(context);
 
         // new LocalFileStorage(context).cleanup();
 
@@ -62,7 +62,7 @@ public class OrgzlyTest {
 //        new Handler(context.getMainLooper()).post(new Runnable() {
 //            @Override
 //            public void run() {
-                setupPreferences();
+        setupPreferences();
 //            }
 //        });
     }
@@ -72,7 +72,7 @@ public class OrgzlyTest {
 //        new Handler(InstrumentationRegistry.getTargetContext().getMainLooper()).post(new Runnable() {
 //            @Override
 //            public void run() {
-                restorePreferences();
+        restorePreferences();
 //            }
 //        });
     }
@@ -122,11 +122,6 @@ public class OrgzlyTest {
      */
     private void restorePreferences() {
         AppPreferences.setAllFromValues(context, prefValues);
-    }
-
-    protected static Repo randomDropboxRepo(Context context) {
-        String uuid = UUID.randomUUID().toString();
-        return RepoFactory.getFromUri(context, "dropbox:/orgzly/tests/" + uuid);
     }
 
     /**

@@ -18,16 +18,16 @@ import java.util.List;
 
 public class TitleGenerator {
     /* Separator for heading parts (state, priority, title, tags). */
-    private final static String TITLE_SEPARATOR = "  ";
+    private static final String TITLE_SEPARATOR = "  ";
 
     /*
      * Separator between note's tags and inherited tags.
      * Not used if note doesn't have its own tags.
      */
-    private final static String INHERITED_TAGS_SEPARATOR = " • ";
+    private static final String INHERITED_TAGS_SEPARATOR = " • ";
 
     /* Separator for individual tags. */
-    private final static String TAGS_SEPARATOR = " ";
+    private static final String TAGS_SEPARATOR = " ";
 
     private Context mContext;
     /** Can be in book or search results. */
