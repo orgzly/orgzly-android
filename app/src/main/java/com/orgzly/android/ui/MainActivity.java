@@ -829,7 +829,6 @@ public class MainActivity extends CommonActivity
 
         if (f != null && f.isVisible()) {
             AgendaFragment af = (AgendaFragment) f;
-            af.getListView().getItemMenus().closeAll();
             af.reloadAgenda();
         }
     }
@@ -840,7 +839,6 @@ public class MainActivity extends CommonActivity
 
         if (f != null && f.isVisible()) {
             AgendaFragment af = (AgendaFragment) f;
-            af.getListView().getItemMenus().closeAll();
             af.reloadAgenda();
         }
     }
@@ -862,7 +860,6 @@ public class MainActivity extends CommonActivity
 
         if (f != null && f.isVisible()) {
             AgendaFragment af = (AgendaFragment) f;
-            af.getListView().getItemMenus().closeAll();
             af.reloadAgenda();
         }
     }
