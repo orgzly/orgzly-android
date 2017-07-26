@@ -6,7 +6,6 @@ import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.os.Bundle;
 import android.provider.BaseColumns;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.util.Pair;
@@ -30,8 +29,7 @@ import com.orgzly.android.SearchQuery;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.NotesClient;
-import com.orgzly.android.provider.models.DbNote;
-import com.orgzly.android.provider.views.NotesView;
+import com.orgzly.android.provider.views.DbNoteViewColumns;
 import com.orgzly.android.ui.ActionModeListener;
 import com.orgzly.android.ui.AgendaListViewAdapter;
 import com.orgzly.android.ui.Loaders;
@@ -431,7 +429,7 @@ public class AgendaFragment extends NoteListFragment
         } while (++i < agendaDurationInDays);
 
         Calendar now = Calendar.getInstance();
-        int scheduledRangeStrIdx = cursor.getColumnIndex(NotesView.Columns.SCHEDULED_RANGE_STRING);
+        int scheduledRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.SCHEDULED_RANGE_STRING);
         // expand each note if it has a repeater or is a range
         originalNoteIDs.clear();
         for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
@@ -638,7 +636,7 @@ public class AgendaFragment extends NoteListFragment
         return mQuery;
     }
 
-    public static class Columns implements BaseColumns, DbNote.Columns {
+    public static class Columns implements BaseColumns, DbNoteViewColumns {
         public static String IS_SEPARATOR = "is_separator";
         public static String AGENDA_DAY = "day";
 
