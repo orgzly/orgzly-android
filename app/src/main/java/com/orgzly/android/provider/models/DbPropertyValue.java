@@ -6,7 +6,7 @@ import android.provider.BaseColumns;
 
 import com.orgzly.android.provider.DatabaseUtils;
 
-public class DbPropertyValue {
+public class DbPropertyValue implements DbPropertyValueColumns, BaseColumns {
     public static final String TABLE = "property_values";
 
     public static final String[] CREATE_SQL = new String[] {
@@ -20,22 +20,16 @@ public class DbPropertyValue {
 
     public static final String DROP_SQL = "DROP TABLE IF EXISTS " + TABLE;
 
-    public interface Columns {
-        String VALUE = "value";
-    }
-
-    public static class Column implements Columns, BaseColumns {}
-
     public static long getOrInsert(SQLiteDatabase db, String value) {
         long id = DatabaseUtils.getId(
                 db,
                 TABLE,
-                Column.VALUE + " = ?",
+                VALUE + " = ?",
                 new String[] { value });
 
         if (id == 0) {
             ContentValues values = new ContentValues();
-            values.put(Column.VALUE, value);
+            values.put(VALUE, value);
 
             id = db.insertOrThrow(TABLE, null, values);
         }

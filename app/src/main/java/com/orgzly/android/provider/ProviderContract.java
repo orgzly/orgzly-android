@@ -5,13 +5,13 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.orgzly.android.SearchQuery;
-import com.orgzly.android.provider.models.DbBook;
-import com.orgzly.android.provider.models.DbDbRepo;
-import com.orgzly.android.provider.models.DbNote;
-import com.orgzly.android.provider.models.DbRepo;
-import com.orgzly.android.provider.models.DbSearch;
-import com.orgzly.android.provider.views.BooksView;
-import com.orgzly.android.provider.views.NotesView;
+import com.orgzly.android.provider.models.DbBookColumns;
+import com.orgzly.android.provider.models.DbDbRepoColumns;
+import com.orgzly.android.provider.models.DbNoteColumns;
+import com.orgzly.android.provider.models.DbRepoColumns;
+import com.orgzly.android.provider.models.DbSearchColumns;
+import com.orgzly.android.provider.views.DbBookViewColumns;
+import com.orgzly.android.provider.views.DbNoteViewColumns;
 import com.orgzly.android.ui.NotePlace;
 
 /**
@@ -23,7 +23,7 @@ public class ProviderContract {
     public static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);
 
     public interface Books {
-        class Param extends BooksView.Columns implements DbBook.Columns, BaseColumns {
+        class Param implements DbBookViewColumns, DbBookColumns, BaseColumns {
         }
 
         interface MatcherUri {
@@ -61,7 +61,7 @@ public class ProviderContract {
     }
 
     public interface Filters {
-        class Param implements DbSearch.Columns, BaseColumns {
+        class Param implements DbSearchColumns, BaseColumns {
         }
 
         interface MatcherUri {
@@ -89,7 +89,7 @@ public class ProviderContract {
     }
 
     public interface Repos {
-        class Param implements DbRepo.Columns, BaseColumns {
+        class Param implements DbRepoColumns, BaseColumns {
         }
 
         interface MatcherUri {
@@ -133,10 +133,10 @@ public class ProviderContract {
     }
 
     public interface Notes {
-        class QueryParam extends NotesView.Columns implements DbNote.Columns, BaseColumns {
+        class QueryParam implements DbNoteViewColumns, DbNoteColumns, BaseColumns {
         }
 
-        class UpdateParam implements DbNote.Columns, BaseColumns {
+        class UpdateParam implements DbNoteColumns, BaseColumns {
             public static final String SCHEDULED_STRING = "scheduled_string"; // TODO: This is range, rename.
             public static final String DEADLINE_STRING = "deadline_string";
             public static final String CLOSED_STRING = "closed_string";
@@ -374,7 +374,7 @@ public class ProviderContract {
     }
 
     public interface LocalDbRepo {
-        class Param implements DbDbRepo.Columns {
+        class Param implements DbDbRepoColumns {
         }
 
         interface MatcherUri {

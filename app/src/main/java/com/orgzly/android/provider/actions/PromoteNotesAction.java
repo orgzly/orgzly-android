@@ -39,7 +39,7 @@ public class PromoteNotesAction implements Action {
 
 
         /* Get note info. */
-        cursor = db.query(DbNote.TABLE, null, DbNote.Column._ID + " IN (" + ids + ")", null, null, null, null);
+        cursor = db.query(DbNote.TABLE, null, DbNote._ID + " IN (" + ids + ")", null, null, null, null);
         try {
             if (cursor.moveToFirst()) {
                 note = DbNote.positionFromCursor(cursor);
@@ -56,8 +56,8 @@ public class PromoteNotesAction implements Action {
         }
 
         /* Delete affected notes from ancestors table. */
-        String w = "(SELECT " + DbNote.Column._ID + " FROM " + DbNote.TABLE + " WHERE " + DatabaseUtils.whereDescendantsAndNotes(bookId, ids) + ")";
-        String sql = "DELETE FROM " + DbNoteAncestor.TABLE + " WHERE " + DbNoteAncestor.Column.NOTE_ID + " IN " + w;
+        String w = "(SELECT " + DbNote._ID + " FROM " + DbNote.TABLE + " WHERE " + DatabaseUtils.whereDescendantsAndNotes(bookId, ids) + ")";
+        String sql = "DELETE FROM " + DbNoteAncestor.TABLE + " WHERE " + DbNoteAncestor.NOTE_ID + " IN " + w;
         if (BuildConfig.LOG_DEBUG) LogUtils.d("SQL", sql);
         db.execSQL(sql);
 
@@ -65,7 +65,7 @@ public class PromoteNotesAction implements Action {
         /* Cut note and all its descendants. */
         long batchId = System.currentTimeMillis();
         values = new ContentValues();
-        values.put(DbNote.Column.IS_CUT, batchId);
+        values.put(DbNote.IS_CUT, batchId);
         db.update(DbNote.TABLE, values, DatabaseUtils.whereDescendantsAndNote(bookId, note.getLft(), note.getRgt()), null);
 
         /* Paste below parent. */

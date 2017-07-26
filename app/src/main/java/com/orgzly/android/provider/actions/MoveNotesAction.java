@@ -37,10 +37,10 @@ public class MoveNotesAction implements Action {
         if (direction == -1) { /* Move up - paste above previous sibling. */
             Cursor cursor = db.query(
                     DbNote.TABLE,
-                    new String[] { DbNote.Column._ID, DbNote.Column.LEVEL },
-                    DatabaseUtils.whereUncutBookNotes(bookId) + " AND " + DbNote.Column.RGT + " < " + selectedNotePosition.getLft(),
+                    new String[] { DbNote._ID, DbNote.LEVEL },
+                    DatabaseUtils.whereUncutBookNotes(bookId) + " AND " + DbNote.RGT + " < " + selectedNotePosition.getLft(),
                     null, null, null,
-                    DbNote.Column.RGT + " DESC");
+                    DbNote.RGT + " DESC");
 
             try {
                 if (cursor.moveToFirst()) {
@@ -60,10 +60,10 @@ public class MoveNotesAction implements Action {
         } else { /* Move down - paste below next sibling. */
             Cursor cursor = db.query(
                     DbNote.TABLE,
-                    new String[] { DbNote.Column._ID, DbNote.Column.LEVEL },
-                    DatabaseUtils.whereUncutBookNotes(bookId) + " AND " + DbNote.Column.LFT + " > " + selectedNotePosition.getRgt(),
+                    new String[] { DbNote._ID, DbNote.LEVEL },
+                    DatabaseUtils.whereUncutBookNotes(bookId) + " AND " + DbNote.LFT + " > " + selectedNotePosition.getRgt(),
                     null, null, null,
-                    DbNote.Column.LFT);
+                    DbNote.LFT);
 
             try {
                 if (cursor.moveToFirst()) {
@@ -84,15 +84,15 @@ public class MoveNotesAction implements Action {
             ContentValues values;
 
             /* Delete affected notes from ancestors table. */
-            String w = "(SELECT " + DbNote.Column._ID + " FROM " + DbNote.TABLE + " WHERE " + DatabaseUtils.whereDescendantsAndNote(bookId, selectedNotePosition.getLft(), selectedNotePosition.getRgt()) + ")";
-            String sql = "DELETE FROM " + DbNoteAncestor.TABLE + " WHERE " + DbNoteAncestor.Column.NOTE_ID + " IN " + w;
+            String w = "(SELECT " + DbNote._ID + " FROM " + DbNote.TABLE + " WHERE " + DatabaseUtils.whereDescendantsAndNote(bookId, selectedNotePosition.getLft(), selectedNotePosition.getRgt()) + ")";
+            String sql = "DELETE FROM " + DbNoteAncestor.TABLE + " WHERE " + DbNoteAncestor.NOTE_ID + " IN " + w;
             if (BuildConfig.LOG_DEBUG) LogUtils.d("SQL", sql);
             db.execSQL(sql);
 
             /* Cut note and all its descendants. */
             long batchId = System.currentTimeMillis();
             values = new ContentValues();
-            values.put(DbNote.Column.IS_CUT, batchId);
+            values.put(DbNote.IS_CUT, batchId);
             db.update(DbNote.TABLE, values, DatabaseUtils.whereDescendantsAndNote(bookId, selectedNotePosition.getLft(), selectedNotePosition.getRgt()), null);
 
             /* Paste. */

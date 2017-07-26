@@ -33,14 +33,14 @@ public class CutNotesAction implements Action {
         batchId = System.currentTimeMillis();
 
         /* Delete affected notes from ancestors table. */
-        String w = "(SELECT " + DbNote.Column._ID + " FROM " + DbNote.TABLE + " WHERE " + DatabaseUtils.whereDescendantsAndNotes(bookId, ids) + ")";
-        String sql = "DELETE FROM " + DbNoteAncestor.TABLE + " WHERE " + DbNoteAncestor.Column.NOTE_ID + " IN " + w;
+        String w = "(SELECT " + DbNote._ID + " FROM " + DbNote.TABLE + " WHERE " + DatabaseUtils.whereDescendantsAndNotes(bookId, ids) + ")";
+        String sql = "DELETE FROM " + DbNoteAncestor.TABLE + " WHERE " + DbNoteAncestor.NOTE_ID + " IN " + w;
         if (BuildConfig.LOG_DEBUG) LogUtils.d("SQL", sql);
         db.execSQL(sql);
 
         /* Mark as cut. */
         ContentValues values = new ContentValues();
-        values.put(DbNote.Column.IS_CUT, batchId);
+        values.put(DbNote.IS_CUT, batchId);
         String where = DatabaseUtils.whereDescendantsAndNotes(bookId, ids);
         result = db.update(DbNote.TABLE, values, where, null);
 

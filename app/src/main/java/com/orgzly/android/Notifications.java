@@ -24,11 +24,11 @@ import java.util.List;
 public class Notifications {
     public static final String TAG = Notifications.class.getName();
 
-    public final static int ONGOING_NEW_NOTE = 1;
-    public final static int REMINDER = 2;
-    public final static int REMINDER_SCHEDULED = 3;
-    public final static int SYNC_IN_PROGRESS = 4;
-    public final static int SYNC_FAILED = 5;
+    public static final int ONGOING_NEW_NOTE = 1;
+    public static final int REMINDER = 2;
+    public static final int REMINDER_SCHEDULED = 3;
+    public static final int SYNC_IN_PROGRESS = 4;
+    public static final int SYNC_FAILED = 5;
 
     public static void createNewNoteNotification(Context context) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, context);
@@ -91,11 +91,15 @@ public class Notifications {
     };
 
     public static Notification createSyncInProgressNotification(Context context) {
+        PendingIntent openOrgzlyPendingIntent = PendingIntent.getActivity(context, 0,
+                new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_sync_white_24dp)
                 .setContentTitle(context.getString(R.string.syncing_in_progress))
-                .setColor(ContextCompat.getColor(context, R.color.notification));
+                .setColor(ContextCompat.getColor(context, R.color.notification))
+                .setContentIntent(openOrgzlyPendingIntent);
 
         return builder.build();
     }

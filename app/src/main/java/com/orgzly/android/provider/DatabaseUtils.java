@@ -21,34 +21,34 @@ public class DatabaseUtils {
     public static final String[] PROJECTION_FOR_COUNT = new String[] { "count(*)" };
 
     public static final String WHERE_EXISTING_NOTES = "(" +
-                                                      DbNote.Column.IS_CUT + " = 0" + " AND " +
-                                                      DbNote.Column.LEVEL + " > 0" + ")"; // Root note is a dummy note with level 0
+                                                      DbNote.IS_CUT + " = 0" + " AND " +
+                                                      DbNote.LEVEL + " > 0" + ")"; // Root note is a dummy note with level 0
 
 
     public static final String WHERE_VISIBLE_NOTES = "(" +
                                                      WHERE_EXISTING_NOTES + " AND " +
-                                                     GenericDatabaseUtils.whereNullOrZero(DbNote.Column.FOLDED_UNDER_ID) + ")";
+                                                     GenericDatabaseUtils.whereNullOrZero(DbNote.FOLDED_UNDER_ID) + ")";
 
     public static String whereUncutBookNotes(long bookId) {
-        return "(" + DbNote.Column.BOOK_ID + " = " + bookId + " AND " + WHERE_EXISTING_NOTES + ")";
+        return "(" + DbNote.BOOK_ID + " = " + bookId + " AND " + WHERE_EXISTING_NOTES + ")";
     }
 
     public static String whereAncestors(long bookId, long lft, long rgt) {
         return "(" + whereUncutBookNotes(bookId) + " AND " +
-               DbNote.Column.LFT + "< " + lft + " AND " + rgt + " < " + DbNote.Column.RGT + ")";
+               DbNote.LFT + "< " + lft + " AND " + rgt + " < " + DbNote.RGT + ")";
     }
 
     public static String whereAncestorsAndNote(long bookId, long id) {
-        return "(" + whereAncestors(bookId, String.valueOf(id)) + " OR (" + DbNote.Column._ID + " = " + id + "))";
+        return "(" + whereAncestors(bookId, String.valueOf(id)) + " OR (" + DbNote._ID + " = " + id + "))";
     }
 
     public static String whereAncestors(long bookId, String ids) {
-        String sql = "(" + DbNote.Column._ID + " IN (SELECT DISTINCT b." + DbNote.Column._ID + " FROM " +
+        String sql = "(" + DbNote._ID + " IN (SELECT DISTINCT b." + DbNote._ID + " FROM " +
                      DbNote.TABLE + " a, " + DbNote.TABLE + " b WHERE " +
-                     "a." + DbNote.Column.BOOK_ID + " = " + bookId + " AND " +
-                     "b." + DbNote.Column.BOOK_ID + " = " + bookId + " AND " +
-                     "a." + DbNote.Column._ID + " IN (" + ids + ") AND " +
-                     "b." + DbNote.Column.LFT + " < a." + DbNote.Column.LFT + " AND a." + DbNote.Column.RGT + " < b." + DbNote.Column.RGT + "))";
+                     "a." + DbNote.BOOK_ID + " = " + bookId + " AND " +
+                     "b." + DbNote.BOOK_ID + " = " + bookId + " AND " +
+                     "a." + DbNote._ID + " IN (" + ids + ") AND " +
+                     "b." + DbNote.LFT + " < a." + DbNote.LFT + " AND a." + DbNote.RGT + " < b." + DbNote.RGT + "))";
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "whereAncestors: " + sql);
 
@@ -58,7 +58,7 @@ public class DatabaseUtils {
     public static String ancestorsIds(SQLiteDatabase db, long bookId, long noteId) {
         Cursor cursor = db.query(
                 DbNote.TABLE,
-                new String[] { "group_concat(" + DbNote.Column._ID + ", ',')" },
+                new String[] { "group_concat(" + DbNote._ID + ", ',')" },
                 DatabaseUtils.whereAncestors(bookId, String.valueOf(noteId)),
                 null, null, null, null);
         try {
@@ -74,22 +74,22 @@ public class DatabaseUtils {
 
     public static String whereDescendants(long bookId, long lft, long rgt) {
         return "(" + whereUncutBookNotes(bookId) + " AND " +
-               lft + " < " + DbNote.Column.LFT + " AND " + DbNote.Column.RGT + " < " + rgt + ")";
+               lft + " < " + DbNote.LFT + " AND " + DbNote.RGT + " < " + rgt + ")";
     }
 
     public static String whereDescendantsAndNote(long bookId, long lft, long rgt) {
         return "(" + whereUncutBookNotes(bookId) + " AND " +
-               lft + " <= " + DbNote.Column.LFT + " AND " + DbNote.Column.RGT + " <= " + rgt + ")";
+               lft + " <= " + DbNote.LFT + " AND " + DbNote.RGT + " <= " + rgt + ")";
     }
 
     public static String whereDescendantsAndNotes(long bookId, String ids) {
-        return DbNote.Column._ID + " IN (SELECT DISTINCT d." + DbNote.Column._ID + " FROM " +
+        return DbNote._ID + " IN (SELECT DISTINCT d." + DbNote._ID + " FROM " +
                DbNote.TABLE + " n, " + DbNote.TABLE + " d WHERE " +
-               "d." + DbNote.Column.BOOK_ID + " = " + bookId + " AND " +
-               "n." + DbNote.Column.BOOK_ID + " = " + bookId + " AND " +
-               "n." + DbNote.Column._ID + " IN (" + ids + ") AND " +
-               "d." + DbNote.Column.IS_CUT + " = 0 AND " +
-               "n." + DbNote.Column.LFT + " <= d." + DbNote.Column.LFT + " AND d." + DbNote.Column.RGT + " <= n." + DbNote.Column.RGT + ")";
+               "d." + DbNote.BOOK_ID + " = " + bookId + " AND " +
+               "n." + DbNote.BOOK_ID + " = " + bookId + " AND " +
+               "n." + DbNote._ID + " IN (" + ids + ") AND " +
+               "d." + DbNote.IS_CUT + " = 0 AND " +
+               "n." + DbNote.LFT + " <= d." + DbNote.LFT + " AND d." + DbNote.RGT + " <= n." + DbNote.RGT + ")";
     }
 
     public static long getId(SQLiteDatabase db, String table, String selection, String[] selectionArgs) {
@@ -111,7 +111,7 @@ public class DatabaseUtils {
      * Sets modification time for notebook to now.
      */
     public static int updateBookMtime(SQLiteDatabase db, long bookId) {
-        return DatabaseUtils.updateBookMtime(db, DbBook.Column._ID + "=" + bookId, null);
+        return DatabaseUtils.updateBookMtime(db, DbBook._ID + "=" + bookId, null);
     }
 
     /**
@@ -120,7 +120,7 @@ public class DatabaseUtils {
     public static int updateBookMtime(SQLiteDatabase db, String where, String[] whereArgs) {
         ContentValues values = new ContentValues();
 
-        values.put(DbBook.Column.MTIME, System.currentTimeMillis());
+        values.put(DbBook.MTIME, System.currentTimeMillis());
 
         return db.update(DbBook.TABLE, values, where, whereArgs);
     }
@@ -143,12 +143,12 @@ public class DatabaseUtils {
         switch (place) {
 
             case ABOVE:
-                selection = bookSelection + " AND " + DbNote.Column.LFT + " >= " + targetNotePosition.getLft();
+                selection = bookSelection + " AND " + DbNote.LFT + " >= " + targetNotePosition.getLft();
 
                 GenericDatabaseUtils.incrementFields(db, DbNote.TABLE, selection,
                         spaceRequired, ProviderContract.Notes.UpdateParam.LFT);
 
-                selection = bookSelection + " AND " + DbNote.Column.RGT + " > " + targetNotePosition.getLft();
+                selection = bookSelection + " AND " + DbNote.RGT + " > " + targetNotePosition.getLft();
 
                 GenericDatabaseUtils.incrementFields(db, DbNote.TABLE, selection,
                         spaceRequired, ProviderContract.Notes.UpdateParam.RGT);
@@ -159,12 +159,12 @@ public class DatabaseUtils {
                 break;
 
             case UNDER:
-                selection = bookSelection + " AND " + DbNote.Column.LFT + " > " + targetNotePosition.getRgt();
+                selection = bookSelection + " AND " + DbNote.LFT + " > " + targetNotePosition.getRgt();
 
                 GenericDatabaseUtils.incrementFields(db, DbNote.TABLE, selection,
                         spaceRequired, ProviderContract.Notes.UpdateParam.LFT);
 
-                selection = bookSelection + " AND " + DbNote.Column.RGT + " >= " + targetNotePosition.getRgt();
+                selection = bookSelection + " AND " + DbNote.RGT + " >= " + targetNotePosition.getRgt();
 
                 GenericDatabaseUtils.incrementFields(db, DbNote.TABLE, selection,
                         spaceRequired, ProviderContract.Notes.UpdateParam.RGT);
@@ -175,13 +175,13 @@ public class DatabaseUtils {
                 break;
 
             case BELOW:
-                selection = bookSelection + " AND " + DbNote.Column.LFT + " > " + targetNotePosition.getRgt();
+                selection = bookSelection + " AND " + DbNote.LFT + " > " + targetNotePosition.getRgt();
 
                 GenericDatabaseUtils.incrementFields(db, DbNote.TABLE, selection,
                         spaceRequired, ProviderContract.Notes.UpdateParam.LFT);
 
                 // Container notes - update their RGT.
-                selection = bookSelection + " AND " + DbNote.Column.RGT + " > " + targetNotePosition.getRgt();
+                selection = bookSelection + " AND " + DbNote.RGT + " > " + targetNotePosition.getRgt();
 
                 GenericDatabaseUtils.incrementFields(db, DbNote.TABLE, selection,
                         spaceRequired, ProviderContract.Notes.UpdateParam.RGT);
@@ -201,7 +201,7 @@ public class DatabaseUtils {
     public static void updateDescendantsCount(SQLiteDatabase db, String where) {
         Cursor cursor = db.query(
                 DbNote.TABLE,
-                new String[] { DbNote.Column._ID, DbNote.Column.LFT, DbNote.Column.RGT, DbNote.Column.BOOK_ID },
+                new String[] { DbNote._ID, DbNote.LFT, DbNote.RGT, DbNote.BOOK_ID },
                 where,
                 null, null, null, null);
         try {
@@ -217,8 +217,8 @@ public class DatabaseUtils {
                                           " WHERE " + whereDescendants(bookId, lft, rgt) + ")";
 
                 String sql = "UPDATE " + DbNote.TABLE +
-                             " SET " + DbNote.Column.DESCENDANTS_COUNT + " = " + descendantsCount +
-                             " WHERE " + DbNote.Column._ID + " = " + id;
+                             " SET " + DbNote.DESCENDANTS_COUNT + " = " + descendantsCount +
+                             " WHERE " + DbNote._ID + " = " + id;
 
                 if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, sql);
 
@@ -235,12 +235,12 @@ public class DatabaseUtils {
                 DbNote.TABLE,
                 PROJECTION_FOR_ID,
                 DatabaseUtils.whereUncutBookNotes(n.getBookId()) + " AND " +
-                DbNote.Column.LFT + " < " + n.getLft() + " AND " +
-                DbNote.Column.PARENT_ID + " = " + n.getParentId(),
+                DbNote.LFT + " < " + n.getLft() + " AND " +
+                DbNote.PARENT_ID + " = " + n.getParentId(),
                 null,
                 null,
                 null,
-                DbNote.Column.LFT + " DESC");
+                DbNote.LFT + " DESC");
         try {
             if (cursor.moveToFirst()) {
                 return cursor.getLong(0);
