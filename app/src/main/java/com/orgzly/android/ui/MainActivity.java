@@ -1494,8 +1494,9 @@ public class MainActivity extends CommonActivity
             ((DrawerFragment) drawerFragment).setActiveFragment(fragmentTag);
         }
 
-        /* Update floating action button. */
+        /* Update floating action buttons. */
         MainFab.updateFab(this, fragmentTag, selectionCount);
+        SyncFab.updateFab(this, fragmentTag);
     }
 
     @Override

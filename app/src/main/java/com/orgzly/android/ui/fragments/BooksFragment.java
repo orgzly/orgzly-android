@@ -3,6 +3,7 @@ package com.orgzly.android.ui.fragments;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -33,6 +34,8 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.ui.Fab;
+import com.orgzly.android.ui.SyncFabIf;
+import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.util.LogUtils;
@@ -48,6 +51,7 @@ import java.util.Date;
 public class BooksFragment extends ListFragment
         implements
         Fab,
+        SyncFabIf,
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = BooksFragment.class.getName();
@@ -637,6 +641,18 @@ public class BooksFragment extends ListFragment
             @Override
             public void run() {
                 mListener.onBookCreateRequest();
+            }
+        };
+    }
+
+    @Override
+    public Runnable getSyncFabAction() {
+        return new Runnable() {
+            @Override
+            public void run() {
+                LogUtils.d("getSyncFabAction");
+                Intent intent = new Intent(getActivity(), SyncService.class);
+                getActivity().startService(intent);
             }
         };
     }
