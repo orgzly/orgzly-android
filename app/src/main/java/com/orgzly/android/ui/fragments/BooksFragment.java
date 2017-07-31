@@ -420,12 +420,11 @@ public class BooksFragment extends ListFragment
         adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                TextView textView;
+                TextView textView=(TextView) view;
 
                 switch (view.getId()) {
                     case R.id.item_book_encoding_used:
                         if (! cursor.isNull(columnIndex)) {
-                            textView = (TextView) view;
                             textView.setText(cursor.getString(columnIndex));
                             textView.append(" used");
                         }
@@ -433,7 +432,6 @@ public class BooksFragment extends ListFragment
 
                     case R.id.item_book_encoding_detected:
                         if (! cursor.isNull(columnIndex)) {
-                            textView = (TextView) view;
                             textView.setText(cursor.getString(columnIndex));
                             textView.append(" detected");
                         }
@@ -441,7 +439,6 @@ public class BooksFragment extends ListFragment
 
                     case R.id.item_book_encoding_selected:
                         if (! cursor.isNull(columnIndex)) {
-                            textView = (TextView) view;
                             textView.setText(cursor.getString(columnIndex));
                             textView.append(" selected");
                         }
@@ -449,7 +446,6 @@ public class BooksFragment extends ListFragment
 
                     /* Generic N/A-if-does-not-exist. */
                     case R.id.item_book_synced_revision:
-                        textView = (TextView) view;
                         if (! cursor.isNull(columnIndex)) {
                             textView.setText(cursor.getString(columnIndex));
                         } else {
@@ -458,7 +454,6 @@ public class BooksFragment extends ListFragment
                         return true;
 
                     case R.id.item_book_synced_mtime:
-                        textView = (TextView) view;
                         if (! cursor.isNull(columnIndex) && cursor.getLong(columnIndex) > 0) {
                             /* Format time. */
                             textView.setText(timeString(cursor.getLong(columnIndex)));
@@ -468,7 +463,6 @@ public class BooksFragment extends ListFragment
                         return true;
 
                     case R.id.item_book_mtime:
-                        textView = (TextView) view;
                         if (! cursor.isNull(columnIndex) && cursor.getLong(columnIndex) > 0) {
                             /* Format time. */
                             textView.setText(timeString(cursor.getLong(columnIndex)));
@@ -479,7 +473,6 @@ public class BooksFragment extends ListFragment
 
                     case R.id.item_book_link_url:
                     case R.id.item_book_synced_url:
-                        textView = (TextView) view;
                         if (! cursor.isNull(columnIndex)) {
                             textView.setText(UriUtils.friendlyUri(cursor.getString(columnIndex)));
                         }
