@@ -227,7 +227,7 @@ public class BooksTest extends OrgzlyTest {
                 .check(matches(withText(endsWith("10 notes"))));
         shelfTestUtils.setupBook("book-Zthree", "");
         onListItem(2).onChildView(withId(R.id.item_book_notes_count))
-                .check(matches(withText(endsWith("0 notes"))));
+                .check(matches(withText(endsWith("empty"))));
     }
 
 }
