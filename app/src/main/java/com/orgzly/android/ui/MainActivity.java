@@ -357,9 +357,12 @@ public class MainActivity extends CommonActivity
         super.onResume();
 
         performIntros();
-        Intent intent = new Intent(this, SyncService.class);
-        intent.setAction(AppIntent.ACTION_SYNC_START);
-        startService(intent);
+
+        if (AppPreferences.onResumeSync(this)) {
+            Intent intent = new Intent(this, SyncService.class);
+            intent.setAction(AppIntent.ACTION_SYNC_START);
+            startService(intent);
+        }
     }
 
     private void performIntros() {
