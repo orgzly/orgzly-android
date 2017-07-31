@@ -50,6 +50,7 @@ import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.provider.clients.ReposClient;
 import com.orgzly.android.repos.ContentRepo;
 import com.orgzly.android.repos.Repo;
+import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.dialogs.WhatsNewDialog;
 import com.orgzly.android.ui.fragments.BookFragment;
@@ -356,6 +357,9 @@ public class MainActivity extends CommonActivity
         super.onResume();
 
         performIntros();
+        Intent intent = new Intent(this, SyncService.class);
+        startService(intent);
+        
     }
 
     private void performIntros() {
