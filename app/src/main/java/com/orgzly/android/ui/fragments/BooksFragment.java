@@ -420,67 +420,67 @@ public class BooksFragment extends ListFragment
         adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                TextView textView=(TextView) view;
-
+                boolean has_data=!cursor.isNull(columnIndex);
+                String view_content="";
                 switch (view.getId()) {
                     case R.id.item_book_encoding_used:
-                        if (! cursor.isNull(columnIndex)) {
-                            textView.setText(cursor.getString(columnIndex));
-                            textView.append(" used");
+                        if (has_data) {
+                            view_content=cursor.getString(columnIndex)+" used";
                         }
-                        return true;
+                        break;
 
                     case R.id.item_book_encoding_detected:
-                        if (! cursor.isNull(columnIndex)) {
-                            textView.setText(cursor.getString(columnIndex));
-                            textView.append(" detected");
+                        if (has_data) {
+                            view_content=cursor.getString(columnIndex)+" detected";
                         }
-                        return true;
+                        break;
 
                     case R.id.item_book_encoding_selected:
-                        if (! cursor.isNull(columnIndex)) {
-                            textView.setText(cursor.getString(columnIndex));
-                            textView.append(" selected");
+                        if (has_data) {
+                            view_content=cursor.getString(columnIndex)+" selected";
                         }
-                        return true;
+                        break;
 
                     /* Generic N/A-if-does-not-exist. */
                     case R.id.item_book_synced_revision:
-                        if (! cursor.isNull(columnIndex)) {
-                            textView.setText(cursor.getString(columnIndex));
+                        if (has_data) {
+                            view_content=cursor.getString(columnIndex);
                         } else {
-                            textView.setText("N/A");
+                            view_content="N/A";
                         }
-                        return true;
+                        break;
 
                     case R.id.item_book_synced_mtime:
-                        if (! cursor.isNull(columnIndex) && cursor.getLong(columnIndex) > 0) {
+                        if (has_data && cursor.getLong(columnIndex) > 0) {
                             /* Format time. */
-                            textView.setText(timeString(cursor.getLong(columnIndex)));
+                            view_content=timeString(cursor.getLong(columnIndex));
                         } else {
-                            textView.setText("N/A");
+                            view_content="N/A";
                         }
-                        return true;
+                        break;
 
                     case R.id.item_book_mtime:
-                        if (! cursor.isNull(columnIndex) && cursor.getLong(columnIndex) > 0) {
+                        if (has_data && cursor.getLong(columnIndex) > 0) {
                             /* Format time. */
-                            textView.setText(timeString(cursor.getLong(columnIndex)));
+                            view_content=timeString(cursor.getLong(columnIndex));
                         } else {
-                            textView.setText(R.string.book_never_modified_locally);
+                            view_content=getString(R.string.book_never_modified_locally);
                         }
-                        return true;
+                        break;
 
                     case R.id.item_book_link_url:
                     case R.id.item_book_synced_url:
-                        if (! cursor.isNull(columnIndex)) {
-                            textView.setText(UriUtils.friendlyUri(cursor.getString(columnIndex)));
+                        if (has_data) {
+                            view_content=UriUtils.friendlyUri(cursor.getString(columnIndex));
                         }
-                        return true;
+                        break;
 
+                    default:
+                        return false;
                 }
 
-                return false;
+                ((TextView) view).setText(view_content);
+                return true;
             }
         });
 
