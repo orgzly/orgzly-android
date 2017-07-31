@@ -20,6 +20,7 @@ import com.orgzly.android.AppIntent;
 import com.orgzly.android.Notifications;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.TimesClient;
+import com.orgzly.android.provider.views.DbTimeView;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.OrgFormatter;
@@ -121,8 +122,8 @@ public class ReminderService extends IntentService {
         Set<String> doneStateKeywords = AppPreferences.doneKeywordsSet(context);
         boolean state = noteTime.state == null || !doneStateKeywords.contains(noteTime.state);
 
-        boolean scheduled = AppPreferences.remindersForScheduledEnabled(context) && noteTime.timeType == 1;
-        boolean deadline = AppPreferences.remindersForDeadlineEnabled(context) && noteTime.timeType == 2;
+        boolean scheduled = AppPreferences.remindersForScheduledEnabled(context) && noteTime.timeType == DbTimeView.SCHEDULED_TIME;
+        boolean deadline = AppPreferences.remindersForDeadlineEnabled(context) && noteTime.timeType == DbTimeView.DEADLINE_TIME;
 
         return state && (scheduled || deadline);
     }
@@ -150,7 +151,7 @@ public class ReminderService extends IntentService {
 
         switch (beforeOrAfter) {
             case TIME_BEFORE_NOW: // Before now, starting from lastRun, depending on timeType
-                res[0] = timeType == 1 ? lastRun.scheduled : lastRun.deadline;
+                res[0] = timeType == DbTimeView.SCHEDULED_TIME ? lastRun.scheduled : lastRun.deadline;
                 if (res[0] == null) {
                     res[0] = now;
                 }
@@ -330,7 +331,7 @@ public class ReminderService extends IntentService {
             int notificationId = Notifications.REMINDER;
 
             String line = context.getString(
-                    noteReminder.getPayload().timeType == 1 ? R.string.reminder_for_scheduled : R.string.reminder_for_deadline,
+                    noteReminder.getPayload().timeType == DbTimeView.SCHEDULED_TIME ? R.string.reminder_for_scheduled : R.string.reminder_for_deadline,
                     noteReminder.getPayload().orgDateTime.toStringWithoutBrackets());
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
