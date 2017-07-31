@@ -358,8 +358,8 @@ public class MainActivity extends CommonActivity
 
         performIntros();
         Intent intent = new Intent(this, SyncService.class);
+        intent.setAction(AppIntent.ACTION_SYNC_START);
         startService(intent);
-        
     }
 
     private void performIntros() {
