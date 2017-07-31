@@ -16,6 +16,8 @@ import com.orgzly.BuildConfig;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.SearchQuery;
+import com.orgzly.android.provider.models.DbNoteColumns;
+import com.orgzly.android.provider.views.DbNoteViewColumns;
 import com.orgzly.android.provider.views.DbTimeView;
 import com.orgzly.org.utils.StateChangeLogic;
 import com.orgzly.android.prefs.AppPreferences;
@@ -209,7 +211,7 @@ public class Provider extends ContentProvider {
                 String books_view=DbBookView.VIEW_NAME, notes_view=DbNoteView.VIEW_NAME;
                 table = books_view;
                 String count_subquery=String.format("(select count(*) from %s where %s.%s=%s.%s) as notes_count",
-                        notes_view, notes_view, DbPropertyName._ID, books_view, DbPropertyName._ID);
+                        notes_view, notes_view, DbNoteColumns.BOOK_ID, books_view, DbPropertyName._ID);
                 projection=new String[]{DbBookView.VIEW_NAME+".*", count_subquery};
                 break;
 

@@ -210,6 +210,7 @@ public class BooksFragment extends ListFragment
                 ProviderContract.Books.Param.USED_ENCODING,
                 ProviderContract.Books.Param.DETECTED_ENCODING,
                 ProviderContract.Books.Param.SELECTED_ENCODING,
+                "notes_count",
         };
 
         /* Views which the data will be bound to. */
@@ -226,7 +227,8 @@ public class BooksFragment extends ListFragment
                 R.id.item_book_synced_mtime,
                 R.id.item_book_encoding_used,
                 R.id.item_book_encoding_detected,
-                R.id.item_book_encoding_selected
+                R.id.item_book_encoding_selected,
+                R.id.item_book_notes_count,
         };
 
         adapter = new SimpleCursorAdapter(getActivity(), R.layout.item_book, null, columns, to, 0) {
