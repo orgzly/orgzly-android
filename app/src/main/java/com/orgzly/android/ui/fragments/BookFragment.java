@@ -31,6 +31,7 @@ import android.widget.ViewFlipper;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Book;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
@@ -720,6 +721,7 @@ public class BookFragment extends NoteListFragment
             public void run() {
                 if (BuildConfig.LOG_DEBUG) LogUtils.d("getSyncFabAction");
                 Intent intent = new Intent(getActivity(), SyncService.class);
+                intent.setAction(AppIntent.ACTION_SYNC_START);
                 getActivity().startService(intent);
             }
         };

@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.ViewFlipper;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.ui.Fab;
@@ -223,6 +224,7 @@ public class FiltersFragment extends ListFragment implements Fab, SyncFabIf, Loa
             public void run() {
                 if (BuildConfig.LOG_DEBUG) LogUtils.d("getSyncFabAction");
                 Intent intent = new Intent(getActivity(), SyncService.class);
+                intent.setAction(AppIntent.ACTION_SYNC_START);
                 getActivity().startService(intent);
             }
         };

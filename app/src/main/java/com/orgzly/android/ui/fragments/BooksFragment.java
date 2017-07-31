@@ -28,6 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Book;
 import com.orgzly.android.BookAction;
 import com.orgzly.android.prefs.AppPreferences;
@@ -652,6 +653,7 @@ public class BooksFragment extends ListFragment
             public void run() {
                 if (BuildConfig.LOG_DEBUG) LogUtils.d("getSyncFabAction");
                 Intent intent = new Intent(getActivity(), SyncService.class);
+                intent.setAction(AppIntent.ACTION_SYNC_START);
                 getActivity().startService(intent);
             }
         };
