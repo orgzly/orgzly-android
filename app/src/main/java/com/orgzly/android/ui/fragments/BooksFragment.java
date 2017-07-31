@@ -475,10 +475,11 @@ public class BooksFragment extends ListFragment
                             view_content=UriUtils.friendlyUri(cursor.getString(columnIndex));
                         }
                         break;
-                    
+
                     case R.id.item_book_notes_count:
+                        int real_notes_amount=cursor.getInt(columnIndex)-1; // subtract automatically added root node
                         if (has_data) {
-                            view_content="Contains "+cursor.getInt(columnIndex)+" notes";
+                            view_content = "Contains " + real_notes_amount + " notes";
                         }
                         break;
 
