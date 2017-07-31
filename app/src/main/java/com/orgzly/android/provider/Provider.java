@@ -205,7 +205,12 @@ public class Provider extends ContentProvider {
                 break;
 
             case ProviderUris.BOOKS:
-                table = DbBookView.VIEW_NAME;
+                //table = DbBookView.VIEW_NAME;
+                String books_view=DbBookView.VIEW_NAME, notes_view=DbNoteView.VIEW_NAME;
+                table = books_view;
+                String count_subquery=String.format("(select count(*) from %s where %s.%s=%s.%s) as notes_count",
+                        notes_view, notes_view, DbPropertyName._ID, books_view, DbPropertyName._ID);
+                projection=new String[]{DbBookView.VIEW_NAME+".*", count_subquery};
                 break;
 
             case ProviderUris.BOOKS_ID:
