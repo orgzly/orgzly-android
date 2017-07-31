@@ -1,6 +1,7 @@
 package com.orgzly.android.espresso;
 
 import android.os.Environment;
+import android.os.SystemClock;
 import android.support.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
@@ -217,4 +218,16 @@ public class BooksTest extends OrgzlyTest {
         onListItem(0).onChildView(withId(R.id.item_book_last_action))
                 .check(matches(withText(endsWith("Notebook with that name already exists"))));
     }
+
+    @Test
+    public void testNoteCountDisplayed() {
+        onListItem(0).onChildView(withId(R.id.item_book_notes_count))
+                .check(matches(withText(endsWith("5 notes"))));
+        onListItem(1).onChildView(withId(R.id.item_book_notes_count))
+                .check(matches(withText(endsWith("10 notes"))));
+        shelfTestUtils.setupBook("book-Zthree", "");
+        onListItem(2).onChildView(withId(R.id.item_book_notes_count))
+                .check(matches(withText(endsWith("0 notes"))));
+    }
+
 }
