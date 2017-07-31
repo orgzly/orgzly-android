@@ -245,6 +245,7 @@ public class BooksFragment extends ListFragment
                 View usedEncodingContainer;
                 View detectedEncodingContainer;
                 View selectedEncodingContainer;
+                View notesCountContainer;
                 TextView lastAction;
                 TextView subTitle;
                 TextView mtime;
@@ -273,7 +274,7 @@ public class BooksFragment extends ListFragment
                     holder.usedEncodingContainer = view.findViewById(R.id.item_book_encoding_used_container);
                     holder.detectedEncodingContainer = view.findViewById(R.id.item_book_encoding_detected_container);
                     holder.selectedEncodingContainer = view.findViewById(R.id.item_book_encoding_selected_container);
-
+                    holder.notesCountContainer=view.findViewById(R.id.item_book_notes_count_container);
                     view.setTag(holder);
                 }
 
@@ -472,6 +473,12 @@ public class BooksFragment extends ListFragment
                     case R.id.item_book_synced_url:
                         if (has_data) {
                             view_content=UriUtils.friendlyUri(cursor.getString(columnIndex));
+                        }
+                        break;
+                    
+                    case R.id.item_book_notes_count:
+                        if (has_data) {
+                            view_content="Contains "+cursor.getInt(columnIndex)+" notes";
                         }
                         break;
 
