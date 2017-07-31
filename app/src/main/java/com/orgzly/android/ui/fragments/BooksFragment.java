@@ -210,7 +210,7 @@ public class BooksFragment extends ListFragment
                 ProviderContract.Books.Param.USED_ENCODING,
                 ProviderContract.Books.Param.DETECTED_ENCODING,
                 ProviderContract.Books.Param.SELECTED_ENCODING,
-                "notes_count",
+                ProviderContract.Books.Param.NOTES_COUNT, //"notes_count",
         };
 
         /* Views which the data will be bound to. */
