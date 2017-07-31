@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.orgzly.R;
 import com.orgzly.android.ui.util.ActivityUtils;
+import com.orgzly.android.prefs.AppPreferences;
 
 public class SyncFab {
 
@@ -25,6 +26,10 @@ public class SyncFab {
         Fragment fragment = activity.getSupportFragmentManager().findFragmentByTag(fragmentTag);
 
         if (fragment == null) {
+            fab.hide();
+            return;
+        }
+        if (!AppPreferences.floatingSync(fragment.getContext())) {
             fab.hide();
             return;
         }

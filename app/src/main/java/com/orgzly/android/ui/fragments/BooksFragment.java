@@ -650,7 +650,7 @@ public class BooksFragment extends ListFragment
         return new Runnable() {
             @Override
             public void run() {
-                LogUtils.d("getSyncFabAction");
+                if (BuildConfig.LOG_DEBUG) LogUtils.d("getSyncFabAction");
                 Intent intent = new Intent(getActivity(), SyncService.class);
                 getActivity().startService(intent);
             }
