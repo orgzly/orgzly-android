@@ -100,6 +100,8 @@ public class AgendaFragment extends NoteListFragment
     // available ids for copied notes
     long nextID = Long.MAX_VALUE;
 
+    int currentLoaderId = -1;
+
     /**
      * Assigned IDs to note copies. Each copy is identified by the original note
      * ID and the agenda day timestamp
@@ -264,6 +266,7 @@ public class AgendaFragment extends NoteListFragment
         /* If query did not change - reuse loader. Otherwise - restart it. */
         String newQuery = mQuery.toString();
         int id = Loaders.generateLoaderId(Loaders.AGENDA_FRAGMENT, newQuery);
+        currentLoaderId = id;
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Loader #" + id + " for: " + newQuery);
         getActivity().getSupportLoaderManager().initLoader(id, null, this);
     }
@@ -410,6 +413,11 @@ public class AgendaFragment extends NoteListFragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader, cursor);
 
+        if (loader.getId() != currentLoaderId) {
+            LogUtils.d(TAG, "Skip callback from loader " + loader.getId());
+            return;
+        }
+
         if (mListAdapter == null) {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "adapter is null, view is destroyed?");
             return;
@@ -539,12 +547,6 @@ public class AgendaFragment extends NoteListFragment
         parseQuery(selectedQuery);
         loadQuery();
     }
-
-//    public void reloadAgenda() {
-//        parseQuery(selectedQuery);
-//        loadQuery();
-//        announceChangesToActivity();
-//    }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
