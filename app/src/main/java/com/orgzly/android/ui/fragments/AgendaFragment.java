@@ -264,7 +264,7 @@ public class AgendaFragment extends NoteListFragment
         String newQuery = mQuery.toString();
         int id = Loaders.generateLoaderId(Loaders.AGENDA_FRAGMENT, newQuery);
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Loader #" + id + " for: " + newQuery);
-        getActivity().getSupportLoaderManager().restartLoader(id, null, this);
+        getActivity().getSupportLoaderManager().initLoader(id, null, this);
     }
 
     @Override
@@ -535,14 +535,15 @@ public class AgendaFragment extends NoteListFragment
         } else {
             throw new RuntimeException("Invalid agenda period item selected!");
         }
-        reloadAgenda();
-    }
-
-    public void reloadAgenda() {
         parseQuery(selectedQuery);
         loadQuery();
-        announceChangesToActivity();
     }
+
+//    public void reloadAgenda() {
+//        parseQuery(selectedQuery);
+//        loadQuery();
+//        announceChangesToActivity();
+//    }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
