@@ -830,22 +830,6 @@ public class MainActivity extends CommonActivity
     @Override
     public void onStateChanged(Set<Long> noteIds, String state) {
         // animateNotesAfterEdit(noteIds);
-        Fragment f = getSupportFragmentManager().findFragmentByTag(AgendaFragment.FRAGMENT_TAG);
-
-        if (f != null && f.isVisible()) {
-            AgendaFragment af = (AgendaFragment) f;
-            af.reloadAgenda();
-        }
-    }
-
-    @Override
-    public void onStateShifted(long id, int direction) {
-        Fragment f = getSupportFragmentManager().findFragmentByTag(AgendaFragment.FRAGMENT_TAG);
-
-        if (f != null && f.isVisible()) {
-            AgendaFragment af = (AgendaFragment) f;
-            af.reloadAgenda();
-        }
     }
 
     @Override
@@ -861,12 +845,6 @@ public class MainActivity extends CommonActivity
     @Override
     public void onScheduledTimeUpdated(Set<Long> noteIds, OrgDateTime time) {
         // animateNotesAfterEdit(noteIds);
-        Fragment f = getSupportFragmentManager().findFragmentByTag(AgendaFragment.FRAGMENT_TAG);
-
-        if (f != null && f.isVisible()) {
-            AgendaFragment af = (AgendaFragment) f;
-            af.reloadAgenda();
-        }
     }
 
     @Override /* BookFragment */
