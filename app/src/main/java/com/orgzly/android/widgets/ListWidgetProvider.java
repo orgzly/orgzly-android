@@ -82,7 +82,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
         remoteViews.setOnClickPendingIntent(R.id.list_widget_header_add, ShareActivity.createNewNoteIntent(context));
 
         /* open query on click on orgzly logo */
-        Intent openIntent = new Intent(context, MainActivity.class);
+        Intent openIntent = Intent.makeRestartActivityTask(new ComponentName(context, MainActivity.class));
         openIntent.putExtra(MainActivity.EXTRA_QUERY_STRING, filter.getQuery());
         serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
         remoteViews.setOnClickPendingIntent(R.id.list_widget_header_icon, PendingIntent.getActivity(context, 0, openIntent, PendingIntent.FLAG_UPDATE_CURRENT));
@@ -230,8 +230,9 @@ public class ListWidgetProvider extends AppWidgetProvider {
         long noteId = intent.getLongExtra(ListWidgetProvider.EXTRA_NOTE_ID, 0L);
         long bookId = intent.getLongExtra(ListWidgetProvider.EXTRA_BOOK_ID, 0L);
 
+        PendingIntent pi = ActivityUtils.mainActivityPendingIntent(context, bookId, noteId);
         try {
-            ActivityUtils.mainActivityPendingIntent(context, bookId, noteId).send();
+            pi.send();
         } catch (PendingIntent.CanceledException e) {
             Log.e(TAG, "Error opening note: " + e);
         }
