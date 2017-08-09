@@ -65,8 +65,6 @@ public class AgendaFragment extends NoteListFragment
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = AgendaFragment.class.getName();
 
-    public static final int DEFAULT_AGENDA_SPINNER_POSITION = 0;
-
     private int agendaDurationInDays = 0;
 
     private UserTimeFormatter userTimeFormatter;
@@ -94,7 +92,7 @@ public class AgendaFragment extends NoteListFragment
     private String selectedQuery;
 
     /* Use first spinner item as default */
-    private int spinnerSelection = DEFAULT_AGENDA_SPINNER_POSITION;
+    private int spinnerSelection;
 
     // available ids for copied notes
     long nextID = Long.MAX_VALUE;
@@ -356,6 +354,11 @@ public class AgendaFragment extends NoteListFragment
                 R.array.agenda_duration,
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // get default agenda
+        selectedQuery = AppPreferences.defaultAgenda(getActivity());
+        if (selectedQuery == null)
+            selectedQuery = Query.DEFAULT_AGENDA_QUERY;
+        spinnerSelection = Query.getAgendaSpinnerPosition(selectedQuery);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         spinner.setSelection(spinnerSelection);
@@ -543,6 +546,7 @@ public class AgendaFragment extends NoteListFragment
         } else {
             throw new RuntimeException("Invalid agenda period item selected!");
         }
+        AppPreferences.defaultAgenda(getActivity(), selectedQuery);
         parseQuery(selectedQuery);
         loadQuery();
     }
@@ -667,6 +671,20 @@ public class AgendaFragment extends NoteListFragment
                     return 14;
                 case AGENDA_THIRTY_DAYS_QUERY:
                     return 30;
+            }
+            throw new IllegalStateException("Invalid agenda query!");
+        }
+
+        public static int getAgendaSpinnerPosition(String query) {
+            switch (query) {
+                case AGENDA_DAY_QUERY:
+                    return 0;
+                case AGENDA_WEEK_QUERY:
+                    return 1;
+                case AGENDA_FORTNIGHT_QUERY:
+                    return 2;
+                case AGENDA_THIRTY_DAYS_QUERY:
+                    return 3;
             }
             throw new IllegalStateException("Invalid agenda query!");
         }
