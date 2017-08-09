@@ -1,5 +1,6 @@
 package com.orgzly.android.espresso;
 
+import android.content.pm.ActivityInfo;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.rule.ActivityTestRule;
 import android.widget.DatePicker;
@@ -165,5 +166,15 @@ public class AgendaFragmentTest extends OrgzlyTest {
         onView(withText(R.string.ok)).perform(click());
         onView(withText(R.string.set)).perform(click());
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(21)));
+    }
+
+    @Test
+    public void testPersistedSpinnerSelection() {
+        defaultSetUp();
+        openAgenda();
+        selectAgendaSpinner(1); // week
+        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(22)));
+        activityRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(22)));
     }
 }

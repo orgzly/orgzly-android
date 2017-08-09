@@ -576,4 +576,14 @@ public class AppPreferences {
                 context.getResources().getString(R.string.pref_key_repo_update_sync),
                 context.getResources().getBoolean(R.bool.pref_default_value_repo_update_sync));
     }
+
+    public static String defaultAgenda(Context context) {
+        return getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_default_agenda), null);
+    }
+
+    public static void defaultAgenda(Context context, String value) {
+        String key = context.getResources().getString(R.string.pref_key_default_agenda);
+        getDefaultSharedPreferences(context).edit().putString(key, value).apply();
+    }
 }
