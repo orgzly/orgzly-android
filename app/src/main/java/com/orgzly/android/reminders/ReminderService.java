@@ -102,13 +102,7 @@ public class ReminderService extends IntentService {
         Collections.sort(result, new Comparator<NoteReminder>() {
             @Override
             public int compare(NoteReminder o1, NoteReminder o2) {
-                if (o1.getRunTime() == o2.getRunTime()) {
-                    return 0;
-                } else if (o1.getRunTime().isBefore(o2.getRunTime())) {
-                    return -1;
-                } else {
-                    return 1;
-                }
+                return o1.getRunTime().compareTo(o2.getRunTime());
             }
         });
 
