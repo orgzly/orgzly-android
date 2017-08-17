@@ -1,6 +1,7 @@
 package com.orgzly.android.ui.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -19,9 +20,12 @@ import android.widget.ListView;
 import android.widget.ViewFlipper;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.ui.Fab;
+import com.orgzly.android.ui.SyncFabIf;
+import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.util.ListViewUtils;
@@ -32,7 +36,7 @@ import java.util.Set;
 /**
  * Displays and allows modifying saved filters.
  */
-public class FiltersFragment extends ListFragment implements Fab, LoaderManager.LoaderCallbacks<Cursor> {
+public class FiltersFragment extends ListFragment implements Fab, SyncFabIf, LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = FiltersFragment.class.getName();
 
     /** Name used for {@link android.app.FragmentManager}. */
@@ -209,6 +213,19 @@ public class FiltersFragment extends ListFragment implements Fab, LoaderManager.
             @Override
             public void run() {
                 mListener.onFilterNewRequest();
+            }
+        };
+    }
+
+    @Override
+    public Runnable getSyncFabAction() {
+        return new Runnable() {
+            @Override
+            public void run() {
+                if (BuildConfig.LOG_DEBUG) LogUtils.d("getSyncFabAction");
+                Intent intent = new Intent(getActivity(), SyncService.class);
+                intent.setAction(AppIntent.ACTION_SYNC_START);
+                getActivity().startService(intent);
             }
         };
     }

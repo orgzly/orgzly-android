@@ -507,4 +507,10 @@ public class AppPreferences {
                 context.getResources().getString(R.string.pref_key_sync_after),
                 context.getResources().getBoolean(R.bool.pref_default_value_sync_after));
     }
+
+    public static boolean floatingSync(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_floating_sync),
+                context.getResources().getBoolean(R.bool.pref_default_value_floating_sync));
+    }
 }
