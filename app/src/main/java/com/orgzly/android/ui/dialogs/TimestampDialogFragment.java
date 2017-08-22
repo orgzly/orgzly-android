@@ -329,13 +329,14 @@ public class TimestampDialogFragment extends DialogFragment {
     private void setValues(OrgDateTime time) {
         Calendar cal;
 
-        Calendar nextMinute = Calendar.getInstance();
-        nextMinute.add(Calendar.MINUTE, 1);
+        // TODO: Make it configurable
+        Calendar defaultTime = Calendar.getInstance();
+        defaultTime.add(Calendar.HOUR, 1);
 
         if (time != null) {
             cal = time.getCalendar();
         } else {
-            cal = nextMinute;
+            cal = defaultTime;
         }
 
         mIsActive.setChecked(time == null || time.isActive());
@@ -346,10 +347,10 @@ public class TimestampDialogFragment extends DialogFragment {
 
         mIsTimeUsed.setChecked(time != null && time.hasTime());
 
-        /* If date/time is set but there's no time part, use next minute for the time as default. */
+        /* If there is no time part, set it to default's. */
         if (time != null && !time.hasTime()) {
-            mCurrentHour = nextMinute.get(Calendar.HOUR_OF_DAY);
-            mCurrentMinute = nextMinute.get(Calendar.MINUTE);
+            mCurrentHour = defaultTime.get(Calendar.HOUR_OF_DAY);
+            mCurrentMinute = defaultTime.get(Calendar.MINUTE);
         } else {
             mCurrentHour = cal.get(Calendar.HOUR_OF_DAY);
             mCurrentMinute = cal.get(Calendar.MINUTE);

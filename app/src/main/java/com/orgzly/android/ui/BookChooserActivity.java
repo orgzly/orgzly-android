@@ -1,5 +1,6 @@
 package com.orgzly.android.ui;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import com.orgzly.BuildConfig;
@@ -54,7 +55,7 @@ public class BookChooserActivity extends CommonActivity
     public void onBookClicked(long bookId) {
         if (action.equals(Intent.ACTION_CREATE_SHORTCUT)) {
 
-            Intent launchIntent = new Intent(this, MainActivity.class);
+            Intent launchIntent = Intent.makeRestartActivityTask(new ComponentName(this, MainActivity.class));
             launchIntent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
 
             Intent shortcut = new Intent(Intent.ACTION_CREATE_SHORTCUT);
