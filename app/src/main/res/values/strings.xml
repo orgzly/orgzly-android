@@ -368,6 +368,10 @@
 
     <string name="pref_title_reminders_sound">Sound</string>
     <string name="pref_title_reminders_vibrate">Vibrate</string>
+    
+    <string name="pref_title_floating_sync">Enable bottom left sync button</string>
+    
+    <string name="pref_title_on_resume_sync">Enable automatic sync when app comes to the foreground</string>
 
     <string name="primary_storage">Main storage</string>
     <string name="secondary_storage">SD card</string>

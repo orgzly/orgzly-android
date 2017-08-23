@@ -3,6 +3,7 @@ package com.orgzly.android.ui.fragments;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import android.widget.ViewFlipper;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Book;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
@@ -37,6 +39,8 @@ import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.ui.ActionModeListener;
 import com.orgzly.android.ui.Fab;
+import com.orgzly.android.ui.SyncFabIf;
+import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.HeadsListViewAdapter;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.NotePlace;
@@ -58,6 +62,7 @@ import java.util.TreeSet;
 public class BookFragment extends NoteListFragment
         implements
         Fab,
+        SyncFabIf,
         TimestampDialogFragment.OnDateTimeSetListener,
         LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -707,6 +712,19 @@ public class BookFragment extends NoteListFragment
                 listener.onNoteNewRequest(new NotePlace(mBookId));
             }
         } : null;
+    }
+
+    @Override
+    public Runnable getSyncFabAction() {
+        return new Runnable() {
+            @Override
+            public void run() {
+                if (BuildConfig.LOG_DEBUG) LogUtils.d("getSyncFabAction");
+                Intent intent = new Intent(getActivity(), SyncService.class);
+                intent.setAction(AppIntent.ACTION_SYNC_START);
+                getActivity().startService(intent);
+            }
+        };
     }
 
     private void delete(final TreeSet<Long> ids) {

@@ -225,6 +225,7 @@
             android:key="@string/pref_key_reminders_vibrate"
             android:title="@string/pref_title_reminders_vibrate"
             android:defaultValue="@bool/pref_default_value_reminders_vibrate"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/sync">
@@ -240,6 +241,17 @@
             android:key="@string/pref_key_sync_after"
             android:summary="@string/sync_after_summary"
             android:defaultValue="@bool/pref_default_value_sync_after"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_key_floating_sync"
+            android:title="@string/pref_title_floating_sync"
+            android:defaultValue="@bool/pref_default_value_floating_sync"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_key_on_resume_sync"
+            android:title="@string/pref_title_on_resume_sync"
+            android:defaultValue="@bool/pref_default_value_on_resume_sync"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/app">
