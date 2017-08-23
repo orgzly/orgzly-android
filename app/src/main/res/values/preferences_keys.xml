@@ -197,6 +197,9 @@
     <string name="pref_key_reminders_vibrate" translatable="false">pref_key_reminders_vibrate</string>
     <bool name="pref_default_value_reminders_vibrate" translatable="false">false</bool>
 
+    <string name="pref_key_on_resume_sync" translatable="false">pref_key_on_resume_sync</string>
+    <bool name="pref_default_value_on_resume_sync" translatable="false">false</bool>
+
     <string name="pref_key_use_reminders_for_scheduled_times" translatable="false">pref_key_use_reminders_for_scheduled_times</string>
     <bool name="pref_default_value_use_reminders_for_scheduled_times" translatable="false">false</bool>
 

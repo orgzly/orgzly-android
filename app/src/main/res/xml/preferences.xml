@@ -240,6 +240,12 @@
             android:key="@string/pref_key_sync_after"
             android:summary="@string/sync_after_summary"
             android:defaultValue="@bool/pref_default_value_sync_after"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_key_on_resume_sync"
+            android:title="@string/pref_title_on_resume_sync"
+            android:defaultValue="@bool/pref_default_value_on_resume_sync"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/app">
