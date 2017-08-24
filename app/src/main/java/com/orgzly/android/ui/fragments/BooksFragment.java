@@ -38,9 +38,6 @@ import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.UriUtils;
 
-import java.text.DateFormat;
-import java.util.Date;
-
 /**
  * Displays all notebooks.
  * Allows creating new, deleting, renaming, setting links etc.
@@ -210,7 +207,7 @@ public class BooksFragment extends ListFragment
                 ProviderContract.Books.Param.USED_ENCODING,
                 ProviderContract.Books.Param.DETECTED_ENCODING,
                 ProviderContract.Books.Param.SELECTED_ENCODING,
-                ProviderContract.Books.Param.NOTES_COUNT, //"notes_count",
+                ProviderContract.Books.Param.NOTES_COUNT,
         };
 
         /* Views which the data will be bound to. */
@@ -330,18 +327,18 @@ public class BooksFragment extends ListFragment
                  *   OR
                  * - action is INFO but user choose not to display it
                  */
-                boolean should_hide_last_action=book.getLastAction() == null || (lastActionWasInfo(book) && !isPreferenceActivated(R.string.pref_value_book_details_last_action, context));
-                placer.displayDetailByCondition(holder.lastActionContainer, !should_hide_last_action);
-                if (!should_hide_last_action){
+                boolean shouldHideLastAction=book.getLastAction() == null || (lastActionWasInfo(book) && !isPreferenceActivated(R.string.pref_value_book_details_last_action, context));
+                placer.displayDetailByCondition(holder.lastActionContainer, !shouldHideLastAction);
+                if (!shouldHideLastAction){
                     holder.lastAction.setText(getLastActionText(book));
                 }
 
                 /* If encoding is not set, removed it. */
-                boolean should_show_used_encoding=book.getUsedEncoding() != null && isPreferenceActivated(R.string.pref_value_book_details_encoding_used, context);
-                placer.displayDetailByCondition(holder.usedEncodingContainer, should_show_used_encoding);
+                boolean shouldShowUsedEncoding=book.getUsedEncoding() != null && isPreferenceActivated(R.string.pref_value_book_details_encoding_used, context);
+                placer.displayDetailByCondition(holder.usedEncodingContainer, shouldShowUsedEncoding);
 
-                boolean should_show_detected_encoding=book.getDetectedEncoding() != null && isPreferenceActivated(R.string.pref_value_book_details_encoding_detected, context);
-                placer.displayDetailByCondition(holder.detectedEncodingContainer ,should_show_detected_encoding);
+                boolean shouldShowDetectedEncoding=book.getDetectedEncoding() != null && isPreferenceActivated(R.string.pref_value_book_details_encoding_detected, context);
+                placer.displayDetailByCondition(holder.detectedEncodingContainer ,shouldShowDetectedEncoding);
 
                 placer.displayElementByCondition(holder.selectedEncodingContainer, book.getSelectedEncoding() != null);
 
@@ -360,7 +357,7 @@ public class BooksFragment extends ListFragment
 
 
             class ElementPlacer {
-                private boolean detail_was_shown=false;
+                private boolean detailWasShown =false;
 
                 private void displayElementByCondition(View element, boolean condition){
                     element.setVisibility(condition ? View.VISIBLE : View.GONE);
@@ -369,7 +366,7 @@ public class BooksFragment extends ListFragment
                 private void displayDetailByCondition(View detail, boolean condition){
                     displayElementByCondition(detail, condition);
                     if (condition){
-                        detail_was_shown=true;
+                        detailWasShown =true;
                     }
                 }
 
@@ -382,12 +379,12 @@ public class BooksFragment extends ListFragment
                 }
 
                 boolean anyDetailWasShown(){
-                    return detail_was_shown;
+                    return detailWasShown;
                 }
             }
 
-            private boolean isPreferenceActivated(int preference_code, Context context){
-                return AppPreferences.displayedBookDetails(context).contains(getString(preference_code));
+            private boolean isPreferenceActivated(int preferenceCode, Context context){
+                return AppPreferences.displayedBookDetails(context).contains(getString(preferenceCode));
             }
 
             private boolean lastActionWasInfo(Book book){
@@ -423,65 +420,65 @@ public class BooksFragment extends ListFragment
         adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                boolean has_data=!cursor.isNull(columnIndex);
-                String view_content="";
+                boolean hasData=!cursor.isNull(columnIndex);
+                String viewContent="";
                 switch (view.getId()) {
                     case R.id.item_book_encoding_used:
-                        if (has_data) {
-                            view_content=cursor.getString(columnIndex)+" used";
+                        if (hasData) {
+                            viewContent=cursor.getString(columnIndex)+" used";
                         }
                         break;
 
                     case R.id.item_book_encoding_detected:
-                        if (has_data) {
-                            view_content=cursor.getString(columnIndex)+" detected";
+                        if (hasData) {
+                            viewContent=cursor.getString(columnIndex)+" detected";
                         }
                         break;
 
                     case R.id.item_book_encoding_selected:
-                        if (has_data) {
-                            view_content=cursor.getString(columnIndex)+" selected";
+                        if (hasData) {
+                            viewContent=cursor.getString(columnIndex)+" selected";
                         }
                         break;
 
                     /* Generic N/A-if-does-not-exist. */
                     case R.id.item_book_synced_revision:
-                        if (has_data) {
-                            view_content=cursor.getString(columnIndex);
+                        if (hasData) {
+                            viewContent=cursor.getString(columnIndex);
                         } else {
-                            view_content="N/A";
+                            viewContent="N/A";
                         }
                         break;
 
                     case R.id.item_book_synced_mtime:
-                        if (has_data && cursor.getLong(columnIndex) > 0) {
+                        if (hasData && cursor.getLong(columnIndex) > 0) {
                             /* Format time. */
-                            view_content=timeString(cursor.getLong(columnIndex));
+                            viewContent=timeString(cursor.getLong(columnIndex));
                         } else {
-                            view_content="N/A";
+                            viewContent="N/A";
                         }
                         break;
 
                     case R.id.item_book_mtime:
-                        if (has_data && cursor.getLong(columnIndex) > 0) {
+                        if (hasData && cursor.getLong(columnIndex) > 0) {
                             /* Format time. */
-                            view_content=timeString(cursor.getLong(columnIndex));
+                            viewContent=timeString(cursor.getLong(columnIndex));
                         } else {
-                            view_content=getString(R.string.book_never_modified_locally);
+                            viewContent=getString(R.string.book_never_modified_locally);
                         }
                         break;
 
                     case R.id.item_book_link_url:
                     case R.id.item_book_synced_url:
-                        if (has_data) {
-                            view_content=UriUtils.friendlyUri(cursor.getString(columnIndex));
+                        if (hasData) {
+                            viewContent=UriUtils.friendlyUri(cursor.getString(columnIndex));
                         }
                         break;
 
                     case R.id.item_book_notes_count:
-                        int real_notes_amount=cursor.getInt(columnIndex)-1; // subtract automatically added root node
-                        if (has_data) {
-                            view_content = (real_notes_amount > 0) ? "Contains " + real_notes_amount + " notes" : "Notebook is empty";
+                        int realNotesAmount=cursor.getInt(columnIndex)-1; // subtract automatically added root node
+                        if (hasData) {
+                            viewContent = (realNotesAmount > 0) ? "Contains " + realNotesAmount + " notes" : "Notebook is empty";
                         }
                         break;
 
@@ -489,7 +486,7 @@ public class BooksFragment extends ListFragment
                         return false;
                 }
 
-                ((TextView) view).setText(view_content);
+                ((TextView) view).setText(viewContent);
                 return true;
             }
         });
