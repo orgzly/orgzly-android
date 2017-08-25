@@ -317,6 +317,7 @@
     <string name="displayed_book_details_detected_encoding">Detected encoding</string>
     <string name="displayed_book_details_used_encoding">Used encoding</string>
     <string name="displayed_book_details_last_action">Last action</string>
+    <string name="displayed_book_details_notes_count" >Notes count</string>
 
     <string name="color_scheme_light">Light</string>
     <string name="color_scheme_dark">Dark</string>

@@ -349,6 +349,8 @@ public class BooksFragment extends ListFragment
                     view.setAlpha(1);
                 }
 
+                placer.displayDetailByCondition(holder.notesCountContainer, isPreferenceActivated(R.string.pref_value_book_details_notes_count, context));
+
                 /*
                  * Add some vertical spacing if at least one of the notebook details is displayed.
                  */
