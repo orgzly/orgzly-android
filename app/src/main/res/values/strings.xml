@@ -369,8 +369,6 @@
     <string name="pref_title_reminders_sound">Sound</string>
     <string name="pref_title_reminders_vibrate">Vibrate</string>
     
-    <string name="pref_title_on_resume_sync">Enable automatic sync when app comes to the foreground</string>
-
     <string name="primary_storage">Main storage</string>
     <string name="secondary_storage">SD card</string>
     <string name="secondary_storage_not_available_any_more">Secondary storage is no longer available</string>
@@ -404,8 +402,14 @@
     <string name="select_a_filter">Select a filter</string>
     <string name="select_a_filter_long">Select a filter by clicking on the title bar</string>
 
-    <string name="sync_after_preference_title">Start sync after new note is created</string>
-    <string name="sync_after_summary">Note that entire notebook will be exported and transferred over the network each time</string>
+    <string name="pref_title_sync_after_note_create">Start sync after new note is created</string>
+    <string name="pref_summary_sync_after_note_create">Note that entire notebook will be exported and potentially transferred over the network each time</string>
+
+    <string name="pref_title_sync_after_note_update">Start sync after a note is updated</string>
+    <string name="pref_summary_sync_after_note_update">Note that entire notebook will be exported and potentially transferred over the network each time</string>
+
+    <string name="pref_title_on_resume_sync">Sync onResume</string>
+    <string name="pref_summary_on_resume_sync">Sync whenever app comes to the foreground</string>
 
     <!-- These are just used in tools:text for layout preview and don't have to be translated,
          unless layout look depends on the translation. -->

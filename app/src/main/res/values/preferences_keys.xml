@@ -197,6 +197,12 @@
     <string name="pref_key_reminders_vibrate" translatable="false">pref_key_reminders_vibrate</string>
     <bool name="pref_default_value_reminders_vibrate" translatable="false">false</bool>
 
+    <string name="pref_key_sync_after_note_create">pref_key_sync_after_note_create</string>
+    <bool name="pref_default_value_sync_after_note_create" translatable="false">false</bool>
+
+    <string name="pref_key_sync_after_note_update" translatable="false">pref_key_sync_after_note_update</string>
+    <bool name="pref_default_value_sync_after_note_update" translatable="false">false</bool>
+
     <string name="pref_key_on_resume_sync" translatable="false">pref_key_on_resume_sync</string>
     <bool name="pref_default_value_on_resume_sync" translatable="false">false</bool>
 
@@ -217,9 +223,6 @@
 
     <string name="pref_key_min_priority" translatable="false">pref_key_min_priority</string>
     <string name="pref_default_min_priority" translatable="false">C</string>
-
-    <string name="pref_key_sync_after">pref_key_sync_after</string>
-    <bool name="pref_default_value_sync_after" translatable="false">false</bool>
 
     <string-array name="priorities">
         <item>@string/priority_a_highest</item>

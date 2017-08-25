@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.android.util.LogUtils;
+import com.orgzly.android.prefs.AppPreferences;
+import com.orgzly.android.sync.SyncService;
 
 public class ActionService extends IntentService {
     public static final String TAG = ActionService.class.getName();
@@ -36,6 +38,11 @@ public class ActionService extends IntentService {
 
             if (noteId > 0) {
                 shelf.setStateToDone(noteId);
+                if (AppPreferences.syncAfterNewNoteCreated(this)) {
+                    Intent syncIntent = new Intent(this, SyncService.class);
+                    intent.setAction(AppIntent.ACTION_SYNC_START);
+                    this.startService(syncIntent);
+                }
             } else {
                 throw new IllegalArgumentException("Missing note ID");
             }

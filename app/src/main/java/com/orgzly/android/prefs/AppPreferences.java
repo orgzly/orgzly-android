@@ -504,8 +504,14 @@ public class AppPreferences {
 
     public static boolean syncAfterNewNoteCreated(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
-                context.getResources().getString(R.string.pref_key_sync_after),
-                context.getResources().getBoolean(R.bool.pref_default_value_sync_after));
+                context.getResources().getString(R.string.pref_key_sync_after_note_create),
+                context.getResources().getBoolean(R.bool.pref_default_value_sync_after_note_create));
+    }
+
+    public static boolean syncAfterNoteUpdated(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_sync_after_note_update),
+                context.getResources().getBoolean(R.bool.pref_default_value_sync_after_note_update));
     }
 
     public static boolean onResumeSync(Context context) {
