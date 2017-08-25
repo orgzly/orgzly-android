@@ -405,6 +405,10 @@ public class ShareActivity extends CommonActivity
     public void onNotesCut(int count) {
     }
 
+    @Override
+    public void onNotesMoved(int result) {
+    }
+
     private class Data {
         String title;
         String content;

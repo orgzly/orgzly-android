@@ -1079,6 +1079,25 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    public void moveNote(final long bookId, final long noteId, final int offset) {
+        new AsyncTask<Void, Void, Integer>() {
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                return mShelf.move(bookId, noteId, offset);
+            }
+
+            @Override
+            protected void onPostExecute(Integer result) {
+                if (AppPreferences.syncAfterNoteUpdated(getContext())) {
+                    Intent intent = new Intent(getActivity(), SyncService.class);
+                    intent.setAction(AppIntent.ACTION_SYNC_START);
+                    getActivity().startService(intent);
+                }
+                mListener.onNotesMoved(result);
+            }
+        }.execute();
+    }
+
     /**
      * Re-parsing notes currently only checks for notes' title and state.
      */
@@ -1235,5 +1254,7 @@ public class SyncFragment extends Fragment {
 
         void onNotesDeleted(int count);
         void onNotesCut(int count);
+
+        void onNotesMoved(int result);
     }
 }

@@ -333,6 +333,12 @@ public class Shelf {
         return result;
     }
 
+    public int move(long bookId, long noteId, int offset) {
+        int result = BooksClient.moveNotes(mContext, bookId, noteId, offset);
+        notifyDataChanged(mContext);
+        return result;
+    }
+
     public NotesBatch paste(long bookId, long noteId, Place place) {
         NotesBatch batch = NotesClient.paste(mContext, bookId, noteId, place);
         notifyDataChanged(mContext);

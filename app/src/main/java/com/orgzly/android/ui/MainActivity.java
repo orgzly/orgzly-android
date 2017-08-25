@@ -1327,6 +1327,15 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
+    public void onNotesMoveRequest(long bookId, long noteId, int offset) {
+        mSyncFragment.moveNote(bookId, noteId, offset);
+    }
+
+    @Override
+    public void onNotesMoved(int count) {
+    }
+
+    @Override
     public void onNotesPasted(NotesBatch batch) {
         String message = getResources().getQuantityString(
                 R.plurals.notes_pasted,
