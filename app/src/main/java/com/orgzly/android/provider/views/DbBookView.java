@@ -1,5 +1,6 @@
 package com.orgzly.android.provider.views;
 
+import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.GenericDatabaseUtils;
 import com.orgzly.android.provider.models.DbBook;
 import com.orgzly.android.provider.models.DbBookColumns;
@@ -20,9 +21,10 @@ public class DbBookView implements DbBookColumns, DbBookViewColumns {
 
     public static final String DROP_SQL = "DROP VIEW IF EXISTS " + VIEW_NAME;
 
-    private final static String notes_count_subquery=String.format("SELECT COUNT(*) FROM %s WHERE %s.%s=%s.%s",
+    private final static String notesCountSubquery=String.format("SELECT COUNT(*) FROM %s WHERE %s.%s=%s.%s AND %s",
             DbNoteView.VIEW_NAME, DbNoteView.VIEW_NAME, DbNoteColumns.BOOK_ID,
-            DbBook.TABLE, DbPropertyName._ID);
+            DbBook.TABLE, DbPropertyName._ID,
+            DatabaseUtils.WHERE_EXISTING_NOTES);
 
     public static final String CREATE_SQL =
             "CREATE VIEW " + VIEW_NAME + " AS " +
@@ -35,7 +37,7 @@ public class DbBookView implements DbBookColumns, DbBookViewColumns {
             "t_sync_revision_rook_urls.rook_url AS " + SYNCED_ROOK_URL + ", " +
             "t_sync_revisions.rook_revision AS " + SYNCED_ROOK_REVISION + ", " +
             "t_sync_revisions.rook_mtime AS " + SYNCED_ROOK_MTIME + ", " +
-             String.format("(%s) AS %s ", notes_count_subquery, NOTES_COUNT) +
+             String.format("(%s) AS %s ", notesCountSubquery, NOTES_COUNT) +
 
             "FROM " + DbBook.TABLE + " " +
 

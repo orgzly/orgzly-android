@@ -478,9 +478,9 @@ public class BooksFragment extends ListFragment
                         break;
 
                     case R.id.item_book_notes_count:
-                        int realNotesAmount=cursor.getInt(columnIndex)-1; // subtract automatically added root node
+                        int notesAmount=cursor.getInt(columnIndex); // root and cut nodes are already filtered in subquery
                         if (hasData) {
-                            viewContent = (realNotesAmount > 0) ? "Contains " + realNotesAmount + " notes" : "Notebook is empty";
+                            viewContent = (notesAmount > 0) ? "Contains " + notesAmount + " notes" : "Notebook is empty";
                         }
                         break;
 
