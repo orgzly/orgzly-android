@@ -109,7 +109,10 @@ public class Book {
     }
 
     public boolean isModifiedAfterLastSync() {
-        return lastSyncedToRook != null && modificationTime > lastSyncedToRook.getMtime();
+        // Android does not report last file modification time in milliseconds in all cases
+        // The mod times are truncated to seconds in some/many cases.
+        // so consider it synced if within the last second
+        return lastSyncedToRook != null && modificationTime - lastSyncedToRook.getMtime() > 1000;
     }
 
     public long getMtime() {
