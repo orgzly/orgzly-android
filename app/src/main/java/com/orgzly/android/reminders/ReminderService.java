@@ -358,16 +358,20 @@ public class ReminderService extends IntentService {
             PendingIntent openPi = ActivityUtils.mainActivityPendingIntent(context, noteReminder.getPayload().bookId, noteReminder.getPayload().id);
             builder.setContentIntent(openPi);
 
-            /* Action text depending on repeater. */
+            /* Mark as done action - text depending on repeater. */
             String doneActionText = noteReminder.getPayload().orgDateTime.hasRepeater() ?
                     getString(R.string.mark_as_done_with_repeater, noteReminder.getPayload().orgDateTime.getRepeater().toString()) :
                     getString(R.string.mark_as_done);
 
-            builder.addAction(
-                    R.drawable.ic_done_white_24dp,
-                    doneActionText,
-                    markNoteAsDonePendingIntent(context, noteReminder.getPayload().id, notificationTag, notificationId));
-
+            NotificationCompat.Action markAsDoneAction =
+                new NotificationCompat.Action(R.drawable.ic_done_white_24dp,
+                                              doneActionText,
+                                              markNoteAsDonePendingIntent(context,
+                                                                          noteReminder.getPayload().id,
+                                                                          notificationTag,
+                                                                          notificationId));
+            builder.addAction(markAsDoneAction);
+            builder.extend(new NotificationCompat.WearableExtender().addAction(markAsDoneAction));
             notificationManager.notify(notificationTag, notificationId, builder.build());
         }
     }
