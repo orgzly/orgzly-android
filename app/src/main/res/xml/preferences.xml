@@ -231,6 +231,14 @@
             android:key="@string/pref_key_reminders_vibrate"
             android:title="@string/pref_title_reminders_vibrate"
             android:defaultValue="@bool/pref_default_value_reminders_vibrate"/>
+
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_snooze_time"
+            android:title="@string/pref_title_snooze_time"
+            android:entries="@array/pref_entries_snooze_time"
+            android:entryValues="@array/pref_entry_values_snooze_time"
+            android:defaultValue="@string/pref_default_value_snooze_time"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/sync">

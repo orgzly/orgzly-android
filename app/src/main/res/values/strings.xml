@@ -28,6 +28,7 @@
     <string name="done">Done</string>
     <string name="mark_as_done">Mark as done</string>
     <string name="mark_as_done_with_repeater">Reschedule %s</string>
+    <string name="reminder_snooze">Snooze</string>
     <string name="close">Close</string>
     <string name="import_">Import</string> <!-- "import" is reserved -->
     <string name="imported">Imported</string>
@@ -370,7 +371,9 @@
 
     <string name="pref_title_reminders_sound">Sound</string>
     <string name="pref_title_reminders_vibrate">Vibrate</string>
-    
+
+    <string name="pref_title_snooze_time">Snooze Time</string>
+
     <string name="primary_storage">Main storage</string>
     <string name="secondary_storage">SD card</string>
     <string name="secondary_storage_not_available_any_more">Secondary storage is no longer available</string>

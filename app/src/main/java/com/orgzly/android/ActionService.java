@@ -10,6 +10,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.sync.SyncService;
+import com.orgzly.android.reminders.SnoozeJob;
 
 public class ActionService extends IntentService {
     public static final String TAG = ActionService.class.getName();
@@ -18,6 +19,7 @@ public class ActionService extends IntentService {
     public static final String EXTRA_NOTIFICATION_ID = "notification_id";
 
     public static final String EXTRA_NOTE_ID = "note_id";
+    public static final String EXTRA_SNOOZE_TIMESTAMP = "snooze_timestamp";
 
     public ActionService() {
         super(TAG);
@@ -29,18 +31,29 @@ public class ActionService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
-        Shelf shelf = new Shelf(this);
-
         dismissNotification(this, intent);
-
-        if (intent != null && AppIntent.ACTION_NOTE_MARK_AS_DONE.equals(intent.getAction())) {
+        if (intent == null) {
+            return;
+        }
+        if (AppIntent.ACTION_NOTE_MARK_AS_DONE.equals(intent.getAction())) {
             long noteId = intent.getLongExtra(EXTRA_NOTE_ID, 0);
 
             if (noteId > 0) {
+                Shelf shelf = new Shelf(this);
                 shelf.setStateToDone(noteId);
                 shelf.createSync();
             } else {
                 throw new IllegalArgumentException("Missing note ID");
+            }
+        } else if (AppIntent.ACTION_REMINDER_SNOOZE_REQUEST.equals(intent.getAction())) {
+            long noteId = intent.getLongExtra(ActionService.EXTRA_NOTE_ID, 0);
+            long timestamp = intent.getLongExtra(ActionService.EXTRA_SNOOZE_TIMESTAMP, 0);
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
+            if (noteId > 0) {
+                long snoozeTime = AppPreferences.remindersSnoozeTime(this) * 60 * 1000;
+                SnoozeJob.scheduleJob(noteId, timestamp + snoozeTime);
+            } else {
+                throw new IllegalArgumentException("Missing note id");
             }
         }
     }
