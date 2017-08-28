@@ -386,6 +386,7 @@ public class ReminderService extends IntentService {
                     .setPriority(NotificationCompat.PRIORITY_MAX)
                     .setColor(ContextCompat.getColor(context, R.color.notification))
                     .setSmallIcon(R.drawable.cic_orgzly_notification);
+            NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender();
 
             /* Set vibration. */
             if (AppPreferences.remindersVibrate(context)) {
@@ -423,7 +424,7 @@ public class ReminderService extends IntentService {
                                                                           notificationTag,
                                                                           notificationId));
             builder.addAction(markAsDoneAction);
-            builder.extend(new NotificationCompat.WearableExtender().addAction(markAsDoneAction));
+            wearableExtender.addAction(markAsDoneAction);
 
             /* snooze action */
             String reminderSnoozeActionText = getString(R.string.reminder_snooze);
@@ -440,9 +441,10 @@ public class ReminderService extends IntentService {
                                                                           notificationTag,
                                                                           notificationId));
             builder.addAction(reminderSnoozeAction);
-            builder.extend(new NotificationCompat.WearableExtender().addAction(reminderSnoozeAction));
+            wearableExtender.addAction(reminderSnoozeAction);
 
-            /* notify */
+            /* finish & notify */
+            builder.extend(wearableExtender);
             notificationManager.notify(notificationTag, notificationId, builder.build());
         }
     }
