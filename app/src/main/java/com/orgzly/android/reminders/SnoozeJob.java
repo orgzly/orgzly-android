@@ -34,16 +34,17 @@ public class SnoozeJob extends Job {
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp, exactMs);
 
-        if (exactMs > 0) {
-            extras.putLong(ActionService.EXTRA_NOTE_ID, noteId);
-            extras.putLong(ActionService.EXTRA_SNOOZE_TIMESTAMP, timestamp);
+        if (exactMs <= 0) {
+            exactMs = 1000;
+        }
+        extras.putLong(ActionService.EXTRA_NOTE_ID, noteId);
+        extras.putLong(ActionService.EXTRA_SNOOZE_TIMESTAMP, timestamp);
 
-            new JobRequest.Builder(SnoozeJob.TAG)
-                .setExact(exactMs)
-                .setExtras(extras)
-                .setPersisted(true)
-                .build()
-                .schedule();
-        } 
+        new JobRequest.Builder(SnoozeJob.TAG)
+            .setExact(exactMs)
+            .setExtras(extras)
+            .setPersisted(true)
+            .build()
+            .schedule();
     }
 }
