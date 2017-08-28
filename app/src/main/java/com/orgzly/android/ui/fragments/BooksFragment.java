@@ -480,7 +480,9 @@ public class BooksFragment extends ListFragment
                     case R.id.item_book_notes_count:
                         int notesAmount=cursor.getInt(columnIndex); // root and cut nodes are already filtered in subquery
                         if (hasData) {
-                            viewContent = (notesAmount > 0) ? "Contains " + notesAmount + " notes" : "Notebook is empty";
+                            viewContent = notesAmount > 0 ?
+                                    getResources().getQuantityString(R.plurals.notes_count_nonzero, notesAmount, notesAmount) :
+                                    getString(R.string.notes_count_zero);
                         }
                         break;
 

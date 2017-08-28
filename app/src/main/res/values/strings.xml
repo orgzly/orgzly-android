@@ -439,4 +439,10 @@
     <string name="synced_rook_revision_sample">42f97fe238</string>
     <string name="tap_to_view_notes">Tap to view your notes</string>
     <string name="book_never_modified_locally">Never modified locally</string>
+
+    <string name="notes_count_zero">Contains no notes</string>
+    <plurals name="notes_count_nonzero">
+        <item quantity="one">Contains <b>%d</b> note</item>
+        <item quantity="other">Contains <b>%d</b> notes</item>
+    </plurals>
 </resources>
