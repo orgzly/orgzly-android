@@ -147,6 +147,7 @@
 
         <attr name="oic_item_book_item_sync_needed" format="reference"/>
         <attr name="oic_item_book_mtime_item" format="reference"/>
+        <attr name="oic_item_book_notes_count" format="reference"/>
         <attr name="oic_item_book_link_item" format="reference"/>
         <attr name="oic_item_book_versioned_rook_item" format="reference"/>
         <attr name="oic_item_book_sync_status_item" format="reference"/>

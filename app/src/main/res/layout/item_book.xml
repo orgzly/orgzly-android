@@ -103,6 +103,29 @@
                         android:textSize="?attr/item_book_details_text_size"/>
                 </LinearLayout>
 
+                <!-- Notes count -->
+                <LinearLayout
+                    android:id="@+id/item_book_notes_count_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        style="@style/BookItemInfoIcon"
+                        android:src="?attr/oic_item_book_notes_count"
+                        android:alpha="?attr/oic_item_alpha"
+                        android:contentDescription="@string/book_notes_count"/>
+
+                    <TextView
+                        android:id="@+id/item_book_notes_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start|center_vertical"
+                        tools:text="@string/books_book_notes_count_sample"
+                        android:textSize="?attr/item_book_details_text_size"/>
+                </LinearLayout>
+
                 <!-- Link details. -->
                 <LinearLayout
                     android:id="@+id/item_book_link_container"
@@ -356,30 +379,6 @@
                         tools:text="@string/books_book_sync_last_action_sample"
                         android:textSize="?attr/item_book_details_text_size"/>
                 </LinearLayout>
-
-                                <!-- Last action. -->
-                <LinearLayout
-                    android:id="@+id/item_book_notes_count_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        style="@style/BookItemInfoIcon"
-                        android:src="?attr/oic_edit_state_action_mode"
-                        android:alpha="?attr/oic_item_alpha"
-                        android:contentDescription="@string/book_notes_count"/>
-
-                    <TextView
-                        android:id="@+id/item_book_notes_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start|center_vertical"
-                        tools:text="@string/books_book_notes_count_sample"
-                        android:textSize="?attr/item_book_details_text_size"/>
-                </LinearLayout>
-
             </LinearLayout>
 
         </LinearLayout>

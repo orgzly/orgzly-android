@@ -156,6 +156,7 @@
 
         <item name="oic_item_book_item_sync_needed">@drawable/ic_sync_black_18dp</item>
         <item name="oic_item_book_mtime_item">@drawable/ic_access_time_black_18dp</item>
+        <item name="oic_item_book_notes_count">@drawable/ic_format_list_bulleted_black_18dp</item>
         <item name="oic_item_book_link_item">@drawable/ic_link_black_18dp</item>
         <item name="oic_item_book_versioned_rook_item">@drawable/ic_sync_black_18dp</item>
         <item name="oic_item_book_sync_status_item">@drawable/ic_sync_black_18dp</item>
@@ -316,6 +317,7 @@
 
         <item name="oic_item_book_item_sync_needed">@drawable/ic_sync_white_18dp</item>
         <item name="oic_item_book_mtime_item">@drawable/ic_access_time_white_18dp</item>
+        <item name="oic_item_book_notes_count">@drawable/ic_format_list_bulleted_white_18dp</item>
         <item name="oic_item_book_link_item">@drawable/ic_link_white_18dp</item>
         <item name="oic_item_book_versioned_rook_item">@drawable/ic_sync_white_18dp</item>
         <item name="oic_item_book_sync_status_item">@drawable/ic_sync_white_18dp</item>

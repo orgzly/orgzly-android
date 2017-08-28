@@ -155,6 +155,7 @@
     <string name="pref_value_book_details_notes_count" translatable="false">book_details_notes_count</string>
     <string-array name="displayed_book_details">
         <item>@string/displayed_book_details_local_mtime</item>
+        <item>@string/displayed_book_details_notes_count</item>
         <item>@string/displayed_book_details_link_url</item>
         <item>@string/displayed_book_details_sync_url</item>
         <item>@string/displayed_book_details_sync_mtime</item>
@@ -162,10 +163,10 @@
         <item>@string/displayed_book_details_detected_encoding</item>
         <item>@string/displayed_book_details_used_encoding</item>
         <item>@string/displayed_book_details_last_action</item>
-        <item>@string/displayed_book_details_notes_count</item>
     </string-array>
     <string-array name="displayed_book_details_values">
         <item>@string/pref_value_book_details_mtime</item>
+        <item>@string/pref_value_book_details_notes_count</item>
         <item>@string/pref_value_book_details_link_url</item>
         <item>@string/pref_value_book_details_sync_url</item>
         <item>@string/pref_value_book_details_sync_mtime</item>
@@ -173,7 +174,6 @@
         <item>@string/pref_value_book_details_encoding_detected</item>
         <item>@string/pref_value_book_details_encoding_used</item>
         <item>@string/pref_value_book_details_last_action</item>
-        <item>@string/pref_value_book_details_notes_count</item>
     </string-array>
 
     <string name="pref_key_new_note_state" translatable="false">pref_key_new_note_state</string>
