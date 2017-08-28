@@ -9,11 +9,14 @@ import com.orgzly.BuildConfig;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.provider.models.DbNote;
 import com.orgzly.android.provider.models.DbNoteAncestor;
+import com.orgzly.android.provider.models.DbNoteColumns;
 import com.orgzly.android.provider.models.DbNoteProperty;
 import com.orgzly.android.provider.models.DbOrgTimestamp;
 import com.orgzly.android.provider.models.DbProperty;
 import com.orgzly.android.provider.models.DbPropertyName;
 import com.orgzly.android.provider.models.DbPropertyValue;
+import com.orgzly.android.provider.views.DbBookView;
+import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 import com.orgzly.org.datetime.OrgDateTime;
@@ -52,8 +55,10 @@ public class DatabaseMigration {
     private static final int DB_VER_10 = 139;
     private static final int DB_VER_11 = 140;
     private static final int DB_VER_12 = 141;
+    private static final int DB_VER_13 = 142;
+    private static final int DB_VER_14 = 143;
 
-    static final int DB_VER_CURRENT = DB_VER_12;
+    static final int DB_VER_CURRENT = DB_VER_14;
 
     /**
      * Start from the old version and go through all changes. No breaks.
@@ -128,6 +133,12 @@ public class DatabaseMigration {
 
             case DB_VER_11:
                 /* Views-only updates */
+
+            case DB_VER_12:
+                /* Views-only updates (notes count added to DbBookView) */
+
+            case DB_VER_13:
+                /* Views-only updates (notes count subquery modified) */
 
         }
     }

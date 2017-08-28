@@ -153,6 +153,7 @@
     <string name="book_link">Notebook link</string>
     <string name="book_link_details">Notebook link details</string>
     <string name="book_last_action">Notebook last action</string>
+    <string name="book_notes_count">Notes count</string>
     <string name="pref_title_notebooks">Notebooks</string>
     <string name="notebooks">Notebooks</string>
     <string name="searches">Searches</string>
@@ -316,6 +317,7 @@
     <string name="displayed_book_details_detected_encoding">Detected encoding</string>
     <string name="displayed_book_details_used_encoding">Used encoding</string>
     <string name="displayed_book_details_last_action">Last action</string>
+    <string name="displayed_book_details_notes_count" >Notes count</string>
 
     <string name="color_scheme_light">Light</string>
     <string name="color_scheme_dark">Dark</string>
@@ -412,6 +414,7 @@
     <string name="book_preface_sample">This is notebook\'s preface. Any text before the first entry. It could be quite long and contain multiple lines.</string>
     <string name="book_title_sample">Notebook Title</string>
     <string name="books_book_sync_last_action_sample">May 15, 2015 11:24:47 PM: No change</string>
+    <string name="books_book_notes_count_sample">Contains 42 notes</string>
     <string name="dialog_timestamp_date_sample">7/27/2015</string>
     <string name="dialog_timestamp_end_time_sample">12345:6789</string>
     <string name="dialog_timestamp_time_sample">14:32</string>

@@ -9,4 +9,6 @@ public interface DbBookViewColumns {
     String SYNCED_ROOK_URL      = "sync_rook_url";
     String SYNCED_ROOK_REVISION = "sync_rook_revision";
     String SYNCED_ROOK_MTIME    = "sync_rook_mtime";
+
+    String NOTES_COUNT    = "notes_count";
 }
