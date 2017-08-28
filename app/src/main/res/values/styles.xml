@@ -8,6 +8,9 @@
          See and try using http://developer.android.com/design/style/typography.html
     -->
     <style name="AppLightTheme" parent="Theme.Design.Light">
+        <!-- Avoid white screen appearing briefly. -->
+        <item name="android:windowDisablePreview">true</item>
+
         <!-- Font sizes (defaults) -->
         <item name="font_micro">12sp</item>
         <item name="font_small">14sp</item>
