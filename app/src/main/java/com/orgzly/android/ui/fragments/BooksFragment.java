@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
@@ -49,7 +50,9 @@ public class BooksFragment extends ListFragment
 
     private static final String TAG = BooksFragment.class.getName();
 
-    /** Name used for {@link android.app.FragmentManager}. */
+    /**
+     * Name used for {@link android.app.FragmentManager}.
+     */
     public static final String FRAGMENT_TAG = BooksFragment.class.getName();
 
     private static final String ARG_ADD_OPTIONS = "add_options";
@@ -193,7 +196,7 @@ public class BooksFragment extends ListFragment
         SimpleCursorAdapter adapter;
 
         /* Column field names to be bound. */
-        String[] columns = new String[] {
+        String[] columns = new String[]{
                 ProviderContract.Books.Param.NAME,
                 ProviderContract.Books.Param.NAME,
                 ProviderContract.Books.Param.MTIME,
@@ -211,7 +214,7 @@ public class BooksFragment extends ListFragment
         };
 
         /* Views which the data will be bound to. */
-        int[] to = new int[] {
+        int[] to = new int[]{
                 R.id.item_book_title,
                 R.id.item_book_subtitle,
                 R.id.item_book_mtime,
@@ -273,7 +276,7 @@ public class BooksFragment extends ListFragment
                     holder.usedEncodingContainer = view.findViewById(R.id.item_book_encoding_used_container);
                     holder.detectedEncodingContainer = view.findViewById(R.id.item_book_encoding_detected_container);
                     holder.selectedEncodingContainer = view.findViewById(R.id.item_book_encoding_selected_container);
-                    holder.notesCountContainer=view.findViewById(R.id.item_book_notes_count_container);
+                    holder.notesCountContainer = view.findViewById(R.id.item_book_notes_count_container);
                     view.setTag(holder);
                 }
 
@@ -301,11 +304,11 @@ public class BooksFragment extends ListFragment
                 /*
                  * Modification time.
                  */
-                ElementPlacer placer=new ElementPlacer();
+                ElementPlacer placer = new ElementPlacer();
                 placer.displayDetailByCondition(holder.mtimeContainer, isPreferenceActivated(R.string.pref_value_book_details_mtime, context));
 
                 /* If book has no link - remove related rows. */
-                if (book.getLink() != null){
+                if (book.getLink() != null) {
                     placer.displayDetailByCondition(holder.linkDetailsContainer, isPreferenceActivated(R.string.pref_value_book_details_link_url, context));
                 } else {
                     placer.hideElement(holder.linkDetailsContainer);
@@ -327,18 +330,18 @@ public class BooksFragment extends ListFragment
                  *   OR
                  * - action is INFO but user choose not to display it
                  */
-                boolean shouldHideLastAction=book.getLastAction() == null || (lastActionWasInfo(book) && !isPreferenceActivated(R.string.pref_value_book_details_last_action, context));
+                boolean shouldHideLastAction = book.getLastAction() == null || (lastActionWasInfo(book) && !isPreferenceActivated(R.string.pref_value_book_details_last_action, context));
                 placer.displayDetailByCondition(holder.lastActionContainer, !shouldHideLastAction);
-                if (!shouldHideLastAction){
+                if (!shouldHideLastAction) {
                     holder.lastAction.setText(getLastActionText(book));
                 }
 
                 /* If encoding is not set, removed it. */
-                boolean shouldShowUsedEncoding=book.getUsedEncoding() != null && isPreferenceActivated(R.string.pref_value_book_details_encoding_used, context);
+                boolean shouldShowUsedEncoding = book.getUsedEncoding() != null && isPreferenceActivated(R.string.pref_value_book_details_encoding_used, context);
                 placer.displayDetailByCondition(holder.usedEncodingContainer, shouldShowUsedEncoding);
 
-                boolean shouldShowDetectedEncoding=book.getDetectedEncoding() != null && isPreferenceActivated(R.string.pref_value_book_details_encoding_detected, context);
-                placer.displayDetailByCondition(holder.detectedEncodingContainer ,shouldShowDetectedEncoding);
+                boolean shouldShowDetectedEncoding = book.getDetectedEncoding() != null && isPreferenceActivated(R.string.pref_value_book_details_encoding_detected, context);
+                placer.displayDetailByCondition(holder.detectedEncodingContainer, shouldShowDetectedEncoding);
 
                 placer.displayElementByCondition(holder.selectedEncodingContainer, book.getSelectedEncoding() != null);
 
@@ -359,41 +362,41 @@ public class BooksFragment extends ListFragment
 
 
             class ElementPlacer {
-                private boolean detailWasShown =false;
+                private boolean detailWasShown = false;
 
-                private void displayElementByCondition(View element, boolean condition){
+                private void displayElementByCondition(View element, boolean condition) {
                     element.setVisibility(condition ? View.VISIBLE : View.GONE);
                 }
 
-                private void displayDetailByCondition(View detail, boolean condition){
+                private void displayDetailByCondition(View detail, boolean condition) {
                     displayElementByCondition(detail, condition);
-                    if (condition){
-                        detailWasShown =true;
+                    if (condition) {
+                        detailWasShown = true;
                     }
                 }
 
-                private void showElement(View element){
+                private void showElement(View element) {
                     element.setVisibility(View.VISIBLE);
                 }
 
-                private void hideElement(View element){
+                private void hideElement(View element) {
                     element.setVisibility(View.GONE);
                 }
 
-                boolean anyDetailWasShown(){
+                boolean anyDetailWasShown() {
                     return detailWasShown;
                 }
             }
 
-            private boolean isPreferenceActivated(int preferenceCode, Context context){
+            private boolean isPreferenceActivated(int preferenceCode, Context context) {
                 return AppPreferences.displayedBookDetails(context).contains(getString(preferenceCode));
             }
 
-            private boolean lastActionWasInfo(Book book){
+            private boolean lastActionWasInfo(Book book) {
                 return book.getLastAction().getType() == BookAction.Type.INFO;
             }
 
-            private CharSequence getLastActionText(Book book){
+            private CharSequence getLastActionText(Book book) {
                 SpannableStringBuilder builder = new SpannableStringBuilder();
 
                 builder.append(timeString(book.getLastAction().getTimestamp()));
@@ -404,7 +407,7 @@ public class BooksFragment extends ListFragment
                 if (book.getLastAction().getType() == BookAction.Type.ERROR) {
                     /* Get error color attribute. */
                     TypedArray arr = getActivity().obtainStyledAttributes(
-                            new int[] { R.attr.item_book_error_color });
+                            new int[]{R.attr.item_book_error_color});
                     int color = arr.getColor(0, 0);
                     arr.recycle();
 
@@ -422,63 +425,63 @@ public class BooksFragment extends ListFragment
         adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                boolean hasData=!cursor.isNull(columnIndex);
-                String viewContent="";
+                boolean hasData = !cursor.isNull(columnIndex);
+                String viewContent = "";
                 switch (view.getId()) {
                     case R.id.item_book_encoding_used:
                         if (hasData) {
-                            viewContent=cursor.getString(columnIndex)+" used";
+                            viewContent = cursor.getString(columnIndex) + " used";
                         }
                         break;
 
                     case R.id.item_book_encoding_detected:
                         if (hasData) {
-                            viewContent=cursor.getString(columnIndex)+" detected";
+                            viewContent = cursor.getString(columnIndex) + " detected";
                         }
                         break;
 
                     case R.id.item_book_encoding_selected:
                         if (hasData) {
-                            viewContent=cursor.getString(columnIndex)+" selected";
+                            viewContent = cursor.getString(columnIndex) + " selected";
                         }
                         break;
 
                     /* Generic N/A-if-does-not-exist. */
                     case R.id.item_book_synced_revision:
                         if (hasData) {
-                            viewContent=cursor.getString(columnIndex);
+                            viewContent = cursor.getString(columnIndex);
                         } else {
-                            viewContent="N/A";
+                            viewContent = "N/A";
                         }
                         break;
 
                     case R.id.item_book_synced_mtime:
                         if (hasData && cursor.getLong(columnIndex) > 0) {
                             /* Format time. */
-                            viewContent=timeString(cursor.getLong(columnIndex));
+                            viewContent = timeString(cursor.getLong(columnIndex));
                         } else {
-                            viewContent="N/A";
+                            viewContent = "N/A";
                         }
                         break;
 
                     case R.id.item_book_mtime:
                         if (hasData && cursor.getLong(columnIndex) > 0) {
                             /* Format time. */
-                            viewContent=timeString(cursor.getLong(columnIndex));
+                            viewContent = timeString(cursor.getLong(columnIndex));
                         } else {
-                            viewContent=getString(R.string.book_never_modified_locally);
+                            viewContent = getString(R.string.book_never_modified_locally);
                         }
                         break;
 
                     case R.id.item_book_link_url:
                     case R.id.item_book_synced_url:
                         if (hasData) {
-                            viewContent=UriUtils.friendlyUri(cursor.getString(columnIndex));
+                            viewContent = UriUtils.friendlyUri(cursor.getString(columnIndex));
                         }
                         break;
 
                     case R.id.item_book_notes_count:
-                        int notesAmount=cursor.getInt(columnIndex); // root and cut nodes are already filtered in subquery
+                        int notesAmount = cursor.getInt(columnIndex); // root and cut nodes are already filtered in subquery
                         if (hasData) {
                             viewContent = notesAmount > 0 ?
                                     getResources().getQuantityString(R.plurals.notes_count_nonzero, notesAmount, notesAmount) :
@@ -560,7 +563,7 @@ public class BooksFragment extends ListFragment
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-		/* Get ID of the item. */
+        /* Get ID of the item. */
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         long bookId = info.id;
 
@@ -657,20 +660,26 @@ public class BooksFragment extends ListFragment
 
         /**
          * Click on a book item has been performed.
+         *
          * @param bookId
          */
         void onBookClicked(long bookId);
 
         /**
          * User wants to delete the book.
+         *
          * @param bookId
          */
         void onBookDeleteRequest(long bookId);
 
         void onBookRenameRequest(long bookId);
+
         void onBookLinkSetRequest(long bookId);
+
         void onForceSaveRequest(long bookId);
+
         void onForceLoadRequest(long bookId);
+
         void onBookExportRequest(long bookId);
 
         void onBookLoadRequest();
