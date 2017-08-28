@@ -221,13 +221,13 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testNoteCountDisplayed() {
-        onListItem(0).onChildView(withId(R.id.item_book_notes_count))
-                .check(matches(withText(endsWith("5 notes"))));
-        onListItem(1).onChildView(withId(R.id.item_book_notes_count))
-                .check(matches(withText(endsWith("10 notes"))));
         shelfTestUtils.setupBook("book-Zthree", "");
+        onListItem(0).onChildView(withId(R.id.item_book_notes_count))
+                .check(matches(withText(context.getResources().getQuantityString(R.plurals.notes_count_nonzero, 5, 5))));
+        onListItem(1).onChildView(withId(R.id.item_book_notes_count))
+                .check(matches(withText(context.getResources().getQuantityString(R.plurals.notes_count_nonzero, 10, 10))));
         onListItem(2).onChildView(withId(R.id.item_book_notes_count))
-                .check(matches(withText(endsWith("empty"))));
+                .check(matches(withText(R.string.notes_count_zero)));
     }
 
 }
