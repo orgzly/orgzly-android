@@ -31,6 +31,7 @@ import android.widget.ViewFlipper;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
+import com.orgzly.android.BookUtils;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
@@ -627,8 +628,8 @@ public class BookFragment extends NoteListFragment
         if (listener != null) {
             listener.announceChanges(
                     BookFragment.FRAGMENT_TAG,
-                    Book.getFragmentTitleForBook(mBook),
-                    Book.getFragmentSubtitleForBook(mBook),
+                    BookUtils.getFragmentTitleForBook(mBook),
+                    BookUtils.getFragmentSubtitleForBook(getContext(), mBook),
                     mSelection.getCount());
         }
     }

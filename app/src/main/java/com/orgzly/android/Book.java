@@ -45,38 +45,6 @@ public class Book {
 
     private OrgFileSettings orgFileSettings = new OrgFileSettings();
 
-    /**
-     * Returns either notebook's #+TITLE or file name.
-     */
-    public static String getFragmentTitleForBook(Book book) {
-        String str = null;
-
-        if (book != null) {
-            if (book.getOrgFileSettings().getTitle() != null) {
-                str = book.getOrgFileSettings().getTitle();
-            } else {
-                str = book.getName();
-            }
-        }
-
-        return str;
-    }
-
-    /**
-     * Returns book's file name if #+TITLE is set, null otherwise.
-     */
-    public static String getFragmentSubtitleForBook(Book book) {
-        String str = null;
-
-        if (book != null) {
-            if (book.getOrgFileSettings().getTitle() != null) {
-                str = book.getName();
-            }
-        }
-
-        return str;
-    }
-
     public Book(String name) {
         this(name, "", System.currentTimeMillis(), false);
     }
@@ -195,7 +163,7 @@ public class Book {
 
     public String toString() {
          /* Used by spinner in share activity. */
-        return getFragmentTitleForBook(this);
+        return BookUtils.getFragmentTitleForBook(this);
     }
 
 }
