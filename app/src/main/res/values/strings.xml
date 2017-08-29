@@ -267,7 +267,7 @@
     <string name="reversed_note_click_action_summary">Click to select note, long-click to open</string>
     <string name="prefs_interface">Interface</string>
     <string name="look_and_feel"><![CDATA[Look & Feel]]></string>
-    <string name="notes_list">Notes list</string>
+    <string name="notes_list">List of notes</string>
     <string name="prefs_title_new_note">New note</string>
     <string name="prefs_title_notifications">Notifications</string>
     <string name="app">App</string>
