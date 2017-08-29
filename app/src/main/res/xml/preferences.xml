@@ -192,6 +192,14 @@
             android:title="@string/separate_header_and_content_with_new_line"
             android:summary="@string/separate_header_and_content_with_new_line_summary"
             android:defaultValue="@bool/pref_default_separate_header_and_content_with_new_line"/>
+
+        <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
+            android:key="@string/pref_key_tags_column"
+            android:title="@string/tags_column"
+            android:dialogTitle="@string/tags_column"
+            android:numeric="integer"
+            android:inputType="number"
+            android:defaultValue="@string/pref_default_tags_column"/>
     </PreferenceCategory>
 
 

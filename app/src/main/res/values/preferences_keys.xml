@@ -303,6 +303,9 @@
     <string name="pref_key_separate_header_and_content_with_new_line" translatable="false">pref_key_separate_header_and_content_with_new_line</string>
     <bool name="pref_default_separate_header_and_content_with_new_line" translatable="false">true</bool>
 
+    <!-- Tags column -->
+    <string name="pref_key_tags_column" translatable="false">pref_key_tags_column</string>
+    <string name="pref_default_tags_column" translatable="false">0</string>
 
     <!-- These do not store any data. -->
     <string name="pref_key_repos" translatable="false">pref_key_repos</string>

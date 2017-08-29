@@ -231,6 +231,7 @@ public class Shelf {
             }
 
             parserSettings.separateHeaderAndContentWithNewLine = AppPreferences.separateHeaderAndContentWithNewLine(mContext);
+            parserSettings.tagsColumn = AppPreferences.tagsColumn(mContext);
 
             final OrgParserWriter parserWriter = new OrgParserWriter(parserSettings);
 

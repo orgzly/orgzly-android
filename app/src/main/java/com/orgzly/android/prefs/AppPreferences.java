@@ -293,6 +293,14 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_separate_header_and_content_with_new_line));
     }
 
+    public static Integer tagsColumn(Context context) {
+        String prefStr = getDefaultSharedPreferences(context).getString(
+            context.getResources().getString(R.string.pref_key_tags_column),
+            context.getResources().getString(R.string.pref_default_tags_column));
+
+        return Integer.parseInt(prefStr);
+    }
+
     /*
      * Click action.
      */
