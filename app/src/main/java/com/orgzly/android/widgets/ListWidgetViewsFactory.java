@@ -74,7 +74,10 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public int getCount() {
-        return mCursor.getCount();
+        if (mCursor != null) {
+            return mCursor.getCount();
+        }
+        return 0;
     }
 
     @Override
