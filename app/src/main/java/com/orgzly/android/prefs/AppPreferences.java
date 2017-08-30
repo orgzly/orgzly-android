@@ -499,24 +499,30 @@ public class AppPreferences {
 
 
     /*
-     *
+     * Auto Sync
      */
+
+    public static boolean autoSync(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_auto_sync),
+                context.getResources().getBoolean(R.bool.pref_default_value_auto_sync));
+    }
 
     public static boolean syncAfterNewNoteCreated(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
-                context.getResources().getString(R.string.pref_key_sync_after_note_create),
-                context.getResources().getBoolean(R.bool.pref_default_value_sync_after_note_create));
+                context.getResources().getString(R.string.pref_key_auto_sync),
+                context.getResources().getBoolean(R.bool.pref_default_value_auto_sync));
     }
 
     public static boolean syncAfterNoteUpdated(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
-                context.getResources().getString(R.string.pref_key_sync_after_note_update),
-                context.getResources().getBoolean(R.bool.pref_default_value_sync_after_note_update));
+                context.getResources().getString(R.string.pref_key_auto_sync),
+                context.getResources().getBoolean(R.bool.pref_default_value_auto_sync));
     }
 
     public static boolean onResumeSync(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
-                context.getResources().getString(R.string.pref_key_on_resume_sync),
-                context.getResources().getBoolean(R.bool.pref_default_value_on_resume_sync));
+                context.getResources().getString(R.string.pref_key_auto_sync),
+                context.getResources().getBoolean(R.bool.pref_default_value_auto_sync));
     }
 }

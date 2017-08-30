@@ -197,14 +197,8 @@
     <string name="pref_key_reminders_vibrate" translatable="false">pref_key_reminders_vibrate</string>
     <bool name="pref_default_value_reminders_vibrate" translatable="false">false</bool>
 
-    <string name="pref_key_sync_after_note_create">pref_key_sync_after_note_create</string>
-    <bool name="pref_default_value_sync_after_note_create" translatable="false">false</bool>
-
-    <string name="pref_key_sync_after_note_update" translatable="false">pref_key_sync_after_note_update</string>
-    <bool name="pref_default_value_sync_after_note_update" translatable="false">false</bool>
-
-    <string name="pref_key_on_resume_sync" translatable="false">pref_key_on_resume_sync</string>
-    <bool name="pref_default_value_on_resume_sync" translatable="false">false</bool>
+    <string name="pref_key_auto_sync" translatable="false">pref_key_auto_sync</string>
+    <bool name="pref_default_value_auto_sync" translatable="false">false</bool>
 
     <string name="pref_key_use_reminders_for_scheduled_times" translatable="false">pref_key_use_reminders_for_scheduled_times</string>
     <bool name="pref_default_value_use_reminders_for_scheduled_times" translatable="false">false</bool>

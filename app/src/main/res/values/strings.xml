@@ -402,14 +402,9 @@
     <string name="select_a_filter">Select a filter</string>
     <string name="select_a_filter_long">Select a filter by clicking on the title bar</string>
 
-    <string name="pref_title_sync_after_note_create">Create Note Sync</string>
-    <string name="pref_summary_sync_after_note_create">Sync after creating a new note.  NOTE: the entire notebook will be exported.</string>
-
-    <string name="pref_title_sync_after_note_update">Update Note Sync</string>
-    <string name="pref_summary_sync_after_note_update">Sync after updating/deleting a note.  NOTE: the entire notebook will be exported.</string>
-
-    <string name="pref_title_on_resume_sync">App Resume Sync</string>
-    <string name="pref_summary_on_resume_sync">Sync whenever app comes to the foreground.</string>
+    <string name="pref_title_preferencescreen_auto_sync">EXPERIMENTAL Auto-Sync</string>
+    <string name="pref_summary_auto_sync">CAUTION: This is a new feature undergoing test.  Whenever the app comes to the foreground a sync will occur.  Whenever a change is made, a sync will occur.  The feature to sync when the repo changes has not yet been implemented.\nSyncs may take some time, especially when transferred over the network.  Certain actions will be blocked while sync is in progress.  Any change will force full notebook write, potentially over the network.</string>
+    <string name="pref_title_auto_sync">Enable Auto-Sync</string>
 
     <!-- These are just used in tools:text for layout preview and don't have to be translated,
          unless layout look depends on the translation. -->
