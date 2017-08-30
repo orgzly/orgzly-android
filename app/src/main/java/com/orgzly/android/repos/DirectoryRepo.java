@@ -5,8 +5,11 @@ import android.util.Log;
 
 import com.orgzly.android.BookName;
 import com.orgzly.android.LocalStorage;
+import com.orgzly.BuildConfig;
+import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 import com.orgzly.android.util.UriUtils;
+import com.orgzly.android.util.HashUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -81,7 +84,7 @@ public class DirectoryRepo implements Repo {
                 result.add(new VersionedRook(
                         repoUri,
                         uri,
-                        String.valueOf(files[i].lastModified()),
+                        getRevision(files[i]),
                         files[i].lastModified()
                 ));
             }
@@ -100,7 +103,7 @@ public class DirectoryRepo implements Repo {
         /* "Download" the file. */
         MiscUtils.copyFile(sourceFile, destinationFile);
 
-        String rev = String.valueOf(sourceFile.lastModified());
+        String rev = getRevision(sourceFile);
         long mtime = sourceFile.lastModified();
 
         return new VersionedRook(repoUri, uri, rev, mtime);
@@ -120,7 +123,7 @@ public class DirectoryRepo implements Repo {
         /* "Upload" the file. */
         MiscUtils.copyFile(file, destinationFile);
 
-        String rev = String.valueOf(destinationFile.lastModified());
+        String rev = getRevision(destinationFile);
         long mtime = destinationFile.lastModified();
 
         Uri uri = repoUri.buildUpon().appendPath(fileName).build();
@@ -142,7 +145,7 @@ public class DirectoryRepo implements Repo {
             throw new IOException("Failed renaming " + fromFile + " to " + toFile);
         }
 
-        String rev = String.valueOf(toFile.lastModified());
+        String rev = getRevision(toFile);
         long mtime = toFile.lastModified();
 
         return new VersionedRook(repoUri, newUri, rev, mtime);
@@ -166,5 +169,10 @@ public class DirectoryRepo implements Repo {
     @Override
     public String toString() {
         return repoUri.toString();
+    }
+
+    private String getRevision(File arg) throws IOException {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d("revision: ", HashUtils.MD5.checksum(arg));
+        return HashUtils.MD5.checksum(arg);
     }
 }
