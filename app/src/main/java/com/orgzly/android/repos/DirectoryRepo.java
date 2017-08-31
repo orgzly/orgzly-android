@@ -3,6 +3,7 @@ package com.orgzly.android.repos;
 import android.net.Uri;
 import android.util.Log;
 
+import com.orgzly.android.App;
 import com.orgzly.android.BookName;
 import com.orgzly.android.LocalStorage;
 import com.orgzly.BuildConfig;
@@ -10,6 +11,7 @@ import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 import com.orgzly.android.util.UriUtils;
 import com.orgzly.android.util.HashUtils;
+import com.orgzly.android.provider.clients.CurrentRooksClient;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -104,9 +106,9 @@ public class DirectoryRepo implements Repo {
         MiscUtils.copyFile(sourceFile, destinationFile);
 
         String rev = getRevision(sourceFile);
-        long mtime = sourceFile.lastModified();
 
-        return new VersionedRook(repoUri, uri, rev, mtime);
+        VersionedRook latestRook = CurrentRooksClient.get(App.getAppContext() , uri.toString());
+        return new VersionedRook(repoUri, uri, rev, latestRook.getMtime());
     }
 
     @Override
@@ -123,8 +125,8 @@ public class DirectoryRepo implements Repo {
         /* "Upload" the file. */
         MiscUtils.copyFile(file, destinationFile);
 
+        long mtime = System.currentTimeMillis(); // destinationFile.lastModified();
         String rev = getRevision(destinationFile);
-        long mtime = destinationFile.lastModified();
 
         Uri uri = repoUri.buildUpon().appendPath(fileName).build();
 
@@ -144,9 +146,8 @@ public class DirectoryRepo implements Repo {
         if (! fromFile.renameTo(toFile)) {
             throw new IOException("Failed renaming " + fromFile + " to " + toFile);
         }
-
+        long mtime = System.currentTimeMillis(); // toFile.lastModified();
         String rev = getRevision(toFile);
-        long mtime = toFile.lastModified();
 
         return new VersionedRook(repoUri, newUri, rev, mtime);
     }
