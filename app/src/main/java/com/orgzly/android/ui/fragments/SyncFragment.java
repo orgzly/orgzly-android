@@ -442,7 +442,7 @@ public class SyncFragment extends Fragment {
             @Override
             protected Void doInBackground(Void... params) {
                 mShelf.setStateToDone(noteId);
-                if (AppPreferences.syncAfterNoteUpdated(getContext())) {
+                if (AppPreferences.syncAfterNoteUpdate(getContext())) {
                     Intent intent = new Intent(getActivity(), SyncService.class);
                     intent.setAction(AppIntent.ACTION_SYNC_START);
                     getActivity().startService(intent);
@@ -682,7 +682,7 @@ public class SyncFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 if (mListener != null) {
-                    if (AppPreferences.syncAfterNoteUpdated(getContext())) {
+                    if (AppPreferences.syncAfterNoteUpdate(getContext())) {
                         Intent intent = new Intent(getActivity(), SyncService.class);
                         intent.setAction(AppIntent.ACTION_SYNC_START);
                         getActivity().startService(intent);
@@ -706,7 +706,7 @@ public class SyncFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 if (mListener != null) {
-                    if (AppPreferences.syncAfterNoteUpdated(getContext())) {
+                    if (AppPreferences.syncAfterNoteUpdate(getContext())) {
                         Intent intent = new Intent(getActivity(), SyncService.class);
                         intent.setAction(AppIntent.ACTION_SYNC_START);
                         getActivity().startService(intent);
@@ -732,7 +732,7 @@ public class SyncFragment extends Fragment {
                 if (mListener == null) {
                     Log.w(TAG, "Listener not set, not calling onStateChanged");
                 }
-                if (AppPreferences.syncAfterNoteUpdated(getContext())) {
+                if (AppPreferences.syncAfterNoteUpdate(getContext())) {
                     Intent intent = new Intent(getActivity(), SyncService.class);
                     intent.setAction(AppIntent.ACTION_SYNC_START);
                     getActivity().startService(intent);
@@ -958,7 +958,7 @@ public class SyncFragment extends Fragment {
             @Override
             protected void onPostExecute(Integer noOfUpdated) {
                 if (noOfUpdated == 1) {
-                    if (AppPreferences.syncAfterNoteUpdated(getContext())) {
+                    if (AppPreferences.syncAfterNoteUpdate(getContext())) {
                         Intent intent = new Intent(getActivity(), SyncService.class);
                         intent.setAction(AppIntent.ACTION_SYNC_START);
                         getActivity().startService(intent);
@@ -982,7 +982,7 @@ public class SyncFragment extends Fragment {
             protected void onPostExecute(Note createdNote) {
                 if (createdNote != null) {
 
-                    if (AppPreferences.syncAfterNewNoteCreated(getContext())) {
+                    if (AppPreferences.syncAfterNoteCreate(getContext())) {
                         Intent intent = new Intent(getActivity(), SyncService.class);
                         intent.setAction(AppIntent.ACTION_SYNC_START);
                         getActivity().startService(intent);
@@ -1008,7 +1008,7 @@ public class SyncFragment extends Fragment {
             @Override
             protected Integer doInBackground(Void... params) {
                 int result = mShelf.delete(bookId, noteIds);
-                if (AppPreferences.syncAfterNoteUpdated(getContext())) {
+                if (AppPreferences.syncAfterNoteUpdate(getContext())) {
                     Intent intent = new Intent(getActivity(), SyncService.class);
                     intent.setAction(AppIntent.ACTION_SYNC_START);
                     getActivity().startService(intent);
@@ -1046,7 +1046,7 @@ public class SyncFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Integer result) {
-                if (AppPreferences.syncAfterNoteUpdated(getContext())) {
+                if (AppPreferences.syncAfterNoteUpdate(getContext())) {
                     Intent intent = new Intent(getActivity(), SyncService.class);
                     intent.setAction(AppIntent.ACTION_SYNC_START);
                     getActivity().startService(intent);
@@ -1066,7 +1066,7 @@ public class SyncFragment extends Fragment {
             @Override
             protected void onPostExecute(NotesBatch batch) {
                 if (batch != null) {
-                    if (AppPreferences.syncAfterNoteUpdated(getContext())) {
+                    if (AppPreferences.syncAfterNoteUpdate(getContext())) {
                         Intent intent = new Intent(getActivity(), SyncService.class);
                         intent.setAction(AppIntent.ACTION_SYNC_START);
                         getActivity().startService(intent);
@@ -1088,7 +1088,7 @@ public class SyncFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Integer result) {
-                if (AppPreferences.syncAfterNoteUpdated(getContext())) {
+                if (AppPreferences.syncAfterNoteUpdate(getContext())) {
                     Intent intent = new Intent(getActivity(), SyncService.class);
                     intent.setAction(AppIntent.ACTION_SYNC_START);
                     getActivity().startService(intent);

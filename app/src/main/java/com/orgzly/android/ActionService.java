@@ -38,7 +38,7 @@ public class ActionService extends IntentService {
 
             if (noteId > 0) {
                 shelf.setStateToDone(noteId);
-                if (AppPreferences.syncAfterNewNoteCreated(this)) {
+                if (AppPreferences.syncAfterNoteCreate(this)) {
                     Intent syncIntent = new Intent(this, SyncService.class);
                     intent.setAction(AppIntent.ACTION_SYNC_START);
                     this.startService(syncIntent);
