@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import com.orgzly.BuildConfig;
@@ -247,6 +248,13 @@ public class SyncService extends Service {
 
             status.set(SyncStatus.Type.BOOKS_COLLECTED, null, 0, namesakes.size());
             announceActiveSyncStatus();
+
+            /* Because android sometimes drops milliseconds on reported file lastModified,
+             * wait until the next full second
+             */
+            long now = System.currentTimeMillis();
+            long nowMsPart = now % 1000;
+            SystemClock.sleep(1000 - nowMsPart);
 
             /*
              * Update books' statuses, before starting to sync them.

@@ -10,7 +10,6 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
-import android.os.SystemClock;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import com.orgzly.BuildConfig;
@@ -553,14 +552,7 @@ public class Shelf {
         try {
             /* Write to temporary file. */
             writeBookToFile(book, format, tmpFile);
-            /* Because android sometimes drops milliseconds on reported file lastModified,
-             *    wait until the next full second if truncated time is before book mtime */
-            long now = System.currentTimeMillis();
-            long nowMsPart = now % 1000;
-            long nowTruncated = now - nowMsPart;
-            if (nowTruncated < book.getMtime()) {
-                SystemClock.sleep(1000 - nowMsPart);
-            }
+
             /* Upload to repo. */
             uploadedBook = repo.storeBook(tmpFile, fileName);
 
