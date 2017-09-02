@@ -25,6 +25,7 @@ import java.util.GregorianCalendar;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openContextualActionModeOverflowMenu;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
@@ -170,7 +171,7 @@ public class MiscTest extends OrgzlyTest {
         onListItem(1).perform(longClick());
         onListItem(2).perform(click());
         onListItem(3).perform(click());
-        onView(withId(R.id.book_cab_edit)).perform(click());
+        openContextualActionModeOverflowMenu();
         onView(withText(R.string.state)).perform(click());
         onView(withText("DONE")).perform(click());
 
@@ -219,7 +220,7 @@ public class MiscTest extends OrgzlyTest {
         onListItem(1).perform(longClick());
         onListItem(2).perform(click());
         onListItem(3).perform(click());
-        onView(withId(R.id.book_cab_edit)).perform(click());
+        openContextualActionModeOverflowMenu();
         onView(withText(R.string.schedule)).perform(click());
         onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
@@ -339,7 +340,7 @@ public class MiscTest extends OrgzlyTest {
         onListItem(1).perform(longClick());
 
         /* TO DO -> DONE */
-        onView(withId(R.id.book_cab_edit)).perform(click());
+        openContextualActionModeOverflowMenu();
         onView(withText(R.string.state)).perform(click());
         onView(withText("DONE")).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("TODO"))));
@@ -347,7 +348,7 @@ public class MiscTest extends OrgzlyTest {
         onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
 
         /* DONE -> NOTE */
-        onView(withId(R.id.book_cab_edit)).perform(click());
+        openContextualActionModeOverflowMenu();
         onView(withText(R.string.state)).perform(click());
         onView(withText("NOTE")).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("Note"))));
@@ -355,7 +356,7 @@ public class MiscTest extends OrgzlyTest {
         onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
 
         /* NOTE -> DONE */
-        onView(withId(R.id.book_cab_edit)).perform(click());
+        openContextualActionModeOverflowMenu();
         onView(withText(R.string.state)).perform(click());
         onView(withText("DONE")).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("Note"))));
@@ -363,7 +364,7 @@ public class MiscTest extends OrgzlyTest {
         onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(withText(userDateTime("<2015-01-30 Fri 04:05 +6d>"))));
 
         /* NOTE -> OLD */
-        onView(withId(R.id.book_cab_edit)).perform(click());
+        openContextualActionModeOverflowMenu();
         onView(withText(R.string.state)).perform(click());
         onView(withText("OLD")).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("Note"))));
@@ -428,7 +429,7 @@ public class MiscTest extends OrgzlyTest {
         onListItem(0).perform(longClick());
         onListItem(1).perform(click());
         onListItem(2).perform(click());
-        onView(withId(R.id.book_cab_edit)).perform(click());
+        openContextualActionModeOverflowMenu();
         onView(withText(R.string.state)).perform(click());
         onView(withText("TODO")).perform(click());
 
@@ -610,10 +611,10 @@ public class MiscTest extends OrgzlyTest {
 
         onView(allOf(withText("booky"), isDisplayed())).perform(click());
         onListItem(3).perform(longClick());
-        onView(withId(R.id.book_cab_edit)).check(matches(isDisplayed()));
+        onView(withId(R.id.book_cab_move)).check(matches(isDisplayed()));
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(allOf(isDescendantOfA(withId(R.id.fragment_left_drawer_container)), withText("booky"), isDisplayed())).perform(click());
-        onView(withId(R.id.book_cab_edit)).check(matches(isDisplayed()));
+        onView(withId(R.id.book_cab_move)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -635,7 +636,7 @@ public class MiscTest extends OrgzlyTest {
 
         onView(allOf(withText("booky-one"), isDisplayed())).perform(click());
         onListItem(3).perform(longClick());
-        onView(withId(R.id.book_cab_edit)).check(matches(isDisplayed()));
+        onView(withId(R.id.book_cab_move)).check(matches(isDisplayed()));
         onView(withId(R.id.drawer_layout)).perform(open());
         onData(anything())
                 .inAdapterView(withContentDescription(activityRule.getActivity().getString(R.string.fragment_left_drawer_list_view_content_description)))
@@ -643,7 +644,7 @@ public class MiscTest extends OrgzlyTest {
                 .perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.book_cab_edit)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.book_cab_move)).check(matches(not(isDisplayed())));
     }
 
     @Test
