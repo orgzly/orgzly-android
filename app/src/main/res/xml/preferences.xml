@@ -234,40 +234,14 @@
                 android:targetPackage="com.orgzly"
                 android:targetClass="com.orgzly.android.ui.ReposActivity"/>
         </Preference>
-        <PreferenceScreen
-            android:key="@string/pref_key_preferencescreen_auto_sync"
-            android:title="@string/pref_title_preferencescreen_auto_sync">
-          <Preference
-              android:key="@string/pref_key_static_field_auto_sync"
-              android:selectable="false"
-              android:summary="@string/pref_summary_auto_sync"/>
-
-          <CheckBoxPreference
-              android:title="@string/pref_title_sync_after_note_create"
-              android:key="@string/pref_key_sync_after_note_create"
-              android:summary="@string/pref_summary_sync_after_note_create"
-              android:defaultValue="@bool/pref_default_value_sync_after_note_create"/>
-
-          <CheckBoxPreference
-              android:title="@string/pref_title_sync_after_note_update"
-              android:key="@string/pref_key_sync_after_note_update"
-              android:summary="@string/pref_summary_sync_after_note_update"
-              android:defaultValue="@bool/pref_default_value_sync_after_note_update"/>
-
-          <CheckBoxPreference
-              android:title="@string/pref_title_on_resume_sync"
-              android:key="@string/pref_key_on_resume_sync"
-              android:summary="@string/pref_summary_on_resume_sync"
-              android:defaultValue="@bool/pref_default_value_on_resume_sync"/>
-
-          <CheckBoxPreference
-              android:title="@string/pref_title_repo_update_sync"
-              android:key="@string/pref_key_repo_update_sync"
-              android:summary="@string/pref_summary_repo_update_sync"
-              android:enabled="false"
-              android:defaultValue="@bool/pref_default_value_repo_update_sync"/>
-
-        </PreferenceScreen>
+        <Preference
+            android:title="@string/pref_title_preferencescreen_auto_sync"
+            android:key="@string/pref_key_preferencescreen_auto_sync">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.orgzly"
+                android:targetClass="com.orgzly.android.ui.AutoSyncSettingsActivity"/>
+        </Preference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/app">

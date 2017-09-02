@@ -104,6 +104,13 @@
             android:theme="@style/Theme.AppCompat.Light.Dialog"
             android:excludeFromRecents="true"/>
 
+        <activity android:name="com.orgzly.android.ui.AutoSyncSettingsActivity">
+            <intent-filter android:label="Pref" >
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.PREFERENCE" />
+            </intent-filter>
+        </activity>
+
         <receiver android:name="com.orgzly.android.widgets.ListWidgetProvider"
             android:label="@string/list_widget_name">
             <intent-filter>

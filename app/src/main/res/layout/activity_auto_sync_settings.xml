@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <FrameLayout
+      android:id="@+id/activity_auto_sync_frame"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      tools:context="com.orgzly.android.ui.AutoSyncSettingsActivity"
+      tools:ignore="MergeRootFrame"/>
+
+</android.support.design.widget.CoordinatorLayout>
