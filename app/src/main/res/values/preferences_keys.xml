@@ -70,6 +70,9 @@
     <string name="pref_key_is_notes_content_foldable" translatable="false">pref_key_is_notes_content_foldable</string>
     <bool name="pref_default_is_notes_content_foldable" translatable="false">true</bool>
 
+    <string name="pref_key_content_line_count_displayed" translatable="false">pref_key_content_line_count_displayed</string>
+    <bool name="pref_default_content_line_count_displayed" translatable="false">true</bool>
+
     <string name="pref_key_is_font_monospaced" translatable="false">pref_key_is_font_monospaced</string>
     <bool name="pref_default_is_font_monospaced" translatable="false">false</bool>
 

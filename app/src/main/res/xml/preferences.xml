@@ -115,6 +115,12 @@
             android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
             android:defaultValue="@bool/pref_default_is_notes_content_foldable"/>
 
+        <CheckBoxPreference
+            android:key="@string/pref_key_content_line_count_displayed"
+            android:title="@string/content_line_count_displayed"
+            android:summary="@string/content_line_count_displayed_summary"
+            android:defaultValue="@bool/pref_default_content_line_count_displayed"/>
+
         <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
             android:key="@string/pref_key_preface_in_book"
             android:title="@string/preface_in_book"

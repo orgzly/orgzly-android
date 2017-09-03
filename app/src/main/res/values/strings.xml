@@ -445,4 +445,7 @@
         <item quantity="one">Contains <b>%d</b> note</item>
         <item quantity="other">Contains <b>%d</b> notes</item>
     </plurals>
+
+    <string name="content_line_count_displayed">Display content line count</string>
+    <string name="content_line_count_displayed_summary">Display number of lines for note\'s content</string>
 </resources>
