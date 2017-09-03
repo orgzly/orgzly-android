@@ -358,11 +358,8 @@ public class MainActivity extends CommonActivity
 
         performIntros();
 
-        if (AppPreferences.onResumeSync(this)) {
-            Intent intent = new Intent(this, SyncService.class);
-            intent.setAction(AppIntent.ACTION_SYNC_START);
-            startService(intent);
-        }
+        Shelf shelf = new Shelf(this);
+        shelf.resumeSync();
     }
 
     private void performIntros() {

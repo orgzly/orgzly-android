@@ -442,11 +442,6 @@ public class SyncFragment extends Fragment {
             @Override
             protected Void doInBackground(Void... params) {
                 mShelf.setStateToDone(noteId);
-                if (AppPreferences.syncAfterNoteUpdate(getContext())) {
-                    Intent intent = new Intent(getActivity(), SyncService.class);
-                    intent.setAction(AppIntent.ACTION_SYNC_START);
-                    getActivity().startService(intent);
-                }
                 return null;
             }
         }.execute();
@@ -456,7 +451,7 @@ public class SyncFragment extends Fragment {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                mShelf.promoteNotes(bookId, noteIds);
+                mShelf.promote(bookId, noteIds);
                 return null;
             }
         }.execute();
@@ -466,7 +461,7 @@ public class SyncFragment extends Fragment {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                mShelf.demoteNotes(bookId, noteIds);
+                mShelf.demote(bookId, noteIds);
                 return null;
             }
         }.execute();
@@ -682,11 +677,6 @@ public class SyncFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 if (mListener != null) {
-                    if (AppPreferences.syncAfterNoteUpdate(getContext())) {
-                        Intent intent = new Intent(getActivity(), SyncService.class);
-                        intent.setAction(AppIntent.ACTION_SYNC_START);
-                        getActivity().startService(intent);
-                    }
                     mListener.onScheduledTimeUpdated(noteIds, time);
                 } else {
                     Log.w(TAG, "Listener not set, not calling onScheduledTimeUpdated");
@@ -706,11 +696,6 @@ public class SyncFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 if (mListener != null) {
-                    if (AppPreferences.syncAfterNoteUpdate(getContext())) {
-                        Intent intent = new Intent(getActivity(), SyncService.class);
-                        intent.setAction(AppIntent.ACTION_SYNC_START);
-                        getActivity().startService(intent);
-                    }
                     mListener.onStateChanged(noteIds, state);
                 } else {
                     Log.w(TAG, "Listener not set, not calling onStateChanged");
@@ -732,20 +717,13 @@ public class SyncFragment extends Fragment {
                 if (mListener == null) {
                     Log.w(TAG, "Listener not set, not calling onStateChanged");
                 }
-                if (AppPreferences.syncAfterNoteUpdate(getContext())) {
-                    Intent intent = new Intent(getActivity(), SyncService.class);
-                    intent.setAction(AppIntent.ACTION_SYNC_START);
-                    getActivity().startService(intent);
-                }
             }
         }.execute();
     }
 
     public void onSyncButton() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
-
-        Intent intent = new Intent(getActivity(), SyncService.class);
-        getActivity().startService(intent);
+        mShelf.directedSync();
     }
 
     public void renameBook(final Book book, final String value) {
@@ -958,11 +936,6 @@ public class SyncFragment extends Fragment {
             @Override
             protected void onPostExecute(Integer noOfUpdated) {
                 if (noOfUpdated == 1) {
-                    if (AppPreferences.syncAfterNoteUpdate(getContext())) {
-                        Intent intent = new Intent(getActivity(), SyncService.class);
-                        intent.setAction(AppIntent.ACTION_SYNC_START);
-                        getActivity().startService(intent);
-                    }
                     mListener.onNoteUpdated(note);
                 } else {
                     mListener.onNoteUpdatingFailed(note);
@@ -981,13 +954,6 @@ public class SyncFragment extends Fragment {
             @Override
             protected void onPostExecute(Note createdNote) {
                 if (createdNote != null) {
-
-                    if (AppPreferences.syncAfterNoteCreate(getContext())) {
-                        Intent intent = new Intent(getActivity(), SyncService.class);
-                        intent.setAction(AppIntent.ACTION_SYNC_START);
-                        getActivity().startService(intent);
-                    }
-
                     mListener.onNoteCreated(createdNote);
                 } else {
                     mListener.onNoteCreatingFailed();
@@ -1008,11 +974,6 @@ public class SyncFragment extends Fragment {
             @Override
             protected Integer doInBackground(Void... params) {
                 int result = mShelf.delete(bookId, noteIds);
-                if (AppPreferences.syncAfterNoteUpdate(getContext())) {
-                    Intent intent = new Intent(getActivity(), SyncService.class);
-                    intent.setAction(AppIntent.ACTION_SYNC_START);
-                    getActivity().startService(intent);
-                }
                 return result;
             }
 
@@ -1046,11 +1007,6 @@ public class SyncFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Integer result) {
-                if (AppPreferences.syncAfterNoteUpdate(getContext())) {
-                    Intent intent = new Intent(getActivity(), SyncService.class);
-                    intent.setAction(AppIntent.ACTION_SYNC_START);
-                    getActivity().startService(intent);
-                }
                 mListener.onNotesCut(result);
             }
         }.execute();
@@ -1066,11 +1022,6 @@ public class SyncFragment extends Fragment {
             @Override
             protected void onPostExecute(NotesBatch batch) {
                 if (batch != null) {
-                    if (AppPreferences.syncAfterNoteUpdate(getContext())) {
-                        Intent intent = new Intent(getActivity(), SyncService.class);
-                        intent.setAction(AppIntent.ACTION_SYNC_START);
-                        getActivity().startService(intent);
-                    }
                     mListener.onNotesPasted(batch);
                 } else {
                     mListener.onNotesNotPasted();
@@ -1088,11 +1039,6 @@ public class SyncFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Integer result) {
-                if (AppPreferences.syncAfterNoteUpdate(getContext())) {
-                    Intent intent = new Intent(getActivity(), SyncService.class);
-                    intent.setAction(AppIntent.ACTION_SYNC_START);
-                    getActivity().startService(intent);
-                }
                 mListener.onNotesMoved(result);
             }
         }.execute();
