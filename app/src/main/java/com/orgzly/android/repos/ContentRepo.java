@@ -7,10 +7,13 @@ import android.provider.DocumentsContract;
 import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 
+import com.orgzly.android.App;
 import com.orgzly.BuildConfig;
 import com.orgzly.android.BookName;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
+import com.orgzly.android.util.HashUtils;
+import com.orgzly.android.provider.clients.CurrentRooksClient;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -75,11 +78,19 @@ public class ContentRepo implements Repo {
                                 "file.getParentFile()", file.getParentFile().getUri());
                     }
 
+                    VersionedRook lastRook = CurrentRooksClient.get(App.getAppContext() , getUri().toString());
+                    String rev = getRevision(file);
+                    long mtime;
+                    if (lastRook == null || !rev.equals(lastRook.getRevision())) {
+                        mtime = System.currentTimeMillis();
+                    } else {
+                        mtime = lastRook.getMtime();
+                    }
                     result.add(new VersionedRook(
                             getUri(),
                             file.getUri(),
-                            String.valueOf(file.lastModified()),
-                            file.lastModified()
+                            rev,
+                            mtime
                     ));
                 }
             }
@@ -103,9 +114,15 @@ public class ContentRepo implements Repo {
             is.close();
         }
 
-        String rev = String.valueOf(sourceFile.lastModified());
-        long mtime = sourceFile.lastModified();
+        String rev = getRevision(sourceFile);
 
+        VersionedRook lastRook = CurrentRooksClient.get(App.getAppContext() , uri.toString());
+        long mtime;
+        if (lastRook == null || !rev.equals(lastRook.getRevision())) {
+            mtime = System.currentTimeMillis();
+        } else {
+            mtime = lastRook.getMtime();
+        }
         return new VersionedRook(repoUri, uri, rev, mtime);
     }
 
@@ -140,8 +157,8 @@ public class ContentRepo implements Repo {
             }
         }
 
-        String rev = String.valueOf(destinationFile.lastModified());
-        long mtime = destinationFile.lastModified();
+        long mtime = System.currentTimeMillis(); // destinationFile.lastModified();
+        String rev = getRevision(destinationFile);
 
         return new VersionedRook(getUri(), uri, rev, mtime);
     }
@@ -161,8 +178,8 @@ public class ContentRepo implements Repo {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Uri newUri = DocumentsContract.renameDocument(context.getContentResolver(), from, newFileName);
 
-            long mtime = fromDocFile.lastModified();
-            String rev = String.valueOf(mtime);
+            long mtime = System.currentTimeMillis(); // destinationFile.lastModified();
+            String rev = getRevision(fromDocFile);
 
             return new VersionedRook(getUri(), newUri, rev, mtime);
 
@@ -190,5 +207,10 @@ public class ContentRepo implements Repo {
     @Override
     public String toString() {
         return getUri().toString();
+    }
+
+    private String getRevision(DocumentFile arg) throws IOException {
+        InputStream istream = context.getContentResolver().openInputStream(arg.getUri());
+        return HashUtils.MD5.checksum(istream);
     }
 }

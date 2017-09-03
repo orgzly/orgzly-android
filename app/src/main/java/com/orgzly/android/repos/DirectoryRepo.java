@@ -3,10 +3,15 @@ package com.orgzly.android.repos;
 import android.net.Uri;
 import android.util.Log;
 
+import com.orgzly.android.App;
 import com.orgzly.android.BookName;
 import com.orgzly.android.LocalStorage;
+import com.orgzly.BuildConfig;
+import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 import com.orgzly.android.util.UriUtils;
+import com.orgzly.android.util.HashUtils;
+import com.orgzly.android.provider.clients.CurrentRooksClient;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -78,11 +83,19 @@ public class DirectoryRepo implements Repo {
             for (int i = 0; i < files.length; i++) {
                 Uri uri = repoUri.buildUpon().appendPath(files[i].getName()).build();
 
+                VersionedRook lastRook = CurrentRooksClient.get(App.getAppContext() , uri.toString());
+                String rev = getRevision(files[i]);
+                long mtime;
+                if (lastRook == null || !rev.equals(lastRook.getRevision())) {
+                    mtime = System.currentTimeMillis();
+                } else {
+                    mtime = lastRook.getMtime();
+                }
                 result.add(new VersionedRook(
                         repoUri,
                         uri,
-                        String.valueOf(files[i].lastModified()),
-                        files[i].lastModified()
+                        rev,
+                        mtime
                 ));
             }
 
@@ -100,9 +113,15 @@ public class DirectoryRepo implements Repo {
         /* "Download" the file. */
         MiscUtils.copyFile(sourceFile, destinationFile);
 
-        String rev = String.valueOf(sourceFile.lastModified());
-        long mtime = sourceFile.lastModified();
+        String rev = getRevision(sourceFile);
 
+        VersionedRook lastRook = CurrentRooksClient.get(App.getAppContext() , uri.toString());
+        long mtime;
+        if (lastRook == null || !rev.equals(lastRook.getRevision())) {
+            mtime = System.currentTimeMillis();
+        } else {
+            mtime = lastRook.getMtime();
+        }
         return new VersionedRook(repoUri, uri, rev, mtime);
     }
 
@@ -120,8 +139,8 @@ public class DirectoryRepo implements Repo {
         /* "Upload" the file. */
         MiscUtils.copyFile(file, destinationFile);
 
-        String rev = String.valueOf(destinationFile.lastModified());
-        long mtime = destinationFile.lastModified();
+        long mtime = System.currentTimeMillis();
+        String rev = getRevision(destinationFile);
 
         Uri uri = repoUri.buildUpon().appendPath(fileName).build();
 
@@ -141,9 +160,8 @@ public class DirectoryRepo implements Repo {
         if (! fromFile.renameTo(toFile)) {
             throw new IOException("Failed renaming " + fromFile + " to " + toFile);
         }
-
-        String rev = String.valueOf(toFile.lastModified());
-        long mtime = toFile.lastModified();
+        long mtime = System.currentTimeMillis();
+        String rev = getRevision(toFile);
 
         return new VersionedRook(repoUri, newUri, rev, mtime);
     }
@@ -166,5 +184,10 @@ public class DirectoryRepo implements Repo {
     @Override
     public String toString() {
         return repoUri.toString();
+    }
+
+    private String getRevision(File arg) throws IOException {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d("revision: ", HashUtils.MD5.checksum(arg));
+        return HashUtils.MD5.checksum(arg);
     }
 }
