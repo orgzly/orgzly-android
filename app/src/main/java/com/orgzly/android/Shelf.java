@@ -718,15 +718,20 @@ public class Shelf {
     }
 
     public void setStateToDone(long noteId) {
-        /* Get the *first* DONE state from preferences. */
         Set<String> doneStates = AppPreferences.doneKeywordsSet(mContext);
-        String firstState = doneStates.iterator().hasNext() ? doneStates.iterator().next() : null;
+        Note note = NotesClient.getNote(mContext, noteId);
+        String currentState = note.getHead().getState();
+        if (doneStates.contains(currentState)) {
+            return;  // already done, early exit
+        }
 
-        if (firstState != null) {
+        /* Get the *first* DONE state from preferences. */
+        String firstDoneState = doneStates.iterator().hasNext() ? doneStates.iterator().next() : null;
+
+        if (firstDoneState != null) {
             Set<Long> ids = new TreeSet<>();
             ids.add(noteId);
-
-            setNotesState(ids, firstState);
+            setNotesState(ids, firstDoneState);
         }
     }
 
