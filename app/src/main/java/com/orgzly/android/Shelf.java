@@ -311,7 +311,7 @@ public class Shelf {
 
     public int promote(long bookId, Set<Long> noteIds) {
         int result = BooksClient.promote(mContext, bookId, noteIds);
-        updateSync();
+        // updateSync(); handled on action bar destroy instead
         return result;
     }
 
@@ -324,7 +324,7 @@ public class Shelf {
 
     public int demote(long bookId, Set<Long> noteIds) {
         int result = BooksClient.demote(mContext, bookId, noteIds);
-        updateSync();
+        // updateSync(); handled on action bar destroy instead
         return result;
     }
 
@@ -345,7 +345,7 @@ public class Shelf {
     public int move(long bookId, long noteId, int offset) {
         int result = BooksClient.moveNotes(mContext, bookId, noteId, offset);
         notifyDataChanged(mContext);
-        updateSync();
+        // updateSync(); handled on action bar destroy instead
         return result;
     }
 
