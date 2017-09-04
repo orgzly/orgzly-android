@@ -39,7 +39,6 @@ import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
 import com.orgzly.android.BookUtils;
-import com.orgzly.android.Broadcasts;
 import com.orgzly.android.Note;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
@@ -1063,9 +1062,6 @@ public class NoteFragment extends Fragment
             } else {
                 mListener.onNoteUpdateRequest(mNote);
             }
-
-            LocalBroadcastManager.getInstance(getContext())
-                    .sendBroadcast(new Intent(Broadcasts.ACTION_NOTE_CHANGED));
         }
     }
 
