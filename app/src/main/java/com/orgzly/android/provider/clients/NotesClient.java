@@ -94,8 +94,6 @@ public class NotesClient {
         values.put(ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT, note.getPosition().getDescendantsCount());
         values.put(ProviderContract.Notes.UpdateParam.FOLDED_UNDER_ID, note.getPosition().getFoldedUnderId());
 
-        values.put(ProviderContract.Notes.UpdateParam.POSITION, 0); // TODO: Remove
-
         toContentValues(values, note.getHead());
     }
 
