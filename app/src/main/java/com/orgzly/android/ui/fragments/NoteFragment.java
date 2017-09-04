@@ -1059,12 +1059,15 @@ public class NoteFragment extends Fragment
             if (mIsNew) {
                 mListener.onNoteCreateRequest(mNote, place != Place.UNDEFINED ?
                         new NotePlace(mNote.getPosition().getBookId(), mNoteId, place) : null);
-            } else {
-                mListener.onNoteUpdateRequest(mNote);
-            }
-
-            LocalBroadcastManager.getInstance(getContext())
+                LocalBroadcastManager.getInstance(getContext())
                     .sendBroadcast(new Intent(Broadcasts.ACTION_NOTE_CHANGED));
+            } else if (isNoteModified()) {
+                mListener.onNoteUpdateRequest(mNote);
+                LocalBroadcastManager.getInstance(getContext())
+                    .sendBroadcast(new Intent(Broadcasts.ACTION_NOTE_CHANGED));
+            } else {
+                mListener.onNoteCancelRequest(mNote);
+            }
         }
     }
 
