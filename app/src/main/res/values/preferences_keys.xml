@@ -306,6 +306,10 @@
     <!-- Tags column -->
     <string name="pref_key_tags_column" translatable="false">pref_key_tags_column</string>
     <string name="pref_default_tags_column" translatable="false">0</string>
+    <string name="pref_key_org_indent_mode" translatable="false">pref_key_org_indent_mode</string>
+    <string name="pref_key_org_indent_indentation_per_level" translatable="false">pref_key_org_indent_indentation_per_level</string>
+    <bool name="pref_default_org_indent_mode" translatable="false">false</bool>
+    <string name="pref_default_org_indent_indentation_per_level" translatable="false">2</string>
 
     <!-- These do not store any data. -->
     <string name="pref_key_repos" translatable="false">pref_key_repos</string>

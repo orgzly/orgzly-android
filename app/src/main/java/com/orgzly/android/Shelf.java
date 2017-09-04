@@ -232,6 +232,8 @@ public class Shelf {
 
             parserSettings.separateHeaderAndContentWithNewLine = AppPreferences.separateHeaderAndContentWithNewLine(mContext);
             parserSettings.tagsColumn = AppPreferences.tagsColumn(mContext);
+            parserSettings.orgIndentMode = AppPreferences.orgIndentMode(mContext);
+            parserSettings.orgIndentIndentationPerLevel = AppPreferences.orgIndentIndentationPerLevel(mContext);
 
             final OrgParserWriter parserWriter = new OrgParserWriter(parserSettings);
 
