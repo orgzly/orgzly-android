@@ -198,7 +198,7 @@
             android:title="@string/tags_column"
             android:dialogTitle="@string/tags_column"
             android:numeric="integer"
-            android:inputType="number"
+            android:inputType="numberSigned"
             android:defaultValue="@string/pref_default_tags_column"/>
 
         <CheckBoxPreference
