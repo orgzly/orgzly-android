@@ -351,8 +351,10 @@ public class Shelf {
 
     public NotesBatch paste(long bookId, long noteId, Place place) {
         NotesBatch batch = NotesClient.paste(mContext, bookId, noteId, place);
-        notifyDataChanged(mContext);
-        updateSync();
+        if (batch != null) {
+            notifyDataChanged(mContext);
+            updateSync();
+        }
         return batch;
 
     }
