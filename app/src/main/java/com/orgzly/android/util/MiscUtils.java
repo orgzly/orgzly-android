@@ -229,11 +229,8 @@ public class MiscUtils {
             }
         }
 
-        if (percentHexCharsLeft > 0) {
-            return true;
-        }
+        return percentHexCharsLeft > 0;
 
-        return false;
     }
 
     public static String encodeUri(String str) {
