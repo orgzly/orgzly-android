@@ -254,6 +254,9 @@ public class ShareActivity extends CommonActivity
     protected void onResume() {
         super.onResume();
 
+        Shelf shelf = new Shelf(this);
+        shelf.resumeSync();
+
         if (mError != null) {
             showSimpleSnackbarLong(mError);
             mError = null;
