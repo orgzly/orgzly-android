@@ -1060,11 +1060,10 @@ public class NoteFragment extends Fragment
                 mListener.onNoteCreateRequest(mNote, place != Place.UNDEFINED ?
                         new NotePlace(mNote.getPosition().getBookId(), mNoteId, place) : null);
 
-            } else if (isNoteModified()) {
-                mListener.onNoteUpdateRequest(mNote);
-
-            } else {
-                mListener.onNoteCancelRequest(mNote);
+            } else { // Saving existing note
+                if (isNoteModified()) {
+                    mListener.onNoteUpdateRequest(mNote);
+                }
             }
         }
     }
