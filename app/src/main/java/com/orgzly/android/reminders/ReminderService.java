@@ -485,7 +485,7 @@ public class ReminderService extends IntentService {
 
         return PendingIntent.getService(
                 context,
-                Long.valueOf(2 * noteId).intValue(),
+                Long.valueOf(noteId).intValue(),
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
@@ -507,7 +507,7 @@ public class ReminderService extends IntentService {
 
         return PendingIntent.getService(
                 context,
-                Long.valueOf(2 * noteId + 1).intValue(),
+                Long.valueOf(noteId).intValue(),
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
