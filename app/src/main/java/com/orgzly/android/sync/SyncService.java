@@ -31,6 +31,7 @@ import java.util.Map;
 public class SyncService extends Service {
     public static final String TAG = SyncService.class.getName();
 
+    public static final String EXTRA_AUTOMATIC = "automatic";
 
     private SyncStatus status = new SyncStatus();
 
@@ -64,9 +65,11 @@ public class SyncService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
+        boolean isTriggeredAutomatically = intent != null && intent.getBooleanExtra(EXTRA_AUTOMATIC, false);
+
         if (intent != null && AppIntent.ACTION_SYNC_START.equals(intent.getAction())) {
             if (!isRunning()) {
-                start();
+                start(isTriggeredAutomatically);
             }
 
         } else if (intent != null && AppIntent.ACTION_SYNC_STOP.equals(intent.getAction())) {
@@ -78,7 +81,7 @@ public class SyncService extends Service {
             if (isRunning()) {
                 stop();
             } else {
-                start();
+                start(isTriggeredAutomatically);
             }
         }
 
@@ -89,7 +92,7 @@ public class SyncService extends Service {
         return syncTask != null;
     }
 
-    private void start() {
+    private void start(boolean isTriggeredAutomatically) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         Notifications.ensureSyncNotificationSetup(this);
@@ -129,7 +132,7 @@ public class SyncService extends Service {
         }
 
         syncTask = new SyncTask();
-        syncTask.execute();
+        syncTask.execute(isTriggeredAutomatically);
     }
 
     private void stop() {
@@ -220,7 +223,7 @@ public class SyncService extends Service {
     /**
      * Main sync task.
      */
-    private class SyncTask extends AsyncTask<Void, Object, Exception> {
+    private class SyncTask extends AsyncTask<Boolean, Object, Exception> {
         @Override
         protected void onPreExecute() {
             status.set(SyncStatus.Type.STARTING, null, 0, 0);
@@ -228,7 +231,8 @@ public class SyncService extends Service {
         }
 
         @Override
-        protected Exception doInBackground(Void... params) { /* Executing on a different thread. */
+        protected Exception doInBackground(Boolean... params) { /* Executing on a different thread. */
+            boolean isTriggeredAutomatically = params[0];
 
             /* Get the list of local and remote books from all repositories.
              * Group them by name.
@@ -252,9 +256,11 @@ public class SyncService extends Service {
             /* Because android sometimes drops milliseconds on reported file lastModified,
              * wait until the next full second
              */
-            long now = System.currentTimeMillis();
-            long nowMsPart = now % 1000;
-            SystemClock.sleep(1000 - nowMsPart);
+            if (isTriggeredAutomatically) {
+                long now = System.currentTimeMillis();
+                long nowMsPart = now % 1000;
+                SystemClock.sleep(1000 - nowMsPart);
+            }
 
             /*
              * Update books' statuses, before starting to sync them.

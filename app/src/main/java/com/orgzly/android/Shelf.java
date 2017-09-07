@@ -763,14 +763,18 @@ public class Shelf {
         }
     }
 
-    public void autoSync() {
+    private void autoSync() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
-        Map<String, Repo> repos = getAllRepos();
-        if (repos.size() == 0) {
-            return; // skip sync if no repos
+
+        /* Skip sync if there are no repos. */
+        if (getAllRepos().size() == 0) {
+            return;
         }
+
         Intent intent = new Intent(mContext, SyncService.class);
         intent.setAction(AppIntent.ACTION_SYNC_START);
+        intent.putExtra(SyncService.EXTRA_AUTOMATIC, true);
+
         mContext.startService(intent);
     }
 
