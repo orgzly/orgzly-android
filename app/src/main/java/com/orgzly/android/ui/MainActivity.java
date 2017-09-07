@@ -50,6 +50,7 @@ import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.provider.clients.ReposClient;
 import com.orgzly.android.repos.ContentRepo;
 import com.orgzly.android.repos.Repo;
+import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.dialogs.WhatsNewDialog;
 import com.orgzly.android.ui.fragments.BookFragment;
@@ -122,6 +123,7 @@ public class MainActivity extends CommonActivity
 
     private DisplayManager mDisplayManager;
     private ActionMode mActionMode;
+    private boolean mPromoteDemoteOrMoveRequested = false;
 
     // private Dialog mTooltip;
     private AlertDialog mWhatsNewDialog;
@@ -356,6 +358,9 @@ public class MainActivity extends CommonActivity
         super.onResume();
 
         performIntros();
+
+        Shelf shelf = new Shelf(this);
+        shelf.resumeSync();
     }
 
     private void performIntros() {
@@ -1311,12 +1316,24 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onNotesPromoteRequest(long bookId, Set<Long> noteIds) {
+        mPromoteDemoteOrMoveRequested = true;
         mSyncFragment.promoteNotes(bookId, noteIds);
     }
 
     @Override
     public void onNotesDemoteRequest(long bookId, Set<Long> noteIds) {
+        mPromoteDemoteOrMoveRequested = true;
         mSyncFragment.demoteNotes(bookId, noteIds);
+    }
+
+    @Override
+    public void onNotesMoveRequest(long bookId, long noteId, int offset) {
+        mPromoteDemoteOrMoveRequested = true;
+        mSyncFragment.moveNote(bookId, noteId, offset);
+    }
+
+    @Override
+    public void onNotesMoved(int count) {
     }
 
     @Override
@@ -1454,6 +1471,13 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void actionModeDestroyed() {
+        if (mActionMode != null) {
+            if ("M".equals(mActionMode.getTag()) && mPromoteDemoteOrMoveRequested) {
+                Shelf shelf = new Shelf(this);
+                shelf.updateSync();
+            }
+        }
+        mPromoteDemoteOrMoveRequested = false;
         mActionMode = null;
     }
 

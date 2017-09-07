@@ -370,7 +370,7 @@
 
     <string name="pref_title_reminders_sound">Sound</string>
     <string name="pref_title_reminders_vibrate">Vibrate</string>
-
+    
     <string name="primary_storage">Main storage</string>
     <string name="secondary_storage">SD card</string>
     <string name="secondary_storage_not_available_any_more">Secondary storage is no longer available</string>
@@ -404,8 +404,20 @@
     <string name="select_a_filter">Select a filter</string>
     <string name="select_a_filter_long">Select a filter by clicking on the title bar</string>
 
-    <string name="sync_after_preference_title">Start sync after new note is created</string>
-    <string name="sync_after_summary">Note that entire notebook will be exported and transferred over the network each time</string>
+    <string name="pref_title_preferencescreen_auto_sync">EXPERIMENTAL Auto-Sync</string>
+    <string name="pref_summary_auto_sync">CAUTION: EXPERIMENTAL\nThis is a new feature undergoing test.  Each sync will force full a notebook rewrite no matter how small the change.  Syncs may take some time, especially when transferred over the network.  Certain actions will be blocked while sync is in progress.</string>
+
+    <string name="pref_title_sync_after_note_create">New Note</string>
+    <string name="pref_summary_sync_after_note_create">Sync after creating a new note</string>
+
+    <string name="pref_title_sync_after_note_update">Note Updated or Deleted</string>
+    <string name="pref_summary_sync_after_note_update">Sync after updating/deleting a note</string>
+
+    <string name="pref_title_on_resume_sync">App Started or Resumed</string>
+    <string name="pref_summary_on_resume_sync">Sync whenever this app comes to the foreground</string>
+
+    <string name="pref_title_repo_update_sync">FUTURE Repo Updated</string>
+    <string name="pref_summary_repo_update_sync">FUTURE: Sync whenever an update on a repo is detected</string>
 
     <!-- These are just used in tools:text for layout preview and don't have to be translated,
          unless layout look depends on the translation. -->

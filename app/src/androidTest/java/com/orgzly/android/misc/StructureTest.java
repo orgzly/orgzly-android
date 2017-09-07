@@ -383,7 +383,7 @@ public class StructureTest extends OrgzlyTest {
         Note note = shelf.getNote("Note 1.1");
 
         /* TODO: Assert 0 if trying to promote level 1 note. */
-        assertEquals(1, shelf.promoteNotes(book.getId(), note.getId()));
+        assertEquals(1, shelf.promote(book.getId(), note.getId()));
 
         assertEquals("description\n" +
                      "\n" +
@@ -425,8 +425,8 @@ public class StructureTest extends OrgzlyTest {
         Note note = shelf.getNote("Note 1.1.1");
 
         /* Promote 1.1.1 twice. */
-        assertEquals(1, shelf.promoteNotes(book.getId(), note.getId()));
-        assertEquals(1, shelf.promoteNotes(book.getId(), note.getId()));
+        assertEquals(1, shelf.promote(book.getId(), note.getId()));
+        assertEquals(1, shelf.promote(book.getId(), note.getId()));
 
         assertEquals("description\n" +
                      "\n" +
@@ -481,7 +481,7 @@ public class StructureTest extends OrgzlyTest {
 
         /* Promote folded 1.1 */
         shelf.toggleFoldedState(note.getId());
-        assertEquals(1, shelf.promoteNotes(book.getId(), note.getId()));
+        assertEquals(1, shelf.promote(book.getId(), note.getId()));
 
         assertEquals("description\n" +
                      "\n" +
@@ -543,7 +543,7 @@ public class StructureTest extends OrgzlyTest {
                                                          "* Note 2\n");
 
         /* Demote 2. */
-        assertEquals(1, shelf.demoteNotes(book.getId(), shelf.getNote("Note 2").getId()));
+        assertEquals(1, shelf.demote(book.getId(), shelf.getNote("Note 2").getId()));
 
         assertEquals("description\n" +
                      "\n" +
@@ -667,7 +667,7 @@ public class StructureTest extends OrgzlyTest {
                                                          "*** Note 2.1.1\n");
 
         /* Demote 2.1. */
-        assertEquals(0, shelf.demoteNotes(book.getId(), shelf.getNote("Note 2.1").getId()));
+        assertEquals(0, shelf.demote(book.getId(), shelf.getNote("Note 2.1").getId()));
 
         assertEquals("description\n" +
                      "\n" +

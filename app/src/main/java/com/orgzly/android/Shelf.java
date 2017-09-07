@@ -29,6 +29,7 @@ import com.orgzly.android.repos.Rook;
 import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.sync.BookNamesake;
 import com.orgzly.android.sync.BookSyncStatus;
+import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.CircularArrayList;
@@ -254,11 +255,13 @@ public class Shelf {
     public void setNotesScheduledTime(Set<Long> noteIds, OrgDateTime time) {
         NotesClient.updateScheduledTime(mContext, noteIds, time);
         notifyDataChanged(mContext);
+        updateSync();
     }
 
     public void setNotesState(Set<Long> noteIds, String state) {
         NotesClient.setState(mContext, noteIds, state);
         notifyDataChanged(mContext);
+        updateSync();
     }
 
     public Note getNote(long id) {
@@ -276,6 +279,7 @@ public class Shelf {
     public int updateNote(Note note) {
         int result = NotesClient.update(mContext, note);
         notifyDataChanged(mContext);
+        updateSync();
         return result;
     }
 
@@ -286,7 +290,7 @@ public class Shelf {
         BooksClient.setModifiedTime(mContext, note.getPosition().getBookId(), System.currentTimeMillis());
 
         notifyDataChanged(mContext);
-
+        createSync();
         return insertedNote;
     }
 
@@ -298,26 +302,30 @@ public class Shelf {
         NotesClient.toggleFoldedState(mContext, noteId);
     }
 
-    public void promoteNotes(long bookId, Set<Long> noteIds) {
-        BooksClient.promote(mContext, bookId, noteIds);
-    }
-
-    public int promoteNotes(long bookId, long noteId) {
+    public int promote(long bookId, long noteId) {
         Set<Long> noteIds = new HashSet<>();
         noteIds.add(noteId);
 
-        return BooksClient.promote(mContext, bookId, noteIds);
+        return promote(bookId, noteIds);
     }
 
-    public void demoteNotes(long bookId, Set<Long> noteIds) {
-        BooksClient.demote(mContext, bookId, noteIds);
+    public int promote(long bookId, Set<Long> noteIds) {
+        int result = BooksClient.promote(mContext, bookId, noteIds);
+        // updateSync(); handled on action bar destroy instead
+        return result;
     }
 
-    public int demoteNotes(long bookId, long noteId) {
+    public int demote(long bookId, long noteId) {
         Set<Long> noteIds = new HashSet<>();
         noteIds.add(noteId);
 
-        return BooksClient.demote(mContext, bookId, noteIds);
+        return demote(bookId, noteIds);
+    }
+
+    public int demote(long bookId, Set<Long> noteIds) {
+        int result = BooksClient.demote(mContext, bookId, noteIds);
+        // updateSync(); handled on action bar destroy instead
+        return result;
     }
 
     public int cut(long bookId, long noteId) {
@@ -330,12 +338,23 @@ public class Shelf {
     public int cut(long bookId, Set<Long> noteIds) {
         int result = NotesClient.cut(mContext, bookId, noteIds);
         notifyDataChanged(mContext);
+        updateSync();
+        return result;
+    }
+
+    public int move(long bookId, long noteId, int offset) {
+        int result = BooksClient.moveNotes(mContext, bookId, noteId, offset);
+        notifyDataChanged(mContext);
+        // updateSync(); handled on action bar destroy instead
         return result;
     }
 
     public NotesBatch paste(long bookId, long noteId, Place place) {
         NotesBatch batch = NotesClient.paste(mContext, bookId, noteId, place);
-        notifyDataChanged(mContext);
+        if (batch != null) {
+            notifyDataChanged(mContext);
+            updateSync();
+        }
         return batch;
 
     }
@@ -343,6 +362,7 @@ public class Shelf {
     public int delete(long bookId, Set<Long> noteIds) {
         int result = NotesClient.delete(mContext, bookId, noteIds);
         notifyDataChanged(mContext);
+        updateSync();
         return result;
     }
 
@@ -356,6 +376,7 @@ public class Shelf {
         AppPreferences.lastSuccessfulSyncTime(mContext, 0L);
 
         notifyDataChanged(mContext);
+        // sync?
     }
 
     /**
@@ -699,15 +720,20 @@ public class Shelf {
     }
 
     public void setStateToDone(long noteId) {
-        /* Get the *first* DONE state from preferences. */
         Set<String> doneStates = AppPreferences.doneKeywordsSet(mContext);
-        String firstState = doneStates.iterator().hasNext() ? doneStates.iterator().next() : null;
+        Note note = NotesClient.getNote(mContext, noteId);
+        String currentState = note.getHead().getState();
+        if (doneStates.contains(currentState)) {
+            return;  // already done, early exit
+        }
 
-        if (firstState != null) {
+        /* Get the *first* DONE state from preferences. */
+        String firstDoneState = doneStates.iterator().hasNext() ? doneStates.iterator().next() : null;
+
+        if (firstDoneState != null) {
             Set<Long> ids = new TreeSet<>();
             ids.add(noteId);
-
-            setNotesState(ids, firstState);
+            setNotesState(ids, firstDoneState);
         }
     }
 
@@ -717,6 +743,41 @@ public class Shelf {
         ReminderService.notifyDataChanged(context);
 
         context.sendBroadcast(new Intent(AppIntent.ACTION_LIST_WIDGET_UPDATE));
+    }
+
+    public void createSync() {
+        if (AppPreferences.syncAfterNoteCreate(mContext)) {
+            autoSync();
+        }
+    }
+
+    public void updateSync() {
+        if (AppPreferences.syncAfterNoteUpdate(mContext)) {
+            autoSync();
+        }
+    }
+
+    public void resumeSync() {
+        if (AppPreferences.onResumeSync(mContext)) {
+            autoSync();
+        }
+    }
+
+    public void autoSync() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+        Map<String, Repo> repos = getAllRepos();
+        if (repos.size() == 0) {
+            return; // skip sync if no repos
+        }
+        Intent intent = new Intent(mContext, SyncService.class);
+        intent.setAction(AppIntent.ACTION_SYNC_START);
+        mContext.startService(intent);
+    }
+
+    public void directedSync() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+        Intent intent = new Intent(mContext, SyncService.class);
+        mContext.startService(intent);
     }
 
     public interface ReParsingNotesListener {

@@ -254,6 +254,9 @@ public class ShareActivity extends CommonActivity
     protected void onResume() {
         super.onResume();
 
+        Shelf shelf = new Shelf(this);
+        shelf.resumeSync();
+
         if (mError != null) {
             showSimpleSnackbarLong(mError);
             mError = null;
@@ -403,6 +406,10 @@ public class ShareActivity extends CommonActivity
 
     @Override
     public void onNotesCut(int count) {
+    }
+
+    @Override
+    public void onNotesMoved(int result) {
     }
 
     private class Data {

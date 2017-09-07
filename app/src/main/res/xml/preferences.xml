@@ -240,12 +240,14 @@
                 android:targetPackage="com.orgzly"
                 android:targetClass="com.orgzly.android.ui.ReposActivity"/>
         </Preference>
-
-        <CheckBoxPreference
-            android:title="@string/sync_after_preference_title"
-            android:key="@string/pref_key_sync_after"
-            android:summary="@string/sync_after_summary"
-            android:defaultValue="@bool/pref_default_value_sync_after"/>
+        <Preference
+            android:title="@string/pref_title_preferencescreen_auto_sync"
+            android:key="@string/pref_key_preferencescreen_auto_sync">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.orgzly"
+                android:targetClass="com.orgzly.android.ui.AutoSyncSettingsActivity"/>
+        </Preference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/app">
