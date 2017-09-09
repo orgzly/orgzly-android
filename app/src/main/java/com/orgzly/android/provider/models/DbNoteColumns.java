@@ -2,6 +2,7 @@ package com.orgzly.android.provider.models;
 
 public interface DbNoteColumns {
     String BOOK_ID = "book_id";
+    String POSITION = "position";
 
     String LEVEL = "level";
     String TITLE = "title";
