@@ -27,6 +27,7 @@ public class DbNote implements DbNoteColumns, BaseColumns {
 
             /* Position/structure */
             BOOK_ID + " INTEGER NOT NULL," +
+            POSITION + " INTEGER NOT NULL," +
             LFT + " INTEGER," +
             RGT + " INTEGER," +
             LEVEL + " INTEGER NOT NULL," +
@@ -179,6 +180,7 @@ public class DbNote implements DbNoteColumns, BaseColumns {
         values.put(FOLDED_UNDER_ID, position.getFoldedUnderId());
         values.put(PARENT_ID, position.getParentId());
         values.put(IS_FOLDED, position.isFolded() ? 1 : 0);
+        values.put(POSITION, 0); // TODO: Remove
     }
 
     public static NotePosition positionFromCursor(Cursor cursor) {
