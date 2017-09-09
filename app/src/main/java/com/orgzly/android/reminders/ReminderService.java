@@ -429,9 +429,8 @@ public class ReminderService extends IntentService {
             /* snooze action */
             String reminderSnoozeActionText = getString(R.string.reminder_snooze);
 
-            DateTime now = new DateTime();
             long timestamp = noteReminder.getRunTime().getMillis();
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, timestamp);
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, timestamp);
             NotificationCompat.Action reminderSnoozeAction =
                 new NotificationCompat.Action(R.drawable.ic_alarm_white_24dp,
                                               reminderSnoozeActionText,

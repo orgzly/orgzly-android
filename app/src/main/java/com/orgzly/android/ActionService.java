@@ -50,8 +50,7 @@ public class ActionService extends IntentService {
             long timestamp = intent.getLongExtra(ActionService.EXTRA_SNOOZE_TIMESTAMP, 0);
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
             if (noteId > 0) {
-                long snoozeTime = AppPreferences.remindersSnoozeTime(this) * 60 * 1000;
-                SnoozeJob.scheduleJob(noteId, timestamp + snoozeTime);
+                SnoozeJob.scheduleJob(this, noteId, timestamp);
             } else {
                 throw new IllegalArgumentException("Missing note id");
             }
