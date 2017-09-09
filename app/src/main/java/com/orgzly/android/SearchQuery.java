@@ -3,6 +3,9 @@ package com.orgzly.android;
 import com.orgzly.android.util.QuotedStringTokenizer;
 import com.orgzly.org.datetime.OrgInterval;
 
+import android.text.TextUtils;
+
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -10,6 +13,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 
 /**
@@ -25,274 +29,178 @@ import java.util.regex.Pattern;
  * using a modifier key on most keyboards.
  *
  */
+
 public class SearchQuery {
-    private SearchQueryInterval scheduled;
-    private SearchQueryInterval deadline;
-    private Set<String> textSearch = new LinkedHashSet<>();
-    private String bookName;
-    private Set<String> notBookName = new TreeSet<>();
-    private Set<String> noteTags = new TreeSet<>();
-    private Set<String> tags = new TreeSet<>();
-    private Set<String> notTags = new TreeSet<>();
-    private String priority;
-    private String state;
-    private Set<String> notState = new TreeSet<>();
 
-    private List<SortOrder> sortOrder = new ArrayList<>();
+    // A "group" of search criteria that is AND-ed together when searching.
+    public class SearchQueryGroup {
+        private SearchQueryInterval scheduled;
+        private SearchQueryInterval deadline;
+        private Set<String> textSearch = new LinkedHashSet<>();
+        private String bookName;
+        private Set<String> notBookName = new TreeSet<>();
+        private Set<String> noteTags = new TreeSet<>();
+        private Set<String> tags = new TreeSet<>();
+        private Set<String> notTags = new TreeSet<>();
+        private String priority;
+        private String state;
+        private Set<String> notState = new TreeSet<>();
 
-    public SearchQuery() {
-    }
-
-    public SearchQuery(String str) {
-        if (str == null) {
-            str = "";
+        public boolean hasScheduled() {
+            return scheduled != null;
         }
 
-        QuotedStringTokenizer tokenizer = new QuotedStringTokenizer(str, " ", false, true);
-
-        while (tokenizer.hasMoreTokens()) {
-            String token = tokenizer.nextToken();
-
-            if (token.startsWith("s.")) { // scheduled
-                if (token.length() > 2) {
-                    scheduled = SearchQueryInterval.getInstance(token.substring(2).toLowerCase());
-                }
-
-            } else if (token.startsWith("d.")) { // deadline
-                if (token.length() > 2) {
-                    deadline = SearchQueryInterval.getInstance(token.substring(2).toLowerCase());
-                }
-
-            } else if (token.startsWith("p.")) { // priority
-                if (token.length() > 2) {
-                    priority = token.substring(2).toLowerCase();
-                }
-
-            } else if (token.startsWith("i.")) { // is (state)
-                if (token.length() > 2) {
-                    state = token.substring(2).toUpperCase();
-                }
-
-            } else if (token.startsWith(".i.")) { // is not (state)
-                if (token.length() > 3) {
-                    notState.add(token.substring(3).toUpperCase());
-                }
-
-            } else if (token.startsWith("b.")) { // book name
-                if (token.length() > 2) {
-                    bookName = QuotedStringTokenizer.unquote(token.substring(2));
-                }
-
-            } else if (token.startsWith(".b.")) { // book name
-                if (token.length() > 3) {
-                    notBookName.add(QuotedStringTokenizer.unquote(token.substring(3)));
-                }
-
-            } else if (token.startsWith("tn.")) { // note tag
-                if (token.length() > 3) {
-                    noteTags.add(token.substring(3));
-                }
-
-            } else if (token.startsWith(".t.")) { // has no tag
-                if (token.length() > 3) {
-                    notTags.add(token.substring(3));
-                }
-
-            } else if (token.startsWith("t.")) { // tag
-                if (token.length() > 2) {
-                    tags.add(token.substring(2));
-                }
-
-            } else if (token.startsWith(".o.")) { // sort order
-                if (token.length() > 3) {
-                    String sortOrderName = token.substring(3);
-                    sortOrder.add(new SortOrder(sortOrderName, false));
-                }
-
-            } else if (token.startsWith("o.")) { // sort order
-                if (token.length() > 2) {
-                    String sortOrderName = token.substring(2);
-                    sortOrder.add(new SortOrder(sortOrderName, true));
-                }
-
-            } else {
-                textSearch.add(token);
-            }
-        }
-    }
-
-    public boolean hasScheduled() {
-        return scheduled != null;
-    }
-
-    public SearchQueryInterval getScheduled() {
-        return scheduled;
-    }
-
-    public boolean hasDeadline() {
-        return deadline != null;
-    }
-
-    public SearchQueryInterval getDeadline() {
-        return deadline;
-    }
-
-    public Set<String> getTextSearch() {
-        return textSearch;
-    }
-
-    public boolean hasTextSearch() {
-        return !textSearch.isEmpty();
-    }
-
-    public Set<String> getNoteTags() {
-        return noteTags;
-    }
-
-    public boolean hasNoteTags() {
-        return !noteTags.isEmpty();
-    }
-
-    public Set<String> getTags() {
-        return tags;
-    }
-
-    public boolean hasTags() {
-        return !tags.isEmpty();
-    }
-
-    public Set<String> getNotTags() {
-        return notTags;
-    }
-
-    public String getPriority() {
-        return priority;
-    }
-
-    /**
-     * Lowercase priority.
-     */
-    public boolean hasPriority() {
-        return priority != null;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public boolean hasState() {
-        return state != null;
-    }
-
-    public void setState(String value) {
-        state = value;
-    }
-
-    public Set<String> getNotState() {
-        return notState;
-    }
-
-    public boolean hasNotState() {
-        return ! notState.isEmpty();
-    }
-
-    public String getBookName() {
-        return bookName;
-    }
-
-    public void setBookName(String bookName) {
-        this.bookName = bookName;
-    }
-
-    public boolean hasBookName() {
-        return bookName != null;
-    }
-
-    public Set<String> getNotBookName() {
-        return notBookName;
-    }
-
-    public boolean hasNotBookName() {
-        return ! notBookName.isEmpty();
-    }
-
-
-    public boolean hasSortOrder() {
-        return sortOrder.size() > 0;
-    }
-
-    public List<SortOrder> getSortOrder() {
-        return sortOrder;
-    }
-
-    public String toString() {
-        StringBuilder s = new StringBuilder();
-
-        if (hasBookName()) {
-            s.append("b.").append(QuotedStringTokenizer.quote(bookName, " "));
+        public SearchQueryInterval getScheduled() {
+            return scheduled;
         }
 
-        if (hasNotBookName()) {
-            for (String name : notBookName) {
-                s.append(" .b.").append(QuotedStringTokenizer.quote(name, " "));
-            }
+        public boolean hasDeadline() {
+            return deadline != null;
         }
 
-        if (state != null) {
-            s.append(" i.").append(state.toLowerCase());
+        public SearchQueryInterval getDeadline() {
+            return deadline;
         }
 
-        if (! notState.isEmpty()) {
-            for (String state : notState) {
-                s.append(" .i.").append(state.toLowerCase());
-            }
+        public Set<String> getTextSearch() {
+            return textSearch;
         }
 
-        if (priority != null) {
-            s.append(" p.").append(priority.toLowerCase());
+        public boolean hasTextSearch() {
+            return !textSearch.isEmpty();
         }
 
-        if (! noteTags.isEmpty()) {
-            for (String tag: noteTags) {
-                s.append(" tn.").append(tag);
-            }
+        public Set<String> getNoteTags() {
+            return noteTags;
         }
 
-        if (! notTags.isEmpty()) {
-            for (String tag : notTags) {
-                s.append(" .t.").append(tag);
-            }
+        public boolean hasNoteTags() {
+            return !noteTags.isEmpty();
         }
 
-        if (! tags.isEmpty()) {
-            for (String tag: tags) {
-                s.append(" t.").append(tag);
-            }
+        public Set<String> getTags() {
+            return tags;
         }
 
-        if (hasScheduled()) {
-            s.append(" s.").append(scheduled.toString());
+        public boolean hasTags() {
+            return !tags.isEmpty();
         }
 
-        if (hasDeadline()) {
-            s.append(" d.").append(deadline.toString());
+        public Set<String> getNotTags() {
+            return notTags;
         }
 
-        for (String ts: textSearch) {
-            s.append(" ").append(ts);
+        public String getPriority() {
+            return priority;
         }
 
-        for (SortOrder order: sortOrder) {
-            s.append(" ");
+        /**
+         * Lowercase priority.
+         */
+        public boolean hasPriority() {
+            return priority != null;
+        }
 
-            if (! order.isAscending) {
-                s.append(".");
+        public String getState() {
+            return state;
+        }
+
+        public boolean hasState() {
+            return state != null;
+        }
+
+        public void setState(String value) {
+            state = value;
+        }
+
+        public Set<String> getNotState() {
+            return notState;
+        }
+
+        public boolean hasNotState() {
+            return ! notState.isEmpty();
+        }
+
+        public String getBookName() {
+            return bookName;
+        }
+
+        public void setBookName(String bookName) {
+            this.bookName = bookName;
+        }
+
+        public boolean hasBookName() {
+            return bookName != null;
+        }
+
+        public Set<String> getNotBookName() {
+            return notBookName;
+        }
+
+        public boolean hasNotBookName() {
+            return ! notBookName.isEmpty();
+        }
+
+
+        public String toString() {
+            StringBuilder s = new StringBuilder();
+
+            if (hasBookName()) {
+                s.append("b.").append(QuotedStringTokenizer.quote(bookName, " "));
             }
 
-            s.append("o.").append(order.name);
-        }
+            if (hasNotBookName()) {
+                for (String name : notBookName) {
+                    s.append(" .b.").append(QuotedStringTokenizer.quote(name, " "));
+                }
+            }
 
-        return s.toString().trim();
+            if (state != null) {
+                s.append(" i.").append(state.toLowerCase());
+            }
+
+            if (! notState.isEmpty()) {
+                for (String state : notState) {
+                    s.append(" .i.").append(state.toLowerCase());
+                }
+            }
+
+            if (priority != null) {
+                s.append(" p.").append(priority.toLowerCase());
+            }
+
+            if (! noteTags.isEmpty()) {
+                for (String tag: noteTags) {
+                    s.append(" tn.").append(tag);
+                }
+            }
+
+            if (! notTags.isEmpty()) {
+                for (String tag : notTags) {
+                    s.append(" .t.").append(tag);
+                }
+            }
+
+            if (! tags.isEmpty()) {
+                for (String tag: tags) {
+                    s.append(" t.").append(tag);
+                }
+            }
+
+            if (hasScheduled()) {
+                s.append(" s.").append(scheduled.toString());
+            }
+
+            if (hasDeadline()) {
+                s.append(" d.").append(deadline.toString());
+            }
+
+            for (String ts: textSearch) {
+                s.append(" ").append(ts);
+            }
+
+            return s.toString().trim();
+        }
     }
 
     public static class SortOrder {
@@ -396,5 +304,286 @@ public class SearchQuery {
         public boolean none() {
             return none;
         }
+    }
+
+    // The most recent group added. (If there is no "or" in the search, this
+    // will be the only group.) Adding this field should make it simpler to
+    // integrate this feature into the existing code.
+    public SearchQueryGroup currentGroup = new SearchQueryGroup();
+    // A list of grouped search criteria. The criteria inside a group is AND-ed
+    // together. The different groups are all OR-ed together.
+    public List<SearchQueryGroup> groups = new ArrayList<>(Arrays.asList(currentGroup));
+
+    private List<SortOrder> sortOrder = new ArrayList<>();
+
+    public SearchQuery() {
+    }
+
+    public SearchQuery(String str) {
+        if (str == null) {
+            str = "";
+        }
+
+        QuotedStringTokenizer tokenizer = new QuotedStringTokenizer(str, " ", false, true);
+
+        while (tokenizer.hasMoreTokens()) {
+            String token = tokenizer.nextToken();
+
+            if (token.startsWith("s.")) { // scheduled
+                if (token.length() > 2) {
+                    currentGroup.scheduled = SearchQueryInterval.getInstance(token.substring(2).toLowerCase());
+                }
+
+            } else if (token.startsWith("d.")) { // deadline
+                if (token.length() > 2) {
+                    currentGroup.deadline = SearchQueryInterval.getInstance(token.substring(2).toLowerCase());
+                }
+
+            } else if (token.startsWith("p.")) { // priority
+                if (token.length() > 2) {
+                    currentGroup.priority = token.substring(2).toLowerCase();
+                }
+
+            } else if (token.startsWith("i.")) { // is (state)
+                if (token.length() > 2) {
+                    currentGroup.state = token.substring(2).toUpperCase();
+                }
+
+            } else if (token.startsWith(".i.")) { // is not (state)
+                if (token.length() > 3) {
+                    currentGroup.notState.add(token.substring(3).toUpperCase());
+                }
+
+            } else if (token.startsWith("b.")) { // book name
+                if (token.length() > 2) {
+                    currentGroup.bookName = QuotedStringTokenizer.unquote(token.substring(2));
+                }
+
+            } else if (token.startsWith(".b.")) { // book name
+                if (token.length() > 3) {
+                    currentGroup.notBookName.add(QuotedStringTokenizer.unquote(token.substring(3)));
+                }
+
+            } else if (token.startsWith("tn.")) { // note tag
+                if (token.length() > 3) {
+                    currentGroup.noteTags.add(token.substring(3));
+                }
+
+            } else if (token.startsWith(".t.")) { // has no tag
+                if (token.length() > 3) {
+                    currentGroup.notTags.add(token.substring(3));
+                }
+
+            } else if (token.startsWith("t.")) { // tag
+                if (token.length() > 2) {
+                    currentGroup.tags.add(token.substring(2));
+                }
+
+            } else if (token.startsWith(".o.")) { // sort order
+                if (token.length() > 3) {
+                    String sortOrderName = token.substring(3);
+                    sortOrder.add(new SortOrder(sortOrderName, false));
+                }
+
+            } else if (token.startsWith("o.")) { // sort order
+                if (token.length() > 2) {
+                    String sortOrderName = token.substring(2);
+                    sortOrder.add(new SortOrder(sortOrderName, true));
+                }
+
+            } else if (token.equals("or")) {
+                currentGroup = new SearchQueryGroup();
+                groups.add(currentGroup);
+
+            } else {
+                currentGroup.textSearch.add(token);
+            }
+        }
+    }
+
+    public List<SortOrder> getSortOrder() {
+        return sortOrder;
+    }
+
+    public boolean hasSortOrder() {
+        return sortOrder.size() > 0;
+    }
+
+        public boolean hasScheduled() {
+            for (SearchQuery.SearchQueryGroup group : groups) {
+                if (group.hasScheduled()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // public SearchQueryInterval getScheduled() {
+        //     return scheduled;
+        // }
+
+        public boolean hasDeadline() {
+            for (SearchQuery.SearchQueryGroup group : groups) {
+                if (group.hasDeadline()) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // public SearchQueryInterval getDeadline() {
+        //     return deadline;
+        // }
+
+        // public Set<String> getTextSearch() {
+        //     return textSearch;
+        // }
+
+        public boolean hasTextSearch() {
+            for (SearchQuery.SearchQueryGroup group : groups) {
+                if (group.hasTextSearch()) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // public Set<String> getNoteTags() {
+        //     return noteTags;
+        // }
+
+        public boolean hasNoteTags() {
+            for (SearchQuery.SearchQueryGroup group : groups) {
+                if (group.hasNoteTags()) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // public Set<String> getTags() {
+        //     return tags;
+        // }
+
+        public boolean hasTags() {
+            for (SearchQuery.SearchQueryGroup group : groups) {
+                if (group.hasTags()) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // public Set<String> getNotTags() {
+        //     return notTags;
+        // }
+
+        // public String getPriority() {
+        //     return priority;
+        // }
+
+        /**
+         * Lowercase priority.
+         */
+        public boolean hasPriority() {
+            for (SearchQuery.SearchQueryGroup group : groups) {
+                if (group.hasPriority()) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // public String getState() {
+        //     return state;
+        // }
+
+        public boolean hasState() {
+            for (SearchQuery.SearchQueryGroup group : groups) {
+                if (group.hasState()) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // public void setState(String value) {
+        //     state = value;
+        // }
+
+        // public Set<String> getNotState() {
+        //     return notState;
+        // }
+
+        public boolean hasNotState() {
+            for (SearchQuery.SearchQueryGroup group : groups) {
+                if (group.hasNotState()) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // public String getBookName() {
+        //     return bookName;
+        // }
+
+        // public void setBookName(String bookName) {
+        //     this.bookName = bookName;
+        // }
+
+        public boolean hasBookName() {
+            for (SearchQuery.SearchQueryGroup group : groups) {
+                if (group.hasBookName()) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // public Set<String> getNotBookName() {
+        //     return notBookName;
+        // }
+
+        public boolean hasNotBookName() {
+            for (SearchQuery.SearchQueryGroup group : groups) {
+                if (group.hasNotBookName()) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+    public String toString() {
+        List<String> groupStrs = new ArrayList<>();
+
+        for (SearchQueryGroup qg : groups) {
+            groupStrs.add(qg.toString());
+        }
+
+        String groupStr = TextUtils.join(" or ", groupStrs);
+
+        for (SortOrder order: sortOrder) {
+            StringBuilder s = new StringBuilder();
+            s.append(" ");
+
+            if (! order.isAscending) {
+                s.append(".");
+            }
+
+            s.append("o.").append(order.name);
+            groupStr += s.toString();
+        }
+
+        return groupStr;
     }
 }
