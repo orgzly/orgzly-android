@@ -30,6 +30,35 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="1.5.2"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support emphasis and monospace"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Display notes count in the list of notebooks"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Hide number of content lines (new option)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Display cut, paste and move buttons in action bar (moved from overflow)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Display book's last action error in subtitle"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix brief appearance of white window on app start when using dark color scheme"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="1.5.1"
             tools:ignore="HardcodedText"/>
 
