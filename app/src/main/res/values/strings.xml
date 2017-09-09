@@ -372,7 +372,10 @@
     <string name="pref_title_reminders_sound">Sound</string>
     <string name="pref_title_reminders_vibrate">Vibrate</string>
 
-    <string name="pref_title_snooze_time">Snooze Time</string>
+    <string name="pref_title_snooze_time">Snooze time</string>
+
+    <string name="pref_title_snooze_relative_to">Snooze relative to</string>
+    <string name="pref_dialog_title_snooze_relative_to">Snooze time starts relative to:</string>
 
     <string name="primary_storage">Main storage</string>
     <string name="secondary_storage">SD card</string>

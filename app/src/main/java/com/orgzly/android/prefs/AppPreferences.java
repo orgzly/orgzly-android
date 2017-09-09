@@ -235,6 +235,12 @@ public class AppPreferences {
                 context.getResources().getString(R.string.pref_default_value_snooze_time)));
     }
 
+    public static String remindersSnoozeRelativeTo(Context context) {
+        return getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_snooze_relative_to),
+                context.getResources().getString(R.string.pref_default_value_snooze_relative_to));
+    }
+
     public static boolean showSyncNotifications(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_show_sync_notifications),

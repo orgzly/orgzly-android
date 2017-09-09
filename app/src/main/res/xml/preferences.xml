@@ -239,6 +239,14 @@
             android:entryValues="@array/pref_entry_values_snooze_time"
             android:defaultValue="@string/pref_default_value_snooze_time"/>
 
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_snooze_relative_to"
+            android:title="@string/pref_title_snooze_relative_to"
+            android:dialogTitle="@string/pref_dialog_title_snooze_relative_to"
+            android:entries="@array/pref_entries_snooze_relative_to"
+            android:entryValues="@array/pref_entry_values_snooze_relative_to"
+            android:defaultValue="@string/pref_default_value_snooze_relative_to"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/sync">

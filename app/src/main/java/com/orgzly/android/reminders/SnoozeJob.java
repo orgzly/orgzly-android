@@ -3,6 +3,7 @@ package com.orgzly.android.reminders;
 import java.lang.System;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobManager;
@@ -31,14 +32,23 @@ public class SnoozeJob extends Job {
         PersistableBundleCompat extras = new PersistableBundleCompat();
 
         long snoozeTime = AppPreferences.remindersSnoozeTime(context) * 60 * 1000;
-        long now = System.currentTimeMillis();
-        long exactMs = timestamp - now;
-
-        // keep adding snooze times until positive: handle the case where
-        // someone lets the alarm go off for more that one snoozeTime interval
-        while (exactMs <= 0) {
-            exactMs += snoozeTime;
+        String snoozeRelativeTo = AppPreferences.remindersSnoozeRelativeTo(context);
+        long exactMs;
+        if (snoozeRelativeTo.equals("button")) {
+            exactMs = snoozeTime;
+        } else if (snoozeRelativeTo.equals("alarm")) {
             timestamp += snoozeTime;
+            exactMs = timestamp - System.currentTimeMillis();
+            // keep adding snooze times until positive: handle the case where
+            // someone lets the alarm go off for more that one snoozeTime interval
+            while (exactMs <= 0) {
+                exactMs += snoozeTime;
+                timestamp += snoozeTime;
+            }
+        } else {
+            // should never happen
+            Log.e(TAG, "unhandled snoozeRelativeTo " + snoozeRelativeTo);
+            return;
         }
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp, exactMs);

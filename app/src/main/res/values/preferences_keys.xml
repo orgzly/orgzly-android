@@ -237,6 +237,17 @@
         <item>30</item>
     </string-array>
 
+    <string name="pref_key_snooze_relative_to" translatable="false">pref_key_snooze_relative_to</string>
+    <string name="pref_default_value_snooze_relative_to">button</string>
+    <string-array name="pref_entries_snooze_relative_to">
+        <item>alarm time</item>
+        <item>button time</item>
+    </string-array>
+    <string-array name="pref_entry_values_snooze_relative_to">
+        <item>alarm</item>
+        <item>button</item>
+    </string-array>
+
     <string name="pref_key_use_reminders_for_scheduled_times" translatable="false">pref_key_use_reminders_for_scheduled_times</string>
     <bool name="pref_default_value_use_reminders_for_scheduled_times" translatable="false">false</bool>
 
