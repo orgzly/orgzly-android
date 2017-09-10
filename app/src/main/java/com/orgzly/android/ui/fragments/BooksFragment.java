@@ -426,7 +426,7 @@ public class BooksFragment extends ListFragment
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 boolean hasData = !cursor.isNull(columnIndex);
-                String viewContent = "";
+                String viewContent = null;
                 switch (view.getId()) {
                     case R.id.item_book_encoding_used:
                         if (hasData) {
@@ -481,8 +481,8 @@ public class BooksFragment extends ListFragment
                         break;
 
                     case R.id.item_book_notes_count:
-                        int notesAmount = cursor.getInt(columnIndex); // root and cut nodes are already filtered in subquery
                         if (hasData) {
+                            int notesAmount = cursor.getInt(columnIndex);
                             viewContent = notesAmount > 0 ?
                                     getResources().getQuantityString(R.plurals.notes_count_nonzero, notesAmount, notesAmount) :
                                     getString(R.string.notes_count_zero);
@@ -493,7 +493,10 @@ public class BooksFragment extends ListFragment
                         return false;
                 }
 
-                ((TextView) view).setText(viewContent);
+                if (viewContent != null) {
+                    ((TextView) view).setText(viewContent);
+                }
+
                 return true;
             }
         });
