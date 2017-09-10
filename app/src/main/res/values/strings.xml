@@ -158,6 +158,7 @@
     <string name="book_link">Notebook link</string>
     <string name="book_link_details">Notebook link details</string>
     <string name="book_last_action">Notebook last action</string>
+    <string name="book_notes_count">Notes count</string>
     <string name="pref_title_notebooks">Notebooks</string>
     <string name="notebooks">Notebooks</string>
     <string name="searches">Searches</string>
@@ -271,7 +272,7 @@
     <string name="reversed_note_click_action_summary">Click to select note, long-click to open</string>
     <string name="prefs_interface">Interface</string>
     <string name="look_and_feel"><![CDATA[Look & Feel]]></string>
-    <string name="notes_list">Notes list</string>
+    <string name="notes_list">List of notes</string>
     <string name="prefs_title_new_note">New note</string>
     <string name="prefs_title_notifications">Notifications</string>
     <string name="app">App</string>
@@ -321,6 +322,7 @@
     <string name="displayed_book_details_detected_encoding">Detected encoding</string>
     <string name="displayed_book_details_used_encoding">Used encoding</string>
     <string name="displayed_book_details_last_action">Last action</string>
+    <string name="displayed_book_details_notes_count" >Notes count</string>
 
     <string name="color_scheme_light">Light</string>
     <string name="color_scheme_dark">Dark</string>
@@ -373,7 +375,7 @@
 
     <string name="pref_title_reminders_sound">Sound</string>
     <string name="pref_title_reminders_vibrate">Vibrate</string>
-
+    
     <string name="primary_storage">Main storage</string>
     <string name="secondary_storage">SD card</string>
     <string name="secondary_storage_not_available_any_more">Secondary storage is no longer available</string>
@@ -407,8 +409,20 @@
     <string name="select_a_filter">Select a filter</string>
     <string name="select_a_filter_long">Select a filter by clicking on the title bar</string>
 
-    <string name="sync_after_preference_title">Start sync after new note is created</string>
-    <string name="sync_after_summary">Note that entire notebook will be exported and transferred over the network each time</string>
+    <string name="pref_title_preferencescreen_auto_sync">EXPERIMENTAL Auto-Sync</string>
+    <string name="pref_summary_auto_sync">CAUTION: EXPERIMENTAL\nThis is a new feature undergoing test.  Each sync will force full a notebook rewrite no matter how small the change.  Syncs may take some time, especially when transferred over the network.  Certain actions will be blocked while sync is in progress.</string>
+
+    <string name="pref_title_sync_after_note_create">New Note</string>
+    <string name="pref_summary_sync_after_note_create">Sync after creating a new note</string>
+
+    <string name="pref_title_sync_after_note_update">Note Updated or Deleted</string>
+    <string name="pref_summary_sync_after_note_update">Sync after updating/deleting a note</string>
+
+    <string name="pref_title_on_resume_sync">App Started or Resumed</string>
+    <string name="pref_summary_on_resume_sync">Sync whenever this app comes to the foreground</string>
+
+    <string name="pref_title_repo_update_sync">FUTURE Repo Updated</string>
+    <string name="pref_summary_repo_update_sync">FUTURE: Sync whenever an update on a repo is detected</string>
 
     <string name="agenda_day">Day</string>
     <string name="agenda_week">Week</string>
@@ -422,6 +436,7 @@
     <string name="book_preface_sample">This is notebook\'s preface. Any text before the first entry. It could be quite long and contain multiple lines.</string>
     <string name="book_title_sample">Notebook Title</string>
     <string name="books_book_sync_last_action_sample">May 15, 2015 11:24:47 PM: No change</string>
+    <string name="books_book_notes_count_sample">Contains 42 notes</string>
     <string name="dialog_timestamp_date_sample">7/27/2015</string>
     <string name="dialog_timestamp_end_time_sample">12345:6789</string>
     <string name="dialog_timestamp_time_sample">14:32</string>
@@ -446,4 +461,13 @@
     <string name="synced_rook_revision_sample">42f97fe238</string>
     <string name="tap_to_view_notes">Tap to view your notes</string>
     <string name="book_never_modified_locally">Never modified locally</string>
+
+    <string name="notes_count_zero">Contains no notes</string>
+    <plurals name="notes_count_nonzero">
+        <item quantity="one">Contains <b>%d</b> note</item>
+        <item quantity="other">Contains <b>%d</b> notes</item>
+    </plurals>
+
+    <string name="content_line_count_displayed">Display content line count</string>
+    <string name="content_line_count_displayed_summary">Display number of lines for note\'s content</string>
 </resources>

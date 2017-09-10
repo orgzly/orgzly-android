@@ -81,7 +81,8 @@ public class NewNoteTest extends OrgzlyTest {
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
 
         onListItem(2).perform(longClick());
-        onView(withId(R.id.book_cab_new)).perform(click());
+        openContextualActionModeOverflowMenu();
+        onView(withText(R.string.new_note)).perform(click());
         onView(withText(R.string.heads_action_menu_item_add_under)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceText("A"), closeSoftKeyboardWithDelay());
         onView(withId(R.id.done)).perform(click());
@@ -99,7 +100,8 @@ public class NewNoteTest extends OrgzlyTest {
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
 
         onListItem(2).perform(longClick());
-        onView(withId(R.id.book_cab_new)).perform(click());
+        openContextualActionModeOverflowMenu();
+        onView(withText(R.string.new_note)).perform(click());
         onView(withText(R.string.heads_action_menu_item_add_above)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceText("A"), closeSoftKeyboardWithDelay());
         onView(withId(R.id.done)).perform(click());
@@ -123,7 +125,8 @@ public class NewNoteTest extends OrgzlyTest {
         onView(allOf(withText("booky"), isDisplayed())).perform(click());
 
         onListItem(2).perform(longClick());
-        onView(withId(R.id.book_cab_new)).perform(click());
+        openContextualActionModeOverflowMenu();
+        onView(withText(R.string.new_note)).perform(click());
         onView(withText(R.string.heads_action_menu_item_add_below)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceText("A"), closeSoftKeyboardWithDelay());
         onView(withId(R.id.done)).perform(click());
@@ -184,8 +187,7 @@ public class NewNoteTest extends OrgzlyTest {
         /* Move A B and C under Parent 1. */
         for (int i = 0; i < 3; i++) {
             onListItem(0).perform(longClick());
-            openContextualActionModeOverflowMenu();
-            onView(withText(R.string.move)).perform(click());
+            onView(withId(R.id.book_cab_move)).perform(click());
             onView(withId(R.id.notes_action_move_down)).perform(click());
             onView(withId(R.id.notes_action_move_down)).perform(click());
             onView(withId(R.id.notes_action_move_down)).perform(click());
@@ -198,7 +200,8 @@ public class NewNoteTest extends OrgzlyTest {
         onView(withId(R.id.done)).perform(click());
 
         onListItem(0).perform(longClick());
-        onView(withId(R.id.book_cab_new)).perform(click());
+        openContextualActionModeOverflowMenu();
+        onView(withText(R.string.new_note)).perform(click());
         onView(withText(R.string.heads_action_menu_item_add_under)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceText("Note"));
         onView(withId(R.id.done)).perform(click());

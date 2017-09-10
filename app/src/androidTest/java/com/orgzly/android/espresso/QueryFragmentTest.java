@@ -345,8 +345,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         /* Move Note C down. */
         onListItem(2).perform(longClick());
-        openContextualActionModeOverflowMenu();
-        onView(withText(R.string.move)).perform(click());
+        onView(withId(R.id.book_cab_move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).perform(click());
         pressBack();
 
@@ -373,8 +372,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         /* Demote Note B. */
         onListItem(1).perform(longClick());
-        openContextualActionModeOverflowMenu();
-        onView(withText(R.string.move)).perform(click());
+        onView(withId(R.id.book_cab_move)).perform(click());
         onView(withId(R.id.notes_action_move_right)).perform(click());
         pressBack();
 
@@ -401,13 +399,11 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         /* Cut Note B. */
         onListItem(1).perform(longClick());
-        openContextualActionModeOverflowMenu();
-        onView(withText(R.string.cut)).perform(click());
+        onView(withId(R.id.book_cab_cut)).perform(click());
 
         /* Paste under Note A. */
         onListItem(0).perform(longClick());
-        openContextualActionModeOverflowMenu();
-        onView(withText(R.string.paste)).perform(click());
+        onView(withId(R.id.book_cab_paste)).perform(click());
         onView(withText(R.string.heads_action_menu_item_paste_under)).perform(click());
 
         searchForText("t.tag3");

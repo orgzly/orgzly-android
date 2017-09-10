@@ -31,6 +31,7 @@ import android.widget.ViewFlipper;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
+import com.orgzly.android.BookUtils;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
@@ -458,14 +459,14 @@ public class BookFragment extends NoteListFragment
     }
 
     // TODO: Go through main activity and do it in background.
-    private int moveNotes(int offset) {
+    private void moveNotes(int offset) {
         /* Sanity check. Should not ever happen. */
         if (getSelection().getCount() == 0) {
             Log.e(TAG, "Trying to move notes up while there are no notes selected");
-            return 0;
+            return;
         }
 
-        return BooksClient.moveNotes(getContext(), mBookId, getSelection().getIds().first(), offset);
+        listener.onNotesMoveRequest(mBookId, getSelection().getIds().first(), offset);
     }
 
     /**
@@ -627,8 +628,8 @@ public class BookFragment extends NoteListFragment
         if (listener != null) {
             listener.announceChanges(
                     BookFragment.FRAGMENT_TAG,
-                    Book.getFragmentTitleForBook(mBook),
-                    Book.getFragmentSubtitleForBook(mBook),
+                    BookUtils.getFragmentTitleForBook(mBook),
+                    BookUtils.getFragmentSubtitleForBook(getContext(), mBook),
                     mSelection.getCount());
         }
     }
@@ -915,6 +916,7 @@ public class BookFragment extends NoteListFragment
         void onNotesPasteRequest(long bookId, long noteId, Place place);
         void onNotesPromoteRequest(long bookId, Set<Long> noteIds);
         void onNotesDemoteRequest(long bookId, Set<Long> noteIds);
+        void onNotesMoveRequest(long bookId, long noteId, int offset);
 
         void onCycleVisibilityRequest(Book book);
     }

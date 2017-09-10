@@ -451,7 +451,7 @@ public class SyncFragment extends Fragment {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                mShelf.promoteNotes(bookId, noteIds);
+                mShelf.promote(bookId, noteIds);
                 return null;
             }
         }.execute();
@@ -461,7 +461,7 @@ public class SyncFragment extends Fragment {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                mShelf.demoteNotes(bookId, noteIds);
+                mShelf.demote(bookId, noteIds);
                 return null;
             }
         }.execute();
@@ -723,9 +723,7 @@ public class SyncFragment extends Fragment {
 
     public void onSyncButton() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
-
-        Intent intent = new Intent(getActivity(), SyncService.class);
-        getActivity().startService(intent);
+        mShelf.directedSync();
     }
 
     public void renameBook(final Book book, final String value) {
@@ -956,13 +954,6 @@ public class SyncFragment extends Fragment {
             @Override
             protected void onPostExecute(Note createdNote) {
                 if (createdNote != null) {
-
-                    if (AppPreferences.syncAfterNewNoteCreated(getContext())) {
-                        Intent intent = new Intent(getActivity(), SyncService.class);
-                        intent.setAction(AppIntent.ACTION_SYNC_START);
-                        getActivity().startService(intent);
-                    }
-
                     mListener.onNoteCreated(createdNote);
                 } else {
                     mListener.onNoteCreatingFailed();
@@ -982,7 +973,8 @@ public class SyncFragment extends Fragment {
         new AsyncTask<Void, Void, Integer>() {
             @Override
             protected Integer doInBackground(Void... params) {
-                return mShelf.delete(bookId, noteIds);
+                int result = mShelf.delete(bookId, noteIds);
+                return result;
             }
 
             @Override
@@ -1034,6 +1026,20 @@ public class SyncFragment extends Fragment {
                 } else {
                     mListener.onNotesNotPasted();
                 }
+            }
+        }.execute();
+    }
+
+    public void moveNote(final long bookId, final long noteId, final int offset) {
+        new AsyncTask<Void, Void, Integer>() {
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                return mShelf.move(bookId, noteId, offset);
+            }
+
+            @Override
+            protected void onPostExecute(Integer result) {
+                mListener.onNotesMoved(result);
             }
         }.execute();
     }
@@ -1194,5 +1200,7 @@ public class SyncFragment extends Fragment {
 
         void onNotesDeleted(int count);
         void onNotesCut(int count);
+
+        void onNotesMoved(int result);
     }
 }

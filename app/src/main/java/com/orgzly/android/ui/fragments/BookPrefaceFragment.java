@@ -16,6 +16,7 @@ import android.widget.EditText;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
+import com.orgzly.android.BookUtils;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.ui.FragmentListener;
@@ -141,8 +142,8 @@ public class BookPrefaceFragment extends Fragment {
         if (listener != null) {
             listener.announceChanges(
                     BookPrefaceFragment.FRAGMENT_TAG,
-                    Book.getFragmentTitleForBook(book),
-                    Book.getFragmentSubtitleForBook(book),
+                    BookUtils.getFragmentTitleForBook(book),
+                    BookUtils.getFragmentSubtitleForBook(getContext(), book),
                     0);
         }
     }

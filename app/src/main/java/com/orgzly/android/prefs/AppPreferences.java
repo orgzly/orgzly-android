@@ -130,6 +130,12 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_is_notes_content_foldable));
     }
 
+    public static boolean contentLineCountDisplayed(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_content_line_count_displayed),
+                context.getResources().getBoolean(R.bool.pref_default_content_line_count_displayed));
+    }
+
     public static String prefaceDisplay(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_preface_in_book),
@@ -499,13 +505,30 @@ public class AppPreferences {
 
 
     /*
-     *
+     * Auto Sync
      */
-
-    public static boolean syncAfterNewNoteCreated(Context context) {
+    public static boolean syncAfterNoteCreate(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
-                context.getResources().getString(R.string.pref_key_sync_after),
-                context.getResources().getBoolean(R.bool.pref_default_value_sync_after));
+                context.getResources().getString(R.string.pref_key_sync_after_note_create),
+                context.getResources().getBoolean(R.bool.pref_default_value_sync_after_note_create));
+    }
+
+    public static boolean syncAfterNoteUpdate(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_sync_after_note_update),
+                context.getResources().getBoolean(R.bool.pref_default_value_sync_after_note_update));
+    }
+
+    public static boolean onResumeSync(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_on_resume_sync),
+                context.getResources().getBoolean(R.bool.pref_default_value_on_resume_sync));
+    }
+
+    public static boolean syncAfterRepoUpdate(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_repo_update_sync),
+                context.getResources().getBoolean(R.bool.pref_default_value_repo_update_sync));
     }
 
     public static String defaultAgenda(Context context) {

@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.Book;
+import com.orgzly.android.BookUtils;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.ui.fragments.BooksFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
@@ -60,7 +60,7 @@ public class BookChooserActivity extends CommonActivity
 
             Intent shortcut = new Intent(Intent.ACTION_CREATE_SHORTCUT);
             Shelf shelf = new Shelf(this);
-            String title = Book.getFragmentTitleForBook(shelf.getBook(bookId));
+            String title = BookUtils.getFragmentTitleForBook(shelf.getBook(bookId));
             if(title == null) {
                 setResult(RESULT_CANCELED, shortcut);
                 finish();

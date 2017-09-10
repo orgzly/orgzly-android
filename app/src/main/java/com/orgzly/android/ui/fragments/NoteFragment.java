@@ -38,7 +38,7 @@ import android.widget.ViewFlipper;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
-import com.orgzly.android.Broadcasts;
+import com.orgzly.android.BookUtils;
 import com.orgzly.android.Note;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
@@ -665,8 +665,8 @@ public class NoteFragment extends Fragment
         if (mListener != null) {
             mListener.announceChanges(
                     NoteFragment.FRAGMENT_TAG,
-                    Book.getFragmentTitleForBook(mBook),
-                    Book.getFragmentSubtitleForBook(mBook),
+                    BookUtils.getFragmentTitleForBook(mBook),
+                    BookUtils.getFragmentSubtitleForBook(getContext(), mBook),
                     0);
         }
     }
@@ -1059,12 +1059,12 @@ public class NoteFragment extends Fragment
             if (mIsNew) {
                 mListener.onNoteCreateRequest(mNote, place != Place.UNDEFINED ?
                         new NotePlace(mNote.getPosition().getBookId(), mNoteId, place) : null);
-            } else {
-                mListener.onNoteUpdateRequest(mNote);
-            }
 
-            LocalBroadcastManager.getInstance(getContext())
-                    .sendBroadcast(new Intent(Broadcasts.ACTION_NOTE_CHANGED));
+            } else { // Saving existing note
+                if (isNoteModified()) {
+                    mListener.onNoteUpdateRequest(mNote);
+                }
+            }
         }
     }
 

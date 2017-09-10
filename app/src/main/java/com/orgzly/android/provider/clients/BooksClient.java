@@ -16,10 +16,10 @@ import com.orgzly.android.BookName;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.actions.SparseTreeAction;
+import com.orgzly.android.provider.views.DbBookView;
 import com.orgzly.android.repos.Rook;
 import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.util.ExceptionUtils;
-import com.orgzly.android.widgets.ListWidgetProvider;
 import com.orgzly.org.OrgFileSettings;
 
 import java.io.File;
@@ -32,13 +32,14 @@ public class BooksClient {
     /** Sort by modification times. */
     private static final String ORDER_BY_MTIME =
             ProviderContract.Books.Param.IS_DUMMY + "," +
-                    "MAX(COALESCE("+ ProviderContract.Books.Param.MTIME+", 0), COALESCE("+ ProviderContract.Books.Param.SYNCED_ROOK_MTIME+", 0)) DESC, " +
+                    "MAX(COALESCE("+ DbBookView.VIEW_NAME+"."+ProviderContract.Books.Param.MTIME+", 0), COALESCE("+ DbBookView.VIEW_NAME+"."+ProviderContract.Books.Param.SYNCED_ROOK_MTIME+", 0)) DESC, " +
                     ProviderContract.Books.Param.NAME;
 
     /** Sort by title or filename. */
     private static final String ORDER_BY_NAME =
             ProviderContract.Books.Param.IS_DUMMY + "," +
-                    "LOWER(COALESCE(" + ProviderContract.Books.Param.TITLE + ", " + ProviderContract.Books.Param.NAME + "))";
+                    "LOWER(COALESCE(" + DbBookView.VIEW_NAME+"."+ProviderContract.Books.Param.TITLE + ", "
+                    + DbBookView.VIEW_NAME+"."+ProviderContract.Books.Param.NAME + "))";
 
     private static void toContentValues(ContentValues values, Book book) {
         values.put(ProviderContract.Books.Param.NAME, book.getName());

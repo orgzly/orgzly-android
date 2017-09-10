@@ -16,6 +16,8 @@ import com.orgzly.BuildConfig;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.SearchQuery;
+import com.orgzly.android.provider.models.DbNoteColumns;
+import com.orgzly.android.provider.views.DbNoteViewColumns;
 import com.orgzly.android.provider.views.DbTimeView;
 import com.orgzly.org.utils.StateChangeLogic;
 import com.orgzly.android.prefs.AppPreferences;

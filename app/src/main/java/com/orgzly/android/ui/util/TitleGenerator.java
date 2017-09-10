@@ -93,8 +93,8 @@ public class TitleGenerator {
             hasPostTitleText = true;
         }
 
-        /* Content length. */
-        if (head.hasContent() && (!AppPreferences.isNotesContentDisplayedInList(mContext) || (note.getPosition().isFolded() && AppPreferences.isNotesContentFoldable(mContext)))) {
+        /* Content line number. */
+        if (head.hasContent() && AppPreferences.contentLineCountDisplayed(mContext) && (!AppPreferences.isNotesContentDisplayedInList(mContext) || (note.getPosition().isFolded() && AppPreferences.isNotesContentFoldable(mContext)))) {
             builder.append(TITLE_SEPARATOR).append(String.valueOf(note.getContentLines()));
             hasPostTitleText = true;
         }
