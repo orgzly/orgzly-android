@@ -291,6 +291,7 @@ public class Shelf {
 
         notifyDataChanged(mContext);
         createSync();
+
         return insertedNote;
     }
 

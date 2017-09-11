@@ -151,12 +151,12 @@ public class SettingsFragment extends PreferenceFragment
     public void onResume() {
         super.onResume();
 
-        updateUserReposPreferenceSummary();
+        // Needs to be done in background.
+        // updateUserReposPreferenceSummary();
 
         /* Start to listen for any preference changes. */
         android.preference.PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .registerOnSharedPreferenceChangeListener(this);
-
 
         announceChangesToActivity();
     }
