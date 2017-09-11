@@ -6,6 +6,7 @@ import com.orgzly.android.provider.models.DbBook;
 import com.orgzly.android.provider.models.DbBookColumns;
 import com.orgzly.android.provider.models.DbBookLink;
 import com.orgzly.android.provider.models.DbBookSync;
+import com.orgzly.android.provider.models.DbNote;
 import com.orgzly.android.provider.models.DbRepo;
 import com.orgzly.android.provider.models.DbRook;
 import com.orgzly.android.provider.models.DbRookUrl;
@@ -20,8 +21,8 @@ public class DbBookView implements DbBookColumns, DbBookViewColumns {
     public static final String DROP_SQL = "DROP VIEW IF EXISTS " + VIEW_NAME;
 
     private final static String notesCountQuery =
-            "SELECT COUNT(*) FROM " + DbNoteView.VIEW_NAME +
-            " WHERE " + DbNoteView.VIEW_NAME + "." + DbNoteView.BOOK_ID + " = " + DbBook.TABLE + "." + DbBook._ID +
+            "SELECT COUNT(*) FROM " + DbNote.TABLE +
+            " WHERE " + DbNote.TABLE + "." + DbNote.BOOK_ID + " = " + DbBook.TABLE + "." + DbBook._ID +
             " AND " + DatabaseUtils.WHERE_EXISTING_NOTES;
 
     public static final String CREATE_SQL =
