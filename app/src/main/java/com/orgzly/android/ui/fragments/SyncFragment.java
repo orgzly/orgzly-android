@@ -956,13 +956,6 @@ public class SyncFragment extends Fragment {
             @Override
             protected void onPostExecute(Note createdNote) {
                 if (createdNote != null) {
-
-                    if (AppPreferences.syncAfterNewNoteCreated(getContext())) {
-                        Intent intent = new Intent(getActivity(), SyncService.class);
-                        intent.setAction(AppIntent.ACTION_SYNC_START);
-                        getActivity().startService(intent);
-                    }
-
                     mListener.onNoteCreated(createdNote);
                 } else {
                     mListener.onNoteCreatingFailed();

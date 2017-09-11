@@ -29,6 +29,7 @@ import com.orgzly.android.repos.Rook;
 import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.sync.BookNamesake;
 import com.orgzly.android.sync.BookSyncStatus;
+import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.CircularArrayList;
@@ -286,6 +287,12 @@ public class Shelf {
         BooksClient.setModifiedTime(mContext, note.getPosition().getBookId(), System.currentTimeMillis());
 
         notifyDataChanged(mContext);
+
+        if (AppPreferences.syncAfterNewNoteCreated(mContext)) {
+            Intent intent = new Intent(mContext, SyncService.class);
+            intent.setAction(AppIntent.ACTION_SYNC_START);
+            mContext.startService(intent);
+        }
 
         return insertedNote;
     }
