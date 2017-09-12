@@ -582,6 +582,34 @@ public class AppPreferences {
     }
 
     /*
+     * Git Sync
+     */
+
+    public static String gitAuthor(Context context) {
+        return getStateSharedPreferences(context).getString("pref_key_git_author", null);
+    }
+
+    public static void gitAuthor(Context context, String value) {
+        getStateSharedPreferences(context).edit().putString("pref_key_git_author", value).apply();
+    }
+
+    public static String gitEmail(Context context) {
+        return getStateSharedPreferences(context).getString("pref_key_git_email", null);
+    }
+
+    public static void gitEmail(Context context, String value) {
+        getStateSharedPreferences(context).edit().putString("pref_key_git_email", value).apply();
+    }
+
+    public static String gitSSHKeyPath(Context context) {
+        return getStateSharedPreferences(context).getString("pref_key_git_ssh_key_path", null);
+    }
+
+    public static void gitSSHKeyPath(Context context, String value) {
+        getStateSharedPreferences(context).edit().putString("pref_key_git_ssh_key_path", value).apply();
+    }
+
+    /*
      * Last used version.
      */
 
