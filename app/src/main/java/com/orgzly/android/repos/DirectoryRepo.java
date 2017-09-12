@@ -121,7 +121,7 @@ public class DirectoryRepo implements Repo {
         MiscUtils.copyFile(file, destinationFile);
 
         String rev = String.valueOf(destinationFile.lastModified());
-        long mtime = destinationFile.lastModified();
+        long mtime = System.currentTimeMillis();
 
         Uri uri = repoUri.buildUpon().appendPath(fileName).build();
 

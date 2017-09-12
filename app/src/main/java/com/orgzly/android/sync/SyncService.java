@@ -256,11 +256,11 @@ public class SyncService extends Service {
             /* Because android sometimes drops milliseconds on reported file lastModified,
              * wait until the next full second
              */
-            if (isTriggeredAutomatically) {
-                long now = System.currentTimeMillis();
-                long nowMsPart = now % 1000;
-                SystemClock.sleep(1000 - nowMsPart);
-            }
+//            if (isTriggeredAutomatically) {
+//                long now = System.currentTimeMillis();
+//                long nowMsPart = now % 1000;
+//                SystemClock.sleep(1000 - nowMsPart);
+//            }
 
             /*
              * Update books' statuses, before starting to sync them.

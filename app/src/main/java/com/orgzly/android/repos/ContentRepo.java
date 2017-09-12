@@ -141,7 +141,7 @@ public class ContentRepo implements Repo {
         }
 
         String rev = String.valueOf(destinationFile.lastModified());
-        long mtime = destinationFile.lastModified();
+        long mtime = System.currentTimeMillis();
 
         return new VersionedRook(getUri(), uri, rev, mtime);
     }
