@@ -141,11 +141,12 @@ public class ReminderService extends IntentService {
         context.startService(intent);
     }
 
-    public static void notifySnoozeTriggered(Context context, long noteId, long timestamp) {
+    public static void notifySnoozeTriggered(Context context, long noteId, int noteTimeType, long timestamp) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
         Intent intent = new Intent(context, ReminderService.class);
         intent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_SNOOZE_JOB_TRIGGERED);
         intent.putExtra(ActionService.EXTRA_NOTE_ID, noteId);
+        intent.putExtra(ActionService.EXTRA_NOTE_TIME_TYPE, noteTimeType);
         intent.putExtra(ActionService.EXTRA_SNOOZE_TIMESTAMP, timestamp);
         context.startService(intent);
     }
@@ -204,9 +205,10 @@ public class ReminderService extends IntentService {
 
             case EVENT_SNOOZE_JOB_TRIGGERED:
                 long noteId = intent.getLongExtra(ActionService.EXTRA_NOTE_ID, 0);
+                int noteTimeType = intent.getIntExtra(ActionService.EXTRA_NOTE_TIME_TYPE, 0);
                 long timestamp = intent.getLongExtra(ActionService.EXTRA_SNOOZE_TIMESTAMP, 0);
                 if (noteId > 0) {
-                    onSnoozeTriggered(noteId, timestamp);
+                    onSnoozeTriggered(this, noteId, noteTimeType, timestamp);
                 }
                 break;
 
@@ -325,17 +327,19 @@ public class ReminderService extends IntentService {
         scheduleNextJob(now, lastRun);
     }
 
-    private void onSnoozeTriggered(final long noteId, final long timestamp) {
+    private void onSnoozeTriggered(final Context context, final long noteId,
+                                   final int noteTimeType, final long timestamp) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
-        Context context = this;
 
         String msg;
-
+        // FIXME TODO replace this with a simpler query, may need to create it in notesclient
         final List<NoteReminder> result = new ArrayList<>();
         TimesClient.forEachTime(context, new TimesClient.TimesClientInterface() {
                 @Override
                 public void onTime(TimesClient.NoteTime noteTime) {
-                    if (noteTime.id == noteId) {
+                    if (noteTime.id == noteId &&
+                        noteTime.timeType == noteTimeType &&
+                        isRelevantNoteTime(context, noteTime)) {
                         OrgDateTime orgDateTime = OrgDateTime.parse(noteTime.orgTimestampString);
                         NoteReminderPayload payload = new NoteReminderPayload(noteTime.id,
                                                                               noteTime.bookId,
@@ -436,6 +440,7 @@ public class ReminderService extends IntentService {
                                               reminderSnoozeActionText,
                                               reminderSnoozePendingIntent(context,
                                                                           noteReminder.getPayload().id,
+                                                                          noteReminder.getPayload().timeType,
                                                                           timestamp,
                                                                           notificationTag,
                                                                           notificationId));
@@ -491,6 +496,7 @@ public class ReminderService extends IntentService {
 
     private PendingIntent reminderSnoozePendingIntent(Context context,
                                                       long noteId,
+                                                      int noteTimeType, // scheduled vs deadline
                                                       long timestamp,
                                                       String notificationTag,
                                                       int notificationId) {
@@ -500,6 +506,7 @@ public class ReminderService extends IntentService {
         intent.setAction(AppIntent.ACTION_REMINDER_SNOOZE_REQUEST);
 
         intent.putExtra(ActionService.EXTRA_NOTE_ID, noteId);
+        intent.putExtra(ActionService.EXTRA_NOTE_TIME_TYPE, noteTimeType);
         intent.putExtra(ActionService.EXTRA_SNOOZE_TIMESTAMP, timestamp);
         intent.putExtra(ActionService.EXTRA_NOTIFICATION_TAG, notificationTag);
         intent.putExtra(ActionService.EXTRA_NOTIFICATION_ID, notificationId);

@@ -22,13 +22,14 @@ public class SnoozeJob extends Job {
     @Override @NonNull
     protected Result onRunJob(Params params) {
         long noteId = params.getExtras().getLong(ActionService.EXTRA_NOTE_ID, 0);
+        int noteTimeType = params.getExtras().getInt(ActionService.EXTRA_NOTE_TIME_TYPE, 0);
         long timestamp = params.getExtras().getLong(ActionService.EXTRA_SNOOZE_TIMESTAMP, 0);
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
-        ReminderService.notifySnoozeTriggered(getContext(), noteId, timestamp);
+        ReminderService.notifySnoozeTriggered(getContext(), noteId, noteTimeType, timestamp);
         return Result.SUCCESS;
     }
 
-    public static void scheduleJob(Context context, long noteId, long timestamp) {
+    public static void scheduleJob(Context context, long noteId, int noteTimeType, long timestamp) {
         PersistableBundleCompat extras = new PersistableBundleCompat();
 
         long snoozeTime = AppPreferences.remindersSnoozeTime(context) * 60 * 1000;
@@ -51,9 +52,10 @@ public class SnoozeJob extends Job {
             return;
         }
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp, exactMs);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, noteTimeType, timestamp, exactMs);
 
         extras.putLong(ActionService.EXTRA_NOTE_ID, noteId);
+        extras.putInt(ActionService.EXTRA_NOTE_TIME_TYPE, noteTimeType);
         extras.putLong(ActionService.EXTRA_SNOOZE_TIMESTAMP, timestamp);
 
         new JobRequest.Builder(SnoozeJob.TAG)

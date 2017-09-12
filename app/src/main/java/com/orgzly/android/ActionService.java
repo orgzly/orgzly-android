@@ -19,6 +19,7 @@ public class ActionService extends IntentService {
     public static final String EXTRA_NOTIFICATION_ID = "notification_id";
 
     public static final String EXTRA_NOTE_ID = "note_id";
+    public static final String EXTRA_NOTE_TIME_TYPE = "note_time_types";
     public static final String EXTRA_SNOOZE_TIMESTAMP = "snooze_timestamp";
 
     public ActionService() {
@@ -47,10 +48,11 @@ public class ActionService extends IntentService {
             }
         } else if (AppIntent.ACTION_REMINDER_SNOOZE_REQUEST.equals(intent.getAction())) {
             long noteId = intent.getLongExtra(ActionService.EXTRA_NOTE_ID, 0);
+            int noteTimeType = intent.getIntExtra(ActionService.EXTRA_NOTE_TIME_TYPE, 0);
             long timestamp = intent.getLongExtra(ActionService.EXTRA_SNOOZE_TIMESTAMP, 0);
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
             if (noteId > 0) {
-                SnoozeJob.scheduleJob(this, noteId, timestamp);
+                SnoozeJob.scheduleJob(this, noteId, noteTimeType, timestamp);
             } else {
                 throw new IllegalArgumentException("Missing note id");
             }
