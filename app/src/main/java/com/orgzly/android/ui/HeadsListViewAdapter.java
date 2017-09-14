@@ -171,7 +171,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                 holder.content.setTypeface(Typeface.MONOSPACE);
             }
 
-            holder.content.setText(OrgFormatter.parse(head.getContent()));
+            holder.content.setText(OrgFormatter.parse(context, head.getContent()));
 
             holder.content.setVisibility(View.VISIBLE);
 

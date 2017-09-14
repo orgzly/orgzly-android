@@ -658,7 +658,7 @@ public class BookFragment extends NoteListFragment
                 mPrefaceText.setEllipsize(null);
             }
 
-            mPrefaceText.setText(OrgFormatter.parse(mBook.getPreface()));
+            mPrefaceText.setText(OrgFormatter.parse(getContext(), mBook.getPreface()));
 
         } else {
             // Remove header

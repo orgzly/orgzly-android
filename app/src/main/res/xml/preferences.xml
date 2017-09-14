@@ -30,6 +30,19 @@
             android:summary="@string/monospaced_font_summary"
             android:defaultValue="@bool/pref_default_is_font_monospaced"/>
 
+        <CheckBoxPreference
+            android:key="@string/pref_key_style_text"
+            android:title="@string/style_text_title"
+            android:summary="@string/style_text_summary"
+            android:defaultValue="@bool/pref_default_style_text"/>
+
+        <CheckBoxPreference
+            android:dependency="@string/pref_key_style_text"
+            android:key="@string/pref_key_styled_text_with_marks"
+            android:title="@string/styled_text_with_marks_title"
+            android:summary="@string/styled_text_with_marks_summary"
+            android:defaultValue="@bool/pref_default_styled_text_with_marks"/>
+
         <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
             android:key="@string/pref_key_layout_direction"
             android:title="@string/layout_direction"

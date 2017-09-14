@@ -1,5 +1,6 @@
 package com.orgzly.android.util;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -8,6 +9,9 @@ import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.URLSpan;
 import android.text.style.UnderlineSpan;
+
+import com.orgzly.R;
+import com.orgzly.android.prefs.AppPreferences;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,18 +32,18 @@ public class OrgFormatter {
      */
     private static final String BRACKET_ANY_LINK = "(([^]]+))";
 
-    public static SpannableStringBuilder parse(String s) {
-        return parse(s, true, true);
+    public static SpannableStringBuilder parse(Context context, String s) {
+        return parse(context, s, true);
     }
 
-    public static SpannableStringBuilder parse(String s, boolean linkify, boolean hideMarkers) {
+    public static SpannableStringBuilder parse(Context context, String s, boolean linkify) {
         SpannableStringBuilder ssb = new SpannableStringBuilder(s);
 
         doOrgLinksWithName(ssb, BRACKET_LINK, linkify);
         doOrgLinksWithName(ssb, BRACKET_ANY_LINK, false);
         doOrgLinks(ssb, BRACKET_LINK, linkify);
         doPlainLinks(ssb, PLAIN_LINK, linkify);
-        doMarkup(ssb, hideMarkers);
+        doMarkup(ssb, context);
 
         return ssb;
     }
@@ -138,33 +142,42 @@ public class OrgFormatter {
                 markupRegex('+'), Pattern.MULTILINE);
     }
 
-    private static void doMarkup(SpannableStringBuilder ssb, boolean hideMarkers) {
+    private static void doMarkup(SpannableStringBuilder ssb, Context context) {
+        boolean style = context == null || AppPreferences.styleText(context);
+        boolean withMarks = context != null && AppPreferences.styledTextWithMarks(context);
+
+        if (style) {
+            doMarkup(ssb, withMarks);
+        }
+    }
+
+    private static void doMarkup(SpannableStringBuilder ssb, boolean withMarks) {
         Matcher m = MARKUP_PATTERN.matcher(ssb);
 
         while (m.find()) {
             if (m.group(1) != null) {
-                m = setMarkupSpan(ssb, m, 1, new StyleSpan(Typeface.BOLD), hideMarkers);
+                m = setMarkupSpan(ssb, m, 1, new StyleSpan(Typeface.BOLD), withMarks);
 
             } else if (m.group(3) != null) {
-                m = setMarkupSpan(ssb, m, 3, new StyleSpan(Typeface.ITALIC), hideMarkers);
+                m = setMarkupSpan(ssb, m, 3, new StyleSpan(Typeface.ITALIC), withMarks);
 
             } else if (m.group(5) != null) {
-                m = setMarkupSpan(ssb, m, 5, new UnderlineSpan(), hideMarkers);
+                m = setMarkupSpan(ssb, m, 5, new UnderlineSpan(), withMarks);
 
             } else if (m.group(7) != null) {
-                m = setMarkupSpan(ssb, m, 7, new TypefaceSpan("monospace"), hideMarkers);
+                m = setMarkupSpan(ssb, m, 7, new TypefaceSpan("monospace"), withMarks);
 
             } else if (m.group(9) != null) {
-                m = setMarkupSpan(ssb, m, 9, new TypefaceSpan("monospace"), hideMarkers);
+                m = setMarkupSpan(ssb, m, 9, new TypefaceSpan("monospace"), withMarks);
 
             } else if (m.group(11) != null) {
-                m = setMarkupSpan(ssb, m, 11, new StrikethroughSpan(), hideMarkers);
+                m = setMarkupSpan(ssb, m, 11, new StrikethroughSpan(), withMarks);
             }
         }
     }
 
-    private static Matcher setMarkupSpan(SpannableStringBuilder ssb, Matcher matcher, int group, Object span, boolean hideMarkers) {
-        if (! hideMarkers) {
+    private static Matcher setMarkupSpan(SpannableStringBuilder ssb, Matcher matcher, int group, Object span, boolean withMarks) {
+        if (withMarks) {
             ssb.setSpan(span, matcher.start(group), matcher.end(group), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             return matcher;
         }

@@ -107,7 +107,7 @@ public class OrgFormatterTest {
         OrgSpan[] spans;
 
         public OrgSpannable(String str) {
-            SpannableStringBuilder ssb = OrgFormatter.parse(str);
+            SpannableStringBuilder ssb = OrgFormatter.parse(null, str);
 
             string = ssb.toString();
 
