@@ -116,47 +116,62 @@ public class OrgFormatter {
     /**
      * You can make words *bold*, /italic/, _underlined_, =verbatim= , ~code~ and +strike-through+.
      */
+
+    private static final Pattern MARKUP_PATTERN;
+
+    private static final String PRE = "- \t('\"{";
+    private static final String POST = "- \\t.,:!?;'\")}\\[";
+    private static final String BORDER = "\\S";
+    private static final String BODY = ".*?(?:\n.*?)?";
+
+    private static String markupRegex(char marker) {
+        return "(?:^|[" + PRE + "])([" + marker + "](" + BORDER + "|" + BORDER + BODY + BORDER + ")[" + marker + "])(?:[" + POST + "]|$)";
+    }
+
+    static {
+        MARKUP_PATTERN = Pattern.compile(
+                markupRegex('*') + "|" +
+                markupRegex('/') + "|" +
+                markupRegex('_') + "|" +
+                markupRegex('=') + "|" +
+                markupRegex('~') + "|" +
+                markupRegex('+'), Pattern.MULTILINE);
+    }
+
     private static void doMarkup(SpannableStringBuilder ssb) {
-        Pattern p = Pattern.compile("(\\*([^*\\s]+)\\*)|(/([^/\\s]+)/)|(_([^_\\s]+)_)|(=([^=\\s]+)=)|(~([^~\\s]+)~)|(\\+([^+\\s]+)\\+)");
-        Matcher m = p.matcher(ssb);
+        Matcher m = MARKUP_PATTERN.matcher(ssb);
 
         while (m.find()) {
-            String content = null;
-            Object span = null;
-
             if (m.group(1) != null) {
-                content = m.group(2);
-                span = new StyleSpan(Typeface.BOLD);
+                m = replaceWithSpan(ssb, m, 1, new StyleSpan(Typeface.BOLD));
 
             } else if (m.group(3) != null) {
-                content = m.group(4);
-                span = new StyleSpan(Typeface.ITALIC);
+                m = replaceWithSpan(ssb, m, 3, new StyleSpan(Typeface.ITALIC));
 
             } else if (m.group(5) != null) {
-                content = m.group(6);
-                span = new UnderlineSpan();
+                m = replaceWithSpan(ssb, m, 5, new UnderlineSpan());
 
             } else if (m.group(7) != null) {
-                content = m.group(8);
-                span = new TypefaceSpan("monospace");
+                m = replaceWithSpan(ssb, m, 7, new TypefaceSpan("monospace"));
 
             } else if (m.group(9) != null) {
-                content = m.group(10);
-                span = new TypefaceSpan("monospace");
+                m = replaceWithSpan(ssb, m, 9, new TypefaceSpan("monospace"));
 
             } else if (m.group(11) != null) {
-                content = m.group(12);
-                span = new StrikethroughSpan();
-            }
-
-            if (span != null && content != null) {
-                ssb.replace(m.start(), m.end(), content);
-
-                ssb.setSpan(span, m.start(), m.end()-2, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-
-                /* Re-create Matcher, as ssb size is modified. */
-                m = p.matcher(ssb);
+                m = replaceWithSpan(ssb, m, 11, new StrikethroughSpan());
             }
         }
+    }
+
+    private static Matcher replaceWithSpan(SpannableStringBuilder ssb, Matcher matcher, int group, Object span) {
+        /* Next group matches content only, without markers. */
+        String content = matcher.group(group + 1);
+
+        ssb.replace(matcher.start(group), matcher.end(group), content);
+
+        ssb.setSpan(span, matcher.start(group), matcher.start(group)+content.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+
+        /* Re-create Matcher, as ssb size is modified. */
+        return MARKUP_PATTERN.matcher(ssb);
     }
 }
