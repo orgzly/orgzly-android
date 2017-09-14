@@ -73,6 +73,7 @@
 
     <!-- Preferences (Settings). -->
     <string name="repos_preference_title">Repositories</string>
+    <string name="repos_preference_summary">Location to synchronize your notebooks with</string>
     <string name="message_book_has_no_link">No link.</string>
     <string name="message_book_does_not_exist">This notebook does not exist any more.</string>
     <string name="message_note_created">Note created</string>
@@ -460,4 +461,10 @@
 
     <string name="content_line_count_displayed">Display content line count</string>
     <string name="content_line_count_displayed_summary">Display number of lines for note\'s content</string>
+
+    <string name="style_text_title">Style text</string>
+    <string name="style_text_summary">Use special marks for emphasis and monospace</string>
+
+    <string name="styled_text_with_marks_title">Styled text with marks</string>
+    <string name="styled_text_with_marks_summary">Keep marks displayed (e.g. *bold*)</string>
 </resources>

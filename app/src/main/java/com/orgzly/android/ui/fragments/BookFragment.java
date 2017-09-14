@@ -47,6 +47,7 @@ import com.orgzly.android.ui.Selection;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.views.GesturedListView;
 import com.orgzly.android.util.LogUtils;
+import com.orgzly.android.util.OrgFormatter;
 import com.orgzly.org.datetime.OrgDateTime;
 
 import java.util.Set;
@@ -657,7 +658,7 @@ public class BookFragment extends NoteListFragment
                 mPrefaceText.setEllipsize(null);
             }
 
-            mPrefaceText.setText(mBook.getPreface());
+            mPrefaceText.setText(OrgFormatter.parse(getContext(), mBook.getPreface()));
 
         } else {
             // Remove header

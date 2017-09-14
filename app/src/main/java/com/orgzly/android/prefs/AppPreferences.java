@@ -153,6 +153,18 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_is_font_monospaced));
     }
 
+    public static boolean styleText(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_style_text),
+                context.getResources().getBoolean(R.bool.pref_default_style_text));
+    }
+
+    public static boolean styledTextWithMarks(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_styled_text_with_marks),
+                context.getResources().getBoolean(R.bool.pref_default_styled_text_with_marks));
+    }
+
     public static String notebooksSortOrder(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_notebooks_sort_order),
