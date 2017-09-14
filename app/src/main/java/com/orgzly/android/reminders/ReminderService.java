@@ -346,7 +346,7 @@ public class ReminderService extends IntentService {
                 builder.setSound(sound);
             }
 
-            builder.setContentTitle(OrgFormatter.parse(noteReminder.getPayload().title, false));
+            builder.setContentTitle(OrgFormatter.parse(noteReminder.getPayload().title, false, true));
             builder.setContentText(line);
 
             builder.setStyle(new NotificationCompat.InboxStyle()

@@ -29,17 +29,17 @@ public class OrgFormatter {
     private static final String BRACKET_ANY_LINK = "(([^]]+))";
 
     public static SpannableStringBuilder parse(String s) {
-        return parse(s, true);
+        return parse(s, true, true);
     }
 
-    public static SpannableStringBuilder parse(String s, boolean linkify) {
+    public static SpannableStringBuilder parse(String s, boolean linkify, boolean hideMarkers) {
         SpannableStringBuilder ssb = new SpannableStringBuilder(s);
 
         doOrgLinksWithName(ssb, BRACKET_LINK, linkify);
         doOrgLinksWithName(ssb, BRACKET_ANY_LINK, false);
         doOrgLinks(ssb, BRACKET_LINK, linkify);
         doPlainLinks(ssb, PLAIN_LINK, linkify);
-        doMarkup(ssb);
+        doMarkup(ssb, hideMarkers);
 
         return ssb;
     }
@@ -138,33 +138,38 @@ public class OrgFormatter {
                 markupRegex('+'), Pattern.MULTILINE);
     }
 
-    private static void doMarkup(SpannableStringBuilder ssb) {
+    private static void doMarkup(SpannableStringBuilder ssb, boolean hideMarkers) {
         Matcher m = MARKUP_PATTERN.matcher(ssb);
 
         while (m.find()) {
             if (m.group(1) != null) {
-                m = replaceWithSpan(ssb, m, 1, new StyleSpan(Typeface.BOLD));
+                m = setMarkupSpan(ssb, m, 1, new StyleSpan(Typeface.BOLD), hideMarkers);
 
             } else if (m.group(3) != null) {
-                m = replaceWithSpan(ssb, m, 3, new StyleSpan(Typeface.ITALIC));
+                m = setMarkupSpan(ssb, m, 3, new StyleSpan(Typeface.ITALIC), hideMarkers);
 
             } else if (m.group(5) != null) {
-                m = replaceWithSpan(ssb, m, 5, new UnderlineSpan());
+                m = setMarkupSpan(ssb, m, 5, new UnderlineSpan(), hideMarkers);
 
             } else if (m.group(7) != null) {
-                m = replaceWithSpan(ssb, m, 7, new TypefaceSpan("monospace"));
+                m = setMarkupSpan(ssb, m, 7, new TypefaceSpan("monospace"), hideMarkers);
 
             } else if (m.group(9) != null) {
-                m = replaceWithSpan(ssb, m, 9, new TypefaceSpan("monospace"));
+                m = setMarkupSpan(ssb, m, 9, new TypefaceSpan("monospace"), hideMarkers);
 
             } else if (m.group(11) != null) {
-                m = replaceWithSpan(ssb, m, 11, new StrikethroughSpan());
+                m = setMarkupSpan(ssb, m, 11, new StrikethroughSpan(), hideMarkers);
             }
         }
     }
 
-    private static Matcher replaceWithSpan(SpannableStringBuilder ssb, Matcher matcher, int group, Object span) {
-        /* Next group matches content only, without markers. */
+    private static Matcher setMarkupSpan(SpannableStringBuilder ssb, Matcher matcher, int group, Object span, boolean hideMarkers) {
+        if (! hideMarkers) {
+            ssb.setSpan(span, matcher.start(group), matcher.end(group), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            return matcher;
+        }
+
+        /* Next group matches content only, without markers.*/
         String content = matcher.group(group + 1);
 
         ssb.replace(matcher.start(group), matcher.end(group), content);
@@ -173,5 +178,6 @@ public class OrgFormatter {
 
         /* Re-create Matcher, as ssb size is modified. */
         return MARKUP_PATTERN.matcher(ssb);
+
     }
 }
