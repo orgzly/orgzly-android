@@ -234,7 +234,10 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/sync">
-        <Preference android:title="@string/repos_preference_title" android:key="@string/pref_key_repos">
+        <Preference
+            android:title="@string/repos_preference_title"
+            android:summary="@string/repos_preference_summary"
+            android:key="@string/pref_key_repos">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:targetPackage="com.orgzly"

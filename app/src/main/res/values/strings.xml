@@ -73,6 +73,7 @@
 
     <!-- Preferences (Settings). -->
     <string name="repos_preference_title">Repositories</string>
+    <string name="repos_preference_summary">Location to synchronize your notebooks with</string>
     <string name="message_book_has_no_link">No link.</string>
     <string name="message_book_does_not_exist">This notebook does not exist any more.</string>
     <string name="message_note_created">Note created</string>
