@@ -11,6 +11,7 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
 import java.io.File;
@@ -18,8 +19,9 @@ import java.io.IOException;
 
 public class GitFileSynchronizer {
     private Git git;
+    private CredentialsProvider credentialsProvider;
 
-    public GitFileSynchronizer(Git g) {
+    public GitFileSynchronizer(Git g, CredentialsProvider credentialsProvider) {
         git = g;
     }
 
@@ -40,7 +42,7 @@ public class GitFileSynchronizer {
     public boolean mergeWithRemote(String remoteName, boolean leaveConflicts) throws IOException {
         ensureReposIsClean();
         try {
-            git.fetch().setRemote(remoteName).call();
+            git.fetch().setCredentialsProvider(credentialsProvider).setRemote(remoteName).call();
             RevCommit mergeTarget = getCommit(
                     String.format("%s/%s", remoteName, git.getRepository().getFullBranch()));
             return doMerge(mergeTarget, leaveConflicts);
@@ -48,6 +50,14 @@ public class GitFileSynchronizer {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public boolean mergeAndPushToRemote(String remoteName) throws IOException {
+        boolean success = mergeWithRemote(remoteName, false);
+        if (success) try {
+            git.push().setCredentialsProvider(credentialsProvider).setRemote(remoteName).call();
+        } catch (GitAPIException e) {}
+        return success;
     }
 
     public boolean updateAndCommitFileFromRevisionAndMerge(

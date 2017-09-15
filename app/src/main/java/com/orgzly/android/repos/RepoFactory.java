@@ -2,6 +2,12 @@ package com.orgzly.android.repos;
 
 import android.content.Context;
 import android.net.Uri;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+
+import java.io.File;
+import java.io.IOException;
 
 import com.orgzly.BuildConfig;
 
@@ -44,5 +50,30 @@ public class RepoFactory {
         }
 
         return null;
+    }
+
+    static boolean isRepo(FileRepositoryBuilder frb, File f) {
+        frb.addCeilingDirectory(f).findGitDir(f);
+        return frb.getGitDir() != null;
+    }
+
+    static Uri buildDirectoryUri(Uri gitUri) {
+        String filepath = gitUri.getSchemeSpecificPart().replaceAll("[^a-zA-Z0-9-_\\.]", "_");
+        return new Uri.Builder().scheme("file").path(filepath).build();
+    }
+
+    public static Git ensureRepositoryExists(Uri repoUri, File directoryFile) throws IOException {
+        FileRepositoryBuilder frb = new FileRepositoryBuilder();
+        if (!directoryFile.exists()) {
+            try {
+                return Git.cloneRepository().setURI(repoUri.getPath()).setDirectory(directoryFile).call();
+            } catch (GitAPIException e) {
+                throw new IOException("Failed to clone repository " + repoUri.toString());
+            }
+        } else if (!isRepo(frb, directoryFile)) {
+            throw new IOException(
+                    String.format("Directory %s is not a git repository.", directoryFile.getAbsolutePath()));
+        }
+        return new Git(frb.build());
     }
 }

@@ -4,12 +4,11 @@ import android.net.Uri;
 import com.orgzly.android.App;
 import com.orgzly.android.provider.clients.CurrentRooksClient;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.FileMode;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
-import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
 import java.io.File;
@@ -22,35 +21,10 @@ public class GitRepo implements Repo {
     private Git git;
     private GitFileSynchronizer synchronizer;
 
-    static boolean isRepo(FileRepositoryBuilder frb, File f) {
-        frb.addCeilingDirectory(f).findGitDir(f);
-        return frb.getGitDir() != null;
-    }
-
-    static Uri buildDirectoryUri(Uri gitUri) {
-        String filepath = gitUri.getSchemeSpecificPart().replaceAll("[^a-zA-Z0-9-_\\.]", "_");
-        return new Uri.Builder().scheme("file").path(filepath).build();
-    }
-
-    public static Git ensureRepositoryExists(Uri repoUri, File directoryFile) throws IOException {
-        FileRepositoryBuilder frb = new FileRepositoryBuilder();
-        if (!directoryFile.exists()) {
-            try {
-                return Git.cloneRepository().setURI(repoUri.getPath()).setDirectory(directoryFile).call();
-            } catch (GitAPIException e) {
-                throw new IOException("Failed to clone repository " + repoUri.toString());
-            }
-        } else if (!isRepo(frb, directoryFile)) {
-            throw new IOException(
-                    String.format("Directory %s is not a git repository.", directoryFile.getAbsolutePath()));
-        }
-        return new Git(frb.build());
-    }
-
-    public GitRepo(Git g, Uri rUri) {
-        git = git;
+    public GitRepo(Uri rUri, Git g, CredentialsProvider cp) {
+        git = g;
         gitUri = rUri;
-        synchronizer = new GitFileSynchronizer(git);
+        synchronizer = new GitFileSynchronizer(git, cp);
     }
 
     public boolean requiresConnection() {
@@ -78,6 +52,8 @@ public class GitRepo implements Repo {
         VersionedRook current = CurrentRooksClient.get(
                 App.getAppContext(), gitUri.toString(), sourceUri.toString());
 
+        // TODO: Make this configurable
+        synchronizer.mergeAndPushToRemote("origin");
         synchronizer.safelyRetrieveLatestVersionOfFile(
                 sourceUri.getPath(), destinationFile, getCommitFromRevisionString(current.getRevision()));
 
@@ -105,11 +81,11 @@ public class GitRepo implements Repo {
             if (mode == FileMode.TREE)
                 continue;
             result.add(
-                    currentVersionedRook(Uri.withAppendedPath(Uri.EMPTY, walk.getPathString())));
+                    currentVersionedRook(
+                            Uri.withAppendedPath(Uri.EMPTY, walk.getPathString())));
         }
         return result;
     }
-
 
     public Uri getUri() {
         return gitUri;
