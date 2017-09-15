@@ -7,9 +7,7 @@ import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
-
 import com.orgzly.android.provider.ProviderContract;
-import com.orgzly.android.repos.Rook;
 import com.orgzly.android.repos.VersionedRook;
 
 import java.util.ArrayList;
@@ -86,6 +84,26 @@ public class CurrentRooksClient {
                 null,
                 ProviderContract.CurrentRooks.Param.ROOK_URL + "=?",
                 new String[] { url },
+                null);
+        try {
+            if (cursor.moveToFirst()) {
+                return CurrentRooksClient.fromCursor(cursor);
+            }
+
+        } finally {
+            cursor.close();
+        }
+
+        return null;
+    }
+
+    public static VersionedRook get(Context context, String repoUrl, String url) {
+        Cursor cursor = context.getContentResolver().query(
+                ProviderContract.CurrentRooks.ContentUri.currentRooks(),
+                null,
+                String.format("%s=? AND %s=?", ProviderContract.CurrentRooks.Param.ROOK_URL,
+                        ProviderContract.CurrentRooks.Param.REPO_URL),
+                new String[] { url, repoUrl },
                 null);
         try {
             if (cursor.moveToFirst()) {

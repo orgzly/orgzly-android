@@ -1,8 +1,10 @@
 package com.orgzly.android;
 
+
 import android.content.Context;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDexApplication;
+import android.content.Context;
 
 import com.evernote.android.job.JobConfig;
 import com.evernote.android.job.JobManager;
@@ -22,6 +24,10 @@ public class App extends MultiDexApplication {
 
     public static final AppExecutors EXECUTORS = new AppExecutors();
 
+public class App extends Application {
+
+    private static Context context;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -29,6 +35,7 @@ public class App extends MultiDexApplication {
         App.setDefaultPreferences(this, false);
 
         JobConfig.setJobIdOffset(LAST_JOB_ID);
+        App.context = getApplicationContext();
         JobManager.create(this).addJobCreator(new AppJobCreator());
 
         NotificationChannels.INSTANCE.createAll(this);
@@ -40,5 +47,9 @@ public class App extends MultiDexApplication {
                 PreferenceManager.setDefaultValues(context, res, true);
             }
         }
+    }
+
+    public static Context getAppContext() {
+        return App.context;
     }
 }

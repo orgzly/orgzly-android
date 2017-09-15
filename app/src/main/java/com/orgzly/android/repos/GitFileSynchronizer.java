@@ -1,15 +1,10 @@
 package com.orgzly.android.repos;
 
 import android.content.Context;
-
+import com.orgzly.android.App;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.util.MiscUtils;
-
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.MergeCommand;
-import org.eclipse.jgit.api.MergeResult;
-import org.eclipse.jgit.api.ResetCommand;
-import org.eclipse.jgit.api.Status;
+import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
@@ -23,11 +18,9 @@ import java.io.IOException;
 
 public class GitFileSynchronizer {
     private Git git;
-    private Context context;
 
-    public GitFileSynchronizer(Git g, Context c) {
+    public GitFileSynchronizer(Git g) {
         git = g;
-        context = c;
     }
 
     public void safelyRetrieveLatestVersionOfFile(
@@ -39,7 +32,7 @@ public class GitFileSynchronizer {
         retrieveLatestVersionOfFile(repositoryPath, destination);
     }
 
-    private void retrieveLatestVersionOfFile(
+    public void retrieveLatestVersionOfFile(
             String repositoryPath, File destination) throws IOException {
         MiscUtils.copyFile(repoDirectoryFile(repositoryPath), destination);
     }
@@ -120,14 +113,14 @@ public class GitFileSynchronizer {
     public boolean updateAndCommitFileFromRevision(
             File sourceFile, String repositoryPath, ObjectId revision) throws IOException {
         ensureReposIsClean();
-        if (getFileRevision(repositoryPath) == revision) {
+        if (getFileRevision(repositoryPath, currentHead()) == revision) {
             updateAndCommitFile(sourceFile, repositoryPath);
             return true;
         }
         return false;
     }
 
-    private ObjectId updateAndCommitFile(
+    private RevCommit updateAndCommitFile(
             File sourceFile, String repositoryPath) throws IOException {
         File destinationFile = repoDirectoryFile(repositoryPath);
         MiscUtils.copyFile(sourceFile, destinationFile);
@@ -137,10 +130,11 @@ public class GitFileSynchronizer {
         } catch (GitAPIException e) {
             throw new IOException("Failed to commit changes.");
         }
-        return getFileRevision(repositoryPath);
+        return currentHead();
     }
 
     private void commit(String message) throws GitAPIException {
+        Context context = App.getAppContext();
         git.commit().
                 setCommitter(
                         AppPreferences.gitAuthor(context),
@@ -148,11 +142,11 @@ public class GitFileSynchronizer {
                 setMessage(message).call();
     }
 
-    private RevCommit currentHead() throws IOException {
-        return getCommit("HEAD");
+    public RevCommit currentHead() throws IOException {
+        return getCommit(Constants.HEAD);
     }
 
-    private RevCommit getCommit(String identifier) throws IOException {
+    public RevCommit getCommit(String identifier) throws IOException {
         Ref head = git.getRepository().exactRef(identifier);
         return new RevWalk(git.getRepository()).parseCommit(head.getObjectId());
     }
@@ -179,11 +173,7 @@ public class GitFileSynchronizer {
         return new File(repoPath(), filePath);
     }
 
-    public ObjectId getFileRevision(String pathString) throws IOException {
-        TreeWalk walk = TreeWalk.forPath(
-                git.getRepository(),
-                pathString,
-                git.getRepository().resolve(Constants.HEAD));
-        return walk.getObjectId(0);
+    public ObjectId getFileRevision(String pathString, RevCommit commit) throws IOException {
+        return TreeWalk.forPath(git.getRepository(), pathString, commit).getObjectId(0);
     }
 }
