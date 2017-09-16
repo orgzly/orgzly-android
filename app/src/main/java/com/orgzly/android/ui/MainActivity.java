@@ -1208,7 +1208,7 @@ public class MainActivity extends CommonActivity
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-                        mDisplayManager.reset();
+                        mDisplayManager.clear();
                         mSyncFragment.clearDatabase();
                         break;
 

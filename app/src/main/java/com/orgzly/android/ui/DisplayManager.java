@@ -68,14 +68,11 @@ public class DisplayManager {
 
     /**
      * Return to original state.
-     * Removes all fragments and then adds BooksFragment.
+     * Removes all fragments except for the last one, displaying books.
      */
-    public void reset() {
+    public void clear() {
         /* Clear the back stack. */
         mFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-        /* Display starting fragment. */
-        displayBooks(false);
     }
 
     public void displayFilters() {
