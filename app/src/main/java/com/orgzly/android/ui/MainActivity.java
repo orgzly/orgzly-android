@@ -34,6 +34,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
@@ -50,7 +51,6 @@ import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.provider.clients.ReposClient;
 import com.orgzly.android.repos.ContentRepo;
 import com.orgzly.android.repos.Repo;
-import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.dialogs.WhatsNewDialog;
 import com.orgzly.android.ui.fragments.BookFragment;
@@ -1191,6 +1191,11 @@ public class MainActivity extends CommonActivity
         });
 
         mWhatsNewDialog.show();
+    }
+
+    @Override
+    public void onPreferenceScreen(String resource) {
+        mDisplayManager.displaySettings(resource);
     }
 
     /**

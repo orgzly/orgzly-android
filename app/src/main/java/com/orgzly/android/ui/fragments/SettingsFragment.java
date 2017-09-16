@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
+import android.preference.PreferenceScreen;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -20,12 +21,11 @@ import android.widget.ListView;
 import com.github.machinarius.preferencefragment.PreferenceFragment;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.Shelf;
 import com.orgzly.android.Notifications;
+import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.prefs.ListPreferenceWithValueAsSummary;
 import com.orgzly.android.provider.clients.ReposClient;
-import com.orgzly.android.reminders.ReminderService;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.NoteStateSpinner;
@@ -48,6 +48,8 @@ public class SettingsFragment extends PreferenceFragment
 
     public static final String FRAGMENT_TAG = SettingsFragment.class.getName();
 
+    private static final String ARG_RESOURCE = "resource";
+
     private static final @StringRes int[] REQUIRE_ACTIVITY_RESTART = new int [] {
             R.string.pref_key_font_size,
             R.string.pref_key_color_scheme,
@@ -56,15 +58,50 @@ public class SettingsFragment extends PreferenceFragment
 
     private Preference mReposPreference;
     private SettingsFragmentListener mListener;
-    public static SettingsFragment getInstance() {
-        return new SettingsFragment();
+
+    public static SettingsFragment getInstance(String res) {
+        SettingsFragment fragment = new SettingsFragment();
+
+        Bundle args = new Bundle();
+        args.putString(ARG_RESOURCE, res);
+        fragment.setArguments(args);
+
+        return fragment;
     }
+
+    public boolean isForResource(String resource) {
+        String thisResource = getArguments().getString(ARG_RESOURCE);
+        return resource == null ? thisResource == null : resource.equals(thisResource);
+    }
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addPreferencesFromResource(R.xml.preferences);
+        addPreferencesFromResource();
 
+        /* Receive onCreateOptionsMenu() call, to remove search menu item. */
+        setHasOptionsMenu(true);
+    }
+
+    private void addPreferencesFromResource() {
+        String resourceName = getArguments().getString(ARG_RESOURCE);
+
+        if (resourceName == null) { // Main screen
+            addPreferencesFromResource(R.xml.preferences);
+            setupMainPageSettings();
+
+        } else { // Sub-screen
+            int resourceId = getResourceId(resourceName);
+            addPreferencesFromResource(resourceId);
+        }
+    }
+
+    private int getResourceId(String resourceName) {
+        return getResources().getIdentifier(resourceName, "xml", getContext().getPackageName());
+
+    }
+    private void setupMainPageSettings() {
         mReposPreference = findPreference(getString(R.string.pref_key_repos));
 
         findPreference(getString(R.string.pref_key_clear_database))
@@ -90,9 +127,6 @@ public class SettingsFragment extends PreferenceFragment
 
         setupVersionPreference();
 
-        /* Receive onCreateOptionsMenu() call, to remove search menu item. */
-        setHasOptionsMenu(true);
-
         setDefaultStateForNewNote();
 
         /* Disable preference for changing the layout, if not on API version that supports that. */
@@ -103,6 +137,25 @@ public class SettingsFragment extends PreferenceFragment
 
         /* Update preferences which depend on multiple others. */
         updateOtherPreferencesForReminders();
+    }
+
+    private void setupVersionPreference() {
+        Preference versionPreference = findPreference(getString(R.string.pref_key_version));
+
+        /* Set summary to the current version string, appending suffix for the flavor. */
+        versionPreference.setSummary(BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_SUFFIX);
+
+        /* Display changelog dialog when version is clicked. */
+        versionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                if (mListener != null) {
+                    mListener.onWhatsNewDisplayRequest();
+                }
+
+                return true;
+            }
+        });
     }
 
     @Override
@@ -187,26 +240,6 @@ public class SettingsFragment extends PreferenceFragment
         mListener = null;
     }
 
-    private void setupVersionPreference() {
-        Preference versionPreference = findPreference(getString(R.string.pref_key_version));
-
-        /* Set summary to the current version string, appending suffix for the flavor. */
-        versionPreference.setSummary(BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_SUFFIX);
-
-        /* Display changelog dialog when version is clicked. */
-        versionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (mListener != null) {
-                    mListener.onWhatsNewDisplayRequest();
-                }
-
-                return true;
-            }
-        });
-
-    }
-
     /**
      * Updates preference's summary with a list of configured user repos.
      */
@@ -248,7 +281,8 @@ public class SettingsFragment extends PreferenceFragment
 
         Activity activity = getActivity();
 
-        if (activity == null) {
+        /* No activity or not the main settings page. */
+        if (activity == null || getArguments().get(ARG_RESOURCE) != null) {
             return;
         }
 
@@ -369,13 +403,21 @@ public class SettingsFragment extends PreferenceFragment
         }
     }
 
+    @Override
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+        super.onPreferenceTreeClick(preferenceScreen, preference);
+        if (preference instanceof PreferenceScreen) {
+            mListener.onPreferenceScreen(preference.getKey());
+            return true;
+        }
+        return false;
+    }
+
     public interface SettingsFragmentListener extends FragmentListener {
         void onStateKeywordsPreferenceChanged();
-
         void onDatabaseClearRequest();
-
         void onGettingStartedNotebookReloadRequest();
-
         void onWhatsNewDisplayRequest();
+        void onPreferenceScreen(String resource);
     }
 }

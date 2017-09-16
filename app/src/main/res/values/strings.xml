@@ -405,20 +405,22 @@
     <string name="select_a_filter">Select a filter</string>
     <string name="select_a_filter_long">Select a filter by clicking on the title bar</string>
 
-    <string name="pref_title_preferencescreen_auto_sync">EXPERIMENTAL Auto-Sync</string>
-    <string name="pref_summary_auto_sync">CAUTION: EXPERIMENTAL\nThis is a new feature undergoing test.  Each sync will force full a notebook rewrite no matter how small the change.  Syncs may take some time, especially when transferred over the network.  Certain actions will be blocked while sync is in progress.</string>
+    <string name="auto_sync">Auto-sync (experimental)</string>
+    <string name="auto_sync_summary">Define cases when sync will be triggered automatically</string>
+    <string name="auto_sync_title">CAUTION</string>
+    <string name="auto_sync_description">Depending on which options you choose, sync could be triggered often. If notebook is modified, its entire content is transferred to or from the repository. If you are using a non-local repository this will be done over the network and it may take some time. Certain actions might be delayed while syncing is in progress.</string>
 
     <string name="pref_title_sync_after_note_create">New Note</string>
     <string name="pref_summary_sync_after_note_create">Sync after creating a new note</string>
 
-    <string name="pref_title_sync_after_note_update">Note Updated or Deleted</string>
-    <string name="pref_summary_sync_after_note_update">Sync after updating/deleting a note</string>
+    <string name="pref_title_sync_after_note_update">Note updated or deleted</string>
+    <string name="pref_summary_sync_after_note_update">Sync after updating or deleting a note</string>
 
-    <string name="pref_title_on_resume_sync">App Started or Resumed</string>
-    <string name="pref_summary_on_resume_sync">Sync whenever this app comes to the foreground</string>
+    <string name="pref_title_on_resume_sync">App started or resumed</string>
+    <string name="pref_summary_on_resume_sync">Sync whenever app comes to the foreground</string>
 
-    <string name="pref_title_repo_update_sync">FUTURE Repo Updated</string>
-    <string name="pref_summary_repo_update_sync">FUTURE: Sync whenever an update on a repo is detected</string>
+    <string name="pref_title_repo_update_sync">Check repositories for changes (not yet implemented)</string>
+    <string name="pref_summary_repo_update_sync">Sync whenever an update in repositories is detected</string>
 
     <!-- These are just used in tools:text for layout preview and don't have to be translated,
          unless layout look depends on the translation. -->

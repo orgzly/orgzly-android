@@ -1,5 +1,6 @@
 package com.orgzly.android.ui;
 
+import android.media.audiofx.BassBoost;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -201,11 +202,20 @@ public class DisplayManager {
 //    }
 
     public void displaySettings() {
-        if (isFragmentDisplayed(SettingsFragment.FRAGMENT_TAG) != null) {
-            return;
+        displaySettings(null);
+    }
+
+    public void displaySettings(String resource) {
+        /* Check if settings fragment using the same resource is already displayed. */
+        Fragment f = isFragmentDisplayed(SettingsFragment.FRAGMENT_TAG);
+        if (f != null) {
+            SettingsFragment settingsFragment = (SettingsFragment) f;
+            if (settingsFragment.isForResource(resource)) {
+                return;
+            }
         }
 
-        Fragment fragment = SettingsFragment.getInstance();
+        Fragment fragment = SettingsFragment.getInstance(resource);
 
         mFragmentManager
                 .beginTransaction()

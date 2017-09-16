@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/pref_title_preferencescreen_auto_sync">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
   <Preference
-      android:key="@string/pref_key_static_field_auto_sync"
       android:selectable="false"
-      android:summary="@string/pref_summary_auto_sync"/>
+      android:title="@string/auto_sync_title"
+      android:summary="@string/auto_sync_description"/>
 
   <CheckBoxPreference
       android:title="@string/pref_title_sync_after_note_create"

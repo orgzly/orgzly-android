@@ -256,14 +256,12 @@
                 android:targetPackage="com.orgzly"
                 android:targetClass="com.orgzly.android.ui.ReposActivity"/>
         </Preference>
-        <Preference
-            android:title="@string/pref_title_preferencescreen_auto_sync"
-            android:key="@string/pref_key_preferencescreen_auto_sync">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:targetPackage="com.orgzly"
-                android:targetClass="com.orgzly.android.ui.AutoSyncSettingsActivity"/>
-        </Preference>
+
+        <PreferenceScreen
+            android:title="@string/auto_sync"
+            android:summary="@string/auto_sync_summary"
+            android:key="preferences_auto_sync">
+        </PreferenceScreen>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/app">
