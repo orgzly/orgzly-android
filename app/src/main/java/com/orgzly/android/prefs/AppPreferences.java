@@ -305,6 +305,28 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_separate_header_and_content_with_new_line));
     }
 
+    public static Integer tagsColumn(Context context) {
+        String prefStr = getDefaultSharedPreferences(context).getString(
+            context.getResources().getString(R.string.pref_key_tags_column),
+            context.getResources().getString(R.string.pref_default_tags_column));
+
+        return Integer.parseInt(prefStr);
+    }
+
+    public static boolean orgIndentMode(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+            context.getResources().getString(R.string.pref_key_org_indent_mode),
+            context.getResources().getBoolean(R.bool.pref_default_org_indent_mode));
+    }
+
+    public static Integer orgIndentIndentationPerLevel(Context context) {
+        String prefStr = getDefaultSharedPreferences(context).getString(
+            context.getResources().getString(R.string.pref_key_org_indent_indentation_per_level),
+            context.getResources().getString(R.string.pref_default_org_indent_indentation_per_level));
+
+        return Integer.parseInt(prefStr);
+    }
+
     /*
      * Click action.
      */
