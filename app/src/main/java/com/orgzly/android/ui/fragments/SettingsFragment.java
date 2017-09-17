@@ -93,6 +93,9 @@ public class SettingsFragment extends PreferenceFragment
 
         } else { // Sub-screen
             int resourceId = getResourceId(resourceName);
+            if (resourceId == 0) {
+                throw new IllegalArgumentException("XML file " + resourceName + ".xml not found");
+            }
             addPreferencesFromResource(resourceId);
         }
     }
