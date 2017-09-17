@@ -288,10 +288,14 @@
     <string name="separate_notes_with_new_line">Separate notes with an empty line</string>
     <string name="separate_header_and_content_with_new_line">Separate header and content</string>
     <string name="separate_header_and_content_with_new_line_summary">Separate header and content with an empty line</string>
-    <string name="tags_column">Tags column</string>
-    <string name="org_indent_mode">Org-Indent-Mode</string>
-    <string name="org_indent_mode_summary">Adjust tags column for org-indent-mode</string>
-    <string name="org_indent_indentation_per_level">Org-Indent indentation per level</string>
+
+    <string name="tags_indent">Tags indentation</string>
+    <string name="tags_indent_summary">Options controlling indentation of tags</string>
+    <string name="tags_column">Tags column (org-tags-column)</string>
+    <string name="org_indent_mode">Adjust based on indent mode</string>
+    <string name="org_indent_mode_summary">Take org-indent-mode into account</string>
+    <string name="org_indent_indentation_per_level">Indentation per level</string>
+
     <string name="add_property">Add property</string>
 
     <string name="priority_a_highest">A (highest priority)</string>

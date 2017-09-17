@@ -206,28 +206,10 @@
             android:summary="@string/separate_header_and_content_with_new_line_summary"
             android:defaultValue="@bool/pref_default_separate_header_and_content_with_new_line"/>
 
-        <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
-            android:key="@string/pref_key_tags_column"
-            android:title="@string/tags_column"
-            android:dialogTitle="@string/tags_column"
-            android:numeric="integer"
-            android:inputType="numberSigned"
-            android:defaultValue="@string/pref_default_tags_column"/>
-
-        <CheckBoxPreference
-            android:key="@string/pref_key_org_indent_mode"
-            android:title="@string/org_indent_mode"
-            android:summary="@string/org_indent_mode_summary"
-            android:defaultValue="@bool/pref_default_org_indent_mode"/>
-
-        <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
-            android:key="@string/pref_key_org_indent_indentation_per_level"
-            android:title="@string/org_indent_indentation_per_level"
-            android:dialogTitle="@string/org_indent_indentation_per_level"
-            android:dependency="@string/pref_key_org_indent_mode"
-            android:numeric="integer"
-            android:inputType="number"
-            android:defaultValue="@string/pref_default_org_indent_indentation_per_level"/>
+        <PreferenceScreen
+            android:title="@string/tags_indent"
+            android:summary="@string/tags_indent_summary"
+            android:key="preferences_org_mode_tags_indent"/> <!-- XML file with this name must exist -->
     </PreferenceCategory>
 
 
@@ -283,7 +265,7 @@
         <PreferenceScreen
             android:title="@string/auto_sync"
             android:summary="@string/auto_sync_summary"
-            android:key="preferences_auto_sync">
+            android:key="preferences_auto_sync"> <!-- XML file with this name must exist -->
         </PreferenceScreen>
     </PreferenceCategory>
 
