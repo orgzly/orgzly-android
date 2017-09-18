@@ -98,7 +98,7 @@
 
     <!-- Notes' list density. -->
     <string name="pref_key_notes_list_density" translatable="false">pref_key_notes_list_density</string>
-    <string name="pref_default_notes_list_density" translatable="false">@string/pref_value_list_density_cozy</string>
+    <string name="pref_default_notes_list_density" translatable="false">@string/pref_value_list_density_comfortable</string>
     <string name="pref_value_list_density_comfortable" translatable="false">comfortable</string>
     <string name="pref_value_list_density_cozy" translatable="false">cozy</string>
     <string name="pref_value_list_density_compact" translatable="false">compact</string>
