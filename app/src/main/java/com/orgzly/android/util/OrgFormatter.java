@@ -114,7 +114,7 @@ public class OrgFormatter {
     }
 
     private static void setUrlSpan(SpannableStringBuilder ssb, String link, int start, int end) {
-        ssb.setSpan(new URLSpan(link), start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        ssb.setSpan(new URLSpan(link), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     /**
@@ -178,7 +178,7 @@ public class OrgFormatter {
 
     private static Matcher setMarkupSpan(SpannableStringBuilder ssb, Matcher matcher, int group, Object span, boolean withMarks) {
         if (withMarks) {
-            ssb.setSpan(span, matcher.start(group), matcher.end(group), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            ssb.setSpan(span, matcher.start(group), matcher.end(group), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             return matcher;
         }
 
@@ -187,7 +187,7 @@ public class OrgFormatter {
 
         ssb.replace(matcher.start(group), matcher.end(group), content);
 
-        ssb.setSpan(span, matcher.start(group), matcher.start(group)+content.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        ssb.setSpan(span, matcher.start(group), matcher.start(group)+content.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         /* Re-create Matcher, as ssb size is modified. */
         return MARKUP_PATTERN.matcher(ssb);
