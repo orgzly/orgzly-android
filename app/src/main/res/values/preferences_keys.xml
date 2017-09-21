@@ -356,7 +356,6 @@
     <string name="pref_key_org_indent_indentation_per_level" translatable="false">pref_key_org_indent_indentation_per_level</string>
     <string name="pref_default_org_indent_indentation_per_level" translatable="false">2</string>
 
-
     <!-- Widget -->
 
     <string name="pref_key_widget_color_scheme" translatable="false">pref_key_widget_color_scheme</string>
@@ -380,13 +379,20 @@
         <item>60</item>
     </string-array>
 
+    <!-- Git preferences -->
+    <string name="pref_key_git_author" traslatable="false">pref_key_git_author</string>
+    <string name="pref_key_git_author" traslatable="false">pref_key_git_author</string>
+    <string name="pref_key_git_email" traslatable="false">pref_key_git_email</string>
+    <string name="pref_key_git_email" traslatable="false">pref_key_git_email</string>
+    <string name="pref_key_git_ssh_key_path" traslatable="false">pref_key_git_ssh_key_path</string>
+    <string name="pref_key_git_ssh_key_path" traslatable="false">pref_key_git_ssh_key_path</string>
+>>>>>>> Add git preference keys
 
     <!-- These do not store any data. -->
     <string name="pref_key_repos" translatable="false">pref_key_repos</string>
     <string name="pref_key_version" translatable="false">pref_key_version</string>
     <string name="pref_key_reload_getting_started" translatable="false">pref_key_reload_getting_started</string>
     <string name="pref_key_clear_database" translatable="false">pref_key_clear_database</string>
-
 
     <!-- State-type preferences, not changeable by user. They have no defaults. -->
     <string name="pref_key_dropbox_token" translatable="false">pref_key_dropbox_token</string>
