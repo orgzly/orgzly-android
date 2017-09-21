@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GitRepo implements Repo {
+    public final static String SCHEME = "git";
+
     private final Uri gitUri;
     private Git git;
     private GitFileSynchronizer synchronizer;

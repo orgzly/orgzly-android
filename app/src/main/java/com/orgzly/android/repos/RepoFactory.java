@@ -2,6 +2,8 @@ package com.orgzly.android.repos;
 
 import android.content.Context;
 import android.net.Uri;
+import com.orgzly.R;
+import com.orgzly.android.prefs.RepoPreferences;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
@@ -35,9 +37,9 @@ public class RepoFactory {
                         if (uri.getAuthority() != null) {
                             return null;
                         }
-
                         return new DropboxRepo(context, uri);
-
+                    case GitRepo.SCHEME:
+                        return buildGitRepo(context, uri);
                     case DirectoryRepo.SCHEME:
                         return new DirectoryRepo(uriString, false);
 
@@ -50,6 +52,11 @@ public class RepoFactory {
         }
 
         return null;
+    }
+
+    static GitRepo buildGitRepo(Context context, Uri uri) {
+        RepoPreferences prefs = RepoPreferences.fromUri(context, uri);
+        prefs.getStringValueWithGlobalDefault(R.string.pref_key_git_author);
     }
 
     static boolean isRepo(FileRepositoryBuilder frb, File f) {
