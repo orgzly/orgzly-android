@@ -1,4 +1,4 @@
-package com.orgzly.android.repos;
+package com.orgzly.android.git;
 
 import android.content.Context;
 import com.orgzly.android.App;
@@ -19,10 +19,15 @@ import java.io.IOException;
 
 public class GitFileSynchronizer {
     private Git git;
-    private CredentialsProvider credentialsProvider;
+    private GitPreferences preferences;
 
-    public GitFileSynchronizer(Git g, CredentialsProvider credentialsProvider) {
+    public GitFileSynchronizer(Git g, GitPreferences prefs) {
         git = g;
+        preferences = prefs;
+    }
+
+    private GitTransportSetter transportSetter() {
+        return preferences.getTransportSetter();
     }
 
     public void safelyRetrieveLatestVersionOfFile(
@@ -39,12 +44,12 @@ public class GitFileSynchronizer {
         MiscUtils.copyFile(repoDirectoryFile(repositoryPath), destination);
     }
 
-    public boolean mergeWithRemote(String remoteName, boolean leaveConflicts) throws IOException {
+    public boolean mergeWithRemote(boolean leaveConflicts) throws IOException {
         ensureReposIsClean();
         try {
-            git.fetch().setCredentialsProvider(credentialsProvider).setRemote(remoteName).call();
+            transportSetter().setTransport(git.fetch().setRemote(preferences.remoteName())).call();
             RevCommit mergeTarget = getCommit(
-                    String.format("%s/%s", remoteName, git.getRepository().getFullBranch()));
+                    String.format("%s/%s", preferences.remoteName(), git.getRepository().getFullBranch()));
             return doMerge(mergeTarget, leaveConflicts);
         } catch (GitAPIException e) {
             e.printStackTrace();
@@ -52,10 +57,10 @@ public class GitFileSynchronizer {
         return false;
     }
 
-    public boolean mergeAndPushToRemote(String remoteName) throws IOException {
-        boolean success = mergeWithRemote(remoteName, false);
+    public boolean mergeAndPushToRemote() throws IOException {
+        boolean success = mergeWithRemote(false);
         if (success) try {
-            git.push().setCredentialsProvider(credentialsProvider).setRemote(remoteName).call();
+            transportSetter().setTransport(git.push().setRemote(preferences.remoteName())).call();
         } catch (GitAPIException e) {}
         return success;
     }
@@ -145,10 +150,9 @@ public class GitFileSynchronizer {
 
     private void commit(String message) throws GitAPIException {
         Context context = App.getAppContext();
-        git.commit().
-                setCommitter(
-                        AppPreferences.gitAuthor(context),
-                        AppPreferences.gitEmail(context)).
+        git.commit().setCommitter(
+                preferences.getAuthor(),
+                preferences.getEmail()).
                 setMessage(message).call();
     }
 

@@ -2,6 +2,9 @@ package com.orgzly.android.repos;
 
 import android.net.Uri;
 import com.orgzly.android.App;
+import com.orgzly.android.git.GitFileSynchronizer;
+import com.orgzly.android.git.GitPreferences;
+import com.orgzly.android.git.GitTransportSetter;
 import com.orgzly.android.provider.clients.CurrentRooksClient;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.FileMode;
@@ -22,11 +25,13 @@ public class GitRepo implements Repo {
     private final Uri gitUri;
     private Git git;
     private GitFileSynchronizer synchronizer;
+    private GitPreferences preferences;
 
-    public GitRepo(Uri rUri, Git g, CredentialsProvider cp) {
+    public GitRepo(Uri rUri, Git g, GitPreferences prefs) {
         git = g;
         gitUri = rUri;
-        synchronizer = new GitFileSynchronizer(git, cp);
+        preferences = prefs;
+        synchronizer = new GitFileSynchronizer(git, prefs);
     }
 
     public boolean requiresConnection() {
@@ -55,7 +60,7 @@ public class GitRepo implements Repo {
                 App.getAppContext(), gitUri.toString(), sourceUri.toString());
 
         // TODO: Make this configurable
-        synchronizer.mergeAndPushToRemote("origin");
+        synchronizer.mergeAndPushToRemote();
         synchronizer.safelyRetrieveLatestVersionOfFile(
                 sourceUri.getPath(), destinationFile, getCommitFromRevisionString(current.getRevision()));
 

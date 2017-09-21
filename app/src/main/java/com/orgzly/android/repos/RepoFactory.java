@@ -3,13 +3,19 @@ package com.orgzly.android.repos;
 import android.content.Context;
 import android.net.Uri;
 import com.orgzly.R;
+import com.orgzly.android.git.GitPreferences;
+import com.orgzly.android.git.GitSSHKeyTransportSetter;
+import com.orgzly.android.git.GitTransportSetter;
 import com.orgzly.android.prefs.RepoPreferences;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.RemoteSetUrlCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import org.eclipse.jgit.transport.URIish;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import com.orgzly.BuildConfig;
 
@@ -45,6 +51,8 @@ public class RepoFactory {
 
                     case MockRepo.SCHEME:
                         return new MockRepo(context, uriString);
+                    default:
+                        return buildGitRepo(context, uri);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -54,19 +62,21 @@ public class RepoFactory {
         return null;
     }
 
-    static GitRepo buildGitRepo(Context context, Uri uri) {
-        RepoPreferences prefs = RepoPreferences.fromUri(context, uri);
-        prefs.getStringValueWithGlobalDefault(R.string.pref_key_git_author);
+    static GitRepo buildGitRepo(Context context, Uri uri) throws IOException, URISyntaxException, GitAPIException {
+        GitPreferences prefs = new GitPreferences(RepoPreferences.fromUri(context, uri));
+
+        Git git = ensureRepositoryExists(uri, new File(prefs.repositoryFilepath()));
+        RemoteSetUrlCommand remoteSetUrlCommand = git.remoteSetUrl();
+        remoteSetUrlCommand.setUri(new URIish(uri.toString()));
+        remoteSetUrlCommand.setName(prefs.remoteName());
+        remoteSetUrlCommand.call();
+
+        return new GitRepo(uri, git, prefs);
     }
 
     static boolean isRepo(FileRepositoryBuilder frb, File f) {
         frb.addCeilingDirectory(f).findGitDir(f);
         return frb.getGitDir() != null;
-    }
-
-    static Uri buildDirectoryUri(Uri gitUri) {
-        String filepath = gitUri.getSchemeSpecificPart().replaceAll("[^a-zA-Z0-9-_\\.]", "_");
-        return new Uri.Builder().scheme("file").path(filepath).build();
     }
 
     public static Git ensureRepositoryExists(Uri repoUri, File directoryFile) throws IOException {

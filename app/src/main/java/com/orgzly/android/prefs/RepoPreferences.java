@@ -3,6 +3,8 @@ package com.orgzly.android.prefs;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+
+import com.orgzly.R;
 import com.orgzly.android.provider.clients.ReposClient;
 
 public class RepoPreferences {
@@ -35,11 +37,23 @@ public class RepoPreferences {
         return context.getSharedPreferences("state", Context.MODE_PRIVATE);
     }
 
+    private String getSelector(int selector) {
+        return context.getResources().getString(selector);
+    }
+
+    public String getStringValue(int selector, String def) {
+        return getStringValue(getSelector(selector), def);
+    }
+
     public String getStringValue(String key, String def) {
         return getRepoPreferences().getString(key, def);
     }
 
     public String getStringValueWithGlobalDefault(String key, String def) {
         return getStringValue(key, getAppPreferences().getString(key, def));
+    }
+
+    public String getStringValueWithGlobalDefault(int selector, String def) {
+        return getStringValueWithGlobalDefault(getSelector(selector), def);
     }
 }
