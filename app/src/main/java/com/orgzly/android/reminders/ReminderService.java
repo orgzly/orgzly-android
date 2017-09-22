@@ -48,6 +48,7 @@ public class ReminderService extends IntentService {
 
     public static final int EVENT_DATA_CHANGED = 1;
     public static final int EVENT_JOB_TRIGGERED = 2;
+    public static final int EVENT_SNOOZE_JOB_TRIGGERED = 3;
     public static final int EVENT_UNKNOWN = -1;
 
     static final int TIME_BEFORE_NOW = 1;
@@ -140,6 +141,16 @@ public class ReminderService extends IntentService {
         context.startService(intent);
     }
 
+    public static void notifySnoozeTriggered(Context context, long noteId, int noteTimeType, long timestamp) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
+        Intent intent = new Intent(context, ReminderService.class);
+        intent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_SNOOZE_JOB_TRIGGERED);
+        intent.putExtra(ActionService.EXTRA_NOTE_ID, noteId);
+        intent.putExtra(ActionService.EXTRA_NOTE_TIME_TYPE, noteTimeType);
+        intent.putExtra(ActionService.EXTRA_SNOOZE_TIMESTAMP, timestamp);
+        context.startService(intent);
+    }
+
     private static ReadableInstant[] getInterval(int beforeOrAfter, ReadableInstant now, LastRun lastRun, int timeType) {
         ReadableInstant[] res = new ReadableInstant[2];
 
@@ -190,6 +201,15 @@ public class ReminderService extends IntentService {
 
             case EVENT_JOB_TRIGGERED:
                 onJobTriggered(now, lastRun);
+                break;
+
+            case EVENT_SNOOZE_JOB_TRIGGERED:
+                long noteId = intent.getLongExtra(ActionService.EXTRA_NOTE_ID, 0);
+                int noteTimeType = intent.getIntExtra(ActionService.EXTRA_NOTE_TIME_TYPE, 0);
+                long timestamp = intent.getLongExtra(ActionService.EXTRA_SNOOZE_TIMESTAMP, 0);
+                if (noteId > 0) {
+                    onSnoozeTriggered(this, noteId, noteTimeType, timestamp);
+                }
                 break;
 
             default:
@@ -307,6 +327,42 @@ public class ReminderService extends IntentService {
         scheduleNextJob(now, lastRun);
     }
 
+    private void onSnoozeTriggered(final Context context, final long noteId,
+                                   final int noteTimeType, final long timestamp) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
+
+        String msg;
+        // FIXME TODO replace this with a simpler query, may need to create it in notesclient
+        final List<NoteReminder> result = new ArrayList<>();
+        TimesClient.forEachTime(context, new TimesClient.TimesClientInterface() {
+                @Override
+                public void onTime(TimesClient.NoteTime noteTime) {
+                    if (noteTime.id == noteId &&
+                        noteTime.timeType == noteTimeType &&
+                        isRelevantNoteTime(context, noteTime)) {
+                        OrgDateTime orgDateTime = OrgDateTime.parse(noteTime.orgTimestampString);
+                        NoteReminderPayload payload = new NoteReminderPayload(noteTime.id,
+                                                                              noteTime.bookId,
+                                                                              noteTime.bookName,
+                                                                              noteTime.title,
+                                                                              noteTime.timeType,
+                                                                              orgDateTime);
+                        DateTime timestampDateTime = new DateTime(timestamp);
+                        result.add(new NoteReminder(timestampDateTime, payload));
+                    }
+                }
+            });
+
+        if (!result.isEmpty()) {
+            msg = "Found " + result.size() + " notes";
+            showNotification(this, result);
+        } else {
+            msg = "No notes found";
+        }
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, msg);
+    }
+
     private long getJobRunTime(int jobId) {
         JobRequest jobRequest = JobManager.instance().getJobRequest(jobId);
         return jobRequest.getScheduledAt() + jobRequest.getStartMs();
@@ -334,6 +390,7 @@ public class ReminderService extends IntentService {
                     .setPriority(NotificationCompat.PRIORITY_MAX)
                     .setColor(ContextCompat.getColor(context, R.color.notification))
                     .setSmallIcon(R.drawable.cic_orgzly_notification);
+            NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender();
 
             /* Set vibration. */
             if (AppPreferences.remindersVibrate(context)) {
@@ -362,16 +419,40 @@ public class ReminderService extends IntentService {
             PendingIntent openPi = ActivityUtils.mainActivityPendingIntent(context, noteReminder.getPayload().bookId, noteReminder.getPayload().id);
             builder.setContentIntent(openPi);
 
-            /* Action text depending on repeater. */
+            /* Mark as done action - text depending on repeater. */
             String doneActionText = noteReminder.getPayload().orgDateTime.hasRepeater() ?
                     getString(R.string.mark_as_done_with_repeater, noteReminder.getPayload().orgDateTime.getRepeater().toString()) :
                     getString(R.string.mark_as_done);
 
-            builder.addAction(
-                    R.drawable.ic_done_white_24dp,
-                    doneActionText,
-                    markNoteAsDonePendingIntent(context, noteReminder.getPayload().id, notificationTag, notificationId));
+            NotificationCompat.Action markAsDoneAction =
+                new NotificationCompat.Action(R.drawable.ic_done_white_24dp,
+                                              doneActionText,
+                                              markNoteAsDonePendingIntent(context,
+                                                                          noteReminder.getPayload().id,
+                                                                          notificationTag,
+                                                                          notificationId));
+            builder.addAction(markAsDoneAction);
+            wearableExtender.addAction(markAsDoneAction);
 
+            /* snooze action */
+            String reminderSnoozeActionText = getString(R.string.reminder_snooze);
+
+            long timestamp = noteReminder.getRunTime().getMillis();
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, timestamp);
+            NotificationCompat.Action reminderSnoozeAction =
+                new NotificationCompat.Action(R.drawable.ic_alarm_white_24dp,
+                                              reminderSnoozeActionText,
+                                              reminderSnoozePendingIntent(context,
+                                                                          noteReminder.getPayload().id,
+                                                                          noteReminder.getPayload().timeType,
+                                                                          timestamp,
+                                                                          notificationTag,
+                                                                          notificationId));
+            builder.addAction(reminderSnoozeAction);
+            wearableExtender.addAction(reminderSnoozeAction);
+
+            /* finish & notify */
+            builder.extend(wearableExtender);
             notificationManager.notify(notificationTag, notificationId, builder.build());
         }
     }
@@ -407,6 +488,30 @@ public class ReminderService extends IntentService {
 
         intent.putExtra(ActionService.EXTRA_NOTE_ID, noteId);
 
+        intent.putExtra(ActionService.EXTRA_NOTIFICATION_TAG, notificationTag);
+        intent.putExtra(ActionService.EXTRA_NOTIFICATION_ID, notificationId);
+
+        return PendingIntent.getService(
+                context,
+                Long.valueOf(noteId).intValue(),
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private PendingIntent reminderSnoozePendingIntent(Context context,
+                                                      long noteId,
+                                                      int noteTimeType, // scheduled vs deadline
+                                                      long timestamp,
+                                                      String notificationTag,
+                                                      int notificationId) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
+        Intent intent = new Intent(context, ActionService.class);
+
+        intent.setAction(AppIntent.ACTION_REMINDER_SNOOZE_REQUEST);
+
+        intent.putExtra(ActionService.EXTRA_NOTE_ID, noteId);
+        intent.putExtra(ActionService.EXTRA_NOTE_TIME_TYPE, noteTimeType);
+        intent.putExtra(ActionService.EXTRA_SNOOZE_TIMESTAMP, timestamp);
         intent.putExtra(ActionService.EXTRA_NOTIFICATION_TAG, notificationTag);
         intent.putExtra(ActionService.EXTRA_NOTIFICATION_ID, notificationId);
 

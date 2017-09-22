@@ -221,6 +221,36 @@
     <string name="pref_key_repo_update_sync" translatable="false">pref_key_repo_update_sync</string>
     <bool name="pref_default_value_repo_update_sync" translatable="false">false</bool>
 
+    <string name="pref_key_snooze_time" translatable="false">pref_key_snooze_time</string>
+    <string name="pref_default_value_snooze_time">10</string>
+    <string-array name="pref_entries_snooze_time">
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>20 minutes</item>
+        <item>25 minutes</item>
+        <item>30 minutes</item>
+    </string-array>
+    <string-array name="pref_entry_values_snooze_time">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+    </string-array>
+
+    <string name="pref_key_snooze_relative_to" translatable="false">pref_key_snooze_relative_to</string>
+    <string name="pref_default_value_snooze_relative_to">button</string>
+    <string-array name="pref_entries_snooze_relative_to">
+        <item>alarm time</item>
+        <item>button time</item>
+    </string-array>
+    <string-array name="pref_entry_values_snooze_relative_to">
+        <item>alarm</item>
+        <item>button</item>
+    </string-array>
+
     <string name="pref_key_use_reminders_for_scheduled_times" translatable="false">pref_key_use_reminders_for_scheduled_times</string>
     <bool name="pref_default_value_use_reminders_for_scheduled_times" translatable="false">false</bool>
 
