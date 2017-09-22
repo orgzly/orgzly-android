@@ -639,10 +639,7 @@ public class BookFragment extends NoteListFragment
      * Update book's preface.
      */
     private void updatePreface() {
-        boolean displayPreface = ! getString(R.string.pref_value_preface_in_book_hide)
-                .equals(AppPreferences.prefaceDisplay(getContext()));
-
-        if (! TextUtils.isEmpty(mBook.getPreface()) && displayPreface) {
+        if (isPrefaceDisplayed()) {
             // Add header
             if (getListView().getHeaderViewsCount() == 0) {
                 getListView().addHeaderView(mHeader);
@@ -668,6 +665,13 @@ public class BookFragment extends NoteListFragment
         }
     }
 
+    private boolean isPrefaceDisplayed() {
+        boolean displayPreface = ! getString(R.string.pref_value_preface_in_book_hide)
+                .equals(AppPreferences.prefaceDisplay(getContext()));
+
+        return displayPreface && mBook != null && !TextUtils.isEmpty(mBook.getPreface());
+    }
+
     private void notesLoaded(Cursor cursor) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, cursor);
 
@@ -680,7 +684,8 @@ public class BookFragment extends NoteListFragment
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "after swap: cursor/adapter count: " + cursor.getCount() + "/" + mListAdapter.getCount());
 
-        if (mListAdapter.getCount() > 0) {
+        /* Display "No notes" text, unless notes or preface are displayed. */
+        if (mListAdapter.getCount() > 0 || isPrefaceDisplayed()) {
             mNoNotesText.setVisibility(View.GONE);
         } else {
             mNoNotesText.setVisibility(View.VISIBLE);

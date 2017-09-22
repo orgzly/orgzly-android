@@ -19,7 +19,6 @@ public class BookChooserActivity extends CommonActivity
 
     public static final String TAG = BookChooserActivity.class.getName();
 
-    private BooksFragment mBooksFragment;
     private String action;
 
     @Override
@@ -41,13 +40,11 @@ public class BookChooserActivity extends CommonActivity
 
     private void setupFragments(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            mBooksFragment = BooksFragment.getInstance(false, false);
+            BooksFragment mBooksFragment = BooksFragment.getInstance(false, false);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.activity_bookchooser_main, mBooksFragment, BooksFragment.FRAGMENT_TAG)
                     .commit();
-        } else {
-            mBooksFragment = (BooksFragment) getSupportFragmentManager().findFragmentByTag(BooksFragment.FRAGMENT_TAG);
         }
     }
 
@@ -67,9 +64,10 @@ public class BookChooserActivity extends CommonActivity
             launchIntent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
 
             Intent shortcut = new Intent(Intent.ACTION_CREATE_SHORTCUT);
+
             Shelf shelf = new Shelf(this);
             String title = BookUtils.getFragmentTitleForBook(shelf.getBook(bookId));
-            if(title == null) {
+            if (title == null) {
                 setResult(RESULT_CANCELED, shortcut);
                 finish();
                 return;
