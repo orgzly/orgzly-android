@@ -480,11 +480,28 @@ public class NotesClient {
 
                 } else if (so.getType() == SearchQuery.SortOrder.Type.SCHEDULED) {
                     orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_TIMESTAMP + " IS NULL");
-                    orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_TIMESTAMP + (so.isAscending()? "" : " DESC"));
+                    if (so.isAscending()) {
+                        orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_START_OF_DAY);
+                        orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_HOUR + " IS NULL");
+                        orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_TIMESTAMP);
+                    } else {
+                        orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_START_OF_DAY + " DESC");
+                        orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_HOUR + " IS NOT NULL");
+                        orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_TIMESTAMP + " DESC");
+                    }
 
                 } else if (so.getType() == SearchQuery.SortOrder.Type.DEADLINE) {
                     orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_TIMESTAMP + " IS NULL");
-                    orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_TIMESTAMP + (so.isAscending() ? "" : " DESC"));
+                    if (so.isAscending()) {
+                        orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_START_OF_DAY);
+                        orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_HOUR + " IS NULL");
+                        orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_TIMESTAMP);
+                    } else {
+                        orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_START_OF_DAY + " DESC");
+                        orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_HOUR + " IS NOT NULL");
+                        orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_TIMESTAMP + " DESC");
+                    }
+
 
                 } else if (so.getType() == SearchQuery.SortOrder.Type.PRIORITY) {
                     orderByColumns.add("COALESCE(" + ProviderContract.Notes.QueryParam.PRIORITY + ", '" + defaultPriority + "')" + (so.isAscending() ? "" : " DESC"));

@@ -7,13 +7,17 @@ public interface DbNoteViewColumns {
 
     String SCHEDULED_RANGE_STRING = "scheduled_range_string"; // rename to just scheduled string
     String SCHEDULED_TIME_STRING = "scheduled_time_string";
-    String SCHEDULED_TIME_END_STRING = "scheduled_time_string";
+    String SCHEDULED_TIME_END_STRING = "scheduled_time_end_string";
     String SCHEDULED_TIME_TIMESTAMP = "scheduled_time_timestamp";
+    String SCHEDULED_TIME_START_OF_DAY = "scheduled_time_start_of_day";
+    String SCHEDULED_TIME_HOUR = "scheduled_time_hour";
 
     String DEADLINE_RANGE_STRING = "deadline_range_string";
     String DEADLINE_TIME_STRING = "deadline_time_string";
     String DEADLINE_TIME_END_STRING = "deadline_time_end_string";
     String DEADLINE_TIME_TIMESTAMP = "deadline_time_timestamp";
+    String DEADLINE_TIME_START_OF_DAY = "deadline_time_start_of_day";
+    String DEADLINE_TIME_HOUR = "deadline_time_hour";
 
     String CLOSED_RANGE_STRING = "closed_range_string";
     String CLOSED_TIME_STRING = "closed_time_string";

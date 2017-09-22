@@ -14,7 +14,6 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.openContextualActionModeOverflowMenu;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
@@ -432,6 +431,50 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note B")));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note A")));
+    }
+
+    @Test
+    public void testOrderScheduledWithAndWithoutTimePart() {
+        shelfTestUtils.setupBook("notebook-1",
+                "* Note A\n" +
+                "SCHEDULED: <2014-01-01>\n" +
+                "** Note B\n" +
+                "SCHEDULED: <2014-01-02>\n" +
+                "*** Note C\n" +
+                "SCHEDULED: <2014-01-02 10:00>\n" +
+                "*** DONE Note D\n" +
+                "SCHEDULED: <2014-01-03>\n" +
+                "");
+        activityRule.launchActivity(null);
+
+        onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
+        searchForText("s.today .i.done o.s");
+        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note A")));
+        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note C")));
+        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note B")));
+    }
+
+    @Test
+    public void testOrderDeadlineWithAndWithoutTimePartDesc() {
+        shelfTestUtils.setupBook("notebook-1",
+                "* Note A\n" +
+                "DEADLINE: <2014-01-01>\n" +
+                "** Note B\n" +
+                "DEADLINE: <2014-01-02>\n" +
+                "*** Note C\n" +
+                "DEADLINE: <2014-01-02 10:00>\n" +
+                "*** DONE Note D\n" +
+                "DEADLINE: <2014-01-03>\n" +
+                "");
+        activityRule.launchActivity(null);
+
+        onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
+        searchForText("d.today .i.done .o.d");
+        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note B")));
+        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note C")));
+        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note A")));
     }
 
     @Test
