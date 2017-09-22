@@ -381,7 +381,7 @@ public class SettingsFragment extends PreferenceFragment
         findPreference(getString(R.string.pref_key_reminders_sound)).setEnabled(remindersEnabled);
         findPreference(getString(R.string.pref_key_reminders_vibrate)).setEnabled(remindersEnabled);
         findPreference(getString(R.string.pref_key_snooze_time)).setEnabled(remindersEnabled);
-        findPreference(getString(R.string.pref_key_snooze_relative_to)).setEnabled(remindersEnabled);
+        findPreference(getString(R.string.pref_key_snooze_type)).setEnabled(remindersEnabled);
     }
 
     /**

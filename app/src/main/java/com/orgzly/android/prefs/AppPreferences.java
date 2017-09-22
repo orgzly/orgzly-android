@@ -242,15 +242,15 @@ public class AppPreferences {
     }
 
     public static int remindersSnoozeTime(Context context) {
-        return Integer.parseInt(getDefaultSharedPreferences(context).getString(
+        return getDefaultSharedPreferences(context).getInt(
                 context.getResources().getString(R.string.pref_key_snooze_time),
-                context.getResources().getString(R.string.pref_default_value_snooze_time)));
+                context.getResources().getInteger(R.integer.pref_default_value_snooze_time));
     }
 
     public static String remindersSnoozeRelativeTo(Context context) {
         return getDefaultSharedPreferences(context).getString(
-                context.getResources().getString(R.string.pref_key_snooze_relative_to),
-                context.getResources().getString(R.string.pref_default_value_snooze_relative_to));
+                context.getResources().getString(R.string.pref_key_snooze_type),
+                context.getResources().getString(R.string.pref_default_value_snooze_type));
     }
 
     public static boolean showSyncNotifications(Context context) {

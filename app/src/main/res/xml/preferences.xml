@@ -212,7 +212,6 @@
             android:key="preferences_org_mode_tags_indent"/> <!-- XML file with this name must exist -->
     </PreferenceCategory>
 
-
     <PreferenceCategory android:title="@string/prefs_title_notifications">
         <CheckBoxPreference
             android:key="@string/pref_key_new_note_notification"
@@ -250,21 +249,19 @@
             android:title="@string/pref_title_reminders_vibrate"
             android:defaultValue="@bool/pref_default_value_reminders_vibrate"/>
 
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        <com.orgzly.android.prefs.PositiveIntegerPreference
             android:key="@string/pref_key_snooze_time"
             android:title="@string/pref_title_snooze_time"
-            android:entries="@array/pref_entries_snooze_time"
-            android:entryValues="@array/pref_entry_values_snooze_time"
-            android:defaultValue="@string/pref_default_value_snooze_time"/>
+            android:dialogTitle="@string/pref_dialog_title_snooze_time"
+            android:inputType="numberSigned"
+            android:defaultValue="@integer/pref_default_value_snooze_time"/>
 
         <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-            android:key="@string/pref_key_snooze_relative_to"
-            android:title="@string/pref_title_snooze_relative_to"
-            android:dialogTitle="@string/pref_dialog_title_snooze_relative_to"
-            android:entries="@array/pref_entries_snooze_relative_to"
-            android:entryValues="@array/pref_entry_values_snooze_relative_to"
-            android:defaultValue="@string/pref_default_value_snooze_relative_to"/>
-
+            android:key="@string/pref_key_snooze_type"
+            android:title="@string/pref_title_snooze_type"
+            android:entries="@array/snooze_types"
+            android:entryValues="@array/snooze_type_values"
+            android:defaultValue="@string/pref_default_value_snooze_type"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/sync">

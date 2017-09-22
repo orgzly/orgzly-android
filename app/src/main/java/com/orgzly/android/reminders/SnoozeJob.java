@@ -1,19 +1,16 @@
 package com.orgzly.android.reminders;
 
-import java.lang.System;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.evernote.android.job.Job;
-import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
 import com.evernote.android.job.util.support.PersistableBundleCompat;
-
 import com.orgzly.BuildConfig;
 import com.orgzly.android.ActionService;
-import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.prefs.AppPreferences;
+import com.orgzly.android.util.LogUtils;
 
 public class SnoozeJob extends Job {
     public static final String TAG = SnoozeJob.class.getName();
