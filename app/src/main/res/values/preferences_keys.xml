@@ -228,7 +228,7 @@
     <string name="pref_default_value_snooze_type">button</string>
     <string-array name="snooze_types">
         <item>Relative to when you tap the snooze button</item>
-        <item>Relative to alarm</item>
+        <item>Relative to reminder time</item>
     </string-array>
     <string-array name="snooze_type_values">
         <item>button</item>

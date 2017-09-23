@@ -34,6 +34,7 @@ import static org.hamcrest.Matchers.*;
  * - replaceText() is preferred over typeText() as it is much faster.
  */
 class EspressoUtils {
+    // TODO: Get rid of these if possible
     static final int SETTINGS_REVERSED_NOTE_CLICK_ACTION = 1;
 
     static final int SETTINGS_STATE_KEYWORDS = 24;
@@ -43,11 +44,13 @@ class EspressoUtils {
     static final int SETTINGS_NEW_NOTE_STATE = 28;
     static final int SETTINGS_CREATED_AT = 30;
 
-    static final int SETTINGS_REPOS = 44;
-    static final int SETTINGS_SYNC_AFTER = 45;
+    static final int SETTINGS_REPOS = 47;
 
-    static final int IMPORT_GETTING_STARTED = 47;
-    static final int SETTINGS_CLEAR_DATABASE = 48;
+    static final int SETTINGS_AUTO_SYNC = 48;
+    static final int SETTINGS_AUTO_SYNC_NOTE_CREATED = 1;
+
+    static final int IMPORT_GETTING_STARTED = 50;
+    static final int SETTINGS_CLEAR_DATABASE = 51;
 
     /**
      */
