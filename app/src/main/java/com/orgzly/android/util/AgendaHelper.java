@@ -22,7 +22,7 @@ public class AgendaHelper {
 
     public static List<Date> expandOrgRange(String rangeStr, Calendar now, int days) {
         List<Date> entries = new LinkedList<>();
-        OrgRange range = OrgRange.getInstanceOrNull(rangeStr);
+        OrgRange range = OrgRange.parseOrNull(rangeStr);
         if (range == null)
             return entries;
         return expandOrgRange(range, now, days);
