@@ -431,7 +431,7 @@ public class NotesClient {
     public static Cursor getCursorForBook(Context context, String bookName) throws SQLException {
         SearchQuery searchQuery = new SearchQuery();
         if (bookName != null) {
-            searchQuery.setBookName(bookName);
+            searchQuery.currentGroup.setBookName(bookName);
         }
 
         return context.getContentResolver().query(
@@ -496,11 +496,11 @@ public class NotesClient {
             /* Priority or default priority. */
             orderByColumns.add("COALESCE(" + ProviderContract.Notes.QueryParam.PRIORITY + ", '" + defaultPriority + "')");
 
-            if (searchQuery.hasDeadline()) {
+            if (searchQuery.currentGroup.hasDeadline()) {
                 orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_TIMESTAMP);
             }
 
-            if (searchQuery.hasScheduled()) {
+            if (searchQuery.currentGroup.hasScheduled()) {
                 orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_TIMESTAMP);
             }
         }

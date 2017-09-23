@@ -493,4 +493,21 @@ public class QueryFragmentTest extends OrgzlyTest {
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Note A  a"), isDisplayed())));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Note D"), isDisplayed())));
     }
+
+    @Test
+    public void testSearchForTagOrTag() {
+        shelfTestUtils.setupBook("notebook",
+                                 "* Note A :a:\n" +
+                                 "** Note B :b:\n" +
+                                 "*** Note C\n" +
+                                 "* Note D\n");
+        activityRule.launchActivity(null);
+
+        onView(allOf(withText("notebook"), isDisplayed())).perform(click());
+        searchForText("tn.a or tn.b");
+        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
+        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note A")), isDisplayed())));
+        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note B")), isDisplayed())));
+    }
 }

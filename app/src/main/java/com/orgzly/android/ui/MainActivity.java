@@ -527,7 +527,7 @@ public class MainActivity extends CommonActivity
                     Book book = getActiveFragmentBook();
                     if (book != null) {
                         SearchQuery query = new SearchQuery();
-                        query.setBookName(book.getName());
+                        query.currentGroup.setBookName(book.getName());
                         searchView.setQuery(query.toString() + " ", false);
                     }
                 }
