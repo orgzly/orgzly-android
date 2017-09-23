@@ -40,6 +40,8 @@
     <string name="new_notebook">New notebook</string>
     <string name="new_folder">New folder</string>
     <string name="scheduled">Scheduled</string>
+    <string name="agenda">Agenda</string>
+    <item type="id" name="AGENDA_ITEM_SEPARATOR_TAG"/>
 
     <plurals name="notes_deleted">
         <item quantity="one">Note deleted</item>
@@ -138,6 +140,7 @@
     <string name="repo_dropbox_button_not_linked">Link to Dropbox</string>
     <string name="repo_dropbox_button_linked">Unlink from Dropbox</string>
     <string name="fragment_settings_title">Settings</string>
+    <string name="fragment_agenda_title">Agenda</string>
 
     <string name="updating_notes">Updating notes…</string>
     <string name="todo_keywords_configuration_changed_dialog_title">Keywords modified</string>
@@ -434,6 +437,11 @@
 
     <string name="pref_title_repo_update_sync">Check repositories for changes (not yet implemented)</string>
     <string name="pref_summary_repo_update_sync">Sync whenever an update in repositories is detected</string>
+
+    <string name="agenda_day">Day</string>
+    <string name="agenda_week">Week</string>
+    <string name="agenda_fortnight">Fortnight</string>
+    <string name="thirty_days">30 Days</string>
 
     <!-- These are just used in tools:text for layout preview and don't have to be translated,
          unless layout look depends on the translation. -->

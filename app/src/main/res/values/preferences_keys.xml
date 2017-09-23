@@ -253,6 +253,11 @@
     <string name="pref_key_min_priority" translatable="false">pref_key_min_priority</string>
     <string name="pref_default_min_priority" translatable="false">C</string>
 
+    <string name="pref_key_sync_after">pref_key_sync_after</string>
+    <bool name="pref_default_value_sync_after" translatable="false">false</bool>
+
+    <string name="pref_key_default_agenda">pref_key_default_agenda</string>
+
     <string-array name="priorities">
         <item>@string/priority_a_highest</item>
         <item>B</item>

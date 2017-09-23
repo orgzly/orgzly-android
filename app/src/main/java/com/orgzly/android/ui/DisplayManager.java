@@ -10,6 +10,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
 import com.orgzly.android.SearchQuery;
+import com.orgzly.android.ui.fragments.AgendaFragment;
 import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
@@ -222,6 +223,24 @@ public class DisplayManager {
                 .commit();
     }
 
+    public void displayAgenda(String query) {
+        /* If the same query is already displayed, don't do anything. */
+        SearchQuery agendaQuery = getAgendaQuery();
+        if (agendaQuery != null && agendaQuery.toString().equals(query)) {
+            return;
+        }
+
+        /* Create fragment. */
+        Fragment fragment = AgendaFragment.getInstance(query);
+        /* Add fragment. */
+        mFragmentManager
+                .beginTransaction()
+                .setTransition(FRAGMENT_TRANSITION)
+                .addToBackStack(null)
+                .replace(R.id.single_pane_container, fragment, AgendaFragment.FRAGMENT_TAG)
+                .commit();
+    }
+
     public void displayEditor(Book book) {
         /* Create fragment. */
         Fragment fragment = BookPrefaceFragment.getInstance(book.getId(), book.getPreface());
@@ -266,6 +285,16 @@ public class DisplayManager {
 
         if (f != null && f.isVisible()) {
             return ((QueryFragment) f).getQuery();
+        }
+
+        return null;
+    }
+
+    public SearchQuery getAgendaQuery() {
+        Fragment f = mFragmentManager.findFragmentByTag(AgendaFragment.FRAGMENT_TAG);
+
+        if (f != null && f.isVisible()) {
+            return ((AgendaFragment) f).getQuery();
         }
 
         return null;

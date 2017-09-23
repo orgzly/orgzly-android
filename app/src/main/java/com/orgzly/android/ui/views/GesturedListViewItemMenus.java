@@ -13,7 +13,9 @@ import com.orgzly.android.ui.util.ViewUtils;
 import com.orgzly.android.util.LogUtils;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GesturedListViewItemMenus {
     private static final String TAG = GesturedListViewItemMenus.class.getName();
