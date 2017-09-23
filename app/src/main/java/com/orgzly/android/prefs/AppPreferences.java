@@ -242,9 +242,9 @@ public class AppPreferences {
     }
 
     public static int remindersSnoozeTime(Context context) {
-        return getDefaultSharedPreferences(context).getInt(
+        return Integer.valueOf(getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_snooze_time),
-                context.getResources().getInteger(R.integer.pref_default_value_snooze_time));
+                context.getResources().getString(R.string.pref_default_value_snooze_time)));
     }
 
     public static String remindersSnoozeRelativeTo(Context context) {

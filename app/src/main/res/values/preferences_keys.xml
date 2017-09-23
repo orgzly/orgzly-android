@@ -222,7 +222,7 @@
     <bool name="pref_default_value_repo_update_sync" translatable="false">false</bool>
 
     <string name="pref_key_snooze_time" translatable="false">pref_key_snooze_time</string>
-    <integer name="pref_default_value_snooze_time">5</integer>
+    <string name="pref_default_value_snooze_time">5</string>
 
     <string name="pref_key_snooze_type" translatable="false">pref_key_snooze_type</string>
     <string name="pref_default_value_snooze_type">button</string>
