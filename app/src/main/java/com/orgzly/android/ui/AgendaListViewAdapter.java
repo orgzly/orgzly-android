@@ -2,19 +2,15 @@ package com.orgzly.android.ui;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.provider.BaseColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.orgzly.R;
 import com.orgzly.android.ui.fragments.AgendaFragment;
 import com.orgzly.android.ui.views.GesturedListViewItemMenus;
-
-/**
- * Created by pxsalehi on 11.04.17.
- */
 
 public class AgendaListViewAdapter extends HeadsListViewAdapter {
 
@@ -47,15 +43,17 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-//        int id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
         int isSeparator = cursor.getInt(cursor.getColumnIndex(AgendaFragment.Columns.IS_SEPARATOR));
 
-//        if (separatorIDs.contains(id)) {
         if (isSeparator == 1) {
-            TextView textView = createAgendaDateTextView(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_agenda_time, null);
+
+            TextView textView = (TextView) view.findViewById(R.id.item_agenda_time_text);
             textView.setText(cursor.getString(cursor.getColumnIndex(AgendaFragment.Columns.AGENDA_DAY)));
-            textView.setTag(R.id.AGENDA_ITEM_SEPARATOR_TAG, Boolean.TRUE);
-            return textView;
+
+            view.setTag(R.id.AGENDA_ITEM_SEPARATOR_TAG, Boolean.TRUE);
+            return view;
+
         } else {
             View v = super.newView(context, cursor, parent);
             v.setTag(R.id.AGENDA_ITEM_SEPARATOR_TAG, Boolean.FALSE);
@@ -68,13 +66,14 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
         boolean isCursorSeparator = getCursorType(cursor) == TYPE_SEPARATOR;
         boolean isViewSeparator = (boolean) view.getTag(R.id.AGENDA_ITEM_SEPARATOR_TAG);
 
-        if (isCursorSeparator != isViewSeparator)
-            throw new IllegalStateException("Cannot convert between agenda entry and header view types!");
-
         if (isCursorSeparator && isViewSeparator) {
-            // reuse an agenda header
-            TextView textView = (TextView) view;
+            TextView textView = (TextView) view.findViewById(R.id.item_agenda_time_text);
             textView.setText(cursor.getString(cursor.getColumnIndex(AgendaFragment.Columns.AGENDA_DAY)));
+
+            int[] margins = getMarginsForListDensity(context);
+            RelativeLayout.LayoutParams payloadParams = (RelativeLayout.LayoutParams) textView.getLayoutParams();
+            payloadParams.setMargins(payloadParams.leftMargin, margins[0], payloadParams.rightMargin, margins[1]);
+
         } else {
             super.bindView(view, context, cursor);
         }
@@ -95,10 +94,5 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
         if (cursor.getInt(cursor.getColumnIndex(AgendaFragment.Columns.IS_SEPARATOR)) == 1)
             return TYPE_SEPARATOR;
         return TYPE_NOTE;
-    }
-
-    private TextView createAgendaDateTextView(Context context) {
-        View header = LayoutInflater.from(context).inflate(R.layout.agenda_day_head, null);
-        return (TextView) header;
     }
 }
