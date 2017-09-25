@@ -10,7 +10,6 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -263,6 +262,7 @@ public class Shelf {
 
     public void setNotesState(Set<Long> noteIds, String state) {
         NotesClient.setState(mContext, noteIds, state);
+        // TODO: Check if there was a change
         notifyDataChanged(mContext);
         updateSync();
     }
@@ -724,14 +724,8 @@ public class Shelf {
     }
 
     public void setStateToDone(long noteId) {
-        Set<String> doneStates = AppPreferences.doneKeywordsSet(mContext);
-        Note note = NotesClient.getNote(mContext, noteId);
-        String currentState = note.getHead().getState();
-        if (doneStates.contains(currentState)) {
-            return;  // already done, early exit
-        }
-
         /* Get the *first* DONE state from preferences. */
+        Set<String> doneStates = AppPreferences.doneKeywordsSet(mContext);
         String firstDoneState = doneStates.iterator().hasNext() ? doneStates.iterator().next() : null;
 
         if (firstDoneState != null) {
