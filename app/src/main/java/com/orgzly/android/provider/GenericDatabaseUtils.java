@@ -43,10 +43,6 @@ public class GenericDatabaseUtils {
         return " LEFT OUTER JOIN " + table + " " + alias + " ON " + field(alias, field1) + " = " + field(onTable, field2) + " ";
     }
 
-    public static String field(String table, String name) {
-        return table + "." + name;
-    }
-
     public static int getCount(Context context, Uri uri, String selection) {
         Cursor cursor = context.getContentResolver().query(
                 uri, new String[] { "COUNT(*) AS count" }, selection, null, null);
@@ -61,5 +57,13 @@ public class GenericDatabaseUtils {
         } finally {
             cursor.close();
         }
+    }
+
+    public static String field(String table, String name) {
+        return table + "." + name;
+    }
+
+    public static String ms2StartOfDay(String s) {
+        return "datetime(" + s + "/1000, 'unixepoch', 'localtime', 'start of day')";
     }
 }
