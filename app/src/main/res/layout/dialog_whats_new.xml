@@ -30,6 +30,27 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="1.5.3"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Display notes with more specific times first when sorting"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix resetting notebook shortcut on some launchers"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix state cycling with multiple done-type states defined"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix styling words at the end of the title"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="1.5.2"
             tools:ignore="HardcodedText"/>
 
