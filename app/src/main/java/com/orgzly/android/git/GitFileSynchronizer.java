@@ -161,7 +161,7 @@ public class GitFileSynchronizer {
     }
 
     public RevCommit getCommit(String identifier) throws IOException {
-        Ref head = git.getRepository().exactRef(identifier);
+        Ref head = git.getRepository().getRef(identifier);
         return new RevWalk(git.getRepository()).parseCommit(head.getObjectId());
     }
 

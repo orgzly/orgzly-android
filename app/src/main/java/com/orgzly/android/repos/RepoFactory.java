@@ -8,8 +8,8 @@ import com.orgzly.android.git.GitSSHKeyTransportSetter;
 import com.orgzly.android.git.GitTransportSetter;
 import com.orgzly.android.prefs.RepoPreferences;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.RemoteSetUrlCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.URIish;
 
@@ -66,10 +66,10 @@ public class RepoFactory {
         GitPreferences prefs = new GitPreferences(RepoPreferences.fromUri(context, uri));
 
         Git git = ensureRepositoryExists(uri, new File(prefs.repositoryFilepath()));
-        RemoteSetUrlCommand remoteSetUrlCommand = git.remoteSetUrl();
-        remoteSetUrlCommand.setUri(new URIish(uri.toString()));
-        remoteSetUrlCommand.setName(prefs.remoteName());
-        remoteSetUrlCommand.call();
+
+        StoredConfig config = git.getRepository().getConfig();
+        config.setString("remote", prefs.remoteName(), "url", uri.toString());
+        config.save();
 
         return new GitRepo(uri, git, prefs);
     }
