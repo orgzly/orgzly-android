@@ -34,7 +34,7 @@ import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 
 
-public class DirectoryRepoFragment extends RepoFragment {
+public class DirectoryRepoFragment extends RepoFragment implements FileBrowserOpener.BrowserResultHandler {
     private static final String TAG = DirectoryRepoFragment.class.getName();
 
     private static final String ARG_REPO_ID = "repo_id";
@@ -67,8 +67,7 @@ public class DirectoryRepoFragment extends RepoFragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public DirectoryRepoFragment() {
-    }
+    public DirectoryRepoFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -165,17 +164,17 @@ public class DirectoryRepoFragment extends RepoFragment {
     }
 
     private void startBrowser() {
-        String uri = null;
+        String uriPath = null;
 
         if (! TextUtils.isEmpty(mUriView.getText())) {
-            uri = mUriView.getText().toString();
+            uriPath = mUriView.getText().toString();
         }
 
-        if (uri != null) {
-            mListener.onBrowseDirectories(Uri.parse(uri).getPath());
-        } else {
-            mListener.onBrowseDirectories(null);
-        }
+        Uri uri = null;
+        if (uriPath != null)
+            uri = Uri.parse(uriPath);
+
+        mListener.browseDirectory(uri, this);
     }
 
     @Override
@@ -290,7 +289,10 @@ public class DirectoryRepoFragment extends RepoFragment {
         mSelectedUri = uri;
     }
 
-    public interface DirectoryRepoFragmentListener extends RepoFragmentListener {
-        void onBrowseDirectories(String dir);
+    @Override
+    public void handleBrowseResult(Uri uri) {
+        updateUri(uri);
     }
+
+    public interface DirectoryRepoFragmentListener extends RepoFragmentListener, FileBrowserOpener {}
 }

@@ -29,7 +29,7 @@ public class RepoPreferences {
         return String.format("repo.%d.xml", repoId);
     }
 
-    private SharedPreferences getRepoPreferences() {
+    public SharedPreferences getRepoPreferences() {
         return context.getSharedPreferences(getRepoPreferencesFilename(), Context.MODE_PRIVATE);
     }
 

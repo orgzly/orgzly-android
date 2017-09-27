@@ -214,7 +214,11 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
             case R.id.repos_options_menu_item_new_external_storage_directory:
                 mListener.onRepoNewRequest(item.getItemId());
                 return true;
-
+            case R.id.repos_options_menu_item_new_git:
+                if (AppPermissions.isGrantedOrRequest((CommonActivity) getActivity(), AppPermissions.FOR_LOCAL_REPO)) {
+                    mListener.onRepoNewRequest(item.getItemId());
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

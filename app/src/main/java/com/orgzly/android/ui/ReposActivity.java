@@ -17,11 +17,14 @@ import com.orgzly.android.provider.clients.ReposClient;
 import com.orgzly.android.repos.ContentRepo;
 import com.orgzly.android.repos.DirectoryRepo;
 import com.orgzly.android.repos.DropboxRepo;
+import com.orgzly.android.repos.GitRepo;
 import com.orgzly.android.repos.MockRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.fragments.DirectoryRepoFragment;
+import com.orgzly.android.ui.fragments.GitRepoFragment;
+import com.orgzly.android.ui.fragments.browser.FileBrowserFragment;
 import com.orgzly.android.ui.fragments.ReposFragment;
 import com.orgzly.android.ui.fragments.browser.FileBrowserFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
@@ -37,8 +40,10 @@ public class ReposActivity extends RepoActivity
         implements
         SimpleOneLinerDialog.SimpleOneLinerDialogListener,
         DirectoryRepoFragment.DirectoryRepoFragmentListener,
+        GitRepoFragment.GitRepoFragmentListener,
         FileBrowserFragment.BrowserFragmentListener,
-        ReposFragment.ReposFragmentListener {
+        ReposFragment.ReposFragmentListener,
+        FileBrowserOpener {
 
     public static final String TAG = ReposActivity.class.getName();
 
@@ -46,9 +51,12 @@ public class ReposActivity extends RepoActivity
 
     private static final int DIALOG_CREATE_DIRECTORY_ID = 1;
     private static final String DIALOG_CREATE_DIRECTORY_ARG_DIRECTORY = "directory";
-
+    private static final String BROWSER_RESULT_HANDLER_ID = "browserResultHandlerId";
 
     private Shelf mShelf;
+
+    private int browserResultHandlerId;
+    private BrowserResultHandler browserResultHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +66,6 @@ public class ReposActivity extends RepoActivity
 
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -74,8 +81,17 @@ public class ReposActivity extends RepoActivity
                     .beginTransaction()
                     .replace(R.id.activity_repos_frame, fragment, ReposFragment.FRAGMENT_TAG)
                     .commit();
+        } else {
+            browserResultHandlerId = savedInstanceState.getInt(BROWSER_RESULT_HANDLER_ID, 0);
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(BROWSER_RESULT_HANDLER_ID, browserResultHandlerId);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -110,14 +126,18 @@ public class ReposActivity extends RepoActivity
 
     @Override
     public void onRepoNewRequest(int id) {
-        if (id == R.id.repos_options_menu_item_new_dropbox) {
-            DropboxRepoActivity.start(this);
-
-        } else if (id == R.id.repos_options_menu_item_new_external_storage_directory) {
-            displayRepoFragment(DirectoryRepoFragment.getInstance(), DirectoryRepoFragment.FRAGMENT_TAG);
-
-        } else {
-            throw new IllegalArgumentException("Unknown repo menu item clicked: " + id);
+        switch (id) {
+            case R.id.repos_options_menu_item_new_dropbox:
+                DropboxRepoActivity.start(this);
+                return;
+            case R.id.repos_options_menu_item_new_external_storage_directory:
+                displayRepoFragment(DirectoryRepoFragment.getInstance(), DirectoryRepoFragment.FRAGMENT_TAG);
+                return;
+            case R.id.repos_options_menu_item_new_git:
+                displayRepoFragment(GitRepoFragment.getInstance(), GitRepoFragment.FRAGMENT_TAG);
+                return;
+            default:
+                throw new IllegalArgumentException("Unknown repo menu item clicked: " + id);
         }
     }
 
@@ -164,16 +184,6 @@ public class ReposActivity extends RepoActivity
     }
 
     @Override
-    public void onBrowseDirectories(String dir) {
-        // Open the browser
-        getSupportFragmentManager()
-                .beginTransaction()
-                .addToBackStack(null)
-                .replace(R.id.activity_repos_frame, FileBrowserFragment.getInstance(dir), FileBrowserFragment.FRAGMENT_TAG)
-                .commit();
-    }
-
-    @Override
     public void onBrowserCancel() {
         getSupportFragmentManager().popBackStack();
     }
@@ -190,14 +200,8 @@ public class ReposActivity extends RepoActivity
 
     @Override
     public void onBrowserUse(String item) {
-        DirectoryRepoFragment fragment =
-                (DirectoryRepoFragment) getSupportFragmentManager()
-                        .findFragmentByTag(DirectoryRepoFragment.FRAGMENT_TAG);
-
         Uri uri = UriUtils.uriFromPath(DirectoryRepo.SCHEME, item);
-
-        fragment.updateUri(uri);
-
+        browserResultHandler.handleBrowseResult(uri);
         getSupportFragmentManager().popBackStack();
     }
 
@@ -252,5 +256,16 @@ public class ReposActivity extends RepoActivity
 
                 break;
         }
+    }
+
+    @Override
+    public void browseDirectory(Uri uri, BrowserResultHandler handler) {
+        browserResultHandler = handler;
+        String dir = uri != null ? uri.getPath() : null;
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.activity_repos_frame, FileBrowserFragment.getInstance(dir), FileBrowserFragment.FRAGMENT_TAG)
+                .commit();
     }
 }

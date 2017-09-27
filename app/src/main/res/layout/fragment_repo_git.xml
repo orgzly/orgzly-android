@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_repo_directory_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".android.ui.MainActivity">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/fragment_repo_remote_address_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/fragment_padding"
+        android:layout_marginLeft="@dimen/fragment_padding"
+        android:layout_marginRight="@dimen/fragment_padding"
+        app:errorEnabled="true">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/fragment_repo_remote_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:hint="@string/fragment_repo_git_remote_address"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <fragment
+        android:name="com.orgzly.android.ui.fragments.FileSelectionFragment"
+        android:id="@+id/fragment_repo_git_directory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_file_selection" />
+
+    <fragment
+        android:name="com.orgzly.android.ui.fragments.FileSelectionFragment"
+        android:id="@+id/fragment_repo_ssh_key_filepath"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_file_selection" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/fragment_repo_git_author_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/fragment_padding"
+        android:layout_marginRight="@dimen/fragment_padding"
+        android:layout_marginTop="@dimen/fragment_padding"
+        app:errorEnabled="true">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/fragment_repo_git_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/fragment_repo_git_author"
+            android:imeOptions="actionDone"
+            android:inputType="text" />
+
+    </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+        android:id="@+id/fragment_repo_git_email_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/fragment_padding"
+        android:layout_marginRight="@dimen/fragment_padding"
+        android:layout_marginTop="@dimen/fragment_padding"
+        app:errorEnabled="true">
+
+    <android.support.design.widget.TextInputEditText
+            android:id="@+id/fragment_repo_git_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/fragment_repo_git_email"
+            android:imeOptions="actionDone"
+            android:inputType="text" />
+
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>
