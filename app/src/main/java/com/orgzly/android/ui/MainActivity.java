@@ -908,6 +908,10 @@ public class MainActivity extends CommonActivity
 
         final Book book = BooksClient.get(this, bookId);
 
+        if (book == null) {
+            return;
+        }
+
         View view = View.inflate(this, R.layout.dialog_book_delete, null);
         final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
 
