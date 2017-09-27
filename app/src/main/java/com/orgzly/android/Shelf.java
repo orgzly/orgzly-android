@@ -744,19 +744,19 @@ public class Shelf {
     }
 
     public void createSync() {
-        if (AppPreferences.syncAfterNoteCreate(mContext)) {
+        if (AppPreferences.autoSync(mContext) && AppPreferences.syncAfterNoteCreate(mContext)) {
             autoSync();
         }
     }
 
     public void updateSync() {
-        if (AppPreferences.syncAfterNoteUpdate(mContext)) {
+        if (AppPreferences.autoSync(mContext) && AppPreferences.syncAfterNoteUpdate(mContext)) {
             autoSync();
         }
     }
 
     public void resumeSync() {
-        if (AppPreferences.onResumeSync(mContext)) {
+        if (AppPreferences.autoSync(mContext) && AppPreferences.onResumeSync(mContext)) {
             autoSync();
         }
     }

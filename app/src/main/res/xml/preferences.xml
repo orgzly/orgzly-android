@@ -71,13 +71,13 @@
             android:defaultValue="@array/displayed_book_details_default"/>
 
         <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
-            android:defaultValue="@string/default_share_notebook"
             android:key="@string/pref_key_share_notebook"
+            android:title="@string/default_notebook"
             android:selectAllOnFocus="true"
             android:inputType="text"
             android:singleLine="true"
             android:dialogMessage="@string/default_notebook_desc"
-            android:title="@string/default_notebook" />
+            android:defaultValue="@string/default_share_notebook"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/notes_list">
@@ -206,10 +206,11 @@
             android:summary="@string/separate_header_and_content_with_new_line_summary"
             android:defaultValue="@bool/pref_default_separate_header_and_content_with_new_line"/>
 
+        <!-- XML file with this name must exist -->
         <PreferenceScreen
+            android:key="preferences_org_mode_tags_indent"
             android:title="@string/tags_indent"
-            android:summary="@string/tags_indent_summary"
-            android:key="preferences_org_mode_tags_indent"/> <!-- XML file with this name must exist -->
+            android:summary="@string/tags_indent_summary"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefs_title_notifications">
@@ -266,36 +267,37 @@
 
     <PreferenceCategory android:title="@string/sync">
         <Preference
+            android:key="@string/pref_key_repos"
             android:title="@string/repos_preference_title"
-            android:summary="@string/repos_preference_summary"
-            android:key="@string/pref_key_repos">
+            android:summary="@string/repos_preference_summary">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:targetPackage="com.orgzly"
                 android:targetClass="com.orgzly.android.ui.ReposActivity"/>
         </Preference>
 
+        <!-- XML file with this name must exist -->
         <PreferenceScreen
-            android:title="@string/auto_sync"
-            android:summary="@string/auto_sync_summary"
-            android:key="preferences_auto_sync"> <!-- XML file with this name must exist -->
+            android:key="preferences_auto_sync"
+            android:title="@string/auto_sync_experimental"
+            android:summary="@string/auto_sync_summary">
         </PreferenceScreen>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/app">
         <Preference
+            android:key="@string/pref_key_reload_getting_started"
             android:title="@string/reload_getting_started"
-            android:summary="@string/reload_getting_started_summary"
-            android:key="@string/pref_key_reload_getting_started"/>
+            android:summary="@string/reload_getting_started_summary"/>
 
         <Preference
+            android:key="@string/pref_key_clear_database"
             android:title="@string/clear_database"
-            android:summary="@string/clear_database_summary"
-            android:key="@string/pref_key_clear_database"/>
+            android:summary="@string/clear_database_summary"/>
 
         <Preference
-            android:title="@string/version"
-            android:key="@string/pref_key_version"/>
+            android:key="@string/pref_key_version"
+            android:title="@string/version"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

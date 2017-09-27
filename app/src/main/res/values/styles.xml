@@ -175,6 +175,8 @@
         <item name="oic_move">@drawable/ic_swap_vert_black_24dp</item>
         <item name="oic_cut">@drawable/ic_content_cut_black_24dp</item>
         <item name="oic_paste">@drawable/ic_content_paste_black_24dp</item>
+
+        <item name="oic_warning">@drawable/ic_warning_black_24dp</item>
     </style>
 
     <style name="AppDarkTheme" parent="Theme.Design">
@@ -338,6 +340,8 @@
         <item name="oic_move">@drawable/ic_swap_vert_white_24dp</item>
         <item name="oic_cut">@drawable/ic_content_cut_white_24dp</item>
         <item name="oic_paste">@drawable/ic_content_paste_white_24dp</item>
+
+        <item name="oic_warning">@drawable/ic_warning_white_24dp</item>
     </style>
 
     <!-- Color schemes -->
