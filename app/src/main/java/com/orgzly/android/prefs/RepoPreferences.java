@@ -34,7 +34,7 @@ public class RepoPreferences {
     }
 
     private SharedPreferences getAppPreferences() {
-        return context.getSharedPreferences("state", Context.MODE_PRIVATE);
+        return AppPreferences.getStateSharedPreferences(context);
     }
 
     private String getSelector(int selector) {
@@ -55,5 +55,13 @@ public class RepoPreferences {
 
     public String getStringValueWithGlobalDefault(int selector, String def) {
         return getStringValueWithGlobalDefault(getSelector(selector), def);
+    }
+
+    public long getRepoId() {
+        return repoId;
+    }
+
+    public Context getContext() {
+        return context;
     }
 }

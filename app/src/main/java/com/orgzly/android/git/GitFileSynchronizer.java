@@ -2,7 +2,7 @@ package com.orgzly.android.git;
 
 import android.content.Context;
 import com.orgzly.android.App;
-import com.orgzly.android.prefs.AppPreferences;
+import com.orgzly.android.repos.GitRepo;
 import com.orgzly.android.util.MiscUtils;
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -11,7 +11,6 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
-import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
 import java.io.File;
@@ -27,7 +26,7 @@ public class GitFileSynchronizer {
     }
 
     private GitTransportSetter transportSetter() {
-        return preferences.getTransportSetter();
+        return GitRepo.getTransportSetter(preferences);
     }
 
     public void safelyRetrieveLatestVersionOfFile(
@@ -49,7 +48,8 @@ public class GitFileSynchronizer {
         try {
             transportSetter().setTransport(git.fetch().setRemote(preferences.remoteName())).call();
             RevCommit mergeTarget = getCommit(
-                    String.format("%s/%s", preferences.remoteName(), git.getRepository().getFullBranch()));
+                    String.format("%s/%s", preferences.remoteName(),
+                            git.getRepository().getFullBranch()));
             return doMerge(mergeTarget, leaveConflicts);
         } catch (GitAPIException e) {
             e.printStackTrace();

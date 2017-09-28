@@ -61,7 +61,7 @@
 
     </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+    <android.support.design.widget.TextInputLayout
         android:id="@+id/fragment_repo_git_email_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

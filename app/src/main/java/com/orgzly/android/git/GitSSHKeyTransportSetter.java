@@ -23,6 +23,7 @@ public class GitSSHKeyTransportSetter implements GitTransportSetter {
         sshSessionFactory = new JschConfigSessionFactory() {
             @Override
             protected void configure(OpenSshConfig.Host host, Session session ) {
+                session.setConfig("StrictHostKeyChecking", "no");
             }
 
             @Override
@@ -36,7 +37,7 @@ public class GitSSHKeyTransportSetter implements GitTransportSetter {
         configCallback = new TransportConfigCallback() {
             @Override
             public void configure(Transport transport) {
-                SshTransport sshTransport = (SshTransport)transport;
+                SshTransport sshTransport = (SshTransport) transport;
                 sshTransport.setSshSessionFactory(sshSessionFactory);
             }
         };
