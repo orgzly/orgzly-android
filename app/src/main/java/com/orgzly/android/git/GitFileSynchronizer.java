@@ -1,6 +1,8 @@
 package com.orgzly.android.git;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.orgzly.android.App;
 import com.orgzly.android.repos.GitRepo;
 import com.orgzly.android.util.MiscUtils;
@@ -32,7 +34,8 @@ public class GitFileSynchronizer {
     public void safelyRetrieveLatestVersionOfFile(
             String repositoryPath, File destination, RevCommit revision) throws IOException {
         RevWalk revWalk = new RevWalk(git.getRepository());
-        if (!revWalk.isMergedInto(revision, currentHead())) {
+        RevCommit head = currentHead();
+        if (!(revision.equals(head) || revWalk.isMergedInto(revision, head))) {
             throw new IOException("The provided revision is not merged in to the current HEAD.");
         }
         retrieveLatestVersionOfFile(repositoryPath, destination);
@@ -49,7 +52,7 @@ public class GitFileSynchronizer {
             transportSetter().setTransport(git.fetch().setRemote(preferences.remoteName())).call();
             RevCommit mergeTarget = getCommit(
                     String.format("%s/%s", preferences.remoteName(),
-                            git.getRepository().getFullBranch()));
+                            git.getRepository().getBranch()));
             return doMerge(mergeTarget, leaveConflicts);
         } catch (GitAPIException e) {
             e.printStackTrace();
@@ -161,18 +164,20 @@ public class GitFileSynchronizer {
     }
 
     public RevCommit getCommit(String identifier) throws IOException {
+        Log.i("test", git.getRepository().getWorkTree().toString());
+        Log.i("test", identifier);
         Ref head = git.getRepository().getRef(identifier);
         return new RevWalk(git.getRepository()).parseCommit(head.getObjectId());
     }
 
     public String repoPath() {
-        return git.getRepository().getDirectory().getAbsolutePath();
+        return git.getRepository().getWorkTree().getAbsolutePath();
     }
 
     private boolean gitRepoIsClean() {
         try {
             Status status = git.status().call();
-            return status.hasUncommittedChanges();
+            return !status.hasUncommittedChanges();
         } catch (GitAPIException e) {
             return false;
         }
@@ -188,6 +193,7 @@ public class GitFileSynchronizer {
     }
 
     public ObjectId getFileRevision(String pathString, RevCommit commit) throws IOException {
-        return TreeWalk.forPath(git.getRepository(), pathString, commit).getObjectId(0);
+        Log.i("path", pathString);
+        return TreeWalk.forPath(git.getRepository(), pathString, commit.getTree()).getObjectId(0);
     }
 }

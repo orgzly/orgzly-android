@@ -118,7 +118,12 @@ public class GitRepo implements Repo {
     public VersionedRook storeBook(File file, String fileName) throws IOException{
         VersionedRook current = CurrentRooksClient.get(
                 App.getAppContext(), Uri.withAppendedPath(getUri(), fileName).toString());
-        RevCommit commit = getCommitFromRevisionString(current.getRevision());
+        RevCommit commit;
+        if (current == null) {
+            commit = synchronizer.currentHead();
+        } else {
+            commit = getCommitFromRevisionString(current.getRevision());
+        }
         synchronizer.updateAndCommitFileFromRevisionAndMerge(
                 file, fileName, synchronizer.getFileRevision(fileName, commit), commit, false);
         return currentVersionedRook(current);
@@ -139,14 +144,14 @@ public class GitRepo implements Repo {
         // TODO: Make this configurables
         synchronizer.mergeAndPushToRemote();
         synchronizer.safelyRetrieveLatestVersionOfFile(
-                sourceUri.getPath(), destinationFile, getCommitFromRevisionString(current.getRevision()));
+                sourceUri.getPath(), destinationFile, synchronizer.currentHead());
 
         return currentVersionedRook(current);
     }
 
     private VersionedRook currentVersionedRook(VersionedRook last) throws IOException {
         RevCommit newCommit = synchronizer.currentHead();
-        return new VersionedRook(last, newCommit.toString(), newCommit.getCommitTime());
+        return new VersionedRook(last, newCommit.name(), newCommit.getCommitTime());
     }
 
     private VersionedRook currentVersionedRook(Uri uri) throws IOException {
@@ -159,6 +164,7 @@ public class GitRepo implements Repo {
         TreeWalk walk = new TreeWalk(git.getRepository());
         walk.reset();
         walk.setRecursive(true);
+        walk.addTree(synchronizer.currentHead().getTree());
 
         while (walk.next()) {
             final FileMode mode = walk.getFileMode(0);
