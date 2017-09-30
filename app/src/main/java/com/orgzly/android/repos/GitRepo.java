@@ -126,6 +126,7 @@ public class GitRepo implements Repo {
         }
         synchronizer.updateAndCommitFileFromRevisionAndMerge(
                 file, fileName, synchronizer.getFileRevision(fileName, commit), commit, false);
+        synchronizer.mergeAndPushToRemote();
         return currentVersionedRook(current);
     }
 

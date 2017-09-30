@@ -76,12 +76,13 @@ public class GitFileSynchronizer {
         if (updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision)) return true;
 
         String originalBranch = git.getRepository().getFullBranch();
-        String mergeBranch = String.format("merge%s%s", repositoryPath, fileRevision.toString());
+        String mergeBranch = String.format("merge%s%s", repositoryPath, fileRevision.getName());
         Boolean mergeSucceeded = true;
         Boolean doCleanup = true;
         try {
             RevCommit mergeTarget = currentHead();
-            git.checkout().setCreateBranch(true).setStartPoint(revision).setName(mergeBranch).call();
+            git.checkout().setCreateBranch(true).setForce(true).
+                    setStartPoint(revision).setName(mergeBranch).call();
             if (!updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision))
                 throw new IOException(
                         String.format(
@@ -98,7 +99,8 @@ public class GitFileSynchronizer {
             }
         } catch (GitAPIException e) {
             doCleanup = true;
-            throw new IOException("Failed to handle merge correctly");
+            e.printStackTrace();
+            throw new IOException(String.format("Failed to handle merge correctly: %s", e.getMessage()));
         } finally {
             if (mergeSucceeded || doCleanup) try {
                 git.checkout().setName(originalBranch).call();
@@ -131,7 +133,11 @@ public class GitFileSynchronizer {
     public boolean updateAndCommitFileFromRevision(
             File sourceFile, String repositoryPath, ObjectId revision) throws IOException {
         ensureReposIsClean();
-        if (getFileRevision(repositoryPath, currentHead()) == revision) {
+        ObjectId repositoryRevision = getFileRevision(repositoryPath, currentHead());
+        Log.i("temp", String.format(
+                "Repository revision for %s is %s, current is %s. Equality is %s",
+                repositoryPath, repositoryRevision.name(), revision.name(), repositoryRevision == revision));
+        if (repositoryRevision.equals(revision)) {
             updateAndCommitFile(sourceFile, repositoryPath);
             return true;
         }
@@ -194,6 +200,8 @@ public class GitFileSynchronizer {
 
     public ObjectId getFileRevision(String pathString, RevCommit commit) throws IOException {
         Log.i("path", pathString);
-        return TreeWalk.forPath(git.getRepository(), pathString, commit.getTree()).getObjectId(0);
+        ObjectId objectId = TreeWalk.forPath(git.getRepository(), pathString, commit.getTree()).getObjectId(0);
+        Log.i("temp", String.format("ID for %s is %s", pathString, objectId.toString()));
+        return objectId;
     }
 }

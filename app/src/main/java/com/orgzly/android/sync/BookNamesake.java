@@ -189,7 +189,7 @@ public class BookNamesake {
 
             /* Same revision, there was no remote change. */
             // TODO: We get difference even if the file content is identical - if mtimes (revisions) are different - do compare content too in that case. Size first for speed.
-            if (book.getLastSyncedToRook().getRevision().equals(latestLinkedRook.getRevision())) {
+            if (true) {
                 /* Revision did not change. */
 
                 if (book.isModifiedAfterLastSync()) { // Local change.
