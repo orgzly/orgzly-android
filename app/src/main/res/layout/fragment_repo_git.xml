@@ -93,7 +93,7 @@
             android:id="@+id/fragment_repo_git_branch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/fragment_repo_git_email"
+            android:hint="@string/fragment_repo_git_branch"
             android:imeOptions="actionDone"
             android:inputType="text" />
 

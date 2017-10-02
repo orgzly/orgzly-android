@@ -165,7 +165,10 @@ public class ReposActivity extends RepoActivity
         } else if (repo instanceof DirectoryRepo || repo instanceof ContentRepo) {
             displayRepoFragment(DirectoryRepoFragment.getInstance(id), DirectoryRepoFragment.FRAGMENT_TAG);
 
-        } else {
+        } else if (repo instanceof GitRepo) {
+            displayRepoFragment(GitRepoFragment.getInstance(id), GitRepoFragment.FRAGMENT_TAG);
+        }
+        else {
             showSimpleSnackbarLong(R.string.message_unsupported_repository_type);
         }
     }

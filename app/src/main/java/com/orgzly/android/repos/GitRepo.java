@@ -85,7 +85,12 @@ public class GitRepo implements Repo, Repo.TwoWaySync {
                     transportSetter.setTransport(cloneCommand);
                     return cloneCommand.call();
                 } catch (GitAPIException | JGitInternalException e) {
-                    FileUtils.delete(directoryFile, FileUtils.RECURSIVE);
+                    try {
+                        FileUtils.delete(directoryFile, FileUtils.RECURSIVE);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    e.printStackTrace();
                     throw new IOException(
                             String.format("Failed to clone repository %s, %s", repoUri.toString(),
                                     e.getCause()));

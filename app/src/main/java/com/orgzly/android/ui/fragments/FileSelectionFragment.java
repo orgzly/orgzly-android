@@ -23,9 +23,7 @@ public class FileSelectionFragment extends Fragment
     private EditText editText;
     private FileBrowserOpener browserOpener;
 
-    public FileSelectionFragment() {
-        Log.i("Cool", "fragment created");
-    }
+    public FileSelectionFragment() {}
 
     public void setHint(int hint) {
         editText.setHint(hint);
@@ -39,9 +37,7 @@ public class FileSelectionFragment extends Fragment
         return editText.getText().toString();
     }
 
-    public String getFilePathString() {
-        return editText.getText().toString();
-    }
+    public EditText getEditText() { return editText; }
 
     @Override
     public void handleBrowseResult(Uri uri) {

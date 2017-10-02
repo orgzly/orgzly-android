@@ -79,7 +79,6 @@ public class Book {
     }
 
     public boolean isModifiedAfterLastSync() {
-        Log.i("Temp", String.format("Mod time %s, %s", modificationTime, lastSyncedToRook.getMtime()));
         return lastSyncedToRook != null && modificationTime > lastSyncedToRook.getMtime();
     }
 

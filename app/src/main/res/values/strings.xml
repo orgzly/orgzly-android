@@ -194,6 +194,7 @@
     <string name="fragment_repo_ssh_key_location_desc">SSH key location (e.g. “file:/sdcard/id_rsa”)</string>
     <string name="fragment_repo_git_author">Git author (e.g. My Name)</string>
     <string name="fragment_repo_git_email">Git email (e.g. me@email.com)</string>
+    <string name="fragment_repo_git_branch">Git branch (e.g. master)</string>
     <string name="fragment_repo_git_remote_address">Git remote address (e.g. git@github.com:orgzly/orgzly-android.git)</string>
 
     <!-- Share button - error messages (set as title). -->

@@ -7,14 +7,10 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,31 +18,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.git.GitPreferences;
-import com.orgzly.android.git.GitSSHKeyTransportSetter;
-import com.orgzly.android.git.GitTransportSetter;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.prefs.RepoPreferences;
 import com.orgzly.android.provider.clients.ReposClient;
 import com.orgzly.android.repos.GitRepo;
-import com.orgzly.android.repos.RepoFactory;
-import com.orgzly.android.ui.CommonActivity;
-import com.orgzly.android.ui.util.ActivityUtils;
-import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
-import com.orgzly.android.util.MiscUtils;
 
-import org.eclipse.jgit.api.TransportCommand;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.ProgressMonitor;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 public class GitRepoFragment extends RepoFragment implements GitPreferences {
     private static final String TAG = DirectoryRepoFragment.class.getName();
@@ -64,8 +54,21 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
     private RepoPreferences repoPreferences;
     private GitRepoFragmentListener mListener;
 
+    private EditTextPreference[] editTextPreferences;
+
     public static GitRepoFragment getInstance() {
         return new GitRepoFragment();
+    }
+
+    public static GitRepoFragment getInstance(long repoId) {
+        GitRepoFragment fragment = new GitRepoFragment();
+        Bundle args = new Bundle();
+
+        args.putLong(ARG_REPO_ID, repoId);
+
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     public GitRepoFragment() {
@@ -81,8 +84,16 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
     }
 
     private void setFromPreferences() {
-        directoryFragment.setValue(
-                repoPreferences().getStringValue(R.string.pref_key_git_repository_filepath, ""));
+        for(EditTextPreference editTextPreference : editTextPreferences) {
+            setTextFromPrefKey(editTextPreference.editText, editTextPreference.preference);
+        }
+    }
+
+    private void setTextFromPrefKey(EditText editText, int prefKey) {
+        editText.length();
+        if (editText.length() < 1)
+            editText.setText(
+                    repoPreferences().getStringValue(prefKey, ""));
     }
 
     private RepoPreferences repoPreferences() {
@@ -107,6 +118,16 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
                 findFragmentById(R.id.fragment_repo_ssh_key_filepath);
         directoryFragment.setHint(R.string.fragment_repo_external_storage_directory_desc);
         sshKeyFragment.setHint(R.string.fragment_repo_ssh_key_location_desc);
+
+        editTextPreferences = new EditTextPreference[]{
+                new EditTextPreference(
+                        directoryFragment.getEditText(), R.string.pref_key_git_repository_filepath),
+                new EditTextPreference(
+                        sshKeyFragment.getEditText(), R.string.pref_key_git_ssh_key_path),
+                new EditTextPreference(gitAuthorText, R.string.pref_key_git_author),
+                new EditTextPreference(gitEmailText, R.string.pref_key_git_email),
+                new EditTextPreference(gitBranchText, R.string.pref_key_git_branch_name)
+        };
 
         if (savedInstanceState == null) {
             setFromArgument();
@@ -166,7 +187,8 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
         try {
             mListener = (GitRepoFragmentListener) getActivity();
         } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString() + " must implement " + GitRepoFragmentListener.class);
+            throw new ClassCastException(
+                    getActivity().toString() + " must implement " + GitRepoFragmentListener.class);
         }
     }
 
@@ -188,6 +210,20 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
         Snackbar.make(view, errorString, Snackbar.LENGTH_LONG);
     }
 
+    private boolean setPreferenceEdits() {
+        SharedPreferences.Editor editor = repoPreferences().getRepoPreferences().edit();
+        for(EditTextPreference editTextPreference : editTextPreferences) {
+            String settingName = getSettingName(editTextPreference.preference);
+            String value = editTextPreference.editText.getText().toString();
+            if (value.length() > 0) {
+                editor = editor.putString(settingName, value);
+            } else {
+                editor = editor.remove(settingName);
+            }
+        }
+        return editor.commit();
+    }
+
     private void save() {
         String remoteUriString = remoteUri().toString();
         if (repoId < 0) {
@@ -197,16 +233,7 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
             repoId = ReposClient.getId(getActivity(), remoteUriString);
         }
 
-        boolean commitSuccess =
-                new PreferenceStringWriter(
-                        getActivity(), repoPreferences().getRepoPreferences().edit()).
-                        putString(R.string.pref_key_git_repository_filepath, directoryFragment.getValue()).
-                        putString(R.string.pref_key_git_ssh_key_path, sshKeyFragment.getValue()).
-                        putString(R.string.pref_key_git_author, gitAuthorText.getText().toString()).
-                        putString(R.string.pref_key_git_email, gitEmailText.getText().toString()).
-                        putString(R.string.pref_key_git_branch_name, gitBranchText.getText().toString())
-                        .editor.commit();
-
+        setPreferenceEdits();
         ReposClient.updateUrl(getActivity(), repoId, remoteUriString);
 
         GitRepo repo;
@@ -229,12 +256,16 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
 
     }
 
+    private String getSettingName(int setting) {
+        return getResources().getString(setting);
+    }
+
     private String withDefault(String v, int selector) {
         if (v != null && v.length() > 0) {
             return v;
         }
         return AppPreferences.getStateSharedPreferences(getContext()).
-                getString(getResources().getString(selector), "");
+                getString(getSettingName(selector), "");
     }
 
     @Override
@@ -278,27 +309,13 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
         return Uri.parse(remoteUriString);
     }
 
-    class PreferenceStringWriter {
-        SharedPreferences.Editor editor;
-        Context context;
-        PreferenceStringWriter(Context c, SharedPreferences.Editor e) {
-            context = c;
-            editor = e;
-        }
+    class EditTextPreference {
+        public EditText editText;
+        public int preference;
 
-        PreferenceStringWriter putString(int preference, String value) {
-            SharedPreferences.Editor newEditor;
-            String setting = getSettingName(preference);
-            if (value.length() > 0) {
-                newEditor = editor.putString(setting, value);
-            } else {
-                newEditor = editor.remove(setting);
-            }
-            return new PreferenceStringWriter(context, newEditor);
-        }
-
-        private String getSettingName(int setting) {
-            return context.getResources().getString(setting);
+        EditTextPreference(EditText et, int p) {
+            editText = et;
+            preference = p;
         }
     }
 
