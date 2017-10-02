@@ -504,6 +504,7 @@ public class NotesClient {
 
                 } else if (so.getType() == SearchQuery.SortOrder.Type.PRIORITY) {
                     orderByColumns.add("COALESCE(" + ProviderContract.Notes.QueryParam.PRIORITY + ", '" + defaultPriority + "')" + (so.isAscending() ? "" : " DESC"));
+                    orderByColumns.add(ProviderContract.Notes.QueryParam.PRIORITY + (so.isAscending() ? " IS NULL" : " IS NOT NULL"));
                 }
             }
 
@@ -513,6 +514,7 @@ public class NotesClient {
 
             /* Priority or default priority. */
             orderByColumns.add("COALESCE(" + ProviderContract.Notes.QueryParam.PRIORITY + ", '" + defaultPriority + "')");
+            orderByColumns.add(ProviderContract.Notes.QueryParam.PRIORITY + " IS NULL");
 
             if (searchQuery.currentGroup.hasDeadline()) {
                 orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_TIMESTAMP + " IS NULL");
