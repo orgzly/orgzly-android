@@ -1,7 +1,7 @@
 package com.orgzly.android;
 
 import android.net.Uri;
-
+import android.util.Log;
 import com.orgzly.android.repos.Rook;
 import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.sync.BookSyncStatus;
@@ -79,6 +79,7 @@ public class Book {
     }
 
     public boolean isModifiedAfterLastSync() {
+        Log.i("Temp", String.format("Mod time %s, %s", modificationTime, lastSyncedToRook.getMtime()));
         return lastSyncedToRook != null && modificationTime > lastSyncedToRook.getMtime();
     }
 

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.orgzly.android.App;
+import com.orgzly.android.BookName;
 import com.orgzly.android.git.GitFileSynchronizer;
 import com.orgzly.android.git.GitPreferences;
 import com.orgzly.android.git.GitPreferencesFromRepoPrefs;
@@ -115,19 +116,15 @@ public class GitRepo implements Repo {
         return false;
     }
 
-    public VersionedRook storeBook(File file, String fileName) throws IOException{
+    public VersionedRook storeBook(File file, String fileName) throws IOException {
         VersionedRook current = CurrentRooksClient.get(
-                App.getAppContext(), Uri.withAppendedPath(getUri(), fileName).toString());
-        RevCommit commit;
-        if (current == null) {
-            commit = synchronizer.currentHead();
-        } else {
-            commit = getCommitFromRevisionString(current.getRevision());
-        }
-        synchronizer.updateAndCommitFileFromRevisionAndMerge(
-                file, fileName, synchronizer.getFileRevision(fileName, commit), commit, false);
-        synchronizer.mergeAndPushToRemote();
-        return currentVersionedRook(current);
+                // TODO: get rid of "/" prefix needed here
+                App.getAppContext(), getUri().toString(), "/" + fileName);
+        RevCommit commit = getCommitFromRevisionString(current.getRevision());
+        synchronizer.updateAndCommitFileFromRevision(
+                file, fileName, synchronizer.getFileRevision(fileName, commit));
+        synchronizer.tryPushIfUpdated(commit);
+        return currentVersionedRook(Uri.EMPTY.buildUpon().appendPath(fileName).build());
     }
 
     private RevWalk walk() {
@@ -141,26 +138,28 @@ public class GitRepo implements Repo {
     public VersionedRook retrieveBook(Uri sourceUri, File destinationFile) throws IOException {
         VersionedRook current = CurrentRooksClient.get(
                 App.getAppContext(), getUri().toString(), sourceUri.toString());
+        RevCommit currentCommit = null;
+        if (current != null) {
+            currentCommit = getCommitFromRevisionString(current.getRevision());
+        }
 
-        // TODO: Make this configurables
-        synchronizer.mergeAndPushToRemote();
+        // TODO: consider
+        // synchronizer.checkoutSelected();
+        synchronizer.mergeWithRemote();
+        synchronizer.tryPushIfUpdated(currentCommit);
         synchronizer.safelyRetrieveLatestVersionOfFile(
                 sourceUri.getPath(), destinationFile, synchronizer.currentHead());
 
-        return currentVersionedRook(current);
-    }
-
-    private VersionedRook currentVersionedRook(VersionedRook last) throws IOException {
-        RevCommit newCommit = synchronizer.currentHead();
-        return new VersionedRook(last, newCommit.name(), newCommit.getCommitTime());
+        return currentVersionedRook(sourceUri);
     }
 
     private VersionedRook currentVersionedRook(Uri uri) throws IOException {
         RevCommit newCommit = synchronizer.currentHead();
-        return new VersionedRook(getUri(), uri, newCommit.toString(), newCommit.getCommitTime());
+        return new VersionedRook(getUri(), uri, newCommit.name(), newCommit.getCommitTime()*1000);
     }
 
     public List<VersionedRook> getBooks() throws IOException {
+        synchronizer.setBranchAndGetLatest();
         List<VersionedRook> result = new ArrayList<>();
         TreeWalk walk = new TreeWalk(git.getRepository());
         walk.reset();
@@ -171,14 +170,17 @@ public class GitRepo implements Repo {
             final FileMode mode = walk.getFileMode(0);
             if (mode == FileMode.TREE)
                 continue;
-            result.add(
-                    currentVersionedRook(
-                            Uri.withAppendedPath(Uri.EMPTY, walk.getPathString())));
+            String filePath = walk.getPathString();
+            if (BookName.isSupportedFormatFileName(filePath))
+                result.add(
+                        currentVersionedRook(
+                                Uri.withAppendedPath(Uri.EMPTY, walk.getPathString())));
         }
         return result;
     }
 
     public Uri getUri() {
+        Log.i("Git", String.format("%s", preferences.remoteUri()));
         return preferences.remoteUri();
     }
 

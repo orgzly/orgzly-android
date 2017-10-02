@@ -41,6 +41,11 @@ public class GitPreferencesFromRepoPrefs implements GitPreferences {
                 R.string.pref_key_git_remote_name, "origin");
     }
 
+    public String branchName() {
+        return repoPreferences.getStringValueWithGlobalDefault(
+                R.string.pref_key_git_branch_name, "master");
+    }
+
     public Uri remoteUri() {
         return Uri.parse(ReposClient.getUrl(
                 repoPreferences.getContext(), repoPreferences.getRepoId()));

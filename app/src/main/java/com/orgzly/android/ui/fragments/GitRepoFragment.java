@@ -58,6 +58,7 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
     private FileSelectionFragment sshKeyFragment;
     private EditText gitAuthorText;
     private EditText gitEmailText;
+    private EditText gitBranchText;
     private View view;
     private long repoId;
     private RepoPreferences repoPreferences;
@@ -99,11 +100,11 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
         uriText = (EditText) view.findViewById(R.id.fragment_repo_remote_address);
         gitAuthorText = (EditText) view.findViewById(R.id.fragment_repo_git_author);
         gitEmailText = (EditText) view.findViewById(R.id.fragment_repo_git_email);
+        gitBranchText = (EditText) view.findViewById(R.id.fragment_repo_git_branch);
         directoryFragment = (FileSelectionFragment) getChildFragmentManager().
                 findFragmentById(R.id.fragment_repo_git_directory);
         sshKeyFragment = (FileSelectionFragment) getChildFragmentManager().
                 findFragmentById(R.id.fragment_repo_ssh_key_filepath);
-
         directoryFragment.setHint(R.string.fragment_repo_external_storage_directory_desc);
         sshKeyFragment.setHint(R.string.fragment_repo_ssh_key_location_desc);
 
@@ -199,10 +200,11 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
         boolean commitSuccess =
                 new PreferenceStringWriter(
                         getActivity(), repoPreferences().getRepoPreferences().edit()).
-                putString(R.string.pref_key_git_repository_filepath, directoryFragment.getValue()).
-                putString(R.string.pref_key_git_ssh_key_path, sshKeyFragment.getValue()).
-                putString(R.string.pref_key_git_author, gitAuthorText.getText().toString()).
-                putString(R.string.pref_key_git_email, gitEmailText.getText().toString())
+                        putString(R.string.pref_key_git_repository_filepath, directoryFragment.getValue()).
+                        putString(R.string.pref_key_git_ssh_key_path, sshKeyFragment.getValue()).
+                        putString(R.string.pref_key_git_author, gitAuthorText.getText().toString()).
+                        putString(R.string.pref_key_git_email, gitEmailText.getText().toString()).
+                        putString(R.string.pref_key_git_branch_name, gitBranchText.getText().toString())
                         .editor.commit();
 
         ReposClient.updateUrl(getActivity(), repoId, remoteUriString);
@@ -263,6 +265,11 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
     public String remoteName() {
         // TODO: Update this if remote selection is ever allowed.
         return withDefault("", R.string.pref_key_git_remote_name);
+    }
+
+    @Override
+    public String branchName() {
+        return withDefault(gitBranchText.getText().toString(), R.string.pref_key_git_branch_name);
     }
 
     @Override

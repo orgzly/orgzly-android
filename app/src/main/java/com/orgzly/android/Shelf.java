@@ -445,6 +445,7 @@ public class Shelf {
             case ONLY_BOOK_WITHOUT_LINK_AND_MULTIPLE_REPOS:
             case BOOK_WITH_LINK_AND_ROOK_EXISTS_BUT_LINK_POINTING_TO_DIFFERENT_ROOK:
             case CONFLICT_BOTH_BOOK_AND_ROOK_MODIFIED:
+
             case CONFLICT_BOOK_WITH_LINK_AND_ROOK_BUT_NEVER_SYNCED_BEFORE:
             case CONFLICT_LAST_SYNCED_ROOK_AND_LATEST_ROOK_ARE_DIFFERENT:
             case ONLY_DUMMY:
@@ -501,6 +502,15 @@ public class Shelf {
         return bookAction;
     }
 
+    private Repo getRepo(Uri repoUrl) throws IOException {
+        Repo repo = RepoFactory.getFromUri(mContext, repoUrl);
+
+        if (repo == null) {
+            throw new IOException("Unsupported repository URL \"" + repoUrl + "\"");
+        }
+        return repo;
+    }
+
     /**
      * Downloads remote book, parses it and stores it to {@link Shelf}.
      * @return book now linked to remote one
@@ -545,13 +555,10 @@ public class Shelf {
      * @throws IOException
      */
     public Book saveBookToRepo(String repoUrl, String fileName, Book book, BookName.Format format) throws IOException {
-        Repo repo = RepoFactory.getFromUri(mContext, repoUrl);
-
-        if (repo == null) {
-            throw new IOException("Unsupported repository URL \"" + repoUrl + "\"");
-        }
 
         VersionedRook uploadedBook;
+
+        Repo repo = getRepo(Uri.parse(repoUrl));
 
         File tmpFile = getTempBookFile();
         try {

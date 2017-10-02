@@ -20,14 +20,14 @@ import java.net.URISyntaxException;
 import com.orgzly.BuildConfig;
 
 public class RepoFactory {
-    public static Repo getFromUri(Context context, Uri uri) {
-        return getFromUri(context, uri.toString());
+
+    public static Repo getFromUri(Context context, String uriString) {
+        return getFromUri(context, Uri.parse(uriString));
     }
 
     // TODO: Better throw exception, not return null?
-    public static Repo getFromUri(Context context, String uriString) {
-        Uri uri = Uri.parse(uriString);
-
+    public static Repo getFromUri(Context context, Uri uri) {
+        String uriString = uri.toString();
         if (uri != null && uri.getScheme() != null) { // Make sure uri is valid and has a scheme
             try {
                 switch (uri.getScheme()) {

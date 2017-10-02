@@ -1,6 +1,7 @@
 package com.orgzly.android.git;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.orgzly.android.App;
@@ -46,14 +47,22 @@ public class GitFileSynchronizer {
         MiscUtils.copyFile(repoDirectoryFile(repositoryPath), destination);
     }
 
-    public boolean mergeWithRemote(boolean leaveConflicts) throws IOException {
+    private void fetch() throws GitAPIException {
+        transportSetter().setTransport(git.fetch().setRemote(preferences.remoteName())).call();
+    }
+
+    public void checkoutSelected() throws GitAPIException {
+        git.checkout().setName(preferences.branchName()).call();
+    }
+
+    public boolean mergeWithRemote() throws IOException {
         ensureReposIsClean();
         try {
-            transportSetter().setTransport(git.fetch().setRemote(preferences.remoteName())).call();
+            fetch();
             RevCommit mergeTarget = getCommit(
                     String.format("%s/%s", preferences.remoteName(),
                             git.getRepository().getBranch()));
-            return doMerge(mergeTarget, leaveConflicts);
+            return doMerge(mergeTarget);
         } catch (GitAPIException e) {
             e.printStackTrace();
         }
@@ -61,16 +70,25 @@ public class GitFileSynchronizer {
     }
 
     public boolean mergeAndPushToRemote() throws IOException {
-        boolean success = mergeWithRemote(false);
+        boolean success = mergeWithRemote();
         if (success) try {
             transportSetter().setTransport(git.push().setRemote(preferences.remoteName())).call();
         } catch (GitAPIException e) {}
         return success;
     }
 
+    public void updateAndCommitFileFromRevision(
+            File sourceFile, String repositoryPath,
+            ObjectId fileRevision, RevCommit revision) throws IOException {
+        ensureReposIsClean();
+        if (updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision))
+            return;
+
+    }
+
     public boolean updateAndCommitFileFromRevisionAndMerge(
             File sourceFile, String repositoryPath,
-            ObjectId fileRevision, RevCommit revision, boolean leaveConflicts)
+            ObjectId fileRevision, RevCommit revision)
             throws IOException {
         ensureReposIsClean();
         if (updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision)) return true;
@@ -86,9 +104,10 @@ public class GitFileSynchronizer {
             if (!updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision))
                 throw new IOException(
                         String.format(
-                                "The provided file revision %s for %s is not the same as the one found in the provided commit %s.",
+                                "The provided file revision %s for %s is " +
+                                        "not the same as the one found in the provided commit %s.",
                                 fileRevision.toString(), repositoryPath, revision.toString()));
-            mergeSucceeded = doMerge(mergeTarget, leaveConflicts);
+            mergeSucceeded = doMerge(mergeTarget);
             if (mergeSucceeded) {
                 RevCommit merged = currentHead();
                 git.checkout().setName(originalBranch).call();
@@ -100,7 +119,8 @@ public class GitFileSynchronizer {
         } catch (GitAPIException e) {
             doCleanup = true;
             e.printStackTrace();
-            throw new IOException(String.format("Failed to handle merge correctly: %s", e.getMessage()));
+            throw new IOException(
+                    String.format("Failed to handle merge correctly: %s", e.getMessage()));
         } finally {
             if (mergeSucceeded || doCleanup) try {
                 git.checkout().setName(originalBranch).call();
@@ -111,17 +131,35 @@ public class GitFileSynchronizer {
         return mergeSucceeded;
     }
 
-    private boolean doMerge(RevCommit mergeTarget, boolean leaveConflicts) throws IOException {
-        try {
-            MergeResult result = git.merge().include(mergeTarget).call();
-            if (result.getMergeStatus().equals(MergeResult.MergeStatus.CONFLICTING)) {
-                if (!leaveConflicts) gitResetMerge();
-                return false;
-            }
-        } catch (GitAPIException e) {
-            throw new IOException("Failed to handle merge correctly");
+    private boolean doMerge(RevCommit mergeTarget) throws IOException, GitAPIException {
+        MergeResult result = git.merge().include(mergeTarget).call();
+        if (result.getMergeStatus().equals(MergeResult.MergeStatus.CONFLICTING)) {
+            gitResetMerge();
+            return false;
         }
         return true;
+    }
+
+    public void tryPushIfUpdated(RevCommit commit) throws IOException {
+        if (!commit.equals(currentHead())) {
+            tryPush();
+        }
+    }
+
+    public void tryPush() {
+        final TransportCommand pushCommand = transportSetter().setTransport(
+                git.push().setRemote(preferences.remoteName()));
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    pushCommand.call();
+                } catch (GitAPIException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
     }
 
     private void gitResetMerge() throws IOException, GitAPIException {
@@ -134,14 +172,30 @@ public class GitFileSynchronizer {
             File sourceFile, String repositoryPath, ObjectId revision) throws IOException {
         ensureReposIsClean();
         ObjectId repositoryRevision = getFileRevision(repositoryPath, currentHead());
-        Log.i("temp", String.format(
-                "Repository revision for %s is %s, current is %s. Equality is %s",
-                repositoryPath, repositoryRevision.name(), revision.name(), repositoryRevision == revision));
         if (repositoryRevision.equals(revision)) {
             updateAndCommitFile(sourceFile, repositoryPath);
             return true;
         }
         return false;
+    }
+
+    public void setBranchAndGetLatest() throws IOException {
+        ensureReposIsClean();
+        try {
+            fetch();
+            // TODO: XXX maybe:
+            // checkoutSelected();
+            RevCommit current = currentHead();
+            RevCommit mergeTarget = getCommit(
+                    String.format("%s/%s", preferences.remoteName(), preferences.branchName()));
+            if (!doMerge(mergeTarget))
+                throw new IOException(
+                        String.format("Failed to merge %s and %s",
+                                current.getName(), mergeTarget.getName()));
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+            throw new IOException("Failed to update from remote");
+        }
     }
 
     private RevCommit updateAndCommitFile(
@@ -150,7 +204,8 @@ public class GitFileSynchronizer {
         MiscUtils.copyFile(sourceFile, destinationFile);
         try {
             git.add().addFilepattern(repositoryPath).call();
-            commit(String.format("Orgzly update: %s", repositoryPath));
+            if (!gitRepoIsClean())
+                commit(String.format("Orgzly update: %s", repositoryPath));
         } catch (GitAPIException e) {
             throw new IOException("Failed to commit changes.");
         }
@@ -172,8 +227,8 @@ public class GitFileSynchronizer {
     public RevCommit getCommit(String identifier) throws IOException {
         Log.i("test", git.getRepository().getWorkTree().toString());
         Log.i("test", identifier);
-        Ref head = git.getRepository().getRef(identifier);
-        return new RevWalk(git.getRepository()).parseCommit(head.getObjectId());
+        Ref target = git.getRepository().getRef(identifier);
+        return new RevWalk(git.getRepository()).parseCommit(target.getObjectId());
     }
 
     public String repoPath() {
@@ -191,7 +246,7 @@ public class GitFileSynchronizer {
 
     private void ensureReposIsClean() throws IOException {
         if (!gitRepoIsClean())
-            throw new IOException("Refusing to update because there are uncomitted changes.");
+            throw new IOException("Refusing to update because there are uncommitted changes.");
     }
 
     private File repoDirectoryFile(String filePath) {
@@ -199,9 +254,8 @@ public class GitFileSynchronizer {
     }
 
     public ObjectId getFileRevision(String pathString, RevCommit commit) throws IOException {
-        Log.i("path", pathString);
-        ObjectId objectId = TreeWalk.forPath(git.getRepository(), pathString, commit.getTree()).getObjectId(0);
-        Log.i("temp", String.format("ID for %s is %s", pathString, objectId.toString()));
+        ObjectId objectId = TreeWalk.forPath(
+                git.getRepository(), pathString, commit.getTree()).getObjectId(0);
         return objectId;
     }
 }

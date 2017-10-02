@@ -8,5 +8,6 @@ public interface GitPreferences {
     public String getEmail();
     public String repositoryFilepath();
     public String remoteName();
+    public String branchName();
     public Uri remoteUri();
 }
