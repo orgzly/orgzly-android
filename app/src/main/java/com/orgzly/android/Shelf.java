@@ -434,6 +434,17 @@ public class Shelf {
         String fileName;
         BookAction bookAction = null;
 
+        // XXX: This is a pretty nasty hack that completely circumvents the existing code path
+        VersionedRook rook = namesake.getLatestLinkedRook();
+        Repo repo = getRepo(rook.getRepoUri());
+        Repo.TwoWaySync sync = repo.getSync();
+        if (sync != null) {
+            handleTwoWaySync(sync, namesake);
+            return new BookAction(
+                    BookAction.Type.INFO,
+                    namesake.getStatus().msg(UriUtils.friendlyUri(repo.getUri().toString())));
+        }
+
         switch (namesake.getStatus()) {
             case NO_CHANGE:
                 bookAction = new BookAction(BookAction.Type.INFO, namesake.getStatus().msg());
@@ -576,6 +587,32 @@ public class Shelf {
         book.setLastSyncedToRook(uploadedBook);
 
         BooksClient.saved(mContext, book.getId(), uploadedBook);
+
+        return book;
+    }
+
+    public Book handleTwoWaySync(Repo.TwoWaySync sync, BookNamesake namesake) throws IOException {
+        Book book = namesake.getBook();
+        VersionedRook currentRook = book.getLastSyncedToRook();
+        VersionedRook newBook = currentRook;
+        File dbFile = getTempBookFile();
+        File readBackFile = getTempBookFile();
+        try {
+            writeBookToFile(book, BookName.Format.ORG, dbFile);
+
+            newBook = sync.syncBook(currentRook, dbFile, readBackFile);
+
+            String fileName = BookName.getFileName(mContext, newBook.getUri());
+            BookName bookName = BookName.fromFileName(fileName);
+            book = loadBookFromFile(bookName.getName(), bookName.getFormat(), readBackFile, newBook);
+        } finally {
+            /* Delete temporary files. */
+            dbFile.delete();
+            readBackFile.delete();
+        }
+
+        book.setLastSyncedToRook(currentRook);
+        BooksClient.saved(mContext, book.getId(), newBook);
 
         return book;
     }

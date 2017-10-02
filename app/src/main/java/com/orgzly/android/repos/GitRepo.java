@@ -34,7 +34,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GitRepo implements Repo {
+public class GitRepo implements Repo, Repo.TwoWaySync {
     public final static String SCHEME = "git";
 
     public static GitTransportSetter getTransportSetter(GitPreferences preferences) {
@@ -148,7 +148,7 @@ public class GitRepo implements Repo {
         synchronizer.mergeWithRemote();
         synchronizer.tryPushIfUpdated(currentCommit);
         synchronizer.safelyRetrieveLatestVersionOfFile(
-                sourceUri.getPath(), destinationFile, synchronizer.currentHead());
+                sourceUri.getPath(), destinationFile, currentCommit);
 
         return currentVersionedRook(sourceUri);
     }
@@ -189,8 +189,24 @@ public class GitRepo implements Repo {
         throw new IOException("Don't do that");
     }
 
+    @Override
+    public TwoWaySync getSync() {
+        return this;
+    }
+
     public VersionedRook renameBook(Uri from, String name) throws IOException {
         return null;
     }
 
+    @Override
+    public VersionedRook syncBook(VersionedRook current, File fromDB, File destinationFile) throws IOException {
+        String fileName = current.getUri().getPath().replaceFirst("/", "");
+        RevCommit commit = getCommitFromRevisionString(current.getRevision());
+        Log.i("Temp", String.format("File name %s, commit: %s", fileName, commit));
+        synchronizer.updateAndCommitFileFromRevisionAndMerge(
+                fromDB, fileName, synchronizer.getFileRevision(fileName, commit), commit);
+        synchronizer.tryPushIfUpdated(commit);
+        synchronizer.safelyRetrieveLatestVersionOfFile(fileName, destinationFile, commit);
+        return currentVersionedRook(Uri.EMPTY.buildUpon().appendPath(fileName).build());
+    }
 }

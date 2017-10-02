@@ -164,4 +164,9 @@ public class DirectoryRepo implements Repo {
     public String toString() {
         return repoUri.toString();
     }
+
+    @Override
+    public TwoWaySync getSync() {
+        return null;
+    }
 }

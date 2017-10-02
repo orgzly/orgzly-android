@@ -36,8 +36,13 @@ public class GitFileSynchronizer {
             String repositoryPath, File destination, RevCommit revision) throws IOException {
         RevWalk revWalk = new RevWalk(git.getRepository());
         RevCommit head = currentHead();
-        if (!(revision.equals(head) || revWalk.isMergedInto(revision, head))) {
-            throw new IOException("The provided revision is not merged in to the current HEAD.");
+        RevCommit rHead = revWalk.parseCommit(head.toObjectId());
+        RevCommit rRevision = revWalk.parseCommit(revision.toObjectId());
+        if (!revWalk.isMergedInto(rRevision, rHead)) {
+            throw new IOException(
+                    String.format(
+                            "The provided revision %s is not merged in to the current HEAD, %s.",
+                            revision, head));
         }
         retrieveLatestVersionOfFile(repositoryPath, destination);
     }
@@ -93,14 +98,20 @@ public class GitFileSynchronizer {
         ensureReposIsClean();
         if (updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision)) return true;
 
+        Log.i("Temp", "Attempting setback merge");
         String originalBranch = git.getRepository().getFullBranch();
         String mergeBranch = String.format("merge%s%s", repositoryPath, fileRevision.getName());
+        try {
+            git.branchDelete().setBranchNames(mergeBranch).call();
+        } catch (GitAPIException e) {}
         Boolean mergeSucceeded = true;
         Boolean doCleanup = true;
         try {
             RevCommit mergeTarget = currentHead();
             git.checkout().setCreateBranch(true).setForce(true).
                     setStartPoint(revision).setName(mergeBranch).call();
+            if (!currentHead().equals(revision))
+                throw new IOException("Unable to set revision to " + revision.toString());
             if (!updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision))
                 throw new IOException(
                         String.format(
@@ -111,10 +122,9 @@ public class GitFileSynchronizer {
             if (mergeSucceeded) {
                 RevCommit merged = currentHead();
                 git.checkout().setName(originalBranch).call();
-                MergeResult result = git.merge().setFastForward(
-                        MergeCommand.FastForwardMode.FF_ONLY).include(merged).call();
-                if (!result.getMergeStatus().equals(MergeResult.MergeStatus.MERGED))
-                    throw new IOException("Unexpected failure to fast forward.");
+                MergeResult result = git.merge().include(merged).call();
+                if (!currentHead().equals(merged))
+                    throw new IOException("Unexpected failure to merge branch");
             }
         } catch (GitAPIException e) {
             doCleanup = true;
