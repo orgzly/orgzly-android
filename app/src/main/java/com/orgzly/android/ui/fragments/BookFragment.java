@@ -164,6 +164,33 @@ public class BookFragment extends NoteListFragment
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
+        super.onActivityCreated(savedInstanceState);
+
+        /* Activity created - context available. Create Shelf and populate list with data. */
+        mShelf = new Shelf(getActivity().getApplicationContext());
+
+        /*
+         * If loader is for last loaded book, just init, do not restart.
+         * Trying not to reset the loader and null the adapter, to keep the scroll position.
+         *
+         * NOTE: Opening a new book fragment for the same book will not restore the previous
+         * fragment's list view, even though book ID is the same. This is because callbacks
+         * will be different (they are two separate fragments displaying the same book).
+         */
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Book Loader: Last book " + mLastBookId + ", new book " + mBookId);
+
+        if (mLastBookId == mBookId) {
+            getActivity().getSupportLoaderManager().initLoader(Loaders.BOOK_FRAGMENT_BOOK, null, this);
+            getActivity().getSupportLoaderManager().initLoader(Loaders.BOOK_FRAGMENT_NOTES, null, this);
+        } else {
+            getActivity().getSupportLoaderManager().restartLoader(Loaders.BOOK_FRAGMENT_BOOK, null, this);
+            getActivity().getSupportLoaderManager().restartLoader(Loaders.BOOK_FRAGMENT_NOTES, null, this);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, inflater, container, savedInstanceState);
 
@@ -276,33 +303,6 @@ public class BookFragment extends NoteListFragment
 
         mSelection.restoreIds(savedInstanceState);
         /* Reset from ids will be performed after loading the data. */
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
-        super.onActivityCreated(savedInstanceState);
-
-        /* Activity created - context available. Create Shelf and populate list with data. */
-        mShelf = new Shelf(getActivity().getApplicationContext());
-
-        /*
-         * If loader is for last loaded book, just init, do not restart.
-         * Trying not to reset the loader and null the adapter, to keep the scroll position.
-         *
-         * NOTE: Opening a new book fragment for the same book will not restore the previous
-         * fragment's list view, even though book ID is the same. This is because callbacks
-         * will be different (they are two separate fragments displaying the same book).
-         */
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Book Loader: Last book " + mLastBookId + ", new book " + mBookId);
-
-        if (mLastBookId == mBookId) {
-            getActivity().getSupportLoaderManager().initLoader(Loaders.BOOK_FRAGMENT_BOOK, null, this);
-            getActivity().getSupportLoaderManager().initLoader(Loaders.BOOK_FRAGMENT_NOTES, null, this);
-        } else {
-            getActivity().getSupportLoaderManager().restartLoader(Loaders.BOOK_FRAGMENT_BOOK, null, this);
-            getActivity().getSupportLoaderManager().restartLoader(Loaders.BOOK_FRAGMENT_NOTES, null, this);
-        }
     }
 
     @Override

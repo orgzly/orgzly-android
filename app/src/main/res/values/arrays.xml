@@ -22,11 +22,4 @@
         <item>@string/repeater_description_restart</item>
     </string-array>
 
-    <string-array name="agenda_duration">
-        <item>@string/agenda_day</item>
-        <item>@string/agenda_week</item>
-        <item>@string/agenda_fortnight</item>
-        <item>@string/thirty_days</item>
-    </string-array>
-
 </resources>

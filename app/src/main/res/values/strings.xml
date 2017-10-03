@@ -41,7 +41,7 @@
     <string name="new_folder">New folder</string>
     <string name="scheduled">Scheduled</string>
     <string name="agenda">Agenda</string>
-    <string name="agenda_period">Agenda period</string>
+    <string name="agenda_period">Agenda days</string>
 
     <item type="id" name="AGENDA_ITEM_SEPARATOR_TAG"/>
 

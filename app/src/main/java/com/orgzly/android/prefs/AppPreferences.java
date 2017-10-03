@@ -464,6 +464,23 @@ public class AppPreferences {
         getDefaultSharedPreferences(context).edit().putString(key, value).apply();
     }
 
+
+    /*
+     * Agenda
+     */
+
+    public static int agendaDays(Context context) {
+        return Integer.valueOf(getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_agenda_days),
+                context.getResources().getString(R.string.pref_key_default_agenda_days)));
+    }
+
+    public static void agendaDays(Context context, int value) {
+        String key = context.getResources().getString(R.string.pref_key_agenda_days);
+        getDefaultSharedPreferences(context).edit().putString(key, String.valueOf(value)).apply();
+    }
+
+
     /*
      * State flags and values.
      * They have no default values, they are not set by user.
@@ -575,21 +592,5 @@ public class AppPreferences {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_auto_sync_on_resume),
                 context.getResources().getBoolean(R.bool.pref_default_value_auto_sync_on_resume));
-    }
-
-    public static boolean syncAfterRepoUpdate(Context context) {
-        return getDefaultSharedPreferences(context).getBoolean(
-                context.getResources().getString(R.string.pref_key_auto_sync_on_repo_change),
-                context.getResources().getBoolean(R.bool.pref_default_value_auto_sync_on_repo_change));
-    }
-
-    public static String defaultAgenda(Context context) {
-        return getDefaultSharedPreferences(context).getString(
-                context.getResources().getString(R.string.pref_key_default_agenda), null);
-    }
-
-    public static void defaultAgenda(Context context, String value) {
-        String key = context.getResources().getString(R.string.pref_key_default_agenda);
-        getDefaultSharedPreferences(context).edit().putString(key, value).apply();
     }
 }

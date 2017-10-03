@@ -1,6 +1,8 @@
 package com.orgzly.android.ui.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
@@ -9,7 +11,6 @@ import android.provider.BaseColumns;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.util.Pair;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,9 +20,8 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
+import android.widget.NumberPicker;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -50,6 +50,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -58,42 +59,32 @@ import java.util.TreeSet;
 public class AgendaFragment extends NoteListFragment
         implements
         TimestampDialogFragment.OnDateTimeSetListener,
-        LoaderManager.LoaderCallbacks<Cursor>,
-        AdapterView.OnItemSelectedListener {
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = DrawerFragment.AgendaItem.class.getName();
 
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = AgendaFragment.class.getName();
 
-    private int agendaDurationInDays = 0;
+    private static final int MIN_DAYS = 1;
+    private static final int MAX_DAYS = 31;
 
-    private UserTimeFormatter userTimeFormatter;
-
-    private static String[] agendaSpinnerItems;
-
-    /* Arguments. */
-    private static final String ARG_QUERY = "query";
-    private static final String ARG_FRESH_INSTANCE = "fresh";
+    private static final String AGENDA_DAYS_QUERY = ".i.done s.%dd";
 
     private static final int STATE_ITEM_GROUP = 1;
 
-    private AgendaListViewAdapter mListAdapter;
-
     /* Currently active query. */
     private SearchQuery mQuery;
+    private int agendaDurationInDays;
+
+    private UserTimeFormatter userTimeFormatter;
+
+    private AgendaListViewAdapter mListAdapter;
 
     private NoteListFragmentListener mListener;
 
-    private String mActionModeTag;
-
     /* Maps a copy note ID to the original note ID */
     private Map<Long, Long> originalNoteIDs = new HashMap<>();
-
-    private String selectedQuery;
-
-    /* Use first spinner item as default */
-    private int spinnerSelection;
 
     // available ids for copied notes
     long nextID = Long.MAX_VALUE;
@@ -107,16 +98,8 @@ public class AgendaFragment extends NoteListFragment
     Map<Pair<Long, Long>, Long> assignedIDs = new HashMap<>();
 
 
-    public static AgendaFragment getInstance(String query) {
-        AgendaFragment fragment = new AgendaFragment();
-
-        Bundle args = new Bundle();
-        args.putString(ARG_QUERY, query);
-        args.putBoolean(ARG_FRESH_INSTANCE, true);
-
-        fragment.setArguments(args);
-
-        return fragment;
+    public static AgendaFragment getInstance() {
+        return new AgendaFragment();
     }
 
     /**
@@ -156,13 +139,7 @@ public class AgendaFragment extends NoteListFragment
 
         setHasOptionsMenu(true);
 
-        parseArguments();
-
-        if (savedInstanceState != null && savedInstanceState.getBoolean("actionModeMove", false)) {
-            mActionModeTag = "M";
-        }
-
-        agendaSpinnerItems = getContext().getResources().getStringArray(R.array.agenda_duration);
+        updateQuery();
 
         // reset available IDs
         nextID = Long.MAX_VALUE;
@@ -187,9 +164,9 @@ public class AgendaFragment extends NoteListFragment
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mListAdapter.getItemViewType(position) == AgendaListViewAdapter.TYPE_SEPARATOR)
-                    return true;
-                mListener.onNoteLongClick(AgendaFragment.this, view, position, id);
+                if (mListAdapter.getItemViewType(position) != AgendaListViewAdapter.TYPE_SEPARATOR) {
+                    mListener.onNoteLongClick(AgendaFragment.this, view, position, id);
+                }
                 return true;
             }
         });
@@ -240,7 +217,7 @@ public class AgendaFragment extends NoteListFragment
 
         setListAdapter(mListAdapter);
 
-        /**
+        /*
          * Restore selected items, now that adapter is set.
          * Saved with {@link Selection#saveSelectedIds(android.os.Bundle, String)}.
          */
@@ -311,20 +288,6 @@ public class AgendaFragment extends NoteListFragment
         mActionModeListener = null;
     }
 
-    private void parseArguments() {
-        if (getArguments() == null) {
-            throw new IllegalArgumentException("No arguments found to " + AgendaFragment.class.getSimpleName());
-        }
-        String query = getArguments().getString(ARG_QUERY);
-
-        parseQuery(query);
-    }
-
-    private void parseQuery(String query) {
-        mQuery = new SearchQuery(query);
-        agendaDurationInDays = Query.getAgendaDurationInDays(mQuery.toString());
-    }
-
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
         int itemViewType = mListAdapter.getItemViewType(position);
@@ -340,30 +303,65 @@ public class AgendaFragment extends NoteListFragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
 
-        inflater.inflate(R.menu.agenda_spinner, menu);
+        inflater.inflate(R.menu.agenda_actions, menu);
 
-        /* Remove search item. */
-        MenuItem menuItem = menu.findItem(R.id.activity_action_search);
-        menuItem.collapseActionView();
         menu.removeItem(R.id.activity_action_search);
+    }
 
-        MenuItem item = menu.findItem(R.id.agenda_spinner);
-        Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.agenda_period:
+                openNumberPicker();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                getActivity(),
-                R.array.agenda_duration,
-                android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // get default agenda
-        selectedQuery = AppPreferences.defaultAgenda(getActivity());
-        if (selectedQuery == null)
-            selectedQuery = Query.DEFAULT_AGENDA_QUERY;
-        spinnerSelection = Query.getAgendaSpinnerPosition(selectedQuery);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-        spinner.setSelection(spinnerSelection);
-        spinner.setOnItemSelectedListener(this);
+    private void openNumberPicker() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, agendaDurationInDays);
+
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View view = inflater.inflate(R.layout.number_picker, null);
+
+        final NumberPicker picker = (NumberPicker) view.findViewById(R.id.number_picker);
+        picker.setMaxValue(MAX_DAYS);
+        picker.setMinValue(MIN_DAYS);
+        picker.setValue(agendaDurationInDays);
+
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.agenda_period)
+                .setView(view)
+                .setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        updateQuery(picker.getValue());
+                        loadQuery();
+                        announceChangesToActivity();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .show();
+    }
+
+    private void updateQuery() {
+        int days = AppPreferences.agendaDays(getContext());
+        updateQuery(days);
+    }
+
+    private void updateQuery(int days) {
+        String queryString = String.format((Locale) null, AGENDA_DAYS_QUERY, days);
+
+        agendaDurationInDays = days;
+        mQuery = new SearchQuery(queryString);
+
+        /* Save to preferences. */
+        AppPreferences.agendaDays(getActivity(), days);
     }
 
     @Override
@@ -472,8 +470,8 @@ public class AgendaFragment extends NoteListFragment
 
         MergeCursor mCursor = createAgendaCursor(agenda);
 
-        mCursor.moveToFirst();
-        /**
+//        mCursor.moveToFirst();
+        /*
          * Swapping instead of changing Cursor here, to keep the old one open.
          * Loader should release the old Cursor - see note in
          * {@link LoaderManager.LoaderCallbacks#onLoadFinished).
@@ -481,13 +479,6 @@ public class AgendaFragment extends NoteListFragment
         mListAdapter.swapCursor(mCursor);
 
         mActionModeListener.updateActionModeForSelection(mSelection, new MyActionMode());
-
-        ActionMode actionMode = mActionModeListener.getActionMode();
-        if (mActionModeTag != null) {
-            actionMode.setTag("M");
-            actionMode.invalidate();
-            mActionModeTag = null;
-        }
     }
 
     private long assignNoteCopyID(long noteId, DateTime date) {
@@ -529,32 +520,6 @@ public class AgendaFragment extends NoteListFragment
         }
 
         mListAdapter.changeCursor(null);
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String selectedStr = agendaSpinnerItems[position];
-        spinnerSelection = position;
-
-        if (selectedStr.equalsIgnoreCase(getResources().getString(R.string.agenda_day))) {
-            selectedQuery = Query.AGENDA_DAY_QUERY;
-        } else if (selectedStr.equalsIgnoreCase(getResources().getString(R.string.agenda_week))) {
-            selectedQuery = Query.AGENDA_WEEK_QUERY;
-        } else if (selectedStr.equalsIgnoreCase(getResources().getString(R.string.agenda_fortnight))) {
-            selectedQuery = Query.AGENDA_FORTNIGHT_QUERY;
-        } else if (selectedStr.equalsIgnoreCase(getResources().getString(R.string.thirty_days))) {
-            selectedQuery = Query.AGENDA_THIRTY_DAYS_QUERY;
-        } else {
-            throw new RuntimeException("Invalid agenda period item selected!");
-        }
-        AppPreferences.defaultAgenda(getActivity(), selectedQuery);
-        parseQuery(selectedQuery);
-        loadQuery();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        // nothing to do here!
     }
 
     public class MyActionMode implements ActionMode.Callback {
@@ -640,10 +605,6 @@ public class AgendaFragment extends NoteListFragment
         }
     }
 
-    public SearchQuery getQuery() {
-        return mQuery;
-    }
-
     public static class Columns implements BaseColumns, DbNoteColumns {
         public static String IS_SEPARATOR = "is_separator";
         public static String AGENDA_DAY = "day";
@@ -652,42 +613,5 @@ public class AgendaFragment extends NoteListFragment
                 Columns._ID,
                 Columns.AGENDA_DAY,
                 Columns.IS_SEPARATOR};
-    }
-
-    public static class Query {
-        public static final String AGENDA_DAY_QUERY = ".i.done s.tomorrow";
-        public static final String AGENDA_WEEK_QUERY = ".i.done s.1w";
-        public static final String AGENDA_FORTNIGHT_QUERY = ".i.done s.2w";
-        public static final String AGENDA_THIRTY_DAYS_QUERY = ".i.done s.30d";
-
-        public static final String DEFAULT_AGENDA_QUERY = AGENDA_WEEK_QUERY;
-
-        public static int getAgendaDurationInDays(String query) {
-            switch (query) {
-                case AGENDA_DAY_QUERY:
-                    return 1;
-                case AGENDA_WEEK_QUERY:
-                    return 7;
-                case AGENDA_FORTNIGHT_QUERY:
-                    return 14;
-                case AGENDA_THIRTY_DAYS_QUERY:
-                    return 30;
-            }
-            throw new IllegalStateException("Invalid agenda query!");
-        }
-
-        public static int getAgendaSpinnerPosition(String query) {
-            switch (query) {
-                case AGENDA_DAY_QUERY:
-                    return 0;
-                case AGENDA_WEEK_QUERY:
-                    return 1;
-                case AGENDA_FORTNIGHT_QUERY:
-                    return 2;
-                case AGENDA_THIRTY_DAYS_QUERY:
-                    return 3;
-            }
-            throw new IllegalStateException("Invalid agenda query!");
-        }
     }
 }

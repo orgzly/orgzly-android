@@ -223,15 +223,13 @@ public class DisplayManager {
                 .commit();
     }
 
-    public void displayAgenda(String query) {
-        /* If the same query is already displayed, don't do anything. */
-        SearchQuery agendaQuery = getAgendaQuery();
-        if (agendaQuery != null && agendaQuery.toString().equals(query)) {
+    public void displayAgenda() {
+        if (isFragmentDisplayed(AgendaFragment.FRAGMENT_TAG) != null) {
             return;
         }
 
         /* Create fragment. */
-        Fragment fragment = AgendaFragment.getInstance(query);
+        Fragment fragment = AgendaFragment.getInstance();
         /* Add fragment. */
         mFragmentManager
                 .beginTransaction()
@@ -285,16 +283,6 @@ public class DisplayManager {
 
         if (f != null && f.isVisible()) {
             return ((QueryFragment) f).getQuery();
-        }
-
-        return null;
-    }
-
-    public SearchQuery getAgendaQuery() {
-        Fragment f = mFragmentManager.findFragmentByTag(AgendaFragment.FRAGMENT_TAG);
-
-        if (f != null && f.isVisible()) {
-            return ((AgendaFragment) f).getQuery();
         }
 
         return null;
