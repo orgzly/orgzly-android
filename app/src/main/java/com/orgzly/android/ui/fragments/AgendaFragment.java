@@ -444,7 +444,7 @@ public class AgendaFragment extends NoteListFragment
         int scheduledRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.SCHEDULED_RANGE_STRING);
         // expand each note if it has a repeater or is a range
         originalNoteIDs.clear();
-        for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             String scheduledRangeStr = cursor.getString(scheduledRangeStrIdx);
             List<DateTime> dates = AgendaUtils.expandOrgDateTime(scheduledRangeStr, now, agendaDurationInDays);
             for (DateTime date: dates) {
@@ -660,7 +660,7 @@ public class AgendaFragment extends NoteListFragment
         public static final String AGENDA_FORTNIGHT_QUERY = ".i.done s.2w";
         public static final String AGENDA_THIRTY_DAYS_QUERY = ".i.done s.30d";
 
-        public static final String DEFAULT_AGENDA_QUERY = AGENDA_DAY_QUERY;
+        public static final String DEFAULT_AGENDA_QUERY = AGENDA_WEEK_QUERY;
 
         public static int getAgendaDurationInDays(String query) {
             switch (query) {

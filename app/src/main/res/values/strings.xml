@@ -41,6 +41,7 @@
     <string name="new_folder">New folder</string>
     <string name="scheduled">Scheduled</string>
     <string name="agenda">Agenda</string>
+    <string name="agenda_period">Agenda period</string>
 
     <item type="id" name="AGENDA_ITEM_SEPARATOR_TAG"/>
 
@@ -492,4 +493,5 @@
 
     <string name="styled_text_with_marks_title">Styled text with marks</string>
     <string name="styled_text_with_marks_summary">Keep marks displayed (e.g. *bold*)</string>
+
 </resources>
