@@ -13,7 +13,6 @@ import org.joda.time.DateTime;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeRight;
@@ -25,11 +24,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.listViewItemCount;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.EspressoUtils.setNumber;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
 
 public class AgendaFragmentTest extends OrgzlyTest {
     @Rule
@@ -68,17 +66,18 @@ public class AgendaFragmentTest extends OrgzlyTest {
         onView(withText("Agenda")).perform(click());
     }
 
-    private void selectAgendaSpinner(int pos) {
-        onView(withId(R.id.agenda_spinner)).perform(click());
-        onData(allOf(is(instanceOf(String.class)))).atPosition(pos).perform(click());
+    private void selectAgendaPeriod(int days) {
+        onView(withId(R.id.agenda_period)).perform(click());
+        onView(withId(R.id.number_picker)).perform(setNumber(days));
+        onView(withText(R.string.set)).perform(click());
     }
 
     @Test
     public void testWithNoBook() {
         emptySetup();
         openAgenda();
-        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(1)));
-        selectAgendaSpinner(1);
+        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(3)));
+        selectAgendaPeriod(7);
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(7)));
     }
 
@@ -86,6 +85,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
     public void testDayAgenda() {
         defaultSetUp();
         openAgenda();
+        selectAgendaPeriod(1);
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(4)));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(endsWith("Note B")), isDisplayed())));
         onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(endsWith("Note C")), isDisplayed())));
@@ -96,7 +96,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
     public void testWeekAgenda() {
         defaultSetUp();
         openAgenda();
-        selectAgendaSpinner(1);
+        selectAgendaPeriod(7);
         // 7 date headers, 1 Note B, 7 x Note C, 7 x Note 2
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(22)));
     }
@@ -105,7 +105,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
     public void testOneTimeTaskMarkedDone() {
         defaultSetUp();
         openAgenda();
-        selectAgendaSpinner(1);  // week
+        selectAgendaPeriod(7);
         onListItem(1).perform(swipeRight());
         onListItem(1).onChildView(withId(R.id.item_menu_done_state_btn)).perform(click());
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(21)));
@@ -115,7 +115,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
     public void testRepeaterTaskMarkedDone() {
         defaultSetUp();
         openAgenda();
-        selectAgendaSpinner(1);  // week
+        selectAgendaPeriod(7);
         onListItem(2).perform(swipeRight());
         onListItem(2).onChildView(withId(R.id.item_menu_done_state_btn)).perform(click());
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(21)));
@@ -125,7 +125,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
     public void testRangeTaskMarkedDone() {
         defaultSetUp();
         openAgenda();
-        selectAgendaSpinner(1);  // week
+        selectAgendaPeriod(7);
         onListItem(3).perform(swipeRight());
         onListItem(3).onChildView(withId(R.id.item_menu_done_state_btn)).perform(click());
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(15)));
@@ -135,7 +135,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
     public void testChangeStateUntilDone() {
         defaultSetUp();
         openAgenda();
-        selectAgendaSpinner(1);  // week
+        selectAgendaPeriod(7);
         onListItem(2).perform(swipeRight());
         onListItem(2).onChildView(withId(R.id.item_menu_next_state_btn)).perform(click());
         onListItem(2).onChildView(withId(R.id.item_menu_next_state_btn)).perform(click());
@@ -148,7 +148,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
 
         defaultSetUp();
         openAgenda();
-        selectAgendaSpinner(1);  // week
+        selectAgendaPeriod(7);
         onListItem(2).perform(swipeRight());
         onListItem(2).onChildView(withId(R.id.item_menu_schedule_btn)).perform(click());
         onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
@@ -166,7 +166,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
     public void testPersistedSpinnerSelection() {
         defaultSetUp();
         openAgenda();
-        selectAgendaSpinner(1); // week
+        selectAgendaPeriod(7);
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(22)));
         activityRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(22)));

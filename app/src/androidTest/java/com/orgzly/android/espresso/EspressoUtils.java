@@ -1,16 +1,17 @@
 package com.orgzly.android.espresso;
 
 import android.content.pm.ActivityInfo;
-import android.os.Build;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.action.CloseKeyboardAction;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import com.orgzly.R;
 import org.hamcrest.Description;
@@ -235,6 +236,28 @@ class EspressoUtils {
             @Override
             public void describeTo(Description description) {
                 description.appendText("a View which is highlighted");
+            }
+        };
+    }
+
+    /**
+     * Set value for {@link NumberPicker}
+     */
+    public static ViewAction setNumber(final int n) {
+        return new ViewAction() {
+            @Override
+            public void perform(UiController uiController, View view) {
+                ((NumberPicker) view).setValue(n);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Set NumberPicker value";
+            }
+
+            @Override
+            public Matcher<View> getConstraints() {
+                return ViewMatchers.isAssignableFrom(NumberPicker.class);
             }
         };
     }
