@@ -10,8 +10,23 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class AgendaUtils {
+
+    public static Set<DateTime> expandOrgDateTime(String[] rangeStrings, Calendar now, int days) {
+        Set<DateTime> set = new TreeSet<>();
+
+        for (String rangeString : rangeStrings) {
+            OrgRange range = OrgRange.parseOrNull(rangeString);
+            if (range != null) {
+                set.addAll(expandOrgDateTime(range, new DateTime(now), days));
+            }
+        }
+
+        return set;
+    }
 
     public static List<DateTime> expandOrgDateTime(String rangeStr, Calendar now, int days) {
         OrgRange range = OrgRange.parseOrNull(rangeStr);

@@ -69,7 +69,7 @@ public class AgendaFragment extends NoteListFragment
     private static final int MIN_DAYS = 1;
     private static final int MAX_DAYS = 31;
 
-    private static final String AGENDA_DAYS_QUERY = ".i.done s.%dd";
+    private static final String AGENDA_DAYS_QUERY = ".i.done s.%dd or .i.done d.%dd";
 
     private static final int STATE_ITEM_GROUP = 1;
 
@@ -355,7 +355,7 @@ public class AgendaFragment extends NoteListFragment
     }
 
     private void updateQuery(int days) {
-        String queryString = String.format((Locale) null, AGENDA_DAYS_QUERY, days);
+        String queryString = String.format((Locale) null, AGENDA_DAYS_QUERY, days, days);
 
         agendaDurationInDays = days;
         mQuery = new SearchQuery(queryString);
@@ -441,11 +441,18 @@ public class AgendaFragment extends NoteListFragment
 
         Calendar now = Calendar.getInstance();
         int scheduledRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.SCHEDULED_RANGE_STRING);
+        int deadlineRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.DEADLINE_RANGE_STRING);
         // expand each note if it has a repeater or is a range
         originalNoteIDs.clear();
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            String scheduledRangeStr = cursor.getString(scheduledRangeStrIdx);
-            List<DateTime> dates = AgendaUtils.expandOrgDateTime(scheduledRangeStr, now, agendaDurationInDays);
+            Set<DateTime> dates = AgendaUtils.expandOrgDateTime(
+                    new String[] {
+                            cursor.getString(scheduledRangeStrIdx),
+                            cursor.getString(deadlineRangeStrIdx)
+                    },
+                    now,
+                    agendaDurationInDays);
+
             for (DateTime date: dates) {
                 // create agenda cursors
                 MatrixCursor matrixCursor = agenda.get(date.withTimeAtStartOfDay().getMillis());
@@ -453,6 +460,7 @@ public class AgendaFragment extends NoteListFragment
                 for (String col: columnNames) {
                     if (col.equalsIgnoreCase(Columns._ID)) {
                         // if just one note (no repeater), use original ID
+                        // TODO: Is this an issue if note has both scheduled and deadline times?
                         long noteId = cursor.getLong(cursor.getColumnIndex(col));
                         long copyId = noteId;
                         if (dates.size() > 1)
@@ -460,8 +468,7 @@ public class AgendaFragment extends NoteListFragment
                         originalNoteIDs.put(copyId, noteId);
                         rowBuilder.add(copyId);
                     } else if (col.equalsIgnoreCase(Columns.IS_SEPARATOR)) {
-                        // notes are not separators!
-                        rowBuilder.add(0);
+                        rowBuilder.add(0); // IS_SEPARATOR
                     } else {
                         rowBuilder.add(cursor.getString(cursor.getColumnIndex(col)));
                     }
@@ -505,7 +512,7 @@ public class AgendaFragment extends NoteListFragment
             int id = (int) (dateMilli / 1000);
             dateRow.add(id);
             dateRow.add(userTimeFormatter.formatDate(AgendaUtils.buildOrgDateTimeFromDate(date, null)));
-            dateRow.add(1);
+            dateRow.add(1); // IS_SEPARATOR
             allCursors.add(dateCursor);
             allCursors.add(agenda.get(dateMilli));
         }
