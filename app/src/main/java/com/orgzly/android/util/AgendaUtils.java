@@ -14,49 +14,52 @@ import java.util.List;
 public class AgendaUtils {
 
     public static List<DateTime> expandOrgDateTime(String rangeStr, Calendar now, int days) {
-        List<DateTime> result = new ArrayList<>();
         OrgRange range = OrgRange.parseOrNull(rangeStr);
-        if (range == null)
-            return result;
-        return expandOrgDateTime(range, now, days);
+        if (range == null) {
+            return new ArrayList<>();
+        }
+        return expandOrgDateTime(range, new DateTime(now), days);
     }
 
-    private static List<DateTime> expandOrgDateTime(OrgRange range, Calendar now, int days) {
+    private static List<DateTime> expandOrgDateTime(OrgRange range, DateTime now, int days) {
         List<DateTime> result = new ArrayList<>();
-        DateTime from = new DateTime(now.getTime());
         OrgDateTime rangeStart = range.getStartTime();
         OrgDateTime rangeEnd = range.getEndTime();
 
-        // add a today entry task is overdue
-        if (rangeStart.getCalendar().before(from.toGregorianCalendar()))
+        // Add today if task is overdue
+        if (rangeStart.getCalendar().before(now.toGregorianCalendar())) {
             result.add(new DateTime(now).withTimeAtStartOfDay());
+        }
 
-        DateTime to = from.plusDays(days).withTimeAtStartOfDay();
+        DateTime to = now.plusDays(days).withTimeAtStartOfDay();
+
         if (rangeEnd == null) {
-            result.addAll(OrgDateTimeUtils.getTimesInInterval(rangeStart, from, to, true, 100));
+            result.addAll(OrgDateTimeUtils.getTimesInInterval(rangeStart, now, to, true, 0));
         } else {
             // a time range
-            if (to.isAfter(rangeEnd.getCalendar().getTimeInMillis()))
+            if (to.isAfter(rangeEnd.getCalendar().getTimeInMillis())) {
                 to = new DateTime(rangeEnd.getCalendar()).withTimeAtStartOfDay().plusDays(1);
+            }
             // if start time has no repeater, use a daily repeater
             if (!rangeStart.hasRepeater()) {
                 DateTime start = new DateTime(rangeStart.getCalendar());
                 rangeStart = buildOrgDateTimeFromDate(start, OrgRepeater.parse("++1d"));
             }
-            result.addAll(OrgDateTimeUtils.getTimesInInterval(rangeStart, from, to, true, 100));
+            result.addAll(OrgDateTimeUtils.getTimesInInterval(rangeStart, now, to, true, 0));
         }
 
         return result;
     }
 
     public static OrgDateTime buildOrgDateTimeFromDate(DateTime date, OrgRepeater repeater) {
-        OrgDateTime.Builder builder =  new OrgDateTime.Builder();
+        OrgDateTime.Builder builder = new OrgDateTime.Builder();
 
         builder.setYear(date.getYear())
                 .setMonth(date.getMonthOfYear() - 1)
                 .setDay(date.getDayOfMonth())
                 .setHour(date.getHourOfDay())
                 .setMinute(date.getMinuteOfHour());
+
         if (repeater != null)
             builder.setHasRepeater(true).setRepeater(repeater);
 
