@@ -31,15 +31,9 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-/**
- * Created by pxsalehi on 11.07.17.
- */
-
 public class AgendaFragmentTest extends OrgzlyTest {
     @Rule
     public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class, true, false);
-
-
 
     private void defaultSetUp() {
         shelfTestUtils.setupBook("book-one",

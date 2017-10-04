@@ -15,11 +15,6 @@ import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-
-/**
- * Created by pxsalehi on 04.05.17.
- */
-
 @RunWith(Parameterized.class)
 public class AgendaUtilsTest {
     private String rangeStr;

@@ -61,7 +61,7 @@ public class AgendaFragment extends NoteListFragment
         TimestampDialogFragment.OnDateTimeSetListener,
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = DrawerFragment.AgendaItem.class.getName();
+    private static final String TAG = AgendaFragment.class.getName();
 
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = AgendaFragment.class.getName();
@@ -424,16 +424,17 @@ public class AgendaFragment extends NoteListFragment
             return;
         }
 
+        // Add IS_SEPARATOR column
+        String[] columnNames = new String[cursor.getColumnNames().length + 1];
+        System.arraycopy(cursor.getColumnNames(), 0, columnNames, 0, cursor.getColumnNames().length);
+        columnNames[columnNames.length - 1] = Columns.IS_SEPARATOR;
+
         Map<Long, MatrixCursor> agenda = new LinkedHashMap<>();
-        // add is_separator column to the cursors
-        String[] cols = new String[cursor.getColumnNames().length + 1];
-        System.arraycopy(cursor.getColumnNames(), 0, cols, 0, cursor.getColumnNames().length);
-        cols[cols.length - 1] = Columns.IS_SEPARATOR;
         DateTime day = DateTime.now().withTimeAtStartOfDay();
         int i = 0;
         // create entries from today to today+agenda_len
         do {
-            MatrixCursor matrixCursor = new MatrixCursor(cols);
+            MatrixCursor matrixCursor = new MatrixCursor(columnNames);
             agenda.put(day.getMillis(), matrixCursor);
             day = day.plusDays(1);
         } while (++i < agendaDurationInDays);
@@ -449,7 +450,7 @@ public class AgendaFragment extends NoteListFragment
                 // create agenda cursors
                 MatrixCursor matrixCursor = agenda.get(date.withTimeAtStartOfDay().getMillis());
                 MatrixCursor.RowBuilder rowBuilder = matrixCursor.newRow();
-                for (String col: cols) {
+                for (String col: columnNames) {
                     if (col.equalsIgnoreCase(Columns._ID)) {
                         // if just one note (no repeater), use original ID
                         long noteId = cursor.getLong(cursor.getColumnIndex(col));
@@ -496,7 +497,7 @@ public class AgendaFragment extends NoteListFragment
     private MergeCursor createAgendaCursor(Map<Long, MatrixCursor> agenda) {
         List<Cursor> allCursors = new ArrayList<>();
 
-        for(long dateMilli: agenda.keySet()) {
+        for (long dateMilli: agenda.keySet()) {
             DateTime date = new DateTime(dateMilli);
             MatrixCursor dateCursor = new MatrixCursor(Columns.AGENDA_SEPARATOR_COLS);
             MatrixCursor.RowBuilder dateRow = dateCursor.newRow();
@@ -555,7 +556,7 @@ public class AgendaFragment extends NoteListFragment
             switch (menuItem.getItemId()) {
                 case R.id.query_cab_schedule:
                     selectionIds = new TreeSet<>();
-                    for(Long id: mSelection.getIds())
+                    for (Long id: mSelection.getIds())
                         selectionIds.add(originalNoteIDs.get(id));
                     displayScheduleTimestampDialog(R.id.query_cab_schedule, selectionIds);
                     break;
@@ -576,7 +577,7 @@ public class AgendaFragment extends NoteListFragment
                     if (menuItem.getGroupId() == STATE_ITEM_GROUP) {
                         if (mListener != null) {
                             selectionIds = new TreeSet<>();
-                            for(Long id: mSelection.getIds())
+                            for (Long id: mSelection.getIds())
                                 selectionIds.add(originalNoteIDs.get(id));
                             mListener.onStateChangeRequest(selectionIds, menuItem.getTitle().toString());
                         }

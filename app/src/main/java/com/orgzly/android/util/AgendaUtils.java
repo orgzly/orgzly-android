@@ -11,10 +11,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-/**
- * Created by pxsalehi on 27.04.17.
- */
-
 public class AgendaUtils {
 
     public static List<DateTime> expandOrgDateTime(String rangeStr, Calendar now, int days) {
@@ -25,7 +21,7 @@ public class AgendaUtils {
         return expandOrgDateTime(range, now, days);
     }
 
-    public static List<DateTime> expandOrgDateTime(OrgRange range, Calendar now, int days) {
+    private static List<DateTime> expandOrgDateTime(OrgRange range, Calendar now, int days) {
         List<DateTime> result = new ArrayList<>();
         DateTime from = new DateTime(now.getTime());
         OrgDateTime rangeStart = range.getStartTime();
