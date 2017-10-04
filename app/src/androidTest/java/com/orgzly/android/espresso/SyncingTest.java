@@ -85,6 +85,7 @@ public class SyncingTest extends OrgzlyTest {
         // Set preference
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
         onListItem(EspressoUtils.SETTINGS_AUTO_SYNC).perform(click());
+        onListItem(EspressoUtils.SETTINGS_AUTO_SYNC_TOGGLE).perform(click());
         onListItem(EspressoUtils.SETTINGS_AUTO_SYNC_NOTE_CREATED).perform(click());
 
         // Open book
