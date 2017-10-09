@@ -7,9 +7,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,17 +24,14 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.prefs.RepoPreferences;
 import com.orgzly.android.provider.clients.ReposClient;
 import com.orgzly.android.repos.GitRepo;
+import com.orgzly.android.ui.CommonActivity;
+import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 
 import org.eclipse.jgit.lib.ProgressMonitor;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+
 
 public class GitRepoFragment extends RepoFragment implements GitPreferences {
     private static final String TAG = DirectoryRepoFragment.class.getName();
@@ -206,8 +201,7 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
     }
 
     private void showError(String errorString) {
-        Log.e("Clone", errorString);
-        Snackbar.make(view, errorString, Snackbar.LENGTH_LONG);
+        ((CommonActivity) getActivity()).showSimpleSnackbarLong(errorString);
     }
 
     private boolean setPreferenceEdits() {
@@ -227,33 +221,17 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
     private void save() {
         String remoteUriString = remoteUri().toString();
         if (repoId < 0) {
-            if (ReposClient.getId(getActivity(), remoteUriString) != 0)
-                return; // TODO: throw an exception/handle this case
             ReposClient.insert(getActivity(), remoteUriString);
             repoId = ReposClient.getId(getActivity(), remoteUriString);
         }
+        if (ReposClient.getUrl(getActivity(), repoId) != remoteUriString) {
+            ReposClient.updateUrl(getActivity(), repoId, remoteUriString);
+        }
 
         setPreferenceEdits();
-        ReposClient.updateUrl(getActivity(), repoId, remoteUriString);
 
-        GitRepo repo;
-        try {
-            repo = GitRepo.buildFromUri(getContext(), remoteUri());
-        } catch (IOException | URISyntaxException e) {
-            showError(e.toString());
-            return;
-        }
-        if (getArguments() != null && getArguments().containsKey(ARG_REPO_ID)) { // Existing repo
-            long repoId = getArguments().getLong(ARG_REPO_ID);
-            if (mListener != null) {
-                mListener.onRepoUpdateRequest(repoId, repo);
-            }
-        } else {
-            if (mListener != null) {
-                mListener.onRepoCreateRequest(repo);
-            }
-        }
-
+        getActivity().getSupportFragmentManager().popBackStack();
+        ActivityUtils.closeSoftKeyboard(getActivity());
     }
 
     private String getSettingName(int setting) {
@@ -373,7 +351,9 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
                 CloneProgressUpdate u = updates[i];
                 if (u.setMax) {
                     progressDialog.setMessage("Cloning repository");
+                    progressDialog.hide();
                     progressDialog.setIndeterminate(false);
+                    progressDialog.show();
                     progressDialog.setMax(u.amount);
                 } else {
                     progressDialog.incrementProgressBy(u.amount);

@@ -194,24 +194,27 @@ public class GitRepo implements Repo, Repo.TwoWaySync {
         throw new IOException("Don't do that");
     }
 
-    @Override
-    public TwoWaySync getSync() {
-        return this;
-    }
-
     public VersionedRook renameBook(Uri from, String name) throws IOException {
         return null;
     }
 
     @Override
-    public VersionedRook syncBook(VersionedRook current, File fromDB, File destinationFile) throws IOException {
-        String fileName = current.getUri().getPath().replaceFirst("/", "");
-        RevCommit commit = getCommitFromRevisionString(current.getRevision());
-        Log.i("Temp", String.format("File name %s, commit: %s", fileName, commit));
-        synchronizer.updateAndCommitFileFromRevisionAndMerge(
-                fromDB, fileName, synchronizer.getFileRevision(fileName, commit), commit);
-        synchronizer.tryPushIfUpdated(commit);
-        synchronizer.safelyRetrieveLatestVersionOfFile(fileName, destinationFile, commit);
+    public VersionedRook syncBook(Uri uri, VersionedRook current, File fromDB, File destinationFile) throws IOException {
+        String fileName = uri.getPath();
+        if (fileName.startsWith("/"))
+            fileName = fileName.replaceFirst("/", "");
+        if (current != null) {
+            RevCommit commit = getCommitFromRevisionString(current.getRevision());
+            Log.i("Git", String.format("File name %s, commit: %s", fileName, commit));
+            synchronizer.updateAndCommitFileFromRevisionAndMerge(
+                    fromDB, fileName, synchronizer.getFileRevision(fileName, commit), commit);
+
+            synchronizer.tryPushIfUpdated(commit);
+            synchronizer.safelyRetrieveLatestVersionOfFile(fileName, destinationFile, commit);
+        } else {
+            Log.w("Git", "Unable to find previous commit, loading from repository.");
+            synchronizer.retrieveLatestVersionOfFile(fileName, destinationFile);
+        }
         return currentVersionedRook(Uri.EMPTY.buildUpon().appendPath(fileName).build());
     }
 }

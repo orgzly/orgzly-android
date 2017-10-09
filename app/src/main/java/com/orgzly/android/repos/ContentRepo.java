@@ -189,9 +189,4 @@ public class ContentRepo implements Repo {
     public String toString() {
         return getUri().toString();
     }
-
-    @Override
-    public TwoWaySync getSync() {
-        return null;
-    }
 }

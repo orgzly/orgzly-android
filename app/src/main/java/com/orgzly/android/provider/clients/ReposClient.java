@@ -70,11 +70,13 @@ public class ReposClient {
         Cursor cursor = context.getContentResolver().query(
                 ProviderContract.Repos.ContentUri.repos(),
                 new String[] { ProviderContract.Repos.Param._ID },
-                ProviderContract.Repos.Param.REPO_URL + "=?",
+                String.format("%s = ?", ProviderContract.Repos.Param.REPO_URL),
                 new String[] { url },
                 null);
 
+
         try {
+            Log.i("Cursor count is", String.format("%s, %s", cursor.getCount(), url));
             if (cursor.moveToFirst()) {
                 return cursor.getLong(0);
             } else {
@@ -89,7 +91,8 @@ public class ReposClient {
 
     public static String getUrl(Context context, long id) {
         Uri uri = ContentUris.withAppendedId(ProviderContract.Repos.ContentUri.repos(), id);
-        Cursor cursor = context.getContentResolver().query(uri, new String[] { ProviderContract.Repos.Param.REPO_URL }, null, null, null);
+        Cursor cursor = context.getContentResolver().query(
+                uri, new String[] { ProviderContract.Repos.Param.REPO_URL }, null, null, null);
         try {
             if (cursor.moveToFirst()) {
                 return cursor.getString(0);

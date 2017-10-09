@@ -608,7 +608,8 @@ public class AppPreferences {
     }
 
     public static void gitSSHKeyPath(Context context, String value) {
-        getStateSharedPreferences(context).edit().putString("pref_key_git_ssh_key_path", value).apply();
+        getStateSharedPreferences(context).edit().putString(
+                "pref_key_git_ssh_key_path", value).apply();
     }
 
     public static String defaultRepositoryStorageDirectory(Context context) {
@@ -618,8 +619,13 @@ public class AppPreferences {
     }
 
     public static String repositoryStoragePathForUri(Context context, Uri repoUri) {
+        String directoryFilename = repoUri.toString();
+        if (directoryFilename == null) {
+            directoryFilename = "gitDirectory";
+        }
+        directoryFilename = directoryFilename.replaceAll("[\\W][^\\.][^-][^_]", "_");
         Uri baseUri = Uri.parse(defaultRepositoryStorageDirectory(context));
-        return baseUri.buildUpon().appendPath(repoUri.getLastPathSegment()).build().getPath();
+        return baseUri.buildUpon().appendPath(directoryFilename).build().getPath();
     }
 
     private static String getStringFromSelector(Context context, int selector, String def) {

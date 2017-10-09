@@ -161,14 +161,11 @@ public class ReposActivity extends RepoActivity
 
         if (repo instanceof DropboxRepo || repo instanceof MockRepo) {  // TODO: Remove Mock from here
             DropboxRepoActivity.start(this, id);
-
         } else if (repo instanceof DirectoryRepo || repo instanceof ContentRepo) {
             displayRepoFragment(DirectoryRepoFragment.getInstance(id), DirectoryRepoFragment.FRAGMENT_TAG);
-
         } else if (repo instanceof GitRepo) {
             displayRepoFragment(GitRepoFragment.getInstance(id), GitRepoFragment.FRAGMENT_TAG);
-        }
-        else {
+        } else {
             showSimpleSnackbarLong(R.string.message_unsupported_repository_type);
         }
     }

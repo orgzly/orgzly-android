@@ -43,11 +43,9 @@ public interface Repo {
 
     String toString();
 
-    TwoWaySync getSync();
-
     // XXX: This is a v2 sync interface that allows for conflict resolution between local and remote versions
     public interface TwoWaySync {
         VersionedRook syncBook(
-                VersionedRook current, File fromDB, File writeBack) throws IOException;
+                Uri uri, VersionedRook current, File fromDB, File writeBack) throws IOException;
     }
 }

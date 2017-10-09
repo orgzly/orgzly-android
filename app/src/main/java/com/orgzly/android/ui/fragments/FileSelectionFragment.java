@@ -41,7 +41,7 @@ public class FileSelectionFragment extends Fragment
 
     @Override
     public void handleBrowseResult(Uri uri) {
-        editText.setText(uri.toString());
+        editText.setText(uri.getPath());
     }
 
     @Override

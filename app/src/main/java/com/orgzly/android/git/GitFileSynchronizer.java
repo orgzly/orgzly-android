@@ -98,7 +98,6 @@ public class GitFileSynchronizer {
         ensureReposIsClean();
         if (updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision)) return true;
 
-        Log.i("Temp", "Attempting setback merge");
         String originalBranch = git.getRepository().getFullBranch();
         String mergeBranch = String.format("merge%s%s", repositoryPath, fileRevision.getName());
         try {

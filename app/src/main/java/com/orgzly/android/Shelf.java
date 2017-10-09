@@ -13,7 +13,7 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
-
+import android.util.Log;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.filter.Filter;
@@ -435,14 +435,16 @@ public class Shelf {
         BookAction bookAction = null;
 
         // XXX: This is a pretty nasty hack that completely circumvents the existing code path
-        VersionedRook rook = namesake.getLatestLinkedRook();
-        Repo repo = getRepo(rook.getRepoUri());
-        Repo.TwoWaySync sync = repo.getSync();
-        if (sync != null) {
-            handleTwoWaySync(sync, namesake);
-            return new BookAction(
-                    BookAction.Type.INFO,
-                    namesake.getStatus().msg(UriUtils.friendlyUri(repo.getUri().toString())));
+        VersionedRook rook = namesake.getRooks().get(0);
+        if (rook != null) {
+            Uri repoUri = rook.getRepoUri();
+            Repo repo = getRepo(repoUri);
+            if (repo instanceof Repo.TwoWaySync) {
+                handleTwoWaySync((Repo.TwoWaySync) repo, namesake);
+                return new BookAction(
+                        BookAction.Type.INFO,
+                        namesake.getStatus().msg(UriUtils.friendlyUri(repo.getUri().toString())));
+            }
         }
 
         switch (namesake.getStatus()) {
@@ -594,17 +596,18 @@ public class Shelf {
     public Book handleTwoWaySync(Repo.TwoWaySync sync, BookNamesake namesake) throws IOException {
         Book book = namesake.getBook();
         VersionedRook currentRook = book.getLastSyncedToRook();
+        VersionedRook someRook = currentRook == null ? namesake.getRooks().get(0) : currentRook;
         VersionedRook newBook = currentRook;
         File dbFile = getTempBookFile();
         File readBackFile = getTempBookFile();
         try {
             writeBookToFile(book, BookName.Format.ORG, dbFile);
-
-            newBook = sync.syncBook(currentRook, dbFile, readBackFile);
+            newBook = sync.syncBook(someRook.getUri(), currentRook, dbFile, readBackFile);
 
             String fileName = BookName.getFileName(mContext, newBook.getUri());
             BookName bookName = BookName.fromFileName(fileName);
-            book = loadBookFromFile(bookName.getName(), bookName.getFormat(), readBackFile, newBook);
+            book = loadBookFromFile(bookName.getName(), bookName.getFormat(),
+                    readBackFile, newBook);
         } finally {
             /* Delete temporary files. */
             dbFile.delete();
