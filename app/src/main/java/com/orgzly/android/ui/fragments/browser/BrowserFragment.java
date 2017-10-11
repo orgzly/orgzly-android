@@ -57,10 +57,11 @@ public abstract class BrowserFragment extends ListFragment {
             throw new ClassCastException(getActivity().toString() + " must implement " + BrowserFragmentListener.class);
         }
 
+        final Bundle arguments = getArguments();
         /* Sets current item. Either uses passed argument, or default. */
-        if (getArguments() != null) {
-            if (getArguments().containsKey(ARG_ITEM)) {
-                mNextItem = getArguments().getString(ARG_ITEM);
+        if (arguments != null) {
+            if (arguments.containsKey(ARG_ITEM)) {
+                mNextItem = arguments.getString(ARG_ITEM);
                 if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Using passed argument: " + mNextItem);
             }
         }

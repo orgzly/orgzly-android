@@ -22,6 +22,9 @@ public class FileSelectionFragment extends Fragment
 
     private EditText editText;
     private FileBrowserOpener browserOpener;
+    public boolean allowFileSelection;
+
+    public static String ARG_ALLOW_FILE_SELECTION = "allow_file_selection";
 
     public FileSelectionFragment() {}
 
@@ -51,6 +54,7 @@ public class FileSelectionFragment extends Fragment
 
         View view = inflater.inflate(R.layout.fragment_file_selection, container, false);
         editText = (EditText) view.findViewById(R.id.fragment_file_selection_text);
+        allowFileSelection = true;
 
         view.findViewById(R.id.fragment_file_selection_browse_button).setOnClickListener(this);
 
@@ -83,7 +87,7 @@ public class FileSelectionFragment extends Fragment
         if (uriString != null) {
             uri = Uri.parse(uriString);
         }
-        browserOpener.browseDirectory(uri, this);
+        browserOpener.browseDirectory(uri, this, allowFileSelection);
     }
 
     @Override

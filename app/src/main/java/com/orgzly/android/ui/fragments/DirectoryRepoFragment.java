@@ -174,7 +174,7 @@ public class DirectoryRepoFragment extends RepoFragment implements FileBrowserOp
         if (uriPath != null)
             uri = Uri.parse(uriPath);
 
-        mListener.browseDirectory(uri, this);
+        mListener.browseDirectory(uri, this, false);
     }
 
     @Override

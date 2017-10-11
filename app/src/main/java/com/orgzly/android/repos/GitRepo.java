@@ -199,7 +199,8 @@ public class GitRepo implements Repo, Repo.TwoWaySync {
     }
 
     @Override
-    public VersionedRook syncBook(Uri uri, VersionedRook current, File fromDB, File destinationFile) throws IOException {
+    public VersionedRook syncBook(
+            Uri uri, VersionedRook current, File fromDB, File destinationFile) throws IOException {
         String fileName = uri.getPath();
         if (fileName.startsWith("/"))
             fileName = fileName.replaceFirst("/", "");

@@ -8,7 +8,11 @@ import com.orgzly.R;
 import com.orgzly.android.App;
 import com.orgzly.org.OrgStatesWorkflow;
 
+import org.eclipse.jgit.transport.URIish;
+
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -618,12 +622,13 @@ public class AppPreferences {
                 context, R.string.pref_key_git_default_repository_directory, path.toString());
     }
 
-    public static String repositoryStoragePathForUri(Context context, Uri repoUri) {
+    public static String repositoryStoragePathForUri(Context context, Uri repoUri)  {
         String directoryFilename = repoUri.toString();
-        if (directoryFilename == null) {
-            directoryFilename = "gitDirectory";
+        try {
+            directoryFilename = new URIish(directoryFilename).getPath();
+        } catch (URISyntaxException e) {
+            directoryFilename = directoryFilename.replaceAll("/[^A-Za-z0-9 ]/", "");
         }
-        directoryFilename = directoryFilename.replaceAll("[\\W][^\\.][^-][^_]", "_");
         Uri baseUri = Uri.parse(defaultRepositoryStorageDirectory(context));
         return baseUri.buildUpon().appendPath(directoryFilename).build().getPath();
     }

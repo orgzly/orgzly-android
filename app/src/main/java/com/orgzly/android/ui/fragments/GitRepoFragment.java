@@ -112,7 +112,9 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
         sshKeyFragment = (FileSelectionFragment) getChildFragmentManager().
                 findFragmentById(R.id.fragment_repo_ssh_key_filepath);
         directoryFragment.setHint(R.string.fragment_repo_external_storage_directory_desc);
+        directoryFragment.allowFileSelection = false;
         sshKeyFragment.setHint(R.string.fragment_repo_ssh_key_location_desc);
+        sshKeyFragment.allowFileSelection = true;
 
         editTextPreferences = new EditTextPreference[]{
                 new EditTextPreference(
