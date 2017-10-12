@@ -18,6 +18,9 @@ import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
+import org.eclipse.jgit.errors.IncorrectObjectTypeException;
+import org.eclipse.jgit.errors.MissingObjectException;
+import org.eclipse.jgit.ignore.IgnoreNode;
 import org.eclipse.jgit.lib.FileMode;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ProgressMonitor;
@@ -26,9 +29,11 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.TreeWalk;
+import org.eclipse.jgit.treewalk.filter.TreeFilter;
 import org.eclipse.jgit.util.FileUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -163,6 +168,20 @@ public class GitRepo implements Repo, Repo.TwoWaySync {
         return new VersionedRook(getUri(), uri, newCommit.name(), newCommit.getCommitTime()*1000);
     }
 
+    private IgnoreNode getIgnores() throws IOException {
+        IgnoreNode ignores = new IgnoreNode();
+        File ignoreFile = synchronizer.repoDirectoryFile(".orgzlyignore");
+        if (ignoreFile.exists()) {
+            FileInputStream in = new FileInputStream(ignoreFile);
+            try {
+                ignores.parse(in);
+            } finally {
+                in.close();
+            }
+        }
+        return ignores;
+    }
+
     public List<VersionedRook> getBooks() throws IOException {
         synchronizer.setBranchAndGetLatest();
         List<VersionedRook> result = new ArrayList<>();
@@ -170,12 +189,32 @@ public class GitRepo implements Repo, Repo.TwoWaySync {
         walk.reset();
         walk.setRecursive(true);
         walk.addTree(synchronizer.currentHead().getTree());
+        final IgnoreNode ignores = getIgnores();
+        walk.setFilter(new TreeFilter() {
+            @Override
+            public boolean include(TreeWalk walker) throws MissingObjectException, IncorrectObjectTypeException, IOException {
+                final FileMode mode = walker.getFileMode(0);
+                final String filePath = walker.getPathString();
+                final boolean isDirectory = mode == FileMode.TREE;
+                return !(ignores.isIgnored(filePath, isDirectory) == IgnoreNode.MatchResult.IGNORED);
+            }
 
+            @Override
+            public boolean shouldBeRecursive() {
+                return true;
+            }
+
+            @Override
+            public TreeFilter clone() {
+                return this;
+            }
+        });
         while (walk.next()) {
             final FileMode mode = walk.getFileMode(0);
-            if (mode == FileMode.TREE)
+            final boolean isDirectory = mode == FileMode.TREE;
+            final String filePath = walk.getPathString();
+            if (isDirectory)
                 continue;
-            String filePath = walk.getPathString();
             if (BookName.isSupportedFormatFileName(filePath))
                 result.add(
                         currentVersionedRook(

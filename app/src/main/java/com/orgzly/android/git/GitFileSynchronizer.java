@@ -258,7 +258,7 @@ public class GitFileSynchronizer {
             throw new IOException("Refusing to update because there are uncommitted changes.");
     }
 
-    private File repoDirectoryFile(String filePath) {
+    public File repoDirectoryFile(String filePath) {
         return new File(repoPath(), filePath);
     }
 
