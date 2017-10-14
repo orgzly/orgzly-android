@@ -45,6 +45,9 @@ public class SearchQuery {
         private String priority;
         private String state;
         private Set<String> notState = new TreeSet<>();
+        private String stateType;
+        private String notStateType;
+
 
         public boolean hasScheduled() {
             return scheduled != null;
@@ -90,16 +93,17 @@ public class SearchQuery {
             return notTags;
         }
 
+        /* Priority. */
+
         public String getPriority() {
             return priority;
         }
 
-        /**
-         * Lowercase priority.
-         */
         public boolean hasPriority() {
             return priority != null;
         }
+
+        /* State. */
 
         public String getState() {
             return state;
@@ -109,10 +113,6 @@ public class SearchQuery {
             return state != null;
         }
 
-        public void setState(String value) {
-            state = value;
-        }
-
         public Set<String> getNotState() {
             return notState;
         }
@@ -120,6 +120,26 @@ public class SearchQuery {
         public boolean hasNotState() {
             return ! notState.isEmpty();
         }
+
+        /* State type. */
+
+        public String getStateType() {
+            return stateType;
+        }
+
+        public boolean hasStateType() {
+            return stateType != null;
+        }
+
+        public String getNotStateType() {
+            return notStateType;
+        }
+
+        public boolean hasNotStateType() {
+            return notStateType != null;
+        }
+
+        /* Book name */
 
         public String getBookName() {
             return bookName;
@@ -153,6 +173,14 @@ public class SearchQuery {
                 for (String name : notBookName) {
                     s.append(" .b.").append(QuotedStringTokenizer.quote(name, " "));
                 }
+            }
+
+            if (stateType != null) {
+                s.append(" it.").append(stateType.toLowerCase());
+            }
+
+            if (notStateType != null) {
+                s.append(" .it.").append(notStateType.toLowerCase());
             }
 
             if (state != null) {
@@ -352,6 +380,16 @@ public class SearchQuery {
             } else if (token.startsWith(".i.")) { // is not (state)
                 if (token.length() > 3) {
                     currentGroup.notState.add(token.substring(3).toUpperCase());
+                }
+
+            } else if (token.startsWith("it.")) { // is state type
+                if (token.length() > 3) {
+                    currentGroup.stateType = token.substring(3).toUpperCase();
+                }
+
+            } else if (token.startsWith(".it.")) { // is not state type
+                if (token.length() > 4) {
+                    currentGroup.notStateType = token.substring(4).toUpperCase();
                 }
 
             } else if (token.startsWith("b.")) { // book name

@@ -16,8 +16,6 @@ import com.orgzly.BuildConfig;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.SearchQuery;
-import com.orgzly.android.provider.models.DbNoteColumns;
-import com.orgzly.android.provider.views.DbNoteViewColumns;
 import com.orgzly.android.provider.views.DbTimeView;
 import com.orgzly.org.utils.StateChangeLogic;
 import com.orgzly.android.prefs.AppPreferences;
@@ -74,6 +72,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -331,6 +330,30 @@ public class Provider extends ContentProvider {
                 }
             }
 
+            if (group.hasStateType()) {
+                if ("todo".equalsIgnoreCase(group.getStateType())) {
+                    searchQueryStates(selection, selectionArgs, "IN", AppPreferences.todoKeywordsSet(getContext()));
+
+                } else if ("done".equalsIgnoreCase(group.getStateType())) {
+                    searchQueryStates(selection, selectionArgs, "IN", AppPreferences.doneKeywordsSet(getContext()));
+
+                } else if ("none".equalsIgnoreCase(group.getStateType())) {
+                    selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') = ''");
+                }
+            }
+
+            if (group.hasNotStateType()) {
+                if ("todo".equalsIgnoreCase(group.getNotStateType())) {
+                    searchQueryStates(selection, selectionArgs, "NOT IN", AppPreferences.todoKeywordsSet(getContext()));
+
+                } else if ("done".equalsIgnoreCase(group.getNotStateType())) {
+                    searchQueryStates(selection, selectionArgs, "NOT IN", AppPreferences.doneKeywordsSet(getContext()));
+
+                } else if ("none".equalsIgnoreCase(group.getNotStateType())) {
+                    selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') != ''");
+                }
+            }
+
             if (group.hasState()) {
                 selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') = ?");
                 selectionArgs.add(group.getState());
@@ -391,6 +414,17 @@ public class Provider extends ContentProvider {
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, sql, selectionArgs);
         return db.rawQuery(sql, selectionArgs.toArray(new String[selectionArgs.size()]));
+    }
+
+    private void searchQueryStates(StringBuilder selection, List<String> selectionArgs, String in, Set<String> states) {
+        selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') ")
+                .append(in).append(" (")
+                .append(TextUtils.join(", ", Collections.nCopies(states.size(), "?")))
+                .append(")");
+
+        for (String state: states) {
+            selectionArgs.add(state);
+        }
     }
 
     private static void appendBeforeInterval(StringBuilder selection, String column, SearchQuery.SearchQueryInterval interval) {
