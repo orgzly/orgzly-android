@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/agenda_period"
-        android:icon="?attr/oic_item_menu_schedule"
+        android:icon="?attr/oic_date_range"
         app:showAsAction="always"
         android:title="@string/agenda_period"/>
 </menu>
