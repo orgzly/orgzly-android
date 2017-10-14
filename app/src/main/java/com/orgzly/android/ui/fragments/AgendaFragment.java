@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.util.Pair;
+import android.support.v4.util.LongSparseArray;
 import android.support.v7.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -83,20 +83,10 @@ public class AgendaFragment extends NoteListFragment
 
     private NoteListFragmentListener mListener;
 
-    /* Maps a copy note ID to the original note ID */
-    private Map<Long, Long> originalNoteIDs = new HashMap<>();
-
-    // available ids for copied notes
-    long nextID = Long.MAX_VALUE;
+    /* Maps agenda's item ID to note ID */
+    private LongSparseArray<Long> originalNoteIDs = new LongSparseArray<>();
 
     int currentLoaderId = -1;
-
-    /**
-     * Assigned IDs to note copies. Each copy is identified by the original note
-     * ID and the agenda day timestamp
-     */
-    Map<Pair<Long, Long>, Long> assignedIDs = new HashMap<>();
-
 
     public static AgendaFragment getInstance() {
         return new AgendaFragment();
@@ -140,12 +130,6 @@ public class AgendaFragment extends NoteListFragment
         setHasOptionsMenu(true);
 
         updateQuery();
-
-        // reset available IDs
-        nextID = Long.MAX_VALUE;
-
-        // clear assigned IDs
-        assignedIDs.clear();
     }
 
     @Override
@@ -440,10 +424,15 @@ public class AgendaFragment extends NoteListFragment
         } while (++i < agendaDurationInDays);
 
         Calendar now = Calendar.getInstance();
+
         int scheduledRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.SCHEDULED_RANGE_STRING);
         int deadlineRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.DEADLINE_RANGE_STRING);
+
         // expand each note if it has a repeater or is a range
+
+        long nextId = 1;
         originalNoteIDs.clear();
+
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             Set<DateTime> dates = AgendaUtils.expandOrgDateTime(
                     new String[] {
@@ -459,16 +448,15 @@ public class AgendaFragment extends NoteListFragment
                 MatrixCursor.RowBuilder rowBuilder = matrixCursor.newRow();
                 for (String col: columnNames) {
                     if (col.equalsIgnoreCase(Columns._ID)) {
-                        // if just one note (no repeater), use original ID
-                        // TODO: Is this an issue if note has both scheduled and deadline times?
                         long noteId = cursor.getLong(cursor.getColumnIndex(col));
-                        long copyId = noteId;
-                        if (dates.size() > 1)
-                            copyId = assignNoteCopyID(noteId, date);
-                        originalNoteIDs.put(copyId, noteId);
-                        rowBuilder.add(copyId);
+
+                        originalNoteIDs.put(nextId, noteId);
+
+                        rowBuilder.add(nextId++);
+
                     } else if (col.equalsIgnoreCase(Columns.IS_SEPARATOR)) {
-                        rowBuilder.add(0); // IS_SEPARATOR
+                        rowBuilder.add(0); // Not a separator
+
                     } else {
                         rowBuilder.add(cursor.getString(cursor.getColumnIndex(col)));
                     }
@@ -476,9 +464,8 @@ public class AgendaFragment extends NoteListFragment
             }
         }
 
-        MergeCursor mCursor = createAgendaCursor(agenda);
+        MergeCursor mCursor = mergeDates(nextId, agenda);
 
-//        mCursor.moveToFirst();
         /*
          * Swapping instead of changing Cursor here, to keep the old one open.
          * Loader should release the old Cursor - see note in
@@ -489,19 +476,7 @@ public class AgendaFragment extends NoteListFragment
         mActionModeListener.updateActionModeForSelection(mSelection, new MyActionMode());
     }
 
-    private long assignNoteCopyID(long noteId, DateTime date) {
-        // try to reuse mappings from before
-        Long copyId = assignedIDs.get(Pair.create(noteId, date.getMillis()));
-
-        if (copyId == null) {
-            copyId = nextID--;
-            assignedIDs.put(Pair.create(noteId, date.getMillis()), copyId);
-        }
-
-        return copyId;
-    }
-
-    private MergeCursor createAgendaCursor(Map<Long, MatrixCursor> agenda) {
+    private MergeCursor mergeDates(long nextId, Map<Long, MatrixCursor> agenda) {
         List<Cursor> allCursors = new ArrayList<>();
 
         for (long dateMilli: agenda.keySet()) {
@@ -509,8 +484,7 @@ public class AgendaFragment extends NoteListFragment
             MatrixCursor dateCursor = new MatrixCursor(Columns.AGENDA_SEPARATOR_COLS);
             MatrixCursor.RowBuilder dateRow = dateCursor.newRow();
             // use date as number of seconds as id
-            int id = (int) (dateMilli / 1000);
-            dateRow.add(id);
+            dateRow.add(nextId++);
             dateRow.add(userTimeFormatter.formatDate(AgendaUtils.buildOrgDateTimeFromDate(date, null)));
             dateRow.add(1); // IS_SEPARATOR
             allCursors.add(dateCursor);
@@ -617,9 +591,10 @@ public class AgendaFragment extends NoteListFragment
         public static String IS_SEPARATOR = "is_separator";
         public static String AGENDA_DAY = "day";
 
-        public static final String[] AGENDA_SEPARATOR_COLS = new String[]{
+        private static final String[] AGENDA_SEPARATOR_COLS = new String[]{
                 Columns._ID,
                 Columns.AGENDA_DAY,
-                Columns.IS_SEPARATOR};
+                Columns.IS_SEPARATOR
+        };
     }
 }
