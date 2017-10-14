@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -71,8 +72,7 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
             textView.setText(cursor.getString(cursor.getColumnIndex(AgendaFragment.Columns.AGENDA_DAY)));
 
             int[] margins = getMarginsForListDensity(context);
-            RelativeLayout.LayoutParams payloadParams = (RelativeLayout.LayoutParams) textView.getLayoutParams();
-            payloadParams.setMargins(payloadParams.leftMargin, margins[0], payloadParams.rightMargin, margins[1]);
+            view.setPadding(0, margins[0], 0, margins[1]);
 
         } else {
             super.bindView(view, context, cursor);
