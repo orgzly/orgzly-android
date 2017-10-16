@@ -72,7 +72,7 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
             textView.setText(cursor.getString(cursor.getColumnIndex(AgendaFragment.Columns.AGENDA_DAY)));
 
             int[] margins = getMarginsForListDensity(context);
-            view.setPadding(0, margins[0], 0, margins[1]);
+            view.setPadding(0, margins[1], 0, margins[1]);
 
         } else {
             super.bindView(view, context, cursor);

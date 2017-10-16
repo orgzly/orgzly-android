@@ -5,9 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingEnd="@dimen/fragment_padding"
-    android:paddingRight="@dimen/fragment_padding">
+    android:orientation="horizontal">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="1dp"
+        android:layout_gravity="center_vertical"
+        android:background="?attr/item_head_indent_line_color"/>
 
     <TextView
         android:id="@+id/item_agenda_time_text"
@@ -26,6 +31,5 @@
         android:layout_weight="1"
         android:layout_height="1dp"
         android:layout_gravity="center_vertical"
-        android:background="?attr/item_head_indent_line_color"
-        />
+        android:background="?attr/item_head_indent_line_color"/>
 </LinearLayout>

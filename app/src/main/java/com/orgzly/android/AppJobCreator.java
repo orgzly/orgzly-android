@@ -10,8 +10,10 @@ public class AppJobCreator implements JobCreator {
     public Job create(String tag) {
         if (ReminderJob.TAG.equals(tag)) {
             return new ReminderJob();
+
         } else if (SnoozeJob.TAG.equals(tag)) {
             return new SnoozeJob();
+
         } else {
             return null;
         }

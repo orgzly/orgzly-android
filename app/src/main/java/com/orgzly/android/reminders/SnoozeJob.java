@@ -8,7 +8,7 @@ import com.evernote.android.job.Job;
 import com.evernote.android.job.JobRequest;
 import com.evernote.android.job.util.support.PersistableBundleCompat;
 import com.orgzly.BuildConfig;
-import com.orgzly.android.ActionService;
+import com.orgzly.android.NotificationActionService;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.util.LogUtils;
 
@@ -18,9 +18,9 @@ public class SnoozeJob extends Job {
 
     @Override @NonNull
     protected Result onRunJob(Params params) {
-        long noteId = params.getExtras().getLong(ActionService.EXTRA_NOTE_ID, 0);
-        int noteTimeType = params.getExtras().getInt(ActionService.EXTRA_NOTE_TIME_TYPE, 0);
-        long timestamp = params.getExtras().getLong(ActionService.EXTRA_SNOOZE_TIMESTAMP, 0);
+        long noteId = params.getExtras().getLong(NotificationActionService.EXTRA_NOTE_ID, 0);
+        int noteTimeType = params.getExtras().getInt(NotificationActionService.EXTRA_NOTE_TIME_TYPE, 0);
+        long timestamp = params.getExtras().getLong(NotificationActionService.EXTRA_SNOOZE_TIMESTAMP, 0);
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
         ReminderService.notifySnoozeTriggered(getContext(), noteId, noteTimeType, timestamp);
         return Result.SUCCESS;
@@ -51,9 +51,9 @@ public class SnoozeJob extends Job {
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, noteTimeType, timestamp, exactMs);
 
-        extras.putLong(ActionService.EXTRA_NOTE_ID, noteId);
-        extras.putInt(ActionService.EXTRA_NOTE_TIME_TYPE, noteTimeType);
-        extras.putLong(ActionService.EXTRA_SNOOZE_TIMESTAMP, timestamp);
+        extras.putLong(NotificationActionService.EXTRA_NOTE_ID, noteId);
+        extras.putInt(NotificationActionService.EXTRA_NOTE_TIME_TYPE, noteTimeType);
+        extras.putLong(NotificationActionService.EXTRA_SNOOZE_TIMESTAMP, timestamp);
 
         new JobRequest.Builder(SnoozeJob.TAG)
             .setExact(exactMs)

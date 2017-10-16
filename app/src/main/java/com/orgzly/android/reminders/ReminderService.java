@@ -15,7 +15,7 @@ import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.ActionService;
+import com.orgzly.android.NotificationActionService;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.Notifications;
 import com.orgzly.android.prefs.AppPreferences;
@@ -145,9 +145,9 @@ public class ReminderService extends IntentService {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
         Intent intent = new Intent(context, ReminderService.class);
         intent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_SNOOZE_JOB_TRIGGERED);
-        intent.putExtra(ActionService.EXTRA_NOTE_ID, noteId);
-        intent.putExtra(ActionService.EXTRA_NOTE_TIME_TYPE, noteTimeType);
-        intent.putExtra(ActionService.EXTRA_SNOOZE_TIMESTAMP, timestamp);
+        intent.putExtra(NotificationActionService.EXTRA_NOTE_ID, noteId);
+        intent.putExtra(NotificationActionService.EXTRA_NOTE_TIME_TYPE, noteTimeType);
+        intent.putExtra(NotificationActionService.EXTRA_SNOOZE_TIMESTAMP, timestamp);
         context.startService(intent);
     }
 
@@ -204,9 +204,9 @@ public class ReminderService extends IntentService {
                 break;
 
             case EVENT_SNOOZE_JOB_TRIGGERED:
-                long noteId = intent.getLongExtra(ActionService.EXTRA_NOTE_ID, 0);
-                int noteTimeType = intent.getIntExtra(ActionService.EXTRA_NOTE_TIME_TYPE, 0);
-                long timestamp = intent.getLongExtra(ActionService.EXTRA_SNOOZE_TIMESTAMP, 0);
+                long noteId = intent.getLongExtra(NotificationActionService.EXTRA_NOTE_ID, 0);
+                int noteTimeType = intent.getIntExtra(NotificationActionService.EXTRA_NOTE_TIME_TYPE, 0);
+                long timestamp = intent.getLongExtra(NotificationActionService.EXTRA_SNOOZE_TIMESTAMP, 0);
                 if (noteId > 0) {
                     onSnoozeTriggered(this, noteId, noteTimeType, timestamp);
                 }
@@ -482,14 +482,14 @@ public class ReminderService extends IntentService {
 
     private PendingIntent markNoteAsDonePendingIntent(
             Context context, long noteId, String notificationTag, int notificationId) {
-        Intent intent = new Intent(context, ActionService.class);
+        Intent intent = new Intent(context, NotificationActionService.class);
 
         intent.setAction(AppIntent.ACTION_NOTE_MARK_AS_DONE);
 
-        intent.putExtra(ActionService.EXTRA_NOTE_ID, noteId);
+        intent.putExtra(NotificationActionService.EXTRA_NOTE_ID, noteId);
 
-        intent.putExtra(ActionService.EXTRA_NOTIFICATION_TAG, notificationTag);
-        intent.putExtra(ActionService.EXTRA_NOTIFICATION_ID, notificationId);
+        intent.putExtra(NotificationActionService.EXTRA_NOTIFICATION_TAG, notificationTag);
+        intent.putExtra(NotificationActionService.EXTRA_NOTIFICATION_ID, notificationId);
 
         return PendingIntent.getService(
                 context,
@@ -505,15 +505,15 @@ public class ReminderService extends IntentService {
                                                       String notificationTag,
                                                       int notificationId) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
-        Intent intent = new Intent(context, ActionService.class);
+        Intent intent = new Intent(context, NotificationActionService.class);
 
         intent.setAction(AppIntent.ACTION_REMINDER_SNOOZE_REQUEST);
 
-        intent.putExtra(ActionService.EXTRA_NOTE_ID, noteId);
-        intent.putExtra(ActionService.EXTRA_NOTE_TIME_TYPE, noteTimeType);
-        intent.putExtra(ActionService.EXTRA_SNOOZE_TIMESTAMP, timestamp);
-        intent.putExtra(ActionService.EXTRA_NOTIFICATION_TAG, notificationTag);
-        intent.putExtra(ActionService.EXTRA_NOTIFICATION_ID, notificationId);
+        intent.putExtra(NotificationActionService.EXTRA_NOTE_ID, noteId);
+        intent.putExtra(NotificationActionService.EXTRA_NOTE_TIME_TYPE, noteTimeType);
+        intent.putExtra(NotificationActionService.EXTRA_SNOOZE_TIMESTAMP, timestamp);
+        intent.putExtra(NotificationActionService.EXTRA_NOTIFICATION_TAG, notificationTag);
+        intent.putExtra(NotificationActionService.EXTRA_NOTIFICATION_ID, notificationId);
 
         return PendingIntent.getService(
                 context,

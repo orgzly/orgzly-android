@@ -444,7 +444,7 @@ public class AgendaFragment extends NoteListFragment
 
             for (DateTime date: dates) {
                 // create agenda cursors
-                MatrixCursor matrixCursor = agenda.get(date.withTimeAtStartOfDay().getMillis());
+                MatrixCursor matrixCursor = agenda.get(date.getMillis());
                 MatrixCursor.RowBuilder rowBuilder = matrixCursor.newRow();
                 for (String col: columnNames) {
                     if (col.equalsIgnoreCase(Columns._ID)) {
@@ -483,10 +483,9 @@ public class AgendaFragment extends NoteListFragment
             DateTime date = new DateTime(dateMilli);
             MatrixCursor dateCursor = new MatrixCursor(Columns.AGENDA_SEPARATOR_COLS);
             MatrixCursor.RowBuilder dateRow = dateCursor.newRow();
-            // use date as number of seconds as id
             dateRow.add(nextId++);
             dateRow.add(userTimeFormatter.formatDate(AgendaUtils.buildOrgDateTimeFromDate(date, null)));
-            dateRow.add(1); // IS_SEPARATOR
+            dateRow.add(1); // Separator
             allCursors.add(dateCursor);
             allCursors.add(agenda.get(dateMilli));
         }
