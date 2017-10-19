@@ -61,7 +61,6 @@ public class BooksFragment extends ListFragment
     private BooksFragmentListener mListener;
     private SimpleCursorAdapter mListAdapter;
     private View mNoNotebookText;
-    private boolean mIsViewCreated = false;
     private boolean mAddOptions = true;
     private boolean mShowContextMenu = true;
 
@@ -144,8 +143,6 @@ public class BooksFragment extends ListFragment
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, view, savedInstanceState);
         super.onViewCreated(view, savedInstanceState);
 
-        mIsViewCreated = true;
-
         /* Request callbacks for Context menu. */
         registerForContextMenu(getListView());
 
@@ -181,7 +178,6 @@ public class BooksFragment extends ListFragment
     public void onDestroyView() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onDestroyView();
-        mIsViewCreated = false;
     }
 
     @Override
@@ -612,27 +608,18 @@ public class BooksFragment extends ListFragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader, cursor);
 
-        if (mIsViewCreated) {
-            /**
-             * Swapping instead of changing Cursor here, to keep the old one open.
-             * Loader should release the old Cursor - see note in
-             * {@link LoaderManager.LoaderCallbacks#onLoadFinished).
-             */
-            mListAdapter.swapCursor(cursor);
+        mListAdapter.swapCursor(cursor);
 
-            if (mListAdapter.getCount() > 0) {
-                mNoNotebookText.setVisibility(View.GONE);
-            } else {
-                mNoNotebookText.setVisibility(View.VISIBLE);
-            }
+        if (mListAdapter.getCount() > 0) {
+            mNoNotebookText.setVisibility(View.GONE);
+        } else {
+            mNoNotebookText.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        if (mIsViewCreated) {
-            mListAdapter.changeCursor(null);
-        }
+        mListAdapter.changeCursor(null);
     }
 
     @Override
