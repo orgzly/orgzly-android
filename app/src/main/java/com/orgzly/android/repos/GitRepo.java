@@ -244,14 +244,21 @@ public class GitRepo implements Repo, Repo.TwoWaySync {
         if (fileName.startsWith("/"))
             fileName = fileName.replaceFirst("/", "");
         if (current != null) {
-            RevCommit commit = getCommitFromRevisionString(current.getRevision());
-            Log.i("Git", String.format("File name %s, commit: %s", fileName, commit));
+            RevCommit rookCommit = getCommitFromRevisionString(current.getRevision());
+            RevCommit originalSyncHEAD = synchronizer.currentHead();
+            Log.i("Git", String.format("File name %s, rookCommit: %s", fileName, rookCommit));
             synchronizer.updateAndCommitFileFromRevisionAndMerge(
-                    fromDB, fileName, synchronizer.getFileRevision(fileName, commit), commit);
+                    fromDB, fileName,
+                    synchronizer.getFileRevision(fileName, rookCommit),
+                    rookCommit);
 
-            synchronizer.tryPushIfUpdated(commit);
-            synchronizer.safelyRetrieveLatestVersionOfFile(fileName, destinationFile, commit);
+            if (!synchronizer.currentHead().equals(originalSyncHEAD)) {
+                synchronizer.tryPushIfUpdated(rookCommit);
+                synchronizer.safelyRetrieveLatestVersionOfFile(
+                        fileName, destinationFile, rookCommit);
+            }
         } else {
+            // XXX/TODO: Prompt user for confirmation?
             Log.w("Git", "Unable to find previous commit, loading from repository.");
             synchronizer.retrieveLatestVersionOfFile(fileName, destinationFile);
         }

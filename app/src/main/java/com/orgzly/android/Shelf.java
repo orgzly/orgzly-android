@@ -597,17 +597,19 @@ public class Shelf {
         Book book = namesake.getBook();
         VersionedRook currentRook = book.getLastSyncedToRook();
         VersionedRook someRook = currentRook == null ? namesake.getRooks().get(0) : currentRook;
-        VersionedRook newBook = currentRook;
+        VersionedRook newRook = currentRook;
         File dbFile = getTempBookFile();
         File readBackFile = getTempBookFile();
         try {
             writeBookToFile(book, BookName.Format.ORG, dbFile);
-            newBook = sync.syncBook(someRook.getUri(), currentRook, dbFile, readBackFile);
+            newRook = sync.syncBook(someRook.getUri(), currentRook, dbFile, readBackFile);
 
-            String fileName = BookName.getFileName(mContext, newBook.getUri());
-            BookName bookName = BookName.fromFileName(fileName);
-            book = loadBookFromFile(bookName.getName(), bookName.getFormat(),
-                    readBackFile, newBook);
+            if (!newRook.getRevision().equals(someRook.getRevision())) {
+                String fileName = BookName.getFileName(mContext, newRook.getUri());
+                BookName bookName = BookName.fromFileName(fileName);
+                book = loadBookFromFile(bookName.getName(), bookName.getFormat(),
+                        readBackFile, newRook);
+            }
         } finally {
             /* Delete temporary files. */
             dbFile.delete();
@@ -615,7 +617,7 @@ public class Shelf {
         }
 
         book.setLastSyncedToRook(currentRook);
-        BooksClient.saved(mContext, book.getId(), newBook);
+        BooksClient.saved(mContext, book.getId(), newRook);
 
         return book;
     }
