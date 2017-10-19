@@ -245,15 +245,15 @@ public class GitRepo implements Repo, Repo.TwoWaySync {
             fileName = fileName.replaceFirst("/", "");
         if (current != null) {
             RevCommit rookCommit = getCommitFromRevisionString(current.getRevision());
-            RevCommit originalSyncHEAD = synchronizer.currentHead();
             Log.i("Git", String.format("File name %s, rookCommit: %s", fileName, rookCommit));
             synchronizer.updateAndCommitFileFromRevisionAndMerge(
                     fromDB, fileName,
                     synchronizer.getFileRevision(fileName, rookCommit),
                     rookCommit);
 
-            if (!synchronizer.currentHead().equals(originalSyncHEAD)) {
-                synchronizer.tryPushIfUpdated(rookCommit);
+            synchronizer.tryPushIfUpdated(rookCommit);
+
+            if (!synchronizer.currentHead().equals(rookCommit)) {
                 synchronizer.safelyRetrieveLatestVersionOfFile(
                         fileName, destinationFile, rookCommit);
             }

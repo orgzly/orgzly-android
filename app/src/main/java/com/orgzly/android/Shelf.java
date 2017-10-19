@@ -604,7 +604,7 @@ public class Shelf {
             writeBookToFile(book, BookName.Format.ORG, dbFile);
             newRook = sync.syncBook(someRook.getUri(), currentRook, dbFile, readBackFile);
 
-            if (!newRook.getRevision().equals(someRook.getRevision())) {
+            if (currentRook == null || !newRook.getRevision().equals(currentRook.getRevision())) {
                 String fileName = BookName.getFileName(mContext, newRook.getUri());
                 BookName bookName = BookName.fromFileName(fileName);
                 book = loadBookFromFile(bookName.getName(), bookName.getFormat(),
