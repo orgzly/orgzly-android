@@ -12,6 +12,8 @@ import com.orgzly.android.provider.models.DbRook;
 import com.orgzly.android.provider.models.DbRookUrl;
 import com.orgzly.android.provider.models.DbVersionedRook;
 
+import static com.orgzly.android.provider.GenericDatabaseUtils.field;
+
 /**
  * Books with link's data.
  */
@@ -19,11 +21,6 @@ public class DbBookView implements DbBookColumns, DbBookViewColumns {
     public static final String VIEW_NAME = "books_view";
 
     public static final String DROP_SQL = "DROP VIEW IF EXISTS " + VIEW_NAME;
-
-    private final static String notesCountQuery =
-            "SELECT COUNT(*) FROM " + DbNote.TABLE +
-            " WHERE " + DbNote.TABLE + "." + DbNote.BOOK_ID + " = " + DbBook.TABLE + "." + DbBook._ID +
-            " AND " + DatabaseUtils.WHERE_EXISTING_NOTES;
 
     public static final String CREATE_SQL =
             "CREATE VIEW " + VIEW_NAME + " AS " +
@@ -37,7 +34,7 @@ public class DbBookView implements DbBookColumns, DbBookViewColumns {
             "t_sync_revisions.rook_revision AS " + SYNCED_ROOK_REVISION + ", " +
             "t_sync_revisions.rook_mtime AS " + SYNCED_ROOK_MTIME + ", " +
 
-            "(" + notesCountQuery + ") AS " + NOTES_COUNT + " " +
+            "count(t_notes._id) AS " + NOTES_COUNT + " " +
 
             "FROM " + DbBook.TABLE + " " +
 
@@ -52,5 +49,7 @@ public class DbBookView implements DbBookColumns, DbBookViewColumns {
             GenericDatabaseUtils.join(DbRepo.TABLE, "t_sync_revision_rook_repos", DbRepo._ID, "t_sync_revision_rooks", DbRook.REPO_ID) +
             GenericDatabaseUtils.join(DbRookUrl.TABLE, "t_sync_revision_rook_urls", DbRookUrl._ID, "t_sync_revision_rooks", DbRook.ROOK_URL_ID) +
 
-            "";
+            GenericDatabaseUtils.join(DbNote.TABLE, "t_notes", DbNote.BOOK_ID, DbBook.TABLE, DbBook._ID) + " AND " + DatabaseUtils.WHERE_EXISTING_NOTES +
+
+            " GROUP BY " + field(DbBook.TABLE, DbBook._ID);
 }

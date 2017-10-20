@@ -55,8 +55,9 @@ public class DatabaseMigration {
     private static final int DB_VER_13 = 142;
     private static final int DB_VER_14 = 143;
     private static final int DB_VER_15 = 144;
+    private static final int DB_VER_16 = 145;
 
-    static final int DB_VER_CURRENT = DB_VER_15;
+    static final int DB_VER_CURRENT = DB_VER_16;
 
     /**
      * Start from the old version and go through all changes. No breaks.
@@ -131,6 +132,7 @@ public class DatabaseMigration {
             case DB_VER_12: /* Views-only updates (notes count) */
             case DB_VER_13: /* Views-only updates (notes count) */
             case DB_VER_14: /* Views-only updates */
+            case DB_VER_15: /* Views-only updates */
         }
     }
 

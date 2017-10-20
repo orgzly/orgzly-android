@@ -1,7 +1,6 @@
 package com.orgzly.android.espresso;
 
 import android.os.Environment;
-import android.os.SystemClock;
 import android.support.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
@@ -221,7 +220,7 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testNoteCountDisplayed() {
-        shelfTestUtils.setupBook("book-Zthree", "");
+        shelfTestUtils.setupBook("book-three", "");
         onListItem(0).onChildView(withId(R.id.item_book_notes_count))
                 .check(matches(withText(context.getResources().getQuantityString(R.plurals.notes_count_nonzero, 5, 5))));
         onListItem(1).onChildView(withId(R.id.item_book_notes_count))
@@ -229,5 +228,4 @@ public class BooksTest extends OrgzlyTest {
         onListItem(2).onChildView(withId(R.id.item_book_notes_count))
                 .check(matches(withText(R.string.notes_count_zero)));
     }
-
 }
