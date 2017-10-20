@@ -436,7 +436,7 @@ public class Shelf {
 
         // XXX: This is a pretty nasty hack that completely circumvents the existing code path
         VersionedRook rook = namesake.getRooks().get(0);
-        if (rook != null) {
+        if (rook != null && namesake.getStatus() != BookSyncStatus.NO_CHANGE) {
             Uri repoUri = rook.getRepoUri();
             Repo repo = getRepo(repoUri);
             if (repo instanceof Repo.TwoWaySync) {
@@ -613,6 +613,7 @@ public class Shelf {
                 book = loadBookFromFile(bookName.getName(), bookName.getFormat(),
                         readBackFile, newRook);
                 book.setLastSyncedToRook(newRook);
+                BooksClient.setModificationTime(mContext, book.getId(), 0);
             }
         } finally {
             /* Delete temporary files. */

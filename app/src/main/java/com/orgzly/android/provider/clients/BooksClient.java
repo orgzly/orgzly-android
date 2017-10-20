@@ -265,6 +265,14 @@ public class BooksClient {
                 ContentUris.withAppendedId(ProviderContract.Books.ContentUri.books(), book.getId()), values, null, null);
     }
 
+    public static int setModificationTime(Context context, long id, long time) {
+        ContentValues values = new ContentValues();
+        values.put(ProviderContract.Books.Param.MTIME, time);
+        return context.getContentResolver().update(
+                ContentUris.withAppendedId(ProviderContract.Books.ContentUri.books(), id),
+                values, null, null);
+    }
+
     public static int updateName(Context context, long id, String name) {
         ContentValues values = new ContentValues();
         values.put(ProviderContract.Books.Param.NAME, name);
