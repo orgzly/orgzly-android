@@ -604,11 +604,15 @@ public class Shelf {
             writeBookToFile(book, BookName.Format.ORG, dbFile);
             newRook = sync.syncBook(someRook.getUri(), currentRook, dbFile, readBackFile);
 
-            if (currentRook == null || !newRook.getRevision().equals(currentRook.getRevision())) {
+            boolean updateOccured =
+                    currentRook == null || !newRook.getRevision().equals(currentRook.getRevision());
+            Log.i("Git", String.format("Update occured was %s", updateOccured));
+            if (updateOccured) {
                 String fileName = BookName.getFileName(mContext, newRook.getUri());
                 BookName bookName = BookName.fromFileName(fileName);
                 book = loadBookFromFile(bookName.getName(), bookName.getFormat(),
                         readBackFile, newRook);
+                book.setLastSyncedToRook(newRook);
             }
         } finally {
             /* Delete temporary files. */
@@ -616,7 +620,6 @@ public class Shelf {
             readBackFile.delete();
         }
 
-        book.setLastSyncedToRook(currentRook);
         BooksClient.saved(mContext, book.getId(), newRook);
 
         return book;

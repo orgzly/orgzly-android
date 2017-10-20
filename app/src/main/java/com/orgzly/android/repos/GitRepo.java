@@ -252,8 +252,12 @@ public class GitRepo implements Repo, Repo.TwoWaySync {
                     rookCommit);
 
             synchronizer.tryPushIfUpdated(rookCommit);
-
-            if (!synchronizer.currentHead().equals(rookCommit)) {
+            RevCommit afterChanges = synchronizer.currentHead();
+            // XXX: Ideally this would not be done in two places, but we have a similar check in Shelf.
+            // architecture changes are needed to avoid this
+            boolean syncBackNeeded = !afterChanges.equals(rookCommit);
+            Log.i("Git", String.format("Sync back needed was %s", syncBackNeeded));
+            if (syncBackNeeded) {
                 synchronizer.safelyRetrieveLatestVersionOfFile(
                         fileName, destinationFile, rookCommit);
             }
