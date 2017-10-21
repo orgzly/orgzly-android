@@ -42,6 +42,7 @@
     <string name="scheduled">Scheduled</string>
     <string name="agenda">Agenda</string>
     <string name="agenda_period">Agenda days</string>
+    <string name="experimental">Experimental</string>
 
     <item type="id" name="AGENDA_ITEM_SEPARATOR_TAG"/>
 
@@ -425,9 +426,9 @@
 
     <string name="auto_sync">Auto-sync</string>
     <string name="auto_sync_experimental">Auto-sync (experimental)</string>
-    <string name="auto_sync_summary">Define cases when sync will be triggered automatically</string>
-    <string name="auto_sync_title">CAUTION</string>
-    <string name="auto_sync_description">Depending on which options you choose, sync could be triggered often. If notebook is modified, its entire content is transferred to or from the repository. If you are using a non-local repository this will be done over the network and it may take some time. Certain actions might be delayed while syncing is in progress.</string>
+    <string name="auto_sync_experimental_summary">Used for local repositories only</string>
+    <string name="auto_sync_title">Caution</string>
+    <string name="auto_sync_description">Depending on which options you choose, sync could be triggered often. If notebook is modified, its entire content is transferred to or from the repository. Certain actions might be delayed while syncing is in progress.</string>
 
     <string name="pref_title_sync_after_note_create">Note created</string>
     <string name="pref_summary_sync_after_note_create">Sync after creating a new note</string>

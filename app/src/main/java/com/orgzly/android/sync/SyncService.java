@@ -9,9 +9,9 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
+
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
@@ -21,6 +21,7 @@ import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.repos.DirectoryRepo;
 import com.orgzly.android.repos.Repo;
+import com.orgzly.android.repos.RepoUtils;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
 
@@ -39,8 +40,6 @@ public class SyncService extends Service {
 
     private SyncTask syncTask;
 
-    // private NotificationManager notificationManager;
-
     private final IBinder binder = new LocalBinder();
 
 
@@ -50,22 +49,14 @@ public class SyncService extends Service {
 
         shelf = new Shelf(this);
 
-        // notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // startForeground();
-
         status.loadFromPreferences(this);
     }
-
-//    private void startForeground() {
-//        startForeground(NOTIFICATION_ID, createNotification(getString(R.string.syncing_in_progress)));
-//    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
-        boolean isTriggeredAutomatically = intent != null && intent.getBooleanExtra(EXTRA_AUTOMATIC, false);
+        boolean isTriggeredAutomatically = isTriggeredAutomatically(intent);
 
         if (intent != null && AppIntent.ACTION_SYNC_START.equals(intent.getAction())) {
             if (!isRunning()) {
@@ -88,6 +79,10 @@ public class SyncService extends Service {
         return Service.START_REDELIVER_INTENT;
     }
 
+    private boolean isTriggeredAutomatically(Intent intent) {
+        return intent != null && intent.getBooleanExtra(EXTRA_AUTOMATIC, false);
+    }
+
     private boolean isRunning() {
         return syncTask != null;
     }
@@ -98,6 +93,7 @@ public class SyncService extends Service {
         Notifications.ensureSyncNotificationSetup(this);
 
         if (AppPreferences.showSyncNotifications(getApplicationContext())) {
+            // FIXME: Makes service run in foreground (doesn't just display ongoing notification)
             startForeground(Notifications.SYNC_IN_PROGRESS, Notifications.createSyncInProgressNotification(getApplicationContext()));
         }
 
@@ -112,7 +108,7 @@ public class SyncService extends Service {
         }
 
         /* If one of the repositories requires internet connection, check for it. */
-        if (reposRequireConnection(repos.values()) && !haveNetworkConnection()) {
+        if (RepoUtils.requireConnection(repos.values()) && !haveNetworkConnection()) {
             status.set(SyncStatus.Type.FAILED, getString(R.string.no_connection), 0, 0);
             announceActiveSyncStatus();
             stopSelf();
@@ -142,15 +138,6 @@ public class SyncService extends Service {
         announceActiveSyncStatus();
 
         syncTask.cancel(false);
-    }
-
-    private boolean reposRequireConnection(Collection<Repo> repos) {
-        for (Repo repo: repos) {
-            if (repo.requiresConnection()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private boolean reposRequireStoragePermission(Collection<Repo> repos) {
@@ -196,10 +183,6 @@ public class SyncService extends Service {
     @Override
     public void onDestroy() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
-
-        /* Kill the on-going notification (might not exist). */
-        // notificationManager.cancel(NOTIFICATION_ID);
-
         super.onDestroy();
     }
 
@@ -322,7 +305,7 @@ public class SyncService extends Service {
             } else {
                 status.set(SyncStatus.Type.FINISHED, null, 0, 0);
 
-                /** Save last successful sync time to preferences. */
+                /* Save last successful sync time to preferences. */
                 long time = System.currentTimeMillis();
                 AppPreferences.lastSuccessfulSyncTime(getApplicationContext(), time);
             }

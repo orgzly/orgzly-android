@@ -25,20 +25,20 @@
             android:defaultValue="@string/pref_default_value_font_size"/>
 
         <CheckBoxPreference
-            android:key="@string/pref_key_is_font_monospaced"
-            android:title="@string/monospaced_font"
-            android:summary="@string/monospaced_font_summary"
-            android:defaultValue="@bool/pref_default_is_font_monospaced"/>
-
-        <CheckBoxPreference
             android:key="@string/pref_key_style_text"
             android:title="@string/style_text_title"
             android:summary="@string/style_text_summary"
             android:defaultValue="@bool/pref_default_style_text"/>
 
         <CheckBoxPreference
-            android:dependency="@string/pref_key_style_text"
+            android:key="@string/pref_key_is_font_monospaced"
+            android:title="@string/monospaced_font"
+            android:summary="@string/monospaced_font_summary"
+            android:defaultValue="@bool/pref_default_is_font_monospaced"/>
+
+        <CheckBoxPreference
             android:key="@string/pref_key_styled_text_with_marks"
+            android:dependency="@string/pref_key_style_text"
             android:title="@string/styled_text_with_marks_title"
             android:summary="@string/styled_text_with_marks_summary"
             android:defaultValue="@bool/pref_default_styled_text_with_marks"/>
@@ -116,16 +116,16 @@
 
         <CheckBoxPreference
             android:key="@string/pref_key_is_notes_content_displayed_in_search"
+            android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
             android:title="@string/display_content_in_search"
             android:summary="@string/display_content_in_search_results"
-            android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
             android:defaultValue="@bool/pref_default_is_notes_content_displayed_in_search"/>
 
         <CheckBoxPreference
             android:key="@string/pref_key_is_notes_content_foldable"
+            android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
             android:title="@string/fold_content"
             android:summary="@string/allow_folding_of_content"
-            android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
             android:defaultValue="@bool/pref_default_is_notes_content_foldable"/>
 
         <CheckBoxPreference
@@ -280,7 +280,7 @@
         <PreferenceScreen
             android:key="preferences_auto_sync"
             android:title="@string/auto_sync_experimental"
-            android:summary="@string/auto_sync_summary">
+            android:summary="@string/auto_sync_experimental_summary">
         </PreferenceScreen>
     </PreferenceCategory>
 

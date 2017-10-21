@@ -6,7 +6,7 @@
     <Preference
         android:selectable="false"
         android:icon="?attr/oic_warning"
-        android:title="@string/auto_sync_title"/>
+        android:title="@string/experimental"/>
 
     <Preference
         android:selectable="false"

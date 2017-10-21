@@ -414,7 +414,6 @@ public class Shelf {
 
     }
 
-
     public Map<String, Repo> getAllRepos() {
         return ReposClient.getAll(mContext);
     }
