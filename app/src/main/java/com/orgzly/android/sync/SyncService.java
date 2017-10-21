@@ -25,7 +25,6 @@ import com.orgzly.android.repos.RepoUtils;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 
@@ -89,43 +88,6 @@ public class SyncService extends Service {
 
     private void start(boolean isTriggeredAutomatically) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
-
-        Notifications.ensureSyncNotificationSetup(this);
-
-        if (AppPreferences.showSyncNotifications(getApplicationContext())) {
-            // FIXME: Makes service run in foreground (doesn't just display ongoing notification)
-            startForeground(Notifications.SYNC_IN_PROGRESS, Notifications.createSyncInProgressNotification(getApplicationContext()));
-        }
-
-        Map<String, Repo> repos = shelf.getAllRepos();
-
-        /* There are no repositories configured. */
-        if (repos.size() == 0) {
-            status.set(SyncStatus.Type.FAILED, getString(R.string.no_repos_configured), 0, 0);
-            announceActiveSyncStatus();
-            stopSelf();
-            return;
-        }
-
-        /* If one of the repositories requires internet connection, check for it. */
-        if (RepoUtils.requireConnection(repos.values()) && !haveNetworkConnection()) {
-            status.set(SyncStatus.Type.FAILED, getString(R.string.no_connection), 0, 0);
-            announceActiveSyncStatus();
-            stopSelf();
-            return;
-        }
-
-        /* Make sure we have permission to access local storage,
-         * if there are repositories that would use it.
-         */
-        if (reposRequireStoragePermission(repos.values())) {
-            if (AppPermissions.isNotGranted(this, AppPermissions.FOR_SYNC_START)) {
-                status.set(SyncStatus.Type.NO_STORAGE_PERMISSION, null, 0, 0);
-                announceActiveSyncStatus();
-                stopSelf();
-                return;
-            }
-        }
 
         syncTask = new SyncTask();
         syncTask.execute(isTriggeredAutomatically);
@@ -206,16 +168,51 @@ public class SyncService extends Service {
     /**
      * Main sync task.
      */
-    private class SyncTask extends AsyncTask<Boolean, Object, Exception> {
+    private class SyncTask extends AsyncTask<Boolean, Object, Void> {
         @Override
-        protected void onPreExecute() {
+        protected Void doInBackground(Boolean... params) { /* Executing on a different thread. */
+            boolean isTriggeredAutomatically = params[0];
+
+            Context context = SyncService.this;
+
+            Map<String, Repo> repos = shelf.getAllRepos();
+
             status.set(SyncStatus.Type.STARTING, null, 0, 0);
             announceActiveSyncStatus();
-        }
 
-        @Override
-        protected Exception doInBackground(Boolean... params) { /* Executing on a different thread. */
-            boolean isTriggeredAutomatically = params[0];
+            Notifications.ensureSyncNotificationSetup(context);
+
+            if (AppPreferences.showSyncNotifications(getApplicationContext())) {
+                // FIXME: Makes service run in foreground (doesn't just display ongoing notification)
+                startForeground(Notifications.SYNC_IN_PROGRESS, Notifications.createSyncInProgressNotification(getApplicationContext()));
+            }
+
+
+            /* There are no repositories configured. */
+            if (repos.size() == 0) {
+                status.set(SyncStatus.Type.FAILED, getString(R.string.no_repos_configured), 0, 0);
+                announceActiveSyncStatus();
+                return null;
+            }
+
+            /* If one of the repositories requires internet connection, check for it. */
+            if (RepoUtils.requireConnection(repos.values()) && !haveNetworkConnection()) {
+                status.set(SyncStatus.Type.FAILED, getString(R.string.no_connection), 0, 0);
+                announceActiveSyncStatus();
+                return null;
+            }
+
+            /* Make sure we have permission to access local storage,
+             * if there are repositories that would use it.
+             */
+            if (reposRequireStoragePermission(repos.values())) {
+                if (AppPermissions.isNotGranted(context, AppPermissions.FOR_SYNC_START)) {
+                    status.set(SyncStatus.Type.NO_STORAGE_PERMISSION, null, 0, 0);
+                    announceActiveSyncStatus();
+                    return null;
+                }
+            }
+
 
             /* Get the list of local and remote books from all repositories.
              * Group them by name.
@@ -226,11 +223,16 @@ public class SyncService extends Service {
                 namesakes = shelf.groupAllNotebooksByName();
             } catch (Exception e) {
                 e.printStackTrace();
-                return e;
+                String msg = (e.getMessage() != null ? e.getMessage() : e.toString());
+                status.set(SyncStatus.Type.FAILED, msg, 0, 0);
+                announceActiveSyncStatus();
+                return null;
             }
 
             if (namesakes.size() == 0) {
-                return new IOException("No notebooks found");
+                status.set(SyncStatus.Type.FAILED, "No notebooks found", 0, 0);
+                announceActiveSyncStatus();
+                return null;
             }
 
             status.set(SyncStatus.Type.BOOKS_COLLECTED, null, 0, namesakes.size());
@@ -281,39 +283,28 @@ public class SyncService extends Service {
                 curr++;
             }
 
+            status.set(SyncStatus.Type.FINISHED, null, 0, 0);
+            announceActiveSyncStatus();
+
+            /* Save last successful sync time to preferences. */
+            long time = System.currentTimeMillis();
+            AppPreferences.lastSuccessfulSyncTime(getApplicationContext(), time);
+
             return null; /* Success. */
         }
 
         @Override
-        protected void onCancelled(Exception e) {
+        protected void onCancelled(Void v) {
             status.set(SyncStatus.Type.CANCELED, getString(R.string.canceled), 0, 0);
             announceActiveSyncStatus();
 
             syncTask = null;
-
             stopSelf();
         }
 
         @Override
-        protected void onPostExecute(Exception exception) {
-            if (exception != null) {
-                String msg = (exception.getMessage() != null ?
-                        exception.getMessage() : exception.toString());
-
-                status.set(SyncStatus.Type.FAILED, msg, 0, 0);
-
-            } else {
-                status.set(SyncStatus.Type.FINISHED, null, 0, 0);
-
-                /* Save last successful sync time to preferences. */
-                long time = System.currentTimeMillis();
-                AppPreferences.lastSuccessfulSyncTime(getApplicationContext(), time);
-            }
-
-            announceActiveSyncStatus();
-
+        protected void onPostExecute(Void v) {
             syncTask = null;
-
             stopSelf();
         }
     }
