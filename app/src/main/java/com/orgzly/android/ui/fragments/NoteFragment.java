@@ -927,42 +927,53 @@ public class NoteFragment extends Fragment
 
     @Override /* TimestampDialog */
     public void onDateTimeSet(int id, TreeSet<Long> noteIds, OrgDateTime time) {
+        if (mNote == null) {
+            return;
+        }
+
+        OrgHead head = mNote.getHead();
         OrgRange range = new OrgRange(time);
 
         switch (id) {
             case R.id.fragment_note_scheduled_button:
                 updateTimestampView(TimeType.SCHEDULED, mScheduledButton, range);
-                mNote.getHead().setScheduled(range);
+                head.setScheduled(range);
                 break;
 
             case R.id.fragment_note_deadline_button:
                 updateTimestampView(TimeType.DEADLINE, mDeadlineButton, range);
-                mNote.getHead().setDeadline(range);
+                head.setDeadline(range);
                 break;
 
             case R.id.fragment_note_closed_button:
                 updateTimestampView(TimeType.CLOSED, mClosedButton, range);
-                mNote.getHead().setClosed(range);
+                head.setClosed(range);
                 break;
         }
     }
 
     @Override /* TimestampDialog */
     public void onDateTimeCleared(int id, TreeSet<Long> noteIds) {
+        if (mNote == null) {
+            return;
+        }
+
+        OrgHead head = mNote.getHead();
+
         switch (id) {
             case R.id.fragment_note_scheduled_button:
                 updateTimestampView(TimeType.SCHEDULED, mScheduledButton, null);
-                mNote.getHead().setScheduled(null);
+                head.setScheduled(null);
                 break;
 
             case R.id.fragment_note_deadline_button:
                 updateTimestampView(TimeType.DEADLINE, mDeadlineButton, null);
-                mNote.getHead().setDeadline(null);
+                head.setDeadline(null);
                 break;
 
             case R.id.fragment_note_closed_button:
                 updateTimestampView(TimeType.CLOSED, mClosedButton, null);
-                mNote.getHead().setClosed(null);
+                head.setClosed(null);
                 break;
         }
     }
