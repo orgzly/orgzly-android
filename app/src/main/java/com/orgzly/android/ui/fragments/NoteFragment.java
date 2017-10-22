@@ -262,6 +262,7 @@ public class NoteFragment extends Fragment
         mTitleView.setHorizontallyScrolling(false);
         mTitleView.setMaxLines(3);
 
+        /* Keyboard's action button pressed. */
         mTitleView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -1056,13 +1057,15 @@ public class NoteFragment extends Fragment
         }
 
         if (updateNoteFromViewsAndVerify()) {
-            if (mIsNew) {
+            if (mIsNew) { // New note
                 mListener.onNoteCreateRequest(mNote, place != Place.UNDEFINED ?
                         new NotePlace(mNote.getPosition().getBookId(), mNoteId, place) : null);
 
-            } else { // Saving existing note
+            } else { // Existing note
                 if (isNoteModified()) {
                     mListener.onNoteUpdateRequest(mNote);
+                } else {
+                    mListener.onNoteCancelRequest(mNote);
                 }
             }
         }
