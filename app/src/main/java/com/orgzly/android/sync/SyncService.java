@@ -177,6 +177,13 @@ public class SyncService extends Service {
 
             Map<String, Repo> repos = shelf.getAllRepos();
 
+            /* Do nothing if it's auto-sync and there are no repos or they require connection. */
+            if (isTriggeredAutomatically) {
+                if (repos.size() == 0 || RepoUtils.requireConnection(repos.values())) {
+                    return null;
+                }
+            }
+
             status.set(SyncStatus.Type.STARTING, null, 0, 0);
             announceActiveSyncStatus();
 
