@@ -599,26 +599,23 @@ public class Shelf {
         VersionedRook someRook = currentRook == null ? namesake.getRooks().get(0) : currentRook;
         VersionedRook newRook = currentRook;
         File dbFile = getTempBookFile();
-        File readBackFile = getTempBookFile();
         try {
             writeBookToFile(book, BookName.Format.ORG, dbFile);
-            newRook = sync.syncBook(someRook.getUri(), currentRook, dbFile, readBackFile);
-
-            boolean updateOccured =
-                    currentRook == null || !newRook.getRevision().equals(currentRook.getRevision());
-            Log.i("Git", String.format("Update occured was %s", updateOccured));
-            if (updateOccured) {
+            Repo.TwoWaySync.TwoWaySyncResult result = sync.syncBook(
+                    someRook.getUri(), currentRook, dbFile);
+            newRook = result.newRook;
+            if (result.loadFile != null) {
                 String fileName = BookName.getFileName(mContext, newRook.getUri());
                 BookName bookName = BookName.fromFileName(fileName);
+                Log.i("Git", String.format("Loading from file %s", result.loadFile.toString()));
                 book = loadBookFromFile(bookName.getName(), bookName.getFormat(),
-                        readBackFile, newRook);
-                book.setLastSyncedToRook(newRook);
+                        result.loadFile, newRook);
                 BooksClient.setModificationTime(mContext, book.getId(), 0);
             }
+            book.setLastSyncedToRook(newRook);
         } finally {
             /* Delete temporary files. */
             dbFile.delete();
-            readBackFile.delete();
         }
 
         BooksClient.saved(mContext, book.getId(), newRook);

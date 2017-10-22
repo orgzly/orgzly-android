@@ -238,11 +238,13 @@ public class GitRepo implements Repo, Repo.TwoWaySync {
     }
 
     @Override
-    public VersionedRook syncBook(
-            Uri uri, VersionedRook current, File fromDB, File destinationFile) throws IOException {
+    public TwoWaySyncResult syncBook(
+            Uri uri, VersionedRook current, File fromDB) throws IOException {
+        File writeBack = null;
         String fileName = uri.getPath();
         if (fileName.startsWith("/"))
             fileName = fileName.replaceFirst("/", "");
+        boolean syncBackNeeded = false;
         if (current != null) {
             RevCommit rookCommit = getCommitFromRevisionString(current.getRevision());
             Log.i("Git", String.format("File name %s, rookCommit: %s", fileName, rookCommit));
@@ -252,20 +254,20 @@ public class GitRepo implements Repo, Repo.TwoWaySync {
                     rookCommit);
 
             synchronizer.tryPushIfUpdated(rookCommit);
-            RevCommit afterChanges = synchronizer.currentHead();
-            // XXX: Ideally this would not be done in two places, but we have a similar check in Shelf.
-            // architecture changes are needed to avoid this
-            boolean syncBackNeeded = !afterChanges.equals(rookCommit);
-            Log.i("Git", String.format("Sync back needed was %s", syncBackNeeded));
-            if (syncBackNeeded) {
-                synchronizer.safelyRetrieveLatestVersionOfFile(
-                        fileName, destinationFile, rookCommit);
-            }
+
+            syncBackNeeded = !synchronizer.fileMatchesInRevisions(
+                    fileName, rookCommit, synchronizer.currentHead());
         } else {
             // XXX/TODO: Prompt user for confirmation?
             Log.w("Git", "Unable to find previous commit, loading from repository.");
-            synchronizer.retrieveLatestVersionOfFile(fileName, destinationFile);
+            syncBackNeeded = true;
         }
-        return currentVersionedRook(Uri.EMPTY.buildUpon().appendPath(fileName).build());
+        Log.i("Git", String.format("Sync back needed was %s", syncBackNeeded));
+        if (syncBackNeeded) {
+            writeBack = synchronizer.repoDirectoryFile(fileName);
+        }
+        return new TwoWaySyncResult(
+                currentVersionedRook(Uri.EMPTY.buildUpon().appendPath(fileName).build()),
+                writeBack);
     }
 }

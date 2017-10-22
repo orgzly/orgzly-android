@@ -267,4 +267,9 @@ public class GitFileSynchronizer {
                 git.getRepository(), pathString, commit.getTree()).getObjectId(0);
         return objectId;
     }
+
+    public boolean fileMatchesInRevisions(String pathString, RevCommit start, RevCommit end)
+            throws IOException {
+        return getFileRevision(pathString, start).equals(getFileRevision(pathString, end));
+    }
 }
