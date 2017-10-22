@@ -541,7 +541,7 @@ public class Provider extends ContentProvider {
                 break;
 
             case ProviderUris.NOTES:
-                return insertNote(db, uri, contentValues, Place.UNDEFINED);
+                return insertNote(db, uri, contentValues, Place.UNSPECIFIED);
 
             case ProviderUris.NOTE_ABOVE:
                 return insertNote(db, uri, contentValues, Place.ABOVE);
@@ -605,7 +605,7 @@ public class Provider extends ContentProvider {
         /* If new note is inserted relative to some other note, get info about that target note. */
         long refNoteId = 0;
         NotePosition refNotePos = null;
-        if (place != Place.UNDEFINED) {
+        if (place != Place.UNSPECIFIED) {
             refNoteId = Long.valueOf(uri.getPathSegments().get(1));
             refNotePos = DbNote.getPosition(db, refNoteId);
         }
@@ -643,7 +643,7 @@ public class Provider extends ContentProvider {
 
                 break;
 
-            case UNDEFINED:
+            case UNSPECIFIED:
                 /* If target note is not used, add note at the end with level 1. */
                 long rootRgt = getMaxRgt(db, bookId);
                 long rootId = getRootId(db, bookId);
@@ -672,7 +672,7 @@ public class Provider extends ContentProvider {
                  */
                 incrementDescendantsCountForAncestors(db, bookId, notePos.getLft(), notePos.getRgt());
 
-            case UNDEFINED:
+            case UNSPECIFIED:
                 /* Make space for new note - increment root's RGT. */
                 String selection = DbNote.BOOK_ID + " = " + bookId + " AND " + DbNote.LFT + " = 1";
                 GenericDatabaseUtils.incrementFields(db, DbNote.TABLE, selection, 2, ProviderContract.Notes.UpdateParam.RGT);

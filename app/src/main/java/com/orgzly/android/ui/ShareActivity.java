@@ -210,7 +210,7 @@ public class ShareActivity extends CommonActivity
                     .add(mSyncFragment, SyncFragment.FRAGMENT_TAG)
                     .commit();
 
-            mNoteFragment = NoteFragment.getInstance(true, 0, 0, Place.UNDEFINED, data.title, data.content);
+            mNoteFragment = NoteFragment.getInstance(true, 0, 0, Place.UNSPECIFIED, data.title, data.content);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.activity_share_main, mNoteFragment, NoteFragment.FRAGMENT_TAG)

@@ -1,6 +1,5 @@
 package com.orgzly.android.ui;
 
-import android.media.audiofx.BassBoost;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -139,7 +138,7 @@ public class DisplayManager {
     }
 
     public void displayNote(long bookId, long noteId) {
-        displayNote(false, bookId, noteId, Place.UNDEFINED);
+        displayNote(false, bookId, noteId, Place.UNSPECIFIED);
     }
 
     public void displayNewNote(NotePlace target) {

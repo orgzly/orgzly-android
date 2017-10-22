@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -1058,7 +1056,7 @@ public class NoteFragment extends Fragment
 
         if (updateNoteFromViewsAndVerify()) {
             if (mIsNew) { // New note
-                mListener.onNoteCreateRequest(mNote, place != Place.UNDEFINED ?
+                mListener.onNoteCreateRequest(mNote, place != Place.UNSPECIFIED ?
                         new NotePlace(mNote.getPosition().getBookId(), mNoteId, place) : null);
 
             } else { // Existing note
