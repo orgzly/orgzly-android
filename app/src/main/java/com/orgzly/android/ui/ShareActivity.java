@@ -380,10 +380,6 @@ public class ShareActivity extends CommonActivity
     }
 
     @Override
-    public void onStateChanged(Set<Long> noteIds, String state) {
-    }
-
-    @Override
     public void onNoteCreated(Note note) {
         finish();
     }

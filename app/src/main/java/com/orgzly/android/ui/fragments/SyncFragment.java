@@ -692,15 +692,6 @@ public class SyncFragment extends Fragment {
                 mShelf.setNotesState(noteIds, state);
                 return null;
             }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                if (mListener != null) {
-                    mListener.onStateChanged(noteIds, state);
-                } else {
-                    Log.w(TAG, "Listener not set, not calling onStateChanged");
-                }
-            }
         }.execute();
     }
 
@@ -710,13 +701,6 @@ public class SyncFragment extends Fragment {
             protected Void doInBackground(Void... params) {
                 mShelf.shiftState(id, direction);
                 return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                if (mListener == null) {
-                    Log.w(TAG, "Listener not set, not calling onStateChanged");
-                }
             }
         }.execute();
     }
@@ -935,10 +919,12 @@ public class SyncFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Integer noOfUpdated) {
-                if (noOfUpdated == 1) {
-                    mListener.onNoteUpdated(note);
-                } else {
-                    mListener.onNoteUpdatingFailed(note);
+                if (mListener != null) {
+                    if (noOfUpdated == 1) {
+                        mListener.onNoteUpdated(note);
+                    } else {
+                        mListener.onNoteUpdatingFailed(note);
+                    }
                 }
             }
         }.execute();
@@ -953,10 +939,12 @@ public class SyncFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Note createdNote) {
-                if (createdNote != null) {
-                    mListener.onNoteCreated(createdNote);
-                } else {
-                    mListener.onNoteCreatingFailed();
+                if (mListener != null) {
+                    if (createdNote != null) {
+                        mListener.onNoteCreated(createdNote);
+                    } else {
+                        mListener.onNoteCreatingFailed();
+                    }
                 }
             }
         }.execute();
@@ -979,7 +967,9 @@ public class SyncFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Integer result) {
-                mListener.onNotesDeleted(result);
+                if (mListener != null) {
+                    mListener.onNotesDeleted(result);
+                }
             }
         }.execute();
     }
@@ -1007,7 +997,9 @@ public class SyncFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Integer result) {
-                mListener.onNotesCut(result);
+                if (mListener != null) {
+                    mListener.onNotesCut(result);
+                }
             }
         }.execute();
     }
@@ -1021,10 +1013,12 @@ public class SyncFragment extends Fragment {
 
             @Override
             protected void onPostExecute(NotesBatch batch) {
-                if (batch != null) {
-                    mListener.onNotesPasted(batch);
-                } else {
-                    mListener.onNotesNotPasted();
+                if (mListener != null) {
+                    if (batch != null) {
+                        mListener.onNotesPasted(batch);
+                    } else {
+                        mListener.onNotesNotPasted();
+                    }
                 }
             }
         }.execute();
@@ -1189,8 +1183,6 @@ public class SyncFragment extends Fragment {
         void onBookDeletingFailed(Book book, IOException exception);
 
         void onScheduledTimeUpdated(Set<Long> noteIds, OrgDateTime time);
-
-        void onStateChanged(Set<Long> noteIds, String state);
 
         void onNoteCreated(Note note);
         void onNoteCreatingFailed();

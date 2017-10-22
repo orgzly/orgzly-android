@@ -828,11 +828,6 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onStateChanged(Set<Long> noteIds, String state) {
-        // animateNotesAfterEdit(noteIds);
-    }
-
-    @Override
     public void onScheduledTimeUpdateRequest(Set<Long> noteIds, OrgDateTime time) {
         mSyncFragment.updateScheduledTime(noteIds, time);
     }
