@@ -44,7 +44,7 @@ public class BooksTest extends OrgzlyTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        shelfTestUtils.setupBook("book-one",
+        shelfTestUtils.setupBook("book-1",
                 "First book used for testing\n" +
                 "* Note A.\n" +
                 "** Note B.\n" +
@@ -55,7 +55,7 @@ public class BooksTest extends OrgzlyTest {
                 ""
         );
 
-        shelfTestUtils.setupBook("book-two",
+        shelfTestUtils.setupBook("book-2",
                 "Sample book used for tests\n" +
                 "* Note #1.\n" +
                 "* Note #2.\n" +
@@ -84,10 +84,10 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testReturnToNonExistentBookByPressingBack() {
-        onView(allOf(withText("book-one"), isDisplayed())).perform(click());
+        onView(allOf(withText("book-1"), isDisplayed())).perform(click());
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.notebooks)).perform(click());
-        onView(allOf(withText("book-one"), isDisplayed())).perform(longClick());
+        onView(allOf(withText("book-1"), isDisplayed())).perform(longClick());
         onData(hasToString(containsString(context.getString(R.string.delete)))).perform(click());
         onView(withText(R.string.ok)).perform(click());
         pressBack();
@@ -96,16 +96,16 @@ public class BooksTest extends OrgzlyTest {
         onView(withId(R.id.fab)).check(matches(not(isDisplayed())));
         pressBack();
         onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
-        onView(allOf(withText("book-two"), isDisplayed())).perform(click());
+        onView(allOf(withText("book-2"), isDisplayed())).perform(click());
         onView(allOf(withText(R.string.message_book_does_not_exist), isDisplayed())).check(doesNotExist());
     }
 
     @Test
     public void testEnterPrefaceForNonExistentBook() {
-        onView(allOf(withText("book-one"), isDisplayed())).perform(click());
+        onView(allOf(withText("book-1"), isDisplayed())).perform(click());
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.notebooks)).perform(click());
-        onView(allOf(withText("book-one"), isDisplayed())).perform(longClick());
+        onView(allOf(withText("book-1"), isDisplayed())).perform(longClick());
         onData(hasToString(containsString(context.getString(R.string.delete)))).perform(click());
         onView(withText(R.string.ok)).perform(click());
         pressBack();
@@ -117,7 +117,7 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testExport() {
-        onView(allOf(withText("book-one"), isDisplayed())).perform(longClick());
+        onView(allOf(withText("book-1"), isDisplayed())).perform(longClick());
         onData(hasToString(containsString(context.getString(R.string.books_context_menu_item_export)))).perform(click());
 
         /*
@@ -157,7 +157,7 @@ public class BooksTest extends OrgzlyTest {
 
         onView(allOf(withText("book-created-from-scratch"), isDisplayed())).check(matches(isDisplayed()));
 
-        onListItem(0).perform(longClick());
+        onListItem(2).perform(longClick());
         onView(withText(R.string.delete)).perform(click());
         onView(withText(R.string.ok)).perform(click());
 
@@ -166,16 +166,16 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testDifferentBookLoading() {
-        onView(allOf(withText("book-one"), isDisplayed())).perform(click());
+        onView(allOf(withText("book-1"), isDisplayed())).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note A.")));
         pressBack();
-        onView(allOf(withText("book-two"), isDisplayed())).perform(click());
+        onView(allOf(withText("book-2"), isDisplayed())).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note #1.")));
     }
 
     @Test
     public void testLoadingBookOnlyIfFragmentHasViewCreated() {
-        onView(allOf(withText("book-one"), isDisplayed())).perform(click());
+        onView(allOf(withText("book-1"), isDisplayed())).perform(click());
 
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.notebooks)).perform(click());
@@ -211,7 +211,7 @@ public class BooksTest extends OrgzlyTest {
     public void testRenameBookToExistingName() {
         onListItem(0).perform(longClick());
         onView(withText(R.string.books_context_menu_item_rename)).perform(click());
-        onView(withId(R.id.name)).perform(replaceText("book-two"), closeSoftKeyboardWithDelay());
+        onView(withId(R.id.name)).perform(replaceText("book-2"), closeSoftKeyboardWithDelay());
         onView(withText(R.string.rename)).perform(click());
 
         onListItem(0).onChildView(withId(R.id.item_book_last_action))
@@ -220,7 +220,7 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testNoteCountDisplayed() {
-        shelfTestUtils.setupBook("book-three", "");
+        shelfTestUtils.setupBook("book-3", "");
         onListItem(0).onChildView(withId(R.id.item_book_notes_count))
                 .check(matches(withText(context.getResources().getQuantityString(R.plurals.notes_count_nonzero, 5, 5))));
         onListItem(1).onChildView(withId(R.id.item_book_notes_count))
