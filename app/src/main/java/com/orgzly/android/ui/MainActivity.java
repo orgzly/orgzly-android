@@ -636,9 +636,10 @@ public class MainActivity extends CommonActivity
     private String guessBookNameFromUri(Uri uri) {
         String fileName = BookName.getFileName(this, uri);
 
-        if (BookName.isSupportedFormatFileName(fileName)) {
+        if (fileName != null && BookName.isSupportedFormatFileName(fileName)) {
             BookName bookName = BookName.fromFileName(fileName);
             return bookName.getName();
+
         } else {
             return null;
         }
