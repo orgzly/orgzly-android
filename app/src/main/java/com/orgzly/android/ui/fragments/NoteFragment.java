@@ -1039,7 +1039,9 @@ public class NoteFragment extends Fragment
                 .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mListener.onNoteDeleteRequest(mNote);
+                        if (mListener != null) {
+                            mListener.onNoteDeleteRequest(mNote);
+                        }
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -1052,7 +1054,9 @@ public class NoteFragment extends Fragment
     }
 
     private void cancel() {
-        mListener.onNoteCancelRequest(mNote);
+        if (mListener != null) {
+            mListener.onNoteCancelRequest(mNote);
+        }
     }
 
     private void save() {
@@ -1066,15 +1070,17 @@ public class NoteFragment extends Fragment
         }
 
         if (updateNoteFromViewsAndVerify()) {
-            if (mIsNew) { // New note
-                mListener.onNoteCreateRequest(mNote, place != Place.UNSPECIFIED ?
-                        new NotePlace(mNote.getPosition().getBookId(), mNoteId, place) : null);
+            if (mListener != null) {
+                if (mIsNew) { // New note
+                    mListener.onNoteCreateRequest(mNote, place != Place.UNSPECIFIED ?
+                            new NotePlace(mNote.getPosition().getBookId(), mNoteId, place) : null);
 
-            } else { // Existing note
-                if (isNoteModified()) {
-                    mListener.onNoteUpdateRequest(mNote);
-                } else {
-                    mListener.onNoteCancelRequest(mNote);
+                } else { // Existing note
+                    if (isNoteModified()) {
+                        mListener.onNoteUpdateRequest(mNote);
+                    } else {
+                        mListener.onNoteCancelRequest(mNote);
+                    }
                 }
             }
         }
