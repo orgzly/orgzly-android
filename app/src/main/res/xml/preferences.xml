@@ -253,7 +253,6 @@
         <com.orgzly.android.prefs.PositiveIntegerPreference
             android:key="@string/pref_key_snooze_time"
             android:title="@string/pref_title_snooze_time"
-            android:dialogTitle="@string/pref_dialog_title_snooze_time"
             android:inputType="numberSigned"
             android:defaultValue="@string/pref_default_value_snooze_time"/>
 

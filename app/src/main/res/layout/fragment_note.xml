@@ -15,8 +15,7 @@
         android:padding="@dimen/padding_16"
         android:clipToPadding="false"
         android:fadeScrollbars="false"
-        android:scrollbarStyle="outsideOverlay"
-        >
+        android:scrollbarStyle="outsideOverlay">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,8 +39,7 @@
                     android:layout_marginRight="4dp"
                     android:prompt="@string/priority_spinner_prompt"
                     android:freezesText="true"/>
-
-
+                
                 <Spinner
                     android:id="@+id/fragment_note_state"
                     android:layout_width="wrap_content"
