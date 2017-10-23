@@ -59,10 +59,10 @@ import java.util.TreeSet;
 
 
 /**
- * Retained fragment for sync button. FIXME: Cleanup
+ * Retained fragment for async operations. FIXME: Use service for most tasks
  *
- * Misused over time and now includes most async tasks. Move them and don't use a single listener
- * (check {@link com.orgzly.android.ui.ShareActivity}, it has to implement tons of methods with no reason)
+ * Abused over time and now includes most async tasks. Move them and don't use a single listener
+ * (check {@link com.orgzly.android.ui.ShareActivity} - it has to implement tons of methods with no reason)
  */
 public class SyncFragment extends Fragment {
     private static final String TAG = SyncFragment.class.getName();
@@ -77,6 +77,7 @@ public class SyncFragment extends Fragment {
     private SyncFragmentListener mListener;
 
     private Shelf mShelf;
+    private Resources resources;
 
     /** Progress bar and button text. */
     private SyncButton mSyncButton;
@@ -89,7 +90,9 @@ public class SyncFragment extends Fragment {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent, status);
 
             /* Update sync button based on sync status. */
-            mSyncButton.update(status);
+            if (isAdded()) {
+                mSyncButton.update(status);
+            }
 
             switch (status.type) {
                 case FAILED:
@@ -149,6 +152,7 @@ public class SyncFragment extends Fragment {
         }
 
         mShelf = new Shelf(context.getApplicationContext());
+        resources = context.getResources();
     }
 
     /**
@@ -191,11 +195,6 @@ public class SyncFragment extends Fragment {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
     public void onDestroy() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onDestroy();
@@ -211,7 +210,6 @@ public class SyncFragment extends Fragment {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onDetach();
         mListener = null;
-
     }
 
     /**
@@ -247,7 +245,7 @@ public class SyncFragment extends Fragment {
                 if (mListener != null) {
                     if (result instanceof Book) {
                         Book book = (Book) result;
-                        mShelf.setBookStatus(book, null, new BookAction(BookAction.Type.INFO, getString(R.string.imported)));
+                        mShelf.setBookStatus(book, null, new BookAction(BookAction.Type.INFO, resources.getString(R.string.imported)));
                         mListener.onBookLoaded((Book) result);
                     } else {
                         mListener.onBookLoadFailed((IOException) result);
@@ -289,7 +287,7 @@ public class SyncFragment extends Fragment {
                         // TODO: Do in bg
                         mShelf.setBookStatus(book, null, new BookAction(
                                 BookAction.Type.INFO,
-                                getString(R.string.loaded_from_resource, name)));
+                                resources.getString(R.string.loaded_from_resource, name)));
                         mListener.onBookLoaded(book);
                     } else {
                         // TODO: Why is status not updated here?
@@ -311,13 +309,13 @@ public class SyncFragment extends Fragment {
 
                 try {
                     if (book == null) {
-                        throw new IOException(getString(R.string.message_book_does_not_exist));
+                        throw new IOException(resources.getString(R.string.message_book_does_not_exist));
                     }
 
                     Rook rook = book.getLink();
 
                     if (rook == null) {
-                        throw new IOException(getString(R.string.message_book_has_no_link));
+                        throw new IOException(resources.getString(R.string.message_book_has_no_link));
                     }
 
                     mShelf.setBookStatus(
@@ -325,7 +323,7 @@ public class SyncFragment extends Fragment {
                             null,
                             new BookAction(
                                     BookAction.Type.PROGRESS,
-                                    getString(R.string.force_loading_from_uri, UriUtils.friendlyUri(rook.getUri()))));
+                                    resources.getString(R.string.force_loading_from_uri, UriUtils.friendlyUri(rook.getUri()))));
 
                     return mShelf.loadBookFromRepo(rook);
 
@@ -337,7 +335,7 @@ public class SyncFragment extends Fragment {
                             null,
                             new BookAction(
                                     BookAction.Type.ERROR,
-                                    getString(R.string.force_loading_failed, e.getLocalizedMessage())));
+                                    resources.getString(R.string.force_loading_failed, e.getLocalizedMessage())));
 
                     return e;
                 }
@@ -355,7 +353,7 @@ public class SyncFragment extends Fragment {
                                 null,
                                 new BookAction(
                                         BookAction.Type.INFO,
-                                        getString(R.string.force_loaded_from_uri, UriUtils.friendlyUri(book.getLastSyncedToRook().getUri()))));
+                                        resources.getString(R.string.force_loaded_from_uri, UriUtils.friendlyUri(book.getLastSyncedToRook().getUri()))));
 
                         mListener.onBookLoaded((Book) result);
 
@@ -494,7 +492,7 @@ public class SyncFragment extends Fragment {
 
                         mShelf.setBookStatus(book, null,
                                 new BookAction(BookAction.Type.PROGRESS,
-                                        getString(R.string.force_saving_to_uri, repoUrl)));
+                                        resources.getString(R.string.force_saving_to_uri, repoUrl)));
 
                         return mShelf.saveBookToRepo(repoUrl, fileName, book, BookName.Format.ORG);
 
@@ -502,12 +500,12 @@ public class SyncFragment extends Fragment {
                         e.printStackTrace();
                         mShelf.setBookStatus(book, null,
                                 new BookAction(BookAction.Type.ERROR,
-                                        getString(R.string.force_saving_failed, e.getLocalizedMessage())));
+                                        resources.getString(R.string.force_saving_failed, e.getLocalizedMessage())));
                         return e;
                     }
 
                 } else {
-                    return new IOException(getString(R.string.message_book_does_not_exist));
+                    return new IOException(resources.getString(R.string.message_book_does_not_exist));
                 }
             }
 
@@ -522,7 +520,7 @@ public class SyncFragment extends Fragment {
                                 null,
                                 new BookAction(
                                         BookAction.Type.INFO,
-                                        getString(R.string.force_saved_to_uri, UriUtils.friendlyUri(book.getLastSyncedToRook().getUri()))));
+                                        resources.getString(R.string.force_saved_to_uri, UriUtils.friendlyUri(book.getLastSyncedToRook().getUri()))));
 
                         mListener.onBookSaved(book);
 
@@ -546,13 +544,13 @@ public class SyncFragment extends Fragment {
         /* Use repository if there is only one. */
 
         if (repos.size() == 0) {
-            throw new IOException(getString(R.string.no_repos));
+            throw new IOException(resources.getString(R.string.no_repos));
 
         } else if (repos.size() == 1) {
             return repos.keySet().iterator().next();
 
         } else {
-            throw new IOException(getString(R.string.multiple_repos));
+            throw new IOException(resources.getString(R.string.multiple_repos));
         }
     }
 
@@ -643,7 +641,7 @@ public class SyncFragment extends Fragment {
             protected Object doInBackground(Void... params) {
                 try {
                     Book book = mShelf.createBook(name);
-                    mShelf.setBookStatus(book, null, new BookAction(BookAction.Type.INFO, getString(R.string.created)));
+                    mShelf.setBookStatus(book, null, new BookAction(BookAction.Type.INFO, resources.getString(R.string.created)));
                     return book;
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -720,7 +718,7 @@ public class SyncFragment extends Fragment {
                     e.printStackTrace();
                     mShelf.setBookStatus(book, null, new BookAction(
                             BookAction.Type.ERROR,
-                            getString(R.string.failed_renaming_book_with_reason, e.getLocalizedMessage())));
+                            resources.getString(R.string.failed_renaming_book_with_reason, e.getLocalizedMessage())));
 //                        return e;
                 }
                 return null;
@@ -804,7 +802,7 @@ public class SyncFragment extends Fragment {
             long time = AppPreferences.lastSuccessfulSyncTime(appContext);
 
             if (time > 0) {
-                buttonText.setText(getString(R.string.last_sync_prefix, formatLastSyncTime(time)));
+                buttonText.setText(resources.getString(R.string.last_sync_prefix, formatLastSyncTime(time)));
             } else {
                 buttonText.setText(R.string.sync);
             }
@@ -852,7 +850,7 @@ public class SyncFragment extends Fragment {
 
                     setAnimation(true);
 
-                    buttonText.setText(getString(R.string.syncing_book, status.message));
+                    buttonText.setText(resources.getString(R.string.syncing_book, status.message));
 
                     break;
 
@@ -884,7 +882,7 @@ public class SyncFragment extends Fragment {
 
                     setAnimation(false);
 
-                    buttonText.setText(getString(R.string.last_sync_prefix, status.message));
+                    buttonText.setText(resources.getString(R.string.last_sync_prefix, status.message));
 
                     break;
             }
@@ -1049,7 +1047,7 @@ public class SyncFragment extends Fragment {
             protected void onPreExecute() {
                 progressDialog = new ProgressDialog(getActivity());
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                progressDialog.setMessage(getString(R.string.updating_notes));
+                progressDialog.setMessage(resources.getString(R.string.updating_notes));
                 progressDialog.show();
             }
 
