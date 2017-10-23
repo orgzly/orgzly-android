@@ -86,7 +86,9 @@
         <item name="item_head_title_text_color">@color/black</item>
         <item name="item_head_fold_button_text_color">@color/black</item>
         <item name="item_head_post_title_text_color">#696969</item>
-        <item name="item_head_indent_line_color">#0c000000</item>
+
+        <item name="line_thin_color">#0c000000</item>
+        <item name="line_color">#18000000</item>
 
         <item name="big_centered_text_color">#696969</item>
 
@@ -253,7 +255,9 @@
         <item name="item_head_title_text_color">@color/dark_bg_text_primary</item>
         <item name="item_head_fold_button_text_color">@color/dark_bg_text_primary</item>
         <item name="item_head_post_title_text_color">@color/dark_bg_text_secondary</item>
-        <item name="item_head_indent_line_color">#0cffffff</item>
+
+        <item name="line_thin_color">#0cffffff</item>
+        <item name="line_color">#18ffffff</item>
 
         <item name="big_centered_text_color">@color/dark_bg_text_primary</item>
 

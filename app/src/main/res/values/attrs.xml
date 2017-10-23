@@ -74,7 +74,9 @@
         <attr name="item_head_fold_button_text_color" format="color"/>
 
         <attr name="item_head_post_title_text_color" format="color"/>
-        <attr name="item_head_indent_line_color" format="color"/>
+
+        <attr name="line_thin_color" format="color"/>
+        <attr name="line_color" format="color"/>
 
         <attr name="big_centered_text_color" format="color"/>
 

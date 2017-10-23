@@ -12,7 +12,7 @@
         android:layout_weight="1"
         android:layout_height="1dp"
         android:layout_gravity="center_vertical"
-        android:background="?attr/item_head_indent_line_color"/>
+        android:background="?attr/line_color"/>
 
     <TextView
         android:id="@+id/item_agenda_time_text"
@@ -31,5 +31,5 @@
         android:layout_weight="1"
         android:layout_height="1dp"
         android:layout_gravity="center_vertical"
-        android:background="?attr/item_head_indent_line_color"/>
+        android:background="?attr/line_color"/>
 </LinearLayout>
