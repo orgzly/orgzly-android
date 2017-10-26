@@ -225,7 +225,7 @@ public class BookFragment extends NoteListFragment
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position > getListView().getHeaderViewsCount() - 1) { /* Not a header. */
-                    listener.onNoteLongClick(BookFragment.this, view, position, id);
+                    listener.onNoteLongClick(BookFragment.this, view, position, id, id);
                     return true;
                 } else {
                     return false;
@@ -361,7 +361,7 @@ public class BookFragment extends NoteListFragment
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, listView, view, position, id);
 
         if ((position+1) > listView.getHeaderViewsCount()) { /* Not a header. */
-            listener.onNoteClick(this, view, position, id);
+            listener.onNoteClick(this, view, position, id, id);
         } else {
             listener.onBookPrefaceEditRequest(mBook);
         }

@@ -115,8 +115,8 @@ public abstract class NoteListFragment extends ListFragment {
     public interface NoteListFragmentListener extends FragmentListener {
         void onNoteScrollToRequest(long noteId);
         void onNoteNewRequest(NotePlace target);
-        void onNoteClick(NoteListFragment fragment, View view, int position, long noteId);
-        void onNoteLongClick(NoteListFragment fragment, View view, int position, long noteId);
+        void onNoteClick(NoteListFragment fragment, View view, int position, long id, long noteId);
+        void onNoteLongClick(NoteListFragment fragment, View view, int position, long id, long noteId);
 
         void onStateChangeRequest(Set<Long> noteIds, String state);
         void onStateCycleRequest(long noteId, int direction);
