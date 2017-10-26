@@ -7,7 +7,7 @@ android {
     }
 
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.2'
 
     /*
      * Read properties from the file.
@@ -46,11 +46,15 @@ android {
         }
     }
 
+    flavorDimensions "store"
+
     productFlavors {
         premium {
             buildConfigField "boolean", "IS_DROPBOX_ENABLED", "true"
 
             buildConfigField "String", "VERSION_NAME_SUFFIX", '""'
+
+            dimension "store"
         }
 
         fdroid {
@@ -61,6 +65,8 @@ android {
             buildConfigField "boolean", "IS_DROPBOX_ENABLED", "false"
 
             buildConfigField "String", "VERSION_NAME_SUFFIX", '" (fdroid)"'
+
+            dimension "store"
         }
     }
 
@@ -73,6 +79,11 @@ android {
          * javax.servlet.http. Referenced from com.dropbox.core.DbxStandardSessionStore.
          */
         disable 'InvalidPackage'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -111,10 +122,8 @@ dependencies {
 
     androidTestCompile "com.android.support.test:runner:$android_test_version"
     androidTestCompile "com.android.support.test:rules:$android_test_version"
-
     androidTestCompile "com.android.support.test.espresso:espresso-core:$android_test_espresso_version"
     androidTestCompile "com.android.support.test.espresso:espresso-contrib:$android_test_espresso_version"
-
     androidTestCompile "com.android.support.test.uiautomator:uiautomator-v18:$android_test_uiautomator_version"
 
     androidTestCompile "de.sven-jacobs:loremipsum:$loremipsum_version"
