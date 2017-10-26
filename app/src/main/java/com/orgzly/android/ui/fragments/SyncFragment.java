@@ -1,5 +1,6 @@
 package com.orgzly.android.ui.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -215,6 +216,7 @@ public class SyncFragment extends Fragment {
     /**
      * Load book from the Uri.
      */
+    @SuppressLint("StaticFieldLeak")
     public void importBookFromUri(
             final String bookName,
             final BookName.Format format,
@@ -260,6 +262,7 @@ public class SyncFragment extends Fragment {
      *
      * FIXME: Only supports Org format (hardcoded below)
      */
+    @SuppressLint("StaticFieldLeak")
     public void loadBook(final String name, final Resources resources, final int resourceId) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, name, resources, resourceId);
 
@@ -301,6 +304,7 @@ public class SyncFragment extends Fragment {
     /**
      * Load book from repository.
      */
+    @SuppressLint("StaticFieldLeak")
     public void loadBook(final long bookId) {
         new AsyncTask<Void, Object, Object>() {
             @Override
@@ -365,6 +369,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void deleteFilters(final Set<Long> ids) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -375,6 +380,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void createFilter(final Filter filter) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -385,6 +391,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void updateFilter(final long id, final Filter filter) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -395,6 +402,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void moveFilterUp(final long id) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -405,6 +413,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void moveFilterDown(final long id) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -415,6 +424,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void cycleVisibility(final Book book) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -425,6 +435,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void sparseTree(final long bookId, final long noteId) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -435,6 +446,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void setStateToDone(final long noteId) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -445,6 +457,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void promoteNotes(final long bookId, final Set<Long> noteIds) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -455,6 +468,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void demoteNotes(final long bookId, final Set<Long> noteIds) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -468,6 +482,7 @@ public class SyncFragment extends Fragment {
     /**
      * Saves book to its linked remote book, or to the one-and-only repository .
      */
+    @SuppressLint("StaticFieldLeak")
     public void forceSaveBook(final long bookId) {
         new AsyncTask<Void, Void, Object>() {
             @Override
@@ -557,6 +572,7 @@ public class SyncFragment extends Fragment {
     /**
      * Exports book. Link is not updated, book stays linked to the same remote book.
      */
+    @SuppressLint("StaticFieldLeak")
     public void exportBook(final long bookId) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookId);
 
@@ -586,6 +602,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void clearDatabase() {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -605,6 +622,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void deleteBook(final Book book, final boolean deleteLinked) {
         new AsyncTask<Void, Void, Object>() {
             @Override
@@ -635,6 +653,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void createNewBook(final String name) {
         new AsyncTask<Void, Void, Object>() {
             @Override
@@ -664,6 +683,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void updateScheduledTime(final Set<Long> noteIds, final OrgDateTime time) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -683,6 +703,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void updateNoteState(final Set<Long> noteIds, final String state) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -693,6 +714,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void shiftNoteState(final long id, final int direction) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -708,6 +730,7 @@ public class SyncFragment extends Fragment {
         mShelf.directedSync();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void renameBook(final Book book, final String value) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -727,6 +750,7 @@ public class SyncFragment extends Fragment {
     }
 
 
+    @SuppressLint("StaticFieldLeak")
     public void updateBookSettings(final Book book) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -778,12 +802,7 @@ public class SyncFragment extends Fragment {
                 setButtonTextToLastSynced();
             }
 
-            buttonContainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onSyncButton();
-                }
-            });
+            buttonContainer.setOnClickListener(v -> onSyncButton());
 
             buttonContainer.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -908,6 +927,7 @@ public class SyncFragment extends Fragment {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void updateNote(final Note note) {
         new AsyncTask<Void, Void, Integer>() {
             @Override
@@ -928,6 +948,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void createNote(final Note note, final NotePlace notePlace) {
         new AsyncTask<Void, Void, Note>() {
             @Override
@@ -955,6 +976,7 @@ public class SyncFragment extends Fragment {
      * @param bookId Book ID
      * @param noteIds Set of notes' IDs
      */
+    @SuppressLint("StaticFieldLeak")
     public void deleteNotes(final long bookId, final TreeSet<Long> noteIds) {
         new AsyncTask<Void, Void, Integer>() {
             @Override
@@ -986,6 +1008,7 @@ public class SyncFragment extends Fragment {
      * @param bookId Book ID
      * @param noteIds Set of notes' IDs
      */
+    @SuppressLint("StaticFieldLeak")
     public void cutNotes(final long bookId, final TreeSet<Long> noteIds) {
         new AsyncTask<Void, Void, Integer>() {
             @Override
@@ -1002,6 +1025,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void pasteNotes(final long bookId, final long noteId, final Place place) {
         new AsyncTask<Void, Void, NotesBatch>() {
             @Override
@@ -1022,6 +1046,7 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void moveNote(final long bookId, final long noteId, final int offset) {
         new AsyncTask<Void, Void, Integer>() {
             @Override
@@ -1039,6 +1064,7 @@ public class SyncFragment extends Fragment {
     /**
      * Re-parsing notes currently only checks for notes' title and state.
      */
+    @SuppressLint("StaticFieldLeak")
     public void reParseNotes() {
         new AsyncTask<Void, Object, IOException>() {
             private ProgressDialog progressDialog;

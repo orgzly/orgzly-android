@@ -1,5 +1,6 @@
 package com.orgzly.android.widgets;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -213,6 +214,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
         return "widget-filter-" + appWidgetId;
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void setNoteDone(Context context, Intent intent) {
         final Shelf shelf = new Shelf(context);
 

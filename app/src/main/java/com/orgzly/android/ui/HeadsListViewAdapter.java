@@ -1,5 +1,6 @@
 package com.orgzly.android.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
@@ -237,6 +238,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         });
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void toggleFoldedState(final Context context, final long id) {
         new AsyncTask<Void, Void, Void>() {
             @Override
