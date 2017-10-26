@@ -30,6 +30,39 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="1.6"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Agenda view"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Auto-sync for local repositories (experimental)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Snooze for reminders"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support “or” in search queries"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support “it” (type of state) search operator"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Preference for indenting tags (Org file format)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Various bug fixes"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="1.5.3"
             tools:ignore="HardcodedText"/>
 
@@ -139,7 +172,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Support for .t search operator"/>
+            app:text="Support for “.t” search operator"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -314,7 +347,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Search operators for sorting (o and .o)"/>
+            app:text="Search operators for sorting (“o” and “.o”)"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -334,7 +367,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Fix b search operator parsing (dot as a book name)"/>
+            app:text="Fix “b” search operator parsing (dot as a book name)"/>
 
         <TextView
             style="@style/WhatsNewVersion"
@@ -356,11 +389,11 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Tags inheritance (t operator)"/>
+            app:text="Tags inheritance (“t” operator)"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Search by note's tag only (new tn operator)"/>
+            app:text="Search by note's tag only (new “tn” operator)"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -559,11 +592,11 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Search operator p.priority added"/>
+            app:text="Search operator “p” (priority) added"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Search operator s.day upgraded"/>
+            app:text="Search operator “s.day” upgraded"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
