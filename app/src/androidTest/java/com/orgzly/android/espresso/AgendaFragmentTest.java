@@ -7,6 +7,7 @@ import android.widget.DatePicker;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.MainActivity;
 
 import org.joda.time.DateTime;
@@ -15,6 +16,7 @@ import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerActions.open;
@@ -170,5 +172,31 @@ public class AgendaFragmentTest extends OrgzlyTest {
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(22)));
         activityRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(22)));
+    }
+
+    @Test
+    public void testClickAndChangeStateWithReverseNoteClick() {
+        shelfTestUtils.setupBook("book-1","* DONE Note A");
+        shelfTestUtils.setupBook("book-2","* TODO Note B\nSCHEDULED: <2014-01-01>\n* TODO Note C\nSCHEDULED: <2014-01-02>\n");
+        AppPreferences.isReverseNoteClickAction(context, true);
+        activityRule.launchActivity(null);
+
+        openAgenda();
+        onListItem(2).perform(click());
+        onView(withId(R.id.query_cab_edit)).perform(click());
+        onView(withText(R.string.state)).perform(click());
+        onView(withText("NEXT")).perform(click());
+    }
+
+    @Test
+    public void testOpenNoteWithReverseNoteClick() {
+        shelfTestUtils.setupBook("book-1","* DONE Note A");
+        shelfTestUtils.setupBook("book-2","* TODO Note B\nSCHEDULED: <2014-01-01>\n* TODO Note C\nSCHEDULED: <2014-01-02>\n");
+        AppPreferences.isReverseNoteClickAction(context, true);
+        activityRule.launchActivity(null);
+
+        openAgenda();
+        onListItem(2).perform(longClick());
+        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note C")));
     }
 }

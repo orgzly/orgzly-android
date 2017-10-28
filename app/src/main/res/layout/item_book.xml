@@ -105,7 +105,7 @@
 
                 <!-- Notes count -->
                 <LinearLayout
-                    android:id="@+id/item_book_notes_count_container"
+                    android:id="@+id/item_book_note_count_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -118,7 +118,7 @@
                         android:contentDescription="@string/book_notes_count"/>
 
                     <TextView
-                        android:id="@+id/item_book_notes_count"
+                        android:id="@+id/item_book_note_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start|center_vertical"

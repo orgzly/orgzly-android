@@ -385,7 +385,7 @@ public class DatabaseMigration {
      * Delete those, update notes tables and add a unique constraint to the org_ranges.
      */
     private static void fixOrgRanges(SQLiteDatabase db) {
-        String[] notesFields = new String[] {
+        String[] notesFields = {
                 "scheduled_range_id",
                 "deadline_range_id",
                 "closed_range_id",

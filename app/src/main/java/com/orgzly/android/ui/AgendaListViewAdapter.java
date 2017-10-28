@@ -5,8 +5,6 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.orgzly.R;
@@ -15,9 +13,10 @@ import com.orgzly.android.ui.views.GesturedListViewItemMenus;
 
 public class AgendaListViewAdapter extends HeadsListViewAdapter {
 
+    public static final int NOTE_TYPE = 0;
+    public static final int SEPARATOR_TYPE = 1;
+
     private static final int TYPE_COUNT = 2;
-    public static final int TYPE_NOTE = 0;
-    public static final int TYPE_SEPARATOR = 1;
 
     public AgendaListViewAdapter(Context context, Selection selection,
                                  GesturedListViewItemMenus toolbars, boolean inBook) {
@@ -32,7 +31,7 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
         // otherwise create a new view
         boolean isViewSeparator = (boolean) convertView.getTag(R.id.AGENDA_ITEM_SEPARATOR_TAG);
         Cursor cursor = (Cursor) getItem(position);
-        boolean isCursorSeparator = getCursorType(cursor) == TYPE_SEPARATOR;
+        boolean isCursorSeparator = getCursorType(cursor) == SEPARATOR_TYPE;
         if (isCursorSeparator != isViewSeparator) {
             // do not use @convertView
             return super.getView(position, null, parent);
@@ -64,7 +63,7 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        boolean isCursorSeparator = getCursorType(cursor) == TYPE_SEPARATOR;
+        boolean isCursorSeparator = getCursorType(cursor) == SEPARATOR_TYPE;
         boolean isViewSeparator = (boolean) view.getTag(R.id.AGENDA_ITEM_SEPARATOR_TAG);
 
         if (isCursorSeparator && isViewSeparator) {
@@ -92,7 +91,7 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
 
     private int getCursorType(Cursor cursor) {
         if (cursor.getInt(cursor.getColumnIndex(AgendaFragment.Columns.IS_SEPARATOR)) == 1)
-            return TYPE_SEPARATOR;
-        return TYPE_NOTE;
+            return SEPARATOR_TYPE;
+        return NOTE_TYPE;
     }
 }

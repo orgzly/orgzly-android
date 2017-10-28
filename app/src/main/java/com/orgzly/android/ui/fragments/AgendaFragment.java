@@ -148,8 +148,8 @@ public class AgendaFragment extends NoteListFragment
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mListAdapter.getItemViewType(position) != AgendaListViewAdapter.TYPE_SEPARATOR) {
-                    mListener.onNoteLongClick(AgendaFragment.this, view, position, id);
+                if (mListAdapter.getItemViewType(position) != AgendaListViewAdapter.SEPARATOR_TYPE) {
+                    mListener.onNoteLongClick(AgendaFragment.this, view, position, id, originalNoteIDs.get(id));
                 }
                 return true;
             }
@@ -275,11 +275,9 @@ public class AgendaFragment extends NoteListFragment
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
         int itemViewType = mListAdapter.getItemViewType(position);
-        if (itemViewType == AgendaListViewAdapter.TYPE_NOTE) {
-            /* if some notes are selected, do not translate IDs */
-            if (mSelection.getIds().isEmpty())
-                id = originalNoteIDs.get(id);
-            mListener.onNoteClick(this, view, position, id);
+
+        if (itemViewType == AgendaListViewAdapter.NOTE_TYPE) {
+            mListener.onNoteClick(this, view, position, id, originalNoteIDs.get(id));
         }
     }
 
@@ -590,7 +588,7 @@ public class AgendaFragment extends NoteListFragment
         public static String IS_SEPARATOR = "is_separator";
         public static String AGENDA_DAY = "day";
 
-        private static final String[] AGENDA_SEPARATOR_COLS = new String[]{
+        private static final String[] AGENDA_SEPARATOR_COLS = {
                 Columns._ID,
                 Columns.AGENDA_DAY,
                 Columns.IS_SEPARATOR

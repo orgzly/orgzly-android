@@ -28,6 +28,29 @@
             android:layout_marginTop="@dimen/padding_8"
             android:text="@string/whats_new_follow"/>
 
+
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.6-beta.2"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix agenda when “Reversed note click action” option is used"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix blank “Tags indentation” settings screen"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Attempt to fix occasional crashes in notebook list related to note count"/>
+
+
+
+
         <TextView
             style="@style/WhatsNewVersion"
             android:text="1.6"

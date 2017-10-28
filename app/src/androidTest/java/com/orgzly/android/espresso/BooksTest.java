@@ -221,11 +221,11 @@ public class BooksTest extends OrgzlyTest {
     @Test
     public void testNoteCountDisplayed() {
         shelfTestUtils.setupBook("book-3", "");
-        onListItem(0).onChildView(withId(R.id.item_book_notes_count))
+        onListItem(0).onChildView(withId(R.id.item_book_note_count))
                 .check(matches(withText(context.getResources().getQuantityString(R.plurals.notes_count_nonzero, 5, 5))));
-        onListItem(1).onChildView(withId(R.id.item_book_notes_count))
+        onListItem(1).onChildView(withId(R.id.item_book_note_count))
                 .check(matches(withText(context.getResources().getQuantityString(R.plurals.notes_count_nonzero, 10, 10))));
-        onListItem(2).onChildView(withId(R.id.item_book_notes_count))
+        onListItem(2).onChildView(withId(R.id.item_book_note_count))
                 .check(matches(withText(R.string.notes_count_zero)));
     }
 }

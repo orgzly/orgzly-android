@@ -4,7 +4,7 @@ package com.orgzly.android.provider.models;
 public class DbNoteAncestor implements DbNoteAncestorColumns {
     public static final String TABLE = "note_ancestors";
 
-    public static final String[] CREATE_SQL = new String[] {
+    public static final String[] CREATE_SQL = {
             "CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
 
             "book_id INTEGER," +

@@ -54,7 +54,7 @@ public class ReminderService extends IntentService {
     static final int TIME_BEFORE_NOW = 1;
     static final int TIME_FROM_NOW = 2;
 
-    private static final long[] SCHEDULED_NOTE_VIBRATE_PATTERN = new long[]{500, 50, 50, 300};
+    private static final long[] SCHEDULED_NOTE_VIBRATE_PATTERN = {500, 50, 50, 300};
 
     public ReminderService() {
         super(TAG);

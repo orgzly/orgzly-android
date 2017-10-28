@@ -667,16 +667,16 @@ public class MainActivity extends CommonActivity
      * @param noteId note ID
      */
     @Override
-    public void onNoteClick(NoteListFragment fragment, View view, int position, long noteId) {
+    public void onNoteClick(NoteListFragment fragment, View view, int position, long id, long noteId) {
         if (AppPreferences.isReverseNoteClickAction(this)) {
-            toggleNoteSelection(fragment, view, noteId);
+            toggleNoteSelection(fragment, view, id);
 
         } else {
-            /* If there are already selected note, toggle the selection of this one.
-             * If there are no notes selected, open note
+            /* If there are any selected notes, toggle the selection of this one.
+             * If there are no notes selected, open note.
              */
             if (fragment.getSelection().getCount() > 0) {
-                toggleNoteSelection(fragment, view, noteId);
+                toggleNoteSelection(fragment, view, id);
             } else {
                 openNote(fragment.getFragmentTag(), noteId);
             }
@@ -692,11 +692,11 @@ public class MainActivity extends CommonActivity
      * @param noteId note ID
      */
     @Override
-    public void onNoteLongClick(NoteListFragment fragment, View view, int position, long noteId) {
+    public void onNoteLongClick(NoteListFragment fragment, View view, int position, long id, long noteId) {
         if (AppPreferences.isReverseNoteClickAction(this)) {
             openNote(fragment.getFragmentTag(), noteId);
         } else {
-            toggleNoteSelection(fragment, view, noteId);
+            toggleNoteSelection(fragment, view, id);
         }
     }
 

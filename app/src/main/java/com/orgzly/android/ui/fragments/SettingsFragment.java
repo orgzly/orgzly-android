@@ -50,7 +50,7 @@ public class SettingsFragment extends PreferenceFragment
 
     private static final String ARG_RESOURCE = "resource";
 
-    private static final @StringRes int[] REQUIRE_ACTIVITY_RESTART = new int [] {
+    private static final @StringRes int[] REQUIRE_ACTIVITY_RESTART = {
             R.string.pref_key_font_size,
             R.string.pref_key_color_scheme,
             R.string.pref_key_layout_direction
@@ -91,41 +91,30 @@ public class SettingsFragment extends PreferenceFragment
             addPreferencesFromResource(R.xml.preferences);
             setupMainPageSettings();
 
-        } else { // Sub-screen
-            int resourceId = getResourceId(resourceName);
-            if (resourceId == 0) {
-                throw new IllegalArgumentException("XML file " + resourceName + ".xml not found");
-            }
-            addPreferencesFromResource(resourceId);
+        } else if (resourceName.equals("preferences_org_mode_tags_indent")) {
+            addPreferencesFromResource(R.xml.preferences_org_mode_tags_indent);
+
+        } else if (resourceName.equals("preferences_auto_sync")) {
+            addPreferencesFromResource(R.xml.preferences_auto_sync);
         }
     }
 
-    private int getResourceId(String resourceName) {
-        return getResources().getIdentifier(resourceName, "xml", getContext().getPackageName());
-
-    }
     private void setupMainPageSettings() {
         mReposPreference = findPreference(getString(R.string.pref_key_repos));
 
         findPreference(getString(R.string.pref_key_clear_database))
-                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        if (mListener != null) {
-                            mListener.onDatabaseClearRequest();
-                        }
-                        return true;
+                .setOnPreferenceClickListener(preference -> {
+                    if (mListener != null) {
+                        mListener.onDatabaseClearRequest();
                     }
+                    return true;
                 });
         findPreference(getString(R.string.pref_key_reload_getting_started))
-                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        if (mListener != null) {
-                            mListener.onGettingStartedNotebookReloadRequest();
-                        }
-                        return true;
+                .setOnPreferenceClickListener(preference -> {
+                    if (mListener != null) {
+                        mListener.onGettingStartedNotebookReloadRequest();
                     }
+                    return true;
                 });
 
         setupVersionPreference();
@@ -149,15 +138,12 @@ public class SettingsFragment extends PreferenceFragment
         versionPreference.setSummary(BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_SUFFIX);
 
         /* Display changelog dialog when version is clicked. */
-        versionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (mListener != null) {
-                    mListener.onWhatsNewDisplayRequest();
-                }
-
-                return true;
+        versionPreference.setOnPreferenceClickListener(preference -> {
+            if (mListener != null) {
+                mListener.onWhatsNewDisplayRequest();
             }
+
+            return true;
         });
     }
 
@@ -171,7 +157,7 @@ public class SettingsFragment extends PreferenceFragment
          * Set fragment's background.
          */
         if (view != null) {
-            int[] textSizeAttr = new int[] { R.attr.item_book_card_bg_color};
+            int[] textSizeAttr = { R.attr.item_book_card_bg_color};
             TypedArray typedArray = view.getContext().obtainStyledAttributes(textSizeAttr);
             int color = typedArray.getColor(0, -1);
             typedArray.recycle();

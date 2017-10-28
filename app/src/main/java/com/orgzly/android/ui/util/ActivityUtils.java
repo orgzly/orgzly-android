@@ -19,7 +19,6 @@ import android.view.inputmethod.InputMethodManager;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.ui.MainActivity;
-import com.orgzly.android.ui.fragments.AutoSyncSettingsFragment;
 import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
@@ -110,11 +109,6 @@ public class ActivityUtils {
                 fabAttr = 0;
 
             } else if (ReposFragment.FRAGMENT_TAG.equals(fragmentTag)) {
-                statusBarAttr = R.attr.status_bar_in_settings;
-                actionBarAttr = R.attr.action_bar_in_settings;
-                fabAttr = 0;
-
-            } else if (AutoSyncSettingsFragment.FRAGMENT_TAG.equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_in_settings;
                 actionBarAttr = R.attr.action_bar_in_settings;
                 fabAttr = 0;
