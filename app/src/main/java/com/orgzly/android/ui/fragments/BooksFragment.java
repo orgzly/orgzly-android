@@ -33,6 +33,7 @@ import com.orgzly.android.BookAction;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.BooksClient;
+import com.orgzly.android.provider.views.DbBookViewColumns;
 import com.orgzly.android.ui.Fab;
 import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.Loaders;
@@ -205,8 +206,7 @@ public class BooksFragment extends ListFragment
                 ProviderContract.Books.Param.SYNCED_ROOK_MTIME,
                 ProviderContract.Books.Param.USED_ENCODING,
                 ProviderContract.Books.Param.DETECTED_ENCODING,
-                ProviderContract.Books.Param.SELECTED_ENCODING,
-                ProviderContract.Books.Param.NOTES_COUNT,
+                ProviderContract.Books.Param.SELECTED_ENCODING
         };
 
         /* Views which the data will be bound to. */
@@ -223,8 +223,7 @@ public class BooksFragment extends ListFragment
                 R.id.item_book_synced_mtime,
                 R.id.item_book_encoding_used,
                 R.id.item_book_encoding_detected,
-                R.id.item_book_encoding_selected,
-                R.id.item_book_notes_count,
+                R.id.item_book_encoding_selected
         };
 
         adapter = new SimpleCursorAdapter(getActivity(), R.layout.item_book, null, columns, to, 0) {
@@ -243,7 +242,8 @@ public class BooksFragment extends ListFragment
                 View usedEncodingContainer;
                 View detectedEncodingContainer;
                 View selectedEncodingContainer;
-                View notesCountContainer;
+                TextView noteCount;
+                View noteCountContainer;
                 TextView lastAction;
                 TextView subTitle;
                 TextView mtime;
@@ -272,7 +272,8 @@ public class BooksFragment extends ListFragment
                     holder.usedEncodingContainer = view.findViewById(R.id.item_book_encoding_used_container);
                     holder.detectedEncodingContainer = view.findViewById(R.id.item_book_encoding_detected_container);
                     holder.selectedEncodingContainer = view.findViewById(R.id.item_book_encoding_selected_container);
-                    holder.notesCountContainer = view.findViewById(R.id.item_book_notes_count_container);
+                    holder.noteCount = (TextView) view.findViewById(R.id.item_book_note_count);
+                    holder.noteCountContainer = view.findViewById(R.id.item_book_note_count_container);
                     view.setTag(holder);
                 }
 
@@ -348,7 +349,15 @@ public class BooksFragment extends ListFragment
                     view.setAlpha(1);
                 }
 
-                placer.displayDetailByCondition(holder.notesCountContainer, isPreferenceActivated(R.string.pref_value_book_details_notes_count, context));
+                placer.displayDetailByCondition(holder.noteCountContainer, isPreferenceActivated(R.string.pref_value_book_details_notes_count, context));
+
+                /* Set notes count. For some reason, there are crashes reported here and there
+                 * for some users if NOTES_COUNT is included in SimpleCursorAdapter's column list.
+                 */
+                int noteCount = cursor.getInt(cursor.getColumnIndexOrThrow(DbBookViewColumns.NOTES_COUNT));
+                holder.noteCount.setText(noteCount > 0 ?
+                        getResources().getQuantityString(R.plurals.notes_count_nonzero, noteCount, noteCount) :
+                        getString(R.string.notes_count_zero));
 
                 /*
                  * Add some vertical spacing if at least one of the notebook details is displayed.
@@ -476,15 +485,6 @@ public class BooksFragment extends ListFragment
                         }
                         break;
 
-                    case R.id.item_book_notes_count:
-                        if (hasData) {
-                            int notesAmount = cursor.getInt(columnIndex);
-                            viewContent = notesAmount > 0 ?
-                                    getResources().getQuantityString(R.plurals.notes_count_nonzero, notesAmount, notesAmount) :
-                                    getString(R.string.notes_count_zero);
-                        }
-                        break;
-
                     default:
                         return false;
                 }
@@ -502,10 +502,10 @@ public class BooksFragment extends ListFragment
 
     private String timeString(long ts) {
         int flags = DateUtils.FORMAT_SHOW_DATE |
-                    DateUtils.FORMAT_SHOW_TIME |
-                    DateUtils.FORMAT_ABBREV_MONTH |
-                    DateUtils.FORMAT_SHOW_WEEKDAY |
-                    DateUtils.FORMAT_ABBREV_WEEKDAY;
+                DateUtils.FORMAT_SHOW_TIME |
+                DateUtils.FORMAT_ABBREV_MONTH |
+                DateUtils.FORMAT_SHOW_WEEKDAY |
+                DateUtils.FORMAT_ABBREV_WEEKDAY;
 
         return DateUtils.formatDateTime(getContext(), ts, flags);
     }
