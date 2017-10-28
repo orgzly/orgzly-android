@@ -97,7 +97,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         RelativeLayout.LayoutParams payloadParams = (RelativeLayout.LayoutParams) holder.payload.getLayoutParams();
         payloadParams.setMargins(payloadParams.leftMargin, margins[0], payloadParams.rightMargin, 0);
 
-        LinearLayout.LayoutParams[] params = new LinearLayout.LayoutParams[] {
+        LinearLayout.LayoutParams[] params = {
                 (LinearLayout.LayoutParams) holder.scheduled.getLayoutParams(),
                 (LinearLayout.LayoutParams) holder.deadline.getLayoutParams(),
                 (LinearLayout.LayoutParams) holder.closed.getLayoutParams(),

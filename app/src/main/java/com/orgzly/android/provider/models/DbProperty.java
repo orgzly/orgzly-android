@@ -9,7 +9,7 @@ import com.orgzly.android.provider.DatabaseUtils;
 public class DbProperty implements DbPropertyColumns, BaseColumns {
     public static final String TABLE = "properties";
 
-    public static final String[] CREATE_SQL = new String[] {
+    public static final String[] CREATE_SQL = {
             "CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 

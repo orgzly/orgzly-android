@@ -50,7 +50,7 @@ public class SettingsFragment extends PreferenceFragment
 
     private static final String ARG_RESOURCE = "resource";
 
-    private static final @StringRes int[] REQUIRE_ACTIVITY_RESTART = new int [] {
+    private static final @StringRes int[] REQUIRE_ACTIVITY_RESTART = {
             R.string.pref_key_font_size,
             R.string.pref_key_color_scheme,
             R.string.pref_key_layout_direction
@@ -157,7 +157,7 @@ public class SettingsFragment extends PreferenceFragment
          * Set fragment's background.
          */
         if (view != null) {
-            int[] textSizeAttr = new int[] { R.attr.item_book_card_bg_color};
+            int[] textSizeAttr = { R.attr.item_book_card_bg_color};
             TypedArray typedArray = view.getContext().obtainStyledAttributes(textSizeAttr);
             int color = typedArray.getColor(0, -1);
             typedArray.recycle();

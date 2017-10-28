@@ -1160,7 +1160,7 @@ public class Provider extends ContentProvider {
         String notesSelection = DbNote._ID + " IN (" + ids + ") AND (" +
                                 DbNoteView.STATE + " IS NULL OR " + DbNoteView.STATE + " != ?)";
 
-        String[] selectionArgs = new String[] { targetState };
+        String[] selectionArgs = { targetState };
 
         /* Select notebooks which will be affected. */
         String booksSelection = DbBook._ID + " IN (SELECT DISTINCT " +

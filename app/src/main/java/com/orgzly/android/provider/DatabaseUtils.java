@@ -17,8 +17,8 @@ import com.orgzly.android.util.LogUtils;
 public class DatabaseUtils {
     private static final String TAG = DatabaseUtils.class.getName();
 
-    public static final String[] PROJECTION_FOR_ID = new String[] { "_id" };
-    public static final String[] PROJECTION_FOR_COUNT = new String[] { "count(*)" };
+    public static final String[] PROJECTION_FOR_ID = { "_id" };
+    public static final String[] PROJECTION_FOR_COUNT = { "count(*)" };
 
     public static final String WHERE_EXISTING_NOTES = "(" +
                                                       DbNote.IS_CUT + " = 0" + " AND " +

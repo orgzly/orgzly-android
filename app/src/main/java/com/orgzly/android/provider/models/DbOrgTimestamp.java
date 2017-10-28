@@ -36,7 +36,7 @@ public class DbOrgTimestamp implements DbOrgTimestampColumns, BaseColumns {
     public static final int DELAY_TYPE_ALL = 1;
     public static final int DELAY_TYPE_FIRST_ONLY = 2;
 
-    public static final String[] CREATE_SQL = new String[] {
+    public static final String[] CREATE_SQL = {
             "CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 

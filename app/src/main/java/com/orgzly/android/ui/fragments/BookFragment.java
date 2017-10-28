@@ -74,7 +74,7 @@ public class BookFragment extends NoteListFragment
 
     private static final int STATE_ITEM_GROUP = 1;
 
-    private static final int[] ITEMS_HIDDEN_ON_MULTIPLE_SELECTED_NOTES = new int[] {
+    private static final int[] ITEMS_HIDDEN_ON_MULTIPLE_SELECTED_NOTES = {
             R.id.book_cab_new,
             R.id.book_cab_cut,
             R.id.book_cab_paste,

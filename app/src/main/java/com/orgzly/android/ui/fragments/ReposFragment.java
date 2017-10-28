@@ -133,12 +133,12 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
 
     private void setupAdapter() {
         /* Column field names to be bound. */
-        String[] columns = new String[] {
+        String[] columns = {
                 ProviderContract.Repos.Param.REPO_URL
         };
 
         /* Views which the data will be bound to. */
-        int[] to = new int[] {
+        int[] to = {
                 R.id.item_repo_url
         };
 

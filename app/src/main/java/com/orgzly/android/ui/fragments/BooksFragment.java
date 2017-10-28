@@ -192,7 +192,7 @@ public class BooksFragment extends ListFragment
         SimpleCursorAdapter adapter;
 
         /* Column field names to be bound. */
-        String[] columns = new String[]{
+        String[] columns = {
                 ProviderContract.Books.Param.NAME,
                 ProviderContract.Books.Param.NAME,
                 ProviderContract.Books.Param.MTIME,
@@ -210,7 +210,7 @@ public class BooksFragment extends ListFragment
         };
 
         /* Views which the data will be bound to. */
-        int[] to = new int[]{
+        int[] to = {
                 R.id.item_book_title,
                 R.id.item_book_subtitle,
                 R.id.item_book_mtime,

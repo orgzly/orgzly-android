@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
 public class DbBookLink implements DbBookLinkColumns, BaseColumns {
     public static final String TABLE = "book_links";
 
-    public static final String[] CREATE_SQL = new String[] {
+    public static final String[] CREATE_SQL = {
             "CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             BOOK_ID + " INTEGER," +

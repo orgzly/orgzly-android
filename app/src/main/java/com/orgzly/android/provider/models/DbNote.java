@@ -21,7 +21,7 @@ import java.util.List;
 public class DbNote implements DbNoteColumns, BaseColumns {
     public static final String TABLE = "notes";
 
-    public static final String[] CREATE_SQL = new String[] {
+    public static final String[] CREATE_SQL = {
             "CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 
@@ -67,7 +67,7 @@ public class DbNote implements DbNoteColumns, BaseColumns {
     };
 
     public static final String DROP_SQL = "DROP TABLE IF EXISTS " + TABLE;
-    public static String[] POSITION_PROJECTION = new String[] {
+    public static String[] POSITION_PROJECTION = {
             BOOK_ID,
             LEVEL,
             LFT,

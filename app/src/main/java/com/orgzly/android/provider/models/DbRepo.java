@@ -12,7 +12,7 @@ import com.orgzly.android.provider.DatabaseUtils;
 public class DbRepo implements DbRepoColumns, BaseColumns {
     public static final String TABLE = "repos";
 
-    public static final String[] CREATE_SQL = new String[] {
+    public static final String[] CREATE_SQL = {
             "CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             REPO_URL + " TEXT NOT NULL, " +

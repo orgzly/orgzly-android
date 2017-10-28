@@ -588,7 +588,7 @@ public class AgendaFragment extends NoteListFragment
         public static String IS_SEPARATOR = "is_separator";
         public static String AGENDA_DAY = "day";
 
-        private static final String[] AGENDA_SEPARATOR_COLS = new String[]{
+        private static final String[] AGENDA_SEPARATOR_COLS = {
                 Columns._ID,
                 Columns.AGENDA_DAY,
                 Columns.IS_SEPARATOR
