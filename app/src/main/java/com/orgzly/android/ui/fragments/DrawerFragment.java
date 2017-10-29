@@ -319,16 +319,14 @@ public class DrawerFragment extends ListFragment
 
         mListAdapter.clear();
 
-        mListAdapter.add(filtersHeader);
+        mListAdapter.add(agendaHeader);
 
+        mListAdapter.add(filtersHeader);
         for (DrawerItem item: filters) {
             mListAdapter.add(item);
         }
 
-        mListAdapter.add(agendaHeader);
-
         mListAdapter.add(booksHeader);
-
         for (DrawerItem item: books) {
             mListAdapter.add(item);
         }
