@@ -1,5 +1,7 @@
 package com.orgzly.android.provider.views;
 
+import android.provider.BaseColumns;
+
 import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.GenericDatabaseUtils;
 import com.orgzly.android.provider.models.DbBook;
@@ -17,7 +19,7 @@ import static com.orgzly.android.provider.GenericDatabaseUtils.field;
 /**
  * Books with link's data.
  */
-public class DbBookView implements DbBookColumns, DbBookViewColumns {
+public class DbBookView implements BaseColumns, DbBookColumns, DbBookViewColumns {
     public static final String VIEW_NAME = "books_view";
 
     public static final String DROP_SQL = "DROP VIEW IF EXISTS " + VIEW_NAME;
@@ -52,4 +54,29 @@ public class DbBookView implements DbBookColumns, DbBookViewColumns {
             GenericDatabaseUtils.join(DbNote.TABLE, "t_notes", DbNote.BOOK_ID, DbBook.TABLE, DbBook._ID) + " AND " + DatabaseUtils.WHERE_EXISTING_NOTES +
 
             " GROUP BY " + field(DbBook.TABLE, DbBook._ID);
+
+    public static final String[] PROJECTION = {
+            _ID,
+            NAME,
+            TITLE,
+            MTIME,
+            IS_DUMMY,
+            IS_DELETED,
+            PREFACE,
+            IS_INDENTED,
+            USED_ENCODING,
+            DETECTED_ENCODING,
+            SELECTED_ENCODING,
+            SYNC_STATUS,
+            LAST_ACTION_TIMESTAMP,
+            LAST_ACTION_TYPE,
+            LAST_ACTION,
+            LINK_REPO_URL,
+            LINK_ROOK_URL,
+            SYNCED_REPO_URL,
+            SYNCED_ROOK_URL,
+            SYNCED_ROOK_REVISION,
+            SYNCED_ROOK_MTIME,
+            NOTES_COUNT
+    };
 }
