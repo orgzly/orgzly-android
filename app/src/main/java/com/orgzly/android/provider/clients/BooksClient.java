@@ -352,7 +352,7 @@ public class BooksClient {
         return new CursorLoader(
                 context,
                 ProviderContract.Books.ContentUri.books(),
-                null,
+                DbBookView.PROJECTION,
                 null,
                 null,
                 getSortOrder(context));
