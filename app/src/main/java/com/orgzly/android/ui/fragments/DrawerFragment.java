@@ -103,9 +103,6 @@ public class DrawerFragment extends ListFragment
                 } else if (FiltersFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
                     selectedItem = filtersHeader;
 
-                } else if (SettingsFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
-                    selectedItem = settingsHeader;
-
                 /* Find by book ID. */
                 } else if (BookFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
                     Book book = ((BookFragment) fragment).getBook();

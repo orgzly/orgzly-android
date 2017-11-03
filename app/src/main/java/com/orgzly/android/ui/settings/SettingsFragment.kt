@@ -27,7 +27,7 @@ import java.util.*
 /**
  * Displays settings.
  */
-class NewSettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private var mReposPreference: Preference? = null
     private var mListener: NewSettingsFragmentListener? = null
@@ -349,16 +349,16 @@ class NewSettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPref
     }
 
     companion object {
-        private val TAG: String = NewSettingsFragment::class.java.name
+        private val TAG: String = SettingsFragment::class.java.name
 
-        val FRAGMENT_TAG: String = NewSettingsFragment::class.java.name
+        val FRAGMENT_TAG: String = SettingsFragment::class.java.name
 
         private val ARG_RESOURCE = "resource"
 
         @StringRes private val REQUIRE_ACTIVITY_RESTART = intArrayOf(R.string.pref_key_font_size, R.string.pref_key_color_scheme, R.string.pref_key_layout_direction)
 
-        fun getInstance(res: String? = null): NewSettingsFragment {
-            val fragment = NewSettingsFragment()
+        fun getInstance(res: String? = null): SettingsFragment {
+            val fragment = SettingsFragment()
 
             val args = Bundle()
             args.putString(ARG_RESOURCE, res)

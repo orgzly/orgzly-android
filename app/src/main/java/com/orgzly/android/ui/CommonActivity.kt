@@ -37,16 +37,18 @@ abstract class CommonActivity : AppCompatActivity() {
             when (intent.action) {
                 AppIntent.ACTION_DB_UPGRADE_STARTED ->
                     if (whatsNewDialog != null) {
-                        whatsNewDialog!!.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.running_database_update)
-                        whatsNewDialog!!.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = false
-                        whatsNewDialog!!.setCancelable(false)
+                        val dialog = whatsNewDialog as AlertDialog
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.running_database_update)
+                        dialog.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = false
+                        dialog.setCancelable(false)
                     }
 
                 AppIntent.ACTION_DB_UPGRADE_ENDED ->
                     if (whatsNewDialog != null) {
-                        whatsNewDialog!!.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.ok)
-                        whatsNewDialog!!.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = true
-                        whatsNewDialog!!.setCancelable(true)
+                        val dialog = whatsNewDialog as AlertDialog
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.ok)
+                        dialog.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = true
+                        dialog.setCancelable(true)
                     }
 
                 AppIntent.ACTION_BOOK_LOADED ->
@@ -66,8 +68,8 @@ abstract class CommonActivity : AppCompatActivity() {
         }
 
     private fun dismissSnackbar() {
-        if (snackbar != null) {
-            snackbar!!.dismiss()
+        snackbar?.let {
+            it.dismiss()
             snackbar = null
         }
     }
@@ -92,13 +94,13 @@ abstract class CommonActivity : AppCompatActivity() {
             (drawerLayout as DrawerLayout).closeDrawer(GravityCompat.START)
         }
 
-        snackbar = s
-
         /* Set background color from attribute. */
         val bgColor = snackbarBackgroundColor
-        snackbar!!.view.setBackgroundColor(bgColor)
+        s.view.setBackgroundColor(bgColor)
 
-        snackbar!!.show()
+        s.show()
+
+        snackbar = s
     }
 
     override fun onBackPressed() {
@@ -140,20 +142,20 @@ abstract class CommonActivity : AppCompatActivity() {
         super.onPause()
 
         /* Dismiss What's new dialog. */
-        if (whatsNewDialog != null) {
-            whatsNewDialog!!.dismiss()
+        whatsNewDialog?.let {
+            it.dismiss()
             whatsNewDialog = null
         }
     }
 
     protected fun displayWhatsNewDialog() {
-        if (whatsNewDialog != null) {
-            whatsNewDialog!!.dismiss()
-        }
+        whatsNewDialog?.dismiss()
 
-        whatsNewDialog = WhatsNewDialog.create(this)
-        whatsNewDialog!!.setOnDismissListener { dialog -> whatsNewDialog = null }
-        whatsNewDialog!!.show()
+        val dialog = WhatsNewDialog.create(this)
+        dialog.setOnDismissListener { _ -> whatsNewDialog = null }
+        dialog.show()
+
+        whatsNewDialog = dialog
     }
 
     override fun onDestroy() {
@@ -212,8 +214,8 @@ abstract class CommonActivity : AppCompatActivity() {
             AppPermissions.FOR_BOOK_EXPORT -> {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (actionAfterPermissionGrant != null) {
-                        actionAfterPermissionGrant!!.run()
+                    actionAfterPermissionGrant?.let {
+                        it.run()
                         actionAfterPermissionGrant = null
                     }
                 }

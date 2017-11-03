@@ -2,11 +2,8 @@ package com.orgzly.android.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +11,6 @@ import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -50,11 +46,9 @@ import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.provider.clients.ReposClient;
-import com.orgzly.android.reminders.ReminderService;
 import com.orgzly.android.repos.ContentRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
-import com.orgzly.android.ui.dialogs.WhatsNewDialog;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
@@ -63,7 +57,6 @@ import com.orgzly.android.ui.fragments.FilterFragment;
 import com.orgzly.android.ui.fragments.FiltersFragment;
 import com.orgzly.android.ui.fragments.NoteFragment;
 import com.orgzly.android.ui.fragments.NoteListFragment;
-import com.orgzly.android.ui.fragments.SettingsFragment;
 import com.orgzly.android.ui.fragments.SyncFragment;
 import com.orgzly.android.ui.settings.SettingsActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
@@ -92,13 +85,11 @@ public class MainActivity extends CommonActivity
         SimpleOneLinerDialog.SimpleOneLinerDialogListener,
         BookPrefaceFragment.EditorListener,
         NoteListFragment.NoteListFragmentListener,
-        SettingsFragment.SettingsFragmentListener,
         DrawerFragment.DrawerFragmentListener {
 
     public static final String TAG = MainActivity.class.getName();
 
     public static final int ACTIVITY_REQUEST_CODE_FOR_FILE_CHOOSER = 0;
-    public static final int ACTIVITY_REQUEST_CODE_FOR_SETTINGS = 1;
 
     private static final int DIALOG_NEW_BOOK = 1;
     private static final int DIALOG_IMPORT_BOOK = 5;
@@ -551,9 +542,7 @@ public class MainActivity extends CommonActivity
                 return true;
 
             case R.id.activity_action_settings:
-                startActivityForResult(
-                        new Intent(this, SettingsActivity.class),
-                        ACTIVITY_REQUEST_CODE_FOR_SETTINGS);
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
 
             default:
@@ -576,8 +565,6 @@ public class MainActivity extends CommonActivity
                     mImportChosenBook = bundle;
                 }
                 break;
-
-            case ACTIVITY_REQUEST_CODE_FOR_SETTINGS:
         }
     }
 
@@ -851,20 +838,6 @@ public class MainActivity extends CommonActivity
         showSimpleSnackbarLong(message);
     }
 
-    @Override
-    public void onStateKeywordsPreferenceChanged() {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.todo_keywords_configuration_changed_dialog_title)
-                .setMessage(R.string.todo_keywords_configuration_changed_dialog_message)
-                .setPositiveButton(R.string.yes, (dialog, which) -> {
-                    Intent intent = new Intent(MainActivity.this, ActionService.class);
-                    intent.setAction(AppIntent.ACTION_REPARSE_NOTES);
-                    startService(intent);
-                })
-                .setNegativeButton(R.string.not_now, null)
-                .show();
-    }
-
     /**
      * Ask user to confirm, then delete book.
      */
@@ -1134,57 +1107,6 @@ public class MainActivity extends CommonActivity
                 Intent.createChooser(intent, getString(R.string.import_org_file)),
                 ACTIVITY_REQUEST_CODE_FOR_FILE_CHOOSER);
     }
-
-    @Override
-    public void onGettingStartedNotebookReloadRequest() {
-        Intent intent = new Intent(this, ActionService.class);
-        intent.setAction(AppIntent.ACTION_IMPORT_GETTING_STARTED_NOTEBOOK);
-        startService(intent);
-    }
-
-    @Override
-    public void onWhatsNewDisplayRequest() {
-        displayWhatsNewDialog();
-    }
-
-    @Override
-    public void onPreferenceScreen(String resource) {
-        mDisplayManager.displaySettings(resource);
-    }
-
-    /**
-     * Wipe database, after prompting user to confirm.
-     */
-    @Override
-    public void onDatabaseClearRequest() {
-        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
-            switch (which){
-                case DialogInterface.BUTTON_POSITIVE:
-                    mDisplayManager.clear();
-
-                    Intent intent = new Intent(MainActivity.this, ActionService.class);
-                    intent.setAction(AppIntent.ACTION_CLEAR_DATABASE);
-                    startService(intent);
-
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    break;
-            }
-        };
-
-        new AlertDialog.Builder(this)
-                .setTitle("Database")
-                .setMessage(R.string.clear_database_dialog_message)
-                .setPositiveButton(R.string.ok, dialogClickListener)
-                .setNegativeButton(R.string.cancel, dialogClickListener)
-                .show();
-    }
-
-//    @Override
-//    public void onRepoSettingsRequest() {
-//        mDisplayManager.reposSettingsRequest();
-//    }
 
     /**
      * Prompt user for book name and then create it.
@@ -1544,7 +1466,7 @@ public class MainActivity extends CommonActivity
                     mDisplayManager.displayFilters();
 
                 } else if (item instanceof DrawerFragment.SettingsItem) {
-                    mDisplayManager.displaySettings();
+                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 
                 } else if (item instanceof DrawerFragment.BookItem) {
                     long bookId = ((DrawerFragment.BookItem) item).id;

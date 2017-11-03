@@ -17,7 +17,7 @@ import com.orgzly.android.ui.fragments.FilterFragment;
 import com.orgzly.android.ui.fragments.FiltersFragment;
 import com.orgzly.android.ui.fragments.NoteFragment;
 import com.orgzly.android.ui.fragments.QueryFragment;
-import com.orgzly.android.ui.fragments.SettingsFragment;
+import com.orgzly.android.ui.settings.SettingsFragment;
 import com.orgzly.android.util.LogUtils;
 
 public class DisplayManager {
@@ -187,38 +187,14 @@ public class DisplayManager {
                 .commit();
     }
 
-//    private void displayReposSettings() {
-//        Fragment fragment = ReposFragment.getInstance();
-//
-//        mFragmentManager
-//                .beginTransaction()
-//                .setTransition(FRAGMENT_TRANSITION)
-//                .addToBackStack(null)
-//                .replace(R.id.single_pane_container, fragment, ReposFragment.FRAGMENT_TAG)
-//                .commit();
-//    }
-
-    public void displaySettings() {
-        displaySettings(null);
-    }
-
     public void displaySettings(String resource) {
-        /* Check if settings fragment using the same resource is already displayed. */
-        Fragment f = isFragmentDisplayed(SettingsFragment.FRAGMENT_TAG);
-        if (f != null) {
-            SettingsFragment settingsFragment = (SettingsFragment) f;
-            if (settingsFragment.isForResource(resource)) {
-                return;
-            }
-        }
-
-        Fragment fragment = SettingsFragment.getInstance(resource);
+        Fragment fragment = SettingsFragment.Companion.getInstance(resource);
 
         mFragmentManager
                 .beginTransaction()
                 .setTransition(FRAGMENT_TRANSITION)
                 .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, SettingsFragment.FRAGMENT_TAG)
+                .replace(R.id.single_pane_container, fragment, SettingsFragment.Companion.getFRAGMENT_TAG())
                 .commit();
     }
 

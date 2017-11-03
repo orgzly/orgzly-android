@@ -27,7 +27,7 @@ import com.orgzly.android.ui.fragments.FiltersFragment;
 import com.orgzly.android.ui.fragments.NoteFragment;
 import com.orgzly.android.ui.fragments.QueryFragment;
 import com.orgzly.android.ui.fragments.ReposFragment;
-import com.orgzly.android.ui.fragments.SettingsFragment;
+import com.orgzly.android.ui.settings.SettingsFragment;
 import com.orgzly.android.util.LogUtils;
 
 /**
@@ -103,7 +103,7 @@ public class ActivityUtils {
             int actionBarAttr;
             int fabAttr;
 
-            if (SettingsFragment.FRAGMENT_TAG.equals(fragmentTag)) {
+            if (SettingsFragment.Companion.getFRAGMENT_TAG().equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_in_settings;
                 actionBarAttr = R.attr.action_bar_in_settings;
                 fabAttr = 0;

@@ -8,8 +8,7 @@ import com.orgzly.R
 import com.orgzly.android.ActionService
 import com.orgzly.android.AppIntent
 import com.orgzly.android.ui.CommonActivity
-import com.orgzly.android.ui.fragments.SettingsFragment
-import com.orgzly.android.ui.settings.NewSettingsFragment.NewSettingsFragmentListener
+import com.orgzly.android.ui.settings.SettingsFragment.NewSettingsFragmentListener
 import com.orgzly.android.ui.util.ActivityUtils
 
 
@@ -31,6 +30,9 @@ class SettingsActivity : CommonActivity(), NewSettingsFragmentListener {
                 .show()
     }
 
+    /**
+     * Wipe database, after prompting user for confirmation.
+     */
     override fun onDatabaseClearRequest() {
         AlertDialog.Builder(this)
                 .setTitle(R.string.clear_database)
@@ -52,7 +54,7 @@ class SettingsActivity : CommonActivity(), NewSettingsFragmentListener {
     }
 
     override fun onPreferenceScreen(resource: String) {
-        val fragment = NewSettingsFragment.getInstance(resource)
+        val fragment = SettingsFragment.getInstance(resource)
 
         supportFragmentManager
                 .beginTransaction()
@@ -77,7 +79,7 @@ class SettingsActivity : CommonActivity(), NewSettingsFragmentListener {
         ActivityUtils.setColorsForFragment(this, SettingsFragment.FRAGMENT_TAG)
 
         if (savedInstanceState == null) {
-            val fragment = NewSettingsFragment.getInstance()
+            val fragment = SettingsFragment.getInstance()
 
             supportFragmentManager
                     .beginTransaction()
