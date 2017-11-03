@@ -126,30 +126,6 @@ public class MainActivity extends CommonActivity
     private ActionMode mActionMode;
     private boolean mPromoteDemoteOrMoveRequested = false;
 
-    // private Dialog mTooltip;
-    private AlertDialog mWhatsNewDialog;
-
-    private BroadcastReceiver dbUpgradeStartedReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (mWhatsNewDialog != null) {
-                mWhatsNewDialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.running_database_update);
-                mWhatsNewDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
-                mWhatsNewDialog.setCancelable(false);
-            }
-        }
-    };
-
-    private BroadcastReceiver dbUpgradeEndedReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (mWhatsNewDialog != null) {
-                mWhatsNewDialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.ok);
-                mWhatsNewDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
-                mWhatsNewDialog.setCancelable(true);
-            }
-        }
-    };
 
     private Bundle mImportChosenBook = null;
 
@@ -158,11 +134,6 @@ public class MainActivity extends CommonActivity
     protected void onCreate(Bundle savedInstanceState) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onCreate(savedInstanceState);
-
-        LocalBroadcastManager.getInstance(this)
-                .registerReceiver(dbUpgradeStartedReceiver, new IntentFilter(AppIntent.ACTION_DB_UPGRADE_STARTED));
-        LocalBroadcastManager.getInstance(this)
-                .registerReceiver(dbUpgradeEndedReceiver, new IntentFilter(AppIntent.ACTION_DB_UPGRADE_ENDED));
 
         /*
          * Set defaults.
@@ -383,7 +354,7 @@ public class MainActivity extends CommonActivity
                 mIsDrawerOpen = true;
             }
 
-            onWhatsNewDisplayRequest();
+            displayWhatsNewDialog();
         }
     }
 
@@ -411,21 +382,12 @@ public class MainActivity extends CommonActivity
     protected void onPause() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onPause();
-
-        /* Dismiss What's new dialog. */
-        if (mWhatsNewDialog != null) {
-            mWhatsNewDialog.dismiss();
-            mWhatsNewDialog = null;
-        }
     }
 
     @Override
     protected void onDestroy() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onDestroy();
-
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(dbUpgradeStartedReceiver);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(dbUpgradeEndedReceiver);
 
         if (mDrawerLayout != null && mDrawerToggle != null) {
             mDrawerLayout.removeDrawerListener(mDrawerToggle);
@@ -1183,20 +1145,7 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onWhatsNewDisplayRequest() {
-        if (mWhatsNewDialog != null) {
-            mWhatsNewDialog.dismiss();
-        }
-
-        mWhatsNewDialog = WhatsNewDialog.create(this);
-
-        mWhatsNewDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                mWhatsNewDialog = null;
-            }
-        });
-
-        mWhatsNewDialog.show();
+        displayWhatsNewDialog();
     }
 
     @Override

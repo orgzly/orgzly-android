@@ -1,6 +1,10 @@
 package com.orgzly.android.ui;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
@@ -16,21 +20,46 @@ import android.view.View;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.prefs.AppPreferences;
+import com.orgzly.android.ui.dialogs.WhatsNewDialog;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
 
 /**
- * Ash nazg durbatulûk, ash nazg gimbatul,
- * ash nazg thrakatulûk agh burzum-ishi krimpatul.
- *
- * ("Extended by all activities.")
+ * Inherited by every activity in the app.
  */
-public class CommonActivity extends AppCompatActivity {
+public abstract class CommonActivity extends AppCompatActivity {
     private static final String TAG = CommonActivity.class.getName();
 
-    protected Snackbar snackbar;
+    private Snackbar snackbar;
+
+    private AlertDialog whatsNewDialog;
+
+    private BroadcastReceiver dbUpgradeStartedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (whatsNewDialog != null) {
+                whatsNewDialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.running_database_update);
+                whatsNewDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
+                whatsNewDialog.setCancelable(false);
+            }
+        }
+    };
+
+    private BroadcastReceiver dbUpgradeEndedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (whatsNewDialog != null) {
+                whatsNewDialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.ok);
+                whatsNewDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
+                whatsNewDialog.setCancelable(true);
+            }
+        }
+    };
+
+    protected Runnable actionAfterPermissionGrant;
 
     private void dismissSnackbar() {
         if (snackbar != null) {
@@ -106,6 +135,39 @@ public class CommonActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(dbUpgradeStartedReceiver, new IntentFilter(AppIntent.ACTION_DB_UPGRADE_STARTED));
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(dbUpgradeEndedReceiver, new IntentFilter(AppIntent.ACTION_DB_UPGRADE_ENDED));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        /* Dismiss What's new dialog. */
+        if (whatsNewDialog != null) {
+            whatsNewDialog.dismiss();
+            whatsNewDialog = null;
+        }
+    }
+
+    protected void displayWhatsNewDialog() {
+        if (whatsNewDialog != null) {
+            whatsNewDialog.dismiss();
+        }
+
+        whatsNewDialog = WhatsNewDialog.create(this);
+        whatsNewDialog.setOnDismissListener(dialog -> whatsNewDialog = null);
+        whatsNewDialog.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(dbUpgradeStartedReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(dbUpgradeEndedReceiver);
     }
 
     private void setupLayoutDirection() {
@@ -153,8 +215,6 @@ public class CommonActivity extends AppCompatActivity {
         }
     }
 
-    protected Runnable actionAfterPermissionGrant;
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -169,12 +229,6 @@ public class CommonActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "");
     }
 
     public void popBackStackAndCloseKeyboard() {

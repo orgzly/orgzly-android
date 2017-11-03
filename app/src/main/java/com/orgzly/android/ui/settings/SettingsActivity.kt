@@ -4,8 +4,13 @@ import android.os.Bundle
 import android.view.MenuItem
 import com.orgzly.R
 import com.orgzly.android.ui.CommonActivity
+import com.orgzly.android.ui.settings.NewSettingsFragment.NewSettingsFragmentListener
 
-class SettingsActivity : CommonActivity(), NewSettingsFragment.NewSettingsFragmentListener {
+class SettingsActivity : CommonActivity(), NewSettingsFragmentListener {
+    override fun onWhatsNewDisplayRequest() {
+        displayWhatsNewDialog()
+    }
+
     override fun onStateKeywordsPreferenceChanged() {
         TODO("not implemented")
     }
@@ -15,10 +20,6 @@ class SettingsActivity : CommonActivity(), NewSettingsFragment.NewSettingsFragme
     }
 
     override fun onGettingStartedNotebookReloadRequest() {
-        TODO("not implemented")
-    }
-
-    override fun onWhatsNewDisplayRequest() {
         TODO("not implemented")
     }
 
