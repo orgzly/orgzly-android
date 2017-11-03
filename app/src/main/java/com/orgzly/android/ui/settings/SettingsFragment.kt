@@ -30,21 +30,12 @@ import java.util.*
 class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private var mReposPreference: Preference? = null
-    private var mListener: NewSettingsFragmentListener? = null
-
-    fun isForResource(resource: String?): Boolean {
-        val thisResource = arguments.getString(ARG_RESOURCE)
-        return if (resource == null) thisResource == null else resource == thisResource
-    }
-
+    private var mListener: SettingsFragmentListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         addPreferencesFromResource()
-
-        /* Receive onCreateOptionsMenu() call, to remove search menu item. */
-        setHasOptionsMenu(true)
     }
 
     private fun addPreferencesFromResource() {
@@ -64,17 +55,13 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         mReposPreference = findPreference(getString(R.string.pref_key_repos))
 
         findPreference(getString(R.string.pref_key_clear_database))
-                .setOnPreferenceClickListener { preference ->
-                    if (mListener != null) {
-                        mListener!!.onDatabaseClearRequest()
-                    }
+                .setOnPreferenceClickListener { _ ->
+                    mListener?.onDatabaseClearRequest()
                     true
                 }
         findPreference(getString(R.string.pref_key_reload_getting_started))
-                .setOnPreferenceClickListener { preference ->
-                    if (mListener != null) {
-                        mListener!!.onGettingStartedNotebookReloadRequest()
-                    }
+                .setOnPreferenceClickListener { _ ->
+                    mListener?.onGettingStartedNotebookReloadRequest()
                     true
                 }
 
@@ -99,11 +86,8 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         versionPreference.summary = BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_SUFFIX
 
         /* Display changelog dialog when version is clicked. */
-        versionPreference.setOnPreferenceClickListener { preference ->
-            if (mListener != null) {
-                mListener!!.onWhatsNewDisplayRequest()
-            }
-
+        versionPreference.setOnPreferenceClickListener { _ ->
+            mListener?.onWhatsNewDisplayRequest()
             true
         }
     }
@@ -132,11 +116,9 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
          */
         if (view != null) {
             val list = view.findViewById(android.R.id.list) as ListView
-            if (list != null) {
-                val h = resources.getDimension(R.dimen.fragment_horizontal_padding).toInt()
-                val v = resources.getDimension(R.dimen.fragment_vertical_padding).toInt()
-                list.setPadding(h, v, h, v)
-            }
+            val h = resources.getDimension(R.dimen.fragment_horizontal_padding).toInt()
+            val v = resources.getDimension(R.dimen.fragment_vertical_padding).toInt()
+            list.setPadding(h, v, h, v)
         }
 
         return view
@@ -145,7 +127,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        mListener = activity as NewSettingsFragmentListener
+        mListener = activity as SettingsFragmentListener
     }
 
     override fun onResume() {
@@ -194,17 +176,6 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     }
 
     /**
-     * Callback for options menu.
-     */
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        /*
-         * Clear the menu. We want new SettingsActivity anyway,
-         * to remove as much code from MainActivity as possible.
-         */
-        menu!!.clear()
-    }
-
-    /**
      * Called when a shared preference is modified in any way.
      * Used to update AppPreferences' static values and do any required post-settings-change work.
      */
@@ -225,9 +196,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
             /* Re-parse notes. */
             ActivityUtils.closeSoftKeyboard(activity)
 
-            if (mListener != null) {
-                mListener!!.onStateKeywordsPreferenceChanged()
-            }
+            mListener?.onStateKeywordsPreferenceChanged()
 
             setDefaultStateForNewNote()
         }
@@ -299,7 +268,9 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     }
 
     private fun updateOtherPreferencesForReminders() {
-        val remindersEnabled = (findPreference(getString(R.string.pref_key_use_reminders_for_scheduled_times)) as CheckBoxPreference).isChecked || (findPreference(getString(R.string.pref_key_use_reminders_for_deadline_times)) as CheckBoxPreference).isChecked
+        val remindersEnabled =
+                (findPreference(getString(R.string.pref_key_use_reminders_for_scheduled_times)) as CheckBoxPreference).isChecked ||
+                (findPreference(getString(R.string.pref_key_use_reminders_for_deadline_times)) as CheckBoxPreference).isChecked
 
         findPreference(getString(R.string.pref_key_reminders_sound)).isEnabled = remindersEnabled
         findPreference(getString(R.string.pref_key_reminders_vibrate)).isEnabled = remindersEnabled
@@ -333,14 +304,16 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
     override fun onPreferenceTreeClick(preferenceScreen: PreferenceScreen?, preference: Preference): Boolean {
         super.onPreferenceTreeClick(preferenceScreen, preference)
+
         if (preference is PreferenceScreen) {
-            mListener!!.onPreferenceScreen(preference.getKey())
+            mListener?.onPreferenceScreen(preference.getKey())
             return true
         }
+
         return false
     }
 
-    interface NewSettingsFragmentListener {
+    interface SettingsFragmentListener {
         fun onStateKeywordsPreferenceChanged()
         fun onDatabaseClearRequest()
         fun onGettingStartedNotebookReloadRequest()

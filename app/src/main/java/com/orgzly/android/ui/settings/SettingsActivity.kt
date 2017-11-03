@@ -8,11 +8,11 @@ import com.orgzly.R
 import com.orgzly.android.ActionService
 import com.orgzly.android.AppIntent
 import com.orgzly.android.ui.CommonActivity
-import com.orgzly.android.ui.settings.SettingsFragment.NewSettingsFragmentListener
+import com.orgzly.android.ui.settings.SettingsFragment.SettingsFragmentListener
 import com.orgzly.android.ui.util.ActivityUtils
 
 
-class SettingsActivity : CommonActivity(), NewSettingsFragmentListener {
+class SettingsActivity : CommonActivity(), SettingsFragmentListener {
     override fun onWhatsNewDisplayRequest() {
         displayWhatsNewDialog()
     }

@@ -10,16 +10,18 @@ import com.orgzly.R;
 import com.orgzly.android.Book;
 import com.orgzly.android.SearchQuery;
 import com.orgzly.android.ui.fragments.AgendaFragment;
-import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
+import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
 import com.orgzly.android.ui.fragments.FilterFragment;
 import com.orgzly.android.ui.fragments.FiltersFragment;
 import com.orgzly.android.ui.fragments.NoteFragment;
 import com.orgzly.android.ui.fragments.QueryFragment;
-import com.orgzly.android.ui.settings.SettingsFragment;
 import com.orgzly.android.util.LogUtils;
 
+/**
+ * Manager for {@link MainActivity}'s fragments.
+ */
 public class DisplayManager {
     private static final String TAG = DisplayManager.class.getName();
 
@@ -184,17 +186,6 @@ public class DisplayManager {
                 .setTransition(FRAGMENT_TRANSITION)
                 .addToBackStack(null)
                 .replace(R.id.single_pane_container, fragment, QueryFragment.FRAGMENT_TAG)
-                .commit();
-    }
-
-    public void displaySettings(String resource) {
-        Fragment fragment = SettingsFragment.Companion.getInstance(resource);
-
-        mFragmentManager
-                .beginTransaction()
-                .setTransition(FRAGMENT_TRANSITION)
-                .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, SettingsFragment.Companion.getFRAGMENT_TAG())
                 .commit();
     }
 

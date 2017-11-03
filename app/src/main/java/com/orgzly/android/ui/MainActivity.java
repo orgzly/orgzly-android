@@ -20,7 +20,6 @@ import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +28,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -628,7 +626,7 @@ public class MainActivity extends CommonActivity
             if (fragment.getSelection().getCount() > 0) {
                 toggleNoteSelection(fragment, view, id);
             } else {
-                openNote(fragment.getFragmentTag(), noteId);
+                openNote(noteId);
             }
         }
     }
@@ -644,13 +642,13 @@ public class MainActivity extends CommonActivity
     @Override
     public void onNoteLongClick(NoteListFragment fragment, View view, int position, long id, long noteId) {
         if (AppPreferences.isReverseNoteClickAction(this)) {
-            openNote(fragment.getFragmentTag(), noteId);
+            openNote(noteId);
         } else {
             toggleNoteSelection(fragment, view, id);
         }
     }
 
-    private void openNote(String fragmentTag, long noteId) {
+    private void openNote(long noteId) {
         finishActionMode();
 
         // TODO: Avoid using Shelf from activity directly
@@ -714,16 +712,13 @@ public class MainActivity extends CommonActivity
         if (view != null) {
             showSnackbar(Snackbar
                     .make(view, R.string.message_note_created, MiscUtils.SNACKBAR_WITH_ACTION_DURATION)
-                    .setAction(R.string.new_below, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            NotePlace notePlace = new NotePlace(
-                                    note.getPosition().getBookId(),
-                                    note.getId(),
-                                    Place.BELOW);
+                    .setAction(R.string.new_below, v -> {
+                        NotePlace notePlace = new NotePlace(
+                                note.getPosition().getBookId(),
+                                note.getId(),
+                                Place.BELOW);
 
-                            mDisplayManager.displayNewNote(notePlace);
-                        }
+                        mDisplayManager.displayNewNote(notePlace);
                     }));
         }
 
@@ -854,20 +849,17 @@ public class MainActivity extends CommonActivity
         View view = View.inflate(this, R.layout.dialog_book_delete, null);
         final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
 
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case DialogInterface.BUTTON_POSITIVE:
-                        boolean deleteLinked = checkBox.isChecked();
+        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    boolean deleteLinked = checkBox.isChecked();
 
-                        /* Delete book. */
-                        mSyncFragment.deleteBook(book, deleteLinked);
-                        break;
+                    /* Delete book. */
+                    mSyncFragment.deleteBook(book, deleteLinked);
+                    break;
 
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        break;
-                }
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
             }
         };
 
@@ -900,17 +892,14 @@ public class MainActivity extends CommonActivity
 
         Uri originalLinkUri = book.getLink() != null ? book.getLink().getUri() : null;
 
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        doRenameBook(book, name.getText().toString(), nameInputLayout);
-                        break;
+        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    doRenameBook(book, name.getText().toString(), nameInputLayout);
+                    break;
 
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        break;
-                }
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
             }
         };
 
@@ -926,30 +915,17 @@ public class MainActivity extends CommonActivity
         final AlertDialog dialog = builder.create();
 
         /* Finish on keyboard action press. */
-        name.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-                return true;
-            }
+        name.setOnEditorActionListener((v, actionId, event) -> {
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            return true;
         });
 
 
         final Activity activity = this;
 
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                ActivityUtils.openSoftKeyboard(activity, name);
-            }
-        });
+        dialog.setOnShowListener(d -> ActivityUtils.openSoftKeyboard(activity, name));
 
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                ActivityUtils.closeSoftKeyboard(activity);
-            }
-        });
+        dialog.setOnDismissListener(d -> ActivityUtils.closeSoftKeyboard(activity));
 
         if (originalLinkUri != null) {
             name.addTextChangedListener(new TextWatcher() {
@@ -1025,25 +1001,22 @@ public class MainActivity extends CommonActivity
             }
         }
 
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        Shelf shelf = new Shelf(MainActivity.this);
-                        String repoUrl = (String) spinner.getSelectedItem();
+        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    Shelf shelf = new Shelf(MainActivity.this);
+                    String repoUrl = (String) spinner.getSelectedItem();
 
-                        if (getString(R.string.no_link).equals(repoUrl)) {
-                            shelf.setLink(book, null);
-                        } else {
-                            shelf.setLink(book, repoUrl);
-                        }
+                    if (getString(R.string.no_link).equals(repoUrl)) {
+                        shelf.setLink(book, null);
+                    } else {
+                        shelf.setLink(book, repoUrl);
+                    }
 
-                        break;
+                    break;
 
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        break;
-                }
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
             }
         };
 
@@ -1078,12 +1051,7 @@ public class MainActivity extends CommonActivity
      */
     @Override
     public void onBookExportRequest(final long bookId) {
-        setActionAfterPermissionGrant(new Runnable() {
-            @Override
-            public void run() {
-                mSyncFragment.exportBook(bookId);
-            }
-        });
+        setActionAfterPermissionGrant(() -> mSyncFragment.exportBook(bookId));
 
         /* Check for permissions. */
         boolean isGranted = AppPermissions.isGrantedOrRequest(this, AppPermissions.FOR_BOOK_EXPORT);
@@ -1171,13 +1139,10 @@ public class MainActivity extends CommonActivity
 
         if (view != null) {
             showSnackbar(Snackbar.make(view, msg, MiscUtils.SNACKBAR_WITH_ACTION_DURATION)
-                    .setAction(R.string.repositories, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setClass(MainActivity.this, ReposActivity.class);
-                            startActivity(intent);
-                        }
+                    .setAction(R.string.repositories, v -> {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setClass(MainActivity.this, ReposActivity.class);
+                        startActivity(intent);
                     }));
         }
     }
@@ -1456,29 +1421,26 @@ public class MainActivity extends CommonActivity
             mDrawerLayout.closeDrawer(GravityCompat.START);
         }
 
-        runDelayedAfterDrawerClose(new Runnable() {
-            @Override
-            public void run() {
-                if (item instanceof DrawerFragment.BooksItem) {
-                    mDisplayManager.displayBooks(true);
+        runDelayedAfterDrawerClose(() -> {
+            if (item instanceof DrawerFragment.BooksItem) {
+                mDisplayManager.displayBooks(true);
 
-                } else if (item instanceof DrawerFragment.FiltersItem) {
-                    mDisplayManager.displayFilters();
+            } else if (item instanceof DrawerFragment.FiltersItem) {
+                mDisplayManager.displayFilters();
 
-                } else if (item instanceof DrawerFragment.SettingsItem) {
-                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            } else if (item instanceof DrawerFragment.SettingsItem) {
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 
-                } else if (item instanceof DrawerFragment.BookItem) {
-                    long bookId = ((DrawerFragment.BookItem) item).id;
-                    mDisplayManager.displayBook(bookId, 0);
+            } else if (item instanceof DrawerFragment.BookItem) {
+                long bookId = ((DrawerFragment.BookItem) item).id;
+                mDisplayManager.displayBook(bookId, 0);
 
-                } else if (item instanceof DrawerFragment.FilterItem) {
-                    String query = ((DrawerFragment.FilterItem) item).query;
-                    mDisplayManager.displayQuery(query);
+            } else if (item instanceof DrawerFragment.FilterItem) {
+                String query = ((DrawerFragment.FilterItem) item).query;
+                mDisplayManager.displayQuery(query);
 
-                } else if (item instanceof DrawerFragment.AgendaItem) {
-                    mDisplayManager.displayAgenda();
-                }
+            } else if (item instanceof DrawerFragment.AgendaItem) {
+                mDisplayManager.displayAgenda();
             }
         });
     }
