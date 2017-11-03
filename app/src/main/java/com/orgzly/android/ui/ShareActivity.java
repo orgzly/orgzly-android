@@ -332,10 +332,6 @@ public class ShareActivity extends CommonActivity
     }
 
     @Override
-    public void onBookLoadFailed(Exception exception) {
-    }
-
-    @Override
     public void onBookSaved(Book book) {
     }
 
@@ -361,10 +357,6 @@ public class ShareActivity extends CommonActivity
 
     @Override
     public void onNotesNotPasted() {
-    }
-
-    @Override
-    public void onDatabaseCleared() {
     }
 
     @Override

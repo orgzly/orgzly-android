@@ -349,9 +349,9 @@ class NewSettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPref
     }
 
     companion object {
-        val TAG = NewSettingsFragment::class.java.name
+        private val TAG: String = NewSettingsFragment::class.java.name
 
-        val FRAGMENT_TAG = NewSettingsFragment::class.java.name
+        val FRAGMENT_TAG: String = NewSettingsFragment::class.java.name
 
         private val ARG_RESOURCE = "resource"
 

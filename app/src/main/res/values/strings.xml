@@ -136,6 +136,7 @@
     <string name="reload_getting_started">Import “Getting Started with Orgzly”</string>
     <string name="reload_getting_started_summary">Import the latest version of the notebook</string>
     <string name="getting_started_loaded">Notebook “Getting Started with Orgzly” loaded</string>
+    <string name="notebook_loaded">Notebook loaded</string>
 
     <string name="fragment_note_does_not_exist">This note does not exist any more.</string>
     <string name="fragment_filter_does_not_exist">This search does not exist any more.</string>

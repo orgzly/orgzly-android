@@ -37,6 +37,7 @@ import android.widget.TextView;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.ActionService;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.Book;
 import com.orgzly.android.BookName;
@@ -49,6 +50,7 @@ import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.provider.clients.ReposClient;
+import com.orgzly.android.reminders.ReminderService;
 import com.orgzly.android.repos.ContentRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
@@ -96,9 +98,7 @@ public class MainActivity extends CommonActivity
     public static final String TAG = MainActivity.class.getName();
 
     public static final int ACTIVITY_REQUEST_CODE_FOR_FILE_CHOOSER = 0;
-
-    private static final String GETTING_STARTED_NOTEBOOK_NAME = "Getting Started with Orgzly";
-    private static final int GETTING_STARTED_NOTEBOOK_RESOURCE_ID = R.raw.orgzly_getting_started;
+    public static final int ACTIVITY_REQUEST_CODE_FOR_SETTINGS = 1;
 
     private static final int DIALOG_NEW_BOOK = 1;
     private static final int DIALOG_IMPORT_BOOK = 5;
@@ -344,7 +344,9 @@ public class MainActivity extends CommonActivity
         if (isNewVersion) {
             /* Import Getting Started notebook. */
             if (! AppPreferences.isGettingStartedNotebookLoaded(this)) {
-                importGettingStartedNotebook();
+                Intent intent = new Intent(this, ActionService.class);
+                intent.setAction(AppIntent.ACTION_IMPORT_GETTING_STARTED_NOTEBOOK);
+                startService(intent);
                 /* This will be marked as done after book has been loaded in onBookLoaded(). */
             }
 
@@ -356,13 +358,6 @@ public class MainActivity extends CommonActivity
 
             displayWhatsNewDialog();
         }
-    }
-
-    private void importGettingStartedNotebook() {
-        mSyncFragment.loadBook(
-                GETTING_STARTED_NOTEBOOK_NAME,
-                getResources(),
-                GETTING_STARTED_NOTEBOOK_RESOURCE_ID);
     }
 
     private boolean checkIfNewAndUpdateVersion() {
@@ -556,8 +551,9 @@ public class MainActivity extends CommonActivity
                 return true;
 
             case R.id.activity_action_settings:
-//                mDisplayManager.displaySettings();
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivityForResult(
+                        new Intent(this, SettingsActivity.class),
+                        ACTIVITY_REQUEST_CODE_FOR_SETTINGS);
                 return true;
 
             default:
@@ -580,6 +576,8 @@ public class MainActivity extends CommonActivity
                     mImportChosenBook = bundle;
                 }
                 break;
+
+            case ACTIVITY_REQUEST_CODE_FOR_SETTINGS:
         }
     }
 
@@ -858,11 +856,10 @@ public class MainActivity extends CommonActivity
         new AlertDialog.Builder(this)
                 .setTitle(R.string.todo_keywords_configuration_changed_dialog_title)
                 .setMessage(R.string.todo_keywords_configuration_changed_dialog_message)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mSyncFragment.reParseNotes();
-                    }
+                .setPositiveButton(R.string.yes, (dialog, which) -> {
+                    Intent intent = new Intent(MainActivity.this, ActionService.class);
+                    intent.setAction(AppIntent.ACTION_REPARSE_NOTES);
+                    startService(intent);
                 })
                 .setNegativeButton(R.string.not_now, null)
                 .show();
@@ -1108,19 +1105,19 @@ public class MainActivity extends CommonActivity
      */
     @Override
     public void onBookExportRequest(final long bookId) {
-        actionAfterPermissionGrant = new Runnable() {
+        setActionAfterPermissionGrant(new Runnable() {
             @Override
             public void run() {
                 mSyncFragment.exportBook(bookId);
             }
-        };
+        });
 
         /* Check for permissions. */
         boolean isGranted = AppPermissions.isGrantedOrRequest(this, AppPermissions.FOR_BOOK_EXPORT);
 
         if (isGranted) {
-            actionAfterPermissionGrant.run();
-            actionAfterPermissionGrant = null;
+            getActionAfterPermissionGrant().run();
+            setActionAfterPermissionGrant(null);
         }
     }
 
@@ -1140,7 +1137,9 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onGettingStartedNotebookReloadRequest() {
-        importGettingStartedNotebook();
+        Intent intent = new Intent(this, ActionService.class);
+        intent.setAction(AppIntent.ACTION_IMPORT_GETTING_STARTED_NOTEBOOK);
+        startService(intent);
     }
 
     @Override
@@ -1158,18 +1157,19 @@ public class MainActivity extends CommonActivity
      */
     @Override
     public void onDatabaseClearRequest() {
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case DialogInterface.BUTTON_POSITIVE:
-                        mDisplayManager.clear();
-                        mSyncFragment.clearDatabase();
-                        break;
+        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    mDisplayManager.clear();
 
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        break;
-                }
+                    Intent intent = new Intent(MainActivity.this, ActionService.class);
+                    intent.setAction(AppIntent.ACTION_CLEAR_DATABASE);
+                    startService(intent);
+
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
             }
         };
 
@@ -1210,7 +1210,7 @@ public class MainActivity extends CommonActivity
         /* If it's Getting Started notebook, mark that it has been loaded in preferences,
          * so we don't try to load it again.
          */
-        if (book.getName().equals(GETTING_STARTED_NOTEBOOK_NAME)) {
+        if (book.getName().equals(ActionService.GETTING_STARTED_NOTEBOOK_NAME)) {
             /* If notebook was already previously loaded, user probably requested reload.
              * Display a message in that case.
              */
@@ -1220,10 +1220,6 @@ public class MainActivity extends CommonActivity
                 AppPreferences.isGettingStartedNotebookLoaded(this, true);
             }
         }
-    }
-
-    @Override
-    public void onBookLoadFailed(Exception exception) {
     }
 
     /**
@@ -1323,10 +1319,6 @@ public class MainActivity extends CommonActivity
                 exception.toString());
 
         showSimpleSnackbarLong(message);
-    }
-
-    @Override /* SyncFragment */
-    public void onDatabaseCleared() {
     }
 
     @Override

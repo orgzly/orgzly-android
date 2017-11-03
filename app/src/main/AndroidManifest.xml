@@ -131,9 +131,10 @@
         </provider>
 
 
-        <service android:name=".android.reminders.ReminderService" />
         <service android:name=".android.sync.SyncService" android:exported="true" />
+        <service android:name=".android.reminders.ReminderService" />
         <service android:name=".android.NotificationActionService" />
+        <service android:name=".android.ActionService" />
 
 
         <receiver android:name=".android.BootCompletedReceiver">
