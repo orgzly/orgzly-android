@@ -63,6 +63,7 @@ import com.orgzly.android.ui.fragments.NoteFragment;
 import com.orgzly.android.ui.fragments.NoteListFragment;
 import com.orgzly.android.ui.fragments.SettingsFragment;
 import com.orgzly.android.ui.fragments.SyncFragment;
+import com.orgzly.android.ui.settings.SettingsActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
@@ -593,8 +594,8 @@ public class MainActivity extends CommonActivity
                 return true;
 
             case R.id.activity_action_settings:
-                mDisplayManager.displaySettings();
-//                startActivity(new Intent(this, SettingsActivity.class));
+//                mDisplayManager.displaySettings();
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
 
             default:
