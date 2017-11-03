@@ -53,7 +53,6 @@ import com.orgzly.android.repos.ContentRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.dialogs.WhatsNewDialog;
-import com.orgzly.android.ui.fragments.AgendaFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
@@ -595,6 +594,7 @@ public class MainActivity extends CommonActivity
 
             case R.id.activity_action_settings:
                 mDisplayManager.displaySettings();
+//                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
 
             default:

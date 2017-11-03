@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     dexOptions {
@@ -110,6 +111,8 @@ dependencies {
 
     compile "joda-time:joda-time:$joda_time_version"
 
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
     compile "com.android.support:support-v4:$android_support_version"
     compile "com.android.support:appcompat-v7:$android_support_version"
     compile "com.android.support:cardview-v7:$android_support_version"
@@ -127,6 +130,10 @@ dependencies {
     androidTestCompile "com.android.support.test.uiautomator:uiautomator-v18:$android_test_uiautomator_version"
 
     androidTestCompile "de.sven-jacobs:loremipsum:$loremipsum_version"
+}
+
+repositories {
+    mavenCentral()
 }
 
 /*
