@@ -703,25 +703,27 @@ public class MainActivity extends CommonActivity
     private void openNote(String fragmentTag, long noteId) {
         finishActionMode();
 
-        /* Get book ID from note ID. */
         // TODO: Avoid using Shelf from activity directly
         Shelf shelf = new Shelf(this);
         Note note = shelf.getNote(noteId);
-        long bookId = note.getPosition().getBookId();
 
-        mDisplayManager.displayNote(bookId, noteId);
+        if (note != null) {
+            long bookId = note.getPosition().getBookId();
+            mDisplayManager.displayNote(bookId, noteId);
+        }
     }
 
     @Override
     public void onNoteScrollToRequest(long noteId) {
-        /* Get book ID from note ID. */
         // TODO: Avoid using Shelf from activity directly
         Shelf shelf = new Shelf(this);
         Note note = shelf.getNote(noteId);
-        long bookId = note.getPosition().getBookId();
 
-        mSyncFragment.sparseTree(bookId, noteId);
-        mDisplayManager.displayBook(bookId, noteId);
+        if (note != null) {
+            long bookId = note.getPosition().getBookId();
+            mSyncFragment.sparseTree(bookId, noteId);
+            mDisplayManager.displayBook(bookId, noteId);
+        }
     }
 
     /**

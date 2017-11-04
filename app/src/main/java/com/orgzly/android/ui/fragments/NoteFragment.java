@@ -599,13 +599,15 @@ public class NoteFragment extends Fragment
             }
 
         } else { /* Get existing note from database. */
-            // TODO: Cleanup: getNote(id, withProperties) or such
-            try {
-                mNote = mShelf.getNote(mNoteId);
+            mNote = mShelf.getNote(mNoteId);
+
+            if (mNote != null) {
+                // TODO: Cleanup: getNote(id, withProperties) or such
                 mNote.getHead().setProperties(mShelf.getNoteProperties(mNoteId));
+
                 mViewFlipper.setDisplayedChild(0);
-            } catch (NoSuchElementException e) {
-                mNote = null;
+
+            } else {
                 mViewFlipper.setDisplayedChild(1);
             }
         }

@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
+import android.util.Log;
+
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Note;
@@ -394,18 +396,21 @@ public class NotesClient {
 //        return pasted;
 //    }
 
-    // TODO: Don't throw Exception, return null?
+    /**
+     * Get {@link Note} by id
+     */
     public static Note getNote(Context context, long noteId) {
-        Cursor cursor = context.getContentResolver().query(ProviderContract.Notes.ContentUri.notes(), null, ProviderContract.Notes.QueryParam._ID + "=" + noteId, null, null);
+        Uri uri = ProviderContract.Notes.ContentUri.notes();
+        String selection = ProviderContract.Notes.QueryParam._ID + "=" + noteId;
+
         // TODO: Do not select all columns, especially not content if not required.
-        try {
-            if (cursor.moveToFirst()) {
+        try (Cursor cursor = context.getContentResolver().query(uri, null, selection, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
                 return fromCursor(cursor);
             } else {
-                throw new NoSuchElementException("Note with id " + noteId + " was not found in " + ProviderContract.Notes.ContentUri.notes());
+                Log.e(TAG, "Note with id " + noteId + " was not found in " + uri);
+                return null;
             }
-        } finally {
-            cursor.close();
         }
     }
 
