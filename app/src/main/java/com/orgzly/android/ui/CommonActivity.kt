@@ -20,6 +20,9 @@ import com.orgzly.android.ui.dialogs.WhatsNewDialog
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
+
 
 /**
  * Inherited by every activity in the app.
@@ -29,6 +32,8 @@ abstract class CommonActivity : AppCompatActivity() {
     private var snackbar: Snackbar? = null
 
     private var whatsNewDialog: AlertDialog? = null
+
+    private var restart = false
 
     private val actionReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -55,6 +60,16 @@ abstract class CommonActivity : AppCompatActivity() {
                     showSimpleSnackbarLong(R.string.notebook_loaded)
             }
         }
+    }
+
+    private val settingsChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key in PREFS_REQUIRE_ACTIVITY_RESTART.map { getString(it) }) {
+            requestActivityRestartForChangedSettings()
+        }
+    }
+
+    open fun requestActivityRestartForChangedSettings() {
+        restart = true
     }
 
     protected var actionAfterPermissionGrant: Runnable? = null
@@ -136,6 +151,18 @@ abstract class CommonActivity : AppCompatActivity() {
         intentFilter.addAction(AppIntent.ACTION_DB_UPGRADE_ENDED)
         intentFilter.addAction(AppIntent.ACTION_BOOK_LOADED)
         LocalBroadcastManager.getInstance(this).registerReceiver(actionReceiver, intentFilter)
+
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(settingsChangeListener)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (restart) {
+            recreate()
+            restart = false
+        }
     }
 
     override fun onPause() {
@@ -162,6 +189,9 @@ abstract class CommonActivity : AppCompatActivity() {
         super.onDestroy()
 
         LocalBroadcastManager.getInstance(this).unregisterReceiver(actionReceiver)
+
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(settingsChangeListener)
     }
 
     private fun setupLayoutDirection() {
@@ -230,5 +260,11 @@ abstract class CommonActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = CommonActivity::class.java.name
+
+        private val PREFS_REQUIRE_ACTIVITY_RESTART = listOf(
+                R.string.pref_key_font_size,
+                R.string.pref_key_color_scheme,
+                R.string.pref_key_layout_direction
+        )
     }
 }

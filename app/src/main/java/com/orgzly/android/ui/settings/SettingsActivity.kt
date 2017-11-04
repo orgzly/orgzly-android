@@ -96,4 +96,9 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
             super.onOptionsItemSelected(item)
         }
     }
+
+    override fun requestActivityRestartForChangedSettings() {
+        /* Recreate activity immediately, don't wait for onResume(). */
+        recreate()
+    }
 }
