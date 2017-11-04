@@ -8,37 +8,38 @@
         android:icon="?attr/oic_warning"
         android:title="@string/experimental"/>
 
-    <Preference
-        android:selectable="false"
-        android:summary="@string/auto_sync_description"/>
-
     <SwitchPreference
         android:key="@string/pref_key_auto_sync"
         android:title="@string/auto_sync"
         android:defaultValue="@bool/pref_default_value_auto_sync"/>
 
-    <CheckBoxPreference
+    <Preference
+        android:selectable="false"
+        android:summary="@string/auto_sync_description"/>
+
+
+    <SwitchPreference
         android:key="@string/pref_key_auto_sync_on_note_create"
         android:dependency="@string/pref_key_auto_sync"
         android:title="@string/pref_title_sync_after_note_create"
         android:summary="@string/pref_summary_sync_after_note_create"
         android:defaultValue="@bool/pref_default_value_auto_sync_on_note_create"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:key="@string/pref_key_auto_sync_on_note_update"
         android:dependency="@string/pref_key_auto_sync"
         android:title="@string/pref_title_sync_after_note_update"
         android:summary="@string/pref_summary_sync_after_note_update"
         android:defaultValue="@bool/pref_default_value_auto_sync_on_note_update"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:key="@string/pref_key_auto_sync_on_resume"
         android:dependency="@string/pref_key_auto_sync"
         android:title="@string/pref_title_on_resume_sync"
         android:summary="@string/pref_summary_on_resume_sync"
         android:defaultValue="@bool/pref_default_value_auto_sync_on_resume"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:key="@string/pref_key_auto_sync_on_repo_change"
         android:enabled="false"
         android:title="@string/pref_title_repo_update_sync"

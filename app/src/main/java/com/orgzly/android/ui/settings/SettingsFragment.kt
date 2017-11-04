@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.preference.CheckBoxPreference
 import android.preference.Preference
 import android.preference.PreferenceScreen
+import android.preference.TwoStatePreference
 import android.support.annotation.StringRes
 import android.text.TextUtils
 import android.view.*
@@ -269,8 +269,8 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
     private fun updateOtherPreferencesForReminders() {
         val remindersEnabled =
-                (findPreference(getString(R.string.pref_key_use_reminders_for_scheduled_times)) as CheckBoxPreference).isChecked ||
-                (findPreference(getString(R.string.pref_key_use_reminders_for_deadline_times)) as CheckBoxPreference).isChecked
+                (findPreference(getString(R.string.pref_key_use_reminders_for_scheduled_times)) as TwoStatePreference).isChecked ||
+                (findPreference(getString(R.string.pref_key_use_reminders_for_deadline_times)) as TwoStatePreference).isChecked
 
         findPreference(getString(R.string.pref_key_reminders_sound)).isEnabled = remindersEnabled
         findPreference(getString(R.string.pref_key_reminders_vibrate)).isEnabled = remindersEnabled
