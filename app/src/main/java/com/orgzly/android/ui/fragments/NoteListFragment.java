@@ -95,7 +95,7 @@ public abstract class NoteListFragment extends ListFragment {
     private OrgDateTime getScheduledTimeForNote(long id) {
         Note note = mShelf.getNote(id);
 
-        if (note.getHead().hasScheduled()) {
+        if (note != null && note.getHead().hasScheduled()) {
             return note.getHead().getScheduled().getStartTime();
         }
 

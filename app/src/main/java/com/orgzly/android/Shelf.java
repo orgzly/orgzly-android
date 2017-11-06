@@ -648,8 +648,10 @@ public class Shelf {
     }
 
     public void shiftState(long id, int direction) {
-        Note note = NotesClient.getNote(mContext, id);
-        shiftState(note, direction);
+        Note note = getNote(id);
+        if (note != null) {
+            shiftState(note, direction);
+        }
     }
 
     public void shiftState(Note note, int direction) {
