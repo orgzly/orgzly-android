@@ -37,6 +37,9 @@ class ActionService : IntentService(TAG) {
 
     private fun clearDatabase() {
         shelf.clearDatabase()
+
+        val intent = Intent(AppIntent.ACTION_DB_CLEARED)
+        localBroadcastManager.sendBroadcast(intent)
     }
 
     private fun reparseNotes() {

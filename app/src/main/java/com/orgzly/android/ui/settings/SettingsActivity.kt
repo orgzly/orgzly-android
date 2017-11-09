@@ -38,7 +38,6 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
                 .setTitle(R.string.clear_database)
                 .setMessage(R.string.clear_database_dialog_message)
                 .setPositiveButton(R.string.ok) { _, _ ->
-                    // TODO: Clear MainActivity's back stack
                     val intent = Intent(this, ActionService::class.java)
                     intent.action = AppIntent.ACTION_CLEAR_DATABASE
                     startService(intent)

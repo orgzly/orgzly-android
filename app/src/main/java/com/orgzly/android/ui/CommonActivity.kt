@@ -33,7 +33,8 @@ abstract class CommonActivity : AppCompatActivity() {
 
     private var whatsNewDialog: AlertDialog? = null
 
-    private var restart = false
+    private var restartActivity = false
+    @JvmField protected var clearFragmentBackstack = false
 
     private val actionReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -58,6 +59,9 @@ abstract class CommonActivity : AppCompatActivity() {
 
                 AppIntent.ACTION_BOOK_LOADED ->
                     showSimpleSnackbarLong(R.string.notebook_loaded)
+
+                AppIntent.ACTION_DB_CLEARED ->
+                    clearFragmentBackstack = true
             }
         }
     }
@@ -69,7 +73,7 @@ abstract class CommonActivity : AppCompatActivity() {
     }
 
     open fun requestActivityRestartForChangedSettings() {
-        restart = true
+        restartActivity = true
     }
 
     protected var actionAfterPermissionGrant: Runnable? = null
@@ -150,6 +154,7 @@ abstract class CommonActivity : AppCompatActivity() {
         intentFilter.addAction(AppIntent.ACTION_DB_UPGRADE_STARTED)
         intentFilter.addAction(AppIntent.ACTION_DB_UPGRADE_ENDED)
         intentFilter.addAction(AppIntent.ACTION_BOOK_LOADED)
+        intentFilter.addAction(AppIntent.ACTION_DB_CLEARED)
         LocalBroadcastManager.getInstance(this).registerReceiver(actionReceiver, intentFilter)
 
         PreferenceManager.getDefaultSharedPreferences(this)
@@ -159,9 +164,9 @@ abstract class CommonActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (restart) {
+        if (restartActivity) {
             recreate()
-            restart = false
+            restartActivity = false
         }
     }
 

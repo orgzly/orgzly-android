@@ -320,6 +320,11 @@ public class MainActivity extends CommonActivity
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onResume();
 
+        if (clearFragmentBackstack) {
+            mDisplayManager.clear();
+            clearFragmentBackstack = false;
+        }
+
         performIntros();
 
         Shelf shelf = new Shelf(this);
