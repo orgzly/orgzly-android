@@ -72,6 +72,7 @@ public class ViewHolder /* extends RecyclerView.ViewHolder */ {
         closedText = (TextView) itemView.findViewById(R.id.item_head_closed_text);
 
         content = (TextView) itemView.findViewById(R.id.item_head_content);
+	/* This is where the content widget is set up */
 
         menuContainer = (ViewGroup) itemView.findViewById(R.id.item_head_menu_container);
         menuFlipper = (ViewFlipper) itemView.findViewById(R.id.item_head_menu_flipper);

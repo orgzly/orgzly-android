@@ -181,7 +181,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
             if (AppPreferences.isFontMonospaced(context)) {
                 holder.content.setTypeface(Typeface.MONOSPACE);
             }
-
+	    /* This is where wrapping needs to be disabled, I guess */
             holder.content.setText(OrgFormatter.parse(context, head.getContent()));
 
             holder.content.setVisibility(View.VISIBLE);
@@ -343,4 +343,3 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         }
     }
 }
-

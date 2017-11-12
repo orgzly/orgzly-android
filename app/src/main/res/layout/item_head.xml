@@ -193,7 +193,7 @@
                 <!-- Content -->
                 <com.orgzly.android.ui.views.TextViewWithLinks
                     android:id="@+id/item_head_content"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
                     tools:text="@string/note_content_sample"
