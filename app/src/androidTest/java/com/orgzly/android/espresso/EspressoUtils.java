@@ -48,7 +48,7 @@ class EspressoUtils {
     static final int SETTINGS_REPOS = 47;
 
     static final int SETTINGS_AUTO_SYNC = 48;
-    static final int SETTINGS_AUTO_SYNC_TOGGLE = 2;
+    static final int SETTINGS_AUTO_SYNC_TOGGLE = 1;
     static final int SETTINGS_AUTO_SYNC_NOTE_CREATED = 3;
 
     static final int IMPORT_GETTING_STARTED = 50;

@@ -87,6 +87,8 @@ public class SyncingTest extends OrgzlyTest {
         onListItem(EspressoUtils.SETTINGS_AUTO_SYNC).perform(click());
         onListItem(EspressoUtils.SETTINGS_AUTO_SYNC_TOGGLE).perform(click());
         onListItem(EspressoUtils.SETTINGS_AUTO_SYNC_NOTE_CREATED).perform(click());
+        pressBack();
+        pressBack();
 
         // Open book
         onView(withId(R.id.drawer_layout)).perform(open());
