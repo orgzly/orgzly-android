@@ -2,15 +2,13 @@ package com.orgzly.android.misc;
 
 import com.orgzly.android.BookName;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.util.Arrays;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(value = Parameterized.class)
 public class BookNameTest {

@@ -23,11 +23,10 @@ import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
 import static com.orgzly.android.espresso.EspressoUtils.onSpinnerString;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
-import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.startsWith;
+import static org.junit.Assert.assertTrue;
 
 /**
  *

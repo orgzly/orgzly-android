@@ -14,8 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class BookParsingTest extends OrgzlyTest {
     private static final String TAG = BookParsingTest.class.getName();

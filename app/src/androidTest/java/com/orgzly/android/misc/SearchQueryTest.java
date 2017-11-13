@@ -5,7 +5,7 @@ import com.orgzly.android.util.QuotedStringTokenizer;
 import com.orgzly.org.datetime.OrgInterval;
 import org.junit.Test;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 public class SearchQueryTest {
     @Test
