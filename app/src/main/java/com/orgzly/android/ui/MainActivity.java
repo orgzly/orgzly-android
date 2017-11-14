@@ -1459,15 +1459,6 @@ public class MainActivity extends CommonActivity
             if (selection.getCount() > 0) {
                 /* Start new action mode. */
                 mActionMode = startSupportActionMode(actionMode);
-
-                /* onPrepareActionMode is not being called (any more?) when action mode
-                 * is first created. This causes title to be left empty. This forces
-                 * onPrepareActionMode to be called and title updated.
-                 *
-                 * TODO: Update: Might not be the case any more
-                 * We now get two calls to onPrepareActionMode when action mode is first created.
-                 */
-                mActionMode.invalidate();
             }
         }
     }

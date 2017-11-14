@@ -273,7 +273,7 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        /**
+        /*
          * Swapping instead of changing Cursor here, to keep the old one open.
          * Loader should release the old Cursor - see note in
          * {@link LoaderManager.LoaderCallbacks#onLoadFinished).

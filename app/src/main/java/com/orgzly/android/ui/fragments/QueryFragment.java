@@ -335,7 +335,7 @@ public class QueryFragment extends NoteListFragment
             return;
         }
 
-        /**
+        /*
          * Swapping instead of changing Cursor here, to keep the old one open.
          * Loader should release the old Cursor - see note in
          * {@link LoaderManager.LoaderCallbacks#onLoadFinished).

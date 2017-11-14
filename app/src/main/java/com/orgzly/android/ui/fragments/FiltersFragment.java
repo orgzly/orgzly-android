@@ -181,7 +181,7 @@ public class FiltersFragment extends ListFragment implements Fab, LoaderManager.
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         if (mIsViewCreated) {
-            /**
+            /*
              * Swapping instead of changing Cursor here, to keep the old one open.
              * Loader should release the old Cursor - see note in
              * {@link LoaderManager.LoaderCallbacks#onLoadFinished).

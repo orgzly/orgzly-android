@@ -47,9 +47,8 @@ public abstract class NoteListFragment extends ListFragment {
 
         /* Save action mode state (move mode). */
         if (mActionModeListener != null) {
-            outState.putBoolean(
-                    "actionModeMove", mActionModeListener.getActionMode() != null &&
-                            "M".equals(mActionModeListener.getActionMode().getTag()));
+            ActionMode actionMode = mActionModeListener.getActionMode();
+            outState.putBoolean("actionModeMove", actionMode != null && "M".equals(actionMode.getTag()));
         }
     }
 

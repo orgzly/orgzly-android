@@ -675,7 +675,7 @@ public class BookFragment extends NoteListFragment
     private void notesLoaded(Cursor cursor) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, cursor);
 
-        /**
+        /*
          * Swapping instead of changing Cursor here, to keep the old one open.
          * Loader should release the old Cursor - see note in
          * {@link LoaderManager.LoaderCallbacks#onLoadFinished).
@@ -695,7 +695,7 @@ public class BookFragment extends NoteListFragment
             mActionModeListener.updateActionModeForSelection(mSelection, new MyActionMode());
 
             ActionMode actionMode = mActionModeListener.getActionMode();
-            if (mActionModeTag != null) {
+            if (actionMode != null && mActionModeTag != null) {
                 actionMode.setTag("M"); // TODO: Ugh.
                 actionMode.invalidate();
                 mActionModeTag = null;
