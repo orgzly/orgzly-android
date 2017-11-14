@@ -216,7 +216,7 @@ public class AgendaFragment extends NoteListFragment
         /* Activity created - context available. Create Shelf and populate list with data. */
         mShelf = new Shelf(getActivity().getApplicationContext());
 
-        mActionModeListener.updateActionModeForSelection(mSelection, new MyActionMode());
+        mActionModeListener.updateActionModeForSelection(mSelection.getCount(), new MyActionMode());
 
         loadQuery();
     }
@@ -471,7 +471,7 @@ public class AgendaFragment extends NoteListFragment
          */
         mListAdapter.swapCursor(mCursor);
 
-        mActionModeListener.updateActionModeForSelection(mSelection, new MyActionMode());
+        mActionModeListener.updateActionModeForSelection(mSelection.getCount(), new MyActionMode());
     }
 
     private MergeCursor mergeDates(long nextId, Map<Long, MatrixCursor> agenda) {

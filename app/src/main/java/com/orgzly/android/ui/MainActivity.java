@@ -734,7 +734,7 @@ public class MainActivity extends CommonActivity
 
         selection.toggle(view, noteId);
 
-        updateActionModeForSelection(fragment.getSelection(), fragment.getNewActionMode());
+        updateActionModeForSelection(fragment.getSelection().getCount(), fragment.getNewActionMode());
     }
 
     /* Open note fragment to create a new note. */
@@ -1444,19 +1444,19 @@ public class MainActivity extends CommonActivity
      */
 
     @Override
-    public void updateActionModeForSelection(Selection selection, ActionMode.Callback actionMode) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, selection, actionMode);
+    public void updateActionModeForSelection(int selectedCount, ActionMode.Callback actionMode) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, selectedCount, actionMode);
 
         if (mActionMode != null) { /* Action menu is already activated. */
             /* Finish action mode if there are no more selected items. */
-            if (selection.getCount() == 0) {
+            if (selectedCount == 0) {
                 mActionMode.finish();
             } else {
                 mActionMode.invalidate();
             }
 
         } else { /* No action menu activated - started it. */
-            if (selection.getCount() > 0) {
+            if (selectedCount > 0) {
                 /* Start new action mode. */
                 mActionMode = startSupportActionMode(actionMode);
             }

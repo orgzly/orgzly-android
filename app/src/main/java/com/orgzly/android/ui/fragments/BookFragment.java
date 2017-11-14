@@ -692,7 +692,7 @@ public class BookFragment extends NoteListFragment
         }
 
         if (mActionModeListener != null) {
-            mActionModeListener.updateActionModeForSelection(mSelection, new MyActionMode());
+            mActionModeListener.updateActionModeForSelection(mSelection.getCount(), new MyActionMode());
 
             ActionMode actionMode = mActionModeListener.getActionMode();
             if (actionMode != null && mActionModeTag != null) {

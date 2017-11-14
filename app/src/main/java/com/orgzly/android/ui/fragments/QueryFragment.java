@@ -202,7 +202,7 @@ public class QueryFragment extends NoteListFragment
         /* Activity created - context available. Create Shelf and populate list with data. */
         mShelf = new Shelf(getActivity().getApplicationContext());
 
-        mActionModeListener.updateActionModeForSelection(mSelection, new MyActionMode());
+        mActionModeListener.updateActionModeForSelection(mSelection.getCount(), new MyActionMode());
 
         /* If query did not change - reuse loader. Otherwise - restart it. */
         String newQuery = mQuery.toString();
@@ -342,7 +342,7 @@ public class QueryFragment extends NoteListFragment
          */
         mListAdapter.swapCursor(cursor);
 
-        mActionModeListener.updateActionModeForSelection(mSelection, new MyActionMode());
+        mActionModeListener.updateActionModeForSelection(mSelection.getCount(), new MyActionMode());
 
         ActionMode actionMode = mActionModeListener.getActionMode();
         if (mActionModeTag != null) {
