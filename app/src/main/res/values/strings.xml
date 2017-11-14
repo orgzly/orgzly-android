@@ -486,7 +486,7 @@
     </plurals>
 
     <string name="content_line_count_displayed">Display content line count</string>
-    <string name="content_line_count_displayed_summary">Display number of lines for note\'s content</string>
+    <string name="content_line_count_displayed_summary">Display line count when content is not displayed</string>
 
     <string name="style_text_title">Style text</string>
     <string name="style_text_summary">Use special marks for emphasis and monospace</string>

@@ -542,10 +542,10 @@ public class QueryFragmentTest extends OrgzlyTest {
     @Test
     public void testSearchForTagOrTag() {
         shelfTestUtils.setupBook("notebook",
-                                 "* Note A :a:\n" +
-                                 "** Note B :b:\n" +
-                                 "*** Note C\n" +
-                                 "* Note D\n");
+                "* Note A :a:\n" +
+                "** Note B :b:\n" +
+                "*** Note C\n" +
+                "* Note D\n");
         activityRule.launchActivity(null);
 
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
@@ -662,5 +662,25 @@ public class QueryFragmentTest extends OrgzlyTest {
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note A")), isDisplayed())));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
         onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note C")), isDisplayed())));
+    }
+
+    @Test
+    public void testContentOfFoldedNoteDisplayed() {
+        AppPreferences.isNotesContentDisplayedInSearch(context, true);
+        shelfTestUtils.setupBook("notebook",
+                "* Note A\n" +
+                "** Note B\n" +
+                "Content for Note B\n" +
+                "* Note C\n");
+        activityRule.launchActivity(null);
+
+        onView(allOf(withText("notebook"), isDisplayed())).perform(click());
+        onListItem(1).onChildView(withId(R.id.item_head_fold_button)).perform(click());
+        searchForText("note");
+        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(3)));
+        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
+        onListItem(1).onChildView(withId(R.id.item_head_content)).check(matches(allOf(withText(containsString("Content for Note B")), isDisplayed())));
+
     }
 }

@@ -177,7 +177,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         holder.title.setText(titleGenerator.generateTitle(note, head));
 
         /* Content. */
-        if (head.hasContent() && AppPreferences.isNotesContentDisplayedInList(context) && (!note.getPosition().isFolded() || !AppPreferences.isNotesContentFoldable(context)) && (inBook || AppPreferences.isNotesContentDisplayedInSearch(context))) {
+        if (head.hasContent() && titleGenerator.shouldDisplayContent(note)) {
             if (AppPreferences.isFontMonospaced(context)) {
                 holder.content.setTypeface(Typeface.MONOSPACE);
             }

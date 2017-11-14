@@ -94,9 +94,11 @@ public class TitleGenerator {
         }
 
         /* Content line number. */
-        if (head.hasContent() && AppPreferences.contentLineCountDisplayed(mContext) && (!AppPreferences.isNotesContentDisplayedInList(mContext) || (note.getPosition().isFolded() && AppPreferences.isNotesContentFoldable(mContext)))) {
-            builder.append(TITLE_SEPARATOR).append(String.valueOf(note.getContentLines()));
-            hasPostTitleText = true;
+        if (head.hasContent() && AppPreferences.contentLineCountDisplayed(mContext)) {
+            if (!shouldDisplayContent(note)) {
+                builder.append(TITLE_SEPARATOR).append(String.valueOf(note.getContentLines()));
+                hasPostTitleText = true;
+            }
         }
 
         /* Debug folding. */
@@ -112,6 +114,30 @@ public class TitleGenerator {
         }
 
         return builder;
+    }
+
+    /**
+     * Should note's content be displayed if it exists.
+     */
+    public boolean shouldDisplayContent(Note note) {
+        boolean display = true;
+
+        if (AppPreferences.isNotesContentDisplayedInList(mContext)) { // Content could be displayed in list
+            if (inBook) { // In book, folded
+                if (AppPreferences.isNotesContentFoldable(mContext) && note.getPosition().isFolded()) {
+                    display = false;
+                }
+            } else { // In search results, not displaying content
+                if (!AppPreferences.isNotesContentDisplayedInSearch(mContext)) {
+                    display = false;
+                }
+            }
+
+        } else { // Never displaying content in list
+            display = false;
+        }
+
+        return display;
     }
 
     private CharSequence generateTags(List<String> tags) {
