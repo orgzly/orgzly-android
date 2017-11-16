@@ -43,6 +43,7 @@ public class SearchQuery {
         private Set<String> tags = new TreeSet<>();
         private Set<String> notTags = new TreeSet<>();
         private String priority;
+        private String notPriority;
         private String state;
         private Set<String> notState = new TreeSet<>();
         private String stateType;
@@ -101,6 +102,14 @@ public class SearchQuery {
 
         public boolean hasPriority() {
             return priority != null;
+        }
+
+        public String getNotPriority() {
+            return notPriority;
+        }
+
+        public boolean hasNotPriority() {
+            return notPriority != null;
         }
 
         /* State. */
@@ -195,6 +204,10 @@ public class SearchQuery {
 
             if (priority != null) {
                 s.append(" p.").append(priority.toLowerCase());
+            }
+
+            if (notPriority != null) {
+                s.append(" .p.").append(notPriority.toLowerCase());
             }
 
             if (! noteTags.isEmpty()) {
@@ -370,6 +383,11 @@ public class SearchQuery {
             } else if (token.startsWith("p.")) { // priority
                 if (token.length() > 2) {
                     currentGroup.priority = token.substring(2).toLowerCase();
+                }
+
+            } else if (token.startsWith(".p.")) { // not priority
+                if (token.length() > 3) {
+                    currentGroup.notPriority = token.substring(3).toLowerCase();
                 }
 
             } else if (token.startsWith("i.")) { // is (state)

@@ -223,6 +223,12 @@ public class SearchQueryTest {
     }
 
     @Test
+    public void testNotPriority() {
+        SearchQuery query = new SearchQuery(".p.c");
+        assertEquals("c", query.currentGroup.getNotPriority());
+    }
+
+    @Test
     public void testScheduledTomorrow() {
         SearchQuery query = new SearchQuery("s.tom");
 

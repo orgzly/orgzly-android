@@ -164,6 +164,21 @@ public class QueryFragmentTest extends OrgzlyTest {
         onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("#A  Note #16."), isDisplayed())));
     }
 
+    @Test
+    public void testNotPriority() {
+        defaultSetUp();
+
+        searchForText(".p.b");
+        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+
+        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(4)));
+
+        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("#A  Note B."), isDisplayed())));
+        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("#A  Note #15."), isDisplayed())));
+        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("#A  Note #16."), isDisplayed())));
+        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("#C  Note #18."), isDisplayed())));
+    }
+
 
     @Test
     public void testSearchInBook() {

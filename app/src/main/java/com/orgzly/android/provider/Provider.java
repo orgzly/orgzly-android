@@ -395,6 +395,13 @@ public class Provider extends ContentProvider {
                 selectionArgs.add(group.getPriority());
             }
 
+            if (group.hasNotPriority()) {
+                String defaultPriority = AppPreferences.defaultPriority(getContext());
+                selection.append(" AND lower(coalesce(nullif(" + ProviderContract.Notes.QueryParam.PRIORITY + ", ''), ?)) != ?");
+                selectionArgs.add(defaultPriority);
+                selectionArgs.add(group.getNotPriority());
+            }
+
             if (group.hasNoteTags()) {
                 /*
                  * We are only searching for a tag within a string of tags.
