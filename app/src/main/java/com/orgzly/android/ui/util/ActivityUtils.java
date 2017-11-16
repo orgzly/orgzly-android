@@ -180,11 +180,16 @@ public class ActivityUtils {
     }
 
     public static PendingIntent mainActivityPendingIntent(Context context, long bookId, long noteId) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookId, noteId);
         Intent intent = Intent.makeRestartActivityTask(new ComponentName(context, MainActivity.class));
 
-        intent.putExtra(MainActivity.EXTRA_NOTE_ID, noteId);
         intent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
+        intent.putExtra(MainActivity.EXTRA_NOTE_ID, noteId);
 
-        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(
+                context,
+                Long.valueOf(noteId).intValue(),
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

@@ -199,6 +199,8 @@ public class MainActivity extends CommonActivity
             long noteId = getIntent().getLongExtra(EXTRA_NOTE_ID, 0L);
             String queryString = getIntent().getStringExtra(EXTRA_QUERY_STRING);
 
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookId, noteId, queryString);
+
             mDisplayManager.displayBooks(false);
 
             /* Display requested book and note. */
