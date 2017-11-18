@@ -534,8 +534,10 @@ public class AgendaFragment extends NoteListFragment
             switch (menuItem.getItemId()) {
                 case R.id.query_cab_schedule:
                     selectionIds = new TreeSet<>();
-                    for (Long id: mSelection.getIds())
-                        selectionIds.add(originalNoteIDs.get(id));
+                    for (Long id: mSelection.getIds()) {
+                        Long originalId = originalNoteIDs.get(id);
+                        selectionIds.add(originalId);
+                    }
                     displayScheduleTimestampDialog(R.id.query_cab_schedule, selectionIds);
                     break;
 
@@ -555,8 +557,10 @@ public class AgendaFragment extends NoteListFragment
                     if (menuItem.getGroupId() == STATE_ITEM_GROUP) {
                         if (mListener != null) {
                             selectionIds = new TreeSet<>();
-                            for (Long id: mSelection.getIds())
-                                selectionIds.add(originalNoteIDs.get(id));
+                            for (Long id: mSelection.getIds()) {
+                                Long originalId = originalNoteIDs.get(id);
+                                selectionIds.add(originalId);
+                            }
                             mListener.onStateChangeRequest(selectionIds, menuItem.getTitle().toString());
                         }
                         return true;
