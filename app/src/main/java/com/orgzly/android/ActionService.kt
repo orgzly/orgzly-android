@@ -43,7 +43,9 @@ class ActionService : IntentService(TAG) {
     }
 
     private fun reparseNotes() {
-        shelf.reParseNotesStateAndTitles(null) // TODO: Display progress
+        localBroadcastManager.sendBroadcast(Intent(AppIntent.ACTION_REPARSING_NOTES_STARTED))
+        shelf.reParseNotesStateAndTitles(null)
+        localBroadcastManager.sendBroadcast(Intent(AppIntent.ACTION_REPARSING_NOTES_ENDED))
     }
 
     private fun importGettingStartedNotebook() {

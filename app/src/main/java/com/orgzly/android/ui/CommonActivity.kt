@@ -1,6 +1,7 @@
 package com.orgzly.android.ui
 
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.*
 import android.content.pm.PackageManager
 import android.os.Build
@@ -33,6 +34,8 @@ abstract class CommonActivity : AppCompatActivity() {
 
     private var whatsNewDialog: AlertDialog? = null
 
+    private var progressDialog: ProgressDialog? = null
+
     private var restartActivity = false
     @JvmField protected var clearFragmentBackstack = false
 
@@ -62,6 +65,16 @@ abstract class CommonActivity : AppCompatActivity() {
 
                 AppIntent.ACTION_DB_CLEARED ->
                     clearFragmentBackstack = true
+
+                AppIntent.ACTION_REPARSING_NOTES_STARTED -> {
+                    progressDialog = ProgressDialog(this@CommonActivity)
+                    progressDialog?.setMessage(resources.getString(R.string.updating_notes))
+                    progressDialog?.isIndeterminate = true
+                    progressDialog?.show()
+                }
+
+                AppIntent.ACTION_REPARSING_NOTES_ENDED ->
+                    progressDialog?.dismiss()
             }
         }
     }
@@ -157,6 +170,8 @@ abstract class CommonActivity : AppCompatActivity() {
         intentFilter.addAction(AppIntent.ACTION_DB_UPGRADE_ENDED)
         intentFilter.addAction(AppIntent.ACTION_BOOK_LOADED)
         intentFilter.addAction(AppIntent.ACTION_DB_CLEARED)
+        intentFilter.addAction(AppIntent.ACTION_REPARSING_NOTES_STARTED)
+        intentFilter.addAction(AppIntent.ACTION_REPARSING_NOTES_ENDED)
         LocalBroadcastManager.getInstance(this).registerReceiver(actionReceiver, intentFilter)
 
         PreferenceManager.getDefaultSharedPreferences(this)
