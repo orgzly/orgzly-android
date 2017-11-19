@@ -3,18 +3,14 @@ package com.orgzly.android.ui.fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.format.DateUtils;
@@ -29,10 +25,10 @@ import android.widget.TextView;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Book;
 import com.orgzly.android.BookAction;
 import com.orgzly.android.BookName;
-import com.orgzly.android.AppIntent;
 import com.orgzly.android.Filter;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotesBatch;
@@ -41,7 +37,6 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.Rook;
-import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.sync.SyncStatus;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.NotePlace;
@@ -71,8 +66,6 @@ public class SyncFragment extends Fragment {
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = SyncFragment.class.getName();
 
-
-    private boolean isServiceBound = false;
 
     /** Activity which has this fragment attached. Used as a target for hooks. */
     private SyncFragmentListener mListener;
@@ -188,11 +181,9 @@ public class SyncFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        /*
-         * Bind to sync service to request and receive the sync status.
-         * We're doing this after button is initialized.
-         */
-        bindToSyncService();
+        SyncStatus status = new SyncStatus();
+        status.loadFromPreferences(getContext());
+        mSyncButton.update(status);
     }
 
     @Override
@@ -992,51 +983,6 @@ public class SyncFragment extends Fragment {
             }
         }.execute();
     }
-
-    private void bindToSyncService() {
-        Intent intent = new Intent(getActivity(), SyncService.class);
-        Activity activity = getActivity();
-        if (activity != null) {
-            activity.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        }
-    }
-
-    private void unbindFromSyncService() {
-        if (isServiceBound) {
-            Activity activity = getActivity();
-            if (activity != null) {
-                activity.unbindService(serviceConnection);
-                isServiceBound = false;
-            }
-        }
-    }
-
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder serviceBinder) {
-            isServiceBound = true;
-
-            SyncService.LocalBinder binder = (SyncService.LocalBinder) serviceBinder;
-
-            /*
-             * Check for activity added due to tests sometimes triggering:
-             * java.lang.IllegalStateException: Fragment SyncFragment{782d3f6} not attached to Activity
-             * Probably not specific to tests.
-             */
-            if (getActivity() != null) {
-                /* Get current sync status from the service and update the button. */
-                SyncStatus status = binder.getService().getStatus();
-                mSyncButton.update(status);
-            }
-
-            unbindFromSyncService();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            isServiceBound = false;
-        }
-    };
 
     public interface SyncFragmentListener {
         void onBookCreated(Book book);
