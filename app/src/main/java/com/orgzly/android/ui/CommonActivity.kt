@@ -30,12 +30,12 @@ import android.preference.PreferenceManager
  */
 abstract class CommonActivity : AppCompatActivity() {
 
+    /* Dialogs and Snackbars. */
     private var snackbar: Snackbar? = null
-
     private var whatsNewDialog: AlertDialog? = null
-
     private var progressDialog: ProgressDialog? = null
 
+    /* Actions. */
     private var restartActivity = false
     @JvmField protected var clearFragmentBackstack = false
 
@@ -44,21 +44,17 @@ abstract class CommonActivity : AppCompatActivity() {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Received broadcast: $intent")
 
             when (intent.action) {
-                AppIntent.ACTION_DB_UPGRADE_STARTED ->
-                    if (whatsNewDialog != null) {
-                        val dialog = whatsNewDialog as AlertDialog
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.running_database_update)
-                        dialog.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = false
-                        dialog.setCancelable(false)
-                    }
+                AppIntent.ACTION_DB_UPGRADE_STARTED -> {
+                    whatsNewDialog?.getButton(AlertDialog.BUTTON_POSITIVE)?.setText(R.string.running_database_update)
+                    whatsNewDialog?.getButton(DialogInterface.BUTTON_POSITIVE)?.isEnabled = false
+                    whatsNewDialog?.setCancelable(false)
+                }
 
-                AppIntent.ACTION_DB_UPGRADE_ENDED ->
-                    if (whatsNewDialog != null) {
-                        val dialog = whatsNewDialog as AlertDialog
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.ok)
-                        dialog.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = true
-                        dialog.setCancelable(true)
-                    }
+                AppIntent.ACTION_DB_UPGRADE_ENDED -> {
+                    whatsNewDialog?.getButton(AlertDialog.BUTTON_POSITIVE)?.setText(R.string.ok)
+                    whatsNewDialog?.getButton(DialogInterface.BUTTON_POSITIVE)?.isEnabled = true
+                    whatsNewDialog?.setCancelable(true)
+                }
 
                 AppIntent.ACTION_BOOK_LOADED ->
                     showSimpleSnackbarLong(R.string.notebook_loaded)

@@ -190,8 +190,11 @@ public class Provider extends ContentProvider {
                 String propName = uri.getQueryParameter(ProviderContract.Notes.Param.PROPERTY_NAME);
                 String propValue = uri.getQueryParameter(ProviderContract.Notes.Param.PROPERTY_VALUE);
 
-                selection = field("tpropertyname", DbPropertyName.NAME) + " = ? AND " +
-                        field("tpropertyvalue", DbPropertyValue.VALUE) + " = ?";
+                selection =
+                        field("tpropertyname", DbPropertyName.NAME) + " = ? AND " +
+                                field("tpropertyvalue", DbPropertyValue.VALUE) + " = ? AND " +
+                                field("tnotes", DbNote._ID) + " IS NOT NULL";
+
                 selectionArgs = new String[] { propName, propValue };
 
                 sortOrder = field("tnotes", DbNote.LFT);
@@ -290,7 +293,8 @@ public class Provider extends ContentProvider {
             cursor = db.query(table, projection, selection, selectionArgs, null, null, sortOrder);
         }
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Cursor count: " + cursor.getCount() + " for " + table + " " + selection + " " + selectionArgs);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Cursor count: " + cursor.getCount() + " for " +
+                table + " " + selection + " " + (selectionArgs != null ? TextUtils.join(",", selectionArgs) : ""));
 
         cursor.setNotificationUri(getContext().getContentResolver(), ProviderContract.AUTHORITY_URI);
 

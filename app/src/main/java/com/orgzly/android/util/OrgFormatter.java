@@ -30,8 +30,8 @@ public class OrgFormatter {
     /* Same as the above, but ] ends the link too. Used for bracket links. */
     private static final String BRACKET_LINK = "((" + LINK_SCHEMES + "):[^]\\s]+)";
 
-    // [[#CUSTOM_ID]] http://orgmode.org/manual/Internal-links.html
-    private static final String CUSTOM_ID_LINK = "(\\#([^]\\s]+))";
+    // #custom id
+    private static final String CUSTOM_ID_LINK = "(#([^]]+))";
 
     /* Allows anything as a link. Probably needs some constraints.
      * See http://orgmode.org/manual/External-links.html and org-any-link-re
@@ -45,18 +45,23 @@ public class OrgFormatter {
     public static SpannableStringBuilder parse(Context context, String s, boolean linkify) {
         SpannableStringBuilder ssb = new SpannableStringBuilder(s);
 
+        doCustomIdLinkWithName(ssb, CUSTOM_ID_LINK, linkify, context);
+        doCustomIdLink(ssb, CUSTOM_ID_LINK, linkify, context);
+
         doOrgLinksWithName(ssb, BRACKET_LINK, linkify);
         doOrgLinksWithName(ssb, BRACKET_ANY_LINK, false);
+
         doOrgLinks(ssb, BRACKET_LINK, linkify);
-        doCustomIdLink(ssb, CUSTOM_ID_LINK, linkify, context);
+
         doPlainLinks(ssb, PLAIN_LINK, linkify);
+
         doMarkup(ssb, context);
 
         return ssb;
     }
 
     /**
-     * [[http://link.com][Link]]
+     * [[http://link.com][link]]
      */
     private static void doOrgLinksWithName(SpannableStringBuilder ssb, String linkRegex, boolean createLinks) {
         Pattern p = Pattern.compile("\\[\\[" + linkRegex + "\\]\\[([^]]+)\\]\\]");
@@ -99,13 +104,42 @@ public class OrgFormatter {
         }
     }
 
+    /**
+     * [[#custom id][link]]
+     */
+    private static void doCustomIdLinkWithName(SpannableStringBuilder ssb, String linkRegex, boolean createLinks, Context context) {
+        Pattern p = Pattern.compile("\\[\\[" + linkRegex + "\\]\\[([^]]+)\\]\\]");
+        Matcher m = p.matcher(ssb);
+
+        while (m.find()) {
+            String customId = m.group(2);
+            String name = m.group(3);
+
+            ssb.replace(m.start(), m.end(), name);
+
+            if (createLinks) {
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(View widget) {
+                        Shelf shelf = new Shelf(context);
+                        shelf.openFirstNoteWithProperty("CUSTOM_ID", customId);
+                    }
+                }, m.start(), m.start() + name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+
+            /* Re-create Matcher, as ssb size is modified. */
+            m = p.matcher(ssb);
+
+        }
+    }
+
     private static void doCustomIdLink(SpannableStringBuilder ssb, String linkRegex, boolean createLinks, Context context) {
         Pattern p = Pattern.compile("\\[\\[" + linkRegex + "\\]\\]");
         Matcher m = p.matcher(ssb);
 
         while (m.find()) {
             String link = m.group(1);
-            String str = m.group(2);
+            String customId = m.group(2);
 
             ssb.replace(m.start(), m.end(), link);
 
@@ -114,7 +148,7 @@ public class OrgFormatter {
                     @Override
                     public void onClick(View widget) {
                         Shelf shelf = new Shelf(context);
-                        shelf.openNoteForCustomId(str);
+                        shelf.openFirstNoteWithProperty("CUSTOM_ID", customId);
                     }
                 }, m.start(), m.start() + link.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }

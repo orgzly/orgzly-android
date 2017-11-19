@@ -895,8 +895,8 @@ public class Shelf {
         return modifiedNotesCount;
     }
 
-    public void openNoteForCustomId(String str) {
-        List<Long[]> notes = NotesClient.getNotesWithProperty(mContext, "CUSTOM_ID", str);
+    public void openFirstNoteWithProperty(String propName, String propValue) {
+        List<Long[]> notes = NotesClient.getNotesWithProperty(mContext, propName, propValue);
 
         if (!notes.isEmpty()) {
             long noteId = notes.get(0)[0];
