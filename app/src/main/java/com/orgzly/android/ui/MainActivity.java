@@ -2,8 +2,11 @@ package com.orgzly.android.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +14,7 @@ import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -115,14 +119,29 @@ public class MainActivity extends CommonActivity
     private ActionMode mActionMode;
     private boolean mPromoteDemoteOrMoveRequested = false;
 
-
     private Bundle mImportChosenBook = null;
 
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
+
+            long bookId = intent.getLongExtra(EXTRA_BOOK_ID, 0);
+            long noteId = intent.getLongExtra(EXTRA_NOTE_ID, 0);
+
+            if (mDisplayManager != null) {
+                mDisplayManager.displayNote(bookId, noteId);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onCreate(savedInstanceState);
+
+        LocalBroadcastManager bm = LocalBroadcastManager.getInstance(this);
+        bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_NOTE));
 
         setContentView(R.layout.activity_main);
 
@@ -165,11 +184,6 @@ public class MainActivity extends CommonActivity
                 mDisplayManager.displayQuery(queryString);
             }
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     private void setupDrawer() {
@@ -369,6 +383,9 @@ public class MainActivity extends CommonActivity
     protected void onDestroy() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onDestroy();
+
+        LocalBroadcastManager bm = LocalBroadcastManager.getInstance(this);
+        bm.unregisterReceiver(receiver);
 
         if (mDrawerLayout != null && mDrawerToggle != null) {
             mDrawerLayout.removeDrawerListener(mDrawerToggle);

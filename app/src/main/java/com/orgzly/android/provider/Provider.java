@@ -81,6 +81,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.orgzly.android.provider.GenericDatabaseUtils.field;
+import static com.orgzly.android.provider.GenericDatabaseUtils.join;
 
 public class Provider extends ContentProvider {
     private static final String TAG = Provider.class.getName();
@@ -185,6 +186,29 @@ public class Provider extends ContentProvider {
                 selectionArgs = null;
                 break;
 
+            case ProviderUris.NOTES_WITH_PROPERTY:
+                String propName = uri.getQueryParameter(ProviderContract.Notes.Param.PROPERTY_NAME);
+                String propValue = uri.getQueryParameter(ProviderContract.Notes.Param.PROPERTY_VALUE);
+
+                selection = field("tpropertyname", DbPropertyName.NAME) + " = ? AND " +
+                        field("tpropertyvalue", DbPropertyValue.VALUE) + " = ?";
+                selectionArgs = new String[] { propName, propValue };
+
+                sortOrder = field("tnotes", DbNote.LFT);
+
+                table = DbNoteProperty.TABLE + " " +
+                        join(DbNote.TABLE, "tnotes", DbNote._ID, DbNoteProperty.TABLE, DbNoteProperty.NOTE_ID) +
+                        join(DbProperty.TABLE, "tproperties", DbProperty._ID, DbNoteProperty.TABLE, DbNoteProperty.PROPERTY_ID) +
+                        join(DbPropertyName.TABLE, "tpropertyname", DbPropertyName._ID, "tproperties", DbProperty.NAME_ID) +
+                        join(DbPropertyValue.TABLE, "tpropertyvalue", DbPropertyValue._ID, "tproperties", DbProperty.VALUE_ID);
+
+                projection = new String[] {
+                        field("tnotes", DbNote._ID),
+                        field("tnotes", DbNote.BOOK_ID),
+                };
+
+                break;
+
             case ProviderUris.NOTES_ID_PROPERTIES:
                 long noteId = Long.parseLong(uri.getPathSegments().get(1));
 
@@ -194,9 +218,9 @@ public class Provider extends ContentProvider {
                 sortOrder = DbNoteProperty.POSITION;
 
                 table = DbNoteProperty.TABLE + " " +
-                        GenericDatabaseUtils.join(DbProperty.TABLE, "tproperties", DbProperty._ID, DbNoteProperty.TABLE, DbNoteProperty.PROPERTY_ID) +
-                        GenericDatabaseUtils.join(DbPropertyName.TABLE, "tpropertyname", DbPropertyName._ID, "tproperties", DbProperty.NAME_ID) +
-                        GenericDatabaseUtils.join(DbPropertyValue.TABLE, "tpropertyvalue", DbPropertyValue._ID, "tproperties", DbProperty.VALUE_ID);
+                        join(DbProperty.TABLE, "tproperties", DbProperty._ID, DbNoteProperty.TABLE, DbNoteProperty.PROPERTY_ID) +
+                        join(DbPropertyName.TABLE, "tpropertyname", DbPropertyName._ID, "tproperties", DbProperty.NAME_ID) +
+                        join(DbPropertyValue.TABLE, "tpropertyvalue", DbPropertyValue._ID, "tproperties", DbProperty.VALUE_ID);
 
                 projection = new String[] {
                         "tpropertyname." + DbPropertyName.NAME,
@@ -245,14 +269,14 @@ public class Provider extends ContentProvider {
                 table = null;
 
                 String query = "SELECT " +
-                               DbTimeView.NOTE_ID + ", " +
-                               DbTimeView.BOOK_ID + ", " +
-                               DbTimeView.BOOK_NAME + ", " +
-                               DbTimeView.NOTE_STATE + ", " +
-                               DbTimeView.NOTE_TITLE + ", " +
-                               DbTimeView.TIME_TYPE + ", " +
-                               DbTimeView.ORG_TIMESTAMP_STRING +
-                               " FROM " + DbTimeView.VIEW_NAME;
+                        DbTimeView.NOTE_ID + ", " +
+                        DbTimeView.BOOK_ID + ", " +
+                        DbTimeView.BOOK_NAME + ", " +
+                        DbTimeView.NOTE_STATE + ", " +
+                        DbTimeView.NOTE_TITLE + ", " +
+                        DbTimeView.TIME_TYPE + ", " +
+                        DbTimeView.ORG_TIMESTAMP_STRING +
+                        " FROM " + DbTimeView.VIEW_NAME;
 
                 cursor = db.rawQuery(query, null);
 
@@ -302,8 +326,8 @@ public class Provider extends ContentProvider {
              */
             for (String tag: group.getTags()) {
                 selection.append(" AND (")
-                    .append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ? OR ")
-                    .append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(" LIKE ?)");
+                        .append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ? OR ")
+                        .append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(" LIKE ?)");
 
                 selectionArgs.add("%" + tag + "%");
                 selectionArgs.add("%" + tag + "%");
@@ -311,8 +335,8 @@ public class Provider extends ContentProvider {
 
             for (String tag: group.getNotTags()) {
                 selection.append(" AND (")
-                    .append("COALESCE(").append(ProviderContract.Notes.QueryParam.TAGS).append(", '')").append(" NOT LIKE ? AND ")
-                    .append("COALESCE(").append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(", '')").append(" NOT LIKE ?)");
+                        .append("COALESCE(").append(ProviderContract.Notes.QueryParam.TAGS).append(", '')").append(" NOT LIKE ? AND ")
+                        .append("COALESCE(").append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(", '')").append(" NOT LIKE ?)");
 
                 selectionArgs.add("%" + tag + "%");
                 selectionArgs.add("%" + tag + "%");
@@ -694,26 +718,26 @@ public class Provider extends ContentProvider {
         long id = db.insertOrThrow(DbNote.TABLE, null, values);
 
         db.execSQL("INSERT INTO " + DbNoteAncestor.TABLE +
-                   " (" + DbNoteAncestor.BOOK_ID + ", " +
-                   DbNoteAncestor.NOTE_ID +
-                   ", " + DbNoteAncestor.ANCESTOR_NOTE_ID + ") " +
-                   "SELECT " + field(DbNote.TABLE, DbNote.BOOK_ID) + ", " +
-                   field(DbNote.TABLE, DbNote._ID) + ", " +
-                   field("a", DbNote._ID) +
-                   " FROM " + DbNote.TABLE +
-                   " JOIN " + DbNote.TABLE + " a ON (" +
-                   field(DbNote.TABLE, DbNote.BOOK_ID) + " = " + field("a", DbNote.BOOK_ID) + " AND " +
-                   field("a", DbNote.LFT) + " < " + field(DbNote.TABLE, DbNote.LFT) + " AND " +
-                   field(DbNote.TABLE, DbNote.RGT) + " < " + field("a", DbNote.RGT) + ")" +
-                   " WHERE " + field(DbNote.TABLE, DbNote._ID) + " = " + id + " AND " + field("a", DbNote.LEVEL) + " > 0");
+                " (" + DbNoteAncestor.BOOK_ID + ", " +
+                DbNoteAncestor.NOTE_ID +
+                ", " + DbNoteAncestor.ANCESTOR_NOTE_ID + ") " +
+                "SELECT " + field(DbNote.TABLE, DbNote.BOOK_ID) + ", " +
+                field(DbNote.TABLE, DbNote._ID) + ", " +
+                field("a", DbNote._ID) +
+                " FROM " + DbNote.TABLE +
+                " JOIN " + DbNote.TABLE + " a ON (" +
+                field(DbNote.TABLE, DbNote.BOOK_ID) + " = " + field("a", DbNote.BOOK_ID) + " AND " +
+                field("a", DbNote.LFT) + " < " + field(DbNote.TABLE, DbNote.LFT) + " AND " +
+                field(DbNote.TABLE, DbNote.RGT) + " < " + field("a", DbNote.RGT) + ")" +
+                " WHERE " + field(DbNote.TABLE, DbNote._ID) + " = " + id + " AND " + field("a", DbNote.LEVEL) + " > 0");
 
         return ContentUris.withAppendedId(uri, id);
     }
 
     private void incrementDescendantsCountForAncestors(SQLiteDatabase db, long bookId, long lft, long rgt) {
         db.execSQL("UPDATE " + DbNote.TABLE +
-                   " SET " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " = " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " + 1 " +
-                   "WHERE " + DatabaseUtils.whereAncestors(bookId, lft, rgt));
+                " SET " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " = " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " + 1 " +
+                "WHERE " + DatabaseUtils.whereAncestors(bookId, lft, rgt));
     }
 
     private int getMaxRgt(SQLiteDatabase db, long bookId) {
@@ -791,7 +815,7 @@ public class Provider extends ContentProvider {
 
     private static final String DELETE_CURRENT_VERSIONED_ROOKS_FOR_ROOK_ID =
             "DELETE FROM " + DbCurrentVersionedRook.TABLE +
-            " WHERE " + DbCurrentVersionedRook.VERSIONED_ROOK_ID + " IN (" + VERSIONED_ROOK_IDS_FOR_ROOK_ID + ")";
+                    " WHERE " + DbCurrentVersionedRook.VERSIONED_ROOK_ID + " IN (" + VERSIONED_ROOK_IDS_FOR_ROOK_ID + ")";
 
     private Uri insertCurrentRook(SQLiteDatabase db, Uri uri, ContentValues contentValues) {
         String repoUrl = contentValues.getAsString(ProviderContract.CurrentRooks.Param.REPO_URL);
@@ -980,8 +1004,8 @@ public class Provider extends ContentProvider {
     private int removeBooksLinksForRepo(SQLiteDatabase db, String repoId) {
         /* Rooks which use passed repo. */
         String rookIds = "SELECT DISTINCT " + DbRook._ID +
-                         " FROM " + DbRook.TABLE +
-                         " WHERE " + DbRook.REPO_ID + " = " + repoId;
+                " FROM " + DbRook.TABLE +
+                " WHERE " + DbRook.REPO_ID + " = " + repoId;
 
         return db.delete(DbBookLink.TABLE, DbBookLink.ROOK_ID + " IN (" + rookIds + ")", null);
     }
@@ -1165,13 +1189,13 @@ public class Provider extends ContentProvider {
 
         /* Select only notes which don't already have the target state. */
         String notesSelection = DbNote._ID + " IN (" + ids + ") AND (" +
-                                DbNoteView.STATE + " IS NULL OR " + DbNoteView.STATE + " != ?)";
+                DbNoteView.STATE + " IS NULL OR " + DbNoteView.STATE + " != ?)";
 
         String[] selectionArgs = { targetState };
 
         /* Select notebooks which will be affected. */
         String booksSelection = DbBook._ID + " IN (SELECT DISTINCT " +
-                                DbNote.BOOK_ID + " FROM " + DbNote.TABLE + " WHERE " + notesSelection + ")";
+                DbNote.BOOK_ID + " FROM " + DbNote.TABLE + " WHERE " + notesSelection + ")";
 
         /* Notebooks must be updated before notes, because selection checks
          * for notes what will be affected.
@@ -1586,7 +1610,7 @@ public class Provider extends ContentProvider {
 
         if (BuildConfig.LOG_DEBUG)
             LogUtils.d(TAG, bookName + ": Parsing done in " +
-                            (System.currentTimeMillis() - startedAt) + " ms");
+                    (System.currentTimeMillis() - startedAt) + " ms");
 
         if (rookUrl != null) {
             updateOrInsertBookLink(db, bookId, repoUrl, rookUrl);

@@ -4,13 +4,15 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.style.ClickableSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.URLSpan;
 import android.text.style.UnderlineSpan;
+import android.view.View;
 
-import com.orgzly.R;
+import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 
 import java.util.regex.Matcher;
@@ -22,10 +24,14 @@ import java.util.regex.Pattern;
 public class OrgFormatter {
     private static final String LINK_SCHEMES = "https?|mailto|tel|voicemail|geo|sms|smsto|mms|mmsto";
 
+    // tel:1234567
     private static final String PLAIN_LINK = "((" + LINK_SCHEMES + "):\\S+)";
 
-    /* Same as the above, but ] ends the link too. */
+    /* Same as the above, but ] ends the link too. Used for bracket links. */
     private static final String BRACKET_LINK = "((" + LINK_SCHEMES + "):[^]\\s]+)";
+
+    // [[#CUSTOM_ID]] http://orgmode.org/manual/Internal-links.html
+    private static final String CUSTOM_ID_LINK = "(\\#([^]\\s]+))";
 
     /* Allows anything as a link. Probably needs some constraints.
      * See http://orgmode.org/manual/External-links.html and org-any-link-re
@@ -42,6 +48,7 @@ public class OrgFormatter {
         doOrgLinksWithName(ssb, BRACKET_LINK, linkify);
         doOrgLinksWithName(ssb, BRACKET_ANY_LINK, false);
         doOrgLinks(ssb, BRACKET_LINK, linkify);
+        doCustomIdLink(ssb, CUSTOM_ID_LINK, linkify, context);
         doPlainLinks(ssb, PLAIN_LINK, linkify);
         doMarkup(ssb, context);
 
@@ -85,6 +92,31 @@ public class OrgFormatter {
 
             if (createLinks) {
                 setUrlSpan(ssb, link, m.start(), m.start() + link.length());
+            }
+
+            /* Re-create Matcher, as ssb size is modified. */
+            m = p.matcher(ssb);
+        }
+    }
+
+    private static void doCustomIdLink(SpannableStringBuilder ssb, String linkRegex, boolean createLinks, Context context) {
+        Pattern p = Pattern.compile("\\[\\[" + linkRegex + "\\]\\]");
+        Matcher m = p.matcher(ssb);
+
+        while (m.find()) {
+            String link = m.group(1);
+            String str = m.group(2);
+
+            ssb.replace(m.start(), m.end(), link);
+
+            if (createLinks) {
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(View widget) {
+                        Shelf shelf = new Shelf(context);
+                        shelf.openNoteForCustomId(str);
+                    }
+                }, m.start(), m.start() + link.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
 
             /* Re-create Matcher, as ssb size is modified. */

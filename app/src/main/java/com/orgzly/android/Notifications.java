@@ -155,9 +155,8 @@ public class Notifications {
     }
 
     public static void ensureSyncNotificationSetup(Context context) {
-        LocalBroadcastManager.getInstance(context).unregisterReceiver(syncServiceReceiver);
-
-        LocalBroadcastManager.getInstance(context)
-                .registerReceiver(syncServiceReceiver, new IntentFilter(AppIntent.ACTION_SYNC_STATUS));
+        LocalBroadcastManager bm = LocalBroadcastManager.getInstance(context);
+        bm.unregisterReceiver(syncServiceReceiver);
+        bm.registerReceiver(syncServiceReceiver, new IntentFilter(AppIntent.ACTION_SYNC_STATUS));
     }
 }

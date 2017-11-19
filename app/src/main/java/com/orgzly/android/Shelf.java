@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -29,6 +30,7 @@ import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.sync.BookNamesake;
 import com.orgzly.android.sync.BookSyncStatus;
 import com.orgzly.android.sync.SyncService;
+import com.orgzly.android.ui.MainActivity;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.CircularArrayList;
@@ -891,6 +893,21 @@ public class Shelf {
         notifyDataChanged(mContext);
 
         return modifiedNotesCount;
+    }
+
+    public void openNoteForCustomId(String str) {
+        List<Long[]> notes = NotesClient.getNotesWithProperty(mContext, "CUSTOM_ID", str);
+
+        if (!notes.isEmpty()) {
+            long noteId = notes.get(0)[0];
+            long bookId = notes.get(0)[1];
+
+            Intent intent = new Intent(AppIntent.ACTION_OPEN_NOTE);
+            intent.putExtra(MainActivity.EXTRA_NOTE_ID, noteId);
+            intent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
+
+            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+        }
     }
 
     // TODO: Used by tests only for now

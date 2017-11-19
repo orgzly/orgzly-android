@@ -433,6 +433,21 @@ public class NotesClient {
         }
     }
 
+    public static List<Long[]> getNotesWithProperty(Context context, String propName, String propValue) {
+        List<Long[]> results = new ArrayList<>();
+
+        try (Cursor cursor = context.getContentResolver().query(
+                ProviderContract.Notes.ContentUri.notesWithProperty(propName, propValue), null, null, null, null)) {
+            if (cursor != null) {
+                for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                    results.add(new Long[] { cursor.getLong(0), cursor.getLong(1) });
+                }
+            }
+        }
+
+        return results;
+    }
+
     public static Cursor getCursorForBook(Context context, String bookName) throws SQLException {
         SearchQuery searchQuery = new SearchQuery();
         if (bookName != null) {

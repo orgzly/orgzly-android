@@ -31,6 +31,7 @@ class ProviderUris {
         matcher.addURI(ProviderContract.AUTHORITY, CurrentRooks.MatcherUri.CURRENT_ROOKS, CURRENT_ROOKS);
 
         matcher.addURI(ProviderContract.AUTHORITY, Notes.MatcherUri.NOTES_SEARCH_QUERIED, NOTES_SEARCH_QUERIED);
+        matcher.addURI(ProviderContract.AUTHORITY, Notes.MatcherUri.NOTES_WITH_PROPERTY, NOTES_WITH_PROPERTY);
         matcher.addURI(ProviderContract.AUTHORITY, Notes.MatcherUri.NOTES_ID_ABOVE, NOTE_ABOVE);
         matcher.addURI(ProviderContract.AUTHORITY, Notes.MatcherUri.NOTES_ID_UNDER, NOTE_UNDER);
         matcher.addURI(ProviderContract.AUTHORITY, Notes.MatcherUri.NOTES_ID_BELOW, NOTE_BELOW);
@@ -94,4 +95,5 @@ class ProviderUris {
     static final int DELETE = 33;
     static final int BOOKS_ID_SPARSE_TREE = 34;
     static final int TIMES = 35;
+    static final int NOTES_WITH_PROPERTY = 36;
 }
