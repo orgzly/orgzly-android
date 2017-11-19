@@ -124,14 +124,6 @@ public class MainActivity extends CommonActivity
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onCreate(savedInstanceState);
 
-        /*
-         * Set defaults.
-         * Attempting to set defaults every time (true parameter below), in case some preference's
-         * key has been changed. If false is used, opening Settings fragment can trigger preference
-         * change listener, even though nothing has been changed by user.
-         */
-        android.preference.PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
-
         setContentView(R.layout.activity_main);
 
         mSavedTitle = mDefaultTitle = getTitle();

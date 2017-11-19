@@ -150,6 +150,8 @@ abstract class CommonActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
+
         val intentFilter = IntentFilter()
         intentFilter.addAction(AppIntent.ACTION_DB_UPGRADE_STARTED)
         intentFilter.addAction(AppIntent.ACTION_DB_UPGRADE_ENDED)
