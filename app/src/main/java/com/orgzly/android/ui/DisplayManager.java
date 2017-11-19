@@ -121,9 +121,7 @@ public class DisplayManager {
      * Add fragment for book, unless the same book is already being displayed.
      */
     public void displayBook(long bookId, long noteId) {
-        BookFragment f = getFragmentDisplayingBook(bookId);
-
-        if (f == null) {
+        if (getFragmentDisplayingBook(bookId) == null) {
             /* Create fragment. */
             Fragment fragment = BookFragment.getInstance(bookId, noteId);
 
@@ -140,7 +138,9 @@ public class DisplayManager {
     }
 
     public void displayNote(long bookId, long noteId) {
-        displayNote(false, bookId, noteId, Place.UNSPECIFIED);
+        if (getFragmentDisplayingNote(noteId) == null) {
+            displayNote(false, bookId, noteId, Place.UNSPECIFIED);
+        }
     }
 
     public void displayNewNote(NotePlace target) {
@@ -218,6 +218,16 @@ public class DisplayManager {
                 .commit();
     }
 
+    public SearchQuery getDisplayedQuery() {
+        Fragment f = mFragmentManager.findFragmentByTag(QueryFragment.FRAGMENT_TAG);
+
+        if (f != null && f.isVisible()) {
+            return ((QueryFragment) f).getQuery();
+        }
+
+        return null;
+    }
+
     private BookFragment getFragmentDisplayingBook(long bookId) {
         Fragment f = mFragmentManager.findFragmentByTag(BookFragment.FRAGMENT_TAG);
 
@@ -226,6 +236,20 @@ public class DisplayManager {
 
             if (bookFragment.getBook() != null && bookFragment.getBook().getId() == bookId) {
                 return bookFragment;
+            }
+        }
+
+        return null;
+    }
+
+    private NoteFragment getFragmentDisplayingNote(long noteId) {
+        Fragment f = mFragmentManager.findFragmentByTag(NoteFragment.FRAGMENT_TAG);
+
+        if (f != null && f.isVisible()) {
+            NoteFragment noteFragment = (NoteFragment) f;
+
+            if (noteFragment.getNoteId() == noteId) {
+                return noteFragment;
             }
         }
 
@@ -242,15 +266,5 @@ public class DisplayManager {
         } else {
             return null;
         }
-    }
-
-    public SearchQuery getDisplayedQuery() {
-        Fragment f = mFragmentManager.findFragmentByTag(QueryFragment.FRAGMENT_TAG);
-
-        if (f != null && f.isVisible()) {
-            return ((QueryFragment) f).getQuery();
-        }
-
-        return null;
     }
 }

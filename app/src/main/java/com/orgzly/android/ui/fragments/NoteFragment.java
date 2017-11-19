@@ -1118,6 +1118,10 @@ public class NoteFragment extends Fragment
         getArguments().putLong(ARG_BOOK_ID, book.getId());
     }
 
+    public long getNoteId() {
+        return mNoteId;
+    }
+
     private void updateNoteForStateChange(Context context, Note note, String state) {
         StateChangeLogic stateSetOp = new StateChangeLogic(AppPreferences.doneKeywordsSet(context));
 
