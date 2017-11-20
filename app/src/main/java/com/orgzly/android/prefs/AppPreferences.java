@@ -206,6 +206,12 @@ public class AppPreferences {
                 context.getResources().getString(R.string.pref_default_share_notebook));
     }
 
+    public static boolean forceUtf8(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_force_utf8),
+                context.getResources().getBoolean(R.bool.pref_default_force_utf8));
+    }
+
     public static boolean newNoteNotification(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_new_note_notification),

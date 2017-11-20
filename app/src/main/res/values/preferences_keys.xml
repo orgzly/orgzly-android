@@ -200,6 +200,9 @@
     <string name="pref_key_share_notebook" translatable="false">pref_key_share_notebook</string>
     <string name="pref_default_share_notebook" translatable="false">@string/default_share_notebook</string>
 
+    <string name="pref_key_force_utf8" translatable="false">pref_key_force_utf8</string>
+    <bool name="pref_default_force_utf8" translatable="false">false</bool>
+
     <string name="pref_key_new_note_notification" translatable="false">pref_key_new_note_notification</string>
     <bool name="pref_default_value_new_note_notification" translatable="false">false</bool>
 

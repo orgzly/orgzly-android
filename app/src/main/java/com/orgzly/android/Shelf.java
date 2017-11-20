@@ -141,6 +141,10 @@ public class Shelf {
     }
 
     public Book loadBookFromFile(String name, BookName.Format format, File file, VersionedRook vrook, String selectedEncoding) throws IOException {
+        if (selectedEncoding == null && AppPreferences.forceUtf8(mContext)) {
+            selectedEncoding = "UTF-8";
+        }
+
         Uri uri = BooksClient.loadFromFile(mContext, name, format, file, vrook, selectedEncoding);
 
         notifyDataChanged(mContext);

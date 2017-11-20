@@ -1403,7 +1403,7 @@ public class Provider extends ContentProvider {
 
         try {
             /*
-             * Determine encoding to use -- detect of force it.
+             * Determine encoding to use -- detect or force it.
              */
             String usedEncoding;
             String detectedEncoding = null;

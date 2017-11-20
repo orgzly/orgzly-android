@@ -78,6 +78,12 @@
             android:singleLine="true"
             android:dialogMessage="@string/default_notebook_desc"
             android:defaultValue="@string/default_share_notebook"/>
+
+        <SwitchPreference
+            android:key="@string/pref_key_force_utf8"
+            android:title="@string/force_utf8"
+            android:summary="@string/force_utf8_summary"
+            android:defaultValue="@bool/pref_default_force_utf8"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/notes_list">
