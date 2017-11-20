@@ -391,7 +391,7 @@ public class ReminderService extends IntentService {
                 builder.setSound(sound);
             }
 
-            builder.setContentTitle(OrgFormatter.parse(
+            builder.setContentTitle(OrgFormatter.INSTANCE.parse(
                     context,
                     noteReminder.getPayload().title,
                     false // Do not linkify links in notification
