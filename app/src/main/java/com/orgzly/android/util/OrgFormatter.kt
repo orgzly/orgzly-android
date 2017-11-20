@@ -64,11 +64,11 @@ object OrgFormatter {
     private val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 
     @JvmOverloads
-    fun parse(context: Context, str: String, linkify: Boolean = true): SpannableStringBuilder {
+    fun parse(context: Context?, str: String, linkify: Boolean = true): SpannableStringBuilder {
         val ssb = SpannableStringBuilder(str)
 
-        parsePropertyLinks(ssb, CUSTOM_ID_LINK, "CUSTOM_ID", linkify, context)
-        parsePropertyLinks(ssb, ID_LINK, "ID", linkify, context)
+        parsePropertyLinks(ssb, CUSTOM_ID_LINK, "CUSTOM_ID", linkify)
+        parsePropertyLinks(ssb, ID_LINK, "ID", linkify)
 
         parseOrgLinksWithName(ssb, BRACKET_LINK, linkify)
         parseOrgLinksWithName(ssb, BRACKET_ANY_LINK, false)
@@ -128,7 +128,7 @@ object OrgFormatter {
      * [[ #custom id ]] and [[ #custom id ][ link ]]
      * [[ id:id ]] and [[ id:id ][ link ]]
      */
-    private fun parsePropertyLinks(ssb: SpannableStringBuilder, linkRegex: String, propName: String, createLinks: Boolean, context: Context) {
+    private fun parsePropertyLinks(ssb: SpannableStringBuilder, linkRegex: String, propName: String, createLinks: Boolean) {
         fun p(p: Pattern, propGroup: Int, linkGroup: Int) {
             var m = p.matcher(ssb)
 
@@ -142,7 +142,7 @@ object OrgFormatter {
                     ssb.setSpan(object : ClickableSpan() {
                         override fun onClick(widget: View) {
                             // TODO: Send to ActionService
-                            val shelf = Shelf(context)
+                            val shelf = Shelf(widget.context)
                             shelf.openFirstNoteWithProperty(propName, propValue)
                         }
                     }, m.start(), m.start() + link.length, FLAGS)
@@ -180,11 +180,12 @@ object OrgFormatter {
     }
 
     private fun parseMarkup(ssb: SpannableStringBuilder, context: Context?) {
-        if (!AppPreferences.styleText(context)) {
+        /* Parse if context is null or if option is enabled. */
+        if (context != null && !AppPreferences.styleText(context)) {
             return
         }
 
-        val withMarks = AppPreferences.styledTextWithMarks(context)
+        val withMarks = context != null && AppPreferences.styledTextWithMarks(context)
 
         fun setMarkupSpan(matcher: Matcher, group: Int, span: Any): Matcher {
             if (withMarks) {
