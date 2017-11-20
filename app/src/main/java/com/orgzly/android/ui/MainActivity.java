@@ -334,7 +334,7 @@ public class MainActivity extends CommonActivity
         performIntros();
 
         Shelf shelf = new Shelf(this);
-        shelf.resumeSync();
+        shelf.syncOnResume();
     }
 
     private void performIntros() {
@@ -1318,7 +1318,7 @@ public class MainActivity extends CommonActivity
         if (mActionMode != null) {
             if ("M".equals(mActionMode.getTag()) && mPromoteDemoteOrMoveRequested) {
                 Shelf shelf = new Shelf(this);
-                shelf.updateSync();
+                shelf.syncOnNoteUpdate();
             }
         }
         mPromoteDemoteOrMoveRequested = false;

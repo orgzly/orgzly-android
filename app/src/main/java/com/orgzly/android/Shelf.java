@@ -263,14 +263,14 @@ public class Shelf {
     public void setNotesScheduledTime(Set<Long> noteIds, OrgDateTime time) {
         NotesClient.updateScheduledTime(mContext, noteIds, time);
         notifyDataChanged(mContext);
-        updateSync();
+        syncOnNoteUpdate();
     }
 
     public void setNotesState(Set<Long> noteIds, String state) {
         NotesClient.setState(mContext, noteIds, state);
         // TODO: Check if there was a change
         notifyDataChanged(mContext);
-        updateSync();
+        syncOnNoteUpdate();
     }
 
     public Note getNote(long id) {
@@ -288,7 +288,7 @@ public class Shelf {
     public int updateNote(Note note) {
         int result = NotesClient.update(mContext, note);
         notifyDataChanged(mContext);
-        updateSync();
+        syncOnNoteUpdate();
         return result;
     }
 
@@ -299,7 +299,7 @@ public class Shelf {
         BooksClient.setModifiedTime(mContext, note.getPosition().getBookId(), System.currentTimeMillis());
 
         notifyDataChanged(mContext);
-        createSync();
+        syncOnNoteCreate();
 
         return insertedNote;
     }
@@ -348,7 +348,7 @@ public class Shelf {
     public int cut(long bookId, Set<Long> noteIds) {
         int result = NotesClient.cut(mContext, bookId, noteIds);
         notifyDataChanged(mContext);
-        updateSync();
+        syncOnNoteUpdate();
         return result;
     }
 
@@ -363,7 +363,7 @@ public class Shelf {
         NotesBatch batch = NotesClient.paste(mContext, bookId, noteId, place);
         if (batch != null) {
             notifyDataChanged(mContext);
-            updateSync();
+            syncOnNoteUpdate();
         }
         return batch;
 
@@ -372,7 +372,7 @@ public class Shelf {
     public int delete(long bookId, Set<Long> noteIds) {
         int result = NotesClient.delete(mContext, bookId, noteIds);
         notifyDataChanged(mContext);
-        updateSync();
+        syncOnNoteUpdate();
         return result;
     }
 
@@ -750,20 +750,20 @@ public class Shelf {
         context.sendBroadcast(new Intent(AppIntent.ACTION_LIST_WIDGET_UPDATE));
     }
 
-    public void createSync() {
-        if (AppPreferences.autoSync(mContext) && AppPreferences.syncAfterNoteCreate(mContext)) {
+    public void syncOnNoteCreate() {
+        if (AppPreferences.autoSync(mContext) && AppPreferences.syncOnNoteCreate(mContext)) {
             autoSync();
         }
     }
 
-    public void updateSync() {
-        if (AppPreferences.autoSync(mContext) && AppPreferences.syncAfterNoteUpdate(mContext)) {
+    public void syncOnNoteUpdate() {
+        if (AppPreferences.autoSync(mContext) && AppPreferences.syncOnNoteUpdate(mContext)) {
             autoSync();
         }
     }
 
-    public void resumeSync() {
-        if (AppPreferences.autoSync(mContext) && AppPreferences.onResumeSync(mContext)) {
+    public void syncOnResume() {
+        if (AppPreferences.autoSync(mContext) && AppPreferences.syncOnResume(mContext)) {
             autoSync();
         }
     }
