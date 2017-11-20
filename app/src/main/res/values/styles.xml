@@ -8,6 +8,9 @@
          See and try using http://developer.android.com/design/style/typography.html
     -->
     <style name="AppLightTheme" parent="Theme.Design.Light">
+        <!-- Avoid white screen appearing briefly. -->
+        <item name="android:windowDisablePreview">true</item>
+
         <!-- Font sizes (defaults) -->
         <item name="font_micro">12sp</item>
         <item name="font_small">14sp</item>
@@ -83,7 +86,9 @@
         <item name="item_head_title_text_color">@color/black</item>
         <item name="item_head_fold_button_text_color">@color/black</item>
         <item name="item_head_post_title_text_color">#696969</item>
-        <item name="item_head_indent_line_color">#0c000000</item>
+
+        <item name="line_thin_color">#0c000000</item>
+        <item name="line_color">#18000000</item>
 
         <item name="big_centered_text_color">#696969</item>
 
@@ -95,9 +100,10 @@
 
         <item name="oic_drawer_sync_button">@drawable/ic_sync_black_24dp</item>
         <item name="oic_drawer_filters">@drawable/ic_search_black_24dp</item>
-        <item name="oic_drawer_notebooks">@drawable/ic_my_library_books_black_24dp</item>
+        <item name="oic_drawer_notebooks">@drawable/ic_library_books_black_24dp</item>
         <item name="oic_drawer_settings">@drawable/ic_settings_black_24dp</item>
-        <item name="oic_drawer_item_modified">@drawable/ic_sync_grey600_18dp</item>
+        <item name="oic_drawer_item_modified">@drawable/ic_sync_black_18dp</item>
+        <item name="oic_drawer_agenda">@drawable/ic_agenda_black_24dp</item>
 
         <item name="oic_above_heads_action_mode">@drawable/cic_new_above_black_24dp</item>
         <item name="oic_under_heads_action_mode">@drawable/cic_new_under_black_24dp</item>
@@ -120,10 +126,10 @@
         <item name="oic_edit_scheduled_time_action_mode">@drawable/ic_today_black_24dp</item>
         <item name="oic_edit_state_action_mode">@drawable/ic_storage_black_24dp</item>
 
-        <item name="oic_move_heads_left_action_mode">@drawable/ic_keyboard_arrow_left_black_24dp</item>
-        <item name="oic_move_heads_down_action_mode">@drawable/ic_keyboard_arrow_down_black_24dp</item>
-        <item name="oic_move_heads_up_action_mode">@drawable/ic_keyboard_arrow_up_black_24dp</item>
-        <item name="oic_move_heads_right_action_mode">@drawable/ic_keyboard_arrow_right_black_24dp</item>
+        <item name="oic_move_heads_left_action_mode">@drawable/ic_arrow_back_black_24dp</item>
+        <item name="oic_move_heads_down_action_mode">@drawable/ic_arrow_downward_black_24dp</item>
+        <item name="oic_move_heads_up_action_mode">@drawable/ic_arrow_upward_black_24dp</item>
+        <item name="oic_move_heads_right_action_mode">@drawable/ic_arrow_forward_black_24dp</item>
 
         <item name="oic_search_option">@drawable/ic_search_black_24dp</item>
 
@@ -156,6 +162,7 @@
 
         <item name="oic_item_book_item_sync_needed">@drawable/ic_sync_black_18dp</item>
         <item name="oic_item_book_mtime_item">@drawable/ic_access_time_black_18dp</item>
+        <item name="oic_item_book_notes_count">@drawable/ic_format_list_bulleted_black_18dp</item>
         <item name="oic_item_book_link_item">@drawable/ic_link_black_18dp</item>
         <item name="oic_item_book_versioned_rook_item">@drawable/ic_sync_black_18dp</item>
         <item name="oic_item_book_sync_status_item">@drawable/ic_sync_black_18dp</item>
@@ -166,6 +173,14 @@
         <item name="oic_item_head_scheduled_item">@drawable/ic_today_black_18dp</item>
         <item name="oic_item_head_deadline_item">@drawable/ic_alarm_black_18dp</item>
         <item name="oic_item_head_closed_item">@drawable/ic_done_black_18dp</item>
+
+        <item name="oic_move">@drawable/ic_swap_vert_black_24dp</item>
+        <item name="oic_cut">@drawable/ic_content_cut_black_24dp</item>
+        <item name="oic_paste">@drawable/ic_content_paste_black_24dp</item>
+
+        <item name="oic_warning">@drawable/ic_warning_black_24dp</item>
+
+        <item name="oic_date_range">@drawable/ic_date_range_black_24dp</item>
     </style>
 
     <style name="AppDarkTheme" parent="Theme.Design">
@@ -240,7 +255,9 @@
         <item name="item_head_title_text_color">@color/dark_bg_text_primary</item>
         <item name="item_head_fold_button_text_color">@color/dark_bg_text_primary</item>
         <item name="item_head_post_title_text_color">@color/dark_bg_text_secondary</item>
-        <item name="item_head_indent_line_color">#0cffffff</item>
+
+        <item name="line_thin_color">#0cffffff</item>
+        <item name="line_color">#18ffffff</item>
 
         <item name="big_centered_text_color">@color/dark_bg_text_primary</item>
 
@@ -252,9 +269,10 @@
 
         <item name="oic_drawer_sync_button">@drawable/ic_sync_white_24dp</item>
         <item name="oic_drawer_filters">@drawable/ic_search_white_24dp</item>
-        <item name="oic_drawer_notebooks">@drawable/ic_my_library_books_white_24dp</item>
+        <item name="oic_drawer_notebooks">@drawable/ic_library_books_white_24dp</item>
         <item name="oic_drawer_settings">@drawable/ic_settings_white_24dp</item>
         <item name="oic_drawer_item_modified">@drawable/ic_sync_white_18dp</item>
+        <item name="oic_drawer_agenda">@drawable/ic_agenda_white_24dp</item>
 
         <item name="oic_above_heads_action_mode">@drawable/cic_new_above_white_24dp</item>
         <item name="oic_under_heads_action_mode">@drawable/cic_new_under_white_24dp</item>
@@ -277,10 +295,10 @@
         <item name="oic_edit_scheduled_time_action_mode">@drawable/ic_today_white_24dp</item>
         <item name="oic_edit_state_action_mode">@drawable/ic_storage_white_24dp</item>
 
-        <item name="oic_move_heads_left_action_mode">@drawable/ic_keyboard_arrow_left_white_24dp</item>
-        <item name="oic_move_heads_down_action_mode">@drawable/ic_keyboard_arrow_down_white_24dp</item>
-        <item name="oic_move_heads_up_action_mode">@drawable/ic_keyboard_arrow_up_white_24dp</item>
-        <item name="oic_move_heads_right_action_mode">@drawable/ic_keyboard_arrow_right_white_24dp</item>
+        <item name="oic_move_heads_left_action_mode">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="oic_move_heads_down_action_mode">@drawable/ic_arrow_downward_white_24dp</item>
+        <item name="oic_move_heads_up_action_mode">@drawable/ic_arrow_upward_white_24dp</item>
+        <item name="oic_move_heads_right_action_mode">@drawable/ic_arrow_forward_white_24dp</item>
 
         <item name="oic_search_option">@drawable/ic_search_white_24dp</item>
 
@@ -313,6 +331,7 @@
 
         <item name="oic_item_book_item_sync_needed">@drawable/ic_sync_white_18dp</item>
         <item name="oic_item_book_mtime_item">@drawable/ic_access_time_white_18dp</item>
+        <item name="oic_item_book_notes_count">@drawable/ic_format_list_bulleted_white_18dp</item>
         <item name="oic_item_book_link_item">@drawable/ic_link_white_18dp</item>
         <item name="oic_item_book_versioned_rook_item">@drawable/ic_sync_white_18dp</item>
         <item name="oic_item_book_sync_status_item">@drawable/ic_sync_white_18dp</item>
@@ -323,6 +342,14 @@
         <item name="oic_item_head_scheduled_item">@drawable/ic_today_white_18dp</item>
         <item name="oic_item_head_deadline_item">@drawable/ic_alarm_white_18dp</item>
         <item name="oic_item_head_closed_item">@drawable/ic_done_white_18dp</item>
+
+        <item name="oic_move">@drawable/ic_swap_vert_white_24dp</item>
+        <item name="oic_cut">@drawable/ic_content_cut_white_24dp</item>
+        <item name="oic_paste">@drawable/ic_content_paste_white_24dp</item>
+
+        <item name="oic_warning">@drawable/ic_warning_white_24dp</item>
+
+        <item name="oic_date_range">@drawable/ic_date_range_white_24dp</item>
     </style>
 
     <!-- Color schemes -->

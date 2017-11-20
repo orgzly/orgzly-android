@@ -1,5 +1,6 @@
 package com.orgzly.android.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
@@ -82,10 +83,33 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
             view.setTag(holder);
         }
 
-        /*
-         * Setup margins and padding for different list density options.
-         */
+        setupMargins(context, holder);
 
+        return view;
+    }
+
+    /**
+     * Setup margins for different list density options.
+     */
+    private void setupMargins(Context context, ViewHolder holder) {
+        int[] margins = getMarginsForListDensity(context);
+
+        RelativeLayout.LayoutParams payloadParams = (RelativeLayout.LayoutParams) holder.payload.getLayoutParams();
+        payloadParams.setMargins(payloadParams.leftMargin, margins[0], payloadParams.rightMargin, 0);
+
+        LinearLayout.LayoutParams[] params = {
+                (LinearLayout.LayoutParams) holder.scheduled.getLayoutParams(),
+                (LinearLayout.LayoutParams) holder.deadline.getLayoutParams(),
+                (LinearLayout.LayoutParams) holder.closed.getLayoutParams(),
+                (LinearLayout.LayoutParams) holder.content.getLayoutParams()
+        };
+
+        for (LinearLayout.LayoutParams p: params) {
+            p.setMargins(0, margins[1], 0, 0);
+        }
+    }
+
+    protected int[] getMarginsForListDensity(Context context) {
         int itemMargins;
         int belowTitleMargins;
 
@@ -104,20 +128,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
             belowTitleMargins = (int) context.getResources().getDimension(R.dimen.item_head_below_title_padding_cozy);
         }
 
-        RelativeLayout.LayoutParams payloadParams = (RelativeLayout.LayoutParams) holder.payload.getLayoutParams();
-        payloadParams.setMargins(payloadParams.leftMargin, itemMargins, payloadParams.rightMargin, 0);
-
-        LinearLayout.LayoutParams[] params = new LinearLayout.LayoutParams[] {
-                (LinearLayout.LayoutParams) holder.scheduled.getLayoutParams(),
-                (LinearLayout.LayoutParams) holder.deadline.getLayoutParams(),
-                (LinearLayout.LayoutParams) holder.closed.getLayoutParams(),
-                (LinearLayout.LayoutParams) holder.content.getLayoutParams()
-        };
-        for (LinearLayout.LayoutParams p: params) {
-            p.setMargins(0, belowTitleMargins, 0, 0);
-        }
-
-        return view;
+        return new int[] { itemMargins, belowTitleMargins };
     }
 
     @Override
@@ -171,7 +182,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                 holder.content.setTypeface(Typeface.MONOSPACE);
             }
 
-            holder.content.setText(OrgFormatter.parse(head.getContent()));
+            holder.content.setText(OrgFormatter.parse(context, head.getContent()));
 
             holder.content.setVisibility(View.VISIBLE);
 
@@ -227,6 +238,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         });
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void toggleFoldedState(final Context context, final long id) {
         new AsyncTask<Void, Void, Void>() {
             @Override

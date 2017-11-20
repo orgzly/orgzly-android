@@ -9,6 +9,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
 import com.orgzly.android.SearchQuery;
+import com.orgzly.android.ui.fragments.AgendaFragment;
 import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
@@ -67,14 +68,11 @@ public class DisplayManager {
 
     /**
      * Return to original state.
-     * Removes all fragments and then adds BooksFragment.
+     * Removes all fragments except for the last one, displaying books.
      */
-    public void reset() {
+    public void clear() {
         /* Clear the back stack. */
         mFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-        /* Display starting fragment. */
-        displayBooks(false);
     }
 
     public void displayFilters() {
@@ -140,7 +138,7 @@ public class DisplayManager {
     }
 
     public void displayNote(long bookId, long noteId) {
-        displayNote(false, bookId, noteId, Place.UNDEFINED);
+        displayNote(false, bookId, noteId, Place.UNSPECIFIED);
     }
 
     public void displayNewNote(NotePlace target) {
@@ -201,17 +199,42 @@ public class DisplayManager {
 //    }
 
     public void displaySettings() {
-        if (isFragmentDisplayed(SettingsFragment.FRAGMENT_TAG) != null) {
-            return;
+        displaySettings(null);
+    }
+
+    public void displaySettings(String resource) {
+        /* Check if settings fragment using the same resource is already displayed. */
+        Fragment f = isFragmentDisplayed(SettingsFragment.FRAGMENT_TAG);
+        if (f != null) {
+            SettingsFragment settingsFragment = (SettingsFragment) f;
+            if (settingsFragment.isForResource(resource)) {
+                return;
+            }
         }
 
-        Fragment fragment = SettingsFragment.getInstance();
+        Fragment fragment = SettingsFragment.getInstance(resource);
 
         mFragmentManager
                 .beginTransaction()
                 .setTransition(FRAGMENT_TRANSITION)
                 .addToBackStack(null)
                 .replace(R.id.single_pane_container, fragment, SettingsFragment.FRAGMENT_TAG)
+                .commit();
+    }
+
+    public void displayAgenda() {
+        if (isFragmentDisplayed(AgendaFragment.FRAGMENT_TAG) != null) {
+            return;
+        }
+
+        /* Create fragment. */
+        Fragment fragment = AgendaFragment.getInstance();
+        /* Add fragment. */
+        mFragmentManager
+                .beginTransaction()
+                .setTransition(FRAGMENT_TRANSITION)
+                .addToBackStack(null)
+                .replace(R.id.single_pane_container, fragment, AgendaFragment.FRAGMENT_TAG)
                 .commit();
     }
 

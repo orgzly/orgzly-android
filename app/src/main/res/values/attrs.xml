@@ -74,7 +74,9 @@
         <attr name="item_head_fold_button_text_color" format="color"/>
 
         <attr name="item_head_post_title_text_color" format="color"/>
-        <attr name="item_head_indent_line_color" format="color"/>
+
+        <attr name="line_thin_color" format="color"/>
+        <attr name="line_color" format="color"/>
 
         <attr name="big_centered_text_color" format="color"/>
 
@@ -89,6 +91,7 @@
         <attr name="oic_drawer_notebooks" format="reference"/>
         <attr name="oic_drawer_settings" format="reference"/>
         <attr name="oic_drawer_item_modified" format="reference"/>
+        <attr name="oic_drawer_agenda" format="reference"/>
 
         <attr name="oic_above_heads_action_mode" format="reference"/>
         <attr name="oic_under_heads_action_mode" format="reference"/>
@@ -147,6 +150,7 @@
 
         <attr name="oic_item_book_item_sync_needed" format="reference"/>
         <attr name="oic_item_book_mtime_item" format="reference"/>
+        <attr name="oic_item_book_notes_count" format="reference"/>
         <attr name="oic_item_book_link_item" format="reference"/>
         <attr name="oic_item_book_versioned_rook_item" format="reference"/>
         <attr name="oic_item_book_sync_status_item" format="reference"/>
@@ -157,5 +161,13 @@
         <attr name="oic_item_head_scheduled_item" format="reference"/>
         <attr name="oic_item_head_deadline_item" format="reference"/>
         <attr name="oic_item_head_closed_item" format="reference"/>
+
+        <attr name="oic_move" format="reference"/>
+        <attr name="oic_cut" format="reference"/>
+        <attr name="oic_paste" format="reference"/>
+
+        <attr name="oic_warning" format="reference"/>
+
+        <attr name="oic_date_range" format="reference"/>
     </declare-styleable>
 </resources>

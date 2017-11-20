@@ -52,8 +52,13 @@ public class DatabaseMigration {
     private static final int DB_VER_10 = 139;
     private static final int DB_VER_11 = 140;
     private static final int DB_VER_12 = 141;
+    private static final int DB_VER_13 = 142;
+    private static final int DB_VER_14 = 143;
+    private static final int DB_VER_15 = 144;
+    private static final int DB_VER_16 = 145;
+    private static final int DB_VER_17 = 146;
 
-    static final int DB_VER_CURRENT = DB_VER_12;
+    static final int DB_VER_CURRENT = DB_VER_17;
 
     /**
      * Start from the old version and go through all changes. No breaks.
@@ -123,16 +128,19 @@ public class DatabaseMigration {
             case DB_VER_9:
                 migrateOrgTimestamps(db);
 
-            case DB_VER_10:
-                /* Views-only updates */
-            case DB_VER_11:
+            case DB_VER_10: /* Views-only updates */
+            case DB_VER_11: /* Views-only updates */
+            case DB_VER_12: /* Views-only updates (notes count) */
+            case DB_VER_13: /* Views-only updates (notes count) */
+            case DB_VER_14: /* Views-only updates */
+            case DB_VER_15: /* Views-only updates */
+            case DB_VER_16:
                 addCreatedAt(db);
         }
     }
 
     private static void addCreatedAt(SQLiteDatabase db) {
         db.execSQL("ALTER TABLE notes ADD COLUMN created_at INTEGER");
-        db.execSQL("ALTER TABLE notes ADD COLUMN created_at_internal INTEGER");
     }
 
     private static void migrateOrgTimestamps(SQLiteDatabase db) {
@@ -384,7 +392,7 @@ public class DatabaseMigration {
      * Delete those, update notes tables and add a unique constraint to the org_ranges.
      */
     private static void fixOrgRanges(SQLiteDatabase db) {
-        String[] notesFields = new String[] {
+        String[] notesFields = {
                 "scheduled_range_id",
                 "deadline_range_id",
                 "closed_range_id",

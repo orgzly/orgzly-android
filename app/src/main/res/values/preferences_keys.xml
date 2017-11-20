@@ -70,8 +70,17 @@
     <string name="pref_key_is_notes_content_foldable" translatable="false">pref_key_is_notes_content_foldable</string>
     <bool name="pref_default_is_notes_content_foldable" translatable="false">true</bool>
 
+    <string name="pref_key_content_line_count_displayed" translatable="false">pref_key_content_line_count_displayed</string>
+    <bool name="pref_default_content_line_count_displayed" translatable="false">true</bool>
+
     <string name="pref_key_is_font_monospaced" translatable="false">pref_key_is_font_monospaced</string>
     <bool name="pref_default_is_font_monospaced" translatable="false">false</bool>
+
+    <string name="pref_key_style_text" translatable="false">pref_key_style_text</string>
+    <bool name="pref_default_style_text" translatable="false">true</bool>
+
+    <string name="pref_key_styled_text_with_marks" translatable="false">pref_key_styled_text_with_marks</string>
+    <bool name="pref_default_styled_text_with_marks" translatable="false">false</bool>
 
     <!-- Notebooks' sort order. -->
     <string name="pref_key_notebooks_sort_order" translatable="false">pref_key_notebooks_sort_order</string>
@@ -89,7 +98,7 @@
 
     <!-- Notes' list density. -->
     <string name="pref_key_notes_list_density" translatable="false">pref_key_notes_list_density</string>
-    <string name="pref_default_notes_list_density" translatable="false">@string/pref_value_list_density_cozy</string>
+    <string name="pref_default_notes_list_density" translatable="false">@string/pref_value_list_density_comfortable</string>
     <string name="pref_value_list_density_comfortable" translatable="false">comfortable</string>
     <string name="pref_value_list_density_cozy" translatable="false">cozy</string>
     <string name="pref_value_list_density_compact" translatable="false">compact</string>
@@ -152,8 +161,10 @@
     <string name="pref_value_book_details_encoding_detected" translatable="false">book_details_encoding_detected</string>
     <string name="pref_value_book_details_encoding_used" translatable="false">book_details_encoding_used</string>
     <string name="pref_value_book_details_last_action" translatable="false">book_details_last_action</string>
+    <string name="pref_value_book_details_notes_count" translatable="false">book_details_notes_count</string>
     <string-array name="displayed_book_details">
         <item>@string/displayed_book_details_local_mtime</item>
+        <item>@string/displayed_book_details_notes_count</item>
         <item>@string/displayed_book_details_link_url</item>
         <item>@string/displayed_book_details_sync_url</item>
         <item>@string/displayed_book_details_sync_mtime</item>
@@ -164,6 +175,7 @@
     </string-array>
     <string-array name="displayed_book_details_values">
         <item>@string/pref_value_book_details_mtime</item>
+        <item>@string/pref_value_book_details_notes_count</item>
         <item>@string/pref_value_book_details_link_url</item>
         <item>@string/pref_value_book_details_sync_url</item>
         <item>@string/pref_value_book_details_sync_mtime</item>
@@ -197,6 +209,38 @@
     <string name="pref_key_reminders_vibrate" translatable="false">pref_key_reminders_vibrate</string>
     <bool name="pref_default_value_reminders_vibrate" translatable="false">false</bool>
 
+    <!-- Auto-sync -->
+
+    <string name="pref_key_auto_sync" translatable="false">pref_key_auto_sync</string>
+    <bool name="pref_default_value_auto_sync" translatable="false">false</bool>
+
+    <string name="pref_key_auto_sync_on_note_create" translatable="false">pref_key_auto_sync_on_note_create</string>
+    <bool name="pref_default_value_auto_sync_on_note_create" translatable="false">false</bool>
+
+    <string name="pref_key_auto_sync_on_note_update" translatable="false">pref_key_auto_sync_on_note_update</string>
+    <bool name="pref_default_value_auto_sync_on_note_update" translatable="false">false</bool>
+
+    <string name="pref_key_auto_sync_on_resume" translatable="false">pref_key_auto_sync_on_resume</string>
+    <bool name="pref_default_value_auto_sync_on_resume" translatable="false">false</bool>
+
+    <string name="pref_key_auto_sync_on_repo_change" translatable="false">pref_key_auto_sync_on_repo_change</string>
+    <bool name="pref_default_value_auto_sync_on_repo_change" translatable="false">false</bool>
+
+
+    <string name="pref_key_snooze_time" translatable="false">pref_key_snooze_time</string>
+    <string name="pref_default_value_snooze_time">5</string>
+
+    <string name="pref_key_snooze_type" translatable="false">pref_key_snooze_type</string>
+    <string name="pref_default_value_snooze_type">button</string>
+    <string-array name="snooze_types">
+        <item>Relative to when you tap the snooze button</item>
+        <item>Relative to reminder time</item>
+    </string-array>
+    <string-array name="snooze_type_values">
+        <item>button</item>
+        <item>alarm</item>
+    </string-array>
+
     <string name="pref_key_use_reminders_for_scheduled_times" translatable="false">pref_key_use_reminders_for_scheduled_times</string>
     <bool name="pref_default_value_use_reminders_for_scheduled_times" translatable="false">false</bool>
 
@@ -215,8 +259,8 @@
     <string name="pref_key_min_priority" translatable="false">pref_key_min_priority</string>
     <string name="pref_default_min_priority" translatable="false">C</string>
 
-    <string name="pref_key_sync_after">pref_key_sync_after</string>
-    <bool name="pref_default_value_sync_after" translatable="false">false</bool>
+    <string name="pref_key_agenda_days" translatable="false">pref_key_agenda_days</string>
+    <string name="pref_key_default_agenda_days">3</string>
 
     <string-array name="priorities">
         <item>@string/priority_a_highest</item>
@@ -296,6 +340,17 @@
     <!-- Separate header and content with an empty line -->
     <string name="pref_key_separate_header_and_content_with_new_line" translatable="false">pref_key_separate_header_and_content_with_new_line</string>
     <bool name="pref_default_separate_header_and_content_with_new_line" translatable="false">true</bool>
+
+    <!-- Tags column -->
+    <string name="pref_key_tags_column" translatable="false">pref_key_org_tags_column</string>
+    <string name="pref_default_tags_column" translatable="false">0</string>
+
+    <string name="pref_key_org_indent_mode" translatable="false">pref_key_org_indent_mode</string>
+    <bool name="pref_default_org_indent_mode" translatable="false">false</bool>
+
+    <string name="pref_key_org_indent_indentation_per_level" translatable="false">pref_key_org_indent_indentation_per_level</string>
+    <string name="pref_default_org_indent_indentation_per_level" translatable="false">2</string>
+
 
 
     <!-- These do not store any data. -->

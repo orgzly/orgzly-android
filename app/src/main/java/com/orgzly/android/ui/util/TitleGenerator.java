@@ -67,7 +67,7 @@ public class TitleGenerator {
         }
 
         /* Title. */
-        builder.append(OrgFormatter.parse(head.getTitle()));
+        builder.append(OrgFormatter.parse(mContext, head.getTitle()));
 
         /* Append note ID. */
         // builder.append(TITLE_SEPARATOR).append("#").append(String.valueOf(note.getId()));
@@ -93,8 +93,8 @@ public class TitleGenerator {
             hasPostTitleText = true;
         }
 
-        /* Content length. */
-        if (head.hasContent() && (!AppPreferences.isNotesContentDisplayedInList(mContext) || (note.getPosition().isFolded() && AppPreferences.isNotesContentFoldable(mContext)))) {
+        /* Content line number. */
+        if (head.hasContent() && AppPreferences.contentLineCountDisplayed(mContext) && (!AppPreferences.isNotesContentDisplayedInList(mContext) || (note.getPosition().isFolded() && AppPreferences.isNotesContentFoldable(mContext)))) {
             builder.append(TITLE_SEPARATOR).append(String.valueOf(note.getContentLines()));
             hasPostTitleText = true;
         }

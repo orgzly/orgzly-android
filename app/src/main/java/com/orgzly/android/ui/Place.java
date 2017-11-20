@@ -8,5 +8,5 @@ public enum Place {
     ABOVE,
     UNDER,
     BELOW,
-    UNDEFINED
+    UNSPECIFIED
 }

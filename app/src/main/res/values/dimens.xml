@@ -26,7 +26,7 @@
     <dimen name="item_head_below_title_padding_compact">0dp</dimen>
 
     <!-- Drawer ... -->
-    <dimen name="left_drawer_width">240dp</dimen>
+    <dimen name="left_drawer_width">280dp</dimen>
     <dimen name="left_drawer_button_min_height">48dp</dimen>
     <!-- ... Drawer -->
 

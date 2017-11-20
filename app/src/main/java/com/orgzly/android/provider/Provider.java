@@ -73,6 +73,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -282,100 +283,149 @@ public class Provider extends ContentProvider {
         StringBuilder selection = new StringBuilder();
         List<String> selectionArgs = new ArrayList<>();
 
-        /* Skip cut notes. */
-        selection.append(DatabaseUtils.WHERE_EXISTING_NOTES);
+        // Loop through the various search criteria groups. The criteria inside
+        // each group is AND-ed together. The groups themselves are OR-ed
+        // together.
+        for (SearchQuery.SearchQueryGroup group : searchQuery.groups) {
 
-        /*
-         * We are only searching for a tag within a string of tags.
-         * "tag" will be found in "few tagy ones"
-         */
-        for (String tag: searchQuery.getTags()) {
-            selection.append(" AND (")
-                    .append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ? OR ")
-                    .append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(" LIKE ?)");
-
-            selectionArgs.add("%" + tag + "%");
-            selectionArgs.add("%" + tag + "%");
-        }
-
-        for (String tag: searchQuery.getNotTags()) {
-            selection.append(" AND (")
-                    .append("COALESCE(").append(ProviderContract.Notes.QueryParam.TAGS).append(", '')").append(" NOT LIKE ? AND ")
-                    .append("COALESCE(").append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(", '')").append(" NOT LIKE ?)");
-
-            selectionArgs.add("%" + tag + "%");
-            selectionArgs.add("%" + tag + "%");
-        }
-
-        if (searchQuery.hasBookName()) {
-            selection.append(" AND ").append(ProviderContract.Notes.QueryParam.BOOK_NAME).append(" = ?");
-            selectionArgs.add(searchQuery.getBookName());
-        }
-
-        if (searchQuery.hasNotBookName()) {
-            for (String name: searchQuery.getNotBookName()) {
-                selection.append(" AND ").append(ProviderContract.Notes.QueryParam.BOOK_NAME).append(" != ?");
-                selectionArgs.add(name);
+            if (selection.length() == 0) {
+                selection.append(" ((");
+            } else {
+                selection.append(") OR (");
             }
-        }
 
-        if (searchQuery.hasState()) {
-            selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') = ?");
-            selectionArgs.add(searchQuery.getState());
-        }
+            /* Skip cut notes. */
+            selection.append(DatabaseUtils.WHERE_EXISTING_NOTES);
 
-        if (searchQuery.hasNotState()) {
-            for (String state: searchQuery.getNotState()) {
-                selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') != ?");
-                selectionArgs.add(state);
-            }
-        }
-
-        for (String token: searchQuery.getTextSearch()) {
-            selection.append(" AND (").append(ProviderContract.Notes.QueryParam.TITLE).append(" LIKE ?");
-            selectionArgs.add("%" + token + "%");
-            selection.append(" OR ").append(ProviderContract.Notes.QueryParam.CONTENT).append(" LIKE ?");
-            selectionArgs.add("%" + token + "%");
-            selection.append(" OR ").append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ?");
-            selectionArgs.add("%" + token + "%");
-            selection.append(")");
-        }
-
-        if (searchQuery.hasScheduled()) {
-            appendBeforeInterval(selection, ProviderContract.Notes.QueryParam.SCHEDULED_TIME_TIMESTAMP, searchQuery.getScheduled());
-        }
-
-        if (searchQuery.hasDeadline()) {
-            appendBeforeInterval(selection, ProviderContract.Notes.QueryParam.DEADLINE_TIME_TIMESTAMP, searchQuery.getDeadline());
-        }
-
-        /*
-         * Handle empty string and NULL - use default priority in those cases.
-         * lower( coalesce( nullif(PRIORITY, ''), DEFAULT) )
-         */
-        if (searchQuery.hasPriority()) {
-            String defaultPriority = AppPreferences.defaultPriority(getContext());
-            selection.append(" AND lower(coalesce(nullif(" + ProviderContract.Notes.QueryParam.PRIORITY + ", ''), ?)) = ?");
-            selectionArgs.add(defaultPriority);
-            selectionArgs.add(searchQuery.getPriority());
-        }
-
-        if (searchQuery.hasNoteTags()) {
             /*
              * We are only searching for a tag within a string of tags.
              * "tag" will be found in "few tagy ones"
-             * Tags must be kept separately so we can match them exactly.
              */
-            for (String tag: searchQuery.getNoteTags()) {
-                selection.append(" AND ").append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ?");
+            for (String tag: group.getTags()) {
+                selection.append(" AND (")
+                    .append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ? OR ")
+                    .append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(" LIKE ?)");
+
+                selectionArgs.add("%" + tag + "%");
                 selectionArgs.add("%" + tag + "%");
             }
+
+            for (String tag: group.getNotTags()) {
+                selection.append(" AND (")
+                    .append("COALESCE(").append(ProviderContract.Notes.QueryParam.TAGS).append(", '')").append(" NOT LIKE ? AND ")
+                    .append("COALESCE(").append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(", '')").append(" NOT LIKE ?)");
+
+                selectionArgs.add("%" + tag + "%");
+                selectionArgs.add("%" + tag + "%");
+            }
+
+            if (group.hasBookName()) {
+                selection.append(" AND ").append(ProviderContract.Notes.QueryParam.BOOK_NAME).append(" = ?");
+                selectionArgs.add(group.getBookName());
+            }
+
+            if (group.hasNotBookName()) {
+                for (String name: group.getNotBookName()) {
+                    selection.append(" AND ").append(ProviderContract.Notes.QueryParam.BOOK_NAME).append(" != ?");
+                    selectionArgs.add(name);
+                }
+            }
+
+            if (group.hasStateType()) {
+                if ("todo".equalsIgnoreCase(group.getStateType())) {
+                    searchQueryStates(selection, selectionArgs, "IN", AppPreferences.todoKeywordsSet(getContext()));
+
+                } else if ("done".equalsIgnoreCase(group.getStateType())) {
+                    searchQueryStates(selection, selectionArgs, "IN", AppPreferences.doneKeywordsSet(getContext()));
+
+                } else if ("none".equalsIgnoreCase(group.getStateType())) {
+                    selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') = ''");
+                }
+            }
+
+            if (group.hasNotStateType()) {
+                if ("todo".equalsIgnoreCase(group.getNotStateType())) {
+                    searchQueryStates(selection, selectionArgs, "NOT IN", AppPreferences.todoKeywordsSet(getContext()));
+
+                } else if ("done".equalsIgnoreCase(group.getNotStateType())) {
+                    searchQueryStates(selection, selectionArgs, "NOT IN", AppPreferences.doneKeywordsSet(getContext()));
+
+                } else if ("none".equalsIgnoreCase(group.getNotStateType())) {
+                    selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') != ''");
+                }
+            }
+
+            if (group.hasState()) {
+                selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') = ?");
+                selectionArgs.add(group.getState());
+            }
+
+            if (group.hasNotState()) {
+                for (String state: group.getNotState()) {
+                    selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') != ?");
+                    selectionArgs.add(state);
+                }
+            }
+
+            for (String token: group.getTextSearch()) {
+                selection.append(" AND (").append(ProviderContract.Notes.QueryParam.TITLE).append(" LIKE ?");
+                selectionArgs.add("%" + token + "%");
+                selection.append(" OR ").append(ProviderContract.Notes.QueryParam.CONTENT).append(" LIKE ?");
+                selectionArgs.add("%" + token + "%");
+                selection.append(" OR ").append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ?");
+                selectionArgs.add("%" + token + "%");
+                selection.append(")");
+            }
+
+            if (group.hasScheduled()) {
+                appendBeforeInterval(selection, ProviderContract.Notes.QueryParam.SCHEDULED_TIME_TIMESTAMP, group.getScheduled());
+            }
+
+            if (group.hasDeadline()) {
+                appendBeforeInterval(selection, ProviderContract.Notes.QueryParam.DEADLINE_TIME_TIMESTAMP, group.getDeadline());
+            }
+
+            /*
+             * Handle empty string and NULL - use default priority in those cases.
+             * lower( coalesce( nullif(PRIORITY, ''), DEFAULT) )
+             */
+            if (group.hasPriority()) {
+                String defaultPriority = AppPreferences.defaultPriority(getContext());
+                selection.append(" AND lower(coalesce(nullif(" + ProviderContract.Notes.QueryParam.PRIORITY + ", ''), ?)) = ?");
+                selectionArgs.add(defaultPriority);
+                selectionArgs.add(group.getPriority());
+            }
+
+            if (group.hasNoteTags()) {
+                /*
+                 * We are only searching for a tag within a string of tags.
+                 * "tag" will be found in "few tagy ones"
+                 * Tags must be kept separately so we can match them exactly.
+                 */
+                for (String tag: group.getNoteTags()) {
+                    selection.append(" AND ").append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ?");
+                    selectionArgs.add("%" + tag + "%");
+                }
+            }
         }
+
+        selection.append(")) ");
 
         String sql = "SELECT * FROM " + DbNoteView.VIEW_NAME + " WHERE " + selection.toString() + " ORDER BY " + sortOrder;
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, sql, selectionArgs);
         return db.rawQuery(sql, selectionArgs.toArray(new String[selectionArgs.size()]));
+    }
+
+    private void searchQueryStates(StringBuilder selection, List<String> selectionArgs, String in, Set<String> states) {
+        selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') ")
+                .append(in).append(" (")
+                .append(TextUtils.join(", ", Collections.nCopies(states.size(), "?")))
+                .append(")");
+
+        for (String state: states) {
+            selectionArgs.add(state);
+        }
     }
 
     private static void appendBeforeInterval(StringBuilder selection, String column, SearchQuery.SearchQueryInterval interval) {
@@ -492,7 +542,7 @@ public class Provider extends ContentProvider {
                 break;
 
             case ProviderUris.NOTES:
-                return insertNote(db, uri, contentValues, Place.UNDEFINED);
+                return insertNote(db, uri, contentValues, Place.UNSPECIFIED);
 
             case ProviderUris.NOTE_ABOVE:
                 return insertNote(db, uri, contentValues, Place.ABOVE);
@@ -556,7 +606,7 @@ public class Provider extends ContentProvider {
         /* If new note is inserted relative to some other note, get info about that target note. */
         long refNoteId = 0;
         NotePosition refNotePos = null;
-        if (place != Place.UNDEFINED) {
+        if (place != Place.UNSPECIFIED) {
             refNoteId = Long.valueOf(uri.getPathSegments().get(1));
             refNotePos = DbNote.getPosition(db, refNoteId);
         }
@@ -594,7 +644,7 @@ public class Provider extends ContentProvider {
 
                 break;
 
-            case UNDEFINED:
+            case UNSPECIFIED:
                 /* If target note is not used, add note at the end with level 1. */
                 long rootRgt = getMaxRgt(db, bookId);
                 long rootId = getRootId(db, bookId);
@@ -623,7 +673,7 @@ public class Provider extends ContentProvider {
                  */
                 incrementDescendantsCountForAncestors(db, bookId, notePos.getLft(), notePos.getRgt());
 
-            case UNDEFINED:
+            case UNSPECIFIED:
                 /* Make space for new note - increment root's RGT. */
                 String selection = DbNote.BOOK_ID + " = " + bookId + " AND " + DbNote.LFT + " = 1";
                 GenericDatabaseUtils.incrementFields(db, DbNote.TABLE, selection, 2, ProviderContract.Notes.UpdateParam.RGT);
@@ -1111,7 +1161,7 @@ public class Provider extends ContentProvider {
         String notesSelection = DbNote._ID + " IN (" + ids + ") AND (" +
                                 DbNoteView.STATE + " IS NULL OR " + DbNoteView.STATE + " != ?)";
 
-        String[] selectionArgs = new String[] { targetState };
+        String[] selectionArgs = { targetState };
 
         /* Select notebooks which will be affected. */
         String booksSelection = DbBook._ID + " IN (SELECT DISTINCT " +

@@ -6,7 +6,7 @@ import android.provider.BaseColumns;
 public class DbOrgRange implements DbOrgRangeColumns, BaseColumns {
     public static final String TABLE = "org_ranges";
 
-    public static final String[] CREATE_SQL = new String[] {
+    public static final String[] CREATE_SQL = {
             "CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 

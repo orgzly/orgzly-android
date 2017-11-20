@@ -2,6 +2,7 @@ package com.orgzly.android.ui.util;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -179,14 +180,10 @@ public class ActivityUtils {
     }
 
     public static PendingIntent mainActivityPendingIntent(Context context, long bookId, long noteId) {
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = Intent.makeRestartActivityTask(new ComponentName(context, MainActivity.class));
 
         intent.putExtra(MainActivity.EXTRA_NOTE_ID, noteId);
         intent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
-
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }

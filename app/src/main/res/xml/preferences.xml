@@ -25,10 +25,23 @@
             android:defaultValue="@string/pref_default_value_font_size"/>
 
         <CheckBoxPreference
+            android:key="@string/pref_key_style_text"
+            android:title="@string/style_text_title"
+            android:summary="@string/style_text_summary"
+            android:defaultValue="@bool/pref_default_style_text"/>
+
+        <CheckBoxPreference
             android:key="@string/pref_key_is_font_monospaced"
             android:title="@string/monospaced_font"
             android:summary="@string/monospaced_font_summary"
             android:defaultValue="@bool/pref_default_is_font_monospaced"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_key_styled_text_with_marks"
+            android:dependency="@string/pref_key_style_text"
+            android:title="@string/styled_text_with_marks_title"
+            android:summary="@string/styled_text_with_marks_summary"
+            android:defaultValue="@bool/pref_default_styled_text_with_marks"/>
 
         <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
             android:key="@string/pref_key_layout_direction"
@@ -58,13 +71,13 @@
             android:defaultValue="@array/displayed_book_details_default"/>
 
         <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
-            android:defaultValue="@string/default_share_notebook"
             android:key="@string/pref_key_share_notebook"
+            android:title="@string/default_notebook"
             android:selectAllOnFocus="true"
             android:inputType="text"
             android:singleLine="true"
             android:dialogMessage="@string/default_notebook_desc"
-            android:title="@string/default_notebook" />
+            android:defaultValue="@string/default_share_notebook"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/notes_list">
@@ -103,17 +116,23 @@
 
         <CheckBoxPreference
             android:key="@string/pref_key_is_notes_content_displayed_in_search"
+            android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
             android:title="@string/display_content_in_search"
             android:summary="@string/display_content_in_search_results"
-            android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
             android:defaultValue="@bool/pref_default_is_notes_content_displayed_in_search"/>
 
         <CheckBoxPreference
             android:key="@string/pref_key_is_notes_content_foldable"
+            android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
             android:title="@string/fold_content"
             android:summary="@string/allow_folding_of_content"
-            android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
             android:defaultValue="@bool/pref_default_is_notes_content_foldable"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_key_content_line_count_displayed"
+            android:title="@string/content_line_count_displayed"
+            android:summary="@string/content_line_count_displayed_summary"
+            android:defaultValue="@bool/pref_default_content_line_count_displayed"/>
 
         <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
             android:key="@string/pref_key_preface_in_book"
@@ -185,8 +204,13 @@
             android:title="@string/separate_header_and_content_with_new_line"
             android:summary="@string/separate_header_and_content_with_new_line_summary"
             android:defaultValue="@bool/pref_default_separate_header_and_content_with_new_line"/>
-    </PreferenceCategory>
 
+        <!-- XML file with this name must exist -->
+        <PreferenceScreen
+            android:key="preferences_org_mode_tags_indent"
+            android:title="@string/tags_indent"
+            android:summary="@string/tags_indent_summary"/>
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefs_title_notifications">
         <CheckBoxPreference
@@ -224,37 +248,54 @@
             android:key="@string/pref_key_reminders_vibrate"
             android:title="@string/pref_title_reminders_vibrate"
             android:defaultValue="@bool/pref_default_value_reminders_vibrate"/>
+
+        <com.orgzly.android.prefs.PositiveIntegerPreference
+            android:key="@string/pref_key_snooze_time"
+            android:title="@string/pref_title_snooze_time"
+            android:inputType="numberSigned"
+            android:defaultValue="@string/pref_default_value_snooze_time"/>
+
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_snooze_type"
+            android:title="@string/pref_title_snooze_type"
+            android:entries="@array/snooze_types"
+            android:entryValues="@array/snooze_type_values"
+            android:defaultValue="@string/pref_default_value_snooze_type"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/sync">
-        <Preference android:title="@string/repos_preference_title" android:key="@string/pref_key_repos">
+        <Preference
+            android:key="@string/pref_key_repos"
+            android:title="@string/repos_preference_title"
+            android:summary="@string/repos_preference_summary">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:targetPackage="com.orgzly"
                 android:targetClass="com.orgzly.android.ui.ReposActivity"/>
         </Preference>
 
-        <CheckBoxPreference
-            android:title="@string/sync_after_preference_title"
-            android:key="@string/pref_key_sync_after"
-            android:summary="@string/sync_after_summary"
-            android:defaultValue="@bool/pref_default_value_sync_after"/>
+        <!-- XML file with this name must exist -->
+        <PreferenceScreen
+            android:key="preferences_auto_sync"
+            android:title="@string/auto_sync_experimental"
+            android:summary="@string/auto_sync_experimental_summary">
+        </PreferenceScreen>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/app">
         <Preference
+            android:key="@string/pref_key_reload_getting_started"
             android:title="@string/reload_getting_started"
-            android:summary="@string/reload_getting_started_summary"
-            android:key="@string/pref_key_reload_getting_started"/>
+            android:summary="@string/reload_getting_started_summary"/>
 
         <Preference
+            android:key="@string/pref_key_clear_database"
             android:title="@string/clear_database"
-            android:summary="@string/clear_database_summary"
-            android:key="@string/pref_key_clear_database"/>
+            android:summary="@string/clear_database_summary"/>
 
         <Preference
-            android:title="@string/version"
-            android:key="@string/pref_key_version"/>
+            android:key="@string/pref_key_version"
+            android:title="@string/version"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

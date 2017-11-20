@@ -37,11 +37,11 @@ CLOSED: [2015-02-20 Fri 20:17]
 
 ** Note can include different types of links
 
-Dial a phone number (tel:555-2368) or [[sms:555-2368][send SMS]].
+Dial a phone number (tel:555-2368) or [[sms:555-2368][send SMS]]. Send email to [[mailto:support@orgzly.com][support@orgzly.com]], visit http://www.orgzly.com or read [[http://www.orgzly.com/help][documentation]].
 
-Send email to [[mailto:support@orgzly.com][support@orgzly.com]], visit http://www.orgzly.com or read [[http://www.orgzly.com/help][documentation]].
+** Basic typographical emphasis is supported
 
-Start editing this content to check the syntax.
+You can make words *bold*, /italic/, _underlined_, =verbatim= , ~code~ and +strike-through+.
 
 * Searching
 ** You can search notes by clicking the search icon

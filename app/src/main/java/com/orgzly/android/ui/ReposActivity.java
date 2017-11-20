@@ -1,5 +1,6 @@
 package com.orgzly.android.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -109,6 +110,7 @@ public class ReposActivity extends CommonActivity
         popBackStackAndCloseKeyboard();
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void addRepoUrl(final String url) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -125,6 +127,7 @@ public class ReposActivity extends CommonActivity
         popBackStackAndCloseKeyboard();
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void updateRepoUrl(final long id, final String url) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -158,6 +161,7 @@ public class ReposActivity extends CommonActivity
         deleteRepo(id);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void deleteRepo(final long id) {
         new AsyncTask<Void, Void, Void>() {
             @Override

@@ -17,6 +17,9 @@
 #}
 
 
+# Keep line numbers and file names
+-keepattributes SourceFile,LineNumberTable
+
 # For avoiding: SupportMenuInflater: Cannot instantiate class: android.support.v7.widget.SearchView
 
 -keep class android.support.v7.widget.SearchView { *; }

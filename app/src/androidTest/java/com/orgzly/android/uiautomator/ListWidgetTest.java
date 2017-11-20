@@ -8,6 +8,7 @@ import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.Until;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -24,7 +25,7 @@ import static org.hamcrest.Matchers.notNullValue;
  *
  * see also https://developer.android.com/training/testing/ui-testing/uiautomator-testing.html
  */
-public class ListWidgetTest {
+@Ignore public class ListWidgetTest {
 
     private static final String HEADER_FILTER = "com.orgzly:id/list_widget_header_filter";
     private static final String HEADER_ICON = "com.orgzly:id/list_widget_header_icon";

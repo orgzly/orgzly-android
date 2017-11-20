@@ -1,16 +1,17 @@
 package com.orgzly.android.espresso;
 
 import android.content.pm.ActivityInfo;
-import android.os.Build;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.action.CloseKeyboardAction;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import com.orgzly.R;
 import org.hamcrest.Description;
@@ -34,20 +35,24 @@ import static org.hamcrest.Matchers.*;
  * - replaceText() is preferred over typeText() as it is much faster.
  */
 class EspressoUtils {
+    // TODO: Get rid of these if possible
     static final int SETTINGS_REVERSED_NOTE_CLICK_ACTION = 1;
 
-    static final int SETTINGS_STATE_KEYWORDS = 21;
-    static final int SETTINGS_DEFAULT_PRIORITY = 22;
-    static final int SETTINGS_LOWEST_PRIORITY = 23;
+    static final int SETTINGS_STATE_KEYWORDS = 24;
+    static final int SETTINGS_DEFAULT_PRIORITY = 25;
+    static final int SETTINGS_LOWEST_PRIORITY = 26;
 
-    static final int SETTINGS_NEW_NOTE_STATE = 25;
-    static final int SETTINGS_CREATED_AT = 27;
+    static final int SETTINGS_NEW_NOTE_STATE = 28;
+    static final int SETTINGS_CREATED_AT = 30;
 
-    static final int SETTINGS_REPOS = 41;
-    static final int SETTINGS_SYNC_AFTER = 42;
+    static final int SETTINGS_REPOS = 47;
 
-    static final int IMPORT_GETTING_STARTED = 44;
-    static final int SETTINGS_CLEAR_DATABASE = 45;
+    static final int SETTINGS_AUTO_SYNC = 48;
+    static final int SETTINGS_AUTO_SYNC_TOGGLE = 2;
+    static final int SETTINGS_AUTO_SYNC_NOTE_CREATED = 3;
+
+    static final int IMPORT_GETTING_STARTED = 50;
+    static final int SETTINGS_CLEAR_DATABASE = 51;
 
     /**
      */
@@ -232,6 +237,28 @@ class EspressoUtils {
             @Override
             public void describeTo(Description description) {
                 description.appendText("a View which is highlighted");
+            }
+        };
+    }
+
+    /**
+     * Set value for {@link NumberPicker}
+     */
+    public static ViewAction setNumber(final int n) {
+        return new ViewAction() {
+            @Override
+            public void perform(UiController uiController, View view) {
+                ((NumberPicker) view).setValue(n);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Set NumberPicker value";
+            }
+
+            @Override
+            public Matcher<View> getConstraints() {
+                return ViewMatchers.isAssignableFrom(NumberPicker.class);
             }
         };
     }

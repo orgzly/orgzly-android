@@ -11,7 +11,7 @@ public class NotePlace {
 
     public NotePlace(long bookId) {
         this.bookId = bookId;
-        place = Place.UNDEFINED;
+        place = Place.UNSPECIFIED;
     }
 
     public NotePlace(long bookId, long noteId, Place place) {

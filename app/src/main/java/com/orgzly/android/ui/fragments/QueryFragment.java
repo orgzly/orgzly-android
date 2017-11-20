@@ -141,7 +141,7 @@ public class QueryFragment extends NoteListFragment
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                mListener.onNoteLongClick(QueryFragment.this, view, position, id);
+                mListener.onNoteLongClick(QueryFragment.this, view, position, id, id);
                 return true;
             }
         });
@@ -263,7 +263,7 @@ public class QueryFragment extends NoteListFragment
 
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
-        mListener.onNoteClick(this, view, position, id);
+        mListener.onNoteClick(this, view, position, id, id);
     }
 
     /**

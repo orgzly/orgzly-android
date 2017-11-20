@@ -53,6 +53,7 @@ import com.orgzly.android.repos.ContentRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.dialogs.WhatsNewDialog;
+import com.orgzly.android.ui.fragments.AgendaFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
@@ -123,6 +124,7 @@ public class MainActivity extends CommonActivity
 
     private DisplayManager mDisplayManager;
     private ActionMode mActionMode;
+    private boolean mPromoteDemoteOrMoveRequested = false;
 
     // private Dialog mTooltip;
     private AlertDialog mWhatsNewDialog;
@@ -357,6 +359,9 @@ public class MainActivity extends CommonActivity
         super.onResume();
 
         performIntros();
+
+        Shelf shelf = new Shelf(this);
+        shelf.resumeSync();
     }
 
     private void performIntros() {
@@ -523,7 +528,7 @@ public class MainActivity extends CommonActivity
                     Book book = getActiveFragmentBook();
                     if (book != null) {
                         SearchQuery query = new SearchQuery();
-                        query.setBookName(book.getName());
+                        query.currentGroup.setBookName(book.getName());
                         searchView.setQuery(query.toString() + " ", false);
                     }
                 }
@@ -631,9 +636,10 @@ public class MainActivity extends CommonActivity
     private String guessBookNameFromUri(Uri uri) {
         String fileName = BookName.getFileName(this, uri);
 
-        if (BookName.isSupportedFormatFileName(fileName)) {
+        if (fileName != null && BookName.isSupportedFormatFileName(fileName)) {
             BookName bookName = BookName.fromFileName(fileName);
             return bookName.getName();
+
         } else {
             return null;
         }
@@ -661,16 +667,16 @@ public class MainActivity extends CommonActivity
      * @param noteId note ID
      */
     @Override
-    public void onNoteClick(NoteListFragment fragment, View view, int position, long noteId) {
+    public void onNoteClick(NoteListFragment fragment, View view, int position, long id, long noteId) {
         if (AppPreferences.isReverseNoteClickAction(this)) {
-            toggleNoteSelection(fragment, view, noteId);
+            toggleNoteSelection(fragment, view, id);
 
         } else {
-            /* If there are already selected note, toggle the selection of this one.
-             * If there are no notes selected, open note
+            /* If there are any selected notes, toggle the selection of this one.
+             * If there are no notes selected, open note.
              */
             if (fragment.getSelection().getCount() > 0) {
-                toggleNoteSelection(fragment, view, noteId);
+                toggleNoteSelection(fragment, view, id);
             } else {
                 openNote(fragment.getFragmentTag(), noteId);
             }
@@ -686,36 +692,38 @@ public class MainActivity extends CommonActivity
      * @param noteId note ID
      */
     @Override
-    public void onNoteLongClick(NoteListFragment fragment, View view, int position, long noteId) {
+    public void onNoteLongClick(NoteListFragment fragment, View view, int position, long id, long noteId) {
         if (AppPreferences.isReverseNoteClickAction(this)) {
             openNote(fragment.getFragmentTag(), noteId);
         } else {
-            toggleNoteSelection(fragment, view, noteId);
+            toggleNoteSelection(fragment, view, id);
         }
     }
 
     private void openNote(String fragmentTag, long noteId) {
         finishActionMode();
 
-        /* Get book ID from note ID. */
         // TODO: Avoid using Shelf from activity directly
         Shelf shelf = new Shelf(this);
         Note note = shelf.getNote(noteId);
-        long bookId = note.getPosition().getBookId();
 
-        mDisplayManager.displayNote(bookId, noteId);
+        if (note != null) {
+            long bookId = note.getPosition().getBookId();
+            mDisplayManager.displayNote(bookId, noteId);
+        }
     }
 
     @Override
     public void onNoteScrollToRequest(long noteId) {
-        /* Get book ID from note ID. */
         // TODO: Avoid using Shelf from activity directly
         Shelf shelf = new Shelf(this);
         Note note = shelf.getNote(noteId);
-        long bookId = note.getPosition().getBookId();
 
-        mSyncFragment.sparseTree(bookId, noteId);
-        mDisplayManager.displayBook(bookId, noteId);
+        if (note != null) {
+            long bookId = note.getPosition().getBookId();
+            mSyncFragment.sparseTree(bookId, noteId);
+            mDisplayManager.displayBook(bookId, noteId);
+        }
     }
 
     /**
@@ -823,11 +831,6 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onStateChanged(Set<Long> noteIds, String state) {
-        // animateNotesAfterEdit(noteIds);
-    }
-
-    @Override
     public void onScheduledTimeUpdateRequest(Set<Long> noteIds, OrgDateTime time) {
         mSyncFragment.updateScheduledTime(noteIds, time);
     }
@@ -923,6 +926,10 @@ public class MainActivity extends CommonActivity
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Get name for the book " + bookId + "...");
 
         final Book book = BooksClient.get(this, bookId);
+
+        if (book == null) {
+            return;
+        }
 
         View view = View.inflate(this, R.layout.dialog_book_delete, null);
         final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
@@ -1204,6 +1211,11 @@ public class MainActivity extends CommonActivity
         mWhatsNewDialog.show();
     }
 
+    @Override
+    public void onPreferenceScreen(String resource) {
+        mDisplayManager.displaySettings(resource);
+    }
+
     /**
      * Wipe database, after prompting user to confirm.
      */
@@ -1214,7 +1226,7 @@ public class MainActivity extends CommonActivity
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-                        mDisplayManager.reset();
+                        mDisplayManager.clear();
                         mSyncFragment.clearDatabase();
                         break;
 
@@ -1327,12 +1339,24 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onNotesPromoteRequest(long bookId, Set<Long> noteIds) {
+        mPromoteDemoteOrMoveRequested = true;
         mSyncFragment.promoteNotes(bookId, noteIds);
     }
 
     @Override
     public void onNotesDemoteRequest(long bookId, Set<Long> noteIds) {
+        mPromoteDemoteOrMoveRequested = true;
         mSyncFragment.demoteNotes(bookId, noteIds);
+    }
+
+    @Override
+    public void onNotesMoveRequest(long bookId, long noteId, int offset) {
+        mPromoteDemoteOrMoveRequested = true;
+        mSyncFragment.moveNote(bookId, noteId, offset);
+    }
+
+    @Override
+    public void onNotesMoved(int count) {
     }
 
     @Override
@@ -1470,6 +1494,13 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void actionModeDestroyed() {
+        if (mActionMode != null) {
+            if ("M".equals(mActionMode.getTag()) && mPromoteDemoteOrMoveRequested) {
+                Shelf shelf = new Shelf(this);
+                shelf.updateSync();
+            }
+        }
+        mPromoteDemoteOrMoveRequested = false;
         mActionMode = null;
     }
 
@@ -1602,6 +1633,9 @@ public class MainActivity extends CommonActivity
                 } else if (item instanceof DrawerFragment.FilterItem) {
                     String query = ((DrawerFragment.FilterItem) item).query;
                     mDisplayManager.displayQuery(query);
+
+                } else if (item instanceof DrawerFragment.AgendaItem) {
+                    mDisplayManager.displayAgenda();
                 }
             }
         });

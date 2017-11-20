@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -38,7 +36,7 @@ import android.widget.ViewFlipper;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
-import com.orgzly.android.Broadcasts;
+import com.orgzly.android.BookUtils;
 import com.orgzly.android.Note;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
@@ -262,6 +260,7 @@ public class NoteFragment extends Fragment
         mTitleView.setHorizontallyScrolling(false);
         mTitleView.setMaxLines(3);
 
+        /* Keyboard's action button pressed. */
         mTitleView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -344,7 +343,7 @@ public class NoteFragment extends Fragment
                 } else {
                     bodyEdit.setVisibility(View.GONE);
 
-                    bodyView.setText(OrgFormatter.parse(bodyEdit.getText().toString()));
+                    bodyView.setText(OrgFormatter.parse(getContext(), bodyEdit.getText().toString()));
                     bodyView.setVisibility(View.VISIBLE);
 
                     ActivityUtils.closeSoftKeyboard(getActivity());
@@ -504,7 +503,7 @@ public class NoteFragment extends Fragment
 
         /* Content. */
         bodyEdit.setText(head.getContent());
-        bodyView.setText(OrgFormatter.parse(head.getContent()));
+        bodyView.setText(OrgFormatter.parse(getContext(), head.getContent()));
     }
 
     private void addPropertyToList(OrgProperty property) {
@@ -600,13 +599,15 @@ public class NoteFragment extends Fragment
             }
 
         } else { /* Get existing note from database. */
-            // TODO: Cleanup: getNote(id, withProperties) or such
-            try {
-                mNote = mShelf.getNote(mNoteId);
+            mNote = mShelf.getNote(mNoteId);
+
+            if (mNote != null) {
+                // TODO: Cleanup: getNote(id, withProperties) or such
                 mNote.getHead().setProperties(mShelf.getNoteProperties(mNoteId));
+
                 mViewFlipper.setDisplayedChild(0);
-            } catch (NoSuchElementException e) {
-                mNote = null;
+
+            } else {
                 mViewFlipper.setDisplayedChild(1);
             }
         }
@@ -665,8 +666,8 @@ public class NoteFragment extends Fragment
         if (mListener != null) {
             mListener.announceChanges(
                     NoteFragment.FRAGMENT_TAG,
-                    Book.getFragmentTitleForBook(mBook),
-                    Book.getFragmentSubtitleForBook(mBook),
+                    BookUtils.getFragmentTitleForBook(mBook),
+                    BookUtils.getFragmentSubtitleForBook(getContext(), mBook),
                     0);
         }
     }
@@ -928,42 +929,53 @@ public class NoteFragment extends Fragment
 
     @Override /* TimestampDialog */
     public void onDateTimeSet(int id, TreeSet<Long> noteIds, OrgDateTime time) {
+        if (mNote == null) {
+            return;
+        }
+
+        OrgHead head = mNote.getHead();
         OrgRange range = new OrgRange(time);
 
         switch (id) {
             case R.id.fragment_note_scheduled_button:
                 updateTimestampView(TimeType.SCHEDULED, mScheduledButton, range);
-                mNote.getHead().setScheduled(range);
+                head.setScheduled(range);
                 break;
 
             case R.id.fragment_note_deadline_button:
                 updateTimestampView(TimeType.DEADLINE, mDeadlineButton, range);
-                mNote.getHead().setDeadline(range);
+                head.setDeadline(range);
                 break;
 
             case R.id.fragment_note_closed_button:
                 updateTimestampView(TimeType.CLOSED, mClosedButton, range);
-                mNote.getHead().setClosed(range);
+                head.setClosed(range);
                 break;
         }
     }
 
     @Override /* TimestampDialog */
     public void onDateTimeCleared(int id, TreeSet<Long> noteIds) {
+        if (mNote == null) {
+            return;
+        }
+
+        OrgHead head = mNote.getHead();
+
         switch (id) {
             case R.id.fragment_note_scheduled_button:
                 updateTimestampView(TimeType.SCHEDULED, mScheduledButton, null);
-                mNote.getHead().setScheduled(null);
+                head.setScheduled(null);
                 break;
 
             case R.id.fragment_note_deadline_button:
                 updateTimestampView(TimeType.DEADLINE, mDeadlineButton, null);
-                mNote.getHead().setDeadline(null);
+                head.setDeadline(null);
                 break;
 
             case R.id.fragment_note_closed_button:
                 updateTimestampView(TimeType.CLOSED, mClosedButton, null);
-                mNote.getHead().setClosed(null);
+                head.setClosed(null);
                 break;
         }
     }
@@ -1029,7 +1041,9 @@ public class NoteFragment extends Fragment
                 .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mListener.onNoteDeleteRequest(mNote);
+                        if (mListener != null) {
+                            mListener.onNoteDeleteRequest(mNote);
+                        }
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -1042,7 +1056,9 @@ public class NoteFragment extends Fragment
     }
 
     private void cancel() {
-        mListener.onNoteCancelRequest(mNote);
+        if (mListener != null) {
+            mListener.onNoteCancelRequest(mNote);
+        }
     }
 
     private void save() {
@@ -1056,15 +1072,19 @@ public class NoteFragment extends Fragment
         }
 
         if (updateNoteFromViewsAndVerify()) {
-            if (mIsNew) {
-                mListener.onNoteCreateRequest(mNote, place != Place.UNDEFINED ?
-                        new NotePlace(mNote.getPosition().getBookId(), mNoteId, place) : null);
-            } else {
-                mListener.onNoteUpdateRequest(mNote);
-            }
+            if (mListener != null) {
+                if (mIsNew) { // New note
+                    mListener.onNoteCreateRequest(mNote, place != Place.UNSPECIFIED ?
+                            new NotePlace(mNote.getPosition().getBookId(), mNoteId, place) : null);
 
-            LocalBroadcastManager.getInstance(getContext())
-                    .sendBroadcast(new Intent(Broadcasts.ACTION_NOTE_CHANGED));
+                } else { // Existing note
+                    if (isNoteModified()) {
+                        mListener.onNoteUpdateRequest(mNote);
+                    } else {
+                        mListener.onNoteCancelRequest(mNote);
+                    }
+                }
+            }
         }
     }
 

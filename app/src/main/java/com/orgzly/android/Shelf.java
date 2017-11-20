@@ -30,6 +30,7 @@ import com.orgzly.android.repos.Rook;
 import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.sync.BookNamesake;
 import com.orgzly.android.sync.BookSyncStatus;
+import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.CircularArrayList;
@@ -232,6 +233,9 @@ public class Shelf {
             }
 
             parserSettings.separateHeaderAndContentWithNewLine = AppPreferences.separateHeaderAndContentWithNewLine(mContext);
+            parserSettings.tagsColumn = AppPreferences.tagsColumn(mContext);
+            parserSettings.orgIndentMode = AppPreferences.orgIndentMode(mContext);
+            parserSettings.orgIndentIndentationPerLevel = AppPreferences.orgIndentIndentationPerLevel(mContext);
 
             final OrgParserWriter parserWriter = new OrgParserWriter(parserSettings);
 
@@ -255,11 +259,14 @@ public class Shelf {
     public void setNotesScheduledTime(Set<Long> noteIds, OrgDateTime time) {
         NotesClient.updateScheduledTime(mContext, noteIds, time);
         notifyDataChanged(mContext);
+        updateSync();
     }
 
     public void setNotesState(Set<Long> noteIds, String state) {
         NotesClient.setState(mContext, noteIds, state);
+        // TODO: Check if there was a change
         notifyDataChanged(mContext);
+        updateSync();
     }
 
     public Note getNote(long id) {
@@ -277,6 +284,7 @@ public class Shelf {
     public int updateNote(Note note) {
         int result = NotesClient.update(mContext, note);
         notifyDataChanged(mContext);
+        updateSync();
         return result;
     }
 
@@ -287,6 +295,7 @@ public class Shelf {
         BooksClient.setModifiedTime(mContext, note.getPosition().getBookId(), System.currentTimeMillis());
 
         notifyDataChanged(mContext);
+        createSync();
 
         return insertedNote;
     }
@@ -299,26 +308,30 @@ public class Shelf {
         NotesClient.toggleFoldedState(mContext, noteId);
     }
 
-    public void promoteNotes(long bookId, Set<Long> noteIds) {
-        BooksClient.promote(mContext, bookId, noteIds);
-    }
-
-    public int promoteNotes(long bookId, long noteId) {
+    public int promote(long bookId, long noteId) {
         Set<Long> noteIds = new HashSet<>();
         noteIds.add(noteId);
 
-        return BooksClient.promote(mContext, bookId, noteIds);
+        return promote(bookId, noteIds);
     }
 
-    public void demoteNotes(long bookId, Set<Long> noteIds) {
-        BooksClient.demote(mContext, bookId, noteIds);
+    public int promote(long bookId, Set<Long> noteIds) {
+        int result = BooksClient.promote(mContext, bookId, noteIds);
+        // updateSync(); handled on action bar destroy instead
+        return result;
     }
 
-    public int demoteNotes(long bookId, long noteId) {
+    public int demote(long bookId, long noteId) {
         Set<Long> noteIds = new HashSet<>();
         noteIds.add(noteId);
 
-        return BooksClient.demote(mContext, bookId, noteIds);
+        return demote(bookId, noteIds);
+    }
+
+    public int demote(long bookId, Set<Long> noteIds) {
+        int result = BooksClient.demote(mContext, bookId, noteIds);
+        // updateSync(); handled on action bar destroy instead
+        return result;
     }
 
     public int cut(long bookId, long noteId) {
@@ -331,12 +344,23 @@ public class Shelf {
     public int cut(long bookId, Set<Long> noteIds) {
         int result = NotesClient.cut(mContext, bookId, noteIds);
         notifyDataChanged(mContext);
+        updateSync();
+        return result;
+    }
+
+    public int move(long bookId, long noteId, int offset) {
+        int result = BooksClient.moveNotes(mContext, bookId, noteId, offset);
+        notifyDataChanged(mContext);
+        // updateSync(); handled on action bar destroy instead
         return result;
     }
 
     public NotesBatch paste(long bookId, long noteId, Place place) {
         NotesBatch batch = NotesClient.paste(mContext, bookId, noteId, place);
-        notifyDataChanged(mContext);
+        if (batch != null) {
+            notifyDataChanged(mContext);
+            updateSync();
+        }
         return batch;
 
     }
@@ -344,6 +368,7 @@ public class Shelf {
     public int delete(long bookId, Set<Long> noteIds) {
         int result = NotesClient.delete(mContext, bookId, noteIds);
         notifyDataChanged(mContext);
+        updateSync();
         return result;
     }
 
@@ -357,6 +382,7 @@ public class Shelf {
         AppPreferences.lastSuccessfulSyncTime(mContext, 0L);
 
         notifyDataChanged(mContext);
+        // sync?
     }
 
     /**
@@ -389,7 +415,6 @@ public class Shelf {
         return namesakes;
 
     }
-
 
     public Map<String, Repo> getAllRepos() {
         return ReposClient.getAll(mContext);
@@ -625,8 +650,10 @@ public class Shelf {
     }
 
     public void shiftState(long id, int direction) {
-        Note note = NotesClient.getNote(mContext, id);
-        shiftState(note, direction);
+        Note note = getNote(id);
+        if (note != null) {
+            shiftState(note, direction);
+        }
     }
 
     public void shiftState(Note note, int direction) {
@@ -702,13 +729,12 @@ public class Shelf {
     public void setStateToDone(long noteId) {
         /* Get the *first* DONE state from preferences. */
         Set<String> doneStates = AppPreferences.doneKeywordsSet(mContext);
-        String firstState = doneStates.iterator().hasNext() ? doneStates.iterator().next() : null;
+        String firstDoneState = doneStates.iterator().hasNext() ? doneStates.iterator().next() : null;
 
-        if (firstState != null) {
+        if (firstDoneState != null) {
             Set<Long> ids = new TreeSet<>();
             ids.add(noteId);
-
-            setNotesState(ids, firstState);
+            setNotesState(ids, firstDoneState);
         }
     }
 
@@ -718,6 +744,45 @@ public class Shelf {
         ReminderService.notifyDataChanged(context);
 
         context.sendBroadcast(new Intent(AppIntent.ACTION_LIST_WIDGET_UPDATE));
+    }
+
+    public void createSync() {
+        if (AppPreferences.autoSync(mContext) && AppPreferences.syncAfterNoteCreate(mContext)) {
+            autoSync();
+        }
+    }
+
+    public void updateSync() {
+        if (AppPreferences.autoSync(mContext) && AppPreferences.syncAfterNoteUpdate(mContext)) {
+            autoSync();
+        }
+    }
+
+    public void resumeSync() {
+        if (AppPreferences.autoSync(mContext) && AppPreferences.onResumeSync(mContext)) {
+            autoSync();
+        }
+    }
+
+    private void autoSync() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+
+        /* Skip sync if there are no repos. */
+        if (getAllRepos().size() == 0) {
+            return;
+        }
+
+        Intent intent = new Intent(mContext, SyncService.class);
+        intent.setAction(AppIntent.ACTION_SYNC_START);
+        intent.putExtra(SyncService.EXTRA_AUTOMATIC, true);
+
+        mContext.startService(intent);
+    }
+
+    public void directedSync() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+        Intent intent = new Intent(mContext, SyncService.class);
+        mContext.startService(intent);
     }
 
     public interface ReParsingNotesListener {

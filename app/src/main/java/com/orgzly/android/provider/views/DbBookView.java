@@ -1,19 +1,25 @@
 package com.orgzly.android.provider.views;
 
+import android.provider.BaseColumns;
+
+import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.GenericDatabaseUtils;
 import com.orgzly.android.provider.models.DbBook;
 import com.orgzly.android.provider.models.DbBookColumns;
 import com.orgzly.android.provider.models.DbBookLink;
 import com.orgzly.android.provider.models.DbBookSync;
+import com.orgzly.android.provider.models.DbNote;
 import com.orgzly.android.provider.models.DbRepo;
 import com.orgzly.android.provider.models.DbRook;
 import com.orgzly.android.provider.models.DbRookUrl;
 import com.orgzly.android.provider.models.DbVersionedRook;
 
+import static com.orgzly.android.provider.GenericDatabaseUtils.field;
+
 /**
  * Books with link's data.
  */
-public class DbBookView implements DbBookColumns, DbBookViewColumns {
+public class DbBookView implements BaseColumns, DbBookColumns, DbBookViewColumns {
     public static final String VIEW_NAME = "books_view";
 
     public static final String DROP_SQL = "DROP VIEW IF EXISTS " + VIEW_NAME;
@@ -28,7 +34,9 @@ public class DbBookView implements DbBookColumns, DbBookViewColumns {
             "t_sync_revision_rook_repos.repo_url AS " + SYNCED_REPO_URL + ", " +
             "t_sync_revision_rook_urls.rook_url AS " + SYNCED_ROOK_URL + ", " +
             "t_sync_revisions.rook_revision AS " + SYNCED_ROOK_REVISION + ", " +
-            "t_sync_revisions.rook_mtime AS " + SYNCED_ROOK_MTIME + " " +
+            "t_sync_revisions.rook_mtime AS " + SYNCED_ROOK_MTIME + ", " +
+
+            "count(t_notes._id) AS " + NOTES_COUNT + " " +
 
             "FROM " + DbBook.TABLE + " " +
 
@@ -43,5 +51,32 @@ public class DbBookView implements DbBookColumns, DbBookViewColumns {
             GenericDatabaseUtils.join(DbRepo.TABLE, "t_sync_revision_rook_repos", DbRepo._ID, "t_sync_revision_rooks", DbRook.REPO_ID) +
             GenericDatabaseUtils.join(DbRookUrl.TABLE, "t_sync_revision_rook_urls", DbRookUrl._ID, "t_sync_revision_rooks", DbRook.ROOK_URL_ID) +
 
-            "";
+            GenericDatabaseUtils.join(DbNote.TABLE, "t_notes", DbNote.BOOK_ID, DbBook.TABLE, DbBook._ID) + " AND " + DatabaseUtils.WHERE_EXISTING_NOTES +
+
+            " GROUP BY " + field(DbBook.TABLE, DbBook._ID);
+
+    public static final String[] PROJECTION = {
+            _ID,
+            NAME,
+            TITLE,
+            MTIME,
+            IS_DUMMY,
+            IS_DELETED,
+            PREFACE,
+            IS_INDENTED,
+            USED_ENCODING,
+            DETECTED_ENCODING,
+            SELECTED_ENCODING,
+            SYNC_STATUS,
+            LAST_ACTION_TIMESTAMP,
+            LAST_ACTION_TYPE,
+            LAST_ACTION,
+            LINK_REPO_URL,
+            LINK_ROOK_URL,
+            SYNCED_REPO_URL,
+            SYNCED_ROOK_URL,
+            SYNCED_ROOK_REVISION,
+            SYNCED_ROOK_MTIME,
+            NOTES_COUNT
+    };
 }

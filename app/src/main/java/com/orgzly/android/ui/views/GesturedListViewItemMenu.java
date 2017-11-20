@@ -79,11 +79,8 @@ class GesturedListViewItemMenu {
 
         Integer targetChild = gestureMenuMap.get(gesture);
 
-        if (targetChild != null && targetChild == flipperView.getDisplayedChild()) {
-            return true;
-        }
+        return targetChild != null && targetChild == flipperView.getDisplayedChild();
 
-        return false;
     }
 
     private void setFlipperAnimation(GesturedListView.Gesture gesture) {

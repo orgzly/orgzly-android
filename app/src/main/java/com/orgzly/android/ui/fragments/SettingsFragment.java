@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
+import android.preference.PreferenceScreen;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -49,7 +50,9 @@ public class SettingsFragment extends PreferenceFragment
 
     public static final String FRAGMENT_TAG = SettingsFragment.class.getName();
 
-    private static final @StringRes int[] REQUIRE_ACTIVITY_RESTART = new int [] {
+    private static final String ARG_RESOURCE = "resource";
+
+    private static final @StringRes int[] REQUIRE_ACTIVITY_RESTART = {
             R.string.pref_key_font_size,
             R.string.pref_key_color_scheme,
             R.string.pref_key_layout_direction
@@ -57,42 +60,66 @@ public class SettingsFragment extends PreferenceFragment
 
     private Preference mReposPreference;
     private SettingsFragmentListener mListener;
-    public static SettingsFragment getInstance() {
-        return new SettingsFragment();
+
+    public static SettingsFragment getInstance(String res) {
+        SettingsFragment fragment = new SettingsFragment();
+
+        Bundle args = new Bundle();
+        args.putString(ARG_RESOURCE, res);
+        fragment.setArguments(args);
+
+        return fragment;
     }
+
+    public boolean isForResource(String resource) {
+        String thisResource = getArguments().getString(ARG_RESOURCE);
+        return resource == null ? thisResource == null : resource.equals(thisResource);
+    }
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addPreferencesFromResource(R.xml.preferences);
-
-        mReposPreference = findPreference(getString(R.string.pref_key_repos));
-
-        findPreference(getString(R.string.pref_key_clear_database))
-                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        if (mListener != null) {
-                            mListener.onDatabaseClearRequest();
-                        }
-                        return true;
-                    }
-                });
-        findPreference(getString(R.string.pref_key_reload_getting_started))
-                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        if (mListener != null) {
-                            mListener.onGettingStartedNotebookReloadRequest();
-                        }
-                        return true;
-                    }
-                });
-
-        setupVersionPreference();
+        addPreferencesFromResource();
 
         /* Receive onCreateOptionsMenu() call, to remove search menu item. */
         setHasOptionsMenu(true);
+    }
+
+    private void addPreferencesFromResource() {
+        String resourceName = getArguments().getString(ARG_RESOURCE);
+
+        if (resourceName == null) { // Main screen
+            addPreferencesFromResource(R.xml.preferences);
+            setupMainPageSettings();
+
+        } else if (resourceName.equals("preferences_org_mode_tags_indent")) {
+            addPreferencesFromResource(R.xml.preferences_org_mode_tags_indent);
+
+        } else if (resourceName.equals("preferences_auto_sync")) {
+            addPreferencesFromResource(R.xml.preferences_auto_sync);
+        }
+    }
+
+    private void setupMainPageSettings() {
+        mReposPreference = findPreference(getString(R.string.pref_key_repos));
+
+        findPreference(getString(R.string.pref_key_clear_database))
+                .setOnPreferenceClickListener(preference -> {
+                    if (mListener != null) {
+                        mListener.onDatabaseClearRequest();
+                    }
+                    return true;
+                });
+        findPreference(getString(R.string.pref_key_reload_getting_started))
+                .setOnPreferenceClickListener(preference -> {
+                    if (mListener != null) {
+                        mListener.onGettingStartedNotebookReloadRequest();
+                    }
+                    return true;
+                });
+
+        setupVersionPreference();
 
         setDefaultStateForNewNote();
 
@@ -106,6 +133,22 @@ public class SettingsFragment extends PreferenceFragment
         updateOtherPreferencesForReminders();
     }
 
+    private void setupVersionPreference() {
+        Preference versionPreference = findPreference(getString(R.string.pref_key_version));
+
+        /* Set summary to the current version string, appending suffix for the flavor. */
+        versionPreference.setSummary(BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_SUFFIX);
+
+        /* Display changelog dialog when version is clicked. */
+        versionPreference.setOnPreferenceClickListener(preference -> {
+            if (mListener != null) {
+                mListener.onWhatsNewDisplayRequest();
+            }
+
+            return true;
+        });
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -116,7 +159,7 @@ public class SettingsFragment extends PreferenceFragment
          * Set fragment's background.
          */
         if (view != null) {
-            int[] textSizeAttr = new int[] { R.attr.item_book_card_bg_color};
+            int[] textSizeAttr = { R.attr.item_book_card_bg_color};
             TypedArray typedArray = view.getContext().obtainStyledAttributes(textSizeAttr);
             int color = typedArray.getColor(0, -1);
             typedArray.recycle();
@@ -152,12 +195,12 @@ public class SettingsFragment extends PreferenceFragment
     public void onResume() {
         super.onResume();
 
-        updateUserReposPreferenceSummary();
+        // Needs to be done in background.
+        // updateUserReposPreferenceSummary();
 
         /* Start to listen for any preference changes. */
         android.preference.PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .registerOnSharedPreferenceChangeListener(this);
-
 
         announceChangesToActivity();
     }
@@ -186,26 +229,6 @@ public class SettingsFragment extends PreferenceFragment
         super.onDetach();
 
         mListener = null;
-    }
-
-    private void setupVersionPreference() {
-        Preference versionPreference = findPreference(getString(R.string.pref_key_version));
-
-        /* Set summary to the current version string, appending suffix for the flavor. */
-        versionPreference.setSummary(BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_SUFFIX);
-
-        /* Display changelog dialog when version is clicked. */
-        versionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (mListener != null) {
-                    mListener.onWhatsNewDisplayRequest();
-                }
-
-                return true;
-            }
-        });
-
     }
 
     /**
@@ -249,7 +272,8 @@ public class SettingsFragment extends PreferenceFragment
 
         Activity activity = getActivity();
 
-        if (activity == null) {
+        /* No activity or not the main settings page. */
+        if (activity == null || getArguments().get(ARG_RESOURCE) != null) {
             return;
         }
 
@@ -368,6 +392,8 @@ public class SettingsFragment extends PreferenceFragment
 
         findPreference(getString(R.string.pref_key_reminders_sound)).setEnabled(remindersEnabled);
         findPreference(getString(R.string.pref_key_reminders_vibrate)).setEnabled(remindersEnabled);
+        findPreference(getString(R.string.pref_key_snooze_time)).setEnabled(remindersEnabled);
+        findPreference(getString(R.string.pref_key_snooze_type)).setEnabled(remindersEnabled);
     }
 
     /**
@@ -394,15 +420,23 @@ public class SettingsFragment extends PreferenceFragment
         }
     }
 
+    @Override
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+        super.onPreferenceTreeClick(preferenceScreen, preference);
+        if (preference instanceof PreferenceScreen) {
+            mListener.onPreferenceScreen(preference.getKey());
+            return true;
+        }
+        return false;
+    }
+
     public interface SettingsFragmentListener extends FragmentListener {
         void onCreatedKeywordPreferenceChanged();
 
         void onStateKeywordsPreferenceChanged();
-
         void onDatabaseClearRequest();
-
         void onGettingStartedNotebookReloadRequest();
-
         void onWhatsNewDisplayRequest();
+        void onPreferenceScreen(String resource);
     }
 }

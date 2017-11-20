@@ -210,7 +210,7 @@ public class ShareActivity extends CommonActivity
                     .add(mSyncFragment, SyncFragment.FRAGMENT_TAG)
                     .commit();
 
-            mNoteFragment = NoteFragment.getInstance(true, 0, 0, Place.UNDEFINED, data.title, data.content);
+            mNoteFragment = NoteFragment.getInstance(true, 0, 0, Place.UNSPECIFIED, data.title, data.content);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.activity_share_main, mNoteFragment, NoteFragment.FRAGMENT_TAG)
@@ -253,6 +253,9 @@ public class ShareActivity extends CommonActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        Shelf shelf = new Shelf(this);
+        shelf.resumeSync();
 
         if (mError != null) {
             showSimpleSnackbarLong(mError);
@@ -377,10 +380,6 @@ public class ShareActivity extends CommonActivity
     }
 
     @Override
-    public void onStateChanged(Set<Long> noteIds, String state) {
-    }
-
-    @Override
     public void onNoteCreated(Note note) {
         finish();
     }
@@ -403,6 +402,10 @@ public class ShareActivity extends CommonActivity
 
     @Override
     public void onNotesCut(int count) {
+    }
+
+    @Override
+    public void onNotesMoved(int result) {
     }
 
     private class Data {

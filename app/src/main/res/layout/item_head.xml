@@ -145,8 +145,7 @@
                     android:orientation="horizontal"
                     android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
                     android:gravity="center_vertical"
-                    android:visibility="gone"
-                    >
+                    android:visibility="gone">
                     <ImageView
                         style="@style/HeadItemInfoIcon"
                         android:src="?attr/oic_item_head_deadline_item"
@@ -172,8 +171,7 @@
                     android:orientation="horizontal"
                     android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
                     android:gravity="center_vertical"
-                    android:visibility="gone"
-                    >
+                    android:visibility="gone">
 
                     <ImageView
                         style="@style/HeadItemInfoIcon"

@@ -1,8 +1,17 @@
 package com.orgzly.android.util;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.style.StrikethroughSpan;
+import android.text.style.StyleSpan;
+import android.text.style.TypefaceSpan;
 import android.text.style.URLSpan;
+import android.text.style.UnderlineSpan;
+
+import com.orgzly.R;
+import com.orgzly.android.prefs.AppPreferences;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,17 +32,18 @@ public class OrgFormatter {
      */
     private static final String BRACKET_ANY_LINK = "(([^]]+))";
 
-    public static SpannableStringBuilder parse(String s) {
-        return parse(s, true);
+    public static SpannableStringBuilder parse(Context context, String s) {
+        return parse(context, s, true);
     }
 
-    public static SpannableStringBuilder parse(String s, boolean linkify) {
+    public static SpannableStringBuilder parse(Context context, String s, boolean linkify) {
         SpannableStringBuilder ssb = new SpannableStringBuilder(s);
 
         doOrgLinksWithName(ssb, BRACKET_LINK, linkify);
         doOrgLinksWithName(ssb, BRACKET_ANY_LINK, false);
         doOrgLinks(ssb, BRACKET_LINK, linkify);
         doPlainLinks(ssb, PLAIN_LINK, linkify);
+        doMarkup(ssb, context);
 
         return ssb;
     }
@@ -55,7 +65,7 @@ public class OrgFormatter {
                 setUrlSpan(ssb, link, m.start(), m.start() + name.length());
             }
 
-            /* Must re-create Matcher, as ssb size is modified. */
+            /* Re-create Matcher, as ssb size is modified. */
             m = p.matcher(ssb);
 
         }
@@ -72,12 +82,12 @@ public class OrgFormatter {
             String link = m.group(1);
 
             ssb.replace(m.start(), m.end(), link);
-            
+
             if (createLinks) {
                 setUrlSpan(ssb, link, m.start(), m.start() + link.length());
             }
 
-            /* Must re-create Matcher, as ssb size is modified. */
+            /* Re-create Matcher, as ssb size is modified. */
             m = p.matcher(ssb);
         }
     }
@@ -89,7 +99,7 @@ public class OrgFormatter {
         if (!createLinks) {
             return;
         }
-        
+
         Pattern p = Pattern.compile(linkRegex);
         Matcher m = p.matcher(ssb);
 
@@ -105,5 +115,82 @@ public class OrgFormatter {
 
     private static void setUrlSpan(SpannableStringBuilder ssb, String link, int start, int end) {
         ssb.setSpan(new URLSpan(link), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    /**
+     * You can make words *bold*, /italic/, _underlined_, =verbatim= , ~code~ and +strike-through+.
+     */
+
+    private static final Pattern MARKUP_PATTERN;
+
+    private static final String PRE = "- \t('\"{";
+    private static final String POST = "- \\t.,:!?;'\")}\\[";
+    private static final String BORDER = "\\S";
+    private static final String BODY = ".*?(?:\n.*?)?";
+
+    private static String markupRegex(char marker) {
+        return "(?:^|[" + PRE + "])([" + marker + "](" + BORDER + "|" + BORDER + BODY + BORDER + ")[" + marker + "])(?:[" + POST + "]|$)";
+    }
+
+    static {
+        MARKUP_PATTERN = Pattern.compile(
+                markupRegex('*') + "|" +
+                markupRegex('/') + "|" +
+                markupRegex('_') + "|" +
+                markupRegex('=') + "|" +
+                markupRegex('~') + "|" +
+                markupRegex('+'), Pattern.MULTILINE);
+    }
+
+    private static void doMarkup(SpannableStringBuilder ssb, Context context) {
+        boolean style = context == null || AppPreferences.styleText(context);
+        boolean withMarks = context != null && AppPreferences.styledTextWithMarks(context);
+
+        if (style) {
+            doMarkup(ssb, withMarks);
+        }
+    }
+
+    private static void doMarkup(SpannableStringBuilder ssb, boolean withMarks) {
+        Matcher m = MARKUP_PATTERN.matcher(ssb);
+
+        while (m.find()) {
+            if (m.group(1) != null) {
+                m = setMarkupSpan(ssb, m, 1, new StyleSpan(Typeface.BOLD), withMarks);
+
+            } else if (m.group(3) != null) {
+                m = setMarkupSpan(ssb, m, 3, new StyleSpan(Typeface.ITALIC), withMarks);
+
+            } else if (m.group(5) != null) {
+                m = setMarkupSpan(ssb, m, 5, new UnderlineSpan(), withMarks);
+
+            } else if (m.group(7) != null) {
+                m = setMarkupSpan(ssb, m, 7, new TypefaceSpan("monospace"), withMarks);
+
+            } else if (m.group(9) != null) {
+                m = setMarkupSpan(ssb, m, 9, new TypefaceSpan("monospace"), withMarks);
+
+            } else if (m.group(11) != null) {
+                m = setMarkupSpan(ssb, m, 11, new StrikethroughSpan(), withMarks);
+            }
+        }
+    }
+
+    private static Matcher setMarkupSpan(SpannableStringBuilder ssb, Matcher matcher, int group, Object span, boolean withMarks) {
+        if (withMarks) {
+            ssb.setSpan(span, matcher.start(group), matcher.end(group), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return matcher;
+        }
+
+        /* Next group matches content only, without markers.*/
+        String content = matcher.group(group + 1);
+
+        ssb.replace(matcher.start(group), matcher.end(group), content);
+
+        ssb.setSpan(span, matcher.start(group), matcher.start(group)+content.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        /* Re-create Matcher, as ssb size is modified. */
+        return MARKUP_PATTERN.matcher(ssb);
+
     }
 }

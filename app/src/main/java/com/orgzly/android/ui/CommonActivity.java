@@ -16,7 +16,6 @@ import android.view.View;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.Broadcasts;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.AppPermissions;

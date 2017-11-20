@@ -31,6 +31,7 @@ import android.widget.ViewFlipper;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
+import com.orgzly.android.BookUtils;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
@@ -46,6 +47,7 @@ import com.orgzly.android.ui.Selection;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.views.GesturedListView;
 import com.orgzly.android.util.LogUtils;
+import com.orgzly.android.util.OrgFormatter;
 import com.orgzly.org.datetime.OrgDateTime;
 
 import java.util.Set;
@@ -72,7 +74,7 @@ public class BookFragment extends NoteListFragment
 
     private static final int STATE_ITEM_GROUP = 1;
 
-    private static final int[] ITEMS_HIDDEN_ON_MULTIPLE_SELECTED_NOTES = new int[] {
+    private static final int[] ITEMS_HIDDEN_ON_MULTIPLE_SELECTED_NOTES = {
             R.id.book_cab_new,
             R.id.book_cab_cut,
             R.id.book_cab_paste,
@@ -162,6 +164,33 @@ public class BookFragment extends NoteListFragment
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
+        super.onActivityCreated(savedInstanceState);
+
+        /* Activity created - context available. Create Shelf and populate list with data. */
+        mShelf = new Shelf(getActivity().getApplicationContext());
+
+        /*
+         * If loader is for last loaded book, just init, do not restart.
+         * Trying not to reset the loader and null the adapter, to keep the scroll position.
+         *
+         * NOTE: Opening a new book fragment for the same book will not restore the previous
+         * fragment's list view, even though book ID is the same. This is because callbacks
+         * will be different (they are two separate fragments displaying the same book).
+         */
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Book Loader: Last book " + mLastBookId + ", new book " + mBookId);
+
+        if (mLastBookId == mBookId) {
+            getActivity().getSupportLoaderManager().initLoader(Loaders.BOOK_FRAGMENT_BOOK, null, this);
+            getActivity().getSupportLoaderManager().initLoader(Loaders.BOOK_FRAGMENT_NOTES, null, this);
+        } else {
+            getActivity().getSupportLoaderManager().restartLoader(Loaders.BOOK_FRAGMENT_BOOK, null, this);
+            getActivity().getSupportLoaderManager().restartLoader(Loaders.BOOK_FRAGMENT_NOTES, null, this);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, inflater, container, savedInstanceState);
 
@@ -196,7 +225,7 @@ public class BookFragment extends NoteListFragment
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position > getListView().getHeaderViewsCount() - 1) { /* Not a header. */
-                    listener.onNoteLongClick(BookFragment.this, view, position, id);
+                    listener.onNoteLongClick(BookFragment.this, view, position, id, id);
                     return true;
                 } else {
                     return false;
@@ -277,33 +306,6 @@ public class BookFragment extends NoteListFragment
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
-        super.onActivityCreated(savedInstanceState);
-
-        /* Activity created - context available. Create Shelf and populate list with data. */
-        mShelf = new Shelf(getActivity().getApplicationContext());
-
-        /*
-         * If loader is for last loaded book, just init, do not restart.
-         * Trying not to reset the loader and null the adapter, to keep the scroll position.
-         *
-         * NOTE: Opening a new book fragment for the same book will not restore the previous
-         * fragment's list view, even though book ID is the same. This is because callbacks
-         * will be different (they are two separate fragments displaying the same book).
-         */
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Book Loader: Last book " + mLastBookId + ", new book " + mBookId);
-
-        if (mLastBookId == mBookId) {
-            getActivity().getSupportLoaderManager().initLoader(Loaders.BOOK_FRAGMENT_BOOK, null, this);
-            getActivity().getSupportLoaderManager().initLoader(Loaders.BOOK_FRAGMENT_NOTES, null, this);
-        } else {
-            getActivity().getSupportLoaderManager().restartLoader(Loaders.BOOK_FRAGMENT_BOOK, null, this);
-            getActivity().getSupportLoaderManager().restartLoader(Loaders.BOOK_FRAGMENT_NOTES, null, this);
-        }
-    }
-
-    @Override
     public void onPause() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onPause();
@@ -359,7 +361,7 @@ public class BookFragment extends NoteListFragment
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, listView, view, position, id);
 
         if ((position+1) > listView.getHeaderViewsCount()) { /* Not a header. */
-            listener.onNoteClick(this, view, position, id);
+            listener.onNoteClick(this, view, position, id, id);
         } else {
             listener.onBookPrefaceEditRequest(mBook);
         }
@@ -458,14 +460,14 @@ public class BookFragment extends NoteListFragment
     }
 
     // TODO: Go through main activity and do it in background.
-    private int moveNotes(int offset) {
+    private void moveNotes(int offset) {
         /* Sanity check. Should not ever happen. */
         if (getSelection().getCount() == 0) {
             Log.e(TAG, "Trying to move notes up while there are no notes selected");
-            return 0;
+            return;
         }
 
-        return BooksClient.moveNotes(getContext(), mBookId, getSelection().getIds().first(), offset);
+        listener.onNotesMoveRequest(mBookId, getSelection().getIds().first(), offset);
     }
 
     /**
@@ -627,8 +629,8 @@ public class BookFragment extends NoteListFragment
         if (listener != null) {
             listener.announceChanges(
                     BookFragment.FRAGMENT_TAG,
-                    Book.getFragmentTitleForBook(mBook),
-                    Book.getFragmentSubtitleForBook(mBook),
+                    BookUtils.getFragmentTitleForBook(mBook),
+                    BookUtils.getFragmentSubtitleForBook(getContext(), mBook),
                     mSelection.getCount());
         }
     }
@@ -637,10 +639,7 @@ public class BookFragment extends NoteListFragment
      * Update book's preface.
      */
     private void updatePreface() {
-        boolean displayPreface = ! getString(R.string.pref_value_preface_in_book_hide)
-                .equals(AppPreferences.prefaceDisplay(getContext()));
-
-        if (! TextUtils.isEmpty(mBook.getPreface()) && displayPreface) {
+        if (isPrefaceDisplayed()) {
             // Add header
             if (getListView().getHeaderViewsCount() == 0) {
                 getListView().addHeaderView(mHeader);
@@ -656,7 +655,7 @@ public class BookFragment extends NoteListFragment
                 mPrefaceText.setEllipsize(null);
             }
 
-            mPrefaceText.setText(mBook.getPreface());
+            mPrefaceText.setText(OrgFormatter.parse(getContext(), mBook.getPreface()));
 
         } else {
             // Remove header
@@ -664,6 +663,13 @@ public class BookFragment extends NoteListFragment
                 getListView().removeHeaderView(mHeader);
             }
         }
+    }
+
+    private boolean isPrefaceDisplayed() {
+        boolean displayPreface = ! getString(R.string.pref_value_preface_in_book_hide)
+                .equals(AppPreferences.prefaceDisplay(getContext()));
+
+        return displayPreface && mBook != null && !TextUtils.isEmpty(mBook.getPreface());
     }
 
     private void notesLoaded(Cursor cursor) {
@@ -678,7 +684,8 @@ public class BookFragment extends NoteListFragment
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "after swap: cursor/adapter count: " + cursor.getCount() + "/" + mListAdapter.getCount());
 
-        if (mListAdapter.getCount() > 0) {
+        /* Display "No notes" text, unless notes or preface are displayed. */
+        if (mListAdapter.getCount() > 0 || isPrefaceDisplayed()) {
             mNoNotesText.setVisibility(View.GONE);
         } else {
             mNoNotesText.setVisibility(View.VISIBLE);
@@ -915,6 +922,7 @@ public class BookFragment extends NoteListFragment
         void onNotesPasteRequest(long bookId, long noteId, Place place);
         void onNotesPromoteRequest(long bookId, Set<Long> noteIds);
         void onNotesDemoteRequest(long bookId, Set<Long> noteIds);
+        void onNotesMoveRequest(long bookId, long noteId, int offset);
 
         void onCycleVisibilityRequest(Book book);
     }

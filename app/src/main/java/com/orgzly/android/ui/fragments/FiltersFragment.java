@@ -134,14 +134,14 @@ public class FiltersFragment extends ListFragment implements Fab, LoaderManager.
 
     public static SimpleCursorAdapter createFilterCursorAdapter(Context context) {
         /* Column field names to be bound. */
-        String[] columns = new String[] {
+        String[] columns = {
                 ProviderContract.Filters.Param.NAME,
                 ProviderContract.Filters.Param.QUERY,
                 ProviderContract.Filters.Param.POSITION,
         };
 
         /* Views which the data will be bound to. */
-        int[] to = new int[] {
+        int[] to = {
                 R.id.item_filter_name,
                 R.id.item_filter_query,
                 R.id.item_filter_position,

@@ -11,6 +11,7 @@ import com.orgzly.android.provider.models.DbOrgRange;
 import com.orgzly.android.provider.models.DbOrgTimestamp;
 
 import static com.orgzly.android.provider.GenericDatabaseUtils.field;
+import static com.orgzly.android.provider.GenericDatabaseUtils.ms2StartOfDay;
 
 /**
  * Notes with book name and times.
@@ -31,11 +32,15 @@ public class DbNoteView implements DbNoteViewColumns, DbNoteColumns, BaseColumns
             "t_scheduled_timestamps_start." + DbOrgTimestamp.STRING + " AS " + SCHEDULED_TIME_STRING + ", " +
             "t_scheduled_timestamps_end." + DbOrgTimestamp.STRING + " AS " + SCHEDULED_TIME_END_STRING + ", " +
             "t_scheduled_timestamps_start." + DbOrgTimestamp.TIMESTAMP + " AS " + SCHEDULED_TIME_TIMESTAMP + ", " +
+            ms2StartOfDay("t_scheduled_timestamps_start." + DbOrgTimestamp.TIMESTAMP) + " AS " + SCHEDULED_TIME_START_OF_DAY + ", " +
+            "t_scheduled_timestamps_start." + DbOrgTimestamp.HOUR + " AS " + SCHEDULED_TIME_HOUR + ", " +
 
             "t_deadline_range." + DbOrgRange.STRING + " AS " + DEADLINE_RANGE_STRING + ", " +
             "t_deadline_timestamps_start." + DbOrgTimestamp.STRING + " AS " + DEADLINE_TIME_STRING + ", " +
             "t_deadline_timestamps_end." + DbOrgTimestamp.STRING + " AS " + DEADLINE_TIME_END_STRING + ", " +
             "t_deadline_timestamps_start." + DbOrgTimestamp.TIMESTAMP + " AS " + DEADLINE_TIME_TIMESTAMP + ", " +
+            ms2StartOfDay("t_deadline_timestamps_start." + DbOrgTimestamp.TIMESTAMP) + " AS " + DEADLINE_TIME_START_OF_DAY + ", " +
+            "t_deadline_timestamps_start." + DbOrgTimestamp.HOUR + " AS " + DEADLINE_TIME_HOUR + ", " +
 
             "t_closed_range." + DbOrgRange.STRING + " AS " + CLOSED_RANGE_STRING + ", " +
             "t_closed_timestamps_start." + DbOrgTimestamp.STRING + " AS " + CLOSED_TIME_STRING + ", " +
