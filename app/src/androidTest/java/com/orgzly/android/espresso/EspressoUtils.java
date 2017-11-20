@@ -45,14 +45,14 @@ class EspressoUtils {
     static final int SETTINGS_NEW_NOTE_STATE = 28;
     static final int SETTINGS_CREATED_AT = 30;
 
-    static final int SETTINGS_REPOS = 47;
+    static final int SETTINGS_REPOS = 48;
 
-    static final int SETTINGS_AUTO_SYNC = 48;
+    static final int SETTINGS_AUTO_SYNC = 49;
     static final int SETTINGS_AUTO_SYNC_TOGGLE = 1;
     static final int SETTINGS_AUTO_SYNC_NOTE_CREATED = 3;
 
-    static final int IMPORT_GETTING_STARTED = 50;
-    static final int SETTINGS_CLEAR_DATABASE = 51;
+    static final int IMPORT_GETTING_STARTED = 51;
+    static final int SETTINGS_CLEAR_DATABASE = 52;
 
     /**
      */

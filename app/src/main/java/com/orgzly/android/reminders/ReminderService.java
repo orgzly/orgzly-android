@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -389,6 +390,11 @@ public class ReminderService extends IntentService {
             if (AppPreferences.remindersSound(context)) {
                 Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 builder.setSound(sound);
+            }
+
+            /* Set LED. */
+            if (AppPreferences.remindersLed(context)) {
+                builder.setLights(Color.BLUE, 1000, 5000);
             }
 
             builder.setContentTitle(OrgFormatter.INSTANCE.parse(

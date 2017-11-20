@@ -274,6 +274,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
         findPreference(getString(R.string.pref_key_reminders_sound)).isEnabled = remindersEnabled
         findPreference(getString(R.string.pref_key_reminders_vibrate)).isEnabled = remindersEnabled
+        findPreference(getString(R.string.pref_key_reminders_led)).isEnabled = remindersEnabled
         findPreference(getString(R.string.pref_key_snooze_time)).isEnabled = remindersEnabled
         findPreference(getString(R.string.pref_key_snooze_type)).isEnabled = remindersEnabled
     }
