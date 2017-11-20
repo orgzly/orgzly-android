@@ -33,6 +33,9 @@ object OrgFormatter {
     // #custom id
     private val CUSTOM_ID_LINK = "(#([^]]+))"
 
+    // id:CABA8098-5969-429E-A780-94C8E0A9D206
+    private val ID_LINK = "(id:([-0-9a-zA-Z]+))"
+
     /* Allows anything as a link. Probably needs some constraints.
      * See http://orgmode.org/manual/External-links.html and org-any-link-re
      */
@@ -64,7 +67,8 @@ object OrgFormatter {
     fun parse(context: Context, str: String, linkify: Boolean = true): SpannableStringBuilder {
         val ssb = SpannableStringBuilder(str)
 
-        parseCustomIdLinks(ssb, CUSTOM_ID_LINK, linkify, context)
+        parsePropertyLinks(ssb, CUSTOM_ID_LINK, "CUSTOM_ID", linkify, context)
+        parsePropertyLinks(ssb, ID_LINK, "ID", linkify, context)
 
         parseOrgLinksWithName(ssb, BRACKET_LINK, linkify)
         parseOrgLinksWithName(ssb, BRACKET_ANY_LINK, false)
@@ -121,16 +125,16 @@ object OrgFormatter {
     }
 
     /**
-     * [[ #custom id ]]
-     * [[ #custom id ][ link ]]
+     * [[ #custom id ]] and [[ #custom id ][ link ]]
+     * [[ id:id ]] and [[ id:id ][ link ]]
      */
-    private fun parseCustomIdLinks(ssb: SpannableStringBuilder, linkRegex: String, createLinks: Boolean, context: Context) {
-        fun p(p: Pattern, customIdGroup: Int, linkGroup: Int) {
+    private fun parsePropertyLinks(ssb: SpannableStringBuilder, linkRegex: String, propName: String, createLinks: Boolean, context: Context) {
+        fun p(p: Pattern, propGroup: Int, linkGroup: Int) {
             var m = p.matcher(ssb)
 
             while (m.find()) {
                 val link = m.group(linkGroup)
-                val customId = m.group(customIdGroup)
+                val propValue = m.group(propGroup)
 
                 ssb.replace(m.start(), m.end(), link)
 
@@ -139,7 +143,7 @@ object OrgFormatter {
                         override fun onClick(widget: View) {
                             // TODO: Send to ActionService
                             val shelf = Shelf(context)
-                            shelf.openFirstNoteWithProperty("CUSTOM_ID", customId)
+                            shelf.openFirstNoteWithProperty(propName, propValue)
                         }
                     }, m.start(), m.start() + link.length, FLAGS)
                 }
