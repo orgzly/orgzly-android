@@ -331,6 +331,7 @@
     <string name="displayed_book_details_sync_url">Sync URL</string>
     <string name="displayed_book_details_sync_mtime">Sync modification time</string>
     <string name="displayed_book_details_sync_revision">Sync revision</string>
+    <string name="displayed_book_details_selected_encoding">Selected encoding</string>
     <string name="displayed_book_details_detected_encoding">Detected encoding</string>
     <string name="displayed_book_details_used_encoding">Used encoding</string>
     <string name="displayed_book_details_last_action">Last action</string>
