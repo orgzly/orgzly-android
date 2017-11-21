@@ -1,6 +1,7 @@
 package com.orgzly.android.util
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Typeface
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -11,6 +12,8 @@ import android.text.style.TypefaceSpan
 import android.text.style.URLSpan
 import android.text.style.UnderlineSpan
 import android.view.View
+import com.orgzly.android.ActionService
+import com.orgzly.android.AppIntent
 
 import com.orgzly.android.Shelf
 import com.orgzly.android.prefs.AppPreferences
@@ -141,9 +144,11 @@ object OrgFormatter {
                 if (createLinks) {
                     ssb.setSpan(object : ClickableSpan() {
                         override fun onClick(widget: View) {
-                            // TODO: Send to ActionService
-                            val shelf = Shelf(widget.context)
-                            shelf.openFirstNoteWithProperty(propName, propValue)
+                            val intent = Intent(widget.context, ActionService::class.java)
+                            intent.action = AppIntent.ACTION_OPEN_NOTE
+                            intent.putExtra(ActionService.EXTRA_NAME, propName)
+                            intent.putExtra(ActionService.EXTRA_VALUE, propValue)
+                            widget.context.startService(intent)
                         }
                     }, m.start(), m.start() + link.length, FLAGS)
                 }
