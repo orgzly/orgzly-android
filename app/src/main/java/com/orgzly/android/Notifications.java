@@ -122,10 +122,11 @@ public class Notifications {
 
             StringBuilder sb = new StringBuilder();
             for (Book book: books) {
-                if (book.getLastAction().getType() == BookAction.Type.ERROR) {
+                BookAction action = book.getLastAction();
+                if (action != null && action.getType() == BookAction.Type.ERROR) {
                     sb.append(book.getName())
                             .append(": ")
-                            .append(book.getLastAction().getMessage())
+                            .append(action.getMessage())
                             .append("\n");
                 }
             }

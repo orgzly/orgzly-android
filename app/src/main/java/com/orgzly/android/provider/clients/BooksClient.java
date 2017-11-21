@@ -176,15 +176,13 @@ public class BooksClient {
     public static List<Book> getAll(Context context) {
         List<Book> books = new ArrayList<>();
 
-        Cursor cursor = context.getContentResolver().query(
-                ProviderContract.Books.ContentUri.books(), null, null, null, getSortOrder(context));
-
-        try {
-            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                books.add(fromCursor(cursor));
+        try (Cursor cursor = context.getContentResolver().query(
+                ProviderContract.Books.ContentUri.books(), null, null, null, getSortOrder(context))) {
+            if (cursor != null) {
+                for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                    books.add(fromCursor(cursor));
+                }
             }
-        } finally {
-            cursor.close();
         }
 
         return books;
@@ -198,17 +196,13 @@ public class BooksClient {
      * @return {@link Book} or {@code null} if the book with specified ID doesn't exist
      */
     public static Book get(Context context, long bookId) {
-        Cursor cursor = context.getContentResolver().query(
-                ProviderContract.Books.ContentUri.booksId(bookId), null, null, null, null);
-
-        try {
-            if (cursor.moveToFirst()) {
+        try (Cursor cursor = context.getContentResolver().query(
+                ProviderContract.Books.ContentUri.booksId(bookId), null, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
                 return fromCursor(cursor);
             } else {
                 return null;
             }
-        } finally {
-            cursor.close();
         }
     }
 
@@ -219,31 +213,25 @@ public class BooksClient {
      * @return {@link Book} or {@code null} if the book with specified name doesn't exist
      */
     public static Book get(Context context, String name) {
-        Cursor cursor = context.getContentResolver().query(
+
+        try (Cursor cursor = context.getContentResolver().query(
                 ProviderContract.Books.ContentUri.books(),
                 null,
                 ProviderContract.Books.Param.NAME + "=?",
-                new String[] { name },
-                null);
-
-        try {
-            if (cursor.moveToFirst()) {
+                new String[]{name},
+                null)) {
+            if (cursor != null && cursor.moveToFirst()) {
                 return fromCursor(cursor);
             } else {
                 return null;
             }
-        } finally {
-            cursor.close();
         }
     }
 
     /** Checks if notebook with the same name already exists in database. */
     public static boolean doesExist(Context context, String name) {
-        Cursor cursor = context.getContentResolver().query(ProviderContract.Books.ContentUri.books(), null, ProviderContract.Books.Param.NAME + " = ?", new String[] { name }, null);
-        try {
-            return cursor.getCount() > 0;
-        } finally {
-            cursor.close();
+        try (Cursor cursor = context.getContentResolver().query(ProviderContract.Books.ContentUri.books(), null, ProviderContract.Books.Param.NAME + " = ?", new String[]{name}, null)) {
+            return cursor != null && cursor.getCount() > 0;
         }
     }
 
