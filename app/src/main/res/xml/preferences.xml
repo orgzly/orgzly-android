@@ -252,14 +252,14 @@
             android:defaultValue="@bool/pref_default_value_reminders_sound"/>
 
         <SwitchPreference
-            android:key="@string/pref_key_reminders_vibrate"
-            android:title="@string/pref_title_reminders_vibrate"
-            android:defaultValue="@bool/pref_default_value_reminders_vibrate"/>
-
-        <SwitchPreference
             android:key="@string/pref_key_reminders_led"
             android:title="@string/pref_title_reminders_led"
             android:defaultValue="@bool/pref_default_value_reminders_led"/>
+
+        <SwitchPreference
+            android:key="@string/pref_key_reminders_vibrate"
+            android:title="@string/pref_title_reminders_vibrate"
+            android:defaultValue="@bool/pref_default_value_reminders_vibrate"/>
 
         <com.orgzly.android.prefs.PositiveIntegerPreference
             android:key="@string/pref_key_snooze_time"

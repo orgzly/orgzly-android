@@ -627,12 +627,7 @@ public class BooksFragment extends ListFragment
 
     @Override
     public Runnable getFabAction() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                mListener.onBookCreateRequest();
-            }
-        };
+        return () -> mListener.onBookCreateRequest();
     }
 
     private void announceChangesToActivity() {

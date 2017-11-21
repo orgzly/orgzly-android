@@ -387,7 +387,7 @@
     <string name="pref_title_summary_reminders_for_deadline_times">Display notification for notes with deadline time</string>
 
     <string name="pref_title_reminders_sound">Sound</string>
-    <string name="pref_title_reminders_vibrate">Vibrate</string>
+    <string name="pref_title_reminders_vibrate">Vibration</string>
     <string name="pref_title_reminders_led">Light</string>
 
     <string name="pref_title_snooze_time">Snooze time (minutes)</string>

@@ -246,16 +246,16 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_value_reminders_sound));
     }
 
-    public static boolean remindersVibrate(Context context) {
-        return getDefaultSharedPreferences(context).getBoolean(
-                context.getResources().getString(R.string.pref_key_reminders_vibrate),
-                context.getResources().getBoolean(R.bool.pref_default_value_reminders_vibrate));
-    }
-
     public static boolean remindersLed(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_reminders_led),
                 context.getResources().getBoolean(R.bool.pref_default_value_reminders_led));
+    }
+
+    public static boolean remindersVibrate(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_reminders_vibrate),
+                context.getResources().getBoolean(R.bool.pref_default_value_reminders_vibrate));
     }
 
     public static int remindersSnoozeTime(Context context) {
