@@ -85,6 +85,10 @@ public class Shelf {
         return BooksClient.get(mContext, name);
     }
 
+    public boolean doesBookExist(String name) {
+        return BooksClient.doesExist(mContext, name);
+    }
+
     /**
      * Creates a new empty book.
      *

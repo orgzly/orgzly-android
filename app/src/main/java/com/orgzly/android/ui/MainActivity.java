@@ -608,19 +608,6 @@ public class MainActivity extends CommonActivity
     }
 
     /**
-     * Import notebook from URI saving it under specified name.
-     */
-    private void importBookFromUri(Uri uri, String bookName, BookName.Format format) {
-        /* Check if book name already exists in database. */
-        if (BooksClient.doesExist(this, bookName)) {
-            showSimpleSnackbarLong(getString(R.string.book_name_already_exists, bookName));
-            return;
-        }
-
-        mSyncFragment.importBookFromUri(bookName, format, uri);
-    }
-
-    /**
      * Note has been clicked in list view.
      *
      * @param fragment Fragment from which the action came.
@@ -1194,6 +1181,11 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
+    public void onFailure(String message) {
+        showSimpleSnackbarLong(message);
+    }
+
+    @Override
     public void onNotesPasted(NotesBatch batch) {
         String message = getResources().getQuantityString(
                 R.plurals.notes_pasted,
@@ -1265,10 +1257,9 @@ public class MainActivity extends CommonActivity
                 break;
 
             case DIALOG_IMPORT_BOOK:
-                /* We are assuming it's an Org file. */
                 Uri uri = Uri.parse(userData.getString("uri"));
-                importBookFromUri(uri, value, BookName.Format.ORG);
-
+                /* We are assuming it's an Org file. */
+                mSyncFragment.importBookFromUri(value, BookName.Format.ORG, uri);
                 break;
         }
     }

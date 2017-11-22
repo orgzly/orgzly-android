@@ -400,6 +400,11 @@ public class ShareActivity extends CommonActivity
     public void onNotesMoved(int result) {
     }
 
+    @Override
+    public void onFailure(String message) {
+        showSimpleSnackbarLong(message);
+    }
+
     private class Data {
         String title;
         String content;

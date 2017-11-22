@@ -205,7 +205,7 @@ public class SyncFragment extends Fragment {
     }
 
     /**
-     * Load book from the Uri.
+     * Load notebook from URI saving it under specified name.
      */
     @SuppressLint("StaticFieldLeak")
     public void importBookFromUri(
@@ -217,12 +217,17 @@ public class SyncFragment extends Fragment {
             @Override
             protected Object doInBackground(Void ... params) { /* Executing on a different thread. */
                 try {
+                     /* Check if book name already exists in database. */
+                    if (mShelf.doesBookExist(bookName)) {
+                        if (mListener != null) {
+                            mListener.onFailure(getString(R.string.book_name_already_exists, bookName));
+                        }
+                        return null;
+                    }
+
                     Book book;
-                    InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
-                    try {
+                    try (InputStream inputStream = getActivity().getContentResolver().openInputStream(uri)) {
                         book = mShelf.loadBookFromStream(bookName, format, inputStream);
-                    } finally {
-                        inputStream.close();
                     }
 
                     return book;
@@ -235,12 +240,11 @@ public class SyncFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Object result) {
-                if (mListener != null) {
-                    if (result instanceof Book) {
-                        Book book = (Book) result;
-                        mShelf.setBookStatus(book, null, new BookAction(BookAction.Type.INFO, resources.getString(R.string.imported)));
-                        mListener.onBookLoaded((Book) result);
-                    }
+                if (mListener != null && result != null && result instanceof Book) {
+                    Book book = (Book) result;
+                    mShelf.setBookStatus(book, null, new BookAction(BookAction.Type.INFO, resources.getString(R.string.imported)));
+                    mListener.onBookLoaded((Book) result);
+
                 }
             }
         }.execute();
@@ -1016,5 +1020,7 @@ public class SyncFragment extends Fragment {
         void onNotesCut(int count);
 
         void onNotesMoved(int result);
+
+        void onFailure(String message);
     }
 }
