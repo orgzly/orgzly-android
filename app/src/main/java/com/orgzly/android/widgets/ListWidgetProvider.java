@@ -74,7 +74,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
         /* Set the PendingIntent template for the clicks on the rows */
         final Intent onClickIntent = new Intent(context, ListWidgetProvider.class);
-        onClickIntent.setAction(AppIntent.ACTION_LIST_WIDGET_CLICK);
+        onClickIntent.setAction(AppIntent.ACTION_CLICK_LIST_WIDGET);
         onClickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         onClickIntent.setData(Uri.parse(onClickIntent.toUri(Intent.URI_INTENT_SCHEME)));
         final PendingIntent onClickPendingIntent = PendingIntent.getBroadcast(context, 0,
@@ -126,8 +126,8 @@ public class ListWidgetProvider extends AppWidgetProvider {
     @Override
     public void onEnabled(Context context) {
         IntentFilter filter = new IntentFilter();
-        filter.addAction(AppIntent.ACTION_LIST_WIDGET_UPDATE);
-        filter.addAction(AppIntent.ACTION_LIST_WIDGET_UPDATE_LAYOUT);
+        filter.addAction(AppIntent.ACTION_UPDATE_LIST_WIDGET);
+        filter.addAction(AppIntent.ACTION_UPDATE_LAYOUT_LIST_WIDGET);
 
         LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
 
@@ -178,7 +178,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     private static PendingIntent getAlarmIntent(Context context) {
         Intent intent = new Intent(context, ListWidgetProvider.class);
-        intent.setAction(AppIntent.ACTION_LIST_WIDGET_UPDATE);
+        intent.setAction(AppIntent.ACTION_UPDATE_LIST_WIDGET);
         return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -246,16 +246,16 @@ public class ListWidgetProvider extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
-        if (AppIntent.ACTION_LIST_WIDGET_UPDATE.equals(intent.getAction())) {
+        if (AppIntent.ACTION_UPDATE_LIST_WIDGET.equals(intent.getAction())) {
             updateListContents(context);
 
-        } else if (AppIntent.ACTION_LIST_WIDGET_UPDATE_LAYOUT.equals(intent.getAction())) {
+        } else if (AppIntent.ACTION_UPDATE_LAYOUT_LIST_WIDGET.equals(intent.getAction())) {
             updateAppWidgetLayouts(context);
 
-        } else if (AppIntent.ACTION_LIST_WIDGET_SET_FILTER.equals(intent.getAction())) {
+        } else if (AppIntent.ACTION_SET_FILTER_LIST_WIDGET.equals(intent.getAction())) {
             setFilterFromIntent(context, intent);
 
-        } else if (AppIntent.ACTION_LIST_WIDGET_CLICK.equals(intent.getAction())) {
+        } else if (AppIntent.ACTION_CLICK_LIST_WIDGET.equals(intent.getAction())) {
             switch (intent.getIntExtra(EXTRA_CLICK_TYPE, -1)) {
                 case OPEN_CLICK_TYPE:
                     openNote(context, intent);

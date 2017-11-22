@@ -751,7 +751,7 @@ public class Shelf {
 
         ReminderService.notifyDataChanged(context);
 
-        context.sendBroadcast(new Intent(AppIntent.ACTION_LIST_WIDGET_UPDATE));
+        context.sendBroadcast(new Intent(AppIntent.ACTION_UPDATE_LIST_WIDGET));
     }
 
     public void syncOnNoteCreate() {

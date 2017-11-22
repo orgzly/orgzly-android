@@ -90,14 +90,19 @@
             android:theme="@style/Theme.AppCompat.Light.Dialog"
             android:excludeFromRecents="true"/>
 
-        <receiver android:name="com.orgzly.android.widgets.ListWidgetProvider"
+        <receiver
+            android:name="com.orgzly.android.widgets.ListWidgetProvider"
             android:label="@string/list_widget_name">
+
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+
                 <action android:name="com.orgzly.intent.action.UPDATE_LIST_WIDGET" />
                 <action android:name="com.orgzly.intent.action.UPDATE_LAYOUT_LIST_WIDGET" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
+
+            <meta-data
+                android:name="android.appwidget.provider"
                 android:resource="@xml/list_widget_info" />
         </receiver>
 

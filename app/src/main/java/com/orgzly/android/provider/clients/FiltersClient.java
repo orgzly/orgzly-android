@@ -123,6 +123,6 @@ public class FiltersClient {
     }
 
     private static void updateWidgets(Context context) {
-        context.sendBroadcast(new Intent(AppIntent.ACTION_LIST_WIDGET_UPDATE_LAYOUT));
+        context.sendBroadcast(new Intent(AppIntent.ACTION_UPDATE_LAYOUT_LIST_WIDGET));
     }
 }

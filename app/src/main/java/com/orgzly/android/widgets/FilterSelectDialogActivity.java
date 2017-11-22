@@ -67,7 +67,7 @@ public class FilterSelectDialogActivity extends AppCompatActivity implements Loa
 
         /* notify Widget */
         Intent intent = new Intent(this, ListWidgetProvider.class);
-        intent.setAction(AppIntent.ACTION_LIST_WIDGET_SET_FILTER);
+        intent.setAction(AppIntent.ACTION_SET_FILTER_LIST_WIDGET);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID));
         intent.putExtra(ListWidgetProvider.EXTRA_FILTER_ID, id);
         sendBroadcast(intent);
