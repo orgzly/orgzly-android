@@ -414,7 +414,6 @@ public class Provider extends ContentProvider {
 
             /*
              * Handle empty string and NULL - use default priority in those cases.
-             * lower( coalesce( nullif(PRIORITY, ''), DEFAULT) )
              */
             if (group.hasPriority()) {
                 String defaultPriority = AppPreferences.defaultPriority(getContext());
@@ -422,12 +421,24 @@ public class Provider extends ContentProvider {
                 selectionArgs.add(defaultPriority);
                 selectionArgs.add(group.getPriority());
             }
-
             if (group.hasNotPriority()) {
                 String defaultPriority = AppPreferences.defaultPriority(getContext());
                 selection.append(" AND lower(coalesce(nullif(" + ProviderContract.Notes.QueryParam.PRIORITY + ", ''), ?)) != ?");
                 selectionArgs.add(defaultPriority);
                 selectionArgs.add(group.getNotPriority());
+            }
+
+            /*
+             * Just check for note's *set* priority, don't use default if there is none.
+             */
+            if (group.hasSetPriority()) {
+                selection.append(" AND lower(coalesce(" + ProviderContract.Notes.QueryParam.PRIORITY + ", '')) = ?");
+                selectionArgs.add(group.getSetPriority());
+            }
+
+            if (group.hasNotSetPriority()) {
+                selection.append(" AND lower(coalesce(" + ProviderContract.Notes.QueryParam.PRIORITY + ", '')) != ?");
+                selectionArgs.add(group.getNotSetPriority());
             }
 
             if (group.hasNoteTags()) {

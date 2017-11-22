@@ -117,8 +117,9 @@ public class Notifications {
 
         if (status.type == SyncStatus.Type.FAILED) {
             builder.setContentText(status.message);
+
         } else {
-            List<Book> books = new Shelf(context).getBooks();
+            List<Book> books = new Shelf(context).getBooks(); // FIXME: ANR reported
 
             StringBuilder sb = new StringBuilder();
             for (Book book: books) {

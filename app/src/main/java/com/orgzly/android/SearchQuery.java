@@ -15,21 +15,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-
 /**
- * Inspired by:
- *
- * Advanced searching (org-mode)
- * http://orgmode.org/worg/org-tutorials/advanced-searching.html
- *
- * Advanced search (GMail)
- * https://support.google.com/mail/answer/7190?hl=en
- *
- * Using . as a separator as it's available without
- * using a modifier key on most keyboards.
- *
+ * Currently being rewritten.
  */
-
 public class SearchQuery {
 
     // A "group" of search criteria that is AND-ed together when searching.
@@ -39,13 +27,21 @@ public class SearchQuery {
         private Set<String> textSearch = new LinkedHashSet<>();
         private String bookName;
         private Set<String> notBookName = new TreeSet<>();
+
         private Set<String> noteTags = new TreeSet<>();
+
         private Set<String> tags = new TreeSet<>();
         private Set<String> notTags = new TreeSet<>();
+
         private String priority;
         private String notPriority;
+
+        private String setPriority;
+        private String notSetPriority;
+
         private String state;
         private Set<String> notState = new TreeSet<>();
+
         private String stateType;
         private String notStateType;
 
@@ -110,6 +106,24 @@ public class SearchQuery {
 
         public boolean hasNotPriority() {
             return notPriority != null;
+        }
+
+        /* Set Priority. */
+
+        public String getSetPriority() {
+            return setPriority;
+        }
+
+        public boolean hasSetPriority() {
+            return setPriority != null;
+        }
+
+        public String getNotSetPriority() {
+            return notSetPriority;
+        }
+
+        public boolean hasNotSetPriority() {
+            return notSetPriority != null;
         }
 
         /* State. */
@@ -208,6 +222,14 @@ public class SearchQuery {
 
             if (notPriority != null) {
                 s.append(" .p.").append(notPriority.toLowerCase());
+            }
+
+            if (setPriority != null) {
+                s.append(" ps.").append(setPriority.toLowerCase());
+            }
+
+            if (notSetPriority != null) {
+                s.append(" .ps.").append(notSetPriority.toLowerCase());
             }
 
             if (! noteTags.isEmpty()) {
@@ -388,6 +410,16 @@ public class SearchQuery {
             } else if (token.startsWith(".p.")) { // not priority
                 if (token.length() > 3) {
                     currentGroup.notPriority = token.substring(3).toLowerCase();
+                }
+
+            } else if (token.startsWith("ps.")) { // set priority
+                if (token.length() > 3) {
+                    currentGroup.setPriority = token.substring(3).toLowerCase();
+                }
+
+            } else if (token.startsWith(".ps.")) { // not set priority
+                if (token.length() > 4) {
+                    currentGroup.notSetPriority = token.substring(4).toLowerCase();
                 }
 
             } else if (token.startsWith("i.")) { // is (state)
