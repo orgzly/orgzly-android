@@ -148,8 +148,15 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
 
         setupIndentContainer(context, holder.indentContainer, inBook ? note.getPosition().getLevel() - 1 : 0);
 
-        updateFoldingButton(context, note, holder);
         updateBullet(context, note, holder);
+
+        if (updateFoldingButton(context, note, holder)) {
+            holder.foldButton.setOnClickListener(v -> toggleFoldedState(context, note.getId()));
+            holder.bullet.setOnClickListener(v -> toggleFoldedState(context, note.getId()));
+        } else {
+            holder.foldButton.setOnClickListener(null);
+            holder.bullet.setOnClickListener(null);
+        }
 
         /* Book name. */
         if (inBook) {
@@ -229,14 +236,6 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         quickMenu.updateView(view, note.getId(), holder.menuContainer, holder.menuFlipper);
 
         selection.updateView(view, note.getId());
-
-        /* Toggle folded state. */
-        holder.foldButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleFoldedState(context, note.getId());
-            }
-        });
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -253,7 +252,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
     /**
      * Change folding button appearance.
      */
-    private void updateFoldingButton(Context context, Note note, ViewHolder holder) {
+    private boolean updateFoldingButton(Context context, Note note, ViewHolder holder) {
         boolean isVisible = false;
 
         if (inBook) {
@@ -280,6 +279,8 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
             holder.foldButton.setVisibility(View.INVISIBLE);
             holder.foldButtonText.setVisibility(View.INVISIBLE);
         }
+
+        return isVisible;
     }
 
     /**
