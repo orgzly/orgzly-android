@@ -138,9 +138,6 @@ public class ProviderContract {
             public static final String PROPERTY_VALUE = "property_value";
         }
 
-        class QueryParam implements DbNoteViewColumns, DbNoteColumns, BaseColumns {
-        }
-
         class UpdateParam implements DbNoteColumns, BaseColumns {
             public static final String SCHEDULED_STRING = "scheduled_string"; // TODO: This is range, rename.
             public static final String DEADLINE_STRING = "deadline_string";

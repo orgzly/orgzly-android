@@ -330,8 +330,8 @@ public class Provider extends ContentProvider {
              */
             for (String tag: group.getTags()) {
                 selection.append(" AND (")
-                        .append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ? OR ")
-                        .append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(" LIKE ?)");
+                        .append(DbNoteView.TAGS).append(" LIKE ? OR ")
+                        .append(DbNoteView.INHERITED_TAGS).append(" LIKE ?)");
 
                 selectionArgs.add("%" + tag + "%");
                 selectionArgs.add("%" + tag + "%");
@@ -339,21 +339,21 @@ public class Provider extends ContentProvider {
 
             for (String tag: group.getNotTags()) {
                 selection.append(" AND (")
-                        .append("COALESCE(").append(ProviderContract.Notes.QueryParam.TAGS).append(", '')").append(" NOT LIKE ? AND ")
-                        .append("COALESCE(").append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(", '')").append(" NOT LIKE ?)");
+                        .append("COALESCE(").append(DbNoteView.TAGS).append(", '')").append(" NOT LIKE ? AND ")
+                        .append("COALESCE(").append(DbNoteView.INHERITED_TAGS).append(", '')").append(" NOT LIKE ?)");
 
                 selectionArgs.add("%" + tag + "%");
                 selectionArgs.add("%" + tag + "%");
             }
 
             if (group.hasBookName()) {
-                selection.append(" AND ").append(ProviderContract.Notes.QueryParam.BOOK_NAME).append(" = ?");
+                selection.append(" AND ").append(DbNoteView.BOOK_NAME).append(" = ?");
                 selectionArgs.add(group.getBookName());
             }
 
             if (group.hasNotBookName()) {
                 for (String name: group.getNotBookName()) {
-                    selection.append(" AND ").append(ProviderContract.Notes.QueryParam.BOOK_NAME).append(" != ?");
+                    selection.append(" AND ").append(DbNoteView.BOOK_NAME).append(" != ?");
                     selectionArgs.add(name);
                 }
             }
@@ -366,7 +366,7 @@ public class Provider extends ContentProvider {
                     searchQueryStates(selection, selectionArgs, "IN", AppPreferences.doneKeywordsSet(getContext()));
 
                 } else if ("none".equalsIgnoreCase(group.getStateType())) {
-                    selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') = ''");
+                    selection.append(" AND COALESCE(" + DbNoteView.STATE + ", '') = ''");
                 }
             }
 
@@ -378,38 +378,38 @@ public class Provider extends ContentProvider {
                     searchQueryStates(selection, selectionArgs, "NOT IN", AppPreferences.doneKeywordsSet(getContext()));
 
                 } else if ("none".equalsIgnoreCase(group.getNotStateType())) {
-                    selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') != ''");
+                    selection.append(" AND COALESCE(" + DbNoteView.STATE + ", '') != ''");
                 }
             }
 
             if (group.hasState()) {
-                selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') = ?");
+                selection.append(" AND COALESCE(" + DbNoteView.STATE + ", '') = ?");
                 selectionArgs.add(group.getState());
             }
 
             if (group.hasNotState()) {
                 for (String state: group.getNotState()) {
-                    selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') != ?");
+                    selection.append(" AND COALESCE(" + DbNoteView.STATE + ", '') != ?");
                     selectionArgs.add(state);
                 }
             }
 
             for (String token: group.getTextSearch()) {
-                selection.append(" AND (").append(ProviderContract.Notes.QueryParam.TITLE).append(" LIKE ?");
+                selection.append(" AND (").append(DbNoteView.TITLE).append(" LIKE ?");
                 selectionArgs.add("%" + token + "%");
-                selection.append(" OR ").append(ProviderContract.Notes.QueryParam.CONTENT).append(" LIKE ?");
+                selection.append(" OR ").append(DbNoteView.CONTENT).append(" LIKE ?");
                 selectionArgs.add("%" + token + "%");
-                selection.append(" OR ").append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ?");
+                selection.append(" OR ").append(DbNoteView.TAGS).append(" LIKE ?");
                 selectionArgs.add("%" + token + "%");
                 selection.append(")");
             }
 
             if (group.hasScheduled()) {
-                appendBeforeInterval(selection, ProviderContract.Notes.QueryParam.SCHEDULED_TIME_TIMESTAMP, group.getScheduled());
+                appendBeforeInterval(selection, DbNoteView.SCHEDULED_TIME_TIMESTAMP, group.getScheduled());
             }
 
             if (group.hasDeadline()) {
-                appendBeforeInterval(selection, ProviderContract.Notes.QueryParam.DEADLINE_TIME_TIMESTAMP, group.getDeadline());
+                appendBeforeInterval(selection, DbNoteView.DEADLINE_TIME_TIMESTAMP, group.getDeadline());
             }
 
             /*
@@ -417,13 +417,13 @@ public class Provider extends ContentProvider {
              */
             if (group.hasPriority()) {
                 String defaultPriority = AppPreferences.defaultPriority(getContext());
-                selection.append(" AND lower(coalesce(nullif(" + ProviderContract.Notes.QueryParam.PRIORITY + ", ''), ?)) = ?");
+                selection.append(" AND lower(coalesce(nullif(" + DbNoteView.PRIORITY + ", ''), ?)) = ?");
                 selectionArgs.add(defaultPriority);
                 selectionArgs.add(group.getPriority());
             }
             if (group.hasNotPriority()) {
                 String defaultPriority = AppPreferences.defaultPriority(getContext());
-                selection.append(" AND lower(coalesce(nullif(" + ProviderContract.Notes.QueryParam.PRIORITY + ", ''), ?)) != ?");
+                selection.append(" AND lower(coalesce(nullif(" + DbNoteView.PRIORITY + ", ''), ?)) != ?");
                 selectionArgs.add(defaultPriority);
                 selectionArgs.add(group.getNotPriority());
             }
@@ -432,12 +432,12 @@ public class Provider extends ContentProvider {
              * Just check for note's *set* priority, don't use default if there is none.
              */
             if (group.hasSetPriority()) {
-                selection.append(" AND lower(coalesce(" + ProviderContract.Notes.QueryParam.PRIORITY + ", '')) = ?");
+                selection.append(" AND lower(coalesce(" + DbNoteView.PRIORITY + ", '')) = ?");
                 selectionArgs.add(group.getSetPriority());
             }
 
             if (group.hasNotSetPriority()) {
-                selection.append(" AND lower(coalesce(" + ProviderContract.Notes.QueryParam.PRIORITY + ", '')) != ?");
+                selection.append(" AND lower(coalesce(" + DbNoteView.PRIORITY + ", '')) != ?");
                 selectionArgs.add(group.getNotSetPriority());
             }
 
@@ -448,7 +448,7 @@ public class Provider extends ContentProvider {
                  * Tags must be kept separately so we can match them exactly.
                  */
                 for (String tag: group.getNoteTags()) {
-                    selection.append(" AND ").append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ?");
+                    selection.append(" AND ").append(DbNoteView.TAGS).append(" LIKE ?");
                     selectionArgs.add("%" + tag + "%");
                 }
             }
@@ -463,7 +463,7 @@ public class Provider extends ContentProvider {
     }
 
     private void searchQueryStates(StringBuilder selection, List<String> selectionArgs, String in, Set<String> states) {
-        selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') ")
+        selection.append(" AND COALESCE(" + DbNoteView.STATE + ", '') ")
                 .append(in).append(" (")
                 .append(TextUtils.join(", ", Collections.nCopies(states.size(), "?")))
                 .append(")");
@@ -758,8 +758,8 @@ public class Provider extends ContentProvider {
     private int getMaxRgt(SQLiteDatabase db, long bookId) {
         Cursor cursor = db.query(
                 DbNote.TABLE,
-                new String[] { "MAX(" + ProviderContract.Notes.QueryParam.RGT + ")" },
-                ProviderContract.Notes.QueryParam.BOOK_ID + "= " + bookId + " AND " + ProviderContract.Notes.QueryParam.IS_CUT + " = 0",
+                new String[] { "MAX(" + DbNoteView.RGT + ")" },
+                DbNoteView.BOOK_ID + "= " + bookId + " AND " + DbNoteView.IS_CUT + " = 0",
                 null,
                 null,
                 null,
@@ -782,7 +782,7 @@ public class Provider extends ContentProvider {
         Cursor cursor = db.query(
                 DbNote.TABLE,
                 DatabaseUtils.PROJECTION_FOR_ID,
-                ProviderContract.Notes.QueryParam.BOOK_ID + "= " + bookId + " AND " + ProviderContract.Notes.QueryParam.LEVEL + " = 0",
+                DbNoteView.BOOK_ID + "= " + bookId + " AND " + DbNoteView.LEVEL + " = 0",
                 null,
                 null,
                 null,

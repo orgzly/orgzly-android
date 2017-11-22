@@ -17,6 +17,7 @@ import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.NotesClient;
+import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.ui.util.TitleGenerator;
 import com.orgzly.android.ui.views.GesturedListViewItemMenus;
 import com.orgzly.android.util.OrgFormatter;
@@ -161,12 +162,12 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                     holder.bookNameUnderNote.setVisibility(View.GONE);
                     break;
                 case 1:
-                    holder.bookNameLeftFromNoteText.setText(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.BOOK_NAME)));
+                    holder.bookNameLeftFromNoteText.setText(cursor.getString(cursor.getColumnIndex(DbNoteView.BOOK_NAME)));
                     holder.bookNameLeftFromNoteText.setVisibility(View.VISIBLE);
                     holder.bookNameUnderNote.setVisibility(View.GONE);
                     break;
                 case 2:
-                    holder.bookNameUnderNoteText.setText(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.BOOK_NAME)));
+                    holder.bookNameUnderNoteText.setText(cursor.getString(cursor.getColumnIndex(DbNoteView.BOOK_NAME)));
                     holder.bookNameLeftFromNoteText.setVisibility(View.GONE);
                     holder.bookNameUnderNote.setVisibility(View.VISIBLE);
                     break;
