@@ -484,7 +484,7 @@ public class SyncingTest extends OrgzlyTest {
         onListItem(EspressoUtils.SETTINGS_REPOS).perform(click());
         onListItem(0).perform(click());
         onView(withId(R.id.fragment_repo_dropbox_directory)).perform(replaceText("repo-b"));
-        onActionItemClick(R.id.done, R.string.close);
+        onActionItemClick(R.id.done, R.string.done);
         pressBack();
         pressBack();
 
@@ -536,10 +536,10 @@ public class SyncingTest extends OrgzlyTest {
         onListItem(EspressoUtils.SETTINGS_REPOS).perform(click());
         onListItem(0).perform(click());
         onView(withId(R.id.fragment_repo_dropbox_directory)).perform(replaceText("repo-1"));
-        onActionItemClick(R.id.done, R.string.close);
+        onActionItemClick(R.id.done, R.string.done);
         onListItem(0).perform(click());
         onView(withId(R.id.fragment_repo_dropbox_directory)).perform(replaceText("repo-2"));
-        onActionItemClick(R.id.done, R.string.close);
+        onActionItemClick(R.id.done, R.string.done);
         pressBack();
         pressBack();
 

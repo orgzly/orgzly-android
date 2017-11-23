@@ -992,7 +992,7 @@ public class NoteFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
 
-        inflater.inflate(R.menu.note_actions, menu);
+        inflater.inflate(R.menu.close_done_delete, menu);
 
         /* Remove search item. */
         menu.removeItem(R.id.activity_action_search);

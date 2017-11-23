@@ -168,7 +168,7 @@ public class FilterFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
 
-        inflater.inflate(R.menu.done_or_close, menu);
+        inflater.inflate(R.menu.close_done, menu);
 
         /* Remove search item. */
         menu.removeItem(R.id.activity_action_search);
