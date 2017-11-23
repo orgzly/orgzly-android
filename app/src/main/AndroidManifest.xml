@@ -127,7 +127,6 @@
 
         <receiver android:name=".android.BootCompletedReceiver">
             <intent-filter>
-                <!-- Useless now (http://stackoverflow.com/a/19856367) -->
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
