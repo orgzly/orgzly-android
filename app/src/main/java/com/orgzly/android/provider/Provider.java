@@ -1029,7 +1029,7 @@ public class Provider extends ContentProvider {
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, uri.toString(), selection, selectionArgs);
 
-        /* Only used by tests. Changing database name so we don't overwrite user's real data. */
+        /* Used by tests. Open a different database so we don't overwrite user's real data. */
         if (uris.matcher.match(uri) == ProviderUris.DB_SWITCH) {
             reopenDatabaseWithDifferentName();
             return 1;
@@ -1059,10 +1059,14 @@ public class Provider extends ContentProvider {
         return result;
     }
 
+    /**
+     * Re-open database with a different name (for tests), unless already using it.
+     */
     private void reopenDatabaseWithDifferentName() {
-        mOpenHelper.close();
-
-        mOpenHelper = new Database(getContext(), DATABASE_NAME_FOR_TESTS);
+        if (!DATABASE_NAME_FOR_TESTS.equals(mOpenHelper.getDatabaseName())) {
+            mOpenHelper.close();
+            mOpenHelper = new Database(getContext(), DATABASE_NAME_FOR_TESTS);
+        }
     }
 
     private int updateUnderTransaction(SQLiteDatabase db, Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
