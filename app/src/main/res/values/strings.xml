@@ -499,5 +499,7 @@
 
     <string name="styled_text_with_marks_title">Styled text with marks</string>
     <string name="styled_text_with_marks_summary">Keep marks displayed (e.g. *bold*)</string>
+    <string name="time">Time</string>
+    <string name="repeater">Repeater</string>
 
 </resources>

@@ -169,5 +169,8 @@
         <attr name="oic_warning" format="reference"/>
 
         <attr name="oic_date_range" format="reference"/>
+
+        <attr name="oic_repeat" format="reference"/>
+        <attr name="oic_time" format="reference"/>
     </declare-styleable>
 </resources>

@@ -578,7 +578,7 @@ public class NoteFragment extends Fragment
         setupTagsView();
 
         if (mBookId != 0) {
-            mBook = mShelf.getBook(mBookId);
+            mBook = mShelf.getBook(mBookId); // FIXME: ANR reported
         }
 
         if (mIsNew) { /* Creating new note. */

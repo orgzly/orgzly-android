@@ -181,6 +181,9 @@
         <item name="oic_warning">@drawable/ic_warning_black_24dp</item>
 
         <item name="oic_date_range">@drawable/ic_date_range_black_24dp</item>
+
+        <item name="oic_time">@drawable/ic_access_time_black_24dp</item>
+        <item name="oic_repeat">@drawable/ic_repeat_black_24dp</item>
     </style>
 
     <style name="AppDarkTheme" parent="Theme.Design">
@@ -350,6 +353,9 @@
         <item name="oic_warning">@drawable/ic_warning_white_24dp</item>
 
         <item name="oic_date_range">@drawable/ic_date_range_white_24dp</item>
+
+        <item name="oic_time">@drawable/ic_access_time_white_24dp</item>
+        <item name="oic_repeat">@drawable/ic_repeat_white_24dp</item>
     </style>
 
     <!-- Color schemes -->
