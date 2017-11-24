@@ -1,80 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- Steal focus before descendants to avoid opening keyboard on
-     on dialog popup (due to repeat value). -->
-
-<LinearLayout
-    android:id="@+id/dialog_repeater_container"
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/padding_16"
-    android:gravity="center"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/padding_4"
-        android:gravity="center"
-        android:text="@string/repeater_explained"/>
-
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <NumberPicker
-            android:id="@+id/dialog_timestamp_repeater_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <NumberPicker
-            android:id="@+id/dialog_timestamp_repeater_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/padding_8"
-            android:layout_marginRight="@dimen/padding_8"/>
-
-        <NumberPicker
-            android:id="@+id/dialog_timestamp_repeater_unit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/dialog_timestamp_repeater_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_4"
+        android:padding="@dimen/padding_16"
         android:gravity="center"
-        android:hint="@string/repeater_longest_type_desc"
-        android:text="@string/repeater_longest_type_desc"
-        android:lines="2"/>
+        android:orientation="vertical">
 
-    <!--<Spinner-->
-    <!--android:id="@+id/dialog_timestamp_repeater_habit_deadline_unit"-->
-    <!--style="@style/TimestampDialogLabel"-->
-    <!--android:layout_below="@id/dialog_timestamp_repeater_unit"-->
-    <!--android:layout_alignLeft="@id/dialog_timestamp_repeater_unit"-->
-    <!--android:layout_alignStart="@id/dialog_timestamp_repeater_unit"-->
-    <!--android:entries="@array/time_units"-->
-    <!--/>-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_4"
+            android:gravity="center"
+            android:text="@string/repeater_explained"/>
 
-    <!--<EditText-->
-    <!--android:id="@+id/dialog_timestamp_repeater_habit_deadline_value"-->
-    <!--style="@style/TimestampDialogLabel"-->
-    <!--android:layout_alignTop="@id/dialog_timestamp_repeater_habit_deadline_unit"-->
-    <!--android:layout_alignLeft="@id/dialog_timestamp_repeater_value"-->
-    <!--android:layout_alignStart="@id/dialog_timestamp_repeater_value"-->
-    <!--android:minWidth="48dp"-->
-    <!--android:text="@string/dialog_timestamp_repeater_value_sample"-->
-    <!--android:inputType="number"-->
-    <!--/>-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-</LinearLayout>
+            <NumberPicker
+                android:id="@+id/dialog_timestamp_repeater_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <NumberPicker
+                android:id="@+id/dialog_timestamp_repeater_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_8"
+                android:layout_marginRight="@dimen/padding_8"/>
+
+            <NumberPicker
+                android:id="@+id/dialog_timestamp_repeater_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/dialog_timestamp_repeater_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_4"
+            android:gravity="center"
+            android:hint="@string/repeater_longest_type_desc"
+            android:text="@string/repeater_longest_type_desc"
+            android:lines="2"/>
+    </LinearLayout>
+</ScrollView>

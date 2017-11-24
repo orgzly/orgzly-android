@@ -317,7 +317,7 @@
 
     <string name="repeat_dialog_title">Repeat</string>
 
-    <string name="repeater_explained">After task is marked complete, this repeater will be applied to update the time</string>
+    <string name="repeater_explained">After task is marked complete, repeater will be shift the time</string>
 
     <string name="repeater_description_cumulate">Add period to time</string> <!-- + -->
     <string name="repeater_description_catch_up">Keep adding period to time until time reaches future</string> <!-- ++ -->
