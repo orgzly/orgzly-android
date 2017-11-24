@@ -63,7 +63,7 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
     }
 
     companion object {
-        val TAG: String = CommonActivity::class.java.name
+        val TAG: String = SettingsActivity::class.java.name
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
