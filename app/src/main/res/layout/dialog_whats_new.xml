@@ -41,7 +41,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Display LED on reminder's notification"/>
+            app:text="Blink LED on reminder's notification"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -49,7 +49,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Support “ps” and “.ps” search operators (set priority)"/>
+            app:text="Support “ps” and “.ps” search operators"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
