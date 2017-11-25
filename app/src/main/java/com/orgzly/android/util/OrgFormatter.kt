@@ -5,19 +5,11 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.text.style.ClickableSpan
-import android.text.style.StrikethroughSpan
-import android.text.style.StyleSpan
-import android.text.style.TypefaceSpan
-import android.text.style.URLSpan
-import android.text.style.UnderlineSpan
+import android.text.style.*
 import android.view.View
 import com.orgzly.android.ActionService
 import com.orgzly.android.AppIntent
-
-import com.orgzly.android.Shelf
 import com.orgzly.android.prefs.AppPreferences
-
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -37,7 +29,8 @@ object OrgFormatter {
     private val CUSTOM_ID_LINK = "(#([^]]+))"
 
     // id:CABA8098-5969-429E-A780-94C8E0A9D206
-    private val ID_LINK = "(id:([-0-9a-zA-Z]+))"
+    private val HD = "[0-9a-fA-F]"
+    private val ID_LINK = "(id:($HD{8}-(?:$HD{4}-){3}$HD{12}))"
 
     /* Allows anything as a link. Probably needs some constraints.
      * See http://orgmode.org/manual/External-links.html and org-any-link-re
