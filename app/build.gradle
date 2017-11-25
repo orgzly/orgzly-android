@@ -138,8 +138,8 @@ repositories {
 }
 
 /*
- * Use local org-java directory if it exists to ease developing.
- * Being more specific with ../../orgzly/ on purpose.
+ * Use local org-java directory if it exists for easier development.
+ * Being more specific by looking for orgzly/org-java/ on purpose.
  */
 def orgJavaLocation() {
     File localOrgJavaDir = getRootProject().file('../../orgzly/org-java')
