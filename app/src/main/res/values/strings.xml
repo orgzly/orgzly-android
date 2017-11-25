@@ -502,4 +502,6 @@
     <string name="time">Time</string>
     <string name="repeater">Repeater</string>
 
+    <string name="no_such_link_target">Note with “%1$s” property set to “%2$s” not found</string>
+
 </resources>

@@ -904,18 +904,26 @@ public class Shelf {
     }
 
     public void openFirstNoteWithProperty(String propName, String propValue) {
+        Intent intent;
+
         List<Long[]> notes = NotesClient.getNotesWithProperty(mContext, propName, propValue);
 
         if (!notes.isEmpty()) {
             long noteId = notes.get(0)[0];
             long bookId = notes.get(0)[1];
 
-            Intent intent = new Intent(AppIntent.ACTION_OPEN_NOTE);
+            intent = new Intent(AppIntent.ACTION_OPEN_NOTE);
             intent.putExtra(MainActivity.EXTRA_NOTE_ID, noteId);
             intent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
 
-            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+        } else {
+            String msg = mContext.getString(R.string.no_such_link_target, propName, propValue);
+
+            intent = new Intent(AppIntent.ACTION_DISPLAY_MESSAGE);
+            intent.putExtra(AppIntent.EXTRA_MESSAGE, msg);
         }
+
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 
     // TODO: Used by tests only for now

@@ -71,6 +71,9 @@ abstract class CommonActivity : AppCompatActivity() {
 
                 AppIntent.ACTION_REPARSING_NOTES_ENDED ->
                     progressDialog?.dismiss()
+
+                AppIntent.ACTION_DISPLAY_MESSAGE ->
+                    showSimpleSnackbarLong(intent.getStringExtra(AppIntent.EXTRA_MESSAGE))
             }
         }
     }
@@ -168,6 +171,7 @@ abstract class CommonActivity : AppCompatActivity() {
         intentFilter.addAction(AppIntent.ACTION_DB_CLEARED)
         intentFilter.addAction(AppIntent.ACTION_REPARSING_NOTES_STARTED)
         intentFilter.addAction(AppIntent.ACTION_REPARSING_NOTES_ENDED)
+        intentFilter.addAction(AppIntent.ACTION_DISPLAY_MESSAGE)
         LocalBroadcastManager.getInstance(this).registerReceiver(actionReceiver, intentFilter)
 
         PreferenceManager.getDefaultSharedPreferences(this)
