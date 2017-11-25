@@ -3,6 +3,14 @@
 <!-- Use a minimum number of different colors. -->
 
 <resources>
+    <!-- https://material.io/guidelines/style/color.html#color-color-palette -->
+    <color name="red200">#EF9A9A</color>
+    <color name="red900">#B71C1C</color>
+    <color name="green200">#A5D6A7</color>
+    <color name="green900">#1B5E20</color>
+    <color name="blue200">#90CAF9</color>
+    <color name="blue900">#0D47A1</color>
+
     <!-- http://www.google.com/design/spec/style/color.html#color-themes -->
     <color name="dark_theme_status_bar">#000000</color>
     <color name="dark_theme_app_bar">#212121</color>
