@@ -126,11 +126,23 @@ public class MainActivity extends CommonActivity
         public void onReceive(Context context, Intent intent) {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
-            long bookId = intent.getLongExtra(EXTRA_BOOK_ID, 0);
-            long noteId = intent.getLongExtra(EXTRA_NOTE_ID, 0);
+            if (intent != null) {
+                String action = intent.getAction();
 
-            if (mDisplayManager != null) {
-                mDisplayManager.displayNote(bookId, noteId);
+                if (AppIntent.ACTION_OPEN_BOOK.equals(action)) {
+                    long bookId = intent.getLongExtra(EXTRA_BOOK_ID, 0);
+                    if (mDisplayManager != null) {
+                        mDisplayManager.displayBook(bookId, 0);
+                    }
+
+                } else if (AppIntent.ACTION_OPEN_NOTE.equals(action)) {
+                    long bookId = intent.getLongExtra(EXTRA_BOOK_ID, 0);
+                    long noteId = intent.getLongExtra(EXTRA_NOTE_ID, 0);
+
+                    if (mDisplayManager != null) {
+                        mDisplayManager.displayNote(bookId, noteId);
+                    }
+                }
             }
         }
     };
@@ -139,9 +151,6 @@ public class MainActivity extends CommonActivity
     protected void onCreate(Bundle savedInstanceState) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onCreate(savedInstanceState);
-
-        LocalBroadcastManager bm = LocalBroadcastManager.getInstance(this);
-        bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_NOTE));
 
         setContentView(R.layout.activity_main);
 
@@ -377,15 +386,15 @@ public class MainActivity extends CommonActivity
     protected void onPause() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onPause();
+
+        LocalBroadcastManager bm = LocalBroadcastManager.getInstance(this);
+        bm.unregisterReceiver(receiver);
     }
 
     @Override
     protected void onDestroy() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onDestroy();
-
-        LocalBroadcastManager bm = LocalBroadcastManager.getInstance(this);
-        bm.unregisterReceiver(receiver);
 
         if (mDrawerLayout != null && mDrawerToggle != null) {
             mDrawerLayout.removeDrawerListener(mDrawerToggle);
@@ -436,6 +445,10 @@ public class MainActivity extends CommonActivity
             importChosenBook(mImportChosenBook);
             mImportChosenBook = null;
         }
+
+        LocalBroadcastManager bm = LocalBroadcastManager.getInstance(this);
+        bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_NOTE));
+        bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_BOOK));
     }
 
     /**
@@ -1218,7 +1231,13 @@ public class MainActivity extends CommonActivity
     public void onBookClicked(long bookId) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookId);
 
-        mDisplayManager.displayBook(bookId, 0);
+        /* Attempt to avoid occasional rare IllegalStateException (state loss related).
+         * Consider removing BooksFragmentListener and using broadcasts for all actions instead.
+         */
+        // mDisplayManager.displayBook(bookId, 0);
+        Intent intent = new Intent(AppIntent.ACTION_OPEN_BOOK);
+        intent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 
 //    private void animateNotesAfterEdit(Set<Long> noteIds) {

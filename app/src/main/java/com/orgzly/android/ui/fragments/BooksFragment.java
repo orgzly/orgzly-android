@@ -549,8 +549,6 @@ public class BooksFragment extends ListFragment
 
     @Override
     public void onListItemClick(ListView listView, View v, int position, long id) {
-        super.onListItemClick(listView, v, position, id);
-
         if (mListener != null) {
             mListener.onBookClicked(id);
         }

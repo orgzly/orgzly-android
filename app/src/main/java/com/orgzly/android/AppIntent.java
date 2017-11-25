@@ -25,4 +25,5 @@ public class AppIntent {
     public static final String ACTION_CLEAR_DATABASE = "com.orgzly.intent.action.CLEAR_DATABASE";
 
     public static final String ACTION_OPEN_NOTE = "com.orgzly.intent.action.OPEN_NOTE";
+    public static final String ACTION_OPEN_BOOK = "com.orgzly.intent.action.OPEN_BOOK";
 }
