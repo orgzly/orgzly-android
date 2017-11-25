@@ -28,7 +28,48 @@
             android:layout_marginTop="@dimen/padding_8"
             android:text="@string/whats_new_follow"/>
 
-        
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.6.1-beta.1"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Follow internal links (using CUSTOM_ID and ID properties)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Display LED on reminder's notification"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support “.p” search operator"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support “ps” and “.ps” search operators (set priority)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="New preference to force UTF-8 when loading and saving notebooks"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fold/unfold notes and content by clicking on bullets"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix opening different note when clicking reminder's notification"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Various bug fixes and improvements"/>
+
+
+
+
         <TextView
             style="@style/WhatsNewVersion"
             android:text="1.6"
