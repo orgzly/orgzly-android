@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.BookUtils;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.ui.fragments.BooksFragment;
@@ -61,7 +62,7 @@ public class BookChooserActivity extends CommonActivity
 
             Intent launchIntent = new Intent(this, MainActivity.class);
             launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            launchIntent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
+            launchIntent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
 
             Intent shortcut = new Intent(Intent.ACTION_CREATE_SHORTCUT);
 

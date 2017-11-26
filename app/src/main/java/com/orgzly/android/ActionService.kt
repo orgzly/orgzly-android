@@ -35,10 +35,10 @@ class ActionService : IntentService(TAG) {
 
             AppIntent.ACTION_OPEN_NOTE ->
                 when {
-                    intent.hasExtra(EXTRA_NAME) && intent.hasExtra(EXTRA_VALUE) ->
+                    intent.hasExtra(AppIntent.EXTRA_PROPERTY_NAME) && intent.hasExtra(AppIntent.EXTRA_PROPERTY_VALUE) ->
                         openFirstNoteWithProperty(
-                                intent.getStringExtra(EXTRA_NAME),
-                                intent.getStringExtra(EXTRA_VALUE))
+                                intent.getStringExtra(AppIntent.EXTRA_PROPERTY_NAME),
+                                intent.getStringExtra(AppIntent.EXTRA_PROPERTY_VALUE))
                 }
 
         }
@@ -101,8 +101,5 @@ class ActionService : IntentService(TAG) {
 
         const val GETTING_STARTED_NOTEBOOK_NAME = "Getting Started with Orgzly"
         const val GETTING_STARTED_NOTEBOOK_RESOURCE_ID = R.raw.orgzly_getting_started
-
-        const val EXTRA_NAME = "name"
-        const val EXTRA_VALUE = "value"
     }
 }

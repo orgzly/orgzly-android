@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.ui.MainActivity;
 import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
@@ -183,8 +184,8 @@ public class ActivityUtils {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookId, noteId);
         Intent intent = Intent.makeRestartActivityTask(new ComponentName(context, MainActivity.class));
 
-        intent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
-        intent.putExtra(MainActivity.EXTRA_NOTE_ID, noteId);
+        intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
+        intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId);
 
         return PendingIntent.getActivity(
                 context,

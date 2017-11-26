@@ -13,13 +13,6 @@ import com.orgzly.android.reminders.SnoozeJob;
 public class NotificationActionService extends IntentService {
     public static final String TAG = NotificationActionService.class.getName();
 
-    public static final String EXTRA_NOTIFICATION_TAG = "notification_tag";
-    public static final String EXTRA_NOTIFICATION_ID = "notification_id";
-
-    public static final String EXTRA_NOTE_ID = "note_id";
-    public static final String EXTRA_NOTE_TIME_TYPE = "note_time_type";
-    public static final String EXTRA_SNOOZE_TIMESTAMP = "snooze_timestamp";
-
     public NotificationActionService() {
         super(TAG);
 
@@ -37,7 +30,7 @@ public class NotificationActionService extends IntentService {
         dismissNotification(this, intent);
 
         if (AppIntent.ACTION_NOTE_MARK_AS_DONE.equals(intent.getAction())) {
-            long noteId = intent.getLongExtra(EXTRA_NOTE_ID, 0);
+            long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0);
 
             if (noteId > 0) {
                 Shelf shelf = new Shelf(this);
@@ -48,9 +41,9 @@ public class NotificationActionService extends IntentService {
             }
 
         } else if (AppIntent.ACTION_REMINDER_SNOOZE_REQUEST.equals(intent.getAction())) {
-            long noteId = intent.getLongExtra(NotificationActionService.EXTRA_NOTE_ID, 0);
-            int noteTimeType = intent.getIntExtra(NotificationActionService.EXTRA_NOTE_TIME_TYPE, 0);
-            long timestamp = intent.getLongExtra(NotificationActionService.EXTRA_SNOOZE_TIMESTAMP, 0);
+            long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0);
+            int noteTimeType = intent.getIntExtra(AppIntent.EXTRA_NOTE_TIME_TYPE, 0);
+            long timestamp = intent.getLongExtra(AppIntent.EXTRA_SNOOZE_TIMESTAMP, 0);
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
             if (noteId > 0) {
                 SnoozeJob.scheduleJob(this, noteId, noteTimeType, timestamp);
@@ -66,8 +59,8 @@ public class NotificationActionService extends IntentService {
      * Cancel the notification here.
      */
     private void dismissNotification(Context context, Intent intent) {
-        int id = intent.getIntExtra(EXTRA_NOTIFICATION_ID, 0);
-        String tag = intent.getStringExtra(EXTRA_NOTIFICATION_TAG);
+        int id = intent.getIntExtra(AppIntent.EXTRA_NOTIFICATION_ID, 0);
+        String tag = intent.getStringExtra(AppIntent.EXTRA_NOTIFICATION_TAG);
 
         if (id > 0) {
             NotificationManager notificationManager =

@@ -31,8 +31,6 @@ import java.util.Map;
 public class SyncService extends Service {
     public static final String TAG = SyncService.class.getName();
 
-    public static final String EXTRA_AUTOMATIC = "automatic";
-
     private SyncStatus status = new SyncStatus();
 
     private Shelf shelf;
@@ -79,7 +77,7 @@ public class SyncService extends Service {
     }
 
     private boolean isTriggeredAutomatically(Intent intent) {
-        return intent != null && intent.getBooleanExtra(EXTRA_AUTOMATIC, false);
+        return intent != null && intent.getBooleanExtra(AppIntent.EXTRA_IS_AUTOMATIC, false);
     }
 
     private boolean isRunning() {

@@ -139,8 +139,8 @@ object OrgFormatter {
                         override fun onClick(widget: View) {
                             val intent = Intent(widget.context, ActionService::class.java)
                             intent.action = AppIntent.ACTION_OPEN_NOTE
-                            intent.putExtra(ActionService.EXTRA_NAME, propName)
-                            intent.putExtra(ActionService.EXTRA_VALUE, propValue)
+                            intent.putExtra(AppIntent.EXTRA_PROPERTY_NAME, propName)
+                            intent.putExtra(AppIntent.EXTRA_PROPERTY_VALUE, propValue)
                             widget.context.startService(intent)
                         }
                     }, m.start(), m.start() + link.length, FLAGS)

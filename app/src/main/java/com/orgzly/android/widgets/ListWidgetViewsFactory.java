@@ -12,6 +12,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Note;
 import com.orgzly.android.SearchQuery;
 import com.orgzly.android.prefs.AppPreferences;
@@ -95,14 +96,14 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
             setContent(row, note);
 
             final Intent openIntent = new Intent();
-            openIntent.putExtra(ListWidgetProvider.EXTRA_CLICK_TYPE, ListWidgetProvider.OPEN_CLICK_TYPE);
-            openIntent.putExtra(ListWidgetProvider.EXTRA_NOTE_ID, note.getId());
-            openIntent.putExtra(ListWidgetProvider.EXTRA_BOOK_ID, note.getPosition().getBookId());
+            openIntent.putExtra(AppIntent.EXTRA_CLICK_TYPE, ListWidgetProvider.OPEN_CLICK_TYPE);
+            openIntent.putExtra(AppIntent.EXTRA_NOTE_ID, note.getId());
+            openIntent.putExtra(AppIntent.EXTRA_BOOK_ID, note.getPosition().getBookId());
             row.setOnClickFillInIntent(R.id.item_list_widget_layout, openIntent);
 
             final Intent doneIntent = new Intent();
-            doneIntent.putExtra(ListWidgetProvider.EXTRA_CLICK_TYPE, ListWidgetProvider.DONE_CLICK_TYPE);
-            doneIntent.putExtra(ListWidgetProvider.EXTRA_NOTE_ID, note.getId());
+            doneIntent.putExtra(AppIntent.EXTRA_CLICK_TYPE, ListWidgetProvider.DONE_CLICK_TYPE);
+            doneIntent.putExtra(AppIntent.EXTRA_NOTE_ID, note.getId());
             row.setOnClickFillInIntent(R.id.item_list_widget_done, doneIntent);
         }
 

@@ -30,7 +30,6 @@ import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.sync.BookNamesake;
 import com.orgzly.android.sync.BookSyncStatus;
 import com.orgzly.android.sync.SyncService;
-import com.orgzly.android.ui.MainActivity;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.CircularArrayList;
@@ -782,7 +781,7 @@ public class Shelf {
 
         Intent intent = new Intent(mContext, SyncService.class);
         intent.setAction(AppIntent.ACTION_SYNC_START);
-        intent.putExtra(SyncService.EXTRA_AUTOMATIC, true);
+        intent.putExtra(AppIntent.EXTRA_IS_AUTOMATIC, true);
 
         mContext.startService(intent);
     }
@@ -913,8 +912,8 @@ public class Shelf {
             long bookId = notes.get(0)[1];
 
             intent = new Intent(AppIntent.ACTION_OPEN_NOTE);
-            intent.putExtra(MainActivity.EXTRA_NOTE_ID, noteId);
-            intent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
+            intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId);
+            intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
 
         } else {
             String msg = mContext.getString(R.string.no_such_link_target, propName, propValue);

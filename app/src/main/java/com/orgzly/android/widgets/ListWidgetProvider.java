@@ -38,10 +38,6 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     public static final int OPEN_CLICK_TYPE = 1;
     public static final int DONE_CLICK_TYPE = 2;
-    public static final String EXTRA_CLICK_TYPE = "click_type";
-    public static final String EXTRA_NOTE_ID = "note_id";
-    public static final String EXTRA_BOOK_ID = "book_id";
-    public static final String EXTRA_FILTER_ID = "filter_id";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -59,7 +55,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
         Intent serviceIntent = new Intent(context, ListWidgetService.class);
         serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        serviceIntent.putExtra(ListWidgetService.EXTRA_QUERY_STRING, filter.getQuery());
+        serviceIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, filter.getQuery());
         serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
         // Tell ListView where to get the data from
@@ -85,7 +81,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
         /* open query on click on orgzly logo */
         Intent openIntent = Intent.makeRestartActivityTask(new ComponentName(context, MainActivity.class));
-        openIntent.putExtra(MainActivity.EXTRA_QUERY_STRING, filter.getQuery());
+        openIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, filter.getQuery());
         serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
         remoteViews.setOnClickPendingIntent(R.id.list_widget_header_icon, PendingIntent.getActivity(context, 0, openIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
@@ -184,7 +180,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     private static void setFilterFromIntent(Context context, Intent intent) {
         int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        long filterId = intent.getLongExtra(EXTRA_FILTER_ID, 0);
+        long filterId = intent.getLongExtra(AppIntent.EXTRA_SAVED_SEARCH_ID, 0);
 
         setFilter(context, appWidgetId, filterId);
 
@@ -220,7 +216,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
     private void setNoteDone(Context context, Intent intent) {
         final Shelf shelf = new Shelf(context);
 
-        final long noteId = intent.getLongExtra(ListWidgetProvider.EXTRA_NOTE_ID, 0L);
+        final long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0L);
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
@@ -231,8 +227,8 @@ public class ListWidgetProvider extends AppWidgetProvider {
     }
 
     private void openNote(Context context, Intent intent) {
-        long noteId = intent.getLongExtra(ListWidgetProvider.EXTRA_NOTE_ID, 0L);
-        long bookId = intent.getLongExtra(ListWidgetProvider.EXTRA_BOOK_ID, 0L);
+        long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0L);
+        long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0L);
 
         PendingIntent pi = ActivityUtils.mainActivityPendingIntent(context, bookId, noteId);
         try {
@@ -256,7 +252,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
             setFilterFromIntent(context, intent);
 
         } else if (AppIntent.ACTION_CLICK_LIST_WIDGET.equals(intent.getAction())) {
-            switch (intent.getIntExtra(EXTRA_CLICK_TYPE, -1)) {
+            switch (intent.getIntExtra(AppIntent.EXTRA_CLICK_TYPE, -1)) {
                 case OPEN_CLICK_TYPE:
                     openNote(context, intent);
                     break;

@@ -96,10 +96,6 @@ public class MainActivity extends CommonActivity
     private static final int DIALOG_NEW_BOOK = 1;
     private static final int DIALOG_IMPORT_BOOK = 5;
 
-    public static final String EXTRA_BOOK_ID = "book_id";
-    public static final String EXTRA_NOTE_ID = "note_id";
-    public static final String EXTRA_QUERY_STRING = "query_string";
-
     public SyncFragment mSyncFragment;
 
     private DrawerLayout mDrawerLayout;
@@ -130,14 +126,14 @@ public class MainActivity extends CommonActivity
                 String action = intent.getAction();
 
                 if (AppIntent.ACTION_OPEN_BOOK.equals(action)) {
-                    long bookId = intent.getLongExtra(EXTRA_BOOK_ID, 0);
+                    long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0);
                     if (mDisplayManager != null) {
                         mDisplayManager.displayBook(bookId, 0);
                     }
 
                 } else if (AppIntent.ACTION_OPEN_NOTE.equals(action)) {
-                    long bookId = intent.getLongExtra(EXTRA_BOOK_ID, 0);
-                    long noteId = intent.getLongExtra(EXTRA_NOTE_ID, 0);
+                    long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0);
+                    long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0);
 
                     if (mDisplayManager != null) {
                         mDisplayManager.displayNote(bookId, noteId);
@@ -175,9 +171,9 @@ public class MainActivity extends CommonActivity
         mDisplayManager = new DisplayManager(getSupportFragmentManager());
 
         if (savedInstanceState == null) { // Not a configuration change.
-            long bookId = getIntent().getLongExtra(EXTRA_BOOK_ID, 0L);
-            long noteId = getIntent().getLongExtra(EXTRA_NOTE_ID, 0L);
-            String queryString = getIntent().getStringExtra(EXTRA_QUERY_STRING);
+            long bookId = getIntent().getLongExtra(AppIntent.EXTRA_BOOK_ID, 0L);
+            long noteId = getIntent().getLongExtra(AppIntent.EXTRA_NOTE_ID, 0L);
+            String queryString = getIntent().getStringExtra(AppIntent.EXTRA_QUERY_STRING);
 
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookId, noteId, queryString);
 
@@ -1236,7 +1232,7 @@ public class MainActivity extends CommonActivity
          */
         // mDisplayManager.displayBook(bookId, 0);
         Intent intent = new Intent(AppIntent.ACTION_OPEN_BOOK);
-        intent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
+        intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 

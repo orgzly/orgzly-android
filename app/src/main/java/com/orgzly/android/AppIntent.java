@@ -29,5 +29,17 @@ public class AppIntent {
 
     public static final String ACTION_DISPLAY_MESSAGE = "com.orgzly.intent.action.DISPLAY_MESSAGE";
 
-    public static final String EXTRA_MESSAGE= "com.orgzly.intent.extra.MESSAGE";
+    public static final String EXTRA_MESSAGE = "com.orgzly.intent.extra.MESSAGE";
+    public static final String EXTRA_BOOK_ID = "com.orgzly.intent.extra.BOOK_ID";
+    public static final String EXTRA_NOTE_ID = "com.orgzly.intent.extra.NOTE_ID";
+    public static final String EXTRA_QUERY_STRING = "com.orgzly.intent.extra.QUERY_STRING";
+    public static final String EXTRA_PROPERTY_NAME  = "com.orgzly.intent.extra.PROPERTY_NAME";
+    public static final String EXTRA_PROPERTY_VALUE  = "com.orgzly.intent.extra.PROPERTY_VALUE";
+    public static final String EXTRA_NOTIFICATION_TAG = "com.orgzly.intent.extra.NOTIFICATION_TAG";
+    public static final String EXTRA_NOTIFICATION_ID = "com.orgzly.intent.extra.NOTIFICATION_ID";
+    public static final String EXTRA_NOTE_TIME_TYPE = "com.orgzly.intent.extra.NOTE_TIME_TYPE";
+    public static final String EXTRA_SNOOZE_TIMESTAMP = "com.orgzly.intent.extra.SNOOZE_TIMESTAMP";
+    public static final String EXTRA_CLICK_TYPE = "com.orgzly.intent.extra.CLICK_TYPE";
+    public static final String EXTRA_SAVED_SEARCH_ID = "com.orgzly.intent.extra.SAVED_SEARCH_ID";
+    public static final String EXTRA_IS_AUTOMATIC = "com.orgzly.intent.extra.IS_AUTOMATIC";
 }
