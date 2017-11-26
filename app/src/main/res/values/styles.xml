@@ -103,7 +103,7 @@
         <item name="oic_drawer_notebooks">@drawable/ic_library_books_black_24dp</item>
         <item name="oic_drawer_settings">@drawable/ic_settings_black_24dp</item>
         <item name="oic_drawer_item_modified">@drawable/ic_sync_black_18dp</item>
-        <item name="oic_drawer_agenda">@drawable/ic_agenda_black_24dp</item>
+        <item name="oic_drawer_agenda">@drawable/ic_event_black_24dp</item>
 
         <item name="oic_above_heads_action_mode">@drawable/cic_new_above_black_24dp</item>
         <item name="oic_under_heads_action_mode">@drawable/cic_new_under_black_24dp</item>
@@ -275,7 +275,7 @@
         <item name="oic_drawer_notebooks">@drawable/ic_library_books_white_24dp</item>
         <item name="oic_drawer_settings">@drawable/ic_settings_white_24dp</item>
         <item name="oic_drawer_item_modified">@drawable/ic_sync_white_18dp</item>
-        <item name="oic_drawer_agenda">@drawable/ic_agenda_white_24dp</item>
+        <item name="oic_drawer_agenda">@drawable/ic_event_white_24dp</item>
 
         <item name="oic_above_heads_action_mode">@drawable/cic_new_above_white_24dp</item>
         <item name="oic_under_heads_action_mode">@drawable/cic_new_under_white_24dp</item>
