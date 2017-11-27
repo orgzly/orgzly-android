@@ -104,6 +104,10 @@
             android:theme="@style/Theme.AppCompat.Light.Dialog"
             android:excludeFromRecents="true"/>
 
+        <activity
+            android:name=".android.Shortcuts$SyncTrampolineActivity"
+            android:taskAffinity="" />
+
         <receiver android:name="com.orgzly.android.widgets.ListWidgetProvider"
             android:label="@string/list_widget_name">
             <intent-filter>
