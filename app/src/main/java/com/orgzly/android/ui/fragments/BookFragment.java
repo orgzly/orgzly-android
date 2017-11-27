@@ -36,6 +36,7 @@ import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.BooksClient;
+import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.ui.ActionModeListener;
 import com.orgzly.android.ui.Fab;
 import com.orgzly.android.ui.HeadsListViewAdapter;
@@ -562,7 +563,7 @@ public class BookFragment extends NoteListFragment
                         null,
                         null,
                         null,
-                        ProviderContract.Notes.QueryParam.LFT);
+                        DbNoteView.LFT);
 
             default:
                 throw new IllegalArgumentException("Unknown loader id " + id);
@@ -655,7 +656,7 @@ public class BookFragment extends NoteListFragment
                 mPrefaceText.setEllipsize(null);
             }
 
-            mPrefaceText.setText(OrgFormatter.parse(getContext(), mBook.getPreface()));
+            mPrefaceText.setText(OrgFormatter.INSTANCE.parse(getContext(), mBook.getPreface()));
 
         } else {
             // Remove header

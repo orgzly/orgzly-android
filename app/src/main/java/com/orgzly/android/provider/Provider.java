@@ -81,6 +81,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.orgzly.android.provider.GenericDatabaseUtils.field;
+import static com.orgzly.android.provider.GenericDatabaseUtils.join;
 
 public class Provider extends ContentProvider {
     private static final String TAG = Provider.class.getName();
@@ -185,6 +186,32 @@ public class Provider extends ContentProvider {
                 selectionArgs = null;
                 break;
 
+            case ProviderUris.NOTES_WITH_PROPERTY:
+                String propName = uri.getQueryParameter(ProviderContract.Notes.Param.PROPERTY_NAME);
+                String propValue = uri.getQueryParameter(ProviderContract.Notes.Param.PROPERTY_VALUE);
+
+                selection =
+                        field("tpropertyname", DbPropertyName.NAME) + " = ? AND " +
+                                field("tpropertyvalue", DbPropertyValue.VALUE) + " = ? AND " +
+                                field("tnotes", DbNote._ID) + " IS NOT NULL";
+
+                selectionArgs = new String[] { propName, propValue };
+
+                sortOrder = field("tnotes", DbNote.LFT);
+
+                table = DbNoteProperty.TABLE + " " +
+                        join(DbNote.TABLE, "tnotes", DbNote._ID, DbNoteProperty.TABLE, DbNoteProperty.NOTE_ID) +
+                        join(DbProperty.TABLE, "tproperties", DbProperty._ID, DbNoteProperty.TABLE, DbNoteProperty.PROPERTY_ID) +
+                        join(DbPropertyName.TABLE, "tpropertyname", DbPropertyName._ID, "tproperties", DbProperty.NAME_ID) +
+                        join(DbPropertyValue.TABLE, "tpropertyvalue", DbPropertyValue._ID, "tproperties", DbProperty.VALUE_ID);
+
+                projection = new String[] {
+                        field("tnotes", DbNote._ID),
+                        field("tnotes", DbNote.BOOK_ID),
+                };
+
+                break;
+
             case ProviderUris.NOTES_ID_PROPERTIES:
                 long noteId = Long.parseLong(uri.getPathSegments().get(1));
 
@@ -194,9 +221,9 @@ public class Provider extends ContentProvider {
                 sortOrder = DbNoteProperty.POSITION;
 
                 table = DbNoteProperty.TABLE + " " +
-                        GenericDatabaseUtils.join(DbProperty.TABLE, "tproperties", DbProperty._ID, DbNoteProperty.TABLE, DbNoteProperty.PROPERTY_ID) +
-                        GenericDatabaseUtils.join(DbPropertyName.TABLE, "tpropertyname", DbPropertyName._ID, "tproperties", DbProperty.NAME_ID) +
-                        GenericDatabaseUtils.join(DbPropertyValue.TABLE, "tpropertyvalue", DbPropertyValue._ID, "tproperties", DbProperty.VALUE_ID);
+                        join(DbProperty.TABLE, "tproperties", DbProperty._ID, DbNoteProperty.TABLE, DbNoteProperty.PROPERTY_ID) +
+                        join(DbPropertyName.TABLE, "tpropertyname", DbPropertyName._ID, "tproperties", DbProperty.NAME_ID) +
+                        join(DbPropertyValue.TABLE, "tpropertyvalue", DbPropertyValue._ID, "tproperties", DbProperty.VALUE_ID);
 
                 projection = new String[] {
                         "tpropertyname." + DbPropertyName.NAME,
@@ -245,14 +272,14 @@ public class Provider extends ContentProvider {
                 table = null;
 
                 String query = "SELECT " +
-                               DbTimeView.NOTE_ID + ", " +
-                               DbTimeView.BOOK_ID + ", " +
-                               DbTimeView.BOOK_NAME + ", " +
-                               DbTimeView.NOTE_STATE + ", " +
-                               DbTimeView.NOTE_TITLE + ", " +
-                               DbTimeView.TIME_TYPE + ", " +
-                               DbTimeView.ORG_TIMESTAMP_STRING +
-                               " FROM " + DbTimeView.VIEW_NAME;
+                        DbTimeView.NOTE_ID + ", " +
+                        DbTimeView.BOOK_ID + ", " +
+                        DbTimeView.BOOK_NAME + ", " +
+                        DbTimeView.NOTE_STATE + ", " +
+                        DbTimeView.NOTE_TITLE + ", " +
+                        DbTimeView.TIME_TYPE + ", " +
+                        DbTimeView.ORG_TIMESTAMP_STRING +
+                        " FROM " + DbTimeView.VIEW_NAME;
 
                 cursor = db.rawQuery(query, null);
 
@@ -266,7 +293,8 @@ public class Provider extends ContentProvider {
             cursor = db.query(table, projection, selection, selectionArgs, null, null, sortOrder);
         }
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Cursor count: " + cursor.getCount() + " for " + table + " " + selection + " " + selectionArgs);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Cursor count: " + cursor.getCount() + " for " +
+                table + " " + selection + " " + (selectionArgs != null ? TextUtils.join(",", selectionArgs) : ""));
 
         cursor.setNotificationUri(getContext().getContentResolver(), ProviderContract.AUTHORITY_URI);
 
@@ -302,8 +330,8 @@ public class Provider extends ContentProvider {
              */
             for (String tag: group.getTags()) {
                 selection.append(" AND (")
-                    .append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ? OR ")
-                    .append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(" LIKE ?)");
+                        .append(DbNoteView.TAGS).append(" LIKE ? OR ")
+                        .append(DbNoteView.INHERITED_TAGS).append(" LIKE ?)");
 
                 selectionArgs.add("%" + tag + "%");
                 selectionArgs.add("%" + tag + "%");
@@ -311,21 +339,21 @@ public class Provider extends ContentProvider {
 
             for (String tag: group.getNotTags()) {
                 selection.append(" AND (")
-                    .append("COALESCE(").append(ProviderContract.Notes.QueryParam.TAGS).append(", '')").append(" NOT LIKE ? AND ")
-                    .append("COALESCE(").append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(", '')").append(" NOT LIKE ?)");
+                        .append("COALESCE(").append(DbNoteView.TAGS).append(", '')").append(" NOT LIKE ? AND ")
+                        .append("COALESCE(").append(DbNoteView.INHERITED_TAGS).append(", '')").append(" NOT LIKE ?)");
 
                 selectionArgs.add("%" + tag + "%");
                 selectionArgs.add("%" + tag + "%");
             }
 
             if (group.hasBookName()) {
-                selection.append(" AND ").append(ProviderContract.Notes.QueryParam.BOOK_NAME).append(" = ?");
+                selection.append(" AND ").append(DbNoteView.BOOK_NAME).append(" = ?");
                 selectionArgs.add(group.getBookName());
             }
 
             if (group.hasNotBookName()) {
                 for (String name: group.getNotBookName()) {
-                    selection.append(" AND ").append(ProviderContract.Notes.QueryParam.BOOK_NAME).append(" != ?");
+                    selection.append(" AND ").append(DbNoteView.BOOK_NAME).append(" != ?");
                     selectionArgs.add(name);
                 }
             }
@@ -338,7 +366,7 @@ public class Provider extends ContentProvider {
                     searchQueryStates(selection, selectionArgs, "IN", AppPreferences.doneKeywordsSet(getContext()));
 
                 } else if ("none".equalsIgnoreCase(group.getStateType())) {
-                    selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') = ''");
+                    selection.append(" AND COALESCE(" + DbNoteView.STATE + ", '') = ''");
                 }
             }
 
@@ -350,56 +378,67 @@ public class Provider extends ContentProvider {
                     searchQueryStates(selection, selectionArgs, "NOT IN", AppPreferences.doneKeywordsSet(getContext()));
 
                 } else if ("none".equalsIgnoreCase(group.getNotStateType())) {
-                    selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') != ''");
+                    selection.append(" AND COALESCE(" + DbNoteView.STATE + ", '') != ''");
                 }
             }
 
             if (group.hasState()) {
-                selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') = ?");
+                selection.append(" AND COALESCE(" + DbNoteView.STATE + ", '') = ?");
                 selectionArgs.add(group.getState());
             }
 
             if (group.hasNotState()) {
                 for (String state: group.getNotState()) {
-                    selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') != ?");
+                    selection.append(" AND COALESCE(" + DbNoteView.STATE + ", '') != ?");
                     selectionArgs.add(state);
                 }
             }
 
             for (String token: group.getTextSearch()) {
-                selection.append(" AND (").append(ProviderContract.Notes.QueryParam.TITLE).append(" LIKE ?");
+                selection.append(" AND (").append(DbNoteView.TITLE).append(" LIKE ?");
                 selectionArgs.add("%" + token + "%");
-                selection.append(" OR ").append(ProviderContract.Notes.QueryParam.CONTENT).append(" LIKE ?");
+                selection.append(" OR ").append(DbNoteView.CONTENT).append(" LIKE ?");
                 selectionArgs.add("%" + token + "%");
-                selection.append(" OR ").append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ?");
+                selection.append(" OR ").append(DbNoteView.TAGS).append(" LIKE ?");
                 selectionArgs.add("%" + token + "%");
                 selection.append(")");
             }
 
             if (group.hasScheduled()) {
-                appendBeforeInterval(selection, ProviderContract.Notes.QueryParam.SCHEDULED_TIME_TIMESTAMP, group.getScheduled());
+                appendBeforeInterval(selection, DbNoteView.SCHEDULED_TIME_TIMESTAMP, group.getScheduled());
             }
 
             if (group.hasDeadline()) {
-                appendBeforeInterval(selection, ProviderContract.Notes.QueryParam.DEADLINE_TIME_TIMESTAMP, group.getDeadline());
+                appendBeforeInterval(selection, DbNoteView.DEADLINE_TIME_TIMESTAMP, group.getDeadline());
             }
 
             /*
              * Handle empty string and NULL - use default priority in those cases.
-             * lower( coalesce( nullif(PRIORITY, ''), DEFAULT) )
              */
             if (group.hasPriority()) {
                 String defaultPriority = AppPreferences.defaultPriority(getContext());
-                selection.append(" AND lower(coalesce(nullif(" + ProviderContract.Notes.QueryParam.PRIORITY + ", ''), ?)) = ?");
+                selection.append(" AND lower(coalesce(nullif(" + DbNoteView.PRIORITY + ", ''), ?)) = ?");
                 selectionArgs.add(defaultPriority);
                 selectionArgs.add(group.getPriority());
             }
-
             if (group.hasNotPriority()) {
                 String defaultPriority = AppPreferences.defaultPriority(getContext());
-                selection.append(" AND lower(coalesce(nullif(" + ProviderContract.Notes.QueryParam.PRIORITY + ", ''), ?)) != ?");
+                selection.append(" AND lower(coalesce(nullif(" + DbNoteView.PRIORITY + ", ''), ?)) != ?");
                 selectionArgs.add(defaultPriority);
                 selectionArgs.add(group.getNotPriority());
+            }
+
+            /*
+             * Just check for note's *set* priority, don't use default if there is none.
+             */
+            if (group.hasSetPriority()) {
+                selection.append(" AND lower(coalesce(" + DbNoteView.PRIORITY + ", '')) = ?");
+                selectionArgs.add(group.getSetPriority());
+            }
+
+            if (group.hasNotSetPriority()) {
+                selection.append(" AND lower(coalesce(" + DbNoteView.PRIORITY + ", '')) != ?");
+                selectionArgs.add(group.getNotSetPriority());
             }
 
             if (group.hasNoteTags()) {
@@ -409,7 +448,7 @@ public class Provider extends ContentProvider {
                  * Tags must be kept separately so we can match them exactly.
                  */
                 for (String tag: group.getNoteTags()) {
-                    selection.append(" AND ").append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ?");
+                    selection.append(" AND ").append(DbNoteView.TAGS).append(" LIKE ?");
                     selectionArgs.add("%" + tag + "%");
                 }
             }
@@ -424,7 +463,7 @@ public class Provider extends ContentProvider {
     }
 
     private void searchQueryStates(StringBuilder selection, List<String> selectionArgs, String in, Set<String> states) {
-        selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') ")
+        selection.append(" AND COALESCE(" + DbNoteView.STATE + ", '') ")
                 .append(in).append(" (")
                 .append(TextUtils.join(", ", Collections.nCopies(states.size(), "?")))
                 .append(")");
@@ -694,33 +733,33 @@ public class Provider extends ContentProvider {
         long id = db.insertOrThrow(DbNote.TABLE, null, values);
 
         db.execSQL("INSERT INTO " + DbNoteAncestor.TABLE +
-                   " (" + DbNoteAncestor.BOOK_ID + ", " +
-                   DbNoteAncestor.NOTE_ID +
-                   ", " + DbNoteAncestor.ANCESTOR_NOTE_ID + ") " +
-                   "SELECT " + field(DbNote.TABLE, DbNote.BOOK_ID) + ", " +
-                   field(DbNote.TABLE, DbNote._ID) + ", " +
-                   field("a", DbNote._ID) +
-                   " FROM " + DbNote.TABLE +
-                   " JOIN " + DbNote.TABLE + " a ON (" +
-                   field(DbNote.TABLE, DbNote.BOOK_ID) + " = " + field("a", DbNote.BOOK_ID) + " AND " +
-                   field("a", DbNote.LFT) + " < " + field(DbNote.TABLE, DbNote.LFT) + " AND " +
-                   field(DbNote.TABLE, DbNote.RGT) + " < " + field("a", DbNote.RGT) + ")" +
-                   " WHERE " + field(DbNote.TABLE, DbNote._ID) + " = " + id + " AND " + field("a", DbNote.LEVEL) + " > 0");
+                " (" + DbNoteAncestor.BOOK_ID + ", " +
+                DbNoteAncestor.NOTE_ID +
+                ", " + DbNoteAncestor.ANCESTOR_NOTE_ID + ") " +
+                "SELECT " + field(DbNote.TABLE, DbNote.BOOK_ID) + ", " +
+                field(DbNote.TABLE, DbNote._ID) + ", " +
+                field("a", DbNote._ID) +
+                " FROM " + DbNote.TABLE +
+                " JOIN " + DbNote.TABLE + " a ON (" +
+                field(DbNote.TABLE, DbNote.BOOK_ID) + " = " + field("a", DbNote.BOOK_ID) + " AND " +
+                field("a", DbNote.LFT) + " < " + field(DbNote.TABLE, DbNote.LFT) + " AND " +
+                field(DbNote.TABLE, DbNote.RGT) + " < " + field("a", DbNote.RGT) + ")" +
+                " WHERE " + field(DbNote.TABLE, DbNote._ID) + " = " + id + " AND " + field("a", DbNote.LEVEL) + " > 0");
 
         return ContentUris.withAppendedId(uri, id);
     }
 
     private void incrementDescendantsCountForAncestors(SQLiteDatabase db, long bookId, long lft, long rgt) {
         db.execSQL("UPDATE " + DbNote.TABLE +
-                   " SET " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " = " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " + 1 " +
-                   "WHERE " + DatabaseUtils.whereAncestors(bookId, lft, rgt));
+                " SET " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " = " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " + 1 " +
+                "WHERE " + DatabaseUtils.whereAncestors(bookId, lft, rgt));
     }
 
     private int getMaxRgt(SQLiteDatabase db, long bookId) {
         Cursor cursor = db.query(
                 DbNote.TABLE,
-                new String[] { "MAX(" + ProviderContract.Notes.QueryParam.RGT + ")" },
-                ProviderContract.Notes.QueryParam.BOOK_ID + "= " + bookId + " AND " + ProviderContract.Notes.QueryParam.IS_CUT + " = 0",
+                new String[] { "MAX(" + DbNoteView.RGT + ")" },
+                DbNoteView.BOOK_ID + "= " + bookId + " AND " + DbNoteView.IS_CUT + " = 0",
                 null,
                 null,
                 null,
@@ -743,7 +782,7 @@ public class Provider extends ContentProvider {
         Cursor cursor = db.query(
                 DbNote.TABLE,
                 DatabaseUtils.PROJECTION_FOR_ID,
-                ProviderContract.Notes.QueryParam.BOOK_ID + "= " + bookId + " AND " + ProviderContract.Notes.QueryParam.LEVEL + " = 0",
+                DbNoteView.BOOK_ID + "= " + bookId + " AND " + DbNoteView.LEVEL + " = 0",
                 null,
                 null,
                 null,
@@ -791,7 +830,7 @@ public class Provider extends ContentProvider {
 
     private static final String DELETE_CURRENT_VERSIONED_ROOKS_FOR_ROOK_ID =
             "DELETE FROM " + DbCurrentVersionedRook.TABLE +
-            " WHERE " + DbCurrentVersionedRook.VERSIONED_ROOK_ID + " IN (" + VERSIONED_ROOK_IDS_FOR_ROOK_ID + ")";
+                    " WHERE " + DbCurrentVersionedRook.VERSIONED_ROOK_ID + " IN (" + VERSIONED_ROOK_IDS_FOR_ROOK_ID + ")";
 
     private Uri insertCurrentRook(SQLiteDatabase db, Uri uri, ContentValues contentValues) {
         String repoUrl = contentValues.getAsString(ProviderContract.CurrentRooks.Param.REPO_URL);
@@ -980,8 +1019,8 @@ public class Provider extends ContentProvider {
     private int removeBooksLinksForRepo(SQLiteDatabase db, String repoId) {
         /* Rooks which use passed repo. */
         String rookIds = "SELECT DISTINCT " + DbRook._ID +
-                         " FROM " + DbRook.TABLE +
-                         " WHERE " + DbRook.REPO_ID + " = " + repoId;
+                " FROM " + DbRook.TABLE +
+                " WHERE " + DbRook.REPO_ID + " = " + repoId;
 
         return db.delete(DbBookLink.TABLE, DbBookLink.ROOK_ID + " IN (" + rookIds + ")", null);
     }
@@ -990,7 +1029,7 @@ public class Provider extends ContentProvider {
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, uri.toString(), selection, selectionArgs);
 
-        /* Only used by tests. Changing database name so we don't overwrite user's real data. */
+        /* Used by tests. Open a different database so we don't overwrite user's real data. */
         if (uris.matcher.match(uri) == ProviderUris.DB_SWITCH) {
             reopenDatabaseWithDifferentName();
             return 1;
@@ -1020,10 +1059,14 @@ public class Provider extends ContentProvider {
         return result;
     }
 
+    /**
+     * Re-open database with a different name (for tests), unless already using it.
+     */
     private void reopenDatabaseWithDifferentName() {
-        mOpenHelper.close();
-
-        mOpenHelper = new Database(getContext(), DATABASE_NAME_FOR_TESTS);
+        if (!DATABASE_NAME_FOR_TESTS.equals(mOpenHelper.getDatabaseName())) {
+            mOpenHelper.close();
+            mOpenHelper = new Database(getContext(), DATABASE_NAME_FOR_TESTS);
+        }
     }
 
     private int updateUnderTransaction(SQLiteDatabase db, Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
@@ -1165,13 +1208,13 @@ public class Provider extends ContentProvider {
 
         /* Select only notes which don't already have the target state. */
         String notesSelection = DbNote._ID + " IN (" + ids + ") AND (" +
-                                DbNoteView.STATE + " IS NULL OR " + DbNoteView.STATE + " != ?)";
+                DbNoteView.STATE + " IS NULL OR " + DbNoteView.STATE + " != ?)";
 
         String[] selectionArgs = { targetState };
 
         /* Select notebooks which will be affected. */
         String booksSelection = DbBook._ID + " IN (SELECT DISTINCT " +
-                                DbNote.BOOK_ID + " FROM " + DbNote.TABLE + " WHERE " + notesSelection + ")";
+                DbNote.BOOK_ID + " FROM " + DbNote.TABLE + " WHERE " + notesSelection + ")";
 
         /* Notebooks must be updated before notes, because selection checks
          * for notes what will be affected.
@@ -1375,7 +1418,7 @@ public class Provider extends ContentProvider {
 
         try {
             /*
-             * Determine encoding to use -- detect of force it.
+             * Determine encoding to use -- detect or force it.
              */
             String usedEncoding;
             String detectedEncoding = null;
@@ -1586,7 +1629,7 @@ public class Provider extends ContentProvider {
 
         if (BuildConfig.LOG_DEBUG)
             LogUtils.d(TAG, bookName + ": Parsing done in " +
-                            (System.currentTimeMillis() - startedAt) + " ms");
+                    (System.currentTimeMillis() - startedAt) + " ms");
 
         if (rookUrl != null) {
             updateOrInsertBookLink(db, bookId, repoUrl, rookUrl);

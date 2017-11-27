@@ -158,6 +158,7 @@
     <string name="pref_value_book_details_sync_url" translatable="false">book_details_sync_url</string>
     <string name="pref_value_book_details_sync_mtime" translatable="false">book_details_sync_mtime</string>
     <string name="pref_value_book_details_sync_revision" translatable="false">book_details_sync_revision</string>
+    <string name="pref_value_book_details_encoding_selected" translatable="false">book_details_encoding_selected</string>
     <string name="pref_value_book_details_encoding_detected" translatable="false">book_details_encoding_detected</string>
     <string name="pref_value_book_details_encoding_used" translatable="false">book_details_encoding_used</string>
     <string name="pref_value_book_details_last_action" translatable="false">book_details_last_action</string>
@@ -169,6 +170,7 @@
         <item>@string/displayed_book_details_sync_url</item>
         <item>@string/displayed_book_details_sync_mtime</item>
         <item>@string/displayed_book_details_sync_revision</item>
+        <item>@string/displayed_book_details_selected_encoding</item>
         <item>@string/displayed_book_details_detected_encoding</item>
         <item>@string/displayed_book_details_used_encoding</item>
         <item>@string/displayed_book_details_last_action</item>
@@ -180,6 +182,7 @@
         <item>@string/pref_value_book_details_sync_url</item>
         <item>@string/pref_value_book_details_sync_mtime</item>
         <item>@string/pref_value_book_details_sync_revision</item>
+        <item>@string/pref_value_book_details_encoding_selected</item>
         <item>@string/pref_value_book_details_encoding_detected</item>
         <item>@string/pref_value_book_details_encoding_used</item>
         <item>@string/pref_value_book_details_last_action</item>
@@ -200,6 +203,9 @@
     <string name="pref_key_share_notebook" translatable="false">pref_key_share_notebook</string>
     <string name="pref_default_share_notebook" translatable="false">@string/default_share_notebook</string>
 
+    <string name="pref_key_force_utf8" translatable="false">pref_key_force_utf8</string>
+    <bool name="pref_default_force_utf8" translatable="false">false</bool>
+
     <string name="pref_key_new_note_notification" translatable="false">pref_key_new_note_notification</string>
     <bool name="pref_default_value_new_note_notification" translatable="false">false</bool>
 
@@ -208,6 +214,9 @@
 
     <string name="pref_key_reminders_vibrate" translatable="false">pref_key_reminders_vibrate</string>
     <bool name="pref_default_value_reminders_vibrate" translatable="false">false</bool>
+
+    <string name="pref_key_reminders_led" translatable="false">pref_key_reminders_led</string>
+    <bool name="pref_default_value_reminders_led" translatable="false">true</bool>
 
     <!-- Auto-sync -->
 

@@ -136,6 +136,7 @@
     <string name="reload_getting_started">Import “Getting Started with Orgzly”</string>
     <string name="reload_getting_started_summary">Import the latest version of the notebook</string>
     <string name="getting_started_loaded">Notebook “Getting Started with Orgzly” loaded</string>
+    <string name="notebook_loaded">Notebook loaded</string>
 
     <string name="fragment_note_does_not_exist">This note does not exist any more.</string>
     <string name="fragment_filter_does_not_exist">This search does not exist any more.</string>
@@ -316,7 +317,7 @@
 
     <string name="repeat_dialog_title">Repeat</string>
 
-    <string name="repeater_explained">After task is marked complete, this repeater will be applied to update the time</string>
+    <string name="repeater_explained">After task is marked complete, repeater will be shift the time</string>
 
     <string name="repeater_description_cumulate">Add period to time</string> <!-- + -->
     <string name="repeater_description_catch_up">Keep adding period to time until time reaches future</string> <!-- ++ -->
@@ -330,6 +331,7 @@
     <string name="displayed_book_details_sync_url">Sync URL</string>
     <string name="displayed_book_details_sync_mtime">Sync modification time</string>
     <string name="displayed_book_details_sync_revision">Sync revision</string>
+    <string name="displayed_book_details_selected_encoding">Selected encoding</string>
     <string name="displayed_book_details_detected_encoding">Detected encoding</string>
     <string name="displayed_book_details_used_encoding">Used encoding</string>
     <string name="displayed_book_details_last_action">Last action</string>
@@ -385,7 +387,8 @@
     <string name="pref_title_summary_reminders_for_deadline_times">Display notification for notes with deadline time</string>
 
     <string name="pref_title_reminders_sound">Sound</string>
-    <string name="pref_title_reminders_vibrate">Vibrate</string>
+    <string name="pref_title_reminders_vibrate">Vibration</string>
+    <string name="pref_title_reminders_led">Light</string>
 
     <string name="pref_title_snooze_time">Snooze time (minutes)</string>
     <string name="pref_title_snooze_type">Snooze type</string>
@@ -418,6 +421,9 @@
 
     <string name="default_notebook">Default notebook</string>
     <string name="default_notebook_desc">Notebook used when sharing to Orgzly or creating a new note from the ongoing notification</string>
+
+    <string name="force_utf8">Force UTF-8 encoding</string>
+    <string name="force_utf8_summary">Do not try to detect encoding, always use UTF-8</string>
 
     <string name="list_widget_name">Orgzly search</string>
     <string name="select_a_filter">Select a filter</string>
@@ -493,5 +499,9 @@
 
     <string name="styled_text_with_marks_title">Styled text with marks</string>
     <string name="styled_text_with_marks_summary">Keep marks displayed (e.g. *bold*)</string>
+    <string name="time">Time</string>
+    <string name="repeater">Repeater</string>
+
+    <string name="no_such_link_target">Note with “%1$s” property set to “%2$s” not found</string>
 
 </resources>

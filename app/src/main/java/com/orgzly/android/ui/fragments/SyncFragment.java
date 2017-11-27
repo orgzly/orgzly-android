@@ -3,18 +3,14 @@ package com.orgzly.android.ui.fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.format.DateUtils;
@@ -29,10 +25,10 @@ import android.widget.TextView;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Book;
 import com.orgzly.android.BookAction;
 import com.orgzly.android.BookName;
-import com.orgzly.android.AppIntent;
 import com.orgzly.android.Filter;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotesBatch;
@@ -41,7 +37,6 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.Rook;
-import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.sync.SyncStatus;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.NotePlace;
@@ -71,8 +66,6 @@ public class SyncFragment extends Fragment {
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = SyncFragment.class.getName();
 
-
-    private boolean isServiceBound = false;
 
     /** Activity which has this fragment attached. Used as a target for hooks. */
     private SyncFragmentListener mListener;
@@ -188,11 +181,9 @@ public class SyncFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        /*
-         * Bind to sync service to request and receive the sync status.
-         * We're doing this after button is initialized.
-         */
-        bindToSyncService();
+        SyncStatus status = new SyncStatus();
+        status.loadFromPreferences(getContext());
+        mSyncButton.update(status);
     }
 
     @Override
@@ -214,7 +205,7 @@ public class SyncFragment extends Fragment {
     }
 
     /**
-     * Load book from the Uri.
+     * Load notebook from URI saving it under specified name.
      */
     @SuppressLint("StaticFieldLeak")
     public void importBookFromUri(
@@ -226,12 +217,17 @@ public class SyncFragment extends Fragment {
             @Override
             protected Object doInBackground(Void ... params) { /* Executing on a different thread. */
                 try {
+                     /* Check if book name already exists in database. */
+                    if (mShelf.doesBookExist(bookName)) {
+                        if (mListener != null) {
+                            mListener.onFailure(getString(R.string.book_name_already_exists, bookName));
+                        }
+                        return null;
+                    }
+
                     Book book;
-                    InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
-                    try {
+                    try (InputStream inputStream = getActivity().getContentResolver().openInputStream(uri)) {
                         book = mShelf.loadBookFromStream(bookName, format, inputStream);
-                    } finally {
-                        inputStream.close();
                     }
 
                     return book;
@@ -244,58 +240,11 @@ public class SyncFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Object result) {
-                if (mListener != null) {
-                    if (result instanceof Book) {
-                        Book book = (Book) result;
-                        mShelf.setBookStatus(book, null, new BookAction(BookAction.Type.INFO, resources.getString(R.string.imported)));
-                        mListener.onBookLoaded((Book) result);
-                    } else {
-                        mListener.onBookLoadFailed((IOException) result);
-                    }
-                }
-            }
-        }.execute();
-    }
+                if (mListener != null && result != null && result instanceof Book) {
+                    Book book = (Book) result;
+                    mShelf.setBookStatus(book, null, new BookAction(BookAction.Type.INFO, resources.getString(R.string.imported)));
+                    mListener.onBookLoaded((Book) result);
 
-    /**
-     * Load book from resource.
-     *
-     * FIXME: Only supports Org format (hardcoded below)
-     */
-    @SuppressLint("StaticFieldLeak")
-    public void loadBook(final String name, final Resources resources, final int resourceId) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, name, resources, resourceId);
-
-        new AsyncTask<Void, Object, Object>() {
-            @Override
-            protected void onPreExecute() {
-            }
-
-            /* Executing on a different thread. */
-            @Override
-            protected Object doInBackground(Void... params) {
-                try {
-                    return mShelf.loadBookFromResource(name, BookName.Format.ORG, resources, resourceId);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return e;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(Object result) {
-                if (mListener != null) {
-                    if (result instanceof Book) {
-                        Book book = (Book) result;
-                        // TODO: Do in bg
-                        mShelf.setBookStatus(book, null, new BookAction(
-                                BookAction.Type.INFO,
-                                resources.getString(R.string.loaded_from_resource, name)));
-                        mListener.onBookLoaded(book);
-                    } else {
-                        // TODO: Why is status not updated here?
-                        mListener.onBookLoadFailed((IOException) result);
-                    }
                 }
             }
         }.execute();
@@ -361,8 +310,6 @@ public class SyncFragment extends Fragment {
 
                         mListener.onBookLoaded((Book) result);
 
-                    } else {
-                        mListener.onBookLoadFailed((Exception) result);
                     }
                 }
             }
@@ -597,26 +544,6 @@ public class SyncFragment extends Fragment {
                     }
                 } else {
                     Log.w(TAG, "Listener not set, not handling exportBook result");
-                }
-            }
-        }.execute();
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    public void clearDatabase() {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                mShelf.clearDatabase();
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                if (mListener != null) {
-                    mListener.onDatabaseCleared();
-                } else {
-                    Log.w(TAG, "Listener not set, not calling onDatabaseCleared");
                 }
             }
         }.execute();
@@ -1061,134 +988,11 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
-    /**
-     * Re-parsing notes currently only checks for notes' title and state.
-     */
-    @SuppressLint("StaticFieldLeak")
-    public void reParseNotes() {
-        new AsyncTask<Void, Object, IOException>() {
-            private ProgressDialog progressDialog;
-
-            @Override
-            protected void onPreExecute() {
-                progressDialog = new ProgressDialog(getActivity());
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                progressDialog.setMessage(resources.getString(R.string.updating_notes));
-                progressDialog.show();
-            }
-
-            @Override
-            protected IOException doInBackground(Void[] params) {
-                try {
-                    mShelf.reParseNotesStateAndTitles(new Shelf.ReParsingNotesListener() {
-                        @Override
-                        public void noteParsed(int current, int total, String msg) {
-                            publishProgress(current, total, msg);
-                        }
-                    });
-                } catch (IOException e) {
-                    return e;
-                }
-
-                return null; /* Success. */
-            }
-
-            @Override
-            protected void onPostExecute(IOException exception) {
-            /*
-             * If dialog is gone due to rotation for example, IllegalArgumentException occurs
-             * here on dismiss() (and isShowing() returns true).
-             * Catch & ignore - http://stackoverflow.com/questions/2745061/java-lang-illegalargumentexception-view-not-attached-to-window-manager
-             */
-                try {
-                    if (progressDialog.isShowing()) {
-                        progressDialog.dismiss();
-                    }
-                } catch (Exception e) {
-
-                }
-
-            /* TODO: Do this for all other errors as well? */
-                if (exception != null) {
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.failure)
-                            .setMessage(exception.toString())
-                            .setPositiveButton(R.string.ok, null)
-                            .show();
-                }
-            }
-
-            @Override
-            protected void onProgressUpdate(Object ... values) {
-                int current = (Integer) values[0];
-                int total   = (Integer) values[1];
-                String msg  = (String)  values[2];
-
-                progressDialog.setMessage(msg);
-
-                if (total == 0) {
-                    progressDialog.setIndeterminate(true);
-
-                } else {
-                    progressDialog.setIndeterminate(false);
-                    progressDialog.setProgress(current);
-                    progressDialog.setMax(total);
-                }
-            }
-        }.execute();
-    }
-
-    private void bindToSyncService() {
-        Intent intent = new Intent(getActivity(), SyncService.class);
-        Activity activity = getActivity();
-        if (activity != null) {
-            activity.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        }
-    }
-
-    private void unbindFromSyncService() {
-        if (isServiceBound) {
-            Activity activity = getActivity();
-            if (activity != null) {
-                activity.unbindService(serviceConnection);
-                isServiceBound = false;
-            }
-        }
-    }
-
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder serviceBinder) {
-            isServiceBound = true;
-
-            SyncService.LocalBinder binder = (SyncService.LocalBinder) serviceBinder;
-
-            /*
-             * Check for activity added due to tests sometimes triggering:
-             * java.lang.IllegalStateException: Fragment SyncFragment{782d3f6} not attached to Activity
-             * Probably not specific to tests.
-             */
-            if (getActivity() != null) {
-                /* Get current sync status from the service and update the button. */
-                SyncStatus status = binder.getService().getStatus();
-                mSyncButton.update(status);
-            }
-
-            unbindFromSyncService();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            isServiceBound = false;
-        }
-    };
-
     public interface SyncFragmentListener {
         void onBookCreated(Book book);
         void onBookCreationFailed(Exception exception);
 
         void onBookLoaded(Book book);
-        void onBookLoadFailed(Exception exception);
 
         void onBookSaved(Book book);
         void onBookForceSavingFailed(Exception exception);
@@ -1200,8 +1004,6 @@ public class SyncFragment extends Fragment {
 
         void onNotesPasted(NotesBatch batch);
         void onNotesNotPasted();
-
-        void onDatabaseCleared();
 
         void onBookDeleted(Book book);
         void onBookDeletingFailed(Book book, IOException exception);
@@ -1218,5 +1020,7 @@ public class SyncFragment extends Fragment {
         void onNotesCut(int count);
 
         void onNotesMoved(int result);
+
+        void onFailure(String message);
     }
 }

@@ -37,16 +37,6 @@
                 <action android:name="com.google.android.gm.action.AUTO_SEND"/>
                 <data android:mimeType="text/plain"/>
             </intent-filter>
-
-            <!--<intent-filter>-->
-                <!--<action android:name="com.google.android.gm.action.AUTO_SEND"/>-->
-                <!--<category android:name="com.google.android.voicesearch.SELF_NOTE"/>-->
-            <!--</intent-filter>-->
-
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.SEND"/>-->
-                <!--<category android:name="com.google.android.voicesearch.SELF_NOTE"/>-->
-            <!--</intent-filter>-->
         </activity>
 
         <activity
@@ -59,19 +49,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.orgzly.android.ui.ReposActivity"
+        <activity
+            android:name=".android.ui.settings.SettingsActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
-        <!--<activity android:name="com.orgzly.android.ui.ReposActivity"-->
-            <!--android:parentActivityName="com.orgzly.android.ui.MainActivity">-->
-
-            <!--&lt;!&ndash; Parent activity meta-data to support 4.0 and lower &ndash;&gt;-->
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value="com.orgzly.android.ui.MainActivity"/>-->
-
-        <!--</activity>-->
+        <activity
+            android:name="com.orgzly.android.ui.ReposActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
 
         <activity
             android:name="com.orgzly.android.ui.BookChooserActivity"
@@ -108,14 +94,19 @@
             android:name=".android.Shortcuts$SyncTrampolineActivity"
             android:taskAffinity="" />
 
-        <receiver android:name="com.orgzly.android.widgets.ListWidgetProvider"
+        <receiver
+            android:name="com.orgzly.android.widgets.ListWidgetProvider"
             android:label="@string/list_widget_name">
+
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.orgzly.intent.action.ACTION_UPDATE_LIST_WIDGET" />
-                <action android:name="com.orgzly.intent.action.ACTION_UPDATE_LAYOUT_LIST_WIDGET" />
+
+                <action android:name="com.orgzly.intent.action.UPDATE_LIST_WIDGET" />
+                <action android:name="com.orgzly.intent.action.UPDATE_LAYOUT_LIST_WIDGET" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
+
+            <meta-data
+                android:name="android.appwidget.provider"
                 android:resource="@xml/list_widget_info" />
         </receiver>
 
@@ -125,20 +116,21 @@
             android:exported="false" />
 
         <!-- Not exported (not made available to other applications). -->
-        <provider android:name=".android.provider.Provider"
+        <provider
+            android:name=".android.provider.Provider"
             android:exported="false"
             android:authorities="com.orgzly">
         </provider>
 
 
-        <service android:name=".android.reminders.ReminderService" />
         <service android:name=".android.sync.SyncService" android:exported="true" />
+        <service android:name=".android.reminders.ReminderService" />
         <service android:name=".android.NotificationActionService" />
+        <service android:name=".android.ActionService" />
 
 
         <receiver android:name=".android.BootCompletedReceiver">
             <intent-filter>
-                <!-- Useless now (http://stackoverflow.com/a/19856367) -->
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>

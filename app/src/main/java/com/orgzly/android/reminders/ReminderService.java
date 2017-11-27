@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -391,7 +392,12 @@ public class ReminderService extends IntentService {
                 builder.setSound(sound);
             }
 
-            builder.setContentTitle(OrgFormatter.parse(
+            /* Set LED. */
+            if (AppPreferences.remindersLed(context)) {
+                builder.setLights(Color.BLUE, 1000, 5000);
+            }
+
+            builder.setContentTitle(OrgFormatter.INSTANCE.parse(
                     context,
                     noteReminder.getPayload().title,
                     false // Do not linkify links in notification

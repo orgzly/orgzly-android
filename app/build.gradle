@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     dexOptions {
@@ -21,8 +22,8 @@ android {
         applicationId "com.orgzly"
         minSdkVersion 16 // JELLY_BEAN
         targetSdkVersion 25 // Nougat (7.1)
-        versionCode 83
-        versionName "1.6"
+        versionCode 84
+        versionName "1.6.1-beta.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "DROPBOX_APP_KEY", properties.getProperty("dropbox.app_key", '""')
@@ -96,42 +97,49 @@ configurations.all {
 }
 
 dependencies {
-    compile orgJavaLocation()
+    implementation orgJavaLocation()
 
-    compile "com.dropbox.core:dropbox-core-sdk:$dropbox_core_sdk_version"
+    implementation "com.dropbox.core:dropbox-core-sdk:$dropbox_core_sdk_version"
 
-    compile "com.googlecode.juniversalchardet:juniversalchardet:$juniversalchardet_version"
+    implementation "com.googlecode.juniversalchardet:juniversalchardet:$juniversalchardet_version"
 
-    compile("com.github.machinarius:preferencefragment:$preference_fragment_version") {
+    implementation("com.github.machinarius:preferencefragment:$preference_fragment_version") {
         exclude module: 'support-v4'
     }
 
-    compile "com.evernote:android-job:$evernote_android_job_version"
+    implementation "com.evernote:android-job:$evernote_android_job_version"
 
-    compile "joda-time:joda-time:$joda_time_version"
+    implementation "joda-time:joda-time:$joda_time_version"
 
-    compile "com.android.support:support-v4:$android_support_version"
-    compile "com.android.support:appcompat-v7:$android_support_version"
-    compile "com.android.support:cardview-v7:$android_support_version"
-    compile "com.android.support:recyclerview-v7:$android_support_version"
-    compile "com.android.support:design:$android_support_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
-    androidTestCompile "com.android.support:support-annotations:$android_support_version"
+    implementation "com.android.support:support-v4:$android_support_version"
+    implementation "com.android.support:appcompat-v7:$android_support_version"
+    implementation "com.android.support:cardview-v7:$android_support_version"
+    implementation "com.android.support:recyclerview-v7:$android_support_version"
+    implementation "com.android.support:design:$android_support_version"
+    implementation "com.android.support.constraint:constraint-layout:$android_constraint_layout"
 
-    testCompile "junit:junit:$junit_version"
+    androidTestImplementation "com.android.support:support-annotations:$android_support_version"
 
-    androidTestCompile "com.android.support.test:runner:$android_test_version"
-    androidTestCompile "com.android.support.test:rules:$android_test_version"
-    androidTestCompile "com.android.support.test.espresso:espresso-core:$android_test_espresso_version"
-    androidTestCompile "com.android.support.test.espresso:espresso-contrib:$android_test_espresso_version"
-    androidTestCompile "com.android.support.test.uiautomator:uiautomator-v18:$android_test_uiautomator_version"
+    testImplementation "junit:junit:$junit_version"
 
-    androidTestCompile "de.sven-jacobs:loremipsum:$loremipsum_version"
+    androidTestImplementation "com.android.support.test:runner:$android_test_version"
+    androidTestImplementation "com.android.support.test:rules:$android_test_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$android_test_espresso_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$android_test_espresso_version"
+    androidTestImplementation "com.android.support.test.uiautomator:uiautomator-v18:$android_test_uiautomator_version"
+
+    androidTestImplementation "de.sven-jacobs:loremipsum:$loremipsum_version"
+}
+
+repositories {
+    mavenCentral()
 }
 
 /*
- * Use local org-java directory if it exists to ease developing.
- * Being more specific with ../../orgzly/ on purpose.
+ * Use local org-java directory if it exists for easier development.
+ * Being more specific by looking for orgzly/org-java/ on purpose.
  */
 def orgJavaLocation() {
     File localOrgJavaDir = getRootProject().file('../../orgzly/org-java')

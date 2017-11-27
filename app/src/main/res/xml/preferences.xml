@@ -2,7 +2,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/prefs_interface">
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_is_reverse_click_action"
             android:title="@string/reversed_note_click_action"
             android:summary="@string/reversed_note_click_action_summary"
@@ -24,19 +24,19 @@
             android:entryValues="@array/font_sizes_values"
             android:defaultValue="@string/pref_default_value_font_size"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_style_text"
             android:title="@string/style_text_title"
             android:summary="@string/style_text_summary"
             android:defaultValue="@bool/pref_default_style_text"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_is_font_monospaced"
             android:title="@string/monospaced_font"
             android:summary="@string/monospaced_font_summary"
             android:defaultValue="@bool/pref_default_is_font_monospaced"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_styled_text_with_marks"
             android:dependency="@string/pref_key_style_text"
             android:title="@string/styled_text_with_marks_title"
@@ -78,6 +78,12 @@
             android:singleLine="true"
             android:dialogMessage="@string/default_notebook_desc"
             android:defaultValue="@string/default_share_notebook"/>
+
+        <SwitchPreference
+            android:key="@string/pref_key_force_utf8"
+            android:title="@string/force_utf8"
+            android:summary="@string/force_utf8_summary"
+            android:defaultValue="@bool/pref_default_force_utf8"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/notes_list">
@@ -89,7 +95,7 @@
             android:entryValues="@array/list_density_values"
             android:defaultValue="@string/pref_default_notes_list_density"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_display_planning"
             android:title="@string/display_planning_times"
             android:summary="@string/display_planning_times_summary"
@@ -102,33 +108,33 @@
             android:entryValues="@array/book_name_in_search_entry_values"
             android:defaultValue="@string/pref_default_value_book_name_in_search"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_display_inherited_tags_in_search_results"
             android:title="@string/display_inherited_tags_in_search_results"
             android:summary="@string/display_inherited_tags_in_search_results_summary"
             android:defaultValue="@bool/pref_default_display_inherited_tags_in_search_results"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_is_notes_content_displayed_in_list"
             android:title="@string/display_content"
             android:summary="@string/display_both_title_and_content"
             android:defaultValue="@bool/pref_default_is_notes_content_displayed_in_list"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_is_notes_content_displayed_in_search"
             android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
             android:title="@string/display_content_in_search"
             android:summary="@string/display_content_in_search_results"
             android:defaultValue="@bool/pref_default_is_notes_content_displayed_in_search"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_is_notes_content_foldable"
             android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
             android:title="@string/fold_content"
             android:summary="@string/allow_folding_of_content"
             android:defaultValue="@bool/pref_default_is_notes_content_foldable"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_content_line_count_displayed"
             android:title="@string/content_line_count_displayed"
             android:summary="@string/content_line_count_displayed_summary"
@@ -171,13 +177,13 @@
             android:title="@string/state"
             android:defaultValue="@string/pref_default_value_new_note_state"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_is_new_note_scheduled"
             android:title="@string/scheduled"
             android:summary="@string/scheduled_new_notes_for_today"
             android:defaultValue="@bool/pref_default_value_is_new_note_scheduled"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_is_created_at_added"
             android:title="@string/created_at"
             android:summary="@string/insert_note_creation_time"
@@ -200,7 +206,7 @@
             android:entryValues="@array/separate_notes_with_new_line_values"
             android:defaultValue="@string/pref_default_separate_notes_with_new_line"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_separate_header_and_content_with_new_line"
             android:title="@string/separate_header_and_content_with_new_line"
             android:summary="@string/separate_header_and_content_with_new_line_summary"
@@ -214,13 +220,13 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefs_title_notifications">
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_new_note_notification"
             android:title="@string/new_note_notification"
             android:summary="@string/new_note_notification_summary"
             android:defaultValue="@bool/pref_default_value_new_note_notification"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_show_sync_notifications"
             android:title="@string/show_sync_notifications_title"
             android:summary="@string/show_sync_notifications_summary"
@@ -228,24 +234,29 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefs_title_reminders">
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_use_reminders_for_scheduled_times"
             android:title="@string/pref_title_reminders_for_scheduled_times"
             android:summary="@string/pref_title_summary_reminders_for_scheduled_times"
             android:defaultValue="@bool/pref_default_value_use_reminders_for_scheduled_times"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_use_reminders_for_deadline_times"
             android:title="@string/pref_title_reminders_for_deadline_times"
             android:summary="@string/pref_title_summary_reminders_for_deadline_times"
             android:defaultValue="@bool/pref_default_value_use_reminders_for_deadline_times"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="@string/pref_key_reminders_sound"
             android:title="@string/pref_title_reminders_sound"
             android:defaultValue="@bool/pref_default_value_reminders_sound"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
+            android:key="@string/pref_key_reminders_led"
+            android:title="@string/pref_title_reminders_led"
+            android:defaultValue="@bool/pref_default_value_reminders_led"/>
+
+        <SwitchPreference
             android:key="@string/pref_key_reminders_vibrate"
             android:title="@string/pref_title_reminders_vibrate"
             android:defaultValue="@bool/pref_default_value_reminders_vibrate"/>

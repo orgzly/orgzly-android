@@ -8,11 +8,17 @@
         android:id="@+id/close"
         android:icon="?attr/oic_close"
         app:showAsAction="always"
-        android:title="@string/done"/>
+        android:title="@string/close"/>
 
     <item
         android:id="@+id/done"
         android:icon="?attr/oic_done"
         app:showAsAction="always"
-        android:title="@string/close"/>
+        android:title="@string/done"/>
+
+    <item
+        android:id="@+id/delete"
+        android:icon="?attr/oic_delete_item"
+        app:showAsAction="never"
+        android:title="@string/delete"/>
 </menu>

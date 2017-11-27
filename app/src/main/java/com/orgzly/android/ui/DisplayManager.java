@@ -10,16 +10,18 @@ import com.orgzly.R;
 import com.orgzly.android.Book;
 import com.orgzly.android.SearchQuery;
 import com.orgzly.android.ui.fragments.AgendaFragment;
-import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
+import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
 import com.orgzly.android.ui.fragments.FilterFragment;
 import com.orgzly.android.ui.fragments.FiltersFragment;
 import com.orgzly.android.ui.fragments.NoteFragment;
 import com.orgzly.android.ui.fragments.QueryFragment;
-import com.orgzly.android.ui.fragments.SettingsFragment;
 import com.orgzly.android.util.LogUtils;
 
+/**
+ * Manager for {@link MainActivity}'s fragments.
+ */
 public class DisplayManager {
     private static final String TAG = DisplayManager.class.getName();
 
@@ -119,9 +121,7 @@ public class DisplayManager {
      * Add fragment for book, unless the same book is already being displayed.
      */
     public void displayBook(long bookId, long noteId) {
-        BookFragment f = getFragmentDisplayingBook(bookId);
-
-        if (f == null) {
+        if (getFragmentDisplayingBook(bookId) == null) {
             /* Create fragment. */
             Fragment fragment = BookFragment.getInstance(bookId, noteId);
 
@@ -138,7 +138,9 @@ public class DisplayManager {
     }
 
     public void displayNote(long bookId, long noteId) {
-        displayNote(false, bookId, noteId, Place.UNSPECIFIED);
+        if (getFragmentDisplayingNote(noteId) == null) {
+            displayNote(false, bookId, noteId, Place.UNSPECIFIED);
+        }
     }
 
     public void displayNewNote(NotePlace target) {
@@ -187,41 +189,6 @@ public class DisplayManager {
                 .commit();
     }
 
-//    private void displayReposSettings() {
-//        Fragment fragment = ReposFragment.getInstance();
-//
-//        mFragmentManager
-//                .beginTransaction()
-//                .setTransition(FRAGMENT_TRANSITION)
-//                .addToBackStack(null)
-//                .replace(R.id.single_pane_container, fragment, ReposFragment.FRAGMENT_TAG)
-//                .commit();
-//    }
-
-    public void displaySettings() {
-        displaySettings(null);
-    }
-
-    public void displaySettings(String resource) {
-        /* Check if settings fragment using the same resource is already displayed. */
-        Fragment f = isFragmentDisplayed(SettingsFragment.FRAGMENT_TAG);
-        if (f != null) {
-            SettingsFragment settingsFragment = (SettingsFragment) f;
-            if (settingsFragment.isForResource(resource)) {
-                return;
-            }
-        }
-
-        Fragment fragment = SettingsFragment.getInstance(resource);
-
-        mFragmentManager
-                .beginTransaction()
-                .setTransition(FRAGMENT_TRANSITION)
-                .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, SettingsFragment.FRAGMENT_TAG)
-                .commit();
-    }
-
     public void displayAgenda() {
         if (isFragmentDisplayed(AgendaFragment.FRAGMENT_TAG) != null) {
             return;
@@ -251,6 +218,16 @@ public class DisplayManager {
                 .commit();
     }
 
+    public SearchQuery getDisplayedQuery() {
+        Fragment f = mFragmentManager.findFragmentByTag(QueryFragment.FRAGMENT_TAG);
+
+        if (f != null && f.isVisible()) {
+            return ((QueryFragment) f).getQuery();
+        }
+
+        return null;
+    }
+
     private BookFragment getFragmentDisplayingBook(long bookId) {
         Fragment f = mFragmentManager.findFragmentByTag(BookFragment.FRAGMENT_TAG);
 
@@ -259,6 +236,20 @@ public class DisplayManager {
 
             if (bookFragment.getBook() != null && bookFragment.getBook().getId() == bookId) {
                 return bookFragment;
+            }
+        }
+
+        return null;
+    }
+
+    private NoteFragment getFragmentDisplayingNote(long noteId) {
+        Fragment f = mFragmentManager.findFragmentByTag(NoteFragment.FRAGMENT_TAG);
+
+        if (f != null && f.isVisible()) {
+            NoteFragment noteFragment = (NoteFragment) f;
+
+            if (noteFragment.getNoteId() == noteId) {
+                return noteFragment;
             }
         }
 
@@ -275,15 +266,5 @@ public class DisplayManager {
         } else {
             return null;
         }
-    }
-
-    public SearchQuery getDisplayedQuery() {
-        Fragment f = mFragmentManager.findFragmentByTag(QueryFragment.FRAGMENT_TAG);
-
-        if (f != null && f.isVisible()) {
-            return ((QueryFragment) f).getQuery();
-        }
-
-        return null;
     }
 }

@@ -133,7 +133,9 @@ public class ProviderContract {
     }
 
     public interface Notes {
-        class QueryParam implements DbNoteViewColumns, DbNoteColumns, BaseColumns {
+        class Param {
+            public static final String PROPERTY_NAME = "property_name";
+            public static final String PROPERTY_VALUE = "property_value";
         }
 
         class UpdateParam implements DbNoteColumns, BaseColumns {
@@ -148,6 +150,7 @@ public class ProviderContract {
             String NOTES = "notes";
             String NOTES_SEARCH_QUERIED = NOTES + "/queried";
             String NOTES_STATE = NOTES + "/state";
+            String NOTES_WITH_PROPERTY = NOTES + "/with-property";
             String NOTES_ID = NOTES + "/#";
             String NOTES_ID_ABOVE = NOTES + "/#/above";
             String NOTES_ID_BELOW = NOTES + "/#/below";
@@ -164,6 +167,11 @@ public class ProviderContract {
                 return ContentUris.withAppendedId(notes(), id);
             }
 
+            public static Uri notesWithProperty(String propName, String propValue) {
+                return Uri.withAppendedPath(AUTHORITY_URI, MatcherUri.NOTES_WITH_PROPERTY).buildUpon()
+                        .appendQueryParameter(Param.PROPERTY_NAME, propName)
+                        .appendQueryParameter(Param.PROPERTY_VALUE, propValue).build();
+            }
 
             public static Uri notesIdTarget(NotePlace target) {
                 Uri.Builder builder = notesId(target.getNoteId()).buildUpon();

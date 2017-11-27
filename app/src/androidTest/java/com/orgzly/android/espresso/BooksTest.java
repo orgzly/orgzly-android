@@ -51,6 +51,7 @@ public class BooksTest extends OrgzlyTest {
                 "* TODO Note C.\n" +
                 "SCHEDULED: <2014-01-01>\n" +
                 "** Note D.\n" +
+                "[[#Link to note in a different book]]\n" +
                 "*** TODO Note E.\n" +
                 ""
         );
@@ -66,6 +67,9 @@ public class BooksTest extends OrgzlyTest {
                 "**** Note #6.\n" +
                 "** Note #7.\n" +
                 "* DONE Note #8.\n" +
+                ":PROPERTIES:\n" +
+                ":CUSTOM_ID: Link to note in a different book\n" +
+                ":END:\n" +
                 "CLOSED: [2014-06-03 Tue 3:34]\n" +
                 "**** Note #9.\n" +
                 "SCHEDULED: <2014-05-26 Mon>\n" +
@@ -227,5 +231,13 @@ public class BooksTest extends OrgzlyTest {
                 .check(matches(withText(context.getResources().getQuantityString(R.plurals.notes_count_nonzero, 10, 10))));
         onListItem(2).onChildView(withId(R.id.item_book_note_count))
                 .check(matches(withText(R.string.notes_count_zero)));
+    }
+
+    @Test
+    public void testInternalLink() {
+        onListItem(0).perform(click());
+        onView(withText("#Link to note in a different book")).perform(click());
+        onView(withId(R.id.fragment_note_container)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note #8.")));
     }
 }

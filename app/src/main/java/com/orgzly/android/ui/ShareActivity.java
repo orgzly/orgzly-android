@@ -260,7 +260,7 @@ public class ShareActivity extends CommonActivity
         super.onResume();
 
         Shelf shelf = new Shelf(this);
-        shelf.resumeSync();
+        shelf.syncOnResume();
 
         if (mError != null) {
             showSimpleSnackbarLong(mError);
@@ -337,10 +337,6 @@ public class ShareActivity extends CommonActivity
     }
 
     @Override
-    public void onBookLoadFailed(Exception exception) {
-    }
-
-    @Override
     public void onBookSaved(Book book) {
     }
 
@@ -366,10 +362,6 @@ public class ShareActivity extends CommonActivity
 
     @Override
     public void onNotesNotPasted() {
-    }
-
-    @Override
-    public void onDatabaseCleared() {
     }
 
     @Override
@@ -411,6 +403,11 @@ public class ShareActivity extends CommonActivity
 
     @Override
     public void onNotesMoved(int result) {
+    }
+
+    @Override
+    public void onFailure(String message) {
+        showSimpleSnackbarLong(message);
     }
 
     private class Data {

@@ -65,6 +65,9 @@
           <option name="XML_SPACE_INSIDE_EMPTY_TAG" value="true" />
           <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
+        <codeStyleSettings language="JAVA">
+          <option name="ALIGN_MULTILINE_BINARY_OPERATION" value="true" />
+        </codeStyleSettings>
         <codeStyleSettings language="XML">
           <option name="FORCE_REARRANGE_MODE" value="1" />
           <indentOptions>
@@ -224,6 +227,6 @@
         </codeStyleSettings>
       </value>
     </option>
-    <option name="PREFERRED_PROJECT_CODE_STYLE" value="Default" />
+    <option name="USE_PER_PROJECT_SETTINGS" value="true" />
   </component>
 </project>

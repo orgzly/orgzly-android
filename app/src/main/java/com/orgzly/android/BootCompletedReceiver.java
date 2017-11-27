@@ -14,8 +14,10 @@ public class BootCompletedReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, context, intent);
 
-        if (AppPreferences.newNoteNotification(context)) {
-            Notifications.createNewNoteNotification(context);
+        if (intent != null && Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+            if (AppPreferences.newNoteNotification(context)) {
+                Notifications.createNewNoteNotification(context);
+            }
         }
     }
 }

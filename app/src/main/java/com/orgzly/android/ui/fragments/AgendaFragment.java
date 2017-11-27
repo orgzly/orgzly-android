@@ -47,7 +47,6 @@ import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -533,10 +532,10 @@ public class AgendaFragment extends NoteListFragment
             TreeSet<Long> selectionIds;
             switch (menuItem.getItemId()) {
                 case R.id.query_cab_schedule:
-                    selectionIds = new TreeSet<>();
-                    for (Long id: mSelection.getIds())
-                        selectionIds.add(originalNoteIDs.get(id));
-                    displayScheduleTimestampDialog(R.id.query_cab_schedule, selectionIds);
+                    selectionIds = originalSelectedIds();
+                    if (!selectionIds.isEmpty()) {
+                        displayScheduleTimestampDialog(R.id.query_cab_schedule, selectionIds);
+                    }
                     break;
 
                 case R.id.query_cab_state:
@@ -554,10 +553,10 @@ public class AgendaFragment extends NoteListFragment
                     /* Click on one of the state keywords. */
                     if (menuItem.getGroupId() == STATE_ITEM_GROUP) {
                         if (mListener != null) {
-                            selectionIds = new TreeSet<>();
-                            for (Long id: mSelection.getIds())
-                                selectionIds.add(originalNoteIDs.get(id));
-                            mListener.onStateChangeRequest(selectionIds, menuItem.getTitle().toString());
+                            selectionIds = originalSelectedIds();
+                            if (!selectionIds.isEmpty()) {
+                                mListener.onStateChangeRequest(selectionIds, menuItem.getTitle().toString());
+                            }
                         }
                         return true;
                     }
@@ -566,6 +565,22 @@ public class AgendaFragment extends NoteListFragment
             }
 
             return true; // Handled.
+        }
+
+        private TreeSet<Long> originalSelectedIds() {
+            TreeSet<Long> selectionIds = new TreeSet<>();
+            for (Long id: mSelection.getIds()) {
+                Long originalId = originalNoteIDs.get(id);
+                /*
+                 * Original ID might be missing if user selects a note before it's gone
+                 * (because of sync re-loading a notebook for example).  Adding null to TreeSet
+                 * throws NullPointerException.  TODO: De-select notes and remove this check
+                 */
+                if (originalId != null) {
+                    selectionIds.add(originalId);
+                }
+            }
+            return selectionIds;
         }
 
         @Override

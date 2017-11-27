@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -29,6 +30,7 @@ import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.sync.BookNamesake;
 import com.orgzly.android.sync.BookSyncStatus;
 import com.orgzly.android.sync.SyncService;
+import com.orgzly.android.ui.MainActivity;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.CircularArrayList;
@@ -81,6 +83,10 @@ public class Shelf {
 
     public Book getBook(String name) {
         return BooksClient.get(mContext, name);
+    }
+
+    public boolean doesBookExist(String name) {
+        return BooksClient.doesExist(mContext, name);
     }
 
     /**
@@ -139,6 +145,10 @@ public class Shelf {
     }
 
     public Book loadBookFromFile(String name, BookName.Format format, File file, VersionedRook vrook, String selectedEncoding) throws IOException {
+        if (selectedEncoding == null && AppPreferences.forceUtf8(mContext)) {
+            selectedEncoding = "UTF-8";
+        }
+
         Uri uri = BooksClient.loadFromFile(mContext, name, format, file, vrook, selectedEncoding);
 
         notifyDataChanged(mContext);
@@ -257,14 +267,14 @@ public class Shelf {
     public void setNotesScheduledTime(Set<Long> noteIds, OrgDateTime time) {
         NotesClient.updateScheduledTime(mContext, noteIds, time);
         notifyDataChanged(mContext);
-        updateSync();
+        syncOnNoteUpdate();
     }
 
     public void setNotesState(Set<Long> noteIds, String state) {
         NotesClient.setState(mContext, noteIds, state);
         // TODO: Check if there was a change
         notifyDataChanged(mContext);
-        updateSync();
+        syncOnNoteUpdate();
     }
 
     public Note getNote(long id) {
@@ -282,7 +292,7 @@ public class Shelf {
     public int updateNote(Note note) {
         int result = NotesClient.update(mContext, note);
         notifyDataChanged(mContext);
-        updateSync();
+        syncOnNoteUpdate();
         return result;
     }
 
@@ -293,7 +303,7 @@ public class Shelf {
         BooksClient.setModifiedTime(mContext, note.getPosition().getBookId(), System.currentTimeMillis());
 
         notifyDataChanged(mContext);
-        createSync();
+        syncOnNoteCreate();
 
         return insertedNote;
     }
@@ -342,7 +352,7 @@ public class Shelf {
     public int cut(long bookId, Set<Long> noteIds) {
         int result = NotesClient.cut(mContext, bookId, noteIds);
         notifyDataChanged(mContext);
-        updateSync();
+        syncOnNoteUpdate();
         return result;
     }
 
@@ -357,7 +367,7 @@ public class Shelf {
         NotesBatch batch = NotesClient.paste(mContext, bookId, noteId, place);
         if (batch != null) {
             notifyDataChanged(mContext);
-            updateSync();
+            syncOnNoteUpdate();
         }
         return batch;
 
@@ -366,7 +376,7 @@ public class Shelf {
     public int delete(long bookId, Set<Long> noteIds) {
         int result = NotesClient.delete(mContext, bookId, noteIds);
         notifyDataChanged(mContext);
-        updateSync();
+        syncOnNoteUpdate();
         return result;
     }
 
@@ -741,23 +751,23 @@ public class Shelf {
 
         ReminderService.notifyDataChanged(context);
 
-        context.sendBroadcast(new Intent(AppIntent.ACTION_LIST_WIDGET_UPDATE));
+        context.sendBroadcast(new Intent(AppIntent.ACTION_UPDATE_LIST_WIDGET));
     }
 
-    public void createSync() {
-        if (AppPreferences.autoSync(mContext) && AppPreferences.syncAfterNoteCreate(mContext)) {
+    public void syncOnNoteCreate() {
+        if (AppPreferences.autoSync(mContext) && AppPreferences.syncOnNoteCreate(mContext)) {
             autoSync();
         }
     }
 
-    public void updateSync() {
-        if (AppPreferences.autoSync(mContext) && AppPreferences.syncAfterNoteUpdate(mContext)) {
+    public void syncOnNoteUpdate() {
+        if (AppPreferences.autoSync(mContext) && AppPreferences.syncOnNoteUpdate(mContext)) {
             autoSync();
         }
     }
 
-    public void resumeSync() {
-        if (AppPreferences.autoSync(mContext) && AppPreferences.onResumeSync(mContext)) {
+    public void syncOnResume() {
+        if (AppPreferences.autoSync(mContext) && AppPreferences.syncOnResume(mContext)) {
             autoSync();
         }
     }
@@ -891,6 +901,29 @@ public class Shelf {
         notifyDataChanged(mContext);
 
         return modifiedNotesCount;
+    }
+
+    public void openFirstNoteWithProperty(String propName, String propValue) {
+        Intent intent;
+
+        List<Long[]> notes = NotesClient.getNotesWithProperty(mContext, propName, propValue);
+
+        if (!notes.isEmpty()) {
+            long noteId = notes.get(0)[0];
+            long bookId = notes.get(0)[1];
+
+            intent = new Intent(AppIntent.ACTION_OPEN_NOTE);
+            intent.putExtra(MainActivity.EXTRA_NOTE_ID, noteId);
+            intent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
+
+        } else {
+            String msg = mContext.getString(R.string.no_such_link_target, propName, propValue);
+
+            intent = new Intent(AppIntent.ACTION_DISPLAY_MESSAGE);
+            intent.putExtra(AppIntent.EXTRA_MESSAGE, msg);
+        }
+
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 
     // TODO: Used by tests only for now

@@ -161,10 +161,6 @@ public class SyncService extends Service {
         status.saveToPreferences(this);
     }
 
-    public SyncStatus getStatus() {
-        return status;
-    }
-
     /**
      * Main sync task.
      */

@@ -132,6 +132,7 @@ public class MiscTest extends OrgzlyTest {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
         onListItem(EspressoUtils.SETTINGS_CLEAR_DATABASE).perform(click());
         onView(withText(R.string.ok)).perform(click());
+        pressBack();
 
         onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
         onView(withId(R.id.fragment_books_no_notebooks)).check(matches(isDisplayed()));

@@ -10,7 +10,7 @@
       android:inputType="numberSigned"
       android:defaultValue="@string/pref_default_tags_column"/>
 
-  <CheckBoxPreference
+  <SwitchPreference
       android:key="@string/pref_key_org_indent_mode"
       android:title="@string/org_indent_mode"
       android:summary="@string/org_indent_mode_summary"

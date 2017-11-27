@@ -10,6 +10,8 @@
         android:id="@android:id/list"
         android:contentDescription="@string/fragment_left_drawer_list_view_content_description"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:dividerHeight="0dp"/>
 
 </LinearLayout>

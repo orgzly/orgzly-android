@@ -343,7 +343,7 @@ public class NoteFragment extends Fragment
                 } else {
                     bodyEdit.setVisibility(View.GONE);
 
-                    bodyView.setText(OrgFormatter.parse(getContext(), bodyEdit.getText().toString()));
+                    bodyView.setText(OrgFormatter.INSTANCE.parse(getContext(), bodyEdit.getText().toString()));
                     bodyView.setVisibility(View.VISIBLE);
 
                     ActivityUtils.closeSoftKeyboard(getActivity());
@@ -503,7 +503,7 @@ public class NoteFragment extends Fragment
 
         /* Content. */
         bodyEdit.setText(head.getContent());
-        bodyView.setText(OrgFormatter.parse(getContext(), head.getContent()));
+        bodyView.setText(OrgFormatter.INSTANCE.parse(getContext(), head.getContent()));
     }
 
     private void addPropertyToList(OrgProperty property) {
@@ -578,7 +578,7 @@ public class NoteFragment extends Fragment
         setupTagsView();
 
         if (mBookId != 0) {
-            mBook = mShelf.getBook(mBookId);
+            mBook = mShelf.getBook(mBookId); // FIXME: ANR reported
         }
 
         if (mIsNew) { /* Creating new note. */
@@ -992,7 +992,7 @@ public class NoteFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
 
-        inflater.inflate(R.menu.note_actions, menu);
+        inflater.inflate(R.menu.close_done_delete, menu);
 
         /* Remove search item. */
         menu.removeItem(R.id.activity_action_search);
@@ -1116,6 +1116,10 @@ public class NoteFragment extends Fragment
         mNote.getPosition().setBookId(mBookId);
 
         getArguments().putLong(ARG_BOOK_ID, book.getId());
+    }
+
+    public long getNoteId() {
+        return mNoteId;
     }
 
     private void updateNoteForStateChange(Context context, Note note, String state) {
