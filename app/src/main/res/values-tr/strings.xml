@@ -71,7 +71,7 @@
     <!-- Preferences (Settings). -->
     <string name="repos_preference_title">Depolar</string>
     <string name="message_book_has_no_link">Bağlantı yok.</string>
-    <string name="message_book_does_not_exist">Bu defter artık yok.</string>
+    <string name="book_does_not_exist_anymore">Bu defter artık yok.</string>
     <string name="message_note_created">Not Oluşturuldu</string>
     <string name="message_failed_creating_note">Not oluşturma başarısız oldu</string>
     <string name="message_failed_updating_note">Not güncelleme işlemi başarısız oldu</string>
@@ -127,8 +127,8 @@
     <string name="reload_getting_started_summary">Not defterinin son sürümünü içe aktarın</string>
     <string name="getting_started_loaded">Not Defteri "Orgzly Başlarken" yüklendi</string>
 
-    <string name="fragment_note_does_not_exist">Bu not artık mevcut değil.</string>
-    <string name="fragment_filter_does_not_exist">Bu arama artık mevcut değil.</string>
+    <string name="note_does_not_exist_anymore">Bu not artık mevcut değil.</string>
+    <string name="search_does_not_exist_anymore">Bu arama artık mevcut değil.</string>
     <string name="fragment_query_title">Arama</string>
     <string name="repo_dropbox_button_not_linked">Dropbox\'a bağlantı</string>
     <string name="repo_dropbox_button_linked">Dropbox ile bağlantısını kaldır</string>

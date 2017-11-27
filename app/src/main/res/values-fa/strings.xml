@@ -65,7 +65,7 @@
     <!-- Preferences (Settings). -->
     <string name="repos_preference_title">مخزن‌ها</string>
     <string name="message_book_has_no_link">بدون اتصال.</string>
-    <string name="message_book_does_not_exist">این دفترچه دیگر وجود ندارد.</string>
+    <string name="book_does_not_exist_anymore">این دفترچه دیگر وجود ندارد.</string>
     <string name="message_note_created">یادداشت ایجاد شد</string>
     <string name="message_failed_creating_note">نمی‌توان یادداشت را ایجاد کرد</string>
     <string name="message_failed_updating_note">نمی‌توان یادداشت را به‌روز کرد</string>
@@ -121,8 +121,8 @@
     <string name="reload_getting_started_summary">وارد کردن آخرین نسخه دفترچه</string>
     <string name="getting_started_loaded">Notebook “شروع کار با Orgzly” وارد شد</string>
 
-    <string name="fragment_note_does_not_exist">این یادداشت دیگر وجود ندارد.</string>
-    <string name="fragment_filter_does_not_exist">این جستجو دیگر وجود ندارد.</string>
+    <string name="note_does_not_exist_anymore">این یادداشت دیگر وجود ندارد.</string>
+    <string name="search_does_not_exist_anymore">این جستجو دیگر وجود ندارد.</string>
     <string name="fragment_query_title">جستجو</string>
     <string name="repo_dropbox_button_not_linked">اتصال به دراپ‌باکس</string>
     <string name="repo_dropbox_button_linked">قطع شدن از دراپ‌باکس</string>

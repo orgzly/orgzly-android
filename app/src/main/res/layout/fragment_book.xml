@@ -39,6 +39,6 @@
 
     <TextView
         style="@style/BigCenteredText"
-        android:text="@string/message_book_does_not_exist"/>
+        android:text="@string/book_does_not_exist_anymore"/>
 
 </ViewFlipper>

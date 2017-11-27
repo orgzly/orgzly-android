@@ -179,5 +179,5 @@
 
     <TextView
         style="@style/BigCenteredText"
-        android:text="@string/fragment_note_does_not_exist"/>
+        android:text="@string/note_does_not_exist_anymore"/>
 </ViewFlipper>

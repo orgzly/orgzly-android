@@ -8,8 +8,9 @@ import android.preference.Preference
 import android.preference.PreferenceScreen
 import android.preference.TwoStatePreference
 import android.support.annotation.StringRes
-import android.text.TextUtils
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ListView
 import com.github.machinarius.preferencefragment.PreferenceFragment
 import com.orgzly.BuildConfig
@@ -18,7 +19,6 @@ import com.orgzly.android.Notifications
 import com.orgzly.android.Shelf
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-import com.orgzly.android.provider.clients.ReposClient
 import com.orgzly.android.ui.NoteStateSpinner
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
@@ -154,25 +154,6 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         super.onDetach()
 
         mListener = null
-    }
-
-    /**
-     * Updates preference's summary with a list of configured user repos.
-     */
-    fun updateUserReposPreferenceSummary() {
-        val repos = ReposClient.getAll(activity.applicationContext)
-
-        if (repos.isEmpty()) {
-            mReposPreference!!.setSummary(R.string.no_user_repos_configured_pref_summary)
-
-        } else {
-            val list = ArrayList<String>()
-            for (repo in repos.values) {
-                list.add(repo.toString())
-            }
-            Collections.sort(list)
-            mReposPreference!!.summary = TextUtils.join("\n", list)
-        }
     }
 
     /**
@@ -329,7 +310,10 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
         private val ARG_RESOURCE = "resource"
 
-        @StringRes private val REQUIRE_ACTIVITY_RESTART = intArrayOf(R.string.pref_key_font_size, R.string.pref_key_color_scheme, R.string.pref_key_layout_direction)
+        @StringRes private val REQUIRE_ACTIVITY_RESTART = intArrayOf(
+                R.string.pref_key_font_size,
+                R.string.pref_key_color_scheme,
+                R.string.pref_key_layout_direction)
 
         fun getInstance(res: String? = null): SettingsFragment {
             val fragment = SettingsFragment()

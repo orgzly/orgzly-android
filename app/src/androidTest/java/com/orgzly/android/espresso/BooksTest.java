@@ -96,12 +96,12 @@ public class BooksTest extends OrgzlyTest {
         onView(withText(R.string.ok)).perform(click());
         pressBack();
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
-        onView(withText(R.string.message_book_does_not_exist)).check(matches(isDisplayed()));
+        onView(withText(R.string.book_does_not_exist_anymore)).check(matches(isDisplayed()));
         onView(withId(R.id.fab)).check(matches(not(isDisplayed())));
         pressBack();
         onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
         onView(allOf(withText("book-2"), isDisplayed())).perform(click());
-        onView(allOf(withText(R.string.message_book_does_not_exist), isDisplayed())).check(doesNotExist());
+        onView(allOf(withText(R.string.book_does_not_exist_anymore), isDisplayed())).check(doesNotExist());
     }
 
     @Test

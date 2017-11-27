@@ -80,8 +80,7 @@
     <!-- Preferences (Settings). -->
     <string name="repos_preference_title">Repositories</string>
     <string name="repos_preference_summary">Location to synchronize your notebooks with</string>
-    <string name="message_book_has_no_link">No link.</string>
-    <string name="message_book_does_not_exist">This notebook does not exist any more.</string>
+    <string name="message_book_has_no_link">No link set</string>
     <string name="message_note_created">Note created</string>
     <string name="message_failed_creating_note">Failed to create note</string>
     <string name="message_failed_updating_note">Failed to update note</string>
@@ -138,8 +137,10 @@
     <string name="getting_started_loaded">Notebook “Getting Started with Orgzly” loaded</string>
     <string name="notebook_loaded">Notebook loaded</string>
 
-    <string name="fragment_note_does_not_exist">This note does not exist any more.</string>
-    <string name="fragment_filter_does_not_exist">This search does not exist any more.</string>
+    <string name="book_does_not_exist_anymore">This notebook does not exist any more.</string>
+    <string name="note_does_not_exist_anymore">This note does not exist any more.</string>
+    <string name="search_does_not_exist_anymore">This search does not exist any more.</string>
+
     <string name="fragment_query_title">Search</string>
     <string name="repo_dropbox_button_not_linked">Link to Dropbox</string>
     <string name="repo_dropbox_button_linked">Unlink from Dropbox</string>

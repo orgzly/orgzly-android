@@ -63,10 +63,10 @@
     <string name="failure">Uh oh</string>
     <string name="fold_content">收起内容</string>
     <string name="font_size">字体大小</string>
-    <string name="fragment_filter_does_not_exist">这个查找将不再存在。</string>
+    <string name="search_does_not_exist_anymore">这个查找将不再存在。</string>
     <string name="fragment_left_drawer_list_view_content_description">左侧抽屉</string>
     <string name="fragment_note_content_hint">笔记</string>
-    <string name="fragment_note_does_not_exist">这条笔记将不再存在。</string>
+    <string name="note_does_not_exist_anymore">这条笔记将不再存在。</string>
     <string name="fragment_note_tags_hint">标签</string>
     <string name="fragment_note_title_hint">标题</string>
     <string name="fragment_query_title">查找</string>
@@ -90,7 +90,7 @@
     <string name="insert_note_creation_time">插入笔记的生成时间</string>
     <string name="look_and_feel"><![CDATA["外观 & 感觉]]></string>
     <string name="message_book_deleted">笔记本已删除</string>
-    <string name="message_book_does_not_exist">这个笔记本将不再存在。</string>
+    <string name="book_does_not_exist_anymore">这个笔记本将不再存在。</string>
     <string name="message_book_has_no_link">没有链接</string>
     <string name="message_deleting_book_failed">删除笔记本失败: %s</string>
     <string name="message_dropbox_linked">成功连接到Dropbox</string>

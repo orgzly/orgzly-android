@@ -262,7 +262,7 @@ public class SyncFragment extends Fragment {
 
                 try {
                     if (book == null) {
-                        throw new IOException(resources.getString(R.string.message_book_does_not_exist));
+                        throw new IOException(resources.getString(R.string.book_does_not_exist_anymore));
                     }
 
                     Rook rook = book.getLink();
@@ -467,7 +467,7 @@ public class SyncFragment extends Fragment {
                     }
 
                 } else {
-                    return new IOException(resources.getString(R.string.message_book_does_not_exist));
+                    return new IOException(resources.getString(R.string.book_does_not_exist_anymore));
                 }
             }
 
