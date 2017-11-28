@@ -709,9 +709,8 @@ public class BookFragment extends NoteListFragment
 
     @Override
     public Runnable getFabAction() {
-        return mBook != null ? new Runnable() {
-            @Override
-            public void run() {
+        return mBook != null ? () -> {
+            if (listener != null) {
                 listener.onNoteNewRequest(new NotePlace(mBookId));
             }
         } : null;

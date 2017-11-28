@@ -37,6 +37,7 @@ import com.orgzly.android.provider.views.DbBookViewColumns;
 import com.orgzly.android.ui.Fab;
 import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.Loaders;
+import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.UriUtils;
 
@@ -625,7 +626,11 @@ public class BooksFragment extends ListFragment
 
     @Override
     public Runnable getFabAction() {
-        return () -> mListener.onBookCreateRequest();
+        return () -> {
+            if (mListener != null) {
+                mListener.onBookCreateRequest();
+            }
+        };
     }
 
     private void announceChangesToActivity() {

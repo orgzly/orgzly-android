@@ -205,9 +205,8 @@ public class FiltersFragment extends ListFragment implements Fab, LoaderManager.
 
     @Override
     public Runnable getFabAction() {
-        return new Runnable() {
-            @Override
-            public void run() {
+        return () -> {
+            if (mListener != null) {
                 mListener.onFilterNewRequest();
             }
         };
