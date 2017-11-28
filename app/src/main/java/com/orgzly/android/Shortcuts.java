@@ -28,7 +28,6 @@ public class Shortcuts {
                 .setIcon(Icon.createWithResource(context, R.drawable.ic_add_black_24dp))
                 .setIntent(ShareActivity.createNewNoteTaskBuilder(context)
                         .getIntents()[0])
-                .setRank(1)
                 .build();
 
         // Make a shortcut to start syncing using SyncService
@@ -38,7 +37,6 @@ public class Shortcuts {
                 .setIntent(new Intent(context, SyncTrampolineActivity.class)
                         // Shortcuts require Intents to have actions.
                         .setAction(AppIntent.ACTION_SYNC_START))
-                .setRank(0)
                 .build();
 
         // Set up shortcuts
