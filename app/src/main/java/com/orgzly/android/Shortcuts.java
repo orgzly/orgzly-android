@@ -48,7 +48,7 @@ public class Shortcuts {
     /**
      * Activity started by the Sync shortcut.
      * App shortcuts require Intents that start activities, so this is used to start
-     * syncing
+     * syncing without opening the app.
      */
     public static class SyncTrampolineActivity extends AppCompatActivity {
         @Override
