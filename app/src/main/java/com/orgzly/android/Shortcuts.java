@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.orgzly.R;
+import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.ShareActivity;
 
@@ -56,9 +57,12 @@ public class Shortcuts {
             startService(new Intent(this, SyncService.class)
                     .setAction(AppIntent.ACTION_SYNC_START));
 
-            // Show a Toast message so the user knows something happened
-            Toast.makeText(this, R.string.syncing_in_progress, Toast.LENGTH_SHORT)
-                    .show();
+            if (!AppPreferences.showSyncNotifications(this)) {
+                // Show a Toast message so the user knows something happened
+                // if sync notifications are not enabled.
+                Toast.makeText(this, R.string.syncing_in_progress, Toast.LENGTH_SHORT)
+                        .show();
+            }
 
             finish();
         }
