@@ -57,7 +57,7 @@ public class ShareActivity extends CommonActivity
 
     private String mError;
 
-    public static PendingIntent createNewNoteIntent(Context context) {
+    public static TaskStackBuilder createNewNoteTaskBuilder(Context context) {
         Intent resultIntent = new Intent(context, ShareActivity.class);
         resultIntent.setAction(Intent.ACTION_SEND);
         resultIntent.setType("text/plain");
@@ -72,6 +72,11 @@ public class ShareActivity extends CommonActivity
         stackBuilder.addParentStack(ShareActivity.class);
         // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);
+        return stackBuilder;
+    }
+
+    public static PendingIntent createNewNoteIntent(Context context) {
+        TaskStackBuilder stackBuilder = createNewNoteTaskBuilder(context);
         return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
