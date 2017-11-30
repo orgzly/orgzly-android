@@ -20,7 +20,7 @@
         <intent
             android:action="com.orgzly.intent.action.SYNC_START"
             android:targetPackage="com.orgzly"
-            android:targetClass="com.orgzly.android.Shortcuts$SyncTrampolineActivity" />
+            android:targetClass="com.orgzly.android.ui.SyncShortcutActivity" />
     </shortcut>
     <!-- Specify more shortcuts here. -->
 </shortcuts>

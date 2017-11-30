@@ -93,7 +93,7 @@
             android:excludeFromRecents="true"/>
 
         <activity
-            android:name=".android.Shortcuts$SyncTrampolineActivity"
+            android:name=".android.ui.SyncShortcutActivity"
             android:taskAffinity="" />
 
         <receiver
