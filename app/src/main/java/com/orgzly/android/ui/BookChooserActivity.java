@@ -50,7 +50,7 @@ public class BookChooserActivity extends CommonActivity
 
     @Override
     public void onBookClicked(long bookId) {
-        if (action.equals(Intent.ACTION_CREATE_SHORTCUT)) {
+        if (action != null && action.equals(Intent.ACTION_CREATE_SHORTCUT)) {
 
             /* If this intent is used, shortcut's label will be overwritten (set to "Orgzly")
              * with some launchers (like Nova) on every app update.
