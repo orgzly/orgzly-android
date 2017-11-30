@@ -45,7 +45,6 @@ import com.orgzly.android.NotesBatch;
 import com.orgzly.android.Notifications;
 import com.orgzly.android.SearchQuery;
 import com.orgzly.android.Shelf;
-import com.orgzly.android.Shortcuts;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.provider.clients.ReposClient;
@@ -164,11 +163,6 @@ public class MainActivity extends CommonActivity
 
         if (AppPreferences.newNoteNotification(this)) {
             Notifications.createNewNoteNotification(this);
-        }
-
-        // Set up app shortcuts
-        if (savedInstanceState == null) {
-            Shortcuts.setDynamicShortcuts(this);
         }
     }
 
