@@ -219,10 +219,7 @@ public class SyncFragment extends Fragment {
                 try {
                      /* Check if book name already exists in database. */
                     if (mShelf.doesBookExist(bookName)) {
-                        if (mListener != null) {
-                            mListener.onFailure(getString(R.string.book_name_already_exists, bookName));
-                        }
-                        return null;
+                        return resources.getString(R.string.book_name_already_exists, bookName);
                     }
 
                     Book book;
@@ -240,11 +237,15 @@ public class SyncFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Object result) {
-                if (mListener != null && result != null && result instanceof Book) {
-                    Book book = (Book) result;
-                    mShelf.setBookStatus(book, null, new BookAction(BookAction.Type.INFO, resources.getString(R.string.imported)));
-                    mListener.onBookLoaded((Book) result);
+                if (mListener != null && result != null) {
+                    if (result instanceof Book) {
+                        Book book = (Book) result;
+                        mShelf.setBookStatus(book, null, new BookAction(BookAction.Type.INFO, resources.getString(R.string.imported)));
+                        mListener.onBookLoaded((Book) result);
 
+                    } else if (result instanceof String) {
+                        mListener.onFailure((String) result);
+                    }
                 }
             }
         }.execute();
