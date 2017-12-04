@@ -266,19 +266,16 @@ public class GesturedListView extends ListView implements GestureDetector.OnGest
                     Gesture gesture = horizontalFling == 1 ?
                             Gesture.FLING_RIGHT : Gesture.FLING_LEFT;
 
-                    itemMenus.open(itemPosition, gesture);
+                    boolean menuFound = itemMenus.open(itemPosition, gesture);
 
                     /*
                      * If it's the last item in the list scroll to it to make quick-menu visible.
                      * Wait for quick-menu opening animation to end.
                      */
-                    if (itemPosition == getCount() - 1) {
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                setSelection(itemPosition);
-                            }
-                        }, getResources().getInteger(R.integer.item_menu_animation_duration));
+                    if (menuFound && itemPosition == getCount() - 1) {
+                        new Handler().postDelayed(() ->
+                                setSelection(itemPosition),
+                                getResources().getInteger(R.integer.item_menu_animation_duration));
                     }
                 }
 

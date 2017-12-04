@@ -8,10 +8,10 @@ import java.util.TreeSet;
 
 public class ListViewUtils {
     public static boolean isIdVisible(ListView listView, long id) {
-        final int firstListItemPosition = listView.getFirstVisiblePosition();
-        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+        final int firstVisible = listView.getFirstVisiblePosition();
+        final int lastVisible = listView.getLastVisiblePosition();
 
-        for (int pos = firstListItemPosition; pos <= lastListItemPosition; pos++) {
+        for (int pos = firstVisible; pos <= lastVisible; pos++) {
             long posId = listView.getItemIdAtPosition(pos);
 
             if (posId == id) {
@@ -22,16 +22,8 @@ public class ListViewUtils {
         return false;
     }
 
-    public static View getViewByPosition(ListView listView, int pos) {
-        final int firstListItemPosition = listView.getFirstVisiblePosition();
-        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
-
-        if (pos < firstListItemPosition || pos > lastListItemPosition) {
-            return listView.getAdapter().getView(pos, null, listView);
-        } else {
-            final int childIndex = pos - firstListItemPosition;
-            return listView.getChildAt(childIndex);
-        }
+    public static View getViewIfVisible(ListView listView, int pos) {
+        return listView.getChildAt(pos - listView.getFirstVisiblePosition());
     }
 
     public static TreeSet<Long> getCheckedIds(ListView listView) {
