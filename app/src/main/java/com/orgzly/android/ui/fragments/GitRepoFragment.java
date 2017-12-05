@@ -137,7 +137,7 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
 
-        inflater.inflate(R.menu.done_or_close, menu);
+        inflater.inflate(R.menu.close_done , menu);
     }
 
     @Override
