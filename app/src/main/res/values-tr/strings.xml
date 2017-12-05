@@ -88,7 +88,7 @@
     <string name="closed_button_hint">Zamanı Kapa</string>
 
     <string name="fragment_note_content_hint">Not İçeriği</string>
-    <string name="books_context_menu_item_export">Dşarı Aktar</string>
+    <string name="export">Dşarı Aktar</string>
     <string name="books_context_menu_item_rename">Yeniden Adlandır</string>
     <string name="books_context_menu_item_set_link">Bağlantı kur</string>
     <string name="books_context_menu_item_force_save">Kaydetmeye Zorla</string>

@@ -118,7 +118,7 @@ public class BooksTest extends OrgzlyTest {
     @Test
     public void testExport() {
         onView(allOf(withText("book-1"), isDisplayed())).perform(longClick());
-        onData(hasToString(containsString(context.getString(R.string.books_context_menu_item_export)))).perform(click());
+        onData(hasToString(containsString(context.getString(R.string.export)))).perform(click());
 
         /*
          * Depending on whether external storage is available or not,

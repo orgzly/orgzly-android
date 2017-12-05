@@ -31,6 +31,7 @@
     <string name="reminder_snooze">Snooze</string>
     <string name="close">Close</string>
     <string name="import_">Import</string> <!-- "import" is reserved -->
+    <string name="export">Export</string>
     <string name="imported">Imported</string>
     <string name="created">Created</string>
     <string name="states">States</string>
@@ -97,7 +98,6 @@
     <string name="closed_button_hint">Closed time</string>
 
     <string name="fragment_note_content_hint">Note content</string>
-    <string name="books_context_menu_item_export">Export</string>
     <string name="books_context_menu_item_rename">Rename</string>
     <string name="books_context_menu_item_set_link">Set Link</string>
     <string name="books_context_menu_item_force_save">Force Save</string>

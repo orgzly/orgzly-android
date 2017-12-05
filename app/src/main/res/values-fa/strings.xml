@@ -82,7 +82,7 @@
     <string name="closed_button_hint">زمان بسته شدن</string>
 
     <string name="fragment_note_content_hint">متن یادداشت</string>
-    <string name="books_context_menu_item_export">استخراج</string>
+    <string name="export">استخراج</string>
     <string name="books_context_menu_item_rename">تغییر نام</string>
     <string name="books_context_menu_item_set_link">تنظیم پیوند</string>
     <string name="books_context_menu_item_force_save">ذخیره اجباری</string>

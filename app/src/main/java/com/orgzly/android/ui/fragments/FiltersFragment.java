@@ -63,6 +63,7 @@ public class FiltersFragment extends ListFragment implements Fab, LoaderManager.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setHasOptionsMenu(true);
         setupAdapter();
     }
 
@@ -116,6 +117,37 @@ public class FiltersFragment extends ListFragment implements Fab, LoaderManager.
         super.onDetach();
 
         mListener = null;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
+
+        inflater.inflate(R.menu.filters_actions, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, item);
+
+        switch (item.getItemId()) {
+            case R.id.filters_import:
+                importFilters();
+                return true;
+
+            case R.id.filters_export:
+                exportFilters();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void importFilters() {
+    }
+
+    private void exportFilters() {
     }
 
     @Override

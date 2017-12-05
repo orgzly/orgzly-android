@@ -14,7 +14,7 @@
     <string name="book_mtime">笔记本修改时间</string>
     <string name="book_name_already_exists">笔记本 %s 已存在</string>
     <string name="book_preface_hint">"笔记本描述…"</string>
-    <string name="books_context_menu_item_export">导出</string>
+    <string name="export">导出</string>
     <string name="books_context_menu_item_force_load">强制加载</string>
     <string name="books_context_menu_item_force_save">强制保存</string>
     <string name="books_context_menu_item_rename">重命名</string>
