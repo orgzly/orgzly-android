@@ -48,7 +48,7 @@ public class FilterSelectDialogActivity extends AppCompatActivity implements Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return FiltersClient.getCursorLoader(this);
+        return FiltersClient.INSTANCE.getCursorLoader(this);
     }
 
     @Override

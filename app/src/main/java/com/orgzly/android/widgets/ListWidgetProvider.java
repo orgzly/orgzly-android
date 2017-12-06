@@ -18,7 +18,7 @@ import android.widget.RemoteViews;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
-import com.orgzly.android.Filter;
+import com.orgzly.android.filter.Filter;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.ui.MainActivity;
@@ -193,7 +193,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
         long filterId = context.getSharedPreferences(PREFERENCES_ID, Context.MODE_PRIVATE).getLong(getFilterPreferenceKey(appWidgetId), -1);
         Filter filter = null;
         if (filterId != -1) {
-            filter = FiltersClient.get(context, filterId);
+            filter = FiltersClient.INSTANCE.get(context, filterId);
         }
 
         if (filter == null) {

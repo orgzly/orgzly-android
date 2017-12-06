@@ -29,7 +29,7 @@ import com.orgzly.android.AppIntent;
 import com.orgzly.android.Book;
 import com.orgzly.android.BookAction;
 import com.orgzly.android.BookName;
-import com.orgzly.android.Filter;
+import com.orgzly.android.filter.Filter;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotesBatch;
 import com.orgzly.android.Shelf;

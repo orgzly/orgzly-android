@@ -19,6 +19,8 @@ import android.widget.ListView;
 import android.widget.ViewFlipper;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.filter.FileFilterStore;
+import com.orgzly.android.filter.FilterStore;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.ui.Fab;
@@ -145,10 +147,15 @@ public class FiltersFragment extends ListFragment implements Fab, LoaderManager.
     }
 
     private void importFilters() {
+        FilterStore store = new FileFilterStore(getContext());
+        store.importFilters();
     }
 
     private void exportFilters() {
+        FilterStore store = new FileFilterStore(getContext());
+        store.exportFilters();
     }
+
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
@@ -207,7 +214,7 @@ public class FiltersFragment extends ListFragment implements Fab, LoaderManager.
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return FiltersClient.getCursorLoader(getActivity());
+        return FiltersClient.INSTANCE.getCursorLoader(getActivity());
     }
 
     @Override

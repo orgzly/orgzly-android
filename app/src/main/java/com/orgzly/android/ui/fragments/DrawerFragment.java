@@ -278,7 +278,7 @@ public class DrawerFragment extends ListFragment
 
         switch (id) {
             case Loaders.DRAWER_FILTERS:
-                return FiltersClient.getCursorLoader(getActivity());
+                return FiltersClient.INSTANCE.getCursorLoader(getActivity());
 
             case Loaders.DRAWER_BOOKS:
                 return BooksClient.getCursorLoader(getActivity());

@@ -14,6 +14,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.filter.Filter;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.BooksClient;
@@ -689,24 +690,24 @@ public class Shelf {
     public void deleteFilters(Set<Long> ids) {
         // TODO: Send a single request. */
         for (long id: ids) {
-            FiltersClient.delete(mContext, id);
+            FiltersClient.INSTANCE.delete(mContext, id);
         }
     }
 
     public void createFilter(Filter filter) {
-        FiltersClient.create(mContext, filter);
+        FiltersClient.INSTANCE.create(mContext, filter);
     }
 
     public void updateFilter(long id, Filter filter) {
-        FiltersClient.update(mContext, id, filter);
+        FiltersClient.INSTANCE.update(mContext, id, filter);
     }
 
     public void moveFilterUp(long id) {
-        FiltersClient.moveUp(mContext, id);
+        FiltersClient.INSTANCE.moveUp(mContext, id);
     }
 
     public void moveFilterDown(long id) {
-        FiltersClient.moveDown(mContext, id);
+        FiltersClient.INSTANCE.moveDown(mContext, id);
     }
 
     public void cycleVisibility(Book book) {

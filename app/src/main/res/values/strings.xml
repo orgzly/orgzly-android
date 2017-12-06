@@ -505,4 +505,9 @@
 
     <string name="no_such_link_target">Note with “%1$s” property set to “%2$s” not found</string>
 
+    <string name="imported_filters">Imported <b>%d</b> filters</string>
+    <string name="exported_filters">Exported <b>%d</b> filters</string>
+    <string name="storage_permissions_missing">No storage permission</string>
+    <string name="file_does_not_exist">File %s does not exist</string>
+
 </resources>

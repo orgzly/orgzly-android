@@ -1,4 +1,4 @@
-package com.orgzly.android;
+package com.orgzly.android.filter;
 
 public class Filter {
     private String name;
