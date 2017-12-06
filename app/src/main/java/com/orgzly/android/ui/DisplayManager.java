@@ -8,7 +8,6 @@ import android.util.Log;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
-import com.orgzly.android.SearchQuery;
 import com.orgzly.android.ui.fragments.AgendaFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BookPrefaceFragment;
@@ -172,8 +171,8 @@ public class DisplayManager {
 
     public void displayQuery(String query) {
         /* If the same query is already displayed, don't do anything. */
-        SearchQuery displayedQuery = getDisplayedQuery();
-        if (displayedQuery != null && displayedQuery.toString().equals(query)) {
+        String displayedQuery = getDisplayedQuery();
+        if (displayedQuery != null && displayedQuery.equals(query)) {
             return;
         }
 
@@ -218,7 +217,7 @@ public class DisplayManager {
                 .commit();
     }
 
-    public SearchQuery getDisplayedQuery() {
+    public String getDisplayedQuery() {
         Fragment f = mFragmentManager.findFragmentByTag(QueryFragment.FRAGMENT_TAG);
 
         if (f != null && f.isVisible()) {

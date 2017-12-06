@@ -15,8 +15,12 @@ import android.util.Log;
 import com.orgzly.BuildConfig;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
-import com.orgzly.android.SearchQuery;
 import com.orgzly.android.provider.views.DbTimeView;
+import com.orgzly.android.query.Query;
+import com.orgzly.android.query.QueryParser;
+import com.orgzly.android.query.SqlQueryBuilder;
+import com.orgzly.android.query.internal.InternalQueryParser;
+import com.orgzly.android.query.sqlite.SqliteQueryBuilder;
 import com.orgzly.org.utils.StateChangeLogic;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.actions.ActionRunner;
@@ -71,12 +75,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -301,213 +301,29 @@ public class Provider extends ContentProvider {
         return cursor;
     }
 
-    /**
-     * Builds query parameters from {@link SearchQuery}.
-     */
-    private Cursor queryNotesSearchQueried(SQLiteDatabase db, String query, String sortOrder) {
-        SearchQuery searchQuery = new SearchQuery(query);
+    private Cursor queryNotesSearchQueried(SQLiteDatabase db, String queryString, String sortOrder) {
+        QueryParser parser = new InternalQueryParser();
+        Query query = parser.parse(queryString);
 
-        StringBuilder selection = new StringBuilder();
-        List<String> selectionArgs = new ArrayList<>();
+        SqlQueryBuilder queryBuilder = new SqliteQueryBuilder(getContext());
+        queryBuilder.build(query);
 
-        // Loop through the various search criteria groups. The criteria inside
-        // each group is AND-ed together. The groups themselves are OR-ed
-        // together.
-        for (SearchQuery.SearchQueryGroup group : searchQuery.groups) {
-
-            if (selection.length() == 0) {
-                selection.append(" ((");
-            } else {
-                selection.append(") OR (");
-            }
-
-            /* Skip cut notes. */
-            selection.append(DatabaseUtils.WHERE_EXISTING_NOTES);
-
-            /*
-             * We are only searching for a tag within a string of tags.
-             * "tag" will be found in "few tagy ones"
-             */
-            for (String tag: group.getTags()) {
-                selection.append(" AND (")
-                        .append(DbNoteView.TAGS).append(" LIKE ? OR ")
-                        .append(DbNoteView.INHERITED_TAGS).append(" LIKE ?)");
-
-                selectionArgs.add("%" + tag + "%");
-                selectionArgs.add("%" + tag + "%");
-            }
-
-            for (String tag: group.getNotTags()) {
-                selection.append(" AND (")
-                        .append("COALESCE(").append(DbNoteView.TAGS).append(", '')").append(" NOT LIKE ? AND ")
-                        .append("COALESCE(").append(DbNoteView.INHERITED_TAGS).append(", '')").append(" NOT LIKE ?)");
-
-                selectionArgs.add("%" + tag + "%");
-                selectionArgs.add("%" + tag + "%");
-            }
-
-            if (group.hasBookName()) {
-                selection.append(" AND ").append(DbNoteView.BOOK_NAME).append(" = ?");
-                selectionArgs.add(group.getBookName());
-            }
-
-            if (group.hasNotBookName()) {
-                for (String name: group.getNotBookName()) {
-                    selection.append(" AND ").append(DbNoteView.BOOK_NAME).append(" != ?");
-                    selectionArgs.add(name);
-                }
-            }
-
-            if (group.hasStateType()) {
-                if ("todo".equalsIgnoreCase(group.getStateType())) {
-                    searchQueryStates(selection, selectionArgs, "IN", AppPreferences.todoKeywordsSet(getContext()));
-
-                } else if ("done".equalsIgnoreCase(group.getStateType())) {
-                    searchQueryStates(selection, selectionArgs, "IN", AppPreferences.doneKeywordsSet(getContext()));
-
-                } else if ("none".equalsIgnoreCase(group.getStateType())) {
-                    selection.append(" AND COALESCE(" + DbNoteView.STATE + ", '') = ''");
-                }
-            }
-
-            if (group.hasNotStateType()) {
-                if ("todo".equalsIgnoreCase(group.getNotStateType())) {
-                    searchQueryStates(selection, selectionArgs, "NOT IN", AppPreferences.todoKeywordsSet(getContext()));
-
-                } else if ("done".equalsIgnoreCase(group.getNotStateType())) {
-                    searchQueryStates(selection, selectionArgs, "NOT IN", AppPreferences.doneKeywordsSet(getContext()));
-
-                } else if ("none".equalsIgnoreCase(group.getNotStateType())) {
-                    selection.append(" AND COALESCE(" + DbNoteView.STATE + ", '') != ''");
-                }
-            }
-
-            if (group.hasState()) {
-                selection.append(" AND COALESCE(" + DbNoteView.STATE + ", '') = ?");
-                selectionArgs.add(group.getState());
-            }
-
-            if (group.hasNotState()) {
-                for (String state: group.getNotState()) {
-                    selection.append(" AND COALESCE(" + DbNoteView.STATE + ", '') != ?");
-                    selectionArgs.add(state);
-                }
-            }
-
-            for (String token: group.getTextSearch()) {
-                selection.append(" AND (").append(DbNoteView.TITLE).append(" LIKE ?");
-                selectionArgs.add("%" + token + "%");
-                selection.append(" OR ").append(DbNoteView.CONTENT).append(" LIKE ?");
-                selectionArgs.add("%" + token + "%");
-                selection.append(" OR ").append(DbNoteView.TAGS).append(" LIKE ?");
-                selectionArgs.add("%" + token + "%");
-                selection.append(")");
-            }
-
-            if (group.hasScheduled()) {
-                appendBeforeInterval(selection, DbNoteView.SCHEDULED_TIME_TIMESTAMP, group.getScheduled());
-            }
-
-            if (group.hasDeadline()) {
-                appendBeforeInterval(selection, DbNoteView.DEADLINE_TIME_TIMESTAMP, group.getDeadline());
-            }
-
-            /*
-             * Handle empty string and NULL - use default priority in those cases.
-             */
-            if (group.hasPriority()) {
-                String defaultPriority = AppPreferences.defaultPriority(getContext());
-                selection.append(" AND lower(coalesce(nullif(" + DbNoteView.PRIORITY + ", ''), ?)) = ?");
-                selectionArgs.add(defaultPriority);
-                selectionArgs.add(group.getPriority());
-            }
-            if (group.hasNotPriority()) {
-                String defaultPriority = AppPreferences.defaultPriority(getContext());
-                selection.append(" AND lower(coalesce(nullif(" + DbNoteView.PRIORITY + ", ''), ?)) != ?");
-                selectionArgs.add(defaultPriority);
-                selectionArgs.add(group.getNotPriority());
-            }
-
-            /*
-             * Just check for note's *set* priority, don't use default if there is none.
-             */
-            if (group.hasSetPriority()) {
-                selection.append(" AND lower(coalesce(" + DbNoteView.PRIORITY + ", '')) = ?");
-                selectionArgs.add(group.getSetPriority());
-            }
-
-            if (group.hasNotSetPriority()) {
-                selection.append(" AND lower(coalesce(" + DbNoteView.PRIORITY + ", '')) != ?");
-                selectionArgs.add(group.getNotSetPriority());
-            }
-
-            if (group.hasNoteTags()) {
-                /*
-                 * We are only searching for a tag within a string of tags.
-                 * "tag" will be found in "few tagy ones"
-                 * Tags must be kept separately so we can match them exactly.
-                 */
-                for (String tag: group.getNoteTags()) {
-                    selection.append(" AND ").append(DbNoteView.TAGS).append(" LIKE ?");
-                    selectionArgs.add("%" + tag + "%");
-                }
-            }
+        /* If order hasn't been passed, try getting it from the query. */
+        if (sortOrder == null) {
+            sortOrder = queryBuilder.getOrderBy();
         }
 
-        selection.append(")) ");
+        String selection = DatabaseUtils.WHERE_EXISTING_NOTES + (
+                TextUtils.isEmpty(queryBuilder.getSelection()) ? "" : " AND (" + queryBuilder.getSelection() + ")"
+        );
 
-        String sql = "SELECT * FROM " + DbNoteView.VIEW_NAME + " WHERE " + selection.toString() + " ORDER BY " + sortOrder;
+        String[] args = queryBuilder.getSelectionArgs().toArray(new String[queryBuilder.getSelectionArgs().size()]);
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, sql, selectionArgs);
-        return db.rawQuery(sql, selectionArgs.toArray(new String[selectionArgs.size()]));
-    }
+        String sql = "SELECT * FROM " + DbNoteView.VIEW_NAME + " WHERE " + selection + " ORDER BY " + sortOrder;
 
-    private void searchQueryStates(StringBuilder selection, List<String> selectionArgs, String in, Set<String> states) {
-        selection.append(" AND COALESCE(" + DbNoteView.STATE + ", '') ")
-                .append(in).append(" (")
-                .append(TextUtils.join(", ", Collections.nCopies(states.size(), "?")))
-                .append(")");
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, query, query.getCondition(), sql, args);
 
-        for (String state: states) {
-            selectionArgs.add(state);
-        }
-    }
-
-    private static void appendBeforeInterval(StringBuilder selection, String column, SearchQuery.SearchQueryInterval interval) {
-        if (interval.none()) {
-            selection.append(" AND ").append(column).append(" IS NULL");
-            return;
-        }
-
-        Calendar before = new GregorianCalendar();
-
-        switch (interval.getUnit()) {
-            case DAY:
-                before.add(Calendar.DAY_OF_MONTH, interval.getValue());
-                break;
-            case WEEK:
-                before.add(Calendar.WEEK_OF_YEAR, interval.getValue());
-                break;
-            case MONTH:
-                before.add(Calendar.MONTH, interval.getValue());
-                break;
-            case YEAR:
-                before.add(Calendar.YEAR, interval.getValue());
-                break;
-        }
-
-        /* Add one more day, as we use less-then operator. */
-        before.add(Calendar.DAY_OF_MONTH, 1);
-
-        /* 00:00 */
-        before.set(Calendar.HOUR_OF_DAY, 0);
-        before.set(Calendar.MINUTE, 0);
-        before.set(Calendar.SECOND, 0);
-        before.set(Calendar.MILLISECOND, 0);
-
-        selection
-                .append(" AND ").append(column).append(" != 0")
-                .append(" AND ").append(column).append(" < ").append(before.getTimeInMillis());
+        return db.rawQuery(sql, args);
     }
 
     @Override

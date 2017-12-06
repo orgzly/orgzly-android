@@ -20,7 +20,6 @@ import android.widget.ViewFlipper;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.SearchQuery;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.NotesClient;
@@ -60,7 +59,7 @@ public class QueryFragment extends NoteListFragment
     private SimpleCursorAdapter mListAdapter;
 
     /* Currently active query. */
-    private SearchQuery mQuery;
+    private String mQuery;
 
     private NoteListFragmentListener mListener;
 
@@ -258,7 +257,7 @@ public class QueryFragment extends NoteListFragment
             throw new IllegalArgumentException("No arguments found to " + QueryFragment.class.getSimpleName());
         }
 
-        mQuery = new SearchQuery(getArguments().getString(ARG_QUERY));
+        mQuery = getArguments().getString(ARG_QUERY);
     }
 
     @Override
@@ -445,7 +444,7 @@ public class QueryFragment extends NoteListFragment
         }
     }
 
-    public SearchQuery getQuery() {
+    public String getQuery() {
         return mQuery;
     }
 }

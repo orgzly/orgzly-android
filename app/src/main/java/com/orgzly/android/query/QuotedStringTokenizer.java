@@ -16,7 +16,7 @@
 
 // Taken from https://forge.onehippo.org/svn/jcr-shell/trunk/core/src/main/java/org/onehippo/forge/jcrshell/util/QuotedStringTokenizer.java
 
-package com.orgzly.android.util;
+package com.orgzly.android.query;
 
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;

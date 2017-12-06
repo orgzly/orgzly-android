@@ -4,14 +4,12 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.orgzly.android.SearchQuery;
 import com.orgzly.android.provider.models.DbBookColumns;
 import com.orgzly.android.provider.models.DbDbRepoColumns;
 import com.orgzly.android.provider.models.DbNoteColumns;
 import com.orgzly.android.provider.models.DbRepoColumns;
 import com.orgzly.android.provider.models.DbSearchColumns;
 import com.orgzly.android.provider.views.DbBookViewColumns;
-import com.orgzly.android.provider.views.DbNoteViewColumns;
 import com.orgzly.android.ui.NotePlace;
 
 /**
@@ -195,8 +193,8 @@ public class ProviderContract {
                 return notesId(id).buildUpon().appendPath("toggle-folded-state").build();
             }
 
-            public static Uri notesSearchQueried(SearchQuery searchQuery) {
-                return notes().buildUpon().appendPath("queried").query(searchQuery.toString()).build();
+            public static Uri notesSearchQueried(String query) {
+                return notes().buildUpon().appendPath("queried").query(query).build();
             }
         }
     }

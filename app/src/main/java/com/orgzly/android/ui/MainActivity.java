@@ -43,11 +43,14 @@ import com.orgzly.android.Filter;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotesBatch;
 import com.orgzly.android.Notifications;
-import com.orgzly.android.SearchQuery;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.provider.clients.ReposClient;
+import com.orgzly.android.query.Condition;
+import com.orgzly.android.query.Query;
+import com.orgzly.android.query.UserQueryBuilder;
+import com.orgzly.android.query.internal.InternalQueryBuilder;
 import com.orgzly.android.repos.ContentRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
@@ -490,17 +493,17 @@ public class MainActivity extends CommonActivity
                 layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
 
                 /* For Query fragment, fill the box with full query. */
-                SearchQuery q = mDisplayManager.getDisplayedQuery();
+                String q = mDisplayManager.getDisplayedQuery();
                 if (q != null) {
-                    searchView.setQuery(q.toString() + " ", false);
+                    searchView.setQuery(q + " ", false);
 
                 } else {
                     /* If searching from book, add book name to query. */
                     Book book = getActiveFragmentBook();
                     if (book != null) {
-                        SearchQuery query = new SearchQuery();
-                        query.currentGroup.setBookName(book.getName());
-                        searchView.setQuery(query.toString() + " ", false);
+                        UserQueryBuilder builder = new InternalQueryBuilder(getApplicationContext());
+                        builder.build(new Query(new Condition.InBook(book.getName())));
+                        searchView.setQuery(builder.getString() + " ", false);
                     }
                 }
             }

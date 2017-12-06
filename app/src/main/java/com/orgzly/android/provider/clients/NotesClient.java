@@ -15,16 +15,18 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.orgzly.BuildConfig;
-import com.orgzly.R;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.NotesBatch;
-import com.orgzly.android.SearchQuery;
 import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.GenericDatabaseUtils;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.models.DbNote;
 import com.orgzly.android.provider.views.DbNoteView;
+import com.orgzly.android.query.Condition;
+import com.orgzly.android.query.Query;
+import com.orgzly.android.query.UserQueryBuilder;
+import com.orgzly.android.query.internal.InternalQueryBuilder;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.Place;
@@ -450,112 +452,35 @@ public class NotesClient {
     }
 
     public static Cursor getCursorForBook(Context context, String bookName) throws SQLException {
-        SearchQuery searchQuery = new SearchQuery();
-        if (bookName != null) {
-            searchQuery.currentGroup.setBookName(bookName);
-        }
+        /* Create a query with a book name condition. */
+        UserQueryBuilder builder = new InternalQueryBuilder(context);
+        builder.build(new Query(new Condition.InBook(bookName)));
 
         return context.getContentResolver().query(
-                ProviderContract.Notes.ContentUri.notesSearchQueried(searchQuery),
-                null, // TODO: Do not fetch content if it is not required, for speed.
+                ProviderContract.Notes.ContentUri.notesSearchQueried(builder.getString()),
+                null,
                 null,
                 null,
                 DbNoteView.LFT); /* For book, simply order by position. */
     }
 
-    public static CursorLoader getLoaderForQuery(Context context, SearchQuery searchQuery) throws SQLException {
+    public static CursorLoader getLoaderForQuery(Context context, String query) throws SQLException {
         return new CursorLoader(
                 context,
-                ProviderContract.Notes.ContentUri.notesSearchQueried(searchQuery),
-                null, // TODO: Do not fetch content if it is not required, for speed.
+                ProviderContract.Notes.ContentUri.notesSearchQueried(query),
                 null,
                 null,
-                getOrderForQuery(context, searchQuery));
+                null,
+                null);
     }
 
-    public static Cursor getCursorForQuery(Context context, SearchQuery searchQuery) throws SQLException {
+    public static Cursor getCursorForQuery(Context context, String query) throws SQLException {
         return context.getContentResolver().query(
-                ProviderContract.Notes.ContentUri.notesSearchQueried(searchQuery),
-                null, // TODO: Do not fetch content if it is not required, for speed.
+                ProviderContract.Notes.ContentUri.notesSearchQueried(query),
                 null,
                 null,
-                getOrderForQuery(context, searchQuery));
-    }
-
-    /**
-     * Determines order of notes depending on {@link SearchQuery}.
-     */
-    private static String getOrderForQuery(Context context, SearchQuery searchQuery) {
-        /* Get default priority from user settings. */
-        String defaultPriority = android.preference.PreferenceManager.getDefaultSharedPreferences(context).getString(
-                context.getResources().getString(R.string.pref_key_default_priority),
-                context.getResources().getString(R.string.pref_default_default_priority));
-
-        ArrayList<String> orderByColumns = new ArrayList<>();
-
-        /* If user-specified sort order exists, use only that. */
-        if (searchQuery.hasSortOrder()) {
-            for (SearchQuery.SortOrder so: searchQuery.getSortOrder()) {
-                if (so.getType() == SearchQuery.SortOrder.Type.NOTEBOOK) {
-                    orderByColumns.add(DbNoteView.BOOK_NAME + (so.isAscending() ? "" : " DESC"));
-
-                } else if (so.getType() == SearchQuery.SortOrder.Type.SCHEDULED) {
-                    orderByColumns.add(DbNoteView.SCHEDULED_TIME_TIMESTAMP + " IS NULL");
-                    if (so.isAscending()) {
-                        orderByColumns.add(DbNoteView.SCHEDULED_TIME_START_OF_DAY);
-                        orderByColumns.add(DbNoteView.SCHEDULED_TIME_HOUR + " IS NULL");
-                        orderByColumns.add(DbNoteView.SCHEDULED_TIME_TIMESTAMP);
-                    } else {
-                        orderByColumns.add(DbNoteView.SCHEDULED_TIME_START_OF_DAY + " DESC");
-                        orderByColumns.add(DbNoteView.SCHEDULED_TIME_HOUR + " IS NOT NULL");
-                        orderByColumns.add(DbNoteView.SCHEDULED_TIME_TIMESTAMP + " DESC");
-                    }
-
-                } else if (so.getType() == SearchQuery.SortOrder.Type.DEADLINE) {
-                    orderByColumns.add(DbNoteView.DEADLINE_TIME_TIMESTAMP + " IS NULL");
-                    if (so.isAscending()) {
-                        orderByColumns.add(DbNoteView.DEADLINE_TIME_START_OF_DAY);
-                        orderByColumns.add(DbNoteView.DEADLINE_TIME_HOUR + " IS NULL");
-                        orderByColumns.add(DbNoteView.DEADLINE_TIME_TIMESTAMP);
-                    } else {
-                        orderByColumns.add(DbNoteView.DEADLINE_TIME_START_OF_DAY + " DESC");
-                        orderByColumns.add(DbNoteView.DEADLINE_TIME_HOUR + " IS NOT NULL");
-                        orderByColumns.add(DbNoteView.DEADLINE_TIME_TIMESTAMP + " DESC");
-                    }
-
-                } else if (so.getType() == SearchQuery.SortOrder.Type.PRIORITY) {
-                    orderByColumns.add("COALESCE(" + DbNoteView.PRIORITY + ", '" + defaultPriority + "')" + (so.isAscending() ? "" : " DESC"));
-                    orderByColumns.add(DbNoteView.PRIORITY + (so.isAscending() ? " IS NULL" : " IS NOT NULL"));
-                }
-            }
-
-        } else { // No explicit ordering specified
-
-            orderByColumns.add(DbNoteView.BOOK_NAME);
-
-            /* Priority or default priority. */
-            orderByColumns.add("COALESCE(" + DbNoteView.PRIORITY + ", '" + defaultPriority + "')");
-            orderByColumns.add(DbNoteView.PRIORITY + " IS NULL");
-
-            if (searchQuery.currentGroup.hasDeadline()) {
-                orderByColumns.add(DbNoteView.DEADLINE_TIME_TIMESTAMP + " IS NULL");
-                orderByColumns.add(DbNoteView.DEADLINE_TIME_START_OF_DAY);
-                orderByColumns.add(DbNoteView.DEADLINE_TIME_HOUR + " IS NULL");
-                orderByColumns.add(DbNoteView.DEADLINE_TIME_TIMESTAMP);
-            }
-
-            if (searchQuery.currentGroup.hasScheduled()) {
-                orderByColumns.add(DbNoteView.SCHEDULED_TIME_TIMESTAMP + " IS NULL");
-                orderByColumns.add(DbNoteView.SCHEDULED_TIME_START_OF_DAY);
-                orderByColumns.add(DbNoteView.SCHEDULED_TIME_HOUR + " IS NULL");
-                orderByColumns.add(DbNoteView.SCHEDULED_TIME_TIMESTAMP);
-            }
-        }
-
-        /* Always sort by position last. */
-        orderByColumns.add(DbNoteView.LFT);
-
-        return TextUtils.join(", ", orderByColumns);
+                null,
+                null);
     }
 
     public static int getCount(Context context, Long bookId) {

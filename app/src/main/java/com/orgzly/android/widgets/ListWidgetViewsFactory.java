@@ -10,11 +10,11 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.Note;
-import com.orgzly.android.SearchQuery;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.ui.util.TitleGenerator;
@@ -28,14 +28,14 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     private Cursor mCursor;
     private Context mContext;
-    private SearchQuery query;
+    private String query;
     private TitleGenerator titleGenerator;
     private UserTimeFormatter userTimeFormatter;
 
     public ListWidgetViewsFactory(Context mContext, String queryString) {
         this.mContext = mContext;
         // this should be a query string, which doesn't match anything
-        this.query = new SearchQuery(queryString != null ? queryString : ".b.a b.a");
+        this.query = queryString != null ? queryString : ".b.a b.a";
 
         this.userTimeFormatter = new UserTimeFormatter(mContext);
         this.titleGenerator = new TitleGenerator(mContext, false, new TitleGenerator.TitleAttributes(

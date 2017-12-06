@@ -25,7 +25,6 @@ import android.widget.TextView;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
-import com.orgzly.android.SearchQuery;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.provider.clients.FiltersClient;
@@ -87,11 +86,11 @@ public class DrawerFragment extends ListFragment
                 /* Find by query string. */
                 if (QueryFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
 
-                    SearchQuery query = ((QueryFragment) fragment).getQuery();
+                    String query = ((QueryFragment) fragment).getQuery();
 
                     if (query != null) {
                         for (FilterItem item : filters) {
-                            if (query.toString().equals(item.query)) {
+                            if (query.equals(item.query)) {
                                 selectedItem = item;
                             }
                         }
@@ -338,7 +337,7 @@ public class DrawerFragment extends ListFragment
             String name = cursor.getString(cursor.getColumnIndex(ProviderContract.Filters.Param.NAME));
             String query = cursor.getString(cursor.getColumnIndex(ProviderContract.Filters.Param.QUERY));
 
-            FilterItem item = new FilterItem(name, new SearchQuery(query).toString());
+            FilterItem item = new FilterItem(name, query);
 
             filters.add(item);
         }

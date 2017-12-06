@@ -25,7 +25,6 @@ import android.widget.NumberPicker;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.SearchQuery;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.NotesClient;
@@ -73,7 +72,7 @@ public class AgendaFragment extends NoteListFragment
     private static final int STATE_ITEM_GROUP = 1;
 
     /* Currently active query. */
-    private SearchQuery mQuery;
+    private String mQuery;
     private int agendaDurationInDays;
 
     private UserTimeFormatter userTimeFormatter;
@@ -336,10 +335,9 @@ public class AgendaFragment extends NoteListFragment
     }
 
     private void updateQuery(int days) {
-        String queryString = String.format((Locale) null, AGENDA_DAYS_QUERY, days, days);
+        mQuery = String.format((Locale) null, AGENDA_DAYS_QUERY, days, days);
 
         agendaDurationInDays = days;
-        mQuery = new SearchQuery(queryString);
 
         /* Save to preferences. */
         AppPreferences.agendaDays(getActivity(), days);
