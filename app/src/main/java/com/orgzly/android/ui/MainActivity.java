@@ -114,7 +114,6 @@ public class MainActivity extends CommonActivity
     /** Original title used when book is not being displayed. */
     private CharSequence mDefaultTitle;
 
-    private DisplayManager mDisplayManager;
     private ActionMode mActionMode;
     private boolean mPromoteDemoteOrMoveRequested = false;
 
@@ -130,17 +129,13 @@ public class MainActivity extends CommonActivity
 
                 if (AppIntent.ACTION_OPEN_BOOK.equals(action)) {
                     long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0);
-                    if (mDisplayManager != null) {
-                        mDisplayManager.displayBook(bookId, 0);
-                    }
+                    DisplayManager.displayBook(getSupportFragmentManager(), bookId, 0);
 
                 } else if (AppIntent.ACTION_OPEN_NOTE.equals(action)) {
                     long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0);
                     long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0);
 
-                    if (mDisplayManager != null) {
-                        mDisplayManager.displayNote(bookId, noteId);
-                    }
+                    DisplayManager.displayNote(getSupportFragmentManager(), bookId, noteId);
                 }
             }
         }
@@ -171,8 +166,6 @@ public class MainActivity extends CommonActivity
     private void setupDisplay(Bundle savedInstanceState) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, getIntent().getExtras());
 
-        mDisplayManager = new DisplayManager(getSupportFragmentManager());
-
         if (savedInstanceState == null) { // Not a configuration change.
             long bookId = getIntent().getLongExtra(AppIntent.EXTRA_BOOK_ID, 0L);
             long noteId = getIntent().getLongExtra(AppIntent.EXTRA_NOTE_ID, 0L);
@@ -180,16 +173,16 @@ public class MainActivity extends CommonActivity
 
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookId, noteId, queryString);
 
-            mDisplayManager.displayBooks(false);
+            DisplayManager.displayBooks(getSupportFragmentManager(), false);
 
             /* Display requested book and note. */
             if (bookId > 0) {
-                mDisplayManager.displayBook(bookId, noteId);
+                DisplayManager.displayBook(getSupportFragmentManager(), bookId, noteId);
                 if (noteId > 0) {
-                    mDisplayManager.displayNote(bookId, noteId);
+                    DisplayManager.displayNote(getSupportFragmentManager(), bookId, noteId);
                 }
             } else if (queryString != null) {
-                mDisplayManager.displayQuery(queryString);
+                DisplayManager.displayQuery(getSupportFragmentManager(), queryString);
             }
         }
     }
@@ -335,7 +328,7 @@ public class MainActivity extends CommonActivity
         super.onResume();
 
         if (clearFragmentBackstack) {
-            mDisplayManager.clear();
+            DisplayManager.clear(getSupportFragmentManager());
             clearFragmentBackstack = false;
         }
 
@@ -493,7 +486,7 @@ public class MainActivity extends CommonActivity
                 layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
 
                 /* For Query fragment, fill the box with full query. */
-                String q = mDisplayManager.getDisplayedQuery();
+                String q = DisplayManager.getDisplayedQuery(getSupportFragmentManager());
                 if (q != null) {
                     searchView.setQuery(q + " ", false);
 
@@ -522,7 +515,7 @@ public class MainActivity extends CommonActivity
                 /* Close search. */
                 MenuItemCompat.collapseActionView(searchItem);
 
-                mDisplayManager.displayQuery(str);
+                DisplayManager.displayQuery(getSupportFragmentManager(), str);
 
                 return true;
             }
@@ -670,7 +663,7 @@ public class MainActivity extends CommonActivity
 
         if (note != null) {
             long bookId = note.getPosition().getBookId();
-            mDisplayManager.displayNote(bookId, noteId);
+            DisplayManager.displayNote(getSupportFragmentManager(), bookId, noteId);
         }
     }
 
@@ -683,7 +676,7 @@ public class MainActivity extends CommonActivity
         if (note != null) {
             long bookId = note.getPosition().getBookId();
             mSyncFragment.sparseTree(bookId, noteId);
-            mDisplayManager.displayBook(bookId, noteId);
+            DisplayManager.displayBook(getSupportFragmentManager(), bookId, noteId);
         }
     }
 
@@ -703,7 +696,7 @@ public class MainActivity extends CommonActivity
     public void onNoteNewRequest(NotePlace target) {
         finishActionMode();
 
-        mDisplayManager.displayNewNote(target);
+        DisplayManager.displayNewNote(getSupportFragmentManager(), target);
     }
 
     /* Save note. */
@@ -731,7 +724,7 @@ public class MainActivity extends CommonActivity
                                 note.getId(),
                                 Place.BELOW);
 
-                        mDisplayManager.displayNewNote(notePlace);
+                        DisplayManager.displayNewNote(getSupportFragmentManager(), notePlace);
                     }));
         }
 
@@ -807,7 +800,7 @@ public class MainActivity extends CommonActivity
     public void onBookPrefaceEditRequest(Book book) {
         finishActionMode();
 
-        mDisplayManager.displayEditor(book);
+        DisplayManager.displayEditor(getSupportFragmentManager(), book);
     }
 
     @Override
@@ -1233,7 +1226,7 @@ public class MainActivity extends CommonActivity
         /* Attempt to avoid occasional rare IllegalStateException (state loss related).
          * Consider removing BooksFragmentListener and using broadcasts for all actions instead.
          */
-        // mDisplayManager.displayBook(bookId, 0);
+        // DisplayManager.displayBook(bookId, 0);
         Intent intent = new Intent(AppIntent.ACTION_OPEN_BOOK);
         intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
@@ -1377,7 +1370,7 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onFilterNewRequest() {
-        mDisplayManager.onFilterNewRequest();
+        DisplayManager.onFilterNewRequest(getSupportFragmentManager());
     }
 
     @Override
@@ -1387,7 +1380,7 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onFilterEditRequest(long id) {
-        mDisplayManager.onFilterEditRequest(id);
+        DisplayManager.onFilterEditRequest(getSupportFragmentManager(), id);
     }
 
     @Override
@@ -1446,24 +1439,24 @@ public class MainActivity extends CommonActivity
 
         runDelayedAfterDrawerClose(() -> {
             if (item instanceof DrawerFragment.BooksItem) {
-                mDisplayManager.displayBooks(true);
+                DisplayManager.displayBooks(getSupportFragmentManager(), true);
 
             } else if (item instanceof DrawerFragment.FiltersItem) {
-                mDisplayManager.displayFilters();
+                DisplayManager.displayFilters(getSupportFragmentManager());
 
             } else if (item instanceof DrawerFragment.SettingsItem) {
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 
             } else if (item instanceof DrawerFragment.BookItem) {
                 long bookId = ((DrawerFragment.BookItem) item).id;
-                mDisplayManager.displayBook(bookId, 0);
+                DisplayManager.displayBook(getSupportFragmentManager(), bookId, 0);
 
             } else if (item instanceof DrawerFragment.FilterItem) {
                 String query = ((DrawerFragment.FilterItem) item).query;
-                mDisplayManager.displayQuery(query);
+                DisplayManager.displayQuery(getSupportFragmentManager(), query);
 
             } else if (item instanceof DrawerFragment.AgendaItem) {
-                mDisplayManager.displayAgenda();
+                DisplayManager.displayAgenda(getSupportFragmentManager());
             }
         });
     }
