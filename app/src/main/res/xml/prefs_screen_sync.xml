@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="@string/pref_key_repos"
+        android:title="@string/repos_preference_title"
+        android:summary="@string/repos_preference_summary">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.orgzly"
+            android:targetClass="com.orgzly.android.ui.ReposActivity"/>
+    </Preference>
+
+    <!-- XML file with this name must exist -->
+    <PreferenceScreen
+        android:key="prefs_screen_auto_sync"
+        android:title="@string/auto_sync_experimental"
+        android:summary="@string/auto_sync_experimental_summary">
+    </PreferenceScreen>
+</PreferenceScreen>

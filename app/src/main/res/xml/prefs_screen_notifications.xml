@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:key="@string/pref_key_new_note_notification"
+        android:title="@string/new_note_notification"
+        android:summary="@string/new_note_notification_summary"
+        android:defaultValue="@bool/pref_default_value_new_note_notification"/>
+
+    <SwitchPreference
+        android:key="@string/pref_key_show_sync_notifications"
+        android:title="@string/show_sync_notifications_title"
+        android:summary="@string/show_sync_notifications_summary"
+        android:defaultValue="@bool/pref_default_value_show_sync_notifications"/>
+</PreferenceScreen>

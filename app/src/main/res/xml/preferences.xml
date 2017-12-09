@@ -1,313 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/prefs_interface">
-        <SwitchPreference
-            android:key="@string/pref_key_is_reverse_click_action"
-            android:title="@string/reversed_note_click_action"
-            android:summary="@string/reversed_note_click_action_summary"
-            android:defaultValue="@bool/pref_default_is_reverse_click_action"/>
-    </PreferenceCategory>
+    <PreferenceScreen
+        android:title="@string/look_and_feel"
+        android:key="prefs_screen_look_and_feel"/>
 
-    <PreferenceCategory android:title="@string/look_and_feel">
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-            android:key="@string/pref_key_color_scheme"
-            android:title="@string/color_scheme"
-            android:entries="@array/color_scheme"
-            android:entryValues="@array/color_scheme_values"
-            android:defaultValue="@string/pref_default_value_color_scheme"/>
+    <PreferenceScreen
+        android:title="@string/pref_title_notebooks"
+        android:key="prefs_screen_notebooks"/>
 
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-            android:key="@string/pref_key_font_size"
-            android:title="@string/font_size"
-            android:entries="@array/font_sizes"
-            android:entryValues="@array/font_sizes_values"
-            android:defaultValue="@string/pref_default_value_font_size"/>
+    <PreferenceScreen
+        android:title="@string/notes_list"
+        android:key="prefs_screen_list_of_notes"/>
 
-        <SwitchPreference
-            android:key="@string/pref_key_style_text"
-            android:title="@string/style_text_title"
-            android:summary="@string/style_text_summary"
-            android:defaultValue="@bool/pref_default_style_text"/>
+    <PreferenceScreen
+        android:title="@string/notes"
+        android:key="prefs_screen_notes"/>
 
-        <SwitchPreference
-            android:key="@string/pref_key_is_font_monospaced"
-            android:title="@string/monospaced_font"
-            android:summary="@string/monospaced_font_summary"
-            android:defaultValue="@bool/pref_default_is_font_monospaced"/>
+    <PreferenceScreen
+        android:title="@string/prefs_title_notifications"
+        android:key="prefs_screen_notifications"/>
 
-        <SwitchPreference
-            android:key="@string/pref_key_styled_text_with_marks"
-            android:dependency="@string/pref_key_style_text"
-            android:title="@string/styled_text_with_marks_title"
-            android:summary="@string/styled_text_with_marks_summary"
-            android:defaultValue="@bool/pref_default_styled_text_with_marks"/>
+    <PreferenceScreen
+        android:title="@string/prefs_title_reminders"
+        android:key="prefs_screen_reminders"/>
 
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-            android:key="@string/pref_key_layout_direction"
-            android:title="@string/layout_direction"
-            android:entries="@array/layout_direction"
-            android:entryValues="@array/layout_direction_values"
-            android:defaultValue="@string/pref_default_value_layout_direction"/>
+    <PreferenceScreen
+        android:title="@string/sync"
+        android:key="prefs_screen_sync"/>
 
-    </PreferenceCategory>
+    <PreferenceScreen
+        android:title="@string/org_file_format"
+        android:key="prefs_screen_org_file_format"/>
 
-    <PreferenceCategory android:title="@string/pref_title_notebooks">
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-            android:key="@string/pref_key_notebooks_sort_order"
-            android:title="@string/sort_order"
-            android:dialogTitle="@string/notebooks_sort_order"
-            android:entries="@array/notebooks_sort_order"
-            android:entryValues="@array/notebooks_sort_order_values"
-            android:defaultValue="@string/pref_default_notebooks_sort_order"/>
-
-        <MultiSelectListPreference
-            android:key="@string/pref_key_displayed_book_details"
-            android:title="@string/details"
-            android:dialogTitle="@string/notebook_details"
-            android:summary="@string/displayed_details_about_notebook"
-            android:entries="@array/displayed_book_details"
-            android:entryValues="@array/displayed_book_details_values"
-            android:defaultValue="@array/displayed_book_details_default"/>
-
-        <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
-            android:key="@string/pref_key_share_notebook"
-            android:title="@string/default_notebook"
-            android:selectAllOnFocus="true"
-            android:inputType="text"
-            android:singleLine="true"
-            android:dialogMessage="@string/default_notebook_desc"
-            android:defaultValue="@string/default_share_notebook"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_force_utf8"
-            android:title="@string/force_utf8"
-            android:summary="@string/force_utf8_summary"
-            android:defaultValue="@bool/pref_default_force_utf8"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/notes_list">
-
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-            android:key="@string/pref_key_notes_list_density"
-            android:title="@string/density"
-            android:entries="@array/list_density"
-            android:entryValues="@array/list_density_values"
-            android:defaultValue="@string/pref_default_notes_list_density"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_display_planning"
-            android:title="@string/display_planning_times"
-            android:summary="@string/display_planning_times_summary"
-            android:defaultValue="@bool/pref_default_display_planning"/>
-
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-            android:key="@string/pref_key_book_name_in_search"
-            android:title="@string/book_name_in_search"
-            android:entries="@array/book_name_in_search_entries"
-            android:entryValues="@array/book_name_in_search_entry_values"
-            android:defaultValue="@string/pref_default_value_book_name_in_search"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_display_inherited_tags_in_search_results"
-            android:title="@string/display_inherited_tags_in_search_results"
-            android:summary="@string/display_inherited_tags_in_search_results_summary"
-            android:defaultValue="@bool/pref_default_display_inherited_tags_in_search_results"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_is_notes_content_displayed_in_list"
-            android:title="@string/display_content"
-            android:summary="@string/display_both_title_and_content"
-            android:defaultValue="@bool/pref_default_is_notes_content_displayed_in_list"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_is_notes_content_displayed_in_search"
-            android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
-            android:title="@string/display_content_in_search"
-            android:summary="@string/display_content_in_search_results"
-            android:defaultValue="@bool/pref_default_is_notes_content_displayed_in_search"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_is_notes_content_foldable"
-            android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
-            android:title="@string/fold_content"
-            android:summary="@string/allow_folding_of_content"
-            android:defaultValue="@bool/pref_default_is_notes_content_foldable"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_content_line_count_displayed"
-            android:title="@string/content_line_count_displayed"
-            android:summary="@string/content_line_count_displayed_summary"
-            android:defaultValue="@bool/pref_default_content_line_count_displayed"/>
-
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-            android:key="@string/pref_key_preface_in_book"
-            android:title="@string/preface_in_book"
-            android:entries="@array/preface_in_book_entries"
-            android:entryValues="@array/preface_in_book_entry_values"
-            android:defaultValue="@string/pref_default_value_preface_in_book"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/notes">
-        <com.orgzly.android.prefs.StatesPreference
-            android:key="@string/pref_key_states"
-            android:title="@string/states"
-            android:dialogTitle="@string/states"
-            android:defaultValue="@string/pref_default_states"/>
-
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-            android:key="@string/pref_key_default_priority"
-            android:title="@string/default_priority"
-            android:entries="@array/priorities"
-            android:entryValues="@array/priority_values"
-            android:defaultValue="@string/pref_default_default_priority"/>
-
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-            android:key="@string/pref_key_min_priority"
-            android:title="@string/lowest_priority"
-            android:entries="@array/priorities"
-            android:entryValues="@array/priority_values"
-            android:defaultValue="@string/pref_default_min_priority"/>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/prefs_title_new_note">
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-            android:key="@string/pref_key_new_note_state"
-            android:title="@string/state"
-            android:defaultValue="@string/pref_default_value_new_note_state"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_is_new_note_scheduled"
-            android:title="@string/scheduled"
-            android:summary="@string/scheduled_new_notes_for_today"
-            android:defaultValue="@bool/pref_default_value_is_new_note_scheduled"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_is_created_at_added"
-            android:title="@string/created_at"
-            android:summary="@string/insert_note_creation_time"
-            android:defaultValue="@bool/pref_default_value_is_created_at_added"/>
-
-        <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
-            android:key="@string/pref_key_created_at_property"
-            android:dependency="@string/pref_key_is_created_at_added"
-            android:title="@string/created_at_property"
-            android:dialogTitle="@string/property_name"
-            android:inputType="text"
-            android:defaultValue="@string/pref_default_created_at_property"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/org_file_format">
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-            android:key="@string/pref_key_separate_notes_with_new_line"
-            android:title="@string/separate_notes_with_new_line"
-            android:entries="@array/separate_notes_with_new_line_names"
-            android:entryValues="@array/separate_notes_with_new_line_values"
-            android:defaultValue="@string/pref_default_separate_notes_with_new_line"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_separate_header_and_content_with_new_line"
-            android:title="@string/separate_header_and_content_with_new_line"
-            android:summary="@string/separate_header_and_content_with_new_line_summary"
-            android:defaultValue="@bool/pref_default_separate_header_and_content_with_new_line"/>
-
-        <!-- XML file with this name must exist -->
-        <PreferenceScreen
-            android:key="preferences_org_mode_tags_indent"
-            android:title="@string/tags_indent"
-            android:summary="@string/tags_indent_summary"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/prefs_title_notifications">
-        <SwitchPreference
-            android:key="@string/pref_key_new_note_notification"
-            android:title="@string/new_note_notification"
-            android:summary="@string/new_note_notification_summary"
-            android:defaultValue="@bool/pref_default_value_new_note_notification"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_show_sync_notifications"
-            android:title="@string/show_sync_notifications_title"
-            android:summary="@string/show_sync_notifications_summary"
-            android:defaultValue="@bool/pref_default_value_show_sync_notifications"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/prefs_title_reminders">
-        <SwitchPreference
-            android:key="@string/pref_key_use_reminders_for_scheduled_times"
-            android:title="@string/pref_title_reminders_for_scheduled_times"
-            android:summary="@string/pref_title_summary_reminders_for_scheduled_times"
-            android:defaultValue="@bool/pref_default_value_use_reminders_for_scheduled_times"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_use_reminders_for_deadline_times"
-            android:title="@string/pref_title_reminders_for_deadline_times"
-            android:summary="@string/pref_title_summary_reminders_for_deadline_times"
-            android:defaultValue="@bool/pref_default_value_use_reminders_for_deadline_times"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_reminders_sound"
-            android:title="@string/pref_title_reminders_sound"
-            android:defaultValue="@bool/pref_default_value_reminders_sound"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_reminders_led"
-            android:title="@string/pref_title_reminders_led"
-            android:defaultValue="@bool/pref_default_value_reminders_led"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_reminders_vibrate"
-            android:title="@string/pref_title_reminders_vibrate"
-            android:defaultValue="@bool/pref_default_value_reminders_vibrate"/>
-
-        <com.orgzly.android.prefs.PositiveIntegerPreference
-            android:key="@string/pref_key_snooze_time"
-            android:title="@string/pref_title_snooze_time"
-            android:inputType="numberSigned"
-            android:defaultValue="@string/pref_default_value_snooze_time"/>
-
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-            android:key="@string/pref_key_snooze_type"
-            android:title="@string/pref_title_snooze_type"
-            android:entries="@array/snooze_types"
-            android:entryValues="@array/snooze_type_values"
-            android:defaultValue="@string/pref_default_value_snooze_type"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/sync">
-        <Preference
-            android:key="@string/pref_key_repos"
-            android:title="@string/repos_preference_title"
-            android:summary="@string/repos_preference_summary">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:targetPackage="com.orgzly"
-                android:targetClass="com.orgzly.android.ui.ReposActivity"/>
-        </Preference>
-
-        <!-- XML file with this name must exist -->
-        <PreferenceScreen
-            android:key="preferences_auto_sync"
-            android:title="@string/auto_sync_experimental"
-            android:summary="@string/auto_sync_experimental_summary">
-        </PreferenceScreen>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/app">
-        <Preference
-            android:key="@string/pref_key_reload_getting_started"
-            android:title="@string/reload_getting_started"
-            android:summary="@string/reload_getting_started_summary"/>
-
-        <Preference
-            android:key="@string/pref_key_clear_database"
-            android:title="@string/clear_database"
-            android:summary="@string/clear_database_summary"/>
-
-        <Preference
-            android:key="@string/pref_key_version"
-            android:title="@string/version"/>
-    </PreferenceCategory>
+    <PreferenceScreen
+        android:title="@string/app"
+        android:key="prefs_screen_app"/>
 
 </PreferenceScreen>

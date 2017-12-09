@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:key="@string/pref_key_is_reverse_click_action"
+        android:title="@string/reversed_note_click_action"
+        android:summary="@string/reversed_note_click_action_summary"
+        android:defaultValue="@bool/pref_default_is_reverse_click_action"/>
+
+    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        android:key="@string/pref_key_color_scheme"
+        android:title="@string/color_scheme"
+        android:entries="@array/color_scheme"
+        android:entryValues="@array/color_scheme_values"
+        android:defaultValue="@string/pref_default_value_color_scheme"/>
+
+    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        android:key="@string/pref_key_font_size"
+        android:title="@string/font_size"
+        android:entries="@array/font_sizes"
+        android:entryValues="@array/font_sizes_values"
+        android:defaultValue="@string/pref_default_value_font_size"/>
+
+    <SwitchPreference
+        android:key="@string/pref_key_style_text"
+        android:title="@string/style_text_title"
+        android:summary="@string/style_text_summary"
+        android:defaultValue="@bool/pref_default_style_text"/>
+
+    <SwitchPreference
+        android:key="@string/pref_key_is_font_monospaced"
+        android:title="@string/monospaced_font"
+        android:summary="@string/monospaced_font_summary"
+        android:defaultValue="@bool/pref_default_is_font_monospaced"/>
+
+    <SwitchPreference
+        android:key="@string/pref_key_styled_text_with_marks"
+        android:dependency="@string/pref_key_style_text"
+        android:title="@string/styled_text_with_marks_title"
+        android:summary="@string/styled_text_with_marks_summary"
+        android:defaultValue="@bool/pref_default_styled_text_with_marks"/>
+
+    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        android:key="@string/pref_key_layout_direction"
+        android:title="@string/layout_direction"
+        android:entries="@array/layout_direction"
+        android:entryValues="@array/layout_direction_values"
+        android:defaultValue="@string/pref_default_value_layout_direction"/>
+</PreferenceScreen>

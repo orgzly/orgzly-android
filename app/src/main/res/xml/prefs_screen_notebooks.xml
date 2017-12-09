@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        android:key="@string/pref_key_notebooks_sort_order"
+        android:title="@string/sort_order"
+        android:dialogTitle="@string/notebooks_sort_order"
+        android:entries="@array/notebooks_sort_order"
+        android:entryValues="@array/notebooks_sort_order_values"
+        android:defaultValue="@string/pref_default_notebooks_sort_order"/>
+
+    <MultiSelectListPreference
+        android:key="@string/pref_key_displayed_book_details"
+        android:title="@string/details"
+        android:dialogTitle="@string/notebook_details"
+        android:summary="@string/displayed_details_about_notebook"
+        android:entries="@array/displayed_book_details"
+        android:entryValues="@array/displayed_book_details_values"
+        android:defaultValue="@array/displayed_book_details_default"/>
+
+    <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
+        android:key="@string/pref_key_share_notebook"
+        android:title="@string/default_notebook"
+        android:selectAllOnFocus="true"
+        android:inputType="text"
+        android:singleLine="true"
+        android:dialogMessage="@string/default_notebook_desc"
+        android:defaultValue="@string/default_share_notebook"/>
+
+    <SwitchPreference
+        android:key="@string/pref_key_force_utf8"
+        android:title="@string/force_utf8"
+        android:summary="@string/force_utf8_summary"
+        android:defaultValue="@bool/pref_default_force_utf8"/>
+
+</PreferenceScreen>

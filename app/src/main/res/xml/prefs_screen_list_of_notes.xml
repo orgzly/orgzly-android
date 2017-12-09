@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        android:key="@string/pref_key_notes_list_density"
+        android:title="@string/density"
+        android:entries="@array/list_density"
+        android:entryValues="@array/list_density_values"
+        android:defaultValue="@string/pref_default_notes_list_density"/>
+
+    <SwitchPreference
+        android:key="@string/pref_key_display_planning"
+        android:title="@string/display_planning_times"
+        android:summary="@string/display_planning_times_summary"
+        android:defaultValue="@bool/pref_default_display_planning"/>
+
+    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        android:key="@string/pref_key_book_name_in_search"
+        android:title="@string/book_name_in_search"
+        android:entries="@array/book_name_in_search_entries"
+        android:entryValues="@array/book_name_in_search_entry_values"
+        android:defaultValue="@string/pref_default_value_book_name_in_search"/>
+
+    <SwitchPreference
+        android:key="@string/pref_key_display_inherited_tags_in_search_results"
+        android:title="@string/display_inherited_tags_in_search_results"
+        android:summary="@string/display_inherited_tags_in_search_results_summary"
+        android:defaultValue="@bool/pref_default_display_inherited_tags_in_search_results"/>
+
+    <SwitchPreference
+        android:key="@string/pref_key_is_notes_content_displayed_in_list"
+        android:title="@string/display_content"
+        android:summary="@string/display_both_title_and_content"
+        android:defaultValue="@bool/pref_default_is_notes_content_displayed_in_list"/>
+
+    <SwitchPreference
+        android:key="@string/pref_key_is_notes_content_displayed_in_search"
+        android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
+        android:title="@string/display_content_in_search"
+        android:summary="@string/display_content_in_search_results"
+        android:defaultValue="@bool/pref_default_is_notes_content_displayed_in_search"/>
+
+    <SwitchPreference
+        android:key="@string/pref_key_is_notes_content_foldable"
+        android:dependency="@string/pref_key_is_notes_content_displayed_in_list"
+        android:title="@string/fold_content"
+        android:summary="@string/allow_folding_of_content"
+        android:defaultValue="@bool/pref_default_is_notes_content_foldable"/>
+
+    <SwitchPreference
+        android:key="@string/pref_key_content_line_count_displayed"
+        android:title="@string/content_line_count_displayed"
+        android:summary="@string/content_line_count_displayed_summary"
+        android:defaultValue="@bool/pref_default_content_line_count_displayed"/>
+
+    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        android:key="@string/pref_key_preface_in_book"
+        android:title="@string/preface_in_book"
+        android:entries="@array/preface_in_book_entries"
+        android:entryValues="@array/preface_in_book_entry_values"
+        android:defaultValue="@string/pref_default_value_preface_in_book"/>
+</PreferenceScreen>

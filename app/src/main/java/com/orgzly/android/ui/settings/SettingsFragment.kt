@@ -28,8 +28,6 @@ import java.util.*
  * Displays settings.
  */
 class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
-
-    private var mReposPreference: Preference? = null
     private var mListener: SettingsFragmentListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,26 +42,53 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         when (resourceName) {
             null -> { // Main screen
                 addPreferencesFromResource(R.xml.preferences)
-                setupMainPageSettings()
             }
-            "preferences_org_mode_tags_indent" -> addPreferencesFromResource(R.xml.preferences_org_mode_tags_indent)
-            "preferences_auto_sync" -> addPreferencesFromResource(R.xml.preferences_auto_sync)
+
+        /* Headers file & fragments have been tried - transitions were
+         * not smooth, previous fragment would be briefly displayed.
+         */
+            "prefs_screen_look_and_feel" ->
+                addPreferencesFromResource(R.xml.prefs_screen_look_and_feel)
+            "prefs_screen_notebooks" ->
+                addPreferencesFromResource(R.xml.prefs_screen_notebooks)
+            "prefs_screen_list_of_notes" ->
+                addPreferencesFromResource(R.xml.prefs_screen_list_of_notes)
+            "prefs_screen_notes" ->
+                addPreferencesFromResource(R.xml.prefs_screen_notes)
+            "prefs_screen_org_file_format" ->
+                addPreferencesFromResource(R.xml.prefs_screen_org_file_format)
+            "prefs_screen_org_mode_tags_indent" -> // Sub-screen
+                addPreferencesFromResource(R.xml.prefs_screen_org_mode_tags_indent)
+            "prefs_screen_notifications" ->
+                addPreferencesFromResource(R.xml.prefs_screen_notifications)
+            "prefs_screen_reminders" ->
+                addPreferencesFromResource(R.xml.prefs_screen_reminders)
+            "prefs_screen_sync" ->
+                addPreferencesFromResource(R.xml.prefs_screen_sync)
+            "prefs_screen_auto_sync" -> // Sub-screen
+                addPreferencesFromResource(R.xml.prefs_screen_auto_sync)
+            "prefs_screen_app" -> {
+                addPreferencesFromResource(R.xml.prefs_screen_app)
+            }
         }
+
+        setupPreferences()
     }
 
-    private fun setupMainPageSettings() {
-        mReposPreference = findPreference(getString(R.string.pref_key_repos))
+    private fun setupPreferences() {
+        findPreference(getString(R.string.pref_key_clear_database))?.let {
+            it.setOnPreferenceClickListener { _ ->
+                mListener?.onDatabaseClearRequest()
+                true
+            }
+        }
 
-        findPreference(getString(R.string.pref_key_clear_database))
-                .setOnPreferenceClickListener { _ ->
-                    mListener?.onDatabaseClearRequest()
-                    true
-                }
-        findPreference(getString(R.string.pref_key_reload_getting_started))
-                .setOnPreferenceClickListener { _ ->
-                    mListener?.onGettingStartedNotebookReloadRequest()
-                    true
-                }
+        findPreference(getString(R.string.pref_key_reload_getting_started))?.let {
+            it.setOnPreferenceClickListener { _ ->
+                mListener?.onGettingStartedNotebookReloadRequest()
+                true
+            }
+        }
 
         setupVersionPreference()
 
@@ -71,8 +96,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
         /* Disable preference for changing the layout, if not on API version that supports that. */
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            val layoutDirectionPref = findPreference(getString(R.string.pref_key_layout_direction))
-            layoutDirectionPref.isEnabled = false
+            findPreference(getString(R.string.pref_key_layout_direction))?.isEnabled = false
         }
 
         /* Update preferences which depend on multiple others. */
@@ -80,15 +104,15 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     }
 
     private fun setupVersionPreference() {
-        val versionPreference = findPreference(getString(R.string.pref_key_version))
+        findPreference(getString(R.string.pref_key_version))?.let { pref ->
+            /* Set summary to the current version string, appending suffix for the flavor. */
+            pref.summary = BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_SUFFIX
 
-        /* Set summary to the current version string, appending suffix for the flavor. */
-        versionPreference.summary = BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_SUFFIX
-
-        /* Display changelog dialog when version is clicked. */
-        versionPreference.setOnPreferenceClickListener { _ ->
-            mListener?.onWhatsNewDisplayRequest()
-            true
+            /* Display changelog dialog when version is clicked. */
+            pref.setOnPreferenceClickListener { _ ->
+                mListener?.onWhatsNewDisplayRequest()
+                true
+            }
         }
     }
 
@@ -163,12 +187,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, sharedPreferences, key)
 
-        val activity = activity
-
-        /* No activity or not the main settings page. */
-        if (activity == null || arguments.get(ARG_RESOURCE) != null) {
-            return
-        }
+        val activity = activity ?: return
 
         /* State keywords. */
         if (getString(R.string.pref_key_states) == key) {
@@ -187,7 +206,6 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
             if (key == getString(res)) {
                 activity.recreate()
                 break
-
             }
         }
 
@@ -202,28 +220,33 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
         /* Update default priority when minimum priority changes. */
         if (getString(R.string.pref_key_min_priority) == key) {
+            findPreference(getString(R.string.pref_key_default_priority))?.let {
+                val pref = it as ListPreferenceWithValueAsSummary
 
-            val defPri = AppPreferences.defaultPriority(context)
-            val minPri = sharedPreferences.getString(key, null)
+                val defPri = AppPreferences.defaultPriority(context)
+                val minPri = sharedPreferences.getString(key, null)
 
-            // Default priority is lower then minimum
-            if (defPri.compareTo(minPri!!, ignoreCase = true) > 0) { // minPri -> defPri
-                /* Must use preference directly to update the view too. */
-                val pref = findPreference(getString(R.string.pref_key_default_priority)) as ListPreferenceWithValueAsSummary
-                pref.value = minPri
+                // Default priority is lower then minimum
+                if (defPri.compareTo(minPri!!, ignoreCase = true) > 0) { // minPri -> defPri
+                    /* Must use preference directly to update the view too. */
+                    pref.value = minPri
+                }
             }
         }
 
         /* Update minimum priority when default priority changes. */
         if (getString(R.string.pref_key_default_priority) == key) {
-            val minPri = AppPreferences.minPriority(context)
-            val defPri = sharedPreferences.getString(key, null)
+            findPreference(getString(R.string.pref_key_min_priority))?.let {
+                val pref = it as ListPreferenceWithValueAsSummary
 
-            // Default priority is lower then minimum
-            if (minPri.compareTo(defPri!!, ignoreCase = true) < 0) { // minPri -> defPri
-                /* Must use preference directly to update the view too. */
-                val pref = findPreference(getString(R.string.pref_key_min_priority)) as ListPreferenceWithValueAsSummary
-                pref.value = defPri
+                val minPri = AppPreferences.minPriority(context)
+                val defPri = sharedPreferences.getString(key, null)
+
+                // Default priority is lower then minimum
+                if (minPri.compareTo(defPri!!, ignoreCase = true) < 0) { // minPri -> defPri
+                    /* Must use preference directly to update the view too. */
+                    pref.value = defPri
+                }
             }
         }
 
@@ -249,43 +272,51 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     }
 
     private fun updateOtherPreferencesForReminders() {
-        val remindersEnabled =
-                (findPreference(getString(R.string.pref_key_use_reminders_for_scheduled_times)) as TwoStatePreference).isChecked ||
-                (findPreference(getString(R.string.pref_key_use_reminders_for_deadline_times)) as TwoStatePreference).isChecked
+        val scheduled = findPreference(getString(R.string.pref_key_use_reminders_for_scheduled_times))
+        val deadline = findPreference(getString(R.string.pref_key_use_reminders_for_deadline_times))
 
-        findPreference(getString(R.string.pref_key_reminders_sound)).isEnabled = remindersEnabled
-        findPreference(getString(R.string.pref_key_reminders_led)).isEnabled = remindersEnabled
-        findPreference(getString(R.string.pref_key_reminders_vibrate)).isEnabled = remindersEnabled
-        findPreference(getString(R.string.pref_key_snooze_time)).isEnabled = remindersEnabled
-        findPreference(getString(R.string.pref_key_snooze_type)).isEnabled = remindersEnabled
+        if (scheduled != null && deadline != null) {
+            val remindersEnabled = (scheduled as TwoStatePreference).isChecked || (deadline as TwoStatePreference).isChecked
+
+            findPreference(getString(R.string.pref_key_reminders_sound)).isEnabled = remindersEnabled
+            findPreference(getString(R.string.pref_key_reminders_led)).isEnabled = remindersEnabled
+            findPreference(getString(R.string.pref_key_reminders_vibrate)).isEnabled = remindersEnabled
+            findPreference(getString(R.string.pref_key_snooze_time)).isEnabled = remindersEnabled
+            findPreference(getString(R.string.pref_key_snooze_type)).isEnabled = remindersEnabled
+        }
     }
 
     /**
      * Update list of possible states that can be used as default for a new note.
      */
     private fun setDefaultStateForNewNote() {
-        /* NOTE followed by to-do keywords */
-        val entries = LinkedHashSet<CharSequence>()
-        entries.add(NoteStateSpinner.NO_STATE_KEYWORD)
-        entries.addAll(AppPreferences.todoKeywordsSet(context))
-        val entriesArray = entries.toTypedArray()
+        findPreference(getString(R.string.pref_key_new_note_state))?.let {
+            val pref = it as ListPreferenceWithValueAsSummary
 
-        /* Set possible values. */
-        val pref = findPreference(getString(R.string.pref_key_new_note_state)) as ListPreferenceWithValueAsSummary
-        pref.entries = entriesArray
-        pref.entryValues = entriesArray
+            /* NOTE followed by to-do keywords */
+            val entries = LinkedHashSet<CharSequence>()
+            entries.add(NoteStateSpinner.NO_STATE_KEYWORD)
+            entries.addAll(AppPreferences.todoKeywordsSet(context))
+            val entriesArray = entries.toTypedArray()
 
-        /* Set current value. */
-        val value = AppPreferences.newNoteState(context)
-        if (entries.contains(value)) {
-            pref.value = value
-        } else {
-            pref.value = NoteStateSpinner.NO_STATE_KEYWORD
+            /* Set possible values. */
+            pref.entries = entriesArray
+            pref.entryValues = entriesArray
+
+            /* Set current value. */
+            val value = AppPreferences.newNoteState(context)
+            if (entries.contains(value)) {
+                pref.value = value
+            } else {
+                pref.value = NoteStateSpinner.NO_STATE_KEYWORD
+            }
         }
     }
 
     override fun onPreferenceTreeClick(preferenceScreen: PreferenceScreen?, preference: Preference): Boolean {
         super.onPreferenceTreeClick(preferenceScreen, preference)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, preference)
 
         if (preference is PreferenceScreen) {
             mListener?.onPreferenceScreen(preference.getKey())
