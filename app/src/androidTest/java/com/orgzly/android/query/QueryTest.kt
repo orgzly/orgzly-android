@@ -2,6 +2,7 @@ package com.orgzly.android.query
 
 import android.support.test.espresso.matcher.ViewMatchers.assertThat
 import com.orgzly.android.OrgzlyTest
+import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.query.dotted.DottedQueryBuilder
 import com.orgzly.android.query.dotted.DottedQueryParser
 import com.orgzly.android.query.sqlite.SqliteQueryBuilder
@@ -196,7 +197,9 @@ class QueryTest(
     }
 
     @Before
-    fun parse() {
+    override fun setUp() {
+        super.setUp()
+
         // Parse query
         val parser = DottedQueryParser()
         val query = parser.parse(queryString)

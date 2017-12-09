@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.support.test.InstrumentationRegistry;
 import com.orgzly.R;
 import com.orgzly.android.prefs.AppPreferences;
@@ -53,18 +54,7 @@ public class OrgzlyTest {
         /* Recreate all tables. */
         DbClient.recreateTables(context);
 
-        /*
-         * Using Handler due to:
-         *   android.view.InflateException: Binary XML file line #26: Error inflating class java.lang.reflect.Constructor
-         *   at android.preference.GenericInflater.createItem(GenericInflater.java:397)
-         * on HTC One V API 15.
-         */
-//        new Handler(context.getMainLooper()).post(new Runnable() {
-//            @Override
-//            public void run() {
         setupPreferences();
-//            }
-//        });
     }
 
     @After
