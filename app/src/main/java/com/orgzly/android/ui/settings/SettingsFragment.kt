@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.preference.Preference
+import android.preference.PreferenceManager
 import android.preference.PreferenceScreen
 import android.preference.TwoStatePreference
 import android.support.annotation.StringRes
@@ -106,15 +107,8 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
             }
         }
 
-        /*
-         * Add some padding to list.
-         */
-        if (view != null) {
-            val list = view.findViewById(android.R.id.list) as ListView
-            val h = resources.getDimension(R.dimen.fragment_horizontal_padding).toInt()
-            val v = resources.getDimension(R.dimen.fragment_vertical_padding).toInt()
-            list.setPadding(h, v, h, v)
-        }
+        /* Remove dividers. */
+        view?.findViewById(android.R.id.list)?.let { (it as ListView).divider = null }
 
         return view
     }
@@ -128,20 +122,16 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     override fun onResume() {
         super.onResume()
 
-        // Needs to be done in background.
-        // updateUserReposPreferenceSummary();
-
         /* Start to listen for any preference changes. */
-        android.preference.PreferenceManager.getDefaultSharedPreferences(activity)
+        PreferenceManager.getDefaultSharedPreferences(activity)
                 .registerOnSharedPreferenceChangeListener(this)
     }
-
 
     override fun onPause() {
         super.onPause()
 
         /* Stop listening for preference changed. */
-        android.preference.PreferenceManager.getDefaultSharedPreferences(activity)
+        PreferenceManager.getDefaultSharedPreferences(activity)
                 .unregisterOnSharedPreferenceChangeListener(this)
     }
 
