@@ -45,7 +45,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         when (resourceName) {
             null -> addPreferencesFromResource(R.xml.preferences) // Headings
 
-            in SCREENS -> addPreferencesFromResource(SCREENS.getValue(resourceName))
+            in PREFS_RESOURCES -> addPreferencesFromResource(PREFS_RESOURCES.getValue(resourceName))
         }
     }
 
@@ -277,7 +277,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     override fun onPreferenceTreeClick(preferenceScreen: PreferenceScreen?, preference: Preference?): Boolean {
         if (preference != null && preference is PreferenceScreen) {
             preference.key?.let { key ->
-                if (key in SCREENS) {
+                if (key in PREFS_RESOURCES) {
                     mListener?.onPreferenceScreen(key)
                     return true
                 }
@@ -310,7 +310,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         /* Using headers file & fragments didn't work well - transitions were
          * not smooth, previous fragment would be briefly displayed.
          */
-        private val SCREENS: HashMap<String, Int> = hashMapOf(
+        val PREFS_RESOURCES: HashMap<String, Int> = hashMapOf(
                 "prefs_screen_look_and_feel" to R.xml.prefs_screen_look_and_feel,
                 "prefs_screen_notebooks" to R.xml.prefs_screen_notebooks,
                 "prefs_screen_list_of_notes" to R.xml.prefs_screen_list_of_notes,

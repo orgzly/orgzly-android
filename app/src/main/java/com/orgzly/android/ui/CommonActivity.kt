@@ -23,6 +23,8 @@ import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import com.orgzly.android.App
+import com.orgzly.android.ui.settings.SettingsFragment
 
 
 /**
@@ -161,8 +163,6 @@ abstract class CommonActivity : AppCompatActivity() {
         setupLayoutDirection()
 
         super.onCreate(savedInstanceState)
-
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
 
         val intentFilter = IntentFilter()
         intentFilter.addAction(AppIntent.ACTION_DB_UPGRADE_STARTED)

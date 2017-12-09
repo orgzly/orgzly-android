@@ -4,6 +4,7 @@ package com.orgzly.android.prefs;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.preference.DialogPreference;
 import android.support.design.widget.TextInputLayout;
@@ -27,7 +28,6 @@ public class StatesPreference extends DialogPreference {
 
     private TextInputLayout doneLayout;
     private EditText doneStates;
-
 
     @TargetApi(21)
     public StatesPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -104,6 +104,18 @@ public class StatesPreference extends DialogPreference {
             if (button != null) {
                 button.setEnabled(isValid());
             }
+        }
+    }
+
+    @Override
+    protected Object onGetDefaultValue(TypedArray a, int index) {
+        return a.getString(index);
+    }
+
+    @Override
+    protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
+        if (!restorePersistedValue) {
+            AppPreferences.states(getContext(), (String) defaultValue);
         }
     }
 

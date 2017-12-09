@@ -3,6 +3,8 @@ package com.orgzly.android.prefs;
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.orgzly.R;
+import com.orgzly.android.App;
+import com.orgzly.android.ui.settings.SettingsFragment;
 import com.orgzly.org.OrgStatesWorkflow;
 
 import java.util.Arrays;
@@ -85,7 +87,7 @@ public class AppPreferences {
     public static void setToDefaults(Context context) {
         clearAllSharedPreferences(context);
 
-        setDefaultValues(context, R.xml.preferences, true);
+        App.setDefaultPreferences(context, true);
     }
 
     private static void clearAllSharedPreferences(Context context) {
