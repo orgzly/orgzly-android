@@ -34,45 +34,18 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         super.onCreate(savedInstanceState)
 
         addPreferencesFromResource()
+
+        setupPreferences()
     }
 
     private fun addPreferencesFromResource() {
         val resourceName = arguments?.getString(ARG_RESOURCE)
 
         when (resourceName) {
-            null -> { // Main screen
-                addPreferencesFromResource(R.xml.preferences)
-            }
+            null -> addPreferencesFromResource(R.xml.preferences) // Headings
 
-        /* Headers file & fragments have been tried - transitions were
-         * not smooth, previous fragment would be briefly displayed.
-         */
-            "prefs_screen_look_and_feel" ->
-                addPreferencesFromResource(R.xml.prefs_screen_look_and_feel)
-            "prefs_screen_notebooks" ->
-                addPreferencesFromResource(R.xml.prefs_screen_notebooks)
-            "prefs_screen_list_of_notes" ->
-                addPreferencesFromResource(R.xml.prefs_screen_list_of_notes)
-            "prefs_screen_notes" ->
-                addPreferencesFromResource(R.xml.prefs_screen_notes)
-            "prefs_screen_org_file_format" ->
-                addPreferencesFromResource(R.xml.prefs_screen_org_file_format)
-            "prefs_screen_org_mode_tags_indent" -> // Sub-screen
-                addPreferencesFromResource(R.xml.prefs_screen_org_mode_tags_indent)
-            "prefs_screen_notifications" ->
-                addPreferencesFromResource(R.xml.prefs_screen_notifications)
-            "prefs_screen_reminders" ->
-                addPreferencesFromResource(R.xml.prefs_screen_reminders)
-            "prefs_screen_sync" ->
-                addPreferencesFromResource(R.xml.prefs_screen_sync)
-            "prefs_screen_auto_sync" -> // Sub-screen
-                addPreferencesFromResource(R.xml.prefs_screen_auto_sync)
-            "prefs_screen_app" -> {
-                addPreferencesFromResource(R.xml.prefs_screen_app)
-            }
+            in SCREENS -> addPreferencesFromResource(SCREENS.getValue(resourceName))
         }
-
-        setupPreferences()
     }
 
     private fun setupPreferences() {
@@ -116,9 +89,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
         /*
@@ -313,14 +284,14 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         }
     }
 
-    override fun onPreferenceTreeClick(preferenceScreen: PreferenceScreen?, preference: Preference): Boolean {
-        super.onPreferenceTreeClick(preferenceScreen, preference)
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, preference)
-
-        if (preference is PreferenceScreen) {
-            mListener?.onPreferenceScreen(preference.getKey())
-            return true
+    override fun onPreferenceTreeClick(preferenceScreen: PreferenceScreen?, preference: Preference?): Boolean {
+        if (preference != null && preference is PreferenceScreen) {
+            preference.key?.let { key ->
+                if (key in SCREENS) {
+                    mListener?.onPreferenceScreen(key)
+                    return true
+                }
+            }
         }
 
         return false
@@ -345,6 +316,23 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
                 R.string.pref_key_font_size,
                 R.string.pref_key_color_scheme,
                 R.string.pref_key_layout_direction)
+
+        /* Using headers file & fragments didn't work well - transitions were
+         * not smooth, previous fragment would be briefly displayed.
+         */
+        private val SCREENS: HashMap<String, Int> = hashMapOf(
+                "prefs_screen_look_and_feel" to R.xml.prefs_screen_look_and_feel,
+                "prefs_screen_notebooks" to R.xml.prefs_screen_notebooks,
+                "prefs_screen_list_of_notes" to R.xml.prefs_screen_list_of_notes,
+                "prefs_screen_notes" to R.xml.prefs_screen_notes,
+                "prefs_screen_org_file_format" to R.xml.prefs_screen_org_file_format,
+                "prefs_screen_org_mode_tags_indent" to R.xml.prefs_screen_org_mode_tags_indent, // Sub-screen
+                "prefs_screen_notifications" to R.xml.prefs_screen_notifications,
+                "prefs_screen_reminders" to R.xml.prefs_screen_reminders,
+                "prefs_screen_sync" to R.xml.prefs_screen_sync,
+                "prefs_screen_auto_sync" to R.xml.prefs_screen_auto_sync, // Sub-screen
+                "prefs_screen_app" to R.xml.prefs_screen_app
+        )
 
         fun getInstance(res: String? = null): SettingsFragment {
             val fragment = SettingsFragment()
