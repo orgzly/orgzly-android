@@ -63,7 +63,8 @@ public class NewNoteTest extends OrgzlyTest {
 
         /* Enable "Created at" in settings. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onListItem(EspressoUtils.SETTINGS_CREATED_AT).perform(click());
+        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CREATED_AT);
+        pressBack();
         pressBack();
 
         onView(withId(R.id.fab)).perform(click());

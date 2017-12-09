@@ -135,7 +135,8 @@ public class ActionModeTest extends OrgzlyTest {
     @Test
     public void testSelectingNoteThenOpeningNoteAndGoingBack() {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onListItem(EspressoUtils.SETTINGS_REVERSED_NOTE_CLICK_ACTION).perform(click());
+        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_REVERSED_NOTE_CLICK_ACTION);
+        pressBack();
         pressBack();
         onListItem(3).perform(click()); // Selects
         onListItem(3).perform(longClick()); // Opens note

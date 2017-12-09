@@ -2,7 +2,6 @@ package com.orgzly.android.espresso;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
-import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.DatePicker;
@@ -12,9 +11,6 @@ import com.orgzly.R;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.MainActivity;
-import com.orgzly.android.ui.fragments.BooksFragment;
-import com.orgzly.android.ui.fragments.DrawerFragment;
-import com.orgzly.android.ui.fragments.SyncFragment;
 
 import org.hamcrest.Matcher;
 import org.junit.Rule;
@@ -130,8 +126,9 @@ public class MiscTest extends OrgzlyTest {
                 .perform(click());
         onView(withText("Note #2.")).perform(click());
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onListItem(EspressoUtils.SETTINGS_CLEAR_DATABASE).perform(click());
+        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CLEAR_DATABASE);
         onView(withText(R.string.ok)).perform(click());
+        pressBack();
         pressBack();
 
         onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
@@ -462,8 +459,8 @@ public class MiscTest extends OrgzlyTest {
         pressBack();
         pressBack();
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        fragmentTest(false, withText(R.string.prefs_interface));
-        onListItem(EspressoUtils.SETTINGS_REPOS).perform(click());
+        fragmentTest(false, withText(R.string.look_and_feel));
+        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_REPOS);
         fragmentTest(false, withId(R.id.fragment_repos_flipper));
         onListItem(1).perform(click());
         fragmentTest(false, withId(R.id.fragment_repo_directory_container));
@@ -474,6 +471,7 @@ public class MiscTest extends OrgzlyTest {
         onView(withId(R.id.fragment_repos_flipper)).check(matches(isDisplayed()));
         onListItem(0).perform(click());
         fragmentTest(false, withId(R.id.fragment_repo_dropbox_container));
+        pressBack();
         pressBack();
         pressBack();
         pressBack();

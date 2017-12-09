@@ -300,16 +300,18 @@ public class NoteFragmentTest extends OrgzlyTest {
 
         /* Change lowest priority to A. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onListItem(EspressoUtils.SETTINGS_LOWEST_PRIORITY).perform(click());
+        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_LOWEST_PRIORITY);
         onData(hasToString(containsString("A"))).perform(click());
+        pressBack();
         pressBack();
 
         onView(withId(R.id.fragment_note_priority)).check(matches(spinnerItemCount(2)));
 
         /* Change lowest priority to C. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onListItem(EspressoUtils.SETTINGS_LOWEST_PRIORITY).perform(click());
+        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_LOWEST_PRIORITY);
         onData(hasToString(containsString("C"))).perform(click());
+        pressBack();
         pressBack();
 
         onView(withId(R.id.fragment_note_priority)).check(matches(spinnerItemCount(4)));

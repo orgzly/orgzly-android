@@ -33,7 +33,6 @@ import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
@@ -356,7 +355,8 @@ public class BookTest extends OrgzlyTest {
     public void testNewNoteWithCreatedTimestamp() {
         /* Enable "Created at" in settings. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onListItem(EspressoUtils.SETTINGS_CREATED_AT).perform(click());
+        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CREATED_AT);
+        pressBack();
         pressBack();
 
         onView(withId(R.id.fab)).perform(click());

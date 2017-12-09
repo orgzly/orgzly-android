@@ -14,7 +14,7 @@
         android:key="prefs_screen_list_of_notes"/>
 
     <PreferenceScreen
-        android:title="@string/notes"
+        android:title="@string/note"
         android:key="prefs_screen_notes"/>
 
     <PreferenceScreen

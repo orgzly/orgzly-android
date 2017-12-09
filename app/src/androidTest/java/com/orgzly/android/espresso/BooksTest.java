@@ -79,7 +79,7 @@ public class BooksTest extends OrgzlyTest {
     @Test
     public void testOpenSettings() {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onView(withText(R.string.prefs_interface)).check(matches(isDisplayed()));
+        onView(withText(R.string.look_and_feel)).check(matches(isDisplayed()));
     }
 
     @Test

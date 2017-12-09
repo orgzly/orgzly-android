@@ -35,6 +35,7 @@
     <string name="imported">Imported</string>
     <string name="created">Created</string>
     <string name="states">States</string>
+    <string name="note">Note</string>
     <string name="notes">Notes</string>
     <string name="property">Property</string>
     <string name="import_as">Import as…</string>

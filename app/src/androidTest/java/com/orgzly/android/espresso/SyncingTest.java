@@ -84,9 +84,9 @@ public class SyncingTest extends OrgzlyTest {
 
         // Set preference
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onListItem(EspressoUtils.SETTINGS_AUTO_SYNC).perform(click());
-        onListItem(EspressoUtils.SETTINGS_AUTO_SYNC_TOGGLE).perform(click());
-        onListItem(EspressoUtils.SETTINGS_AUTO_SYNC_NOTE_CREATED).perform(click());
+        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_AUTO_SYNC_TOGGLE);
+        EspressoUtils.tapLastSetting(EspressoUtils.SETTINGS_AUTO_SYNC_NOTE_CREATED);
+        pressBack();
         pressBack();
         pressBack();
 
@@ -481,10 +481,11 @@ public class SyncingTest extends OrgzlyTest {
 
         /* Rename repository. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onListItem(EspressoUtils.SETTINGS_REPOS).perform(click());
+        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_REPOS);
         onListItem(0).perform(click());
         onView(withId(R.id.fragment_repo_dropbox_directory)).perform(replaceText("repo-b"));
         onActionItemClick(R.id.done, R.string.done);
+        pressBack();
         pressBack();
         pressBack();
 
@@ -533,13 +534,14 @@ public class SyncingTest extends OrgzlyTest {
 
         /* Rename all repositories. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onListItem(EspressoUtils.SETTINGS_REPOS).perform(click());
+        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_REPOS);
         onListItem(0).perform(click());
         onView(withId(R.id.fragment_repo_dropbox_directory)).perform(replaceText("repo-1"));
         onActionItemClick(R.id.done, R.string.done);
         onListItem(0).perform(click());
         onView(withId(R.id.fragment_repo_dropbox_directory)).perform(replaceText("repo-2"));
         onActionItemClick(R.id.done, R.string.done);
+        pressBack();
         pressBack();
         pressBack();
 
