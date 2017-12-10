@@ -908,7 +908,9 @@ public class BookFragment extends NoteListFragment
                 getListAdapter().notifyDataSetChanged();
             }
 
-            mActionModeListener.actionModeDestroyed();
+            if (mActionModeListener != null) {
+                mActionModeListener.actionModeDestroyed();
+            }
 
             announceChangesToActivity();
         }
