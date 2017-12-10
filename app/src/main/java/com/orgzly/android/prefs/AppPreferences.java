@@ -98,17 +98,6 @@ public class AppPreferences {
         getStateSharedPreferences(context).edit().clear().apply();
     }
 
-    public static boolean refreshOnSharedPreferenceChanged(Context context, String key) {
-        boolean isReparsingNotesRequired = false;
-
-        if (context.getString(R.string.pref_key_states).equals(key)) {
-            updateStaticKeywords(context);
-            isReparsingNotesRequired = true;
-        }
-
-        return isReparsingNotesRequired;
-    }
-
     /*
      * User preferences.
      * Default values are taken from string resources (also used by preferences.xml)

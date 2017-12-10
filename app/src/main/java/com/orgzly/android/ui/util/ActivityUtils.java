@@ -20,6 +20,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.ui.MainActivity;
+import com.orgzly.android.ui.fragments.AgendaFragment;
 import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
@@ -124,7 +125,7 @@ public class ActivityUtils {
                 actionBarAttr = R.attr.action_bar_in_query;
                 fabAttr = 0;
 
-            } else if (QueryFragment.FRAGMENT_TAG.equals(fragmentTag)) {
+            } else if (QueryFragment.FRAGMENT_TAG.equals(fragmentTag) || AgendaFragment.FRAGMENT_TAG.equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_in_query;
                 actionBarAttr = R.attr.action_bar_in_query;
                 fabAttr = 0;
