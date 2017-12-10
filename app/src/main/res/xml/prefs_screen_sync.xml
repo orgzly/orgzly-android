@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/sync">
+
     <Preference
         android:key="@string/pref_key_repos"
         android:title="@string/repos_preference_title"

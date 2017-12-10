@@ -62,6 +62,10 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
                 .commit()
     }
 
+    override fun onTitleChange(title: CharSequence?) {
+        setTitle(title ?: getText(R.string.settings))
+    }
+
     companion object {
         val TAG: String = SettingsActivity::class.java.name
     }

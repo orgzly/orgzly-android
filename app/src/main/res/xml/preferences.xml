@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/settings">
+
     <PreferenceScreen
         android:title="@string/look_and_feel"
         android:key="prefs_screen_look_and_feel"/>

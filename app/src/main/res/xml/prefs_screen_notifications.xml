@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/prefs_title_notifications">
+
     <SwitchPreference
         android:key="@string/pref_key_new_note_notification"
         android:title="@string/new_note_notification"

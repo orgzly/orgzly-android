@@ -122,6 +122,8 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     override fun onResume() {
         super.onResume()
 
+        mListener?.onTitleChange(preferenceScreen?.title)
+
         /* Start to listen for any preference changes. */
         PreferenceManager.getDefaultSharedPreferences(activity)
                 .registerOnSharedPreferenceChangeListener(this)
@@ -293,6 +295,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         fun onGettingStartedNotebookReloadRequest()
         fun onWhatsNewDisplayRequest()
         fun onPreferenceScreen(resource: String)
+        fun onTitleChange(title: CharSequence?)
     }
 
     companion object {

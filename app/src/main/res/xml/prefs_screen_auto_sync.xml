@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/auto_sync_experimental">
 
     <Preference
         android:selectable="false"
         android:icon="?attr/oic_warning"
-        android:title="@string/experimental"/>
+        android:summary="@string/auto_sync_description"/>
 
     <SwitchPreference
         android:key="@string/pref_key_auto_sync"
         android:title="@string/auto_sync"
         android:defaultValue="@bool/pref_default_value_auto_sync"/>
-
-    <Preference
-        android:selectable="false"
-        android:summary="@string/auto_sync_description"/>
-
 
     <SwitchPreference
         android:key="@string/pref_key_auto_sync_on_note_create"

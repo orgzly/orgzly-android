@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/prefs_title_reminders">
+
     <SwitchPreference
         android:key="@string/pref_key_use_reminders_for_scheduled_times"
         android:title="@string/pref_title_reminders_for_scheduled_times"

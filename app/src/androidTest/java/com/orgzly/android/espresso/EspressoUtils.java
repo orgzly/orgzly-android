@@ -45,7 +45,7 @@ class EspressoUtils {
 
     static final int[] SETTINGS_REPOS = { 4, 0 };
     static final int[] SETTINGS_AUTO_SYNC_TOGGLE = { 4, 1, 1 };
-    static final int[] SETTINGS_AUTO_SYNC_NOTE_CREATED = { 4, 1, 3 };
+    static final int[] SETTINGS_AUTO_SYNC_NOTE_CREATED = { 4, 1, 2 };
 
     static final int[] IMPORT_GETTING_STARTED = { 5, 0 };
     static final int[] SETTINGS_CLEAR_DATABASE = { 5, 1 };

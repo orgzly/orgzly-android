@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/tags_indent">
 
-  <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
-      android:key="@string/pref_key_tags_column"
-      android:title="@string/tags_column"
-      android:numeric="integer"
-      android:inputType="numberSigned"
-      android:defaultValue="@string/pref_default_tags_column"/>
+    <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
+        android:key="@string/pref_key_tags_column"
+        android:title="@string/tags_column"
+        android:numeric="integer"
+        android:inputType="numberSigned"
+        android:defaultValue="@string/pref_default_tags_column"/>
 
-  <SwitchPreference
-      android:key="@string/pref_key_org_indent_mode"
-      android:title="@string/org_indent_mode"
-      android:summary="@string/org_indent_mode_summary"
-      android:defaultValue="@bool/pref_default_org_indent_mode"/>
+    <SwitchPreference
+        android:key="@string/pref_key_org_indent_mode"
+        android:title="@string/org_indent_mode"
+        android:summary="@string/org_indent_mode_summary"
+        android:defaultValue="@bool/pref_default_org_indent_mode"/>
 
-  <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
-      android:key="@string/pref_key_org_indent_indentation_per_level"
-      android:title="@string/org_indent_indentation_per_level"
-      android:dialogTitle="@string/org_indent_indentation_per_level"
-      android:dependency="@string/pref_key_org_indent_mode"
-      android:numeric="integer"
-      android:inputType="number"
-      android:defaultValue="@string/pref_default_org_indent_indentation_per_level"/>
+    <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
+        android:key="@string/pref_key_org_indent_indentation_per_level"
+        android:title="@string/org_indent_indentation_per_level"
+        android:dialogTitle="@string/org_indent_indentation_per_level"
+        android:dependency="@string/pref_key_org_indent_mode"
+        android:numeric="integer"
+        android:inputType="number"
+        android:defaultValue="@string/pref_default_org_indent_indentation_per_level"/>
 </PreferenceScreen>

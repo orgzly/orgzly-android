@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/org_file_format">
 
     <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
         android:key="@string/pref_key_separate_notes_with_new_line"

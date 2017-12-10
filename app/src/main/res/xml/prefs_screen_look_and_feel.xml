@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/look_and_feel">
+
     <SwitchPreference
         android:key="@string/pref_key_is_reverse_click_action"
         android:title="@string/reversed_note_click_action"
