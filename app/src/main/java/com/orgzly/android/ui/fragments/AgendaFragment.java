@@ -67,7 +67,7 @@ public class AgendaFragment extends NoteListFragment
     private static final int MIN_DAYS = 1;
     private static final int MAX_DAYS = 31;
 
-    private static final String AGENDA_DAYS_QUERY = ".it.done s.%dd or .it.done d.%dd";
+    private static final String AGENDA_DAYS_QUERY = ".it.done (s.%dd or d.%dd)";
 
     private static final int STATE_ITEM_GROUP = 1;
 
