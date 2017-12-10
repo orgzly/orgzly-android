@@ -25,7 +25,7 @@ import com.orgzly.org.datetime.OrgRepeater;
 import java.util.Calendar;
 import java.util.TreeSet;
 
-public class TimestampDialogFragment extends DialogFragment implements View.OnClickListener {
+public class TimestampDialogFragment extends DialogFragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final String TAG = TimestampDialogFragment.class.getName();
 
     public static final String FRAGMENT_TAG = TimestampDialogFragment.class.getName();
@@ -234,18 +234,18 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
         mTimePicker.setOnClickListener(this);
         mRepeaterPicker.setOnClickListener(this);
 
+        /*
+         * These callbacks are called not only on user press, but during initialization as well.
+         * It's important that they are *after* dialog has been created.
+         */
+        mIsTimeUsed.setOnCheckedChangeListener(this);
+        mIsRepeaterUsed.setOnCheckedChangeListener(this);
+
         view.findViewById(R.id.dialog_timestamp_today_shortcut).setOnClickListener(this);
         view.findViewById(R.id.dialog_timestamp_tomorrow_shortcut).setOnClickListener(this);
         view.findViewById(R.id.dialog_timestamp_next_week_shortcut).setOnClickListener(this);
         view.findViewById(R.id.dialog_timestamp_time_icon).setOnClickListener(this);
         view.findViewById(R.id.dialog_timestamp_repeater_icon).setOnClickListener(this);
-
-        /*
-         * NOTE: These callbacks are called not only on user press, but during initialization as well.
-         * Because of that, it's important that this method is called after dialog has been created.
-         */
-        mIsTimeUsed.setOnCheckedChangeListener((buttonView, isChecked) -> setViewsFromCurrentValues());
-        mIsRepeaterUsed.setOnCheckedChangeListener((buttonView, isChecked) -> setViewsFromCurrentValues());
 
         restoreState(savedInstanceState);
 
@@ -389,6 +389,20 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
                 setViewsFromCurrentValues();
                 break;
         }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId()) {
+            case R.id.dialog_timestamp_time_check:
+                setViewsFromCurrentValues();
+                break;
+
+            case R.id.dialog_timestamp_repeater_check:
+                setViewsFromCurrentValues();
+                break;
+        }
+
     }
 
     private OrgDateTime getCurrentOrgTime() {
