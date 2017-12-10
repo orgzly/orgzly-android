@@ -30,10 +30,6 @@
         android:key="prefs_screen_sync"/>
 
     <PreferenceScreen
-        android:title="@string/org_file_format"
-        android:key="prefs_screen_org_file_format"/>
-
-    <PreferenceScreen
         android:title="@string/app"
         android:key="prefs_screen_app"/>
 

@@ -315,12 +315,11 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
                 "prefs_screen_notebooks" to R.xml.prefs_screen_notebooks,
                 "prefs_screen_list_of_notes" to R.xml.prefs_screen_list_of_notes,
                 "prefs_screen_notes" to R.xml.prefs_screen_notes,
-                "prefs_screen_org_file_format" to R.xml.prefs_screen_org_file_format,
-                "prefs_screen_org_mode_tags_indent" to R.xml.prefs_screen_org_mode_tags_indent, // Sub-screen
                 "prefs_screen_notifications" to R.xml.prefs_screen_notifications,
                 "prefs_screen_reminders" to R.xml.prefs_screen_reminders,
                 "prefs_screen_sync" to R.xml.prefs_screen_sync,
                 "prefs_screen_auto_sync" to R.xml.prefs_screen_auto_sync, // Sub-screen
+                "prefs_screen_org_mode_tags_indent" to R.xml.prefs_screen_org_mode_tags_indent, // Sub-screen
                 "prefs_screen_app" to R.xml.prefs_screen_app
         )
 

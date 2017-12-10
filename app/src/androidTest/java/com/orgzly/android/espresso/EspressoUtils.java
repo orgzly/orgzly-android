@@ -47,8 +47,8 @@ class EspressoUtils {
     static final int[] SETTINGS_AUTO_SYNC_TOGGLE = { 6, 1, 1 };
     static final int[] SETTINGS_AUTO_SYNC_NOTE_CREATED = { 6, 1, 3 };
 
-    static final int[] IMPORT_GETTING_STARTED = { 8, 0 };
-    static final int[] SETTINGS_CLEAR_DATABASE = { 8, 1 };
+    static final int[] IMPORT_GETTING_STARTED = { 7, 0 };
+    static final int[] SETTINGS_CLEAR_DATABASE = { 7, 1 };
 
 
     static void tapToSetting(int[] setting) {
