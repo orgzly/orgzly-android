@@ -6,7 +6,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
@@ -59,13 +58,6 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
     private Context mContext;
     private UserTimeFormatter mUserTimeFormatter;
 
-
-    /*
-     * Buttons.
-     */
-
-//    private CompoundButton mIsActive;
-
     private Button mDatePicker;
 
     private Button mTimePicker;
@@ -73,10 +65,6 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
 
     private Button mRepeaterPicker;
     private CompoundButton mIsRepeaterUsed;
-
-    /*
-     *
-     */
 
     private int mCurrentYear;
     private int mCurrentMonth;
@@ -88,18 +76,8 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
     private int mCurrentEndTimeHour;
     private int mCurrentEndTimeMinute;
 
-
-    /* Without these, if creating local variables, getting:
-     *
-     * 11-05 19:44:20.080 E/WindowManager( 4250): android.view.WindowLeaked:
-     * Activity com.orgzly.android.ui.MainActivity has leaked window
-     * com.android.internal.policy.impl.PhoneWindow$DecorView{2a02b17e V.E..... R.....I. 0,0-800,442}
-     * that was originally added here
-     */
-    private DatePickerDialog mDatePickerDialog;
-    private TimePickerDialog mTimePickerDialog;
-    private RepeaterPickerDialog mRepeaterPickerDialog;
-//    private TimePickerDialog mEndTimePickerDialog;
+    /* Keeping reference to avoid leak. */
+    private AlertDialog pickerDialog;
 
     /**
      * @param id unique ID passed to every callback method. Useful for identifying dialog's invoker
@@ -165,6 +143,16 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
     public void onCreate(Bundle savedInstanceState) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (pickerDialog != null) {
+            pickerDialog.dismiss();
+            pickerDialog = null;
+        }
     }
 
     /**
@@ -321,19 +309,20 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
 
         switch (v.getId()) {
             case R.id.dialog_timestamp_date_picker:
-                mDatePickerDialog = new DatePickerDialog(mContext, (view, year, monthOfYear, dayOfMonth) -> {
+                pickerDialog = new DatePickerDialog(mContext, (view, year, monthOfYear, dayOfMonth) -> {
                     mCurrentYear = year;
                     mCurrentMonth = monthOfYear;
                     mCurrentDay = dayOfMonth;
 
                     setViewsFromCurrentValues();
                 }, mCurrentYear, mCurrentMonth, mCurrentDay);
-                mDatePickerDialog.show();
+                pickerDialog.setOnDismissListener(dialog -> pickerDialog = null);
+                pickerDialog.show();
                 break;
 
             case R.id.dialog_timestamp_time_picker:
             case R.id.dialog_timestamp_time_icon:
-                mTimePickerDialog = new TimePickerDialog(mContext, (view, hourOfDay, minute) -> {
+                pickerDialog = new TimePickerDialog(mContext, (view, hourOfDay, minute) -> {
                     mCurrentHour = hourOfDay;
                     mCurrentMinute = minute;
 
@@ -341,18 +330,20 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
 
                     setViewsFromCurrentValues();
                 }, mCurrentHour, mCurrentMinute, DateFormat.is24HourFormat(getContext()));
-                mTimePickerDialog.show();
+                pickerDialog.setOnDismissListener(dialog -> pickerDialog = null);
+                pickerDialog.show();
                 break;
 
             case R.id.dialog_timestamp_repeater_picker:
             case R.id.dialog_timestamp_repeater_icon:
-                mRepeaterPickerDialog = new RepeaterPickerDialog(mContext, repeater -> {
+                pickerDialog = new RepeaterPickerDialog(mContext, repeater -> {
                     mRepeaterPicker.setText(repeater.toString());
                     mIsRepeaterUsed.setChecked(true);
 
                     setViewsFromCurrentValues();
                 }, mRepeaterPicker.getText().toString());
-                mRepeaterPickerDialog.show();
+                pickerDialog.setOnDismissListener(dialog -> pickerDialog = null);
+                pickerDialog.show();
                 break;
 
 
