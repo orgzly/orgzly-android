@@ -203,10 +203,10 @@ public class TimestampDialogFragment extends DialogFragment {
         mDatePicker = (Button) view.findViewById(R.id.dialog_timestamp_date_picker);
 
         mTimePicker = (Button) view.findViewById(R.id.dialog_timestamp_time_picker);
-        mIsTimeUsed = (CompoundButton) view.findViewById(R.id.dialog_timestamp_time);
+        mIsTimeUsed = (CompoundButton) view.findViewById(R.id.dialog_timestamp_time_check);
 
-        mRepeaterPicker = (Button) view.findViewById(R.id.dialog_timestamp_repeater);
-        mIsRepeaterUsed = (CompoundButton) view.findViewById(R.id.dialog_timestamp_repeat);
+        mRepeaterPicker = (Button) view.findViewById(R.id.dialog_timestamp_repeater_picker);
+        mIsRepeaterUsed = (CompoundButton) view.findViewById(R.id.dialog_timestamp_repeat_check);
 
         /* Set before toggle buttons are setup, as they trigger dialog title update .*/
         setValues(OrgDateTime.parseOrNull(getArguments().getString(ARG_TIME)));

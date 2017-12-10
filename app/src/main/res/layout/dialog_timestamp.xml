@@ -33,7 +33,7 @@
             tools:text="@string/dialog_timestamp_time_sample"/>
 
         <Button
-            android:id="@+id/dialog_timestamp_repeater"
+            android:id="@+id/dialog_timestamp_repeater_picker"
             style="@style/TimestampDialogButton.Common"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="@+id/dialog_timestamp_time_picker"
@@ -41,7 +41,7 @@
             android:text="@string/dialog_timestamp_repeater_default"/>
 
         <ImageView
-            android:id="@+id/time_icon"
+            android:id="@+id/dialog_timestamp_time_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -53,18 +53,18 @@
             app:layout_constraintTop_toTopOf="@+id/dialog_timestamp_time_picker"/>
 
         <ImageView
-            android:id="@+id/repeater_icon"
+            android:id="@+id/dialog_timestamp_repeater_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="?attr/oic_repeat"
             android:contentDescription="@string/repeater"
-            app:layout_constraintBottom_toBottomOf="@+id/dialog_timestamp_repeater"
-            app:layout_constraintEnd_toEndOf="@+id/time_icon"
-            app:layout_constraintStart_toStartOf="@+id/time_icon"
-            app:layout_constraintTop_toTopOf="@+id/dialog_timestamp_repeater"/>
+            app:layout_constraintBottom_toBottomOf="@+id/dialog_timestamp_repeater_picker"
+            app:layout_constraintEnd_toEndOf="@+id/dialog_timestamp_time_icon"
+            app:layout_constraintStart_toStartOf="@+id/dialog_timestamp_time_icon"
+            app:layout_constraintTop_toTopOf="@+id/dialog_timestamp_repeater_picker"/>
 
         <CheckBox
-            android:id="@+id/dialog_timestamp_time"
+            android:id="@+id/dialog_timestamp_time_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -75,14 +75,14 @@
             app:layout_constraintTop_toTopOf="@+id/dialog_timestamp_time_picker"/>
 
         <CheckBox
-            android:id="@+id/dialog_timestamp_repeat"
+            android:id="@+id/dialog_timestamp_repeat_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
-            app:layout_constraintBottom_toBottomOf="@+id/dialog_timestamp_repeater"
-            app:layout_constraintEnd_toEndOf="@+id/dialog_timestamp_time"
-            app:layout_constraintStart_toStartOf="@+id/dialog_timestamp_time"
-            app:layout_constraintTop_toTopOf="@+id/dialog_timestamp_repeater"/>
+            app:layout_constraintBottom_toBottomOf="@+id/dialog_timestamp_repeater_picker"
+            app:layout_constraintEnd_toEndOf="@+id/dialog_timestamp_time_check"
+            app:layout_constraintStart_toStartOf="@+id/dialog_timestamp_time_check"
+            app:layout_constraintTop_toTopOf="@+id/dialog_timestamp_repeater_picker"/>
 
 
         <ImageButton

@@ -301,9 +301,9 @@ public class MiscTest extends OrgzlyTest {
 
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
         onView(withId(R.id.dialog_timestamp_time_picker)).check(matches(withText(containsString(s))));
-        onView(withId(R.id.dialog_timestamp_time)).perform(scrollTo(), click());
+        onView(withId(R.id.dialog_timestamp_time_check)).perform(scrollTo(), click());
         onView(withId(R.id.dialog_timestamp_time_picker)).check(matches(withText(containsString(s))));
-        onView(withId(R.id.dialog_timestamp_time)).perform(click());
+        onView(withId(R.id.dialog_timestamp_time_check)).perform(click());
         onView(withId(R.id.dialog_timestamp_time_picker)).check(matches(withText(containsString(s))));
     }
 
