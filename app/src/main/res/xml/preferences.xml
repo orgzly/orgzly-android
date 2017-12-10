@@ -10,14 +10,6 @@
         android:key="prefs_screen_notebooks"/>
 
     <PreferenceScreen
-        android:title="@string/notes_list"
-        android:key="prefs_screen_list_of_notes"/>
-
-    <PreferenceScreen
-        android:title="@string/note"
-        android:key="prefs_screen_notes"/>
-
-    <PreferenceScreen
         android:title="@string/prefs_title_notifications"
         android:key="prefs_screen_notifications"/>
 

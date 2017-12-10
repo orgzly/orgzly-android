@@ -11,32 +11,15 @@
             android:targetClass="com.orgzly.android.ui.ReposActivity"/>
     </Preference>
 
-    <!-- XML file with this name must exist -->
     <PreferenceScreen
         android:key="prefs_screen_auto_sync"
         android:title="@string/auto_sync_experimental"
         android:summary="@string/auto_sync_experimental_summary">
     </PreferenceScreen>
 
-    <PreferenceCategory android:title="@string/org_file_format">
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-            android:key="@string/pref_key_separate_notes_with_new_line"
-            android:title="@string/separate_notes_with_new_line"
-            android:entries="@array/separate_notes_with_new_line_names"
-            android:entryValues="@array/separate_notes_with_new_line_values"
-            android:defaultValue="@string/pref_default_separate_notes_with_new_line"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_separate_header_and_content_with_new_line"
-            android:title="@string/separate_header_and_content_with_new_line"
-            android:summary="@string/separate_header_and_content_with_new_line_summary"
-            android:defaultValue="@bool/pref_default_separate_header_and_content_with_new_line"/>
-
-        <!-- XML file with this name must exist -->
-        <PreferenceScreen
-            android:key="prefs_screen_org_mode_tags_indent"
-            android:title="@string/tags_indent"
-            android:summary="@string/tags_indent_summary"/>
-    </PreferenceCategory>
-
+    <PreferenceScreen
+        android:key="prefs_screen_org_file_format"
+        android:title="@string/org_file_format"
+        android:summary="@string/org_file_format_summary">
+    </PreferenceScreen>
 </PreferenceScreen>

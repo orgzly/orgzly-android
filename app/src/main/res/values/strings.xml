@@ -165,7 +165,7 @@
     <string name="book_link_details">Notebook link details</string>
     <string name="book_last_action">Notebook last action</string>
     <string name="book_notes_count">Notes count</string>
-    <string name="pref_title_notebooks">Notebooks</string>
+    <string name="pref_title_notebooks">Notes &amp; Notebooks</string>
     <string name="notebooks">Notebooks</string>
     <string name="searches">Searches</string>
     <string name="search">Search</string>
@@ -277,7 +277,7 @@
     <string name="reversed_note_click_action">Reversed note click action</string>
     <string name="reversed_note_click_action_summary">Click to select note, long-click to open</string>
     <string name="prefs_interface">Interface</string>
-    <string name="look_and_feel"><![CDATA[Look & Feel]]></string>
+    <string name="look_and_feel">Look &amp; Feel</string>
     <string name="notes_list">List of notes</string>
     <string name="prefs_title_new_note">New note</string>
     <string name="prefs_title_notifications">Notifications</string>
@@ -295,6 +295,8 @@
     <string name="loaded_from_resource">Loaded from resource %s</string>
 
     <string name="org_file_format">Org file format</string>
+    <string name="org_file_format_summary">Format of exported notebooks</string>
+
     <string name="separate_notes_with_new_line">Separate notes with an empty line</string>
     <string name="separate_header_and_content_with_new_line">Separate header and content</string>
     <string name="separate_header_and_content_with_new_line_summary">Separate header and content with an empty line</string>
