@@ -3,7 +3,6 @@ package com.orgzly.android.query.basic
 import com.orgzly.android.query.*
 
 open class BasicQueryParser : QueryParser() {
-
     override val groupOpen   = "("
     override val groupClose  = ")"
 
@@ -64,6 +63,13 @@ open class BasicQueryParser : QueryParser() {
             }),
             SortOrderMatch("""^(-)?sort-order:(notebook|book|b)$""", { matcher ->
                 SortOrder.ByBook(matcher.group(1) != null)
+            })
+    )
+
+    override val supportedOptions = listOf(
+            OptionMatch("""^agenda-days:(\d+)$""", { matcher, options ->
+                val days = matcher.group(1).toInt()
+                if (days > 0) options.copy(agendaDays = days) else null
             })
     )
 }

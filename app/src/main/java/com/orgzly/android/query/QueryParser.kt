@@ -5,20 +5,30 @@ import java.util.*
 import java.util.regex.Matcher
 
 abstract class QueryParser {
-    data class ConditionMatch(@Language("RegExp") val regex: String, val rule: (matcher: Matcher) -> Condition?)
-    data class SortOrderMatch(@Language("RegExp") val regex: String, val rule: (matcher: Matcher) -> SortOrder?)
+    data class ConditionMatch(
+            @Language("RegExp") val regex: String,
+            val rule: (matcher: Matcher) -> Condition?)
 
-    abstract val groupOpen: String
-    abstract val groupClose: String
+    data class SortOrderMatch(
+            @Language("RegExp") val regex: String,
+            val rule: (matcher: Matcher) -> SortOrder?)
 
-    abstract val operatorsAnd: List<String>
-    abstract val operatorsOr: List<String>
+    data class OptionMatch(
+            @Language("RegExp") val regex: String,
+            val rule: (matcher: Matcher, options: Options) -> Options?)
 
-    abstract val conditions: List<ConditionMatch>
-    abstract val sortOrders: List<SortOrderMatch>
+    protected abstract val groupOpen: String
+    protected abstract val groupClose: String
 
+    protected abstract val operatorsAnd: List<String>
+    protected abstract val operatorsOr: List<String>
+
+    protected abstract val conditions: List<ConditionMatch>
+    protected abstract val sortOrders: List<SortOrderMatch>
+    protected abstract val supportedOptions: List<OptionMatch>
 
     private val orders: MutableList<SortOrder> = mutableListOf()
+    private var options: Options = Options()
 
     private lateinit var tokenizer: QueryTokenizer
 
@@ -28,7 +38,7 @@ abstract class QueryParser {
 
         tokenizer = QueryTokenizer(str, groupOpen, groupClose)
 
-        return Query(conditions(), orders)
+        return Query(conditions(), orders, options)
     }
 
     private fun conditions(vararg initialExpr: Condition): Condition {
@@ -109,7 +119,18 @@ abstract class QueryParser {
                         val matcher = def.regex.toPattern().matcher(token)
                         if (matcher.find()) {
                             def.rule(matcher)?.let {
-                                addOrder(it)
+                                orders.add(it)
+                            }
+                            continue@tokens
+                        }
+                    }
+
+                    // Check if token is an instruction.
+                    for (def in supportedOptions) {
+                        val matcher = def.regex.toPattern().matcher(token)
+                        if (matcher.find()) {
+                            def.rule(matcher, options)?.let {
+                                options = it
                             }
                             continue@tokens
                         }
@@ -126,8 +147,6 @@ abstract class QueryParser {
             Operator.OR -> Condition.Or(members)
         }
     }
-
-    private fun addOrder(order: SortOrder) = orders.add(order)
 
     protected fun unQuote(token: String): String = QuotedStringTokenizer.unquote(token)
 

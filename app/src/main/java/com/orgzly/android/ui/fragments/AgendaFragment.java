@@ -1,8 +1,6 @@
 package com.orgzly.android.ui.fragments;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
@@ -21,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.NumberPicker;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -30,6 +27,9 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.provider.models.DbNoteColumns;
 import com.orgzly.android.provider.views.DbNoteViewColumns;
+import com.orgzly.android.query.Query;
+import com.orgzly.android.query.QueryParser;
+import com.orgzly.android.query.internal.InternalQueryParser;
 import com.orgzly.android.ui.ActionModeListener;
 import com.orgzly.android.ui.AgendaListViewAdapter;
 import com.orgzly.android.ui.Loaders;
@@ -48,7 +48,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -64,16 +63,12 @@ public class AgendaFragment extends NoteListFragment
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = AgendaFragment.class.getName();
 
-    private static final int MIN_DAYS = 1;
-    private static final int MAX_DAYS = 31;
-
-    private static final String AGENDA_DAYS_QUERY = ".it.done (s.%dd or d.%dd)";
+    private static final String ARG_QUERY = "query";
 
     private static final int STATE_ITEM_GROUP = 1;
 
     /* Currently active query. */
     private String mQuery;
-    private int agendaDurationInDays;
 
     private UserTimeFormatter userTimeFormatter;
 
@@ -86,8 +81,15 @@ public class AgendaFragment extends NoteListFragment
 
     int currentLoaderId = -1;
 
-    public static AgendaFragment getInstance() {
-        return new AgendaFragment();
+    public static AgendaFragment getInstance(String query) {
+        AgendaFragment fragment = new AgendaFragment();
+
+        Bundle args = new Bundle();
+        args.putString(ARG_QUERY, query);
+
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     /**
@@ -118,16 +120,14 @@ public class AgendaFragment extends NoteListFragment
         }
 
         userTimeFormatter = new UserTimeFormatter(context);
+
+        mQuery = getArguments().getString(ARG_QUERY);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onCreate(savedInstanceState);
-
-        setHasOptionsMenu(true);
-
-        updateQuery();
     }
 
     @Override
@@ -220,11 +220,10 @@ public class AgendaFragment extends NoteListFragment
     }
 
     private void loadQuery() {
-        /* If query did not change - reuse loader. Otherwise - restart it. */
-        String newQuery = mQuery.toString();
-        int id = Loaders.generateLoaderId(Loaders.AGENDA_FRAGMENT, newQuery);
+        /* TODO: If query did not change - reuse loader. Otherwise - restart it. */
+        int id = Loaders.generateLoaderId(Loaders.AGENDA_FRAGMENT, mQuery);
         currentLoaderId = id;
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Loader #" + id + " for: " + newQuery);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Loader #" + id + " for: " + mQuery);
         getActivity().getSupportLoaderManager().initLoader(id, null, this);
     }
 
@@ -247,7 +246,7 @@ public class AgendaFragment extends NoteListFragment
             mListener.announceChanges(
                     AgendaFragment.FRAGMENT_TAG,
                     getString(R.string.fragment_agenda_title),
-                    mQuery.toString(),
+                    mQuery,
                     mSelection.getCount());
         }
     }
@@ -277,70 +276,6 @@ public class AgendaFragment extends NoteListFragment
         if (itemViewType == AgendaListViewAdapter.NOTE_TYPE) {
             mListener.onNoteClick(this, view, position, id, originalNoteIDs.get(id));
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
-
-        inflater.inflate(R.menu.agenda_actions, menu);
-
-        menu.removeItem(R.id.activity_action_search);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.agenda_period:
-                openNumberPicker();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void openNumberPicker() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, agendaDurationInDays);
-
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        View view = inflater.inflate(R.layout.number_picker, null);
-
-        final NumberPicker picker = (NumberPicker) view.findViewById(R.id.number_picker);
-        picker.setMaxValue(MAX_DAYS);
-        picker.setMinValue(MIN_DAYS);
-        picker.setValue(agendaDurationInDays);
-
-        new AlertDialog.Builder(getContext())
-                .setTitle(R.string.agenda_period)
-                .setView(view)
-                .setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        updateQuery(picker.getValue());
-                        loadQuery();
-                        announceChangesToActivity();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .show();
-    }
-
-    private void updateQuery() {
-        int days = AppPreferences.agendaDays(getContext());
-        updateQuery(days);
-    }
-
-    private void updateQuery(int days) {
-        mQuery = String.format((Locale) null, AGENDA_DAYS_QUERY, days, days);
-
-        agendaDurationInDays = days;
-
-        /* Save to preferences. */
-        AppPreferences.agendaDays(getActivity(), days);
     }
 
     @Override
@@ -403,6 +338,11 @@ public class AgendaFragment extends NoteListFragment
             return;
         }
 
+        QueryParser parser = new InternalQueryParser();
+        Query query = parser.parse(mQuery);
+
+        int agendaDays = query.getOptions().getAgendaDays();
+
         // Add IS_SEPARATOR column
         String[] columnNames = new String[cursor.getColumnNames().length + 1];
         System.arraycopy(cursor.getColumnNames(), 0, columnNames, 0, cursor.getColumnNames().length);
@@ -416,7 +356,7 @@ public class AgendaFragment extends NoteListFragment
             MatrixCursor matrixCursor = new MatrixCursor(columnNames);
             agenda.put(day.getMillis(), matrixCursor);
             day = day.plusDays(1);
-        } while (++i < agendaDurationInDays);
+        } while (++i < agendaDays);
 
         Calendar now = Calendar.getInstance();
 
@@ -435,7 +375,7 @@ public class AgendaFragment extends NoteListFragment
                             cursor.getString(deadlineRangeStrIdx)
                     },
                     now,
-                    agendaDurationInDays);
+                    agendaDays);
 
             for (DateTime date: dates) {
                 // create agenda cursors
@@ -595,6 +535,10 @@ public class AgendaFragment extends NoteListFragment
 
             mActionModeListener.actionModeDestroyed();
         }
+    }
+
+    public String getQuery() {
+        return mQuery;
     }
 
     public static class Columns implements BaseColumns, DbNoteColumns {

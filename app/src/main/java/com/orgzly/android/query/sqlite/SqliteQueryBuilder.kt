@@ -34,7 +34,7 @@ class SqliteQueryBuilder(val context: Context): SqlQueryBuilder {
     private fun buildOrderBy(sortOrders: List<SortOrder>): String {
         val o = ArrayList<String>()
 
-        if (sortOrders.isEmpty()) {
+        if (sortOrders.isEmpty()) { // Use default sort order
             o.add(DbNoteView.BOOK_NAME)
 
             /* Priority or default priority. */

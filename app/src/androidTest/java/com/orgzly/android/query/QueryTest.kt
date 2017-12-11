@@ -2,7 +2,6 @@ package com.orgzly.android.query
 
 import android.support.test.espresso.matcher.ViewMatchers.assertThat
 import com.orgzly.android.OrgzlyTest
-import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.query.dotted.DottedQueryBuilder
 import com.orgzly.android.query.dotted.DottedQueryParser
 import com.orgzly.android.query.sqlite.SqliteQueryBuilder
@@ -19,13 +18,15 @@ class QueryTest(
         private val expectedQueryString: String,
         private val expectedSql: String,
         private val expectedArgs: List<String>,
-        private val expectedSortOrders: List<SortOrder>
+        private val expectedSortOrders: List<SortOrder>,
+        private val expectedOptions: Options
         ) : OrgzlyTest() {
 
-    private lateinit var sortOrders: List<SortOrder>
+    private lateinit var builtQueryString: String
     private lateinit var sqlSelection: String
     private lateinit var sqlSelectionArgs: List<String>
-    private lateinit var builtQueryString: String
+    private lateinit var sortOrders: List<SortOrder>
+    private lateinit var options: Options
 
     companion object {
         @JvmStatic @Parameterized.Parameters
@@ -36,161 +37,192 @@ class QueryTest(
                             "i.todo",
                             "COALESCE(state, '') = ?",
                             listOf("TODO"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "i.todo t.work",
                             "i.todo t.work",
                             "COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
                             listOf("TODO", "%work%", "%work%"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "i.todo or t.work",
                             "i.todo or t.work",
                             "COALESCE(state, '') = ? OR (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
                             listOf("TODO", "%work%", "%work%"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "i.todo or i.next",
                             "i.todo or i.next",
                             "COALESCE(state, '') = ? OR COALESCE(state, '') = ?",
                             listOf("TODO", "NEXT"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "i.todo or i.next and t.work",
                             "i.todo or i.next t.work",
                             "COALESCE(state, '') = ? OR (COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
                             listOf("TODO", "NEXT", "%work%", "%work%"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "i.todo and t.work or i.next",
                             "i.todo t.work or i.next",
                             "(COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)) OR COALESCE(state, '') = ?",
                             listOf("TODO", "%work%", "%work%", "NEXT"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "i.todo t.work or i.next t.home",
                             "i.todo t.work or i.next t.home",
                             "(COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)) OR (COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
                             listOf("TODO", "%work%", "%work%", "NEXT", "%home%", "%home%"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "( i.todo t.work ) or i.next",
                             "i.todo t.work or i.next",
                             "(COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)) OR COALESCE(state, '') = ?",
                             listOf("TODO", "%work%", "%work%", "NEXT"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "i.todo (i.next or t.work)",
                             "i.todo (i.next or t.work)",
                             "COALESCE(state, '') = ? AND (COALESCE(state, '') = ? OR (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
                             listOf("TODO", "NEXT", "%work%", "%work%"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "(( i.todo) )",
                             "i.todo",
                             "(COALESCE(state, '') = ?)",
                             listOf("TODO"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "(it.todo b.gtd )or .s.none",
                             "it.todo b.gtd or .s.none",
                             "(COALESCE(state, '') IN (?, ?) AND book_name = ?) OR (title LIKE ? OR content LIKE ? OR tags LIKE ?)",
                             listOf("TODO", "NEXT", "gtd", "%.s.none%", "%.s.none%", "%.s.none%"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "it.todo",
                             "it.todo",
                             "COALESCE(state, '') IN (?, ?)",
                             listOf("TODO", "NEXT"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             ".it.none",
                             ".it.none",
                             "NOT(COALESCE(state, '') = '')",
                             listOf<String>(),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "i.todo (t.work or o.p i.next) .o.book t.home",
                             "i.todo (t.work or i.next) t.home o.p .o.b",
                             "COALESCE(state, '') = ? AND ((COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?) OR COALESCE(state, '') = ?) AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
                             listOf("TODO", "%work%", "%work%", "NEXT", "%home%", "%home%"),
-                            listOf(SortOrder.ByPriority(), SortOrder.ByBook(desc = true))
+                            listOf(SortOrder.ByPriority(), SortOrder.ByBook(desc = true)),
+                            Options()
                     ),
                     arrayOf(
                             ".i.done ( t.t1 or t.t2)",
                             ".i.done (t.t1 or t.t2)",
                             "NOT(COALESCE(state, '') = ?) AND ((COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?) OR (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
                             listOf("DONE", "%t1%", "%t1%", "%t2%", "%t2%"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "tnn.tag1",
                             "tnn.tag1",
                             "(title LIKE ? OR content LIKE ? OR tags LIKE ?)",
                             listOf("%tnn.tag1%", "%tnn.tag1%", "%tnn.tag1%"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "p.",
                             "p.",
                             "(title LIKE ? OR content LIKE ? OR tags LIKE ?)",
                             listOf("%p.%", "%p.%", "%p.%"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf( // Operator with no expression before it
                             "and t.tag",
                             "t.tag",
                             "(COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
                             listOf("%tag%", "%tag%"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "i.todo (b.\"book(1) name\" or b.book2)",
                             "i.todo (b.\"book(1) name\" or b.book2)",
                             "COALESCE(state, '') = ? AND (book_name = ? OR book_name = ?)",
                             listOf("TODO", "book(1) name", "book2"),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "s.3d",
                             "s.3d",
                             "(scheduled_time_timestamp != 0 AND scheduled_time_timestamp < " + TimeUtils.dayAfter(Calendar.DAY_OF_MONTH, 3).timeInMillis + ")",
                             listOf<String>(),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "d.tom",
                             "d.tomorrow",
                             "(deadline_time_timestamp != 0 AND deadline_time_timestamp < " + TimeUtils.dayAfter(Calendar.DAY_OF_MONTH, 1).timeInMillis + ")",
                             listOf<String>(),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "p.a",
                             "p.a",
                             "LOWER(COALESCE(NULLIF(priority, ''), ?)) = ?",
                             listOf("B", "a"), // TODO: Normalize
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
                     ),
                     arrayOf(
                             "s.-123d",
                             "",
                             "",
                             listOf<String>(),
-                            listOf<SortOrder>()
+                            listOf<SortOrder>(),
+                            Options()
+                    ),
+                    arrayOf(
+                            "ad.2",
+                            "ad.2",
+                            "",
+                            listOf<String>(),
+                            listOf<SortOrder>(),
+                            Options(2)
                     )
             )
         }
@@ -209,6 +241,7 @@ class QueryTest(
         sqlBuilder.build(query)
 
         sortOrders = query.sortOrders
+        options = query.options
 
         sqlSelection = sqlBuilder.getSelection()
         sqlSelectionArgs = sqlBuilder.getSelectionArgs()
@@ -237,5 +270,10 @@ class QueryTest(
     @Test
     fun testSortOrders() {
         assertThat(queryString, sortOrders, `is`(expectedSortOrders))
+    }
+
+    @Test
+    fun testOptions() {
+        assertThat(queryString, options, `is`(expectedOptions))
     }
 }

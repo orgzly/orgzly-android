@@ -39,11 +39,11 @@ import com.orgzly.android.ActionService;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.Book;
 import com.orgzly.android.BookName;
-import com.orgzly.android.filter.Filter;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotesBatch;
 import com.orgzly.android.Notifications;
 import com.orgzly.android.Shelf;
+import com.orgzly.android.filter.Filter;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.provider.clients.ReposClient;
@@ -1454,9 +1454,6 @@ public class MainActivity extends CommonActivity
             } else if (item instanceof DrawerFragment.FilterItem) {
                 String query = ((DrawerFragment.FilterItem) item).query;
                 DisplayManager.displayQuery(getSupportFragmentManager(), query);
-
-            } else if (item instanceof DrawerFragment.AgendaItem) {
-                DisplayManager.displayAgenda(getSupportFragmentManager());
             }
         });
     }

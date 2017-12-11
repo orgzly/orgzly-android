@@ -474,22 +474,6 @@ public class AppPreferences {
 
 
     /*
-     * Agenda
-     */
-
-    public static int agendaDays(Context context) {
-        return Integer.valueOf(getDefaultSharedPreferences(context).getString(
-                context.getResources().getString(R.string.pref_key_agenda_days),
-                context.getResources().getString(R.string.pref_key_default_agenda_days)));
-    }
-
-    public static void agendaDays(Context context, int value) {
-        String key = context.getResources().getString(R.string.pref_key_agenda_days);
-        getDefaultSharedPreferences(context).edit().putString(key, String.valueOf(value)).apply();
-    }
-
-
-    /*
      * State flags and values.
      * They have no default values, they are not set by user.
      */

@@ -8,6 +8,9 @@ import android.util.Log;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
+import com.orgzly.android.query.Query;
+import com.orgzly.android.query.QueryParser;
+import com.orgzly.android.query.internal.InternalQueryParser;
 import com.orgzly.android.ui.fragments.AgendaFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BookPrefaceFragment;
@@ -162,38 +165,36 @@ public class DisplayManager {
         // .setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
     }
 
-    public static void displayQuery(FragmentManager fragmentManager, String query) {
-        /* If the same query is already displayed, don't do anything. */
+    public static void displayQuery(FragmentManager fragmentManager, String queryString) {
+        // If the same query is already displayed, don't do anything.
         String displayedQuery = getDisplayedQuery(fragmentManager);
-        if (displayedQuery != null && displayedQuery.equals(query)) {
+        if (displayedQuery != null && displayedQuery.equals(queryString)) {
             return;
         }
 
-        /* Create fragment. */
-        Fragment fragment = QueryFragment.getInstance(query);
+        // Parse query
+        QueryParser queryParser = new InternalQueryParser();
+        Query query = queryParser.parse(queryString);
 
-        /* Add fragment. */
+        Fragment fragment;
+        String tag;
+
+        // Display agenda or query fragment
+        if (query.getOptions().getAgendaDays() > 0) {
+            fragment = AgendaFragment.getInstance(queryString);
+            tag = AgendaFragment.FRAGMENT_TAG;
+
+        } else {
+            fragment = QueryFragment.getInstance(queryString);
+            tag = QueryFragment.FRAGMENT_TAG;
+        }
+
+        // Add fragment.
         fragmentManager
                 .beginTransaction()
                 .setTransition(FRAGMENT_TRANSITION)
                 .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, QueryFragment.FRAGMENT_TAG)
-                .commit();
-    }
-
-    public static void displayAgenda(FragmentManager fragmentManager) {
-        if (isFragmentDisplayed(fragmentManager, AgendaFragment.FRAGMENT_TAG) != null) {
-            return;
-        }
-
-        /* Create fragment. */
-        Fragment fragment = AgendaFragment.getInstance();
-        /* Add fragment. */
-        fragmentManager
-                .beginTransaction()
-                .setTransition(FRAGMENT_TRANSITION)
-                .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, AgendaFragment.FRAGMENT_TAG)
+                .replace(R.id.single_pane_container, fragment, tag)
                 .commit();
     }
 
@@ -211,10 +212,14 @@ public class DisplayManager {
     }
 
     public static String getDisplayedQuery(FragmentManager fragmentManager) {
-        Fragment f = fragmentManager.findFragmentByTag(QueryFragment.FRAGMENT_TAG);
+        Fragment qf = fragmentManager.findFragmentByTag(QueryFragment.FRAGMENT_TAG);
+        Fragment af = fragmentManager.findFragmentByTag(AgendaFragment.FRAGMENT_TAG);
 
-        if (f != null && f.isVisible()) {
-            return ((QueryFragment) f).getQuery();
+        if (qf != null && qf.isVisible()) {
+            return ((QueryFragment) qf).getQuery();
+
+        } else if (af != null && af.isVisible()) {
+            return ((AgendaFragment) af).getQuery();
         }
 
         return null;

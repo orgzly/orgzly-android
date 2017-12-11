@@ -4,7 +4,7 @@ import com.orgzly.org.datetime.OrgInterval
 import java.util.regex.Pattern
 
 /**
- * [OrgInterval] with support for today (0d) and tomorrow (1d).
+ * [OrgInterval] with support for "none", "today" (0d) and "tomorrow" (1d).
  **/
 class QueryInterval(var none: Boolean = false) : OrgInterval() {
     override fun toString(): String {

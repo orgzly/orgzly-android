@@ -65,4 +65,11 @@ open class DottedQueryParser : QueryParser() {
                 SortOrder.ByBook(matcher.group(1) != null)
             })
     )
+
+    override val supportedOptions = listOf(
+            OptionMatch("""^ad\.(\d+)$""", { matcher, options ->
+                val days = matcher.group(1).toInt()
+                if (days > 0) options.copy(agendaDays = days) else null
+            })
+    )
 }

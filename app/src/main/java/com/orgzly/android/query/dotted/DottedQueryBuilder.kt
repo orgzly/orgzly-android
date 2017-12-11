@@ -10,24 +10,22 @@ open class DottedQueryBuilder(val context: Context) : UserQueryBuilder {
     override fun getString(): String = string
 
     override fun build(query: Query) {
-        string = toString(query.condition, true)
+        val list = mutableListOf<String>()
 
-        if (query.sortOrders.isNotEmpty()) {
-            string += " " + toString(query.sortOrders)
-        }
+        append(list, query.condition)
+        append(list, query.sortOrders)
+        append(list, query.options)
+
+        string = list.joinToString(" ")
     }
 
-    private fun dot(order: SortOrder) = if (order.desc) "." else ""
+    private fun append(list: MutableList<String>, condition: Condition) {
+        val str = toString(condition, true)
 
-    private fun toString(orders: List<SortOrder>): String =
-            orders.joinToString(" ") { order ->
-                when (order) {
-                    is SortOrder.ByBook      -> dot(order) + "o.b"
-                    is SortOrder.ByScheduled -> dot(order) + "o.s"
-                    is SortOrder.ByDeadline  -> dot(order) + "o.d"
-                    is SortOrder.ByPriority  -> dot(order) + "o.p"
-                }
-            }
+        if (str.isNotEmpty()) {
+            list.add(str)
+        }
+    }
 
     private fun toString(expr: Condition, isOuter: Boolean = false): String {
         fun dot(not: Boolean): String = if (not) "." else ""
@@ -68,5 +66,31 @@ open class DottedQueryBuilder(val context: Context) : UserQueryBuilder {
         }
     }
 
+    private fun append(list: MutableList<String>, orders: List<SortOrder>) {
+        if (orders.isNotEmpty()) {
+            orders.forEach { order ->
+                list.add(when (order) {
+                    is SortOrder.ByBook -> dot(order) + "o.b"
+                    is SortOrder.ByScheduled -> dot(order) + "o.s"
+                    is SortOrder.ByDeadline -> dot(order) + "o.d"
+                    is SortOrder.ByPriority -> dot(order) + "o.p"
+                })
+            }
+        }
+    }
+
+    private fun append(list: MutableList<String>, options: Options) {
+        val default = Options()
+
+        if (options != default) {
+            if (default.agendaDays != options.agendaDays) {
+                list.add("ad.${options.agendaDays}")
+            }
+        }
+    }
+
+
     private fun quote(s: String) = QuotedStringTokenizer.quote(s, " ")
+
+    private fun dot(order: SortOrder) = if (order.desc) "." else ""
 }

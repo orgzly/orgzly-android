@@ -50,7 +50,6 @@ public class DrawerFragment extends ListFragment
     private BooksItem booksHeader;
     private final List<BookItem> books = new ArrayList<>();
     private SettingsItem settingsHeader;
-    private AgendaItem agendaHeader;
 
     private DrawerFragmentListener mListener;
     private ArrayAdapter<DrawerItem> mListAdapter;
@@ -113,8 +112,6 @@ public class DrawerFragment extends ListFragment
                             }
                         }
                     }
-                } else if (AgendaFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
-                    selectedItem = agendaHeader;
                 }
 
                 mListAdapter.notifyDataSetChanged();
@@ -140,7 +137,6 @@ public class DrawerFragment extends ListFragment
         filtersHeader = new FiltersItem();
         booksHeader = new BooksItem();
         settingsHeader = new SettingsItem();
-        agendaHeader = new AgendaItem();
     }
 
     @Override
@@ -315,8 +311,6 @@ public class DrawerFragment extends ListFragment
 
         mListAdapter.clear();
 
-        mListAdapter.add(agendaHeader);
-
         mListAdapter.add(filtersHeader);
         for (DrawerItem item: filters) {
             mListAdapter.add(item);
@@ -463,14 +457,6 @@ public class DrawerFragment extends ListFragment
         SettingsItem() {
             this.name = getString(R.string.settings);
             this.icon = R.styleable.Icons_oic_drawer_settings;
-            this.textSize = R.styleable.FontSize_item_drawer_title_text_size;
-        }
-    }
-
-    public class AgendaItem extends DrawerItem {
-        AgendaItem() {
-            this.name = getString(R.string.agenda);
-            this.icon = R.styleable.Icons_oic_drawer_agenda;
             this.textSize = R.styleable.FontSize_item_drawer_title_text_size;
         }
     }
