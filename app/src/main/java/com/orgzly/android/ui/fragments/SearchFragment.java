@@ -36,8 +36,6 @@ public class SearchFragment extends QueryFragment {
     public static final String FRAGMENT_TAG = SearchFragment.class.getName();
 
 
-    private String mActionModeTag;
-
     private ViewFlipper mViewFlipper;
 
 
@@ -50,16 +48,6 @@ public class SearchFragment extends QueryFragment {
         fragment.setArguments(args);
 
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
-        super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null && savedInstanceState.getBoolean("actionModeMove", false)) {
-            mActionModeTag = "M";
-        }
     }
 
     @Override
@@ -189,13 +177,6 @@ public class SearchFragment extends QueryFragment {
         mListAdapter.swapCursor(cursor);
 
         mActionModeListener.updateActionModeForSelection(mSelection.getCount(), new MyActionMode());
-
-        ActionMode actionMode = mActionModeListener.getActionMode();
-        if (mActionModeTag != null) {
-            actionMode.setTag("M");
-            actionMode.invalidate();
-            mActionModeTag = null;
-        }
 
         if (mListAdapter.getCount() > 0) {
             mViewFlipper.setDisplayedChild(0);
