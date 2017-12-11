@@ -83,9 +83,9 @@ public class DrawerFragment extends ListFragment
 
             if (fragment != null) {
                 /* Find by query string. */
-                if (QueryFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
+                if (SearchFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
 
-                    String query = ((QueryFragment) fragment).getQuery();
+                    String query = ((SearchFragment) fragment).getQuery();
 
                     if (query != null) {
                         for (FilterItem item : filters) {

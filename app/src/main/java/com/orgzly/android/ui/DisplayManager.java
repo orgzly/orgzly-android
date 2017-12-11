@@ -18,7 +18,7 @@ import com.orgzly.android.ui.fragments.BooksFragment;
 import com.orgzly.android.ui.fragments.FilterFragment;
 import com.orgzly.android.ui.fragments.FiltersFragment;
 import com.orgzly.android.ui.fragments.NoteFragment;
-import com.orgzly.android.ui.fragments.QueryFragment;
+import com.orgzly.android.ui.fragments.SearchFragment;
 import com.orgzly.android.util.LogUtils;
 
 /**
@@ -185,8 +185,8 @@ public class DisplayManager {
             tag = AgendaFragment.FRAGMENT_TAG;
 
         } else {
-            fragment = QueryFragment.getInstance(queryString);
-            tag = QueryFragment.FRAGMENT_TAG;
+            fragment = SearchFragment.getInstance(queryString);
+            tag = SearchFragment.FRAGMENT_TAG;
         }
 
         // Add fragment.
@@ -212,11 +212,11 @@ public class DisplayManager {
     }
 
     public static String getDisplayedQuery(FragmentManager fragmentManager) {
-        Fragment qf = fragmentManager.findFragmentByTag(QueryFragment.FRAGMENT_TAG);
+        Fragment qf = fragmentManager.findFragmentByTag(SearchFragment.FRAGMENT_TAG);
         Fragment af = fragmentManager.findFragmentByTag(AgendaFragment.FRAGMENT_TAG);
 
         if (qf != null && qf.isVisible()) {
-            return ((QueryFragment) qf).getQuery();
+            return ((SearchFragment) qf).getQuery();
 
         } else if (af != null && af.isVisible()) {
             return ((AgendaFragment) af).getQuery();

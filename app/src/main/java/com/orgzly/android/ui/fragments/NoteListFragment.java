@@ -23,7 +23,7 @@ import java.util.TreeSet;
 
 /**
  * Fragment which is displaying a list of notes,
- * such as {@link BookFragment} and {@link QueryFragment}.
+ * such as {@link BookFragment}, {@link SearchFragment} or {@link AgendaFragment}.
  */
 public abstract class NoteListFragment extends ListFragment {
 
