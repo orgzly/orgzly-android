@@ -9,28 +9,17 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.SubMenu;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ViewFlipper;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Shelf;
-import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.ui.ActionModeListener;
-import com.orgzly.android.ui.HeadsListViewAdapter;
 import com.orgzly.android.ui.Loaders;
-import com.orgzly.android.ui.NoteStateSpinner;
-import com.orgzly.android.ui.Selection;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
-import com.orgzly.android.ui.views.GesturedListView;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 
-import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -41,21 +30,19 @@ abstract public class QueryFragment extends NoteListFragment
         TimestampDialogFragment.OnDateTimeSetListener,
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    protected static final String TAG = QueryFragment.class.getName();
+    private static final String TAG = QueryFragment.class.getName();
 
-
-    /* Arguments. */
+    /** Arguments. */
     protected static final String ARG_QUERY = "query";
 
     protected static final int STATE_ITEM_GROUP = 1;
 
     protected SimpleCursorAdapter mListAdapter;
 
-    /* Currently active query. */
-    protected String mQuery;
-
     protected NoteListFragmentListener mListener;
 
+    /** Currently active query. */
+    protected String mQuery;
 
 
     /**

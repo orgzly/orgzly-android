@@ -6,7 +6,6 @@ import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.os.Bundle;
 import android.provider.BaseColumns;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.util.LongSparseArray;
 import android.support.v7.view.ActionMode;
@@ -31,7 +30,6 @@ import com.orgzly.android.ui.AgendaListViewAdapter;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.Selection;
-import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.util.AgendaUtils;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.UserTimeFormatter;
@@ -47,17 +45,11 @@ import java.util.Set;
 import java.util.TreeSet;
 
 
-public class AgendaFragment extends QueryFragment
-        implements
-        TimestampDialogFragment.OnDateTimeSetListener,
-        LoaderManager.LoaderCallbacks<Cursor> {
-
+public class AgendaFragment extends QueryFragment {
     private static final String TAG = AgendaFragment.class.getName();
 
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = AgendaFragment.class.getName();
-
-
 
     // Time formatter for separators
     private UserTimeFormatter userTimeFormatter;

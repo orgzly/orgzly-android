@@ -2,7 +2,6 @@ package com.orgzly.android.ui.fragments;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.view.ActionMode;
 import android.view.LayoutInflater;
@@ -22,7 +21,6 @@ import com.orgzly.android.ui.HeadsListViewAdapter;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.Selection;
-import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.util.LogUtils;
 
 import java.util.Set;
@@ -31,12 +29,7 @@ import java.util.TreeSet;
 /**
  * Displays search results.
  */
-public class SearchFragment extends QueryFragment
-        implements
-        // TODO: Do we really want OnDateTimeSetListener in fragments, maybe go through activity?
-        TimestampDialogFragment.OnDateTimeSetListener,
-        LoaderManager.LoaderCallbacks<Cursor> {
-
+public class SearchFragment extends QueryFragment {
     private static final String TAG = SearchFragment.class.getName();
 
     /** Name used for {@link android.app.FragmentManager}. */
