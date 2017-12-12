@@ -15,7 +15,6 @@ import com.orgzly.R;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.ui.ActionModeListener;
-import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.org.datetime.OrgDateTime;
@@ -84,11 +83,6 @@ abstract public class QueryFragment extends NoteListFragment
         mShelf = new Shelf(getActivity().getApplicationContext());
 
         mActionModeListener.updateActionModeForSelection(mSelection.getCount(), getNewActionMode());
-
-        /* If query did not change - reuse loader. Otherwise - restart it. */
-        int id = Loaders.generateLoaderId(Loaders.QUERY_FRAGMENT, mQuery);
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Loader #" + id + " for: " + mQuery);
-        getActivity().getSupportLoaderManager().initLoader(id, null, this);
     }
 
 
@@ -150,9 +144,6 @@ abstract public class QueryFragment extends NoteListFragment
     }
 
     @Override
-    abstract public ActionMode.Callback getNewActionMode();
-
-    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id, bundle);
 
@@ -160,8 +151,7 @@ abstract public class QueryFragment extends NoteListFragment
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-    }
+    abstract public void onLoadFinished(Loader<Cursor> loader, Cursor data);
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
@@ -172,6 +162,9 @@ abstract public class QueryFragment extends NoteListFragment
 
         mListAdapter.changeCursor(null);
     }
+
+    @Override
+    abstract public ActionMode.Callback getNewActionMode();
 
     protected abstract class MyActionMode implements ActionMode.Callback {
         @Override

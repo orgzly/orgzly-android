@@ -19,7 +19,6 @@ import android.widget.ListView;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.models.DbNoteColumns;
 import com.orgzly.android.provider.views.DbNoteViewColumns;
@@ -137,8 +136,8 @@ public class AgendaFragment extends QueryFragment {
         /* Create a selection. */
         mSelection = new Selection();
 
-        mListAdapter = new AgendaListViewAdapter(getActivity(), mSelection,
-                getListView().getItemMenus(), false);
+        mListAdapter = new AgendaListViewAdapter(
+                getActivity(), mSelection, getListView().getItemMenus(), false);
 
         setListAdapter(mListAdapter);
 
@@ -151,13 +150,7 @@ public class AgendaFragment extends QueryFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onActivityCreated(savedInstanceState);
-
-        /* Activity created - context available. Create Shelf and populate list with data. */
-        mShelf = new Shelf(getActivity().getApplicationContext());
-
-        mActionModeListener.updateActionModeForSelection(mSelection.getCount(), new MyActionMode());
 
         /* TODO: If query did not change - reuse loader. Otherwise - restart it. */
         int id = Loaders.generateLoaderId(Loaders.AGENDA_FRAGMENT, mQuery);

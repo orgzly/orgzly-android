@@ -15,7 +15,6 @@ import android.widget.ViewFlipper;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.HeadsListViewAdapter;
 import com.orgzly.android.ui.Loaders;
@@ -34,7 +33,6 @@ public class SearchFragment extends QueryFragment {
 
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = SearchFragment.class.getName();
-
 
     private ViewFlipper mViewFlipper;
 
@@ -106,7 +104,8 @@ public class SearchFragment extends QueryFragment {
         /* Create a selection. */
         mSelection = new Selection();
 
-        mListAdapter = new HeadsListViewAdapter(getActivity(), mSelection, getListView().getItemMenus(), false);
+        mListAdapter = new HeadsListViewAdapter(
+                getActivity(), mSelection, getListView().getItemMenus(), false);
 
         setListAdapter(mListAdapter);
 
@@ -119,13 +118,7 @@ public class SearchFragment extends QueryFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onActivityCreated(savedInstanceState);
-
-        /* Activity created - context available. Create Shelf and populate list with data. */
-        mShelf = new Shelf(getActivity().getApplicationContext());
-
-        mActionModeListener.updateActionModeForSelection(mSelection.getCount(), new MyActionMode());
 
         /* TODO: If query did not change - reuse loader. Otherwise - restart it. */
         int id = Loaders.generateLoaderId(Loaders.QUERY_FRAGMENT, mQuery);
