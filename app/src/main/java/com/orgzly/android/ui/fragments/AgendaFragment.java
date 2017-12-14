@@ -50,6 +50,8 @@ public class AgendaFragment extends QueryFragment {
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = AgendaFragment.class.getName();
 
+    private static final int MAX_DAYS = 30;
+
     // Time formatter for separators
     private UserTimeFormatter userTimeFormatter;
 
@@ -208,6 +210,10 @@ public class AgendaFragment extends QueryFragment {
         Query query = parser.parse(mQuery);
 
         int agendaDays = query.getOptions().getAgendaDays();
+
+        if (agendaDays > MAX_DAYS) {
+            agendaDays = MAX_DAYS;
+        }
 
         // Add IS_SEPARATOR column
         String[] columnNames = new String[cursor.getColumnNames().length + 1];
