@@ -56,8 +56,9 @@ public class DatabaseMigration {
     private static final int DB_VER_14 = 143;
     private static final int DB_VER_15 = 144;
     private static final int DB_VER_16 = 145;
+    private static final int DB_VER_17 = 146;
 
-    static final int DB_VER_CURRENT = DB_VER_16;
+    static final int DB_VER_CURRENT = DB_VER_17;
 
     /**
      * Start from the old version and go through all changes. No breaks.
@@ -133,7 +134,20 @@ public class DatabaseMigration {
             case DB_VER_13: /* Views-only updates (notes count) */
             case DB_VER_14: /* Views-only updates */
             case DB_VER_15: /* Views-only updates */
+
+            case DB_VER_16:
+                insertAgendaSavedSearch(db);
+
         }
+    }
+
+    private static void insertAgendaSavedSearch(SQLiteDatabase db) {
+        ContentValues values = new ContentValues();
+        values.put("name", "Agenda");
+        values.put("search", ".it.done (s.7d or d.7d) ad.7");
+        values.put("position", -1); // Display first
+
+        db.insert("searches", null, values);
     }
 
     private static void migrateOrgTimestamps(SQLiteDatabase db) {
