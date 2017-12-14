@@ -17,7 +17,7 @@
         <item name="font_medium">18sp</item>
         <item name="font_large">22sp</item>
         <item name="item_drawer_title_text_size">16sp</item>
-        <item name="item_drawer_text_size">16sp</item>
+        <item name="item_drawer_subtitle_text_size">12sp</item>
         <item name="left_drawer_sync_text_size">14sp</item>
         <item name="item_book_title_text_size">22sp</item>
         <item name="item_book_subtitle_text_size">18sp</item>
@@ -193,7 +193,7 @@
         <item name="font_medium">18sp</item>
         <item name="font_large">22sp</item>
         <item name="item_drawer_title_text_size">16sp</item>
-        <item name="item_drawer_text_size">16sp</item>
+        <item name="item_drawer_subtitle_text_size">12sp</item>
         <item name="left_drawer_sync_text_size">14sp</item>
         <item name="item_book_title_text_size">22sp</item>
         <item name="item_book_subtitle_text_size">18sp</item>
@@ -397,7 +397,7 @@
         <item name="font_medium">18sp</item>
         <item name="font_large">22sp</item>
         <item name="item_drawer_title_text_size">16sp</item>
-        <item name="item_drawer_text_size">16sp</item>
+        <item name="item_drawer_subtitle_text_size">12sp</item>
         <item name="left_drawer_sync_text_size">14sp</item>
         <item name="item_book_title_text_size">22sp</item>
         <item name="item_book_subtitle_text_size">18sp</item>
@@ -431,7 +431,7 @@
         <item name="font_large">33sp</item>
 
         <item name="item_drawer_title_text_size">18sp</item>
-        <item name="item_drawer_text_size">18sp</item>
+        <item name="item_drawer_subtitle_text_size">16sp</item>
         <item name="left_drawer_sync_text_size">18sp</item>
 
         <item name="item_book_title_text_size">25sp</item>
@@ -471,8 +471,6 @@
         <item name="android:minHeight">@dimen/left_drawer_button_min_height</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:textColor">?attr/drawer_text</item>
     </style>
 
     <!--<style name="DrawerButtonIcon">-->

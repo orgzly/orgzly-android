@@ -460,6 +460,7 @@
          unless layout look depends on the translation. -->
     <string name="book_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
     <string name="book_name_sample">notebook-name</string>
+    <string name="drawer_item_subtitle">Drawer item\'s subtitle</string>
     <string name="book_preface_sample">This is notebook\'s preface. Any text before the first entry. It could be quite long and contain multiple lines.</string>
     <string name="book_title_sample">Notebook Title</string>
     <string name="books_book_sync_last_action_sample">May 15, 2015 11:24:47 PM: No change</string>

@@ -519,7 +519,7 @@ public class MiscTest extends OrgzlyTest {
 
         /* Books in drawer. */
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(allOf(isDescendantOfA(withId(R.id.fragment_left_drawer_container)), withId(R.id.item_drawer_text), withText("Notebook Title")))
+        onView(allOf(isDescendantOfA(withId(R.id.fragment_left_drawer_container)), withId(R.id.item_drawer_title), withText("Notebook Title")))
                 .check(matches(isDisplayed()));
     }
 

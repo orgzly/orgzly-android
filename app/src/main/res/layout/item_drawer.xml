@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/item_drawer_container"
-              style="@style/DrawerButton"
-              android:orientation="horizontal"
-    >
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_drawer_container"
+    style="@style/DrawerButton"
+    android:orientation="horizontal">
 
     <!-- Marker for currently selected item. -->
     <TextView
@@ -32,13 +32,29 @@
             android:visibility="invisible"/>
     </FrameLayout>
 
-    <!-- Actual text. -->
-    <TextView
-        android:id="@+id/item_drawer_text"
-        style="@style/DrawerButtonText"
+    <LinearLayout
+        android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="1"
-        tools:text="@string/book_name_sample"/>
+        style="@style/DrawerButtonText"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/item_drawer_title"
+            android:textSize="?attr/item_drawer_title_text_size"
+            tools:text="@string/book_name_sample"
+            android:textStyle="normal"
+            android:textColor="?attr/drawer_text"/>
+
+        <TextView
+            android:id="@+id/item_drawer_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="?attr/item_drawer_subtitle_text_size"
+            tools:text="@string/drawer_item_subtitle"/>
+    </LinearLayout>
 
     <!-- Is the notebook modified. -->
     <ImageView

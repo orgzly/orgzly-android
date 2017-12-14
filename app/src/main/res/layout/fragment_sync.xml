@@ -47,7 +47,9 @@
             android:textSize="?attr/left_drawer_sync_text_size"
             android:scrollHorizontally="true"
             android:ellipsize="end"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:textStyle="normal"
+            android:textColor="?attr/drawer_text"/>
     </LinearLayout>
 
 </LinearLayout>

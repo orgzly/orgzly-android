@@ -18,7 +18,7 @@
         <attr name="font_large" format="dimension"/>
 
         <attr name="item_drawer_title_text_size" format="dimension"/>
-        <attr name="item_drawer_text_size" format="dimension"/>
+        <attr name="item_drawer_subtitle_text_size" format="dimension"/>
         <attr name="left_drawer_sync_text_size" format="dimension"/>
         <attr name="item_book_title_text_size" format="dimension"/>
         <attr name="item_book_subtitle_text_size" format="dimension"/>
