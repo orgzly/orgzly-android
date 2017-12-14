@@ -185,9 +185,9 @@ class QueryTest(
                             Options()
                     ),
                     arrayOf(
+                            "s.le.3d",
                             "s.3d",
-                            "s.3d",
-                            "(scheduled_time_timestamp != 0 AND scheduled_time_timestamp < " + TimeUtils.dayAfter(Calendar.DAY_OF_MONTH, 3).timeInMillis + ")",
+                            "(scheduled_time_timestamp != 0 AND scheduled_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3+1) + ")",
                             listOf<String>(),
                             listOf<SortOrder>(),
                             Options()
@@ -195,7 +195,7 @@ class QueryTest(
                     arrayOf(
                             "d.tom",
                             "d.tomorrow",
-                            "(deadline_time_timestamp != 0 AND deadline_time_timestamp < " + TimeUtils.dayAfter(Calendar.DAY_OF_MONTH, 1).timeInMillis + ")",
+                            "(deadline_time_timestamp != 0 AND deadline_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 1+1) + ")",
                             listOf<String>(),
                             listOf<SortOrder>(),
                             Options()

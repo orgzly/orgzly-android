@@ -49,8 +49,16 @@ open class DottedQueryBuilder(val context: Context) : UserQueryBuilder {
             is Condition.HasTag -> "${dot(expr.not)}t.${expr.tag}"
             is Condition.HasOwnTag -> "tn.${expr.tag}"
 
-            is Condition.ScheduledInInterval -> "s.${expr.interval}"
-            is Condition.DeadlineInInterval -> "d.${expr.interval}"
+            is Condition.Scheduled -> {
+                val rel = expr.relation.toString().toLowerCase()
+                val relString = if (rel == "le") "" else ".$rel"
+                "s$relString.${expr.interval}"
+            }
+
+            is Condition.Deadline -> {
+                val rel = expr.relation.toString().toLowerCase()
+                val relString = if (rel == "le") "" else ".$rel"
+                "d$relString.${expr.interval}"            }
 
             is Condition.HasText -> expr.text
 

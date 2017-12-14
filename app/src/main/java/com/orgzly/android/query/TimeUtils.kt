@@ -3,19 +3,27 @@ package com.orgzly.android.query
 import java.util.*
 
 object TimeUtils {
-    fun dayAfter(field: Int, amount: Int): Calendar {
+    private val FIELDS = listOf(
+            Calendar.YEAR,
+            Calendar.MONTH,
+            Calendar.HOUR,
+            Calendar.WEEK_OF_YEAR,
+            Calendar.DAY_OF_MONTH,
+            Calendar.HOUR_OF_DAY,
+            Calendar.MINUTE,
+            Calendar.SECOND,
+            Calendar.MILLISECOND)
+
+    fun timeFromNow(field: Int, amount: Int): Long {
         val before = GregorianCalendar()
 
         before.add(field, amount)
 
-        /* Add one more day, as we use less-then operator. */
-        before.add(Calendar.DAY_OF_MONTH, 1)
-
-        /* 00:00 */
-        listOf(Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND, Calendar.MILLISECOND).forEach {
-            before.set(it, 0)
+        // Truncate the rest
+        for (index in FIELDS.indexOf(field) + 1 until FIELDS.size) {
+            before.set(FIELDS[index], 0)
         }
 
-        return before
+        return before.timeInMillis
     }
 }

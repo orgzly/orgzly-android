@@ -168,14 +168,14 @@ class SqliteQueryBuilder(val context: Context): SqlQueryBuilder {
                 "${DbNote.TAGS} LIKE ?"
             }
 
-            is Condition.ScheduledInInterval -> {
+            is Condition.Scheduled -> {
                 hasScheduledCondition = true
-                beforeInterval(DbNoteView.SCHEDULED_TIME_TIMESTAMP, expr.interval)
+                toInterval(DbNoteView.SCHEDULED_TIME_TIMESTAMP, expr.interval, expr.relation)
             }
 
-            is Condition.DeadlineInInterval -> {
+            is Condition.Deadline -> {
                 hasDeadlineCondition = true
-                beforeInterval(DbNoteView.DEADLINE_TIME_TIMESTAMP, expr.interval)
+                toInterval(DbNoteView.DEADLINE_TIME_TIMESTAMP, expr.interval, expr.relation)
             }
 
             is Condition.HasText -> {
@@ -188,25 +188,33 @@ class SqliteQueryBuilder(val context: Context): SqlQueryBuilder {
         }
     }
 
-    private fun beforeInterval(column: String, interval: QueryInterval): String {
+    private fun toInterval(column: String, interval: QueryInterval, relation: Relation): String {
         if (interval.none) {
             return "$column IS NULL"
         }
 
         val field = when (interval.unit) {
+            OrgInterval.Unit.HOUR  -> Calendar.HOUR_OF_DAY
             OrgInterval.Unit.DAY   -> Calendar.DAY_OF_MONTH
             OrgInterval.Unit.WEEK  -> Calendar.WEEK_OF_YEAR
             OrgInterval.Unit.MONTH -> Calendar.MONTH
             OrgInterval.Unit.YEAR  -> Calendar.YEAR
-            else -> -1
+
+            null -> throw IllegalArgumentException("Interval unit not set")
         }
 
-        if (field == -1) {
-            return "1"
+        val timeFromNow = TimeUtils.timeFromNow(field, interval.value)
+        val timeFromNowPlusOne = TimeUtils.timeFromNow(field, interval.value + 1)
+
+        val cond = when (relation) {
+            Relation.EQ -> "$timeFromNow <= $column AND $column < $timeFromNowPlusOne"
+            Relation.NE -> "$column < $timeFromNow AND $timeFromNowPlusOne <= $column"
+            Relation.LT -> "$column < $timeFromNow"
+            Relation.LE -> "$column < $timeFromNowPlusOne"
+            Relation.GT -> "$timeFromNowPlusOne <= $column"
+            Relation.GE -> "$timeFromNow <= $column"
         }
-
-        val before = TimeUtils.dayAfter(field, interval.value)
-
-        return "($column != 0 AND $column < ${before.timeInMillis})"
+        
+        return "($column != 0 AND $cond)"
     }
 }

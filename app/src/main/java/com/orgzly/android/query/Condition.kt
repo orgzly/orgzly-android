@@ -16,8 +16,8 @@ sealed class Condition {
     data class HasTag(val tag: String, val not: Boolean = false) : Condition()
     data class HasOwnTag(val tag: String) : Condition()
 
-    data class ScheduledInInterval(val interval: QueryInterval) : Condition()
-    data class DeadlineInInterval(val interval: QueryInterval) : Condition()
+    data class Scheduled(val interval: QueryInterval, val relation: Relation) : Condition()
+    data class Deadline(val interval: QueryInterval, val relation: Relation) : Condition()
 
     data class HasText(val text: String) : Condition()
 

@@ -1,5 +1,6 @@
 package com.orgzly.android.query.basic
 
+import android.provider.ContactsContract
 import com.orgzly.android.query.*
 
 open class BasicQueryParser : QueryParser() {
@@ -39,14 +40,32 @@ open class BasicQueryParser : QueryParser() {
                 Condition.HasOwnTag(unQuote(matcher.group(1)))
             }),
 
-            ConditionMatch("""^scheduled:(.*)""", { matcher ->
-                val interval = QueryInterval.parse(unQuote(matcher.group(1)))
-                if (interval != null) Condition.ScheduledInInterval(interval) else null
-            }),
+            // scheduled:<3d
+            ConditionMatch("""^(scheduled|deadline):(?:(!=|<|<=|>|>=))?(.*)""", { matcher ->
+                val timeTypeMatch = matcher.group(1)
+                val relationMatch = matcher.group(2)
+                val intervalMatch = matcher.group(3)
 
-            ConditionMatch("""^deadline:(.*)""", { matcher ->
-                val interval = QueryInterval.parse(unQuote(matcher.group(1)))
-                if (interval != null) Condition.DeadlineInInterval(interval) else null
+                val relation = when (relationMatch) {
+                    "!=" -> Relation.NE
+                    "<"  -> Relation.LT
+                    "<=" -> Relation.LE
+                    ">"  -> Relation.GT
+                    ">=" -> Relation.GE
+                    else -> Relation.EQ // Default if there is no relation
+                }
+
+                val interval = QueryInterval.parse(unQuote(intervalMatch))
+
+                if (interval != null) {
+                    if (timeTypeMatch == "scheduled") {
+                        Condition.Scheduled(interval, relation)
+                    } else {
+                        Condition.Deadline(interval, relation)
+                    }
+                } else {
+                    null // Ignore this match
+                }
             })
     )
 
