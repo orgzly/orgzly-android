@@ -70,17 +70,20 @@ open class DottedQueryParser : QueryParser() {
     )
 
     override val sortOrders = listOf(
-            SortOrderMatch("""^(\.)?o\.(scheduled|sched|s)$""", { matcher ->
+            SortOrderMatch("""^(\.)?o\.(?:scheduled|sched|s)$""", { matcher ->
                 SortOrder.ByScheduled(matcher.group(1) != null)
             }),
-            SortOrderMatch("""^(\.)?o\.(deadline|dead|d)$""", { matcher ->
+            SortOrderMatch("""^(\.)?o\.(?:deadline|dead|d)$""", { matcher ->
                 SortOrder.ByDeadline(matcher.group(1) != null)
             }),
-            SortOrderMatch("""^(\.)?o\.(priority|prio|pri|p)$""", { matcher ->
+            SortOrderMatch("""^(\.)?o\.(?:priority|prio|pri|p)$""", { matcher ->
                 SortOrder.ByPriority(matcher.group(1) != null)
             }),
-            SortOrderMatch("""^(\.)?o\.(notebook|book|b)$""", { matcher ->
+            SortOrderMatch("""^(\.)?o\.(?:notebook|book|b)$""", { matcher ->
                 SortOrder.ByBook(matcher.group(1) != null)
+            }),
+            SortOrderMatch("""^(\.)?o\.(?:state|st)$""", { matcher ->
+                SortOrder.ByState(matcher.group(1) != null)
             })
     )
 

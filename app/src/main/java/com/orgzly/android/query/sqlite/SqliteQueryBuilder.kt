@@ -1,6 +1,7 @@
 package com.orgzly.android.query.sqlite
 
 import android.content.Context
+import android.database.DatabaseUtils
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.provider.models.DbNote
 import com.orgzly.android.provider.views.DbNoteView
@@ -9,7 +10,7 @@ import com.orgzly.org.datetime.OrgInterval
 import java.util.*
 
 
-class SqliteQueryBuilder(val context: Context): SqlQueryBuilder {
+class SqliteQueryBuilder(val context: Context) : SqlQueryBuilder {
     private var where: String = ""
     private val arguments: MutableList<String> = ArrayList()
 
@@ -94,6 +95,19 @@ class SqliteQueryBuilder(val context: Context): SqlQueryBuilder {
                     is SortOrder.ByPriority -> {
                         o.add("COALESCE(" + DbNoteView.PRIORITY + ", '" + AppPreferences.defaultPriority(context) + "')" + if (order.desc) " DESC" else "")
                         o.add(DbNoteView.PRIORITY + if (order.desc) " IS NOT NULL" else " IS NULL")
+                    }
+
+                    is SortOrder.ByState -> {
+                        val states = AppPreferences.todoKeywordsSet(context)
+                                .union(AppPreferences.doneKeywordsSet(context))
+
+                        if (states.isNotEmpty()) {
+                            val statesInOrder = if (order.desc) states.reversed() else states
+
+                            o.add(statesInOrder.foldIndexed("CASE ${DbNoteView.STATE}") { i, str, state ->
+                                "$str WHEN ${DatabaseUtils.sqlEscapeString(state)} THEN $i"
+                            } + " ELSE ${states.size} END")
+                        }
                     }
                 }
             }
@@ -214,7 +228,7 @@ class SqliteQueryBuilder(val context: Context): SqlQueryBuilder {
             Relation.GT -> "$timeFromNowPlusOne <= $column"
             Relation.GE -> "$timeFromNow <= $column"
         }
-        
+
         return "($column != 0 AND $cond)"
     }
 }

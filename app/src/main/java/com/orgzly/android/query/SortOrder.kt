@@ -7,4 +7,5 @@ sealed class SortOrder {
     data class ByScheduled(override val desc: Boolean = false) : SortOrder()
     data class ByDeadline(override val desc: Boolean = false) : SortOrder()
     data class ByPriority(override val desc: Boolean = false) : SortOrder()
+    data class ByState(override val desc: Boolean = false) : SortOrder()
 }

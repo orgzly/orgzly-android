@@ -82,6 +82,7 @@ open class DottedQueryBuilder(val context: Context) : UserQueryBuilder {
                     is SortOrder.ByScheduled -> dot(order) + "o.s"
                     is SortOrder.ByDeadline -> dot(order) + "o.d"
                     is SortOrder.ByPriority -> dot(order) + "o.p"
+                    is SortOrder.ByState -> dot(order) + "o.state"
                 })
             }
         }

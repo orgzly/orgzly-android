@@ -71,18 +71,22 @@ open class BasicQueryParser : QueryParser() {
 
 
     override val sortOrders = listOf(
-            SortOrderMatch("""^(-)?sort-order:(scheduled|sched|s)$""", { matcher ->
+            SortOrderMatch("""^(-)?sort-order:(?:scheduled|sched|s)$""", { matcher ->
                 SortOrder.ByScheduled(matcher.group(1) != null)
             }),
-            SortOrderMatch("""^(-)?sort-order:(deadline|dead|d)$""", { matcher ->
+            SortOrderMatch("""^(-)?sort-order:(?:deadline|dead|d)$""", { matcher ->
                 SortOrder.ByDeadline(matcher.group(1) != null)
             }),
-            SortOrderMatch("""^(-)?sort-order:(priority|prio|pri|p)$""", { matcher ->
+            SortOrderMatch("""^(-)?sort-order:(?:priority|prio|pri|p)$""", { matcher ->
                 SortOrder.ByPriority(matcher.group(1) != null)
             }),
-            SortOrderMatch("""^(-)?sort-order:(notebook|book|b)$""", { matcher ->
+            SortOrderMatch("""^(-)?sort-order:(?:notebook|book|b)$""", { matcher ->
                 SortOrder.ByBook(matcher.group(1) != null)
+            }),
+            SortOrderMatch("""^(-)?sort-order:(?:state|st)$""", { matcher ->
+                SortOrder.ByState(matcher.group(1) != null)
             })
+
     )
 
     override val supportedOptions = listOf(
