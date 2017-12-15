@@ -169,16 +169,15 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             expectedSqlSelection = "(closed_time_timestamp != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 0)} <= closed_time_timestamp AND closed_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 0+1) + ")"
                     ),
                     Parameter(
+                            queryString = "c.ge.-1d", // Since yesterday
+                            expectedQueryString = "c.ge.yesterday",
+                            expectedSqlSelection = "(closed_time_timestamp != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, -1)} <= closed_time_timestamp)"
+                    ),
+                    Parameter(
                             queryString = "p.a",
                             expectedQueryString = "p.a",
                             expectedSqlSelection = "LOWER(COALESCE(NULLIF(priority, ''), ?)) = ?",
                             expectedSelectionArgs = listOf("B", "a") // TODO: Normalize
-                    ),
-                    Parameter(
-                            queryString = "s.-123d",
-                            expectedQueryString = "s.-123d",
-                            expectedSqlSelection = "(title LIKE ? OR content LIKE ? OR tags LIKE ?)",
-                            expectedSelectionArgs = listOf("%s.-123d%", "%s.-123d%", "%s.-123d%")
                     ),
                     Parameter(
                             queryString = "ad.2",

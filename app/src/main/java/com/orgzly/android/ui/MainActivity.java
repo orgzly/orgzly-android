@@ -49,8 +49,13 @@ import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.provider.clients.ReposClient;
 import com.orgzly.android.query.Condition;
 import com.orgzly.android.query.Query;
+import com.orgzly.android.query.QueryBuilder;
+import com.orgzly.android.query.QueryParser;
 import com.orgzly.android.query.UserQueryBuilder;
+import com.orgzly.android.query.dotted.DottedQueryBuilder;
+import com.orgzly.android.query.dotted.DottedQueryParser;
 import com.orgzly.android.query.internal.InternalQueryBuilder;
+import com.orgzly.android.query.internal.InternalQueryParser;
 import com.orgzly.android.repos.ContentRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
@@ -494,7 +499,7 @@ public class MainActivity extends CommonActivity
                     /* If searching from book, add book name to query. */
                     Book book = getActiveFragmentBook();
                     if (book != null) {
-                        UserQueryBuilder builder = new InternalQueryBuilder(getApplicationContext());
+                        UserQueryBuilder builder = new DottedQueryBuilder(getApplicationContext());
                         builder.build(new Query(new Condition.InBook(book.getName())));
                         searchView.setQuery(builder.getString() + " ", false);
                     }
@@ -515,7 +520,14 @@ public class MainActivity extends CommonActivity
                 /* Close search. */
                 MenuItemCompat.collapseActionView(searchItem);
 
-                DisplayManager.displayQuery(getSupportFragmentManager(), str);
+                /* Normalize search query. */
+                QueryParser parser = new DottedQueryParser();
+                Query query = parser.parse(str);
+                UserQueryBuilder builder = new DottedQueryBuilder(getApplicationContext());
+                builder.build(query);
+                String queryNormalized = builder.getString();
+
+                DisplayManager.displayQuery(getSupportFragmentManager(), queryNormalized);
 
                 return true;
             }
