@@ -2,6 +2,7 @@ package com.orgzly.android.query
 
 import android.support.test.espresso.matcher.ViewMatchers.assertThat
 import com.orgzly.android.OrgzlyTest
+import com.orgzly.android.provider.views.DbNoteView
 import com.orgzly.android.query.dotted.DottedQueryBuilder
 import com.orgzly.android.query.dotted.DottedQueryParser
 import com.orgzly.android.query.sqlite.SqliteQueryBuilder
@@ -13,216 +14,186 @@ import org.junit.runners.Parameterized
 import java.util.*
 
 @RunWith(value = Parameterized::class)
-class QueryTest(
-        private val queryString: String,
-        private val expectedQueryString: String,
-        private val expectedSql: String,
-        private val expectedArgs: List<String>,
-        private val expectedSortOrders: List<SortOrder>,
-        private val expectedOptions: Options
-        ) : OrgzlyTest() {
+class QueryTest(private val param: Parameter) : OrgzlyTest() {
 
-    private lateinit var builtQueryString: String
-    private lateinit var sqlSelection: String
-    private lateinit var sqlSelectionArgs: List<String>
-    private lateinit var sortOrders: List<SortOrder>
-    private lateinit var options: Options
+    private lateinit var actualQueryString: String
+    private lateinit var actualSqlSelection: String
+    private lateinit var actualSqlSelectionArgs: List<String>
+    private lateinit var actualSqlOrder: String
+    private lateinit var actualQuerySortOrders: List<SortOrder>
+    private lateinit var actualQueryOptions: Options
+
+    data class Parameter(
+            val queryString: String,
+            val expectedQueryString: String? = null,
+            val expectedSqlSelection: String? = null,
+            val expectedSelectionArgs: List<String>? = null,
+            val expectedSqlOrder: String? = null,
+            val expectedQuerySortOrders: List<SortOrder>? = null,
+            val expectedQueryOptions: Options? = null
+    )
 
     companion object {
         @JvmStatic @Parameterized.Parameters
-        fun data(): Collection<Array<Any>> {
+        fun data(): Collection<Parameter> {
             return listOf(
-                    arrayOf(
-                            "i.todo",
-                            "i.todo",
-                            "COALESCE(state, '') = ?",
-                            listOf("TODO"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "i.todo",
+                            expectedQueryString = "i.todo",
+                            expectedSqlSelection = "COALESCE(state, '') = ?",
+                            expectedSelectionArgs = listOf("TODO")
                     ),
-                    arrayOf(
-                            "i.todo t.work",
-                            "i.todo t.work",
-                            "COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
-                            listOf("TODO", "%work%", "%work%"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "i.todo t.work",
+                            expectedQueryString = "i.todo t.work",
+                            expectedSqlSelection = "COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
+                            expectedSelectionArgs = listOf("TODO", "%work%", "%work%")
                     ),
-                    arrayOf(
-                            "i.todo or t.work",
-                            "i.todo or t.work",
-                            "COALESCE(state, '') = ? OR (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
-                            listOf("TODO", "%work%", "%work%"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "i.todo or t.work",
+                            expectedQueryString = "i.todo or t.work",
+                            expectedSqlSelection = "COALESCE(state, '') = ? OR (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
+                            expectedSelectionArgs = listOf("TODO", "%work%", "%work%"),
+                            expectedQuerySortOrders = listOf()
                     ),
-                    arrayOf(
-                            "i.todo or i.next",
-                            "i.todo or i.next",
-                            "COALESCE(state, '') = ? OR COALESCE(state, '') = ?",
-                            listOf("TODO", "NEXT"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "i.todo or i.next",
+                            expectedQueryString = "i.todo or i.next",
+                            expectedSqlSelection = "COALESCE(state, '') = ? OR COALESCE(state, '') = ?",
+                            expectedSelectionArgs = listOf("TODO", "NEXT")
                     ),
-                    arrayOf(
-                            "i.todo or i.next and t.work",
-                            "i.todo or i.next t.work",
-                            "COALESCE(state, '') = ? OR (COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
-                            listOf("TODO", "NEXT", "%work%", "%work%"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "i.todo or i.next and t.work",
+                            expectedQueryString = "i.todo or i.next t.work",
+                            expectedSqlSelection = "COALESCE(state, '') = ? OR (COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
+                            expectedSelectionArgs = listOf("TODO", "NEXT", "%work%", "%work%")
                     ),
-                    arrayOf(
-                            "i.todo and t.work or i.next",
-                            "i.todo t.work or i.next",
-                            "(COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)) OR COALESCE(state, '') = ?",
-                            listOf("TODO", "%work%", "%work%", "NEXT"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "i.todo and t.work or i.next",
+                            expectedQueryString = "i.todo t.work or i.next",
+                            expectedSqlSelection = "(COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)) OR COALESCE(state, '') = ?",
+                            expectedSelectionArgs = listOf("TODO", "%work%", "%work%", "NEXT")
                     ),
-                    arrayOf(
-                            "i.todo t.work or i.next t.home",
-                            "i.todo t.work or i.next t.home",
-                            "(COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)) OR (COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
-                            listOf("TODO", "%work%", "%work%", "NEXT", "%home%", "%home%"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "i.todo t.work or i.next t.home",
+                            expectedQueryString = "i.todo t.work or i.next t.home",
+                            expectedSqlSelection = "(COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)) OR (COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
+                            expectedSelectionArgs = listOf("TODO", "%work%", "%work%", "NEXT", "%home%", "%home%")
                     ),
-                    arrayOf(
-                            "( i.todo t.work ) or i.next",
-                            "i.todo t.work or i.next",
-                            "(COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)) OR COALESCE(state, '') = ?",
-                            listOf("TODO", "%work%", "%work%", "NEXT"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "( i.todo t.work ) or i.next",
+                            expectedQueryString = "i.todo t.work or i.next",
+                            expectedSqlSelection = "(COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)) OR COALESCE(state, '') = ?",
+                            expectedSelectionArgs = listOf("TODO", "%work%", "%work%", "NEXT")
                     ),
-                    arrayOf(
-                            "i.todo (i.next or t.work)",
-                            "i.todo (i.next or t.work)",
-                            "COALESCE(state, '') = ? AND (COALESCE(state, '') = ? OR (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
-                            listOf("TODO", "NEXT", "%work%", "%work%"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "i.todo (i.next or t.work)",
+                            expectedQueryString = "i.todo (i.next or t.work)",
+                            expectedSqlSelection = "COALESCE(state, '') = ? AND (COALESCE(state, '') = ? OR (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
+                            expectedSelectionArgs = listOf("TODO", "NEXT", "%work%", "%work%")
                     ),
-                    arrayOf(
-                            "(( i.todo) )",
-                            "i.todo",
-                            "(COALESCE(state, '') = ?)",
-                            listOf("TODO"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "(( i.todo) )",
+                            expectedQueryString = "i.todo",
+                            expectedSqlSelection = "(COALESCE(state, '') = ?)",
+                            expectedSelectionArgs = listOf("TODO")
                     ),
-                    arrayOf(
-                            "(it.todo b.gtd )or .s.none",
-                            "it.todo b.gtd or .s.none",
-                            "(COALESCE(state, '') IN (?, ?) AND book_name = ?) OR (title LIKE ? OR content LIKE ? OR tags LIKE ?)",
-                            listOf("TODO", "NEXT", "gtd", "%.s.none%", "%.s.none%", "%.s.none%"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "(it.todo b.gtd )or .s.none",
+                            expectedQueryString = "it.todo b.gtd or .s.none",
+                            expectedSqlSelection = "(COALESCE(state, '') IN (?, ?) AND book_name = ?) OR (title LIKE ? OR content LIKE ? OR tags LIKE ?)",
+                            expectedSelectionArgs = listOf("TODO", "NEXT", "gtd", "%.s.none%", "%.s.none%", "%.s.none%")
                     ),
-                    arrayOf(
-                            "it.todo",
-                            "it.todo",
-                            "COALESCE(state, '') IN (?, ?)",
-                            listOf("TODO", "NEXT"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "it.todo",
+                            expectedQueryString = "it.todo",
+                            expectedSqlSelection = "COALESCE(state, '') IN (?, ?)",
+                            expectedSelectionArgs = listOf("TODO", "NEXT")
                     ),
-                    arrayOf(
-                            ".it.none",
-                            ".it.none",
-                            "NOT(COALESCE(state, '') = '')",
-                            listOf<String>(),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = ".it.none",
+                            expectedQueryString = ".it.none",
+                            expectedSqlSelection = "NOT(COALESCE(state, '') = '')",
+                            expectedSelectionArgs = listOf()
                     ),
-                    arrayOf(
-                            "i.todo (t.work or o.p i.next) .o.book t.home",
-                            "i.todo (t.work or i.next) t.home o.p .o.b",
-                            "COALESCE(state, '') = ? AND ((COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?) OR COALESCE(state, '') = ?) AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
-                            listOf("TODO", "%work%", "%work%", "NEXT", "%home%", "%home%"),
-                            listOf(SortOrder.ByPriority(), SortOrder.ByBook(desc = true)),
-                            Options()
+                    Parameter(
+                            queryString = "i.todo (t.work or o.p i.next) .o.book t.home",
+                            expectedQueryString = "i.todo (t.work or i.next) t.home o.p .o.b",
+                            expectedSqlSelection = "COALESCE(state, '') = ? AND ((COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?) OR COALESCE(state, '') = ?) AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
+                            expectedSelectionArgs = listOf("TODO", "%work%", "%work%", "NEXT", "%home%", "%home%"),
+                            expectedQuerySortOrders = listOf(SortOrder.ByPriority(), SortOrder.ByBook(desc = true))
                     ),
-                    arrayOf(
-                            ".i.done ( t.t1 or t.t2)",
-                            ".i.done (t.t1 or t.t2)",
-                            "NOT(COALESCE(state, '') = ?) AND ((COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?) OR (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
-                            listOf("DONE", "%t1%", "%t1%", "%t2%", "%t2%"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = ".i.done ( t.t1 or t.t2)",
+                            expectedQueryString = ".i.done (t.t1 or t.t2)",
+                            expectedSqlSelection = "NOT(COALESCE(state, '') = ?) AND ((COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?) OR (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
+                            expectedSelectionArgs = listOf("DONE", "%t1%", "%t1%", "%t2%", "%t2%")
                     ),
-                    arrayOf(
-                            "tnn.tag1",
-                            "tnn.tag1",
-                            "(title LIKE ? OR content LIKE ? OR tags LIKE ?)",
-                            listOf("%tnn.tag1%", "%tnn.tag1%", "%tnn.tag1%"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "tnn.tag1",
+                            expectedQueryString = "tnn.tag1",
+                            expectedSqlSelection = "(title LIKE ? OR content LIKE ? OR tags LIKE ?)",
+                            expectedSelectionArgs = listOf("%tnn.tag1%", "%tnn.tag1%", "%tnn.tag1%")
                     ),
-                    arrayOf(
-                            "p.",
-                            "p.",
-                            "(title LIKE ? OR content LIKE ? OR tags LIKE ?)",
-                            listOf("%p.%", "%p.%", "%p.%"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "p.",
+                            expectedQueryString = "p.",
+                            expectedSqlSelection = "(title LIKE ? OR content LIKE ? OR tags LIKE ?)",
+                            expectedSelectionArgs = listOf("%p.%", "%p.%", "%p.%")
                     ),
-                    arrayOf( // Operator with no expression before it
-                            "and t.tag",
-                            "t.tag",
-                            "(COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
-                            listOf("%tag%", "%tag%"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter( // Operator with no expression before it
+                            queryString = "and t.tag",
+                            expectedQueryString = "t.tag",
+                            expectedSqlSelection = "(COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
+                            expectedSelectionArgs = listOf("%tag%", "%tag%")
                     ),
-                    arrayOf(
-                            "i.todo (b.\"book(1) name\" or b.book2)",
-                            "i.todo (b.\"book(1) name\" or b.book2)",
-                            "COALESCE(state, '') = ? AND (book_name = ? OR book_name = ?)",
-                            listOf("TODO", "book(1) name", "book2"),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "i.todo (b.\"book(1) name\" or b.book2)",
+                            expectedQueryString = "i.todo (b.\"book(1) name\" or b.book2)",
+                            expectedSqlSelection = "COALESCE(state, '') = ? AND (book_name = ? OR book_name = ?)",
+                            expectedSelectionArgs = listOf("TODO", "book(1) name", "book2")
                     ),
-                    arrayOf(
-                            "s.le.3d",
-                            "s.3d",
-                            "(scheduled_time_timestamp != 0 AND scheduled_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3+1) + ")",
-                            listOf<String>(),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "s.le.3d",
+                            expectedQueryString = "s.3d",
+                            expectedSqlSelection = "(scheduled_time_timestamp != 0 AND scheduled_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3+1) + ")"
                     ),
-                    arrayOf(
-                            "d.tom",
-                            "d.tomorrow",
-                            "(deadline_time_timestamp != 0 AND deadline_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 1+1) + ")",
-                            listOf<String>(),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "d.tom",
+                            expectedQueryString = "d.tomorrow",
+                            expectedSqlSelection = "(deadline_time_timestamp != 0 AND deadline_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 1+1) + ")"
                     ),
-                    arrayOf(
-                            "p.a",
-                            "p.a",
-                            "LOWER(COALESCE(NULLIF(priority, ''), ?)) = ?",
-                            listOf("B", "a"), // TODO: Normalize
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "p.a",
+                            expectedQueryString = "p.a",
+                            expectedSqlSelection = "LOWER(COALESCE(NULLIF(priority, ''), ?)) = ?",
+                            expectedSelectionArgs = listOf("B", "a") // TODO: Normalize
                     ),
-                    arrayOf(
-                            "s.-123d",
-                            "",
-                            "",
-                            listOf<String>(),
-                            listOf<SortOrder>(),
-                            Options()
+                    Parameter(
+                            queryString = "s.-123d",
+                            expectedQueryString = "",
+                            expectedSqlSelection = "",
+                            expectedSelectionArgs = listOf()
                     ),
-                    arrayOf(
-                            "ad.2",
-                            "ad.2",
-                            "",
-                            listOf<String>(),
-                            listOf<SortOrder>(),
-                            Options(2)
+                    Parameter(
+                            queryString = "ad.2",
+                            expectedQueryString = "ad.2",
+                            expectedSqlSelection = "",
+                            expectedSelectionArgs = listOf()
+                    ),
+                    Parameter(
+                            queryString = "o.state",
+                            expectedQueryString = "o.state",
+                            expectedSqlSelection = "",
+                            expectedSelectionArgs = listOf(),
+                            expectedSqlOrder = "CASE state WHEN 'TODO' THEN 0 WHEN 'NEXT' THEN 1 WHEN 'DONE' THEN 2 ELSE 3 END, is_visible",
+                            expectedQuerySortOrders = listOf(SortOrder.ByState()),
+                            expectedQueryOptions = Options()
+                    ),
+                    Parameter(
+                            queryString = "s.ge.3d",
+                            expectedQueryString = "s.ge.3d",
+                            expectedSqlSelection = "(${DbNoteView.SCHEDULED_TIME_TIMESTAMP} != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3)} <= ${DbNoteView.SCHEDULED_TIME_TIMESTAMP})"
                     )
             )
         }
@@ -234,46 +205,65 @@ class QueryTest(
 
         // Parse query
         val parser = DottedQueryParser()
-        val query = parser.parse(queryString)
+        val query = parser.parse(param.queryString)
 
-        // Generate SQL
+        // Build SQL
         val sqlBuilder: SqlQueryBuilder = SqliteQueryBuilder(context)
         sqlBuilder.build(query)
 
-        sortOrders = query.sortOrders
-        options = query.options
-
-        sqlSelection = sqlBuilder.getSelection()
-        sqlSelectionArgs = sqlBuilder.getSelectionArgs()
-
+        // Build query
         val queryBuilder = DottedQueryBuilder(context)
         queryBuilder.build(query)
-        builtQueryString = queryBuilder.getString()
 
-    }
+        actualQuerySortOrders = query.sortOrders
+        actualQueryOptions = query.options
 
-    @Test
-    fun testSqlQuery() {
-        assertThat(queryString, sqlSelection, `is`(expectedSql))
-    }
+        actualSqlSelection = sqlBuilder.getSelection()
+        actualSqlSelectionArgs = sqlBuilder.getSelectionArgs()
+        actualSqlOrder = sqlBuilder.getOrderBy()
 
-    @Test
-    fun testSqlArgs() {
-        assertThat(queryString, sqlSelectionArgs, `is`(expectedArgs))
-    }
-
-    @Test
-    fun testBuiltQuery() {
-        assertThat(queryString, builtQueryString, `is`(expectedQueryString))
+        actualQueryString = queryBuilder.getString()
     }
 
     @Test
     fun testSortOrders() {
-        assertThat(queryString, sortOrders, `is`(expectedSortOrders))
+        param.expectedQuerySortOrders?.let {
+            assertThat(param.queryString, actualQuerySortOrders, `is`(param.expectedQuerySortOrders))
+        }
     }
 
     @Test
     fun testOptions() {
-        assertThat(queryString, options, `is`(expectedOptions))
+        param.expectedQueryOptions?.let {
+            assertThat(param.queryString, actualQueryOptions, `is`(param.expectedQueryOptions))
+        }
+    }
+
+    @Test
+    fun testSqlQuery() {
+        param.expectedSqlSelection?.let {
+            assertThat(param.queryString, actualSqlSelection, `is`(param.expectedSqlSelection))
+        }
+    }
+
+    @Test
+    fun testSqlArgs() {
+        param.expectedSelectionArgs?.let {
+            assertThat(param.queryString, actualSqlSelectionArgs, `is`(param.expectedSelectionArgs))
+        }
+    }
+
+    @Test
+    fun testSqlOrder() {
+        param.expectedSqlOrder?.let {
+            assertThat(param.queryString, actualSqlOrder, `is`(param.expectedSqlOrder))
+        }
+    }
+
+    @Test
+    fun testBuiltQuery() {
+        param.expectedQueryString?.let {
+            assertThat(param.queryString, actualQueryString, `is`(param.expectedQueryString))
+        }
     }
 }

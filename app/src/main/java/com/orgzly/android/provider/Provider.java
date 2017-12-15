@@ -15,13 +15,6 @@ import android.util.Log;
 import com.orgzly.BuildConfig;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
-import com.orgzly.android.provider.views.DbTimeView;
-import com.orgzly.android.query.Query;
-import com.orgzly.android.query.QueryParser;
-import com.orgzly.android.query.SqlQueryBuilder;
-import com.orgzly.android.query.internal.InternalQueryParser;
-import com.orgzly.android.query.sqlite.SqliteQueryBuilder;
-import com.orgzly.org.utils.StateChangeLogic;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.actions.ActionRunner;
 import com.orgzly.android.provider.actions.CutNotesAction;
@@ -55,6 +48,12 @@ import com.orgzly.android.provider.models.DbSearch;
 import com.orgzly.android.provider.models.DbVersionedRook;
 import com.orgzly.android.provider.views.DbBookView;
 import com.orgzly.android.provider.views.DbNoteView;
+import com.orgzly.android.provider.views.DbTimeView;
+import com.orgzly.android.query.Query;
+import com.orgzly.android.query.QueryParser;
+import com.orgzly.android.query.SqlQueryBuilder;
+import com.orgzly.android.query.internal.InternalQueryParser;
+import com.orgzly.android.query.sqlite.SqliteQueryBuilder;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.EncodingDetect;
 import com.orgzly.android.util.LogUtils;
@@ -67,6 +66,7 @@ import com.orgzly.org.parser.OrgNode;
 import com.orgzly.org.parser.OrgNodeInSet;
 import com.orgzly.org.parser.OrgParser;
 import com.orgzly.org.parser.OrgParserWriter;
+import com.orgzly.org.utils.StateChangeLogic;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -302,6 +302,8 @@ public class Provider extends ContentProvider {
     }
 
     private Cursor queryNotesSearchQueried(SQLiteDatabase db, String queryString, String sortOrder) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, queryString, sortOrder);
+
         QueryParser parser = new InternalQueryParser();
         Query query = parser.parse(queryString);
 
@@ -319,11 +321,9 @@ public class Provider extends ContentProvider {
 
         String[] args = queryBuilder.getSelectionArgs().toArray(new String[queryBuilder.getSelectionArgs().size()]);
 
-        String sql = "SELECT * FROM " + DbNoteView.VIEW_NAME + " WHERE " + selection + " ORDER BY " + sortOrder;
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, query, query.getCondition(), queryBuilder.getOrderBy());
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, query, query.getCondition(), sql, args);
-
-        return db.rawQuery(sql, args);
+        return db.query(DbNoteView.VIEW_NAME, null, selection, args, null, null, sortOrder);
     }
 
     @Override
