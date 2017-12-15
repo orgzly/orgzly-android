@@ -38,10 +38,10 @@ abstract class QueryParser {
 
         tokenizer = QueryTokenizer(str, groupOpen, groupClose)
 
-        return Query(conditions(), orders, options)
+        return Query(parseExpression(), orders, options)
     }
 
-    private fun conditions(vararg initialExpr: Condition): Condition {
+    private fun parseExpression(vararg initialExpr: Condition): Condition {
         var members = ArrayList<Condition>()
         var operator = Operator.AND // Default
         var lastTokenWasCondition = false
@@ -49,7 +49,7 @@ abstract class QueryParser {
         fun addCondition(condition: Condition) {
             if (lastTokenWasCondition && operator === Operator.OR) { // OR then implicit AND
                 val exp = members.removeAt(members.size - 1)
-                members.add(conditions(exp, condition))
+                members.add(parseExpression(exp, condition))
             } else {
                 members.add(condition)
             }
@@ -68,7 +68,7 @@ abstract class QueryParser {
 
             when (token) {
                 groupOpen -> {
-                    members.add(conditions())
+                    members.add(parseExpression())
                     lastTokenWasCondition = false
                 }
 
@@ -80,7 +80,7 @@ abstract class QueryParser {
                     if (members.size > 0) {
                         if (operator === Operator.OR) {
                             val expr = members.removeAt(members.size - 1)
-                            members.add(conditions(expr))
+                            members.add(parseExpression(expr))
                         }
                         lastTokenWasCondition = false
 
@@ -107,10 +107,11 @@ abstract class QueryParser {
                     for (def in conditions) {
                         val matcher = def.regex.toPattern().matcher(token)
                         if (matcher.find()) {
-                            def.rule(matcher)?.let {
-                                addCondition(it)
+                            val e = def.rule(matcher)
+                            if (e != null) {
+                                addCondition(e)
+                                continue@tokens
                             }
-                            continue@tokens
                         }
                     }
 
@@ -118,10 +119,11 @@ abstract class QueryParser {
                     for (def in sortOrders) {
                         val matcher = def.regex.toPattern().matcher(token)
                         if (matcher.find()) {
-                            def.rule(matcher)?.let {
-                                orders.add(it)
+                            val e = def.rule(matcher)
+                            if (e != null) {
+                                orders.add(e)
+                                continue@tokens
                             }
-                            continue@tokens
                         }
                     }
 
@@ -129,10 +131,11 @@ abstract class QueryParser {
                     for (def in supportedOptions) {
                         val matcher = def.regex.toPattern().matcher(token)
                         if (matcher.find()) {
-                            def.rule(matcher, options)?.let {
-                                options = it
+                            val e = def.rule(matcher, options)
+                            if (e != null) {
+                                options = e
+                                continue@tokens
                             }
-                            continue@tokens
                         }
                     }
 

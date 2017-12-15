@@ -321,7 +321,7 @@ public class Provider extends ContentProvider {
 
         String[] args = queryBuilder.getSelectionArgs().toArray(new String[queryBuilder.getSelectionArgs().size()]);
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, query, query.getCondition(), queryBuilder.getOrderBy());
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, query, query.getCondition(), queryBuilder.getOrderBy(), selection, args, sortOrder);
 
         return db.query(DbNoteView.VIEW_NAME, null, selection, args, null, null, sortOrder);
     }

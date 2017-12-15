@@ -6,6 +6,7 @@ sealed class SortOrder {
     data class Book(override val desc: Boolean = false) : SortOrder()
     data class Scheduled(override val desc: Boolean = false) : SortOrder()
     data class Deadline(override val desc: Boolean = false) : SortOrder()
+    data class Closed(override val desc: Boolean = false) : SortOrder()
     data class Priority(override val desc: Boolean = false) : SortOrder()
     data class State(override val desc: Boolean = false) : SortOrder()
 }

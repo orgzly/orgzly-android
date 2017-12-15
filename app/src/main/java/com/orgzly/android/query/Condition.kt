@@ -18,6 +18,7 @@ sealed class Condition {
 
     data class Scheduled(val interval: QueryInterval, val relation: Relation) : Condition()
     data class Deadline(val interval: QueryInterval, val relation: Relation) : Condition()
+    data class Closed(val interval: QueryInterval, val relation: Relation) : Condition()
 
     data class HasText(val text: String) : Condition()
 

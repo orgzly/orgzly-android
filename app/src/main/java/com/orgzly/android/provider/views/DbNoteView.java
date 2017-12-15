@@ -45,6 +45,9 @@ public class DbNoteView implements DbNoteViewColumns, DbNoteColumns, BaseColumns
             "t_closed_range." + DbOrgRange.STRING + " AS " + CLOSED_RANGE_STRING + ", " +
             "t_closed_timestamps_start." + DbOrgTimestamp.STRING + " AS " + CLOSED_TIME_STRING + ", " +
             "t_closed_timestamps_end." + DbOrgTimestamp.STRING + " AS " + CLOSED_TIME_END_STRING + ", " +
+            "t_closed_timestamps_start." + DbOrgTimestamp.TIMESTAMP + " AS " + CLOSED_TIME_TIMESTAMP + ", " +
+            ms2StartOfDay("t_closed_timestamps_start." + DbOrgTimestamp.TIMESTAMP) + " AS " + CLOSED_TIME_START_OF_DAY + ", " +
+            "t_closed_timestamps_start." + DbOrgTimestamp.HOUR + " AS " + CLOSED_TIME_HOUR + ", " +
 
             "t_clock_range." + DbOrgRange.STRING + " AS " + CLOCK_RANGE_STRING + ", " +
             "t_clock_timestamps_start." + DbOrgTimestamp.STRING + " AS " + CLOCK_TIME_STRING + ", " +

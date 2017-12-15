@@ -58,7 +58,14 @@ open class DottedQueryBuilder(val context: Context) : UserQueryBuilder {
             is Condition.Deadline -> {
                 val rel = expr.relation.toString().toLowerCase()
                 val relString = if (rel == "le") "" else ".$rel"
-                "d$relString.${expr.interval}"            }
+                "d$relString.${expr.interval}"
+            }
+
+            is Condition.Closed -> {
+                val rel = expr.relation.toString().toLowerCase()
+                val relString = if (rel == "eq") "" else ".$rel"
+                "c$relString.${expr.interval}"
+            }
 
             is Condition.HasText -> expr.text
 
@@ -81,6 +88,7 @@ open class DottedQueryBuilder(val context: Context) : UserQueryBuilder {
                     is SortOrder.Book -> dot(order) + "o.b"
                     is SortOrder.Scheduled -> dot(order) + "o.s"
                     is SortOrder.Deadline -> dot(order) + "o.d"
+                    is SortOrder.Closed -> dot(order) + "o.c"
                     is SortOrder.Priority -> dot(order) + "o.p"
                     is SortOrder.State -> dot(order) + "o.state"
                 })

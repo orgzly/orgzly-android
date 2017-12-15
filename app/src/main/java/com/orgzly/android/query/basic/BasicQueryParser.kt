@@ -40,7 +40,7 @@ open class BasicQueryParser : QueryParser() {
             }),
 
             // scheduled:<3d
-            ConditionMatch("""^(scheduled|deadline):(?:(!=|<|<=|>|>=))?(.*)""", { matcher ->
+            ConditionMatch("""^(scheduled|deadline|closed):(?:(!=|<|<=|>|>=))?(.*)""", { matcher ->
                 val timeTypeMatch = matcher.group(1)
                 val relationMatch = matcher.group(2)
                 val intervalMatch = matcher.group(3)
@@ -57,10 +57,10 @@ open class BasicQueryParser : QueryParser() {
                 val interval = QueryInterval.parse(unQuote(intervalMatch))
 
                 if (interval != null) {
-                    if (timeTypeMatch == "scheduled") {
-                        Condition.Scheduled(interval, relation)
-                    } else {
-                        Condition.Deadline(interval, relation)
+                    when (timeTypeMatch) {
+                        "deadline" -> Condition.Deadline(interval, relation)
+                        "closed"   -> Condition.Closed(interval, relation)
+                        else       -> Condition.Scheduled(interval, relation)
                     }
                 } else {
                     null // Ignore this match
@@ -70,16 +70,19 @@ open class BasicQueryParser : QueryParser() {
 
 
     override val sortOrders = listOf(
-            SortOrderMatch("""^(-)?sort-order:(?:scheduled|sched|s)$""", { matcher ->
+            SortOrderMatch("""^(-)?sort-order:(?:scheduled|sched)$""", { matcher ->
                 SortOrder.Scheduled(matcher.group(1) != null)
             }),
-            SortOrderMatch("""^(-)?sort-order:(?:deadline|dead|d)$""", { matcher ->
+            SortOrderMatch("""^(-)?sort-order:(?:deadline|dead)$""", { matcher ->
                 SortOrder.Deadline(matcher.group(1) != null)
             }),
-            SortOrderMatch("""^(-)?sort-order:(?:priority|prio|pri|p)$""", { matcher ->
+            SortOrderMatch("""^(-)?sort-order:(?:closed|close)$""", { matcher ->
+                SortOrder.Closed(matcher.group(1) != null)
+            }),
+            SortOrderMatch("""^(-)?sort-order:(?:priority|prio)$""", { matcher ->
                 SortOrder.Priority(matcher.group(1) != null)
             }),
-            SortOrderMatch("""^(-)?sort-order:(?:notebook|book|b)$""", { matcher ->
+            SortOrderMatch("""^(-)?sort-order:(?:notebook|book)$""", { matcher ->
                 SortOrder.Book(matcher.group(1) != null)
             }),
             SortOrderMatch("""^(-)?sort-order:(?:state|st)$""", { matcher ->

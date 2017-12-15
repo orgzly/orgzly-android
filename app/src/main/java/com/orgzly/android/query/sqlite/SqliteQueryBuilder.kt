@@ -92,6 +92,21 @@ class SqliteQueryBuilder(val context: Context) : SqlQueryBuilder {
                         }
                     }
 
+                    is SortOrder.Closed -> {
+                        o.add(DbNoteView.CLOSED_TIME_TIMESTAMP + " IS NULL")
+
+                        if (order.desc) {
+                            o.add(DbNoteView.CLOSED_TIME_START_OF_DAY + " DESC")
+                            o.add(DbNoteView.CLOSED_TIME_HOUR + " IS NOT NULL")
+                            o.add(DbNoteView.CLOSED_TIME_TIMESTAMP + " DESC")
+
+                        } else {
+                            o.add(DbNoteView.CLOSED_TIME_START_OF_DAY)
+                            o.add(DbNoteView.CLOSED_TIME_HOUR + " IS NULL")
+                            o.add(DbNoteView.CLOSED_TIME_TIMESTAMP)
+                        }
+                    }
+
                     is SortOrder.Priority -> {
                         o.add("COALESCE(" + DbNoteView.PRIORITY + ", '" + AppPreferences.defaultPriority(context) + "')" + if (order.desc) " DESC" else "")
                         o.add(DbNoteView.PRIORITY + if (order.desc) " IS NOT NULL" else " IS NULL")
@@ -190,6 +205,10 @@ class SqliteQueryBuilder(val context: Context) : SqlQueryBuilder {
             is Condition.Deadline -> {
                 hasDeadlineCondition = true
                 toInterval(DbNoteView.DEADLINE_TIME_TIMESTAMP, expr.interval, expr.relation)
+            }
+
+            is Condition.Closed -> {
+                toInterval(DbNoteView.CLOSED_TIME_TIMESTAMP, expr.interval, expr.relation)
             }
 
             is Condition.HasText -> {

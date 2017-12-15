@@ -164,6 +164,11 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             expectedSqlSelection = "(deadline_time_timestamp != 0 AND deadline_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 1+1) + ")"
                     ),
                     Parameter(
+                            queryString = "c.eq.today",
+                            expectedQueryString = "c.today",
+                            expectedSqlSelection = "(closed_time_timestamp != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 0)} <= closed_time_timestamp AND closed_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 0+1) + ")"
+                    ),
+                    Parameter(
                             queryString = "p.a",
                             expectedQueryString = "p.a",
                             expectedSqlSelection = "LOWER(COALESCE(NULLIF(priority, ''), ?)) = ?",
@@ -171,9 +176,9 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                     ),
                     Parameter(
                             queryString = "s.-123d",
-                            expectedQueryString = "",
-                            expectedSqlSelection = "",
-                            expectedSelectionArgs = listOf()
+                            expectedQueryString = "s.-123d",
+                            expectedSqlSelection = "(title LIKE ? OR content LIKE ? OR tags LIKE ?)",
+                            expectedSelectionArgs = listOf("%s.-123d%", "%s.-123d%", "%s.-123d%")
                     ),
                     Parameter(
                             queryString = "ad.2",

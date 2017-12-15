@@ -40,7 +40,7 @@ open class DottedQueryParser : QueryParser() {
                 Condition.HasOwnTag(unQuote(matcher.group(1)))
             }),
 
-            ConditionMatch("""^([sd])(?:\.(eq|ne|lt|le|gt|ge))?\.(.*)""", { matcher ->
+            ConditionMatch("""^([sdc])(?:\.(eq|ne|lt|le|gt|ge))?\.(.*)""", { matcher ->
                 val timeTypeMatch = matcher.group(1)
                 val relationMatch = matcher.group(2)
                 val intervalMatch = matcher.group(3)
@@ -52,16 +52,16 @@ open class DottedQueryParser : QueryParser() {
                     "le" -> Relation.LE
                     "gt" -> Relation.GT
                     "ge" -> Relation.GE
-                    else -> Relation.LE // Default if there is no relation
+                    else -> if (timeTypeMatch == "c") Relation.EQ else Relation.LE // Default if there is no relation
                 }
 
                 val interval = QueryInterval.parse(unQuote(intervalMatch))
 
                 if (interval != null) {
-                    if (timeTypeMatch == "s") {
-                        Condition.Scheduled(interval, relation)
-                    } else {
-                        Condition.Deadline(interval, relation)
+                    when (timeTypeMatch) {
+                        "d"  -> Condition.Deadline(interval, relation)
+                        "c"  -> Condition.Closed(interval, relation)
+                        else -> Condition.Scheduled(interval, relation)
                     }
                 } else {
                     null // Ignore this match
@@ -75,6 +75,9 @@ open class DottedQueryParser : QueryParser() {
             }),
             SortOrderMatch("""^(\.)?o\.(?:deadline|dead|d)$""", { matcher ->
                 SortOrder.Deadline(matcher.group(1) != null)
+            }),
+            SortOrderMatch("""^(\.)?o\.(?:closed|close|c)$""", { matcher ->
+                SortOrder.Closed(matcher.group(1) != null)
             }),
             SortOrderMatch("""^(\.)?o\.(?:priority|prio|pri|p)$""", { matcher ->
                 SortOrder.Priority(matcher.group(1) != null)

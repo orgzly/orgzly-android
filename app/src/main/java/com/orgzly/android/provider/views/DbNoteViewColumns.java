@@ -22,6 +22,9 @@ public interface DbNoteViewColumns {
     String CLOSED_RANGE_STRING = "closed_range_string";
     String CLOSED_TIME_STRING = "closed_time_string";
     String CLOSED_TIME_END_STRING = "closed_time_end_string";
+    String CLOSED_TIME_TIMESTAMP = "closed_time_timestamp";
+    String CLOSED_TIME_START_OF_DAY = "closed_time_start_of_day";
+    String CLOSED_TIME_HOUR = "closed_time_hour";
 
     String CLOCK_RANGE_STRING = "clock_range_string";
     String CLOCK_TIME_STRING = "clock_time_string";

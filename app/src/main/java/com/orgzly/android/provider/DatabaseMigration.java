@@ -137,6 +137,7 @@ public class DatabaseMigration {
 
             case DB_VER_16:
                 insertAgendaSavedSearch(db);
+                // CLOSED_TIME_TIMESTAMP added to DbNoteView
 
         }
     }
