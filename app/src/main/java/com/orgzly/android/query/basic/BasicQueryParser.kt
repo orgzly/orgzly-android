@@ -1,6 +1,5 @@
 package com.orgzly.android.query.basic
 
-import android.provider.ContactsContract
 import com.orgzly.android.query.*
 
 open class BasicQueryParser : QueryParser() {
@@ -72,19 +71,19 @@ open class BasicQueryParser : QueryParser() {
 
     override val sortOrders = listOf(
             SortOrderMatch("""^(-)?sort-order:(?:scheduled|sched|s)$""", { matcher ->
-                SortOrder.ByScheduled(matcher.group(1) != null)
+                SortOrder.Scheduled(matcher.group(1) != null)
             }),
             SortOrderMatch("""^(-)?sort-order:(?:deadline|dead|d)$""", { matcher ->
-                SortOrder.ByDeadline(matcher.group(1) != null)
+                SortOrder.Deadline(matcher.group(1) != null)
             }),
             SortOrderMatch("""^(-)?sort-order:(?:priority|prio|pri|p)$""", { matcher ->
-                SortOrder.ByPriority(matcher.group(1) != null)
+                SortOrder.Priority(matcher.group(1) != null)
             }),
             SortOrderMatch("""^(-)?sort-order:(?:notebook|book|b)$""", { matcher ->
-                SortOrder.ByBook(matcher.group(1) != null)
+                SortOrder.Book(matcher.group(1) != null)
             }),
             SortOrderMatch("""^(-)?sort-order:(?:state|st)$""", { matcher ->
-                SortOrder.ByState(matcher.group(1) != null)
+                SortOrder.State(matcher.group(1) != null)
             })
 
     )

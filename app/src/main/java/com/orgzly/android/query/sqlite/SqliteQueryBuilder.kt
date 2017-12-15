@@ -59,10 +59,10 @@ class SqliteQueryBuilder(val context: Context) : SqlQueryBuilder {
         } else {
             sortOrders.forEach { order ->
                 when (order) {
-                    is SortOrder.ByBook ->
+                    is SortOrder.Book ->
                         o.add(DbNoteView.BOOK_NAME + if (order.desc) " DESC" else "")
 
-                    is SortOrder.ByScheduled -> {
+                    is SortOrder.Scheduled -> {
                         o.add(DbNoteView.SCHEDULED_TIME_TIMESTAMP + " IS NULL")
 
                         if (order.desc) {
@@ -77,7 +77,7 @@ class SqliteQueryBuilder(val context: Context) : SqlQueryBuilder {
                         }
                     }
 
-                    is SortOrder.ByDeadline -> {
+                    is SortOrder.Deadline -> {
                         o.add(DbNoteView.DEADLINE_TIME_TIMESTAMP + " IS NULL")
 
                         if (order.desc) {
@@ -92,12 +92,12 @@ class SqliteQueryBuilder(val context: Context) : SqlQueryBuilder {
                         }
                     }
 
-                    is SortOrder.ByPriority -> {
+                    is SortOrder.Priority -> {
                         o.add("COALESCE(" + DbNoteView.PRIORITY + ", '" + AppPreferences.defaultPriority(context) + "')" + if (order.desc) " DESC" else "")
                         o.add(DbNoteView.PRIORITY + if (order.desc) " IS NOT NULL" else " IS NULL")
                     }
 
-                    is SortOrder.ByState -> {
+                    is SortOrder.State -> {
                         val states = AppPreferences.todoKeywordsSet(context)
                                 .union(AppPreferences.doneKeywordsSet(context))
 

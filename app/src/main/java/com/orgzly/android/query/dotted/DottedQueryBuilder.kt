@@ -78,11 +78,11 @@ open class DottedQueryBuilder(val context: Context) : UserQueryBuilder {
         if (orders.isNotEmpty()) {
             orders.forEach { order ->
                 list.add(when (order) {
-                    is SortOrder.ByBook -> dot(order) + "o.b"
-                    is SortOrder.ByScheduled -> dot(order) + "o.s"
-                    is SortOrder.ByDeadline -> dot(order) + "o.d"
-                    is SortOrder.ByPriority -> dot(order) + "o.p"
-                    is SortOrder.ByState -> dot(order) + "o.state"
+                    is SortOrder.Book -> dot(order) + "o.b"
+                    is SortOrder.Scheduled -> dot(order) + "o.s"
+                    is SortOrder.Deadline -> dot(order) + "o.d"
+                    is SortOrder.Priority -> dot(order) + "o.p"
+                    is SortOrder.State -> dot(order) + "o.state"
                 })
             }
         }

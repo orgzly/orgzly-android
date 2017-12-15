@@ -121,7 +121,7 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             expectedQueryString = "i.todo (t.work or i.next) t.home o.p .o.b",
                             expectedSqlSelection = "COALESCE(state, '') = ? AND ((COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?) OR COALESCE(state, '') = ?) AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
                             expectedSelectionArgs = listOf("TODO", "%work%", "%work%", "NEXT", "%home%", "%home%"),
-                            expectedQuerySortOrders = listOf(SortOrder.ByPriority(), SortOrder.ByBook(desc = true))
+                            expectedQuerySortOrders = listOf(SortOrder.Priority(), SortOrder.Book(desc = true))
                     ),
                     Parameter(
                             queryString = ".i.done ( t.t1 or t.t2)",
@@ -187,7 +187,7 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             expectedSqlSelection = "",
                             expectedSelectionArgs = listOf(),
                             expectedSqlOrder = "CASE state WHEN 'TODO' THEN 0 WHEN 'NEXT' THEN 1 WHEN 'DONE' THEN 2 ELSE 3 END, is_visible",
-                            expectedQuerySortOrders = listOf(SortOrder.ByState()),
+                            expectedQuerySortOrders = listOf(SortOrder.State()),
                             expectedQueryOptions = Options()
                     ),
                     Parameter(

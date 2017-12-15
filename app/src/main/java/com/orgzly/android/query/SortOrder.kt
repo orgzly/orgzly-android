@@ -3,9 +3,9 @@ package com.orgzly.android.query
 sealed class SortOrder {
     abstract val desc: Boolean
 
-    data class ByBook(override val desc: Boolean = false) : SortOrder()
-    data class ByScheduled(override val desc: Boolean = false) : SortOrder()
-    data class ByDeadline(override val desc: Boolean = false) : SortOrder()
-    data class ByPriority(override val desc: Boolean = false) : SortOrder()
-    data class ByState(override val desc: Boolean = false) : SortOrder()
+    data class Book(override val desc: Boolean = false) : SortOrder()
+    data class Scheduled(override val desc: Boolean = false) : SortOrder()
+    data class Deadline(override val desc: Boolean = false) : SortOrder()
+    data class Priority(override val desc: Boolean = false) : SortOrder()
+    data class State(override val desc: Boolean = false) : SortOrder()
 }
