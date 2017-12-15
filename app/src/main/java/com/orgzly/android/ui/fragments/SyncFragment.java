@@ -749,7 +749,7 @@ public class SyncFragment extends Fragment {
             long time = AppPreferences.lastSuccessfulSyncTime(appContext);
 
             if (time > 0) {
-                buttonText.setText(resources.getString(R.string.last_sync_prefix, formatLastSyncTime(time)));
+                buttonText.setText(resources.getString(R.string.last_sync_with_argument, formatLastSyncTime(time)));
             } else {
                 buttonText.setText(R.string.sync);
             }
@@ -829,7 +829,7 @@ public class SyncFragment extends Fragment {
 
                     setAnimation(false);
 
-                    buttonText.setText(resources.getString(R.string.last_sync_prefix, status.message));
+                    buttonText.setText(resources.getString(R.string.last_sync_with_argument, status.message));
 
                     break;
             }

@@ -166,7 +166,7 @@ public class AgendaFragment extends QueryFragment {
         if (mListener != null) {
             mListener.announceChanges(
                     AgendaFragment.FRAGMENT_TAG,
-                    getString(R.string.fragment_agenda_title),
+                    getString(R.string.agenda),
                     mQuery,
                     mSelection.getCount());
         }

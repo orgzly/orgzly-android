@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:text="@string/head_title_sample"
+            tools:text="@string/head_title_sample"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:maxLines="1" />
@@ -51,7 +51,7 @@
                 android:id="@+id/item_list_widget_scheduled_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/note_scheduled_sample"
+                tools:text="@string/note_scheduled_sample"
                 android:textColor="#696969"
                 android:textSize="14sp"
                 android:layout_marginStart="4dp"
@@ -80,7 +80,7 @@
                 android:id="@+id/item_list_widget_deadline_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/note_deadline_sample"
+                tools:text="@string/note_deadline_sample"
                 android:textColor="#696969"
                 android:textSize="14sp"
                 android:layout_marginStart="4dp"
@@ -109,7 +109,7 @@
                 android:id="@+id/item_list_widget_closed_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/note_closed_sample"
+                tools:text="@string/note_closed_sample"
                 android:textColor="#696969"
                 android:textSize="14sp"
                 android:layout_marginStart="4dp"

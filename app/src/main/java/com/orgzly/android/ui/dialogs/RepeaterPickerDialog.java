@@ -103,7 +103,7 @@ public class RepeaterPickerDialog extends AlertDialog
 
         setViewsFromString(repeaterStr);
 
-        setTitle(R.string.repeat_dialog_title);
+        setTitle(R.string.repeater_dialog_title);
     }
 
 

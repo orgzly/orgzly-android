@@ -10,4 +10,36 @@
     <string name="fold_button_character" translatable="false">–</string>
 
     <string name="default_share_notebook" translatable="false">Inbox</string>
+
+    <string name="dialog_timestamp_repeater_default" translatable="false">.+1w</string>
+
+    <!-- Samples used in tools:text -->
+    <string name="book_mtime_sample" translatable="false">Jul 3, 2013 9:45:37 PM</string>
+    <string name="book_name_sample" translatable="false">notebook-name</string>
+    <string name="drawer_item_subtitle" translatable="false">Drawer item\'s subtitle</string>
+    <string name="book_preface_sample" translatable="false">This is notebook\'s preface. Any text before the first entry. It could be quite long and contain multiple lines.</string>
+    <string name="book_title_sample" translatable="false">Notebook Title</string>
+    <string name="books_book_sync_last_action_sample" translatable="false">May 15, 2015 11:24:47 PM: No change</string>
+    <string name="books_book_notes_count_sample" translatable="false">Contains 42 notes</string>
+    <string name="dialog_timestamp_date_sample" translatable="false">7/27/2015</string>
+    <string name="dialog_timestamp_time_sample" translatable="false">14:32</string>
+    <string name="directory_sample" translatable="false">/storage/emulated/0/org</string>
+    <string name="encoding_detected_sample" translatable="false">UTF-8 detected</string>
+    <string name="encoding_selected_sample" translatable="false">UTF-8 selected</string>
+    <string name="encoding_used_sample" translatable="false">UTF-8 used</string>
+    <string name="filter_name_sample_long" translatable="false">Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe</string>
+    <string name="filter_position_sample" translatable="false">1</string>
+    <string name="filter_query_sample_long" translatable="false">b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday</string>
+    <string name="head_title_sample" translatable="false">This is a sample title used for testing the layout of head\'s item</string>
+    <string name="note_closed_sample" translatable="false">2013\-06\-10 12:00</string>
+    <string name="note_content_sample" translatable="false">This is a multi-line\nnote\'s content which could be quite long, so this needs to be a longer string so we can see how it would look like. There should be both new-lines here, as well as long single line, like this one.</string>
+    <string name="note_deadline_sample" translatable="false">2013\-12\-04 Sat</string>
+    <string name="note_scheduled_sample" translatable="false">2013\-12\-04 Sat</string>
+    <string name="note_title_sample" translatable="false">Simple sample title</string>
+    <string name="repo_url_sample" translatable="false">dropbox:/Some/Path/To/Repo/Directory</string>
+    <string name="rook_url_long_sample" translatable="false">dropbox:/Some/Long/Path/So/Layout/Could/Be/Tested/To/Org/File/notebook.org</string>
+    <string name="rook_url_sample" translatable="false">dropbox:/Some/Path/To/Org/File/notebook.org</string>
+    <string name="sync_button_sample" translatable="false">Last sync: Jan 01, 01:01</string>
+    <string name="synced_rook_mtime_sample" translatable="false">Jul 3, 2013 9:45:37 PM</string>
+    <string name="synced_rook_revision_sample" translatable="false">42f97fe238</string>
 </resources>

@@ -162,7 +162,7 @@
     <string name="book_encoding">NotDefter\'leri kodlamaları</string>
     <string name="syncing_in_progress">Senkronize ediliyor…</string>
     <string name="syncing_book">Senkronize ediliyor %s…</string>
-    <string name="syncing_failed">Senkronize: %s</string> <!-- Sync: Reason -->
+    <string name="sync_with_argument">Senkronize: %s</string> <!-- Sync: Reason -->
     <string name="canceled">İptal edildi</string>
     <string name="canceling">İptal ediliyor…</string>
     <string name="directory">Dizin</string>
@@ -261,7 +261,7 @@
     <string name="app">Uygulama</string>
     <string name="no_repos_configured">Depolar Yapılandırılmadı.</string>
     <string name="no_connection">Bağlantı Yok.</string>
-    <string name="last_sync_prefix">Son senkronize: %s</string> <!-- Last-sync time or reason in the case of failure -->
+    <string name="last_sync_with_argument">Son senkronize: %s</string> <!-- Last-sync time or reason in the case of failure -->
 
     <string name="force_loading_from_uri">Tarafından zorla yükleniyor %s …</string>
     <string name="force_loaded_from_uri">Tarafından zorla yüklendi %s</string>
@@ -284,7 +284,7 @@
     <string name="month">Ay</string>
     <string name="year">Yıl</string>
 
-    <string name="repeat_dialog_title">Bitince, Tekrarla</string>
+    <string name="repeater_dialog_title">Bitince, Tekrarla</string>
 
     <string name="repeater_description_cumulate">Önceki zamana aralık ekle (biriktir)</string> <!-- + -->
     <string name="repeater_description_catch_up">Geçmişte bir önceki zamana aralık eklemeye devam edin (Yakala)</string> <!-- ++ -->

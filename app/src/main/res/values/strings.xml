@@ -44,9 +44,8 @@
     <string name="scheduled">Scheduled</string>
     <string name="agenda">Agenda</string>
     <string name="agenda_period">Agenda days</string>
-    <string name="experimental">Experimental</string>
-
-    <item type="id" name="AGENDA_ITEM_SEPARATOR_TAG"/>
+    <string name="time">Time</string>
+    <string name="repeater">Repeater</string>
 
     <plurals name="notes_deleted">
         <item quantity="one">Note deleted</item>
@@ -146,7 +145,6 @@
     <string name="repo_dropbox_button_not_linked">Link to Dropbox</string>
     <string name="repo_dropbox_button_linked">Unlink from Dropbox</string>
     <string name="fragment_settings_title">Settings</string>
-    <string name="fragment_agenda_title">Agenda</string>
 
     <string name="updating_notes">Updating notes…</string>
     <string name="todo_keywords_configuration_changed_dialog_title">Keywords modified</string>
@@ -158,7 +156,6 @@
     <string name="tomorrow">Tomorrow</string>
     <string name="next_week">Next Week</string>
 
-    <string name="dialog_timestamp_repeater_default">.+1w</string>
     <string name="tags">Tags</string>
     <string name="book_mtime">Notebook modification time</string>
     <string name="book_link">Notebook link</string>
@@ -177,14 +174,13 @@
     <string name="book_encoding">Notebook\'s encoding</string>
     <string name="syncing_in_progress">Syncing…</string>
     <string name="syncing_book">Syncing %s…</string>
-    <string name="syncing_failed">Sync: %s</string> <!-- Sync: Reason -->
+    <string name="sync_with_argument">Sync: %s</string>
     <string name="syncing_failed_title">Sync failed</string>
     <string name="canceled">Canceled</string>
     <string name="canceling">Canceling…</string>
     <string name="directory">Directory</string>
 
     <string name="fragment_repo_dropbox_directory_desc">Directory inside Dropbox (e.g. “/Documents/Orgzly”)</string>
-
     <string name="fragment_repo_external_storage_directory_desc">Directory location (e.g. “file:/sdcard/orgzly”)</string>
 
     <!-- Share button - error messages (set as title). -->
@@ -221,7 +217,6 @@
     <string name="book_shortcut_label">Orgzly notebook</string>
     <string name="pick_a_notebook">Pick a notebook</string>
 
-    <!-- TODO: Use for note moving cab menu (xml) -->
     <string name="down">Down</string>
     <string name="up">Up</string>
     <string name="notebook_modified">Notebook modified</string>
@@ -276,7 +271,6 @@
     <string name="monospaced_font_summary">Use monospaced font for note\'s content and book\'s preface</string>
     <string name="reversed_note_click_action">Reversed note click action</string>
     <string name="reversed_note_click_action_summary">Click to select note, long-click to open</string>
-    <string name="prefs_interface">Interface</string>
     <string name="look_and_feel">Look &amp; Feel</string>
     <string name="notes_list">List of notes</string>
     <string name="prefs_title_new_note">New note</string>
@@ -284,7 +278,7 @@
     <string name="app">App</string>
     <string name="no_repos_configured">No repos configured</string>
     <string name="no_connection">No connection</string>
-    <string name="last_sync_prefix">Last sync: %s</string> <!-- Last-sync time or reason in the case of failure -->
+    <string name="last_sync_with_argument">Last sync: %s</string>
 
     <string name="force_loading_from_uri">Force-loading from %s …</string>
     <string name="force_loaded_from_uri">Force-loaded from %s</string>
@@ -319,10 +313,8 @@
     <string name="month">Month</string>
     <string name="year">Year</string>
 
-    <string name="repeat_dialog_title">Repeat</string>
-
-    <string name="repeater_explained">After task is marked complete, repeater will be shift the time</string>
-
+    <string name="repeater_dialog_title">Repeat</string>
+    <string name="repeater_description">After task is marked complete, repeater will be shift the time</string>
     <string name="repeater_description_cumulate">Add period to time</string> <!-- + -->
     <string name="repeater_description_catch_up">Keep adding period to time until time reaches future</string> <!-- ++ -->
     <string name="repeater_description_restart">Add period to current time</string> <!-- .+ -->
@@ -436,8 +428,7 @@
     <string name="auto_sync">Auto-sync</string>
     <string name="auto_sync_experimental">Auto-sync (experimental)</string>
     <string name="auto_sync_experimental_summary">Used for local repositories only</string>
-    <string name="auto_sync_title">Caution</string>
-    <string name="auto_sync_description">Depending on which options you choose, sync could be triggered often. If notebook is modified, its entire content is transferred to or from the repository. Certain actions might be delayed while syncing is in progress.</string>
+    <string name="auto_sync_warning">Depending on which options you choose, sync could be triggered often. If notebook is modified, its entire content is transferred to or from the repository. Certain actions might be delayed while syncing is in progress.</string>
 
     <string name="pref_title_sync_after_note_create">Note created</string>
     <string name="pref_summary_sync_after_note_create">Sync after creating a new note</string>
@@ -451,43 +442,6 @@
     <string name="pref_title_repo_update_sync">Repositories modified (not implemented yet)</string>
     <string name="pref_summary_repo_update_sync">Sync whenever an update in repositories is detected</string>
 
-    <string name="agenda_day">Day</string>
-    <string name="agenda_week">Week</string>
-    <string name="agenda_fortnight">Fortnight</string>
-    <string name="thirty_days">30 Days</string>
-
-    <!-- These are just used in tools:text for layout preview and don't have to be translated,
-         unless layout look depends on the translation. -->
-    <string name="book_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
-    <string name="book_name_sample">notebook-name</string>
-    <string name="drawer_item_subtitle">Drawer item\'s subtitle</string>
-    <string name="book_preface_sample">This is notebook\'s preface. Any text before the first entry. It could be quite long and contain multiple lines.</string>
-    <string name="book_title_sample">Notebook Title</string>
-    <string name="books_book_sync_last_action_sample">May 15, 2015 11:24:47 PM: No change</string>
-    <string name="books_book_notes_count_sample">Contains 42 notes</string>
-    <string name="dialog_timestamp_date_sample">7/27/2015</string>
-    <string name="dialog_timestamp_end_time_sample">12345:6789</string>
-    <string name="dialog_timestamp_time_sample">14:32</string>
-    <string name="directory_sample">/storage/emulated/0/org</string>
-    <string name="encoding_detected_sample">UTF-8 detected</string>
-    <string name="encoding_selected_sample">UTF-8 selected</string>
-    <string name="encoding_used_sample">UTF-8 used</string>
-    <string name="filter_name_sample_long">Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe</string>
-    <string name="filter_position_sample">1</string>
-    <string name="filter_query_sample_long">b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday</string>
-    <string name="head_title_sample">This is a sample title used for testing the layout of head\'s item</string>
-    <string name="note_closed_sample">2013\-06\-10 12:00</string>
-    <string name="note_content_sample">This is a multi-line\nnote\'s content which could be quite long, so this needs to be a longer string so we can see how it would look like. There should be both new-lines here, as well as long single line, like this one.</string>
-    <string name="note_deadline_sample">2013\-12\-04 Sat</string>
-    <string name="note_scheduled_sample">2013\-12\-04 Sat</string>
-    <string name="note_title_sample">Simple sample title</string>
-    <string name="repo_url_sample">dropbox:/Some/Path/To/Repo/Directory</string>
-    <string name="rook_url_long_sample">dropbox:/Some/Long/Path/So/Layout/Could/Be/Tested/To/Org/File/notebook.org</string>
-    <string name="rook_url_sample">dropbox:/Some/Path/To/Org/File/notebook.org</string>
-    <string name="sync_button_sample">Last sync: Jan 01, 01:01</string>
-    <string name="synced_rook_mtime_sample">Jul 3, 2013 9:45:37 PM</string>
-    <string name="synced_rook_revision_sample">42f97fe238</string>
-    <string name="tap_to_view_notes">Tap to view your notes</string>
     <string name="book_never_modified_locally">Never modified locally</string>
 
     <string name="notes_count_zero">Contains no notes</string>
@@ -504,8 +458,6 @@
 
     <string name="styled_text_with_marks_title">Styled text with marks</string>
     <string name="styled_text_with_marks_summary">Keep marks displayed (e.g. *bold*)</string>
-    <string name="time">Time</string>
-    <string name="repeater">Repeater</string>
 
     <string name="no_such_link_target">Note with “%1$s” property set to “%2$s” not found</string>
 

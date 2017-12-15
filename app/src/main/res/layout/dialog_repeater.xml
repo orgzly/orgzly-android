@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/padding_4"
             android:gravity="center"
-            android:text="@string/repeater_explained"/>
+            android:text="@string/repeater_description"/>
 
         <LinearLayout
             android:layout_width="match_parent"

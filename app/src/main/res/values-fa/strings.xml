@@ -155,7 +155,7 @@
     <string name="book_encoding">رمزگذاری دفترچه</string>
     <string name="syncing_in_progress">در حال همگام‌سازی…</string>
     <string name="syncing_book">هم‌گام سازی %s…</string>
-    <string name="syncing_failed">هم‌گام‌سازی: %s</string> <!-- Sync: Reason -->
+    <string name="sync_with_argument">هم‌گام‌سازی: %s</string> <!-- Sync: Reason -->
     <string name="canceled">منصرف شدید</string>
     <string name="canceling">در حال انصراف…</string>
     <string name="directory">پوشه</string>
@@ -254,7 +254,7 @@
     <string name="app">برنامه</string>
     <string name="no_repos_configured">هیچ مخزنی پیکربندی نشده است</string>
     <string name="no_connection">اتصال برقرار نیست</string>
-    <string name="last_sync_prefix">آخرین همگام‌سازی: %s</string> <!-- Last-sync time or reason in the case of failure -->
+    <string name="last_sync_with_argument">آخرین همگام‌سازی: %s</string> <!-- Last-sync time or reason in the case of failure -->
 
     <string name="force_loading_from_uri">بارکردن اجباری از %s …</string>
     <string name="force_loaded_from_uri">از %s بارگذاری اجباری شد</string>
@@ -277,7 +277,7 @@
     <string name="month">ماه</string>
     <string name="year">سال</string>
 
-    <string name="repeat_dialog_title">بعد از DONE تکرار کن</string>
+    <string name="repeater_dialog_title">بعد از DONE تکرار کن</string>
 
     <string name="repeater_description_cumulate">افزودن فاصله زمانی به قبلی (جمع‌کردن)</string> <!-- + -->
     <string name="repeater_description_catch_up">تا وقتی در گذشته است فاصله زمانی را به قبلی اضافه کن (مداوم)</string> <!-- ++ -->

@@ -85,8 +85,8 @@
     <!-- Notebooks' sort order. -->
     <string name="pref_key_notebooks_sort_order" translatable="false">pref_key_notebooks_sort_order</string>
     <string name="pref_default_notebooks_sort_order" translatable="false">@string/pref_value_notebooks_sort_order_name</string>
-    <string name="pref_value_notebooks_sort_order_name">name</string>
-    <string name="pref_value_notebooks_sort_order_modification_time">mtime</string>
+    <string name="pref_value_notebooks_sort_order_name" translatable="false">name</string>
+    <string name="pref_value_notebooks_sort_order_modification_time" translatable="false">mtime</string>
     <string-array name="notebooks_sort_order">
         <item>@string/notebooks_sort_order_name</item>
         <item>@string/notebooks_sort_order_modification_time</item>
@@ -237,7 +237,7 @@
 
 
     <string name="pref_key_snooze_time" translatable="false">pref_key_snooze_time</string>
-    <string name="pref_default_value_snooze_time">5</string>
+    <string name="pref_default_value_snooze_time" translatable="false">5</string>
 
     <string name="pref_key_snooze_type" translatable="false">pref_key_snooze_type</string>
     <string name="pref_default_value_snooze_type">button</string>

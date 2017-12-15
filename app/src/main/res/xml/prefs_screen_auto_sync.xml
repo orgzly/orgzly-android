@@ -7,7 +7,7 @@
     <Preference
         android:selectable="false"
         android:icon="?attr/oic_warning"
-        android:summary="@string/auto_sync_description"/>
+        android:summary="@string/auto_sync_warning"/>
 
     <SwitchPreference
         android:key="@string/pref_key_auto_sync"

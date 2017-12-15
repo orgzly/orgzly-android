@@ -1128,7 +1128,7 @@ public class MainActivity extends CommonActivity
     @Override
     public void onSyncFinished(String msg) {
         if (msg != null) {
-            showSnackbarWithReposLink(getString(R.string.syncing_failed, msg));
+            showSnackbarWithReposLink(getString(R.string.sync_with_argument, msg));
         }
     }
 
