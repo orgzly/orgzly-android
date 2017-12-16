@@ -2,7 +2,6 @@ package com.orgzly.android.util;
 
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgDateTimeUtils;
-import com.orgzly.org.datetime.OrgInterval;
 import com.orgzly.org.datetime.OrgRange;
 import com.orgzly.org.datetime.OrgRepeater;
 

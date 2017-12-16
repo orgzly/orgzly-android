@@ -22,6 +22,6 @@ sealed class Condition {
 
     data class HasText(val text: String) : Condition()
 
-    data class And(val operands: List<Condition>): Condition()
-    data class Or(val operands: List<Condition>): Condition()
+    data class And(val operands: List<Condition>) : Condition()
+    data class Or(val operands: List<Condition>) : Condition()
 }

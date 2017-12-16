@@ -10,11 +10,11 @@ open class BasicQueryParser : QueryParser() {
     override val operatorsOr = listOf("or", "|")
 
     override val conditions = listOf(
-            ConditionMatch("""^(-)?book:(.*)""", { matcher ->
+            ConditionMatch("""^(-)?book:(.+)""", { matcher ->
                 Condition.InBook(unQuote(matcher.group(2)), matcher.group(1) != null)
             }),
 
-            ConditionMatch("""^(-)?state:(.*)""", { matcher ->
+            ConditionMatch("""^(-)?state:(.+)""", { matcher ->
                 Condition.HasState(unQuote(matcher.group(2)), matcher.group(1) != null)
             }),
 
@@ -31,16 +31,16 @@ open class BasicQueryParser : QueryParser() {
                 Condition.HasSetPriority(matcher.group(2), matcher.group(1) != null)
             }),
 
-            ConditionMatch("""^(-)?tag:(.*)""", { matcher ->
+            ConditionMatch("""^(-)?tag:(.+)""", { matcher ->
                 Condition.HasTag(unQuote(matcher.group(2)), matcher.group(1) != null)
             }),
 
-            ConditionMatch("""^own-tag:(.*)""", { matcher ->
+            ConditionMatch("""^own-tag:(.+)""", { matcher ->
                 Condition.HasOwnTag(unQuote(matcher.group(1)))
             }),
 
             // scheduled:<3d
-            ConditionMatch("""^(scheduled|deadline|closed):(?:(!=|<|<=|>|>=))?(.*)""", { matcher ->
+            ConditionMatch("""^(scheduled|deadline|closed):(?:(!=|<|<=|>|>=))?(.+)""", { matcher ->
                 val timeTypeMatch = matcher.group(1)
                 val relationMatch = matcher.group(2)
                 val intervalMatch = matcher.group(3)

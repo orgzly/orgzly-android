@@ -155,17 +155,6 @@ abstract class QueryParser {
 
     /**
      * AND has precedence over OR
-     *
-     * Reasoning (examples)...
-     *
-     * Languages: && over ||
-     * Orgzly: First "or" implementation: AND over OR
-     * Orgzly: Search proposal: AND over OR
-     * Google: OR over AND
-     * Bing: AND over OR
      */
-    enum class Operator {
-        AND,
-        OR
-    }
+    enum class Operator { AND, OR }
 }

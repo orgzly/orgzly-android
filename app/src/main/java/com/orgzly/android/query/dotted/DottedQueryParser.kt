@@ -11,11 +11,11 @@ open class DottedQueryParser : QueryParser() {
     override val operatorsOr = listOf("or")
 
     override val conditions = listOf(
-            ConditionMatch("""^(\.)?b\.(.*)""", { matcher ->
+            ConditionMatch("""^(\.)?b\.(.+)""", { matcher ->
                 Condition.InBook(unQuote(matcher.group(2)), matcher.group(1) != null)
             }),
 
-            ConditionMatch("""^(\.)?i\.(.*)""", { matcher ->
+            ConditionMatch("""^(\.)?i\.(.+)""", { matcher ->
                 Condition.HasState(unQuote(matcher.group(2)), matcher.group(1) != null)
             }),
 
@@ -32,15 +32,15 @@ open class DottedQueryParser : QueryParser() {
                 Condition.HasSetPriority(matcher.group(2), matcher.group(1) != null)
             }),
 
-            ConditionMatch("""^(\.)?t\.(.*)""", { matcher ->
+            ConditionMatch("""^(\.)?t\.(.+)""", { matcher ->
                 Condition.HasTag(unQuote(matcher.group(2)), matcher.group(1) != null)
             }),
 
-            ConditionMatch("""^tn\.(.*)""", { matcher ->
+            ConditionMatch("""^tn\.(.+)""", { matcher ->
                 Condition.HasOwnTag(unQuote(matcher.group(1)))
             }),
 
-            ConditionMatch("""^([sdc])(?:\.(eq|ne|lt|le|gt|ge))?\.(.*)""", { matcher ->
+            ConditionMatch("""^([sdc])(?:\.(eq|ne|lt|le|gt|ge))?\.(.+)""", { matcher ->
                 val timeTypeMatch = matcher.group(1)
                 val relationMatch = matcher.group(2)
                 val intervalMatch = matcher.group(3)
