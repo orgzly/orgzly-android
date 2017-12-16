@@ -1,6 +1,5 @@
 package com.orgzly.android.reminders;
 
-import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,6 +7,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -16,8 +17,10 @@ import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.App;
 import com.orgzly.android.AppIntent;
-import com.orgzly.android.NotificationActionService;
+import com.orgzly.android.NotificationBroadcastReceiver;
+import com.orgzly.android.NotificationChannels;
 import com.orgzly.android.Notifications;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.TimesClient;
@@ -41,7 +44,7 @@ import java.util.Set;
 /**
  * Every event that can affect reminders is going through this service.
  */
-public class ReminderService extends IntentService {
+public class ReminderService extends JobIntentService {
     public static final String TAG = ReminderService.class.getName();
 
     private static final String EXTRA_EVENT = "event";
@@ -54,13 +57,7 @@ public class ReminderService extends IntentService {
     static final int TIME_BEFORE_NOW = 1;
     static final int TIME_FROM_NOW = 2;
 
-    private static final long[] SCHEDULED_NOTE_VIBRATE_PATTERN = {500, 50, 50, 300};
-
-    public ReminderService() {
-        super(TAG);
-
-        setIntentRedelivery(true);
-    }
+    public static final long[] SCHEDULED_NOTE_VIBRATE_PATTERN = {500, 50, 50, 300};
 
     public static List<NoteReminder> getNoteReminders(
             final Context context, final ReadableInstant now, final LastRun lastRun, final int beforeOrAfter) {
@@ -121,7 +118,7 @@ public class ReminderService extends IntentService {
     public static void notifyDataChanged(Context context) {
         Intent intent = new Intent(context, ReminderService.class);
         intent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_DATA_CHANGED);
-        context.startService(intent);
+        enqueueWork(context, intent);
     }
 
     /**
@@ -130,7 +127,7 @@ public class ReminderService extends IntentService {
     public static void notifyJobTriggered(Context context) {
         Intent intent = new Intent(context, ReminderService.class);
         intent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_JOB_TRIGGERED);
-        context.startService(intent);
+        enqueueWork(context, intent);
     }
 
     public static void notifySnoozeTriggered(Context context, long noteId, int noteTimeType, long timestamp) {
@@ -140,7 +137,11 @@ public class ReminderService extends IntentService {
         intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId);
         intent.putExtra(AppIntent.EXTRA_NOTE_TIME_TYPE, noteTimeType);
         intent.putExtra(AppIntent.EXTRA_SNOOZE_TIMESTAMP, timestamp);
-        context.startService(intent);
+        enqueueWork(context, intent);
+    }
+
+    private static void enqueueWork(Context context, Intent intent) {
+        ReminderService.enqueueWork(context, ReminderService.class, App.REMINDER_SERVICE_JOB_ID, intent);
     }
 
     private static ReadableInstant[] getInterval(int beforeOrAfter, ReadableInstant now, LastRun lastRun, int timeType) {
@@ -168,7 +169,7 @@ public class ReminderService extends IntentService {
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleWork(@NonNull Intent intent) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
         if (!AppPreferences.remindersForScheduledEnabled(this) && !AppPreferences.remindersForDeadlineEnabled(this)) {
@@ -362,6 +363,7 @@ public class ReminderService extends IntentService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+
         for (int i = 0; i < notes.size(); i++) {
             NoteReminder noteReminder = notes.get(i);
 
@@ -372,7 +374,7 @@ public class ReminderService extends IntentService {
                     noteReminder.getPayload().timeType == DbTimeView.SCHEDULED_TIME ? R.string.reminder_for_scheduled : R.string.reminder_for_deadline,
                     noteReminder.getPayload().orgDateTime.toStringWithoutBrackets());
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.REMINDERS)
                     .setAutoCancel(true)
                     .setCategory(NotificationCompat.CATEGORY_REMINDER)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -448,8 +450,8 @@ public class ReminderService extends IntentService {
             builder.addAction(reminderSnoozeAction);
             wearableExtender.addAction(reminderSnoozeAction);
 
-            /* finish & notify */
             builder.extend(wearableExtender);
+
             notificationManager.notify(notificationTag, notificationId, builder.build());
         }
     }
@@ -477,7 +479,7 @@ public class ReminderService extends IntentService {
 
     private PendingIntent markNoteAsDonePendingIntent(
             Context context, long noteId, String notificationTag, int notificationId) {
-        Intent intent = new Intent(context, NotificationActionService.class);
+        Intent intent = new Intent(context, NotificationBroadcastReceiver.class);
 
         intent.setAction(AppIntent.ACTION_NOTE_MARK_AS_DONE);
 
@@ -486,7 +488,7 @@ public class ReminderService extends IntentService {
         intent.putExtra(AppIntent.EXTRA_NOTIFICATION_TAG, notificationTag);
         intent.putExtra(AppIntent.EXTRA_NOTIFICATION_ID, notificationId);
 
-        return PendingIntent.getService(
+        return PendingIntent.getBroadcast(
                 context,
                 Long.valueOf(noteId).intValue(),
                 intent,
@@ -500,7 +502,7 @@ public class ReminderService extends IntentService {
                                                       String notificationTag,
                                                       int notificationId) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
-        Intent intent = new Intent(context, NotificationActionService.class);
+        Intent intent = new Intent(context, NotificationBroadcastReceiver.class);
 
         intent.setAction(AppIntent.ACTION_REMINDER_SNOOZE_REQUEST);
 
@@ -510,7 +512,7 @@ public class ReminderService extends IntentService {
         intent.putExtra(AppIntent.EXTRA_NOTIFICATION_TAG, notificationTag);
         intent.putExtra(AppIntent.EXTRA_NOTIFICATION_ID, notificationId);
 
-        return PendingIntent.getService(
+        return PendingIntent.getBroadcast(
                 context,
                 Long.valueOf(noteId).intValue(),
                 intent,

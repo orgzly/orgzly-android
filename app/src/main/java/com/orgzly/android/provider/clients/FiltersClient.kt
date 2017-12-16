@@ -8,6 +8,7 @@ import com.orgzly.android.AppIntent
 import com.orgzly.android.filter.Filter
 import com.orgzly.android.provider.ProviderContract
 import com.orgzly.android.provider.models.DbSearch
+import com.orgzly.android.widgets.ListWidgetProvider
 import java.util.ArrayList
 
 object FiltersClient {
@@ -107,7 +108,9 @@ object FiltersClient {
     }
 
     private fun updateWidgets(context: Context) {
-        context.sendBroadcast(Intent(AppIntent.ACTION_UPDATE_LAYOUT_LIST_WIDGET))
+        val intent = Intent(context, ListWidgetProvider::class.java)
+        intent.action = AppIntent.ACTION_UPDATE_LAYOUT_LIST_WIDGET
+        context.sendBroadcast(intent)
     }
 
     fun forEach(context: Context, func: (filter: Filter) -> Unit) {

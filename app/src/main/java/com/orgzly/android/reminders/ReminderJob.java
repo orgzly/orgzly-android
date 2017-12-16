@@ -19,7 +19,6 @@ public class ReminderJob extends Job {
     static int scheduleJob(long exactMs) {
         return new JobRequest.Builder(ReminderJob.TAG)
                 .setExact(exactMs)
-                .setPersisted(true)
                 .build()
                 .schedule();
     }

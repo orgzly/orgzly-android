@@ -1,7 +1,8 @@
 package com.orgzly.android
 
-import android.app.IntentService
+import android.content.Context
 import android.content.Intent
+import android.support.v4.app.JobIntentService
 import android.support.v4.content.LocalBroadcastManager
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -12,23 +13,15 @@ import com.orgzly.android.util.LogUtils
 /**
  * TODO: Perform all actions in a single place
  */
-class ActionService : IntentService(TAG) {
-    init {
-        setIntentRedelivery(true)
-    }
 
-    private val shelf by lazy {
-        Shelf(this)
-    }
+class ActionService : JobIntentService() {
+    private val shelf = Shelf(this)
+    private val localBroadcastManager = LocalBroadcastManager.getInstance(this)
 
-    private val localBroadcastManager by lazy {
-        LocalBroadcastManager.getInstance(this)
-    }
-
-    override fun onHandleIntent(intent: Intent?) {
+    override fun onHandleWork(intent: Intent) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent)
 
-        when (intent?.action) {
+        when (intent.action) {
             AppIntent.ACTION_IMPORT_GETTING_STARTED_NOTEBOOK ->
                 importGettingStartedNotebook()
 
@@ -113,5 +106,22 @@ class ActionService : IntentService(TAG) {
 
         const val GETTING_STARTED_NOTEBOOK_NAME = "Getting Started with Orgzly"
         const val GETTING_STARTED_NOTEBOOK_RESOURCE_ID = R.raw.orgzly_getting_started
+
+        fun enqueueWork(context: Context, action: String) {
+            val intent = Intent(context, ActionService::class.java)
+
+            intent.action = action
+
+            enqueueWork(context, intent)
+        }
+
+        fun enqueueWork(context: Context, intent: Intent) {
+            JobIntentService.enqueueWork(
+                    context,
+                    ActionService::class.java,
+                    App.ACTION_SERVICE_JOB_ID,
+                    intent)
+        }
+
     }
 }

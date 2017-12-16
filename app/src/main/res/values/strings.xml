@@ -373,8 +373,8 @@
     <string name="new_note_notification">Create note and sync</string>
     <string name="new_note_notification_summary">Quickly create new note or sync notebooks from notification drawer</string>
 
-    <string name="show_sync_notifications_title">Sync status</string>
-    <string name="show_sync_notifications_summary">Display notification during sync and after sync failure</string>
+    <string name="show_sync_notifications_title">Sync failure</string>
+    <string name="show_sync_notifications_summary">Display notification on sync failure</string>
 
     <string name="prefs_title_reminders">Reminders</string>
 
@@ -470,5 +470,18 @@
     <string name="export_to">Export to “%1$s”?</string>
 
     <string name="primary_storage_not_available">Primary storage not available</string>
+
+    <!-- Notification channels -->
+    <string name="reminders_channel_name">Reminders</string>
+    <string name="reminders_channel_description">Display for scheduled or due tasks</string>
+    <string name="ongoing_channel_name">Ongoing (new note)</string>
+    <string name="ongoing_channel_description">Quickly create new note or initiate sync</string>
+    <string name="sync_progress_channel_name">Sync progress</string>
+    <string name="sync_progress_channel_description">Display sync progress</string>
+    <string name="sync_failed_channel_name">Failed sync</string>
+    <string name="sync_failed_channel_description">Display when syncing fails</string>
+
+    <string name="notification_channel_settings">Notifications</string>
+    <string name="notification_channel_settings_summary">Sound, vibrate, notification dot</string>
 
 </resources>

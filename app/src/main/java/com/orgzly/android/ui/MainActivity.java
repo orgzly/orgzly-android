@@ -350,9 +350,9 @@ public class MainActivity extends CommonActivity
         if (isNewVersion) {
             /* Import Getting Started notebook. */
             if (!AppPreferences.isGettingStartedNotebookLoaded(this)) {
-                Intent intent = new Intent(this, ActionService.class);
-                intent.setAction(AppIntent.ACTION_IMPORT_GETTING_STARTED_NOTEBOOK);
-                startService(intent);
+                ActionService.Companion.enqueueWork(
+                        MainActivity.this,
+                        AppIntent.ACTION_IMPORT_GETTING_STARTED_NOTEBOOK);
             }
 
             /* Open drawer for the first time user. */

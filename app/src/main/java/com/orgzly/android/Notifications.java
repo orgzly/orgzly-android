@@ -36,7 +36,7 @@ public class Notifications {
         PendingIntent resultPendingIntent = ShareActivity.createNewNoteIntent(context, null);
 
         /* Build notification */
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.ONGOING)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.cic_orgzly_notification)
                 .setContentTitle(context.getString(R.string.new_note))
@@ -94,7 +94,7 @@ public class Notifications {
         PendingIntent openOrgzlyPendingIntent = PendingIntent.getActivity(context, 0,
                 new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.SYNC_PROGRESS)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_sync_white_24dp)
                 .setContentTitle(context.getString(R.string.syncing_in_progress))
@@ -108,7 +108,7 @@ public class Notifications {
         PendingIntent openOrgzlyPendingIntent = PendingIntent.getActivity(context, 0,
                 new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.SYNC_FAILED)
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.cic_orgzly_notification)
                 .setContentTitle(context.getString(R.string.syncing_failed_title))

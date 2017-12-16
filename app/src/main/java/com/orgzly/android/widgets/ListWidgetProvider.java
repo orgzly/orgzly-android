@@ -122,19 +122,11 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onEnabled(Context context) {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(AppIntent.ACTION_UPDATE_LIST_WIDGET);
-        filter.addAction(AppIntent.ACTION_UPDATE_LAYOUT_LIST_WIDGET);
-
-        LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
-
         scheduleUpdate(context);
     }
 
     @Override
     public void onDisabled(Context context) {
-        LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
-
         clearUpdate(context);
     }
 

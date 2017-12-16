@@ -65,15 +65,15 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_filters, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_filters, container, false)
 
         mViewFlipper = view.findViewById(R.id.fragment_filters_flipper) as ViewFlipper
 
         return view
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         mIsViewCreated = true
@@ -134,16 +134,15 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
 
     private fun importExport(resId: Int, f: (Int, String) -> Any) {
         try {
-            val file = FileFilterStore(context).file()
+            val file = FileFilterStore(context!!).file()
             f(R.string.searches, getString(resId, file))
 
         } catch(e: IOException) {
             val intent = Intent(AppIntent.ACTION_DISPLAY_MESSAGE)
             intent.putExtra(AppIntent.EXTRA_MESSAGE, e.localizedMessage)
-            LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
+            LocalBroadcastManager.getInstance(context!!).sendBroadcast(intent)
         }
     }
-
 
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
         mListener?.onFilterEditRequest(id)
@@ -160,7 +159,7 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
         super.onActivityCreated(savedInstanceState)
 
-        activity.supportLoaderManager.initLoader(Loaders.FILTERS_FRAGMENT, null, this)
+        activity?.supportLoaderManager?.initLoader(Loaders.FILTERS_FRAGMENT, null, this)
     }
 
     override fun onResume() {
@@ -171,7 +170,7 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-        return FiltersClient.getCursorLoader(activity)
+        return FiltersClient.getCursorLoader(activity!!)
     }
 
     override fun onLoadFinished(cursorLoader: Loader<Cursor>, cursor: Cursor) {

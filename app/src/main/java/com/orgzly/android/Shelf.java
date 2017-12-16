@@ -39,6 +39,7 @@ import com.orgzly.android.util.CircularArrayList;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 import com.orgzly.android.util.UriUtils;
+import com.orgzly.android.widgets.ListWidgetProvider;
 import com.orgzly.org.OrgHead;
 import com.orgzly.org.OrgProperties;
 import com.orgzly.org.datetime.OrgDateTime;
@@ -814,7 +815,9 @@ public class Shelf {
 
         ReminderService.notifyDataChanged(context);
 
-        context.sendBroadcast(new Intent(AppIntent.ACTION_UPDATE_LIST_WIDGET));
+        Intent intent = new Intent(context, ListWidgetProvider.class);
+        intent.setAction(AppIntent.ACTION_UPDATE_LIST_WIDGET);
+        context.sendBroadcast(intent);
     }
 
     public void syncOnNoteCreate() {

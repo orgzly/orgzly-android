@@ -58,7 +58,6 @@ public class SnoozeJob extends Job {
         new JobRequest.Builder(SnoozeJob.TAG)
             .setExact(exactMs)
             .setExtras(extras)
-            .setPersisted(true)
             .build()
             .schedule();
     }

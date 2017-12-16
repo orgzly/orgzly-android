@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.view.View
 import com.orgzly.R
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.util.ActivityUtils
@@ -19,7 +20,7 @@ object AppPermissions {
         if (!isGranted(activity, requestCode)) {
             /* Should we show an explanation? */
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
-                val view = activity.findViewById(R.id.main_content)
+                val view = activity.findViewById(R.id.main_content) as View
 
                 activity.showSnackbar(Snackbar.make(view, rationale, MiscUtils.SNACKBAR_WITH_ACTION_DURATION)
                         .setAction(R.string.settings) { ActivityUtils.openAppInfoSettings(activity) })

@@ -1,31 +1,29 @@
 package com.orgzly.android;
 
-import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
 
 import com.orgzly.BuildConfig;
-import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.reminders.SnoozeJob;
+import com.orgzly.android.util.LogUtils;
 
-public class NotificationActionService extends IntentService {
+public class NotificationActionService extends JobIntentService {
     public static final String TAG = NotificationActionService.class.getName();
 
-    public NotificationActionService() {
-        super(TAG);
-
-        setIntentRedelivery(true);
+    public static void enqueueWork(Context context, Intent intent) {
+        NotificationActionService.enqueueWork(
+                context,
+                NotificationActionService.class,
+                App.NOTIFICATION_SERVICE_JOB_ID,
+                intent);
     }
 
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
+    protected void onHandleWork(@NonNull Intent intent) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
-
-        if (intent == null) {
-            return;
-        }
 
         dismissNotification(this, intent);
 

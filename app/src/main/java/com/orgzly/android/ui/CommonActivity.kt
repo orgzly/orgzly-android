@@ -113,7 +113,7 @@ abstract class CommonActivity : AppCompatActivity() {
     }
 
     fun showSimpleSnackbarLong(message: String) {
-        val view = findViewById(R.id.main_content)
+        val view = findViewById<View>(R.id.main_content)
         if (view != null) {
             showSnackbar(Snackbar.make(view, message, Snackbar.LENGTH_LONG))
         }
@@ -123,7 +123,7 @@ abstract class CommonActivity : AppCompatActivity() {
         dismissSnackbar()
 
         /* Close drawer before displaying snackbar. */
-        val drawerLayout = findViewById(R.id.drawer_layout)
+        val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
         if (drawerLayout != null) {
             (drawerLayout as DrawerLayout).closeDrawer(GravityCompat.START)
         }

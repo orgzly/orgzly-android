@@ -1,15 +1,16 @@
 package com.orgzly.android.ui.settings
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.ActionService
 import com.orgzly.android.AppIntent
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.settings.SettingsFragment.SettingsFragmentListener
 import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.util.LogUtils
 
 
 class SettingsActivity : CommonActivity(), SettingsFragmentListener {
@@ -22,9 +23,7 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
                 .setTitle(R.string.notes_update_needed_dialog_title)
                 .setMessage(R.string.notes_update_needed_dialog_message)
                 .setPositiveButton(R.string.yes) { _, _ ->
-                    val intent = Intent(this, ActionService::class.java)
-                    intent.action = action
-                    startService(intent)
+                    ActionService.enqueueWork(this, action)
                 }
                 .setNegativeButton(R.string.not_now, null)
                 .show()
@@ -38,18 +37,15 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
                 .setTitle(R.string.clear_database)
                 .setMessage(R.string.clear_database_dialog_message)
                 .setPositiveButton(R.string.ok) { _, _ ->
-                    val intent = Intent(this, ActionService::class.java)
-                    intent.action = AppIntent.ACTION_CLEAR_DATABASE
-                    startService(intent)
+                    ActionService.enqueueWork(this, AppIntent.ACTION_CLEAR_DATABASE)
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
     }
 
     override fun onGettingStartedNotebookReloadRequest() {
-        val intent = Intent(this, ActionService::class.java)
-        intent.action = AppIntent.ACTION_IMPORT_GETTING_STARTED_NOTEBOOK
-        startService(intent)
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+        ActionService.enqueueWork(this, AppIntent.ACTION_IMPORT_GETTING_STARTED_NOTEBOOK)
     }
 
     override fun onPreferenceScreen(resource: String) {
@@ -64,10 +60,6 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
 
     override fun onTitleChange(title: CharSequence?) {
         setTitle(title ?: getText(R.string.settings))
-    }
-
-    companion object {
-        val TAG: String = SettingsActivity::class.java.name
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,5 +94,9 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
 
     override fun recreateActivityForSettingsChange() {
         recreate()
+    }
+
+    companion object {
+        val TAG: String = SettingsActivity::class.java.name
     }
 }

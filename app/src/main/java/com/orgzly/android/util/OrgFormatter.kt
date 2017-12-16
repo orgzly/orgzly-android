@@ -142,7 +142,7 @@ object OrgFormatter {
                             intent.action = AppIntent.ACTION_OPEN_NOTE
                             intent.putExtra(AppIntent.EXTRA_PROPERTY_NAME, propName)
                             intent.putExtra(AppIntent.EXTRA_PROPERTY_VALUE, propValue)
-                            widget.context.startService(intent)
+                            ActionService.enqueueWork(widget.context, intent)
                         }
                     }, m.start(), m.start() + link.length, FLAGS)
                 }

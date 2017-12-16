@@ -183,10 +183,10 @@ public class SyncService extends Service {
 
             Notifications.ensureSyncNotificationSetup(context);
 
-            if (AppPreferences.showSyncNotifications(getApplicationContext())) {
-                // FIXME: Makes service run in foreground (doesn't just display ongoing notification)
-                startForeground(Notifications.SYNC_IN_PROGRESS, Notifications.createSyncInProgressNotification(getApplicationContext()));
-            }
+            // Always run in foreground (since Oreo, before possibly switching to scheduled job)
+            startForeground(
+                    Notifications.SYNC_IN_PROGRESS,
+                    Notifications.createSyncInProgressNotification(getApplicationContext()));
 
 
             /* There are no repositories configured. */

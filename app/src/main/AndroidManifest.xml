@@ -21,7 +21,7 @@
         android:name=".android.App"
         android:allowBackup="true"
         android:supportsRtl="true"
-        android:icon="@drawable/cic_orgzly_logo"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppLightTheme.Light"
         android:fullBackupContent="@xml/backup_config">
@@ -96,26 +96,21 @@
             android:name=".android.ui.SyncShortcutActivity"
             android:taskAffinity="" />
 
-        <receiver
-            android:name="com.orgzly.android.widgets.ListWidgetProvider"
-            android:label="@string/list_widget_name">
-
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-
-                <action android:name="com.orgzly.intent.action.UPDATE_LIST_WIDGET" />
-                <action android:name="com.orgzly.intent.action.UPDATE_LAYOUT_LIST_WIDGET" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/list_widget_info" />
-        </receiver>
-
         <service
             android:name=".android.widgets.ListWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS"
             android:exported="false" />
+
+        <service android:name=".android.sync.SyncService" android:exported="true" />
+        <service
+            android:name=".android.NotificationActionService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service
+            android:name=".android.reminders.ReminderService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service
+            android:name=".android.ActionService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <!-- Not exported (not made available to other applications). -->
         <provider
@@ -124,17 +119,26 @@
             android:authorities="com.orgzly">
         </provider>
 
+        <receiver
+            android:name="com.orgzly.android.widgets.ListWidgetProvider"
+            android:label="@string/list_widget_name">
 
-        <service android:name=".android.sync.SyncService" android:exported="true" />
-        <service android:name=".android.reminders.ReminderService" />
-        <service android:name=".android.NotificationActionService" />
-        <service android:name=".android.ActionService" />
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
 
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/list_widget_info" />
+        </receiver>
 
         <receiver android:name=".android.BootCompletedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+
+        <receiver
+            android:name=".android.NotificationBroadcastReceiver"/>
     </application>
 </manifest>

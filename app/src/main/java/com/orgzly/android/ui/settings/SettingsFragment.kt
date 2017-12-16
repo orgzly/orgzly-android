@@ -80,7 +80,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         }
 
         /* Update preferences which depend on multiple others. */
-        updateOtherPreferencesForReminders()
+        updateRemindersScreen()
     }
 
     private fun setupVersionPreference() {
@@ -114,7 +114,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         }
 
         /* Remove dividers. */
-//        view?.findViewById(android.R.id.list)?.let { (it as? ListView)?.divider = null }
+        // view?.findViewById(android.R.id.list)?.let { (it as? ListView)?.divider = null }
 
         return view
     }
@@ -226,7 +226,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
             AppPreferences.reminderLastRunForDeadline(context, 0L)
         }
 
-        updateOtherPreferencesForReminders()
+        updateRemindersScreen()
 
         /* Always notify about possibly changed data, if settings are modified.
          *
@@ -237,20 +237,27 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         Shelf.notifyDataChanged(context)
     }
 
-    private fun updateOtherPreferencesForReminders() {
+    private fun updateRemindersScreen() {
         val scheduled = findPreference(getString(R.string.pref_key_use_reminders_for_scheduled_times))
         val deadline = findPreference(getString(R.string.pref_key_use_reminders_for_deadline_times))
 
         if (scheduled != null && deadline != null) {
-            val remindersEnabled = (scheduled as TwoStatePreference).isChecked || (deadline as TwoStatePreference).isChecked
+            val remindersEnabled = (scheduled as TwoStatePreference).isChecked
+                    || (deadline as TwoStatePreference).isChecked
 
-            findPreference(getString(R.string.pref_key_reminders_sound)).isEnabled = remindersEnabled
-            findPreference(getString(R.string.pref_key_reminders_led)).isEnabled = remindersEnabled
-            findPreference(getString(R.string.pref_key_reminders_vibrate)).isEnabled = remindersEnabled
+            /* These do not exist on Oreo and later */
+            findPreference(getString(R.string.pref_key_reminders_sound))?.isEnabled = remindersEnabled
+            findPreference(getString(R.string.pref_key_reminders_led))?.isEnabled = remindersEnabled
+            findPreference(getString(R.string.pref_key_reminders_vibrate))?.isEnabled = remindersEnabled
+
+            /* This does not exist before Oreo. */
+            findPreference(getString(R.string.pref_key_reminders_channel_notification_settings))?.isEnabled = remindersEnabled
+
             findPreference(getString(R.string.pref_key_snooze_time)).isEnabled = remindersEnabled
             findPreference(getString(R.string.pref_key_snooze_type)).isEnabled = remindersEnabled
         }
     }
+
 
     /**
      * Update list of possible states that can be used as default for a new note.
