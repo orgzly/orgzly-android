@@ -6,7 +6,7 @@ object TimeUtils {
     private val FIELDS = listOf(
             Calendar.YEAR,
             Calendar.MONTH,
-            Calendar.HOUR,
+            Calendar.HOUR_OF_DAY,
             Calendar.WEEK_OF_YEAR,
             Calendar.DAY_OF_MONTH,
             Calendar.HOUR_OF_DAY,

@@ -68,7 +68,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
             remoteViews.setTextViewText(R.id.list_widget_empty_view, context.getString(R.string.no_notes_found_after_search));
         }
 
-        /* Set the PendingIntent template for the clicks on the rows */
+        // Rows - open note
         final Intent onClickIntent = new Intent(context, ListWidgetProvider.class);
         onClickIntent.setAction(AppIntent.ACTION_CLICK_LIST_WIDGET);
         onClickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
@@ -77,9 +77,10 @@ public class ListWidgetProvider extends AppWidgetProvider {
                 onClickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setPendingIntentTemplate(R.id.list_widget_list_view, onClickPendingIntent);
 
+        // Plus icon - new note
         remoteViews.setOnClickPendingIntent(R.id.list_widget_header_add, ShareActivity.createNewNoteIntent(context));
 
-        /* open query on click on orgzly logo */
+        // Logo - open query
         Intent openIntent = Intent.makeRestartActivityTask(new ComponentName(context, MainActivity.class));
         openIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, filter.getQuery());
         serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));

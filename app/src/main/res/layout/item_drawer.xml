@@ -45,7 +45,6 @@
             android:id="@+id/item_drawer_title"
             android:textSize="?attr/item_drawer_title_text_size"
             tools:text="@string/book_name_sample"
-            android:textStyle="normal"
             android:textColor="?attr/drawer_text"/>
 
         <TextView

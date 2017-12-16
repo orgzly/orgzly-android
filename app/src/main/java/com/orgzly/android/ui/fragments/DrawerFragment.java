@@ -82,9 +82,9 @@ public class DrawerFragment extends ListFragment
 
             if (fragment != null) {
                 /* Find by query string. */
-                if (SearchFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
+                if (SearchFragment.FRAGMENT_TAG.equals(activeFragmentTag) || AgendaFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
 
-                    String query = ((SearchFragment) fragment).getQuery();
+                    String query = ((QueryFragment) fragment).getQuery();
 
                     if (query != null) {
                         for (FilterItem item : filters) {
@@ -424,6 +424,7 @@ public class DrawerFragment extends ListFragment
             this.title = getString(R.string.searches);
 //            this.subtitle = "Click to edit";
             this.icon = R.styleable.Icons_oic_drawer_filters;
+//            this.typeface = Typeface.BOLD;
         }
     }
 
@@ -441,6 +442,7 @@ public class DrawerFragment extends ListFragment
         BooksItem() {
             this.title = getString(R.string.notebooks);
             this.icon = R.styleable.Icons_oic_drawer_notebooks;
+//            this.typeface = Typeface.BOLD;
         }
     }
 
@@ -457,6 +459,7 @@ public class DrawerFragment extends ListFragment
         SettingsItem() {
             this.title = getString(R.string.settings);
             this.icon = R.styleable.Icons_oic_drawer_settings;
+//            this.typeface = Typeface.BOLD;
         }
     }
 }

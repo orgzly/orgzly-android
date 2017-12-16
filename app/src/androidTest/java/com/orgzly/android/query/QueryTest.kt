@@ -29,6 +29,7 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
             val expectedSqlSelection: String? = null,
             val expectedSelectionArgs: List<String>? = null,
             val expectedSqlOrder: String? = null,
+
             val expectedQuerySortOrders: List<SortOrder>? = null,
             val expectedQueryOptions: Options? = null
     )
@@ -172,6 +173,11 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             queryString = "c.ge.-1d", // Since yesterday
                             expectedQueryString = "c.ge.yesterday",
                             expectedSqlSelection = "(closed_time_timestamp != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, -1)} <= closed_time_timestamp)"
+                    ),
+                    Parameter(
+                            queryString = "c.gt.-1h",
+                            expectedQueryString = "c.gt.-1h",
+                            expectedSqlSelection = "(closed_time_timestamp != 0 AND ${TimeUtils.timeFromNow(Calendar.HOUR_OF_DAY, 0)} <= closed_time_timestamp)"
                     ),
                     Parameter(
                             queryString = "p.a",
