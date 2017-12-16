@@ -380,7 +380,7 @@
     <string name="encoding_detected_sample">UTF-8 tespit edildi</string>
     <string name="encoding_selected_sample">UTF-8 seçildi</string>
     <string name="encoding_used_sample">UTF-8 kullanıldı</string>
-    <string name="filter_name_sample_long">Belki/Olabilir Belki/Olabilir Belki/Olabilir Belki/Olabilir Belki/Olabilir Belki/Olabilir Belki/Olabilir Belki/Olabilir</string>
+    <string name="filter_name_sample">Belki/Olabilir Belki/Olabilir Belki/Olabilir Belki/Olabilir Belki/Olabilir Belki/Olabilir Belki/Olabilir Belki/Olabilir</string>
     <string name="filter_position_sample">1</string>
     <string name="filter_query_sample_long">b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday</string>
     <string name="head_title_sample">Bu, başlığın\'s düzenini test etmek için kullanılan örnek bir parçadır</string>

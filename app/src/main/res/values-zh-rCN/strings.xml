@@ -228,7 +228,7 @@
     <string name="book_title_sample">笔记本标题</string>
     <string name="encoding_selected_sample">选择UTF-8</string>
     <string name="encoding_used_sample">已使用UTF-8</string>
-    <string name="filter_name_sample_long">将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能</string>
+    <string name="filter_name_sample">将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能 将来某时/可能</string>
     <string name="filter_position_sample">1</string>
     <string name="head_title_sample">"这是一个用于测试开始显示的标题示例"</string>
     <string name="note_closed_sample">20130610 12:00</string>

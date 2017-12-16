@@ -27,7 +27,7 @@
     <string name="encoding_detected_sample" translatable="false">UTF-8 detected</string>
     <string name="encoding_selected_sample" translatable="false">UTF-8 selected</string>
     <string name="encoding_used_sample" translatable="false">UTF-8 used</string>
-    <string name="filter_name_sample_long" translatable="false">Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe Someday/Maybe</string>
+    <string name="filter_name_sample" translatable="false">Someday/Maybe</string>
     <string name="filter_position_sample" translatable="false">1</string>
     <string name="filter_query_sample_long" translatable="false">b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday</string>
     <string name="head_title_sample" translatable="false">This is a sample title used for testing the layout of head\'s item</string>
