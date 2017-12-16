@@ -230,7 +230,7 @@ public class AgendaFragment extends QueryFragment {
             day = day.plusDays(1);
         } while (++i < agendaDays);
 
-        Calendar now = Calendar.getInstance();
+        DateTime now =  DateTime.now();
 
         int scheduledRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.SCHEDULED_RANGE_STRING);
         int deadlineRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.DEADLINE_RANGE_STRING);
@@ -239,7 +239,6 @@ public class AgendaFragment extends QueryFragment {
 
         long nextId = 1;
         originalNoteIDs.clear();
-
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             Set<DateTime> dates = AgendaUtils.expandOrgDateTime(
                     new String[] {
@@ -253,6 +252,7 @@ public class AgendaFragment extends QueryFragment {
                 // create agenda cursors
                 MatrixCursor matrixCursor = agenda.get(date.getMillis());
                 MatrixCursor.RowBuilder rowBuilder = matrixCursor.newRow();
+
                 for (String col: columnNames) {
                     if (col.equalsIgnoreCase(Columns._ID)) {
                         long noteId = cursor.getLong(cursor.getColumnIndex(col));

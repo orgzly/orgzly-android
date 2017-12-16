@@ -19,13 +19,13 @@ public class AgendaUtils {
      * This method returns only one {@link DateTime} per day
      * to avoid displaying the same note multiple times.
      */
-    public static Set<DateTime> expandOrgDateTime(String[] rangeStrings, Calendar now, int days) {
+    public static Set<DateTime> expandOrgDateTime(String[] rangeStrings, DateTime now, int days) {
         Set<DateTime> set = new TreeSet<>();
 
         for (String rangeString : rangeStrings) {
             OrgRange range = OrgRange.parseOrNull(rangeString);
             if (range != null) {
-                set.addAll(expandOrgDateTime(range, new DateTime(now), days));
+                set.addAll(expandOrgDateTime(range, now, days));
             }
         }
 
@@ -53,7 +53,7 @@ public class AgendaUtils {
 
         // Add today if task is overdue
         if (rangeStart.getCalendar().before(now.toGregorianCalendar())) {
-            result.add(new DateTime(now).withTimeAtStartOfDay());
+            result.add(now.withTimeAtStartOfDay());
         }
 
         DateTime to = now.plusDays(days).withTimeAtStartOfDay();
