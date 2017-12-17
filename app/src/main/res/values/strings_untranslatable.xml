@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name" translatable="false">Orgzly</string>
+
     <!-- Note bullets -->
     <string name="bullet" translatable="false">•</string>
     <string name="bullet_with_children_folded" translatable="false">+</string>
