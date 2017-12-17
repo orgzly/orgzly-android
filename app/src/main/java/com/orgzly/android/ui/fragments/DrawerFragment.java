@@ -97,7 +97,7 @@ public class DrawerFragment extends ListFragment
                 } else if (BooksFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
                     selectedItem = booksHeader;
 
-                } else if (FiltersFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
+                } else if (FiltersFragment.Companion.getFRAGMENT_TAG().equals(activeFragmentTag)) {
                     selectedItem = filtersHeader;
 
                 /* Find by book ID. */

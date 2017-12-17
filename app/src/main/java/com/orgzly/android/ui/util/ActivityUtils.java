@@ -115,7 +115,7 @@ public class ActivityUtils {
                 actionBarAttr = R.attr.action_bar_in_settings;
                 fabAttr = 0;
 
-            } else if (FiltersFragment.FRAGMENT_TAG.equals(fragmentTag)) {
+            } else if (FiltersFragment.Companion.getFRAGMENT_TAG().equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_in_query;
                 actionBarAttr = R.attr.action_bar_in_query;
                 fabAttr = R.attr.oic_new_item;

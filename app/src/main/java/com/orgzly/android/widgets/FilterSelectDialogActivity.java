@@ -33,7 +33,7 @@ public class FilterSelectDialogActivity extends AppCompatActivity implements Loa
         setContentView(R.layout.activity_filter_select_dialog);
 
         /* Create adapter using Cursor. */
-        mListAdapter = FiltersFragment.createFilterCursorAdapter(this);
+        mListAdapter = FiltersFragment.Companion.createFilterCursorAdapter(this);
 
         ListView list = (ListView) findViewById(R.id.filter_select_list);
 

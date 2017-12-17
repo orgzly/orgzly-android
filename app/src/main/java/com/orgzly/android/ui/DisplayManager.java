@@ -73,17 +73,17 @@ public class DisplayManager {
     }
 
     public static void displayFilters(FragmentManager fragmentManager) {
-        if (isFragmentDisplayed(fragmentManager, FiltersFragment.FRAGMENT_TAG) != null) {
+        if (isFragmentDisplayed(fragmentManager, FiltersFragment.Companion.getFRAGMENT_TAG()) != null) {
             return;
         }
 
-        Fragment fragment = FiltersFragment.getInstance();
+        Fragment fragment = FiltersFragment.Companion.getInstance();
 
         FragmentTransaction t = fragmentManager
                 .beginTransaction()
                 .setTransition(FRAGMENT_TRANSITION)
                 .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, FiltersFragment.FRAGMENT_TAG);
+                .replace(R.id.single_pane_container, fragment, FiltersFragment.Companion.getFRAGMENT_TAG());
 
 
         t.commit();
