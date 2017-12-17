@@ -100,8 +100,7 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
         }
     }
 
-    override fun requestActivityRestartForChangedSettings() {
-        /* Recreate activity immediately, don't wait for onResume(). */
+    override fun recreateActivityForSettingsChange() {
         recreate()
     }
 }

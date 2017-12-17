@@ -154,11 +154,11 @@ public class AgendaFragment extends QueryFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        /* TODO: If query did not change - reuse loader. Otherwise - restart it. */
+        // Restart loader in case of settings change which affect results (e.g. default priority)
         int id = Loaders.generateLoaderId(Loaders.AGENDA_FRAGMENT, mQuery);
         currentLoaderId = id;
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Loader #" + id + " for: " + mQuery);
-        getActivity().getSupportLoaderManager().initLoader(id, null, this);
+        getActivity().getSupportLoaderManager().restartLoader(id, null, this);
     }
 
     @Override

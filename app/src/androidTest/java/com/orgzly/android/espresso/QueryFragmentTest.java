@@ -696,6 +696,5 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(3)));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
         onListItem(1).onChildView(withId(R.id.item_head_content)).check(matches(allOf(withText(containsString("Content for Note B")), isDisplayed())));
-
     }
 }

@@ -37,6 +37,7 @@ import static org.hamcrest.Matchers.*;
 class EspressoUtils {
     static final int[] SETTINGS_REVERSED_NOTE_CLICK_ACTION = { 0, 0 };
 
+    static final int[] SETTINGS_DISPLAY_CONTENT = { 1, 10 };
     static final int[] SETTINGS_STATE_KEYWORDS = { 1, 16 };
     static final int[] SETTINGS_DEFAULT_PRIORITY = { 1, 17 };
     static final int[] SETTINGS_LOWEST_PRIORITY = { 1, 18 };

@@ -79,13 +79,16 @@ abstract class CommonActivity : AppCompatActivity() {
     }
 
     private val settingsChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key in PREFS_REQUIRE_ACTIVITY_RESTART.map { getString(it) }) {
-            requestActivityRestartForChangedSettings()
+        // Schedule recreate of activities when any preference is changed
+        restartActivity = true
+
+        // Some preferences require Settings activity to be recreated immediately
+        if (key in PREFS_REQUIRE_IMMEDIATE_ACTIVITY_RECREATE.map { getString(it) }) {
+            recreateActivityForSettingsChange()
         }
     }
 
-    open fun requestActivityRestartForChangedSettings() {
-        restartActivity = true
+    open fun recreateActivityForSettingsChange() {
     }
 
     protected var actionAfterPermissionGrant: Runnable? = null
@@ -281,7 +284,7 @@ abstract class CommonActivity : AppCompatActivity() {
     companion object {
         private val TAG = CommonActivity::class.java.name
 
-        private val PREFS_REQUIRE_ACTIVITY_RESTART = listOf(
+        private val PREFS_REQUIRE_IMMEDIATE_ACTIVITY_RECREATE = listOf(
                 R.string.pref_key_font_size,
                 R.string.pref_key_color_scheme,
                 R.string.pref_key_layout_direction
