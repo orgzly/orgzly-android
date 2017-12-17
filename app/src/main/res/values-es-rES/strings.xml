@@ -205,8 +205,8 @@
   <string name="default_priority">Prioridad por defecto</string>
   <string name="lowest_priority">Prioridad más baja</string>
   <string name="todo_states">Palabras clave para las tareas activas (por hacer)</string>
-  <string name="done_states">Keywords for completed (done) tasks</string>
-  <string name="created_at_property">Created at property</string>
+  <string name="done_states">Palabras clave para las tareas completadas (hechas)</string>
+  <string name="created_at_property">Creado en la propiedad</string>
   <string name="property_name">Property Name</string>
   <string name="created_at">Created at</string>
   <string name="insert_note_creation_time">Insert note\'s creation time</string>
