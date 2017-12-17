@@ -195,7 +195,7 @@
   <string name="permissions_rationale_for_local_repo">Sincronización con un directorio local requiere un permiso de almacenamiento</string>
   <string name="permissions_rationale_for_book_export">Exportar la nota requiere permiso de almacenamiento</string>
   <string name="permissions_rationale_for_sync_start">Sincronización con un directorio local requiere un permiso de almacenamiento</string>
-  <string name="cycle_visibility">Fold/Unfold All</string>
+  <string name="cycle_visibility">Plegar/Desplegar Todo</string>
   <string name="running_database_update">Upgrading database…</string>
   <string name="note_has_been_modified">Note modified</string>
   <string name="discard_or_save_changes">Save changes?</string>
