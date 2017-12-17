@@ -1,6 +1,8 @@
 package com.orgzly.android.ui.fragments
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.database.Cursor
 import android.os.Bundle
 import android.support.v4.app.ListFragment
@@ -41,6 +43,8 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
 
     private var mActionMode: ActionMode? = null
 
+    private var dialog: AlertDialog? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -77,6 +81,12 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
 
         listView.choiceMode = ListView.CHOICE_MODE_MULTIPLE_MODAL
         listView.setMultiChoiceModeListener(MyActionMode())
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        dialog?.dismiss()
     }
 
     override fun onDestroyView() {
@@ -119,15 +129,28 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
     }
 
     private fun importFilters() {
-        val store = FileFilterStore(context)
-        store.importFilters()
+        importExportFilters(R.string.import_from, { store -> store.importFilters() })
     }
 
     private fun exportFilters() {
-        val store = FileFilterStore(context)
-        store.exportFilters()
+        importExportFilters(R.string.export_to, { store -> store.exportFilters() })
     }
 
+    private fun importExportFilters(msgRes: Int, f: (store: FileFilterStore) -> Unit) {
+        dialog?.dismiss()
+
+        val title = R.string.searches
+        val message = getString(msgRes, FileFilterStore(context).file())
+
+        dialog = AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(R.string.ok, { _, _ ->
+                    f(FileFilterStore(context))
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show()
+    }
 
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
         mListener?.onFilterEditRequest(id)

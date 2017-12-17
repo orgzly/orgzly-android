@@ -62,7 +62,7 @@ class FileFilterStore(val context: Context) : FilterStore {
         return filters
     }
 
-    private fun file(): File {
+    fun file(): File {
         val dir = LocalStorage(context).downloadsDirectory()
         return File(dir, FILE_NAME)
     }
