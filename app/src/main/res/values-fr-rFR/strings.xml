@@ -48,12 +48,12 @@
   <string name="agenda">Agenda</string>
   <string name="agenda_period">Jours d\'agenda</string>
   <string name="time">Temps</string>
-  <string name="repeater">Repeater</string>
+  <string name="repeater">Répéteur</string>
   <plurals name="notes_deleted">
-    <item quantity="one">Note deleted</item>
-    <item quantity="other">Deleted <b>%d</b> notes</item>
+    <item quantity="one">Note supprimée</item>
+    <item quantity="other">Supprimé <b>%d</b> notes</item>
   </plurals>
-  <string name="no_notes_deleted">No notes deleted</string>
+  <string name="no_notes_deleted">Aucune note suprimée</string>
   <plurals name="notes_cut">
     <item quantity="one">Note cut</item>
     <item quantity="other">Cut <b>%d</b> notes</item>
