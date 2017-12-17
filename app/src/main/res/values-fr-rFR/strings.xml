@@ -60,8 +60,8 @@
   </plurals>
   <string name="no_notes_cut">No notes cut</string>
   <plurals name="notes_pasted">
-    <item quantity="one">Note pasted</item>
-    <item quantity="other">Pasted <b>%d</b> notes</item>
+    <item quantity="one">Note collé</item>
+    <item quantity="other">Collé <b>%d</b> notes</item>
   </plurals>
   <string name="no_notes_pasted">Nothing to paste</string>
   <string name="fragment_note_title_hint">Title</string>
