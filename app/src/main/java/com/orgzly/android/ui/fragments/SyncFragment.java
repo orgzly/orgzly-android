@@ -241,7 +241,6 @@ public class SyncFragment extends Fragment {
                     if (result instanceof Book) {
                         Book book = (Book) result;
                         mShelf.setBookStatus(book, null, new BookAction(BookAction.Type.INFO, resources.getString(R.string.imported)));
-                        mListener.onBookLoaded((Book) result);
 
                     } else if (result instanceof String) {
                         mListener.onFailure((String) result);
@@ -308,9 +307,6 @@ public class SyncFragment extends Fragment {
                                 new BookAction(
                                         BookAction.Type.INFO,
                                         resources.getString(R.string.force_loaded_from_uri, UriUtils.friendlyUri(book.getLastSyncedToRook().getUri()))));
-
-                        mListener.onBookLoaded((Book) result);
-
                     }
                 }
             }
@@ -992,8 +988,6 @@ public class SyncFragment extends Fragment {
     public interface SyncFragmentListener {
         void onBookCreated(Book book);
         void onBookCreationFailed(Exception exception);
-
-        void onBookLoaded(Book book);
 
         void onBookSaved(Book book);
         void onBookForceSavingFailed(Exception exception);

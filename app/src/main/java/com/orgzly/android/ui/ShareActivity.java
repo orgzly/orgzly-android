@@ -331,10 +331,6 @@ public class ShareActivity extends CommonActivity
     }
 
     @Override
-    public void onBookLoaded(Book book) {
-    }
-
-    @Override
     public void onBookSaved(Book book) {
     }
 

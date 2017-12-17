@@ -353,7 +353,6 @@ public class MainActivity extends CommonActivity
                 Intent intent = new Intent(this, ActionService.class);
                 intent.setAction(AppIntent.ACTION_IMPORT_GETTING_STARTED_NOTEBOOK);
                 startService(intent);
-                /* This will be marked as done after book has been loaded in onBookLoaded(). */
             }
 
             /* Open drawer for the first time user. */
@@ -1111,23 +1110,6 @@ public class MainActivity extends CommonActivity
     @Override /* SyncFragment */
     public void onBookCreationFailed(Exception exception) {
         showSimpleSnackbarLong(exception.getMessage());
-    }
-
-    @Override /* SyncFragment */
-    public void onBookLoaded(Book book) {
-        /* If it's Getting Started notebook, mark that it has been loaded in preferences,
-         * so we don't try to load it again.
-         */
-        if (book.getName().equals(ActionService.GETTING_STARTED_NOTEBOOK_NAME)) {
-            /* If notebook was already previously loaded, user probably requested reload.
-             * Display a message in that case.
-             */
-            if (AppPreferences.isGettingStartedNotebookLoaded(this)) {
-                showSimpleSnackbarLong(R.string.getting_started_loaded);
-            } else {
-                AppPreferences.isGettingStartedNotebookLoaded(this, true);
-            }
-        }
     }
 
     /**

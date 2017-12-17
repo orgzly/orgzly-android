@@ -75,7 +75,7 @@ class ActionService : IntentService(TAG) {
          * Display a message in that case.
          */
         if (AppPreferences.isGettingStartedNotebookLoaded(this)) {
-            val intent = Intent(AppIntent.ACTION_BOOK_LOADED)
+            val intent = Intent(AppIntent.ACTION_BOOK_IMPORTED)
             localBroadcastManager.sendBroadcast(intent)
 
         } else {

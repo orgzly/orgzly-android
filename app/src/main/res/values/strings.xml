@@ -134,8 +134,7 @@
 
     <string name="reload_getting_started">Import “Getting Started with Orgzly”</string>
     <string name="reload_getting_started_summary">Import the latest version of the notebook</string>
-    <string name="getting_started_loaded">Notebook “Getting Started with Orgzly” loaded</string>
-    <string name="notebook_loaded">Notebook loaded</string>
+    <string name="notebook_imported">Notebook imported</string>
 
     <string name="book_does_not_exist_anymore">This notebook does not exist any more.</string>
     <string name="note_does_not_exist_anymore">This note does not exist any more.</string>

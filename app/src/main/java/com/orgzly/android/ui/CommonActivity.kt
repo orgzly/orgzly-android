@@ -23,8 +23,6 @@ import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.orgzly.android.App
-import com.orgzly.android.ui.settings.SettingsFragment
 
 
 /**
@@ -58,8 +56,8 @@ abstract class CommonActivity : AppCompatActivity() {
                     whatsNewDialog?.setCancelable(true)
                 }
 
-                AppIntent.ACTION_BOOK_LOADED ->
-                    showSimpleSnackbarLong(R.string.notebook_loaded)
+                AppIntent.ACTION_BOOK_IMPORTED ->
+                    showSimpleSnackbarLong(R.string.notebook_imported)
 
                 AppIntent.ACTION_DB_CLEARED ->
                     clearFragmentBackstack = true
@@ -167,7 +165,7 @@ abstract class CommonActivity : AppCompatActivity() {
         val intentFilter = IntentFilter()
         intentFilter.addAction(AppIntent.ACTION_DB_UPGRADE_STARTED)
         intentFilter.addAction(AppIntent.ACTION_DB_UPGRADE_ENDED)
-        intentFilter.addAction(AppIntent.ACTION_BOOK_LOADED)
+        intentFilter.addAction(AppIntent.ACTION_BOOK_IMPORTED)
         intentFilter.addAction(AppIntent.ACTION_DB_CLEARED)
         intentFilter.addAction(AppIntent.ACTION_REPARSING_NOTES_STARTED)
         intentFilter.addAction(AppIntent.ACTION_REPARSING_NOTES_ENDED)
