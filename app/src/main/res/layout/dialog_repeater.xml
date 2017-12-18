@@ -2,6 +2,7 @@
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -49,8 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_4"
             android:gravity="center"
-            android:hint="@string/repeater_longest_type_desc"
-            android:text="@string/repeater_longest_type_desc"
+            tools:text="@string/repeater_description_cumulate"
             android:lines="2"/>
     </LinearLayout>
 </ScrollView>

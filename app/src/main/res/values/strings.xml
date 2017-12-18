@@ -316,9 +316,6 @@
     <string name="repeater_description_catch_up">Keep adding period to time until time reaches future</string> <!-- ++ -->
     <string name="repeater_description_restart">Add period to current time</string> <!-- .+ -->
 
-    <!-- Used to take enough space to avoid dialog resizing when current values are being changed. -->
-    <string name="repeater_longest_type_desc">@string/repeater_description_catch_up</string>
-
     <string name="displayed_book_details_local_mtime">Local modification time</string>
     <string name="displayed_book_details_link_url">Link URL</string>
     <string name="displayed_book_details_sync_url">Sync URL</string>
