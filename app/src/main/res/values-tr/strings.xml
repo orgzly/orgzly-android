@@ -354,27 +354,34 @@
   <string name="auto_sync">Otomatik eşitleme</string>
   <string name="auto_sync_experimental">Otomatik eşitle (deneme)</string>
   <string name="auto_sync_experimental_summary">Sadece dahili depolar için kullanılır</string>
-  <string name="auto_sync_warning">Depending on which options you choose, sync could be triggered often. If notebook is modified, its entire content is transferred to or from the repository. Certain actions might be delayed while syncing is in progress.</string>
-  <string name="pref_title_sync_after_note_create">Note created</string>
-  <string name="pref_summary_sync_after_note_create">Sync after creating a new note</string>
-  <string name="pref_title_sync_after_note_update">Note updated or deleted</string>
-  <string name="pref_summary_sync_after_note_update">Sync after updating or deleting a note</string>
-  <string name="pref_title_on_resume_sync">App started or resumed</string>
-  <string name="pref_summary_on_resume_sync">Sync whenever app comes to the foreground</string>
-  <string name="pref_title_repo_update_sync">Repositories modified (not implemented yet)</string>
-  <string name="pref_summary_repo_update_sync">Sync whenever an update in repositories is detected</string>
-  <string name="book_never_modified_locally">Never modified locally</string>
-  <string name="notes_count_zero">Contains no notes</string>
+  <string name="auto_sync_warning">Eşitleme işlemi seçtiğiniz durumlara göre işleme konulabilir. Eğer defter değiştirilirse, tüm içerik depodan aktarılır. Eşitleme devam ederken bazı işlemler gecikebilir.</string>
+  <string name="pref_title_sync_after_note_create">Not oluşturuldu</string>
+  <string name="pref_summary_sync_after_note_create">Yeni notu oluşturduktan sonra eşitle</string>
+  <string name="pref_title_sync_after_note_update">Not güncellendi veya silindi</string>
+  <string name="pref_summary_sync_after_note_update">Bir notu güncelledikten veya sildikten sonra eşitle</string>
+  <string name="pref_title_on_resume_sync">Uygulama başlatıldı veya devam ettirildi</string>
+  <string name="pref_summary_on_resume_sync">Uygulama açıldığında eşitle</string>
+  <string name="pref_title_repo_update_sync">Depolar değiştirildi (henüz değil)</string>
+  <string name="pref_summary_repo_update_sync">Depolarda bir güncelleme oluştuğunda eşitle</string>
+  <string name="book_never_modified_locally">Daha önce yerel olarak değiştirilmemiş</string>
+  <string name="notes_count_zero">Not içermiyor</string>
   <plurals name="notes_count_nonzero">
-    <item quantity="one">Contains <b>%d</b> note</item>
-    <item quantity="other">Contains <b>%d</b> notes</item>
+    <item quantity="one">Şekil: 1
+Not <b><%d></b> içerir
+Şekil: 2
+Notlar<b><%d></b> içerir</item>
+    <item quantity="other">Şekil: 1
+Not <b><%d></b> içerir
+
+Şekil: 2
+Notlar<b><%d></b> içerir</item>
   </plurals>
-  <string name="content_line_count_displayed">Display content line count</string>
-  <string name="content_line_count_displayed_summary">Display line count when content is not displayed</string>
-  <string name="style_text_title">Style text</string>
-  <string name="style_text_summary">Use special marks for emphasis and monospace</string>
-  <string name="styled_text_with_marks_title">Styled text with marks</string>
-  <string name="styled_text_with_marks_summary">Keep marks displayed (e.g. *bold*)</string>
+  <string name="content_line_count_displayed">Çizgi sayısı içeriğini göster</string>
+  <string name="content_line_count_displayed_summary">İçerik gösterilmediği zaman satır sayısını göster</string>
+  <string name="style_text_title">Metin stili</string>
+  <string name="style_text_summary">Vurgu ve tek boşluk için özel işaretler kullan</string>
+  <string name="styled_text_with_marks_title">İşaretler içeren metnin stili</string>
+  <string name="styled_text_with_marks_summary">Gösterilen işaretleri kalıcı kıl (örn. *kalın*)</string>
   <string name="no_such_link_target">Note with “%1$s” property set to “%2$s” not found</string>
   <string name="imported_filters">Imported <b>%d</b> filters</string>
   <string name="exported_filters">Exported <b>%d</b> filters</string>
