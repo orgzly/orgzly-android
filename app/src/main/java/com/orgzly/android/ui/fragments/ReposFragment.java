@@ -195,11 +195,12 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
         // Do not display add icon if there are no repositories - large repo buttons will be shown
         if (mListAdapter == null || mListAdapter.getCount() > 0) {
             inflater.inflate(R.menu.repos_actions, menu);
-        }
 
-        if (! BuildConfig.IS_DROPBOX_ENABLED) {
-            menu.findItem(R.id.repos_options_menu_item_new).getSubMenu()
-                    .removeItem(R.id.repos_options_menu_item_new_dropbox);
+            // Remove Dropbox from the menu
+            if (!BuildConfig.IS_DROPBOX_ENABLED) {
+                menu.findItem(R.id.repos_options_menu_item_new).getSubMenu()
+                        .removeItem(R.id.repos_options_menu_item_new_dropbox);
+            }
         }
     }
 
