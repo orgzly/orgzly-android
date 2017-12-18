@@ -373,9 +373,9 @@
   <string name="styled_text_with_marks_summary">Simpan tanda yang ditampilkan (misalnya *bold*)</string>
   <string name="no_such_link_target">Dicatat dengan \"%1$s\" properti diatur ke \"%2$s\" tidak ditemukan</string>
   <string name="imported_filters">Filter <b>%d</b> yang diimpor</string>
-  <string name="exported_filters">Exported <b>%d</b> filters</string>
-  <string name="storage_permissions_missing">No storage permission</string>
-  <string name="file_does_not_exist">File %s does not exist</string>
-  <string name="import_from">Import from “%1$s”?</string>
-  <string name="export_to">Export to “%1$s”?</string>
+  <string name="exported_filters">Filter <b>%d</b> yang diekspor</string>
+  <string name="storage_permissions_missing">Tidak ada izin penyimpanan</string>
+  <string name="file_does_not_exist">File %s tidak ada</string>
+  <string name="import_from">Impor dari \"%1$s\"?</string>
+  <string name="export_to">Ekspor dari \"%1$s\"?</string>
 </resources>
