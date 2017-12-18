@@ -330,9 +330,9 @@
   <string name="primary_storage">Almacenamiento principal</string>
   <string name="secondary_storage">Tarjeta SD</string>
   <string name="secondary_storage_not_available_any_more">El almacenamiento secundario ya no esta disponible</string>
-  <string name="book_exported">Notebook exported to %s</string>
-  <string name="failed_exporting_book">Failed exporting book: %s</string>
-  <string name="edit_book_preface">Edit preface</string>
+  <string name="book_exported">Nota exportada a %s</string>
+  <string name="failed_exporting_book">Error al exportar libro %s</string>
+  <string name="edit_book_preface">Editar parrafo</string>
   <string name="book_preface_hint">Text displayed before the first note</string>
   <string name="layout_direction">Layout direction</string>
   <string name="layout_direction_locale">Default</string>
