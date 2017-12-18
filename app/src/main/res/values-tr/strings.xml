@@ -27,9 +27,9 @@
   <string name="value">Değer</string>
   <string name="query">Sorgula</string>
   <string name="done">Uygula</string>
-  <string name="mark_as_done">Mark as done</string>
-  <string name="mark_as_done_with_repeater">Reschedule %s</string>
-  <string name="reminder_snooze">Snooze</string>
+  <string name="mark_as_done">Tamamlandı olarak işaretle</string>
+  <string name="mark_as_done_with_repeater">%s \'yi yeniden planlayın</string>
+  <string name="reminder_snooze">Ertele</string>
   <string name="close">Kapat</string>
   <string name="import_">İçeri al</string>
   <!-- "import" is reserved -->
@@ -37,17 +37,17 @@
   <string name="imported">İçeri alındı</string>
   <string name="created">Oluştur</string>
   <string name="states">Durum</string>
-  <string name="note">Note</string>
+  <string name="note">Not</string>
   <string name="notes">Notlar</string>
   <string name="property">Özellik</string>
   <string name="import_as">Olarak içe aktar…</string>
   <string name="new_notebook">Yeni Not</string>
   <string name="new_folder">Yeni Dosya</string>
   <string name="scheduled">Planlama</string>
-  <string name="agenda">Agenda</string>
-  <string name="agenda_period">Agenda days</string>
-  <string name="time">Time</string>
-  <string name="repeater">Repeater</string>
+  <string name="agenda">Gündem</string>
+  <string name="agenda_period">Sabah gündemi</string>
+  <string name="time">Zaman</string>
+  <string name="repeater">Tekrarlayıcı</string>
   <plurals name="notes_deleted">
     <item quantity="one">Not Silindi</item>
     <item quantity="other">Silindi <b>%d</b> notlar</item>
@@ -72,7 +72,7 @@
   <string name="message_dropbox_linked">Dropbox\'a başarıyla bağlandı</string>
   <!-- Preferences (Settings). -->
   <string name="repos_preference_title">Depolar</string>
-  <string name="repos_preference_summary">Location to synchronize your notebooks with</string>
+  <string name="repos_preference_summary">Dizüstü bilgisayarınızın senkronize edilmesi için gereken konum</string>
   <string name="message_book_has_no_link">Bağlantı yok.</string>
   <string name="message_note_created">Not Oluşturuldu</string>
   <string name="message_failed_creating_note">Not oluşturma başarısız oldu</string>
@@ -120,7 +120,7 @@
   <string name="clear_database_summary">Yerel veritabanını temizle</string>
   <string name="reload_getting_started">\"Orgzly\'ye Başlarken\" öğreticisini içeri aktar</string>
   <string name="reload_getting_started_summary">Not defterinin son sürümünü içe aktarın</string>
-  <string name="notebook_imported">Notebook imported</string>
+  <string name="notebook_imported">Dizüstü bilgisayar dışa aktarıldı</string>
   <string name="book_does_not_exist_anymore">Bu defter artık yok.</string>
   <string name="note_does_not_exist_anymore">Bu not artık mevcut değil.</string>
   <string name="search_does_not_exist_anymore">Bu arama artık mevcut değil.</string>
@@ -141,7 +141,7 @@
   <string name="book_link">Not Defteri Bağlantı</string>
   <string name="book_link_details">Not Defteri Bağlantı ayrıntıları</string>
   <string name="book_last_action">Not Defteri son eylem</string>
-  <string name="book_notes_count">Notes count</string>
+  <string name="book_notes_count">Not sayısı</string>
   <string name="pref_title_notebooks">Not Defterleri</string>
   <string name="notebooks">Not Defterleri</string>
   <string name="searches">Aramalar</string>
@@ -154,7 +154,7 @@
   <string name="syncing_in_progress">Senkronize ediliyor…</string>
   <string name="syncing_book">Senkronize ediliyor %s…</string>
   <string name="sync_with_argument">Senkronize: %s</string>
-  <string name="syncing_failed_title">Sync failed</string>
+  <string name="syncing_failed_title">Senkronizasyon başarısız</string>
   <string name="canceled">İptal edildi</string>
   <string name="canceling">İptal ediliyor…</string>
   <string name="directory">Dizin</string>
@@ -185,8 +185,8 @@
   <string name="no_notes">Not Defterinizde notlar yok</string>
   <string name="create_new_repository_for_syncing">Not defterlerinizi senkronize etmek için yeni depo oluşturun</string>
   <string name="no_filters">Kaydettiğiniz aramanız yok</string>
-  <string name="book_shortcut_label">Orgzly notebook</string>
-  <string name="pick_a_notebook">Pick a notebook</string>
+  <string name="book_shortcut_label">Orgzly defteri</string>
+  <string name="pick_a_notebook">Bir defter seç</string>
   <string name="down">Aşağı</string>
   <string name="up">Yukarı</string>
   <string name="notebook_modified">Not defteri değiştirildi</string>
@@ -210,8 +210,8 @@
   <string name="property_name">Özellik Adı</string>
   <string name="created_at">Oluşturuldu</string>
   <string name="insert_note_creation_time">Not\'s oluşturma zamanı ekle</string>
-  <string name="reminder_for_scheduled">Scheduled: %s</string>
-  <string name="reminder_for_deadline">Deadline: %s</string>
+  <string name="reminder_for_scheduled">Zamanlanan: %s</string>
+  <string name="reminder_for_deadline">Son bildiri tarihi: %s</string>
   <string name="scheduled_new_notes_for_today">Bugün için yeni notlar planla</string>
   <string name="state">Durum</string>
   <string name="fold_content">Katlanır içerik</string>
@@ -237,7 +237,7 @@
   <string name="look_and_feel">Look &amp; Feel</string>
   <string name="notes_list">Notlar listesi</string>
   <string name="prefs_title_new_note">Yeni Not</string>
-  <string name="prefs_title_notifications">Notifications</string>
+  <string name="prefs_title_notifications">Bildirimler</string>
   <string name="app">Uygulama</string>
   <string name="no_repos_configured">Depolar Yapılandırılmadı.</string>
   <string name="no_connection">Bağlantı Yok.</string>
@@ -250,16 +250,16 @@
   <string name="force_loading_failed">Zorla yükleme başarısız oldu: %s</string>
   <string name="loaded_from_resource">Kaynaktan yüklendi %s</string>
   <string name="org_file_format">Org dosya formatı</string>
-  <string name="org_file_format_summary">Format of exported notebooks</string>
+  <string name="org_file_format_summary">Dışa aktarılmış defter tipi</string>
   <string name="separate_notes_with_new_line">Yeni satırla notları ayır</string>
-  <string name="separate_header_and_content_with_new_line">Separate header and content</string>
-  <string name="separate_header_and_content_with_new_line_summary">Separate header and content with an empty line</string>
-  <string name="tags_indent">Tags indentation</string>
-  <string name="tags_indent_summary">Options controlling indentation of tags</string>
-  <string name="tags_column">Tags column (org-tags-column)</string>
-  <string name="org_indent_mode">Adjust based on indent mode</string>
-  <string name="org_indent_mode_summary">Take org-indent-mode into account</string>
-  <string name="org_indent_indentation_per_level">Indentation per level</string>
+  <string name="separate_header_and_content_with_new_line">Başlık ve içerik</string>
+  <string name="separate_header_and_content_with_new_line_summary">Önbilgiyi ve içeriği boş satırla ayırın</string>
+  <string name="tags_indent">Girili etiketler</string>
+  <string name="tags_indent_summary">Etiketleri kontrol eden seçenekler</string>
+  <string name="tags_column">Etiketler sütunu (org-etiketler-sütun)</string>
+  <string name="org_indent_mode">Girdi moduna göre ayarla</string>
+  <string name="org_indent_mode_summary">Org-çentik-mod\'u hesaba kat</string>
+  <string name="org_indent_indentation_per_level">Seviye başına girdi</string>
   <string name="add_property">Özellik Ekle</string>
   <string name="priority_a_highest">A (Yüksek Öncelik)</string>
   <string name="priority_z_lowest">Z (Düşük Öncelik)</string>
@@ -269,7 +269,7 @@
   <string name="month">Ay</string>
   <string name="year">Yıl</string>
   <string name="repeater_dialog_title">Bitince, Tekrarla</string>
-  <string name="repeater_description">After task is marked complete, repeater will be shift the time</string>
+  <string name="repeater_description">Görev tamamlandı olarak işaretlendikten sonra tekrarlayıcı saatini değiştirir</string>
   <string name="repeater_description_cumulate">Önceki zamana aralık ekle (biriktir)</string>
   <!-- + -->
   <string name="repeater_description_catch_up">Geçmişte bir önceki zamana aralık eklemeye devam edin (Yakala)</string>
