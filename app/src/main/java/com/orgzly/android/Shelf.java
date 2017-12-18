@@ -734,6 +734,21 @@ public class Shelf {
         }
     }
 
+    public void flipState(long noteId) {
+        /* Flip the state of the node to either the first todo or first done state */
+        Set<String> doneStates = AppPreferences.doneKeywordsSet(mContext);
+        Set<String> todoStates = AppPreferences.todoKeywordsSet(mContext);
+        String currentState = getNote(noteId).getHead().getState();
+
+        if (currentState != null) {
+            if (doneStates.contains(currentState)) {
+                setStateToTodo(noteId);
+            } else {
+                setStateToDone(noteId);
+            }
+        }
+    }
+
     public void setStateToDone(long noteId) {
         /* Get the *first* DONE state from preferences. */
         Set<String> doneStates = AppPreferences.doneKeywordsSet(mContext);
@@ -743,6 +758,24 @@ public class Shelf {
             Set<Long> ids = new TreeSet<>();
             ids.add(noteId);
             setNotesState(ids, firstDoneState);
+        }
+    }
+
+    public void setStateToTodo(long noteId) {
+        /* Get the *first* not done state from preferences */
+        String firstTodoState = new String();
+        Set<String> todoStates = AppPreferences.todoKeywordsSet(mContext);
+
+        if (todoStates.iterator().hasNext()) {
+            firstTodoState = todoStates.iterator().next();
+        } else {
+            firstTodoState = null;
+        }
+
+        if (firstTodoState != null) {
+            Set<Long> ids = new TreeSet<>();
+            ids.add(noteId);
+            setNotesState(ids, firstTodoState);
         }
     }
 

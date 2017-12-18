@@ -120,6 +120,7 @@ public abstract class NoteListFragment extends ListFragment {
         void onStateChangeRequest(Set<Long> noteIds, String state);
         void onStateCycleRequest(long noteId, int direction);
         void onStateToDoneRequest(long noteId);
+        void onStateFlipRequest(long noteId);
         void onScheduledTimeUpdateRequest(Set<Long> noteIds, OrgDateTime time);
     }
 }

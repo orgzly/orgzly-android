@@ -790,6 +790,11 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
+    public void onStateFlipRequest(long noteId) {
+        mSyncFragment.flipState(noteId);
+    }
+
+    @Override
     public void onScheduledTimeUpdateRequest(Set<Long> noteIds, OrgDateTime time) {
         mSyncFragment.updateScheduledTime(noteIds, time);
     }

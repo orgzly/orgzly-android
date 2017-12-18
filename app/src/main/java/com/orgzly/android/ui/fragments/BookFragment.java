@@ -255,7 +255,7 @@ public class BookFragment extends NoteListFragment
                                 break;
 
                             case R.id.item_menu_done_state_btn:
-                                listener.onStateToDoneRequest(noteId);
+                                listener.onStateFlipRequest(noteId);
                                 break;
 
                             case R.id.item_menu_delete_btn:
