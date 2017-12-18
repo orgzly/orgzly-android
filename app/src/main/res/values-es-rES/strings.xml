@@ -270,7 +270,7 @@
   <string name="year">Año</string>
   <string name="repeater_dialog_title">Repetir</string>
   <string name="repeater_description">Después de que la tarea se marque como completa, el repetidor cambiará el tiempo</string>
-  <string name="repeater_description_cumulate">Add period to time</string>
+  <string name="repeater_description_cumulate">Agregar periodo a la fecha</string>
   <!-- + -->
   <string name="repeater_description_catch_up">Keep adding period to time until time reaches future</string>
   <!-- ++ -->
