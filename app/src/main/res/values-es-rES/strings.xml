@@ -371,17 +371,17 @@
     <item quantity="one">Contiene <b>%d</b> notas</item>
     <item quantity="other">Contiene <b>%d</b> notas</item>
   </plurals>
-  <string name="content_line_count_displayed">Display content line count</string>
-  <string name="content_line_count_displayed_summary">Display line count when content is not displayed</string>
-  <string name="style_text_title">Style text</string>
-  <string name="style_text_summary">Use special marks for emphasis and monospace</string>
-  <string name="styled_text_with_marks_title">Styled text with marks</string>
-  <string name="styled_text_with_marks_summary">Keep marks displayed (e.g. *bold*)</string>
-  <string name="no_such_link_target">Note with “%1$s” property set to “%2$s” not found</string>
-  <string name="imported_filters">Imported <b>%d</b> filters</string>
-  <string name="exported_filters">Exported <b>%d</b> filters</string>
-  <string name="storage_permissions_missing">No storage permission</string>
-  <string name="file_does_not_exist">File %s does not exist</string>
-  <string name="import_from">Import from “%1$s”?</string>
-  <string name="export_to">Export to “%1$s”?</string>
+  <string name="content_line_count_displayed">Mostrar contenido de contador de linea</string>
+  <string name="content_line_count_displayed_summary">Mostrar la cuenta de línea cuando no se muestre el contenido</string>
+  <string name="style_text_title">Estilo de texto</string>
+  <string name="style_text_summary">Uso de marcas especiales para énfasis y monoespacio</string>
+  <string name="styled_text_with_marks_title">Texto estilizado con las marcas</string>
+  <string name="styled_text_with_marks_summary">Mantener marcas visibles (por ejemplo *negrita*)</string>
+  <string name="no_such_link_target">Nodo con propiedad \"%1$s\" asignado a \"%2$s\" no encontrado</string>
+  <string name="imported_filters">Filtros <b>%d</b> importados</string>
+  <string name="exported_filters">Filtros <b>%d</b> exportados</string>
+  <string name="storage_permissions_missing">Sin permiso de almacenamiento</string>
+  <string name="file_does_not_exist">El archivo %s no existe</string>
+  <string name="import_from">¿Importar desde \"%1$s\"?</string>
+  <string name="export_to">¿Exportar a \"%1$s\"?</string>
 </resources>
