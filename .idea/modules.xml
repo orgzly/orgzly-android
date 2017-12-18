@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/../org-java/org-java.iml" filepath="$PROJECT_DIR$/../org-java/org-java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../org-java/org-java.iml" filepath="$PROJECT_DIR$/../org-java/org-java.iml" />
       <module fileurl="file://$PROJECT_DIR$/orgzly-android.iml" filepath="$PROJECT_DIR$/orgzly-android.iml" />
     </modules>
   </component>
