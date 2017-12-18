@@ -138,15 +138,10 @@ repositories {
     mavenCentral()
 }
 
-/*
- * Use local org-java directory if it exists for easier development.
- * Being more specific by looking for orgzly/org-java/ on purpose.
- */
+// See settings.gradle
 def orgJavaLocation() {
-    File localOrgJavaDir = getRootProject().file('../../orgzly/org-java')
-
-    if (localOrgJavaDir.exists()) {
-        return project(':org-java') // Defined in settings.gradle
+    if (gradle.ext.orgJavaDir.exists()) {
+        return project(':org-java')
     } else {
         return "com.orgzly:org-java:$org_java_version"
     }
