@@ -72,7 +72,7 @@
   <string name="message_dropbox_linked">Dropbox\'a başarıyla bağlandı</string>
   <!-- Preferences (Settings). -->
   <string name="repos_preference_title">Depolar</string>
-  <string name="repos_preference_summary">Dizüstü bilgisayarınızın senkronize edilmesi için gereken konum</string>
+  <string name="repos_preference_summary">Defterinizin senkronize edilmesi için gereken konum</string>
   <string name="message_book_has_no_link">Bağlantı yok.</string>
   <string name="message_note_created">Not Oluşturuldu</string>
   <string name="message_failed_creating_note">Not oluşturma başarısız oldu</string>
@@ -120,7 +120,7 @@
   <string name="clear_database_summary">Yerel veritabanını temizle</string>
   <string name="reload_getting_started">\"Orgzly\'ye Başlarken\" öğreticisini içeri aktar</string>
   <string name="reload_getting_started_summary">Not defterinin son sürümünü içe aktarın</string>
-  <string name="notebook_imported">Dizüstü bilgisayar dışa aktarıldı</string>
+  <string name="notebook_imported">Defter içe aktarıldı</string>
   <string name="book_does_not_exist_anymore">Bu defter artık yok.</string>
   <string name="note_does_not_exist_anymore">Bu not artık mevcut değil.</string>
   <string name="search_does_not_exist_anymore">Bu arama artık mevcut değil.</string>
@@ -382,11 +382,11 @@ Notlar<b><%d></b> içerir</item>
   <string name="style_text_summary">Vurgu ve tek boşluk için özel işaretler kullan</string>
   <string name="styled_text_with_marks_title">İşaretler içeren metnin stili</string>
   <string name="styled_text_with_marks_summary">Gösterilen işaretleri kalıcı kıl (örn. *kalın*)</string>
-  <string name="no_such_link_target">Note with “%1$s” property set to “%2$s” not found</string>
-  <string name="imported_filters">Imported <b>%d</b> filters</string>
-  <string name="exported_filters">Exported <b>%d</b> filters</string>
-  <string name="storage_permissions_missing">No storage permission</string>
-  <string name="file_does_not_exist">File %s does not exist</string>
-  <string name="import_from">Import from “%1$s”?</string>
-  <string name="export_to">Export to “%1$s”?</string>
+  <string name="no_such_link_target">\"%2$s\" bulunamadığı için notu \"%1$s\" özelliği ile kur</string>
+  <string name="imported_filters"><b>%d</b> filtreleri içe aktarıldı</string>
+  <string name="exported_filters"><b>%d</b> filtreleri dışa aktarıldı</string>
+  <string name="storage_permissions_missing">Depolama izni yok</string>
+  <string name="file_does_not_exist">%s dosyası mevcut değil</string>
+  <string name="import_from">\"%1$s\" \' den içeri aktarılsın mı?</string>
+  <string name="export_to">\"%1$s\" e aktarılsın mı?</string>
 </resources>
