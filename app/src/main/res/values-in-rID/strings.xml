@@ -51,15 +51,15 @@
   <plurals name="notes_deleted">
     <item quantity="other">Catatan <b>%d</b> dihapus</item>
   </plurals>
-  <string name="no_notes_deleted">No notes deleted</string>
+  <string name="no_notes_deleted">Tidak ada catatan yang dihapus</string>
   <plurals name="notes_cut">
-    <item quantity="other">Cut <b>%d</b> notes</item>
+    <item quantity="other">Potong <b>%d</b> catatan</item>
   </plurals>
-  <string name="no_notes_cut">No notes cut</string>
+  <string name="no_notes_cut">Tidak ada catatan yang dipotong</string>
   <plurals name="notes_pasted">
-    <item quantity="other">Pasted <b>%d</b> notes</item>
+    <item quantity="other">Tempelkan <b>%d</b> catatan</item>
   </plurals>
-  <string name="no_notes_pasted">Nothing to paste</string>
+  <string name="no_notes_pasted">Tidak ada yang bisa ditempelkan</string>
   <string name="fragment_note_title_hint">Title</string>
   <string name="fragment_note_tags_hint" tools:ignore="typos">tag tag</string>
   <string name="import_org_file">Import Org file</string>
@@ -112,35 +112,35 @@
   <string name="filter_name_already_exists">Search with the same name already exists</string>
   <string name="failed_creating_directory">Failed creating directory %s</string>
   <string name="version">What\'s new</string>
-  <string name="search_hint">Search notes</string>
-  <string name="clear_database">Clear database</string>
-  <string name="clear_database_summary">Clear local database</string>
-  <string name="reload_getting_started">Import “Getting Started with Orgzly”</string>
-  <string name="reload_getting_started_summary">Import the latest version of the notebook</string>
-  <string name="notebook_imported">Notebook imported</string>
-  <string name="book_does_not_exist_anymore">This notebook does not exist any more.</string>
-  <string name="note_does_not_exist_anymore">This note does not exist any more.</string>
-  <string name="search_does_not_exist_anymore">This search does not exist any more.</string>
-  <string name="fragment_query_title">Search</string>
-  <string name="repo_dropbox_button_not_linked">Link to Dropbox</string>
-  <string name="repo_dropbox_button_linked">Unlink from Dropbox</string>
-  <string name="fragment_settings_title">Settings</string>
-  <string name="updating_notes">Updating notes…</string>
-  <string name="todo_keywords_configuration_changed_dialog_title">Keywords modified</string>
-  <string name="todo_keywords_configuration_changed_dialog_message">Refresh notes to reflect the changes?</string>
+  <string name="search_hint">Cari catatan</string>
+  <string name="clear_database">Hapus database</string>
+  <string name="clear_database_summary">Hapus database lokal</string>
+  <string name="reload_getting_started">Impor \"Memulai dengan Orgzly\"</string>
+  <string name="reload_getting_started_summary">Impor versi terbaru notebook</string>
+  <string name="notebook_imported">Notebook diimpor</string>
+  <string name="book_does_not_exist_anymore">Notebook ini tidak ada lagi.</string>
+  <string name="note_does_not_exist_anymore">Catatan ini tidak ada lagi.</string>
+  <string name="search_does_not_exist_anymore">Pecarian ini tidak ada lagi.</string>
+  <string name="fragment_query_title">Cari</string>
+  <string name="repo_dropbox_button_not_linked">Hubungkan ke DropBox</string>
+  <string name="repo_dropbox_button_linked">Lepaskan Hubungan dari DropBox</string>
+  <string name="fragment_settings_title">Setelan</string>
+  <string name="updating_notes">Memperbarui catatan…</string>
+  <string name="todo_keywords_configuration_changed_dialog_title">Kata kunci dimodifikasi</string>
+  <string name="todo_keywords_configuration_changed_dialog_message">Segarkan catatan untuk mencerminkan perubahan?</string>
   <string name="failure">Uh oh</string>
-  <string name="no_notes_found_after_search">Your search did not match any notes</string>
-  <string name="today">Today</string>
-  <string name="tomorrow">Tomorrow</string>
-  <string name="next_week">Next Week</string>
-  <string name="tags">Tags</string>
-  <string name="book_mtime">Notebook modification time</string>
-  <string name="book_link">Notebook link</string>
-  <string name="book_link_details">Notebook link details</string>
-  <string name="book_last_action">Notebook last action</string>
-  <string name="book_notes_count">Notes count</string>
-  <string name="pref_title_notebooks">Notes &amp; Notebooks</string>
-  <string name="notebooks">Notebooks</string>
+  <string name="no_notes_found_after_search">Pencarian Anda tidak sesuai dengan catatan</string>
+  <string name="today">Hari ini</string>
+  <string name="tomorrow">Besok</string>
+  <string name="next_week">Pekan selanjutnya</string>
+  <string name="tags">Label</string>
+  <string name="book_mtime">Waktu modifikasi notebook</string>
+  <string name="book_link">Tautan notebook</string>
+  <string name="book_link_details">Rincian tautan notebook</string>
+  <string name="book_last_action">Tindakan terakhir notebook</string>
+  <string name="book_notes_count">Hitungan catatan</string>
+  <string name="pref_title_notebooks">Catatan &amp; Notebook</string>
+  <string name="notebooks">Notebook</string>
   <string name="searches">Searches</string>
   <string name="search">Search</string>
   <string name="new_search">New Search</string>
@@ -273,8 +273,6 @@
   <!-- ++ -->
   <string name="repeater_description_restart">Add period to current time</string>
   <!-- .+ -->
-  <!-- Used to take enough space to avoid dialog resizing when current values are being changed. -->
-  <string name="repeater_longest_type_desc">@string/repeater_description_catch_up</string>
   <string name="displayed_book_details_local_mtime">Local modification time</string>
   <string name="displayed_book_details_link_url">Link URL</string>
   <string name="displayed_book_details_sync_url">Sync URL</string>
