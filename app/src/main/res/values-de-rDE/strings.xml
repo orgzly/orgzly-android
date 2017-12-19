@@ -63,7 +63,7 @@
     <item quantity="other">Pasted <b>%d</b> notes</item>
   </plurals>
   <string name="no_notes_pasted">Nothing to paste</string>
-  <string name="fragment_note_title_hint">Title</string>
+  <string name="fragment_note_title_hint">Titel</string>
   <string name="fragment_note_tags_hint" tools:ignore="typos">tag tag</string>
   <string name="import_org_file">Import Org file</string>
   <string name="state_spinner_prompt">State</string>
@@ -101,12 +101,12 @@
   <string name="heads_action_menu_item_paste_under">Paste under</string>
   <string name="heads_action_menu_item_paste_below">Paste below</string>
   <string name="heads_moving_action_menu_item_promote">Promote</string>
-  <string name="heads_moving_action_menu_item_down">Down</string>
+  <string name="heads_moving_action_menu_item_down">Runter</string>
   <string name="heads_moving_action_menu_item_up">Up</string>
   <string name="heads_moving_action_menu_item_demote">Demote</string>
-  <string name="new_note">New note</string>
-  <string name="tap_to_create_new_note">Tap to create a new note</string>
-  <string name="options_menu_item_search">Search</string>
+  <string name="new_note">Neue Notiz</string>
+  <string name="tap_to_create_new_note">Antippen, um eine neue Notiz zu erstellen</string>
+  <string name="options_menu_item_search">Suchen</string>
   <string name="message_book_deleted">Notebook deleted</string>
   <string name="clear_database_dialog_message">Clear local database?</string>
   <string name="no_user_repos_configured_pref_summary">None configured yet</string>
