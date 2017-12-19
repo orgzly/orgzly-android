@@ -36,10 +36,10 @@
   <string name="export">Export</string>
   <string name="imported">Importiert</string>
   <string name="created">Erstellt</string>
-  <string name="states">States</string>
+  <string name="states">Status</string>
   <string name="note">Notiz</string>
   <string name="notes">Notizen</string>
-  <string name="property">Property</string>
+  <string name="property">Eigenschaft</string>
   <string name="import_as">Importieren als…</string>
   <string name="new_notebook">Neues Notizbuch</string>
   <string name="new_folder">Neuer Ordner</string>
@@ -75,8 +75,8 @@
   <string name="repos_preference_summary">Speicherort der Notizbücher für die Synchronisierung</string>
   <string name="message_book_has_no_link">Keine Verknüpfung festgelegt</string>
   <string name="message_note_created">Notiz erstellt</string>
-  <string name="message_failed_creating_note">Failed to create note</string>
-  <string name="message_failed_updating_note">Failed to update note</string>
+  <string name="message_failed_creating_note">Notiz erstellen ist fehlgeschlagen</string>
+  <string name="message_failed_updating_note">Notiz bearbeiten ist fehlgeschlagen</string>
   <string name="drawer_close">Close drawer</string>
   <string name="drawer_open">Open drawer</string>
   <string name="schedule">Schedule</string>
@@ -172,8 +172,8 @@
   <string name="message_deleting_book_failed">Löschen des Notizbuchs fehlgeschlagen: %s</string>
   <string name="fragment_left_drawer_list_view_content_description">Left Drawer</string>
   <string name="drawer_item">Drawer Item</string>
-  <string name="prev_state">Prev State</string>
-  <string name="next_state">Next State</string>
+  <string name="prev_state">Vorheriger Status</string>
+  <string name="next_state">Nächster Status</string>
   <string name="new_above">New above</string>
   <string name="new_under">New under</string>
   <string name="new_below">New below</string>
@@ -213,7 +213,7 @@
   <string name="reminder_for_scheduled">Scheduled: %s</string>
   <string name="reminder_for_deadline">Deadline: %s</string>
   <string name="scheduled_new_notes_for_today">Schedule new notes for today</string>
-  <string name="state">State</string>
+  <string name="state">Status</string>
   <string name="fold_content">Fold content</string>
   <string name="allow_folding_of_content">Allow folding of content</string>
   <string name="display_content_in_search">Display content in search</string>
@@ -307,7 +307,7 @@
   <string name="note_content_finish_editing">View content</string>
   <string name="note_content_start_editing">Inhalt editieren</string>
   <string name="duplicate_keywords_not_allowed">Keyword %s already used</string>
-  <string name="no_states_defined">No states defined</string>
+  <string name="no_states_defined">Keine Status definiert</string>
   <string name="book_name_in_search">Name des Notizbuchs in den Suchergebnissen</string>
   <string name="display_inherited_tags_in_search_results">Inherited tags in search results</string>
   <string name="display_inherited_tags_in_search_results_summary">Display inherited tags in search results</string>
