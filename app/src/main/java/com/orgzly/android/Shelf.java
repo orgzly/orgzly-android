@@ -10,8 +10,11 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
+import android.view.View;
+
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.filter.Filter;
@@ -33,6 +36,7 @@ import com.orgzly.android.sync.BookSyncStatus;
 import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
+import com.orgzly.android.ui.views.GesturedListView;
 import com.orgzly.android.util.CircularArrayList;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
@@ -737,7 +741,6 @@ public class Shelf {
     public void flipState(long noteId) {
         /* Flip the state of the node to either the first todo or first done state */
         Set<String> doneStates = AppPreferences.doneKeywordsSet(mContext);
-        Set<String> todoStates = AppPreferences.todoKeywordsSet(mContext);
         String currentState = getNote(noteId).getHead().getState();
 
         if (currentState != null) {
