@@ -5,7 +5,7 @@
   <string name="settings">Einstellungen</string>
   <string name="ok">OK</string>
   <string name="yes">Ja</string>
-  <string name="unlink">Unlink</string>
+  <string name="unlink">Verknüpfung lösen</string>
   <!-- Unlink from Dropbox -->
   <string name="clear">Clear</string>
   <string name="cancel">Abbrechen</string>
@@ -18,7 +18,7 @@
   <string name="not_now">Nicht jetzt</string>
   <string name="save">Speichern</string>
   <string name="discard">Verwerfen</string>
-  <string name="no_link">Kein Link</string>
+  <string name="no_link">Keine Verknüpfung</string>
   <string name="browse">Durchsuchen</string>
   <string name="dropbox">Dropbox</string>
   <string name="edit">Bearbeiten</string>
@@ -68,12 +68,12 @@
   <string name="import_org_file">Import Org file</string>
   <string name="state_spinner_prompt">State</string>
   <string name="priority_spinner_prompt">Priority</string>
-  <string name="message_dropbox_unlinked">Unlinked from Dropbox</string>
-  <string name="message_dropbox_linked">Linked to Dropbox successfully</string>
+  <string name="message_dropbox_unlinked">Verknüpfung mit der Dropbox aufgehoben</string>
+  <string name="message_dropbox_linked">Dropbox erfolgreich Verknüpft</string>
   <!-- Preferences (Settings). -->
   <string name="repos_preference_title">Repositories</string>
   <string name="repos_preference_summary">Speicherort der Notizbücher für die Synchronisierung</string>
-  <string name="message_book_has_no_link">No link set</string>
+  <string name="message_book_has_no_link">Keine Verknüpfung festgelegt</string>
   <string name="message_note_created">Note created</string>
   <string name="message_failed_creating_note">Failed to create note</string>
   <string name="message_failed_updating_note">Failed to update note</string>
@@ -88,7 +88,7 @@
   <string name="closed_button_hint">Closed time</string>
   <string name="fragment_note_content_hint">Note content</string>
   <string name="books_context_menu_item_rename">Rename</string>
-  <string name="books_context_menu_item_set_link">Set Link</string>
+  <string name="books_context_menu_item_set_link">Verknüpfung festlgegen</string>
   <string name="books_context_menu_item_force_save">Force Save</string>
   <string name="books_context_menu_item_force_load">Force Load</string>
   <string name="move">Move</string>
@@ -125,8 +125,8 @@
   <string name="note_does_not_exist_anymore">This note does not exist any more.</string>
   <string name="search_does_not_exist_anymore">This search does not exist any more.</string>
   <string name="fragment_query_title">Search</string>
-  <string name="repo_dropbox_button_not_linked">Link to Dropbox</string>
-  <string name="repo_dropbox_button_linked">Unlink from Dropbox</string>
+  <string name="repo_dropbox_button_not_linked">Mit der Dropbox verknüpfen</string>
+  <string name="repo_dropbox_button_linked">Verknüpfung mit der Dropbox aufheben</string>
   <string name="fragment_settings_title">Settings</string>
   <string name="updating_notes">Updating notes…</string>
   <string name="todo_keywords_configuration_changed_dialog_title">Keywords modified</string>
@@ -177,7 +177,7 @@
   <string name="new_above">New above</string>
   <string name="new_under">New under</string>
   <string name="new_below">New below</string>
-  <string name="confirm_unlinking_from_dropbox_title">Unlink from Dropbox?</string>
+  <string name="confirm_unlinking_from_dropbox_title">Verknüpfung mit der Dropbox aufheben?</string>
   <string name="confirm_unlinking_from_dropbox_message">You will not be able to sync to Dropbox until you link to it again.</string>
   <string name="note_book_not_set">Notizbuch nicht gesetzt</string>
   <string name="can_not_be_empty">Cannot be empty</string>
@@ -276,10 +276,10 @@
   <!-- ++ -->
   <string name="repeater_description_restart">Add period to current time</string>
   <!-- .+ -->
-  <string name="displayed_book_details_local_mtime">Local modification time</string>
+  <string name="displayed_book_details_local_mtime">Lokaler Bearbeitungszeitpunkt</string>
   <string name="displayed_book_details_link_url">Link URL</string>
   <string name="displayed_book_details_sync_url">Sync URL</string>
-  <string name="displayed_book_details_sync_mtime">Sync modification time</string>
+  <string name="displayed_book_details_sync_mtime">Bearbeitungszeitpunkt der Synchronisierung</string>
   <string name="displayed_book_details_sync_revision">Sync revision</string>
   <string name="displayed_book_details_selected_encoding">Selected encoding</string>
   <string name="displayed_book_details_detected_encoding">Detected encoding</string>
@@ -299,7 +299,7 @@
   <string name="list_density_cozy">Cozy</string>
   <string name="list_density_compact">Compact</string>
   <string name="notebooks_sort_order_name">Name</string>
-  <string name="notebooks_sort_order_modification_time">Modification time</string>
+  <string name="notebooks_sort_order_modification_time">Bearbeitungszeitpunkt</string>
   <string name="delete_note">Delete note</string>
   <string name="delete_note_and_all_subnotes">Delete this note and all its sub-notes?</string>
   <string name="delete_notes">Delete notes</string>
@@ -312,7 +312,7 @@
   <string name="display_inherited_tags_in_search_results">Inherited tags in search results</string>
   <string name="display_inherited_tags_in_search_results_summary">Display inherited tags in search results</string>
   <string name="new_note_notification">Create note and sync</string>
-  <string name="new_note_notification_summary">Quickly create new note or sync notebooks from notification drawer</string>
+  <string name="new_note_notification_summary">Über eine Benachrichtigung neue Notizen anlegen oder Notizbücher synchronisieren</string>
   <string name="show_sync_notifications_title">Sync status</string>
   <string name="show_sync_notifications_summary">Display notification during sync and after sync failure</string>
   <string name="prefs_title_reminders">Reminders</string>
@@ -328,7 +328,7 @@
   <string name="primary_storage">Main storage</string>
   <string name="secondary_storage">SD card</string>
   <string name="secondary_storage_not_available_any_more">Secondary storage is no longer available</string>
-  <string name="book_exported">Notebook exported to %s</string>
+  <string name="book_exported">Notizbuch nach %s exportiert</string>
   <string name="failed_exporting_book">Failed exporting book: %s</string>
   <string name="edit_book_preface">Edit preface</string>
   <string name="book_preface_hint">Text displayed before the first note</string>
@@ -336,7 +336,7 @@
   <string name="layout_direction_locale">Default</string>
   <string name="layout_direction_ltr">Left to Right</string>
   <string name="layout_direction_rtl">Right to Left</string>
-  <string name="preface_in_book">Notebook\'s preface</string>
+  <string name="preface_in_book">Einleitungstext des Notizbuchs</string>
   <string name="preface_in_book_full">Display</string>
   <string name="preface_in_book_hide">Hide</string>
   <string name="preface_in_book_few_lines">Display few lines</string>
@@ -354,7 +354,7 @@
   <string name="auto_sync">Auto-sync</string>
   <string name="auto_sync_experimental">Auto-sync (experimental)</string>
   <string name="auto_sync_experimental_summary">Used for local repositories only</string>
-  <string name="auto_sync_warning">Depending on which options you choose, sync could be triggered often. If notebook is modified, its entire content is transferred to or from the repository. Certain actions might be delayed while syncing is in progress.</string>
+  <string name="auto_sync_warning">Je nach dem welche Optionen gewählt wurden, kann die Synchronisierung sehr oft durchgeführt werden. Nach dem Bearbeiten eines Notizbuches wird der gesamte Inhalt zum Ablageort übertragen. Einige Operationen werden verzögert ausgeführt, wenn gerade ein Synchronisierungs-Vorgang läuft.</string>
   <string name="pref_title_sync_after_note_create">Note created</string>
   <string name="pref_summary_sync_after_note_create">Sync after creating a new note</string>
   <string name="pref_title_sync_after_note_update">Note updated or deleted</string>
