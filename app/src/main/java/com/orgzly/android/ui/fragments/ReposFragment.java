@@ -1,5 +1,6 @@
 package com.orgzly.android.ui.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -90,22 +91,13 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
         /* Hide or setup new Dropbox repo button. */
         View newDropboxRepoButton = view.findViewById(R.id.fragment_repos_dropbox);
         if (BuildConfig.IS_DROPBOX_ENABLED) {
-            newDropboxRepoButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mListener.onRepoNewRequest(R.id.repos_options_menu_item_new_dropbox);
-                }
-            });
+            newDropboxRepoButton.setOnClickListener(v -> mListener.onRepoNewRequest(R.id.repos_options_menu_item_new_dropbox));
         } else {
             newDropboxRepoButton.setVisibility(View.GONE);
         }
 
-        view.findViewById(R.id.fragment_repos_directory).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onRepoNewRequest(R.id.repos_options_menu_item_new_external_storage_directory);
-            }
-        });
+        view.findViewById(R.id.fragment_repos_directory).setOnClickListener(v ->
+                mListener.onRepoNewRequest(R.id.repos_options_menu_item_new_external_storage_directory));
 
         return view;
     }
@@ -151,21 +143,18 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
                 to,
                 0);
 
-        mListAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-            @Override
-            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                TextView textView;
+        mListAdapter.setViewBinder((view, cursor, columnIndex) -> {
+            TextView textView;
 
-                switch (view.getId()) {
-                    case R.id.item_repo_url:
-                        if (! cursor.isNull(columnIndex)) {
-                            textView = (TextView) view;
-                            textView.setText(UriUtils.friendlyUri(cursor.getString(columnIndex)));
-                        }
-                        return true;
-                }
-                return false;
+            switch (view.getId()) {
+                case R.id.item_repo_url:
+                    if (! cursor.isNull(columnIndex)) {
+                        textView = (TextView) view;
+                        textView.setText(UriUtils.friendlyUri(cursor.getString(columnIndex)));
+                    }
+                    return true;
             }
+            return false;
         });
 
         setListAdapter(mListAdapter);
@@ -177,16 +166,13 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
         super.onActivityCreated(savedInstanceState);
 
         /* Delay to avoid brief displaying of no-repos view. */
-        new android.os.Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                FragmentActivity activity = getActivity();
-                if (activity != null) {
-                    activity.getSupportLoaderManager()
-                            .initLoader(Loaders.REPOS_FRAGMENT, null, ReposFragment.this);
-                }
-
+        new android.os.Handler().postDelayed(() -> {
+            FragmentActivity activity = getActivity();
+            if (activity != null) {
+                activity.getSupportLoaderManager()
+                        .initLoader(Loaders.REPOS_FRAGMENT, null, ReposFragment.this);
             }
+
         }, 100);
     }
 
@@ -206,11 +192,15 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
 
-        inflater.inflate(R.menu.repos_actions, menu);
+        // Do not display add icon if there are no repositories - large repo buttons will be shown
+        if (mListAdapter == null || mListAdapter.getCount() > 0) {
+            inflater.inflate(R.menu.repos_actions, menu);
 
-        if (! BuildConfig.IS_DROPBOX_ENABLED) {
-            menu.findItem(R.id.repos_options_menu_item_new).getSubMenu()
-                    .removeItem(R.id.repos_options_menu_item_new_dropbox);
+            // Remove Dropbox from the menu
+            if (!BuildConfig.IS_DROPBOX_ENABLED) {
+                menu.findItem(R.id.repos_options_menu_item_new).getSubMenu()
+                        .removeItem(R.id.repos_options_menu_item_new_dropbox);
+            }
         }
     }
 
@@ -284,6 +274,11 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
             mViewFlipper.setDisplayedChild(0);
         } else {
             mViewFlipper.setDisplayedChild(1);
+        }
+
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.invalidateOptionsMenu();
         }
     }
 

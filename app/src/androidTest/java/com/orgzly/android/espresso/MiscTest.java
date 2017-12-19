@@ -43,6 +43,7 @@ import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDel
 import static com.orgzly.android.espresso.EspressoUtils.isHighlighted;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static com.orgzly.android.espresso.EspressoUtils.settingsSetDoneKeywords;
 import static com.orgzly.android.espresso.EspressoUtils.settingsSetTodoKeywords;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
@@ -447,7 +448,6 @@ public class MiscTest extends OrgzlyTest {
         shelfTestUtils.setupRepo("file:/");
         shelfTestUtils.setupRepo("dropbox:/orgzly");
         activityRule.launchActivity(null);
-
         fragmentTest(true, withId(R.id.fragment_books_container));
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
         fragmentTest(true, withId(R.id.fragment_book_view_flipper));
@@ -482,6 +482,11 @@ public class MiscTest extends OrgzlyTest {
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText("Scheduled")).perform(click());
         fragmentTest(true, withId(R.id.fragment_query_view_flipper));
+
+        // Open agenda
+        searchForText("t.tag3 ad.3");
+        fragmentTest(true, withId(R.id.fragment_agenda_container));
+
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.searches)).perform(click());
         fragmentTest(true, withId(R.id.fragment_filters_flipper));

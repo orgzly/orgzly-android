@@ -1,5 +1,14 @@
-// Used when developing
-include ':org-java'
-project(':org-java').projectDir = new File(settingsDir, '../org-java')
+/*
+ * Use org-java from local directory instead of the remote repository.
+ *
+ * If you are working on org-java this can make development process easier.
+ * Make sure you run "clean" task if you change the existence of this directory.
+ */
+gradle.ext.orgJavaDir = new File(settingsDir, '../org-java')
+
+if (gradle.ext.orgJavaDir.exists()) {
+    include ':org-java'
+    project(':org-java').projectDir = gradle.ext.orgJavaDir
+}
 
 include ':app'
