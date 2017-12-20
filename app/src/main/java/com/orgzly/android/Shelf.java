@@ -739,15 +739,25 @@ public class Shelf {
     }
 
     public void flipState(long noteId) {
-        /* Flip the state of the node to either the first todo or first done state */
-        Set<String> doneStates = AppPreferences.doneKeywordsSet(mContext);
-        String currentState = getNote(noteId).getHead().getState();
+        Note note = getNote(noteId);
 
-        if (currentState != null) {
-            if (doneStates.contains(currentState)) {
-                setStateToTodo(noteId);
-            } else {
-                setStateToDone(noteId);
+        if (note.getHead().getState() == null) {
+            String msg = mContext.getString(R.string.note_cannot_marked_as_done);
+            Intent intent = new Intent(AppIntent.ACTION_DISPLAY_MESSAGE);
+            intent.putExtra(AppIntent.EXTRA_MESSAGE, msg);
+            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+        } else {
+            /* Flip the state of the node to either the first to-do or first done state */
+            Set<String> doneStates = AppPreferences.doneKeywordsSet(mContext);
+            String currentState = getNote(noteId).getHead().getState();
+
+            if (currentState != null) {
+                if (doneStates.contains(currentState)) {
+                    setStateToTodo(noteId);
+                } else {
+                    setStateToDone(noteId);
+                }
             }
         }
     }

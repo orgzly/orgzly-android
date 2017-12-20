@@ -791,22 +791,6 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onStateFlipRequest(long noteId) {
-        Shelf shelf = new Shelf(this);
-        Note note = shelf.getNote(noteId);
-
-        if (note.getHead().getState() == null) {
-
-            final Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content),
-                    R.string.note_cannot_marked_as_done, Snackbar.LENGTH_LONG);
-            snackbar.setAction("Dismiss", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    snackbar.dismiss();
-                }
-            });
-            snackbar.show();
-        }
-
         mSyncFragment.flipState(noteId);
     }
 
