@@ -184,6 +184,8 @@
 
         <item name="oic_time">@drawable/ic_access_time_black_24dp</item>
         <item name="oic_repeat">@drawable/ic_repeat_black_24dp</item>
+
+        <item name="oic_notifications_none_24dp">@drawable/ic_notifications_none_black_24dp</item>
     </style>
 
     <style name="AppDarkTheme" parent="Theme.Design">
@@ -356,6 +358,8 @@
 
         <item name="oic_time">@drawable/ic_access_time_white_24dp</item>
         <item name="oic_repeat">@drawable/ic_repeat_white_24dp</item>
+
+        <item name="oic_notifications_none_24dp">@drawable/ic_notifications_none_white_24dp</item>
     </style>
 
     <!-- Color schemes -->
