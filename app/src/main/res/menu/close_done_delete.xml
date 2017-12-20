@@ -6,19 +6,19 @@
 
     <item
         android:id="@+id/close"
-        android:icon="?attr/oic_close"
+        android:icon="?attr/ic_close_24dp"
         app:showAsAction="always"
         android:title="@string/close"/>
 
     <item
         android:id="@+id/done"
-        android:icon="?attr/oic_done"
+        android:icon="?attr/ic_done_24dp"
         app:showAsAction="always"
         android:title="@string/done"/>
 
     <item
         android:id="@+id/delete"
-        android:icon="?attr/oic_delete_item"
+        android:icon="?attr/ic_delete_24dp"
         app:showAsAction="never"
         android:title="@string/delete"/>
 </menu>

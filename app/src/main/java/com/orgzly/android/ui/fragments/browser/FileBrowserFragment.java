@@ -245,15 +245,15 @@ public class FileBrowserFragment extends BrowserFragment {
 
         mItemList = new Item[list.size() + 1];
 
-        mItemList[0] = new Item(typedArray.getResourceId(R.styleable.Icons_oic_browser_up, 0));
+        mItemList[0] = new Item(typedArray.getResourceId(R.styleable.Icons_ic_keyboard_arrow_up_24dp, 0));
 
         for (int i = 0; i < list.size(); i++) {
-            mItemList[i+1] = new Item(typedArray.getResourceId(R.styleable.Icons_oic_browser_file, 0), list.get(i).getName());
+            mItemList[i+1] = new Item(typedArray.getResourceId(R.styleable.Icons_ic_insert_drive_file_24dp, 0), list.get(i).getName());
 
             /* Update icon if it's a directory. */
             File sel = new File(nextPath, list.get(i).getName());
             if (sel.isDirectory()) {
-                mItemList[i+1].icon = typedArray.getResourceId(R.styleable.Icons_oic_browser_directory, 0);
+                mItemList[i+1].icon = typedArray.getResourceId(R.styleable.Icons_ic_folder_open_24dp, 0);
             }
         }
 

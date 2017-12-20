@@ -26,7 +26,7 @@
             android:id="@+id/item_drawer_left_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="?attr/oic_drawer_notebooks"
+            android:src="?attr/ic_library_books_24dp"
             android:layout_gravity="center"
             android:contentDescription="@string/drawer_item"
             android:visibility="invisible"/>
@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:src="?attr/oic_drawer_item_modified"
+        android:src="?attr/ic_sync_18dp"
         android:contentDescription="@string/notebook_modified"/>
 
     <View

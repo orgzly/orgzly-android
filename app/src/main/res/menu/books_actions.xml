@@ -16,7 +16,7 @@
 
     <item
         android:id="@+id/books_options_menu_item_import_book"
-        android:icon="?attr/oic_load_book_option"
+        android:icon="?attr/ic_folder_open_24dp"
         app:showAsAction="never"
         android:orderInCategory="5"
         android:title="@string/import_org_file"/>

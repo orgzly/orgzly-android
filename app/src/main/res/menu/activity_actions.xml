@@ -19,7 +19,7 @@
     <item
         android:id="@+id/activity_action_search"
         android:title="@string/options_menu_item_search"
-        android:icon="?attr/oic_search_option"
+        android:icon="?attr/ic_search_24dp"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="collapseActionView|always" tools:ignore="AlwaysShowAction"/>
 

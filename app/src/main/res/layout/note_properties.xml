@@ -20,8 +20,8 @@
     <Button
         android:id="@+id/add_property"
         style="@style/NoteTimeButton"
-        android:drawableStart="?attr/oic_fragment_note_property"
-        android:drawableLeft="?attr/oic_fragment_note_property"
+        android:drawableStart="?attr/ic_info_outline_24dp"
+        android:drawableLeft="?attr/ic_info_outline_24dp"
         android:text="@string/add_property"
         android:freezesText="true"/>
 

@@ -118,7 +118,7 @@ public class ActivityUtils {
             } else if (FiltersFragment.Companion.getFRAGMENT_TAG().equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_in_query;
                 actionBarAttr = R.attr.action_bar_in_query;
-                fabAttr = R.attr.oic_new_item;
+                fabAttr = R.attr.ic_add_24dp;
 
             } else if (FilterFragment.FRAGMENT_TAG.equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_in_query;
@@ -133,12 +133,12 @@ public class ActivityUtils {
             } else if (BooksFragment.FRAGMENT_TAG.equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_default;
                 actionBarAttr = R.attr.action_bar_default;
-                fabAttr = R.attr.oic_new_item;
+                fabAttr = R.attr.ic_add_24dp;
 
             } else if (BookFragment.FRAGMENT_TAG.equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_default;
                 actionBarAttr = R.attr.action_bar_default;
-                fabAttr = R.attr.oic_new_item;
+                fabAttr = R.attr.ic_add_24dp;
 
             } else if (BookPrefaceFragment.FRAGMENT_TAG.equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_default;

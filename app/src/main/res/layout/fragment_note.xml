@@ -87,7 +87,7 @@
                     android:paddingLeft="4dp"
                     android:paddingRight="8dp"
                     android:layout_gravity="center"
-                    android:src="?attr/oic_fragment_note_tags"
+                    android:src="?attr/ic_label_outline_24dp"
                     android:contentDescription="@string/tags"/>
 
                 <!-- Text is black with dark theme (known issue). Set its color. -->
@@ -109,8 +109,8 @@
                 android:id="@+id/fragment_note_scheduled_button"
                 style="@style/NoteTimeButton"
                 android:layout_marginTop="@dimen/padding_8"
-                android:drawableStart="?attr/oic_fragment_note_scheduled_time"
-                android:drawableLeft="?attr/oic_fragment_note_scheduled_time"
+                android:drawableStart="?attr/ic_today_24dp"
+                android:drawableLeft="?attr/ic_today_24dp"
                 android:text="@string/schedule_button_hint"
                 tools:text="@string/note_scheduled_sample"
                 android:freezesText="true"/>
@@ -118,16 +118,16 @@
             <Button
                 android:id="@+id/fragment_note_deadline_button"
                 style="@style/NoteTimeButton"
-                android:drawableStart="?attr/oic_fragment_note_deadline_time"
-                android:drawableLeft="?attr/oic_fragment_note_deadline_time"
+                android:drawableStart="?attr/ic_alarm_24dp"
+                android:drawableLeft="?attr/ic_alarm_24dp"
                 android:text="@string/deadline_button_hint"
                 android:freezesText="true"/>
 
             <Button
                 android:id="@+id/fragment_note_closed_button"
                 style="@style/NoteTimeButton"
-                android:drawableStart="?attr/oic_fragment_note_closed_time"
-                android:drawableLeft="?attr/oic_fragment_note_closed_time"
+                android:drawableStart="?attr/ic_done_24dp"
+                android:drawableLeft="?attr/ic_done_24dp"
                 android:text="@string/closed_button_hint"
                 android:freezesText="true"/>
 
@@ -141,8 +141,8 @@
             <ToggleButton
                 android:id="@+id/edit_content_toggle"
                 style="@style/NoteTimeButton"
-                android:drawableStart="?attr/oic_edit_item"
-                android:drawableLeft="?attr/oic_edit_item"
+                android:drawableStart="?attr/ic_edit_24dp"
+                android:drawableLeft="?attr/ic_edit_24dp"
                 android:textOn="@string/note_content_finish_editing"
                 android:textOff="@string/note_content_start_editing"/>
 

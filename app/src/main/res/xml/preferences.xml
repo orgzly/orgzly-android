@@ -6,32 +6,32 @@
 
     <PreferenceScreen
         android:title="@string/look_and_feel"
-        android:icon="?attr/oic_drawer_settings"
+        android:icon="?attr/ic_settings_24dp"
         android:key="prefs_screen_look_and_feel"/>
 
     <PreferenceScreen
         android:title="@string/pref_title_notebooks"
-        android:icon="?attr/oic_drawer_notebooks"
+        android:icon="?attr/ic_library_books_24dp"
         android:key="prefs_screen_notebooks"/>
 
     <PreferenceScreen
         android:title="@string/prefs_title_notifications"
-        android:icon="?attr/oic_notifications_none_24dp"
+        android:icon="?attr/ic_notifications_none_24dp"
         android:key="prefs_screen_notifications"/>
 
     <PreferenceScreen
         android:title="@string/prefs_title_reminders"
-        android:icon="?attr/oic_fragment_note_deadline_time"
+        android:icon="?attr/ic_alarm_24dp"
         android:key="prefs_screen_reminders"/>
 
     <PreferenceScreen
         android:title="@string/sync"
-        android:icon="?attr/oic_drawer_sync_button"
+        android:icon="?attr/ic_sync_24dp"
         android:key="prefs_screen_sync"/>
 
     <PreferenceScreen
         android:title="@string/app"
-        android:icon="?attr/oic_fragment_note_property"
+        android:icon="?attr/ic_info_outline_24dp"
         android:key="prefs_screen_app"/>
 
 </PreferenceScreen>

@@ -423,7 +423,7 @@ public class DrawerFragment extends ListFragment
         FiltersItem() {
             this.title = getString(R.string.searches);
 //            this.subtitle = "Click to edit";
-            this.icon = R.styleable.Icons_oic_drawer_filters;
+            this.icon = R.styleable.Icons_ic_search_24dp;
 //            this.typeface = Typeface.BOLD;
         }
     }
@@ -441,7 +441,7 @@ public class DrawerFragment extends ListFragment
     public class BooksItem extends DrawerItem {
         BooksItem() {
             this.title = getString(R.string.notebooks);
-            this.icon = R.styleable.Icons_oic_drawer_notebooks;
+            this.icon = R.styleable.Icons_ic_library_books_24dp;
 //            this.typeface = Typeface.BOLD;
         }
     }
@@ -458,7 +458,7 @@ public class DrawerFragment extends ListFragment
     public class SettingsItem extends DrawerItem {
         SettingsItem() {
             this.title = getString(R.string.settings);
-            this.icon = R.styleable.Icons_oic_drawer_settings;
+            this.icon = R.styleable.Icons_ic_settings_24dp;
 //            this.typeface = Typeface.BOLD;
         }
     }

@@ -5,37 +5,37 @@
     <item
         android:id="@+id/book_cab_move"
         app:showAsAction="always"
-        android:icon="?attr/oic_move"
+        android:icon="?attr/ic_swap_vert_24dp"
         android:title="@string/move">
     </item>
 
     <item
         android:id="@+id/book_cab_cut"
-        android:icon="?attr/oic_cut"
+        android:icon="?attr/ic_content_cut_24dp"
         app:showAsAction="always"
         android:title="@string/cut">
     </item>
 
     <item
         android:id="@+id/book_cab_paste"
-        android:icon="?attr/oic_paste"
+        android:icon="?attr/ic_content_paste_24dp"
         app:showAsAction="always"
         android:title="@string/paste">
 
         <menu>
             <item
                 android:id="@+id/book_cab_paste_above"
-                android:icon="?attr/oic_above_heads_action_mode"
+                android:icon="?attr/oic_new_above_24dp"
                 android:title="@string/heads_action_menu_item_paste_above"/>
 
             <item
                 android:id="@+id/book_cab_paste_under"
-                android:icon="?attr/oic_under_heads_action_mode"
+                android:icon="?attr/oic_new_under_24dp"
                 android:title="@string/heads_action_menu_item_paste_under"/>
 
             <item
                 android:id="@+id/book_cab_paste_below"
-                android:icon="?attr/oic_below_heads_action_mode"
+                android:icon="?attr/oic_new_below_24dp"
                 android:title="@string/heads_action_menu_item_paste_below"/>
         </menu>
     </item>
@@ -43,26 +43,26 @@
     <!-- New note relative to selected. -->
     <item
         android:id="@+id/book_cab_new"
-        android:icon="?attr/oic_new_item"
+        android:icon="?attr/ic_add_24dp"
         app:showAsAction="never"
         android:title="@string/new_note">
 
         <menu>
             <item
                 android:id="@+id/book_cab_new_above"
-                android:icon="?attr/oic_above_heads_action_mode"
+                android:icon="?attr/oic_new_above_24dp"
                 app:showAsAction="never"
                 android:title="@string/heads_action_menu_item_add_above"/>
 
             <item
                 android:id="@+id/book_cab_new_under"
-                android:icon="?attr/oic_under_heads_action_mode"
+                android:icon="?attr/oic_new_under_24dp"
                 app:showAsAction="never"
                 android:title="@string/heads_action_menu_item_add_under"/>
 
             <item
                 android:id="@+id/book_cab_new_below"
-                android:icon="?attr/oic_below_heads_action_mode"
+                android:icon="?attr/oic_new_below_24dp"
                 app:showAsAction="never"
                 android:title="@string/heads_action_menu_item_add_below"/>
         </menu>
@@ -71,21 +71,21 @@
     <!-- Edit note parameters. -->
     <!--<item-->
     <!--android:id="@+id/book_cab_edit"-->
-    <!--android:icon="?attr/oic_edit_item"-->
+    <!--android:icon="?attr/ic_edit_24dp"-->
     <!--app:showAsAction="never"-->
     <!--android:title="@string/edit">-->
     <!--<menu>-->
 
     <item
         android:id="@+id/book_cab_schedule"
-        android:icon="?attr/oic_edit_scheduled_time_action_mode"
+        android:icon="?attr/ic_today_24dp"
         app:showAsAction="never"
         android:title="@string/schedule">
     </item>
 
     <item
         android:id="@+id/book_cab_state"
-        android:icon="?attr/oic_edit_state_action_mode"
+        android:icon="?attr/ic_storage_24dp"
         app:showAsAction="never"
         android:title="@string/state">
 

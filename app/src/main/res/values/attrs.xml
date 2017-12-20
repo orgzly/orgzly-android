@@ -86,93 +86,60 @@
     </declare-styleable>
 
     <declare-styleable name="Icons">
-        <attr name="oic_drawer_sync_button" format="reference"/>
-        <attr name="oic_drawer_filters" format="reference"/>
-        <attr name="oic_drawer_notebooks" format="reference"/>
-        <attr name="oic_drawer_settings" format="reference"/>
-        <attr name="oic_drawer_item_modified" format="reference"/>
-        <attr name="oic_drawer_agenda" format="reference"/>
+        <attr name="ic_access_time_18dp" format="reference"/>
+        <attr name="ic_access_time_24dp" format="reference"/>
+        <attr name="ic_add_24dp" format="reference"/>
+        <attr name="ic_alarm_18dp" format="reference"/>
+        <attr name="ic_alarm_24dp" format="reference"/>
+        <attr name="ic_arrow_back_24dp" format="reference"/>
+        <attr name="ic_arrow_downward_24dp" format="reference"/>
+        <attr name="ic_arrow_forward_24dp" format="reference"/>
+        <attr name="ic_arrow_upward_black_24dp" format="reference"/>
+        <attr name="ic_center_focus_strong_24dp" format="reference"/>
+        <attr name="ic_close_24dp" format="reference"/>
+        <attr name="ic_content_cut_24dp" format="reference"/>
+        <attr name="ic_content_paste_24dp" format="reference"/>
+        <attr name="ic_delete_24dp" format="reference"/>
+        <attr name="ic_done_18dp" format="reference"/>
+        <attr name="ic_done_24dp" format="reference"/>
+        <attr name="ic_edit_24dp" format="reference"/>
+        <attr name="ic_event_24dp" format="reference"/>
+        <attr name="ic_folder_open_18dp" format="reference"/>
+        <attr name="ic_folder_open_24dp" format="reference"/>
+        <attr name="ic_folder_open_48dp" format="reference"/>
+        <attr name="ic_format_list_bulleted_18dp" format="reference"/>
+        <attr name="ic_info_outline_18dp" format="reference"/>
+        <attr name="ic_info_outline_24dp" format="reference"/>
+        <attr name="ic_insert_drive_file_24dp" format="reference"/>
+        <attr name="ic_keyboard_arrow_up_24dp" format="reference"/>
+        <attr name="ic_label_outline_24dp" format="reference"/>
+        <attr name="ic_language_18dp" format="reference"/>
+        <attr name="ic_library_books_24dp" format="reference"/>
+        <attr name="ic_link_18dp" format="reference"/>
+        <attr name="ic_notifications_none_24dp" format="reference"/>
+        <attr name="ic_repeat_24dp" format="reference"/>
+        <attr name="ic_rotate_left_24dp" format="reference"/>
+        <attr name="ic_rotate_right_24dp" format="reference"/>
+        <attr name="ic_search_24dp" format="reference"/>
+        <attr name="ic_settings_24dp" format="reference"/>
+        <attr name="ic_storage_24dp" format="reference"/>
+        <attr name="ic_swap_vert_24dp" format="reference"/>
+        <attr name="ic_sync_18dp" format="reference"/>
+        <attr name="ic_sync_24dp" format="reference"/>
+        <attr name="ic_today_18dp" format="reference"/>
+        <attr name="ic_today_24dp" format="reference"/>
+        <attr name="ic_unfold_more_24dp" format="reference"/>
+        <attr name="ic_warning_24dp" format="reference"/>
 
-        <attr name="oic_above_heads_action_mode" format="reference"/>
-        <attr name="oic_under_heads_action_mode" format="reference"/>
-        <attr name="oic_below_heads_action_mode" format="reference"/>
-
-        <attr name="oic_item_menu_schedule" format="reference"/>
-        <attr name="oic_item_menu_prev_state" format="reference"/>
-        <attr name="oic_item_menu_next_state" format="reference"/>
-        <attr name="oic_item_menu_done_state" format="reference"/>
-        <attr name="oic_item_menu_delete" format="reference"/>
-        <attr name="oic_item_menu_new_above" format="reference"/>
-        <attr name="oic_item_menu_new_under" format="reference"/>
-        <attr name="oic_item_menu_new_below" format="reference"/>
-        <attr name="oic_item_menu_open_note" format="reference"/>
-
-        <attr name="oic_new_item" format="reference"/>
-        <attr name="oic_delete_item" format="reference"/>
-        <attr name="oic_edit_item" format="reference"/>
-
-        <attr name="oic_edit_scheduled_time_action_mode" format="reference"/>
-        <attr name="oic_edit_state_action_mode" format="reference"/>
-
-        <attr name="oic_move_heads_left_action_mode" format="reference"/>
-        <attr name="oic_move_heads_down_action_mode" format="reference"/>
-        <attr name="oic_move_heads_up_action_mode" format="reference"/>
-        <attr name="oic_move_heads_right_action_mode" format="reference"/>
-
-        <attr name="oic_search_option" format="reference"/>
-
-        <attr name="oic_load_book_option" format="reference"/>
-
-        <attr name="oic_done" format="reference"/>
-        <attr name="oic_close" format="reference"/>
-
-        <attr name="oic_fragment_note_tags" format="reference"/>
-        <attr name="oic_fragment_note_scheduled_time" format="reference"/>
-        <attr name="oic_fragment_note_deadline_time" format="reference"/>
-        <attr name="oic_fragment_note_closed_time" format="reference"/>
-        <attr name="oic_fragment_note_property" format="reference"/>
-
-        <attr name="oic_timestamp_dialog_today" format="reference"/>
-        <attr name="oic_timestamp_dialog_tomorrow" format="reference"/>
-        <attr name="oic_timestamp_dialog_next_week" format="reference"/>
-
-        <attr name="oic_dropbox_not_linked" format="reference"/>
         <attr name="oic_dropbox_linked" format="reference"/>
-
-        <attr name="oic_browse_directory" format="reference"/>
-        <attr name="oic_browser_up" format="reference"/>
-        <attr name="oic_browser_directory" format="reference"/>
-        <attr name="oic_browser_file" format="reference"/>
+        <attr name="oic_dropbox_not_linked" format="reference"/>
+        <attr name="oic_new_above_24dp" format="reference"/>
+        <attr name="oic_new_below_24dp" format="reference"/>
+        <attr name="oic_new_under_24dp" format="reference"/>
+        <attr name="oic_next_week_36dp" format="reference"/>
+        <attr name="oic_today_36dp" format="reference"/>
+        <attr name="oic_tomorrow_36dp" format="reference"/>
 
         <attr name="oic_item_alpha" format="float"/>
-
-        <attr name="oic_fragment_book_cycle_visibility" format="reference"/>
-
-        <attr name="oic_item_book_item_sync_needed" format="reference"/>
-        <attr name="oic_item_book_mtime_item" format="reference"/>
-        <attr name="oic_item_book_notes_count" format="reference"/>
-        <attr name="oic_item_book_link_item" format="reference"/>
-        <attr name="oic_item_book_versioned_rook_item" format="reference"/>
-        <attr name="oic_item_book_sync_status_item" format="reference"/>
-        <attr name="oic_item_book_encoding_item" format="reference"/>
-        <attr name="oic_item_book_sync_last_action_item" format="reference"/>
-
-        <attr name="oic_item_head_book_name" format="reference"/>
-        <attr name="oic_item_head_scheduled_item" format="reference"/>
-        <attr name="oic_item_head_deadline_item" format="reference"/>
-        <attr name="oic_item_head_closed_item" format="reference"/>
-
-        <attr name="oic_move" format="reference"/>
-        <attr name="oic_cut" format="reference"/>
-        <attr name="oic_paste" format="reference"/>
-
-        <attr name="oic_warning" format="reference"/>
-
-        <attr name="oic_date_range" format="reference"/>
-
-        <attr name="oic_repeat" format="reference"/>
-        <attr name="oic_time" format="reference"/>
-
-        <attr name="oic_notifications_none_24dp" format="reference"/>
     </declare-styleable>
 </resources>

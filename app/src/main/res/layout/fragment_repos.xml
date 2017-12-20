@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:drawableTop="?attr/oic_browse_directory"
+            android:drawableTop="?attr/ic_folder_open_48dp"
             android:text="@string/directory"/>
 
         <Space
