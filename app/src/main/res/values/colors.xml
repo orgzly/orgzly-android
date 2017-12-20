@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- Use a minimum number of different colors. -->
+<!-- Use minimum number of different colors. -->
 
 <resources>
-    <!-- https://material.io/guidelines/style/color.html#color-color-palette -->
+    <!-- Material colors
+         https://material.io/guidelines/style/color.html#color-color-palette -->
     <color name="red200">#EF9A9A</color>
     <color name="red900">#B71C1C</color>
     <color name="green200">#A5D6A7</color>
     <color name="green900">#1B5E20</color>
     <color name="blue200">#90CAF9</color>
     <color name="blue900">#0D47A1</color>
+    <color name="grey100">#f5f5f5</color>
+    <color name="grey300">#e0e0e0</color>
+
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
 
     <!-- http://www.google.com/design/spec/style/color.html#color-themes -->
     <color name="dark_theme_status_bar">#000000</color>
@@ -22,14 +28,8 @@
     <color name="dark_bg_text_secondary">#b4ffffff</color>
     <color name="dark_bg_text_mute">#4dffffff</color>
 
-    <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
-    <color name="gray17">#fff5f5f5</color>
-    <color name="gray25">#ffe6e6e6</color>
-
     <color name="item_head_selected_bg">#3238caff</color>
 
-    <!--<color name="notification">#262626</color>-->
-    <color name="notification">#000</color>
+    <color name="notification">@color/black</color>
 </resources>
 

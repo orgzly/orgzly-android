@@ -55,7 +55,7 @@
         <item name="colorPrimaryDark">@color/black</item>
 
         <!-- Make buttons lighter. -->
-        <item name="android:colorButtonNormal" tools:targetApi="21">@color/gray17</item>
+        <item name="android:colorButtonNormal" tools:targetApi="21">@color/grey100</item>
 
         <item name="main_text_color">@color/black</item>
 
@@ -66,13 +66,12 @@
         <item name="status_bar_in_settings">#795548</item>
         <item name="action_bar_in_settings">#BCAAA4</item>
 
-        <item name="fragment_books_bg_color">@color/gray25</item>
-        <item name="fragment_filters_bg_color">@color/gray25</item>
+        <item name="fragment_books_bg_color">@color/grey300</item>
         <item name="item_book_card_bg_color">@color/white</item>
 
         <item name="drawer_text">#333333</item>
         <item name="drawer_bg">@color/white</item>
-        <item name="drawer_divider">@color/gray25</item>
+        <item name="drawer_divider">@color/grey300</item>
         <item name="drawer_marker">@color/black</item>
 
         <item name="item_book_title_color">@color/black</item>
@@ -208,7 +207,6 @@
         <item name="action_bar_in_settings">#5D4037</item>
 
         <item name="fragment_books_bg_color">@color/dark_theme_bg</item>
-        <item name="fragment_filters_bg_color">@color/dark_theme_bg</item>
         <item name="item_book_card_bg_color">@color/dark_theme_cards_and_dialogs</item>
 
         <item name="drawer_text">@color/dark_bg_text_primary</item>
@@ -317,7 +315,6 @@
         <item name="action_bar_in_settings">@color/dark_theme_status_bar</item>
 
         <item name="fragment_books_bg_color">@color/dark_theme_status_bar</item>
-        <item name="fragment_filters_bg_color">@color/dark_theme_status_bar</item>
         <item name="item_book_card_bg_color">@color/dark_theme_status_bar</item>
 
         <item name="drawer_bg">@color/dark_theme_status_bar</item>

@@ -53,7 +53,6 @@
         <attr name="action_bar_in_settings" format="color"/>
 
         <attr name="fragment_books_bg_color" format="color"/>
-        <attr name="fragment_filters_bg_color" format="color"/>
         <attr name="item_book_card_bg_color" format="color"/>
 
         <attr name="drawer_bg" format="color"/>
