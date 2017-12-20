@@ -60,7 +60,7 @@
   <plurals name="notes_pasted">
     <item quantity="other">已粘贴 <b>%d</b> 条笔记</item>
   </plurals>
-  <string name="no_notes_pasted">什么都没粘贴</string>
+  <string name="no_notes_pasted">无可粘贴内容</string>
   <string name="fragment_note_title_hint">标题</string>
   <string name="fragment_note_tags_hint" tools:ignore="typos">标签</string>
   <string name="import_org_file">导入 Org 文件</string>
@@ -373,10 +373,10 @@
   <string name="styled_text_with_marks_title">使用特殊标记表示样式</string>
   <string name="styled_text_with_marks_summary">保持标记显示 (如 * 粗体 *)</string>
   <string name="no_such_link_target">未找到 \"%1$s\" 属性设置为 \"%2$s\" 的笔记</string>
-  <string name="imported_filters">Imported <b>%d</b> filters</string>
-  <string name="exported_filters">Exported <b>%d</b> filters</string>
-  <string name="storage_permissions_missing">No storage permission</string>
-  <string name="file_does_not_exist">File %s does not exist</string>
-  <string name="import_from">Import from “%1$s”?</string>
-  <string name="export_to">Export to “%1$s”?</string>
+  <string name="imported_filters">导入 <b>%d </b> 个过滤器</string>
+  <string name="exported_filters">导出 <b>%d </b> 个过滤器</string>
+  <string name="storage_permissions_missing">无存储权限</string>
+  <string name="file_does_not_exist">文件 %s 不存在</string>
+  <string name="import_from">从 \"%1$s\" 导入？</string>
+  <string name="export_to">导出到 \"%1$s\"？</string>
 </resources>
