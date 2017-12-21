@@ -459,17 +459,25 @@ public class NotesClient {
         return context.getContentResolver().query(
                 ProviderContract.Notes.ContentUri.notesSearchQueried(builder.getString()),
                 null,
-                null,
+                DatabaseUtils.WHERE_EXISTING_NOTES,
                 null,
                 DbNoteView.LFT); /* For book, simply order by position. */
     }
 
-    public static CursorLoader getLoaderForQuery(Context context, String query) throws SQLException {
+    public static CursorLoader getLoaderForSearch(Context context, String query) throws SQLException {
+        return getLoaderForQuery(context, query, DatabaseUtils.WHERE_EXISTING_NOTES);
+    }
+
+    public static CursorLoader getLoaderForAgenda(Context context, String query) throws SQLException {
+        return getLoaderForQuery(context, query,  DatabaseUtils.WHERE_EXISTING_NOTES + " AND " + DatabaseUtils.WHERE_NOTES_WITH_TIMES);
+    }
+
+    private static CursorLoader getLoaderForQuery(Context context, String query, String selection) throws SQLException {
         return new CursorLoader(
                 context,
                 ProviderContract.Notes.ContentUri.notesSearchQueried(query),
                 null,
-                null,
+                selection,
                 null,
                 null);
     }
@@ -478,7 +486,7 @@ public class NotesClient {
         return context.getContentResolver().query(
                 ProviderContract.Notes.ContentUri.notesSearchQueried(query),
                 null,
-                null,
+                DatabaseUtils.WHERE_EXISTING_NOTES,
                 null,
                 null);
     }

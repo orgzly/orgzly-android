@@ -24,10 +24,11 @@ public class DatabaseUtils {
                                                       DbNote.IS_CUT + " = 0" + " AND " +
                                                       DbNote.LEVEL + " > 0" + ")"; // Root note is a dummy note with level 0
 
-
     public static final String WHERE_VISIBLE_NOTES = "(" +
                                                      WHERE_EXISTING_NOTES + " AND " +
                                                      GenericDatabaseUtils.whereNullOrZero(DbNote.FOLDED_UNDER_ID) + ")";
+
+    public static final String WHERE_NOTES_WITH_TIMES = "(" + DbNote.SCHEDULED_RANGE_ID + " IS NOT NULL OR " + DbNote.DEADLINE_RANGE_ID + " IS NOT NULL)";
 
     public static String whereUncutBookNotes(long bookId) {
         return "(" + DbNote.BOOK_ID + " = " + bookId + " AND " + WHERE_EXISTING_NOTES + ")";

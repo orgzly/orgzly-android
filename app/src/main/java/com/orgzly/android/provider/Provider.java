@@ -174,7 +174,7 @@ public class Provider extends ContentProvider {
 
             case ProviderUris.NOTES_SEARCH_QUERIED:
                 table = null;
-                cursor = queryNotesSearchQueried(db, uri.getQuery(), sortOrder);
+                cursor = runUserQuery(db, uri.getQuery(), selection, sortOrder);
                 break;
 
             case ProviderUris.BOOKS_ID_NOTES:
@@ -301,7 +301,7 @@ public class Provider extends ContentProvider {
         return cursor;
     }
 
-    private Cursor queryNotesSearchQueried(SQLiteDatabase db, String queryString, String sortOrder) {
+    private Cursor runUserQuery(SQLiteDatabase db, String queryString, String selection, String sortOrder) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, queryString, sortOrder);
 
         QueryParser parser = new InternalQueryParser();
@@ -310,14 +310,14 @@ public class Provider extends ContentProvider {
         SqlQueryBuilder queryBuilder = new SqliteQueryBuilder(getContext());
         queryBuilder.build(query);
 
-        /* If order hasn't been passed, try getting it from the query. */
+        // If order hasn't been passed, try getting it from the query.
         if (sortOrder == null) {
             sortOrder = queryBuilder.getOrderBy();
         }
 
-        String selection = DatabaseUtils.WHERE_EXISTING_NOTES + (
-                TextUtils.isEmpty(queryBuilder.getSelection()) ? "" : " AND (" + queryBuilder.getSelection() + ")"
-        );
+        if (!TextUtils.isEmpty(queryBuilder.getSelection())) {
+            selection += " AND (" + queryBuilder.getSelection() + ")";
+        }
 
         String[] args = queryBuilder.getSelectionArgs().toArray(new String[queryBuilder.getSelectionArgs().size()]);
 

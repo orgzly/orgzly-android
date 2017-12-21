@@ -16,6 +16,7 @@ import android.widget.ViewFlipper;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.prefs.AppPreferences;
+import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.ui.HeadsListViewAdapter;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.NoteStateSpinner;
@@ -152,6 +153,11 @@ public class SearchFragment extends QueryFragment {
         return new MyActionMode();
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id, bundle);
+        return NotesClient.getLoaderForSearch(getActivity(), mQuery);
+    }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {

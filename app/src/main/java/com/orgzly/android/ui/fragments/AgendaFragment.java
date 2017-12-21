@@ -20,6 +20,7 @@ import android.widget.ListView;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.prefs.AppPreferences;
+import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.provider.models.DbNoteColumns;
 import com.orgzly.android.provider.views.DbNoteViewColumns;
 import com.orgzly.android.query.Query;
@@ -36,7 +37,6 @@ import com.orgzly.android.util.UserTimeFormatter;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -192,6 +192,13 @@ public class AgendaFragment extends QueryFragment {
         return new MyActionMode();
     }
 
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id, bundle);
+        return NotesClient.getLoaderForAgenda(getActivity(), mQuery);
+    }
+
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader, cursor);
@@ -235,25 +242,24 @@ public class AgendaFragment extends QueryFragment {
         int scheduledRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.SCHEDULED_RANGE_STRING);
         int deadlineRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.DEADLINE_RANGE_STRING);
 
-        // expand each note if it has a repeater or is a range
-
+        // Expand each note if it has a repeater or is a range
         long nextId = 1;
         originalNoteIDs.clear();
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             Set<DateTime> dates = AgendaUtils.expandOrgDateTime(
                     new String[] {
                             cursor.getString(scheduledRangeStrIdx),
-                            cursor.getString(deadlineRangeStrIdx)
-                    },
+                            cursor.getString(deadlineRangeStrIdx)},
                     now,
-                    agendaDays);
+                    agendaDays
+            );
 
-            for (DateTime date: dates) {
+            for (DateTime date : dates) {
                 // create agenda cursors
                 MatrixCursor matrixCursor = agenda.get(date.getMillis());
                 MatrixCursor.RowBuilder rowBuilder = matrixCursor.newRow();
 
-                for (String col: columnNames) {
+                for (String col : columnNames) {
                     if (col.equalsIgnoreCase(Columns._ID)) {
                         long noteId = cursor.getLong(cursor.getColumnIndex(col));
 
