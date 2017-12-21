@@ -19,6 +19,8 @@ import org.junit.Before;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.UUID;
 
 /**
@@ -114,14 +116,25 @@ public class OrgzlyTest {
         AppPreferences.setAllFromValues(context, prefValues);
     }
 
-    /**
-     * Local-dependent date and time strings displayed to user.
-     */
     protected String userDateTime(String s) {
         return userTimeFormatter.formatAll(OrgDateTime.parse(s));
     }
-    protected String userDate() {
-        return userTimeFormatter.formatDate(new OrgDateTime(true));
+
+    protected String defaultDialogUserDate() {
+        OrgDateTime time = new OrgDateTime(true);
+
+       /* Default time is now + 1h.
+        * TODO: We shouldn't be able to do this - make OrgDateTime immutable.
+        */
+        Calendar cal = time.getCalendar();
+        cal.add(Calendar.HOUR_OF_DAY, 1);
+
+        return userTimeFormatter.formatDate(time);
+    }
+
+    protected String currentUserDate() {
+        OrgDateTime time = new OrgDateTime(true);
+        return userTimeFormatter.formatDate(time);
     }
 
     protected int getActivityResultCode(Activity activity) throws NoSuchFieldException, IllegalAccessException {

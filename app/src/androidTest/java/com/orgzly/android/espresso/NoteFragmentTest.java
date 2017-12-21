@@ -78,7 +78,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(R.string.schedule_button_hint)));
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
         onView(withText(R.string.set)).perform(click());
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(defaultDialogUserDate())), isDisplayed())));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_deadline_button)).check(matches(withText(R.string.deadline_button_hint)));
         onView(withId(R.id.fragment_note_deadline_button)).perform(click());
         onView(withText(R.string.set)).perform(click());
-        onView(withId(R.id.fragment_note_deadline_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
+        onView(withId(R.id.fragment_note_deadline_button)).check(matches(allOf(withText(startsWith(defaultDialogUserDate())), isDisplayed())));
     }
 
     @Test
@@ -133,7 +133,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
         onView(withId(R.id.fragment_note_state)).perform(click());
         onView(withText("DONE")).perform(click());
-        onView(withId(R.id.fragment_note_closed_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
+        onView(withId(R.id.fragment_note_closed_button)).check(matches(allOf(withText(startsWith(currentUserDate())), isDisplayed())));
     }
 
     @Test
@@ -217,9 +217,9 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(R.string.schedule_button_hint)));
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
         onView(withText(R.string.set)).perform(click());
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(defaultDialogUserDate())), isDisplayed())));
         toLandscape(activityRule);
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(defaultDialogUserDate())), isDisplayed())));
     }
 
     @Test
@@ -230,7 +230,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
         toLandscape(activityRule);
         onView(withText(R.string.set)).perform(closeSoftKeyboardWithDelay(), click());
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(defaultDialogUserDate())), isDisplayed())));
     }
 
     @Test
