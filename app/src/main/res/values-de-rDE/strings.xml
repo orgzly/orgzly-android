@@ -55,15 +55,15 @@
   </plurals>
   <string name="no_notes_deleted">Keine Notizen gelöscht</string>
   <plurals name="notes_cut">
-    <item quantity="one">Note cut</item>
+    <item quantity="one">Notizen ausgeschnitten</item>
     <item quantity="other">Cut <b>%d</b> notes</item>
   </plurals>
-  <string name="no_notes_cut">No notes cut</string>
+  <string name="no_notes_cut">Keine Notizen ausgeschnitten</string>
   <plurals name="notes_pasted">
-    <item quantity="one">Note pasted</item>
+    <item quantity="one"><b>%d</b> Notizen eingefügt</item>
     <item quantity="other">Pasted <b>%d</b> notes</item>
   </plurals>
-  <string name="no_notes_pasted">Nothing to paste</string>
+  <string name="no_notes_pasted">Nichts einzufügen</string>
   <string name="fragment_note_title_hint">Titel</string>
   <string name="fragment_note_tags_hint" tools:ignore="typos">tag tag</string>
   <string name="import_org_file">Org-Datei importieren</string>
@@ -129,7 +129,7 @@
   <string name="repo_dropbox_button_not_linked">Mit der Dropbox verknüpfen</string>
   <string name="repo_dropbox_button_linked">Verknüpfung mit der Dropbox aufheben</string>
   <string name="fragment_settings_title">Einstellungen</string>
-  <string name="updating_notes">Updating notes…</string>
+  <string name="updating_notes">Aktualisiere Notizen…</string>
   <string name="todo_keywords_configuration_changed_dialog_title">Keywords modified</string>
   <string name="todo_keywords_configuration_changed_dialog_message">Refresh notes to reflect the changes?</string>
   <string name="failure">Oh Oh</string>
@@ -295,17 +295,17 @@
   <string name="font_size_large">Groß</string>
   <string name="book_name_in_search_hide">Ausblenden</string>
   <string name="book_name_in_search_before_note">Before note</string>
-  <string name="book_name_in_search_under_note">Under note</string>
+  <string name="book_name_in_search_under_note">Unter Notiz</string>
   <string name="list_density_comfortable">Comfortable</string>
   <string name="list_density_cozy">Cozy</string>
   <string name="list_density_compact">Kompakt</string>
   <string name="notebooks_sort_order_name">Name</string>
   <string name="notebooks_sort_order_modification_time">Bearbeitungszeitpunkt</string>
-  <string name="delete_note">Delete note</string>
+  <string name="delete_note">Notiz löschen</string>
   <string name="delete_note_and_all_subnotes">Delete this note and all its sub-notes?</string>
-  <string name="delete_notes">Delete notes</string>
+  <string name="delete_notes">Notizen löschen</string>
   <string name="delete_notes_and_all_subnotes">Delete notes and all its sub-notes?</string>
-  <string name="note_content_finish_editing">View content</string>
+  <string name="note_content_finish_editing">Inhalt anzeigen</string>
   <string name="note_content_start_editing">Inhalt editieren</string>
   <string name="duplicate_keywords_not_allowed">Keyword %s already used</string>
   <string name="no_states_defined">Keine Status definiert</string>
@@ -323,7 +323,7 @@
   <string name="pref_title_summary_reminders_for_deadline_times">Display notification for notes with deadline time</string>
   <string name="pref_title_reminders_sound">Sound</string>
   <string name="pref_title_reminders_vibrate">Vibration</string>
-  <string name="pref_title_reminders_led">Light</string>
+  <string name="pref_title_reminders_led">Licht</string>
   <string name="pref_title_snooze_time">Snooze time (minutes)</string>
   <string name="pref_title_snooze_type">Snooze type</string>
   <string name="primary_storage">Main storage</string>
@@ -350,7 +350,7 @@
   <string name="force_utf8">Force UTF-8 encoding</string>
   <string name="force_utf8_summary">Do not try to detect encoding, always use UTF-8</string>
   <string name="list_widget_name">Orgzly search</string>
-  <string name="select_a_filter">Select a filter</string>
+  <string name="select_a_filter">Filter auswählen</string>
   <string name="select_a_filter_long">Select a filter by clicking on the title bar</string>
   <string name="auto_sync">Auto-sync</string>
   <string name="auto_sync_experimental">Auto-sync (experimental)</string>
@@ -364,11 +364,11 @@
   <string name="pref_summary_on_resume_sync">Sync whenever app comes to the foreground</string>
   <string name="pref_title_repo_update_sync">Repositories modified (not implemented yet)</string>
   <string name="pref_summary_repo_update_sync">Sync whenever an update in repositories is detected</string>
-  <string name="book_never_modified_locally">Never modified locally</string>
-  <string name="notes_count_zero">Contains no notes</string>
+  <string name="book_never_modified_locally">Keine lokale Modifikation</string>
+  <string name="notes_count_zero">Enthält keine Notizen</string>
   <plurals name="notes_count_nonzero">
-    <item quantity="one">Contains <b>%d</b> note</item>
-    <item quantity="other">Contains <b>%d</b> notes</item>
+    <item quantity="one">Enthält <b>%d</b> Notizen</item>
+    <item quantity="other">Enthält <b>%d</b> Notizen</item>
   </plurals>
   <string name="content_line_count_displayed">Display content line count</string>
   <string name="content_line_count_displayed_summary">Display line count when content is not displayed</string>
