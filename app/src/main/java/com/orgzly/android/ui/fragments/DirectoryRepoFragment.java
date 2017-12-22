@@ -107,7 +107,7 @@ public class DirectoryRepoFragment extends RepoFragment {
                 }
 
                 /* Do not open the browser unless we have the storage permission. */
-                if (AppPermissions.isGrantedOrRequest((CommonActivity) getActivity(), AppPermissions.FOR_LOCAL_REPO)) {
+                if (AppPermissions.INSTANCE.isGrantedOrRequest((CommonActivity) getActivity(), AppPermissions.Usage.LOCAL_REPO)) {
                     startBrowserDelayed();
                 }
             }
@@ -168,7 +168,7 @@ public class DirectoryRepoFragment extends RepoFragment {
         }
 
         /* Check for permissions. */
-        AppPermissions.isGrantedOrRequest((CommonActivity) getActivity(), AppPermissions.FOR_LOCAL_REPO);
+        AppPermissions.INSTANCE.isGrantedOrRequest((CommonActivity) getActivity(), AppPermissions.Usage.LOCAL_REPO);
     }
 
     @Override
@@ -226,7 +226,7 @@ public class DirectoryRepoFragment extends RepoFragment {
 
     private void save() {
         /* Check for storage permission. */
-        if (! AppPermissions.isGrantedOrRequest((CommonActivity) getActivity(), AppPermissions.FOR_LOCAL_REPO)) {
+        if (! AppPermissions.INSTANCE.isGrantedOrRequest((CommonActivity) getActivity(), AppPermissions.Usage.LOCAL_REPO)) {
             return;
         }
 

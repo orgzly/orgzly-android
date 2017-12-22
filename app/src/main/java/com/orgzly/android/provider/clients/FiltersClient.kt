@@ -11,7 +11,7 @@ import com.orgzly.android.provider.models.DbSearch
 import java.util.ArrayList
 
 object FiltersClient {
-    var SORT_ORDER = ProviderContract.Filters.Param.POSITION + ", " + ProviderContract.Filters.Param._ID
+    val SORT_ORDER = ProviderContract.Filters.Param.POSITION + ", " + ProviderContract.Filters.Param._ID
 
     fun getCursorLoader(context: Context): CursorLoader =
             CursorLoader(context, ProviderContract.Filters.ContentUri.filters(), null, null, null, SORT_ORDER)

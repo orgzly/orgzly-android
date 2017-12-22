@@ -6,7 +6,7 @@ import java.util.regex.Pattern
 /**
  * [OrgInterval] with support for "none", "today" (0d), "tomorrow" (1d), "yesterday" (-1d).
  **/
-class QueryInterval(var none: Boolean = false) : OrgInterval() {
+class QueryInterval(val none: Boolean = false) : OrgInterval() {
     override fun toString(): String {
         return when {
             none -> "none"

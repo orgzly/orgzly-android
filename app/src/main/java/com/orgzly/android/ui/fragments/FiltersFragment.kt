@@ -2,7 +2,6 @@ package com.orgzly.android.ui.fragments
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.database.Cursor
 import android.os.Bundle
 import android.support.v4.app.ListFragment
@@ -18,10 +17,12 @@ import com.orgzly.R
 import com.orgzly.android.filter.FileFilterStore
 import com.orgzly.android.provider.ProviderContract
 import com.orgzly.android.provider.clients.FiltersClient
+import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.Fab
 import com.orgzly.android.ui.FragmentListener
 import com.orgzly.android.ui.Loaders
 import com.orgzly.android.ui.util.ListViewUtils
+import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 
 /**
@@ -129,11 +130,21 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
     }
 
     private fun importFilters() {
-        importExportFilters(R.string.import_from, { store -> store.importFilters() })
+        if (hasPermission()) {
+            importExportFilters(R.string.import_from, { store -> store.importFilters() })
+        }
     }
 
     private fun exportFilters() {
-        importExportFilters(R.string.export_to, { store -> store.exportFilters() })
+        if (hasPermission()) {
+            importExportFilters(R.string.export_to, { store -> store.exportFilters() })
+        }
+    }
+
+    private fun hasPermission(): Boolean {
+        return AppPermissions.isGrantedOrRequest(
+                activity as CommonActivity,
+                AppPermissions.Usage.FILTERS_EXPORT_IMPORT)
     }
 
     private fun importExportFilters(msgRes: Int, f: (store: FileFilterStore) -> Unit) {

@@ -1069,7 +1069,7 @@ public class MainActivity extends CommonActivity
         setActionAfterPermissionGrant(() -> mSyncFragment.exportBook(bookId));
 
         /* Check for permissions. */
-        boolean isGranted = AppPermissions.isGrantedOrRequest(this, AppPermissions.FOR_BOOK_EXPORT);
+        boolean isGranted = AppPermissions.INSTANCE.isGrantedOrRequest(this, AppPermissions.Usage.BOOK_EXPORT);
 
         if (isGranted) {
             getActionAfterPermissionGrant().run();

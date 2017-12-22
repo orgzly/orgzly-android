@@ -152,7 +152,8 @@ public class FileBrowserFragment extends BrowserFragment {
         super.onResume();
 
         /* Check for permissions. */
-        AppPermissions.isGrantedOrRequest((CommonActivity) getActivity(), AppPermissions.FOR_LOCAL_REPO);
+        AppPermissions.INSTANCE.isGrantedOrRequest(
+                (CommonActivity) getActivity(), AppPermissions.Usage.LOCAL_REPO);
     }
 
     @Override

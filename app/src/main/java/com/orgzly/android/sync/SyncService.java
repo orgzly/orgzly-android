@@ -207,7 +207,7 @@ public class SyncService extends Service {
              * if there are repositories that would use it.
              */
             if (reposRequireStoragePermission(repos.values())) {
-                if (AppPermissions.isNotGranted(context, AppPermissions.FOR_SYNC_START)) {
+                if (!AppPermissions.INSTANCE.isGranted(context, AppPermissions.Usage.SYNC_START)) {
                     status.set(SyncStatus.Type.NO_STORAGE_PERMISSION, null, 0, 0);
                     announceActiveSyncStatus();
                     return null;

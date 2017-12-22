@@ -221,13 +221,10 @@ abstract class CommonActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             val setting = AppPreferences.layoutDirection(this)
 
-            var layoutDirection = View.LAYOUT_DIRECTION_LOCALE
-
-            if (getString(R.string.pref_value_layout_direction_ltr) == setting) {
-                layoutDirection = View.LAYOUT_DIRECTION_LTR
-
-            } else if (getString(R.string.pref_value_layout_direction_rtl) == setting) {
-                layoutDirection = View.LAYOUT_DIRECTION_RTL
+            val layoutDirection = when (setting) {
+                getString(R.string.pref_value_layout_direction_ltr) -> View.LAYOUT_DIRECTION_LTR
+                getString(R.string.pref_value_layout_direction_rtl) -> View.LAYOUT_DIRECTION_RTL
+                else -> View.LAYOUT_DIRECTION_LOCALE
             }
 
             window.decorView.layoutDirection = layoutDirection
@@ -240,14 +237,10 @@ abstract class CommonActivity : AppCompatActivity() {
          */
         val colorScheme = AppPreferences.colorScheme(this)
 
-        if (getString(R.string.pref_value_color_scheme_dark) == colorScheme) {
-            setTheme(R.style.AppDarkTheme_Dark)
-
-        } else if (getString(R.string.pref_value_color_scheme_black) == colorScheme) {
-            setTheme(R.style.AppDarkTheme_Black)
-
-        } else {
-            setTheme(R.style.AppLightTheme_Light)
+        when (colorScheme) {
+            getString(R.string.pref_value_color_scheme_dark)  -> setTheme(R.style.AppDarkTheme_Dark)
+            getString(R.string.pref_value_color_scheme_black) -> setTheme(R.style.AppDarkTheme_Black)
+            else -> setTheme(R.style.AppLightTheme_Light)
         }
 
         /*
@@ -264,7 +257,7 @@ abstract class CommonActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
-            AppPermissions.FOR_BOOK_EXPORT -> {
+            AppPermissions.Usage.BOOK_EXPORT.ordinal -> {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     actionAfterPermissionGrant?.let {
