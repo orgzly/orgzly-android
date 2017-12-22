@@ -49,11 +49,11 @@ import com.orgzly.android.provider.models.DbVersionedRook;
 import com.orgzly.android.provider.views.DbBookView;
 import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.provider.views.DbTimeView;
+import com.orgzly.android.query.sql.SqlQuery;
 import com.orgzly.android.query.Query;
 import com.orgzly.android.query.QueryParser;
-import com.orgzly.android.query.SqlQueryBuilder;
-import com.orgzly.android.query.internal.InternalQueryParser;
-import com.orgzly.android.query.sqlite.SqliteQueryBuilder;
+import com.orgzly.android.query.user.InternalQueryParser;
+import com.orgzly.android.query.sql.SqliteQueryBuilder;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.EncodingDetect;
 import com.orgzly.android.util.LogUtils;
@@ -307,21 +307,21 @@ public class Provider extends ContentProvider {
         QueryParser parser = new InternalQueryParser();
         Query query = parser.parse(queryString);
 
-        SqlQueryBuilder queryBuilder = new SqliteQueryBuilder(getContext());
-        queryBuilder.build(query);
+        SqliteQueryBuilder queryBuilder = new SqliteQueryBuilder(getContext());
+        SqlQuery sqlQuery = queryBuilder.build(query);
 
         // If order hasn't been passed, try getting it from the query.
         if (sortOrder == null) {
-            sortOrder = queryBuilder.getOrderBy();
+            sortOrder = sqlQuery.getOrderBy();
         }
 
-        if (!TextUtils.isEmpty(queryBuilder.getSelection())) {
-            selection += " AND (" + queryBuilder.getSelection() + ")";
+        if (!TextUtils.isEmpty(sqlQuery.getSelection())) {
+            selection += " AND (" + sqlQuery.getSelection() + ")";
         }
 
-        String[] args = queryBuilder.getSelectionArgs().toArray(new String[queryBuilder.getSelectionArgs().size()]);
+        String[] args = sqlQuery.getSelectionArgs().toArray(new String[sqlQuery.getSelectionArgs().size()]);
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, query, query.getCondition(), queryBuilder.getOrderBy(), selection, args, sortOrder);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, query, query.getCondition(), sqlQuery.getOrderBy(), selection, args, sortOrder);
 
         return db.query(DbNoteView.VIEW_NAME, null, selection, args, null, null, sortOrder);
     }

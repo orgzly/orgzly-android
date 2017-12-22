@@ -1,22 +1,18 @@
-package com.orgzly.android.query.dotted
+package com.orgzly.android.query.user
 
 import android.content.Context
 import com.orgzly.android.query.*
 import com.orgzly.android.query.QuotedStringTokenizer
 
-open class DottedQueryBuilder(val context: Context) : UserQueryBuilder {
-    private var string: String = ""
-
-    override fun getString(): String = string
-
-    override fun build(query: Query) {
+open class DottedQueryBuilder(val context: Context) {
+    fun build(query: Query): String {
         val list = mutableListOf<String>()
 
         append(list, query.condition)
         append(list, query.sortOrders)
         append(list, query.options)
 
-        string = list.joinToString(" ")
+        return list.joinToString(" ")
     }
 
     private fun append(list: MutableList<String>, condition: Condition) {

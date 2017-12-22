@@ -1,4 +1,4 @@
-package com.orgzly.android.query.basic
+package com.orgzly.android.query.user
 
 import com.orgzly.android.query.*
 

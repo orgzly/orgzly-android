@@ -1,4 +1,4 @@
-package com.orgzly.android.query.sqlite
+package com.orgzly.android.query.sql
 
 import android.content.Context
 import android.database.DatabaseUtils
@@ -10,7 +10,7 @@ import com.orgzly.org.datetime.OrgInterval
 import java.util.*
 
 
-class SqliteQueryBuilder(val context: Context) : SqlQueryBuilder {
+class SqliteQueryBuilder(val context: Context) {
     private var where: String = ""
     private val arguments: MutableList<String> = ArrayList()
 
@@ -19,17 +19,15 @@ class SqliteQueryBuilder(val context: Context) : SqlQueryBuilder {
     private var hasScheduledCondition = false
     private var hasDeadlineCondition = false
 
-    override fun getSelection() = where
-    override fun getSelectionArgs(): List<String> = arguments
-    override fun getOrderBy(): String = order
-
-    override fun build(query: Query) {
+    fun build(query: Query): SqlQuery {
         hasScheduledCondition = false
         hasDeadlineCondition = false
 
         where = toString(query.condition, true)
 
         order = buildOrderBy(query.sortOrders)
+
+        return SqlQuery(where, arguments, order)
     }
 
     private fun buildOrderBy(sortOrders: List<SortOrder>): String {

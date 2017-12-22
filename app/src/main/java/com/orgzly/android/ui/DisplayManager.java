@@ -10,7 +10,7 @@ import com.orgzly.R;
 import com.orgzly.android.Book;
 import com.orgzly.android.query.Query;
 import com.orgzly.android.query.QueryParser;
-import com.orgzly.android.query.internal.InternalQueryParser;
+import com.orgzly.android.query.user.InternalQueryParser;
 import com.orgzly.android.ui.fragments.AgendaFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BookPrefaceFragment;

@@ -3,9 +3,9 @@ package com.orgzly.android.query
 import android.support.test.espresso.matcher.ViewMatchers.assertThat
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.provider.views.DbNoteView
-import com.orgzly.android.query.dotted.DottedQueryBuilder
-import com.orgzly.android.query.dotted.DottedQueryParser
-import com.orgzly.android.query.sqlite.SqliteQueryBuilder
+import com.orgzly.android.query.sql.SqliteQueryBuilder
+import com.orgzly.android.query.user.DottedQueryBuilder
+import com.orgzly.android.query.user.DottedQueryParser
 import org.hamcrest.Matchers.`is`
 import org.junit.Before
 import org.junit.Test
@@ -218,21 +218,19 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
         val query = parser.parse(param.queryString)
 
         // Build SQL
-        val sqlBuilder: SqlQueryBuilder = SqliteQueryBuilder(context)
-        sqlBuilder.build(query)
+        val sqlBuilder = SqliteQueryBuilder(context)
+        val sqlQuery = sqlBuilder.build(query)
 
         // Build query
         val queryBuilder = DottedQueryBuilder(context)
-        queryBuilder.build(query)
+        actualQueryString = queryBuilder.build(query)
 
         actualQuerySortOrders = query.sortOrders
         actualQueryOptions = query.options
 
-        actualSqlSelection = sqlBuilder.getSelection()
-        actualSqlSelectionArgs = sqlBuilder.getSelectionArgs()
-        actualSqlOrder = sqlBuilder.getOrderBy()
-
-        actualQueryString = queryBuilder.getString()
+        actualSqlSelection = sqlQuery.selection
+        actualSqlSelectionArgs = sqlQuery.selectionArgs
+        actualSqlOrder = sqlQuery.orderBy
     }
 
     @Test

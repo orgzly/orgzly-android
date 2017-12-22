@@ -4,24 +4,21 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Handler;
 import android.support.test.InstrumentationRegistry;
+
 import com.orgzly.R;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.prefs.AppPreferencesValues;
 import com.orgzly.android.provider.clients.DbClient;
-import com.orgzly.android.repos.Repo;
-import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.datetime.OrgDateTime;
+
 import org.junit.After;
 import org.junit.Before;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.UUID;
 
 /**
  * Sets up the environment for tests, such as shelf, preferences and contexts.

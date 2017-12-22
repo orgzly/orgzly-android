@@ -25,7 +25,7 @@ import com.orgzly.android.provider.models.DbNoteColumns;
 import com.orgzly.android.provider.views.DbNoteViewColumns;
 import com.orgzly.android.query.Query;
 import com.orgzly.android.query.QueryParser;
-import com.orgzly.android.query.internal.InternalQueryParser;
+import com.orgzly.android.query.user.InternalQueryParser;
 import com.orgzly.android.ui.AgendaListViewAdapter;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.NoteStateSpinner;

@@ -25,8 +25,7 @@ import com.orgzly.android.provider.models.DbNote;
 import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.query.Condition;
 import com.orgzly.android.query.Query;
-import com.orgzly.android.query.UserQueryBuilder;
-import com.orgzly.android.query.internal.InternalQueryBuilder;
+import com.orgzly.android.query.user.InternalQueryBuilder;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.Place;
@@ -453,11 +452,11 @@ public class NotesClient {
 
     public static Cursor getCursorForBook(Context context, String bookName) throws SQLException {
         /* Create a query with a book name condition. */
-        UserQueryBuilder builder = new InternalQueryBuilder(context);
-        builder.build(new Query(new Condition.InBook(bookName)));
+        InternalQueryBuilder builder = new InternalQueryBuilder(context);
+        String query = builder.build(new Query(new Condition.InBook(bookName)));
 
         return context.getContentResolver().query(
-                ProviderContract.Notes.ContentUri.notesSearchQueried(builder.getString()),
+                ProviderContract.Notes.ContentUri.notesSearchQueried(query),
                 null,
                 DatabaseUtils.WHERE_EXISTING_NOTES,
                 null,

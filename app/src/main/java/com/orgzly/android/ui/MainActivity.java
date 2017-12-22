@@ -49,10 +49,8 @@ import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.provider.clients.ReposClient;
 import com.orgzly.android.query.Condition;
 import com.orgzly.android.query.Query;
-import com.orgzly.android.query.QueryParser;
-import com.orgzly.android.query.UserQueryBuilder;
-import com.orgzly.android.query.dotted.DottedQueryBuilder;
-import com.orgzly.android.query.dotted.DottedQueryParser;
+import com.orgzly.android.query.user.DottedQueryBuilder;
+import com.orgzly.android.query.user.DottedQueryParser;
 import com.orgzly.android.repos.ContentRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
@@ -495,9 +493,9 @@ public class MainActivity extends CommonActivity
                     /* If searching from book, add book name to query. */
                     Book book = getActiveFragmentBook();
                     if (book != null) {
-                        UserQueryBuilder builder = new DottedQueryBuilder(getApplicationContext());
-                        builder.build(new Query(new Condition.InBook(book.getName())));
-                        searchView.setQuery(builder.getString() + " ", false);
+                        DottedQueryBuilder builder = new DottedQueryBuilder(getApplicationContext());
+                        String query = builder.build(new Query(new Condition.InBook(book.getName())));
+                        searchView.setQuery(query + " ", false);
                     }
                 }
             }
@@ -517,11 +515,9 @@ public class MainActivity extends CommonActivity
                 MenuItemCompat.collapseActionView(searchItem);
 
                 /* Normalize search query. */
-                QueryParser parser = new DottedQueryParser();
-                Query query = parser.parse(str);
-                UserQueryBuilder builder = new DottedQueryBuilder(getApplicationContext());
-                builder.build(query);
-                String queryNormalized = builder.getString();
+                Query query = new DottedQueryParser().parse(str);
+                DottedQueryBuilder builder = new DottedQueryBuilder(getApplicationContext());
+                String queryNormalized = builder.build(query);
 
                 DisplayManager.displayQuery(getSupportFragmentManager(), queryNormalized);
 
