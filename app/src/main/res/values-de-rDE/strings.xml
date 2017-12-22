@@ -111,15 +111,15 @@
   <string name="message_book_deleted">Notizbuch gelöscht</string>
   <string name="clear_database_dialog_message">Clear local database?</string>
   <string name="no_user_repos_configured_pref_summary">None configured yet</string>
-  <string name="repos_options_menu_new_repo">New Repository</string>
+  <string name="repos_options_menu_new_repo">Neues Repository</string>
   <string name="book_name_already_exists">Notizbuch %s existiert bereits.</string>
-  <string name="filter_name_already_exists">Search with the same name already exists</string>
-  <string name="failed_creating_directory">Failed creating directory %s</string>
+  <string name="filter_name_already_exists">Gleichnamige Suche existiert bereits</string>
+  <string name="failed_creating_directory">Konnte Verzeichnis %s nicht erzeugen</string>
   <string name="version">Was ist neu?</string>
   <string name="search_hint">Notizen suchen</string>
   <string name="clear_database">Datenbank leeren</string>
   <string name="clear_database_summary">Lokale Datenbank leeren</string>
-  <string name="reload_getting_started">Import “Getting Started with Orgzly”</string>
+  <string name="reload_getting_started">Importiere \"Erste Schritte mit Orgzly\"</string>
   <string name="reload_getting_started_summary">Die aktuellste Version des Notizbuchs importieren</string>
   <string name="notebook_imported">Notizbuch importiert</string>
   <string name="book_does_not_exist_anymore">Dieses Notizbuch existiert nicht mehr.</string>
@@ -132,7 +132,7 @@
   <string name="updating_notes">Updating notes…</string>
   <string name="todo_keywords_configuration_changed_dialog_title">Keywords modified</string>
   <string name="todo_keywords_configuration_changed_dialog_message">Refresh notes to reflect the changes?</string>
-  <string name="failure">Uh oh</string>
+  <string name="failure">Oh Oh</string>
   <string name="no_notes_found_after_search">Your search did not match any notes</string>
   <string name="today">Heute</string>
   <string name="tomorrow">Morgen</string>
@@ -158,7 +158,7 @@
   <string name="syncing_failed_title">Sync failed</string>
   <string name="canceled">Abgebrochen</string>
   <string name="canceling">Abbrechen…</string>
-  <string name="directory">Directory</string>
+  <string name="directory">Verzeichnis</string>
   <string name="fragment_repo_dropbox_directory_desc">Directory inside Dropbox (e.g. “/Documents/Orgzly”)</string>
   <string name="fragment_repo_external_storage_directory_desc">Directory location (e.g. “file:/sdcard/orgzly”)</string>
   <!-- Share button - error messages (set as title). -->
