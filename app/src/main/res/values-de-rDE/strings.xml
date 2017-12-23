@@ -204,9 +204,9 @@
   <string name="failed_renaming_book_with_reason">Umbenennen in %s fehlgeschlagen</string>
   <string name="renamed_book_from">Umbenannt von \"%s\"</string>
   <string name="default_priority">Standardpriorität</string>
-  <string name="lowest_priority">Lowest priority</string>
-  <string name="todo_states">Keywords for active (todo) tasks</string>
-  <string name="done_states">Keywords for completed (done) tasks</string>
+  <string name="lowest_priority">Niedrigste Priorität</string>
+  <string name="todo_states">Schlüsselwörter für aktive Aufgaben</string>
+  <string name="done_states">Schlüsselwörter für erledigte Aufgaben</string>
   <string name="created_at_property">Created at property</string>
   <string name="property_name">Property Name</string>
   <string name="created_at">Erstellt am</string>
@@ -282,9 +282,9 @@
   <string name="displayed_book_details_sync_url">Synchronisations-URL</string>
   <string name="displayed_book_details_sync_mtime">Bearbeitungszeitpunkt der Synchronisierung</string>
   <string name="displayed_book_details_sync_revision">Synchronisations-Version</string>
-  <string name="displayed_book_details_selected_encoding">Selected encoding</string>
-  <string name="displayed_book_details_detected_encoding">Detected encoding</string>
-  <string name="displayed_book_details_used_encoding">Used encoding</string>
+  <string name="displayed_book_details_selected_encoding">Ausgewählter Zeichensatz</string>
+  <string name="displayed_book_details_detected_encoding">Erkannter Zeichensatz</string>
+  <string name="displayed_book_details_used_encoding">Verwendeter Zeichensatz</string>
   <string name="displayed_book_details_last_action">Letzte Aktion</string>
   <string name="displayed_book_details_notes_count">Anzahl der Notizen</string>
   <string name="color_scheme_light">Hell</string>
@@ -302,9 +302,9 @@
   <string name="notebooks_sort_order_name">Name</string>
   <string name="notebooks_sort_order_modification_time">Bearbeitungszeitpunkt</string>
   <string name="delete_note">Notiz löschen</string>
-  <string name="delete_note_and_all_subnotes">Delete this note and all its sub-notes?</string>
+  <string name="delete_note_and_all_subnotes">Diese Notiz und deren Unter-Notizen löschen?</string>
   <string name="delete_notes">Notizen löschen</string>
-  <string name="delete_notes_and_all_subnotes">Delete notes and all its sub-notes?</string>
+  <string name="delete_notes_and_all_subnotes">Notizen und deren Unter-Notizen löschen?</string>
   <string name="note_content_finish_editing">Inhalt anzeigen</string>
   <string name="note_content_start_editing">Inhalt editieren</string>
   <string name="duplicate_keywords_not_allowed">Keyword %s already used</string>
