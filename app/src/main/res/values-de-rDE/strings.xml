@@ -14,7 +14,7 @@
   <string name="new_">Neu</string>
   <!-- "new" is reserved -->
   <string name="select">Auswählen</string>
-  <string name="set">Set</string>
+  <string name="set">Festlegen</string>
   <string name="add">Hinzufügen</string>
   <string name="not_now">Nicht jetzt</string>
   <string name="save">Speichern</string>
@@ -46,7 +46,7 @@
   <string name="new_folder">Neuer Ordner</string>
   <string name="scheduled">Geplant</string>
   <string name="agenda">Agenda</string>
-  <string name="agenda_period">Agenda days</string>
+  <string name="agenda_period">Agenda-Tage</string>
   <string name="time">Zeit</string>
   <string name="repeater">Repeater</string>
   <plurals name="notes_deleted">
@@ -130,8 +130,8 @@
   <string name="repo_dropbox_button_linked">Verknüpfung mit der Dropbox aufheben</string>
   <string name="fragment_settings_title">Einstellungen</string>
   <string name="updating_notes">Aktualisiere Notizen…</string>
-  <string name="todo_keywords_configuration_changed_dialog_title">Keywords modified</string>
-  <string name="todo_keywords_configuration_changed_dialog_message">Refresh notes to reflect the changes?</string>
+  <string name="todo_keywords_configuration_changed_dialog_title">Schlüsselwörter bearbeitet</string>
+  <string name="todo_keywords_configuration_changed_dialog_message">Notizen aktualisieren um Änderungen sichtbar zu machen?</string>
   <string name="failure">Oh Oh</string>
   <string name="no_notes_found_after_search">Die Suchanfrage ergab keine Treffer</string>
   <string name="today">Heute</string>
@@ -162,10 +162,10 @@
   <string name="fragment_repo_dropbox_directory_desc">Directory inside Dropbox (e.g. “/Documents/Orgzly”)</string>
   <string name="fragment_repo_external_storage_directory_desc">Directory location (e.g. “file:/sdcard/orgzly”)</string>
   <!-- Share button - error messages (set as title). -->
-  <string name="share_action_not_set">Share action not set</string>
-  <string name="share_action_not_supported">Share action %s is not supported</string>
-  <string name="share_type_not_set">Share type not set</string>
-  <string name="share_type_not_supported">Share type %s is not supported</string>
+  <string name="share_action_not_set">Teilen-Aktion noch nicht festgelegt</string>
+  <string name="share_action_not_supported">Teilen-Aktion %s wird nicht unterstützt</string>
+  <string name="share_type_not_set">Teilen-Typ noch nicht festgelegt</string>
+  <string name="share_type_not_supported">Teilen-Typ %s wird nicht unterstützt</string>
   <string name="repositories">Ablageorte</string>
   <string name="invalid_repo_url">Ungültige Ablageort-URL \"%s\"</string>
   <string name="message_unsupported_repository_type">Nicht unterstützter Ablageort</string>
@@ -194,7 +194,7 @@
   <string name="permissions_rationale_for_local_repo">Synchronisierung mit einem lokalen Verzeichnis erforderte Zugriffsrechte auf den Speicher</string>
   <string name="permissions_rationale_for_book_export">Das Exportieren eines Notizbuchs erfordert die Berechtigung für den Zugriff auf den internen Speicher</string>
   <string name="permissions_rationale_for_sync_start">Synchronisierung mit lokalem Ablageort erforderte Zugriffsrechte auf den Speicher</string>
-  <string name="cycle_visibility">Fold/Unfold All</string>
+  <string name="cycle_visibility">Alle ein-/ausklappen</string>
   <string name="running_database_update">Upgrading database…</string>
   <string name="note_has_been_modified">Notiz bearbeitet</string>
   <string name="discard_or_save_changes">Änderungen speichern?</string>
@@ -207,8 +207,8 @@
   <string name="lowest_priority">Niedrigste Priorität</string>
   <string name="todo_states">Schlüsselwörter für aktive Aufgaben</string>
   <string name="done_states">Schlüsselwörter für erledigte Aufgaben</string>
-  <string name="created_at_property">Created at property</string>
-  <string name="property_name">Property Name</string>
+  <string name="created_at_property">\"Erstellt am\"-Eigenschaft</string>
+  <string name="property_name">Name der Eigenschaft</string>
   <string name="created_at">Erstellt am</string>
   <string name="insert_note_creation_time">Erstellungszeit der Notiz einfügen</string>
   <string name="reminder_for_scheduled">Scheduled: %s</string>
@@ -248,7 +248,7 @@
   <string name="force_saving_to_uri">Force-saving to %s …</string>
   <string name="force_saved_to_uri">Force-saved to %s</string>
   <string name="force_saving_failed">Force-saving failed: %s</string>
-  <string name="force_loading_failed">Force-loading failed: %s</string>
+  <string name="force_loading_failed">Erzwungenes Laden fehlgeschlagen: %s</string>
   <string name="loaded_from_resource">Loaded from resource %s</string>
   <string name="org_file_format">Org Dateiformat</string>
   <string name="org_file_format_summary">Dateiformat für exportierte Notizbücher</string>
@@ -261,7 +261,7 @@
   <string name="org_indent_mode">Adjust based on indent mode</string>
   <string name="org_indent_mode_summary">Take org-indent-mode into account</string>
   <string name="org_indent_indentation_per_level">Indentation per level</string>
-  <string name="add_property">Add property</string>
+  <string name="add_property">Eigenschaft hinzufügen</string>
   <string name="priority_a_highest">A (höchste Priorität)</string>
   <string name="priority_z_lowest">Z (niedrigste Priorität)</string>
   <string name="hour">Stunde</string>
@@ -307,7 +307,7 @@
   <string name="delete_notes_and_all_subnotes">Notizen und deren Unter-Notizen löschen?</string>
   <string name="note_content_finish_editing">Inhalt anzeigen</string>
   <string name="note_content_start_editing">Inhalt editieren</string>
-  <string name="duplicate_keywords_not_allowed">Keyword %s already used</string>
+  <string name="duplicate_keywords_not_allowed">Schlüsselwort %s wird beteits verwendet</string>
   <string name="no_states_defined">Keine Status definiert</string>
   <string name="book_name_in_search">Name des Notizbuchs in den Suchergebnissen</string>
   <string name="display_inherited_tags_in_search_results">Inherited tags in search results</string>
