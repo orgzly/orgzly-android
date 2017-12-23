@@ -48,7 +48,7 @@
   <string name="agenda">Agenda</string>
   <string name="agenda_period">Agenda-Tage</string>
   <string name="time">Zeit</string>
-  <string name="repeater">Repeater</string>
+  <string name="repeater">Wiederholung</string>
   <plurals name="notes_deleted">
     <item quantity="one">Notiz gelöscht</item>
     <item quantity="other"><b>%d</b> Notizen gelöscht</item>
@@ -78,15 +78,15 @@
   <string name="message_note_created">Notiz erstellt</string>
   <string name="message_failed_creating_note">Notiz erstellen ist fehlgeschlagen</string>
   <string name="message_failed_updating_note">Notiz bearbeiten ist fehlgeschlagen</string>
-  <string name="drawer_close">Close drawer</string>
-  <string name="drawer_open">Open drawer</string>
-  <string name="schedule">Schedule</string>
+  <string name="drawer_close">Schließe Seitenleiste</string>
+  <string name="drawer_open">Seitenleiste öffnen</string>
+  <string name="schedule">Planen</string>
   <string name="deadline">Termin</string>
   <string name="closed">Geschlossen</string>
   <!-- TODO: Not hints, rename -->
-  <string name="schedule_button_hint">Scheduled time</string>
+  <string name="schedule_button_hint">Geplanter Zeitpunkt</string>
   <string name="deadline_button_hint">Zeitpunkt des Termins</string>
-  <string name="closed_button_hint">Closed time</string>
+  <string name="closed_button_hint">Beendeter Zeitpunkt</string>
   <string name="fragment_note_content_hint">Inhalt der Notiz</string>
   <string name="books_context_menu_item_rename">Umbenennen</string>
   <string name="books_context_menu_item_set_link">Verknüpfung festlgegen</string>
@@ -159,8 +159,8 @@
   <string name="canceled">Abgebrochen</string>
   <string name="canceling">Abbrechen…</string>
   <string name="directory">Verzeichnis</string>
-  <string name="fragment_repo_dropbox_directory_desc">Directory inside Dropbox (e.g. “/Documents/Orgzly”)</string>
-  <string name="fragment_repo_external_storage_directory_desc">Directory location (e.g. “file:/sdcard/orgzly”)</string>
+  <string name="fragment_repo_dropbox_directory_desc">Verzeichnis in Dropbox (z.B. \"/Dokumente/Orgzly\")</string>
+  <string name="fragment_repo_external_storage_directory_desc">Verzeichnis (z.B. \"file:/sdcard/orgzly\")</string>
   <!-- Share button - error messages (set as title). -->
   <string name="share_action_not_set">Teilen-Aktion noch nicht festgelegt</string>
   <string name="share_action_not_supported">Teilen-Aktion %s wird nicht unterstützt</string>
@@ -171,8 +171,8 @@
   <string name="message_unsupported_repository_type">Nicht unterstützter Ablageort</string>
   <string name="also_delete_linked_book">Verknüpfung zum externen Notizbuch löschen</string>
   <string name="message_deleting_book_failed">Löschen des Notizbuchs fehlgeschlagen: %s</string>
-  <string name="fragment_left_drawer_list_view_content_description">Left Drawer</string>
-  <string name="drawer_item">Drawer Item</string>
+  <string name="fragment_left_drawer_list_view_content_description">Linke Seitenleiste</string>
+  <string name="drawer_item">Eintrag in der Seitenleiste</string>
   <string name="prev_state">Vorheriger Status</string>
   <string name="next_state">Nächster Status</string>
   <string name="new_above">Neue Notiz darüber</string>
@@ -211,9 +211,9 @@
   <string name="property_name">Name der Eigenschaft</string>
   <string name="created_at">Erstellt am</string>
   <string name="insert_note_creation_time">Erstellungszeit der Notiz einfügen</string>
-  <string name="reminder_for_scheduled">Scheduled: %s</string>
+  <string name="reminder_for_scheduled">Geplant: %s</string>
   <string name="reminder_for_deadline">Termin: %s</string>
-  <string name="scheduled_new_notes_for_today">Schedule new notes for today</string>
+  <string name="scheduled_new_notes_for_today">Neue Notizen für heute planen</string>
   <string name="state">Status</string>
   <string name="fold_content">Inhalt einklappen</string>
   <string name="allow_folding_of_content">Inhalt einklappen erlauben</string>
@@ -222,7 +222,7 @@
   <string name="display_content">Inhalt anzeigen</string>
   <string name="display_both_title_and_content">Titel und Inhalt anzeigen</string>
   <string name="display_planning_times">Geplante Zeiten anzeigen</string>
-  <string name="display_planning_times_summary">Display scheduled, deadline and closed times</string>
+  <string name="display_planning_times_summary">Zeige geplanter und beendeter Zeitpunkt, sowie den Termin an</string>
   <string name="density">Dichte</string>
   <string name="details">Details</string>
   <string name="notebook_details">Notizbuch-Details</string>
@@ -235,7 +235,7 @@
   <string name="monospaced_font_summary">Festbreitenschrift für den Inhalt der Notiz und den Einleitungstext verwenden</string>
   <string name="reversed_note_click_action">Vertausche Aktion bei Tap auf die Notiz</string>
   <string name="reversed_note_click_action_summary">Tap um die Notiz zu selektieren, langer Tap um sie zu öffnen</string>
-  <string name="look_and_feel">Look &amp; Feel</string>
+  <string name="look_and_feel">Erscheinungsbild</string>
   <string name="notes_list">Liste der Notizen</string>
   <string name="prefs_title_new_note">Neue Notiz</string>
   <string name="prefs_title_notifications">Benachrichtigungen</string>
@@ -258,7 +258,7 @@
   <string name="tags_indent">Einrückung der Tags</string>
   <string name="tags_indent_summary">Einstellungen, die die Einrückung von Tags festlegt</string>
   <string name="tags_column">Tags-Spalte (org-tags-column)</string>
-  <string name="org_indent_mode">Adjust based on indent mode</string>
+  <string name="org_indent_mode">Anhand dem Einrückungsmodus anpassen</string>
   <string name="org_indent_mode_summary">org-indent-mode berücksichtigen</string>
   <string name="org_indent_indentation_per_level">Einrückung per Ebene</string>
   <string name="add_property">Eigenschaft hinzufügen</string>
@@ -270,8 +270,8 @@
   <string name="month">Monat</string>
   <string name="year">Jahr</string>
   <string name="repeater_dialog_title">Wiederholen</string>
-  <string name="repeater_description">After task is marked complete, repeater will be shift the time</string>
-  <string name="repeater_description_cumulate">Add period to time</string>
+  <string name="repeater_description">Wenn die Aufgabe als erledigt markiert wird, wird die Zeit neu gesetzt</string>
+  <string name="repeater_description_cumulate">Punkt zu Zeit hinzufügen</string>
   <!-- + -->
   <string name="repeater_description_catch_up">Keep adding period to time until time reaches future</string>
   <!-- ++ -->
@@ -317,8 +317,8 @@
   <string name="show_sync_notifications_title">Status der Synchronisierung</string>
   <string name="show_sync_notifications_summary">Benachrichtigung während der Synchronisierung (und bei Fehlern) anzeigen</string>
   <string name="prefs_title_reminders">Reminders</string>
-  <string name="pref_title_reminders_for_scheduled_times">Scheduled</string>
-  <string name="pref_title_summary_reminders_for_scheduled_times">Display notification for notes with scheduled time</string>
+  <string name="pref_title_reminders_for_scheduled_times">Geplant</string>
+  <string name="pref_title_summary_reminders_for_scheduled_times">Benachrichtigung für Notizen mit geplantem Zeitpunkt anzeigen</string>
   <string name="pref_title_reminders_for_deadline_times">Termine</string>
   <string name="pref_title_summary_reminders_for_deadline_times">Benachrichtigungen für Notizen mit festgelegtem Termin anzeigen</string>
   <string name="pref_title_reminders_sound">Ton</string>
