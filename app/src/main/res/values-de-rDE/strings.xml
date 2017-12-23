@@ -101,16 +101,16 @@
   <string name="heads_action_menu_item_paste_above">Darüber einfügen</string>
   <string name="heads_action_menu_item_paste_under">Eingerückt einfügen</string>
   <string name="heads_action_menu_item_paste_below">Darunter einfügen</string>
-  <string name="heads_moving_action_menu_item_promote">Promote</string>
+  <string name="heads_moving_action_menu_item_promote">Einrücken</string>
   <string name="heads_moving_action_menu_item_down">Runter</string>
   <string name="heads_moving_action_menu_item_up">Hoch</string>
-  <string name="heads_moving_action_menu_item_demote">Demote</string>
+  <string name="heads_moving_action_menu_item_demote">Ausrücken</string>
   <string name="new_note">Neue Notiz</string>
   <string name="tap_to_create_new_note">Antippen, um eine neue Notiz zu erstellen</string>
   <string name="options_menu_item_search">Suchen</string>
   <string name="message_book_deleted">Notizbuch gelöscht</string>
-  <string name="clear_database_dialog_message">Clear local database?</string>
-  <string name="no_user_repos_configured_pref_summary">None configured yet</string>
+  <string name="clear_database_dialog_message">Lokale Datenbank leeren?</string>
+  <string name="no_user_repos_configured_pref_summary">Noch keine eingerichtet</string>
   <string name="repos_options_menu_new_repo">Neues Repository</string>
   <string name="book_name_already_exists">Notizbuch %s existiert bereits.</string>
   <string name="filter_name_already_exists">Gleichnamige Suche existiert bereits</string>
@@ -124,7 +124,7 @@
   <string name="notebook_imported">Notizbuch importiert</string>
   <string name="book_does_not_exist_anymore">Dieses Notizbuch existiert nicht mehr.</string>
   <string name="note_does_not_exist_anymore">Diese Notiz existiert nicht mehr.</string>
-  <string name="search_does_not_exist_anymore">This search does not exist any more.</string>
+  <string name="search_does_not_exist_anymore">Diese Suchanfrage existiert nicht mehr.</string>
   <string name="fragment_query_title">Suchen</string>
   <string name="repo_dropbox_button_not_linked">Mit der Dropbox verknüpfen</string>
   <string name="repo_dropbox_button_linked">Verknüpfung mit der Dropbox aufheben</string>
@@ -149,8 +149,8 @@
   <string name="search">Suchen</string>
   <string name="new_search">Neue Suche</string>
   <string name="active">Aktiv</string>
-  <string name="no_repos">No repositories configured</string>
-  <string name="multiple_repos">Multiple repositories exist</string>
+  <string name="no_repos">Keine Ablageorte eingerichtet</string>
+  <string name="multiple_repos">Es existieren mehrere Ablageorte</string>
   <string name="book_encoding">Zeichensatz für das Notizbuch</string>
   <string name="syncing_in_progress">Synchronisieren …</string>
   <string name="syncing_book">Synchronisiere %s ...</string>
@@ -349,7 +349,7 @@
   <string name="default_notebook_desc">Notizbuch, welches für das Teilen mit Orgzly oder beim Erstellen einer neuen Notiz über die Benachrichtigungen verwendet werden soll</string>
   <string name="force_utf8">Force UTF-8 encoding</string>
   <string name="force_utf8_summary">Do not try to detect encoding, always use UTF-8</string>
-  <string name="list_widget_name">Orgzly search</string>
+  <string name="list_widget_name">Orgzly Suche</string>
   <string name="select_a_filter">Filter auswählen</string>
   <string name="select_a_filter_long">Tap auf die Titelleiste, um einen Filter auszuwählen</string>
   <string name="auto_sync">Automatisch synchronisieren</string>
@@ -370,17 +370,17 @@
     <item quantity="one">Enthält <b>%d</b> Notiz</item>
     <item quantity="other">Enthält <b>%d</b> Notizen</item>
   </plurals>
-  <string name="content_line_count_displayed">Display content line count</string>
+  <string name="content_line_count_displayed">Zeilenanzahl vom Inhalt anzeigen</string>
   <string name="content_line_count_displayed_summary">Display line count when content is not displayed</string>
-  <string name="style_text_title">Style text</string>
-  <string name="style_text_summary">Use special marks for emphasis and monospace</string>
+  <string name="style_text_title">Text formatieren</string>
+  <string name="style_text_summary">Spezielle Markierungen verwenden, um den Text hervorzuheben oder in Festbreitenschrift darzustellen</string>
   <string name="styled_text_with_marks_title">Styled text with marks</string>
   <string name="styled_text_with_marks_summary">Keep marks displayed (e.g. *bold*)</string>
   <string name="no_such_link_target">Note with “%1$s” property set to “%2$s” not found</string>
   <string name="imported_filters">Imported <b>%d</b> filters</string>
   <string name="exported_filters">Exported <b>%d</b> filters</string>
   <string name="storage_permissions_missing">Keine Zugriffsberechtigung auf den Speicher</string>
-  <string name="file_does_not_exist">File %s does not exist</string>
-  <string name="import_from">Import from “%1$s”?</string>
-  <string name="export_to">Export to “%1$s”?</string>
+  <string name="file_does_not_exist">Datei %s existiert nicht</string>
+  <string name="import_from">Von \"%1$s\" importieren?</string>
+  <string name="export_to">Nach \"%1$s\" exportieren?</string>
 </resources>
