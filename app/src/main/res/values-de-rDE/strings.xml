@@ -271,11 +271,11 @@
   <string name="year">Jahr</string>
   <string name="repeater_dialog_title">Wiederholen</string>
   <string name="repeater_description">Wenn die Aufgabe als erledigt markiert wird, wird die Zeit neu gesetzt</string>
-  <string name="repeater_description_cumulate">Punkt zu Zeit hinzufügen</string>
+  <string name="repeater_description_cumulate">Zeitraum zu Zeit addieren</string>
   <!-- + -->
-  <string name="repeater_description_catch_up">Keep adding period to time until time reaches future</string>
+  <string name="repeater_description_catch_up">So lange den Zeitraum zur Zeit addieren bis der Zeitpunkt in der Zukunft liegt</string>
   <!-- ++ -->
-  <string name="repeater_description_restart">Add period to current time</string>
+  <string name="repeater_description_restart">Zeitraum zur aktuellen Zeit addieren</string>
   <!-- .+ -->
   <string name="displayed_book_details_local_mtime">Lokaler Bearbeitungszeitpunkt</string>
   <string name="displayed_book_details_link_url">Verknüpfungs-URL</string>
@@ -316,7 +316,7 @@
   <string name="new_note_notification_summary">Über eine Benachrichtigung neue Notizen anlegen oder Notizbücher synchronisieren</string>
   <string name="show_sync_notifications_title">Status der Synchronisierung</string>
   <string name="show_sync_notifications_summary">Benachrichtigung während der Synchronisierung (und bei Fehlern) anzeigen</string>
-  <string name="prefs_title_reminders">Reminders</string>
+  <string name="prefs_title_reminders">Erinnerungen</string>
   <string name="pref_title_reminders_for_scheduled_times">Geplant</string>
   <string name="pref_title_summary_reminders_for_scheduled_times">Benachrichtigung für Notizen mit geplantem Zeitpunkt anzeigen</string>
   <string name="pref_title_reminders_for_deadline_times">Termine</string>
