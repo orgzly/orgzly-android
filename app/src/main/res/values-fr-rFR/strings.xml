@@ -93,7 +93,7 @@
   <string name="books_context_menu_item_force_save">Force Save</string>
   <string name="books_context_menu_item_force_load">Force Load</string>
   <string name="move">Déplacer</string>
-  <string name="cut">Cut</string>
+  <string name="cut">Couper</string>
   <string name="paste">Paste</string>
   <string name="heads_action_menu_item_add_above">New above</string>
   <string name="heads_action_menu_item_add_under">New under</string>
