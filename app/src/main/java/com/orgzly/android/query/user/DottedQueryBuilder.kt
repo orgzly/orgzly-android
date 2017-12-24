@@ -1,10 +1,9 @@
 package com.orgzly.android.query.user
 
-import android.content.Context
 import com.orgzly.android.query.*
 import com.orgzly.android.query.QuotedStringTokenizer
 
-open class DottedQueryBuilder(val context: Context) {
+open class DottedQueryBuilder {
     fun build(query: Query): String {
         val list = mutableListOf<String>()
 

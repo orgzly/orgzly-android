@@ -1,7 +1,6 @@
 package com.orgzly.android.query
 
 import org.intellij.lang.annotations.Language
-import java.util.*
 
 abstract class QueryParser {
     data class ConditionMatch(
@@ -57,7 +56,7 @@ abstract class QueryParser {
         }
 
         if (initialExpr.isNotEmpty()) {
-            members.addAll(Arrays.asList(*initialExpr))
+            members.addAll(initialExpr)
         }
 
         tokens@ while (tokenizer.hasMoreTokens()) {

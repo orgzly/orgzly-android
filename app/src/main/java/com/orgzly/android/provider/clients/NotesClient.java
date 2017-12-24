@@ -452,7 +452,7 @@ public class NotesClient {
 
     public static Cursor getCursorForBook(Context context, String bookName) throws SQLException {
         /* Create a query with a book name condition. */
-        InternalQueryBuilder builder = new InternalQueryBuilder(context);
+        InternalQueryBuilder builder = new InternalQueryBuilder();
         String query = builder.build(new Query(new Condition.InBook(bookName)));
 
         return context.getContentResolver().query(

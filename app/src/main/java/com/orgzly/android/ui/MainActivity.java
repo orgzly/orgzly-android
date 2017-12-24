@@ -493,7 +493,7 @@ public class MainActivity extends CommonActivity
                     /* If searching from book, add book name to query. */
                     Book book = getActiveFragmentBook();
                     if (book != null) {
-                        DottedQueryBuilder builder = new DottedQueryBuilder(getApplicationContext());
+                        DottedQueryBuilder builder = new DottedQueryBuilder();
                         String query = builder.build(new Query(new Condition.InBook(book.getName())));
                         searchView.setQuery(query + " ", false);
                     }
@@ -516,7 +516,7 @@ public class MainActivity extends CommonActivity
 
                 /* Normalize search query. */
                 Query query = new DottedQueryParser().parse(str);
-                DottedQueryBuilder builder = new DottedQueryBuilder(getApplicationContext());
+                DottedQueryBuilder builder = new DottedQueryBuilder();
                 String queryNormalized = builder.build(query);
 
                 DisplayManager.displayQuery(getSupportFragmentManager(), queryNormalized);
