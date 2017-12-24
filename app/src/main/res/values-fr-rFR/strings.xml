@@ -75,7 +75,7 @@
   <string name="repos_preference_title">Dépôts</string>
   <string name="repos_preference_summary">Emplacement pour synchroniser vos blocs-notes avec</string>
   <string name="message_book_has_no_link">Aucun lien défini</string>
-  <string name="message_note_created">Note created</string>
+  <string name="message_note_created">Note créée</string>
   <string name="message_failed_creating_note">Failed to create note</string>
   <string name="message_failed_updating_note">Failed to update note</string>
   <string name="drawer_close">Close drawer</string>
@@ -92,7 +92,7 @@
   <string name="books_context_menu_item_set_link">Set Link</string>
   <string name="books_context_menu_item_force_save">Force Save</string>
   <string name="books_context_menu_item_force_load">Force Load</string>
-  <string name="move">Move</string>
+  <string name="move">Déplacer</string>
   <string name="cut">Cut</string>
   <string name="paste">Paste</string>
   <string name="heads_action_menu_item_add_above">New above</string>
@@ -105,7 +105,7 @@
   <string name="heads_moving_action_menu_item_down">Down</string>
   <string name="heads_moving_action_menu_item_up">Up</string>
   <string name="heads_moving_action_menu_item_demote">Demote</string>
-  <string name="new_note">New note</string>
+  <string name="new_note">Nouvelle note</string>
   <string name="tap_to_create_new_note">Tap to create a new note</string>
   <string name="options_menu_item_search">Search</string>
   <string name="message_book_deleted">Notebook deleted</string>
