@@ -70,11 +70,11 @@
   <string name="state_spinner_prompt">État</string>
   <string name="priority_spinner_prompt">Priorité</string>
   <string name="message_dropbox_unlinked">Détaché de Dropbox</string>
-  <string name="message_dropbox_linked">Linked to Dropbox successfully</string>
+  <string name="message_dropbox_linked">Lié à Dropbox avec succès</string>
   <!-- Preferences (Settings). -->
-  <string name="repos_preference_title">Repositories</string>
-  <string name="repos_preference_summary">Location to synchronize your notebooks with</string>
-  <string name="message_book_has_no_link">No link set</string>
+  <string name="repos_preference_title">Dépôts</string>
+  <string name="repos_preference_summary">Emplacement pour synchroniser vos blocs-notes avec</string>
+  <string name="message_book_has_no_link">Aucun lien défini</string>
   <string name="message_note_created">Note created</string>
   <string name="message_failed_creating_note">Failed to create note</string>
   <string name="message_failed_updating_note">Failed to update note</string>
