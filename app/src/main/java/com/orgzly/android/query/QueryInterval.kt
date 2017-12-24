@@ -1,7 +1,6 @@
 package com.orgzly.android.query
 
 import com.orgzly.org.datetime.OrgInterval
-import java.util.regex.Pattern
 
 /**
  * [OrgInterval] with support for "none", "today" (0d), "tomorrow" (1d), "yesterday" (-1d).
@@ -18,7 +17,7 @@ class QueryInterval(val none: Boolean = false) : OrgInterval() {
     }
 
     companion object {
-        private val PATTERN = Pattern.compile("^(-?\\d+)([hdwmy])$")
+        private val REGEX = Regex("^(-?\\d+)([hdwmy])$")
 
         fun parse(str: String): QueryInterval? = when (str.toLowerCase()) {
             "none", "no" -> {
@@ -46,12 +45,12 @@ class QueryInterval(val none: Boolean = false) : OrgInterval() {
             }
 
             else -> {
-                val m = PATTERN.matcher(str)
+                val m = REGEX.find(str)
 
-                if (m.find()) {
+                if (m != null) {
                     val interval = QueryInterval()
-                    interval.setValue(m.group(1))
-                    interval.setUnit(m.group(2))
+                    interval.setValue(m.groupValues[1])
+                    interval.setUnit(m.groupValues[2])
                     interval
 
                 } else {

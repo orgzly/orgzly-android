@@ -10,40 +10,40 @@ open class BasicQueryParser : QueryParser() {
     override val operatorsOr = listOf("or", "|")
 
     override val conditions = listOf(
-            ConditionMatch("""^(-)?book:(.+)""", { matcher ->
-                Condition.InBook(unQuote(matcher.group(2)), matcher.group(1) != null)
+            ConditionMatch("""^(-)?book:(.+)""", { match ->
+                Condition.InBook(unQuote(match.groupValues[2]), match.groupValues[1].isNotEmpty())
             }),
 
-            ConditionMatch("""^(-)?state:(.+)""", { matcher ->
-                Condition.HasState(unQuote(matcher.group(2)), matcher.group(1) != null)
+            ConditionMatch("""^(-)?state:(.+)""", { match ->
+                Condition.HasState(unQuote(match.groupValues[2]), match.groupValues[1].isNotEmpty())
             }),
 
-            ConditionMatch("""^(-)?state-type:(todo|done|none)""", { matcher ->
-                val stateType = StateType.valueOf(matcher.group(2).toUpperCase())
-                Condition.HasStateType(stateType, matcher.group(1) != null)
+            ConditionMatch("""^(-)?state-type:(todo|done|none)""", { match ->
+                val stateType = StateType.valueOf(match.groupValues[2].toUpperCase())
+                Condition.HasStateType(stateType, match.groupValues[1].isNotEmpty())
             }),
 
-            ConditionMatch("""^(-)?priority:([a-zA-Z])""", { matcher ->
-                Condition.HasPriority(matcher.group(2), matcher.group(1) != null)
+            ConditionMatch("""^(-)?priority:([a-zA-Z])""", { match ->
+                Condition.HasPriority(match.groupValues[2], match.groupValues[1].isNotEmpty())
             }),
 
-            ConditionMatch("""^(-)?set-priority:([a-zA-Z])""", { matcher ->
-                Condition.HasSetPriority(matcher.group(2), matcher.group(1) != null)
+            ConditionMatch("""^(-)?set-priority:([a-zA-Z])""", { match ->
+                Condition.HasSetPriority(match.groupValues[2], match.groupValues[1].isNotEmpty())
             }),
 
-            ConditionMatch("""^(-)?tag:(.+)""", { matcher ->
-                Condition.HasTag(unQuote(matcher.group(2)), matcher.group(1) != null)
+            ConditionMatch("""^(-)?tag:(.+)""", { match ->
+                Condition.HasTag(unQuote(match.groupValues[2]), match.groupValues[1].isNotEmpty())
             }),
 
-            ConditionMatch("""^own-tag:(.+)""", { matcher ->
-                Condition.HasOwnTag(unQuote(matcher.group(1)))
+            ConditionMatch("""^own-tag:(.+)""", { match ->
+                Condition.HasOwnTag(unQuote(match.groupValues[1]))
             }),
 
             // scheduled:<3d
-            ConditionMatch("""^(scheduled|deadline|closed):(?:(!=|<|<=|>|>=))?(.+)""", { matcher ->
-                val timeTypeMatch = matcher.group(1)
-                val relationMatch = matcher.group(2)
-                val intervalMatch = matcher.group(3)
+            ConditionMatch("""^(scheduled|deadline|closed):(?:(!=|<|<=|>|>=))?(.+)""", { match ->
+                val timeTypeMatch = match.groupValues[1]
+                val relationMatch = match.groupValues[2]
+                val intervalMatch = match.groupValues[3]
 
                 val relation = when (relationMatch) {
                     "!=" -> Relation.NE
@@ -70,30 +70,30 @@ open class BasicQueryParser : QueryParser() {
 
 
     override val sortOrders = listOf(
-            SortOrderMatch("""^(-)?sort-order:(?:scheduled|sched)$""", { matcher ->
-                SortOrder.Scheduled(matcher.group(1) != null)
+            SortOrderMatch("""^(-)?sort-order:(?:scheduled|sched)$""", { match ->
+                SortOrder.Scheduled(match.groupValues[1].isNotEmpty())
             }),
-            SortOrderMatch("""^(-)?sort-order:(?:deadline|dead)$""", { matcher ->
-                SortOrder.Deadline(matcher.group(1) != null)
+            SortOrderMatch("""^(-)?sort-order:(?:deadline|dead)$""", { match ->
+                SortOrder.Deadline(match.groupValues[1].isNotEmpty())
             }),
-            SortOrderMatch("""^(-)?sort-order:(?:closed|close)$""", { matcher ->
-                SortOrder.Closed(matcher.group(1) != null)
+            SortOrderMatch("""^(-)?sort-order:(?:closed|close)$""", { match ->
+                SortOrder.Closed(match.groupValues[1].isNotEmpty())
             }),
-            SortOrderMatch("""^(-)?sort-order:(?:priority|prio)$""", { matcher ->
-                SortOrder.Priority(matcher.group(1) != null)
+            SortOrderMatch("""^(-)?sort-order:(?:priority|prio)$""", { match ->
+                SortOrder.Priority(match.groupValues[1].isNotEmpty())
             }),
-            SortOrderMatch("""^(-)?sort-order:(?:notebook|book)$""", { matcher ->
-                SortOrder.Book(matcher.group(1) != null)
+            SortOrderMatch("""^(-)?sort-order:(?:notebook|book)$""", { match ->
+                SortOrder.Book(match.groupValues[1].isNotEmpty())
             }),
-            SortOrderMatch("""^(-)?sort-order:(?:state|st)$""", { matcher ->
-                SortOrder.State(matcher.group(1) != null)
+            SortOrderMatch("""^(-)?sort-order:(?:state|st)$""", { match ->
+                SortOrder.State(match.groupValues[1].isNotEmpty())
             })
 
     )
 
     override val supportedOptions = listOf(
-            OptionMatch("""^agenda-days:(\d+)$""", { matcher, options ->
-                val days = matcher.group(1).toInt()
+            OptionMatch("""^agenda-days:(\d+)$""", { match, options ->
+                val days = match.groupValues[1].toInt()
                 if (days > 0) options.copy(agendaDays = days) else null
             })
     )

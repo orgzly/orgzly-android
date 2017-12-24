@@ -11,39 +11,39 @@ open class DottedQueryParser : QueryParser() {
     override val operatorsOr = listOf("or")
 
     override val conditions = listOf(
-            ConditionMatch("""^(\.)?b\.(.+)""", { matcher ->
-                Condition.InBook(unQuote(matcher.group(2)), matcher.group(1) != null)
+            ConditionMatch("""^(\.)?b\.(.+)""", { match ->
+                Condition.InBook(unQuote(match.groupValues[2]), match.groupValues[1].isNotEmpty())
             }),
 
-            ConditionMatch("""^(\.)?i\.(.+)""", { matcher ->
-                Condition.HasState(unQuote(matcher.group(2)), matcher.group(1) != null)
+            ConditionMatch("""^(\.)?i\.(.+)""", { match ->
+                Condition.HasState(unQuote(match.groupValues[2]), match.groupValues[1].isNotEmpty())
             }),
 
-            ConditionMatch("""^(\.)?it\.(todo|done|none)""", { matcher ->
-                val stateType = StateType.valueOf(matcher.group(2).toUpperCase())
-                Condition.HasStateType(stateType, matcher.group(1) != null)
+            ConditionMatch("""^(\.)?it\.(todo|done|none)""", { match ->
+                val stateType = StateType.valueOf(match.groupValues[2].toUpperCase())
+                Condition.HasStateType(stateType, match.groupValues[1].isNotEmpty())
             }),
 
-            ConditionMatch("""^(\.)?p\.([a-zA-Z])""", { matcher ->
-                Condition.HasPriority(matcher.group(2), matcher.group(1) != null)
+            ConditionMatch("""^(\.)?p\.([a-zA-Z])""", { match ->
+                Condition.HasPriority(match.groupValues[2], match.groupValues[1].isNotEmpty())
             }),
 
-            ConditionMatch("""^(\.)?ps\.([a-zA-Z])""", { matcher ->
-                Condition.HasSetPriority(matcher.group(2), matcher.group(1) != null)
+            ConditionMatch("""^(\.)?ps\.([a-zA-Z])""", { match ->
+                Condition.HasSetPriority(match.groupValues[2], match.groupValues[1].isNotEmpty())
             }),
 
-            ConditionMatch("""^(\.)?t\.(.+)""", { matcher ->
-                Condition.HasTag(unQuote(matcher.group(2)), matcher.group(1) != null)
+            ConditionMatch("""^(\.)?t\.(.+)""", { match ->
+                Condition.HasTag(unQuote(match.groupValues[2]), match.groupValues[1].isNotEmpty())
             }),
 
-            ConditionMatch("""^tn\.(.+)""", { matcher ->
-                Condition.HasOwnTag(unQuote(matcher.group(1)))
+            ConditionMatch("""^tn\.(.+)""", { match ->
+                Condition.HasOwnTag(unQuote(match.groupValues[1]))
             }),
 
-            ConditionMatch("""^([sdc])(?:\.(eq|ne|lt|le|gt|ge))?\.(.+)""", { matcher ->
-                val timeTypeMatch = matcher.group(1)
-                val relationMatch = matcher.group(2)
-                val intervalMatch = matcher.group(3)
+            ConditionMatch("""^([sdc])(?:\.(eq|ne|lt|le|gt|ge))?\.(.+)""", { match ->
+                val timeTypeMatch = match.groupValues[1]
+                val relationMatch = match.groupValues[2]
+                val intervalMatch = match.groupValues[3]
 
                 val relation = when (relationMatch) {
                     "eq" -> Relation.EQ
@@ -70,29 +70,29 @@ open class DottedQueryParser : QueryParser() {
     )
 
     override val sortOrders = listOf(
-            SortOrderMatch("""^(\.)?o\.(?:scheduled|sched|s)$""", { matcher ->
-                SortOrder.Scheduled(matcher.group(1) != null)
+            SortOrderMatch("""^(\.)?o\.(?:scheduled|sched|s)$""", { match ->
+                SortOrder.Scheduled(match.groupValues[1].isNotEmpty())
             }),
-            SortOrderMatch("""^(\.)?o\.(?:deadline|dead|d)$""", { matcher ->
-                SortOrder.Deadline(matcher.group(1) != null)
+            SortOrderMatch("""^(\.)?o\.(?:deadline|dead|d)$""", { match ->
+                SortOrder.Deadline(match.groupValues[1].isNotEmpty())
             }),
-            SortOrderMatch("""^(\.)?o\.(?:closed|close|c)$""", { matcher ->
-                SortOrder.Closed(matcher.group(1) != null)
+            SortOrderMatch("""^(\.)?o\.(?:closed|close|c)$""", { match ->
+                SortOrder.Closed(match.groupValues[1].isNotEmpty())
             }),
-            SortOrderMatch("""^(\.)?o\.(?:priority|prio|pri|p)$""", { matcher ->
-                SortOrder.Priority(matcher.group(1) != null)
+            SortOrderMatch("""^(\.)?o\.(?:priority|prio|pri|p)$""", { match ->
+                SortOrder.Priority(match.groupValues[1].isNotEmpty())
             }),
-            SortOrderMatch("""^(\.)?o\.(?:notebook|book|b)$""", { matcher ->
-                SortOrder.Book(matcher.group(1) != null)
+            SortOrderMatch("""^(\.)?o\.(?:notebook|book|b)$""", { match ->
+                SortOrder.Book(match.groupValues[1].isNotEmpty())
             }),
-            SortOrderMatch("""^(\.)?o\.(?:state|st)$""", { matcher ->
-                SortOrder.State(matcher.group(1) != null)
+            SortOrderMatch("""^(\.)?o\.(?:state|st)$""", { match ->
+                SortOrder.State(match.groupValues[1].isNotEmpty())
             })
     )
 
     override val supportedOptions = listOf(
-            OptionMatch("""^ad\.(\d+)$""", { matcher, options ->
-                val days = matcher.group(1).toInt()
+            OptionMatch("""^ad\.(\d+)$""", { match, options ->
+                val days = match.groupValues[1].toInt()
                 if (days > 0) options.copy(agendaDays = days) else null
             })
     )
