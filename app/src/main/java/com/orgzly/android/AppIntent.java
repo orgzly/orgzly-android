@@ -42,4 +42,5 @@ public class AppIntent {
     public static final String EXTRA_CLICK_TYPE = "com.orgzly.intent.extra.CLICK_TYPE";
     public static final String EXTRA_SAVED_SEARCH_ID = "com.orgzly.intent.extra.SAVED_SEARCH_ID";
     public static final String EXTRA_IS_AUTOMATIC = "com.orgzly.intent.extra.IS_AUTOMATIC";
+    public static final String EXTRA_FILTER = "com.orgzly.intent.extra.FILTER";
 }

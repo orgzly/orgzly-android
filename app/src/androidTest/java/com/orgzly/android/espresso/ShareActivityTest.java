@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.ShareActivity;
@@ -26,6 +27,7 @@ import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.startsWith;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -36,7 +38,7 @@ public class ShareActivityTest extends OrgzlyTest {
     @Rule
     public ActivityTestRule activityRule = new ActivityTestRule<>(ShareActivity.class, true, false);
 
-    private void startActivityWithIntent(String action, String type, String extraText) {
+    private void startActivityWithIntent(String action, String type, String extraText, String filterQuery) {
         Intent intent = new Intent();
 
         if (action != null) {
@@ -51,12 +53,16 @@ public class ShareActivityTest extends OrgzlyTest {
             intent.putExtra(Intent.EXTRA_TEXT, extraText);
         }
 
+        if (filterQuery != null) {
+            intent.putExtra(AppIntent.EXTRA_FILTER, filterQuery);
+        }
+
         activityRule.launchActivity(intent);
     }
 
     @Test
     public void testDefaultBookRemainsSetAfterRotation() {
-        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text");
+        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", null);
         toPortrait(activityRule);
         onData(anything())
                 .inAdapterView(allOf(withId(R.id.activity_share_books_spinner), isDisplayed()))
@@ -74,7 +80,7 @@ public class ShareActivityTest extends OrgzlyTest {
         shelfTestUtils.setupBook("book-one", "");
         shelfTestUtils.setupBook("book-two", "");
         shelfTestUtils.setupBook("book-three", "");
-        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text");
+        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", null);
         toPortrait(activityRule);
         onView(withId(R.id.activity_share_books_spinner)).perform(click()); // Open spinner
         onView(withText("book-two")).perform(click());
@@ -85,7 +91,7 @@ public class ShareActivityTest extends OrgzlyTest {
 
     @Test
     public void testDefaultBookName() {
-        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text");
+        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", null);
 
         onData(anything())
                 .inAdapterView(allOf(withId(R.id.activity_share_books_spinner), isDisplayed()))
@@ -95,13 +101,13 @@ public class ShareActivityTest extends OrgzlyTest {
 
     @Test
     public void testTextSimple() {
-        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text");
+        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", null);
         onView(withId(R.id.done)).perform(click());
     }
 
     @Test
     public void testSaveAfterRotation() {
-        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text");
+        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", null);
         toLandscape(activityRule);
         toPortrait(activityRule);
         onView(withId(R.id.done)).perform(click());
@@ -109,19 +115,19 @@ public class ShareActivityTest extends OrgzlyTest {
 
     @Test
     public void testTextEmpty() {
-        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "");
+        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "", null);
         onView(withId(R.id.done)).perform(click());
     }
 
     @Test
     public void testTextNull() {
-        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", null);
+        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", null, null);
         onView(withId(R.id.done)).perform(click());
     }
 
     @Test
     public void testNoMatchingType() {
-        startActivityWithIntent(Intent.ACTION_SEND, "image/png", null);
+        startActivityWithIntent(Intent.ACTION_SEND, "image/png", null, null);
 
         onView(withId(R.id.fragment_note_title)).check(matches(withText("")));
         onSnackbar().check(matches(withText(context.getString(R.string.share_type_not_supported, "image/png"))));
@@ -129,7 +135,7 @@ public class ShareActivityTest extends OrgzlyTest {
 
     @Test
     public void testNoActionSend() {
-        startActivityWithIntent(null, null, null);
+        startActivityWithIntent(null, null, null, null);
 
         onView(withId(R.id.fragment_note_title)).check(matches(withText("")));
     }
@@ -139,7 +145,7 @@ public class ShareActivityTest extends OrgzlyTest {
     // android.view.WindowLeaked: Activity com.orgzly.android.ui.ShareActivity has leaked window android.widget.PopupWindow$PopupDecorView
     @Test
     public void testSettingStateRemainsSetAfterRotation() {
-        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text");
+        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", null);
         toPortrait(activityRule);
         onView(withId(R.id.fragment_note_state)).perform(click()); // Open spinner
         onSpinnerString("TODO").perform(click());
@@ -152,7 +158,7 @@ public class ShareActivityTest extends OrgzlyTest {
 
     @Test
     public void testSettingPriorityRemainsSetAfterRotation() {
-        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text");
+        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", null);
         toPortrait(activityRule);
         onView(withId(R.id.fragment_note_priority)).perform(click()); // Open spinner
         onSpinnerString("B").perform(click());
@@ -165,7 +171,7 @@ public class ShareActivityTest extends OrgzlyTest {
 
     @Test
     public void testSettingScheduledTimeRemainsSetAfterRotation() {
-        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text");
+        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", null);
         toPortrait(activityRule);
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(R.string.schedule_button_hint)));
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
@@ -178,7 +184,7 @@ public class ShareActivityTest extends OrgzlyTest {
     @Test
     public void testNoteInsertedLast() {
         shelfTestUtils.setupBook("book-one", "* Note 1\n** Note 2");
-        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "Note 3");
+        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "Note 3", null);
 
         onView(withId(R.id.done)).perform(click());
 
@@ -191,5 +197,16 @@ public class ShareActivityTest extends OrgzlyTest {
         assertTrue(n2.getRgt() < n1.getRgt());
         assertTrue(n1.getRgt() < n3.getLft());
         assertTrue(n3.getLft() < n3.getRgt());
+    }
+
+    @Test
+    public void testPresetBookFromFilterQuery() {
+        shelfTestUtils.setupBook("foo", "doesn't matter");
+        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", "b.foo");
+
+        onData(anything())
+                .inAdapterView(allOf(withId(R.id.activity_share_books_spinner), isDisplayed()))
+                .atPosition(0)
+                .check(matches(withText("foo")));
     }
 }

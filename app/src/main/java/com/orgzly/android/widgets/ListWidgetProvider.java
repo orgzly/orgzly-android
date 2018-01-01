@@ -78,7 +78,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
         remoteViews.setPendingIntentTemplate(R.id.list_widget_list_view, onClickPendingIntent);
 
         // Plus icon - new note
-        remoteViews.setOnClickPendingIntent(R.id.list_widget_header_add, ShareActivity.createNewNoteIntent(context));
+        remoteViews.setOnClickPendingIntent(R.id.list_widget_header_add, ShareActivity.createNewNoteIntent(context, filter));
 
         // Logo - open query
         Intent openIntent = Intent.makeRestartActivityTask(new ComponentName(context, MainActivity.class));
