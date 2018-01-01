@@ -253,7 +253,7 @@
   <string name="separate_header_and_content_with_new_line">分隔页眉和内容</string>
   <string name="separate_header_and_content_with_new_line_summary">用空行分隔页眉和内容</string>
   <string name="tags_indent">标签缩进</string>
-  <string name="tags_indent_summary">Options controlling indentation of tags</string>
+  <string name="tags_indent_summary">控制标签缩进的选项</string>
   <string name="tags_column">Tags column (org-tags-column)</string>
   <string name="org_indent_mode">Adjust based on indent mode</string>
   <string name="org_indent_mode_summary">Take org-indent-mode into account</string>
