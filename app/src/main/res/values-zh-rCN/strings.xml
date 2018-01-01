@@ -255,10 +255,10 @@
   <string name="tags_indent">标签缩进</string>
   <string name="tags_indent_summary">控制标签缩进的选项</string>
   <string name="tags_column">Tags column (org-tags-column)</string>
-  <string name="org_indent_mode">Adjust based on indent mode</string>
+  <string name="org_indent_mode">根据缩进模式调整</string>
   <string name="org_indent_mode_summary">Take org-indent-mode into account</string>
-  <string name="org_indent_indentation_per_level">Indentation per level</string>
-  <string name="add_property">Add property</string>
+  <string name="org_indent_indentation_per_level">每层级缩进量</string>
+  <string name="add_property">添加属性</string>
   <string name="priority_a_highest">A (最高优先级)</string>
   <string name="priority_z_lowest">Z (最低优先级)</string>
   <string name="hour">小时</string>
