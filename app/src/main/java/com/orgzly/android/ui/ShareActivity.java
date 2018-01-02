@@ -57,23 +57,6 @@ public class ShareActivity extends CommonActivity
 
     private String mError;
 
-    public static PendingIntent createNewNoteIntent(Context context) {
-        Intent resultIntent = new Intent(context, ShareActivity.class);
-        resultIntent.setAction(Intent.ACTION_SEND);
-        resultIntent.setType("text/plain");
-        resultIntent.putExtra(Intent.EXTRA_TEXT, "");
-
-        // The stack builder object will contain an artificial back stack for the
-        // started Activity.
-        // This ensures that navigating backward from the Activity leads out of
-        // your application to the Home screen.
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        // Adds the back stack for the Intent (but not the Intent itself)
-        stackBuilder.addParentStack(ShareActivity.class);
-        // Adds the Intent that starts the Activity to the top of the stack
-        stackBuilder.addNextIntent(resultIntent);
-        return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -255,7 +238,7 @@ public class ShareActivity extends CommonActivity
         super.onResume();
 
         Shelf shelf = new Shelf(this);
-        shelf.resumeSync();
+        shelf.syncOnResume();
 
         if (mError != null) {
             showSimpleSnackbarLong(mError);
@@ -297,6 +280,26 @@ public class ShareActivity extends CommonActivity
         return books;
     }
 
+    public static PendingIntent createNewNoteIntent(Context context) {
+        Intent resultIntent = new Intent(context, ShareActivity.class);
+        resultIntent.setAction(Intent.ACTION_SEND);
+        resultIntent.setType("text/plain");
+        resultIntent.putExtra(Intent.EXTRA_TEXT, "");
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(ShareActivity.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+
+//        return PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
     @Override
     public void announceChanges(String fragmentTag, CharSequence title, CharSequence subTitle, int selectionCount) {
     }
@@ -328,14 +331,6 @@ public class ShareActivity extends CommonActivity
     }
 
     @Override
-    public void onBookLoaded(Book book) {
-    }
-
-    @Override
-    public void onBookLoadFailed(Exception exception) {
-    }
-
-    @Override
     public void onBookSaved(Book book) {
     }
 
@@ -361,10 +356,6 @@ public class ShareActivity extends CommonActivity
 
     @Override
     public void onNotesNotPasted() {
-    }
-
-    @Override
-    public void onDatabaseCleared() {
     }
 
     @Override
@@ -406,6 +397,11 @@ public class ShareActivity extends CommonActivity
 
     @Override
     public void onNotesMoved(int result) {
+    }
+
+    @Override
+    public void onFailure(String message) {
+        showSimpleSnackbarLong(message);
     }
 
     private class Data {

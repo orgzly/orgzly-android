@@ -10,10 +10,11 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Note;
-import com.orgzly.android.SearchQuery;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.ui.util.TitleGenerator;
@@ -27,14 +28,14 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     private Cursor mCursor;
     private Context mContext;
-    private SearchQuery query;
+    private String query;
     private TitleGenerator titleGenerator;
     private UserTimeFormatter userTimeFormatter;
 
     public ListWidgetViewsFactory(Context mContext, String queryString) {
         this.mContext = mContext;
         // this should be a query string, which doesn't match anything
-        this.query = new SearchQuery(queryString != null ? queryString : ".b.a b.a");
+        this.query = queryString != null ? queryString : ".b.a b.a";
 
         this.userTimeFormatter = new UserTimeFormatter(mContext);
         this.titleGenerator = new TitleGenerator(mContext, false, new TitleGenerator.TitleAttributes(
@@ -95,14 +96,14 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
             setContent(row, note);
 
             final Intent openIntent = new Intent();
-            openIntent.putExtra(ListWidgetProvider.EXTRA_CLICK_TYPE, ListWidgetProvider.OPEN_CLICK_TYPE);
-            openIntent.putExtra(ListWidgetProvider.EXTRA_NOTE_ID, note.getId());
-            openIntent.putExtra(ListWidgetProvider.EXTRA_BOOK_ID, note.getPosition().getBookId());
+            openIntent.putExtra(AppIntent.EXTRA_CLICK_TYPE, ListWidgetProvider.OPEN_CLICK_TYPE);
+            openIntent.putExtra(AppIntent.EXTRA_NOTE_ID, note.getId());
+            openIntent.putExtra(AppIntent.EXTRA_BOOK_ID, note.getPosition().getBookId());
             row.setOnClickFillInIntent(R.id.item_list_widget_layout, openIntent);
 
             final Intent doneIntent = new Intent();
-            doneIntent.putExtra(ListWidgetProvider.EXTRA_CLICK_TYPE, ListWidgetProvider.DONE_CLICK_TYPE);
-            doneIntent.putExtra(ListWidgetProvider.EXTRA_NOTE_ID, note.getId());
+            doneIntent.putExtra(AppIntent.EXTRA_CLICK_TYPE, ListWidgetProvider.DONE_CLICK_TYPE);
+            doneIntent.putExtra(AppIntent.EXTRA_NOTE_ID, note.getId());
             row.setOnClickFillInIntent(R.id.item_list_widget_done, doneIntent);
         }
 

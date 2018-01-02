@@ -98,7 +98,7 @@
                     android:visibility="visible">
                     <ImageView
                         style="@style/HeadItemInfoIcon"
-                        android:src="?attr/oic_item_head_book_name"
+                        android:src="?attr/ic_folder_open_18dp"
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/schedule"/>
                     <TextView
@@ -123,7 +123,7 @@
                     android:visibility="visible">
                     <ImageView
                         style="@style/HeadItemInfoIcon"
-                        android:src="?attr/oic_item_head_scheduled_item"
+                        android:src="?attr/ic_today_18dp"
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/schedule"/>
                     <TextView
@@ -148,7 +148,7 @@
                     android:visibility="gone">
                     <ImageView
                         style="@style/HeadItemInfoIcon"
-                        android:src="?attr/oic_item_head_deadline_item"
+                        android:src="?attr/ic_alarm_18dp"
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/deadline"/>
                     <TextView
@@ -175,7 +175,7 @@
 
                     <ImageView
                         style="@style/HeadItemInfoIcon"
-                        android:src="?attr/oic_item_head_closed_item"
+                        android:src="?attr/ic_done_18dp"
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/closed"/>
 

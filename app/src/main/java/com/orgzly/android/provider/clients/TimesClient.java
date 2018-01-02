@@ -36,7 +36,7 @@ public class TimesClient {
     }
 
     public static class NoteTime {
-        public long id;
+        public long noteId;
         public long bookId;
         public String bookName;
         public String state;
@@ -44,8 +44,8 @@ public class TimesClient {
         public int timeType;
         public String orgTimestampString;
 
-        NoteTime(long id, long bookId, String bookName, String state, String title, int timeType, String orgTimestampString) {
-            this.id = id;
+        NoteTime(long noteId, long bookId, String bookName, String state, String title, int timeType, String orgTimestampString) {
+            this.noteId = noteId;
             this.bookId = bookId;
             this.bookName = bookName;
             this.state = state;

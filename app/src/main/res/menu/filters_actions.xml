@@ -1,0 +1,15 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/filters_import"
+        app:showAsAction="never"
+        android:title="@string/import_"/>
+
+    <item
+        android:id="@+id/filters_export"
+        app:showAsAction="never"
+        android:title="@string/export"/>
+
+</menu>

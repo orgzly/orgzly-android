@@ -11,12 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import com.orgzly.R;
 import com.orgzly.android.Note;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.NotesClient;
+import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.ui.util.TitleGenerator;
 import com.orgzly.android.ui.views.GesturedListViewItemMenus;
 import com.orgzly.android.util.OrgFormatter;
@@ -147,8 +148,15 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
 
         setupIndentContainer(context, holder.indentContainer, inBook ? note.getPosition().getLevel() - 1 : 0);
 
-        updateFoldingButton(context, note, holder);
         updateBullet(context, note, holder);
+
+        if (updateFoldingButton(context, note, holder)) {
+            holder.foldButton.setOnClickListener(v -> toggleFoldedState(context, note.getId()));
+            holder.bullet.setOnClickListener(v -> toggleFoldedState(context, note.getId()));
+        } else {
+            holder.foldButton.setOnClickListener(null);
+            holder.bullet.setOnClickListener(null);
+        }
 
         /* Book name. */
         if (inBook) {
@@ -161,12 +169,12 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                     holder.bookNameUnderNote.setVisibility(View.GONE);
                     break;
                 case 1:
-                    holder.bookNameLeftFromNoteText.setText(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.BOOK_NAME)));
+                    holder.bookNameLeftFromNoteText.setText(cursor.getString(cursor.getColumnIndex(DbNoteView.BOOK_NAME)));
                     holder.bookNameLeftFromNoteText.setVisibility(View.VISIBLE);
                     holder.bookNameUnderNote.setVisibility(View.GONE);
                     break;
                 case 2:
-                    holder.bookNameUnderNoteText.setText(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.BOOK_NAME)));
+                    holder.bookNameUnderNoteText.setText(cursor.getString(cursor.getColumnIndex(DbNoteView.BOOK_NAME)));
                     holder.bookNameLeftFromNoteText.setVisibility(View.GONE);
                     holder.bookNameUnderNote.setVisibility(View.VISIBLE);
                     break;
@@ -177,12 +185,12 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         holder.title.setText(titleGenerator.generateTitle(note, head));
 
         /* Content. */
-        if (head.hasContent() && AppPreferences.isNotesContentDisplayedInList(context) && (!note.getPosition().isFolded() || !AppPreferences.isNotesContentFoldable(context)) && (inBook || AppPreferences.isNotesContentDisplayedInSearch(context))) {
+        if (head.hasContent() && titleGenerator.shouldDisplayContent(note)) {
             if (AppPreferences.isFontMonospaced(context)) {
                 holder.content.setTypeface(Typeface.MONOSPACE);
             }
 
-            holder.content.setText(OrgFormatter.parse(context, head.getContent()));
+            holder.content.setText(OrgFormatter.INSTANCE.parse(context, head.getContent()));
 
             holder.content.setVisibility(View.VISIBLE);
 
@@ -228,14 +236,6 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         quickMenu.updateView(view, note.getId(), holder.menuContainer, holder.menuFlipper);
 
         selection.updateView(view, note.getId());
-
-        /* Toggle folded state. */
-        holder.foldButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleFoldedState(context, note.getId());
-            }
-        });
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -252,7 +252,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
     /**
      * Change folding button appearance.
      */
-    private void updateFoldingButton(Context context, Note note, ViewHolder holder) {
+    private boolean updateFoldingButton(Context context, Note note, ViewHolder holder) {
         boolean isVisible = false;
 
         if (inBook) {
@@ -279,6 +279,8 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
             holder.foldButton.setVisibility(View.INVISIBLE);
             holder.foldButtonText.setVisibility(View.INVISIBLE);
         }
+
+        return isVisible;
     }
 
     /**

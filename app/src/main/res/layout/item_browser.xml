@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/fragment_padding"
         android:layout_marginEnd="@dimen/fragment_padding"
-        android:src="?attr/oic_browser_directory"/>
+        android:src="?attr/ic_folder_open_24dp"/>
 
     <TextView
         android:id="@+id/browser_item_name"

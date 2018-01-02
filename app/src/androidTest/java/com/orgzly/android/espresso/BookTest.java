@@ -7,7 +7,6 @@ import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.MainActivity;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,7 +33,6 @@ import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
@@ -357,7 +355,8 @@ public class BookTest extends OrgzlyTest {
     public void testNewNoteWithCreatedTimestamp() {
         /* Enable "Created at" in settings. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onListItem(EspressoUtils.SETTINGS_CREATED_AT).perform(click());
+        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CREATED_AT);
+        pressBack();
         pressBack();
 
         onView(withId(R.id.fab)).perform(click());
@@ -378,7 +377,7 @@ public class BookTest extends OrgzlyTest {
         onView(withText(R.string.ok)).perform(click());
         pressBack();
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
-        onView(withText(R.string.fragment_note_does_not_exist)).check(matches(isDisplayed()));
+        onView(withText(R.string.note_does_not_exist_anymore)).check(matches(isDisplayed()));
         onView(withId(R.id.done)).check(doesNotExist());
         onView(withId(R.id.close)).check(doesNotExist());
         pressBack(); // Leave the note

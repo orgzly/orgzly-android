@@ -2,7 +2,6 @@ package com.orgzly.android.espresso;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
-import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.DatePicker;
@@ -12,9 +11,6 @@ import com.orgzly.R;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.MainActivity;
-import com.orgzly.android.ui.fragments.BooksFragment;
-import com.orgzly.android.ui.fragments.DrawerFragment;
-import com.orgzly.android.ui.fragments.SyncFragment;
 
 import org.hamcrest.Matcher;
 import org.junit.Rule;
@@ -47,12 +43,12 @@ import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDel
 import static com.orgzly.android.espresso.EspressoUtils.isHighlighted;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static com.orgzly.android.espresso.EspressoUtils.settingsSetDoneKeywords;
 import static com.orgzly.android.espresso.EspressoUtils.settingsSetTodoKeywords;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -130,8 +126,10 @@ public class MiscTest extends OrgzlyTest {
                 .perform(click());
         onView(withText("Note #2.")).perform(click());
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onListItem(EspressoUtils.SETTINGS_CLEAR_DATABASE).perform(click());
+        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CLEAR_DATABASE);
         onView(withText(R.string.ok)).perform(click());
+        pressBack();
+        pressBack();
 
         onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
         onView(withId(R.id.fragment_books_no_notebooks)).check(matches(isDisplayed()));
@@ -303,9 +301,9 @@ public class MiscTest extends OrgzlyTest {
 
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
         onView(withId(R.id.dialog_timestamp_time_picker)).check(matches(withText(containsString(s))));
-        onView(withId(R.id.dialog_timestamp_time)).perform(scrollTo(), click());
+        onView(withId(R.id.dialog_timestamp_time_check)).perform(scrollTo(), click());
         onView(withId(R.id.dialog_timestamp_time_picker)).check(matches(withText(containsString(s))));
-        onView(withId(R.id.dialog_timestamp_time)).perform(click());
+        onView(withId(R.id.dialog_timestamp_time_check)).perform(click());
         onView(withId(R.id.dialog_timestamp_time_picker)).check(matches(withText(containsString(s))));
     }
 
@@ -449,7 +447,6 @@ public class MiscTest extends OrgzlyTest {
         shelfTestUtils.setupRepo("file:/");
         shelfTestUtils.setupRepo("dropbox:/orgzly");
         activityRule.launchActivity(null);
-
         fragmentTest(true, withId(R.id.fragment_books_container));
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
         fragmentTest(true, withId(R.id.fragment_book_view_flipper));
@@ -461,8 +458,8 @@ public class MiscTest extends OrgzlyTest {
         pressBack();
         pressBack();
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        fragmentTest(false, withText(R.string.prefs_interface));
-        onListItem(EspressoUtils.SETTINGS_REPOS).perform(click());
+        fragmentTest(false, withText(R.string.look_and_feel));
+        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_REPOS);
         fragmentTest(false, withId(R.id.fragment_repos_flipper));
         onListItem(1).perform(click());
         fragmentTest(false, withId(R.id.fragment_repo_directory_container));
@@ -476,6 +473,7 @@ public class MiscTest extends OrgzlyTest {
         pressBack();
         pressBack();
         pressBack();
+        pressBack();
         pressBack(); // In Settings after this
         onView(withId(R.id.drawer_layout)).perform(open());
         fragmentTest(false, withText(R.string.searches));
@@ -483,6 +481,11 @@ public class MiscTest extends OrgzlyTest {
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText("Scheduled")).perform(click());
         fragmentTest(true, withId(R.id.fragment_query_view_flipper));
+
+        // Open agenda
+        searchForText("t.tag3 ad.3");
+        fragmentTest(true, withId(R.id.fragment_agenda_container));
+
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.searches)).perform(click());
         fragmentTest(true, withId(R.id.fragment_filters_flipper));
@@ -520,7 +523,7 @@ public class MiscTest extends OrgzlyTest {
 
         /* Books in drawer. */
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(allOf(isDescendantOfA(withId(R.id.fragment_left_drawer_container)), withId(R.id.item_drawer_text), withText("Notebook Title")))
+        onView(allOf(isDescendantOfA(withId(R.id.fragment_left_drawer_container)), withId(R.id.item_drawer_title), withText("Notebook Title")))
                 .check(matches(isDisplayed()));
     }
 

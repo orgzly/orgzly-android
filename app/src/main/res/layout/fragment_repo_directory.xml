@@ -23,7 +23,7 @@
             android:id="@+id/fragment_repo_directory_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="?attr/oic_browse_directory"
+            android:src="?attr/ic_folder_open_48dp"
             android:contentDescription="@string/browse"/>
 
         <Button

@@ -8,7 +8,7 @@ import org.junit.runners.Parameterized;
 
 import java.util.Arrays;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(value = Parameterized.class)
 public class UriUtilsTest {

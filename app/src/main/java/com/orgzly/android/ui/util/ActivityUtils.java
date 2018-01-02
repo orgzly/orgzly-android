@@ -18,16 +18,18 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.ui.MainActivity;
+import com.orgzly.android.ui.fragments.AgendaFragment;
 import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
 import com.orgzly.android.ui.fragments.FilterFragment;
 import com.orgzly.android.ui.fragments.FiltersFragment;
 import com.orgzly.android.ui.fragments.NoteFragment;
-import com.orgzly.android.ui.fragments.QueryFragment;
+import com.orgzly.android.ui.fragments.SearchFragment;
 import com.orgzly.android.ui.fragments.ReposFragment;
-import com.orgzly.android.ui.fragments.SettingsFragment;
+import com.orgzly.android.ui.settings.SettingsFragment;
 import com.orgzly.android.util.LogUtils;
 
 /**
@@ -103,7 +105,7 @@ public class ActivityUtils {
             int actionBarAttr;
             int fabAttr;
 
-            if (SettingsFragment.FRAGMENT_TAG.equals(fragmentTag)) {
+            if (SettingsFragment.Companion.getFRAGMENT_TAG().equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_in_settings;
                 actionBarAttr = R.attr.action_bar_in_settings;
                 fabAttr = 0;
@@ -113,17 +115,17 @@ public class ActivityUtils {
                 actionBarAttr = R.attr.action_bar_in_settings;
                 fabAttr = 0;
 
-            } else if (FiltersFragment.FRAGMENT_TAG.equals(fragmentTag)) {
+            } else if (FiltersFragment.Companion.getFRAGMENT_TAG().equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_in_query;
                 actionBarAttr = R.attr.action_bar_in_query;
-                fabAttr = R.attr.oic_new_item;
+                fabAttr = R.attr.ic_add_24dp;
 
             } else if (FilterFragment.FRAGMENT_TAG.equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_in_query;
                 actionBarAttr = R.attr.action_bar_in_query;
                 fabAttr = 0;
 
-            } else if (QueryFragment.FRAGMENT_TAG.equals(fragmentTag)) {
+            } else if (SearchFragment.FRAGMENT_TAG.equals(fragmentTag) || AgendaFragment.FRAGMENT_TAG.equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_in_query;
                 actionBarAttr = R.attr.action_bar_in_query;
                 fabAttr = 0;
@@ -131,12 +133,12 @@ public class ActivityUtils {
             } else if (BooksFragment.FRAGMENT_TAG.equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_default;
                 actionBarAttr = R.attr.action_bar_default;
-                fabAttr = R.attr.oic_new_item;
+                fabAttr = R.attr.ic_add_24dp;
 
             } else if (BookFragment.FRAGMENT_TAG.equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_default;
                 actionBarAttr = R.attr.action_bar_default;
-                fabAttr = R.attr.oic_new_item;
+                fabAttr = R.attr.ic_add_24dp;
 
             } else if (BookPrefaceFragment.FRAGMENT_TAG.equals(fragmentTag)) {
                 statusBarAttr = R.attr.status_bar_default;
@@ -180,11 +182,16 @@ public class ActivityUtils {
     }
 
     public static PendingIntent mainActivityPendingIntent(Context context, long bookId, long noteId) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookId, noteId);
         Intent intent = Intent.makeRestartActivityTask(new ComponentName(context, MainActivity.class));
 
-        intent.putExtra(MainActivity.EXTRA_NOTE_ID, noteId);
-        intent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
+        intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
+        intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId);
 
-        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(
+                context,
+                Long.valueOf(noteId).intValue(),
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

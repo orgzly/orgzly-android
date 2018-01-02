@@ -5,20 +5,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.test.InstrumentationRegistry;
+
 import com.orgzly.R;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.prefs.AppPreferencesValues;
 import com.orgzly.android.provider.clients.DbClient;
-import com.orgzly.android.repos.Repo;
-import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.datetime.OrgDateTime;
+
 import org.junit.After;
 import org.junit.Before;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.UUID;
+import java.util.Calendar;
 
 /**
  * Sets up the environment for tests, such as shelf, preferences and contexts.
@@ -53,18 +53,7 @@ public class OrgzlyTest {
         /* Recreate all tables. */
         DbClient.recreateTables(context);
 
-        /*
-         * Using Handler due to:
-         *   android.view.InflateException: Binary XML file line #26: Error inflating class java.lang.reflect.Constructor
-         *   at android.preference.GenericInflater.createItem(GenericInflater.java:397)
-         * on HTC One V API 15.
-         */
-//        new Handler(context.getMainLooper()).post(new Runnable() {
-//            @Override
-//            public void run() {
         setupPreferences();
-//            }
-//        });
     }
 
     @After
@@ -124,14 +113,25 @@ public class OrgzlyTest {
         AppPreferences.setAllFromValues(context, prefValues);
     }
 
-    /**
-     * Local-dependent date and time strings displayed to user.
-     */
     protected String userDateTime(String s) {
         return userTimeFormatter.formatAll(OrgDateTime.parse(s));
     }
-    protected String userDate() {
-        return userTimeFormatter.formatDate(new OrgDateTime(true));
+
+    protected String defaultDialogUserDate() {
+        OrgDateTime time = new OrgDateTime(true);
+
+       /* Default time is now + 1h.
+        * TODO: We shouldn't be able to do this - make OrgDateTime immutable.
+        */
+        Calendar cal = time.getCalendar();
+        cal.add(Calendar.HOUR_OF_DAY, 1);
+
+        return userTimeFormatter.formatDate(time);
+    }
+
+    protected String currentUserDate() {
+        OrgDateTime time = new OrgDateTime(true);
+        return userTimeFormatter.formatDate(time);
     }
 
     protected int getActivityResultCode(Activity activity) throws NoSuchFieldException, IllegalAccessException {

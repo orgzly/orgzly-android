@@ -23,11 +23,10 @@ import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
 import static com.orgzly.android.espresso.EspressoUtils.onSpinnerString;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
-import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.startsWith;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -171,9 +170,9 @@ public class ShareActivityTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(R.string.schedule_button_hint)));
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
         onView(withText(R.string.set)).perform(click());
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(defaultDialogUserDate())), isDisplayed())));
         toLandscape(activityRule);
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(userDate())), isDisplayed())));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(defaultDialogUserDate())), isDisplayed())));
     }
 
     @Test

@@ -79,7 +79,7 @@ public class BooksTest extends OrgzlyTest {
     @Test
     public void testOpenSettings() {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onView(withText(R.string.prefs_interface)).check(matches(isDisplayed()));
+        onView(withText(R.string.look_and_feel)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -92,12 +92,12 @@ public class BooksTest extends OrgzlyTest {
         onView(withText(R.string.ok)).perform(click());
         pressBack();
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
-        onView(withText(R.string.message_book_does_not_exist)).check(matches(isDisplayed()));
+        onView(withText(R.string.book_does_not_exist_anymore)).check(matches(isDisplayed()));
         onView(withId(R.id.fab)).check(matches(not(isDisplayed())));
         pressBack();
         onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
         onView(allOf(withText("book-2"), isDisplayed())).perform(click());
-        onView(allOf(withText(R.string.message_book_does_not_exist), isDisplayed())).check(doesNotExist());
+        onView(allOf(withText(R.string.book_does_not_exist_anymore), isDisplayed())).check(doesNotExist());
     }
 
     @Test
@@ -118,7 +118,7 @@ public class BooksTest extends OrgzlyTest {
     @Test
     public void testExport() {
         onView(allOf(withText("book-1"), isDisplayed())).perform(longClick());
-        onData(hasToString(containsString(context.getString(R.string.books_context_menu_item_export)))).perform(click());
+        onData(hasToString(containsString(context.getString(R.string.export)))).perform(click());
 
         /*
          * Depending on whether external storage is available or not,

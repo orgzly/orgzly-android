@@ -60,6 +60,12 @@ public class DropboxClient {
         return dbxClient != null;
     }
 
+    public void linkedOrThrow() throws IOException {
+        if (! isLinked()) {
+            throw new IOException(NOT_LINKED);
+        }
+    }
+
     public void unlink() {
         dbxClient = null;
         deleteToken();
@@ -119,9 +125,7 @@ public class DropboxClient {
     }
 
     public List<VersionedRook> getBooks(Uri repoUri) throws IOException {
-        if (! isLinked()) {
-            throw new IOException(NOT_LINKED);
-        }
+        linkedOrThrow();
 
         List<VersionedRook> list = new ArrayList<>();
 
@@ -190,9 +194,8 @@ public class DropboxClient {
      * Download file from Dropbox and store it to a local file.
      */
     public VersionedRook download(Uri repoUri, Uri uri, File localFile) throws IOException {
-        if (! isLinked()) {
-            throw new IOException(NOT_LINKED);
-        }
+        linkedOrThrow();
+
         OutputStream out = new BufferedOutputStream(new FileOutputStream(localFile));
 
         try {
@@ -226,11 +229,9 @@ public class DropboxClient {
 
     /** Upload file to Dropbox. */
     public VersionedRook upload(File file, Uri repoUri, String fileName) throws IOException {
-        Uri bookUri = repoUri.buildUpon().appendPath(fileName).build();
+        linkedOrThrow();
 
-        if (! isLinked()) {
-            throw new IOException(NOT_LINKED);
-        }
+        Uri bookUri = repoUri.buildUpon().appendPath(fileName).build();
 
         if (file.length() > UPLOAD_FILE_SIZE_LIMIT * 1024 * 1024) {
             throw new IOException(LARGE_FILE);
@@ -260,6 +261,8 @@ public class DropboxClient {
     }
 
     public void delete(String path) throws IOException {
+        linkedOrThrow();
+
         try {
             dbxClient.files().delete(path);
 
@@ -275,6 +278,8 @@ public class DropboxClient {
     }
 
     public VersionedRook move(Uri repoUri, Uri from, Uri to) throws IOException {
+        linkedOrThrow();
+
         try {
             FileMetadata metadata = (FileMetadata) dbxClient.files().move(from.getPath(), to.getPath());
 

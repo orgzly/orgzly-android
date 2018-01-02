@@ -117,15 +117,17 @@ public class Notifications {
 
         if (status.type == SyncStatus.Type.FAILED) {
             builder.setContentText(status.message);
+
         } else {
-            List<Book> books = new Shelf(context).getBooks();
+            List<Book> books = new Shelf(context).getBooks(); // FIXME: ANR reported
 
             StringBuilder sb = new StringBuilder();
             for (Book book: books) {
-                if (book.getLastAction().getType() == BookAction.Type.ERROR) {
+                BookAction action = book.getLastAction();
+                if (action != null && action.getType() == BookAction.Type.ERROR) {
                     sb.append(book.getName())
                             .append(": ")
-                            .append(book.getLastAction().getMessage())
+                            .append(action.getMessage())
                             .append("\n");
                 }
             }
@@ -155,9 +157,8 @@ public class Notifications {
     }
 
     public static void ensureSyncNotificationSetup(Context context) {
-        LocalBroadcastManager.getInstance(context).unregisterReceiver(syncServiceReceiver);
-
-        LocalBroadcastManager.getInstance(context)
-                .registerReceiver(syncServiceReceiver, new IntentFilter(AppIntent.ACTION_SYNC_STATUS));
+        LocalBroadcastManager bm = LocalBroadcastManager.getInstance(context);
+        bm.unregisterReceiver(syncServiceReceiver);
+        bm.registerReceiver(syncServiceReceiver, new IntentFilter(AppIntent.ACTION_SYNC_STATUS));
     }
 }

@@ -17,7 +17,7 @@ import android.widget.ViewFlipper;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.Filter;
+import com.orgzly.android.filter.Filter;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.util.ActivityUtils;
@@ -95,7 +95,7 @@ public class FilterFragment extends Fragment {
         if (isEditingExistingFilter()) { /* Existing filter. */
             long id = getArguments().getLong(ARG_ID);
 
-            Filter filter = FiltersClient.get(getActivity(), id);
+            Filter filter = FiltersClient.INSTANCE.get(getActivity(), id);
 
             if (filter != null) {
                 mName.setText(filter.getName());
@@ -168,7 +168,7 @@ public class FilterFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
 
-        inflater.inflate(R.menu.done_or_close, menu);
+        inflater.inflate(R.menu.close_done, menu);
 
         /* Remove search item. */
         menu.removeItem(R.id.activity_action_search);
@@ -252,7 +252,7 @@ public class FilterFragment extends Fragment {
      * Checks if filter with the same name (ignoring case) already exists.
      */
     private boolean sameNameFilterExists(String name) {
-        LongSparseArray<Filter> filters = FiltersClient.getByNameIgnoreCase(getContext(), name);
+        LongSparseArray<Filter> filters = FiltersClient.INSTANCE.getByNameIgnoreCase(getContext(), name);
 
         if (isEditingExistingFilter()) {
             long id = getArguments().getLong(ARG_ID);

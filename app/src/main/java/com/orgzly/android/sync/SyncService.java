@@ -31,8 +31,6 @@ import java.util.Map;
 public class SyncService extends Service {
     public static final String TAG = SyncService.class.getName();
 
-    public static final String EXTRA_AUTOMATIC = "automatic";
-
     private SyncStatus status = new SyncStatus();
 
     private Shelf shelf;
@@ -79,7 +77,7 @@ public class SyncService extends Service {
     }
 
     private boolean isTriggeredAutomatically(Intent intent) {
-        return intent != null && intent.getBooleanExtra(EXTRA_AUTOMATIC, false);
+        return intent != null && intent.getBooleanExtra(AppIntent.EXTRA_IS_AUTOMATIC, false);
     }
 
     private boolean isRunning() {
@@ -161,10 +159,6 @@ public class SyncService extends Service {
         status.saveToPreferences(this);
     }
 
-    public SyncStatus getStatus() {
-        return status;
-    }
-
     /**
      * Main sync task.
      */
@@ -213,7 +207,7 @@ public class SyncService extends Service {
              * if there are repositories that would use it.
              */
             if (reposRequireStoragePermission(repos.values())) {
-                if (AppPermissions.isNotGranted(context, AppPermissions.FOR_SYNC_START)) {
+                if (!AppPermissions.INSTANCE.isGranted(context, AppPermissions.Usage.SYNC_START)) {
                     status.set(SyncStatus.Type.NO_STORAGE_PERMISSION, null, 0, 0);
                     announceActiveSyncStatus();
                     return null;

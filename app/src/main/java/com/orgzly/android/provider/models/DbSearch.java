@@ -19,7 +19,10 @@ public class DbSearch implements DbSearchColumns, BaseColumns {
             IS_SAVED + " INTEGER DEFAULT 0)",
 
             "INSERT INTO " + TABLE + " (" + NAME + ", " + QUERY + ") VALUES " +
-            "(\"Scheduled\", \"s.today .i.done\")",
+            "(\"Agenda\", \".it.done (s.7d or d.7d) ad.7\")",
+
+            "INSERT INTO " + TABLE + " (" + NAME + ", " + QUERY + ") VALUES " +
+            "(\"Scheduled\", \"s.today .it.done\")",
 
             "INSERT INTO " + TABLE + " (" + NAME + ", " + QUERY + ") VALUES " +
             "(\"To Do\", \"i.todo\")"

@@ -9,7 +9,7 @@
     <ListView
         android:id="@+id/filter_select_list"
         style="@style/ListView"
-        android:divider="@color/gray25"
+        android:divider="@color/grey300"
         android:dividerHeight="1dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

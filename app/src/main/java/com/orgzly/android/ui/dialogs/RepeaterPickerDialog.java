@@ -1,10 +1,10 @@
 package com.orgzly.android.ui.dialogs;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
@@ -103,7 +103,7 @@ public class RepeaterPickerDialog extends AlertDialog
 
         setViewsFromString(repeaterStr);
 
-        setTitle(R.string.repeat_dialog_title);
+        setTitle(R.string.repeater_dialog_title);
     }
 
 

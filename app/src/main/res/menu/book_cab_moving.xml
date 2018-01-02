@@ -6,22 +6,22 @@
 
     <item
         android:id="@+id/notes_action_move_left"
-        android:icon="?attr/oic_move_heads_left_action_mode"
+        android:icon="?attr/ic_arrow_back_24dp"
         app:showAsAction="always"
         android:title="@string/heads_moving_action_menu_item_promote"/>
     <item
         android:id="@+id/notes_action_move_down"
-        android:icon="?attr/oic_move_heads_down_action_mode"
+        android:icon="?attr/ic_arrow_downward_24dp"
         app:showAsAction="always"
         android:title="@string/heads_moving_action_menu_item_down"/>
     <item
         android:id="@+id/notes_action_move_up"
-        android:icon="?attr/oic_move_heads_up_action_mode"
+        android:icon="?attr/ic_arrow_upward_black_24dp"
         app:showAsAction="always"
         android:title="@string/heads_moving_action_menu_item_up"/>
     <item
         android:id="@+id/notes_action_move_right"
-        android:icon="?attr/oic_move_heads_right_action_mode"
+        android:icon="?attr/ic_arrow_forward_24dp"
         app:showAsAction="always"
         android:title="@string/heads_moving_action_menu_item_demote"/>
 

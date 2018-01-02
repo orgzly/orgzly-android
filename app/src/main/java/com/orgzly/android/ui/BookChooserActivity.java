@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.BookUtils;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.ui.fragments.BooksFragment;
@@ -50,7 +51,7 @@ public class BookChooserActivity extends CommonActivity
 
     @Override
     public void onBookClicked(long bookId) {
-        if (action.equals(Intent.ACTION_CREATE_SHORTCUT)) {
+        if (action != null && action.equals(Intent.ACTION_CREATE_SHORTCUT)) {
 
             /* If this intent is used, shortcut's label will be overwritten (set to "Orgzly")
              * with some launchers (like Nova) on every app update.
@@ -61,7 +62,7 @@ public class BookChooserActivity extends CommonActivity
 
             Intent launchIntent = new Intent(this, MainActivity.class);
             launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            launchIntent.putExtra(MainActivity.EXTRA_BOOK_ID, bookId);
+            launchIntent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
 
             Intent shortcut = new Intent(Intent.ACTION_CREATE_SHORTCUT);
 

@@ -166,7 +166,7 @@ public class BookPrefaceFragment extends Fragment {
 
         menu.clear();
 
-        inflater.inflate(R.menu.done_close_delete, menu);
+        inflater.inflate(R.menu.close_done_delete, menu);
     }
 
     @Override

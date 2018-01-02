@@ -37,6 +37,7 @@ import com.orgzly.android.provider.views.DbBookViewColumns;
 import com.orgzly.android.ui.Fab;
 import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.Loaders;
+import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.UriUtils;
 
@@ -333,14 +334,17 @@ public class BooksFragment extends ListFragment
                     holder.lastAction.setText(getLastActionText(book));
                 }
 
-                /* If encoding is not set, removed it. */
-                boolean shouldShowUsedEncoding = book.getUsedEncoding() != null && isPreferenceActivated(R.string.pref_value_book_details_encoding_used, context);
-                placer.displayDetailByCondition(holder.usedEncodingContainer, shouldShowUsedEncoding);
+                /*
+                 * Display encodings if set.
+                 */
+                boolean shouldShowSelectedEncoding = book.getSelectedEncoding() != null && isPreferenceActivated(R.string.pref_value_book_details_encoding_selected, context);
+                placer.displayDetailByCondition(holder.selectedEncodingContainer, shouldShowSelectedEncoding);
 
                 boolean shouldShowDetectedEncoding = book.getDetectedEncoding() != null && isPreferenceActivated(R.string.pref_value_book_details_encoding_detected, context);
                 placer.displayDetailByCondition(holder.detectedEncodingContainer, shouldShowDetectedEncoding);
 
-                placer.displayElementByCondition(holder.selectedEncodingContainer, book.getSelectedEncoding() != null);
+                boolean shouldShowUsedEncoding = book.getUsedEncoding() != null && isPreferenceActivated(R.string.pref_value_book_details_encoding_used, context);
+                placer.displayDetailByCondition(holder.usedEncodingContainer, shouldShowUsedEncoding);
 
                 /* If it's a dummy book - change opacity. */
                 if (book.isDummy()) {
@@ -546,8 +550,6 @@ public class BooksFragment extends ListFragment
 
     @Override
     public void onListItemClick(ListView listView, View v, int position, long id) {
-        super.onListItemClick(listView, v, position, id);
-
         if (mListener != null) {
             mListener.onBookClicked(id);
         }
@@ -624,9 +626,8 @@ public class BooksFragment extends ListFragment
 
     @Override
     public Runnable getFabAction() {
-        return new Runnable() {
-            @Override
-            public void run() {
+        return () -> {
+            if (mListener != null) {
                 mListener.onBookCreateRequest();
             }
         };

@@ -15,16 +15,18 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.orgzly.BuildConfig;
-import com.orgzly.R;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.NotesBatch;
-import com.orgzly.android.SearchQuery;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.GenericDatabaseUtils;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.models.DbNote;
+import com.orgzly.android.provider.views.DbNoteView;
+import com.orgzly.android.query.Condition;
+import com.orgzly.android.query.Query;
+import com.orgzly.android.query.user.InternalQueryBuilder;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.Place;
@@ -35,6 +37,7 @@ import com.orgzly.org.OrgProperty;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgRange;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -133,8 +136,7 @@ public class NotesClient {
         for (int i = 0; i < head.getProperties().size(); i++) {
             if (head.getProperties().get(i).getName().equals(createdProp)) {
                 try {
-                    OrgDateTime x = OrgDateTime.parse(head.getProperties().get(i).getValue());
-                    values.put(DbNote.CREATED_AT, x.getCalendar().getTimeInMillis());
+                    values.put(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING, head.getProperties().get(i).getValue());
                     break;
                 } catch (IllegalArgumentException e) {
                     // Parsing failed, give up immediately
@@ -161,10 +163,13 @@ public class NotesClient {
         }
     }
 
+    // TODO: If we were to move our created at time detection from Shelf to here (thereby necessitating
+    // a change to org-java), we could properly show created times in the widget & search results.
+    // Would that be necessary?
     public static Note fromCursor(Cursor cursor) {
         long id = idFromCursor(cursor);
 
-        int contentLines = cursor.getInt(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CONTENT_LINE_COUNT));
+        int contentLines = cursor.getInt(cursor.getColumnIndex(DbNoteView.CONTENT_LINE_COUNT));
 
         OrgHead head = headFromCursor(cursor);
 
@@ -177,7 +182,7 @@ public class NotesClient {
         note.setPosition(position);
         note.setContentLines(contentLines);
 
-        String inheritedTags = cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.INHERITED_TAGS));
+        String inheritedTags = cursor.getString(cursor.getColumnIndex(DbNoteView.INHERITED_TAGS));
         if (! TextUtils.isEmpty(inheritedTags)) {
             note.setInheritedTags(DbNote.dbDeSerializeTags(inheritedTags));
         }
@@ -186,39 +191,39 @@ public class NotesClient {
     }
 
     public static long idFromCursor(Cursor cursor) {
-        return cursor.getLong(cursor.getColumnIndex(ProviderContract.Notes.QueryParam._ID));
+        return cursor.getLong(cursor.getColumnIndex(DbNoteView._ID));
     }
 
     private static OrgHead headFromCursor(Cursor cursor) {
         OrgHead head = new OrgHead();
 
-        String state = cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.STATE));
+        String state = cursor.getString(cursor.getColumnIndex(DbNoteView.STATE));
         if (NoteStateSpinner.isSet(state)) {
             head.setState(state);
         } else {
             head.setState(null);
         }
 
-        String priority = cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.PRIORITY));
+        String priority = cursor.getString(cursor.getColumnIndex(DbNoteView.PRIORITY));
         if (priority != null) {
             head.setPriority(priority);
         }
 
-        head.setTitle(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.TITLE)));
+        head.setTitle(cursor.getString(cursor.getColumnIndex(DbNoteView.TITLE)));
 
-        head.setContent(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CONTENT)));
+        head.setContent(cursor.getString(cursor.getColumnIndex(DbNoteView.CONTENT)));
 
-        if (! TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.SCHEDULED_RANGE_STRING))))
-            head.setScheduled(OrgRange.parse(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.SCHEDULED_RANGE_STRING))));
-        if (! TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.DEADLINE_RANGE_STRING))))
-            head.setDeadline(OrgRange.parse(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.DEADLINE_RANGE_STRING))));
-        if (! TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CLOSED_RANGE_STRING))))
-            head.setClosed(OrgRange.parse(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CLOSED_RANGE_STRING))));
-        if (! TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CLOCK_RANGE_STRING))))
-            head.setClock(OrgRange.parse(cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.CLOCK_RANGE_STRING))));
+        if (! TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(DbNoteView.SCHEDULED_RANGE_STRING))))
+            head.setScheduled(OrgRange.parse(cursor.getString(cursor.getColumnIndex(DbNoteView.SCHEDULED_RANGE_STRING))));
+        if (! TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(DbNoteView.DEADLINE_RANGE_STRING))))
+            head.setDeadline(OrgRange.parse(cursor.getString(cursor.getColumnIndex(DbNoteView.DEADLINE_RANGE_STRING))));
+        if (! TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(DbNoteView.CLOSED_RANGE_STRING))))
+            head.setClosed(OrgRange.parse(cursor.getString(cursor.getColumnIndex(DbNoteView.CLOSED_RANGE_STRING))));
+        if (! TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(DbNoteView.CLOCK_RANGE_STRING))))
+            head.setClock(OrgRange.parse(cursor.getString(cursor.getColumnIndex(DbNoteView.CLOCK_RANGE_STRING))));
 
         // TODO: This is probably slowing UI down when scrolling fast, use strings from db directly?
-        String tags = cursor.getString(cursor.getColumnIndex(ProviderContract.Notes.QueryParam.TAGS));
+        String tags = cursor.getString(cursor.getColumnIndex(DbNoteView.TAGS));
         if (! TextUtils.isEmpty(tags)) {
             head.setTags(DbNote.dbDeSerializeTags(tags));
         }
@@ -295,9 +300,9 @@ public class NotesClient {
         ContentValues values = new ContentValues();
         toContentValues(values, note, createdProp);
 
-        if (!values.containsKey(DbNote.CREATED_AT)) {
-            long d = new Date().getTime();
-            values.put(DbNote.CREATED_AT, d);
+        if (!values.containsKey(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING)) {
+            String d = new SimpleDateFormat("[yyyy-MM-dd HH:mm:ss]").format(new Date());
+            values.put(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING, d);
         }
 
         Uri insertUri;
@@ -427,7 +432,7 @@ public class NotesClient {
      */
     public static Note getNote(Context context, long noteId) {
         Uri uri = ProviderContract.Notes.ContentUri.notes();
-        String selection = ProviderContract.Notes.QueryParam._ID + "=" + noteId;
+        String selection = DbNoteView._ID + "=" + noteId;
 
         // TODO: Do not select all columns, especially not content if not required.
         try (Cursor cursor = context.getContentResolver().query(uri, null, selection, null, null)) {
@@ -446,7 +451,7 @@ public class NotesClient {
      */
     public static Note getNote(Context context, String title) {
         Cursor cursor = context.getContentResolver().query(
-                ProviderContract.Notes.ContentUri.notes(), null, ProviderContract.Notes.QueryParam.TITLE + "= ?", new String[] { title }, null);
+                ProviderContract.Notes.ContentUri.notes(), null, DbNoteView.TITLE + "= ?", new String[] { title }, null);
 
         try {
             if (cursor.moveToFirst()) {
@@ -459,116 +464,59 @@ public class NotesClient {
         }
     }
 
-    public static Cursor getCursorForBook(Context context, String bookName) throws SQLException {
-        SearchQuery searchQuery = new SearchQuery();
-        if (bookName != null) {
-            searchQuery.currentGroup.setBookName(bookName);
-        }
+    public static List<Long[]> getNotesWithProperty(Context context, String propName, String propValue) {
+        List<Long[]> results = new ArrayList<>();
 
-        return context.getContentResolver().query(
-                ProviderContract.Notes.ContentUri.notesSearchQueried(searchQuery),
-                null, // TODO: Do not fetch content if it is not required, for speed.
-                null,
-                null,
-                ProviderContract.Notes.QueryParam.LFT); /* For book, simply order by position. */
-    }
-
-    public static CursorLoader getLoaderForQuery(Context context, SearchQuery searchQuery) throws SQLException {
-        return new CursorLoader(
-                context,
-                ProviderContract.Notes.ContentUri.notesSearchQueried(searchQuery),
-                null, // TODO: Do not fetch content if it is not required, for speed.
-                null,
-                null,
-                getOrderForQuery(context, searchQuery));
-    }
-
-    public static Cursor getCursorForQuery(Context context, SearchQuery searchQuery) throws SQLException {
-        return context.getContentResolver().query(
-                ProviderContract.Notes.ContentUri.notesSearchQueried(searchQuery),
-                null, // TODO: Do not fetch content if it is not required, for speed.
-                null,
-                null,
-                getOrderForQuery(context, searchQuery));
-    }
-
-    /**
-     * Determines order of notes depending on {@link SearchQuery}.
-     */
-    private static String getOrderForQuery(Context context, SearchQuery searchQuery) {
-        /* Get default priority from user settings. */
-        String defaultPriority = android.preference.PreferenceManager.getDefaultSharedPreferences(context).getString(
-                context.getResources().getString(R.string.pref_key_default_priority),
-                context.getResources().getString(R.string.pref_default_default_priority));
-
-        ArrayList<String> orderByColumns = new ArrayList<>();
-
-        /* If user-specified sort order exists, use only that. */
-        if (searchQuery.hasSortOrder()) {
-            for (SearchQuery.SortOrder so: searchQuery.getSortOrder()) {
-                if (so.getType() == SearchQuery.SortOrder.Type.NOTEBOOK) {
-                    orderByColumns.add(ProviderContract.Notes.QueryParam.BOOK_NAME + (so.isAscending() ? "" : " DESC"));
-
-                } else if (so.getType() == SearchQuery.SortOrder.Type.SCHEDULED) {
-                    orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_TIMESTAMP + " IS NULL");
-                    if (so.isAscending()) {
-                        orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_START_OF_DAY);
-                        orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_HOUR + " IS NULL");
-                        orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_TIMESTAMP);
-                    } else {
-                        orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_START_OF_DAY + " DESC");
-                        orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_HOUR + " IS NOT NULL");
-                        orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_TIMESTAMP + " DESC");
-                    }
-
-                } else if (so.getType() == SearchQuery.SortOrder.Type.DEADLINE) {
-                    orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_TIMESTAMP + " IS NULL");
-                    if (so.isAscending()) {
-                        orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_START_OF_DAY);
-                        orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_HOUR + " IS NULL");
-                        orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_TIMESTAMP);
-                    } else {
-                        orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_START_OF_DAY + " DESC");
-                        orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_HOUR + " IS NOT NULL");
-                        orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_TIMESTAMP + " DESC");
-                    }
-
-                } else if (so.getType() == SearchQuery.SortOrder.Type.PRIORITY) {
-                    orderByColumns.add("COALESCE(" + ProviderContract.Notes.QueryParam.PRIORITY + ", '" + defaultPriority + "')" + (so.isAscending() ? "" : " DESC"));
-                    orderByColumns.add(ProviderContract.Notes.QueryParam.PRIORITY + (so.isAscending() ? " IS NULL" : " IS NOT NULL"));
-                } else if (so.getType() == SearchQuery.SortOrder.Type.CREATED) {
-                    orderByColumns.add(DbNote.CREATED_AT + " IS NULL");
-                    orderByColumns.add(DbNote.CREATED_AT + (so.isAscending() ? "" : " DESC"));
+        try (Cursor cursor = context.getContentResolver().query(
+                ProviderContract.Notes.ContentUri.notesWithProperty(propName, propValue), null, null, null, null)) {
+            if (cursor != null) {
+                for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                    results.add(new Long[] { cursor.getLong(0), cursor.getLong(1) });
                 }
             }
-
-        } else { // No explicit ordering specified
-
-            orderByColumns.add(ProviderContract.Notes.QueryParam.BOOK_NAME);
-
-            /* Priority or default priority. */
-            orderByColumns.add("COALESCE(" + ProviderContract.Notes.QueryParam.PRIORITY + ", '" + defaultPriority + "')");
-            orderByColumns.add(ProviderContract.Notes.QueryParam.PRIORITY + " IS NULL");
-
-            if (searchQuery.currentGroup.hasDeadline()) {
-                orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_TIMESTAMP + " IS NULL");
-                orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_START_OF_DAY);
-                orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_HOUR + " IS NULL");
-                orderByColumns.add(ProviderContract.Notes.QueryParam.DEADLINE_TIME_TIMESTAMP);
-            }
-
-            if (searchQuery.currentGroup.hasScheduled()) {
-                orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_TIMESTAMP + " IS NULL");
-                orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_START_OF_DAY);
-                orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_HOUR + " IS NULL");
-                orderByColumns.add(ProviderContract.Notes.QueryParam.SCHEDULED_TIME_TIMESTAMP);
-            }
         }
 
-        /* Always sort by position last. */
-        orderByColumns.add(ProviderContract.Notes.QueryParam.LFT);
+        return results;
+    }
 
-        return TextUtils.join(", ", orderByColumns);
+    public static Cursor getCursorForBook(Context context, String bookName) throws SQLException {
+        /* Create a query with a book name condition. */
+        InternalQueryBuilder builder = new InternalQueryBuilder(context);
+        String query = builder.build(new Query(new Condition.InBook(bookName)));
+
+        return context.getContentResolver().query(
+                ProviderContract.Notes.ContentUri.notesSearchQueried(query),
+                null,
+                DatabaseUtils.WHERE_EXISTING_NOTES,
+                null,
+                DbNoteView.LFT); /* For book, simply order by position. */
+    }
+
+    public static CursorLoader getLoaderForSearch(Context context, String query) throws SQLException {
+        return getLoaderForQuery(context, query, DatabaseUtils.WHERE_EXISTING_NOTES);
+    }
+
+    public static CursorLoader getLoaderForAgenda(Context context, String query) throws SQLException {
+        return getLoaderForQuery(context, query,  DatabaseUtils.WHERE_EXISTING_NOTES + " AND " + DatabaseUtils.WHERE_NOTES_WITH_TIMES);
+    }
+
+    private static CursorLoader getLoaderForQuery(Context context, String query, String selection) throws SQLException {
+        return new CursorLoader(
+                context,
+                ProviderContract.Notes.ContentUri.notesSearchQueried(query),
+                null,
+                selection,
+                null,
+                null);
+    }
+
+    public static Cursor getCursorForQuery(Context context, String query) throws SQLException {
+        return context.getContentResolver().query(
+                ProviderContract.Notes.ContentUri.notesSearchQueried(query),
+                null,
+                DatabaseUtils.WHERE_EXISTING_NOTES,
+                null,
+                null);
     }
 
     public static int getCount(Context context, Long bookId) {
@@ -593,10 +541,10 @@ public class NotesClient {
         /* If book id is specified, return only tags from that book. */
         String selection = null;
         if (bookId > 0) {
-            selection = ProviderContract.Notes.QueryParam.BOOK_ID + " = " + bookId;
+            selection = DbNoteView.BOOK_ID + " = " + bookId;
         }
 
-        Cursor cursor = context.getContentResolver().query(ProviderContract.Notes.ContentUri.notes(), new String[] { "DISTINCT " + ProviderContract.Notes.QueryParam.TAGS }, selection, null, null);
+        Cursor cursor = context.getContentResolver().query(ProviderContract.Notes.ContentUri.notes(), new String[] { "DISTINCT " + DbNoteView.TAGS }, selection, null, null);
         try {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 String tags = cursor.getString(0);
@@ -624,7 +572,7 @@ public class NotesClient {
                 DatabaseUtils.PROJECTION_FOR_ID,
                 DatabaseUtils.whereUncutBookNotes(bookId),
                 null,
-                ProviderContract.Notes.QueryParam.LFT
+                DbNoteView.LFT
         );
 
         try {
@@ -682,7 +630,7 @@ public class NotesClient {
         long batchId;
         Cursor cursor = context.getContentResolver().query(
                 ProviderContract.Notes.ContentUri.notes(),
-                new String[] { "MAX(" + ProviderContract.Notes.QueryParam.IS_CUT + ")" },
+                new String[] { "MAX(" + DbNoteView.IS_CUT + ")" },
                 null,
                 null,
                 null);
@@ -702,7 +650,7 @@ public class NotesClient {
         cursor = context.getContentResolver().query(
                 ProviderContract.Notes.ContentUri.notes(),
                 DatabaseUtils.PROJECTION_FOR_ID,
-                ProviderContract.Notes.QueryParam.IS_CUT + " = " + batchId,
+                DbNoteView.IS_CUT + " = " + batchId,
                 null,
                 null);
         try {
@@ -809,8 +757,8 @@ public class NotesClient {
     private static String getBooksForNotes(Context context, String noteIdsCommaSeparated) {
         Cursor cursor = context.getContentResolver().query(
                 ProviderContract.Notes.ContentUri.notes(),
-                new String[] { "GROUP_CONCAT(DISTINCT " + ProviderContract.Notes.QueryParam.BOOK_ID + ")" },
-                ProviderContract.Notes.QueryParam._ID + " IN (" + noteIdsCommaSeparated + ")",
+                new String[] { "GROUP_CONCAT(DISTINCT " + DbNoteView.BOOK_ID + ")" },
+                DbNoteView._ID + " IN (" + noteIdsCommaSeparated + ")",
                 null,
                 null);
 
@@ -830,7 +778,7 @@ public class NotesClient {
 
         Cursor cursor = context.getContentResolver().query(
                 ProviderContract.Notes.ContentUri.notes(),
-                new String[] { ProviderContract.Notes.QueryParam._ID },
+                new String[] { DbNoteView._ID },
                 DatabaseUtils.whereDescendants(
                         note.getPosition().getBookId(),
                         note.getPosition().getLft(),

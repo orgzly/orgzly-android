@@ -11,7 +11,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.Espresso.openContextualActionModeOverflowMenu;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -88,7 +87,7 @@ public class FiltersFragmentTest extends OrgzlyTest {
 
         pressBack();
 
-        onView(withText(R.string.fragment_filter_does_not_exist)).check(matches(isDisplayed()));
+        onView(withText(R.string.search_does_not_exist_anymore)).check(matches(isDisplayed()));
     }
 
 

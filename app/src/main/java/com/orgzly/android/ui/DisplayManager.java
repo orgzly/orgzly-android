@@ -8,18 +8,22 @@ import android.util.Log;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
-import com.orgzly.android.SearchQuery;
+import com.orgzly.android.query.Query;
+import com.orgzly.android.query.QueryParser;
+import com.orgzly.android.query.user.InternalQueryParser;
 import com.orgzly.android.ui.fragments.AgendaFragment;
-import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BookFragment;
+import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
 import com.orgzly.android.ui.fragments.FilterFragment;
 import com.orgzly.android.ui.fragments.FiltersFragment;
 import com.orgzly.android.ui.fragments.NoteFragment;
-import com.orgzly.android.ui.fragments.QueryFragment;
-import com.orgzly.android.ui.fragments.SettingsFragment;
+import com.orgzly.android.ui.fragments.SearchFragment;
 import com.orgzly.android.util.LogUtils;
 
+/**
+ * Manager for {@link MainActivity}'s fragments.
+ */
 public class DisplayManager {
     private static final String TAG = DisplayManager.class.getName();
 
@@ -27,22 +31,15 @@ public class DisplayManager {
     // private static final int FRAGMENT_TRANSITION = FragmentTransaction.TRANSIT_NONE;
     private static final int FRAGMENT_TRANSITION = FragmentTransaction.TRANSIT_FRAGMENT_FADE;
 
-
-    private final FragmentManager mFragmentManager;
-
-    public DisplayManager(FragmentManager fragmentManager) {
-        mFragmentManager = fragmentManager;
-    }
-
     /**
      * Displays fragment for a new filter.
      */
-    public void onFilterNewRequest() {
+    public static void onFilterNewRequest(FragmentManager fragmentManager) {
         /* Create fragment. */
         Fragment fragment = FilterFragment.getInstance();
 
         /* Add fragment. */
-        mFragmentManager
+        fragmentManager
                 .beginTransaction()
                 .setTransition(FRAGMENT_TRANSITION)
                 .addToBackStack(null)
@@ -53,12 +50,12 @@ public class DisplayManager {
     /**
      * Displays fragment for existing filter.
      */
-    public void onFilterEditRequest(long id) {
+    public static void onFilterEditRequest(FragmentManager fragmentManager, long id) {
         /* Create fragment. */
         Fragment fragment = FilterFragment.getInstance(id);
 
         /* Add fragment. */
-        mFragmentManager
+        fragmentManager
                 .beginTransaction()
                 .setTransition(FRAGMENT_TRANSITION)
                 .addToBackStack(null)
@@ -70,23 +67,23 @@ public class DisplayManager {
      * Return to original state.
      * Removes all fragments except for the last one, displaying books.
      */
-    public void clear() {
+    public static void clear(FragmentManager fragmentManager) {
         /* Clear the back stack. */
-        mFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
-    public void displayFilters() {
-        if (isFragmentDisplayed(FiltersFragment.FRAGMENT_TAG) != null) {
+    public static void displayFilters(FragmentManager fragmentManager) {
+        if (isFragmentDisplayed(fragmentManager, FiltersFragment.Companion.getFRAGMENT_TAG()) != null) {
             return;
         }
 
-        Fragment fragment = FiltersFragment.getInstance();
+        Fragment fragment = FiltersFragment.Companion.getInstance();
 
-        FragmentTransaction t = mFragmentManager
+        FragmentTransaction t = fragmentManager
                 .beginTransaction()
                 .setTransition(FRAGMENT_TRANSITION)
                 .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, FiltersFragment.FRAGMENT_TAG);
+                .replace(R.id.single_pane_container, fragment, FiltersFragment.Companion.getFRAGMENT_TAG());
 
 
         t.commit();
@@ -96,14 +93,14 @@ public class DisplayManager {
      * Show fragments listing books.
      * @param addToBackStack add to back stack or not
      */
-    public void displayBooks(boolean addToBackStack) {
-        if (isFragmentDisplayed(BooksFragment.FRAGMENT_TAG) != null) {
+    public static void displayBooks(FragmentManager fragmentManager, boolean addToBackStack) {
+        if (isFragmentDisplayed(fragmentManager, BooksFragment.FRAGMENT_TAG) != null) {
             return;
         }
 
         Fragment fragment = BooksFragment.getInstance();
 
-        FragmentTransaction t = mFragmentManager
+        FragmentTransaction t = fragmentManager
                 .beginTransaction()
                 .setTransition(FRAGMENT_TRANSITION)
                 .replace(R.id.single_pane_container, fragment, BooksFragment.FRAGMENT_TAG);
@@ -118,15 +115,13 @@ public class DisplayManager {
     /**
      * Add fragment for book, unless the same book is already being displayed.
      */
-    public void displayBook(long bookId, long noteId) {
-        BookFragment f = getFragmentDisplayingBook(bookId);
-
-        if (f == null) {
+    public static void displayBook(FragmentManager fragmentManager, long bookId, long noteId) {
+        if (getFragmentDisplayingBook(fragmentManager, bookId) == null) {
             /* Create fragment. */
             Fragment fragment = BookFragment.getInstance(bookId, noteId);
 
             /* Add fragment. */
-            mFragmentManager
+            fragmentManager
                     .beginTransaction()
                     .setTransition(FRAGMENT_TRANSITION)
                     .addToBackStack(null)
@@ -137,15 +132,17 @@ public class DisplayManager {
         }
     }
 
-    public void displayNote(long bookId, long noteId) {
-        displayNote(false, bookId, noteId, Place.UNSPECIFIED);
+    public static void displayNote(FragmentManager fragmentManager, long bookId, long noteId) {
+        if (getFragmentDisplayingNote(fragmentManager, noteId) == null) {
+            displayNote(fragmentManager, false, bookId, noteId, Place.UNSPECIFIED);
+        }
     }
 
-    public void displayNewNote(NotePlace target) {
-        displayNote(true, target.getBookId(), target.getNoteId(), target.getPlace());
+    public static void displayNewNote(FragmentManager fragmentManager, NotePlace target) {
+        displayNote(fragmentManager, true, target.getBookId(), target.getNoteId(), target.getPlace());
     }
 
-    private void displayNote(boolean isNew, long bookId, long noteId, Place place) {
+    private static void displayNote(FragmentManager fragmentManager, boolean isNew, long bookId, long noteId, Place place) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookId, noteId);
 
         if (bookId <= 0) {
@@ -156,7 +153,7 @@ public class DisplayManager {
         Fragment fragment = NoteFragment.getInstance(isNew, bookId, noteId, place, null, null);
 
         /* Add fragment. */
-        mFragmentManager
+        fragmentManager
                 .beginTransaction()
                 .setTransition(FRAGMENT_TRANSITION)
                         // .setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
@@ -168,82 +165,45 @@ public class DisplayManager {
         // .setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
     }
 
-    public void displayQuery(String query) {
-        /* If the same query is already displayed, don't do anything. */
-        SearchQuery displayedQuery = getDisplayedQuery();
-        if (displayedQuery != null && displayedQuery.toString().equals(query)) {
+    public static void displayQuery(FragmentManager fragmentManager, String queryString) {
+        // If the same query is already displayed, don't do anything.
+        String displayedQuery = getDisplayedQuery(fragmentManager);
+        if (displayedQuery != null && displayedQuery.equals(queryString)) {
             return;
         }
 
-        /* Create fragment. */
-        Fragment fragment = QueryFragment.getInstance(query);
+        // Parse query
+        QueryParser queryParser = new InternalQueryParser();
+        Query query = queryParser.parse(queryString);
 
-        /* Add fragment. */
-        mFragmentManager
-                .beginTransaction()
-                .setTransition(FRAGMENT_TRANSITION)
-                .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, QueryFragment.FRAGMENT_TAG)
-                .commit();
-    }
+        Fragment fragment;
+        String tag;
 
-//    private void displayReposSettings() {
-//        Fragment fragment = ReposFragment.getInstance();
-//
-//        mFragmentManager
-//                .beginTransaction()
-//                .setTransition(FRAGMENT_TRANSITION)
-//                .addToBackStack(null)
-//                .replace(R.id.single_pane_container, fragment, ReposFragment.FRAGMENT_TAG)
-//                .commit();
-//    }
+        // Display agenda or query fragment
+        if (query.getOptions().getAgendaDays() > 0) {
+            fragment = AgendaFragment.getInstance(queryString);
+            tag = AgendaFragment.FRAGMENT_TAG;
 
-    public void displaySettings() {
-        displaySettings(null);
-    }
-
-    public void displaySettings(String resource) {
-        /* Check if settings fragment using the same resource is already displayed. */
-        Fragment f = isFragmentDisplayed(SettingsFragment.FRAGMENT_TAG);
-        if (f != null) {
-            SettingsFragment settingsFragment = (SettingsFragment) f;
-            if (settingsFragment.isForResource(resource)) {
-                return;
-            }
+        } else {
+            fragment = SearchFragment.getInstance(queryString);
+            tag = SearchFragment.FRAGMENT_TAG;
         }
 
-        Fragment fragment = SettingsFragment.getInstance(resource);
-
-        mFragmentManager
+        // Add fragment.
+        fragmentManager
                 .beginTransaction()
                 .setTransition(FRAGMENT_TRANSITION)
                 .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, SettingsFragment.FRAGMENT_TAG)
+                .replace(R.id.single_pane_container, fragment, tag)
                 .commit();
     }
 
-    public void displayAgenda() {
-        if (isFragmentDisplayed(AgendaFragment.FRAGMENT_TAG) != null) {
-            return;
-        }
-
-        /* Create fragment. */
-        Fragment fragment = AgendaFragment.getInstance();
-        /* Add fragment. */
-        mFragmentManager
-                .beginTransaction()
-                .setTransition(FRAGMENT_TRANSITION)
-                .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, AgendaFragment.FRAGMENT_TAG)
-                .commit();
-    }
-
-    public void displayEditor(Book book) {
+    public static void displayEditor(FragmentManager fragmentManager, Book book) {
         /* Create fragment. */
         Fragment fragment = BookPrefaceFragment.getInstance(book.getId(), book.getPreface());
 
         /* Add fragment. */
-        mFragmentManager
+        fragmentManager
                 .beginTransaction()
                 .setTransition(FRAGMENT_TRANSITION)
                 .addToBackStack(null)
@@ -251,8 +211,22 @@ public class DisplayManager {
                 .commit();
     }
 
-    private BookFragment getFragmentDisplayingBook(long bookId) {
-        Fragment f = mFragmentManager.findFragmentByTag(BookFragment.FRAGMENT_TAG);
+    public static String getDisplayedQuery(FragmentManager fragmentManager) {
+        Fragment qf = fragmentManager.findFragmentByTag(SearchFragment.FRAGMENT_TAG);
+        Fragment af = fragmentManager.findFragmentByTag(AgendaFragment.FRAGMENT_TAG);
+
+        if (qf != null && qf.isVisible()) {
+            return ((SearchFragment) qf).getQuery();
+
+        } else if (af != null && af.isVisible()) {
+            return ((AgendaFragment) af).getQuery();
+        }
+
+        return null;
+    }
+
+    private static BookFragment getFragmentDisplayingBook(FragmentManager fragmentManager, long bookId) {
+        Fragment f = fragmentManager.findFragmentByTag(BookFragment.FRAGMENT_TAG);
 
         if (f != null && f.isVisible()) {
             BookFragment bookFragment = (BookFragment) f;
@@ -265,8 +239,22 @@ public class DisplayManager {
         return null;
     }
 
-    private Fragment isFragmentDisplayed(String tag) {
-        Fragment f = mFragmentManager.findFragmentByTag(tag);
+    private static NoteFragment getFragmentDisplayingNote(FragmentManager fragmentManager, long noteId) {
+        Fragment f = fragmentManager.findFragmentByTag(NoteFragment.FRAGMENT_TAG);
+
+        if (f != null && f.isVisible()) {
+            NoteFragment noteFragment = (NoteFragment) f;
+
+            if (noteFragment.getNoteId() == noteId) {
+                return noteFragment;
+            }
+        }
+
+        return null;
+    }
+
+    private static Fragment isFragmentDisplayed(FragmentManager fragmentManager, String tag) {
+        Fragment f = fragmentManager.findFragmentByTag(tag);
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "tag:" + tag + " fragment:" + f + " isVisible:" + (f != null ? f.isVisible() : "no"));
 
@@ -275,15 +263,5 @@ public class DisplayManager {
         } else {
             return null;
         }
-    }
-
-    public SearchQuery getDisplayedQuery() {
-        Fragment f = mFragmentManager.findFragmentByTag(QueryFragment.FRAGMENT_TAG);
-
-        if (f != null && f.isVisible()) {
-            return ((QueryFragment) f).getQuery();
-        }
-
-        return null;
     }
 }

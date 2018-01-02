@@ -49,7 +49,7 @@ public class DbNote implements DbNoteColumns, BaseColumns {
             SCHEDULED_RANGE_ID + " INTEGER," +
             DEADLINE_RANGE_ID + " INTEGER," +
             CLOSED_RANGE_ID + " INTEGER," +
-            CREATED_AT + " INTEGER," +
+            CREATED_AT_RANGE_ID + " INTEGER," +
             CLOCK_RANGE_ID + " INTEGER)",
 
             /* For search. */
@@ -109,8 +109,7 @@ public class DbNote implements DbNoteColumns, BaseColumns {
         for (int i = 0; i < head.getProperties().size(); i++) {
             if (head.getProperties().get(i).getName().equals(createdProp)) {
                 try {
-                    OrgDateTime x = OrgDateTime.parse(head.getProperties().get(i).getValue());
-                    values.put(CREATED_AT, x.getCalendar().getTimeInMillis());
+                    values.put(CREATED_AT_RANGE_ID, head.getProperties().get(i).getValue());
                     break;
                 } catch (IllegalArgumentException e) {
                     // Parsing failed, give up immediately

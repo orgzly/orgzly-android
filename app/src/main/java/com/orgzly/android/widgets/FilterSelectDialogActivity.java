@@ -33,7 +33,7 @@ public class FilterSelectDialogActivity extends AppCompatActivity implements Loa
         setContentView(R.layout.activity_filter_select_dialog);
 
         /* Create adapter using Cursor. */
-        mListAdapter = FiltersFragment.createFilterCursorAdapter(this);
+        mListAdapter = FiltersFragment.Companion.createFilterCursorAdapter(this);
 
         ListView list = (ListView) findViewById(R.id.filter_select_list);
 
@@ -48,7 +48,7 @@ public class FilterSelectDialogActivity extends AppCompatActivity implements Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return FiltersClient.getCursorLoader(this);
+        return FiltersClient.INSTANCE.getCursorLoader(this);
     }
 
     @Override
@@ -67,9 +67,9 @@ public class FilterSelectDialogActivity extends AppCompatActivity implements Loa
 
         /* notify Widget */
         Intent intent = new Intent(this, ListWidgetProvider.class);
-        intent.setAction(AppIntent.ACTION_LIST_WIDGET_SET_FILTER);
+        intent.setAction(AppIntent.ACTION_SET_FILTER_LIST_WIDGET);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID));
-        intent.putExtra(ListWidgetProvider.EXTRA_FILTER_ID, id);
+        intent.putExtra(AppIntent.EXTRA_SAVED_SEARCH_ID, id);
         sendBroadcast(intent);
 
         setResult(RESULT_OK);

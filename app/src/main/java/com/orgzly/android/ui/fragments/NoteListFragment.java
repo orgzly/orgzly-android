@@ -23,7 +23,7 @@ import java.util.TreeSet;
 
 /**
  * Fragment which is displaying a list of notes,
- * such as {@link BookFragment} and {@link QueryFragment}.
+ * such as {@link BookFragment}, {@link SearchFragment} or {@link AgendaFragment}.
  */
 public abstract class NoteListFragment extends ListFragment {
 
@@ -47,9 +47,8 @@ public abstract class NoteListFragment extends ListFragment {
 
         /* Save action mode state (move mode). */
         if (mActionModeListener != null) {
-            outState.putBoolean(
-                    "actionModeMove", mActionModeListener.getActionMode() != null &&
-                            "M".equals(mActionModeListener.getActionMode().getTag()));
+            ActionMode actionMode = mActionModeListener.getActionMode();
+            outState.putBoolean("actionModeMove", actionMode != null && "M".equals(actionMode.getTag()));
         }
     }
 
@@ -121,6 +120,7 @@ public abstract class NoteListFragment extends ListFragment {
         void onStateChangeRequest(Set<Long> noteIds, String state);
         void onStateCycleRequest(long noteId, int direction);
         void onStateToDoneRequest(long noteId);
+        void onStateFlipRequest(long noteId);
         void onScheduledTimeUpdateRequest(Set<Long> noteIds, OrgDateTime time);
     }
 }

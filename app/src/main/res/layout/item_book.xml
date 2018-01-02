@@ -40,7 +40,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:src="?attr/oic_item_book_item_sync_needed"
+                        android:src="?attr/ic_sync_18dp"
                         android:layout_gravity="center"
                         android:contentDescription="@string/drawer_item"/>
 
@@ -91,7 +91,7 @@
 
                     <ImageView
                         style="@style/BookItemInfoIcon"
-                        android:src="?attr/oic_item_book_mtime_item"
+                        android:src="?attr/ic_access_time_18dp"
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/book_mtime"/>
 
@@ -113,7 +113,7 @@
 
                     <ImageView
                         style="@style/BookItemInfoIcon"
-                        android:src="?attr/oic_item_book_notes_count"
+                        android:src="?attr/ic_format_list_bulleted_18dp"
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/book_notes_count"/>
 
@@ -143,7 +143,7 @@
 
                         <ImageView
                             style="@style/BookItemInfoIcon"
-                            android:src="?attr/oic_item_book_link_item"
+                            android:src="?attr/ic_link_18dp"
                             android:alpha="?attr/oic_item_alpha"
                             android:contentDescription="@string/book_link_details"/>
 
@@ -167,7 +167,7 @@
 
                         <ImageView
                             style="@style/BookItemInfoIcon"
-                            android:src="?attr/oic_item_book_link_item"
+                            android:src="?attr/ic_link_18dp"
                             android:alpha="?attr/oic_item_alpha"
                             android:contentDescription="@string/book_link"/>
 
@@ -200,7 +200,7 @@
 
                         <ImageView
                             style="@style/BookItemInfoIcon"
-                            android:src="?attr/oic_item_book_versioned_rook_item"
+                            android:src="?attr/ic_sync_18dp"
                             android:alpha="?attr/oic_item_alpha"
                             android:contentDescription="@string/book_link_details"/>
 
@@ -223,7 +223,7 @@
 
                         <ImageView
                             style="@style/BookItemInfoIcon"
-                            android:src="?attr/oic_item_book_versioned_rook_item"
+                            android:src="?attr/ic_sync_18dp"
                             android:alpha="?attr/oic_item_alpha"
                             android:contentDescription="@string/book_link_details"/>
 
@@ -246,7 +246,7 @@
 
                         <ImageView
                             style="@style/BookItemInfoIcon"
-                            android:src="?attr/oic_item_book_versioned_rook_item"
+                            android:src="?attr/ic_sync_18dp"
                             android:alpha="?attr/oic_item_alpha"
                             android:contentDescription="@string/book_link_details"/>
 
@@ -270,7 +270,7 @@
 
                         <ImageView
                             style="@style/BookItemInfoIcon"
-                            android:src="?attr/oic_item_book_versioned_rook_item"
+                            android:src="?attr/ic_sync_18dp"
                             android:alpha="?attr/oic_item_alpha"
                             android:contentDescription="@string/book_link_details"/>
 
@@ -295,7 +295,7 @@
 
                     <ImageView
                         style="@style/BookItemInfoIcon"
-                        android:src="?attr/oic_item_book_encoding_item"
+                        android:src="?attr/ic_language_18dp"
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/book_encoding"/>
 
@@ -317,7 +317,7 @@
 
                     <ImageView
                         style="@style/BookItemInfoIcon"
-                        android:src="?attr/oic_item_book_encoding_item"
+                        android:src="?attr/ic_language_18dp"
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/book_encoding"/>
 
@@ -342,7 +342,7 @@
 
                     <ImageView
                         style="@style/BookItemInfoIcon"
-                        android:src="?attr/oic_item_book_encoding_item"
+                        android:src="?attr/ic_language_18dp"
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/book_encoding"/>
 
@@ -367,7 +367,7 @@
 
                     <ImageView
                         style="@style/BookItemInfoIcon"
-                        android:src="?attr/oic_item_book_sync_last_action_item"
+                        android:src="?attr/ic_info_outline_18dp"
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/book_last_action"/>
 

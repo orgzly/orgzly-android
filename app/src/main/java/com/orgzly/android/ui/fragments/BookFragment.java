@@ -36,6 +36,7 @@ import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.BooksClient;
+import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.ui.ActionModeListener;
 import com.orgzly.android.ui.Fab;
 import com.orgzly.android.ui.HeadsListViewAdapter;
@@ -254,7 +255,7 @@ public class BookFragment extends NoteListFragment
                                 break;
 
                             case R.id.item_menu_done_state_btn:
-                                listener.onStateToDoneRequest(noteId);
+                                listener.onStateFlipRequest(noteId);
                                 break;
 
                             case R.id.item_menu_delete_btn:
@@ -562,7 +563,7 @@ public class BookFragment extends NoteListFragment
                         null,
                         null,
                         null,
-                        ProviderContract.Notes.QueryParam.LFT);
+                        DbNoteView.LFT);
 
             default:
                 throw new IllegalArgumentException("Unknown loader id " + id);
@@ -655,7 +656,7 @@ public class BookFragment extends NoteListFragment
                 mPrefaceText.setEllipsize(null);
             }
 
-            mPrefaceText.setText(OrgFormatter.parse(getContext(), mBook.getPreface()));
+            mPrefaceText.setText(OrgFormatter.INSTANCE.parse(getContext(), mBook.getPreface()));
 
         } else {
             // Remove header
@@ -675,7 +676,7 @@ public class BookFragment extends NoteListFragment
     private void notesLoaded(Cursor cursor) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, cursor);
 
-        /**
+        /*
          * Swapping instead of changing Cursor here, to keep the old one open.
          * Loader should release the old Cursor - see note in
          * {@link LoaderManager.LoaderCallbacks#onLoadFinished).
@@ -692,10 +693,10 @@ public class BookFragment extends NoteListFragment
         }
 
         if (mActionModeListener != null) {
-            mActionModeListener.updateActionModeForSelection(mSelection, new MyActionMode());
+            mActionModeListener.updateActionModeForSelection(mSelection.getCount(), new MyActionMode());
 
             ActionMode actionMode = mActionModeListener.getActionMode();
-            if (mActionModeTag != null) {
+            if (actionMode != null && mActionModeTag != null) {
                 actionMode.setTag("M"); // TODO: Ugh.
                 actionMode.invalidate();
                 mActionModeTag = null;
@@ -708,9 +709,8 @@ public class BookFragment extends NoteListFragment
 
     @Override
     public Runnable getFabAction() {
-        return mBook != null ? new Runnable() {
-            @Override
-            public void run() {
+        return mBook != null ? () -> {
+            if (listener != null) {
                 listener.onNoteNewRequest(new NotePlace(mBookId));
             }
         } : null;
@@ -908,7 +908,9 @@ public class BookFragment extends NoteListFragment
                 getListAdapter().notifyDataSetChanged();
             }
 
-            mActionModeListener.actionModeDestroyed();
+            if (mActionModeListener != null) {
+                mActionModeListener.actionModeDestroyed();
+            }
 
             announceChangesToActivity();
         }

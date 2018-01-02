@@ -85,8 +85,8 @@
     <!-- Notebooks' sort order. -->
     <string name="pref_key_notebooks_sort_order" translatable="false">pref_key_notebooks_sort_order</string>
     <string name="pref_default_notebooks_sort_order" translatable="false">@string/pref_value_notebooks_sort_order_name</string>
-    <string name="pref_value_notebooks_sort_order_name">name</string>
-    <string name="pref_value_notebooks_sort_order_modification_time">mtime</string>
+    <string name="pref_value_notebooks_sort_order_name" translatable="false">name</string>
+    <string name="pref_value_notebooks_sort_order_modification_time" translatable="false">mtime</string>
     <string-array name="notebooks_sort_order">
         <item>@string/notebooks_sort_order_name</item>
         <item>@string/notebooks_sort_order_modification_time</item>
@@ -158,6 +158,7 @@
     <string name="pref_value_book_details_sync_url" translatable="false">book_details_sync_url</string>
     <string name="pref_value_book_details_sync_mtime" translatable="false">book_details_sync_mtime</string>
     <string name="pref_value_book_details_sync_revision" translatable="false">book_details_sync_revision</string>
+    <string name="pref_value_book_details_encoding_selected" translatable="false">book_details_encoding_selected</string>
     <string name="pref_value_book_details_encoding_detected" translatable="false">book_details_encoding_detected</string>
     <string name="pref_value_book_details_encoding_used" translatable="false">book_details_encoding_used</string>
     <string name="pref_value_book_details_last_action" translatable="false">book_details_last_action</string>
@@ -169,6 +170,7 @@
         <item>@string/displayed_book_details_sync_url</item>
         <item>@string/displayed_book_details_sync_mtime</item>
         <item>@string/displayed_book_details_sync_revision</item>
+        <item>@string/displayed_book_details_selected_encoding</item>
         <item>@string/displayed_book_details_detected_encoding</item>
         <item>@string/displayed_book_details_used_encoding</item>
         <item>@string/displayed_book_details_last_action</item>
@@ -180,6 +182,7 @@
         <item>@string/pref_value_book_details_sync_url</item>
         <item>@string/pref_value_book_details_sync_mtime</item>
         <item>@string/pref_value_book_details_sync_revision</item>
+        <item>@string/pref_value_book_details_encoding_selected</item>
         <item>@string/pref_value_book_details_encoding_detected</item>
         <item>@string/pref_value_book_details_encoding_used</item>
         <item>@string/pref_value_book_details_last_action</item>
@@ -200,6 +203,9 @@
     <string name="pref_key_share_notebook" translatable="false">pref_key_share_notebook</string>
     <string name="pref_default_share_notebook" translatable="false">@string/default_share_notebook</string>
 
+    <string name="pref_key_force_utf8" translatable="false">pref_key_force_utf8</string>
+    <bool name="pref_default_force_utf8" translatable="false">false</bool>
+
     <string name="pref_key_new_note_notification" translatable="false">pref_key_new_note_notification</string>
     <bool name="pref_default_value_new_note_notification" translatable="false">false</bool>
 
@@ -208,6 +214,9 @@
 
     <string name="pref_key_reminders_vibrate" translatable="false">pref_key_reminders_vibrate</string>
     <bool name="pref_default_value_reminders_vibrate" translatable="false">false</bool>
+
+    <string name="pref_key_reminders_led" translatable="false">pref_key_reminders_led</string>
+    <bool name="pref_default_value_reminders_led" translatable="false">true</bool>
 
     <!-- Auto-sync -->
 
@@ -228,7 +237,7 @@
 
 
     <string name="pref_key_snooze_time" translatable="false">pref_key_snooze_time</string>
-    <string name="pref_default_value_snooze_time">5</string>
+    <string name="pref_default_value_snooze_time" translatable="false">5</string>
 
     <string name="pref_key_snooze_type" translatable="false">pref_key_snooze_type</string>
     <string name="pref_default_value_snooze_type">button</string>
@@ -258,9 +267,6 @@
 
     <string name="pref_key_min_priority" translatable="false">pref_key_min_priority</string>
     <string name="pref_default_min_priority" translatable="false">C</string>
-
-    <string name="pref_key_agenda_days" translatable="false">pref_key_agenda_days</string>
-    <string name="pref_key_default_agenda_days">3</string>
 
     <string-array name="priorities">
         <item>@string/priority_a_highest</item>

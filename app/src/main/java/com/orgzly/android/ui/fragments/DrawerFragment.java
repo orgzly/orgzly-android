@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import android.widget.TextView;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
-import com.orgzly.android.SearchQuery;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.provider.clients.FiltersClient;
@@ -51,7 +49,6 @@ public class DrawerFragment extends ListFragment
     private BooksItem booksHeader;
     private final List<BookItem> books = new ArrayList<>();
     private SettingsItem settingsHeader;
-    private AgendaItem agendaHeader;
 
     private DrawerFragmentListener mListener;
     private ArrayAdapter<DrawerItem> mListAdapter;
@@ -85,13 +82,13 @@ public class DrawerFragment extends ListFragment
 
             if (fragment != null) {
                 /* Find by query string. */
-                if (QueryFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
+                if (SearchFragment.FRAGMENT_TAG.equals(activeFragmentTag) || AgendaFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
 
-                    SearchQuery query = ((QueryFragment) fragment).getQuery();
+                    String query = ((QueryFragment) fragment).getQuery();
 
                     if (query != null) {
                         for (FilterItem item : filters) {
-                            if (query.toString().equals(item.query)) {
+                            if (query.equals(item.query)) {
                                 selectedItem = item;
                             }
                         }
@@ -100,11 +97,8 @@ public class DrawerFragment extends ListFragment
                 } else if (BooksFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
                     selectedItem = booksHeader;
 
-                } else if (FiltersFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
+                } else if (FiltersFragment.Companion.getFRAGMENT_TAG().equals(activeFragmentTag)) {
                     selectedItem = filtersHeader;
-
-                } else if (SettingsFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
-                    selectedItem = settingsHeader;
 
                 /* Find by book ID. */
                 } else if (BookFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
@@ -117,8 +111,6 @@ public class DrawerFragment extends ListFragment
                             }
                         }
                     }
-                } else if (AgendaFragment.FRAGMENT_TAG.equals(activeFragmentTag)) {
-                    selectedItem = agendaHeader;
                 }
 
                 mListAdapter.notifyDataSetChanged();
@@ -144,7 +136,6 @@ public class DrawerFragment extends ListFragment
         filtersHeader = new FiltersItem();
         booksHeader = new BooksItem();
         settingsHeader = new SettingsItem();
-        agendaHeader = new AgendaItem();
     }
 
     @Override
@@ -209,7 +200,7 @@ public class DrawerFragment extends ListFragment
     }
 
     private ArrayAdapter<DrawerItem> createAdapter() {
-        return new ArrayAdapter<DrawerItem>(getActivity(), R.layout.item_drawer, R.id.item_drawer_text) {
+        return new ArrayAdapter<DrawerItem>(getActivity(), R.layout.item_drawer, R.id.item_drawer_title) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -219,7 +210,8 @@ public class DrawerFragment extends ListFragment
                 if (holder == null) {
                     holder = new ViewHolder();
                     holder.container = (ViewGroup) view.findViewById(R.id.item_drawer_container);
-                    holder.text = (TextView) view.findViewById(R.id.item_drawer_text);
+                    holder.title = (TextView) view.findViewById(R.id.item_drawer_title);
+                    holder.subtitle = (TextView) view.findViewById(R.id.item_drawer_subtitle);
                     holder.leftIcon = (ImageView) view.findViewById(R.id.item_drawer_left_icon);
                     holder.rightIcon = (ImageView) view.findViewById(R.id.item_drawer_right_icon);
                     holder.activeFlag = view.findViewById(R.id.item_drawer_active_flag);
@@ -230,13 +222,6 @@ public class DrawerFragment extends ListFragment
 
                 // item.textSize, item.leftIconResource});
                 TypedArray iconAttrs = getContext().obtainStyledAttributes(R.styleable.Icons);
-                TypedArray fontSizeAttrs = getContext().obtainStyledAttributes(R.styleable.FontSize);
-
-                /* Set text size. */
-                int t = fontSizeAttrs.getDimensionPixelSize(item.textSize, -1);
-                if (t != -1) {
-                    holder.text.setTextSize(TypedValue.COMPLEX_UNIT_PX, t);
-                }
 
 
                 /* Set or hide left icon. */
@@ -248,7 +233,6 @@ public class DrawerFragment extends ListFragment
                 }
 
                 iconAttrs.recycle();
-                fontSizeAttrs.recycle();
 
 
                 /* Set or remove right icon. */
@@ -259,7 +243,14 @@ public class DrawerFragment extends ListFragment
                 }
 
                 /* Set text typeface. */
-                holder.text.setTypeface(null, item.typeface);
+                holder.title.setTypeface(null, item.typeface);
+
+                if (item.subtitle != null) {
+                    holder.subtitle.setVisibility(View.VISIBLE);
+                    holder.subtitle.setText(item.subtitle);
+                } else {
+                    holder.subtitle.setVisibility(View.GONE);
+                }
 
                 /* Set alpha. */
                 view.setAlpha(item.alpha);
@@ -282,7 +273,7 @@ public class DrawerFragment extends ListFragment
 
         switch (id) {
             case Loaders.DRAWER_FILTERS:
-                return FiltersClient.getCursorLoader(getActivity());
+                return FiltersClient.INSTANCE.getCursorLoader(getActivity());
 
             case Loaders.DRAWER_BOOKS:
                 return BooksClient.getCursorLoader(getActivity());
@@ -319,8 +310,6 @@ public class DrawerFragment extends ListFragment
 
         mListAdapter.clear();
 
-        mListAdapter.add(agendaHeader);
-
         mListAdapter.add(filtersHeader);
         for (DrawerItem item: filters) {
             mListAdapter.add(item);
@@ -341,7 +330,7 @@ public class DrawerFragment extends ListFragment
             String name = cursor.getString(cursor.getColumnIndex(ProviderContract.Filters.Param.NAME));
             String query = cursor.getString(cursor.getColumnIndex(ProviderContract.Filters.Param.QUERY));
 
-            FilterItem item = new FilterItem(name, new SearchQuery(query).toString());
+            FilterItem item = new FilterItem(name, query);
 
             filters.add(item);
         }
@@ -406,14 +395,16 @@ public class DrawerFragment extends ListFragment
 
     private class ViewHolder {
         ViewGroup container;
-        TextView text;
+        TextView title;
+        TextView subtitle;
         ImageView leftIcon;
         ImageView rightIcon;
         View activeFlag;
     }
 
     public class DrawerItem {
-        String name;
+        String title;
+        String subtitle;
 
         float alpha = 1;
 
@@ -422,18 +413,18 @@ public class DrawerFragment extends ListFragment
         @StyleableRes int icon = 0; // No icon by default
 
         int typeface = Typeface.NORMAL;
-        @StyleableRes int textSize = R.styleable.FontSize_item_drawer_text_size;
 
         public String toString() {
-            return name;
+            return title;
         }
     }
 
     public class FiltersItem extends DrawerItem {
         FiltersItem() {
-            this.name = getString(R.string.searches);
-            this.icon = R.styleable.Icons_oic_drawer_filters;
-            this.textSize = R.styleable.FontSize_item_drawer_title_text_size;
+            this.title = getString(R.string.searches);
+//            this.subtitle = "Click to edit";
+            this.icon = R.styleable.Icons_ic_search_24dp;
+//            this.typeface = Typeface.BOLD;
         }
     }
 
@@ -441,16 +432,17 @@ public class DrawerFragment extends ListFragment
         public String query;
 
         FilterItem(String name, String query) {
-            this.name = name;
+            this.title = name;
+//            this.subtitle = query;
             this.query = query;
         }
     }
 
     public class BooksItem extends DrawerItem {
         BooksItem() {
-            this.name = getString(R.string.notebooks);
-            this.icon = R.styleable.Icons_oic_drawer_notebooks;
-            this.textSize = R.styleable.FontSize_item_drawer_title_text_size;
+            this.title = getString(R.string.notebooks);
+            this.icon = R.styleable.Icons_ic_library_books_24dp;
+//            this.typeface = Typeface.BOLD;
         }
     }
 
@@ -458,24 +450,16 @@ public class DrawerFragment extends ListFragment
         public long id;
 
         BookItem(String name, long id) {
-            this.name = name;
+            this.title = name;
             this.id = id;
         }
     }
 
     public class SettingsItem extends DrawerItem {
         SettingsItem() {
-            this.name = getString(R.string.settings);
-            this.icon = R.styleable.Icons_oic_drawer_settings;
-            this.textSize = R.styleable.FontSize_item_drawer_title_text_size;
-        }
-    }
-
-    public class AgendaItem extends DrawerItem {
-        AgendaItem() {
-            this.name = getString(R.string.agenda);
-            this.icon = R.styleable.Icons_oic_drawer_agenda;
-            this.textSize = R.styleable.FontSize_item_drawer_title_text_size;
+            this.title = getString(R.string.settings);
+            this.icon = R.styleable.Icons_ic_settings_24dp;
+//            this.typeface = Typeface.BOLD;
         }
     }
 }

@@ -13,9 +13,7 @@ import com.orgzly.android.ui.util.ViewUtils;
 import com.orgzly.android.util.LogUtils;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class GesturedListViewItemMenus {
     private static final String TAG = GesturedListViewItemMenus.class.getName();
@@ -47,7 +45,11 @@ public class GesturedListViewItemMenus {
         /* Close all except this one. */
         closeAllExcept(itemId);
 
-        View itemView = ListViewUtils.getViewByPosition(gesturedListView, itemPosition);
+        View itemView = ListViewUtils.getViewIfVisible(gesturedListView, itemPosition);
+
+        if (itemView == null) {
+            return false;
+        }
 
         ViewGroup menuContainer = getMenuContainer(itemView);
 

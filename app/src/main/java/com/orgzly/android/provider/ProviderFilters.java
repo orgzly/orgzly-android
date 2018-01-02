@@ -108,7 +108,7 @@ class ProviderFilters {
                 null,
                 null,
                 null,
-                FiltersClient.SORT_ORDER);
+                FiltersClient.INSTANCE.getSORT_ORDER());
     }
 
     private static void updateChangedPositions(SQLiteDatabase db, Map<Long, Integer> originalPositions, Map<Long, Integer> newPositions) {

@@ -4,14 +4,12 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.orgzly.android.SearchQuery;
 import com.orgzly.android.provider.models.DbBookColumns;
 import com.orgzly.android.provider.models.DbDbRepoColumns;
 import com.orgzly.android.provider.models.DbNoteColumns;
 import com.orgzly.android.provider.models.DbRepoColumns;
 import com.orgzly.android.provider.models.DbSearchColumns;
 import com.orgzly.android.provider.views.DbBookViewColumns;
-import com.orgzly.android.provider.views.DbNoteViewColumns;
 import com.orgzly.android.ui.NotePlace;
 
 /**
@@ -133,13 +131,16 @@ public class ProviderContract {
     }
 
     public interface Notes {
-        class QueryParam implements DbNoteViewColumns, DbNoteColumns, BaseColumns {
+        class Param {
+            public static final String PROPERTY_NAME = "property_name";
+            public static final String PROPERTY_VALUE = "property_value";
         }
 
         class UpdateParam implements DbNoteColumns, BaseColumns {
             public static final String SCHEDULED_STRING = "scheduled_string"; // TODO: This is range, rename.
             public static final String DEADLINE_STRING = "deadline_string";
             public static final String CLOSED_STRING = "closed_string";
+            public static final String CREATED_AT_STRING = "created_at_string";
             public static final String CLOCK_STRING = "clock_string";
         }
 
@@ -148,6 +149,7 @@ public class ProviderContract {
             String NOTES = "notes";
             String NOTES_SEARCH_QUERIED = NOTES + "/queried";
             String NOTES_STATE = NOTES + "/state";
+            String NOTES_WITH_PROPERTY = NOTES + "/with-property";
             String NOTES_ID = NOTES + "/#";
             String NOTES_ID_ABOVE = NOTES + "/#/above";
             String NOTES_ID_BELOW = NOTES + "/#/below";
@@ -164,6 +166,11 @@ public class ProviderContract {
                 return ContentUris.withAppendedId(notes(), id);
             }
 
+            public static Uri notesWithProperty(String propName, String propValue) {
+                return Uri.withAppendedPath(AUTHORITY_URI, MatcherUri.NOTES_WITH_PROPERTY).buildUpon()
+                        .appendQueryParameter(Param.PROPERTY_NAME, propName)
+                        .appendQueryParameter(Param.PROPERTY_VALUE, propValue).build();
+            }
 
             public static Uri notesIdTarget(NotePlace target) {
                 Uri.Builder builder = notesId(target.getNoteId()).buildUpon();
@@ -187,8 +194,8 @@ public class ProviderContract {
                 return notesId(id).buildUpon().appendPath("toggle-folded-state").build();
             }
 
-            public static Uri notesSearchQueried(SearchQuery searchQuery) {
-                return notes().buildUpon().appendPath("queried").query(searchQuery.toString()).build();
+            public static Uri notesSearchQueried(String query) {
+                return notes().buildUpon().appendPath("queried").query(query).build();
             }
         }
     }

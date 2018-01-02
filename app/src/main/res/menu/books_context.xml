@@ -23,7 +23,7 @@
 
     <item
         android:id="@+id/books_context_menu_export"
-        android:title="@string/books_context_menu_item_export">
+        android:title="@string/export">
     </item>
 
     <!--<item-->

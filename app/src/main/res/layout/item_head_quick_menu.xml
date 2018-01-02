@@ -29,22 +29,22 @@
                 android:id="@+id/item_menu_schedule_btn"
                 style="@style/ItemQuickMenuButton"
                 android:contentDescription="@string/schedule"
-                android:src="?attr/oic_item_menu_schedule"/>
+                android:src="?attr/ic_today_24dp"/>
             <ImageButton
                 android:id="@+id/item_menu_prev_state_btn"
                 style="@style/ItemQuickMenuButton"
                 android:contentDescription="@string/prev_state"
-                android:src="?attr/oic_item_menu_prev_state"/>
+                android:src="?attr/ic_rotate_left_24dp"/>
             <ImageButton
                 android:id="@+id/item_menu_next_state_btn"
                 style="@style/ItemQuickMenuButton"
                 android:contentDescription="@string/next_state"
-                android:src="?attr/oic_item_menu_next_state"/>
+                android:src="?attr/ic_rotate_right_24dp"/>
             <ImageButton
                 android:id="@+id/item_menu_done_state_btn"
                 style="@style/ItemQuickMenuButton"
                 android:contentDescription="@string/done"
-                android:src="?attr/oic_item_menu_done_state"/>
+                android:src="?attr/ic_done_24dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -57,25 +57,25 @@
                 android:id="@+id/item_menu_delete_btn"
                 style="@style/ItemQuickMenuButton"
                 android:contentDescription="@string/delete"
-                android:src="?attr/oic_item_menu_delete"/>
+                android:src="?attr/ic_delete_24dp"/>
 
             <ImageButton
                 android:id="@+id/item_menu_new_above_btn"
                 style="@style/ItemQuickMenuButton"
                 android:contentDescription="@string/new_above"
-                android:src="?attr/oic_item_menu_new_above"/>
+                android:src="?attr/oic_new_above_24dp"/>
 
             <ImageButton
                 android:id="@+id/item_menu_new_under_btn"
                 style="@style/ItemQuickMenuButton"
                 android:contentDescription="@string/new_under"
-                android:src="?attr/oic_item_menu_new_under"/>
+                android:src="?attr/oic_new_under_24dp"/>
 
             <ImageButton
                 android:id="@+id/item_menu_new_below_btn"
                 style="@style/ItemQuickMenuButton"
                 android:contentDescription="@string/new_below"
-                android:src="?attr/oic_item_menu_new_below"/>
+                android:src="?attr/oic_new_below_24dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -87,7 +87,7 @@
                 android:id="@+id/item_menu_open_btn"
                 style="@style/ItemQuickMenuButton"
                 android:contentDescription="@string/edit"
-                android:src="?attr/oic_item_menu_open_note"/>
+                android:src="?attr/ic_center_focus_strong_24dp"/>
 
         </LinearLayout>
     </ViewFlipper>

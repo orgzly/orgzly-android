@@ -31,7 +31,7 @@ public class LocalStorage {
      * @throws IOException if external directory is not available
      */
     public File getExportFile(Book book, BookName.Format format) throws IOException {
-        return new File(exportedBookDirectory(), BookName.fileName(book.getName(), format));
+        return new File(downloadsDirectory(), BookName.fileName(book.getName(), format));
     }
 
     /**
@@ -67,7 +67,7 @@ public class LocalStorage {
     /**
      * Export directory.
      */
-    private File exportedBookDirectory() throws IOException {
+    public File downloadsDirectory() throws IOException {
         if (!isExternalStorageWritable()) {
             throw new IOException("External storage directory not available for writing");
         }

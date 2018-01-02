@@ -10,10 +10,12 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.filter.Filter;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.BooksClient;
@@ -22,7 +24,6 @@ import com.orgzly.android.provider.clients.DbClient;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.provider.clients.ReposClient;
-import com.orgzly.android.provider.models.DbNote;
 import com.orgzly.android.reminders.ReminderService;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
@@ -85,6 +86,10 @@ public class Shelf {
         return BooksClient.get(mContext, name);
     }
 
+    public boolean doesBookExist(String name) {
+        return BooksClient.doesExist(mContext, name);
+    }
+
     /**
      * Creates a new empty book.
      *
@@ -141,6 +146,10 @@ public class Shelf {
     }
 
     public Book loadBookFromFile(String name, BookName.Format format, File file, VersionedRook vrook, String selectedEncoding) throws IOException {
+        if (selectedEncoding == null && AppPreferences.forceUtf8(mContext)) {
+            selectedEncoding = "UTF-8";
+        }
+
         Uri uri = BooksClient.loadFromFile(mContext, name, format, file, vrook, selectedEncoding);
 
         notifyDataChanged(mContext);
@@ -259,14 +268,14 @@ public class Shelf {
     public void setNotesScheduledTime(Set<Long> noteIds, OrgDateTime time) {
         NotesClient.updateScheduledTime(mContext, noteIds, time);
         notifyDataChanged(mContext);
-        updateSync();
+        syncOnNoteUpdate();
     }
 
     public void setNotesState(Set<Long> noteIds, String state) {
         NotesClient.setState(mContext, noteIds, state);
         // TODO: Check if there was a change
         notifyDataChanged(mContext);
-        updateSync();
+        syncOnNoteUpdate();
     }
 
     public Note getNote(long id) {
@@ -284,7 +293,7 @@ public class Shelf {
     public int updateNote(Note note) {
         int result = NotesClient.update(mContext, note);
         notifyDataChanged(mContext);
-        updateSync();
+        syncOnNoteUpdate();
         return result;
     }
 
@@ -295,7 +304,7 @@ public class Shelf {
         BooksClient.setModifiedTime(mContext, note.getPosition().getBookId(), System.currentTimeMillis());
 
         notifyDataChanged(mContext);
-        createSync();
+        syncOnNoteCreate();
 
         return insertedNote;
     }
@@ -344,7 +353,7 @@ public class Shelf {
     public int cut(long bookId, Set<Long> noteIds) {
         int result = NotesClient.cut(mContext, bookId, noteIds);
         notifyDataChanged(mContext);
-        updateSync();
+        syncOnNoteUpdate();
         return result;
     }
 
@@ -359,7 +368,7 @@ public class Shelf {
         NotesBatch batch = NotesClient.paste(mContext, bookId, noteId, place);
         if (batch != null) {
             notifyDataChanged(mContext);
-            updateSync();
+            syncOnNoteUpdate();
         }
         return batch;
 
@@ -368,7 +377,7 @@ public class Shelf {
     public int delete(long bookId, Set<Long> noteIds) {
         int result = NotesClient.delete(mContext, bookId, noteIds);
         notifyDataChanged(mContext);
-        updateSync();
+        syncOnNoteUpdate();
         return result;
     }
 
@@ -682,24 +691,24 @@ public class Shelf {
     public void deleteFilters(Set<Long> ids) {
         // TODO: Send a single request. */
         for (long id: ids) {
-            FiltersClient.delete(mContext, id);
+            FiltersClient.INSTANCE.delete(mContext, id);
         }
     }
 
     public void createFilter(Filter filter) {
-        FiltersClient.create(mContext, filter);
+        FiltersClient.INSTANCE.create(mContext, filter);
     }
 
     public void updateFilter(long id, Filter filter) {
-        FiltersClient.update(mContext, id, filter);
+        FiltersClient.INSTANCE.update(mContext, id, filter);
     }
 
     public void moveFilterUp(long id) {
-        FiltersClient.moveUp(mContext, id);
+        FiltersClient.INSTANCE.moveUp(mContext, id);
     }
 
     public void moveFilterDown(long id) {
-        FiltersClient.moveDown(mContext, id);
+        FiltersClient.INSTANCE.moveDown(mContext, id);
     }
 
     public void cycleVisibility(Book book) {
@@ -726,6 +735,30 @@ public class Shelf {
         }
     }
 
+    public void flipState(long noteId) {
+        Note note = getNote(noteId);
+
+        if (note.getHead().getState() == null) {
+            String msg = mContext.getString(R.string.note_cannot_marked_as_done);
+            Intent intent = new Intent(AppIntent.ACTION_DISPLAY_MESSAGE);
+            intent.putExtra(AppIntent.EXTRA_MESSAGE, msg);
+            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+        } else {
+            /* Flip the state of the node to either the first to-do or first done state */
+            Set<String> doneStates = AppPreferences.doneKeywordsSet(mContext);
+            String currentState = getNote(noteId).getHead().getState();
+
+            if (currentState != null) {
+                if (doneStates.contains(currentState)) {
+                    setStateToTodo(noteId);
+                } else {
+                    setStateToDone(noteId);
+                }
+            }
+        }
+    }
+
     public void setStateToDone(long noteId) {
         /* Get the *first* DONE state from preferences. */
         Set<String> doneStates = AppPreferences.doneKeywordsSet(mContext);
@@ -738,28 +771,46 @@ public class Shelf {
         }
     }
 
+    public void setStateToTodo(long noteId) {
+        /* Get the *first* not done state from preferences */
+        String firstTodoState = new String();
+        Set<String> todoStates = AppPreferences.todoKeywordsSet(mContext);
+
+        if (todoStates.iterator().hasNext()) {
+            firstTodoState = todoStates.iterator().next();
+        } else {
+            firstTodoState = null;
+        }
+
+        if (firstTodoState != null) {
+            Set<Long> ids = new TreeSet<>();
+            ids.add(noteId);
+            setNotesState(ids, firstTodoState);
+        }
+    }
+
     public static void notifyDataChanged(Context context) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         ReminderService.notifyDataChanged(context);
 
-        context.sendBroadcast(new Intent(AppIntent.ACTION_LIST_WIDGET_UPDATE));
+        context.sendBroadcast(new Intent(AppIntent.ACTION_UPDATE_LIST_WIDGET));
     }
 
-    public void createSync() {
-        if (AppPreferences.autoSync(mContext) && AppPreferences.syncAfterNoteCreate(mContext)) {
+    public void syncOnNoteCreate() {
+        if (AppPreferences.autoSync(mContext) && AppPreferences.syncOnNoteCreate(mContext)) {
             autoSync();
         }
     }
 
-    public void updateSync() {
-        if (AppPreferences.autoSync(mContext) && AppPreferences.syncAfterNoteUpdate(mContext)) {
+    public void syncOnNoteUpdate() {
+        if (AppPreferences.autoSync(mContext) && AppPreferences.syncOnNoteUpdate(mContext)) {
             autoSync();
         }
     }
 
-    public void resumeSync() {
-        if (AppPreferences.autoSync(mContext) && AppPreferences.onResumeSync(mContext)) {
+    public void syncOnResume() {
+        if (AppPreferences.autoSync(mContext) && AppPreferences.syncOnResume(mContext)) {
             autoSync();
         }
     }
@@ -774,7 +825,7 @@ public class Shelf {
 
         Intent intent = new Intent(mContext, SyncService.class);
         intent.setAction(AppIntent.ACTION_SYNC_START);
-        intent.putExtra(SyncService.EXTRA_AUTOMATIC, true);
+        intent.putExtra(AppIntent.EXTRA_IS_AUTOMATIC, true);
 
         mContext.startService(intent);
     }
@@ -873,8 +924,7 @@ public class Shelf {
                 for (OrgProperty prop : NotesClient.getNoteProperties(mContext, NotesClient.idFromCursor(cursor))) {
                     if (prop.getName().equals(AppPreferences.createdAtProperty(mContext))) {
                         try {
-                            OrgDateTime x = OrgDateTime.parse(prop.getValue());
-                            values.put(DbNote.CREATED_AT, x.getCalendar().getTimeInMillis());
+                            values.put(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING, prop.getValue());
                             break;
                         } catch (IllegalArgumentException e) {
                             // Parsing failed, give up immediately and insert null
@@ -883,11 +933,14 @@ public class Shelf {
                     }
                 }
 
-                ops.add(ContentProviderOperation
-                        .newUpdate(ContentUris.withAppendedId(ProviderContract.Notes.ContentUri.notes(), cursor.getLong(0)))
-                        .withValues(values)
-                        .build()
-                );
+                if (values.size() > 0) {
+                    ops.add(ContentProviderOperation
+                            .newUpdate(ContentUris.withAppendedId(ProviderContract.Notes.ContentUri.notes(), cursor.getLong(0)))
+                            .withValues(values)
+                            .build()
+                    );
+                }
+
 
                 if (listener != null) {
                     listener.noteParsed(current, total, "Updating notes...");
@@ -915,6 +968,29 @@ public class Shelf {
         notifyDataChanged(mContext);
 
         return modifiedNotesCount;
+    }
+
+    public void openFirstNoteWithProperty(String propName, String propValue) {
+        Intent intent;
+
+        List<Long[]> notes = NotesClient.getNotesWithProperty(mContext, propName, propValue);
+
+        if (!notes.isEmpty()) {
+            long noteId = notes.get(0)[0];
+            long bookId = notes.get(0)[1];
+
+            intent = new Intent(AppIntent.ACTION_OPEN_NOTE);
+            intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId);
+            intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
+
+        } else {
+            String msg = mContext.getString(R.string.no_such_link_target, propName, propValue);
+
+            intent = new Intent(AppIntent.ACTION_DISPLAY_MESSAGE);
+            intent.putExtra(AppIntent.EXTRA_MESSAGE, msg);
+        }
+
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 
     // TODO: Used by tests only for now

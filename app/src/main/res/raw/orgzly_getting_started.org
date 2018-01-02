@@ -27,6 +27,9 @@ You can have any number of different states (NEXT, WAIT, ...). You can configure
 ** TODO You can set scheduled time
 SCHEDULED: <2015-02-20 Fri 15:15>
 
+*** Times can have a repeater
+SCHEDULED: <2015-02-16 Mon .+1d>
+
 ** TODO You can set deadline time
 DEADLINE: <2015-02-20 Fri> SCHEDULED: <2015-02-23 Mon>
 

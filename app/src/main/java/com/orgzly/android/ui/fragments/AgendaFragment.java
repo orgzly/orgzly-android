@@ -1,135 +1,83 @@
 package com.orgzly.android.ui.fragments;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.os.Bundle;
 import android.provider.BaseColumns;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.util.LongSparseArray;
 import android.support.v7.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.NumberPicker;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.SearchQuery;
-import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.provider.models.DbNoteColumns;
 import com.orgzly.android.provider.views.DbNoteViewColumns;
-import com.orgzly.android.ui.ActionModeListener;
+import com.orgzly.android.query.Query;
+import com.orgzly.android.query.QueryParser;
+import com.orgzly.android.query.user.InternalQueryParser;
 import com.orgzly.android.ui.AgendaListViewAdapter;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.Selection;
-import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
-import com.orgzly.android.ui.views.GesturedListView;
 import com.orgzly.android.util.AgendaUtils;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.UserTimeFormatter;
-import com.orgzly.org.datetime.OrgDateTime;
 
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 
-public class AgendaFragment extends NoteListFragment
-        implements
-        TimestampDialogFragment.OnDateTimeSetListener,
-        LoaderManager.LoaderCallbacks<Cursor> {
-
+public class AgendaFragment extends QueryFragment {
     private static final String TAG = AgendaFragment.class.getName();
 
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = AgendaFragment.class.getName();
 
-    private static final int MIN_DAYS = 1;
-    private static final int MAX_DAYS = 31;
+    private static final int MAX_DAYS = 30;
 
-    private static final String AGENDA_DAYS_QUERY = ".it.done s.%dd or .it.done d.%dd";
-
-    private static final int STATE_ITEM_GROUP = 1;
-
-    /* Currently active query. */
-    private SearchQuery mQuery;
-    private int agendaDurationInDays;
-
+    // Time formatter for separators
     private UserTimeFormatter userTimeFormatter;
 
-    private AgendaListViewAdapter mListAdapter;
-
-    private NoteListFragmentListener mListener;
 
     /* Maps agenda's item ID to note ID */
     private LongSparseArray<Long> originalNoteIDs = new LongSparseArray<>();
 
     int currentLoaderId = -1;
 
-    public static AgendaFragment getInstance() {
-        return new AgendaFragment();
-    }
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public AgendaFragment() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+    public static QueryFragment getInstance(String query) {
+        QueryFragment fragment = new AgendaFragment();
+
+        Bundle args = new Bundle();
+        args.putString(ARG_QUERY, query);
+
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
     public void onAttach(Context context) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, getActivity());
         super.onAttach(context);
 
-        /* This makes sure that the container activity has implemented
-         * the callback interface. If not, it throws an exception
-         */
-        try {
-            mListener = (NoteListFragmentListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString() + " must implement " + NoteListFragmentListener.class);
-        }
-        try {
-            mActionModeListener = (ActionModeListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString() + " must implement " + ActionModeListener.class);
-        }
-
         userTimeFormatter = new UserTimeFormatter(context);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
-        super.onCreate(savedInstanceState);
-
-        setHasOptionsMenu(true);
-
-        updateQuery();
     }
 
     @Override
@@ -145,59 +93,53 @@ public class AgendaFragment extends NoteListFragment
         super.onViewCreated(view, savedInstanceState);
 
         /* On long click */
-        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mListAdapter.getItemViewType(position) != AgendaListViewAdapter.SEPARATOR_TYPE) {
-                    mListener.onNoteLongClick(AgendaFragment.this, view, position, id, originalNoteIDs.get(id));
-                }
-                return true;
+        getListView().setOnItemLongClickListener((parent, view1, position, id) -> {
+            if (mListAdapter.getItemViewType(position) != AgendaListViewAdapter.SEPARATOR_TYPE) {
+                mListener.onNoteLongClick(AgendaFragment.this, view1, position, id, originalNoteIDs.get(id));
             }
+            return true;
         });
 
         // noteId needs to be translated since they are different now!
 
         getListView().setOnItemMenuButtonClickListener(
-                new GesturedListView.OnItemMenuButtonClickListener() {
-                    @Override
-                    public boolean onMenuButtonClick(int buttonId, long noteId) {
-                        noteId = originalNoteIDs.get(noteId);
-                        switch (buttonId) {
-                            case R.id.item_menu_schedule_btn:
-                                displayScheduleTimestampDialog(R.id.item_menu_schedule_btn, noteId);
-                                break;
+                (buttonId, noteId) -> {
+                    noteId = originalNoteIDs.get(noteId);
+                    switch (buttonId) {
+                        case R.id.item_menu_schedule_btn:
+                            displayScheduleTimestampDialog(R.id.item_menu_schedule_btn, noteId);
+                            break;
 
-                            case R.id.item_menu_prev_state_btn:
-                                mListener.onStateCycleRequest(noteId, -1);
-                                break;
+                        case R.id.item_menu_prev_state_btn:
+                            mListener.onStateCycleRequest(noteId, -1);
+                            break;
 
-                            case R.id.item_menu_next_state_btn:
-                                mListener.onStateCycleRequest(noteId, 1);
-                                break;
+                        case R.id.item_menu_next_state_btn:
+                            mListener.onStateCycleRequest(noteId, 1);
+                            break;
 
-                            case R.id.item_menu_done_state_btn:
-                                if (AppPreferences.isDoneKeyword(getActivity(), "DONE")) {
-                                    Set<Long> set = new TreeSet<>();
-                                    set.add(noteId);
-                                    mListener.onStateChangeRequest(set, "DONE");
-                                }
-                                break;
+                        case R.id.item_menu_done_state_btn:
+                            if (AppPreferences.isDoneKeyword(getActivity(), "DONE")) {
+                                Set<Long> set = new TreeSet<>();
+                                set.add(noteId);
+                                mListener.onStateChangeRequest(set, "DONE");
+                            }
+                            break;
 
-                            case R.id.item_menu_open_btn:
-                                mListener.onNoteScrollToRequest(noteId);
-                                break;
-                        }
-
-
-                        return false;
+                        case R.id.item_menu_open_btn:
+                            mListener.onNoteScrollToRequest(noteId);
+                            break;
                     }
+
+
+                    return false;
                 });
 
         /* Create a selection. */
         mSelection = new Selection();
 
-        mListAdapter = new AgendaListViewAdapter(getActivity(), mSelection,
-                getListView().getItemMenus(), false);
+        mListAdapter = new AgendaListViewAdapter(
+                getActivity(), mSelection, getListView().getItemMenus(), false);
 
         setListAdapter(mListAdapter);
 
@@ -210,67 +152,26 @@ public class AgendaFragment extends NoteListFragment
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onActivityCreated(savedInstanceState);
 
-        /* Activity created - context available. Create Shelf and populate list with data. */
-        mShelf = new Shelf(getActivity().getApplicationContext());
-
-        mActionModeListener.updateActionModeForSelection(mSelection, new MyActionMode());
-
-        loadQuery();
-    }
-
-    private void loadQuery() {
-        /* If query did not change - reuse loader. Otherwise - restart it. */
-        String newQuery = mQuery.toString();
-        int id = Loaders.generateLoaderId(Loaders.AGENDA_FRAGMENT, newQuery);
+        // Restart loader in case of settings change which affect results (e.g. default priority)
+        int id = Loaders.generateLoaderId(Loaders.AGENDA_FRAGMENT, mQuery);
         currentLoaderId = id;
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Loader #" + id + " for: " + newQuery);
-        getActivity().getSupportLoaderManager().initLoader(id, null, this);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Loader #" + id + " for: " + mQuery);
+        getActivity().getSupportLoaderManager().restartLoader(id, null, this);
     }
 
     @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
-        super.onViewStateRestored(savedInstanceState);
-    }
-
-    @Override
-    public void onResume() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
-        super.onResume();
-
-        announceChangesToActivity();
-    }
-
-    private void announceChangesToActivity() {
+    protected void announceChangesToActivity() {
         if (mListener != null) {
             mListener.announceChanges(
                     AgendaFragment.FRAGMENT_TAG,
-                    getString(R.string.fragment_agenda_title),
-                    mQuery.toString(),
+                    getString(R.string.agenda),
+                    mQuery,
                     mSelection.getCount());
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
-        super.onDestroyView();
-
-        setListAdapter(null);
-        mListAdapter = null;
-    }
-
-    @Override
-    public void onDetach() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
-        super.onDetach();
-
-        mListener = null;
-        mActionModeListener = null;
-    }
 
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
@@ -279,100 +180,6 @@ public class AgendaFragment extends NoteListFragment
         if (itemViewType == AgendaListViewAdapter.NOTE_TYPE) {
             mListener.onNoteClick(this, view, position, id, originalNoteIDs.get(id));
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
-
-        inflater.inflate(R.menu.agenda_actions, menu);
-
-        menu.removeItem(R.id.activity_action_search);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.agenda_period:
-                openNumberPicker();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void openNumberPicker() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, agendaDurationInDays);
-
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        View view = inflater.inflate(R.layout.number_picker, null);
-
-        final NumberPicker picker = (NumberPicker) view.findViewById(R.id.number_picker);
-        picker.setMaxValue(MAX_DAYS);
-        picker.setMinValue(MIN_DAYS);
-        picker.setValue(agendaDurationInDays);
-
-        new AlertDialog.Builder(getContext())
-                .setTitle(R.string.agenda_period)
-                .setView(view)
-                .setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        updateQuery(picker.getValue());
-                        loadQuery();
-                        announceChangesToActivity();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .show();
-    }
-
-    private void updateQuery() {
-        int days = AppPreferences.agendaDays(getContext());
-        updateQuery(days);
-    }
-
-    private void updateQuery(int days) {
-        String queryString = String.format((Locale) null, AGENDA_DAYS_QUERY, days, days);
-
-        agendaDurationInDays = days;
-        mQuery = new SearchQuery(queryString);
-
-        /* Save to preferences. */
-        AppPreferences.agendaDays(getActivity(), days);
-    }
-
-    @Override
-    public void onDateTimeSet(int id, TreeSet<Long> noteIds, OrgDateTime time) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id, time);
-
-        switch (id) {
-            case R.id.query_cab_schedule:
-            case R.id.item_menu_schedule_btn:
-                mListener.onScheduledTimeUpdateRequest(noteIds, time);
-                break;
-        }
-    }
-
-    @Override
-    public void onDateTimeCleared(int id, TreeSet<Long> noteIds) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id);
-
-        switch (id) {
-            case R.id.query_cab_schedule:
-            case R.id.item_menu_schedule_btn:
-                mListener.onScheduledTimeUpdateRequest(noteIds,  null);
-                break;
-        }
-    }
-
-    @Override
-    public void onDateTimeAborted(int id, TreeSet<Long> noteIds) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id);
     }
 
     @Override
@@ -385,11 +192,11 @@ public class AgendaFragment extends NoteListFragment
         return new MyActionMode();
     }
 
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id, bundle);
-
-        return NotesClient.getLoaderForQuery(getActivity(), mQuery);
+        return NotesClient.getLoaderForAgenda(getActivity(), mQuery);
     }
 
     @Override
@@ -406,6 +213,15 @@ public class AgendaFragment extends NoteListFragment
             return;
         }
 
+        QueryParser parser = new InternalQueryParser();
+        Query query = parser.parse(mQuery);
+
+        int agendaDays = query.getOptions().getAgendaDays();
+
+        if (agendaDays > MAX_DAYS) {
+            agendaDays = MAX_DAYS;
+        }
+
         // Add IS_SEPARATOR column
         String[] columnNames = new String[cursor.getColumnNames().length + 1];
         System.arraycopy(cursor.getColumnNames(), 0, columnNames, 0, cursor.getColumnNames().length);
@@ -419,32 +235,31 @@ public class AgendaFragment extends NoteListFragment
             MatrixCursor matrixCursor = new MatrixCursor(columnNames);
             agenda.put(day.getMillis(), matrixCursor);
             day = day.plusDays(1);
-        } while (++i < agendaDurationInDays);
+        } while (++i < agendaDays);
 
-        Calendar now = Calendar.getInstance();
+        DateTime now =  DateTime.now();
 
         int scheduledRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.SCHEDULED_RANGE_STRING);
         int deadlineRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.DEADLINE_RANGE_STRING);
 
-        // expand each note if it has a repeater or is a range
-
+        // Expand each note if it has a repeater or is a range
         long nextId = 1;
         originalNoteIDs.clear();
-
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             Set<DateTime> dates = AgendaUtils.expandOrgDateTime(
                     new String[] {
                             cursor.getString(scheduledRangeStrIdx),
-                            cursor.getString(deadlineRangeStrIdx)
-                    },
+                            cursor.getString(deadlineRangeStrIdx)},
                     now,
-                    agendaDurationInDays);
+                    agendaDays
+            );
 
-            for (DateTime date: dates) {
+            for (DateTime date : dates) {
                 // create agenda cursors
                 MatrixCursor matrixCursor = agenda.get(date.getMillis());
                 MatrixCursor.RowBuilder rowBuilder = matrixCursor.newRow();
-                for (String col: columnNames) {
+
+                for (String col : columnNames) {
                     if (col.equalsIgnoreCase(Columns._ID)) {
                         long noteId = cursor.getLong(cursor.getColumnIndex(col));
 
@@ -471,7 +286,7 @@ public class AgendaFragment extends NoteListFragment
          */
         mListAdapter.swapCursor(mCursor);
 
-        mActionModeListener.updateActionModeForSelection(mSelection, new MyActionMode());
+        mActionModeListener.updateActionModeForSelection(mSelection.getCount(), new MyActionMode());
     }
 
     private MergeCursor mergeDates(long nextId, Map<Long, MatrixCursor> agenda) {
@@ -491,52 +306,17 @@ public class AgendaFragment extends NoteListFragment
         return new MergeCursor(allCursors.toArray(new Cursor[allCursors.size()]));
     }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        /* Make sure this is visible fragment with adapter set (onDestroyVieW() not called). */
-        if (mListAdapter == null) {
-            return;
-        }
-
-        mListAdapter.changeCursor(null);
-    }
-
-    public class MyActionMode implements ActionMode.Callback {
-        @Override
-        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, actionMode, menu);
-
-            /* Inflate a menu resource providing context menu items. */
-            MenuInflater inflater = actionMode.getMenuInflater();
-            inflater.inflate(R.menu.query_cab, menu);
-
-            return true;
-        }
-
-        /**
-         * Called each time the action mode is shown. Always called after onCreateActionMode,
-         * but may be called multiple times if the mode is invalidated.
-         */
-        @Override
-        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, actionMode, menu);
-
-            /* Update action mode with number of selected items. */
-            actionMode.setTitle(String.valueOf(mSelection.getCount()));
-
-            return true;
-        }
-
+    protected class MyActionMode extends QueryFragment.MyActionMode {
         @Override
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, actionMode, menuItem);
             TreeSet<Long> selectionIds;
             switch (menuItem.getItemId()) {
                 case R.id.query_cab_schedule:
-                    selectionIds = new TreeSet<>();
-                    for (Long id: mSelection.getIds())
-                        selectionIds.add(originalNoteIDs.get(id));
-                    displayScheduleTimestampDialog(R.id.query_cab_schedule, selectionIds);
+                    selectionIds = originalSelectedIds();
+                    if (!selectionIds.isEmpty()) {
+                        displayScheduleTimestampDialog(R.id.query_cab_schedule, selectionIds);
+                    }
                     break;
 
                 case R.id.query_cab_state:
@@ -554,10 +334,10 @@ public class AgendaFragment extends NoteListFragment
                     /* Click on one of the state keywords. */
                     if (menuItem.getGroupId() == STATE_ITEM_GROUP) {
                         if (mListener != null) {
-                            selectionIds = new TreeSet<>();
-                            for (Long id: mSelection.getIds())
-                                selectionIds.add(originalNoteIDs.get(id));
-                            mListener.onStateChangeRequest(selectionIds, menuItem.getTitle().toString());
+                            selectionIds = originalSelectedIds();
+                            if (!selectionIds.isEmpty()) {
+                                mListener.onStateChangeRequest(selectionIds, menuItem.getTitle().toString());
+                            }
                         }
                         return true;
                     }
@@ -568,19 +348,20 @@ public class AgendaFragment extends NoteListFragment
             return true; // Handled.
         }
 
-        @Override
-        public void onDestroyActionMode(ActionMode actionMode) {
-            mSelection.clearSelection();
-
-            /* List adapter could be null, as we could be destroying the action mode of a fragment
-             * which is in back stack. That fragment had its onDestroyView called, where list
-             * adapter is set to null.
-             */
-            if (getListAdapter() != null) {
-                getListAdapter().notifyDataSetChanged();
+        private TreeSet<Long> originalSelectedIds() {
+            TreeSet<Long> selectionIds = new TreeSet<>();
+            for (Long id: mSelection.getIds()) {
+                Long originalId = originalNoteIDs.get(id);
+                /*
+                 * Original ID might be missing if user selects a note before it's gone
+                 * (because of sync re-loading a notebook for example).  Adding null to TreeSet
+                 * throws NullPointerException.  TODO: De-select notes and remove this check
+                 */
+                if (originalId != null) {
+                    selectionIds.add(originalId);
+                }
             }
-
-            mActionModeListener.actionModeDestroyed();
+            return selectionIds;
         }
     }
 

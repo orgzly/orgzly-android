@@ -16,7 +16,6 @@ import android.util.Log;
 import com.orgzly.BuildConfig;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
-import com.orgzly.android.SearchQuery;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.actions.ActionRunner;
 import com.orgzly.android.provider.actions.CutNotesAction;
@@ -51,6 +50,11 @@ import com.orgzly.android.provider.models.DbVersionedRook;
 import com.orgzly.android.provider.views.DbBookView;
 import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.provider.views.DbTimeView;
+import com.orgzly.android.query.sql.SqlQuery;
+import com.orgzly.android.query.Query;
+import com.orgzly.android.query.QueryParser;
+import com.orgzly.android.query.user.InternalQueryParser;
+import com.orgzly.android.query.sql.SqliteQueryBuilder;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.EncodingDetect;
 import com.orgzly.android.util.LogUtils;
@@ -72,16 +76,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static com.orgzly.android.provider.GenericDatabaseUtils.field;
+import static com.orgzly.android.provider.GenericDatabaseUtils.join;
 
 public class Provider extends ContentProvider {
     private static final String TAG = Provider.class.getName();
@@ -174,7 +175,7 @@ public class Provider extends ContentProvider {
 
             case ProviderUris.NOTES_SEARCH_QUERIED:
                 table = null;
-                cursor = queryNotesSearchQueried(db, uri.getQuery(), sortOrder);
+                cursor = runUserQuery(db, uri.getQuery(), selection, sortOrder);
                 break;
 
             case ProviderUris.BOOKS_ID_NOTES:
@@ -186,6 +187,32 @@ public class Provider extends ContentProvider {
                 selectionArgs = null;
                 break;
 
+            case ProviderUris.NOTES_WITH_PROPERTY:
+                String propName = uri.getQueryParameter(ProviderContract.Notes.Param.PROPERTY_NAME);
+                String propValue = uri.getQueryParameter(ProviderContract.Notes.Param.PROPERTY_VALUE);
+
+                selection =
+                        "LOWER(" + field("tpropertyname", DbPropertyName.NAME) + ") = ? AND " +
+                        "LOWER(" + field("tpropertyvalue", DbPropertyValue.VALUE) + ") = ? AND " +
+                        field("tnotes", DbNote._ID) + " IS NOT NULL";
+
+                selectionArgs = new String[] { propName.toLowerCase(), propValue.toLowerCase() };
+
+                sortOrder = field("tnotes", DbNote.LFT);
+
+                table = DbNoteProperty.TABLE + " " +
+                        join(DbNote.TABLE, "tnotes", DbNote._ID, DbNoteProperty.TABLE, DbNoteProperty.NOTE_ID) +
+                        join(DbProperty.TABLE, "tproperties", DbProperty._ID, DbNoteProperty.TABLE, DbNoteProperty.PROPERTY_ID) +
+                        join(DbPropertyName.TABLE, "tpropertyname", DbPropertyName._ID, "tproperties", DbProperty.NAME_ID) +
+                        join(DbPropertyValue.TABLE, "tpropertyvalue", DbPropertyValue._ID, "tproperties", DbProperty.VALUE_ID);
+
+                projection = new String[] {
+                        field("tnotes", DbNote._ID),
+                        field("tnotes", DbNote.BOOK_ID),
+                };
+
+                break;
+
             case ProviderUris.NOTES_ID_PROPERTIES:
                 long noteId = Long.parseLong(uri.getPathSegments().get(1));
 
@@ -195,9 +222,9 @@ public class Provider extends ContentProvider {
                 sortOrder = DbNoteProperty.POSITION;
 
                 table = DbNoteProperty.TABLE + " " +
-                        GenericDatabaseUtils.join(DbProperty.TABLE, "tproperties", DbProperty._ID, DbNoteProperty.TABLE, DbNoteProperty.PROPERTY_ID) +
-                        GenericDatabaseUtils.join(DbPropertyName.TABLE, "tpropertyname", DbPropertyName._ID, "tproperties", DbProperty.NAME_ID) +
-                        GenericDatabaseUtils.join(DbPropertyValue.TABLE, "tpropertyvalue", DbPropertyValue._ID, "tproperties", DbProperty.VALUE_ID);
+                        join(DbProperty.TABLE, "tproperties", DbProperty._ID, DbNoteProperty.TABLE, DbNoteProperty.PROPERTY_ID) +
+                        join(DbPropertyName.TABLE, "tpropertyname", DbPropertyName._ID, "tproperties", DbProperty.NAME_ID) +
+                        join(DbPropertyValue.TABLE, "tpropertyvalue", DbPropertyValue._ID, "tproperties", DbProperty.VALUE_ID);
 
                 projection = new String[] {
                         "tpropertyname." + DbPropertyName.NAME,
@@ -267,202 +294,37 @@ public class Provider extends ContentProvider {
             cursor = db.query(table, projection, selection, selectionArgs, null, null, sortOrder);
         }
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Cursor count: " + cursor.getCount() + " for " + table + " " + selection + " " + selectionArgs);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Cursor count: " + cursor.getCount() + " for " +
+                                                   table + " " + selection + " " + (selectionArgs != null ? TextUtils.join(",", selectionArgs) : ""));
 
         cursor.setNotificationUri(getContext().getContentResolver(), ProviderContract.AUTHORITY_URI);
 
         return cursor;
     }
 
-    /**
-     * Builds query parameters from {@link SearchQuery}.
-     */
-    private Cursor queryNotesSearchQueried(SQLiteDatabase db, String query, String sortOrder) {
-        SearchQuery searchQuery = new SearchQuery(query);
+    private Cursor runUserQuery(SQLiteDatabase db, String queryString, String selection, String sortOrder) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, queryString, sortOrder);
 
-        StringBuilder selection = new StringBuilder();
-        List<String> selectionArgs = new ArrayList<>();
+        QueryParser parser = new InternalQueryParser();
+        Query query = parser.parse(queryString);
 
-        // Loop through the various search criteria groups. The criteria inside
-        // each group is AND-ed together. The groups themselves are OR-ed
-        // together.
-        for (SearchQuery.SearchQueryGroup group : searchQuery.groups) {
-
-            if (selection.length() == 0) {
-                selection.append(" ((");
-            } else {
-                selection.append(") OR (");
-            }
-
-            /* Skip cut notes. */
-            selection.append(DatabaseUtils.WHERE_EXISTING_NOTES);
-
-            /*
-             * We are only searching for a tag within a string of tags.
-             * "tag" will be found in "few tagy ones"
-             */
-            for (String tag: group.getTags()) {
-                selection.append(" AND (")
-                    .append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ? OR ")
-                    .append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(" LIKE ?)");
-
-                selectionArgs.add("%" + tag + "%");
-                selectionArgs.add("%" + tag + "%");
-            }
-
-            for (String tag: group.getNotTags()) {
-                selection.append(" AND (")
-                    .append("COALESCE(").append(ProviderContract.Notes.QueryParam.TAGS).append(", '')").append(" NOT LIKE ? AND ")
-                    .append("COALESCE(").append(ProviderContract.Notes.QueryParam.INHERITED_TAGS).append(", '')").append(" NOT LIKE ?)");
-
-                selectionArgs.add("%" + tag + "%");
-                selectionArgs.add("%" + tag + "%");
-            }
-
-            if (group.hasBookName()) {
-                selection.append(" AND ").append(ProviderContract.Notes.QueryParam.BOOK_NAME).append(" = ?");
-                selectionArgs.add(group.getBookName());
-            }
-
-            if (group.hasNotBookName()) {
-                for (String name: group.getNotBookName()) {
-                    selection.append(" AND ").append(ProviderContract.Notes.QueryParam.BOOK_NAME).append(" != ?");
-                    selectionArgs.add(name);
-                }
-            }
-
-            if (group.hasStateType()) {
-                if ("todo".equalsIgnoreCase(group.getStateType())) {
-                    searchQueryStates(selection, selectionArgs, "IN", AppPreferences.todoKeywordsSet(getContext()));
-
-                } else if ("done".equalsIgnoreCase(group.getStateType())) {
-                    searchQueryStates(selection, selectionArgs, "IN", AppPreferences.doneKeywordsSet(getContext()));
-
-                } else if ("none".equalsIgnoreCase(group.getStateType())) {
-                    selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') = ''");
-                }
-            }
-
-            if (group.hasNotStateType()) {
-                if ("todo".equalsIgnoreCase(group.getNotStateType())) {
-                    searchQueryStates(selection, selectionArgs, "NOT IN", AppPreferences.todoKeywordsSet(getContext()));
-
-                } else if ("done".equalsIgnoreCase(group.getNotStateType())) {
-                    searchQueryStates(selection, selectionArgs, "NOT IN", AppPreferences.doneKeywordsSet(getContext()));
-
-                } else if ("none".equalsIgnoreCase(group.getNotStateType())) {
-                    selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') != ''");
-                }
-            }
-
-            if (group.hasState()) {
-                selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') = ?");
-                selectionArgs.add(group.getState());
-            }
-
-            if (group.hasNotState()) {
-                for (String state: group.getNotState()) {
-                    selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') != ?");
-                    selectionArgs.add(state);
-                }
-            }
-
-            for (String token: group.getTextSearch()) {
-                selection.append(" AND (").append(ProviderContract.Notes.QueryParam.TITLE).append(" LIKE ?");
-                selectionArgs.add("%" + token + "%");
-                selection.append(" OR ").append(ProviderContract.Notes.QueryParam.CONTENT).append(" LIKE ?");
-                selectionArgs.add("%" + token + "%");
-                selection.append(" OR ").append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ?");
-                selectionArgs.add("%" + token + "%");
-                selection.append(")");
-            }
-
-            if (group.hasScheduled()) {
-                appendBeforeInterval(selection, ProviderContract.Notes.QueryParam.SCHEDULED_TIME_TIMESTAMP, group.getScheduled());
-            }
-
-            if (group.hasDeadline()) {
-                appendBeforeInterval(selection, ProviderContract.Notes.QueryParam.DEADLINE_TIME_TIMESTAMP, group.getDeadline());
-            }
-
-            /*
-             * Handle empty string and NULL - use default priority in those cases.
-             * lower( coalesce( nullif(PRIORITY, ''), DEFAULT) )
-             */
-            if (group.hasPriority()) {
-                String defaultPriority = AppPreferences.defaultPriority(getContext());
-                selection.append(" AND lower(coalesce(nullif(" + ProviderContract.Notes.QueryParam.PRIORITY + ", ''), ?)) = ?");
-                selectionArgs.add(defaultPriority);
-                selectionArgs.add(group.getPriority());
-            }
-
-            if (group.hasNoteTags()) {
-                /*
-                 * We are only searching for a tag within a string of tags.
-                 * "tag" will be found in "few tagy ones"
-                 * Tags must be kept separately so we can match them exactly.
-                 */
-                for (String tag: group.getNoteTags()) {
-                    selection.append(" AND ").append(ProviderContract.Notes.QueryParam.TAGS).append(" LIKE ?");
-                    selectionArgs.add("%" + tag + "%");
-                }
-            }
+        SqliteQueryBuilder queryBuilder = new SqliteQueryBuilder(getContext());
+        SqlQuery sqlQuery = queryBuilder.build(query);
+        
+        // If order hasn't been passed, try getting it from the query.
+        if (sortOrder == null) {
+            sortOrder = sqlQuery.getOrderBy();
         }
 
-        selection.append(")) ");
-
-        String sql = "SELECT * FROM " + DbNoteView.VIEW_NAME + " WHERE " + selection.toString() + " ORDER BY " + sortOrder;
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, sql, selectionArgs);
-        return db.rawQuery(sql, selectionArgs.toArray(new String[selectionArgs.size()]));
-    }
-
-    private void searchQueryStates(StringBuilder selection, List<String> selectionArgs, String in, Set<String> states) {
-        selection.append(" AND COALESCE(" + ProviderContract.Notes.QueryParam.STATE + ", '') ")
-                .append(in).append(" (")
-                .append(TextUtils.join(", ", Collections.nCopies(states.size(), "?")))
-                .append(")");
-
-        for (String state: states) {
-            selectionArgs.add(state);
-        }
-    }
-
-    private static void appendBeforeInterval(StringBuilder selection, String column, SearchQuery.SearchQueryInterval interval) {
-        if (interval.none()) {
-            selection.append(" AND ").append(column).append(" IS NULL");
-            return;
+        if (!TextUtils.isEmpty(sqlQuery.getSelection())) {
+            selection += " AND (" + sqlQuery.getSelection() + ")";
         }
 
-        Calendar before = new GregorianCalendar();
+        String[] args = sqlQuery.getSelectionArgs().toArray(new String[sqlQuery.getSelectionArgs().size()]);
 
-        switch (interval.getUnit()) {
-            case DAY:
-                before.add(Calendar.DAY_OF_MONTH, interval.getValue());
-                break;
-            case WEEK:
-                before.add(Calendar.WEEK_OF_YEAR, interval.getValue());
-                break;
-            case MONTH:
-                before.add(Calendar.MONTH, interval.getValue());
-                break;
-            case YEAR:
-                before.add(Calendar.YEAR, interval.getValue());
-                break;
-        }
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, query, query.getCondition(), sqlQuery.getOrderBy(), selection, args, sortOrder);
 
-        /* Add one more day, as we use less-then operator. */
-        before.add(Calendar.DAY_OF_MONTH, 1);
-
-        /* 00:00 */
-        before.set(Calendar.HOUR_OF_DAY, 0);
-        before.set(Calendar.MINUTE, 0);
-        before.set(Calendar.SECOND, 0);
-        before.set(Calendar.MILLISECOND, 0);
-
-        selection
-                .append(" AND ").append(column).append(" != 0")
-                .append(" AND ").append(column).append(" < ").append(before.getTimeInMillis());
+        return db.query(DbNoteView.VIEW_NAME, null, selection, args, null, null, sortOrder);
     }
 
     @Override
@@ -713,8 +575,8 @@ public class Provider extends ContentProvider {
     private int getMaxRgt(SQLiteDatabase db, long bookId) {
         Cursor cursor = db.query(
                 DbNote.TABLE,
-                new String[] { "MAX(" + ProviderContract.Notes.QueryParam.RGT + ")" },
-                ProviderContract.Notes.QueryParam.BOOK_ID + "= " + bookId + " AND " + ProviderContract.Notes.QueryParam.IS_CUT + " = 0",
+                new String[] { "MAX(" + DbNoteView.RGT + ")" },
+                DbNoteView.BOOK_ID + "= " + bookId + " AND " + DbNoteView.IS_CUT + " = 0",
                 null,
                 null,
                 null,
@@ -737,7 +599,7 @@ public class Provider extends ContentProvider {
         Cursor cursor = db.query(
                 DbNote.TABLE,
                 DatabaseUtils.PROJECTION_FOR_ID,
-                ProviderContract.Notes.QueryParam.BOOK_ID + "= " + bookId + " AND " + ProviderContract.Notes.QueryParam.LEVEL + " = 0",
+                DbNoteView.BOOK_ID + "= " + bookId + " AND " + DbNoteView.LEVEL + " = 0",
                 null,
                 null,
                 null,
@@ -984,7 +846,7 @@ public class Provider extends ContentProvider {
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, uri.toString(), selection, selectionArgs);
 
-        /* Only used by tests. Changing database name so we don't overwrite user's real data. */
+        /* Used by tests. Open a different database so we don't overwrite user's real data. */
         if (uris.matcher.match(uri) == ProviderUris.DB_SWITCH) {
             reopenDatabaseWithDifferentName();
             return 1;
@@ -1014,10 +876,14 @@ public class Provider extends ContentProvider {
         return result;
     }
 
+    /**
+     * Re-open database with a different name (for tests), unless already using it.
+     */
     private void reopenDatabaseWithDifferentName() {
-        mOpenHelper.close();
-
-        mOpenHelper = new Database(getContext(), DATABASE_NAME_FOR_TESTS);
+        if (!DATABASE_NAME_FOR_TESTS.equals(mOpenHelper.getDatabaseName())) {
+            mOpenHelper.close();
+            mOpenHelper = new Database(getContext(), DATABASE_NAME_FOR_TESTS);
+        }
     }
 
     private int updateUnderTransaction(SQLiteDatabase db, Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
@@ -1369,7 +1235,7 @@ public class Provider extends ContentProvider {
 
         try {
             /*
-             * Determine encoding to use -- detect of force it.
+             * Determine encoding to use -- detect or force it.
              */
             String usedEncoding;
             String detectedEncoding = null;
@@ -1628,6 +1494,17 @@ public class Provider extends ContentProvider {
             }
 
             values.remove(ProviderContract.Notes.UpdateParam.CLOSED_STRING);
+        }
+
+        if (values.containsKey(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING)) {
+            String str = values.getAsString(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING);
+            if (! TextUtils.isEmpty(str)) {
+                values.put(DbNote.CREATED_AT_RANGE_ID, getOrInsertOrgRange(db, OrgRange.parse(str)));
+            } else {
+                values.putNull(DbNote.CREATED_AT_RANGE_ID);
+            }
+
+            values.remove(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING);
         }
 
         if (values.containsKey(ProviderContract.Notes.UpdateParam.CLOCK_STRING)) {

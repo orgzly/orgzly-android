@@ -2,7 +2,9 @@ package com.orgzly.android.prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import com.orgzly.R;
+import com.orgzly.android.App;
 import com.orgzly.org.OrgStatesWorkflow;
 
 import java.util.Arrays;
@@ -13,7 +15,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
-import static android.preference.PreferenceManager.setDefaultValues;
 
 
 /**
@@ -85,7 +86,7 @@ public class AppPreferences {
     public static void setToDefaults(Context context) {
         clearAllSharedPreferences(context);
 
-        setDefaultValues(context, R.xml.preferences, true);
+        App.setDefaultPreferences(context, true);
     }
 
     private static void clearAllSharedPreferences(Context context) {
@@ -94,17 +95,6 @@ public class AppPreferences {
 
         /* Clear state preferences. */
         getStateSharedPreferences(context).edit().clear().apply();
-    }
-
-    public static boolean refreshOnSharedPreferenceChanged(Context context, String key) {
-        boolean isReparsingNotesRequired = false;
-
-        if (context.getString(R.string.pref_key_states).equals(key)) {
-            updateStaticKeywords(context);
-            isReparsingNotesRequired = true;
-        }
-
-        return isReparsingNotesRequired;
     }
 
     /*
@@ -122,6 +112,11 @@ public class AppPreferences {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_is_notes_content_displayed_in_search),
                 context.getResources().getBoolean(R.bool.pref_default_is_notes_content_displayed_in_search));
+    }
+
+    public static void isNotesContentDisplayedInSearch(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_is_notes_content_displayed_in_search);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
     }
 
     public static boolean isNotesContentFoldable(Context context) {
@@ -189,16 +184,32 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_value_is_created_at_added));
     }
 
+    public static void createdAt(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_is_created_at_added);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
+
     public static String createdAtProperty(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_created_at_property),
                 context.getResources().getString(R.string.pref_default_created_at_property));
     }
 
+    public static void createdAtProperty(Context context, String value) {
+        String key = context.getResources().getString(R.string.pref_key_created_at_property);
+        getDefaultSharedPreferences(context).edit().putString(key, value).apply();
+    }
+
     public static String shareNotebook(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_share_notebook),
                 context.getResources().getString(R.string.pref_default_share_notebook));
+    }
+
+    public static boolean forceUtf8(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_force_utf8),
+                context.getResources().getBoolean(R.bool.pref_default_force_utf8));
     }
 
     public static boolean newNoteNotification(Context context) {
@@ -233,6 +244,12 @@ public class AppPreferences {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_reminders_sound),
                 context.getResources().getBoolean(R.bool.pref_default_value_reminders_sound));
+    }
+
+    public static boolean remindersLed(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_reminders_led),
+                context.getResources().getBoolean(R.bool.pref_default_value_reminders_led));
     }
 
     public static boolean remindersVibrate(Context context) {
@@ -466,22 +483,6 @@ public class AppPreferences {
 
 
     /*
-     * Agenda
-     */
-
-    public static int agendaDays(Context context) {
-        return Integer.valueOf(getDefaultSharedPreferences(context).getString(
-                context.getResources().getString(R.string.pref_key_agenda_days),
-                context.getResources().getString(R.string.pref_key_default_agenda_days)));
-    }
-
-    public static void agendaDays(Context context, int value) {
-        String key = context.getResources().getString(R.string.pref_key_agenda_days);
-        getDefaultSharedPreferences(context).edit().putString(key, String.valueOf(value)).apply();
-    }
-
-
-    /*
      * State flags and values.
      * They have no default values, they are not set by user.
      */
@@ -576,19 +577,19 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_value_auto_sync));
     }
 
-    public static boolean syncAfterNoteCreate(Context context) {
+    public static boolean syncOnNoteCreate(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_auto_sync_on_note_create),
                 context.getResources().getBoolean(R.bool.pref_default_value_auto_sync_on_note_create));
     }
 
-    public static boolean syncAfterNoteUpdate(Context context) {
+    public static boolean syncOnNoteUpdate(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_auto_sync_on_note_update),
                 context.getResources().getBoolean(R.bool.pref_default_value_auto_sync_on_note_update));
     }
 
-    public static boolean onResumeSync(Context context) {
+    public static boolean syncOnResume(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_auto_sync_on_resume),
                 context.getResources().getBoolean(R.bool.pref_default_value_auto_sync_on_resume));

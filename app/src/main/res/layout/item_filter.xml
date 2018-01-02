@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              style="@style/ListViewItem"
-              android:gravity="center"
-              android:background="@drawable/list_item_selector"
-              android:orientation="vertical">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/ListViewItem"
+    android:gravity="center"
+    android:background="@drawable/list_item_selector"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/item_filter_name"
@@ -19,7 +20,7 @@
         android:ellipsize="end"
         android:textAppearance="?android:textAppearanceMedium"
         android:textStyle="bold"
-        tools:text="@string/filter_name_sample_long"/>
+        tools:text="@string/filter_name_sample"/>
 
     <TextView
         android:id="@+id/item_filter_query"
@@ -28,12 +29,5 @@
         android:paddingLeft="@dimen/padding_4"
         android:paddingRight="@dimen/padding_4"
         tools:text="@string/filter_query_sample_long"/>
-
-    <TextView
-        android:id="@+id/item_filter_position"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="@string/filter_position_sample"
-        android:visibility="gone"/>
 
 </LinearLayout>

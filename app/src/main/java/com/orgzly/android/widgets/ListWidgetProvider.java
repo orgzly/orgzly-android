@@ -18,7 +18,7 @@ import android.widget.RemoteViews;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
-import com.orgzly.android.Filter;
+import com.orgzly.android.filter.Filter;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.ui.MainActivity;
@@ -32,15 +32,12 @@ import java.util.Calendar;
  * The AppWidgetProvider for the list widget
  */
 public class ListWidgetProvider extends AppWidgetProvider {
-
     private static final String TAG = ListWidgetProvider.class.getName();
+
     private static final String PREFERENCES_ID = "list-widget";
-    public static final String EXTRA_CLICK_TYPE = "click_type";
+
     public static final int OPEN_CLICK_TYPE = 1;
     public static final int DONE_CLICK_TYPE = 2;
-    public static final String EXTRA_NOTE_ID = "note_id";
-    public static final String EXTRA_BOOK_ID = "book_id";
-    public static final String EXTRA_FILTER_ID = "filter_id";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -49,19 +46,19 @@ public class ListWidgetProvider extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidgetLayout(context, appWidgetManager, appWidgetId);
         }
-
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
     private static void updateAppWidgetLayout(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         Filter filter = getFilter(context, appWidgetId);
 
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.list_widget);
+
         Intent serviceIntent = new Intent(context, ListWidgetService.class);
         serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        serviceIntent.putExtra(ListWidgetService.EXTRA_QUERY_STRING, filter.getQuery());
+        serviceIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, filter.getQuery());
         serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.list_widget);
+        // Tell ListView where to get the data from
         remoteViews.setRemoteAdapter(R.id.list_widget_list_view, serviceIntent);
 
         remoteViews.setEmptyView(R.id.list_widget_list_view, R.id.list_widget_empty_view);
@@ -71,20 +68,21 @@ public class ListWidgetProvider extends AppWidgetProvider {
             remoteViews.setTextViewText(R.id.list_widget_empty_view, context.getString(R.string.no_notes_found_after_search));
         }
 
-        /* Set the PendingIntent template for the clicks on the rows */
+        // Rows - open note
         final Intent onClickIntent = new Intent(context, ListWidgetProvider.class);
-        onClickIntent.setAction(AppIntent.ACTION_LIST_WIDGET_CLICK);
+        onClickIntent.setAction(AppIntent.ACTION_CLICK_LIST_WIDGET);
         onClickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         onClickIntent.setData(Uri.parse(onClickIntent.toUri(Intent.URI_INTENT_SCHEME)));
         final PendingIntent onClickPendingIntent = PendingIntent.getBroadcast(context, 0,
                 onClickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setPendingIntentTemplate(R.id.list_widget_list_view, onClickPendingIntent);
 
+        // Plus icon - new note
         remoteViews.setOnClickPendingIntent(R.id.list_widget_header_add, ShareActivity.createNewNoteIntent(context));
 
-        /* open query on click on orgzly logo */
+        // Logo - open query
         Intent openIntent = Intent.makeRestartActivityTask(new ComponentName(context, MainActivity.class));
-        openIntent.putExtra(MainActivity.EXTRA_QUERY_STRING, filter.getQuery());
+        openIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, filter.getQuery());
         serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
         remoteViews.setOnClickPendingIntent(R.id.list_widget_header_icon, PendingIntent.getActivity(context, 0, openIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
@@ -125,8 +123,8 @@ public class ListWidgetProvider extends AppWidgetProvider {
     @Override
     public void onEnabled(Context context) {
         IntentFilter filter = new IntentFilter();
-        filter.addAction(AppIntent.ACTION_LIST_WIDGET_UPDATE);
-        filter.addAction(AppIntent.ACTION_LIST_WIDGET_UPDATE_LAYOUT);
+        filter.addAction(AppIntent.ACTION_UPDATE_LIST_WIDGET);
+        filter.addAction(AppIntent.ACTION_UPDATE_LAYOUT_LIST_WIDGET);
 
         LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
 
@@ -136,16 +134,17 @@ public class ListWidgetProvider extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
+
         clearUpdate(context);
     }
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
-        for (int id : appWidgetIds) {
-            SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_ID, Context.MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_ID, Context.MODE_PRIVATE).edit();
+        for (int id: appWidgetIds) {
             editor.remove(getFilterPreferenceKey(id));
-            editor.apply();
         }
+        editor.apply();
     }
 
     private static void scheduleUpdate(Context context) {
@@ -176,13 +175,13 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     private static PendingIntent getAlarmIntent(Context context) {
         Intent intent = new Intent(context, ListWidgetProvider.class);
-        intent.setAction(AppIntent.ACTION_LIST_WIDGET_UPDATE);
+        intent.setAction(AppIntent.ACTION_UPDATE_LIST_WIDGET);
         return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private static void setFilterFromIntent(Context context, Intent intent) {
         int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        long filterId = intent.getLongExtra(EXTRA_FILTER_ID, 0);
+        long filterId = intent.getLongExtra(AppIntent.EXTRA_SAVED_SEARCH_ID, 0);
 
         setFilter(context, appWidgetId, filterId);
 
@@ -195,7 +194,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
         long filterId = context.getSharedPreferences(PREFERENCES_ID, Context.MODE_PRIVATE).getLong(getFilterPreferenceKey(appWidgetId), -1);
         Filter filter = null;
         if (filterId != -1) {
-            filter = FiltersClient.get(context, filterId);
+            filter = FiltersClient.INSTANCE.get(context, filterId);
         }
 
         if (filter == null) {
@@ -218,7 +217,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
     private void setNoteDone(Context context, Intent intent) {
         final Shelf shelf = new Shelf(context);
 
-        final long noteId = intent.getLongExtra(ListWidgetProvider.EXTRA_NOTE_ID, 0L);
+        final long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0L);
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
@@ -229,8 +228,8 @@ public class ListWidgetProvider extends AppWidgetProvider {
     }
 
     private void openNote(Context context, Intent intent) {
-        long noteId = intent.getLongExtra(ListWidgetProvider.EXTRA_NOTE_ID, 0L);
-        long bookId = intent.getLongExtra(ListWidgetProvider.EXTRA_BOOK_ID, 0L);
+        long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0L);
+        long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0L);
 
         PendingIntent pi = ActivityUtils.mainActivityPendingIntent(context, bookId, noteId);
         try {
@@ -244,17 +243,17 @@ public class ListWidgetProvider extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
-        if (AppIntent.ACTION_LIST_WIDGET_UPDATE.equals(intent.getAction())) {
+        if (AppIntent.ACTION_UPDATE_LIST_WIDGET.equals(intent.getAction())) {
             updateListContents(context);
 
-        } else if (AppIntent.ACTION_LIST_WIDGET_UPDATE_LAYOUT.equals(intent.getAction())) {
+        } else if (AppIntent.ACTION_UPDATE_LAYOUT_LIST_WIDGET.equals(intent.getAction())) {
             updateAppWidgetLayouts(context);
 
-        } else if (AppIntent.ACTION_LIST_WIDGET_SET_FILTER.equals(intent.getAction())) {
+        } else if (AppIntent.ACTION_SET_FILTER_LIST_WIDGET.equals(intent.getAction())) {
             setFilterFromIntent(context, intent);
 
-        } else if (AppIntent.ACTION_LIST_WIDGET_CLICK.equals(intent.getAction())) {
-            switch (intent.getIntExtra(EXTRA_CLICK_TYPE, -1)) {
+        } else if (AppIntent.ACTION_CLICK_LIST_WIDGET.equals(intent.getAction())) {
+            switch (intent.getIntExtra(AppIntent.EXTRA_CLICK_TYPE, -1)) {
                 case OPEN_CLICK_TYPE:
                     openNote(context, intent);
                     break;

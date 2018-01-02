@@ -35,24 +35,32 @@ import static org.hamcrest.Matchers.*;
  * - replaceText() is preferred over typeText() as it is much faster.
  */
 class EspressoUtils {
-    // TODO: Get rid of these if possible
-    static final int SETTINGS_REVERSED_NOTE_CLICK_ACTION = 1;
+    static final int[] SETTINGS_REVERSED_NOTE_CLICK_ACTION = { 0, 0 };
 
-    static final int SETTINGS_STATE_KEYWORDS = 24;
-    static final int SETTINGS_DEFAULT_PRIORITY = 25;
-    static final int SETTINGS_LOWEST_PRIORITY = 26;
+    static final int[] SETTINGS_DISPLAY_CONTENT = { 1, 10 };
+    static final int[] SETTINGS_STATE_KEYWORDS = { 1, 16 };
+    static final int[] SETTINGS_DEFAULT_PRIORITY = { 1, 17 };
+    static final int[] SETTINGS_LOWEST_PRIORITY = { 1, 18 };
+    static final int[] SETTINGS_NEW_NOTE_STATE = { 1, 20 };
+    static final int[] SETTINGS_CREATED_AT = { 1, 22 };
 
-    static final int SETTINGS_NEW_NOTE_STATE = 28;
-    static final int SETTINGS_CREATED_AT = 30;
+    static final int[] SETTINGS_REPOS = { 4, 0 };
+    static final int[] SETTINGS_AUTO_SYNC_TOGGLE = { 4, 1, 1 };
+    static final int[] SETTINGS_AUTO_SYNC_NOTE_CREATED = { 4, 1, 2 };
 
-    static final int SETTINGS_REPOS = 47;
+    static final int[] IMPORT_GETTING_STARTED = { 5, 0 };
+    static final int[] SETTINGS_CLEAR_DATABASE = { 5, 1 };
 
-    static final int SETTINGS_AUTO_SYNC = 48;
-    static final int SETTINGS_AUTO_SYNC_TOGGLE = 2;
-    static final int SETTINGS_AUTO_SYNC_NOTE_CREATED = 3;
 
-    static final int IMPORT_GETTING_STARTED = 50;
-    static final int SETTINGS_CLEAR_DATABASE = 51;
+    static void tapToSetting(int[] setting) {
+        for (int s: setting) {
+            onListItem(s).perform(click());
+        }
+    }
+
+    static void tapLastSetting(int[] setting) {
+        onListItem(setting[setting.length-1]).perform(click());
+    }
 
     /**
      */
@@ -138,12 +146,13 @@ class EspressoUtils {
     private static void settingsSetKeywords(int viewId, String keywords) {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
 
-        onListItem(SETTINGS_STATE_KEYWORDS).perform(click());
+        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_STATE_KEYWORDS);
 
         onView(withId(viewId)).perform(replaceText(keywords), closeSoftKeyboardWithDelay());
         onView(withText(R.string.ok)).perform(click());
         onView(withText(R.string.yes)).perform(click());
 
+        pressBack();
         pressBack();
     }
 
