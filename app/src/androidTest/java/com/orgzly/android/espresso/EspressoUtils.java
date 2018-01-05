@@ -125,7 +125,8 @@ class EspressoUtils {
 
         /* Not pretty, but it does seem to fix testFragments from randomly failing. */
         try {
-            Thread.sleep(1000);
+            // Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
