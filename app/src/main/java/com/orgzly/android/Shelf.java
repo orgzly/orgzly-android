@@ -732,9 +732,11 @@ public class Shelf {
                 fileName = BookName.fileName(book.getName(), BookName.Format.ORG);
             }
 
-            Uri rookUri = Uri.parse(repoUrl).buildUpon().appendPath(fileName).build();
+            Uri rookUri = RepoFactory.getFromUri(mContext, repoUrl).getUriForFilename(fileName);
 
-            BooksClient.setLink(mContext, book.getId(), repoUrl, rookUri.toString());
+            if (rookUri != null) {
+                BooksClient.setLink(mContext, book.getId(), repoUrl, rookUri.toString());
+            }
         }
     }
 

@@ -32,6 +32,11 @@ public class DropboxRepo implements Repo {
     }
 
     @Override
+    public Uri getUriForFilename(String fileName) {
+        return repoUri.buildUpon().appendPath(fileName).build();
+    }
+
+    @Override
     public List<VersionedRook> getBooks() throws IOException {
         return client.getBooks(repoUri);
     }

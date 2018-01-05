@@ -977,6 +977,10 @@ public class MainActivity extends CommonActivity
     public void onBookLinkSetRequest(final long bookId) {
         final Book book = BooksClient.get(this, bookId);
 
+        if (book == null) {
+            return;
+        }
+
         Map<String, Repo> repos = ReposClient.getAll(this);
 
         if (repos.size() == 0) {
@@ -990,15 +994,9 @@ public class MainActivity extends CommonActivity
         /* Add "no link" item. */
         items.put(getString(R.string.no_link), itemIndex++);
 
-        /* Add repositories.
-         * FIXME: Skipping ContentRepo for now, as we can't construct Uri for a non-existent document.
-         * Repo might need changing to be repo uri + path
-         */
+        /* Add repositories. */
         for (String repoUri: repos.keySet()) {
-            Repo repo = repos.get(repoUri);
-            if (! (repo instanceof ContentRepo)) {
-                items.put(repoUri, itemIndex++);
-            }
+            items.put(repoUri, itemIndex++);
         }
 
         View view = getLayoutInflater().inflate(R.layout.dialog_spinner, null, false);

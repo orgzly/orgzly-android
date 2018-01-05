@@ -62,6 +62,11 @@ public class DirectoryRepo implements Repo {
     }
 
     @Override
+    public Uri getUriForFilename(String fileName) {
+        return repoUri.buildUpon().appendPath(fileName).build();
+    }
+
+    @Override
     public List<VersionedRook> getBooks() throws IOException {
         List<VersionedRook> result = new ArrayList<>();
 
