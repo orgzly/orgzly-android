@@ -160,7 +160,7 @@
   <string name="canceling">Abbrechen…</string>
   <string name="directory">Verzeichnis</string>
   <string name="fragment_repo_dropbox_directory_desc">Verzeichnis in Dropbox (z.B. \"/Dokumente/Orgzly\")</string>
-  <string name="fragment_repo_external_storage_directory_desc">Verzeichnis (z.B. \"file:/sdcard/orgzly\")</string>
+  <string name="directory_uri">Directory URI</string>
   <!-- Share button - error messages (set as title). -->
   <string name="share_action_not_set">Teilen-Aktion noch nicht festgelegt</string>
   <string name="share_action_not_supported">Teilen-Aktion %s wird nicht unterstützt</string>
@@ -327,8 +327,6 @@
   <string name="pref_title_snooze_time">Schlummer-Zeit (Minuten)</string>
   <string name="pref_title_snooze_type">Schlummer-Typ</string>
   <string name="primary_storage">Haupt-Speicherort</string>
-  <string name="secondary_storage">SD-Karte</string>
-  <string name="secondary_storage_not_available_any_more">Sekundäre Speicherort ist nicht mehr verfügbar</string>
   <string name="book_exported">Notizbuch nach %s exportiert</string>
   <string name="failed_exporting_book">Exportieren des Buches fehlgeschlagen: %s</string>
   <string name="edit_book_preface">Einleitungstext bearbeiten</string>
