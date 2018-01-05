@@ -26,6 +26,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
@@ -64,14 +65,31 @@ public class NewNoteTest extends OrgzlyTest {
         /* Enable "Created at" in settings. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
         EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CREATED_AT);
+        onView(withText(R.string.yes)).perform(click());
         pressBack();
         pressBack();
 
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.fragment_note_title))
                 .perform(replaceText("new note created by test"), closeSoftKeyboardWithDelay());
+        onView(withText("CREATED")).check(matches(isDisplayed()));
         onView(withId(R.id.done)).perform(click());
         onListItem(7).onChildView(withId(R.id.item_head_title))
+                .check(matches(allOf(withText("new note created by test"), isDisplayed())));
+
+        /*
+        By testing to see if, when sorting by created date, the new note pops up at the top, we can
+        test two pieces of functionality at once:
+        a) Notes in new Books don't have a created at date (since they'll be at the bottom of the
+           search with a value of null
+        b) New notes have a created_at value set (since they won't be null nor will they be at the bottom)
+         */
+        searchForText("o.m");
+        onListItem(0).onChildView(withId(R.id.item_head_title))
+                .check(matches(allOf(withText("new note created by test"), isDisplayed())));
+
+        searchForText(".o.m");
+        onListItem(0).onChildView(withId(R.id.item_head_title))
                 .check(matches(allOf(withText("new note created by test"), isDisplayed())));
     }
 

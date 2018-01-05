@@ -310,7 +310,7 @@ public class Provider extends ContentProvider {
 
         SqliteQueryBuilder queryBuilder = new SqliteQueryBuilder(getContext());
         SqlQuery sqlQuery = queryBuilder.build(query);
-        
+
         // If order hasn't been passed, try getting it from the query.
         if (sortOrder == null) {
             sortOrder = sqlQuery.getOrderBy();
