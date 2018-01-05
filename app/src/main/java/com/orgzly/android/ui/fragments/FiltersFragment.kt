@@ -17,12 +17,10 @@ import com.orgzly.R
 import com.orgzly.android.filter.FileFilterStore
 import com.orgzly.android.provider.ProviderContract
 import com.orgzly.android.provider.clients.FiltersClient
-import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.Fab
 import com.orgzly.android.ui.FragmentListener
 import com.orgzly.android.ui.Loaders
 import com.orgzly.android.ui.util.ListViewUtils
-import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 
 /**
@@ -114,53 +112,21 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, item)
 
+        val file = FileFilterStore(context).file()
+
         return when (item?.itemId) {
             R.id.filters_import -> {
-                importFilters()
+                mListener?.onImportFilters(R.string.searches, getString(R.string.import_from, file))
                 true
             }
 
             R.id.filters_export -> {
-                exportFilters()
+                mListener?.onExportFilters(R.string.searches, getString(R.string.export_to, file))
                 true
             }
 
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun importFilters() {
-        if (hasPermission()) {
-            importExportFilters(R.string.import_from, { store -> store.importFilters() })
-        }
-    }
-
-    private fun exportFilters() {
-        if (hasPermission()) {
-            importExportFilters(R.string.export_to, { store -> store.exportFilters() })
-        }
-    }
-
-    private fun hasPermission(): Boolean {
-        return AppPermissions.isGrantedOrRequest(
-                activity as CommonActivity,
-                AppPermissions.Usage.FILTERS_EXPORT_IMPORT)
-    }
-
-    private fun importExportFilters(msgRes: Int, f: (store: FileFilterStore) -> Unit) {
-        dialog?.dismiss()
-
-        val title = R.string.searches
-        val message = getString(msgRes, FileFilterStore(context).file())
-
-        dialog = AlertDialog.Builder(context)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(R.string.ok, { _, _ ->
-                    f(FileFilterStore(context))
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .show()
     }
 
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
@@ -320,6 +286,8 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
         fun onFilterEditRequest(id: Long)
         fun onFilterMoveUpRequest(id: Long)
         fun onFilterMoveDownRequest(id: Long)
+        fun onExportFilters(title: Int, message: String)
+        fun onImportFilters(title: Int, message: String)
     }
 
     companion object {
