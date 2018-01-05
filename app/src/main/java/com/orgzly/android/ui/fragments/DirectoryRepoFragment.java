@@ -1,6 +1,7 @@
 package com.orgzly.android.ui.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,9 +21,11 @@ import android.widget.TextView;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.provider.clients.ReposClient;
+import com.orgzly.android.repos.DirectoryRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.ui.CommonActivity;
+import com.orgzly.android.ui.ReposActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
@@ -98,9 +101,15 @@ public class DirectoryRepoFragment extends RepoFragment {
 
         MiscUtils.clearErrorOnTextChange(mUriView, directoryInputLayout);
 
-        view.findViewById(R.id.fragment_repo_directory_browse_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+        View.OnClickListener browser;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            browser = v -> {
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                getActivity().startActivityForResult(intent, ReposActivity.ACTION_OPEN_DOCUMENT_TREE_REQUEST_CODE);
+            };
+        } else {
+            browser = v -> {
                 /* Close the keyboard before opening the browser. */
                 if (getActivity() != null) {
                     ActivityUtils.closeSoftKeyboard(getActivity());
@@ -110,8 +119,9 @@ public class DirectoryRepoFragment extends RepoFragment {
                 if (AppPermissions.INSTANCE.isGrantedOrRequest((CommonActivity) getActivity(), AppPermissions.Usage.LOCAL_REPO)) {
                     startBrowserDelayed();
                 }
-            }
-        });
+            };
+        }
+        view.findViewById(R.id.fragment_repo_directory_browse_button).setOnClickListener(browser);
 
         if (savedInstanceState == null && TextUtils.isEmpty(mUriView.getText()) && mSelectedUri == null) {
             setFromArgument();
@@ -166,9 +176,6 @@ public class DirectoryRepoFragment extends RepoFragment {
             mUriView.setText(mSelectedUri.toString());
             mSelectedUri = null;
         }
-
-        /* Check for permissions. */
-        AppPermissions.INSTANCE.isGrantedOrRequest((CommonActivity) getActivity(), AppPermissions.Usage.LOCAL_REPO);
     }
 
     @Override
@@ -225,11 +232,6 @@ public class DirectoryRepoFragment extends RepoFragment {
     }
 
     private void save() {
-        /* Check for storage permission. */
-        if (! AppPermissions.INSTANCE.isGrantedOrRequest((CommonActivity) getActivity(), AppPermissions.Usage.LOCAL_REPO)) {
-            return;
-        }
-
         String uriString = mUriView.getText().toString().trim();
 
         if (TextUtils.isEmpty(uriString)) {
@@ -245,6 +247,11 @@ public class DirectoryRepoFragment extends RepoFragment {
 
         if (repo == null) {
             directoryInputLayout.setError(getString(R.string.invalid_repo_url, uri));
+            return;
+        }
+
+        /* Check for storage permission. */
+        if (repo instanceof DirectoryRepo && !AppPermissions.INSTANCE.isGrantedOrRequest((CommonActivity) getActivity(), AppPermissions.Usage.LOCAL_REPO)) {
             return;
         }
 

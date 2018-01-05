@@ -179,7 +179,7 @@
     <string name="directory">Directory</string>
 
     <string name="fragment_repo_dropbox_directory_desc">Directory inside Dropbox (e.g. “/Documents/Orgzly”)</string>
-    <string name="fragment_repo_external_storage_directory_desc">Directory location (e.g. “file:/sdcard/orgzly”)</string>
+    <string name="directory_uri">Directory URI</string>
 
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Share action not set</string>
@@ -385,8 +385,6 @@
     <string name="pref_title_snooze_type">Snooze type</string>
 
     <string name="primary_storage">Main storage</string>
-    <string name="secondary_storage">SD card</string>
-    <string name="secondary_storage_not_available_any_more">Secondary storage is no longer available</string>
 
     <string name="book_exported">Notebook exported to %s</string>
     <string name="failed_exporting_book">Failed exporting book: %s</string>

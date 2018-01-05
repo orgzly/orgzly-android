@@ -1,6 +1,5 @@
 package com.orgzly.android.ui.fragments.browser;
 
-import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,9 +18,7 @@ import android.widget.TextView;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.LocalStorage;
 import com.orgzly.android.ui.CommonActivity;
-import com.orgzly.android.ui.ReposActivity;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
 
@@ -41,12 +38,9 @@ public class FileBrowserFragment extends BrowserFragment {
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = FileBrowserFragment.class.getName();
 
-    private static final FilenameFilter FILENAME_FILTER = new FilenameFilter() {
-        @Override
-        public boolean accept(File dir, String filename) {
-            File f = new File(dir, filename);
-            return (f.isFile() || f.isDirectory()) && !f.isHidden();
-        }
+    private static final FilenameFilter FILENAME_FILTER = (dir, filename) -> {
+        File f = new File(dir, filename);
+        return (f.isFile() || f.isDirectory()) && !f.isHidden();
     };
 
     public static FileBrowserFragment getInstance(String entry) {
@@ -97,45 +91,12 @@ public class FileBrowserFragment extends BrowserFragment {
          * First shortcut changes current directory to default.
          */
         Button primaryStorageButton = createShortcutButton(R.string.primary_storage);
-        primaryStorageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "first shortcut clicked");
-                mNextItem = defaultPath();
-                tryLoadFileListFromNext(true);
-            }
+        primaryStorageButton.setOnClickListener(v -> {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "first shortcut clicked");
+            mNextItem = defaultPath();
+            tryLoadFileListFromNext(true);
         });
         layout.addView(primaryStorageButton);
-
-
-        /*
-         * If we can access secondary storage and it exists, create a shortcut for it.
-         * TODO: Support more then one?
-         */
-        if (LocalStorage.isSecondaryStorageAccessible(getContext())) {
-            final Button secondaryStorageButton = createShortcutButton(R.string.secondary_storage);
-            secondaryStorageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "second shortcut clicked");
-
-                    // Check if secondary storage is still accessible
-                    if (LocalStorage.isSecondaryStorageAccessible(getContext())) {
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                            getActivity().startActivityForResult(intent, ReposActivity.ACTION_OPEN_DOCUMENT_TREE_REQUEST_CODE);
-                        }
-
-                        mListener.onBrowserCancel();
-
-                    } else {
-                        layout.removeView(secondaryStorageButton);
-                        ((CommonActivity) getActivity()).showSimpleSnackbarLong(R.string.secondary_storage_not_available_any_more);
-                    }
-                }
-            });
-            layout.addView(secondaryStorageButton);
-        }
     }
 
     private Button createShortcutButton(@StringRes int id) {

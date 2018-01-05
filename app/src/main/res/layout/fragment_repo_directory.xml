@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:imeOptions="actionDone"
-            android:hint="@string/fragment_repo_external_storage_directory_desc"/>
+            android:hint="@string/directory_uri"/>
     </android.support.design.widget.TextInputLayout>
 
 </LinearLayout>
