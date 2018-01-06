@@ -12,7 +12,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -245,6 +247,14 @@ public class DrawerFragment extends ListFragment
                 /* Set text typeface. */
                 holder.title.setTypeface(null, item.typeface);
 
+                /* Set text size. */
+                TypedArray fontSizeAttrs = getContext().obtainStyledAttributes(R.styleable.FontSize);
+                int t = fontSizeAttrs.getDimensionPixelSize(item.titleTextSize, -1);
+                if (t != -1) {
+                    holder.title.setTextSize(TypedValue.COMPLEX_UNIT_PX, t);
+                }
+                fontSizeAttrs.recycle();
+
                 if (item.subtitle != null) {
                     holder.subtitle.setVisibility(View.VISIBLE);
                     holder.subtitle.setText(item.subtitle);
@@ -413,18 +423,26 @@ public class DrawerFragment extends ListFragment
         @StyleableRes int icon = 0; // No icon by default
 
         int typeface = Typeface.NORMAL;
+        @StyleableRes int titleTextSize = R.styleable.FontSize_item_drawer_title_text_size;
 
         public String toString() {
             return title;
         }
     }
 
-    public class FiltersItem extends DrawerItem {
+    public class DrawerHeadingItem extends DrawerItem {
+        DrawerHeadingItem() {
+            // this.typeface = Typeface.BOLD;
+            this.titleTextSize = R.styleable.FontSize_item_drawer_title_large_text_size;
+        }
+
+    }
+
+    public class FiltersItem extends DrawerHeadingItem {
         FiltersItem() {
             this.title = getString(R.string.searches);
 //            this.subtitle = "Click to edit";
             this.icon = R.styleable.Icons_ic_search_24dp;
-//            this.typeface = Typeface.BOLD;
         }
     }
 
@@ -438,11 +456,10 @@ public class DrawerFragment extends ListFragment
         }
     }
 
-    public class BooksItem extends DrawerItem {
+    public class BooksItem extends DrawerHeadingItem {
         BooksItem() {
             this.title = getString(R.string.notebooks);
             this.icon = R.styleable.Icons_ic_library_books_24dp;
-//            this.typeface = Typeface.BOLD;
         }
     }
 
@@ -455,11 +472,10 @@ public class DrawerFragment extends ListFragment
         }
     }
 
-    public class SettingsItem extends DrawerItem {
+    public class SettingsItem extends DrawerHeadingItem {
         SettingsItem() {
             this.title = getString(R.string.settings);
             this.icon = R.styleable.Icons_ic_settings_24dp;
-//            this.typeface = Typeface.BOLD;
         }
     }
 }

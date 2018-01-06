@@ -26,10 +26,6 @@ import com.orgzly.android.util.LogUtils
 /**
  * Displays and allows modifying saved filters.
  */
-/**
- * Mandatory empty constructor for the fragment manager to instantiate the
- * fragment (e.g. upon screen orientation changes).
- */
 class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Cursor> {
 
     private var mListAdapter: SimpleCursorAdapter? = null
@@ -116,12 +112,12 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
 
         return when (item?.itemId) {
             R.id.filters_import -> {
-                mListener?.onImportFilters(R.string.searches, getString(R.string.import_from, file))
+                mListener?.onFiltersImportRequest(R.string.searches, getString(R.string.import_from, file))
                 true
             }
 
             R.id.filters_export -> {
-                mListener?.onExportFilters(R.string.searches, getString(R.string.export_to, file))
+                mListener?.onFiltersExportRequest(R.string.searches, getString(R.string.export_to, file))
                 true
             }
 
@@ -286,8 +282,8 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
         fun onFilterEditRequest(id: Long)
         fun onFilterMoveUpRequest(id: Long)
         fun onFilterMoveDownRequest(id: Long)
-        fun onExportFilters(title: Int, message: String)
-        fun onImportFilters(title: Int, message: String)
+        fun onFiltersExportRequest(title: Int, message: String)
+        fun onFiltersImportRequest(title: Int, message: String)
     }
 
     companion object {

@@ -16,7 +16,8 @@
         <item name="font_small">14sp</item>
         <item name="font_medium">18sp</item>
         <item name="font_large">22sp</item>
-        <item name="item_drawer_title_text_size">16sp</item>
+        <item name="item_drawer_title_large_text_size">16sp</item>
+        <item name="item_drawer_title_text_size">14sp</item>
         <item name="item_drawer_subtitle_text_size">12sp</item>
         <item name="left_drawer_sync_text_size">14sp</item>
         <item name="item_book_title_text_size">22sp</item>
@@ -160,7 +161,8 @@
         <item name="font_small">14sp</item>
         <item name="font_medium">18sp</item>
         <item name="font_large">22sp</item>
-        <item name="item_drawer_title_text_size">16sp</item>
+        <item name="item_drawer_title_large_text_size">16sp</item>
+        <item name="item_drawer_title_text_size">14sp</item>
         <item name="item_drawer_subtitle_text_size">12sp</item>
         <item name="left_drawer_sync_text_size">14sp</item>
         <item name="item_book_title_text_size">22sp</item>
@@ -331,7 +333,8 @@
         <item name="font_small">14sp</item>
         <item name="font_medium">18sp</item>
         <item name="font_large">22sp</item>
-        <item name="item_drawer_title_text_size">16sp</item>
+        <item name="item_drawer_title_large_text_size">16sp</item>
+        <item name="item_drawer_title_text_size">14sp</item>
         <item name="item_drawer_subtitle_text_size">12sp</item>
         <item name="left_drawer_sync_text_size">14sp</item>
         <item name="item_book_title_text_size">22sp</item>
@@ -365,8 +368,9 @@
         <item name="font_medium">22sp</item>
         <item name="font_large">33sp</item>
 
-        <item name="item_drawer_title_text_size">18sp</item>
-        <item name="item_drawer_subtitle_text_size">16sp</item>
+        <item name="item_drawer_title_large_text_size">18sp</item>
+        <item name="item_drawer_title_text_size">16sp</item>
+        <item name="item_drawer_subtitle_text_size">14sp</item>
         <item name="left_drawer_sync_text_size">18sp</item>
 
         <item name="item_book_title_text_size">25sp</item>

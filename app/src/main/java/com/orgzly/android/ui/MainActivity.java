@@ -1463,12 +1463,12 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onExportFilters(int title, @NonNull String message) {
+    public void onFiltersExportRequest(int title, @NonNull String message) {
         exportImportFilters(title, message, AppIntent.ACTION_EXPORT_SEARCHES);
     }
 
     @Override
-    public void onImportFilters(int title, @NonNull String message) {
+    public void onFiltersImportRequest(int title, @NonNull String message) {
         exportImportFilters(title, message, AppIntent.ACTION_IMPORT_SEARCHES);
     }
 
