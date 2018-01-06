@@ -18,19 +18,13 @@
         android:layout_width="8dp"
         android:layout_height="match_parent"/>
 
-    <FrameLayout
-        android:layout_width="24dp"
-        android:layout_height="24dp">
-
-        <ImageView
-            android:id="@+id/item_drawer_left_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="?attr/ic_library_books_24dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/drawer_item"
-            android:visibility="invisible"/>
-    </FrameLayout>
+    <ImageView
+        android:id="@+id/item_drawer_left_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="?attr/ic_library_books_24dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/drawer_item"/>
 
     <LinearLayout
         android:layout_height="wrap_content"
