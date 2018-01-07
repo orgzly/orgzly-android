@@ -18,8 +18,8 @@ abstract class QueryParser {
     protected abstract val groupOpen: String
     protected abstract val groupClose: String
 
-    protected abstract val operatorsAnd: List<String>
-    protected abstract val operatorsOr: List<String>
+    protected abstract val logicalAnd: List<String>
+    protected abstract val logicalOr: List<String>
 
     protected abstract val conditions: List<ConditionMatch>
     protected abstract val sortOrders: List<SortOrderMatch>
@@ -74,7 +74,7 @@ abstract class QueryParser {
                     break@tokens
                 }
 
-                in operatorsAnd -> {
+                in logicalAnd -> {
                     if (members.size > 0) {
                         if (operator === Operator.OR) {
                             val expr = members.removeAt(members.size - 1)
@@ -85,7 +85,7 @@ abstract class QueryParser {
                     } // else: Operator with no expression before it
                 }
 
-                in operatorsOr -> {
+                in logicalOr -> {
                     if (members.size > 0) {
                         if (operator === Operator.AND) {
                             if (members.size > 1) { // exp exp OR ... -> Or(And(exp exp), ...)

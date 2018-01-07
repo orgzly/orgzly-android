@@ -51,14 +51,27 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             expectedSelectionArgs = listOf("TODO", "%work%", "%work%")
                     ),
                     Parameter(
-                            queryString = "i.todo or t.work",
-                            expectedQueryString = "i.todo or t.work",
-                            expectedSqlSelection = "COALESCE(state, '') = ? OR (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
+                            queryString = "i.todo and t.work",
+                            expectedQueryString = "i.todo t.work",
+                            expectedSqlSelection = "COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
+                            expectedSelectionArgs = listOf("TODO", "%work%", "%work%"),
+                            expectedQuerySortOrders = listOf()
+                    ),
+                    Parameter(
+                            queryString = "i.todo AND t.work",
+                            expectedQueryString = "i.todo t.work",
+                            expectedSqlSelection = "COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
                             expectedSelectionArgs = listOf("TODO", "%work%", "%work%"),
                             expectedQuerySortOrders = listOf()
                     ),
                     Parameter(
                             queryString = "i.todo or i.next",
+                            expectedQueryString = "i.todo or i.next",
+                            expectedSqlSelection = "COALESCE(state, '') = ? OR COALESCE(state, '') = ?",
+                            expectedSelectionArgs = listOf("TODO", "NEXT")
+                    ),
+                    Parameter(
+                            queryString = "i.todo OR i.next",
                             expectedQueryString = "i.todo or i.next",
                             expectedSqlSelection = "COALESCE(state, '') = ? OR COALESCE(state, '') = ?",
                             expectedSelectionArgs = listOf("TODO", "NEXT")

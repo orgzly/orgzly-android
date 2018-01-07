@@ -7,8 +7,8 @@ open class DottedQueryParser : QueryParser() {
     override val groupOpen   = "("
     override val groupClose  = ")"
 
-    override val operatorsAnd = listOf("and")
-    override val operatorsOr = listOf("or")
+    override val logicalAnd = listOf("and", "AND")
+    override val logicalOr = listOf("or", "OR")
 
     override val conditions = listOf(
             ConditionMatch("""^(\.)?b\.(.+)""", { match ->
