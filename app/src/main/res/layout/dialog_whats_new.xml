@@ -15,18 +15,55 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/dialog_whats_new_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/whats_new_info"/>
-
-        <TextView
             android:id="@+id/dialog_whats_new_follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/padding_4"
-            android:layout_marginTop="@dimen/padding_8"
             android:text="@string/whats_new_follow"/>
+
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.6.2-beta.1"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Remove Agenda, support “ad.days” in any query"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support grouping using parentheses in queries"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support “o.state”"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support “c.closed-time” and “o.closed”"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support “eq”, “ne”, “lt”, “le”, “gt” and “ge” in “s”, “d” and “c” operators"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support using past times in queries (e.g. “s.gt.-2d”)"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Import and export saved searches"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Add app shortcuts for syncing and creating new notes"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Allow toggling DONE state with the check mark button from quick-menu"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Use system's file browser for selecting directories"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text='New translations from Orgzly&apos;s &lt;a href="https://crowdin.com/project/orgzly"&gt;localization project&lt;/a&gt;'/>
+
+
+
 
 
         <TextView

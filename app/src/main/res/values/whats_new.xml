@@ -2,13 +2,11 @@
 <resources>
     <string name="whats_new_title">What\'s New</string>
 
-    <string name="whats_new_info"><![CDATA[
+    <string name="whats_new_follow"><![CDATA[
         Visit
         <a href="http://www.orgzly.com">Orgzly.com</a>
         and contact us if you have any issues or suggestions.
-    ]]></string>
 
-    <string name="whats_new_follow"><![CDATA[
         Follow us on
         <a href="https://twitter.com/Orgzly">Twitter</a> and
         <a href="https://www.facebook.com/Orgzly">Facebook</a> or join
