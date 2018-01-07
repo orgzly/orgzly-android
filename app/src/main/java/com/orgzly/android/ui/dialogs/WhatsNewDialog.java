@@ -21,13 +21,7 @@ public class WhatsNewDialog {
                 ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                         .inflate(R.layout.dialog_whats_new, null, false);
 
-        TextView view;
-
-        view = ((TextView) layoutView.findViewById(R.id.dialog_whats_new_info));
-        view.setText(fromHtml(context.getString(R.string.whats_new_info)));
-        view.setMovementMethod(LinkMovementMethod.getInstance());
-
-        view = ((TextView) layoutView.findViewById(R.id.dialog_whats_new_follow));
+        TextView view = ((TextView) layoutView.findViewById(R.id.dialog_whats_new_follow));
         view.setText(fromHtml(context.getString(R.string.whats_new_follow)));
         view.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -42,7 +36,7 @@ public class WhatsNewDialog {
     private static Spanned fromHtml(String html){
         Spanned result;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+            result = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
         } else {
             result = Html.fromHtml(html);
         }

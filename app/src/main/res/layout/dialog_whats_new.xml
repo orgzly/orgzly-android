@@ -15,18 +15,55 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/dialog_whats_new_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/whats_new_info"/>
-
-        <TextView
             android:id="@+id/dialog_whats_new_follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/padding_4"
-            android:layout_marginTop="@dimen/padding_8"
             android:text="@string/whats_new_follow"/>
+
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="1.6.2-beta.1"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Remove Agenda and support &lt;tt&gt;ad.days&lt;/tt&gt; in any query"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support grouping using parentheses in queries"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support &lt;tt&gt;o.state&lt;/tt&gt;"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support &lt;tt&gt;c.closed-time&lt;/tt&gt; and &lt;tt&gt;o.closed&lt;/tt&gt;"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support &lt;tt&gt;eq&lt;/tt&gt;, &lt;tt&gt;ne&lt;/tt&gt;, &lt;tt&gt;lt&lt;/tt&gt;, &lt;tt&gt;le&lt;/tt&gt;, &lt;tt&gt;gt&lt;/tt&gt; and &lt;tt&gt;ge&lt;/tt&gt; in &lt;tt&gt;s&lt;/tt&gt;, &lt;tt&gt;d&lt;/tt&gt; and &lt;tt&gt;c&lt;/tt&gt; operators"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support using past times in queries (e.g. &lt;tt&gt;s.gt.-2d&lt;/tt&gt;)"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Import and export saved searches"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Add app shortcuts for syncing and creating new notes"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Allow toggling &lt;tt&gt;DONE&lt;/tt&gt; state with the check mark button from quick-menu"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Use system's file browser for selecting directories"/>
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text='New translations from Orgzly&apos;s &lt;a href="https://crowdin.com/project/orgzly"&gt;localization project&lt;/a&gt;'/>
+
+
+
 
 
         <TextView
@@ -36,7 +73,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Follow internal links (using CUSTOM_ID and ID properties)"/>
+            app:text="Follow internal links (using &lt;tt&gt;CUSTOM_ID&lt;/tt&gt; and &lt;tt&gt;ID&lt;/tt&gt; properties)"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -44,11 +81,11 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Support “.p” search operator"/>
+            app:text="Support &lt;tt&gt;.p&lt;/tt&gt; search operator"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Support “ps” and “.ps” search operators"/>
+            app:text="Support &lt;tt&gt;ps&lt;/tt&gt; and &lt;tt&gt;.ps&lt;/tt&gt; search operators"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -88,11 +125,11 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Support “or” in search queries"/>
+            app:text="Support &lt;tt&gt;or&lt;/tt&gt; in search queries"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Support “it” (type of state) search operator"/>
+            app:text="Support &lt;tt&gt;it&lt;/tt&gt; (type of state) search operator"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -180,7 +217,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="s.none and d.none search expressions"/>
+            app:text="&lt;tt&gt;s.none&lt;/tt&gt; and &lt;tt&gt;d.none&lt;/tt&gt; search expressions"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -213,7 +250,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Support for “.t” search operator"/>
+            app:text="Support for &lt;tt&gt;.t&lt;/tt&gt; search operator"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -245,7 +282,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Fix “Fold/Unfold All” button sometimes not being displayed"/>
+            app:text="Fix folded state cycling button sometimes not being displayed"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -279,7 +316,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Support links for “tel”, “sms”, “geo” and more"/>
+            app:text="Support links for &lt;tt&gt;tel&lt;/tt&gt;, &lt;tt&gt;sms&lt;/tt&gt;, &lt;tt&gt;geo&lt;/tt&gt; and more"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -316,7 +353,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Warn about modified note even on “X” press"/>
+            app:text="Warn about modified note even on &lt;tt&gt;X&lt;/tt&gt; press"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -388,7 +425,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Search operators for sorting (“o” and “.o”)"/>
+            app:text="Search operators for sorting (&lt;tt&gt;o&lt;/tt&gt; and &lt;tt&gt;.o&lt;/tt&gt;)"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -408,7 +445,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Fix “b” search operator parsing (dot as a book name)"/>
+            app:text="Fix &lt;tt&gt;b&lt;/tt&gt; search operator parsing (dot as a book name)"/>
 
         <TextView
             style="@style/WhatsNewVersion"
@@ -430,11 +467,11 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Tags inheritance (“t” operator)"/>
+            app:text="Tags inheritance (&lt;tt&gt;t&lt;/tt&gt; operator)"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Search by note's tag only (new “tn” operator)"/>
+            app:text="Search by note's tag only (new &lt;tt&gt;tn&lt;/tt&gt; operator)"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -460,7 +497,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="UI for PROPERTIES"/>
+            app:text="UI for &lt;tt&gt;PROPERTIES&lt;/tt&gt;"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -485,7 +522,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Support .b.notebook search expression"/>
+            app:text="Support &lt;tt&gt;.b.notebook&lt;/tt&gt; search expression"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -531,7 +568,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Support “d” (deadline) search operator"/>
+            app:text="Support &lt;tt&gt;d&lt;/tt&gt; (deadline) search operator"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -599,7 +636,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Multiple .i expressions supported"/>
+            app:text="Multiple &lt;tt&gt;.i&lt;/tt&gt; expressions supported"/>
 
         <TextView
             style="@style/WhatsNewVersion"
@@ -633,11 +670,11 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Search operator “p” (priority) added"/>
+            app:text="Search operator &lt;tt&gt;p&lt;/tt&gt; (priority) added"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Search operator “s.day” upgraded"/>
+            app:text="Search operator &lt;tt&gt;s.day&lt;/tt&gt; upgraded"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"

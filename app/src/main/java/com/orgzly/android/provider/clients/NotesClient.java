@@ -468,7 +468,8 @@ public class NotesClient {
     }
 
     public static CursorLoader getLoaderForAgenda(Context context, String query) throws SQLException {
-        return getLoaderForQuery(context, query,  DatabaseUtils.WHERE_EXISTING_NOTES + " AND " + DatabaseUtils.WHERE_NOTES_WITH_TIMES);
+        String selection = DatabaseUtils.WHERE_EXISTING_NOTES + " AND " + DatabaseUtils.WHERE_NOTES_WITH_TIMES;
+        return getLoaderForQuery(context, query, selection);
     }
 
     private static CursorLoader getLoaderForQuery(Context context, String query, String selection) throws SQLException {
