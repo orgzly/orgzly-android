@@ -30,6 +30,19 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
                 .show()
     }
 
+    override fun onCreatedAtPreferencesChanged() {
+        AlertDialog.Builder(this)
+                .setTitle(R.string.created_keyword_configuration_changed_dialog_title)
+                .setMessage(R.string.created_keyword_configuration_changed_dialog_message)
+                .setPositiveButton(R.string.yes) { _, _ ->
+                    val intent = Intent(this, ActionService::class.java)
+                    intent.action = AppIntent.ACTION_REPARSE_NOTES
+                    startService(intent)
+                }
+                .setNegativeButton(R.string.not_now, null)
+                .show()
+    }
+
     /**
      * Wipe database, after prompting user for confirmation.
      */

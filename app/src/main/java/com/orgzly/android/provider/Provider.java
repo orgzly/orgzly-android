@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+
 import com.orgzly.BuildConfig;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
@@ -453,7 +454,7 @@ public class Provider extends ContentProvider {
         Note rootNote = Note.newRootNote(bookId);
 
         ContentValues values = new ContentValues();
-        NotesClient.toContentValues(values, rootNote);
+        NotesClient.toContentValues(values, rootNote, AppPreferences.createdAtProperty(getContext()));
         replaceTimestampRangeStringsWithIds(db, values);
 
         return db.insertOrThrow(DbNote.TABLE, null, values);
@@ -1366,7 +1367,7 @@ public class Provider extends ContentProvider {
                             ContentValues values = new ContentValues();
 
                             DbNote.toContentValues(values, position);
-                            DbNote.toContentValues(db, values, node.getHead());
+                            DbNote.toContentValues(db, values, node.getHead(), AppPreferences.createdAtProperty(getContext()));
 
                             long noteId = db.insertOrThrow(DbNote.TABLE, null, values);
 
@@ -1493,6 +1494,17 @@ public class Provider extends ContentProvider {
             }
 
             values.remove(ProviderContract.Notes.UpdateParam.CLOSED_STRING);
+        }
+
+        if (values.containsKey(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING)) {
+            String str = values.getAsString(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING);
+            if (! TextUtils.isEmpty(str)) {
+                values.put(DbNote.CREATED_AT_RANGE_ID, getOrInsertOrgRange(db, OrgRange.parse(str)));
+            } else {
+                values.putNull(DbNote.CREATED_AT_RANGE_ID);
+            }
+
+            values.remove(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING);
         }
 
         if (values.containsKey(ProviderContract.Notes.UpdateParam.CLOCK_STRING)) {

@@ -164,6 +164,23 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
             setDefaultStateForNewNote()
         }
 
+        if (getString(R.string.pref_key_is_created_at_added) == key || getString(R.string.pref_key_created_at_property) == key) {
+            if (getString(R.string.pref_key_is_created_at_added) == key) {
+                val value = sharedPreferences.getBoolean(key, resources.getBoolean(R.bool.pref_default_value_is_created_at_added))
+                AppPreferences.createdAt(context, value)
+            } else {
+                val value = sharedPreferences.getString(key, resources.getString(R.string.pref_default_created_at_property))
+                AppPreferences.createdAtProperty(context, value)
+            }
+
+            /* Re-parse notes. */
+            ActivityUtils.closeSoftKeyboard(activity)
+
+            mListener?.onCreatedAtPreferencesChanged()
+
+            setDefaultStateForNewNote()
+        }
+
         /* Recreate activity if preference change requires it. */
         for (res in REQUIRE_ACTIVITY_RESTART) {
             if (key == getString(res)) {
@@ -291,6 +308,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
     interface SettingsFragmentListener {
         fun onStateKeywordsPreferenceChanged()
+        fun onCreatedAtPreferencesChanged()
         fun onDatabaseClearRequest()
         fun onGettingStartedNotebookReloadRequest()
         fun onWhatsNewDisplayRequest()

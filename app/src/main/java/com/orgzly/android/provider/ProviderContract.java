@@ -140,6 +140,7 @@ public class ProviderContract {
             public static final String SCHEDULED_STRING = "scheduled_string"; // TODO: This is range, rename.
             public static final String DEADLINE_STRING = "deadline_string";
             public static final String CLOSED_STRING = "closed_string";
+            public static final String CREATED_AT_STRING = "created_at_string";
             public static final String CLOCK_STRING = "clock_string";
         }
 
