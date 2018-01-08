@@ -215,9 +215,7 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
                 return true;
 
             case R.id.repos_options_menu_item_new_external_storage_directory:
-                if (AppPermissions.INSTANCE.isGrantedOrRequest((CommonActivity) getActivity(), AppPermissions.Usage.LOCAL_REPO)) {
-                    mListener.onRepoNewRequest(item.getItemId());
-                }
+                mListener.onRepoNewRequest(item.getItemId());
                 return true;
 
             default:
