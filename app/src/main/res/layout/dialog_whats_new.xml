@@ -23,6 +23,23 @@
 
 
 
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.6.2-beta.2"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fall back to internal browser if device is not handling &lt;tt&gt;OPEN_DOCUMENT_TREE&lt;/tt&gt; &lt;i&gt;(thanks for the crash report!)&lt;/i&gt;"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Allow uppercase &lt;tt&gt;AND&lt;/tt&gt; and &lt;tt&gt;OR&lt;/tt&gt; logical operators"/>
+
+
+
+
         <TextView
             style="@style/WhatsNewVersion"
             android:text="v1.6.2-beta.1"
