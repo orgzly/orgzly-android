@@ -23,6 +23,8 @@ public class AppIntent {
     public static final String ACTION_IMPORT_GETTING_STARTED_NOTEBOOK = "com.orgzly.intent.action.IMPORT_GETTING_STARTED_NOTEBOOK";
     public static final String ACTION_REPARSE_NOTES = "com.orgzly.intent.action.REPARSE_NOTES";
     public static final String ACTION_CLEAR_DATABASE = "com.orgzly.intent.action.CLEAR_DATABASE";
+    public static final String ACTION_EXPORT_SEARCHES = "com.orgzly.intent.action.EXPORT_SEARCHES";
+    public static final String ACTION_IMPORT_SEARCHES = "com.orgzly.intent.action.IMPORT_SEARCHES";
 
     public static final String ACTION_OPEN_NOTE = "com.orgzly.intent.action.OPEN_NOTE";
     public static final String ACTION_OPEN_BOOK = "com.orgzly.intent.action.OPEN_BOOK";

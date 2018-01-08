@@ -481,7 +481,7 @@ public class NotesClient {
 
     public static Cursor getCursorForBook(Context context, String bookName) throws SQLException {
         /* Create a query with a book name condition. */
-        InternalQueryBuilder builder = new InternalQueryBuilder(context);
+        InternalQueryBuilder builder = new InternalQueryBuilder();
         String query = builder.build(new Query(new Condition.InBook(bookName)));
 
         return context.getContentResolver().query(
@@ -497,7 +497,8 @@ public class NotesClient {
     }
 
     public static CursorLoader getLoaderForAgenda(Context context, String query) throws SQLException {
-        return getLoaderForQuery(context, query,  DatabaseUtils.WHERE_EXISTING_NOTES + " AND " + DatabaseUtils.WHERE_NOTES_WITH_TIMES);
+        String selection = DatabaseUtils.WHERE_EXISTING_NOTES + " AND " + DatabaseUtils.WHERE_NOTES_WITH_TIMES;
+        return getLoaderForQuery(context, query, selection);
     }
 
     private static CursorLoader getLoaderForQuery(Context context, String query, String selection) throws SQLException {

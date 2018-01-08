@@ -1,10 +1,7 @@
 package com.orgzly.android.filter
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import com.orgzly.R
 import com.orgzly.android.AppIntent

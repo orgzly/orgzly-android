@@ -1,7 +1,6 @@
 package com.orgzly.android.espresso;
 
 import android.content.Intent;
-import android.os.Environment;
 import android.support.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
@@ -13,7 +12,6 @@ import org.junit.Test;
 
 import java.io.File;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.replaceText;
@@ -22,8 +20,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasToString;
 
 /**
  *
@@ -48,44 +44,6 @@ public class ReposActivityTest extends OrgzlyTest {
         }
 
         activityRule.launchActivity(intent);
-    }
-
-    @Test
-    public void testBrowserDirectorySelection() {
-        startActivityWithIntent(Intent.ACTION_VIEW, null, null);
-
-        String d = Environment.getExternalStorageDirectory().getPath();
-        String repoUri = "file:" + d;
-
-        onView(withId(R.id.fragment_repos_directory)).perform(click());
-        onView(withId(R.id.fragment_repo_directory_browse_button)).perform(click());
-        onView(withId(R.id.browser_title)).check(matches(withText(d)));
-        onData(hasToString(containsString("Download"))).perform(click());
-        onView(withId(R.id.browser_button_use)).perform(click());
-        onView(withId(R.id.fragment_repo_directory)).check(matches(withText(repoUri + "/Download")));
-    }
-
-    @Test
-    public void testDirectoryRepoSelectingDifferentDirectoryThenStarting() {
-        String repoUri = "file:" + Environment.getExternalStorageDirectory().getPath();
-
-        shelfTestUtils.setupRepo(repoUri);
-        startActivityWithIntent(Intent.ACTION_VIEW, null, null);
-
-        onListItem(0).perform(click());
-        onView(withId(R.id.fragment_repo_directory_browse_button)).perform(click());
-        onData(hasToString(containsString("Download"))).perform(click());
-        onView(withId(R.id.browser_button_use)).perform(click());
-        onView(withId(R.id.fragment_repo_directory)).check(matches(withText(repoUri + "/Download")));
-    }
-
-    @Test
-    public void testDirectoryRepoBrowsingStartsWithInvalidDirectory() {
-        startActivityWithIntent(Intent.ACTION_VIEW, null, null);
-
-        onView(withId(R.id.fragment_repos_directory)).perform(click());
-        onView(withId(R.id.fragment_repo_directory)).perform(replaceText("non-existent-directory"));
-        onView(withId(R.id.fragment_repo_directory_browse_button)).perform(click());
     }
 
     @Test

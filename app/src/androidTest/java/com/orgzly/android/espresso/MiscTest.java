@@ -11,6 +11,7 @@ import com.orgzly.R;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.MainActivity;
+import com.orgzly.android.ui.ReposActivity;
 
 import org.hamcrest.Matcher;
 import org.junit.Rule;
@@ -29,7 +30,6 @@ import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.DrawerActions.close;
 import static android.support.test.espresso.contrib.DrawerActions.open;
 import static android.support.test.espresso.contrib.PickerActions.setDate;
 import static android.support.test.espresso.contrib.PickerActions.setTime;
@@ -439,71 +439,87 @@ public class MiscTest extends OrgzlyTest {
     }
 
     /**
-     * Visits every fragment used in the app and calls {@link #fragmentTest} on it.
+     * Visits every fragment used in the main activity and calls {@link #fragmentTest} on it.
      */
     @Test
-    public void testFragments() {
+    public void testMainActivityFragments() {
         shelfTestUtils.setupBook("book-one", "Preface\n\n* Note");
         shelfTestUtils.setupRepo("file:/");
         shelfTestUtils.setupRepo("dropbox:/orgzly");
         activityRule.launchActivity(null);
-        fragmentTest(true, withId(R.id.fragment_books_container));
+
+        // Books
+        fragmentTest(activityRule, true, withId(R.id.fragment_books_container));
+
+        // Book
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
-        fragmentTest(true, withId(R.id.fragment_book_view_flipper));
+        fragmentTest(activityRule, true, withId(R.id.fragment_book_view_flipper));
+
+        // Note
         onView(withText("Note")).perform(click());
-        fragmentTest(false, withId(R.id.fragment_note_container));
+        fragmentTest(activityRule, false, withId(R.id.fragment_note_container));
         pressBack();
-        onListItem(0).perform(click());
-        fragmentTest(false, withId(R.id.fragment_book_preface_container));
-        pressBack();
-        pressBack();
-        onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        fragmentTest(false, withText(R.string.look_and_feel));
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_REPOS);
-        fragmentTest(false, withId(R.id.fragment_repos_flipper));
-        onListItem(1).perform(click());
-        fragmentTest(false, withId(R.id.fragment_repo_directory_container));
-        onView(withId(R.id.fragment_repo_directory_browse_button)).perform(click());
-        fragmentTest(false, withId(R.id.browser_container));
-        pressBack();
-        pressBack();
-        onView(withId(R.id.fragment_repos_flipper)).check(matches(isDisplayed()));
-        onListItem(0).perform(click());
-        fragmentTest(false, withId(R.id.fragment_repo_dropbox_container));
-        pressBack();
-        pressBack();
-        pressBack();
-        pressBack();
-        pressBack(); // In Settings after this
-        onView(withId(R.id.drawer_layout)).perform(open());
-        fragmentTest(false, withText(R.string.searches));
-        onView(withId(R.id.drawer_layout)).perform(close());
-        onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withText("Scheduled")).perform(click());
-        fragmentTest(true, withId(R.id.fragment_query_view_flipper));
 
-        // Open agenda
-        searchForText("t.tag3 ad.3");
-        fragmentTest(true, withId(R.id.fragment_agenda_container));
+        // Preface
+        onListItem(0).perform(click());
+        fragmentTest(activityRule, false, withId(R.id.fragment_book_preface_container));
 
+        // Opened drawer
+        onView(withId(R.id.drawer_layout)).perform(open());
+        fragmentTest(activityRule, false, withText(R.string.searches));
+
+        // Saved searches
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.searches)).perform(click());
-        fragmentTest(true, withId(R.id.fragment_filters_flipper));
+        fragmentTest(activityRule, true, withId(R.id.fragment_filters_flipper));
+
+        // Search
         onListItem(0).perform(click());
-        fragmentTest(false, withId(R.id.fragment_filter_flipper));
+        fragmentTest(activityRule, false, withId(R.id.fragment_filter_flipper));
+
+        // Search results
+        onView(withId(R.id.drawer_layout)).perform(open());
+        onView(withText("Scheduled")).perform(click());
+        fragmentTest(activityRule, true, withId(R.id.fragment_query_view_flipper));
+
+        // Agenda
+        searchForText("t.tag3 ad.3");
+        fragmentTest(activityRule, true, withId(R.id.fragment_agenda_container));
     }
 
-    private void fragmentTest(boolean hasSearchMenuItem, Matcher<View> matcher) {
+    @Test
+    public void testReposActivityFragments() {
+        ActivityTestRule rule = new ActivityTestRule<>(ReposActivity.class, true, false);
+
+        shelfTestUtils.setupBook("book-one", "Preface\n\n* Note");
+        shelfTestUtils.setupRepo("file:/");
+        shelfTestUtils.setupRepo("dropbox:/orgzly");
+        rule.launchActivity(null);
+
+        // List of repos
+        fragmentTest(rule, false, withId(R.id.fragment_repos_flipper));
+
+        // Directory repo
+        onListItem(1).perform(click());
+        fragmentTest(rule, false, withId(R.id.fragment_repo_directory_container));
+        pressBack();
+
+        // Dropbox repo
+        onListItem(0).perform(click());
+        fragmentTest(rule, false, withId(R.id.fragment_repo_dropbox_container));
+    }
+
+    private void fragmentTest(ActivityTestRule rule, boolean hasSearchMenuItem, Matcher<View> matcher) {
         onView(matcher).check(matches(isDisplayed()));
-        toPortrait(activityRule);
+        toPortrait(rule);
         onView(matcher).check(matches(isDisplayed()));
-        toLandscape(activityRule);
+        toLandscape(rule);
         onView(matcher).check(matches(isDisplayed()));
-        toPortrait(activityRule);
+        toPortrait(rule);
         onView(matcher).check(matches(isDisplayed()));
-        toLandscape(activityRule);
+        toLandscape(rule);
         onView(matcher).check(matches(isDisplayed()));
-        toPortrait(activityRule);
+        toPortrait(rule);
 
         if (hasSearchMenuItem) {
             onView(withId(R.id.activity_action_search)).check(matches(isDisplayed()));

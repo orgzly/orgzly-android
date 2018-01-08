@@ -33,6 +33,7 @@ abstract class CommonActivity : AppCompatActivity() {
     /* Dialogs and Snackbars. */
     private var snackbar: Snackbar? = null
     private var whatsNewDialog: AlertDialog? = null
+    private var promptDialog: AlertDialog? = null
     private var progressDialog: ProgressDialog? = null
 
     /* Actions. */
@@ -191,11 +192,18 @@ abstract class CommonActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        /* Dismiss What's new dialog. */
+        /* Dismiss dialogs. */
+
         whatsNewDialog?.let {
             it.dismiss()
             whatsNewDialog = null
         }
+
+        promptDialog?.let {
+            it.dismiss()
+            promptDialog = null
+        }
+
     }
 
     protected fun displayWhatsNewDialog() {
@@ -257,7 +265,7 @@ abstract class CommonActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
-            AppPermissions.Usage.BOOK_EXPORT.ordinal -> {
+            AppPermissions.Usage.BOOK_EXPORT.ordinal, AppPermissions.Usage.FILTERS_EXPORT_IMPORT.ordinal -> {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     actionAfterPermissionGrant?.let {
@@ -272,6 +280,18 @@ abstract class CommonActivity : AppCompatActivity() {
     fun popBackStackAndCloseKeyboard() {
         supportFragmentManager.popBackStack()
         ActivityUtils.closeSoftKeyboard(this)
+    }
+
+
+    fun promptUser(title: Int, message: String, positiveAction: Runnable) {
+        promptDialog?.dismiss()
+
+        promptDialog = AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(R.string.ok, { _, _ -> positiveAction.run() })
+                .setNegativeButton(R.string.cancel, null)
+                .show()
     }
 
     companion object {

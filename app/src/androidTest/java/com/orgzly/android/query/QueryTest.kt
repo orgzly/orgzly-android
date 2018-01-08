@@ -222,7 +222,7 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
         val sqlQuery = sqlBuilder.build(query)
 
         // Build query
-        val queryBuilder = DottedQueryBuilder(context)
+        val queryBuilder = DottedQueryBuilder()
         actualQueryString = queryBuilder.build(query)
 
         actualQuerySortOrders = query.sortOrders

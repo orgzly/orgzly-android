@@ -11,6 +11,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -104,14 +105,18 @@ public class MainActivity extends CommonActivity
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
-    /** isDrawerOpen() is not reliable - there was a race condition - closing drawer VS fragment resume. */
+    /**
+     * isDrawerOpen() is not reliable - there was a race condition - closing drawer VS fragment resume.
+     */
     private boolean mIsDrawerOpen = false;
 
 
     private CharSequence mSavedTitle;
     private CharSequence mSavedSubtitle;
 
-    /** Original title used when book is not being displayed. */
+    /**
+     * Original title used when book is not being displayed.
+     */
     private CharSequence mDefaultTitle;
 
     private ActionMode mActionMode;
@@ -344,7 +349,7 @@ public class MainActivity extends CommonActivity
 
         if (isNewVersion) {
             /* Import Getting Started notebook. */
-            if (! AppPreferences.isGettingStartedNotebookLoaded(this)) {
+            if (!AppPreferences.isGettingStartedNotebookLoaded(this)) {
                 Intent intent = new Intent(this, ActionService.class);
                 intent.setAction(AppIntent.ACTION_IMPORT_GETTING_STARTED_NOTEBOOK);
                 startService(intent);
@@ -493,7 +498,7 @@ public class MainActivity extends CommonActivity
                     /* If searching from book, add book name to query. */
                     Book book = getActiveFragmentBook();
                     if (book != null) {
-                        DottedQueryBuilder builder = new DottedQueryBuilder(getApplicationContext());
+                        DottedQueryBuilder builder = new DottedQueryBuilder();
                         String query = builder.build(new Query(new Condition.InBook(book.getName())));
                         searchView.setQuery(query + " ", false);
                     }
@@ -516,7 +521,7 @@ public class MainActivity extends CommonActivity
 
                 /* Normalize search query. */
                 Query query = new DottedQueryParser().parse(str);
-                DottedQueryBuilder builder = new DottedQueryBuilder(getApplicationContext());
+                DottedQueryBuilder builder = new DottedQueryBuilder();
                 String queryNormalized = builder.build(query);
 
                 DisplayManager.displayQuery(getSupportFragmentManager(), queryNormalized);
@@ -541,7 +546,7 @@ public class MainActivity extends CommonActivity
     }
 
     private void menuItemsSetVisible(Menu menu, boolean visible) {
-        for(int i = 0; i < menu.size(); i++){
+        for (int i = 0; i < menu.size(); i++) {
             menu.getItem(i).setVisible(visible);
         }
     }
@@ -620,9 +625,9 @@ public class MainActivity extends CommonActivity
      * Note has been clicked in list view.
      *
      * @param fragment Fragment from which the action came.
-     * @param view view
+     * @param view     view
      * @param position note position in list
-     * @param noteId note ID
+     * @param noteId   note ID
      */
     @Override
     public void onNoteClick(NoteListFragment fragment, View view, int position, long id, long noteId) {
@@ -645,9 +650,9 @@ public class MainActivity extends CommonActivity
      * Note has been long-clicked in list view.
      *
      * @param fragment Fragment from which the action came.
-     * @param view view
+     * @param view     view
      * @param position note position in list
-     * @param noteId note ID
+     * @param noteId   note ID
      */
     @Override
     public void onNoteLongClick(NoteListFragment fragment, View view, int position, long id, long noteId) {
@@ -865,7 +870,7 @@ public class MainActivity extends CommonActivity
         final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
 
         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
-            switch (which){
+            switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
                     boolean deleteLinked = checkBox.isChecked();
 
@@ -964,7 +969,7 @@ public class MainActivity extends CommonActivity
     }
 
     private void doRenameBook(Book book, String name, TextInputLayout inputLayout) {
-        if (! TextUtils.isEmpty(name)) {
+        if (!TextUtils.isEmpty(name)) {
             inputLayout.setError(null);
             mSyncFragment.renameBook(book, name);
 
@@ -976,6 +981,10 @@ public class MainActivity extends CommonActivity
     @Override
     public void onBookLinkSetRequest(final long bookId) {
         final Book book = BooksClient.get(this, bookId);
+
+        if (book == null) {
+            return;
+        }
 
         Map<String, Repo> repos = ReposClient.getAll(this);
 
@@ -990,15 +999,9 @@ public class MainActivity extends CommonActivity
         /* Add "no link" item. */
         items.put(getString(R.string.no_link), itemIndex++);
 
-        /* Add repositories.
-         * FIXME: Skipping ContentRepo for now, as we can't construct Uri for a non-existent document.
-         * Repo might need changing to be repo uri + path
-         */
-        for (String repoUri: repos.keySet()) {
-            Repo repo = repos.get(repoUri);
-            if (! (repo instanceof ContentRepo)) {
-                items.put(repoUri, itemIndex++);
-            }
+        /* Add repositories. */
+        for (String repoUri : repos.keySet()) {
+            items.put(repoUri, itemIndex++);
         }
 
         View view = getLayoutInflater().inflate(R.layout.dialog_spinner, null, false);
@@ -1113,7 +1116,7 @@ public class MainActivity extends CommonActivity
     /**
      * Sync finished.
      *
-     * Display snackbar with a message.  If it makes sense also set action to open a repository..
+     * Display Snackbar with a message.  If it makes sense also set action to open a repository.
      *
      * @param msg Error message if syncing failed, null if it was successful
      */
@@ -1340,7 +1343,7 @@ public class MainActivity extends CommonActivity
          * This check is only needed for when drawer is opened for the first time
          * programmatically, before fragment got to its onResume().
          */
-        if (! mIsDrawerOpen) {
+        if (!mIsDrawerOpen) {
             /* Change titles. */
             getSupportActionBar().setTitle(mSavedTitle);
             getSupportActionBar().setSubtitle(mSavedSubtitle);
@@ -1420,7 +1423,7 @@ public class MainActivity extends CommonActivity
     @Override
     public void onDrawerItemClicked(final DrawerFragment.DrawerItem item) {
         /* Don't end action mode if the click was on book - it could be the same book. */
-        if (! (item instanceof DrawerFragment.BookItem)) {
+        if (!(item instanceof DrawerFragment.BookItem)) {
             finishActionMode();
         }
 
@@ -1457,5 +1460,34 @@ public class MainActivity extends CommonActivity
      */
     private void runDelayedAfterDrawerClose(Runnable runnable) {
         new Handler().postDelayed(runnable, 300);
+    }
+
+    @Override
+    public void onFiltersExportRequest(int title, @NonNull String message) {
+        exportImportFilters(title, message, AppIntent.ACTION_EXPORT_SEARCHES);
+    }
+
+    @Override
+    public void onFiltersImportRequest(int title, @NonNull String message) {
+        exportImportFilters(title, message, AppIntent.ACTION_IMPORT_SEARCHES);
+    }
+
+    private void exportImportFilters(int title, String message, String action) {
+        promptUser(title, message, () -> {
+            setActionAfterPermissionGrant(() -> {
+                Intent intent = new Intent(MainActivity.this, ActionService.class);
+                intent.setAction(action);
+                startService(intent);
+            });
+
+            /* Check for permission. */
+            boolean isGranted = AppPermissions.INSTANCE.isGrantedOrRequest(
+                    MainActivity.this, AppPermissions.Usage.FILTERS_EXPORT_IMPORT);
+
+            if (isGranted) {
+                getActionAfterPermissionGrant().run();
+                setActionAfterPermissionGrant(null);
+            }
+        });
     }
 }

@@ -1,21 +1,19 @@
 package com.orgzly.android.query
 
 import org.intellij.lang.annotations.Language
-import java.util.*
-import java.util.regex.Matcher
 
 abstract class QueryParser {
     data class ConditionMatch(
             @Language("RegExp") val regex: String,
-            val rule: (matcher: Matcher) -> Condition?)
+            val rule: (match: MatchResult) -> Condition?)
 
     data class SortOrderMatch(
             @Language("RegExp") val regex: String,
-            val rule: (matcher: Matcher) -> SortOrder?)
+            val rule: (match: MatchResult) -> SortOrder?)
 
     data class OptionMatch(
             @Language("RegExp") val regex: String,
-            val rule: (matcher: Matcher, options: Options) -> Options?)
+            val rule: (match: MatchResult, options: Options) -> Options?)
 
     protected abstract val groupOpen: String
     protected abstract val groupClose: String
@@ -58,7 +56,7 @@ abstract class QueryParser {
         }
 
         if (initialExpr.isNotEmpty()) {
-            members.addAll(Arrays.asList(*initialExpr))
+            members.addAll(initialExpr)
         }
 
         tokens@ while (tokenizer.hasMoreTokens()) {
@@ -105,9 +103,9 @@ abstract class QueryParser {
                 else -> {
                     // Check if token is a condition.
                     for (def in conditions) {
-                        val matcher = def.regex.toPattern().matcher(token)
-                        if (matcher.find()) {
-                            val e = def.rule(matcher)
+                        val match = def.regex.toRegex().find(token)
+                        if (match != null) {
+                            val e = def.rule(match)
                             if (e != null) {
                                 addCondition(e)
                                 continue@tokens
@@ -117,9 +115,9 @@ abstract class QueryParser {
 
                     // Check if token is a sort order.
                     for (def in sortOrders) {
-                        val matcher = def.regex.toPattern().matcher(token)
-                        if (matcher.find()) {
-                            val e = def.rule(matcher)
+                        val match = def.regex.toRegex().find(token)
+                        if (match != null) {
+                            val e = def.rule(match)
                             if (e != null) {
                                 orders.add(e)
                                 continue@tokens
@@ -129,9 +127,9 @@ abstract class QueryParser {
 
                     // Check if token is an instruction.
                     for (def in supportedOptions) {
-                        val matcher = def.regex.toPattern().matcher(token)
-                        if (matcher.find()) {
-                            val e = def.rule(matcher, options)
+                        val match = def.regex.toRegex().find(token)
+                        if (match != null) {
+                            val e = def.rule(match, options)
                             if (e != null) {
                                 options = e
                                 continue@tokens

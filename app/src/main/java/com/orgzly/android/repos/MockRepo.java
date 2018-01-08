@@ -38,6 +38,11 @@ public class MockRepo implements Repo {
     }
 
     @Override
+    public Uri getUriForFilename(String fileName) {
+        return localDbRepo.getUriForFilename(fileName);
+    }
+
+    @Override
     public List<VersionedRook> getBooks() throws IOException {
         try {
             Thread.sleep(SLEEP_FOR_GET_BOOKS);
