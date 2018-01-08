@@ -23,6 +23,18 @@
 
 
 
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.6.2-beta.3"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support &lt;tt&gt;now&lt;/tt&gt; as time in query"/>
+
+
+
+
 
         <TextView
             style="@style/WhatsNewVersion"
