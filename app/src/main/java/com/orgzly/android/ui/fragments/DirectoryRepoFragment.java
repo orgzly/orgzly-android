@@ -1,5 +1,7 @@
 package com.orgzly.android.ui.fragments;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -101,27 +103,8 @@ public class DirectoryRepoFragment extends RepoFragment {
 
         MiscUtils.clearErrorOnTextChange(mUriView, directoryInputLayout);
 
-
-        View.OnClickListener browser;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            browser = v -> {
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                getActivity().startActivityForResult(intent, ReposActivity.ACTION_OPEN_DOCUMENT_TREE_REQUEST_CODE);
-            };
-        } else {
-            browser = v -> {
-                /* Close the keyboard before opening the browser. */
-                if (getActivity() != null) {
-                    ActivityUtils.closeSoftKeyboard(getActivity());
-                }
-
-                /* Do not open the browser unless we have the storage permission. */
-                if (AppPermissions.INSTANCE.isGrantedOrRequest((CommonActivity) getActivity(), AppPermissions.Usage.LOCAL_REPO)) {
-                    startBrowserDelayed();
-                }
-            };
-        }
-        view.findViewById(R.id.fragment_repo_directory_browse_button).setOnClickListener(browser);
+        view.findViewById(R.id.fragment_repo_directory_browse_button)
+                .setOnClickListener(v -> onOpenBrowser());
 
         if (savedInstanceState == null && TextUtils.isEmpty(mUriView.getText()) && mSelectedUri == null) {
             setFromArgument();
@@ -130,26 +113,55 @@ public class DirectoryRepoFragment extends RepoFragment {
         return view;
     }
 
+    private void onOpenBrowser() {
+        boolean browserStarted = false;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+
+            /*
+             * Apparently some devices do not handle this intent.
+             * Fallback to internal browser.
+             */
+            try {
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                getActivity().startActivityForResult(intent, ReposActivity.ACTION_OPEN_DOCUMENT_TREE_REQUEST_CODE);
+                browserStarted = true;
+
+            } catch (ActivityNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (! browserStarted) {
+            Activity activity = getActivity();
+
+            if (activity != null) {
+                /* Close the keyboard before opening the browser. */
+                ActivityUtils.closeSoftKeyboard(getActivity());
+
+                /* Open internal browser. */
+                ((CommonActivity) activity).runWithPermission(
+                        AppPermissions.Usage.LOCAL_REPO,
+                        this::startBrowserDelayed
+                );
+            }
+        }
+    }
+    
+    /**
+     * Delay opening the browser.
+     * Buttons would briefly appear in the middle of the screen because of the opened keyboard.
+     */
+    private void startBrowserDelayed() {
+        new Handler().postDelayed(this::startBrowser, 100);
+    }
+
     private void setFromArgument() {
         if (getArguments() != null && getArguments().containsKey(ARG_REPO_ID)) {
             long repoId = getArguments().getLong(ARG_REPO_ID);
 
             mSelectedUri = Uri.parse(ReposClient.getUrl(getActivity(), repoId));
         }
-    }
-
-    /**
-     * Delay opening the browser.
-     * Buttons would briefly appear in the middle of the screen
-     * because of the opened keyboard.
-     */
-    private void startBrowserDelayed() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startBrowser();
-            }
-        }, 100);
     }
 
     private void startBrowser() {

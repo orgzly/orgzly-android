@@ -15,17 +15,34 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/dialog_whats_new_follow"
+            android:id="@+id/dialog_whats_new_intro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/padding_4"
-            android:text="@string/whats_new_follow"/>
+            android:text="@string/whats_new_intro"/>
+
 
 
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.6.2-beta.1"
+            android:text="v1.6.2-beta.2"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fall back to internal browser if device is not handling &lt;tt&gt;OPEN_DOCUMENT_TREE&lt;/tt&gt; &lt;i&gt;(thanks for the crash report!)&lt;/i&gt;"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Allow uppercase &lt;tt&gt;AND&lt;/tt&gt; and &lt;tt&gt;OR&lt;/tt&gt; logical operators"/>
+
+
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.6.2-beta.1"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -68,7 +85,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.6.1"
+            android:text="v1.6.1"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -108,7 +125,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.6"
+            android:text="v1.6"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -141,7 +158,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.5.3"
+            android:text="v1.5.3"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -162,7 +179,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.5.2"
+            android:text="v1.5.2"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -191,7 +208,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.5.1"
+            android:text="v1.5.1"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -200,7 +217,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.5"
+            android:text="v1.5"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -245,7 +262,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.4.13"
+            android:text="v1.4.13"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -294,7 +311,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.4.12"
+            android:text="v1.4.12"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -303,7 +320,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.4.11"
+            android:text="v1.4.11"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -332,7 +349,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.4.10"
+            android:text="v1.4.10"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -361,7 +378,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.4.9"
+            android:text="v1.4.9"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -378,7 +395,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.4.8"
+            android:text="v1.4.8"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -403,7 +420,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.4.7"
+            android:text="v1.4.7"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -420,7 +437,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.4.6"
+            android:text="v1.4.6"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -449,7 +466,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.4.5"
+            android:text="v1.4.5"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -458,7 +475,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.4.4"
+            android:text="v1.4.4"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -479,7 +496,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.4.3"
+            android:text="v1.4.3"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -488,7 +505,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.4.2"
+            android:text="v1.4.2"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -513,7 +530,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.4.1"
+            android:text="v1.4.1"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -550,7 +567,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.4"
+            android:text="v1.4"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -563,7 +580,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.3.5"
+            android:text="v1.3.5"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -580,7 +597,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.3.4"
+            android:text="v1.3.4"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -597,7 +614,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.3.3"
+            android:text="v1.3.3"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -614,7 +631,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.3.2"
+            android:text="v1.3.2"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -627,7 +644,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.3.1"
+            android:text="v1.3.1"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -640,7 +657,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.3"
+            android:text="v1.3"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -661,7 +678,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.2.2"
+            android:text="v1.2.2"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -690,7 +707,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.2.1"
+            android:text="v1.2.1"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -699,7 +716,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.2"
+            android:text="v1.2"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -720,7 +737,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.1.1"
+            android:text="v1.1.1"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -745,7 +762,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.1"
+            android:text="v1.1"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -758,7 +775,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="1.0"
+            android:text="v1.0"
             tools:ignore="HardcodedText"/>
 
         <TextView

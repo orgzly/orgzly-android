@@ -21,8 +21,8 @@ public class WhatsNewDialog {
                 ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                         .inflate(R.layout.dialog_whats_new, null, false);
 
-        TextView view = ((TextView) layoutView.findViewById(R.id.dialog_whats_new_follow));
-        view.setText(fromHtml(context.getString(R.string.whats_new_follow)));
+        TextView view = ((TextView) layoutView.findViewById(R.id.dialog_whats_new_intro));
+        view.setText(fromHtml(context.getString(R.string.whats_new_intro)));
         view.setMovementMethod(LinkMovementMethod.getInstance());
 
         return new AlertDialog.Builder(context)

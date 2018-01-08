@@ -92,8 +92,6 @@ abstract class CommonActivity : AppCompatActivity() {
     open fun recreateActivityForSettingsChange() {
     }
 
-    protected var actionAfterPermissionGrant: Runnable? = null
-
     private val snackbarBackgroundColor: Int
         get() {
             val arr = obtainStyledAttributes(R.styleable.ColorScheme)
@@ -263,19 +261,35 @@ abstract class CommonActivity : AppCompatActivity() {
         }
     }
 
+
+    private var runAfterPermissionGrant: Runnable? = null
+
+    fun runWithPermission(usage: AppPermissions.Usage, runnable: Runnable) {
+        runAfterPermissionGrant = runnable
+
+        /* Check for permission. */
+        val isGranted = AppPermissions.isGrantedOrRequest(this, usage)
+
+        if (isGranted) {
+            runAfterPermissionGrant?.run()
+            runAfterPermissionGrant = null
+        }
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
-            AppPermissions.Usage.BOOK_EXPORT.ordinal, AppPermissions.Usage.FILTERS_EXPORT_IMPORT.ordinal -> {
-                // If request is cancelled, the result arrays are empty.
+            in AppPermissions.Usage.values().map { it.ordinal } -> {
+                /* If request is cancelled, the result arrays are empty. */
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    actionAfterPermissionGrant?.let {
+                    runAfterPermissionGrant?.let {
                         it.run()
-                        actionAfterPermissionGrant = null
+                        runAfterPermissionGrant = null
                     }
                 }
             }
         }
     }
+
 
     fun popBackStackAndCloseKeyboard() {
         supportFragmentManager.popBackStack()
