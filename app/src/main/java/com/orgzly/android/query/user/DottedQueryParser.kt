@@ -80,7 +80,7 @@ open class DottedQueryParser : QueryParser() {
             SortOrderMatch("""^(\.)?o\.(?:closed|close|c)$""", { match ->
                 SortOrder.Closed(match.groupValues[1].isNotEmpty())
             }),
-            SortOrderMatch("""^(\.)?o\.(?:created|made|m)$""", { matcher ->
+            SortOrderMatch("""^(\.)?o\.(?:created|made|m)$""", { match ->
                 SortOrder.Created(match.groupValues[1].isNotEmpty())
             }),
             SortOrderMatch("""^(\.)?o\.(?:priority|prio|pri|p)$""", { match ->
