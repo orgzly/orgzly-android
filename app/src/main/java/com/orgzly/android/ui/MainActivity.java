@@ -52,7 +52,6 @@ import com.orgzly.android.query.Condition;
 import com.orgzly.android.query.Query;
 import com.orgzly.android.query.user.DottedQueryBuilder;
 import com.orgzly.android.query.user.DottedQueryParser;
-import com.orgzly.android.repos.ContentRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.fragments.BookFragment;
@@ -1069,15 +1068,9 @@ public class MainActivity extends CommonActivity
      */
     @Override
     public void onBookExportRequest(final long bookId) {
-        setActionAfterPermissionGrant(() -> mSyncFragment.exportBook(bookId));
-
-        /* Check for permissions. */
-        boolean isGranted = AppPermissions.INSTANCE.isGrantedOrRequest(this, AppPermissions.Usage.BOOK_EXPORT);
-
-        if (isGranted) {
-            getActionAfterPermissionGrant().run();
-            setActionAfterPermissionGrant(null);
-        }
+        runWithPermission(
+                AppPermissions.Usage.BOOK_EXPORT,
+                () -> mSyncFragment.exportBook(bookId));
     }
 
     @Override
@@ -1473,21 +1466,13 @@ public class MainActivity extends CommonActivity
     }
 
     private void exportImportFilters(int title, String message, String action) {
-        promptUser(title, message, () -> {
-            setActionAfterPermissionGrant(() -> {
-                Intent intent = new Intent(MainActivity.this, ActionService.class);
-                intent.setAction(action);
-                startService(intent);
-            });
-
-            /* Check for permission. */
-            boolean isGranted = AppPermissions.INSTANCE.isGrantedOrRequest(
-                    MainActivity.this, AppPermissions.Usage.FILTERS_EXPORT_IMPORT);
-
-            if (isGranted) {
-                getActionAfterPermissionGrant().run();
-                setActionAfterPermissionGrant(null);
-            }
-        });
+        promptUser(title, message, () -> runWithPermission(
+                AppPermissions.Usage.FILTERS_EXPORT_IMPORT,
+                () -> {
+                    Intent intent = new Intent(MainActivity.this, ActionService.class);
+                    intent.setAction(action);
+                    startService(intent);
+                }
+        ));
     }
 }
