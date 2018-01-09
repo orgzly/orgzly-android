@@ -62,7 +62,7 @@ open class DottedQueryBuilder {
                 "c$relString.${expr.interval}"
             }
 
-            is Condition.HasText -> expr.text
+            is Condition.HasText -> if (expr.isQuoted) quote(expr.text) else expr.text
 
             is Condition.Or ->
                 expr.operands.joinToString(prefix = if (isOuter) "" else "(", separator = " or ", postfix = if (isOuter) "" else ")") {

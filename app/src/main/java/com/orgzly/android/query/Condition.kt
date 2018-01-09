@@ -20,7 +20,7 @@ sealed class Condition {
     data class Deadline(val interval: QueryInterval, val relation: Relation) : Condition()
     data class Closed(val interval: QueryInterval, val relation: Relation) : Condition()
 
-    data class HasText(val text: String) : Condition()
+    data class HasText(val text: String, val isQuoted: Boolean) : Condition()
 
     data class And(val operands: List<Condition>) : Condition()
     data class Or(val operands: List<Condition>) : Condition()
