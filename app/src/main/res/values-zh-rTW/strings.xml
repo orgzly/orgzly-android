@@ -29,34 +29,34 @@
   <string name="query">查詢</string>
   <string name="done">完成</string>
   <string name="mark_as_done">標記為已完成</string>
-  <string name="mark_as_done_with_repeater">Reschedule %s</string>
-  <string name="reminder_snooze">Snooze</string>
-  <string name="close">Close</string>
-  <string name="import_">Import</string>
+  <string name="mark_as_done_with_repeater">重設日程表 %s</string>
+  <string name="reminder_snooze">延後</string>
+  <string name="close">關閉</string>
+  <string name="import_">匯入</string>
   <!-- "import" is reserved -->
-  <string name="export">Export</string>
-  <string name="imported">Imported</string>
-  <string name="created">Created</string>
-  <string name="states">States</string>
-  <string name="note">Note</string>
-  <string name="notes">Notes</string>
-  <string name="property">Property</string>
-  <string name="import_as">Import as…</string>
-  <string name="new_notebook">New notebook</string>
-  <string name="new_folder">New folder</string>
-  <string name="scheduled">Scheduled</string>
-  <string name="agenda">Agenda</string>
-  <string name="agenda_period">Agenda days</string>
-  <string name="time">Time</string>
-  <string name="repeater">Repeater</string>
+  <string name="export">匯出</string>
+  <string name="imported">已匯入</string>
+  <string name="created">已建立</string>
+  <string name="states">狀態</string>
+  <string name="note">筆記</string>
+  <string name="notes">筆記</string>
+  <string name="property">屬性</string>
+  <string name="import_as">匯入為</string>
+  <string name="new_notebook">新筆記</string>
+  <string name="new_folder">新資料夾</string>
+  <string name="scheduled">已排程</string>
+  <string name="agenda">議程</string>
+  <string name="agenda_period">議程日</string>
+  <string name="time">時間</string>
+  <string name="repeater">重複</string>
   <plurals name="notes_deleted">
-    <item quantity="other">Deleted <b>%d</b> notes</item>
+    <item quantity="other">已刪除 <b>%d</b> 筆記</item>
   </plurals>
-  <string name="no_notes_deleted">No notes deleted</string>
+  <string name="no_notes_deleted">沒有筆記被刪除</string>
   <plurals name="notes_cut">
-    <item quantity="other">Cut <b>%d</b> notes</item>
+    <item quantity="other">剪下 <b>%d</b> 筆記</item>
   </plurals>
-  <string name="no_notes_cut">No notes cut</string>
+  <string name="no_notes_cut">沒有筆記被剪下</string>
   <plurals name="notes_pasted">
     <item quantity="other">Pasted <b>%d</b> notes</item>
   </plurals>
