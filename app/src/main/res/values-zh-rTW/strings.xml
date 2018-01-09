@@ -60,29 +60,29 @@
   <plurals name="notes_pasted">
     <item quantity="other">已貼上 <b>%d</b> 筆記</item>
   </plurals>
-  <string name="no_notes_pasted">Nothing to paste</string>
-  <string name="fragment_note_title_hint">Title</string>
-  <string name="fragment_note_tags_hint" tools:ignore="typos">tag tag</string>
-  <string name="import_org_file">Import Org file</string>
-  <string name="state_spinner_prompt">State</string>
-  <string name="priority_spinner_prompt">Priority</string>
-  <string name="message_dropbox_unlinked">Unlinked from Dropbox</string>
-  <string name="message_dropbox_linked">Linked to Dropbox successfully</string>
+  <string name="no_notes_pasted">無法貼上</string>
+  <string name="fragment_note_title_hint">標題</string>
+  <string name="fragment_note_tags_hint" tools:ignore="typos">標記標籤</string>
+  <string name="import_org_file">匯入Org檔案</string>
+  <string name="state_spinner_prompt">狀態</string>
+  <string name="priority_spinner_prompt">優先順序</string>
+  <string name="message_dropbox_unlinked">取消Dropbox連結</string>
+  <string name="message_dropbox_linked">已成功連結到Dropbox</string>
   <!-- Preferences (Settings). -->
-  <string name="repos_preference_title">Repositories</string>
-  <string name="repos_preference_summary">Location to synchronize your notebooks with</string>
-  <string name="message_book_has_no_link">No link set</string>
-  <string name="message_note_created">Note created</string>
-  <string name="message_failed_creating_note">Failed to create note</string>
-  <string name="message_failed_updating_note">Failed to update note</string>
-  <string name="drawer_close">Close drawer</string>
-  <string name="drawer_open">Open drawer</string>
-  <string name="schedule">Schedule</string>
-  <string name="deadline">Deadline</string>
-  <string name="closed">Closed</string>
+  <string name="repos_preference_title">資料庫</string>
+  <string name="repos_preference_summary">同步筆記本的本地位置</string>
+  <string name="message_book_has_no_link">沒有設定連結</string>
+  <string name="message_note_created">已創建筆記</string>
+  <string name="message_failed_creating_note">無法建立筆記</string>
+  <string name="message_failed_updating_note">無法更新筆記</string>
+  <string name="drawer_close">關閉抽屜</string>
+  <string name="drawer_open">打開抽屜</string>
+  <string name="schedule">日程</string>
+  <string name="deadline">截止時間</string>
+  <string name="closed">已關閉</string>
   <!-- TODO: Not hints, rename -->
-  <string name="schedule_button_hint">Scheduled time</string>
-  <string name="deadline_button_hint">Deadline time</string>
+  <string name="schedule_button_hint">排程時間</string>
+  <string name="deadline_button_hint">截止時間</string>
   <string name="closed_button_hint">Closed time</string>
   <string name="fragment_note_content_hint">Note content</string>
   <string name="books_context_menu_item_rename">Rename</string>
@@ -359,15 +359,15 @@
   <string name="pref_summary_on_resume_sync">開啓應用程式到前台時進行同步</string>
   <string name="pref_title_repo_update_sync">修改資料庫(尚未實現)</string>
   <string name="pref_summary_repo_update_sync">檢測到資料庫中的更新時進行同步</string>
-  <string name="book_never_modified_locally">Never modified locally</string>
-  <string name="notes_count_zero">Contains no notes</string>
+  <string name="book_never_modified_locally">從未在本地修改</string>
+  <string name="notes_count_zero">沒有筆記</string>
   <plurals name="notes_count_nonzero">
-    <item quantity="other">Contains <b>%d</b> notes</item>
+    <item quantity="other">包含 <b>%d</b> 筆記</item>
   </plurals>
-  <string name="content_line_count_displayed">Display content line count</string>
-  <string name="content_line_count_displayed_summary">Display line count when content is not displayed</string>
-  <string name="style_text_title">Style text</string>
-  <string name="style_text_summary">Use special marks for emphasis and monospace</string>
+  <string name="content_line_count_displayed">顯示內文行數</string>
+  <string name="content_line_count_displayed_summary">當內文不顯示時，顯示行數</string>
+  <string name="style_text_title">文字風格</string>
+  <string name="style_text_summary">使用特殊標誌用來\"強調\"和\"等寬\"</string>
   <string name="styled_text_with_marks_title">Styled text with marks</string>
   <string name="styled_text_with_marks_summary">Keep marks displayed (e.g. *bold*)</string>
   <string name="no_such_link_target">Note with “%1$s” property set to “%2$s” not found</string>
