@@ -53,15 +53,15 @@
     <item quantity="one">Notitie verwijderd</item>
     <item quantity="other">Verwijderde <b>%d</b> notities</item>
   </plurals>
-  <string name="no_notes_deleted">No notes deleted</string>
+  <string name="no_notes_deleted">Geen notities verwijderd</string>
   <plurals name="notes_cut">
-    <item quantity="one">Note cut</item>
-    <item quantity="other">Cut <b>%d</b> notes</item>
+    <item quantity="one">Notitie knippen</item>
+    <item quantity="other">Knip <b>%d</b> notities</item>
   </plurals>
-  <string name="no_notes_cut">No notes cut</string>
+  <string name="no_notes_cut">Geen notities geknipt</string>
   <plurals name="notes_pasted">
-    <item quantity="one">Note pasted</item>
-    <item quantity="other">Pasted <b>%d</b> notes</item>
+    <item quantity="one">Notitie geplakt</item>
+    <item quantity="other"><b>%d</b> notities geplakt</item>
   </plurals>
   <string name="no_notes_pasted">Nothing to paste</string>
   <string name="fragment_note_title_hint">Title</string>
@@ -115,10 +115,10 @@
   <string name="book_name_already_exists">Notebook %s already exists.</string>
   <string name="filter_name_already_exists">Search with the same name already exists</string>
   <string name="failed_creating_directory">Failed creating directory %s</string>
-  <string name="version">What\'s new</string>
-  <string name="search_hint">Search notes</string>
-  <string name="clear_database">Clear database</string>
-  <string name="clear_database_summary">Clear local database</string>
+  <string name="version">Wat er nieuw is</string>
+  <string name="search_hint">Doorzoek notities</string>
+  <string name="clear_database">Database leegmaken</string>
+  <string name="clear_database_summary">Locale database leegmaken</string>
   <string name="reload_getting_started">Import “Getting Started with Orgzly”</string>
   <string name="reload_getting_started_summary">Import the latest version of the notebook</string>
   <string name="notebook_imported">Notebook imported</string>
