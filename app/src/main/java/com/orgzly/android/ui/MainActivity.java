@@ -1437,7 +1437,7 @@ public class MainActivity extends CommonActivity
 
             } else if (item instanceof DrawerFragment.BookItem) {
                 long bookId = ((DrawerFragment.BookItem) item).id;
-                DisplayManager.displayBook(getSupportFragmentManager(), bookId, 0);
+                onBookClicked(bookId);
 
             } else if (item instanceof DrawerFragment.FilterItem) {
                 String query = ((DrawerFragment.FilterItem) item).query;
