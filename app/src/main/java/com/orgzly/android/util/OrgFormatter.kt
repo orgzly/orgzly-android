@@ -85,7 +85,7 @@ object OrgFormatter {
      */
     private fun parseOrgLinksWithName(ssb: SpannableStringBuilder, linkRegex: String, createLinks: Boolean) {
         val p = namedBracketLinkPattern(linkRegex)
-        var m = p.matcher(ssb)
+        val m = p.matcher(ssb)
 
         while (m.find()) {
             val link = m.group(1)
@@ -97,8 +97,7 @@ object OrgFormatter {
                 setUrlSpan(ssb, link, m.start(), m.start() + name.length)
             }
 
-            m = p.matcher(ssb) // sbb size modified, recreate Matcher
-
+            m.reset(ssb) // sbb size modified, reset Matcher
         }
     }
 
@@ -107,7 +106,7 @@ object OrgFormatter {
      */
     private fun parseOrgLinks(ssb: SpannableStringBuilder, linkRegex: String, createLinks: Boolean) {
         val p = bracketLinkPattern(linkRegex)
-        var m = p.matcher(ssb)
+        val m = p.matcher(ssb)
 
         while (m.find()) {
             val link = m.group(1)
@@ -118,7 +117,7 @@ object OrgFormatter {
                 setUrlSpan(ssb, link, m.start(), m.start() + link.length)
             }
 
-            m = p.matcher(ssb) // sbb size modified, recreate Matcher
+            m.reset(ssb) // sbb size modified, reset Matcher
         }
     }
 
@@ -128,7 +127,7 @@ object OrgFormatter {
      */
     private fun parsePropertyLinks(ssb: SpannableStringBuilder, linkRegex: String, propName: String, createLinks: Boolean) {
         fun p(p: Pattern, propGroup: Int, linkGroup: Int) {
-            var m = p.matcher(ssb)
+            val m = p.matcher(ssb)
 
             while (m.find()) {
                 val link = m.group(linkGroup)
@@ -148,7 +147,7 @@ object OrgFormatter {
                     }, m.start(), m.start() + link.length, FLAGS)
                 }
 
-                m = p.matcher(ssb) // sbb size modified, recreate Matcher
+                m.reset(ssb) // sbb size modified, reset Matcher
             }
         }
 
