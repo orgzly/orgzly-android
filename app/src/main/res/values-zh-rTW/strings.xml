@@ -368,13 +368,13 @@
   <string name="content_line_count_displayed_summary">當內文不顯示時，顯示行數</string>
   <string name="style_text_title">文字風格</string>
   <string name="style_text_summary">使用特殊標誌用來\"強調\"和\"等寬\"</string>
-  <string name="styled_text_with_marks_title">Styled text with marks</string>
-  <string name="styled_text_with_marks_summary">Keep marks displayed (e.g. *bold*)</string>
-  <string name="no_such_link_target">Note with “%1$s” property set to “%2$s” not found</string>
-  <string name="imported_filters">Imported <b>%d</b> filters</string>
-  <string name="exported_filters">Exported <b>%d</b> filters</string>
-  <string name="storage_permissions_missing">No storage permission</string>
-  <string name="file_does_not_exist">File %s does not exist</string>
-  <string name="import_from">Import from “%1$s”?</string>
-  <string name="export_to">Export to “%1$s”?</string>
+  <string name="styled_text_with_marks_title">帶標記的文本樣式</string>
+  <string name="styled_text_with_marks_summary">保持標記顯示 (如 *粗體*)</string>
+  <string name="no_such_link_target">未找到 \"%1$s\" 屬性設置為 \"%2$s\"</string>
+  <string name="imported_filters">匯入 <b>%d </b> 篩選器</string>
+  <string name="exported_filters">匯出 <b>%d </b> 篩選器</string>
+  <string name="storage_permissions_missing">沒有存儲許可權</string>
+  <string name="file_does_not_exist">檔案 %s 不存在</string>
+  <string name="import_from">從 \"%1$s\" 匯入？</string>
+  <string name="export_to">匯出到 \"%1$s\"？</string>
 </resources>
