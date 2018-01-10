@@ -167,7 +167,7 @@
   <string name="invalid_repo_url">無效的資料庫網址 “%s”</string>
   <string name="message_unsupported_repository_type">不支援的資料庫類型</string>
   <string name="also_delete_linked_book">刪除連結的遠端筆記本</string>
-  <string name="message_deleting_book_failed">Deleting notebook failed: %s</string>
+  <string name="message_deleting_book_failed">刪除筆記本失敗: %s</string>
   <string name="fragment_left_drawer_list_view_content_description">Left Drawer</string>
   <string name="drawer_item">Drawer Item</string>
   <string name="prev_state">Prev State</string>
