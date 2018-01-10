@@ -224,18 +224,11 @@ class SqliteQueryBuilder(val context: Context) {
             return "$column IS NULL"
         }
 
-        val field = when (interval.unit) {
-            OrgInterval.Unit.HOUR  -> Calendar.HOUR_OF_DAY
-            OrgInterval.Unit.DAY   -> Calendar.DAY_OF_MONTH
-            OrgInterval.Unit.WEEK  -> Calendar.WEEK_OF_YEAR
-            OrgInterval.Unit.MONTH -> Calendar.MONTH
-            OrgInterval.Unit.YEAR  -> Calendar.YEAR
+        val (field, value) = getFieldAndValueFromInterval(interval)
 
-            null -> throw IllegalArgumentException("Interval unit not set")
-        }
+        val timeFromNow = TimeUtils.timeFromNow(field, value)
+        val timeFromNowPlusOne = TimeUtils.timeFromNow(field, value + 1)
 
-        val timeFromNow = TimeUtils.timeFromNow(field, interval.value)
-        val timeFromNowPlusOne = TimeUtils.timeFromNow(field, interval.value + 1)
 
         val cond = when (relation) {
             Relation.EQ -> "$timeFromNow <= $column AND $column < $timeFromNowPlusOne"
@@ -247,5 +240,31 @@ class SqliteQueryBuilder(val context: Context) {
         }
 
         return "($column != 0 AND $cond)"
+    }
+
+    /*
+     * TODO: Clean this up.
+     * There's no need to depend on Org-supported units.
+     * Remove OrgInterval dependency from QueryInterval.
+     */
+    private fun getFieldAndValueFromInterval(interval: QueryInterval): Pair<Int, Int> {
+        return if (interval.now) {
+            Pair(Calendar.MILLISECOND, 0)
+
+        } else {
+            val unit = when (interval.unit) {
+                OrgInterval.Unit.HOUR -> Calendar.HOUR_OF_DAY
+                OrgInterval.Unit.DAY -> Calendar.DAY_OF_MONTH
+                OrgInterval.Unit.WEEK -> Calendar.WEEK_OF_YEAR
+                OrgInterval.Unit.MONTH -> Calendar.MONTH
+                OrgInterval.Unit.YEAR -> Calendar.YEAR
+
+                null -> throw IllegalArgumentException("Interval unit not set")
+            }
+
+            val value = interval.value
+
+            Pair(unit, value)
+        }
     }
 }

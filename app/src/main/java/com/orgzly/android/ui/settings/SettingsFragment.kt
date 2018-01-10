@@ -164,14 +164,6 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
             setDefaultStateForNewNote()
         }
 
-        /* Recreate activity if preference change requires it. */
-        for (res in REQUIRE_ACTIVITY_RESTART) {
-            if (key == getString(res)) {
-                activity.recreate()
-                break
-            }
-        }
-
         /* Cancel or create an new-note ongoing notification. */
         if (getString(R.string.pref_key_new_note_notification) == key) {
             if (AppPreferences.newNoteNotification(context)) {
@@ -304,11 +296,6 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         val FRAGMENT_TAG: String = SettingsFragment::class.java.name
 
         private val ARG_RESOURCE = "resource"
-
-        @StringRes private val REQUIRE_ACTIVITY_RESTART = intArrayOf(
-                R.string.pref_key_font_size,
-                R.string.pref_key_color_scheme,
-                R.string.pref_key_layout_direction)
 
         /* Using headers file & fragments didn't work well - transitions were
          * not smooth, previous fragment would be briefly displayed.

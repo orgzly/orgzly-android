@@ -214,6 +214,12 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             expectedQueryOptions = Options()
                     ),
                     Parameter(
+                            queryString = "\"(o.s o.d)\"",
+                            expectedQueryString = "\"(o.s o.d)\"",
+                            expectedSqlSelection = "(title LIKE ? OR content LIKE ? OR tags LIKE ?)",
+                            expectedSelectionArgs = listOf("%(o.s o.d)%", "%(o.s o.d)%", "%(o.s o.d)%")
+                    ),
+                    Parameter(
                             queryString = "s.ge.3d",
                             expectedQueryString = "s.ge.3d",
                             expectedSqlSelection = "(${DbNoteView.SCHEDULED_TIME_TIMESTAMP} != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3)} <= ${DbNoteView.SCHEDULED_TIME_TIMESTAMP})"

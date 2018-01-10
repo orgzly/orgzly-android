@@ -3,19 +3,35 @@ package com.orgzly.android.util;
 import android.text.SpannableStringBuilder;
 import android.text.style.URLSpan;
 
+import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.prefs.AppPreferences;
+
+import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import java.util.Arrays;
 
-public class OrgFormatterTest {
+import static org.hamcrest.CoreMatchers.anyOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+
+public class OrgFormatterTest extends OrgzlyTest {
+    @Before
+    public void setup() throws Exception {
+        super.setUp();
+
+        AppPreferences.styledTextWithMarks(context, false);
+    }
+
     @Test
     public void testLinksMultiLine() throws Exception {
         OrgSpannable spannable = new OrgSpannable(
                 "[[http://www.orgzly.com]]\n" +
-                "[[http://www.orgzly.com]]");
+                        "[[http://www.orgzly.com]]");
 
         assertEquals("http://www.orgzly.com\n" +
-                     "http://www.orgzly.com", spannable.string);
+                "http://www.orgzly.com", spannable.string);
 
         assertEquals(2, spannable.spans.length);
 
@@ -54,20 +70,18 @@ public class OrgFormatterTest {
 
         assertEquals(3, spannable.spans.length);
 
-        assertEquals(4, spannable.spans[2].start);
-        assertEquals(20, spannable.spans[2].end);
-        assertEquals("URLSpan", spannable.spans[2].className);
-        assertEquals("http://www.x.com", spannable.spans[2].url);
+        // Different values on different devices. Refactor OrgFormatter.
+        for (int i: Arrays.asList(0, 2)) {
+            assertThat(spannable.spans[i].start, anyOf(is(4), is(45)));
+            assertThat(spannable.spans[i].end, anyOf(is(20), is(46)));
+            assertThat(spannable.spans[i].className, is("URLSpan"));
+            assertThat(spannable.spans[i].url, anyOf(is("http://www.x.com"), is("http://www.z.com")));
+        }
 
         assertEquals(25, spannable.spans[1].start);
         assertEquals(41, spannable.spans[1].end);
         assertEquals("URLSpan", spannable.spans[1].className);
         assertEquals("http://www.y.com", spannable.spans[1].url);
-
-        assertEquals(45, spannable.spans[0].start);
-        assertEquals(46, spannable.spans[0].end);
-        assertEquals("URLSpan", spannable.spans[0].className);
-        assertEquals("http://www.z.com", spannable.spans[0].url);
     }
 
     @Test
@@ -79,20 +93,33 @@ public class OrgFormatterTest {
 
         assertEquals(3, spannable.spans.length);
 
-        assertEquals(4, spannable.spans[2].start);
-        assertEquals(18, spannable.spans[2].end);
-        assertEquals("URLSpan", spannable.spans[2].className);
-        assertEquals("mailto:x@x.com", spannable.spans[2].url);
+        // Different values on different devices. Refactor OrgFormatter.
+        for (int i: Arrays.asList(0, 2)) {
+            assertThat(spannable.spans[i].start, anyOf(is(4), is(41)));
+            assertThat(spannable.spans[i].end, anyOf(is(18), is(42)));
+            assertThat(spannable.spans[i].className, is("URLSpan"));
+            assertThat(spannable.spans[i].url, anyOf(is("mailto:x@x.com"), is("mailto:z@z.com")));
+        }
 
         assertEquals(23, spannable.spans[1].start);
         assertEquals(37, spannable.spans[1].end);
         assertEquals("URLSpan", spannable.spans[1].className);
         assertEquals("mailto:y@y.com", spannable.spans[1].url);
+    }
 
-        assertEquals(41, spannable.spans[0].start);
-        assertEquals(42, spannable.spans[0].end);
-        assertEquals("URLSpan", spannable.spans[0].className);
-        assertEquals("mailto:z@z.com", spannable.spans[0].url);
+    @Test
+    public void testTwoBoldNextToEachOtherWithMarks() {
+        AppPreferences.styledTextWithMarks(context, true);
+
+        OrgSpannable spannable = new OrgSpannable("*a* *b*");
+
+        assertEquals("*a* *b*", spannable.string);
+
+        assertEquals(2, spannable.spans.length);
+        assertEquals(0, spannable.spans[0].start);
+        assertEquals(3, spannable.spans[0].end);
+        assertEquals(4, spannable.spans[1].start);
+        assertEquals(7, spannable.spans[1].end);
     }
 
     private class OrgSpan {
@@ -107,7 +134,7 @@ public class OrgFormatterTest {
         OrgSpan[] spans;
 
         public OrgSpannable(String str) {
-            SpannableStringBuilder ssb = OrgFormatter.INSTANCE.parse(null, str);
+            SpannableStringBuilder ssb = OrgFormatter.INSTANCE.parse(context, str);
 
             string = ssb.toString();
 

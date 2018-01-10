@@ -191,7 +191,7 @@ public class BookTest extends OrgzlyTest {
         pressBack();
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.dialog_input)).perform(replaceText("book-created-from-scratch"));
-        onView(withText("Create")).perform(click());
+        onView(withText(R.string.create)).perform(click());
 
         onView(allOf(withText("book-created-from-scratch"), isDisplayed())).perform(click());
 
@@ -205,7 +205,7 @@ public class BookTest extends OrgzlyTest {
         pressBack();
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.dialog_input)).perform(replaceText("book-created-from-scratch"));
-        onView(withText("Create")).perform(click());
+        onView(withText(R.string.create)).perform(click());
 
         onView(allOf(withText("book-created-from-scratch"), isDisplayed())).perform(click());
 

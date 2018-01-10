@@ -262,7 +262,7 @@ public class MiscTest extends OrgzlyTest {
         toPortrait(activityRule);
         onView(withId(R.id.dialog_new_book_container)).check(matches(isDisplayed()));
         onView(withId(R.id.dialog_input)).perform(replaceText("notebook"), closeSoftKeyboardWithDelay());
-        onView(withText("Create")).perform(click());
+        onView(withText(R.string.create)).perform(click());
 
         /* FIXME: This can fail from time to time on some devices. */
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
@@ -641,7 +641,7 @@ public class MiscTest extends OrgzlyTest {
         activityRule.launchActivity(null);
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.dialog_input)).perform(replaceText("booky"), closeSoftKeyboardWithDelay());
-        onView(withText("Create")).perform(click());
+        onView(withText(R.string.create)).perform(click());
         onListItem(0).onChildView(withId(R.id.item_book_encoding_used_container)).check(matches(not(isDisplayed())));
         onListItem(0).onChildView(withId(R.id.item_book_encoding_detected_container)).check(matches(not(isDisplayed())));
         onListItem(0).onChildView(withId(R.id.item_book_encoding_selected_container)).check(matches(not(isDisplayed())));

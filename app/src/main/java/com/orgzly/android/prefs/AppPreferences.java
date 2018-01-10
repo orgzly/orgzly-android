@@ -161,6 +161,11 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_styled_text_with_marks));
     }
 
+    public static void styledTextWithMarks(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_styled_text_with_marks);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
+
     public static String notebooksSortOrder(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_notebooks_sort_order),

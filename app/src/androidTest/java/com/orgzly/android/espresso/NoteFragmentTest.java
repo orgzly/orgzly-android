@@ -95,7 +95,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onListItem(2).perform(click());
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(not(withText(R.string.schedule_button_hint))));
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
-        onView(withText("Clear")).perform(click());
+        onView(withText(R.string.clear)).perform(click());
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(R.string.schedule_button_hint)));
     }
 
@@ -122,7 +122,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onListItem(2).perform(click());
         onView(withId(R.id.fragment_note_deadline_button)).check(matches(not(withText(R.string.deadline_button_hint))));
         onView(withId(R.id.fragment_note_deadline_button)).perform(click());
-        onView(withText("Clear")).perform(click());
+        onView(withText(R.string.clear)).perform(click());
         onView(withId(R.id.fragment_note_deadline_button)).check(matches(withText(R.string.deadline_button_hint)));
     }
 

@@ -7,6 +7,7 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.*
 import android.view.View
+import com.orgzly.BuildConfig
 import com.orgzly.android.ActionService
 import com.orgzly.android.AppIntent
 import com.orgzly.android.prefs.AppPreferences
@@ -42,8 +43,9 @@ object OrgFormatter {
     private val BORDER = "\\S"
     private val BODY = ".*?(?:\n.*?)?"
 
+    // Added .{0} for the next find() to match from the beginning
     private fun markupRegex(marker: Char): String =
-            "(?:^|[$PRE])([$marker]($BORDER|$BORDER$BODY$BORDER)[$marker])(?:[$POST]|$)"
+            "(?:^|.{0}|[$PRE])([$marker]($BORDER|$BORDER$BODY$BORDER)[$marker])(?:[$POST]|$)"
 
     private val MARKUP_PATTERN = Pattern.compile(
             markupRegex('*') + "|" +
@@ -60,7 +62,7 @@ object OrgFormatter {
     private val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 
     @JvmOverloads
-    fun parse(context: Context?, str: String, linkify: Boolean = true): SpannableStringBuilder {
+    fun parse(context: Context, str: String, linkify: Boolean = true): SpannableStringBuilder {
         val ssb = SpannableStringBuilder(str)
 
         parsePropertyLinks(ssb, CUSTOM_ID_LINK, "CUSTOM_ID", linkify)
@@ -83,7 +85,7 @@ object OrgFormatter {
      */
     private fun parseOrgLinksWithName(ssb: SpannableStringBuilder, linkRegex: String, createLinks: Boolean) {
         val p = namedBracketLinkPattern(linkRegex)
-        var m = p.matcher(ssb)
+        val m = p.matcher(ssb)
 
         while (m.find()) {
             val link = m.group(1)
@@ -95,8 +97,7 @@ object OrgFormatter {
                 setUrlSpan(ssb, link, m.start(), m.start() + name.length)
             }
 
-            m = p.matcher(ssb) // sbb size modified, recreate Matcher
-
+            m.reset(ssb) // sbb size modified, reset Matcher
         }
     }
 
@@ -105,7 +106,7 @@ object OrgFormatter {
      */
     private fun parseOrgLinks(ssb: SpannableStringBuilder, linkRegex: String, createLinks: Boolean) {
         val p = bracketLinkPattern(linkRegex)
-        var m = p.matcher(ssb)
+        val m = p.matcher(ssb)
 
         while (m.find()) {
             val link = m.group(1)
@@ -116,7 +117,7 @@ object OrgFormatter {
                 setUrlSpan(ssb, link, m.start(), m.start() + link.length)
             }
 
-            m = p.matcher(ssb) // sbb size modified, recreate Matcher
+            m.reset(ssb) // sbb size modified, reset Matcher
         }
     }
 
@@ -126,7 +127,7 @@ object OrgFormatter {
      */
     private fun parsePropertyLinks(ssb: SpannableStringBuilder, linkRegex: String, propName: String, createLinks: Boolean) {
         fun p(p: Pattern, propGroup: Int, linkGroup: Int) {
-            var m = p.matcher(ssb)
+            val m = p.matcher(ssb)
 
             while (m.find()) {
                 val link = m.group(linkGroup)
@@ -146,7 +147,7 @@ object OrgFormatter {
                     }, m.start(), m.start() + link.length, FLAGS)
                 }
 
-                m = p.matcher(ssb) // sbb size modified, recreate Matcher
+                m.reset(ssb) // sbb size modified, reset Matcher
             }
         }
 
@@ -183,37 +184,41 @@ object OrgFormatter {
             return
         }
 
-        val withMarks = context != null && AppPreferences.styledTextWithMarks(context)
+        val withMarks = AppPreferences.styledTextWithMarks(context)
 
-        fun setMarkupSpan(matcher: Matcher, group: Int, span: Any): Matcher {
+        fun setMarkupSpan(matcher: Matcher, group: Int, span: Any) {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Type matched", withMarks, matcher.start(group), matcher.end(group))
+
             if (withMarks) {
                 ssb.setSpan(span, matcher.start(group), matcher.end(group), FLAGS)
-                return matcher
+
+            } else {
+                // Next group matches content only, without markers.
+                val content = matcher.group(group + 1)
+
+                ssb.replace(matcher.start(group), matcher.end(group), content)
+
+                ssb.setSpan(span, matcher.start(group), matcher.start(group) + content.length, FLAGS)
+
+                matcher.reset(ssb) // sbb size modified, reset Matcher
             }
-
-            // Next group matches content only, without markers.
-            val content = matcher.group(group + 1)
-
-            ssb.replace(matcher.start(group), matcher.end(group), content)
-
-            ssb.setSpan(span, matcher.start(group), matcher.start(group) + content.length, FLAGS)
-
-            return MARKUP_PATTERN.matcher(ssb) // sbb size modified, recreate Matcher
         }
 
-        var m = MARKUP_PATTERN.matcher(ssb)
+        val m = MARKUP_PATTERN.matcher(ssb)
 
         while (m.find()) {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Matched", ssb.toString(), MARKUP_PATTERN, m.groupCount(), m.group(), m.start(), m.end())
+
             when {
-                m.group(1) != null -> m = setMarkupSpan(m, 1, StyleSpan(Typeface.BOLD))
-                m.group(3) != null -> m = setMarkupSpan(m, 3, StyleSpan(Typeface.ITALIC))
-                m.group(5) != null -> m = setMarkupSpan(m, 5, UnderlineSpan())
-                m.group(7) != null -> m = setMarkupSpan(m, 7, TypefaceSpan("monospace"))
-                m.group(9) != null -> m = setMarkupSpan(m, 9, TypefaceSpan("monospace"))
-                m.group(11) != null -> m = setMarkupSpan(m, 11, StrikethroughSpan())
+                m.group(1)  != null -> setMarkupSpan(m,  1, StyleSpan(Typeface.BOLD))
+                m.group(3)  != null -> setMarkupSpan(m,  3, StyleSpan(Typeface.ITALIC))
+                m.group(5)  != null -> setMarkupSpan(m,  5, UnderlineSpan())
+                m.group(7)  != null -> setMarkupSpan(m,  7, TypefaceSpan("monospace"))
+                m.group(9)  != null -> setMarkupSpan(m,  9, TypefaceSpan("monospace"))
+                m.group(11) != null -> setMarkupSpan(m, 11, StrikethroughSpan())
             }
         }
     }
 
-
+    private val TAG = OrgFormatter::class.java.name
 }

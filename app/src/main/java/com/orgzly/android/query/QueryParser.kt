@@ -138,7 +138,8 @@ abstract class QueryParser {
                     }
 
                     // If nothing matches use token as plain text.
-                    addCondition(Condition.HasText(unQuote(token)))
+                    val unQuoted = unQuote(token)
+                    addCondition(Condition.HasText(unQuoted, unQuoted != token))
                 }
             }
         }

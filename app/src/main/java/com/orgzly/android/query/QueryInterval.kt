@@ -5,10 +5,11 @@ import com.orgzly.org.datetime.OrgInterval
 /**
  * [OrgInterval] with support for "none", "today" (0d), "tomorrow" (1d), "yesterday" (-1d).
  **/
-class QueryInterval(val none: Boolean = false) : OrgInterval() {
+class QueryInterval(val none: Boolean = false, val now: Boolean = false) : OrgInterval() {
     override fun toString(): String {
         return when {
             none -> "none"
+            now -> "now"
             unit == OrgInterval.Unit.DAY && value ==  0 -> "today"
             unit == OrgInterval.Unit.DAY && value ==  1 -> "tomorrow"
             unit == OrgInterval.Unit.DAY && value == -1 -> "yesterday"
@@ -24,11 +25,16 @@ class QueryInterval(val none: Boolean = false) : OrgInterval() {
                 QueryInterval(none = true)
             }
 
+            "now" -> {
+                QueryInterval(now = true)
+            }
+
             "today", "tod" -> {
                 val interval = QueryInterval()
                 interval.setValue(0)
                 interval.setUnit(OrgInterval.Unit.DAY)
-                interval            }
+                interval
+            }
 
             "tomorrow", "tmrw", "tom" -> {
                 val interval = QueryInterval()
