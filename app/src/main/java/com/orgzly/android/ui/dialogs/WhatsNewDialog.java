@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.orgzly.R;
+import com.orgzly.android.util.MiscUtils;
 
 public class WhatsNewDialog {
     /**
@@ -22,7 +23,7 @@ public class WhatsNewDialog {
                         .inflate(R.layout.dialog_whats_new, null, false);
 
         TextView view = ((TextView) layoutView.findViewById(R.id.dialog_whats_new_intro));
-        view.setText(fromHtml(context.getString(R.string.whats_new_intro)));
+        view.setText(MiscUtils.fromHtml(context.getString(R.string.whats_new_intro)));
         view.setMovementMethod(LinkMovementMethod.getInstance());
 
         return new AlertDialog.Builder(context)
@@ -30,16 +31,5 @@ public class WhatsNewDialog {
                 .setPositiveButton(R.string.ok, null)
                 .setView(layoutView)
                 .create();
-    }
-
-    @SuppressWarnings("deprecation")
-    private static Spanned fromHtml(String html){
-        Spanned result;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            result = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            result = Html.fromHtml(html);
-        }
-        return result;
     }
 }

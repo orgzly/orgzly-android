@@ -10,8 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.orgzly.R;
-
-import static android.text.Html.fromHtml;
+import com.orgzly.android.util.MiscUtils;
 
 public class WhatsNewChange extends LinearLayout {
     public WhatsNewChange(Context context, AttributeSet attrs) {
@@ -25,7 +24,7 @@ public class WhatsNewChange extends LinearLayout {
         View view = inflater.inflate(R.layout.text_list_item, this, true);
 
         TextView c = ((TextView) view.findViewById(R.id.content));
-        c.setText(fromHtml(content));
+        c.setText(MiscUtils.fromHtml(content));
         c.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }
