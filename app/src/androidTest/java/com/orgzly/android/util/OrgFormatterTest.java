@@ -3,6 +3,10 @@ package com.orgzly.android.util;
 import android.text.SpannableStringBuilder;
 import android.text.style.URLSpan;
 
+import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.prefs.AppPreferences;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -12,7 +16,14 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-public class OrgFormatterTest {
+public class OrgFormatterTest extends OrgzlyTest {
+    @Before
+    public void setup() throws Exception {
+        super.setUp();
+
+        AppPreferences.styledTextWithMarks(context, false);
+    }
+
     @Test
     public void testLinksMultiLine() throws Exception {
         OrgSpannable spannable = new OrgSpannable(
@@ -96,6 +107,21 @@ public class OrgFormatterTest {
         assertEquals("mailto:y@y.com", spannable.spans[1].url);
     }
 
+    @Test
+    public void testTwoBoldNextToEachOtherWithMarks() {
+        AppPreferences.styledTextWithMarks(context, true);
+
+        OrgSpannable spannable = new OrgSpannable("*a* *b*");
+
+        assertEquals("*a* *b*", spannable.string);
+
+        assertEquals(2, spannable.spans.length);
+        assertEquals(0, spannable.spans[0].start);
+        assertEquals(3, spannable.spans[0].end);
+        assertEquals(4, spannable.spans[1].start);
+        assertEquals(7, spannable.spans[1].end);
+    }
+
     private class OrgSpan {
         int start;
         int end;
@@ -108,7 +134,7 @@ public class OrgFormatterTest {
         OrgSpan[] spans;
 
         public OrgSpannable(String str) {
-            SpannableStringBuilder ssb = OrgFormatter.INSTANCE.parse(null, str);
+            SpannableStringBuilder ssb = OrgFormatter.INSTANCE.parse(context, str);
 
             string = ssb.toString();
 
