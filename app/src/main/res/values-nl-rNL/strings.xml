@@ -72,7 +72,7 @@
   <string name="message_dropbox_unlinked">Losgekoppeld van Dropbox</string>
   <string name="message_dropbox_linked">Succesvol aan Dropbox gekoppeld</string>
   <!-- Preferences (Settings). -->
-  <string name="repos_preference_title">Repositories</string>
+  <string name="repos_preference_title">Opslagruimtes</string>
   <string name="repos_preference_summary">Locatie voor het synchroniseren van uw schriften</string>
   <string name="message_book_has_no_link">Geen koppeling ingesteld</string>
   <string name="message_note_created">Notitie gemaakt</string>
@@ -109,7 +109,7 @@
   <string name="tap_to_create_new_note">Tik om een nieuwe notitie te maken</string>
   <string name="options_menu_item_search">Zoeken</string>
   <string name="message_book_deleted">Schrift verwijderd</string>
-  <string name="clear_database_dialog_message">Locale database leegmaken?</string>
+  <string name="clear_database_dialog_message">Lokale database leegmaken?</string>
   <string name="no_user_repos_configured_pref_summary">Nog niets geconfigureerd</string>
   <string name="repos_options_menu_new_repo">Nieuwe Repository</string>
   <string name="book_name_already_exists">Shrift %s bestaat al.</string>
@@ -149,8 +149,8 @@
   <string name="search">Zoeken</string>
   <string name="new_search">Nieuwe zoekopdracht</string>
   <string name="active">Actief</string>
-  <string name="no_repos">Geen repositories geconfigureerd</string>
-  <string name="multiple_repos">Er bestaan meerdere repositories</string>
+  <string name="no_repos">Geen opslagruimtes ingesteld</string>
+  <string name="multiple_repos">Er bestaan meerdere opslagruimtes</string>
   <string name="book_encoding">Encodering van schrift</string>
   <string name="syncing_in_progress">Synchroniseren…</string>
   <string name="syncing_book">Synchroniseert %s…</string>
@@ -166,9 +166,9 @@
   <string name="share_action_not_supported">Deelactie %s wordt niet ondersteund</string>
   <string name="share_type_not_set">Deeltype niet ingesteld</string>
   <string name="share_type_not_supported">Deeltype %s wordt niet ondersteund</string>
-  <string name="repositories">Repositories</string>
-  <string name="invalid_repo_url">Ongeldige repositorie URL \"%s\"</string>
-  <string name="message_unsupported_repository_type">Niet-ondersteund repositorie type</string>
+  <string name="repositories">Opslagruimtes</string>
+  <string name="invalid_repo_url">Ongeldige opslagruimte-URL \"%s\"</string>
+  <string name="message_unsupported_repository_type">Niet-ondersteund opslagruimte type</string>
   <string name="also_delete_linked_book">Verwijder gekoppelde schrift op server</string>
   <string name="message_deleting_book_failed">Schrift verwijderen mislukt: %s</string>
   <string name="fragment_left_drawer_list_view_content_description">Linker Menu</string>
@@ -184,7 +184,7 @@
   <string name="can_not_be_empty">Mag niet leeg zijn</string>
   <string name="no_notebooks">Je hebt geen schriften</string>
   <string name="no_notes">Schrift heeft geen notities</string>
-  <string name="create_new_repository_for_syncing">Maak een nieuwe repositorie voor het synchroniseren van je schriften</string>
+  <string name="create_new_repository_for_syncing">Maak een nieuwe opslagruimte voor het synchroniseren van je schriften</string>
   <string name="no_filters">Je hebt geen opgeslagen zoekopdrachten</string>
   <string name="book_shortcut_label">Orgzly schrift</string>
   <string name="pick_a_notebook">Kies een schrift</string>
@@ -232,7 +232,7 @@
   <string name="font_size">Lettertypegrootte</string>
   <string name="color_scheme">Kleurenschema</string>
   <string name="monospaced_font">Monospaced-lettertype</string>
-  <string name="monospaced_font_summary">Gebruik monospaced lettertype voor notitie-inhoud en schrift voorwoord</string>
+  <string name="monospaced_font_summary">Gebruik monospaced lettertype voor notitie-inhoud en schriftvoorwoord</string>
   <string name="reversed_note_click_action">Omgekeerde notitie-klik-actie</string>
   <string name="reversed_note_click_action_summary">Klink om notitie te selecteren, lange-klik om te openen</string>
   <string name="look_and_feel">Weergave</string>
@@ -279,9 +279,9 @@
   <!-- .+ -->
   <string name="displayed_book_details_local_mtime">Lokale wijziging tijd</string>
   <string name="displayed_book_details_link_url">Link URL</string>
-  <string name="displayed_book_details_sync_url">Sync URL</string>
-  <string name="displayed_book_details_sync_mtime">Tijdstip van de wijziging van de Sync</string>
-  <string name="displayed_book_details_sync_revision">Sync revisie</string>
+  <string name="displayed_book_details_sync_url">Synchronisatie URL</string>
+  <string name="displayed_book_details_sync_mtime">Tijdstip van de wijziging van de synchronisatie</string>
+  <string name="displayed_book_details_sync_revision">Synchronisatie revisie</string>
   <string name="displayed_book_details_selected_encoding">Geselecteerde codering</string>
   <string name="displayed_book_details_detected_encoding">Gedetecteerd codering</string>
   <string name="displayed_book_details_used_encoding">Gebruikt codering</string>
@@ -300,7 +300,7 @@
   <string name="list_density_cozy">Knus</string>
   <string name="list_density_compact">Compact</string>
   <string name="notebooks_sort_order_name">Naam</string>
-  <string name="notebooks_sort_order_modification_time">Tijdstip van wijziging</string>
+  <string name="notebooks_sort_order_modification_time">Tijdstip van wijzigen</string>
   <string name="delete_note">Notitie verwijderen</string>
   <string name="delete_note_and_all_subnotes">Deze notitie en al haar sub-notities verwijderen?</string>
   <string name="delete_notes">Notities verwijderen</string>
@@ -314,13 +314,13 @@
   <string name="display_inherited_tags_in_search_results_summary">Georven tags weergeven in zoekresultaten</string>
   <string name="new_note_notification">Maak notitie en sync</string>
   <string name="new_note_notification_summary">Maak snel een nieuwe notitie of sync schriften van de notificatiebalk</string>
-  <string name="show_sync_notifications_title">Synchronisatie status</string>
+  <string name="show_sync_notifications_title">Synchronisatiestatus</string>
   <string name="show_sync_notifications_summary">Notificatie laten zien tijdens het synchroniseren en na synchronisatiefout</string>
   <string name="prefs_title_reminders">Herinneringen</string>
   <string name="pref_title_reminders_for_scheduled_times">Gepland</string>
   <string name="pref_title_summary_reminders_for_scheduled_times">Toon notificatie voor notities met geroosterde tijd</string>
   <string name="pref_title_reminders_for_deadline_times">Deadlines</string>
-  <string name="pref_title_summary_reminders_for_deadline_times">Notificatie voor notities met een deadline-tijd</string>
+  <string name="pref_title_summary_reminders_for_deadline_times">Notificatie voor notities met een deadline met tijd</string>
   <string name="pref_title_reminders_sound">Geluid</string>
   <string name="pref_title_reminders_vibrate">Vibratie</string>
   <string name="pref_title_reminders_led">Licht</string>
@@ -352,16 +352,16 @@
   <string name="select_a_filter_long">Selecteer een filter door op de titelbalk te klikken</string>
   <string name="auto_sync">Auto synchroniseer</string>
   <string name="auto_sync_experimental">Auto-synchroniseren (experimenteel)</string>
-  <string name="auto_sync_experimental_summary">Wordt alleen voor lokale repositoria gebruikt</string>
-  <string name="auto_sync_warning">Afhankelijk van welke opties je kiest kan synchroniseren vaak getriggerd worden. Als het schrift aangepast is, wordt de volledige inhoud van of naar de repositorie verstuurd. Bepaalde handelingen kunnen vertraagd worden terwijl het synchroniseren bezig is.</string>
+  <string name="auto_sync_experimental_summary">Wordt alleen voor lokale opslagruimtes gebruikt</string>
+  <string name="auto_sync_warning">Afhankelijk van welke opties je kiest, kan synchroniseren vaak getriggerd worden. Als het schrift aangepast is, wordt de volledige inhoud van of naar de opslagruimte verstuurd. Bepaalde handelingen kunnen vertraagd worden terwijl het synchroniseren bezig is.</string>
   <string name="pref_title_sync_after_note_create">Notitie gemaakt</string>
   <string name="pref_summary_sync_after_note_create">Synchroniseer na het maken van een nieuwe notitie</string>
   <string name="pref_title_sync_after_note_update">Notitie geüpdated of verwijderd</string>
   <string name="pref_summary_sync_after_note_update">Synchroniseer na het updaten of verwijderen van een notitie</string>
   <string name="pref_title_on_resume_sync">App opgestart of gecontinueerd</string>
   <string name="pref_summary_on_resume_sync">Synchroniseer wanneer app naar de voorgrond komt</string>
-  <string name="pref_title_repo_update_sync">Repositories bewerkt (nog niet geïmplementeerd)</string>
-  <string name="pref_summary_repo_update_sync">Synchroniseer wanneer er een update in de repositories is gedetecteerd</string>
+  <string name="pref_title_repo_update_sync">Opslagruimtes bewerkt (nog niet geïmplementeerd)</string>
+  <string name="pref_summary_repo_update_sync">Synchroniseer wanneer er een update in de opslagruimte is gedetecteerd</string>
   <string name="book_never_modified_locally">Nooit lokaal aangepast</string>
   <string name="notes_count_zero">Bevat geen notities</string>
   <plurals name="notes_count_nonzero">
@@ -373,7 +373,7 @@
   <string name="style_text_title">Stijltekst</string>
   <string name="style_text_summary">Gebruik speciale tekens voor benadrukking en monospace</string>
   <string name="styled_text_with_marks_title">Gestijlde tekst met markeringen</string>
-  <string name="styled_text_with_marks_summary">Houdt markeringen weergegeven (bijv. *bold*)</string>
+  <string name="styled_text_with_marks_summary">Blijf opmaaksymbolen tonen (bijv. *bold*)</string>
   <string name="no_such_link_target">Notitie met \"%1$s\" eigenschap ingesteld op \"%2$s\" niet gevonden</string>
   <string name="imported_filters"><b>%d</b> filters geïmporteerd</string>
   <string name="exported_filters"><b>%d</b> filters geëxporteerd</string>
