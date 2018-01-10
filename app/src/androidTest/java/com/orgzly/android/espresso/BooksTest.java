@@ -135,7 +135,7 @@ public class BooksTest extends OrgzlyTest {
     public void testCreateNewBookWithoutExtension() {
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.dialog_input)).perform(replaceText("book-created-from-scratch"), closeSoftKeyboard());
-        onView(withText("Create")).perform(click());
+        onView(withText(R.string.create)).perform(click());
         onView(allOf(withText("book-created-from-scratch"), isDisplayed())).perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
     }
@@ -144,7 +144,7 @@ public class BooksTest extends OrgzlyTest {
     public void testCreateNewBookWithExtension() {
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.dialog_input)).perform(replaceText("book-created-from-scratch.org"));
-        onView(withText("Create")).perform(click());
+        onView(withText(R.string.create)).perform(click());
         onView(allOf(withText("book-created-from-scratch.org"), isDisplayed())).perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
     }
@@ -153,7 +153,7 @@ public class BooksTest extends OrgzlyTest {
     public void testCreateAndDeleteBook() {
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.dialog_input)).perform(replaceText("book-created-from-scratch"), closeSoftKeyboard());
-        onView(withText("Create")).perform(click());
+        onView(withText(R.string.create)).perform(click());
 
         onView(allOf(withText("book-created-from-scratch"), isDisplayed())).check(matches(isDisplayed()));
 
@@ -189,11 +189,11 @@ public class BooksTest extends OrgzlyTest {
     public void testCreateNewBookWithExistingName() {
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.dialog_input)).perform(replaceText("new-book"), closeSoftKeyboardWithDelay());
-        onView(withText("Create")).perform(click());
+        onView(withText(R.string.create)).perform(click());
 
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.dialog_input)).perform(replaceText("new-book"), closeSoftKeyboardWithDelay());
-        onView(withText("Create")).perform(click());
+        onView(withText(R.string.create)).perform(click());
 
         onSnackbar().check(matches(withText("Can't insert notebook with the same name: new-book")));
     }
@@ -202,7 +202,7 @@ public class BooksTest extends OrgzlyTest {
     public void testCreateNewBookWithWhiteSpace() {
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.dialog_input)).perform(replaceText(" new-book  "), closeSoftKeyboardWithDelay());
-        onView(withText("Create")).perform(click());
+        onView(withText(R.string.create)).perform(click());
 
         onListItem(2).onChildView(withId(R.id.item_book_title)).check(matches(withText("new-book")));
     }
