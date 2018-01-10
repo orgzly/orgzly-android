@@ -157,7 +157,7 @@
   <string name="canceling">正在取消</string>
   <string name="directory">目录</string>
   <string name="fragment_repo_dropbox_directory_desc">Dropbox中的目录 (例如 “/Documents/Orgzly”)</string>
-  <string name="directory_uri">Directory URI</string>
+  <string name="directory_uri">目录 URI</string>
   <!-- Share button - error messages (set as title). -->
   <string name="share_action_not_set">未设置分享动作</string>
   <string name="share_action_not_supported">不支持分享动作 %s </string>
@@ -254,7 +254,7 @@
   <string name="separate_header_and_content_with_new_line_summary">用空行分隔页眉和内容</string>
   <string name="tags_indent">标签缩进</string>
   <string name="tags_indent_summary">控制标签缩进的选项</string>
-  <string name="tags_column">Tags column (org-tags-column)</string>
+  <string name="tags_column">标签列 (org-tags-column)</string>
   <string name="org_indent_mode">根据缩进模式调整</string>
   <string name="org_indent_mode_summary">Take org-indent-mode into account</string>
   <string name="org_indent_indentation_per_level">每层级缩进量</string>
@@ -317,7 +317,7 @@
   <string name="pref_title_reminders_for_scheduled_times">Scheduled</string>
   <string name="pref_title_summary_reminders_for_scheduled_times">Display notification for notes with scheduled time</string>
   <string name="pref_title_reminders_for_deadline_times">Deadlines</string>
-  <string name="pref_title_summary_reminders_for_deadline_times">Display notification for notes with deadline time</string>
+  <string name="pref_title_summary_reminders_for_deadline_times">显示带有截止时间的笔记的通知</string>
   <string name="pref_title_reminders_sound">声音</string>
   <string name="pref_title_reminders_vibrate">振动</string>
   <string name="pref_title_reminders_led">提示灯</string>
