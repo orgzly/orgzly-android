@@ -67,7 +67,7 @@
   <string name="fragment_note_title_hint">Titel</string>
   <string name="fragment_note_tags_hint" tools:ignore="typos">label label</string>
   <string name="import_org_file">Importeer Org bestand</string>
-  <string name="state_spinner_prompt">Status</string>
+  <string name="state_spinner_prompt">Staat</string>
   <string name="priority_spinner_prompt">Prioriteit</string>
   <string name="message_dropbox_unlinked">Losgekoppeld van Dropbox</string>
   <string name="message_dropbox_linked">Succesvol aan Dropbox gekoppeld</string>
@@ -153,7 +153,7 @@
   <string name="multiple_repos">Er bestaan meerdere repositories</string>
   <string name="book_encoding">Encodering van schrift</string>
   <string name="syncing_in_progress">Synchroniseren…</string>
-  <string name="syncing_book">Synchroniseren %s…</string>
+  <string name="syncing_book">Synchroniseert %s…</string>
   <string name="sync_with_argument">Synchroniseer: %s</string>
   <string name="syncing_failed_title">Synchroniseren mislukt</string>
   <string name="canceled">Geannuleerd</string>
@@ -193,7 +193,7 @@
   <string name="notebook_modified">Schrift gewijzigd</string>
   <string name="permissions_rationale_for_local_repo">Synchroniseren met een lokale map verijst opslagtoestemming</string>
   <string name="permissions_rationale_for_book_export">Schrift exporteren vereist opslagtoestemming</string>
-  <string name="permissions_rationale_for_sync_start">Synchroniseren met lokale repositories vereist opslagtoestemming</string>
+  <string name="permissions_rationale_for_sync_start">Synchroniseren met lokale opslagruimte vereist opslagtoestemming</string>
   <string name="cycle_visibility">Vouw/Ontvouw alles</string>
   <string name="running_database_update">Database bijwerken…</string>
   <string name="note_has_been_modified">Notitie bewerkt</string>
@@ -242,7 +242,7 @@
   <string name="app">App</string>
   <string name="no_repos_configured">Geen repos geconfigureerd</string>
   <string name="no_connection">Geen verbinding</string>
-  <string name="last_sync_with_argument">Laatste sync: %s</string>
+  <string name="last_sync_with_argument">Laatste synchronisatie: %s</string>
   <string name="force_loading_from_uri">Forceer laden van %s …</string>
   <string name="force_loaded_from_uri">Geforceerd geladen van %s</string>
   <string name="force_saving_to_uri">Forceer opslaan naar %s …</string>
@@ -318,7 +318,7 @@
   <string name="show_sync_notifications_summary">Notificatie laten zien tijdens het synchroniseren en na synchronisatiefout</string>
   <string name="prefs_title_reminders">Herinneringen</string>
   <string name="pref_title_reminders_for_scheduled_times">Gepland</string>
-  <string name="pref_title_summary_reminders_for_scheduled_times">Toon notificatie voor nitities met geroosterde tijd</string>
+  <string name="pref_title_summary_reminders_for_scheduled_times">Toon notificatie voor notities met geroosterde tijd</string>
   <string name="pref_title_reminders_for_deadline_times">Deadlines</string>
   <string name="pref_title_summary_reminders_for_deadline_times">Notificatie voor notities met een deadline-tijd</string>
   <string name="pref_title_reminders_sound">Geluid</string>
