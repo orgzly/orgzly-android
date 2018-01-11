@@ -229,7 +229,7 @@
   <string name="font_size">字型大小</string>
   <string name="color_scheme">色彩配置</string>
   <string name="monospaced_font">等寬字型</string>
-  <string name="monospaced_font_summary">使用等寬字型做為筆記的內容和書的序言</string>
+  <string name="monospaced_font_summary">使用等寬字型做為筆記的內容和筆記本的前言</string>
   <string name="reversed_note_click_action">反轉筆記的點擊操作</string>
   <string name="reversed_note_click_action_summary">點擊選取筆記，長按打開筆記</string>
   <string name="look_and_feel">外觀 &amp; 感覺</string>
@@ -291,7 +291,7 @@
   <string name="font_size_default">預設</string>
   <string name="font_size_large">大</string>
   <string name="book_name_in_search_hide">隱藏</string>
-  <string name="book_name_in_search_before_note">在筆記之前</string>
+  <string name="book_name_in_search_before_note">顯示在標題之前</string>
   <string name="book_name_in_search_under_note">在筆記之下</string>
   <string name="list_density_comfortable">寬鬆</string>
   <string name="list_density_cozy">合適</string>
