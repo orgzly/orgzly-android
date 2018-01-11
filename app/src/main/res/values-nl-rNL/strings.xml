@@ -223,7 +223,7 @@
   <string name="display_both_title_and_content">Zowel de titel als de inhoud weergeven</string>
   <string name="display_planning_times">Planningtijden weergeven</string>
   <string name="display_planning_times_summary">Geef tijden van planning, deadline en afronding weer</string>
-  <string name="density">Dichtheid</string>
+  <string name="density">Dichte</string>
   <string name="details">Details</string>
   <string name="notebook_details">Notitieboekje-details</string>
   <string name="displayed_details_about_notebook">Weergegeven informatie over notitieboekje</string>
