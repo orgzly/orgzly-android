@@ -275,14 +275,14 @@
   <string name="repeater_description_restart">將時間週期添加到當前時間</string>
   <!-- .+ -->
   <string name="displayed_book_details_local_mtime">本地修改時間</string>
-  <string name="displayed_book_details_link_url">連結網址：</string>
-  <string name="displayed_book_details_sync_url">同步 URL</string>
+  <string name="displayed_book_details_link_url">連結位址：</string>
+  <string name="displayed_book_details_sync_url">同步位址</string>
   <string name="displayed_book_details_sync_mtime">同步修改時間</string>
   <string name="displayed_book_details_sync_revision">同步修訂</string>
   <string name="displayed_book_details_selected_encoding">選取編碼</string>
   <string name="displayed_book_details_detected_encoding">檢測編碼</string>
   <string name="displayed_book_details_used_encoding">使用編碼</string>
-  <string name="displayed_book_details_last_action">上一個操作</string>
+  <string name="displayed_book_details_last_action">最後一次操作</string>
   <string name="displayed_book_details_notes_count">筆記數量</string>
   <string name="color_scheme_light">亮色</string>
   <string name="color_scheme_dark">暗色</string>
