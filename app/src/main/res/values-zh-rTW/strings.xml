@@ -117,7 +117,7 @@
   <string name="clear_database">清除資料庫</string>
   <string name="clear_database_summary">清除本地資料庫</string>
   <string name="reload_getting_started">匯入 \"Orgzly 入門\" 筆記</string>
-  <string name="reload_getting_started_summary">匯入最新版本的筆記本</string>
+  <string name="reload_getting_started_summary">匯入最新版本的\"Orgzly入門\"筆記</string>
   <string name="notebook_imported">已匯入筆記本</string>
   <string name="book_does_not_exist_anymore">這個筆記本已不存在</string>
   <string name="note_does_not_exist_anymore">這筆記已不存在</string>
@@ -164,7 +164,7 @@
   <string name="share_type_not_set">沒有設置共用類型</string>
   <string name="share_type_not_supported">共用操作 %s 不支援</string>
   <string name="repositories">資料庫</string>
-  <string name="invalid_repo_url">無效的資料庫網址 “%s”</string>
+  <string name="invalid_repo_url">無效的資料庫位址 “%s”</string>
   <string name="message_unsupported_repository_type">不支援的資料庫類型</string>
   <string name="also_delete_linked_book">刪除連結的遠端筆記本</string>
   <string name="message_deleting_book_failed">刪除筆記本失敗: %s</string>
