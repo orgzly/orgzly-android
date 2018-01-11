@@ -96,7 +96,7 @@
   <string name="heads_action_menu_item_add_under">新增子項目</string>
   <string name="heads_action_menu_item_add_below">在下方新增</string>
   <string name="heads_action_menu_item_paste_above">在上方貼上</string>
-  <string name="heads_action_menu_item_paste_under">在最下方貼上</string>
+  <string name="heads_action_menu_item_paste_under">做為子項目貼上</string>
   <string name="heads_action_menu_item_paste_below">在下方貼上</string>
   <string name="heads_moving_action_menu_item_promote">升級</string>
   <string name="heads_moving_action_menu_item_down">向下</string>
