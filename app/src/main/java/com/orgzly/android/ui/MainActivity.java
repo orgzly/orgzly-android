@@ -25,6 +25,7 @@ import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -518,12 +519,7 @@ public class MainActivity extends CommonActivity
                 /* Close search. */
                 MenuItemCompat.collapseActionView(searchItem);
 
-                /* Normalize search query. */
-                Query query = new DottedQueryParser().parse(str);
-                DottedQueryBuilder builder = new DottedQueryBuilder();
-                String queryNormalized = builder.build(query);
-
-                DisplayManager.displayQuery(getSupportFragmentManager(), queryNormalized);
+                DisplayManager.displayQuery(getSupportFragmentManager(), str);
 
                 return true;
             }

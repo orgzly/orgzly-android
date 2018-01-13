@@ -450,34 +450,12 @@ public class NotesClient {
         return results;
     }
 
-    public static Cursor getCursorForBook(Context context, String bookName) throws SQLException {
-        /* Create a query with a book name condition. */
-        InternalQueryBuilder builder = new InternalQueryBuilder();
-        String query = builder.build(new Query(new Condition.InBook(bookName)));
-
-        return context.getContentResolver().query(
-                ProviderContract.Notes.ContentUri.notesSearchQueried(query),
-                null,
-                DatabaseUtils.WHERE_EXISTING_NOTES,
-                null,
-                DbNoteView.LFT); /* For book, simply order by position. */
-    }
-
-    public static CursorLoader getLoaderForSearch(Context context, String query) throws SQLException {
-        return getLoaderForQuery(context, query, DatabaseUtils.WHERE_EXISTING_NOTES);
-    }
-
-    public static CursorLoader getLoaderForAgenda(Context context, String query) throws SQLException {
-        String selection = DatabaseUtils.WHERE_EXISTING_NOTES + " AND " + DatabaseUtils.WHERE_NOTES_WITH_TIMES;
-        return getLoaderForQuery(context, query, selection);
-    }
-
-    private static CursorLoader getLoaderForQuery(Context context, String query, String selection) throws SQLException {
+    public static CursorLoader getLoaderForQuery(Context context, String query) throws SQLException {
         return new CursorLoader(
                 context,
                 ProviderContract.Notes.ContentUri.notesSearchQueried(query),
                 null,
-                selection,
+                null,
                 null,
                 null);
     }
@@ -486,9 +464,22 @@ public class NotesClient {
         return context.getContentResolver().query(
                 ProviderContract.Notes.ContentUri.notesSearchQueried(query),
                 null,
-                DatabaseUtils.WHERE_EXISTING_NOTES,
+                null,
                 null,
                 null);
+    }
+
+    public static Cursor getCursorForBook(Context context, String bookName) throws SQLException {
+        /* Create a query with a book name condition. */
+        InternalQueryBuilder builder = new InternalQueryBuilder();
+        String query = builder.build(new Query(new Condition.InBook(bookName)));
+
+        return context.getContentResolver().query(
+                ProviderContract.Notes.ContentUri.notesSearchQueried(query),
+                null,
+                null,
+                null,
+                DbNoteView.LFT); // For book view, force ordering by position only
     }
 
     public static int getCount(Context context, Long bookId) {

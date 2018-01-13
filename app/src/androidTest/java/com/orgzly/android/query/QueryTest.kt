@@ -223,6 +223,23 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             expectedSelectionArgs = listOf("%(o.s o.d)%", "%(o.s o.d)%", "%(o.s o.d)%")
                     ),
                     Parameter(
+                            queryString = "\"or\"",
+                            expectedQueryString = "\"or\"",
+                            expectedParsedQuery = "Query(condition=And(operands=[HasText(text=or, isQuoted=true)]), sortOrders=[], options=Options(agendaDays=0))",
+                            expectedSqlSelection = "(title LIKE ? OR content LIKE ? OR tags LIKE ?)",
+                            expectedSelectionArgs = listOf("%or%", "%or%", "%or%")
+                    ),
+                    Parameter(
+                            queryString = "\"\"",
+                            expectedQueryString = "",
+                            expectedParsedQuery = "Query(condition=null, sortOrders=[], options=Options(agendaDays=0))"
+                    ),
+                    Parameter(
+                            queryString = "()",
+                            expectedQueryString = "",
+                            expectedParsedQuery = "Query(condition=null, sortOrders=[], options=Options(agendaDays=0))"
+                    ),
+                    Parameter(
                             queryString = "(o.s and o.d)",
                             expectedQueryString = "o.s o.d",
                             expectedParsedQuery = "Query(condition=null, sortOrders=[Scheduled(desc=false), Deadline(desc=false)], options=Options(agendaDays=0))"
@@ -237,11 +254,6 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             queryString = "(ad.3)",
                             expectedQueryString = "ad.3",
                             expectedParsedQuery = "Query(condition=null, sortOrders=[], options=Options(agendaDays=3))"
-                    ),
-                    Parameter(
-                            queryString = "()",
-                            expectedQueryString = "",
-                            expectedParsedQuery = "Query(condition=null, sortOrders=[], options=Options(agendaDays=0))"
                     ),
                     Parameter(
                             queryString = "s.ge.3d",

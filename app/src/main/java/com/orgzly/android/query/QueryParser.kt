@@ -164,9 +164,11 @@ abstract class QueryParser {
                         }
                     }
 
-                    // If nothing matches use token as plain text.
+                    // If nothing matches use token as plain text (unless empty).
                     val unQuoted = unQuote(token)
-                    addCondition(Condition.HasText(unQuoted, unQuoted != token))
+                    if (unQuoted.isNotEmpty()) {
+                        addCondition(Condition.HasText(unQuoted, unQuoted != token))
+                    }
                 }
             }
         }

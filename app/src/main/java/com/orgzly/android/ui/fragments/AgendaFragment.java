@@ -192,13 +192,6 @@ public class AgendaFragment extends QueryFragment {
         return new MyActionMode();
     }
 
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id, bundle);
-        return NotesClient.getLoaderForAgenda(getActivity(), mQuery);
-    }
-
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader, cursor);
