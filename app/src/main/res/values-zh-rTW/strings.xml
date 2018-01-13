@@ -96,7 +96,7 @@
   <string name="heads_action_menu_item_add_under">新增子項目</string>
   <string name="heads_action_menu_item_add_below">在下方新增</string>
   <string name="heads_action_menu_item_paste_above">在上方貼上</string>
-  <string name="heads_action_menu_item_paste_under">在最下方貼上</string>
+  <string name="heads_action_menu_item_paste_under">做為子項目貼上</string>
   <string name="heads_action_menu_item_paste_below">在下方貼上</string>
   <string name="heads_moving_action_menu_item_promote">升級</string>
   <string name="heads_moving_action_menu_item_down">向下</string>
@@ -117,7 +117,7 @@
   <string name="clear_database">清除資料庫</string>
   <string name="clear_database_summary">清除本地資料庫</string>
   <string name="reload_getting_started">匯入 \"Orgzly 入門\" 筆記</string>
-  <string name="reload_getting_started_summary">匯入最新版本的筆記本</string>
+  <string name="reload_getting_started_summary">匯入最新版本的\"Orgzly入門\"筆記</string>
   <string name="notebook_imported">已匯入筆記本</string>
   <string name="book_does_not_exist_anymore">這個筆記本已不存在</string>
   <string name="note_does_not_exist_anymore">這筆記已不存在</string>
@@ -164,7 +164,7 @@
   <string name="share_type_not_set">沒有設置共用類型</string>
   <string name="share_type_not_supported">共用操作 %s 不支援</string>
   <string name="repositories">資料庫</string>
-  <string name="invalid_repo_url">無效的資料庫網址 “%s”</string>
+  <string name="invalid_repo_url">無效的資料庫位址 “%s”</string>
   <string name="message_unsupported_repository_type">不支援的資料庫類型</string>
   <string name="also_delete_linked_book">刪除連結的遠端筆記本</string>
   <string name="message_deleting_book_failed">刪除筆記本失敗: %s</string>
@@ -229,7 +229,7 @@
   <string name="font_size">字型大小</string>
   <string name="color_scheme">色彩配置</string>
   <string name="monospaced_font">等寬字型</string>
-  <string name="monospaced_font_summary">使用等寬字型做為筆記的內容和書的序言</string>
+  <string name="monospaced_font_summary">使用等寬字型做為筆記的內容和筆記本的前言</string>
   <string name="reversed_note_click_action">反轉筆記的點擊操作</string>
   <string name="reversed_note_click_action_summary">點擊選取筆記，長按打開筆記</string>
   <string name="look_and_feel">外觀 &amp; 感覺</string>
@@ -275,14 +275,14 @@
   <string name="repeater_description_restart">將時間週期添加到當前時間</string>
   <!-- .+ -->
   <string name="displayed_book_details_local_mtime">本地修改時間</string>
-  <string name="displayed_book_details_link_url">連結網址：</string>
-  <string name="displayed_book_details_sync_url">同步 URL</string>
+  <string name="displayed_book_details_link_url">連結位址：</string>
+  <string name="displayed_book_details_sync_url">同步位址</string>
   <string name="displayed_book_details_sync_mtime">同步修改時間</string>
   <string name="displayed_book_details_sync_revision">同步修訂</string>
   <string name="displayed_book_details_selected_encoding">選取編碼</string>
   <string name="displayed_book_details_detected_encoding">檢測編碼</string>
   <string name="displayed_book_details_used_encoding">使用編碼</string>
-  <string name="displayed_book_details_last_action">上一個操作</string>
+  <string name="displayed_book_details_last_action">最後一次操作</string>
   <string name="displayed_book_details_notes_count">筆記數量</string>
   <string name="color_scheme_light">亮色</string>
   <string name="color_scheme_dark">暗色</string>
@@ -291,7 +291,7 @@
   <string name="font_size_default">預設</string>
   <string name="font_size_large">大</string>
   <string name="book_name_in_search_hide">隱藏</string>
-  <string name="book_name_in_search_before_note">在筆記之前</string>
+  <string name="book_name_in_search_before_note">顯示在標題之前</string>
   <string name="book_name_in_search_under_note">在筆記之下</string>
   <string name="list_density_comfortable">寬鬆</string>
   <string name="list_density_cozy">合適</string>

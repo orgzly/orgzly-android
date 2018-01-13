@@ -160,7 +160,7 @@
   <string name="canceling">Abbrechen…</string>
   <string name="directory">Verzeichnis</string>
   <string name="fragment_repo_dropbox_directory_desc">Verzeichnis in Dropbox (z.B. \"/Dokumente/Orgzly\")</string>
-  <string name="directory_uri">Directory URI</string>
+  <string name="directory_uri">Verzeichnis-URI</string>
   <!-- Share button - error messages (set as title). -->
   <string name="share_action_not_set">Teilen-Aktion noch nicht festgelegt</string>
   <string name="share_action_not_supported">Teilen-Aktion %s wird nicht unterstützt</string>
