@@ -7,7 +7,7 @@ open class DottedQueryBuilder {
     fun build(query: Query): String {
         val list = mutableListOf<String>()
 
-        append(list, query.condition)
+        query.condition?.let { append(list, it) }
         append(list, query.sortOrders)
         append(list, query.options)
 

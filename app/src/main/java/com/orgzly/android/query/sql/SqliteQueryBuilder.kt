@@ -143,7 +143,7 @@ class SqliteQueryBuilder(val context: Context) {
                 }
             }
 
-    private fun toString(expr: Condition, isOuter: Boolean = false): String {
+    private fun toString(expr: Condition?, isOuter: Boolean = false): String {
         fun not(not: Boolean, selection: String): String = if (not) "NOT($selection)" else selection
 
         return when (expr) {
@@ -216,6 +216,8 @@ class SqliteQueryBuilder(val context: Context) {
 
             is Condition.Or -> joinConditions(expr.operands, "OR", isOuter)
             is Condition.And -> joinConditions(expr.operands, "AND", isOuter)
+
+            null -> "" // No conditions
         }
     }
 
