@@ -39,8 +39,6 @@ open class BasicQueryParser : QueryParser() {
                 Condition.HasOwnTag(unQuote(match.groupValues[1]))
             }),
 
-            // scheduled:<3d
-       val intervalMatch = matcher.group(3)
             ConditionMatch("""^(scheduled|deadline|closed|created):(?:(!=|<|<=|>|>=))?(.+)""", { match ->
                 val timeTypeMatch = match.groupValues[1]
                 val relationMatch = match.groupValues[2]
