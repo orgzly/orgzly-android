@@ -49,6 +49,7 @@ public class DbNote implements DbNoteColumns, BaseColumns {
             SCHEDULED_RANGE_ID + " INTEGER," +
             DEADLINE_RANGE_ID + " INTEGER," +
             CLOSED_RANGE_ID + " INTEGER," +
+            CREATED_AT_RANGE_ID + " INTEGER," +
             CLOCK_RANGE_ID + " INTEGER)",
 
             /* For search. */
@@ -78,7 +79,7 @@ public class DbNote implements DbNoteColumns, BaseColumns {
             IS_FOLDED
     };
 
-    public static void toContentValues(SQLiteDatabase db, ContentValues values, OrgHead head) {
+    public static void toContentValues(SQLiteDatabase db, ContentValues values, OrgHead head, String createdProp) {
         values.put(TITLE, head.getTitle());
 
         values.put(PRIORITY, head.getPriority());
@@ -103,6 +104,18 @@ public class DbNote implements DbNoteColumns, BaseColumns {
 
         if (head.hasDeadline()) {
             values.put(DEADLINE_RANGE_ID, getOrInsertOrgRange(db, head.getDeadline()));
+        }
+
+        for (int i = 0; i < head.getProperties().size(); i++) {
+            if (head.getProperties().get(i).getName().equals(createdProp)) {
+                try {
+                    values.put(CREATED_AT_RANGE_ID, head.getProperties().get(i).getValue());
+                    break;
+                } catch (IllegalArgumentException e) {
+                    // Parsing failed, give up immediately
+                    break;
+                }
+            }
         }
 
         if (head.hasContent()) {

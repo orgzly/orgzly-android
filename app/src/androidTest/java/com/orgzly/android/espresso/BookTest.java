@@ -30,6 +30,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
@@ -68,6 +69,9 @@ public class BookTest extends OrgzlyTest {
                 "** Note #12.\n" +
                 "** Note #13.\n" +
                 "** Note #14.\n" +
+                ":PROPERTIES:\n" +
+                ":CREATED: [2017-01-01]\n" +
+                ":END:\n" +
                 "** Note #15.\n" +
                 "** Note #16.\n" +
                 "** Note #17.\n" +
@@ -99,6 +103,17 @@ public class BookTest extends OrgzlyTest {
         activityRule.launchActivity(null);
 
         onView(allOf(withText("book-name"), isDisplayed())).perform(click());
+    }
+
+    @Test
+    public void testNoCreatedAt() {
+        searchForText("o.m");
+        onListItem(0).onChildView(withId(R.id.item_head_title))
+                .check(matches(allOf(withText("Note #1."), isDisplayed())));
+
+        searchForText(".o.m");
+        onListItem(0).onChildView(withId(R.id.item_head_title))
+                .check(matches(allOf(withText("Note #1."), isDisplayed())));
     }
 
     @Test

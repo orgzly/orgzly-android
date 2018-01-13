@@ -18,6 +18,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.NotesBatch;
+import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.GenericDatabaseUtils;
 import com.orgzly.android.provider.ProviderContract;
@@ -36,8 +37,10 @@ import com.orgzly.org.OrgProperty;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgRange;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -88,7 +91,7 @@ public class NotesClient {
         return properties;
     }
 
-    public static void toContentValues(ContentValues values, Note note) {
+    public static void toContentValues(ContentValues values, Note note, String createdProp) {
         values.put(ProviderContract.Notes.UpdateParam.BOOK_ID, note.getPosition().getBookId());
 
         values.put(ProviderContract.Notes.UpdateParam.LFT, note.getPosition().getLft());
@@ -100,10 +103,10 @@ public class NotesClient {
 
         values.put(ProviderContract.Notes.UpdateParam.POSITION, 0); // TODO: Remove
 
-        toContentValues(values, note.getHead());
+        toContentValues(values, note.getHead(), createdProp);
     }
 
-    private static void toContentValues(ContentValues values, OrgHead head) {
+    private static void toContentValues(ContentValues values, OrgHead head, String createdProp) {
         values.put(ProviderContract.Notes.UpdateParam.TITLE, head.getTitle());
 
         if (head.hasScheduled()) {
@@ -130,6 +133,18 @@ public class NotesClient {
             values.putNull(ProviderContract.Notes.UpdateParam.DEADLINE_STRING);
         }
 
+        for (int i = 0; i < head.getProperties().size(); i++) {
+            if (head.getProperties().get(i).getName().equals(createdProp)) {
+                try {
+                    values.put(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING, head.getProperties().get(i).getValue());
+                    break;
+                } catch (IllegalArgumentException e) {
+                    // Parsing failed, give up immediately
+                    break;
+                }
+            }
+        }
+
         values.put(ProviderContract.Notes.UpdateParam.PRIORITY, head.getPriority());
         values.put(ProviderContract.Notes.UpdateParam.STATE, head.getState());
 
@@ -148,6 +163,9 @@ public class NotesClient {
         }
     }
 
+    // TODO: If we were to move our created at time detection from Shelf to here (thereby necessitating
+    // a change to org-java), we could properly show created times in the widget & search results.
+    // Would that be necessary?
     public static Note fromCursor(Cursor cursor) {
         long id = idFromCursor(cursor);
 
@@ -217,8 +235,11 @@ public class NotesClient {
      * Updates note by its ID.
      */
     public static int update(Context context, Note note) {
+        // Get created prop name
+        String createdProp = AppPreferences.createdAtProperty(context);
+
         ContentValues values = new ContentValues();
-        toContentValues(values, note.getHead());
+        toContentValues(values, note, createdProp);
 
         Uri noteUri = ContentUris.withAppendedId(ProviderContract.Notes.ContentUri.notes(), note.getId());
         Uri uri = noteUri.buildUpon().appendQueryParameter("bookId", String.valueOf(note.getPosition().getBookId())).build();
@@ -268,13 +289,21 @@ public class NotesClient {
         return result[0].count;
     }
 
+
     /**
      * Insert as last note if position is not specified.
      */
     public static Note create(Context context, Note note, NotePlace target) {
+        // Get created prop name
+        String createdProp = AppPreferences.createdAtProperty(context);
 
         ContentValues values = new ContentValues();
-        toContentValues(values, note);
+        toContentValues(values, note, createdProp);
+
+        if (!values.containsKey(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING)) {
+            String d = new SimpleDateFormat("[yyyy-MM-dd HH:mm:ss]").format(new Date());
+            values.put(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING, d);
+        }
 
         Uri insertUri;
 
