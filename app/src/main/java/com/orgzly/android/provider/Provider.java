@@ -77,6 +77,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -174,7 +175,7 @@ public class Provider extends ContentProvider {
 
             case ProviderUris.NOTES_SEARCH_QUERIED:
                 table = null;
-                cursor = runUserQuery(db, uri.getQuery(), selection, sortOrder);
+                cursor = runUserQuery(db, uri.getQuery(), sortOrder);
                 break;
 
             case ProviderUris.BOOKS_ID_NOTES:
@@ -301,7 +302,7 @@ public class Provider extends ContentProvider {
         return cursor;
     }
 
-    private Cursor runUserQuery(SQLiteDatabase db, String queryString, String selection, String sortOrder) {
+    private Cursor runUserQuery(SQLiteDatabase db, String queryString, String sortOrder) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, queryString, sortOrder);
 
         QueryParser parser = new InternalQueryParser();
@@ -315,15 +316,29 @@ public class Provider extends ContentProvider {
             sortOrder = sqlQuery.getOrderBy();
         }
 
-        if (!TextUtils.isEmpty(sqlQuery.getSelection())) {
-            selection += " AND (" + sqlQuery.getSelection() + ")";
+        List<String> selections = new ArrayList<>();
+
+        // if (!TextUtils.isEmpty(sqlQuery.getSelection())) {
+        if (query.getCondition() != null) {
+            selections.add(sqlQuery.getSelection());
         }
 
-        String[] args = sqlQuery.getSelectionArgs().toArray(new String[sqlQuery.getSelectionArgs().size()]);
+        if (query.getOptions().getAgendaDays() > 0) {
+            selections.add(DatabaseUtils.WHERE_NOTES_WITH_TIMES);
+        }
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, query, query.getCondition(), sqlQuery.getOrderBy(), selection, args, sortOrder);
+        if (!selections.isEmpty() || !query.getSortOrders().isEmpty()) {
+            selections.add(DatabaseUtils.WHERE_EXISTING_NOTES);
+        }
 
-        return db.query(DbNoteView.VIEW_NAME, null, selection, args, null, null, sortOrder);
+        String selection = selections.isEmpty() ? "0" : TextUtils.join(" AND ", selections);
+
+        String[] selectionArgs = sqlQuery.getSelectionArgs().toArray(
+                new String[sqlQuery.getSelectionArgs().size()]);
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, query, query.getCondition(), sqlQuery.getOrderBy(), selection, selectionArgs, sortOrder);
+
+        return db.query(DbNoteView.VIEW_NAME, null, selection, selectionArgs, null, null, sortOrder);
     }
 
     @Override

@@ -16,6 +16,7 @@ import java.util.*
 @RunWith(value = Parameterized::class)
 class QueryTest(private val param: Parameter) : OrgzlyTest() {
 
+    private lateinit var actualParsedQuery: String
     private lateinit var actualQueryString: String
     private lateinit var actualSqlSelection: String
     private lateinit var actualSqlSelectionArgs: List<String>
@@ -25,6 +26,7 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
 
     data class Parameter(
             val queryString: String,
+            val expectedParsedQuery: String? = null,
             val expectedQueryString: String? = null,
             val expectedSqlSelection: String? = null,
             val expectedSelectionArgs: List<String>? = null,
@@ -68,7 +70,8 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             queryString = "i.todo or i.next",
                             expectedQueryString = "i.todo or i.next",
                             expectedSqlSelection = "COALESCE(state, '') = ? OR COALESCE(state, '') = ?",
-                            expectedSelectionArgs = listOf("TODO", "NEXT")
+                            expectedSelectionArgs = listOf("TODO", "NEXT"),
+                            expectedParsedQuery = "Query(condition=Or(operands=[HasState(state=todo, not=false), HasState(state=next, not=false)]), sortOrders=[], options=Options(agendaDays=0))"
                     ),
                     Parameter(
                             queryString = "i.todo OR i.next",
@@ -220,6 +223,39 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             expectedSelectionArgs = listOf("%(o.s o.d)%", "%(o.s o.d)%", "%(o.s o.d)%")
                     ),
                     Parameter(
+                            queryString = "\"or\"",
+                            expectedQueryString = "\"or\"",
+                            expectedParsedQuery = "Query(condition=And(operands=[HasText(text=or, isQuoted=true)]), sortOrders=[], options=Options(agendaDays=0))",
+                            expectedSqlSelection = "(title LIKE ? OR content LIKE ? OR tags LIKE ?)",
+                            expectedSelectionArgs = listOf("%or%", "%or%", "%or%")
+                    ),
+                    Parameter(
+                            queryString = "\"\"",
+                            expectedQueryString = "",
+                            expectedParsedQuery = "Query(condition=null, sortOrders=[], options=Options(agendaDays=0))"
+                    ),
+                    Parameter(
+                            queryString = "()",
+                            expectedQueryString = "",
+                            expectedParsedQuery = "Query(condition=null, sortOrders=[], options=Options(agendaDays=0))"
+                    ),
+                    Parameter(
+                            queryString = "(o.s and o.d)",
+                            expectedQueryString = "o.s o.d",
+                            expectedParsedQuery = "Query(condition=null, sortOrders=[Scheduled(desc=false), Deadline(desc=false)], options=Options(agendaDays=0))"
+                    ),
+
+                    Parameter(
+                            queryString = "(o.s and (o.d))",
+                            expectedQueryString = "o.s o.d",
+                            expectedParsedQuery = "Query(condition=null, sortOrders=[Scheduled(desc=false), Deadline(desc=false)], options=Options(agendaDays=0))"
+                    ),
+                    Parameter(
+                            queryString = "(ad.3)",
+                            expectedQueryString = "ad.3",
+                            expectedParsedQuery = "Query(condition=null, sortOrders=[], options=Options(agendaDays=3))"
+                    ),
+                    Parameter(
                             queryString = "s.ge.3d",
                             expectedQueryString = "s.ge.3d",
                             expectedSqlSelection = "(${DbNoteView.SCHEDULED_TIME_TIMESTAMP} != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3)} <= ${DbNoteView.SCHEDULED_TIME_TIMESTAMP})"
@@ -235,6 +271,7 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
         // Parse query
         val parser = DottedQueryParser()
         val query = parser.parse(param.queryString)
+        actualParsedQuery = query.toString()
 
         // Build SQL
         val sqlBuilder = SqliteQueryBuilder(context)
@@ -291,6 +328,13 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
     fun testBuiltQuery() {
         param.expectedQueryString?.let {
             assertThat(param.queryString, actualQueryString, `is`(param.expectedQueryString))
+        }
+    }
+
+    @Test
+    fun testParsedQuery() {
+        param.expectedParsedQuery?.let {
+            assertThat(param.queryString, actualParsedQuery, `is`(param.expectedParsedQuery))
         }
     }
 }

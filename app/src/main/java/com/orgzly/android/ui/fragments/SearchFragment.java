@@ -154,12 +154,6 @@ public class SearchFragment extends QueryFragment {
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id, bundle);
-        return NotesClient.getLoaderForSearch(getActivity(), mQuery);
-    }
-
-    @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader, cursor);
 

@@ -7,7 +7,7 @@ open class DottedQueryBuilder {
     fun build(query: Query): String {
         val list = mutableListOf<String>()
 
-        append(list, query.condition)
+        query.condition?.let { append(list, it) }
         append(list, query.sortOrders)
         append(list, query.options)
 
@@ -62,7 +62,11 @@ open class DottedQueryBuilder {
                 "c$relString.${expr.interval}"
             }
 
-            is Condition.HasText -> if (expr.isQuoted) quote(expr.text) else expr.text
+            is Condition.HasText -> if (expr.isQuoted) {
+                quote(expr.text, true)
+            } else {
+                expr.text
+            }
 
             is Condition.Or ->
                 expr.operands.joinToString(prefix = if (isOuter) "" else "(", separator = " or ", postfix = if (isOuter) "" else ")") {
@@ -102,7 +106,14 @@ open class DottedQueryBuilder {
     }
 
 
-    private fun quote(s: String) = QuotedStringTokenizer.quote(s, " ")
+    private fun quote(s: String, always: Boolean = false) = if (always) {
+        val sb = StringBuilder()
+        QuotedStringTokenizer.quote(sb, s)
+        sb.toString()
+
+    } else {
+        QuotedStringTokenizer.quote(s, " ")
+    }
 
     private fun dot(order: SortOrder) = if (order.desc) "." else ""
 }

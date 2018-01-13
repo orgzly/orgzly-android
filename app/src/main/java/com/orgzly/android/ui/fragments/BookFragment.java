@@ -2,7 +2,6 @@ package com.orgzly.android.ui.fragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -363,8 +362,13 @@ public class BookFragment extends NoteListFragment
 
         if ((position+1) > listView.getHeaderViewsCount()) { /* Not a header. */
             listener.onNoteClick(this, view, position, id, id);
+
         } else {
-            listener.onBookPrefaceEditRequest(mBook);
+            if (mBook != null) {
+                listener.onBookPrefaceEditRequest(mBook);
+            } else {
+                Log.e(TAG, "Book null on preface edit request");
+            }
         }
     }
 
@@ -611,7 +615,7 @@ public class BookFragment extends NoteListFragment
 
     private void bookLoaded(Book book) {
         /* Set the current book.
-         * Book cab be null. That can happen when this fragment is in back stack and its book
+         * Book can be null. That can happen when this fragment is in back stack and its book
          * gets deleted. When fragment is popped from the back stack it will try to fetch the
          * non-existent book id.
          */
@@ -720,17 +724,8 @@ public class BookFragment extends NoteListFragment
         new AlertDialog.Builder(getContext())
                 .setTitle(R.string.delete_notes)
                 .setMessage(R.string.delete_notes_and_all_subnotes)
-                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        listener.onNotesDeleteRequest(mBookId, ids);
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
+                .setPositiveButton(R.string.delete, (dialog, which) -> listener.onNotesDeleteRequest(mBookId, ids))
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {})
                 .create()
                 .show();
     }

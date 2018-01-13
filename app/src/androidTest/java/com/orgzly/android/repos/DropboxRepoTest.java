@@ -19,6 +19,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 public class DropboxRepoTest extends OrgzlyTest {
+    private static final String DROPBOX_TEST_DIR = "/orgzly-android-tests";
+
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -68,7 +70,7 @@ public class DropboxRepoTest extends OrgzlyTest {
 
     @Test
     public void testDropboxFileRename() throws IOException {
-        Repo repo = RepoFactory.getFromUri(context, "dropbox:/orgzly/tests/" + UUID.randomUUID().toString());
+        Repo repo = RepoFactory.getFromUri(context, randomUrl());
 
         assertNotNull(repo);
         assertEquals(0, repo.getBooks().size());
@@ -88,6 +90,6 @@ public class DropboxRepoTest extends OrgzlyTest {
     }
 
     private String randomUrl() {
-        return "dropbox:/orgzly/tests/" + UUID.randomUUID().toString();
+        return "dropbox:"+ DROPBOX_TEST_DIR + "/" + UUID.randomUUID().toString();
     }
 }

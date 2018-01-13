@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Shelf;
+import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.ui.ActionModeListener;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.util.LogUtils;
@@ -140,6 +141,13 @@ abstract public class QueryFragment extends NoteListFragment
     @Override
     public void onDateTimeAborted(int id, TreeSet<Long> noteIds) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id);
+    }
+
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id, bundle);
+        return NotesClient.getLoaderForQuery(getActivity(), mQuery);
     }
 
     @Override

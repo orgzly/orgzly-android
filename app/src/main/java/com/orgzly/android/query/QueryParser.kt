@@ -39,15 +39,24 @@ abstract class QueryParser {
         return Query(parseExpression(), orders, options)
     }
 
-    private fun parseExpression(vararg initialExpr: Condition): Condition {
+    private fun parseExpression(vararg initialExpr: Condition): Condition? {
         var members = ArrayList<Condition>()
         var operator = Operator.AND // Default
         var lastTokenWasCondition = false
 
         fun addCondition(condition: Condition) {
-            if (lastTokenWasCondition && operator === Operator.OR) { // OR then implicit AND
+            if (lastTokenWasCondition && operator === Operator.OR) {
+                /* OR then implicit AND
+                 * Remove last condition and use it in a new group.
+                 * ~~~ is what's being added to members.
+                 *
+                 * c1 OR c2 OR c3 condition  ->  OR( c1, c2, AND( c3, condition) )
+                 *                                           ~~~~~~~~~~~~~~~~~~~
+                 */
                 val exp = members.removeAt(members.size - 1)
-                members.add(parseExpression(exp, condition))
+                parseExpression(exp, condition)?.let {
+                    members.add(it)
+                }
             } else {
                 members.add(condition)
             }
@@ -66,7 +75,10 @@ abstract class QueryParser {
 
             when (token) {
                 groupOpen -> {
-                    members.add(parseExpression())
+                    parseExpression()?.let {
+                        members.add(it)
+                    }
+
                     lastTokenWasCondition = false
                 }
 
@@ -77,8 +89,17 @@ abstract class QueryParser {
                 in logicalAnd -> {
                     if (members.size > 0) {
                         if (operator === Operator.OR) {
+                            /* AND, while parsing OR expression.
+                             * Remove the last member and use it in a new AND group.
+                             * ~~~ is what's being added to members.
+                             *
+                             * c1 OR c2 OR c3 AND  ->  OR( c1, c2, AND( c3, ... ) )
+                             *                                     ~~~~~~~~~~~~~~
+                             */
                             val expr = members.removeAt(members.size - 1)
-                            members.add(parseExpression(expr))
+                            parseExpression(expr)?.let {
+                                members.add(it)
+                            }
                         }
                         lastTokenWasCondition = false
 
@@ -88,7 +109,13 @@ abstract class QueryParser {
                 in logicalOr -> {
                     if (members.size > 0) {
                         if (operator === Operator.AND) {
-                            if (members.size > 1) { // exp exp OR ... -> Or(And(exp exp), ...)
+                            /* OR, while parsing AND expression which has conditions.
+                             * ~~~ is what's being added to members.
+                             *
+                             * c1 c2 c3 OR  ->  OR( AND( c1, c2, c3 ), ... )
+                             * ~~~~~~~~
+                             */
+                            if (members.size > 1) {
                                 val prev = Condition.And(members)
                                 members = ArrayList()
                                 members.add(prev)
@@ -137,16 +164,22 @@ abstract class QueryParser {
                         }
                     }
 
-                    // If nothing matches use token as plain text.
+                    // If nothing matches use token as plain text (unless empty).
                     val unQuoted = unQuote(token)
-                    addCondition(Condition.HasText(unQuoted, unQuoted != token))
+                    if (unQuoted.isNotEmpty()) {
+                        addCondition(Condition.HasText(unQuoted, unQuoted != token))
+                    }
                 }
             }
         }
 
-        return when (operator) {
-            Operator.AND -> Condition.And(members)
-            Operator.OR -> Condition.Or(members)
+        return if (members.isNotEmpty()) {
+            when (operator) {
+                Operator.AND -> Condition.And(members)
+                Operator.OR -> Condition.Or(members)
+            }
+        } else {
+            null
         }
     }
 

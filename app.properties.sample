@@ -4,8 +4,8 @@
 # Some tests will fail and you won't be able to use Dropbox as a repository,
 # but everything else should be working fine.
 
-# Dropbox token used by tests when working with Dropbox.
-# Create it on https://www.dropbox.com/developers/apps.
+# Token used by few tests which use Dropbox.
+# Create app on https://www.dropbox.com/developers/apps to generate it.
 dropbox.token="token"
 
 # Dropbox app key.
