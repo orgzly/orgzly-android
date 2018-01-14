@@ -143,7 +143,9 @@ public class ShareActivity extends CommonActivity
 
                     if (bookName != null) {
                         Book book = new Shelf(this).getBook(bookName);
-                        data.bookId = book.getId();
+                        if (book != null) {
+                            data.bookId = book.getId();
+                        }
                     }
                 }
 
@@ -215,7 +217,8 @@ public class ShareActivity extends CommonActivity
                     .add(mSyncFragment, SyncFragment.FRAGMENT_TAG)
                     .commit();
 
-            mNoteFragment = NoteFragment.getInstance(true, data.bookId, 0, Place.UNSPECIFIED, data.title, data.content);
+            long fragmentBookId = data.bookId == null ? 0 : data.bookId;
+            mNoteFragment = NoteFragment.getInstance(true, fragmentBookId, 0, Place.UNSPECIFIED, data.title, data.content);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.activity_share_main, mNoteFragment, NoteFragment.FRAGMENT_TAG)
@@ -308,7 +311,7 @@ public class ShareActivity extends CommonActivity
         resultIntent.setType("text/plain");
         resultIntent.putExtra(Intent.EXTRA_TEXT, "");
 
-        if (filter != null) {
+        if (filter != null && filter.getQuery() != null) {
             resultIntent.putExtra(AppIntent.EXTRA_FILTER, filter.getQuery());
         }
 
@@ -433,6 +436,6 @@ public class ShareActivity extends CommonActivity
     private class Data {
         String title;
         String content;
-        Long bookId = 0L;
+        Long bookId = null;
     }
 }
