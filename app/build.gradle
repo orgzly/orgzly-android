@@ -73,6 +73,8 @@ android {
 
     lintOptions {
         disable 'MissingTranslation'
+        disable 'MissingQuantity'
+        disable 'ImpliedQuantity'
 
         /*
          * Added for:
