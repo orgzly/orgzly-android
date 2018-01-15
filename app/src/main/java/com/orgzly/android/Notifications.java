@@ -33,7 +33,7 @@ public class Notifications {
     public static void createNewNoteNotification(Context context) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, context);
 
-        PendingIntent resultPendingIntent = ShareActivity.createNewNoteIntent(context);
+        PendingIntent resultPendingIntent = ShareActivity.createNewNoteIntent(context, null);
 
         /* Build notification */
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)

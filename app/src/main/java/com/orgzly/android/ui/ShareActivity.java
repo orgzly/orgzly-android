@@ -13,16 +13,21 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Book;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotesBatch;
 import com.orgzly.android.Shelf;
+import com.orgzly.android.filter.Filter;
 import com.orgzly.android.prefs.AppPreferences;
+import com.orgzly.android.query.Query;
+import com.orgzly.android.query.user.DottedQueryParser;
 import com.orgzly.android.ui.fragments.NoteFragment;
 import com.orgzly.android.ui.fragments.SyncFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
+import com.orgzly.android.util.QueryUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 
 import java.io.File;
@@ -78,7 +83,7 @@ public class ShareActivity extends CommonActivity
 
         setupBooksSpinner(savedInstanceState);
 
-        setupBooksSpinnerAdapter(savedInstanceState);
+        setupBooksSpinnerAdapter(savedInstanceState, data);
     }
 
     public Data getDataFromIntent(Intent intent) {
@@ -132,6 +137,18 @@ public class ShareActivity extends CommonActivity
                     data.title = intent.getStringExtra(Intent.EXTRA_SUBJECT);
                 }
 
+                if (intent.hasExtra(AppIntent.EXTRA_FILTER)) {
+                    Query query = new DottedQueryParser().parse(intent.getStringExtra(AppIntent.EXTRA_FILTER));
+                    String bookName = QueryUtils.extractFirstBookNameFromQuery(query.getCondition());
+
+                    if (bookName != null) {
+                        Book book = new Shelf(this).getBook(bookName);
+                        if (book != null) {
+                            data.bookId = book.getId();
+                        }
+                    }
+                }
+
             } else {
                 mError = getString(R.string.share_type_not_supported, type);
             }
@@ -153,7 +170,7 @@ public class ShareActivity extends CommonActivity
         return data;
     }
 
-    private void setupBooksSpinnerAdapter(final Bundle savedInstanceState) {
+    private void setupBooksSpinnerAdapter(final Bundle savedInstanceState, Data data) {
         new AsyncTask<Void, Void, List<Book>>() {
             @Override
             protected List<Book> doInBackground(Void... params) {
@@ -169,7 +186,14 @@ public class ShareActivity extends CommonActivity
                 mBooksSpinner.setAdapter(adapter);
 
                 if (savedInstanceState != null && savedInstanceState.containsKey(SPINNER_POSITION_KEY)) {
-                    mBooksSpinner.setSelection(savedInstanceState.getInt(SPINNER_POSITION_KEY, 0));
+                    mBooksSpinner.setSelection(savedInstanceState.getInt(SPINNER_POSITION_KEY, 0), false);
+                } else if (data != null && data.bookId != null) {
+                    for (int i = 0; i < books.size(); i++) {
+                        if (books.get(i).getId() == data.bookId) {
+                            mBooksSpinner.setSelection(i);
+                            break;
+                        }
+                    }
                 } else {
                     String defaultBook = AppPreferences.shareNotebook(getApplicationContext());
                     for (int i=0; i<books.size(); i++) {
@@ -193,7 +217,8 @@ public class ShareActivity extends CommonActivity
                     .add(mSyncFragment, SyncFragment.FRAGMENT_TAG)
                     .commit();
 
-            mNoteFragment = NoteFragment.getInstance(true, 0, 0, Place.UNSPECIFIED, data.title, data.content);
+            long fragmentBookId = data.bookId == null ? 0 : data.bookId;
+            mNoteFragment = NoteFragment.getInstance(true, fragmentBookId, 0, Place.UNSPECIFIED, data.title, data.content);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.activity_share_main, mNoteFragment, NoteFragment.FRAGMENT_TAG)
@@ -280,11 +305,15 @@ public class ShareActivity extends CommonActivity
         return books;
     }
 
-    public static PendingIntent createNewNoteIntent(Context context) {
+    public static PendingIntent createNewNoteIntent(Context context, Filter filter) {
         Intent resultIntent = new Intent(context, ShareActivity.class);
         resultIntent.setAction(Intent.ACTION_SEND);
         resultIntent.setType("text/plain");
         resultIntent.putExtra(Intent.EXTRA_TEXT, "");
+
+        if (filter != null && filter.getQuery() != null) {
+            resultIntent.putExtra(AppIntent.EXTRA_FILTER, filter.getQuery());
+        }
 
         // The stack builder object will contain an artificial back stack for the
         // started Activity.
@@ -407,5 +436,6 @@ public class ShareActivity extends CommonActivity
     private class Data {
         String title;
         String content;
+        Long bookId = null;
     }
 }
