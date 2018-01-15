@@ -16,6 +16,18 @@ public class QueryUtils {
             }
         }
 
+        if (condition instanceof Condition.Or) {
+            Condition.Or c = (Condition.Or) condition;
+
+            for (Condition innerCondition : c.getOperands()) {
+                String result = extractFirstBookNameFromQuery(innerCondition);
+
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+
         if (condition instanceof Condition.InBook) {
             Condition.InBook c = (Condition.InBook) condition;
 

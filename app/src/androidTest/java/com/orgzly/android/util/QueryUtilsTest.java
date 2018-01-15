@@ -30,6 +30,7 @@ public class QueryUtilsTest {
         return Arrays.asList(new Object[][]{
                 {"b.foo", "foo"},
                 {"b.foo b.bar", "foo"},
+                {"foo or b.bar", "bar"},
                 {"", null}
         });
     }
