@@ -138,12 +138,14 @@ public class DatabaseMigration {
             case DB_VER_16:
                 insertAgendaSavedSearch(db);
                 // CLOSED_TIME_TIMESTAMP added to DbNoteView
+
             case DB_VER_17:
                 addCreatedAt(db);
         }
     }
 
     private static void addCreatedAt(SQLiteDatabase db) {
+        db.execSQL("ALTER TABLE notes ADD COLUMN created_at INTEGER DEFAULT 0");
         db.execSQL("ALTER TABLE notes ADD COLUMN created_at_range_id INTEGER");
     }
 

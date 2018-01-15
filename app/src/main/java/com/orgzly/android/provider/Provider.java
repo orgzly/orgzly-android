@@ -1060,6 +1060,8 @@ public class Provider extends ContentProvider {
             notesUpdated = setOtherStateForNotes(db, targetState, notesSelection, selectionArgs);
         }
 
+        /* Update modification time. */
+
         return notesUpdated;
     }
 

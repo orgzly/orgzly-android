@@ -25,6 +25,8 @@ public class DbNote implements DbNoteColumns, BaseColumns {
             "CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 
+            CREATED_AT + " INTEGER DEFAULT 0," +
+
             /* Position/structure */
             BOOK_ID + " INTEGER NOT NULL," +
             POSITION + " INTEGER NOT NULL," +

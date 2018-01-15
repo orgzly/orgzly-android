@@ -94,6 +94,8 @@ public class NotesClient {
     public static void toContentValues(ContentValues values, Note note, String createdProp) {
         values.put(ProviderContract.Notes.UpdateParam.BOOK_ID, note.getPosition().getBookId());
 
+        values.put(ProviderContract.Notes.UpdateParam.CREATED_AT, note.getCreatedAt());
+
         values.put(ProviderContract.Notes.UpdateParam.LFT, note.getPosition().getLft());
         values.put(ProviderContract.Notes.UpdateParam.RGT, note.getPosition().getRgt());
         values.put(ProviderContract.Notes.UpdateParam.LEVEL, note.getPosition().getLevel());
@@ -169,6 +171,8 @@ public class NotesClient {
     public static Note fromCursor(Cursor cursor) {
         long id = idFromCursor(cursor);
 
+        long createdAt = cursor.getLong(cursor.getColumnIndex(DbNoteView.CREATED_AT));
+
         int contentLines = cursor.getInt(cursor.getColumnIndex(DbNoteView.CONTENT_LINE_COUNT));
 
         OrgHead head = headFromCursor(cursor);
@@ -179,6 +183,7 @@ public class NotesClient {
 
         note.setHead(head);
         note.setId(id);
+        note.setCreatedAt(createdAt);
         note.setPosition(position);
         note.setContentLines(contentLines);
 
@@ -241,7 +246,7 @@ public class NotesClient {
         ContentValues values = new ContentValues();
         toContentValues(values, note, createdProp);
 
-        Uri noteUri = ContentUris.withAppendedId(ProviderContract.Notes.ContentUri.notes(), note.getId());
+        Uri noteUri = ProviderContract.Notes.ContentUri.notesId(note.getId());
         Uri uri = noteUri.buildUpon().appendQueryParameter("bookId", String.valueOf(note.getPosition().getBookId())).build();
 
         ArrayList<ContentProviderOperation> ops = new ArrayList<>();
