@@ -2,11 +2,13 @@ package com.orgzly.android.ui.fragments
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
 import android.support.v4.app.ListFragment
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.Loader
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.widget.SimpleCursorAdapter
 import android.view.*
 import android.widget.AbsListView
@@ -14,6 +16,7 @@ import android.widget.ListView
 import android.widget.ViewFlipper
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.AppIntent
 import com.orgzly.android.filter.FileFilterStore
 import com.orgzly.android.provider.ProviderContract
 import com.orgzly.android.provider.clients.FiltersClient
@@ -22,6 +25,7 @@ import com.orgzly.android.ui.FragmentListener
 import com.orgzly.android.ui.Loaders
 import com.orgzly.android.ui.util.ListViewUtils
 import com.orgzly.android.util.LogUtils
+import java.io.IOException
 
 /**
  * Displays and allows modifying saved filters.
@@ -108,22 +112,33 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, item)
 
-        val file = FileFilterStore(context).file()
-
         return when (item?.itemId) {
             R.id.filters_import -> {
-                mListener?.onFiltersImportRequest(R.string.searches, getString(R.string.import_from, file))
+                importExport(R.string.import_from)
                 true
             }
 
             R.id.filters_export -> {
-                mListener?.onFiltersExportRequest(R.string.searches, getString(R.string.export_to, file))
+                importExport(R.string.export_to)
                 true
             }
 
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    private fun importExport(resId: Int) {
+        try {
+            val file = FileFilterStore(context).file()
+            mListener?.onFiltersExportRequest(R.string.searches, getString(resId, file))
+
+        } catch(e: IOException) {
+            val intent = Intent(AppIntent.ACTION_DISPLAY_MESSAGE)
+            intent.putExtra(AppIntent.EXTRA_MESSAGE, e.localizedMessage)
+            LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
+        }
+    }
+
 
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
         mListener?.onFilterEditRequest(id)

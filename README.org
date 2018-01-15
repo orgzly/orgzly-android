@@ -23,16 +23,6 @@ http://orgmode.org for more information.
 </a>
 #+END_HTML
 
-** Features
-
-- Create, edit and delete notes and tasks
-- Collapse and expand sub-notes
-- Schedule tasks and set their deadlines
-- Set priorities and tags for notes
-- Fling notes left or right to open quick-menus
-- Search notes by various properties
-- Create and save searches for quick access
-
 ** Documentation
 
 Find out more here: https://github.com/orgzly/documentation

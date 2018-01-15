@@ -25,6 +25,16 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.6.2-beta.5"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Handle unavailable storage when exporting queries"/>
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.6.2-beta.4"
             tools:ignore="HardcodedText"/>
 
