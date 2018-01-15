@@ -1,6 +1,9 @@
 # Properties loaded by Gradle build (e.g. credentials)
 app.properties
 
+# Crowdin configuration file
+crowdin.yml
+
 
 # Created by https://www.gitignore.io/api/gradle,intellij,android,emacs
 
