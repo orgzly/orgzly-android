@@ -5,6 +5,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.orgzly.BuildConfig;
+import com.orgzly.R;
 import com.orgzly.android.util.LogUtils;
 
 import java.io.File;
@@ -68,7 +69,7 @@ public class LocalStorage {
      */
     public File downloadsDirectory() throws IOException {
         if (!isExternalStorageWritable()) {
-            throw new IOException("External storage directory not available for writing");
+            throw new IOException(mContext.getString(R.string.primary_storage_not_available));
         }
 
         File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
