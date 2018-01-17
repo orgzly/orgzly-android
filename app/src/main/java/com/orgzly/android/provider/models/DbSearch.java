@@ -22,6 +22,9 @@ public class DbSearch implements DbSearchColumns, BaseColumns {
             "(\"Agenda\", \".it.done ad.7\")",
 
             "INSERT INTO " + TABLE + " (" + NAME + ", " + QUERY + ") VALUES " +
+            "(\"Next 3 days\", \".it.done s.ge.today ad.3\")",
+
+            "INSERT INTO " + TABLE + " (" + NAME + ", " + QUERY + ") VALUES " +
             "(\"Scheduled\", \"s.today .it.done\")",
 
             "INSERT INTO " + TABLE + " (" + NAME + ", " + QUERY + ") VALUES " +

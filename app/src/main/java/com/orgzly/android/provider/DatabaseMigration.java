@@ -144,9 +144,14 @@ public class DatabaseMigration {
 
     private static void insertAgendaSavedSearch(SQLiteDatabase db) {
         ContentValues values = new ContentValues();
+
         values.put("name", "Agenda");
-        values.put("search", ".it.done (s.7d or d.7d) ad.7");
-        values.put("position", -1); // Display first
+        values.put("search", ".it.done ad.7");
+        values.put("position", -2); // Display first
+
+        values.put("name", "Next 3 days");
+        values.put("search", ".it.done s.ge.today ad.3");
+        values.put("position", -1); // Display second
 
         db.insert("searches", null, values);
     }
