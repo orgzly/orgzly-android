@@ -217,8 +217,8 @@ public class FilterFragment extends Fragment {
     }
 
     private Filter validateFields() {
-        String name = mName.getText().toString();
-        String query = mQuery.getText().toString();
+        String name = mName.getText().toString().trim();
+        String query = mQuery.getText().toString().trim();
 
         boolean isValid = true;
 

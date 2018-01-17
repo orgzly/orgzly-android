@@ -519,7 +519,7 @@ public class MainActivity extends CommonActivity
                 /* Close search. */
                 MenuItemCompat.collapseActionView(searchItem);
 
-                DisplayManager.displayQuery(getSupportFragmentManager(), str);
+                DisplayManager.displayQuery(getSupportFragmentManager(), str.trim());
 
                 return true;
             }
