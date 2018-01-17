@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -93,10 +94,11 @@ public class MainActivity extends CommonActivity
 
     public static final String TAG = MainActivity.class.getName();
 
-    public static final int ACTIVITY_REQUEST_CODE_FOR_FILE_CHOOSER = 0;
+    public static final int ACTIVITY_REQUEST_CODE_FOR_BOOK_IMPORT = 0;
+    public static final int ACTIVITY_REQUEST_CODE_FOR_QUERIES_IMPORT = 1;
 
     private static final int DIALOG_NEW_BOOK = 1;
-    private static final int DIALOG_IMPORT_BOOK = 5;
+    private static final int DIALOG_IMPORT_BOOK = 2;
 
     public SyncFragment mSyncFragment;
 
@@ -572,11 +574,17 @@ public class MainActivity extends CommonActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            /* Open selected file. */
-            case ACTIVITY_REQUEST_CODE_FOR_FILE_CHOOSER:
+            case ACTIVITY_REQUEST_CODE_FOR_BOOK_IMPORT:
                 if (resultCode == RESULT_OK) {
                     Uri uri = data.getData();
                     runnableOnResumeFragments = () -> importChosenBook(uri);
+                }
+                break;
+
+            case ACTIVITY_REQUEST_CODE_FOR_QUERIES_IMPORT:
+                if (resultCode == RESULT_OK) {
+                    Uri uri = data.getData();
+                    runnableOnResumeFragments = () -> mSyncFragment.importQueries(uri);
                 }
                 break;
         }
@@ -1065,17 +1073,28 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onBookLoadRequest() {
+    public void onBookImportRequest() {
+        startFileChooser(R.string.import_org_file, ACTIVITY_REQUEST_CODE_FOR_BOOK_IMPORT);
+    }
+
+    @Override
+    public void onFiltersExportRequest(int title, @NonNull String message) {
+        runWithPermission(
+                AppPermissions.Usage.FILTERS_EXPORT_IMPORT,
+                () -> mSyncFragment.exportQueries());
+    }
+
+    @Override
+    public void onFiltersImportRequest(int title, @NonNull String message) {
+        startFileChooser(R.string.import_, ACTIVITY_REQUEST_CODE_FOR_QUERIES_IMPORT);
+    }
+
+    private void startFileChooser(@StringRes int titleResId, int code) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
 
-        /* Allow choosing multiple files. */
-        // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-
-        startActivityForResult(
-                Intent.createChooser(intent, getString(R.string.import_org_file)),
-                ACTIVITY_REQUEST_CODE_FOR_FILE_CHOOSER);
+        startActivityForResult(Intent.createChooser(intent, getString(titleResId)), code);
     }
 
     /**
@@ -1444,26 +1463,5 @@ public class MainActivity extends CommonActivity
      */
     private void runDelayedAfterDrawerClose(Runnable runnable) {
         new Handler().postDelayed(runnable, 300);
-    }
-
-    @Override
-    public void onFiltersExportRequest(int title, @NonNull String message) {
-        exportImportFilters(title, message, AppIntent.ACTION_EXPORT_SEARCHES);
-    }
-
-    @Override
-    public void onFiltersImportRequest(int title, @NonNull String message) {
-        exportImportFilters(title, message, AppIntent.ACTION_IMPORT_SEARCHES);
-    }
-
-    private void exportImportFilters(int title, String message, String action) {
-        promptUser(title, message, () -> runWithPermission(
-                AppPermissions.Usage.FILTERS_EXPORT_IMPORT,
-                () -> {
-                    Intent intent = new Intent(MainActivity.this, ActionService.class);
-                    intent.setAction(action);
-                    startService(intent);
-                }
-        ));
     }
 }

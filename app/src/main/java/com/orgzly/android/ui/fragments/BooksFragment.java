@@ -37,7 +37,6 @@ import com.orgzly.android.provider.views.DbBookViewColumns;
 import com.orgzly.android.ui.Fab;
 import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.Loaders;
-import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.UriUtils;
 
@@ -540,7 +539,7 @@ public class BooksFragment extends ListFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.books_options_menu_item_import_book:
-                mListener.onBookLoadRequest();
+                mListener.onBookImportRequest();
                 return true;
 
             default:
@@ -673,6 +672,6 @@ public class BooksFragment extends ListFragment
 
         void onBookExportRequest(long bookId);
 
-        void onBookLoadRequest();
+        void onBookImportRequest();
     }
 }

@@ -2,12 +2,15 @@ package com.orgzly.android.filter
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.support.v4.content.LocalBroadcastManager
 import com.orgzly.R
 import com.orgzly.android.AppIntent
 import com.orgzly.android.LocalStorage
 import com.orgzly.android.provider.clients.FiltersClient
+import com.orgzly.android.util.MiscUtils
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
 import java.io.File
@@ -15,20 +18,32 @@ import java.io.File
 
 class FileFilterStore(val context: Context) : FilterStore {
 
-    override fun importFilters() {
-        val file = file()
+    override fun importFilters(uri: Uri) {
+        val json = parseJson(uri) ?: return
 
-        if (fileExists(file)) {
-            val json = JSONArray(JSONTokener(file.readText()))
+        val filters = (0 until json.length()).map { i ->
+            val filterJson = json.getJSONObject(i)
+            Filter(filterJson.getString("name"), filterJson.getString("query"))
+        }
 
-            val filters = (0 until json.length()).map { i ->
-                val filterJson = json.getJSONObject(i)
-                Filter(filterJson.getString("name"), filterJson.getString("query"))
-            }
+        val imported = FiltersClient.replaceAll(context, filters)
 
-            val imported = FiltersClient.replaceAll(context, filters)
+        notifyUser(context.getString(R.string.imported_filters, imported))
+    }
 
-            notifyUser(context.getString(R.string.imported_filters, imported))
+    /**
+     * Parse JSON content.
+     */
+    private fun parseJson(uri: Uri): JSONArray? {
+        val fileContent = context.contentResolver.openInputStream(uri).use { stream ->
+            MiscUtils.readStream(stream)
+        }
+
+        return try {
+            JSONArray(JSONTokener(fileContent))
+        } catch (e: JSONException) {
+            notifyUser(e.localizedMessage)
+            return null
         }
     }
 

@@ -109,13 +109,8 @@ public class FiltersFragmentTest extends OrgzlyTest {
     }
 
     @Test
-    public void testExportImportFilters() {
+    public void testExportFilters() {
         onActionItemClick(R.id.filters_export, R.string.export);
-        onView(withText(R.string.ok)).perform(click());
-        onSnackbar().check(matches(withText(startsWith(context.getString(R.string.exported_filters, 3)))));
-
-        onActionItemClick(R.id.filters_import, R.string.import_);
-        onView(withText(R.string.ok)).perform(click());
-        onSnackbar().check(matches(withText(startsWith(context.getString(R.string.imported_filters, 3)))));
+        onSnackbar().check(matches(withText(startsWith(context.getString(R.string.exported_filters, 4)))));
     }
 }

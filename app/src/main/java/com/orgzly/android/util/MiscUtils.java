@@ -17,8 +17,10 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.security.MessageDigest;
 
 public class MiscUtils {
@@ -104,6 +106,18 @@ public class MiscUtils {
         reader2.close();
 
         return result;
+    }
+
+    public static String readStream(InputStream in) throws IOException {
+        final int bufferSize = 1024;
+        final char[] buffer = new char[bufferSize];
+        final StringBuilder out = new StringBuilder();
+        Reader reader = new InputStreamReader(in, "UTF-8");
+        int len;
+        while ((len = reader.read(buffer, 0, buffer.length)) != -1) {
+            out.append(buffer, 0, len);
+        }
+        return out.toString();
     }
 
     public static void writeStreamToFile(InputStream in, File file) throws IOException {
