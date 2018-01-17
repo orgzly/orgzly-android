@@ -120,10 +120,7 @@ public class MiscTest extends OrgzlyTest {
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
         onView(withText("Note B.")).perform(click());
         onView(withId(R.id.drawer_layout)).perform(open());
-        onData(anything())
-                .inAdapterView(withContentDescription(activityRule.getActivity().getString(R.string.fragment_left_drawer_list_view_content_description)))
-                .atPosition(6)
-                .perform(click());
+        onView(allOf(withText("book-two"), isDisplayed())).perform(click());
         onView(withText("Note #2.")).perform(click());
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
         EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CLEAR_DATABASE);
@@ -657,10 +654,7 @@ public class MiscTest extends OrgzlyTest {
         onListItem(3).perform(longClick());
         onView(withId(R.id.book_cab_move)).check(matches(isDisplayed()));
         onView(withId(R.id.drawer_layout)).perform(open());
-        onData(anything())
-                .inAdapterView(withContentDescription(activityRule.getActivity().getString(R.string.fragment_left_drawer_list_view_content_description)))
-                .atPosition(6)
-                .perform(click());
+        onView(allOf(withText("booky-two"), isDisplayed())).perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
 
         onView(withId(R.id.book_cab_move)).check(matches(not(isDisplayed())));
