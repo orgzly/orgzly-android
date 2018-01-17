@@ -75,16 +75,6 @@ class FileFilterStore(val context: Context) : FilterStore {
         return File(dir, FILE_NAME)
     }
 
-    private fun fileExists(file: File): Boolean {
-        val fileExists = file.exists()
-
-        if (!fileExists) {
-            notifyUser(context.getString(R.string.file_does_not_exist, file))
-        }
-
-        return fileExists
-    }
-
     private fun notifyUser(msg: String) {
         val intent = Intent(AppIntent.ACTION_DISPLAY_MESSAGE)
         intent.putExtra(AppIntent.EXTRA_MESSAGE, msg)
@@ -92,6 +82,6 @@ class FileFilterStore(val context: Context) : FilterStore {
     }
 
     companion object {
-        val FILE_NAME = "orgzly.queries.json"
+        val FILE_NAME = "Orgzly Search Queries.json"
     }
 }
