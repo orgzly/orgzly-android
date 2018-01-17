@@ -25,7 +25,6 @@ import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,7 +51,6 @@ import com.orgzly.android.provider.clients.ReposClient;
 import com.orgzly.android.query.Condition;
 import com.orgzly.android.query.Query;
 import com.orgzly.android.query.user.DottedQueryBuilder;
-import com.orgzly.android.query.user.DottedQueryParser;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.fragments.BookFragment;
@@ -122,7 +120,7 @@ public class MainActivity extends CommonActivity
     private ActionMode mActionMode;
     private boolean mPromoteDemoteOrMoveRequested = false;
 
-    private Bundle mImportChosenBook = null;
+    private Runnable runnableOnResumeFragments;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -437,9 +435,9 @@ public class MainActivity extends CommonActivity
         /* Showing dialog in onResume() fails with:
          *   Can not perform this action after onSaveInstanceState
          */
-        if (mImportChosenBook != null) {
-            importChosenBook(mImportChosenBook);
-            mImportChosenBook = null;
+        if (runnableOnResumeFragments != null) {
+            runnableOnResumeFragments.run();
+            runnableOnResumeFragments = null;
         }
 
         LocalBroadcastManager bm = LocalBroadcastManager.getInstance(this);
@@ -578,12 +576,7 @@ public class MainActivity extends CommonActivity
             case ACTIVITY_REQUEST_CODE_FOR_FILE_CHOOSER:
                 if (resultCode == RESULT_OK) {
                     Uri uri = data.getData();
-
-                    Bundle bundle = new Bundle();
-                    bundle.putString("uri", uri.toString());
-
-                    /* This will get picked up in onResume(). */
-                    mImportChosenBook = bundle;
+                    runnableOnResumeFragments = () -> importChosenBook(uri);
                 }
                 break;
         }
@@ -592,9 +585,11 @@ public class MainActivity extends CommonActivity
     /**
      * Display a dialog for user to enter notebook's name.
      */
-    private void importChosenBook(final Bundle bundle) {
-        Uri uri = Uri.parse(bundle.getString("uri"));
+    private void importChosenBook(Uri uri) {
         String guessedBookName = guessBookNameFromUri(uri);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("uri", uri.toString());
 
         SimpleOneLinerDialog
                 .getInstance(DIALOG_IMPORT_BOOK, R.string.import_as, R.string.name, R.string.import_, R.string.cancel, guessedBookName, bundle)
