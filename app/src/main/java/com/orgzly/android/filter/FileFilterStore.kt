@@ -77,6 +77,6 @@ class FileFilterStore(val context: Context) : FilterStore {
     }
 
     companion object {
-        val FILE_NAME = "orgzly.filters.json"
+        val FILE_NAME = "orgzly.queries.json"
     }
 }
