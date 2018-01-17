@@ -22,9 +22,12 @@ import static android.support.test.espresso.contrib.DrawerActions.open;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.startsWith;
 
 public class FiltersFragmentTest extends OrgzlyTest {
     @Rule
@@ -103,5 +106,16 @@ public class FiltersFragmentTest extends OrgzlyTest {
     public void testMovingFilterDown() {
         onListItem(0).perform(longClick());
         onView(withId(R.id.filters_cab_move_down)).perform(click());
+    }
+
+    @Test
+    public void testExportImportFilters() {
+        onActionItemClick(R.id.filters_export, R.string.export);
+        onView(withText(R.string.ok)).perform(click());
+        onSnackbar().check(matches(withText(startsWith(context.getString(R.string.exported_filters, 3)))));
+
+        onActionItemClick(R.id.filters_import, R.string.import_);
+        onView(withText(R.string.ok)).perform(click());
+        onSnackbar().check(matches(withText(startsWith(context.getString(R.string.imported_filters, 3)))));
     }
 }
