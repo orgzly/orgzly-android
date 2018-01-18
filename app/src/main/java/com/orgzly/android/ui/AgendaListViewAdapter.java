@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.orgzly.R;
-import com.orgzly.android.ui.fragments.AgendaFragment;
+import com.orgzly.android.provider.AgendaCursor;
 import com.orgzly.android.ui.views.GesturedListViewItemMenus;
 
 public class AgendaListViewAdapter extends HeadsListViewAdapter {
@@ -43,13 +43,13 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        int isSeparator = cursor.getInt(cursor.getColumnIndex(AgendaFragment.Columns.IS_SEPARATOR));
+        int isSeparator = cursor.getInt(cursor.getColumnIndex(AgendaCursor.Columns.IS_SEPARATOR));
 
         if (isSeparator == 1) {
             View view = LayoutInflater.from(context).inflate(R.layout.item_agenda_time, null);
 
             TextView textView = (TextView) view.findViewById(R.id.item_agenda_time_text);
-            textView.setText(cursor.getString(cursor.getColumnIndex(AgendaFragment.Columns.AGENDA_DAY)));
+            textView.setText(cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.AGENDA_DAY)));
 
             view.setTag(R.id.AGENDA_ITEM_SEPARATOR_TAG, Boolean.TRUE);
             return view;
@@ -68,7 +68,7 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
 
         if (isCursorSeparator && isViewSeparator) {
             TextView textView = (TextView) view.findViewById(R.id.item_agenda_time_text);
-            textView.setText(cursor.getString(cursor.getColumnIndex(AgendaFragment.Columns.AGENDA_DAY)));
+            textView.setText(cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.AGENDA_DAY)));
 
             int[] margins = getMarginsForListDensity(context);
             view.setPadding(0, margins[1], 0, margins[1]);
@@ -90,7 +90,7 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
     }
 
     private int getCursorType(Cursor cursor) {
-        if (cursor.getInt(cursor.getColumnIndex(AgendaFragment.Columns.IS_SEPARATOR)) == 1)
+        if (cursor.getInt(cursor.getColumnIndex(AgendaCursor.Columns.IS_SEPARATOR)) == 1)
             return SEPARATOR_TYPE;
         return NOTE_TYPE;
     }

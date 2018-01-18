@@ -7,6 +7,8 @@ import android.text.format.DateUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgRange;
 
+import org.joda.time.DateTime;
+
 import java.util.Formatter;
 import java.util.Locale;
 
@@ -20,6 +22,7 @@ public class UserTimeFormatter {
      */
     private StringBuilder formatterString;
     private Formatter formatter;
+
 
     public UserTimeFormatter(Context context) {
         mContext = context;
@@ -66,9 +69,15 @@ public class UserTimeFormatter {
         return s.toString();
     }
 
-    public String formatDate(OrgDateTime time) {
-        long timestamp = time.getCalendar().getTimeInMillis();
+    public String formatDate(DateTime datetime) {
+        return formatDate(datetime.getMillis());
+    }
 
+    public String formatDate(OrgDateTime time) {
+        return formatDate(time.getCalendar().getTimeInMillis());
+    }
+
+    private String formatDate(long timestamp) {
         int flags = DateUtils.FORMAT_SHOW_DATE |
                     DateUtils.FORMAT_ABBREV_MONTH |
                     DateUtils.FORMAT_SHOW_WEEKDAY |
