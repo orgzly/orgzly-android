@@ -19,8 +19,6 @@ import android.widget.ListView;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.provider.models.DbNoteColumns;
 import com.orgzly.android.provider.views.DbNoteViewColumns;
 import com.orgzly.android.query.Query;
@@ -119,11 +117,7 @@ public class AgendaFragment extends QueryFragment {
                             break;
 
                         case R.id.item_menu_done_state_btn:
-                            if (AppPreferences.isDoneKeyword(getActivity(), "DONE")) {
-                                Set<Long> set = new TreeSet<>();
-                                set.add(noteId);
-                                mListener.onStateChangeRequest(set, "DONE");
-                            }
+                            mListener.onStateFlipRequest(noteId);
                             break;
 
                         case R.id.item_menu_open_btn:

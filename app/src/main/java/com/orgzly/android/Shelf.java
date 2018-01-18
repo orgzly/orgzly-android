@@ -10,10 +10,8 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -36,7 +34,6 @@ import com.orgzly.android.sync.BookSyncStatus;
 import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
-import com.orgzly.android.ui.views.GesturedListView;
 import com.orgzly.android.util.CircularArrayList;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
@@ -272,6 +269,14 @@ public class Shelf {
         NotesClient.updateScheduledTime(mContext, noteIds, time);
         notifyDataChanged(mContext);
         syncOnNoteUpdate();
+    }
+
+    public void setNoteState(long noteId, String state) {
+        if (state != null) {
+            Set<Long> ids = new TreeSet<>();
+            ids.add(noteId);
+            setNotesState(ids, state);
+        }
     }
 
     public void setNotesState(Set<Long> noteIds, String state) {
@@ -740,59 +745,49 @@ public class Shelf {
         }
     }
 
+    /** Check-mark button pressed. */
     public void flipState(long noteId) {
         Note note = getNote(noteId);
 
-        if (note.getHead().getState() == null) {
-            String msg = mContext.getString(R.string.note_cannot_marked_as_done);
-            Intent intent = new Intent(AppIntent.ACTION_DISPLAY_MESSAGE);
-            intent.putExtra(AppIntent.EXTRA_MESSAGE, msg);
-            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+        if (note != null) {
+            String state = getNote(noteId).getHead().getState();
 
-        } else {
-            /* Flip the state of the node to either the first to-do or first done state */
-            Set<String> doneStates = AppPreferences.doneKeywordsSet(mContext);
-            String currentState = getNote(noteId).getHead().getState();
-
-            if (currentState != null) {
-                if (doneStates.contains(currentState)) {
-                    setStateToTodo(noteId);
-                } else {
-                    setStateToDone(noteId);
-                }
+            if (state != null && AppPreferences.isDoneKeyword(mContext, state)) {
+                setStateToFirstTodo(noteId);
+            } else {
+                setStateToFirstDone(noteId);
             }
         }
     }
 
-    public void setStateToDone(long noteId) {
-        /* Get the *first* DONE state from preferences. */
-        Set<String> doneStates = AppPreferences.doneKeywordsSet(mContext);
-        String firstDoneState = doneStates.iterator().hasNext() ? doneStates.iterator().next() : null;
-
-        if (firstDoneState != null) {
-            Set<Long> ids = new TreeSet<>();
-            ids.add(noteId);
-            setNotesState(ids, firstDoneState);
-        }
+    /**
+     * Sets the state of the note to the first to-do-type state defined in Settings.
+     */
+    private void setStateToFirstTodo(long noteId) {
+        String state = getFirstTodoState();
+        setNoteState(noteId, state);
     }
 
-    public void setStateToTodo(long noteId) {
-        /* Get the *first* not done state from preferences */
-        String firstTodoState = new String();
-        Set<String> todoStates = AppPreferences.todoKeywordsSet(mContext);
-
-        if (todoStates.iterator().hasNext()) {
-            firstTodoState = todoStates.iterator().next();
-        } else {
-            firstTodoState = null;
-        }
-
-        if (firstTodoState != null) {
-            Set<Long> ids = new TreeSet<>();
-            ids.add(noteId);
-            setNotesState(ids, firstTodoState);
-        }
+    /**
+     * Sets the state of the note to the first done-type state defined in Settings.
+     */
+    public void setStateToFirstDone(long noteId) {
+        String state = getFirstDoneState();
+        setNoteState(noteId, state);
     }
+
+    private String getFirstTodoState() {
+        return getFirstState(AppPreferences.todoKeywordsSet(mContext));
+    }
+
+    private String getFirstDoneState() {
+        return getFirstState(AppPreferences.doneKeywordsSet(mContext));
+    }
+
+    private String getFirstState(Set<String> states) {
+        return states.iterator().hasNext() ? states.iterator().next() : null;
+    }
+
 
     public static void notifyDataChanged(Context context) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);

@@ -784,11 +784,6 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onStateToDoneRequest(long noteId) {
-        mSyncFragment.setStateToDone(noteId);
-    }
-
-    @Override
     public void onStateFlipRequest(long noteId) {
         mSyncFragment.flipState(noteId);
     }

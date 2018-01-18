@@ -403,17 +403,6 @@ public class SyncFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    public void setStateToDone(final long noteId) {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                mShelf.setStateToDone(noteId);
-                return null;
-            }
-        }.execute();
-    }
-
-    @SuppressLint("StaticFieldLeak")
     public void promoteNotes(final long bookId, final Set<Long> noteIds) {
         new AsyncTask<Void, Void, Void>() {
             @Override
