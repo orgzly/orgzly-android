@@ -106,8 +106,8 @@ public class DbNote implements DbNoteColumns, BaseColumns {
         }
 
         if (head.hasContent()) {
-            values.put(CONTENT, head.getContent());
-            values.put(CONTENT_LINE_COUNT, MiscUtils.lineCount(head.getContent()));
+            values.put(CONTENT, head.getContentString());
+            values.put(CONTENT_LINE_COUNT, MiscUtils.lineCount(head.getContentString()));
         }
     }
 

@@ -190,7 +190,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                 holder.content.setTypeface(Typeface.MONOSPACE);
             }
 
-            holder.content.setText(OrgFormatter.INSTANCE.parse(context, head.getContent()));
+            holder.content.setText(OrgFormatter.INSTANCE.parse(context, head.getContentString()));
 
             holder.content.setVisibility(View.VISIBLE);
 
@@ -345,4 +345,3 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         }
     }
 }
-

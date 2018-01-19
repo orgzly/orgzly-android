@@ -417,7 +417,7 @@ public class NoteFragment extends Fragment
             outState.remove(ARG_CURRENT_PROPERTIES);
         }
 
-        outState.putString(ARG_CURRENT_CONTENT, head.getContent());
+        outState.putString(ARG_CURRENT_CONTENT, head.getContentString());
     }
 
     /**
@@ -502,8 +502,8 @@ public class NoteFragment extends Fragment
         }
 
         /* Content. */
-        bodyEdit.setText(head.getContent());
-        bodyView.setText(OrgFormatter.INSTANCE.parse(getContext(), head.getContent()));
+        bodyEdit.setText(head.getContentString());
+        bodyView.setText(OrgFormatter.INSTANCE.parse(getContext(), head.getContentString()));
     }
 
     private void addPropertyToList(OrgProperty property) {

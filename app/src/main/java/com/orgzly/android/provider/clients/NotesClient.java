@@ -140,8 +140,8 @@ public class NotesClient {
         }
 
         if (head.hasContent()) {
-            values.put(ProviderContract.Notes.UpdateParam.CONTENT, head.getContent());
-            values.put(ProviderContract.Notes.UpdateParam.CONTENT_LINE_COUNT, MiscUtils.lineCount(head.getContent()));
+            values.put(ProviderContract.Notes.UpdateParam.CONTENT, head.getContentString());
+            values.put(ProviderContract.Notes.UpdateParam.CONTENT_LINE_COUNT, MiscUtils.lineCount(head.getContentString()));
         } else {
             values.putNull(ProviderContract.Notes.UpdateParam.CONTENT);
             values.put(ProviderContract.Notes.UpdateParam.CONTENT_LINE_COUNT, 0);
