@@ -35,6 +35,7 @@ import com.orgzly.android.provider.models.DbCurrentVersionedRook;
 import com.orgzly.android.provider.models.DbDbRepo;
 import com.orgzly.android.provider.models.DbNote;
 import com.orgzly.android.provider.models.DbNoteAncestor;
+import com.orgzly.android.provider.models.DbNoteContentTime;
 import com.orgzly.android.provider.models.DbNoteProperty;
 import com.orgzly.android.provider.models.DbOrgRange;
 import com.orgzly.android.provider.models.DbOrgTimestamp;
@@ -1403,6 +1404,12 @@ public class Provider extends ContentProvider {
                                 long propertyId = DbProperty.getOrInsert(db, nameId, valueId);
 
                                 DbNoteProperty.getOrInsert(db, noteId, pos++, propertyId);
+                            }
+
+                            /* Insert note's content times. */
+                            for (OrgRange time: node.getHead().getContent().getTimestamps()) {
+                                long rangeId = getOrInsertOrgRange(db, time);
+                                DbNoteContentTime.getOrInsert(db, noteId, rangeId);
                             }
 
                             /*

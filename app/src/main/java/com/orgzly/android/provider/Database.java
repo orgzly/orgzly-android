@@ -16,6 +16,7 @@ import com.orgzly.android.provider.models.DbCurrentVersionedRook;
 import com.orgzly.android.provider.models.DbDbRepo;
 import com.orgzly.android.provider.models.DbNote;
 import com.orgzly.android.provider.models.DbNoteAncestor;
+import com.orgzly.android.provider.models.DbNoteContentTime;
 import com.orgzly.android.provider.models.DbNoteProperty;
 import com.orgzly.android.provider.models.DbOrgRange;
 import com.orgzly.android.provider.models.DbOrgTimestamp;
@@ -116,6 +117,7 @@ public class Database extends SQLiteOpenHelper {
         for (String sql : DbCurrentVersionedRook.CREATE_SQL) db.execSQL(sql);
         for (String sql : DbDbRepo.CREATE_SQL) db.execSQL(sql);
         for (String sql : DbNoteProperty.CREATE_SQL) db.execSQL(sql);
+        for (String sql : DbNoteContentTime.CREATE_SQL) db.execSQL(sql);
         for (String sql : DbPropertyName.CREATE_SQL) db.execSQL(sql);
         for (String sql : DbPropertyValue.CREATE_SQL) db.execSQL(sql);
         for (String sql : DbProperty.CREATE_SQL) db.execSQL(sql);
@@ -140,6 +142,7 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(DbCurrentVersionedRook.DROP_SQL);
         db.execSQL(DbDbRepo.DROP_SQL);
         db.execSQL(DbNoteProperty.DROP_SQL);
+        db.execSQL(DbNoteContentTime.DROP_SQL);
         db.execSQL(DbPropertyName.DROP_SQL);
         db.execSQL(DbPropertyValue.DROP_SQL);
         db.execSQL(DbProperty.DROP_SQL);
