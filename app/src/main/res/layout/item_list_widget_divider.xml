@@ -12,4 +12,5 @@
     android:paddingBottom="2dp"
     android:maxLines="1"
     android:gravity="center"
+    android:textColor="@color/black"
     tools:text="Mon, 25 Sep"/>
