@@ -380,4 +380,5 @@
   <string name="file_does_not_exist">Bestand %s bestaat niet</string>
   <string name="import_from">Importeer uit \"%1$s\"?</string>
   <string name="export_to">Exporteer naar \"%1$s\"?</string>
+  <string name="primary_storage_not_available">Primaire opslag niet beschikbaar</string>
 </resources>

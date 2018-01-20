@@ -69,7 +69,7 @@
   <string name="message_dropbox_linked">已成功連結到Dropbox</string>
   <!-- Preferences (Settings). -->
   <string name="repos_preference_title">資料庫</string>
-  <string name="repos_preference_summary">同步筆記本的本地位置</string>
+  <string name="repos_preference_summary">同步筆記本的位置</string>
   <string name="message_book_has_no_link">沒有設定連結</string>
   <string name="message_note_created">已創建筆記</string>
   <string name="message_failed_creating_note">無法建立筆記</string>
@@ -376,4 +376,5 @@
   <string name="file_does_not_exist">檔案 %s 不存在</string>
   <string name="import_from">從 \"%1$s\" 匯入？</string>
   <string name="export_to">匯出到 \"%1$s\"？</string>
+  <string name="primary_storage_not_available">沒有可用的主儲存媒體</string>
 </resources>

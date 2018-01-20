@@ -380,4 +380,5 @@
   <string name="file_does_not_exist">File %s does not exist</string>
   <string name="import_from">Import from “%1$s”?</string>
   <string name="export_to">Export to “%1$s”?</string>
+  <string name="primary_storage_not_available">Primary storage not available</string>
 </resources>
