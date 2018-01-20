@@ -22,6 +22,18 @@
             android:text="@string/whats_new_intro"/>
 
 
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.6.2-beta.6"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support agenda display in list widget"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix importing queries and allow picking the file"/>
 
         <TextView
             style="@style/WhatsNewVersion"
@@ -31,7 +43,6 @@
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
             app:text="Handle unavailable storage when exporting queries"/>
-
 
         <TextView
             style="@style/WhatsNewVersion"
