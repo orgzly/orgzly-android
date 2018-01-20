@@ -22,7 +22,6 @@ import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.Selection;
 import com.orgzly.android.util.LogUtils;
-import com.orgzly.android.util.UserTimeFormatter;
 
 import java.util.TreeSet;
 
@@ -70,7 +69,7 @@ public class AgendaFragment extends QueryFragment {
 
         /* On long click */
         getListView().setOnItemLongClickListener((parent, view1, position, id) -> {
-            if (mListAdapter.getItemViewType(position) != AgendaListViewAdapter.SEPARATOR_TYPE) {
+            if (mListAdapter.getItemViewType(position) != AgendaListViewAdapter.DIVIDER_VIEW_TYPE) {
                 mListener.onNoteLongClick(AgendaFragment.this, view1, position, id, originalNoteIDs.get(id));
             }
             return true;
@@ -149,7 +148,7 @@ public class AgendaFragment extends QueryFragment {
     public void onListItemClick(ListView listView, View view, int position, long id) {
         int itemViewType = mListAdapter.getItemViewType(position);
 
-        if (itemViewType == AgendaListViewAdapter.NOTE_TYPE) {
+        if (itemViewType == AgendaListViewAdapter.NOTE_VIEW_TYPE) {
             mListener.onNoteClick(this, view, position, id, originalNoteIDs.get(id));
         }
     }

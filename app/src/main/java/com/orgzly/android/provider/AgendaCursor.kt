@@ -82,7 +82,7 @@ object AgendaCursor {
                                 }
 
                                 col.equals(Columns.IS_DIVIDER) ->
-                                    // Mark row as not a separator
+                                    // Mark row as not being a divider
                                     rowBuilder.add(0)
 
                                 else ->
@@ -128,7 +128,7 @@ object AgendaCursor {
 
             dateRow.add(nextId++)
             dateRow.add(userTimeFormatter.formatDate(date))
-            dateRow.add(1) // Mark as a separator
+            dateRow.add(1)
 
             allCursors.add(dateCursor)
 
@@ -142,9 +142,9 @@ object AgendaCursor {
 
     private val originalNoteIDs = LongSparseArray<Long>()
 
-    object Columns : BaseColumns, DbNoteColumns {
-        const val IS_DIVIDER = "is_separator"
-        const val DIVIDER_VALUE = "day"
+    object Columns: BaseColumns, DbNoteColumns {
+        const val IS_DIVIDER = "is_divider"
+        const val DIVIDER_VALUE = "divider_value"
     }
 
     private const val MAX_DAYS = 30

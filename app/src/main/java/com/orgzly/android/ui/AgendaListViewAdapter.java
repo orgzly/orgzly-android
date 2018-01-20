@@ -12,11 +12,10 @@ import com.orgzly.android.provider.AgendaCursor;
 import com.orgzly.android.ui.views.GesturedListViewItemMenus;
 
 public class AgendaListViewAdapter extends HeadsListViewAdapter {
+    private static final int VIEW_TYPE_COUNT = 2;
 
-    public static final int NOTE_TYPE = 0;
-    public static final int SEPARATOR_TYPE = 1;
-
-    private static final int TYPE_COUNT = 2;
+    public static final int NOTE_VIEW_TYPE = 0;
+    public static final int DIVIDER_VIEW_TYPE = 1;
 
     public AgendaListViewAdapter(Context context, Selection selection,
                                  GesturedListViewItemMenus toolbars, boolean inBook) {
@@ -25,20 +24,22 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null)
-            return super.getView(position, convertView, parent);
-        // make sure @convertView is a separator if cursor is a separator
-        // otherwise create a new view
-        boolean isViewSeparator = (boolean) convertView.getTag(R.id.AGENDA_ITEM_SEPARATOR_TAG);
-        Cursor cursor = (Cursor) getItem(position);
-        boolean isCursorSeparator = getCursorType(cursor) == SEPARATOR_TYPE;
-        if (isCursorSeparator != isViewSeparator) {
-            // do not use @convertView
+        if (convertView == null) {
             return super.getView(position, null, parent);
-        }
-        System.out.println("Position is: " + position);
 
-        return super.getView(position, convertView, parent);
+        } else {
+            boolean isViewDivider = (boolean) convertView.getTag(R.id.is_divider_view_tag);
+
+            Cursor cursor = (Cursor) getItem(position);
+            boolean isRowDivider = AgendaCursor.INSTANCE.isDivider(cursor);
+
+            if (isRowDivider != isViewDivider) {
+                // do not use @convertView
+                return super.getView(position, null, parent);
+            } else {
+                return super.getView(position, convertView, parent);
+            }
+        }
     }
 
     @Override
@@ -49,22 +50,22 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
             TextView textView = (TextView) view.findViewById(R.id.item_agenda_time_text);
             textView.setText(cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.DIVIDER_VALUE)));
 
-            view.setTag(R.id.AGENDA_ITEM_SEPARATOR_TAG, Boolean.TRUE);
+            view.setTag(R.id.is_divider_view_tag, Boolean.TRUE);
             return view;
 
         } else {
             View v = super.newView(context, cursor, parent);
-            v.setTag(R.id.AGENDA_ITEM_SEPARATOR_TAG, Boolean.FALSE);
+            v.setTag(R.id.is_divider_view_tag, Boolean.FALSE);
             return v;
         }
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        boolean isCursorSeparator = getCursorType(cursor) == SEPARATOR_TYPE;
-        boolean isViewSeparator = (boolean) view.getTag(R.id.AGENDA_ITEM_SEPARATOR_TAG);
+        boolean isRowDivider = getCursorType(cursor) == DIVIDER_VIEW_TYPE;
+        boolean isViewDivider = (boolean) view.getTag(R.id.is_divider_view_tag);
 
-        if (isCursorSeparator && isViewSeparator) {
+        if (isRowDivider && isViewDivider) {
             TextView textView = (TextView) view.findViewById(R.id.item_agenda_time_text);
             textView.setText(cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.DIVIDER_VALUE)));
 
@@ -84,14 +85,14 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
 
     @Override
     public int getViewTypeCount() {
-        return TYPE_COUNT;
+        return VIEW_TYPE_COUNT;
     }
 
     private int getCursorType(Cursor cursor) {
         if (AgendaCursor.INSTANCE.isDivider(cursor)) {
-            return SEPARATOR_TYPE;
+            return DIVIDER_VIEW_TYPE;
         } else {
-            return NOTE_TYPE;
+            return NOTE_VIEW_TYPE;
         }
     }
 }

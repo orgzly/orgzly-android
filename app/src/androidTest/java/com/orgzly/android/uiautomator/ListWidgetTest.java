@@ -18,14 +18,15 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 /**
- * Tests the ListWIdget with the UI-Automator framework
- * tested on an Nexus 5 Emulator with Android 25
- * Must have an instance of the ListWidget on the Homescreen, when starting this test
- * Also the default version of Getting Started with Orgzly must be the only notebook
+ * Tests the ListWidget with the UI-Automator framework.
+ * Tested on an Nexus 5 Emulator with Android 25
+ * Must have an instance of the ListWidget on the Homescreen, when starting this test.
+ * Also the default version of Getting Started with Orgzly must be the only notebook.
  *
- * see also https://developer.android.com/training/testing/ui-testing/uiautomator-testing.html
+ * See https://developer.android.com/training/testing/ui-testing/uiautomator-testing.html
  */
-@Ignore public class ListWidgetTest {
+@Ignore
+public class ListWidgetTest {
 
     private static final String HEADER_FILTER = "com.orgzly:id/list_widget_header_filter";
     private static final String HEADER_ICON = "com.orgzly:id/list_widget_header_icon";
