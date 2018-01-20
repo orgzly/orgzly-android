@@ -149,6 +149,8 @@ public class DatabaseMigration {
         values.put("search", ".it.done ad.7");
         values.put("position", -2); // Display first
 
+        db.insert("searches", null, values);
+
         values.put("name", "Next 3 days");
         values.put("search", ".it.done s.ge.today ad.3");
         values.put("position", -1); // Display second
