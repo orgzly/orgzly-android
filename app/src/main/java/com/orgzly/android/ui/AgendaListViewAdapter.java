@@ -43,13 +43,11 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        int isSeparator = cursor.getInt(cursor.getColumnIndex(AgendaCursor.Columns.IS_SEPARATOR));
-
-        if (isSeparator == 1) {
+        if (AgendaCursor.INSTANCE.isDivider(cursor)) {
             View view = LayoutInflater.from(context).inflate(R.layout.item_agenda_time, null);
 
             TextView textView = (TextView) view.findViewById(R.id.item_agenda_time_text);
-            textView.setText(cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.AGENDA_DAY)));
+            textView.setText(cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.DIVIDER_VALUE)));
 
             view.setTag(R.id.AGENDA_ITEM_SEPARATOR_TAG, Boolean.TRUE);
             return view;
@@ -68,7 +66,7 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
 
         if (isCursorSeparator && isViewSeparator) {
             TextView textView = (TextView) view.findViewById(R.id.item_agenda_time_text);
-            textView.setText(cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.AGENDA_DAY)));
+            textView.setText(cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.DIVIDER_VALUE)));
 
             int[] margins = getMarginsForListDensity(context);
             view.setPadding(0, margins[1], 0, margins[1]);
@@ -90,8 +88,10 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
     }
 
     private int getCursorType(Cursor cursor) {
-        if (cursor.getInt(cursor.getColumnIndex(AgendaCursor.Columns.IS_SEPARATOR)) == 1)
+        if (AgendaCursor.INSTANCE.isDivider(cursor)) {
             return SEPARATOR_TYPE;
-        return NOTE_TYPE;
+        } else {
+            return NOTE_TYPE;
+        }
     }
 }

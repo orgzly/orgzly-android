@@ -27,10 +27,10 @@ object AgendaCursor {
             agendaDays = MAX_DAYS
         }
 
-        // Add IS_SEPARATOR column
+        // Add IS_DIVIDER column
         val columnNames = arrayOfNulls<String>(cursor.columnNames.size + 1)
         System.arraycopy(cursor.columnNames, 0, columnNames, 0, cursor.columnNames.size)
-        columnNames[columnNames.size - 1] = Columns.IS_SEPARATOR
+        columnNames[columnNames.size - 1] = Columns.IS_DIVIDER
 
         val agenda = LinkedHashMap<Long, MatrixCursor>()
         var day = DateTime.now().withTimeAtStartOfDay()
@@ -81,7 +81,7 @@ object AgendaCursor {
                                     nextId++
                                 }
 
-                                col.equals(Columns.IS_SEPARATOR) ->
+                                col.equals(Columns.IS_DIVIDER) ->
                                     // Mark row as not a separator
                                     rowBuilder.add(0)
 
@@ -103,13 +103,27 @@ object AgendaCursor {
         return AgendaMergedCursor(mergedCursor, originalNoteIDs)
     }
 
+    fun isDivider(cursor: Cursor): Boolean {
+        return cursor.getInt(cursor.getColumnIndex(AgendaCursor.Columns.IS_DIVIDER)) == 1
+    }
+
+    fun getDividerDate(cursor: Cursor): String {
+        return cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.DIVIDER_VALUE))
+    }
+
     private fun mergeDates(id: Long, agenda: Map<Long, MatrixCursor>, userTimeFormatter: UserTimeFormatter): MergeCursor {
         var nextId = id
         val allCursors = ArrayList<Cursor>()
 
         for (dateMilli in agenda.keys) {
             val date = DateTime(dateMilli)
-            val dateCursor = MatrixCursor(SEPARATOR_COLS)
+
+            /* Add divider. */
+            val dateCursor = MatrixCursor(arrayOf(
+                    BaseColumns._ID,
+                    Columns.DIVIDER_VALUE,
+                    Columns.IS_DIVIDER))
+
             val dateRow = dateCursor.newRow()
 
             dateRow.add(nextId++)
@@ -128,11 +142,9 @@ object AgendaCursor {
 
     private val originalNoteIDs = LongSparseArray<Long>()
 
-    private val SEPARATOR_COLS = arrayOf(BaseColumns._ID, Columns.AGENDA_DAY, Columns.IS_SEPARATOR)
-
     object Columns : BaseColumns, DbNoteColumns {
-        const val IS_SEPARATOR = "is_separator"
-        const val AGENDA_DAY = "day"
+        const val IS_DIVIDER = "is_separator"
+        const val DIVIDER_VALUE = "day"
     }
 
     private const val MAX_DAYS = 30

@@ -33,12 +33,6 @@ public class AgendaFragment extends QueryFragment {
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = AgendaFragment.class.getName();
 
-    private static final int MAX_DAYS = 30;
-
-    // Time formatter for separators
-    private UserTimeFormatter userTimeFormatter;
-
-
     /* Maps agenda's item ID to note ID */
     private LongSparseArray<Long> originalNoteIDs = new LongSparseArray<>();
 
