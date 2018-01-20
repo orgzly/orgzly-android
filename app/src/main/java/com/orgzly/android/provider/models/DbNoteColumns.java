@@ -15,7 +15,6 @@ public interface DbNoteColumns {
     String SCHEDULED_RANGE_ID = "scheduled_range_id";
     String DEADLINE_RANGE_ID = "deadline_range_id";
     String CLOSED_RANGE_ID = "closed_range_id";
-    String CREATED_AT_RANGE_ID = "created_at_range_id";
     String CLOCK_RANGE_ID = "clock_range_id";
 
     String LFT = "is_visible";

@@ -49,13 +49,6 @@ public class DbNoteView implements DbNoteViewColumns, DbNoteColumns, BaseColumns
             ms2StartOfDay("t_closed_timestamps_start." + DbOrgTimestamp.TIMESTAMP) + " AS " + CLOSED_TIME_START_OF_DAY + ", " +
             "t_closed_timestamps_start." + DbOrgTimestamp.HOUR + " AS " + CLOSED_TIME_HOUR + ", " +
 
-            "t_created_at_range." + DbOrgRange.STRING + " AS " + CREATED_AT_RANGE_STRING + ", " +
-            "t_created_at_timestamps_start." + DbOrgTimestamp.STRING + " AS " + CREATED_AT_TIME_STRING + ", " +
-            "t_created_at_timestamps_end." + DbOrgTimestamp.STRING + " AS " + CREATED_AT_TIME_END_STRING + ", " +
-            "t_created_at_timestamps_start." + DbOrgTimestamp.TIMESTAMP + " AS " + CREATED_AT_TIME_TIMESTAMP + ", " +
-            ms2StartOfDay("t_created_at_timestamps_start." + DbOrgTimestamp.TIMESTAMP) + " AS " + CREATED_AT_TIME_START_OF_DAY + ", " +
-            "t_created_at_timestamps_start." + DbOrgTimestamp.HOUR + " AS " + CREATED_AT_TIME_HOUR + ", " +
-
             "t_clock_range." + DbOrgRange.STRING + " AS " + CLOCK_RANGE_STRING + ", " +
             "t_clock_timestamps_start." + DbOrgTimestamp.STRING + " AS " + CLOCK_TIME_STRING + ", " +
             "t_clock_timestamps_end." + DbOrgTimestamp.STRING + " AS " + CLOCK_TIME_END_STRING + ", " +
@@ -75,10 +68,6 @@ public class DbNoteView implements DbNoteViewColumns, DbNoteColumns, BaseColumns
             GenericDatabaseUtils.join(DbOrgRange.TABLE, "t_closed_range", DbOrgRange._ID, DbNote.TABLE, DbNote.CLOSED_RANGE_ID) +
             GenericDatabaseUtils.join(DbOrgTimestamp.TABLE, "t_closed_timestamps_start", DbOrgTimestamp._ID, "t_closed_range", DbOrgRange.START_TIMESTAMP_ID) +
             GenericDatabaseUtils.join(DbOrgTimestamp.TABLE, "t_closed_timestamps_end", DbOrgTimestamp._ID, "t_closed_range", DbOrgRange.END_TIMESTAMP_ID) +
-
-            GenericDatabaseUtils.join(DbOrgRange.TABLE, "t_created_at_range", DbOrgRange._ID, DbNote.TABLE, DbNote.CREATED_AT_RANGE_ID) +
-            GenericDatabaseUtils.join(DbOrgTimestamp.TABLE, "t_created_at_timestamps_start", DbOrgTimestamp._ID, "t_created_at_range", DbOrgRange.START_TIMESTAMP_ID) +
-            GenericDatabaseUtils.join(DbOrgTimestamp.TABLE, "t_created_at_timestamps_end", DbOrgTimestamp._ID, "t_created_at_range", DbOrgRange.END_TIMESTAMP_ID) +
 
             GenericDatabaseUtils.join(DbOrgRange.TABLE, "t_clock_range", DbOrgRange._ID, DbNote.TABLE, DbNote.CLOCK_RANGE_ID) +
             GenericDatabaseUtils.join(DbOrgTimestamp.TABLE, "t_clock_timestamps_start", DbOrgTimestamp._ID, "t_clock_range", DbOrgRange.START_TIMESTAMP_ID) +

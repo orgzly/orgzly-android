@@ -57,10 +57,7 @@ class SqliteQueryBuilder(val context: Context) {
             }
 
             if (hasCreatedCondition) {
-                o.add(DbNoteView.CREATED_AT_TIME_TIMESTAMP + " IS NULL")
-                o.add(DbNoteView.CREATED_AT_TIME_START_OF_DAY)
-                o.add(DbNoteView.CREATED_AT_TIME_HOUR + " IS NULL")
-                o.add(DbNoteView.CREATED_AT_TIME_TIMESTAMP)
+                o.add(DbNoteView.CREATED_AT + " DESC")
             }
 
         } else {
@@ -100,17 +97,13 @@ class SqliteQueryBuilder(val context: Context) {
                     }
 
                     is SortOrder.Created -> {
-                        o.add(DbNoteView.CREATED_AT_TIME_TIMESTAMP + " IS NULL")
+                        o.add(DbNoteView.CREATED_AT + " IS NULL")
 
                         if (order.desc) {
-                            o.add(DbNoteView.CREATED_AT_TIME_START_OF_DAY + " DESC")
-                            o.add(DbNoteView.CREATED_AT_TIME_HOUR + " IS NOT NULL")
-                            o.add(DbNoteView.CREATED_AT_TIME_TIMESTAMP + " DESC")
+                            o.add(DbNoteView.CREATED_AT + " DESC")
 
                         } else {
-                            o.add(DbNoteView.CREATED_AT_TIME_START_OF_DAY)
-                            o.add(DbNoteView.CREATED_AT_TIME_HOUR + " IS NULL")
-                            o.add(DbNoteView.CREATED_AT_TIME_TIMESTAMP)
+                            o.add(DbNoteView.CREATED_AT)
                         }
                     }
 
@@ -231,7 +224,7 @@ class SqliteQueryBuilder(val context: Context) {
 
             is Condition.Created -> {
                 hasCreatedCondition = true
-                toInterval(DbNoteView.CREATED_AT_TIME_TIMESTAMP, expr.interval, expr.relation)
+                toInterval(DbNoteView.CREATED_AT, expr.interval, expr.relation)
             }
 
             is Condition.Closed -> {

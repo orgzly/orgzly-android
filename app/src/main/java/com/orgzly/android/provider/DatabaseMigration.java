@@ -146,7 +146,6 @@ public class DatabaseMigration {
 
     private static void addCreatedAt(SQLiteDatabase db) {
         db.execSQL("ALTER TABLE notes ADD COLUMN created_at INTEGER DEFAULT 0");
-        db.execSQL("ALTER TABLE notes ADD COLUMN created_at_range_id INTEGER");
     }
 
     private static void insertAgendaSavedSearch(SQLiteDatabase db) {

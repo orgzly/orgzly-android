@@ -469,7 +469,7 @@ public class Provider extends ContentProvider {
         Note rootNote = Note.newRootNote(bookId);
 
         ContentValues values = new ContentValues();
-        NotesClient.toContentValues(values, rootNote, AppPreferences.createdAtProperty(getContext()));
+        NotesClient.toContentValues(values, rootNote);
         replaceTimestampRangeStringsWithIds(db, values);
 
         return db.insertOrThrow(DbNote.TABLE, null, values);
@@ -1356,6 +1356,9 @@ public class Provider extends ContentProvider {
         /* Set of ids for which parent is already set. */
         final Set<Long> notesWithParentSet = new HashSet<>();
 
+
+        String createdAtProperty = AppPreferences.createdAtProperty(getContext());
+
         /* Open reader. */
         Reader reader = new BufferedReader(inReader);
         try {
@@ -1384,9 +1387,12 @@ public class Provider extends ContentProvider {
                             ContentValues values = new ContentValues();
 
                             DbNote.toContentValues(values, position);
-                            DbNote.toContentValues(db, values, node.getHead(), AppPreferences.createdAtProperty(getContext()));
+                            DbNote.toContentValues(db, values, node.getHead());
 
                             long noteId = db.insertOrThrow(DbNote.TABLE, null, values);
+
+                            /* Try to get created-at from user-defined property/ */
+                            long createdAt = 0;
 
                             /* Insert note's properties. */
                             int pos = 1;
@@ -1406,6 +1412,22 @@ public class Provider extends ContentProvider {
                                 long propertyId = DbProperty.getOrInsert(db, nameId, valueId);
 
                                 DbNoteProperty.getOrInsert(db, noteId, pos++, propertyId);
+
+                                // Update created-at from user-defined property
+                                if (createdAt == 0 && property.getName().equalsIgnoreCase(createdAtProperty)) {
+                                    if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found user-defined created-at property", property);
+                                    OrgRange range = OrgRange.parseOrNull(property.getValue());
+                                    if (range != null) {
+                                        createdAt = range.getStartTime().getCalendar().getTimeInMillis();
+                                    }
+                                }
+                            }
+
+                            /* Update created-at time. */
+                            if (createdAt > 0) {
+                                ContentValues createdAtValues = new ContentValues();
+                                createdAtValues.put(DbNote.CREATED_AT, createdAt);
+                                db.update(DbNote.TABLE, createdAtValues, DbNote._ID + " = " + noteId, null);
                             }
 
                             /*
@@ -1511,17 +1533,6 @@ public class Provider extends ContentProvider {
             }
 
             values.remove(ProviderContract.Notes.UpdateParam.CLOSED_STRING);
-        }
-
-        if (values.containsKey(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING)) {
-            String str = values.getAsString(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING);
-            if (! TextUtils.isEmpty(str)) {
-                values.put(DbNote.CREATED_AT_RANGE_ID, getOrInsertOrgRange(db, OrgRange.parse(str)));
-            } else {
-                values.putNull(DbNote.CREATED_AT_RANGE_ID);
-            }
-
-            values.remove(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING);
         }
 
         if (values.containsKey(ProviderContract.Notes.UpdateParam.CLOCK_STRING)) {

@@ -34,6 +34,7 @@ import com.orgzly.android.sync.BookSyncStatus;
 import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
+import com.orgzly.android.util.AgendaUtils;
 import com.orgzly.android.util.CircularArrayList;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
@@ -250,14 +251,27 @@ public class Shelf {
 
             out.write(parserWriter.whiteSpacedFilePreface(book.getPreface()));
 
-            NotesClient.forEachBookNote(mContext, book.getName(), new NotesClient.NotesClientInterface() {
-                @Override
-                public void onNote(Note note) {
-                    out.write(parserWriter.whiteSpacedHead(
-                            note.getHead(),
-                            note.getPosition().getLevel(),
-                            book.getOrgFileSettings().isIndented()));
+
+            OrgProperty createdAtProperty;
+            if (AppPreferences.createdAt(mContext)) {
+                createdAtProperty = new OrgProperty(AppPreferences.createdAtProperty(mContext), "");
+            } else {
+                createdAtProperty = null;
+            }
+
+            NotesClient.forEachBookNote(mContext, book.getName(), note -> {
+
+                /* Set created-at property. */
+                if (createdAtProperty != null && note.getCreatedAt() > 0) {
+                    OrgDateTime time = new OrgDateTime(note.getCreatedAt(), false);
+                    createdAtProperty.setValue(time.toString());
+                    note.getHead().addProperty(createdAtProperty); // TODO: could be duplicate
                 }
+
+                out.write(parserWriter.whiteSpacedHead(
+                        note.getHead(),
+                        note.getPosition().getLevel(),
+                        book.getOrgFileSettings().isIndented()));
             });
 
         } finally {
@@ -927,17 +941,17 @@ public class Shelf {
                  * We use the properties from the database because NotesClient.fromCursor returns
                  * a note without any properties
                  */
-                for (OrgProperty prop : NotesClient.getNoteProperties(mContext, NotesClient.idFromCursor(cursor))) {
-                    if (prop.getName().equals(AppPreferences.createdAtProperty(mContext))) {
-                        try {
-                            values.put(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING, prop.getValue());
-                            break;
-                        } catch (IllegalArgumentException e) {
-                            // Parsing failed, give up immediately and insert null
-                            break;
-                        }
-                    }
-                }
+//                for (OrgProperty prop : NotesClient.getNoteProperties(mContext, NotesClient.idFromCursor(cursor))) {
+//                    if (prop.getName().equals(AppPreferences.createdAtProperty(mContext))) {
+//                        try {
+//                            values.put(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING, prop.getValue());
+//                            break;
+//                        } catch (IllegalArgumentException e) {
+//                            // Parsing failed, give up immediately and insert null
+//                            break;
+//                        }
+//                    }
+//                }
 
                 if (values.size() > 0) {
                     ops.add(ContentProviderOperation

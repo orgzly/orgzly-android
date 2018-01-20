@@ -91,7 +91,7 @@ public class NotesClient {
         return properties;
     }
 
-    public static void toContentValues(ContentValues values, Note note, String createdProp) {
+    public static void toContentValues(ContentValues values, Note note) {
         values.put(ProviderContract.Notes.UpdateParam.BOOK_ID, note.getPosition().getBookId());
 
         values.put(ProviderContract.Notes.UpdateParam.CREATED_AT, note.getCreatedAt());
@@ -105,10 +105,10 @@ public class NotesClient {
 
         values.put(ProviderContract.Notes.UpdateParam.POSITION, 0); // TODO: Remove
 
-        toContentValues(values, note.getHead(), createdProp);
+        toContentValues(values, note.getHead());
     }
 
-    private static void toContentValues(ContentValues values, OrgHead head, String createdProp) {
+    private static void toContentValues(ContentValues values, OrgHead head) {
         values.put(ProviderContract.Notes.UpdateParam.TITLE, head.getTitle());
 
         if (head.hasScheduled()) {
@@ -133,18 +133,6 @@ public class NotesClient {
             values.put(ProviderContract.Notes.UpdateParam.DEADLINE_STRING, head.getDeadline().toString());
         } else {
             values.putNull(ProviderContract.Notes.UpdateParam.DEADLINE_STRING);
-        }
-
-        for (int i = 0; i < head.getProperties().size(); i++) {
-            if (head.getProperties().get(i).getName().equals(createdProp)) {
-                try {
-                    values.put(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING, head.getProperties().get(i).getValue());
-                    break;
-                } catch (IllegalArgumentException e) {
-                    // Parsing failed, give up immediately
-                    break;
-                }
-            }
         }
 
         values.put(ProviderContract.Notes.UpdateParam.PRIORITY, head.getPriority());
@@ -240,11 +228,8 @@ public class NotesClient {
      * Updates note by its ID.
      */
     public static int update(Context context, Note note) {
-        // Get created prop name
-        String createdProp = AppPreferences.createdAtProperty(context);
-
         ContentValues values = new ContentValues();
-        toContentValues(values, note, createdProp);
+        toContentValues(values, note);
 
         Uri noteUri = ProviderContract.Notes.ContentUri.notesId(note.getId());
         Uri uri = noteUri.buildUpon().appendQueryParameter("bookId", String.valueOf(note.getPosition().getBookId())).build();
@@ -299,16 +284,8 @@ public class NotesClient {
      * Insert as last note if position is not specified.
      */
     public static Note create(Context context, Note note, NotePlace target) {
-        // Get created prop name
-        String createdProp = AppPreferences.createdAtProperty(context);
-
         ContentValues values = new ContentValues();
-        toContentValues(values, note, createdProp);
-
-        if (!values.containsKey(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING)) {
-            String d = new SimpleDateFormat("[yyyy-MM-dd HH:mm:ss]").format(new Date());
-            values.put(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING, d);
-        }
+        toContentValues(values, note);
 
         Uri insertUri;
 
