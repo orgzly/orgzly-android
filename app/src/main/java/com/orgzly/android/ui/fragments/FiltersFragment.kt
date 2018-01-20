@@ -114,12 +114,17 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
 
         return when (item?.itemId) {
             R.id.filters_import -> {
-                importExport(R.string.import_from)
+                mListener?.let {
+                    importExport(R.string.import_from, it::onFiltersImportRequest)
+                }
+
                 true
             }
 
             R.id.filters_export -> {
-                importExport(R.string.export_to)
+                mListener?.let {
+                    importExport(R.string.export_to, it::onFiltersExportRequest)
+                }
                 true
             }
 
@@ -127,10 +132,10 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
         }
     }
 
-    private fun importExport(resId: Int) {
+    private fun importExport(resId: Int, f: (Int, String) -> Any) {
         try {
             val file = FileFilterStore(context).file()
-            mListener?.onFiltersExportRequest(R.string.searches, getString(resId, file))
+            f(R.string.searches, getString(resId, file))
 
         } catch(e: IOException) {
             val intent = Intent(AppIntent.ACTION_DISPLAY_MESSAGE)

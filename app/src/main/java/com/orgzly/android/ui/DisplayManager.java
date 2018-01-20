@@ -1,5 +1,6 @@
 package com.orgzly.android.ui;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -165,7 +166,7 @@ public class DisplayManager {
         // .setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
     }
 
-    public static void displayQuery(FragmentManager fragmentManager, String queryString) {
+    public static void displayQuery(FragmentManager fragmentManager, @NonNull String queryString) {
         // If the same query is already displayed, don't do anything.
         String displayedQuery = getDisplayedQuery(fragmentManager);
         if (displayedQuery != null && displayedQuery.equals(queryString)) {

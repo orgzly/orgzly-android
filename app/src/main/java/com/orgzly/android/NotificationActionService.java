@@ -34,7 +34,7 @@ public class NotificationActionService extends IntentService {
 
             if (noteId > 0) {
                 Shelf shelf = new Shelf(this);
-                shelf.setStateToDone(noteId);
+                shelf.setStateToFirstDone(noteId);
                 shelf.syncOnNoteCreate();
             } else {
                 throw new IllegalArgumentException("Missing note ID");

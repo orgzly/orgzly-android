@@ -2,10 +2,7 @@ package com.orgzly.android.ui.fragments;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.database.MergeCursor;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.support.v4.content.Loader;
 import android.support.v4.util.LongSparseArray;
 import android.support.v7.view.ActionMode;
@@ -19,28 +16,13 @@ import android.widget.ListView;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.provider.clients.NotesClient;
-import com.orgzly.android.provider.models.DbNoteColumns;
-import com.orgzly.android.provider.views.DbNoteViewColumns;
-import com.orgzly.android.query.Query;
-import com.orgzly.android.query.QueryParser;
-import com.orgzly.android.query.user.InternalQueryParser;
+import com.orgzly.android.provider.AgendaCursor;
 import com.orgzly.android.ui.AgendaListViewAdapter;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.Selection;
-import com.orgzly.android.util.AgendaUtils;
 import com.orgzly.android.util.LogUtils;
-import com.orgzly.android.util.UserTimeFormatter;
 
-import org.joda.time.DateTime;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.TreeSet;
 
 
@@ -49,12 +31,6 @@ public class AgendaFragment extends QueryFragment {
 
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = AgendaFragment.class.getName();
-
-    private static final int MAX_DAYS = 30;
-
-    // Time formatter for separators
-    private UserTimeFormatter userTimeFormatter;
-
 
     /* Maps agenda's item ID to note ID */
     private LongSparseArray<Long> originalNoteIDs = new LongSparseArray<>();
@@ -77,7 +53,6 @@ public class AgendaFragment extends QueryFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        userTimeFormatter = new UserTimeFormatter(context);
     }
 
     @Override
@@ -94,7 +69,7 @@ public class AgendaFragment extends QueryFragment {
 
         /* On long click */
         getListView().setOnItemLongClickListener((parent, view1, position, id) -> {
-            if (mListAdapter.getItemViewType(position) != AgendaListViewAdapter.SEPARATOR_TYPE) {
+            if (mListAdapter.getItemViewType(position) != AgendaListViewAdapter.DIVIDER_VIEW_TYPE) {
                 mListener.onNoteLongClick(AgendaFragment.this, view1, position, id, originalNoteIDs.get(id));
             }
             return true;
@@ -119,11 +94,7 @@ public class AgendaFragment extends QueryFragment {
                             break;
 
                         case R.id.item_menu_done_state_btn:
-                            if (AppPreferences.isDoneKeyword(getActivity(), "DONE")) {
-                                Set<Long> set = new TreeSet<>();
-                                set.add(noteId);
-                                mListener.onStateChangeRequest(set, "DONE");
-                            }
+                            mListener.onStateFlipRequest(noteId);
                             break;
 
                         case R.id.item_menu_open_btn:
@@ -177,7 +148,7 @@ public class AgendaFragment extends QueryFragment {
     public void onListItemClick(ListView listView, View view, int position, long id) {
         int itemViewType = mListAdapter.getItemViewType(position);
 
-        if (itemViewType == AgendaListViewAdapter.NOTE_TYPE) {
+        if (itemViewType == AgendaListViewAdapter.NOTE_VIEW_TYPE) {
             mListener.onNoteClick(this, view, position, id, originalNoteIDs.get(id));
         }
     }
@@ -206,98 +177,23 @@ public class AgendaFragment extends QueryFragment {
             return;
         }
 
-        QueryParser parser = new InternalQueryParser();
-        Query query = parser.parse(mQuery);
+        AgendaCursor.AgendaMergedCursor agendaMergedCursor =
+                AgendaCursor.INSTANCE.create(getContext(), cursor, getQuery());
 
-        int agendaDays = query.getOptions().getAgendaDays();
-
-        if (agendaDays > MAX_DAYS) {
-            agendaDays = MAX_DAYS;
-        }
-
-        // Add IS_SEPARATOR column
-        String[] columnNames = new String[cursor.getColumnNames().length + 1];
-        System.arraycopy(cursor.getColumnNames(), 0, columnNames, 0, cursor.getColumnNames().length);
-        columnNames[columnNames.length - 1] = Columns.IS_SEPARATOR;
-
-        Map<Long, MatrixCursor> agenda = new LinkedHashMap<>();
-        DateTime day = DateTime.now().withTimeAtStartOfDay();
-        int i = 0;
-        // create entries from today to today+agenda_len
-        do {
-            MatrixCursor matrixCursor = new MatrixCursor(columnNames);
-            agenda.put(day.getMillis(), matrixCursor);
-            day = day.plusDays(1);
-        } while (++i < agendaDays);
-
-        DateTime now =  DateTime.now();
-
-        int scheduledRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.SCHEDULED_RANGE_STRING);
-        int deadlineRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.DEADLINE_RANGE_STRING);
-
-        // Expand each note if it has a repeater or is a range
-        long nextId = 1;
-        originalNoteIDs.clear();
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            Set<DateTime> dates = AgendaUtils.expandOrgDateTime(
-                    new String[] {
-                            cursor.getString(scheduledRangeStrIdx),
-                            cursor.getString(deadlineRangeStrIdx)},
-                    now,
-                    agendaDays
-            );
-
-            for (DateTime date : dates) {
-                // create agenda cursors
-                MatrixCursor matrixCursor = agenda.get(date.getMillis());
-                MatrixCursor.RowBuilder rowBuilder = matrixCursor.newRow();
-
-                for (String col : columnNames) {
-                    if (col.equalsIgnoreCase(Columns._ID)) {
-                        long noteId = cursor.getLong(cursor.getColumnIndex(col));
-
-                        originalNoteIDs.put(nextId, noteId);
-
-                        rowBuilder.add(nextId++);
-
-                    } else if (col.equalsIgnoreCase(Columns.IS_SEPARATOR)) {
-                        rowBuilder.add(0); // Not a separator
-
-                    } else {
-                        rowBuilder.add(cursor.getString(cursor.getColumnIndex(col)));
-                    }
-                }
-            }
-        }
-
-        MergeCursor mCursor = mergeDates(nextId, agenda);
+        Cursor mergedCursor = agendaMergedCursor.getCursor();
+        originalNoteIDs = agendaMergedCursor.getOriginalNoteIDs();
 
         /*
          * Swapping instead of changing Cursor here, to keep the old one open.
          * Loader should release the old Cursor - see note in
          * {@link LoaderManager.LoaderCallbacks#onLoadFinished).
          */
-        mListAdapter.swapCursor(mCursor);
+        mListAdapter.swapCursor(mergedCursor);
 
         mActionModeListener.updateActionModeForSelection(mSelection.getCount(), new MyActionMode());
     }
 
-    private MergeCursor mergeDates(long nextId, Map<Long, MatrixCursor> agenda) {
-        List<Cursor> allCursors = new ArrayList<>();
 
-        for (long dateMilli: agenda.keySet()) {
-            DateTime date = new DateTime(dateMilli);
-            MatrixCursor dateCursor = new MatrixCursor(Columns.AGENDA_SEPARATOR_COLS);
-            MatrixCursor.RowBuilder dateRow = dateCursor.newRow();
-            dateRow.add(nextId++);
-            dateRow.add(userTimeFormatter.formatDate(AgendaUtils.buildOrgDateTimeFromDate(date, null)));
-            dateRow.add(1); // Separator
-            allCursors.add(dateCursor);
-            allCursors.add(agenda.get(dateMilli));
-        }
-
-        return new MergeCursor(allCursors.toArray(new Cursor[allCursors.size()]));
-    }
 
     protected class MyActionMode extends QueryFragment.MyActionMode {
         @Override
@@ -358,14 +254,4 @@ public class AgendaFragment extends QueryFragment {
         }
     }
 
-    public static class Columns implements BaseColumns, DbNoteColumns {
-        public static String IS_SEPARATOR = "is_separator";
-        public static String AGENDA_DAY = "day";
-
-        private static final String[] AGENDA_SEPARATOR_COLS = {
-                Columns._ID,
-                Columns.AGENDA_DAY,
-                Columns.IS_SEPARATOR
-        };
-    }
 }

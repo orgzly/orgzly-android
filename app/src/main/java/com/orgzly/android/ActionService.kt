@@ -5,7 +5,6 @@ import android.content.Intent
 import android.support.v4.content.LocalBroadcastManager
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.filter.FileFilterStore
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.util.LogUtils
 
@@ -18,8 +17,13 @@ class ActionService : IntentService(TAG) {
         setIntentRedelivery(true)
     }
 
-    private val shelf = Shelf(this)
-    private val localBroadcastManager = LocalBroadcastManager.getInstance(this)
+    private val shelf by lazy {
+        Shelf(this)
+    }
+
+    private val localBroadcastManager by lazy {
+        LocalBroadcastManager.getInstance(this)
+    }
 
     override fun onHandleIntent(intent: Intent?) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent)
@@ -34,12 +38,6 @@ class ActionService : IntentService(TAG) {
             AppIntent.ACTION_CLEAR_DATABASE ->
                 clearDatabase()
 
-            AppIntent.ACTION_EXPORT_SEARCHES ->
-                exportSearches()
-
-            AppIntent.ACTION_IMPORT_SEARCHES ->
-                importSearches()
-
             AppIntent.ACTION_OPEN_NOTE ->
                 when {
                     intent.hasExtra(AppIntent.EXTRA_PROPERTY_NAME) && intent.hasExtra(AppIntent.EXTRA_PROPERTY_VALUE) ->
@@ -49,14 +47,6 @@ class ActionService : IntentService(TAG) {
                 }
 
         }
-    }
-
-    private fun importSearches() {
-        FileFilterStore(this).importFilters()
-    }
-
-    private fun exportSearches() {
-        FileFilterStore(this).exportFilters()
     }
 
     private fun clearDatabase() {

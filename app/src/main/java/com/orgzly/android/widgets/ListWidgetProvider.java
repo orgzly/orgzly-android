@@ -221,7 +221,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                shelf.setStateToDone(noteId);
+                shelf.setStateToFirstDone(noteId);
                 return null;
             }
         }.execute();

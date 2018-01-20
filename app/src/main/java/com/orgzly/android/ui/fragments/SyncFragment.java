@@ -29,6 +29,7 @@ import com.orgzly.android.AppIntent;
 import com.orgzly.android.Book;
 import com.orgzly.android.BookAction;
 import com.orgzly.android.BookName;
+import com.orgzly.android.filter.FileFilterStore;
 import com.orgzly.android.filter.Filter;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotesBatch;
@@ -402,17 +403,6 @@ public class SyncFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    public void setStateToDone(final long noteId) {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                mShelf.setStateToDone(noteId);
-                return null;
-            }
-        }.execute();
-    }
-
-    @SuppressLint("StaticFieldLeak")
     public void promoteNotes(final long bookId, final Set<Long> noteIds) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -691,6 +681,28 @@ public class SyncFragment extends Fragment {
             @Override
             protected Void doInBackground(Void... params) {
                 mShelf.updateBookSettings(book);
+                return null;
+            }
+        }.execute();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public void importQueries(Uri uri) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                new FileFilterStore(getContext()).importFilters(uri);
+                return null;
+            }
+        }.execute();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public void exportQueries() {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                new FileFilterStore(getContext()).exportFilters();
                 return null;
             }
         }.execute();

@@ -118,6 +118,6 @@ public class BookChooserActivity extends CommonActivity
     }
 
     @Override
-    public void onBookLoadRequest() {
+    public void onBookImportRequest() {
     }
 }

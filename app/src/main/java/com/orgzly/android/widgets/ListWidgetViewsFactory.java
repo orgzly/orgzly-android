@@ -6,6 +6,8 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Binder;
+import android.provider.BaseColumns;
+import android.support.v4.util.LongSparseArray;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -16,26 +18,34 @@ import com.orgzly.R;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.Note;
 import com.orgzly.android.prefs.AppPreferences;
+import com.orgzly.android.provider.AgendaCursor;
 import com.orgzly.android.provider.clients.NotesClient;
+import com.orgzly.android.query.Query;
+import com.orgzly.android.query.QueryParser;
+import com.orgzly.android.query.user.InternalQueryParser;
 import com.orgzly.android.ui.util.TitleGenerator;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.OrgHead;
 
-public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+;
 
+public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     private static final String TAG = ListWidgetViewsFactory.class.getName();
 
+    private boolean isPartitioned;
     private Cursor mCursor;
+    private LongSparseArray<Long> originalNoteIDs;
+
     private Context mContext;
-    private String query;
+    private String queryString;
     private TitleGenerator titleGenerator;
     private UserTimeFormatter userTimeFormatter;
 
     public ListWidgetViewsFactory(Context mContext, String queryString) {
         this.mContext = mContext;
         // this should be a query string, which doesn't match anything
-        this.query = queryString != null ? queryString : ".b.a b.a";
+        this.queryString = queryString != null ? queryString : ".b.a b.a";
 
         this.userTimeFormatter = new UserTimeFormatter(mContext);
         this.titleGenerator = new TitleGenerator(mContext, false, new TitleGenerator.TitleAttributes(
@@ -57,10 +67,26 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
             mCursor.close();
         }
 
+        // Parse query
+        QueryParser queryParser = new InternalQueryParser();
+        Query query = queryParser.parse(queryString);
+
+        isPartitioned = query.getOptions().getAgendaDays() > 0;
+
         // from http://stackoverflow.com/a/20645908
         final long token = Binder.clearCallingIdentity();
         try {
-            mCursor = NotesClient.getCursorForQuery(mContext, query);
+            if (isPartitioned) {
+                Cursor cursor = NotesClient.getCursorForQuery(mContext, queryString);
+                AgendaCursor.AgendaMergedCursor agendaCursor =
+                        AgendaCursor.INSTANCE.create(mContext, cursor, queryString);
+                mCursor = agendaCursor.getCursor();
+                originalNoteIDs = agendaCursor.getOriginalNoteIDs();
+
+            } else {
+                mCursor = NotesClient.getCursorForQuery(mContext, queryString);
+            }
+
         } finally {
             Binder.restoreCallingIdentity(token);
         }
@@ -83,35 +109,41 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public RemoteViews getViewAt(int position) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "getViewAt", position);
+        RemoteViews row = null;
 
-        Note note = null;
         if (mCursor.moveToPosition(position)) {
-            note = NotesClient.fromCursor(mCursor);
+            String packageName = mContext.getPackageName();
+
+            if (isPartitioned && AgendaCursor.INSTANCE.isDivider(mCursor)) {
+                row = new RemoteViews(packageName, R.layout.item_list_widget_divider);
+                setupDividerRow(row, mCursor);
+
+            } else {
+                row = new RemoteViews(packageName, R.layout.item_list_widget);
+                setupNoteRow(row, mCursor);
+            }
         }
 
-        RemoteViews row = new RemoteViews(mContext.getPackageName(), R.layout.item_list_widget);
-
-        if (note != null) {
-            setContent(row, note);
-
-            final Intent openIntent = new Intent();
-            openIntent.putExtra(AppIntent.EXTRA_CLICK_TYPE, ListWidgetProvider.OPEN_CLICK_TYPE);
-            openIntent.putExtra(AppIntent.EXTRA_NOTE_ID, note.getId());
-            openIntent.putExtra(AppIntent.EXTRA_BOOK_ID, note.getPosition().getBookId());
-            row.setOnClickFillInIntent(R.id.item_list_widget_layout, openIntent);
-
-            final Intent doneIntent = new Intent();
-            doneIntent.putExtra(AppIntent.EXTRA_CLICK_TYPE, ListWidgetProvider.DONE_CLICK_TYPE);
-            doneIntent.putExtra(AppIntent.EXTRA_NOTE_ID, note.getId());
-            row.setOnClickFillInIntent(R.id.item_list_widget_done, doneIntent);
-        }
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, position, row.getLayoutId());
 
         return row;
     }
 
-    private void setContent(RemoteViews row, Note note) {
-        /* see also HeadsListViewAdapter.bindView */
+    private void setupDividerRow(RemoteViews row, Cursor cursor) {
+        String value = AgendaCursor.INSTANCE.getDividerDate(cursor);
+
+        row.setTextViewText(R.id.widget_list_item_divider_value, value);
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, row, cursor, value);
+    }
+
+    private void setupNoteRow(RemoteViews row, Cursor cursor) {
+        Note note = NotesClient.fromCursor(cursor);
+
+        if (isPartitioned) {
+            note.setId(originalNoteIDs.get(note.getId()));
+        }
+
         OrgHead head = note.getHead();
         row.setTextViewText(R.id.item_list_widget_title, titleGenerator.generateTitle(note, head));
 
@@ -144,6 +176,20 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
         } else {
             row.setViewVisibility(R.id.item_list_widget_done, View.GONE);
         }
+
+
+        final Intent openIntent = new Intent();
+        openIntent.putExtra(AppIntent.EXTRA_CLICK_TYPE, ListWidgetProvider.OPEN_CLICK_TYPE);
+        openIntent.putExtra(AppIntent.EXTRA_NOTE_ID, note.getId());
+        openIntent.putExtra(AppIntent.EXTRA_BOOK_ID, note.getPosition().getBookId());
+        row.setOnClickFillInIntent(R.id.item_list_widget_layout, openIntent);
+
+        final Intent doneIntent = new Intent();
+        doneIntent.putExtra(AppIntent.EXTRA_CLICK_TYPE, ListWidgetProvider.DONE_CLICK_TYPE);
+        doneIntent.putExtra(AppIntent.EXTRA_NOTE_ID, note.getId());
+        row.setOnClickFillInIntent(R.id.item_list_widget_done, doneIntent);
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, row, cursor);
     }
 
     @Override
@@ -153,17 +199,23 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public int getViewTypeCount() {
-        return 1;
+        return isPartitioned ? 2 : 1;
     }
 
     @Override
     public long getItemId(int position) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "getItemId", position);
+        long id;
 
         if (mCursor.moveToPosition(position)) {
-            return NotesClient.idFromCursor(mCursor);
+            id = mCursor.getLong(mCursor.getColumnIndex(BaseColumns._ID));
+
+        } else {
+            id = -position;
         }
-        return -position;
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, position, id);
+
+        return id;
     }
 
     @Override

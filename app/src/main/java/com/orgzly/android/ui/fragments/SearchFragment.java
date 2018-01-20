@@ -15,16 +15,11 @@ import android.widget.ViewFlipper;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.ui.HeadsListViewAdapter;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.Selection;
 import com.orgzly.android.util.LogUtils;
-
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Displays search results.
@@ -87,11 +82,7 @@ public class SearchFragment extends QueryFragment {
                             break;
 
                         case R.id.item_menu_done_state_btn:
-                            if (AppPreferences.isDoneKeyword(getActivity(), "DONE")) {
-                                Set<Long> set = new TreeSet<>();
-                                set.add(noteId);
-                                mListener.onStateChangeRequest(set, "DONE");
-                            }
+                            mListener.onStateFlipRequest(noteId);
                             break;
 
                         case R.id.item_menu_open_btn:

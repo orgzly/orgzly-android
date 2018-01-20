@@ -76,7 +76,7 @@ public class AgendaUtils {
         return result;
     }
 
-    public static OrgDateTime buildOrgDateTimeFromDate(DateTime date, OrgRepeater repeater) {
+    private static OrgDateTime buildOrgDateTimeFromDate(DateTime date, OrgRepeater repeater) {
         OrgDateTime.Builder builder = new OrgDateTime.Builder();
 
         builder.setYear(date.getYear())

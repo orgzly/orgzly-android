@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -25,7 +26,6 @@ import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,7 +52,6 @@ import com.orgzly.android.provider.clients.ReposClient;
 import com.orgzly.android.query.Condition;
 import com.orgzly.android.query.Query;
 import com.orgzly.android.query.user.DottedQueryBuilder;
-import com.orgzly.android.query.user.DottedQueryParser;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.fragments.BookFragment;
@@ -95,10 +94,11 @@ public class MainActivity extends CommonActivity
 
     public static final String TAG = MainActivity.class.getName();
 
-    public static final int ACTIVITY_REQUEST_CODE_FOR_FILE_CHOOSER = 0;
+    public static final int ACTIVITY_REQUEST_CODE_FOR_BOOK_IMPORT = 0;
+    public static final int ACTIVITY_REQUEST_CODE_FOR_QUERIES_IMPORT = 1;
 
     private static final int DIALOG_NEW_BOOK = 1;
-    private static final int DIALOG_IMPORT_BOOK = 5;
+    private static final int DIALOG_IMPORT_BOOK = 2;
 
     public SyncFragment mSyncFragment;
 
@@ -122,7 +122,7 @@ public class MainActivity extends CommonActivity
     private ActionMode mActionMode;
     private boolean mPromoteDemoteOrMoveRequested = false;
 
-    private Bundle mImportChosenBook = null;
+    private Runnable runnableOnResumeFragments;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -437,9 +437,9 @@ public class MainActivity extends CommonActivity
         /* Showing dialog in onResume() fails with:
          *   Can not perform this action after onSaveInstanceState
          */
-        if (mImportChosenBook != null) {
-            importChosenBook(mImportChosenBook);
-            mImportChosenBook = null;
+        if (runnableOnResumeFragments != null) {
+            runnableOnResumeFragments.run();
+            runnableOnResumeFragments = null;
         }
 
         LocalBroadcastManager bm = LocalBroadcastManager.getInstance(this);
@@ -519,7 +519,7 @@ public class MainActivity extends CommonActivity
                 /* Close search. */
                 MenuItemCompat.collapseActionView(searchItem);
 
-                DisplayManager.displayQuery(getSupportFragmentManager(), str);
+                DisplayManager.displayQuery(getSupportFragmentManager(), str.trim());
 
                 return true;
             }
@@ -574,16 +574,17 @@ public class MainActivity extends CommonActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            /* Open selected file. */
-            case ACTIVITY_REQUEST_CODE_FOR_FILE_CHOOSER:
+            case ACTIVITY_REQUEST_CODE_FOR_BOOK_IMPORT:
                 if (resultCode == RESULT_OK) {
                     Uri uri = data.getData();
+                    runnableOnResumeFragments = () -> importChosenBook(uri);
+                }
+                break;
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("uri", uri.toString());
-
-                    /* This will get picked up in onResume(). */
-                    mImportChosenBook = bundle;
+            case ACTIVITY_REQUEST_CODE_FOR_QUERIES_IMPORT:
+                if (resultCode == RESULT_OK) {
+                    Uri uri = data.getData();
+                    runnableOnResumeFragments = () -> mSyncFragment.importQueries(uri);
                 }
                 break;
         }
@@ -592,9 +593,11 @@ public class MainActivity extends CommonActivity
     /**
      * Display a dialog for user to enter notebook's name.
      */
-    private void importChosenBook(final Bundle bundle) {
-        Uri uri = Uri.parse(bundle.getString("uri"));
+    private void importChosenBook(Uri uri) {
         String guessedBookName = guessBookNameFromUri(uri);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("uri", uri.toString());
 
         SimpleOneLinerDialog
                 .getInstance(DIALOG_IMPORT_BOOK, R.string.import_as, R.string.name, R.string.import_, R.string.cancel, guessedBookName, bundle)
@@ -778,11 +781,6 @@ public class MainActivity extends CommonActivity
     @Override
     public void onStateCycleRequest(long id, int direction) {
         mSyncFragment.shiftNoteState(id, direction);
-    }
-
-    @Override
-    public void onStateToDoneRequest(long noteId) {
-        mSyncFragment.setStateToDone(noteId);
     }
 
     @Override
@@ -1070,17 +1068,28 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onBookLoadRequest() {
+    public void onBookImportRequest() {
+        startFileChooser(R.string.import_org_file, ACTIVITY_REQUEST_CODE_FOR_BOOK_IMPORT);
+    }
+
+    @Override
+    public void onFiltersExportRequest(int title, @NonNull String message) {
+        runWithPermission(
+                AppPermissions.Usage.FILTERS_EXPORT_IMPORT,
+                () -> mSyncFragment.exportQueries());
+    }
+
+    @Override
+    public void onFiltersImportRequest(int title, @NonNull String message) {
+        startFileChooser(R.string.import_, ACTIVITY_REQUEST_CODE_FOR_QUERIES_IMPORT);
+    }
+
+    private void startFileChooser(@StringRes int titleResId, int code) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
 
-        /* Allow choosing multiple files. */
-        // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-
-        startActivityForResult(
-                Intent.createChooser(intent, getString(R.string.import_org_file)),
-                ACTIVITY_REQUEST_CODE_FOR_FILE_CHOOSER);
+        startActivityForResult(Intent.createChooser(intent, getString(titleResId)), code);
     }
 
     /**
@@ -1449,26 +1458,5 @@ public class MainActivity extends CommonActivity
      */
     private void runDelayedAfterDrawerClose(Runnable runnable) {
         new Handler().postDelayed(runnable, 300);
-    }
-
-    @Override
-    public void onFiltersExportRequest(int title, @NonNull String message) {
-        exportImportFilters(title, message, AppIntent.ACTION_EXPORT_SEARCHES);
-    }
-
-    @Override
-    public void onFiltersImportRequest(int title, @NonNull String message) {
-        exportImportFilters(title, message, AppIntent.ACTION_IMPORT_SEARCHES);
-    }
-
-    private void exportImportFilters(int title, String message, String action) {
-        promptUser(title, message, () -> runWithPermission(
-                AppPermissions.Usage.FILTERS_EXPORT_IMPORT,
-                () -> {
-                    Intent intent = new Intent(MainActivity.this, ActionService.class);
-                    intent.setAction(action);
-                    startService(intent);
-                }
-        ));
     }
 }
