@@ -163,11 +163,9 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
             setDefaultStateForNewNote()
         }
 
-//        if (getString(R.string.pref_key_created_at_property) == key) {
-//            /* Re-parse notes. */
-//            ActivityUtils.closeSoftKeyboard(activity)
-//            mListener?.onCreatedAtPreferencesChanged()
-//        }
+        if (getString(R.string.pref_key_is_created_at_added) == key || getString(R.string.pref_key_created_at_property) == key) {
+            mListener?.onCreatedAtPreferencesChanged()
+        }
 
         /* Cancel or create an new-note ongoing notification. */
         if (getString(R.string.pref_key_new_note_notification) == key) {

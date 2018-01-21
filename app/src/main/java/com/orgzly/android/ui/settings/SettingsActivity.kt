@@ -36,7 +36,7 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
                 .setMessage(R.string.created_keyword_configuration_changed_dialog_message)
                 .setPositiveButton(R.string.yes) { _, _ ->
                     val intent = Intent(this, ActionService::class.java)
-                    intent.action = AppIntent.ACTION_REPARSE_NOTES
+                    intent.action = AppIntent.ACTION_SYNC_CREATED_AT_WITH_PROPERTY
                     startService(intent)
                 }
                 .setNegativeButton(R.string.not_now, null)

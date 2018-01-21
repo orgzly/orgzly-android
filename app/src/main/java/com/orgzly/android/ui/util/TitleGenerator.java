@@ -106,7 +106,7 @@ public class TitleGenerator {
             }
         }
 
-        if (false) {
+        if (true) {
             String times = note.getCreatedAt() > 0
                     ? new OrgDateTime(note.getCreatedAt(), false).toString()
                     : "N/A";

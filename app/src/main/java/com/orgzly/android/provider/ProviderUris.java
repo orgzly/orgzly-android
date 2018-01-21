@@ -32,6 +32,7 @@ class ProviderUris {
 
         matcher.addURI(ProviderContract.AUTHORITY, Notes.MatcherUri.NOTES_SEARCH_QUERIED, NOTES_SEARCH_QUERIED);
         matcher.addURI(ProviderContract.AUTHORITY, Notes.MatcherUri.NOTES_WITH_PROPERTY, NOTES_WITH_PROPERTY);
+
         matcher.addURI(ProviderContract.AUTHORITY, Notes.MatcherUri.NOTES_ID_ABOVE, NOTE_ABOVE);
         matcher.addURI(ProviderContract.AUTHORITY, Notes.MatcherUri.NOTES_ID_UNDER, NOTE_UNDER);
         matcher.addURI(ProviderContract.AUTHORITY, Notes.MatcherUri.NOTES_ID_BELOW, NOTE_BELOW);

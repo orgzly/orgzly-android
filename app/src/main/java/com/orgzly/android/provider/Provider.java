@@ -978,6 +978,30 @@ public class Provider extends ContentProvider {
 
                 return result;
 
+            case ProviderUris.NOTES_ID_PROPERTIES:
+                result = 0;
+                noteId = Long.parseLong(uri.getPathSegments().get(1));
+
+                for (String propName: contentValues.keySet()) {
+                    String propValue = contentValues.getAsString(propName);
+
+                    long nameId = DbPropertyName.getOrInsert(db, propName);
+                    long valueId = DbPropertyValue.getOrInsert(db, propValue);
+
+                    // Delete note properties that match the name
+                    String sql = "DELETE FROM note_properties WHERE note_id = " + noteId + " AND property_id IN (SELECT _id FROM properties WHERE name_id = " + nameId + ")"; // TODO
+                    db.execSQL(sql);
+
+                    int nextPosition = getLastPropertyPositionForNote(db, noteId) + 1;
+
+                    long propertyId = DbProperty.getOrInsert(db, nameId, valueId);
+                    DbNoteProperty.getOrInsert(db, noteId, nextPosition, propertyId);
+
+                    result++;
+                }
+
+                return result;
+
             case ProviderUris.CUT:
                 return ActionRunner.run(db, new CutNotesAction(contentValues));
 
@@ -1025,6 +1049,23 @@ public class Provider extends ContentProvider {
         // FIXME: Hard to read - some cases above return, some are reaching this
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, table, contentValues, selection, selectionArgs);
         return db.update(table, contentValues, selection, selectionArgs);
+    }
+
+    private int getLastPropertyPositionForNote(SQLiteDatabase db, long noteId) {
+        try (Cursor cursor = db.query(
+                DbNoteProperty.TABLE,
+                new String[]{"MAX(" + DbNoteProperty.POSITION + ")"},
+                DbNoteProperty.NOTE_ID + "=" + noteId,
+                null,
+                null,
+                null,
+                null)) {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            } else {
+                return 0;
+            }
+        }
     }
 
 

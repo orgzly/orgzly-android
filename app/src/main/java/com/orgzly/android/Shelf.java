@@ -24,6 +24,7 @@ import com.orgzly.android.provider.clients.DbClient;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.provider.clients.ReposClient;
+import com.orgzly.android.provider.models.DbNote;
 import com.orgzly.android.reminders.ReminderService;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
@@ -230,8 +231,8 @@ public class Shelf {
 
         try {
             String separateNotesWithNewLine = AppPreferences.separateNotesWithNewLine(mContext);
-            String createdAtProperty = AppPreferences.createdAtProperty(mContext);
-            boolean doWriteCreatedAtProperty = AppPreferences.createdAt(mContext);
+            String createdAtPropertyName = AppPreferences.createdAtProperty(mContext);
+            boolean useCreatedAtProperty = AppPreferences.createdAt(mContext);
 
             OrgParserSettings parserSettings = OrgParserSettings.getBasic();
 
@@ -256,9 +257,9 @@ public class Shelf {
             // Write notes
             NotesClient.forEachBookNote(mContext, book.getName(), note -> {
                 // Update note properties with created-at property, if the time exists.
-                if (doWriteCreatedAtProperty && createdAtProperty != null && note.getCreatedAt() > 0) {
+                if (useCreatedAtProperty && createdAtPropertyName != null && note.getCreatedAt() > 0) {
                     OrgDateTime time = new OrgDateTime(note.getCreatedAt(), false);
-                    note.getHead().addProperty(createdAtProperty, time.toString());
+                    note.getHead().addProperty(createdAtPropertyName, time.toString());
                 }
 
                 out.write(parserWriter.whiteSpacedHead(
@@ -918,25 +919,6 @@ public class Shelf {
                     values.put(ProviderContract.Notes.UpdateParam.PRIORITY, newHead.getPriority());
                 }
 
-                /* Update created time if it doesn't already exist
-                 * Because the note was only modified in the internal database, modifiedNotesCount
-                 * isn't incremented.
-                 * We use the properties from the database because NotesClient.fromCursor returns
-                 * a note without any properties
-                 */
-                // TODO: Don't do this here, it's costly and re-parsing could have been due to state changes only
-//                for (OrgProperty prop : NotesClient.getNoteProperties(mContext, NotesClient.idFromCursor(cursor))) {
-//                    if (prop.getName().equals(AppPreferences.createdAtProperty(mContext))) {
-//                        try {
-//                            values.put(ProviderContract.Notes.UpdateParam.CREATED_AT_STRING, prop.getValue());
-//                            break;
-//                        } catch (IllegalArgumentException e) {
-//                            // Parsing failed, give up immediately and insert null
-//                            break;
-//                        }
-//                    }
-//                }
-
                 if (values.size() > 0) {
                     ops.add(ContentProviderOperation
                             .newUpdate(ContentUris.withAppendedId(ProviderContract.Notes.ContentUri.notes(), cursor.getLong(0)))
@@ -948,6 +930,93 @@ public class Shelf {
 
         } finally {
             cursor.close();
+        }
+
+        /*
+         * Apply batch.
+         */
+        try {
+            mContext.getContentResolver().applyBatch(ProviderContract.AUTHORITY, ops);
+        } catch (RemoteException | OperationApplicationException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+        notifyDataChanged(mContext);
+    }
+
+    /**
+     * Syncs created-at time and property, using lower value if both exist.
+     */
+    public void syncCreatedAtTimeWithProperty() throws IOException {
+        boolean useCreatedAtProperty = AppPreferences.createdAt(mContext);
+        String createdAtPropName = AppPreferences.createdAtProperty(mContext);
+
+        if (!useCreatedAtProperty) {
+            return;
+        }
+
+        ArrayList<ContentProviderOperation> ops = new ArrayList<>();
+
+        /*
+         * Get all notes.
+         * Only notes that have either created-at time or created-at property are actually needed.
+         * But since this syncing is done so rarely, we don't bother.
+         */
+        try (Cursor cursor = mContext.getContentResolver().query(
+                ProviderContract.Notes.ContentUri.notes(), null, null, null, null)) {
+
+            if (cursor != null) {
+
+                for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                    /* Get current heading string. */
+                    Note note = NotesClient.fromCursor(cursor);
+
+                    /* Skip root node. */
+                    if (note.getPosition().getLevel() == 0) {
+                        continue;
+                    }
+
+                    long dbCreatedAt = note.getCreatedAt();
+
+                    OrgProperties properties = NotesClient.getNoteProperties(mContext, NotesClient.idFromCursor(cursor));
+                    String dbPropValue = properties.get(createdAtPropName);
+                    OrgDateTime dbPropertyValue = OrgDateTime.parseOrNull(dbPropValue);
+
+                    // Compare dbCreatedAt and dbPropertyValue
+
+                    if (dbCreatedAt > 0 && dbPropertyValue == null) {
+                        // Update property
+                        ops.add(ContentProviderOperation
+                                .newUpdate(ProviderContract.NoteProperties.ContentUri.notesIdProperties(note.getId()))
+                                .withValue(createdAtPropName, new OrgDateTime(dbCreatedAt, false).toString())
+                                .build());
+
+                    } else if (dbCreatedAt > 0 && dbPropertyValue != null) {
+                        if (dbPropertyValue.getCalendar().getTimeInMillis() < dbCreatedAt) {
+                            // Update created-at
+                            ops.add(ContentProviderOperation
+                                    .newUpdate(ProviderContract.Notes.ContentUri.notesId(note.getId()))
+                                    .withValue(DbNote.CREATED_AT, dbPropertyValue.getCalendar().getTimeInMillis())
+                                    .build());
+                        } else {
+                            // Update property
+                            ops.add(ContentProviderOperation
+                                    .newUpdate(ProviderContract.NoteProperties.ContentUri.notesIdProperties(note.getId()))
+                                    .withValue(createdAtPropName, new OrgDateTime(dbCreatedAt, false).toString())
+                                    .build());
+                        }
+
+                    } else if (dbCreatedAt == 0 && dbPropertyValue != null) {
+                        // Update created-at time
+                        ops.add(ContentProviderOperation
+                                .newUpdate(ProviderContract.Notes.ContentUri.notesId(note.getId()))
+                                .withValue(DbNote.CREATED_AT, dbPropertyValue.getCalendar().getTimeInMillis())
+                                .build());
+
+                    } // else: None set
+                }
+            }
         }
 
         /*
