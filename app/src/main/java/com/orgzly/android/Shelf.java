@@ -305,9 +305,17 @@ public class Shelf {
     }
 
     public Note createNote(Note note, NotePlace target) {
+
         long time = System.currentTimeMillis();
 
+        // Set created-at time
         note.setCreatedAt(time);
+
+        // Set created-at property
+        if (AppPreferences.createdAt(mContext)) {
+            String propName = AppPreferences.createdAtProperty(mContext);
+            note.getHead().addProperty(propName, new OrgDateTime(time, false).toString());
+        }
 
         /* Create new note. */
         Note insertedNote = NotesClient.create(mContext, note, target);
