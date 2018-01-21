@@ -1357,6 +1357,7 @@ public class Provider extends ContentProvider {
         final Set<Long> notesWithParentSet = new HashSet<>();
 
 
+        boolean useCreatedAtProperty = AppPreferences.createdAt(getContext());
         String createdAtProperty = AppPreferences.createdAtProperty(getContext());
 
         /* Open reader. */
@@ -1388,7 +1389,10 @@ public class Provider extends ContentProvider {
 
                             // Update ContentValues
                             DbNote.toContentValues(values, position);
-                            DbNote.toContentValues(values, node.getHead().getProperties(), createdAtProperty);
+                            if (useCreatedAtProperty) {
+                                DbNote.toContentValues(
+                                        values, node.getHead().getProperties(), createdAtProperty);
+                            }
                             DbNote.toContentValues(db, values, node.getHead());
 
                             long noteId = db.insertOrThrow(DbNote.TABLE, null, values);

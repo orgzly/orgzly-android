@@ -188,10 +188,10 @@ public class DbNote implements DbNoteColumns, BaseColumns {
 
 
     /**
-     * Set created-at from user-defined property.
+     * Set created-at value from property.
      */
     public static  void toContentValues(ContentValues values, OrgProperties properties, String createdAtProperty) {
-        if (properties.containsKey(createdAtProperty)) {
+        if (properties.containsKey(createdAtProperty)) { // Property found
             String value = properties.get(createdAtProperty);
             setCreatedAtValue(values, value);
         }
