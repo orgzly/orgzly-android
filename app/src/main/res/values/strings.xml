@@ -241,10 +241,14 @@
     <string name="todo_states">Keywords for active (todo) tasks</string>
     <string name="done_states">Keywords for completed (done) tasks</string>
 
-    <string name="created_at_property">Created at property</string>
-    <string name="property_name">Property Name</string>
     <string name="created_at">Created at</string>
     <string name="insert_note_creation_time">Insert note\'s creation time</string>
+
+    <string name="use_created_at_property">Use property for created-at time</string>
+    <string name="use_created_at_property_summary">Sync created-at time using a property</string>
+
+    <string name="created_at_property">Created-at property</string>
+    <string name="property_name">Property Name</string>
 
     <string name="reminder_for_scheduled">Scheduled: %s</string>
     <string name="reminder_for_deadline">Deadline: %s</string>
@@ -287,6 +291,8 @@
     <string name="force_saving_failed">Force-saving failed: %s</string>
     <string name="force_loading_failed">Force-loading failed: %s</string>
     <string name="loaded_from_resource">Loaded from resource %s</string>
+
+    <string name="notebook_files">Notebook files</string>
 
     <string name="org_file_format">Org file format</string>
     <string name="org_file_format_summary">Format of exported notebooks</string>

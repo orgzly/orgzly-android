@@ -13,6 +13,7 @@ import com.orgzly.android.Note;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.util.OrgFormatter;
 import com.orgzly.org.OrgHead;
+import com.orgzly.org.datetime.OrgDateTime;
 
 import org.joda.time.DateTimeUtils;
 
@@ -106,7 +107,9 @@ public class TitleGenerator {
         }
 
         if (false) {
-            String times = note.getCreatedAt() > 0 ? new Date(note.getCreatedAt()).toString() : "0";
+            String times = note.getCreatedAt() > 0
+                    ? new OrgDateTime(note.getCreatedAt(), false).toString()
+                    : "N/A";
             builder.append("  ").append(times);
             hasPostTitleText = true;
         }
