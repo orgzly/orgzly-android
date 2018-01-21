@@ -127,8 +127,6 @@
   <string name="repo_dropbox_button_linked">从Dropbox断开连接</string>
   <string name="fragment_settings_title">设置</string>
   <string name="updating_notes">正在更新笔记</string>
-  <string name="todo_keywords_configuration_changed_dialog_title">关键字修改</string>
-  <string name="todo_keywords_configuration_changed_dialog_message">刷新笔记以反映修改?</string>
   <string name="failure">呃哦</string>
   <string name="no_notes_found_after_search">你的查找将不再匹配任何笔记</string>
   <string name="today">今天</string>

@@ -130,8 +130,6 @@
   <string name="repo_dropbox_button_linked">Verknüpfung mit der Dropbox aufheben</string>
   <string name="fragment_settings_title">Einstellungen</string>
   <string name="updating_notes">Aktualisiere Notizen…</string>
-  <string name="todo_keywords_configuration_changed_dialog_title">Schlüsselwörter bearbeitet</string>
-  <string name="todo_keywords_configuration_changed_dialog_message">Notizen aktualisieren um Änderungen sichtbar zu machen?</string>
   <string name="failure">Oh Oh</string>
   <string name="no_notes_found_after_search">Die Suchanfrage ergab keine Treffer</string>
   <string name="today">Heute</string>

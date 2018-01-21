@@ -130,8 +130,6 @@
   <string name="repo_dropbox_button_linked">Ontkoppel van Dropbox</string>
   <string name="fragment_settings_title">Instellingen</string>
   <string name="updating_notes">Notities worden bijgewerkt…</string>
-  <string name="todo_keywords_configuration_changed_dialog_title">Zoekwoorden bewerkt</string>
-  <string name="todo_keywords_configuration_changed_dialog_message">Notities bijwerken om wijzingingen weer te geven?</string>
   <string name="failure">Oh oh</string>
   <string name="no_notes_found_after_search">Je zoekopdracht matcht met geen notities</string>
   <string name="today">Vandaag</string>

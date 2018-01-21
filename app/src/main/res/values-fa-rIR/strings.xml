@@ -130,8 +130,6 @@
   <string name="repo_dropbox_button_linked">قطع شدن از دراپ‌باکس</string>
   <string name="fragment_settings_title">تنظیمات</string>
   <string name="updating_notes">به‌روز رسانی یادداشت‌ها…</string>
-  <string name="todo_keywords_configuration_changed_dialog_title">کلمات کلیدی تغییر داده شد</string>
-  <string name="todo_keywords_configuration_changed_dialog_message">یادداشت برای دریافت تغییرات به روز شود؟</string>
   <string name="failure">اوه نه</string>
   <string name="no_notes_found_after_search">جستجوی شما نتیجه‌ای در بر نداشت</string>
   <string name="today">امروز</string>

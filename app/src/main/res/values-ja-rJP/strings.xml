@@ -127,8 +127,6 @@
   <string name="repo_dropbox_button_linked">Unlink from Dropbox</string>
   <string name="fragment_settings_title">Settings</string>
   <string name="updating_notes">Updating notes…</string>
-  <string name="todo_keywords_configuration_changed_dialog_title">Keywords modified</string>
-  <string name="todo_keywords_configuration_changed_dialog_message">Refresh notes to reflect the changes?</string>
   <string name="failure">Uh oh</string>
   <string name="no_notes_found_after_search">Your search did not match any notes</string>
   <string name="today">Today</string>

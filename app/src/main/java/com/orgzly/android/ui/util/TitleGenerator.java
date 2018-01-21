@@ -9,17 +9,14 @@ import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+
 import com.orgzly.android.Note;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.util.OrgFormatter;
 import com.orgzly.org.OrgHead;
 import com.orgzly.org.datetime.OrgDateTime;
 
-import org.joda.time.DateTimeUtils;
-
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class TitleGenerator {
     /* Separator for heading parts (state, priority, title, tags). */
@@ -106,7 +103,7 @@ public class TitleGenerator {
             }
         }
 
-        if (true) {
+        if (false) {
             String times = note.getCreatedAt() > 0
                     ? new OrgDateTime(note.getCreatedAt(), false).toString()
                     : "N/A";

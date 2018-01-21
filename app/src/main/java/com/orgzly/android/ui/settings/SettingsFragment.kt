@@ -16,6 +16,7 @@ import android.widget.ListView
 import com.github.machinarius.preferencefragment.PreferenceFragment
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.AppIntent
 import com.orgzly.android.Notifications
 import com.orgzly.android.Shelf
 import com.orgzly.android.prefs.AppPreferences
@@ -158,13 +159,13 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
             /* Re-parse notes. */
             ActivityUtils.closeSoftKeyboard(activity)
-            mListener?.onStateKeywordsPreferenceChanged()
+            mListener?.onNotesUpdateRequest(AppIntent.ACTION_REPARSE_NOTES)
 
             setDefaultStateForNewNote()
         }
 
         if (getString(R.string.pref_key_is_created_at_added) == key || getString(R.string.pref_key_created_at_property) == key) {
-            mListener?.onCreatedAtPreferencesChanged()
+            mListener?.onNotesUpdateRequest(AppIntent.ACTION_SYNC_CREATED_AT_WITH_PROPERTY)
         }
 
         /* Cancel or create an new-note ongoing notification. */
@@ -285,8 +286,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     }
 
     interface SettingsFragmentListener {
-        fun onStateKeywordsPreferenceChanged()
-        fun onCreatedAtPreferencesChanged()
+        fun onNotesUpdateRequest(action: String)
         fun onDatabaseClearRequest()
         fun onGettingStartedNotebookReloadRequest()
         fun onWhatsNewDisplayRequest()
