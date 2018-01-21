@@ -849,10 +849,6 @@ public class Shelf {
         mContext.startService(intent);
     }
 
-    public interface ReParsingNotesListener {
-        void noteParsed(int current, int total, String msg);
-    }
-
     /**
      * Using current states configuration, update states and titles for all notes.
      * Keywords that were part of the title can become states and vice versa.
@@ -861,10 +857,8 @@ public class Shelf {
      * in case time doesn't already exist.
      *
      * Affected books' mtime will *not* be updated.
-     *
-     * @return Number of modified notes.
-     */
-    public void reParseNotesStateAndTitles(ReParsingNotesListener listener) throws IOException {
+     **/
+    public void reParseNotesStateAndTitles() throws IOException {
         ArrayList<ContentProviderOperation> ops = new ArrayList<>();
 
         /* Get all notes. */
@@ -872,23 +866,13 @@ public class Shelf {
                 ProviderContract.Notes.ContentUri.notes(), null, null, null, null);
 
         try {
-            int current = 0;
-            int total = 0;
-
             OrgParser.Builder parserBuilder = new OrgParser.Builder()
                     .setTodoKeywords(AppPreferences.todoKeywordsSet(mContext))
                     .setDoneKeywords(AppPreferences.doneKeywordsSet(mContext));
 
             OrgParserWriter parserWriter = new OrgParserWriter();
 
-            /* Get total number of notes for displaying the stats. */
-            if (cursor.moveToFirst()) {
-                total = cursor.getCount();
-            }
-
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                current++;
-
                 /* Get current heading string. */
                 Note note = NotesClient.fromCursor(cursor);
 
@@ -952,19 +936,10 @@ public class Shelf {
                             .build()
                     );
                 }
-
-
-                if (listener != null) {
-                    listener.noteParsed(current, total, "Updating notes...");
-                }
             }
 
         } finally {
             cursor.close();
-        }
-
-        if (listener != null) {
-            listener.noteParsed(0, 0, "Updating database...");
         }
 
         /*

@@ -68,7 +68,7 @@ class ActionService : IntentService(TAG) {
 
     private fun reparseNotes() {
         localBroadcastManager.sendBroadcast(Intent(AppIntent.ACTION_REPARSING_NOTES_STARTED))
-        shelf.reParseNotesStateAndTitles(null)
+        shelf.reParseNotesStateAndTitles()
         localBroadcastManager.sendBroadcast(Intent(AppIntent.ACTION_REPARSING_NOTES_ENDED))
     }
 
