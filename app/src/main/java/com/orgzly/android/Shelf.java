@@ -34,13 +34,12 @@ import com.orgzly.android.sync.BookSyncStatus;
 import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
-import com.orgzly.android.util.AgendaUtils;
 import com.orgzly.android.util.CircularArrayList;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 import com.orgzly.android.util.UriUtils;
 import com.orgzly.org.OrgHead;
-import com.orgzly.org.OrgProperty;
+import com.orgzly.org.OrgProperties;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.parser.OrgParsedFile;
 import com.orgzly.org.parser.OrgParser;
@@ -230,15 +229,17 @@ public class Shelf {
         final PrintWriter out = new PrintWriter(file, encoding);
 
         try {
-            String prefValue = AppPreferences.separateNotesWithNewLine(mContext);
+            String separateNotesWithNewLine = AppPreferences.separateNotesWithNewLine(mContext);
+            String createdAtProperty = AppPreferences.createdAtProperty(mContext);
+            boolean doWriteCreatedAtProperty = AppPreferences.createdAt(mContext);
 
             OrgParserSettings parserSettings = OrgParserSettings.getBasic();
 
-            if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_always).equals(prefValue)) {
+            if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_always).equals(separateNotesWithNewLine)) {
                 parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.ALWAYS;
-            } else if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_multi_line_notes_only).equals(prefValue)) {
+            } else if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_multi_line_notes_only).equals(separateNotesWithNewLine)) {
                 parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.MULTI_LINE_NOTES_ONLY;
-            } else if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_never).equals(prefValue)) {
+            } else if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_never).equals(separateNotesWithNewLine)) {
                 parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.NEVER;
             }
 
@@ -249,23 +250,15 @@ public class Shelf {
 
             final OrgParserWriter parserWriter = new OrgParserWriter(parserSettings);
 
+            // Write preface
             out.write(parserWriter.whiteSpacedFilePreface(book.getPreface()));
 
-
-            OrgProperty createdAtProperty;
-            if (AppPreferences.createdAt(mContext)) {
-                createdAtProperty = new OrgProperty(AppPreferences.createdAtProperty(mContext), "");
-            } else {
-                createdAtProperty = null;
-            }
-
+            // Write notes
             NotesClient.forEachBookNote(mContext, book.getName(), note -> {
-
-                /* Set created-at property. */
-                if (createdAtProperty != null && note.getCreatedAt() > 0) {
+                // Update note properties with created-at property, if the time exists.
+                if (doWriteCreatedAtProperty && createdAtProperty != null && note.getCreatedAt() > 0) {
                     OrgDateTime time = new OrgDateTime(note.getCreatedAt(), false);
-                    createdAtProperty.setValue(time.toString());
-                    note.getHead().addProperty(createdAtProperty); // TODO: could be duplicate
+                    note.getHead().addProperty(createdAtProperty, time.toString());
                 }
 
                 out.write(parserWriter.whiteSpacedHead(
@@ -296,7 +289,7 @@ public class Shelf {
         return NotesClient.getNote(mContext, id);
     }
 
-    public List<OrgProperty> getNoteProperties(long id) {
+    public OrgProperties getNoteProperties(long id) {
         return NotesClient.getNoteProperties(mContext, id);
     }
 
@@ -862,16 +855,16 @@ public class Shelf {
 
     /**
      * Using current states configuration, update states and titles for all notes.
-     * Also updates created time in the database for all notes based on the created property keyword,
-     * but does not affect the property itself in the org file.
      * Keywords that were part of the title can become states and vice versa.
+     *
+     * Also updates created-at in the database for all notes based on the created property keyword,
+     * in case time doesn't already exist.
+     *
      * Affected books' mtime will *not* be updated.
      *
      * @return Number of modified notes.
      */
-    public int reParseNotesStateAndTitles(ReParsingNotesListener listener) throws IOException {
-        int modifiedNotesCount = 0;
-
+    public void reParseNotesStateAndTitles(ReParsingNotesListener listener) throws IOException {
         ArrayList<ContentProviderOperation> ops = new ArrayList<>();
 
         /* Get all notes. */
@@ -928,19 +921,18 @@ public class Shelf {
                     ! TextUtils.equals(newHead.getTitle(), head.getTitle()) ||
                     ! TextUtils.equals(newHead.getPriority(), head.getPriority())) {
 
-                    modifiedNotesCount++;
-
                     values.put(ProviderContract.Notes.UpdateParam.TITLE, newHead.getTitle());
                     values.put(ProviderContract.Notes.UpdateParam.STATE, newHead.getState());
                     values.put(ProviderContract.Notes.UpdateParam.PRIORITY, newHead.getPriority());
                 }
 
-                /* Update created time.
+                /* Update created time if it doesn't already exist
                  * Because the note was only modified in the internal database, modifiedNotesCount
                  * isn't incremented.
                  * We use the properties from the database because NotesClient.fromCursor returns
                  * a note without any properties
                  */
+                // TODO: Don't do this here, it's costly and re-parsing could have been due to state changes only
 //                for (OrgProperty prop : NotesClient.getNoteProperties(mContext, NotesClient.idFromCursor(cursor))) {
 //                    if (prop.getName().equals(AppPreferences.createdAtProperty(mContext))) {
 //                        try {
@@ -986,8 +978,6 @@ public class Shelf {
         }
 
         notifyDataChanged(mContext);
-
-        return modifiedNotesCount;
     }
 
     public void openFirstNoteWithProperty(String propName, String propValue) {

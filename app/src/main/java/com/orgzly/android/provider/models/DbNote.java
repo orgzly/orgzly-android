@@ -10,6 +10,7 @@ import com.orgzly.android.NotePosition;
 import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.util.MiscUtils;
 import com.orgzly.org.OrgHead;
+import com.orgzly.org.OrgProperties;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgRange;
 
@@ -184,6 +185,25 @@ public class DbNote implements DbNoteColumns, BaseColumns {
         values.put(IS_FOLDED, position.isFolded() ? 1 : 0);
         values.put(POSITION, 0); // TODO: Remove
     }
+
+
+    /**
+     * Set created-at from user-defined property.
+     */
+    public static  void toContentValues(ContentValues values, OrgProperties properties, String createdAtProperty) {
+        if (properties.containsKey(createdAtProperty)) {
+            String value = properties.get(createdAtProperty);
+            setCreatedAtValue(values, value);
+        }
+    }
+
+    private static void setCreatedAtValue(ContentValues values, String value) {
+        OrgRange range = OrgRange.parseOrNull(value);
+        if (range != null) {
+            values.put(DbNote.CREATED_AT, range.getStartTime().getCalendar().getTimeInMillis());
+        }
+    }
+
 
     public static NotePosition positionFromCursor(Cursor cursor) {
         long bookId = cursor.getLong(cursor.getColumnIndex(BOOK_ID));

@@ -20,6 +20,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class MiscUtils {
     public static final int SNACKBAR_WITH_ACTION_DURATION = 8000;
@@ -259,5 +261,18 @@ public class MiscUtils {
             result = Html.fromHtml(html);
         }
         return result;
+    }
+
+    public static ArrayList<String> toArrayList(LinkedHashMap<String, String> map) {
+        ArrayList<String> list = new ArrayList<>();
+
+        for (String key: map.keySet()) {
+            String value = map.get(key);
+
+            list.add(key);
+            list.add(value);
+        }
+
+        return list;
     }
 }

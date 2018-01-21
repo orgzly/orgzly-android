@@ -87,29 +87,29 @@ public class SettingsChangeTest extends OrgzlyTest {
         onListItem(index + 1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
     }
 
-    @Test
-    public void testChangeCreatedAtPropertyResultsShouldBeReordered() {
-        searchForText("o.m");
-        onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CREATED_AT);
-        onView(withText(R.string.yes)).perform(click());
-        pressBack();
-        pressBack();
-
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
-
-        onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CREATED_AT_PROPERTY);
-        onView(instanceOf(EditText.class)).perform(replaceText("ADDED"));
-        onView(withText(R.string.ok)).perform(click());
-        onView(withText(R.string.yes)).perform(click());
-        pressBack();
-        pressBack();
-
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
-    }
+//    @Test
+//    public void testChangeCreatedAtPropertyResultsShouldBeReordered() {
+//        searchForText("o.m");
+//        onActionItemClick(R.id.activity_action_settings, R.string.settings);
+//        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CREATED_AT);
+//        onView(withText(R.string.yes)).perform(click());
+//        pressBack();
+//        pressBack();
+//
+//        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
+//        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
+//
+//        onActionItemClick(R.id.activity_action_settings, R.string.settings);
+//        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CREATED_AT_PROPERTY);
+//        onView(instanceOf(EditText.class)).perform(replaceText("ADDED"));
+//        onView(withText(R.string.ok)).perform(click());
+//        onView(withText(R.string.yes)).perform(click());
+//        pressBack();
+//        pressBack();
+//
+//        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
+//        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
+//    }
 
     @Test
     public void testDisplayedContentInBook() {

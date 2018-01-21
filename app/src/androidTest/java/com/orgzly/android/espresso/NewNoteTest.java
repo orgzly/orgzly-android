@@ -72,21 +72,13 @@ public class NewNoteTest extends OrgzlyTest {
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.fragment_note_title))
                 .perform(replaceText("new note created by test"), closeSoftKeyboardWithDelay());
-        onView(withText("CREATED")).check(matches(isDisplayed()));
         onView(withId(R.id.done)).perform(click());
         onListItem(7).onChildView(withId(R.id.item_head_title))
                 .check(matches(allOf(withText("new note created by test"), isDisplayed())));
 
-        /*
-        By testing to see if, when sorting by created date, the new note pops up at the top, we can
-        test two pieces of functionality at once:
-        a) Notes in new Books don't have a created at date (since they'll be at the bottom of the
-           search with a value of null
-        b) New notes have a created_at value set (since they won't be null nor will they be at the bottom)
-         */
         searchForText("o.m");
         onListItem(0).onChildView(withId(R.id.item_head_title))
-                .check(matches(allOf(withText("new note created by test"), isDisplayed())));
+                .check(matches(allOf(withText("1"), isDisplayed())));
 
         searchForText(".o.m");
         onListItem(0).onChildView(withId(R.id.item_head_title))

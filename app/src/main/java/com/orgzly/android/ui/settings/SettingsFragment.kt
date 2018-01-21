@@ -158,28 +158,16 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
             /* Re-parse notes. */
             ActivityUtils.closeSoftKeyboard(activity)
-
             mListener?.onStateKeywordsPreferenceChanged()
 
             setDefaultStateForNewNote()
         }
 
-        if (getString(R.string.pref_key_is_created_at_added) == key || getString(R.string.pref_key_created_at_property) == key) {
-            if (getString(R.string.pref_key_is_created_at_added) == key) {
-                val value = sharedPreferences.getBoolean(key, resources.getBoolean(R.bool.pref_default_value_is_created_at_added))
-                AppPreferences.createdAt(context, value)
-            } else {
-                val value = sharedPreferences.getString(key, resources.getString(R.string.pref_default_created_at_property))
-                AppPreferences.createdAtProperty(context, value)
-            }
-
-            /* Re-parse notes. */
-            ActivityUtils.closeSoftKeyboard(activity)
-
-            mListener?.onCreatedAtPreferencesChanged()
-
-            setDefaultStateForNewNote()
-        }
+//        if (getString(R.string.pref_key_created_at_property) == key) {
+//            /* Re-parse notes. */
+//            ActivityUtils.closeSoftKeyboard(activity)
+//            mListener?.onCreatedAtPreferencesChanged()
+//        }
 
         /* Cancel or create an new-note ongoing notification. */
         if (getString(R.string.pref_key_new_note_notification) == key) {

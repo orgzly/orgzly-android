@@ -517,12 +517,8 @@ public class BookFragment extends NoteListFragment
      * @param cursorPosition note to scroll to. 0 for first note, 1 for second etc.
      */
     private void scrollToCursorPosition(final int cursorPosition) {
-        getListView().post(new Runnable() {
-            public void run() {
-//                getListView().scrollTo(0, getListView().getBottom());
-//                getListView().smoothScrollToPosition(cursorPosition + getListView().getHeaderViewsCount());
-                getListView().setSelection(cursorPosition + getListView().getHeaderViewsCount());
-            }
+        getListView().post(() -> {
+            getListView().setSelection(cursorPosition + getListView().getHeaderViewsCount());
         });
     }
 

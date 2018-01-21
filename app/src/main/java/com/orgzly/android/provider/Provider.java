@@ -59,7 +59,7 @@ import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.EncodingDetect;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.org.OrgFile;
-import com.orgzly.org.OrgProperty;
+import com.orgzly.org.OrgProperties;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgRange;
 import com.orgzly.org.parser.OrgNestedSetParserListener;
@@ -1322,24 +1322,24 @@ public class Provider extends ContentProvider {
         /* Delete all notes from book. TODO: Delete all other references to this book ID */
         db.delete(DbNote.TABLE, DbNote.BOOK_ID + "=" + bookId, null);
 
-        final Map<String, Long> propertyNames = new HashMap<>();
+        final Map<String, Long> propNameDbIds = new HashMap<>();
         {
             Cursor cursor = db.query(DbPropertyName.TABLE, new String[] {DbPropertyName._ID, DbPropertyName.NAME}, null, null, null, null, null);
             try {
                 for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                    propertyNames.put(cursor.getString(1), cursor.getLong(0));
+                    propNameDbIds.put(cursor.getString(1), cursor.getLong(0));
                 }
             } finally {
                 cursor.close();
             }
         }
 
-        final Map<String, Long> propertyValues = new HashMap<>();
+        final Map<String, Long> propValueDbIds = new HashMap<>();
         {
             Cursor cursor = db.query(DbPropertyValue.TABLE, new String[] {DbPropertyValue._ID, DbPropertyValue.VALUE}, null, null, null, null, null);
             try {
                 for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                    propertyValues.put(cursor.getString(1), cursor.getLong(0));
+                    propValueDbIds.put(cursor.getString(1), cursor.getLong(0));
                 }
             } finally {
                 cursor.close();
@@ -1386,48 +1386,35 @@ public class Provider extends ContentProvider {
 
                             ContentValues values = new ContentValues();
 
+                            // Update ContentValues
                             DbNote.toContentValues(values, position);
+                            DbNote.toContentValues(values, node.getHead().getProperties(), createdAtProperty);
                             DbNote.toContentValues(db, values, node.getHead());
 
                             long noteId = db.insertOrThrow(DbNote.TABLE, null, values);
 
-                            /* Try to get created-at from user-defined property/ */
-                            long createdAt = 0;
-
                             /* Insert note's properties. */
                             int pos = 1;
-                            for (OrgProperty property: node.getHead().getProperties()) {
-                                Long nameId = propertyNames.get(property.getName());
+                            OrgProperties noteProperties = node.getHead().getProperties();
+                            for (String propName : noteProperties.keySet()) {
+
+                                String propValue = noteProperties.get(propName);
+
+                                Long nameId = propNameDbIds.get(propName);
                                 if (nameId == null) {
-                                    nameId = DbPropertyName.getOrInsert(db, property.getName());
-                                    propertyNames.put(property.getName(), nameId);
+                                    nameId = DbPropertyName.getOrInsert(db, propName);
+                                    propNameDbIds.put(propName, nameId);
                                 }
 
-                                Long valueId = propertyValues.get(property.getValue());
+                                Long valueId = propValueDbIds.get(propValue);
                                 if (valueId == null) {
-                                    valueId = DbPropertyValue.getOrInsert(db, property.getValue());
-                                    propertyValues.put(property.getValue(), valueId);
+                                    valueId = DbPropertyValue.getOrInsert(db, propValue);
+                                    propValueDbIds.put(propValue, valueId);
                                 }
 
                                 long propertyId = DbProperty.getOrInsert(db, nameId, valueId);
 
                                 DbNoteProperty.getOrInsert(db, noteId, pos++, propertyId);
-
-                                // Update created-at from user-defined property
-                                if (createdAt == 0 && property.getName().equalsIgnoreCase(createdAtProperty)) {
-                                    if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found user-defined created-at property", property);
-                                    OrgRange range = OrgRange.parseOrNull(property.getValue());
-                                    if (range != null) {
-                                        createdAt = range.getStartTime().getCalendar().getTimeInMillis();
-                                    }
-                                }
-                            }
-
-                            /* Update created-at time. */
-                            if (createdAt > 0) {
-                                ContentValues createdAtValues = new ContentValues();
-                                createdAtValues.put(DbNote.CREATED_AT, createdAt);
-                                db.update(DbNote.TABLE, createdAtValues, DbNote._ID + " = " + noteId, null);
                             }
 
                             /*
