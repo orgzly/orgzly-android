@@ -984,37 +984,22 @@ public class Shelf {
                     OrgDateTime dbPropertyValue = OrgDateTime.parseOrNull(dbPropValue);
 
                     // Compare dbCreatedAt and dbPropertyValue
-
                     if (dbCreatedAt > 0 && dbPropertyValue == null) {
-                        // Update property
-                        ops.add(ContentProviderOperation
-                                .newUpdate(ProviderContract.NoteProperties.ContentUri.notesIdProperties(note.getId()))
-                                .withValue(createdAtPropName, new OrgDateTime(dbCreatedAt, false).toString())
-                                .build());
+                        addOpUpdateProperty(ops, note.getId(), createdAtPropName, dbCreatedAt, dbPropValue);
 
                     } else if (dbCreatedAt > 0 && dbPropertyValue != null) {
+                        // Use earlier time
                         if (dbPropertyValue.getCalendar().getTimeInMillis() < dbCreatedAt) {
-                            // Update created-at
-                            ops.add(ContentProviderOperation
-                                    .newUpdate(ProviderContract.Notes.ContentUri.notesId(note.getId()))
-                                    .withValue(DbNote.CREATED_AT, dbPropertyValue.getCalendar().getTimeInMillis())
-                                    .build());
+                            addOpUpdateCreatedAt(ops, note.getId(), dbPropertyValue, note.getCreatedAt());
+
                         } else {
-                            // Update property
-                            ops.add(ContentProviderOperation
-                                    .newUpdate(ProviderContract.NoteProperties.ContentUri.notesIdProperties(note.getId()))
-                                    .withValue(createdAtPropName, new OrgDateTime(dbCreatedAt, false).toString())
-                                    .build());
+                            addOpUpdateProperty(ops, note.getId(), createdAtPropName, dbCreatedAt, dbPropValue);
                         }
 
                     } else if (dbCreatedAt == 0 && dbPropertyValue != null) {
-                        // Update created-at time
-                        ops.add(ContentProviderOperation
-                                .newUpdate(ProviderContract.Notes.ContentUri.notesId(note.getId()))
-                                .withValue(DbNote.CREATED_AT, dbPropertyValue.getCalendar().getTimeInMillis())
-                                .build());
+                        addOpUpdateCreatedAt(ops, note.getId(), dbPropertyValue, note.getCreatedAt());
 
-                    } // else: None set
+                    } // else: Neither created-at time nor property are set
                 }
             }
         }
@@ -1030,6 +1015,36 @@ public class Shelf {
         }
 
         notifyDataChanged(mContext);
+    }
+
+    private void addOpUpdateCreatedAt(ArrayList<ContentProviderOperation> ops, long id, OrgDateTime dbPropertyValue, long currValue) {
+        long value = dbPropertyValue.getCalendar().getTimeInMillis();
+
+        if (value != currValue) {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Updating", id, currValue, value);
+
+            ops.add(ContentProviderOperation
+                    .newUpdate(ProviderContract.Notes.ContentUri.notesId(id))
+                    .withValue(DbNote.CREATED_AT, value)
+                    .build());
+        } else {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Skipping update", id, value);
+        }
+    }
+
+    private void addOpUpdateProperty(ArrayList<ContentProviderOperation> ops, long id, String createdAtPropName, long dbCreatedAt, String currPropValue) {
+        String value = new OrgDateTime(dbCreatedAt, false).toString();
+
+        if (! value.equals(currPropValue)) {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Updating", id, createdAtPropName, currPropValue, value);
+
+            ops.add(ContentProviderOperation
+                    .newUpdate(ProviderContract.NoteProperties.ContentUri.notesIdProperties(id))
+                    .withValue(createdAtPropName, value)
+                    .build());
+        } else {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Skipping update", id, createdAtPropName, value);
+        }
     }
 
     public void openFirstNoteWithProperty(String propName, String propValue) {

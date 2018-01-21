@@ -165,7 +165,9 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         }
 
         if (getString(R.string.pref_key_is_created_at_added) == key || getString(R.string.pref_key_created_at_property) == key) {
-            mListener?.onNotesUpdateRequest(AppIntent.ACTION_SYNC_CREATED_AT_WITH_PROPERTY)
+            if (AppPreferences.createdAt(context)) {
+                mListener?.onNotesUpdateRequest(AppIntent.ACTION_SYNC_CREATED_AT_WITH_PROPERTY)
+            }
         }
 
         /* Cancel or create an new-note ongoing notification. */
