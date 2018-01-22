@@ -8,11 +8,9 @@ import android.preference.Preference
 import android.preference.PreferenceManager
 import android.preference.PreferenceScreen
 import android.preference.TwoStatePreference
-import android.support.annotation.StringRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
 import com.github.machinarius.preferencefragment.PreferenceFragment
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -50,6 +48,13 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     }
 
     private fun setupPreferences() {
+        /* Make icons lighter. */
+//        preferenceScreen?.let {
+//            for (i in 0 until it.preferenceCount) {
+//                it.getPreference(i)?.icon?.alpha = 140
+//            }
+//        }
+
         findPreference(getString(R.string.pref_key_clear_database))?.let {
             it.setOnPreferenceClickListener { _ ->
                 mListener?.onDatabaseClearRequest()
@@ -108,7 +113,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         }
 
         /* Remove dividers. */
-        view?.findViewById(android.R.id.list)?.let { (it as? ListView)?.divider = null }
+//        view?.findViewById(android.R.id.list)?.let { (it as? ListView)?.divider = null }
 
         return view
     }
