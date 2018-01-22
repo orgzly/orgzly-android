@@ -147,11 +147,11 @@ public class DatabaseMigration {
                     notifyUserIfSlow.run();
                     notifyUserIfSlow = null;
                 }
-                addAndUpdateCreatedAt(db, context);
+                addAndSetCreatedAt(db, context);
         }
     }
 
-    private static void addAndUpdateCreatedAt(SQLiteDatabase db, Context context) {
+    private static void addAndSetCreatedAt(SQLiteDatabase db, Context context) {
         db.execSQL("ALTER TABLE notes ADD COLUMN created_at INTEGER DEFAULT 0");
 
         if (!AppPreferences.createdAt(context)) {

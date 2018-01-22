@@ -963,8 +963,9 @@ public class Shelf {
 
         /*
          * Get all notes.
-         * Only notes that have either created-at time or created-at property are actually needed.
-         * But since this syncing is done so rarely, we don't bother.
+         * This is slow and only notes that have either created-at time or created-at property
+         * are actually needed. But since this syncing (triggered on preference change) is done
+         * so rarely, we don't bother.
          */
         try (Cursor cursor = mContext.getContentResolver().query(
                 ProviderContract.Notes.ContentUri.notes(), null, null, null, null)) {
@@ -1056,6 +1057,8 @@ public class Shelf {
                     .newUpdate(ProviderContract.NoteProperties.ContentUri.notesIdProperties(note.getId()))
                     .withValue(createdAtPropName, value)
                     .build());
+
+            // Should we remove the old property?
 
             bookIds.add(note.getPosition().getBookId());
 
