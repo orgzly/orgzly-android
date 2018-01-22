@@ -988,13 +988,15 @@ public class Shelf {
                         addOpUpdateProperty(ops, note.getId(), createdAtPropName, dbCreatedAt, dbPropValue);
 
                     } else if (dbCreatedAt > 0 && dbPropertyValue != null) {
-                        // Use earlier time
+                        // Use older created-at
                         if (dbPropertyValue.getCalendar().getTimeInMillis() < dbCreatedAt) {
                             addOpUpdateCreatedAt(ops, note.getId(), dbPropertyValue, note.getCreatedAt());
-
                         } else {
                             addOpUpdateProperty(ops, note.getId(), createdAtPropName, dbCreatedAt, dbPropValue);
                         }
+
+                        // Or prefer property and set created-at time?
+                        // addOpUpdateCreatedAt(ops, note.getId(), dbPropertyValue, note.getCreatedAt());
 
                     } else if (dbCreatedAt == 0 && dbPropertyValue != null) {
                         addOpUpdateCreatedAt(ops, note.getId(), dbPropertyValue, note.getCreatedAt());
