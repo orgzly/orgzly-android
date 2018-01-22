@@ -2,9 +2,9 @@ package com.orgzly.android.prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import com.orgzly.R;
 import com.orgzly.android.App;
-import com.orgzly.android.ui.settings.SettingsFragment;
 import com.orgzly.org.OrgStatesWorkflow;
 
 import java.util.Arrays;
@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
-import static android.preference.PreferenceManager.setDefaultValues;
 
 
 /**

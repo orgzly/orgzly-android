@@ -99,7 +99,8 @@ configurations.all {
 }
 
 dependencies {
-    implementation orgJavaLocation()
+    // implementation orgJavaLocation()
+    implementation "com.orgzly:org-java:$org_java_version"
 
     implementation "com.dropbox.core:dropbox-core-sdk:$dropbox_core_sdk_version"
 

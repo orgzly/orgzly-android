@@ -2,7 +2,7 @@
  * Use org-java from local directory instead of the remote repository.
  *
  * If you are working on org-java this can make development process easier.
- * Make sure you run "clean" task if you change the existence of this directory.
+ * Make sure you "Clean Project" if you change this value.
  */
 gradle.ext.orgJavaDir = new File(settingsDir, '../org-java')
 
