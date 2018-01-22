@@ -144,7 +144,7 @@
     <string name="repo_dropbox_button_linked">Unlink from Dropbox</string>
     <string name="fragment_settings_title">Settings</string>
 
-    <string name="notes_update_needed_dialog_title">Preference affecting notes changed</string>
+    <string name="notes_update_needed_dialog_title">Preference affects notes</string>
     <string name="notes_update_needed_dialog_message">Update notes to reflect the changes?</string>
 
     <string name="updating_notes">Updating notes…</string>
