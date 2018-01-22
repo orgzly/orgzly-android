@@ -7,13 +7,6 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <View
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="1dp"
-        android:layout_gravity="center_vertical"
-        android:background="?attr/line_color"/>
-
     <TextView
         android:id="@+id/item_agenda_time_text"
         android:layout_width="wrap_content"
@@ -22,14 +15,9 @@
         android:paddingLeft="@dimen/fragment_padding"
         android:paddingRight="@dimen/fragment_padding"
         android:maxLines="1"
-        android:textColor="?attr/item_head_post_title_text_color"
+        android:textColor="?attr/item_head_title_text_color"
         android:textSize="?attr/item_head_post_title_text_size"
+        android:textStyle="bold"
         tools:text="Mon, 25 Sep"/>
 
-    <View
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="1dp"
-        android:layout_gravity="center_vertical"
-        android:background="?attr/line_color"/>
 </LinearLayout>
