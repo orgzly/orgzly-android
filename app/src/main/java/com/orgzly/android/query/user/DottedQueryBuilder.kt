@@ -65,7 +65,7 @@ open class DottedQueryBuilder {
             is Condition.Created -> {
                 val rel = expr.relation.toString().toLowerCase()
                 val relString = if (rel == "le") "" else ".$rel"
-                "m$relString.${expr.interval}"
+                "cr$relString.${expr.interval}"
             }
 
             is Condition.HasText -> if (expr.isQuoted) {
@@ -96,7 +96,7 @@ open class DottedQueryBuilder {
                     is SortOrder.Closed -> dot(order) + "o.c"
                     is SortOrder.Priority -> dot(order) + "o.p"
                     is SortOrder.State -> dot(order) + "o.state"
-                    is SortOrder.Created -> dot(order) + "o.m"
+                    is SortOrder.Created -> dot(order) + "o.cr"
                 })
             }
         }

@@ -79,7 +79,7 @@ open class BasicQueryParser : QueryParser() {
             SortOrderMatch("""^(-)?sort-order:(?:closed|close)$""", { match ->
                 SortOrder.Closed(match.groupValues[1].isNotEmpty())
             }),
-            SortOrderMatch("""^(-)?sort-order:(?:created|made)$""", { matcher ->
+            SortOrderMatch("""^(-)?sort-order:(?:created)$""", { matcher ->
                 SortOrder.Created(matcher.groupValues[1].isNotEmpty())
             }),
             SortOrderMatch("""^(-)?sort-order:(?:priority|prio)$""", { match ->

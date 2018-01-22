@@ -107,17 +107,6 @@ public class BookTest extends OrgzlyTest {
     }
 
     @Test
-    public void testNoCreatedAt() {
-        searchForText("o.m");
-        onListItem(0).onChildView(withId(R.id.item_head_title))
-                .check(matches(allOf(withText("Note #1."), isDisplayed())));
-
-        searchForText(".o.m");
-        onListItem(0).onChildView(withId(R.id.item_head_title))
-                .check(matches(allOf(withText("Note #14."), isDisplayed())));
-    }
-
-    @Test
     public void testNoteExists() {
         onListItem(7).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #7."))));
     }

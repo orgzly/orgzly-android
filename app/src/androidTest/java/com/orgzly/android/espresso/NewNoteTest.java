@@ -57,35 +57,6 @@ public class NewNoteTest extends OrgzlyTest {
     }
 
     @Test
-    public void testNewNote() {
-        shelfTestUtils.setupBook("booky", "Booky Preface\n* 1\n** 2\n*** 3\n*** 4\n** 5\n* 6");
-        activityRule.launchActivity(null);
-        onView(allOf(withText("booky"), isDisplayed())).perform(click());
-
-        /* Enable "Created at" in settings. */
-        onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CREATED_AT);
-        onView(withText(R.string.yes)).perform(click());
-        pressBack();
-        pressBack();
-
-        onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title))
-                .perform(replaceText("new note created by test"), closeSoftKeyboardWithDelay());
-        onView(withId(R.id.done)).perform(click());
-        onListItem(7).onChildView(withId(R.id.item_head_title))
-                .check(matches(allOf(withText("new note created by test"), isDisplayed())));
-
-        searchForText("o.m");
-        onListItem(0).onChildView(withId(R.id.item_head_title))
-                .check(matches(allOf(withText("1"), isDisplayed())));
-
-        searchForText(".o.m");
-        onListItem(0).onChildView(withId(R.id.item_head_title))
-                .check(matches(allOf(withText("new note created by test"), isDisplayed())));
-    }
-
-    @Test
     public void testNewNoteUnder() {
         shelfTestUtils.setupBook("notebook", "description\n* 1\n** 2\n*** 3\n*** 4\n** 5\n* 6");
         activityRule.launchActivity(null);

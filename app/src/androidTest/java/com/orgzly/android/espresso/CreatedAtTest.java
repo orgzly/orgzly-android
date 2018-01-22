@@ -20,6 +20,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
+import static com.orgzly.android.espresso.EspressoUtils.listViewItemCount;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.searchForText;
@@ -27,9 +28,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 
-/**
- *
- */
+
 @SuppressWarnings("unchecked")
 public class CreatedAtTest extends OrgzlyTest {
     @Rule
@@ -41,13 +40,12 @@ public class CreatedAtTest extends OrgzlyTest {
 
         shelfTestUtils.setupBook(
                 "book-a",
-                "* [#B] Note [a-1]\n" +
+                "* Note [a-1]\n" +
                 ":PROPERTIES:\n" +
                 ":CREATED: [2018-01-05]\n" +
-                ":ADDED: [2018-01-03]\n" +
+                ":ADDED: [2018-01-01]\n" +
                 ":END:\n" +
                 "SCHEDULED: <2018-01-01>\n" +
-                "Content for [a-1]\n" +
                 "* Note [a-2]\n" +
                 ":PROPERTIES:\n" +
                 ":CREATED: [2018-01-02]\n" +
@@ -60,29 +58,84 @@ public class CreatedAtTest extends OrgzlyTest {
     }
 
     @Test
-    public void testChangeCreatedAtPropertyResultsShouldBeReordered() {
-        searchForText("o.m");
+    public void testCondition() {
+        enableCreatedAt();
 
-        // Enable created-at property sync
+        searchForText("cr.le.today");
+        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
+
+        // TODO: Search before/after 2018-01-03 expecting 1 note
+    }
+
+    @Test
+    public void testSortOrdder() {
+        enableCreatedAt();
+
+        searchForText("o.cr");
+        onListItem(0).onChildView(withId(R.id.item_head_title))
+                .check(matches(allOf(withText("Note [a-2]"), isDisplayed())));
+
+        searchForText(".o.cr");
+        onListItem(0).onChildView(withId(R.id.item_head_title))
+                .check(matches(allOf(withText("Note [a-1]"), isDisplayed())));
+    }
+
+    @Test
+    public void testChangeCreatedAtPropertyResultsShouldBeReordered() {
+        searchForText("o.cr");
+
+        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note [a-1]")), isDisplayed())));
+        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
+
+        enableCreatedAt();
+
+        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
+        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note [a-1]")), isDisplayed())));
+
+        changeCreatedAtProperty("ADDED");
+
+        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note [a-1]")), isDisplayed())));
+        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
+    }
+
+    @Test
+    public void testNewNote() {
+        onView(allOf(withText("book-a"), isDisplayed())).perform(click());
+
+        enableCreatedAt();
+
+        onView(withId(R.id.fab)).perform(click());
+        onView(withId(R.id.fragment_note_title))
+                .perform(replaceText("new note created by test"), closeSoftKeyboardWithDelay());
+        onView(withId(R.id.done)).perform(click());
+
+        onListItem(2).onChildView(withId(R.id.item_head_title))
+                .check(matches(allOf(withText("new note created by test"), isDisplayed())));
+
+        searchForText("o.cr");
+        onListItem(0).onChildView(withId(R.id.item_head_title))
+                .check(matches(allOf(withText("Note [a-2]"), isDisplayed())));
+
+        searchForText(".o.cr");
+        onListItem(0).onChildView(withId(R.id.item_head_title))
+                .check(matches(allOf(withText("new note created by test"), isDisplayed())));
+    }
+
+    private void enableCreatedAt() {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
         EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CREATED_AT);
         onView(withText(R.string.yes)).perform(click());
         pressBack();
         pressBack();
+    }
 
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
-
-        // Change created-at property name
+    private void changeCreatedAtProperty(String propName) {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
         EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CREATED_AT_PROPERTY);
-        onView(instanceOf(EditText.class)).perform(replaceText("ADDED"), closeSoftKeyboardWithDelay());
+        onView(instanceOf(EditText.class)).perform(replaceText(propName), closeSoftKeyboardWithDelay());
         onView(withText(R.string.ok)).perform(click());
         onView(withText(R.string.yes)).perform(click());
         pressBack();
         pressBack();
-
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
     }
 }
