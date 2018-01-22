@@ -129,8 +129,6 @@
   <string name="repo_dropbox_button_linked">Desvincular de Dropbox</string>
   <string name="fragment_settings_title">Configuración</string>
   <string name="updating_notes">Actualizando notas…</string>
-  <string name="todo_keywords_configuration_changed_dialog_title">Palabras clave modificadas</string>
-  <string name="todo_keywords_configuration_changed_dialog_message">¿Actualizar notas para reflejar los cambios?</string>
   <string name="failure">Oh oh</string>
   <string name="no_notes_found_after_search">Tu búsqueda no concuerda con ninguna nota</string>
   <string name="today">Hoy</string>

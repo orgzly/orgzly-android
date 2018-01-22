@@ -24,6 +24,7 @@ import com.orgzly.android.provider.clients.DbClient;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.provider.clients.ReposClient;
+import com.orgzly.android.provider.models.DbNote;
 import com.orgzly.android.reminders.ReminderService;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
@@ -39,7 +40,7 @@ import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 import com.orgzly.android.util.UriUtils;
 import com.orgzly.org.OrgHead;
-import com.orgzly.org.OrgProperty;
+import com.orgzly.org.OrgProperties;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.parser.OrgParsedFile;
 import com.orgzly.org.parser.OrgParser;
@@ -229,15 +230,17 @@ public class Shelf {
         final PrintWriter out = new PrintWriter(file, encoding);
 
         try {
-            String prefValue = AppPreferences.separateNotesWithNewLine(mContext);
+            String separateNotesWithNewLine = AppPreferences.separateNotesWithNewLine(mContext);
+            String createdAtPropertyName = AppPreferences.createdAtProperty(mContext);
+            boolean useCreatedAtProperty = AppPreferences.createdAt(mContext);
 
             OrgParserSettings parserSettings = OrgParserSettings.getBasic();
 
-            if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_always).equals(prefValue)) {
+            if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_always).equals(separateNotesWithNewLine)) {
                 parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.ALWAYS;
-            } else if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_multi_line_notes_only).equals(prefValue)) {
+            } else if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_multi_line_notes_only).equals(separateNotesWithNewLine)) {
                 parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.MULTI_LINE_NOTES_ONLY;
-            } else if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_never).equals(prefValue)) {
+            } else if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_never).equals(separateNotesWithNewLine)) {
                 parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.NEVER;
             }
 
@@ -248,16 +251,21 @@ public class Shelf {
 
             final OrgParserWriter parserWriter = new OrgParserWriter(parserSettings);
 
+            // Write preface
             out.write(parserWriter.whiteSpacedFilePreface(book.getPreface()));
 
-            NotesClient.forEachBookNote(mContext, book.getName(), new NotesClient.NotesClientInterface() {
-                @Override
-                public void onNote(Note note) {
-                    out.write(parserWriter.whiteSpacedHead(
-                            note.getHead(),
-                            note.getPosition().getLevel(),
-                            book.getOrgFileSettings().isIndented()));
+            // Write notes
+            NotesClient.forEachBookNote(mContext, book.getName(), note -> {
+                // Update note properties with created-at property, if the time exists.
+                if (useCreatedAtProperty && createdAtPropertyName != null && note.getCreatedAt() > 0) {
+                    OrgDateTime time = new OrgDateTime(note.getCreatedAt(), false);
+                    note.getHead().addProperty(createdAtPropertyName, time.toString());
                 }
+
+                out.write(parserWriter.whiteSpacedHead(
+                        note.getHead(),
+                        note.getPosition().getLevel(),
+                        book.getOrgFileSettings().isIndented()));
             });
 
         } finally {
@@ -290,7 +298,7 @@ public class Shelf {
         return NotesClient.getNote(mContext, id);
     }
 
-    public List<OrgProperty> getNoteProperties(long id) {
+    public OrgProperties getNoteProperties(long id) {
         return NotesClient.getNoteProperties(mContext, id);
     }
 
@@ -306,10 +314,22 @@ public class Shelf {
     }
 
     public Note createNote(Note note, NotePlace target) {
+
+        long time = System.currentTimeMillis();
+
+        // Set created-at time
+        note.setCreatedAt(time);
+
+        // Set created-at property
+        if (AppPreferences.createdAt(mContext)) {
+            String propName = AppPreferences.createdAtProperty(mContext);
+            note.getHead().addProperty(propName, new OrgDateTime(time, false).toString());
+        }
+
         /* Create new note. */
         Note insertedNote = NotesClient.create(mContext, note, target);
 
-        BooksClient.setModifiedTime(mContext, note.getPosition().getBookId(), System.currentTimeMillis());
+        BooksClient.setModifiedTime(mContext, note.getPosition().getBookId(), time);
 
         notifyDataChanged(mContext);
         syncOnNoteCreate();
@@ -836,20 +856,16 @@ public class Shelf {
         mContext.startService(intent);
     }
 
-    public interface ReParsingNotesListener {
-        void noteParsed(int current, int total, String msg);
-    }
-
     /**
      * Using current states configuration, update states and titles for all notes.
      * Keywords that were part of the title can become states and vice versa.
-     * Affected books' mtime will *not* be updated.
      *
-     * @return Number of modified notes.
-     */
-    public int reParseNotesStateAndTitles(ReParsingNotesListener listener) throws IOException {
-        int modifiedNotesCount = 0;
-
+     * Also updates created-at in the database for all notes based on the created property keyword,
+     * in case time doesn't already exist.
+     *
+     * Affected books' mtime will *not* be updated.
+     **/
+    public void reParseNotesStateAndTitles() throws IOException {
         ArrayList<ContentProviderOperation> ops = new ArrayList<>();
 
         /* Get all notes. */
@@ -857,23 +873,13 @@ public class Shelf {
                 ProviderContract.Notes.ContentUri.notes(), null, null, null, null);
 
         try {
-            int current = 0;
-            int total = 0;
-
             OrgParser.Builder parserBuilder = new OrgParser.Builder()
                     .setTodoKeywords(AppPreferences.todoKeywordsSet(mContext))
                     .setDoneKeywords(AppPreferences.doneKeywordsSet(mContext));
 
             OrgParserWriter parserWriter = new OrgParserWriter();
 
-            /* Get total number of notes for displaying the stats. */
-            if (cursor.moveToFirst()) {
-                total = cursor.getCount();
-            }
-
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                current++;
-
                 /* Get current heading string. */
                 Note note = NotesClient.fromCursor(cursor);
 
@@ -899,36 +905,29 @@ public class Shelf {
 
                 OrgHead newHead = file.getHeadsInList().get(0).getHead();
 
+                ContentValues values = new ContentValues();
+
                 /* Update if state, title or priority are different. */
                 if (! TextUtils.equals(newHead.getState(), head.getState()) ||
                     ! TextUtils.equals(newHead.getTitle(), head.getTitle()) ||
                     ! TextUtils.equals(newHead.getPriority(), head.getPriority())) {
 
-                    modifiedNotesCount++;
-
-                    ContentValues values = new ContentValues();
                     values.put(ProviderContract.Notes.UpdateParam.TITLE, newHead.getTitle());
                     values.put(ProviderContract.Notes.UpdateParam.STATE, newHead.getState());
                     values.put(ProviderContract.Notes.UpdateParam.PRIORITY, newHead.getPriority());
+                }
 
+                if (values.size() > 0) {
                     ops.add(ContentProviderOperation
                             .newUpdate(ContentUris.withAppendedId(ProviderContract.Notes.ContentUri.notes(), cursor.getLong(0)))
                             .withValues(values)
                             .build()
                     );
                 }
-
-                if (listener != null) {
-                    listener.noteParsed(current, total, "Updating notes...");
-                }
             }
 
         } finally {
             cursor.close();
-        }
-
-        if (listener != null) {
-            listener.noteParsed(0, 0, "Updating database...");
         }
 
         /*
@@ -942,8 +941,128 @@ public class Shelf {
         }
 
         notifyDataChanged(mContext);
+    }
 
-        return modifiedNotesCount;
+    /**
+     * Syncs created-at time and property, using lower value if both exist.
+     */
+    public void syncCreatedAtTimeWithProperty() throws IOException {
+        boolean useCreatedAtProperty = AppPreferences.createdAt(mContext);
+        String createdAtPropName = AppPreferences.createdAtProperty(mContext);
+
+        if (!useCreatedAtProperty) {
+            return;
+        }
+
+        ArrayList<ContentProviderOperation> ops = new ArrayList<>();
+
+        // If new property is added to the note below, book has to be marked as modified.
+        Set<Long> bookIds = new HashSet<>();
+
+        /*
+         * Get all notes.
+         * This is slow and only notes that have either created-at time or created-at property
+         * are actually needed. But since this syncing (triggered on preference change) is done
+         * so rarely, we don't bother.
+         */
+        try (Cursor cursor = mContext.getContentResolver().query(
+                ProviderContract.Notes.ContentUri.notes(), null, null, null, null)) {
+
+            if (cursor != null) {
+
+                for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                    /* Get current heading string. */
+                    Note note = NotesClient.fromCursor(cursor);
+
+                    /* Skip root node. */
+                    if (note.getPosition().getLevel() == 0) {
+                        continue;
+                    }
+
+                    long dbCreatedAt = note.getCreatedAt();
+
+                    OrgProperties properties = NotesClient.getNoteProperties(mContext, NotesClient.idFromCursor(cursor));
+                    String dbPropValue = properties.get(createdAtPropName);
+                    OrgDateTime dbPropertyValue = OrgDateTime.parseOrNull(dbPropValue);
+
+                    // Compare dbCreatedAt and dbPropertyValue
+                    if (dbCreatedAt > 0 && dbPropertyValue == null) {
+                        addOpUpdateProperty(ops, note, createdAtPropName, dbCreatedAt, dbPropValue, bookIds);
+
+                    } else if (dbCreatedAt > 0 && dbPropertyValue != null) {
+                        // Use older created-at
+                        if (dbPropertyValue.getCalendar().getTimeInMillis() < dbCreatedAt) {
+                            addOpUpdateCreatedAt(ops, note, dbPropertyValue, note.getCreatedAt(), bookIds);
+                        } else {
+                            addOpUpdateProperty(ops, note, createdAtPropName, dbCreatedAt, dbPropValue, bookIds);
+                        }
+
+                        // Or prefer property and set created-at time?
+                        // addOpUpdateCreatedAt(ops, note.getId(), dbPropertyValue, note.getCreatedAt());
+
+                    } else if (dbCreatedAt == 0 && dbPropertyValue != null) {
+                        addOpUpdateCreatedAt(ops, note, dbPropertyValue, note.getCreatedAt(), bookIds);
+
+                    } // else: Neither created-at time nor property are set
+                }
+            }
+        }
+
+        long time = System.currentTimeMillis();
+        for (long bookId: bookIds) {
+            BooksClient.setModifiedTime(mContext, bookId, time);
+        }
+
+        /*
+         * Apply batch.
+         */
+        try {
+            mContext.getContentResolver().applyBatch(ProviderContract.AUTHORITY, ops);
+        } catch (RemoteException | OperationApplicationException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+        notifyDataChanged(mContext);
+        syncOnNoteUpdate();
+    }
+
+    private void addOpUpdateCreatedAt(ArrayList<ContentProviderOperation> ops, Note note, OrgDateTime dbPropertyValue, long currValue, Set<Long> bookIds) {
+        long value = dbPropertyValue.getCalendar().getTimeInMillis();
+
+        if (value != currValue) {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Updating created-at time", note.getId(), currValue, value);
+
+            ops.add(ContentProviderOperation
+                    .newUpdate(ProviderContract.Notes.ContentUri.notesId(note.getId()))
+                    .withValue(DbNote.CREATED_AT, value)
+                    .build());
+
+            bookIds.add(note.getPosition().getBookId());
+
+        } else {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Skipping update", note.getId(), value);
+        }
+    }
+
+    private void addOpUpdateProperty(ArrayList<ContentProviderOperation> ops, Note note, String createdAtPropName, long dbCreatedAt, String currPropValue, Set<Long> bookIds) {
+        String value = new OrgDateTime(dbCreatedAt, false).toString();
+
+        if (! value.equals(currPropValue)) {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Updating property", note.getId(), createdAtPropName, currPropValue, value);
+
+            ops.add(ContentProviderOperation
+                    .newUpdate(ProviderContract.NoteProperties.ContentUri.notesIdProperties(note.getId()))
+                    .withValue(createdAtPropName, value)
+                    .build());
+
+            // Should we remove the old property?
+
+            bookIds.add(note.getPosition().getBookId());
+
+        } else {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Skipping update", note.getId(), createdAtPropName, value);
+        }
     }
 
     public void openFirstNoteWithProperty(String propName, String propValue) {

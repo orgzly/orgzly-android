@@ -5,6 +5,7 @@ import android.widget.DatePicker;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.MainActivity;
 
 import org.junit.Before;
@@ -30,6 +31,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
@@ -68,6 +70,9 @@ public class BookTest extends OrgzlyTest {
                 "** Note #12.\n" +
                 "** Note #13.\n" +
                 "** Note #14.\n" +
+                ":PROPERTIES:\n" +
+                ":CREATED: [2017-01-01]\n" +
+                ":END:\n" +
                 "** Note #15.\n" +
                 "** Note #16.\n" +
                 "** Note #17.\n" +
@@ -352,17 +357,11 @@ public class BookTest extends OrgzlyTest {
     }
 
     @Test
-    public void testNewNoteWithCreatedTimestamp() {
-        /* Enable "Created at" in settings. */
-        onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CREATED_AT);
-        pressBack();
-        pressBack();
-
+    public void testNewNoteHasCreatedAtPropertyAfterSaving() {
+        AppPreferences.createdAt(context, true);
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceText("Title"));
         onView(withId(R.id.done)).perform(click());
-
         onListItem(41).perform(click());
         onView(withId(R.id.name)).check(matches(allOf(isDisplayed(), withText(R.string.created_property_name))));
     }

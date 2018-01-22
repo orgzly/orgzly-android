@@ -18,10 +18,12 @@ class SqliteQueryBuilder(val context: Context) {
 
     private var hasScheduledCondition = false
     private var hasDeadlineCondition = false
+    private var hasCreatedCondition = false
 
     fun build(query: Query): SqlQuery {
         hasScheduledCondition = false
         hasDeadlineCondition = false
+        hasCreatedCondition = false
 
         where = toString(query.condition, true)
 
@@ -52,6 +54,10 @@ class SqliteQueryBuilder(val context: Context) {
                 o.add(DbNoteView.DEADLINE_TIME_START_OF_DAY)
                 o.add(DbNoteView.DEADLINE_TIME_HOUR + " IS NULL")
                 o.add(DbNoteView.DEADLINE_TIME_TIMESTAMP)
+            }
+
+            if (hasCreatedCondition) {
+                o.add(DbNoteView.CREATED_AT + " DESC")
             }
 
         } else {
@@ -87,6 +93,17 @@ class SqliteQueryBuilder(val context: Context) {
                             o.add(DbNoteView.DEADLINE_TIME_START_OF_DAY)
                             o.add(DbNoteView.DEADLINE_TIME_HOUR + " IS NULL")
                             o.add(DbNoteView.DEADLINE_TIME_TIMESTAMP)
+                        }
+                    }
+
+                    is SortOrder.Created -> {
+                        o.add(DbNoteView.CREATED_AT + " IS NULL")
+
+                        if (order.desc) {
+                            o.add(DbNoteView.CREATED_AT + " DESC")
+
+                        } else {
+                            o.add(DbNoteView.CREATED_AT)
                         }
                     }
 
@@ -203,6 +220,11 @@ class SqliteQueryBuilder(val context: Context) {
             is Condition.Deadline -> {
                 hasDeadlineCondition = true
                 toInterval(DbNoteView.DEADLINE_TIME_TIMESTAMP, expr.interval, expr.relation)
+            }
+
+            is Condition.Created -> {
+                hasCreatedCondition = true
+                toInterval(DbNoteView.CREATED_AT, expr.interval, expr.relation)
             }
 
             is Condition.Closed -> {

@@ -22,7 +22,7 @@ public class SettingsTest extends OrgzlyTest {
         shelfTestUtils.setupBook("booky", "* TODO [#A] Title");
 
         AppPreferences.states(context, "TODO|DONE");
-        shelf.reParseNotesStateAndTitles(null);
+        shelf.reParseNotesStateAndTitles();
 
         note = shelf.getNote(1);
         assertEquals("TODO", note.getHead().getState());
@@ -30,7 +30,7 @@ public class SettingsTest extends OrgzlyTest {
         assertEquals("Title", note.getHead().getTitle());
 
         AppPreferences.states(context, "");
-        shelf.reParseNotesStateAndTitles(null);
+        shelf.reParseNotesStateAndTitles();
 
         note = shelf.getNote(1);
         assertNull(note.getHead().getState());
@@ -38,7 +38,7 @@ public class SettingsTest extends OrgzlyTest {
         assertEquals("TODO [#A] Title", note.getHead().getTitle());
 
         AppPreferences.states(context, "TODO|DONE");
-        shelf.reParseNotesStateAndTitles(null);
+        shelf.reParseNotesStateAndTitles();
 
         note = shelf.getNote(1);
         assertEquals("TODO", note.getHead().getState());

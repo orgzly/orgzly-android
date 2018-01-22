@@ -4,6 +4,8 @@ public interface DbNoteColumns {
     String BOOK_ID = "book_id";
     String POSITION = "position";
 
+    String CREATED_AT = "created_at";
+
     String LEVEL = "level";
     String TITLE = "title";
     String TAGS = "tags";

@@ -1,12 +1,15 @@
 package com.orgzly.android.provider;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.text.TextUtils;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.android.NotePosition;
+import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.models.DbNote;
 import com.orgzly.android.provider.models.DbNoteAncestor;
 import com.orgzly.android.provider.models.DbNoteProperty;
@@ -57,13 +60,14 @@ public class DatabaseMigration {
     private static final int DB_VER_15 = 144;
     private static final int DB_VER_16 = 145;
     private static final int DB_VER_17 = 146;
+    private static final int DB_VER_18 = 147;
 
-    static final int DB_VER_CURRENT = DB_VER_17;
+    static final int DB_VER_CURRENT = DB_VER_18;
 
     /**
      * Start from the old version and go through all changes. No breaks.
      */
-    public static void upgrade(SQLiteDatabase db, int oldVersion, Runnable notifyUserIfSlow) {
+    public static void upgrade(SQLiteDatabase db, Context context, int oldVersion, Runnable notifyUserIfSlow) {
 
         /* Simulate slow upgrade. */
         // notifyUserIfSlow.run();
@@ -134,11 +138,60 @@ public class DatabaseMigration {
             case DB_VER_13: /* Views-only updates (notes count) */
             case DB_VER_14: /* Views-only updates */
             case DB_VER_15: /* Views-only updates */
-
             case DB_VER_16:
                 insertAgendaSavedSearch(db);
                 // CLOSED_TIME_TIMESTAMP added to DbNoteView
 
+            case DB_VER_17:
+                if (notifyUserIfSlow != null) {
+                    notifyUserIfSlow.run();
+                    notifyUserIfSlow = null;
+                }
+                addAndSetCreatedAt(db, context);
+        }
+    }
+
+    private static void addAndSetCreatedAt(SQLiteDatabase db, Context context) {
+        db.execSQL("ALTER TABLE notes ADD COLUMN created_at INTEGER DEFAULT 0");
+
+        if (!AppPreferences.createdAt(context)) {
+            return;
+        }
+
+        String createdAtPropName = AppPreferences.createdAtProperty(context);
+
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder.setTables("note_properties"
+                               + " JOIN notes ON (notes._id = note_properties.note_id)"
+                               + " JOIN properties ON (properties._id = note_properties.property_id)"
+                               + " JOIN property_names ON (property_names._id = properties.name_id)"
+                               + " JOIN property_values ON (property_values._id = properties.value_id)");
+        queryBuilder.setDistinct(true);
+
+        try (Cursor cursor = queryBuilder.query(
+                db,
+                new String[] {
+                        "notes._id AS note_id",
+                        "property_values.value AS value"
+                },
+                "note_id IS NOT NULL AND name IS NOT NULL AND value IS NOT NULL AND name = ?",
+                new String[] { createdAtPropName },
+                null,
+                null,
+                null)) {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                long noteId = cursor.getLong(0);
+                String propValue = cursor.getString(1);
+
+                OrgDateTime dateTime = OrgDateTime.parseOrNull(propValue);
+
+                if (dateTime != null) {
+                    long millis = dateTime.getCalendar().getTimeInMillis();
+                    ContentValues values = new ContentValues();
+                    values.put("created_at", millis);
+                    db.update("notes", values, "_id = " + noteId, null);
+                }
+            }
         }
     }
 

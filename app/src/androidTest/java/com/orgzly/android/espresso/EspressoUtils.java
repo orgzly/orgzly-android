@@ -42,11 +42,12 @@ class EspressoUtils {
     static final int[] SETTINGS_DEFAULT_PRIORITY = { 1, 17 };
     static final int[] SETTINGS_LOWEST_PRIORITY = { 1, 18 };
     static final int[] SETTINGS_NEW_NOTE_STATE = { 1, 20 };
-    static final int[] SETTINGS_CREATED_AT = { 1, 22 };
 
     static final int[] SETTINGS_REPOS = { 4, 0 };
     static final int[] SETTINGS_AUTO_SYNC_TOGGLE = { 4, 1, 1 };
     static final int[] SETTINGS_AUTO_SYNC_NOTE_CREATED = { 4, 1, 2 };
+    static final int[] SETTINGS_CREATED_AT = { 4, 3 };
+    static final int[] SETTINGS_CREATED_AT_PROPERTY = { 4, 4 };
 
     static final int[] IMPORT_GETTING_STARTED = { 5, 0 };
     static final int[] SETTINGS_CLEAR_DATABASE = { 5, 1 };

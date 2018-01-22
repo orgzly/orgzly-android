@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+
 import com.orgzly.BuildConfig;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotePosition;
@@ -58,7 +59,7 @@ import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.EncodingDetect;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.org.OrgFile;
-import com.orgzly.org.OrgProperty;
+import com.orgzly.org.OrgProperties;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgRange;
 import com.orgzly.org.parser.OrgNestedSetParserListener;
@@ -977,6 +978,30 @@ public class Provider extends ContentProvider {
 
                 return result;
 
+            case ProviderUris.NOTES_ID_PROPERTIES:
+                result = 0;
+                noteId = Long.parseLong(uri.getPathSegments().get(1));
+
+                for (String propName: contentValues.keySet()) {
+                    String propValue = contentValues.getAsString(propName);
+
+                    long nameId = DbPropertyName.getOrInsert(db, propName);
+                    long valueId = DbPropertyValue.getOrInsert(db, propValue);
+
+                    // Delete note properties that match the name
+                    String sql = "DELETE FROM note_properties WHERE note_id = " + noteId + " AND property_id IN (SELECT _id FROM properties WHERE name_id = " + nameId + ")"; // TODO
+                    db.execSQL(sql);
+
+                    int nextPosition = getLastPropertyPositionForNote(db, noteId) + 1;
+
+                    long propertyId = DbProperty.getOrInsert(db, nameId, valueId);
+                    DbNoteProperty.getOrInsert(db, noteId, nextPosition, propertyId);
+
+                    result++;
+                }
+
+                return result;
+
             case ProviderUris.CUT:
                 return ActionRunner.run(db, new CutNotesAction(contentValues));
 
@@ -1026,6 +1051,23 @@ public class Provider extends ContentProvider {
         return db.update(table, contentValues, selection, selectionArgs);
     }
 
+    private int getLastPropertyPositionForNote(SQLiteDatabase db, long noteId) {
+        try (Cursor cursor = db.query(
+                DbNoteProperty.TABLE,
+                new String[]{"MAX(" + DbNoteProperty.POSITION + ")"},
+                DbNoteProperty.NOTE_ID + "=" + noteId,
+                null,
+                null,
+                null,
+                null)) {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            } else {
+                return 0;
+            }
+        }
+    }
+
 
     /**
      * @param ids Note ids separated with comma
@@ -1058,6 +1100,8 @@ public class Provider extends ContentProvider {
         } else {
             notesUpdated = setOtherStateForNotes(db, targetState, notesSelection, selectionArgs);
         }
+
+        /* Update modification time. */
 
         return notesUpdated;
     }
@@ -1319,24 +1363,24 @@ public class Provider extends ContentProvider {
         /* Delete all notes from book. TODO: Delete all other references to this book ID */
         db.delete(DbNote.TABLE, DbNote.BOOK_ID + "=" + bookId, null);
 
-        final Map<String, Long> propertyNames = new HashMap<>();
+        final Map<String, Long> propNameDbIds = new HashMap<>();
         {
             Cursor cursor = db.query(DbPropertyName.TABLE, new String[] {DbPropertyName._ID, DbPropertyName.NAME}, null, null, null, null, null);
             try {
                 for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                    propertyNames.put(cursor.getString(1), cursor.getLong(0));
+                    propNameDbIds.put(cursor.getString(1), cursor.getLong(0));
                 }
             } finally {
                 cursor.close();
             }
         }
 
-        final Map<String, Long> propertyValues = new HashMap<>();
+        final Map<String, Long> propValueDbIds = new HashMap<>();
         {
             Cursor cursor = db.query(DbPropertyValue.TABLE, new String[] {DbPropertyValue._ID, DbPropertyValue.VALUE}, null, null, null, null, null);
             try {
                 for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                    propertyValues.put(cursor.getString(1), cursor.getLong(0));
+                    propValueDbIds.put(cursor.getString(1), cursor.getLong(0));
                 }
             } finally {
                 cursor.close();
@@ -1352,6 +1396,10 @@ public class Provider extends ContentProvider {
 
         /* Set of ids for which parent is already set. */
         final Set<Long> notesWithParentSet = new HashSet<>();
+
+
+        boolean useCreatedAtProperty = AppPreferences.createdAt(getContext());
+        String createdAtProperty = AppPreferences.createdAtProperty(getContext());
 
         /* Open reader. */
         Reader reader = new BufferedReader(inReader);
@@ -1380,24 +1428,33 @@ public class Provider extends ContentProvider {
 
                             ContentValues values = new ContentValues();
 
+                            // Update ContentValues
                             DbNote.toContentValues(values, position);
+                            if (useCreatedAtProperty) {
+                                DbNote.toContentValues(
+                                        values, node.getHead().getProperties(), createdAtProperty);
+                            }
                             DbNote.toContentValues(db, values, node.getHead());
 
                             long noteId = db.insertOrThrow(DbNote.TABLE, null, values);
 
                             /* Insert note's properties. */
                             int pos = 1;
-                            for (OrgProperty property: node.getHead().getProperties()) {
-                                Long nameId = propertyNames.get(property.getName());
+                            OrgProperties noteProperties = node.getHead().getProperties();
+                            for (String propName : noteProperties.keySet()) {
+
+                                String propValue = noteProperties.get(propName);
+
+                                Long nameId = propNameDbIds.get(propName);
                                 if (nameId == null) {
-                                    nameId = DbPropertyName.getOrInsert(db, property.getName());
-                                    propertyNames.put(property.getName(), nameId);
+                                    nameId = DbPropertyName.getOrInsert(db, propName);
+                                    propNameDbIds.put(propName, nameId);
                                 }
 
-                                Long valueId = propertyValues.get(property.getValue());
+                                Long valueId = propValueDbIds.get(propValue);
                                 if (valueId == null) {
-                                    valueId = DbPropertyValue.getOrInsert(db, property.getValue());
-                                    propertyValues.put(property.getValue(), valueId);
+                                    valueId = DbPropertyValue.getOrInsert(db, propValue);
+                                    propValueDbIds.put(propValue, valueId);
                                 }
 
                                 long propertyId = DbProperty.getOrInsert(db, nameId, valueId);

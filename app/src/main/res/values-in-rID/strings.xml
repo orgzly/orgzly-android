@@ -126,8 +126,6 @@
   <string name="repo_dropbox_button_linked">Lepaskan Hubungan dari DropBox</string>
   <string name="fragment_settings_title">Setelan</string>
   <string name="updating_notes">Memperbarui catatan…</string>
-  <string name="todo_keywords_configuration_changed_dialog_title">Kata kunci dimodifikasi</string>
-  <string name="todo_keywords_configuration_changed_dialog_message">Segarkan catatan untuk mencerminkan perubahan?</string>
   <string name="failure">Uh oh</string>
   <string name="no_notes_found_after_search">Pencarian Anda tidak sesuai dengan catatan</string>
   <string name="today">Hari ini</string>

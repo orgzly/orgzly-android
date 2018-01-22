@@ -40,7 +40,7 @@ open class DottedQueryParser : QueryParser() {
                 Condition.HasOwnTag(unQuote(match.groupValues[1]))
             }),
 
-            ConditionMatch("""^([sdc])(?:\.(eq|ne|lt|le|gt|ge))?\.(.+)""", { match ->
+            ConditionMatch("""^(s|d|c|cr)(?:\.(eq|ne|lt|le|gt|ge))?\.(.+)""", { match ->
                 val timeTypeMatch = match.groupValues[1]
                 val relationMatch = match.groupValues[2]
                 val intervalMatch = match.groupValues[3]
@@ -61,6 +61,7 @@ open class DottedQueryParser : QueryParser() {
                     when (timeTypeMatch) {
                         "d"  -> Condition.Deadline(interval, relation)
                         "c"  -> Condition.Closed(interval, relation)
+                        "cr" -> Condition.Created(interval, relation)
                         else -> Condition.Scheduled(interval, relation)
                     }
                 } else {
@@ -78,6 +79,9 @@ open class DottedQueryParser : QueryParser() {
             }),
             SortOrderMatch("""^(\.)?o\.(?:closed|close|c)$""", { match ->
                 SortOrder.Closed(match.groupValues[1].isNotEmpty())
+            }),
+            SortOrderMatch("""^(\.)?o\.(?:created|cr)$""", { match ->
+                SortOrder.Created(match.groupValues[1].isNotEmpty())
             }),
             SortOrderMatch("""^(\.)?o\.(?:priority|prio|pri|p)$""", { match ->
                 SortOrder.Priority(match.groupValues[1].isNotEmpty())

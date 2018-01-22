@@ -30,8 +30,9 @@ import android.preference.PreferenceManager
  */
 abstract class CommonActivity : AppCompatActivity() {
 
-    /* Dialogs and Snackbars. */
     private var snackbar: Snackbar? = null
+
+    /* Dialogs to be dismissed onPause. */
     private var whatsNewDialog: AlertDialog? = null
     private var promptDialog: AlertDialog? = null
     private var progressDialog: ProgressDialog? = null
@@ -63,14 +64,14 @@ abstract class CommonActivity : AppCompatActivity() {
                 AppIntent.ACTION_DB_CLEARED ->
                     clearFragmentBackstack = true
 
-                AppIntent.ACTION_REPARSING_NOTES_STARTED -> {
+                AppIntent.ACTION_UPDATING_NOTES_STARTED -> {
                     progressDialog = ProgressDialog(this@CommonActivity)
                     progressDialog?.setMessage(resources.getString(R.string.updating_notes))
                     progressDialog?.isIndeterminate = true
                     progressDialog?.show()
                 }
 
-                AppIntent.ACTION_REPARSING_NOTES_ENDED ->
+                AppIntent.ACTION_UPDATING_NOTES_ENDED ->
                     progressDialog?.dismiss()
 
                 AppIntent.ACTION_DISPLAY_MESSAGE ->
@@ -169,8 +170,8 @@ abstract class CommonActivity : AppCompatActivity() {
         intentFilter.addAction(AppIntent.ACTION_DB_UPGRADE_ENDED)
         intentFilter.addAction(AppIntent.ACTION_BOOK_IMPORTED)
         intentFilter.addAction(AppIntent.ACTION_DB_CLEARED)
-        intentFilter.addAction(AppIntent.ACTION_REPARSING_NOTES_STARTED)
-        intentFilter.addAction(AppIntent.ACTION_REPARSING_NOTES_ENDED)
+        intentFilter.addAction(AppIntent.ACTION_UPDATING_NOTES_STARTED)
+        intentFilter.addAction(AppIntent.ACTION_UPDATING_NOTES_ENDED)
         intentFilter.addAction(AppIntent.ACTION_DISPLAY_MESSAGE)
         LocalBroadcastManager.getInstance(this).registerReceiver(actionReceiver, intentFilter)
 
@@ -200,6 +201,11 @@ abstract class CommonActivity : AppCompatActivity() {
         promptDialog?.let {
             it.dismiss()
             promptDialog = null
+        }
+
+        progressDialog?.let {
+            it.dismiss()
+            progressDialog = null
         }
 
     }

@@ -37,11 +37,11 @@ public class SettingsChangeTest extends OrgzlyTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        shelfTestUtils.setupBook("book-a",
+        shelfTestUtils.setupBook(
+                "book-a",
                 "* [#B] Note [a-1]\n" +
-                "SCHEDULED: <2014-01-01>\n" +
+                "SCHEDULED: <2018-01-01>\n" +
                 "Content for [a-1]\n" +
-
                 "* Note [a-2]\n" +
                 "SCHEDULED: <2014-01-01>\n"
         );
@@ -74,7 +74,6 @@ public class SettingsChangeTest extends OrgzlyTest {
         onListItem(index).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
         onListItem(index + 1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
     }
-
 
     @Test
     public void testDisplayedContentInBook() {

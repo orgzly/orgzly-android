@@ -33,7 +33,14 @@ class ActionService : IntentService(TAG) {
                 importGettingStartedNotebook()
 
             AppIntent.ACTION_REPARSE_NOTES ->
-                reparseNotes()
+                updatingNotesProgress {
+                    shelf.reParseNotesStateAndTitles()
+                }
+
+            AppIntent.ACTION_SYNC_CREATED_AT_WITH_PROPERTY ->
+                updatingNotesProgress {
+                    shelf.syncCreatedAtTimeWithProperty()
+                }
 
             AppIntent.ACTION_CLEAR_DATABASE ->
                 clearDatabase()
@@ -56,10 +63,10 @@ class ActionService : IntentService(TAG) {
         localBroadcastManager.sendBroadcast(intent)
     }
 
-    private fun reparseNotes() {
-        localBroadcastManager.sendBroadcast(Intent(AppIntent.ACTION_REPARSING_NOTES_STARTED))
-        shelf.reParseNotesStateAndTitles(null)
-        localBroadcastManager.sendBroadcast(Intent(AppIntent.ACTION_REPARSING_NOTES_ENDED))
+    private fun updatingNotesProgress(f: () -> Unit) {
+        localBroadcastManager.sendBroadcast(Intent(AppIntent.ACTION_UPDATING_NOTES_STARTED))
+        f()
+        localBroadcastManager.sendBroadcast(Intent(AppIntent.ACTION_UPDATING_NOTES_ENDED))
     }
 
     private fun importGettingStartedNotebook() {

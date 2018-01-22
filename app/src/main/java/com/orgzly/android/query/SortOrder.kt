@@ -9,4 +9,5 @@ sealed class SortOrder {
     data class Closed(override val desc: Boolean = false) : SortOrder()
     data class Priority(override val desc: Boolean = false) : SortOrder()
     data class State(override val desc: Boolean = false) : SortOrder()
+    data class Created(override val desc: Boolean = false) : SortOrder()
 }

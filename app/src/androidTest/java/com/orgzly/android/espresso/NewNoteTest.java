@@ -26,6 +26,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
@@ -52,26 +53,6 @@ public class NewNoteTest extends OrgzlyTest {
 
         onListItem(0)
                 .onChildView(withId(R.id.item_head_title))
-                .check(matches(allOf(withText("new note created by test"), isDisplayed())));
-    }
-
-    @Test
-    public void testNewNote() {
-        shelfTestUtils.setupBook("booky", "Booky Preface\n* 1\n** 2\n*** 3\n*** 4\n** 5\n* 6");
-        activityRule.launchActivity(null);
-        onView(allOf(withText("booky"), isDisplayed())).perform(click());
-
-        /* Enable "Created at" in settings. */
-        onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CREATED_AT);
-        pressBack();
-        pressBack();
-
-        onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title))
-                .perform(replaceText("new note created by test"), closeSoftKeyboardWithDelay());
-        onView(withId(R.id.done)).perform(click());
-        onListItem(7).onChildView(withId(R.id.item_head_title))
                 .check(matches(allOf(withText("new note created by test"), isDisplayed())));
     }
 

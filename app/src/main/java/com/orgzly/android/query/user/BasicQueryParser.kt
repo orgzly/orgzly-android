@@ -39,8 +39,7 @@ open class BasicQueryParser : QueryParser() {
                 Condition.HasOwnTag(unQuote(match.groupValues[1]))
             }),
 
-            // scheduled:<3d
-            ConditionMatch("""^(scheduled|deadline|closed):(?:(!=|<|<=|>|>=))?(.+)""", { match ->
+            ConditionMatch("""^(scheduled|deadline|closed|created):(?:(!=|<|<=|>|>=))?(.+)""", { match ->
                 val timeTypeMatch = match.groupValues[1]
                 val relationMatch = match.groupValues[2]
                 val intervalMatch = match.groupValues[3]
@@ -60,6 +59,7 @@ open class BasicQueryParser : QueryParser() {
                     when (timeTypeMatch) {
                         "deadline" -> Condition.Deadline(interval, relation)
                         "closed"   -> Condition.Closed(interval, relation)
+                        "created"  -> Condition.Created(interval, relation)
                         else       -> Condition.Scheduled(interval, relation)
                     }
                 } else {
@@ -78,6 +78,9 @@ open class BasicQueryParser : QueryParser() {
             }),
             SortOrderMatch("""^(-)?sort-order:(?:closed|close)$""", { match ->
                 SortOrder.Closed(match.groupValues[1].isNotEmpty())
+            }),
+            SortOrderMatch("""^(-)?sort-order:(?:created)$""", { matcher ->
+                SortOrder.Created(matcher.groupValues[1].isNotEmpty())
             }),
             SortOrderMatch("""^(-)?sort-order:(?:priority|prio)$""", { match ->
                 SortOrder.Priority(match.groupValues[1].isNotEmpty())

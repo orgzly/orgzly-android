@@ -17,13 +17,13 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
         displayWhatsNewDialog()
     }
 
-    override fun onStateKeywordsPreferenceChanged() {
+    override fun onNotesUpdateRequest(action: String) {
         AlertDialog.Builder(this)
-                .setTitle(R.string.todo_keywords_configuration_changed_dialog_title)
-                .setMessage(R.string.todo_keywords_configuration_changed_dialog_message)
+                .setTitle(R.string.notes_update_needed_dialog_title)
+                .setMessage(R.string.notes_update_needed_dialog_message)
                 .setPositiveButton(R.string.yes) { _, _ ->
                     val intent = Intent(this, ActionService::class.java)
-                    intent.action = AppIntent.ACTION_REPARSE_NOTES
+                    intent.action = action
                     startService(intent)
                 }
                 .setNegativeButton(R.string.not_now, null)

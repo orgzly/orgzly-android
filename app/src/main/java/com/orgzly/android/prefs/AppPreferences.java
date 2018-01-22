@@ -2,9 +2,9 @@ package com.orgzly.android.prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import com.orgzly.R;
 import com.orgzly.android.App;
-import com.orgzly.android.ui.settings.SettingsFragment;
 import com.orgzly.org.OrgStatesWorkflow;
 
 import java.util.Arrays;
@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
-import static android.preference.PreferenceManager.setDefaultValues;
 
 
 /**
@@ -190,10 +189,20 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_value_is_created_at_added));
     }
 
+    public static void createdAt(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_is_created_at_added);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
+
     public static String createdAtProperty(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_created_at_property),
                 context.getResources().getString(R.string.pref_default_created_at_property));
+    }
+
+    public static void createdAtProperty(Context context, String value) {
+        String key = context.getResources().getString(R.string.pref_key_created_at_property);
+        getDefaultSharedPreferences(context).edit().putString(key, value).apply();
     }
 
     public static String shareNotebook(Context context) {

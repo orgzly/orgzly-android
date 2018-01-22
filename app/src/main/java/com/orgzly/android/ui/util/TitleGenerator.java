@@ -9,10 +9,12 @@ import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+
 import com.orgzly.android.Note;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.util.OrgFormatter;
 import com.orgzly.org.OrgHead;
+import com.orgzly.org.datetime.OrgDateTime;
 
 import java.util.List;
 
@@ -101,9 +103,11 @@ public class TitleGenerator {
             }
         }
 
-        /* Debug folding. */
         if (false) {
-            builder.append("  ").append(note.toString());
+            String times = note.getCreatedAt() > 0
+                    ? new OrgDateTime(note.getCreatedAt(), false).toString()
+                    : "N/A";
+            builder.append("  ").append(times);
             hasPostTitleText = true;
         }
 

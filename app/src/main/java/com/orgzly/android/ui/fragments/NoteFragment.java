@@ -40,29 +40,28 @@ import com.orgzly.android.BookUtils;
 import com.orgzly.android.Note;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.CommonActivity;
-import com.orgzly.android.ui.NotePrioritySpinner;
-import com.orgzly.android.ui.Place;
-import com.orgzly.android.ui.NoteStateSpinner;
+import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.NotePlace;
+import com.orgzly.android.ui.NotePrioritySpinner;
+import com.orgzly.android.ui.NoteStateSpinner;
+import com.orgzly.android.ui.Place;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
-import com.orgzly.android.util.OrgFormatter;
-import com.orgzly.android.util.UserTimeFormatter;
-import com.orgzly.android.util.SpaceTokenizer;
 import com.orgzly.android.util.MiscUtils;
-import com.orgzly.org.OrgProperty;
+import com.orgzly.android.util.OrgFormatter;
+import com.orgzly.android.util.SpaceTokenizer;
+import com.orgzly.android.util.UserTimeFormatter;
+import com.orgzly.org.OrgHead;
+import com.orgzly.org.OrgProperties;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgRange;
-import com.orgzly.org.OrgHead;
-import com.orgzly.org.utils.StateChangeLogic;
 import com.orgzly.org.parser.OrgParserWriter;
+import com.orgzly.org.utils.StateChangeLogic;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
 /**
@@ -404,14 +403,13 @@ public class NoteFragment extends Fragment
             outState.putString(ARG_CURRENT_CLOSED, head.getClosed().toString());
         }
 
-        /* Store properties as an array of strings: name1 value1 name2 value2 ... */
+        /* Store properties as an array of strings.
+         *
+         *     name1 value1 name2 value2
+         */
         if (head.hasProperties()) {
-            ArrayList<String> array = new ArrayList<>();
-            for (OrgProperty property: head.getProperties()) {
-                array.add(property.getName());
-                array.add(property.getValue());
-            }
-            outState.putStringArrayList(ARG_CURRENT_PROPERTIES, array);
+            ArrayList<String> list = MiscUtils.toArrayList(head.getProperties());
+            outState.putStringArrayList(ARG_CURRENT_PROPERTIES, list);
 
         } else {
             outState.remove(ARG_CURRENT_PROPERTIES);
@@ -458,8 +456,10 @@ public class NoteFragment extends Fragment
         head.removeProperties();
         if (savedInstanceState.containsKey(ARG_CURRENT_PROPERTIES)) {
             ArrayList<String> array = savedInstanceState.getStringArrayList(ARG_CURRENT_PROPERTIES);
-            for (int i = 0; i < array.size(); i += 2) {
-                head.addProperty(new OrgProperty(array.get(i), array.get(i + 1)));
+            if (array != null) {
+                for (int i = 0; i < array.size(); i += 2) {
+                    head.addProperty(array.get(i), array.get(i + 1));
+                }
             }
         }
 
@@ -496,8 +496,10 @@ public class NoteFragment extends Fragment
         /* Properties. */
         propertyList.removeAllViews();
         if (head.hasProperties()) {
-            for (OrgProperty property: head.getProperties()) {
-                addPropertyToList(property);
+            OrgProperties properties = head.getProperties();
+            for (String name: properties.keySet()) {
+                String value = properties.get(name);
+                addPropertyToList(name, value);
             }
         }
 
@@ -506,16 +508,16 @@ public class NoteFragment extends Fragment
         bodyView.setText(OrgFormatter.INSTANCE.parse(getContext(), head.getContent()));
     }
 
-    private void addPropertyToList(OrgProperty property) {
+    private void addPropertyToList(String propName, String propValue) {
         final ViewGroup propView = (ViewGroup) View.inflate(getActivity(), R.layout.note_property, null);
 
         final TextView name  = (TextView) propView.findViewById(R.id.name);
         final TextView value = (TextView) propView.findViewById(R.id.value);
         final View delete = propView.findViewById(R.id.delete);
 
-        if (property != null) { // Existing property
-            name.setText(property.getName());
-            value.setText(property.getValue());
+        if (propName != null && propValue != null) { // Existing property
+            name.setText(propName);
+            value.setText(propValue);
 
         } else { // User creating new property
             Activity activity = getActivity();
@@ -524,12 +526,7 @@ public class NoteFragment extends Fragment
             }
         }
 
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                propertyList.removeView(propView);
-            }
-        });
+        delete.setOnClickListener(view -> propertyList.removeView(propView));
 
         propertyList.addView(propView);
     }
@@ -557,7 +554,7 @@ public class NoteFragment extends Fragment
             CharSequence value = ((TextView) property.findViewById(R.id.value)).getText();
 
             if (!TextUtils.isEmpty(name)) { // Ignore property with no name
-                head.addProperty(new OrgProperty(name.toString(), value.toString()));
+                head.addProperty(name.toString(), value.toString());
             }
         }
 
@@ -857,17 +854,7 @@ public class NoteFragment extends Fragment
             head.setTitle(mInitialTitle);
         }
 
-        /* Content. */
-
         StringBuilder content = new StringBuilder();
-
-        /* Prepend content with created-at property. */
-        if (AppPreferences.createdAt(getContext())) {
-            String propertyName = AppPreferences.createdAtProperty(getContext());
-            String time = new OrgDateTime(false).toString(); /* Inactive time. */
-
-            head.addProperty(new OrgProperty(propertyName, time));
-        }
 
         /* Initial content. */
         if (mInitialContent != null) {
@@ -916,8 +903,8 @@ public class NoteFragment extends Fragment
 
             /* New property. */
             case R.id.add_property:
-                /* Add a new property with empty name and value. */
-                addPropertyToList(null);
+                /* Add new property with empty name and value. */
+                addPropertyToList(null, null);
                 break;
         }
 
@@ -1038,19 +1025,12 @@ public class NoteFragment extends Fragment
         new AlertDialog.Builder(getContext())
                 .setTitle(R.string.delete_note)
                 .setMessage(R.string.delete_note_and_all_subnotes)
-                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (mListener != null) {
-                            mListener.onNoteDeleteRequest(mNote);
-                        }
+                .setPositiveButton(R.string.delete, (dialog, which) -> {
+                    if (mListener != null) {
+                        mListener.onNoteDeleteRequest(mNote);
                     }
                 })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> { })
                 .create()
                 .show();
     }

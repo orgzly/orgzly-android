@@ -72,13 +72,9 @@ public class Database extends SQLiteOpenHelper {
         /* Simply drop all views and create them after the upgrade. */
         dropAllViews(db);
 
-        DatabaseMigration.upgrade(db, oldVersion, new Runnable() {
-            @Override
-            public void run() {
-                LocalBroadcastManager.getInstance(context)
-                        .sendBroadcast(new Intent(AppIntent.ACTION_DB_UPGRADE_STARTED));
-            }
-        });
+        DatabaseMigration
+                .upgrade(db, context, oldVersion, () -> LocalBroadcastManager.getInstance(context)
+                .sendBroadcast(new Intent(AppIntent.ACTION_DB_UPGRADE_STARTED)));
 
         createAllViews(db);
 

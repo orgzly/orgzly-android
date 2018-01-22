@@ -32,7 +32,7 @@ import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 import com.orgzly.org.OrgHead;
-import com.orgzly.org.OrgProperty;
+import com.orgzly.org.OrgProperties;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgRange;
 
@@ -50,6 +50,8 @@ public class NotesClient {
         void onNote(Note note);
     }
 
+
+
     public static void forEachBookNote(Context context, String bookName, NotesClientInterface notesClientInterface) {
         Cursor cursor = NotesClient.getCursorForBook(context, bookName);
 
@@ -57,7 +59,7 @@ public class NotesClient {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 Note note = NotesClient.fromCursor(cursor);
 
-                List<OrgProperty> propertiesFromCursor = getNoteProperties(context, note.getId());
+                OrgProperties propertiesFromCursor = getNoteProperties(context, note.getId());
 
                 note.getHead().setProperties(propertiesFromCursor);
 
@@ -68,21 +70,14 @@ public class NotesClient {
         }
     }
 
-    public static List<OrgProperty> getNoteProperties(Context context, long noteId) {
-        List<OrgProperty> properties = new ArrayList<>();
+    public static OrgProperties getNoteProperties(Context context, long noteId) {
+        OrgProperties properties = new OrgProperties();
 
-        Cursor cursor = context.getContentResolver().query(
-                ProviderContract.NoteProperties.ContentUri.notesIdProperties(noteId), null, null, null, null);
-
-        try {
+        try (Cursor cursor = context.getContentResolver().query(
+                ProviderContract.NoteProperties.ContentUri.notesIdProperties(noteId), null, null, null, null)) {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                properties.add(new OrgProperty(
-                        cursor.getString(0),
-                        cursor.getString(1)
-                ));
+                properties.put(cursor.getString(0), cursor.getString(1));
             }
-        } finally {
-            cursor.close();
         }
 
         return properties;
@@ -90,6 +85,8 @@ public class NotesClient {
 
     public static void toContentValues(ContentValues values, Note note) {
         values.put(ProviderContract.Notes.UpdateParam.BOOK_ID, note.getPosition().getBookId());
+
+        values.put(ProviderContract.Notes.UpdateParam.CREATED_AT, note.getCreatedAt());
 
         values.put(ProviderContract.Notes.UpdateParam.LFT, note.getPosition().getLft());
         values.put(ProviderContract.Notes.UpdateParam.RGT, note.getPosition().getRgt());
@@ -148,8 +145,13 @@ public class NotesClient {
         }
     }
 
+    // TODO: If we were to move our created at time detection from Shelf to here (thereby necessitating
+    // a change to org-java), we could properly show created times in the widget & search results.
+    // Would that be necessary?
     public static Note fromCursor(Cursor cursor) {
         long id = idFromCursor(cursor);
+
+        long createdAt = cursor.getLong(cursor.getColumnIndex(DbNoteView.CREATED_AT));
 
         int contentLines = cursor.getInt(cursor.getColumnIndex(DbNoteView.CONTENT_LINE_COUNT));
 
@@ -161,6 +163,7 @@ public class NotesClient {
 
         note.setHead(head);
         note.setId(id);
+        note.setCreatedAt(createdAt);
         note.setPosition(position);
         note.setContentLines(contentLines);
 
@@ -218,9 +221,9 @@ public class NotesClient {
      */
     public static int update(Context context, Note note) {
         ContentValues values = new ContentValues();
-        toContentValues(values, note.getHead());
+        toContentValues(values, note);
 
-        Uri noteUri = ContentUris.withAppendedId(ProviderContract.Notes.ContentUri.notes(), note.getId());
+        Uri noteUri = ProviderContract.Notes.ContentUri.notesId(note.getId());
         Uri uri = noteUri.buildUpon().appendQueryParameter("bookId", String.valueOf(note.getPosition().getBookId())).build();
 
         ArrayList<ContentProviderOperation> ops = new ArrayList<>();
@@ -240,12 +243,15 @@ public class NotesClient {
 
         /* Add each of the note's property. */
         int i = 0;
-        for (OrgProperty property: note.getHead().getProperties()) {
+        OrgProperties properties = note.getHead().getProperties();
+        for (String name: properties.keySet()) {
+            String value = properties.get(name);
+
             values = new ContentValues();
 
             values.put(ProviderContract.NoteProperties.Param.NOTE_ID, note.getId());
-            values.put(ProviderContract.NoteProperties.Param.NAME, property.getName());
-            values.put(ProviderContract.NoteProperties.Param.VALUE, property.getValue());
+            values.put(ProviderContract.NoteProperties.Param.NAME, name);
+            values.put(ProviderContract.NoteProperties.Param.VALUE, value);
             values.put(ProviderContract.NoteProperties.Param.POSITION, i++);
 
             ops.add(ContentProviderOperation
@@ -254,7 +260,6 @@ public class NotesClient {
                     .build()
             );
         }
-
 
         ContentProviderResult[] result;
 
@@ -268,11 +273,11 @@ public class NotesClient {
         return result[0].count;
     }
 
+
     /**
      * Insert as last note if position is not specified.
      */
     public static Note create(Context context, Note note, NotePlace target) {
-
         ContentValues values = new ContentValues();
         toContentValues(values, note);
 
@@ -297,11 +302,14 @@ public class NotesClient {
 
         /* Add each of the note's property. */
         int i = 0;
-        for (OrgProperty property: note.getHead().getProperties()) {
+        OrgProperties properties = note.getHead().getProperties();
+        for (String name: properties.keySet()) {
+            String value = properties.get(name);
+
             values = new ContentValues();
 
-            values.put(ProviderContract.NoteProperties.Param.NAME, property.getName());
-            values.put(ProviderContract.NoteProperties.Param.VALUE, property.getValue());
+            values.put(ProviderContract.NoteProperties.Param.NAME, name);
+            values.put(ProviderContract.NoteProperties.Param.VALUE, value);
             values.put(ProviderContract.NoteProperties.Param.POSITION, i++);
 
             ops.add(ContentProviderOperation
@@ -363,7 +371,7 @@ public class NotesClient {
         return deleted;
     }
 
-    /**
+    /*
      * Pastes back the latest cut batch.
      * @return number of notes restored
      *

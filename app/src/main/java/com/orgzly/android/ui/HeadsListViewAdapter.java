@@ -11,11 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import com.orgzly.R;
 import com.orgzly.android.Note;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.ui.util.TitleGenerator;

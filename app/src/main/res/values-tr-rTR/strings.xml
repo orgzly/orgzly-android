@@ -129,8 +129,6 @@
   <string name="repo_dropbox_button_linked">Dropbox ile bağlantısını kaldır</string>
   <string name="fragment_settings_title">Ayarlar</string>
   <string name="updating_notes">Notlar güncelleniyor…</string>
-  <string name="todo_keywords_configuration_changed_dialog_title">Anahtar kelimeler değiştirildi</string>
-  <string name="todo_keywords_configuration_changed_dialog_message">Değişiklikleri yansıtmak için notları yenileyin?</string>
   <string name="failure">Ah ah</string>
   <string name="no_notes_found_after_search">Aramanız herhangi bir notla eşleşmedi</string>
   <string name="today">Bugün</string>

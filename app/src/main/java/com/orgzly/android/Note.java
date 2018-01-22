@@ -12,6 +12,8 @@ import java.util.List;
 public class Note {
     private long id;
 
+    private long createdAt;
+
     private OrgHead head;
 
     private NotePosition position;
@@ -38,6 +40,14 @@ public class Note {
         position.setRgt(2);
 
         return note;
+    }
+
+    public long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
     }
 
     public NotePosition getPosition() {

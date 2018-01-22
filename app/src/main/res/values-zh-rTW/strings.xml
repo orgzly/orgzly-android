@@ -126,8 +126,6 @@
   <string name="repo_dropbox_button_linked">取消 Dropbox 連結</string>
   <string name="fragment_settings_title">設置</string>
   <string name="updating_notes">更新筆記</string>
-  <string name="todo_keywords_configuration_changed_dialog_title">修改關鍵字</string>
-  <string name="todo_keywords_configuration_changed_dialog_message">刷新筆記以顯示更改？</string>
   <string name="failure">噢！</string>
   <string name="no_notes_found_after_search">您的搜尋沒有任何結果</string>
   <string name="today">今天</string>
