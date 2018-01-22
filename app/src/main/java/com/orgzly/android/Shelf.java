@@ -958,6 +958,9 @@ public class Shelf {
 
         ArrayList<ContentProviderOperation> ops = new ArrayList<>();
 
+        // If new property is added to the note below, book has to be marked as modified.
+        Set<Long> bookIds = new HashSet<>();
+
         /*
          * Get all notes.
          * Only notes that have either created-at time or created-at property are actually needed.
@@ -985,25 +988,30 @@ public class Shelf {
 
                     // Compare dbCreatedAt and dbPropertyValue
                     if (dbCreatedAt > 0 && dbPropertyValue == null) {
-                        addOpUpdateProperty(ops, note.getId(), createdAtPropName, dbCreatedAt, dbPropValue);
+                        addOpUpdateProperty(ops, note, createdAtPropName, dbCreatedAt, dbPropValue, bookIds);
 
                     } else if (dbCreatedAt > 0 && dbPropertyValue != null) {
                         // Use older created-at
                         if (dbPropertyValue.getCalendar().getTimeInMillis() < dbCreatedAt) {
-                            addOpUpdateCreatedAt(ops, note.getId(), dbPropertyValue, note.getCreatedAt());
+                            addOpUpdateCreatedAt(ops, note, dbPropertyValue, note.getCreatedAt(), bookIds);
                         } else {
-                            addOpUpdateProperty(ops, note.getId(), createdAtPropName, dbCreatedAt, dbPropValue);
+                            addOpUpdateProperty(ops, note, createdAtPropName, dbCreatedAt, dbPropValue, bookIds);
                         }
 
                         // Or prefer property and set created-at time?
                         // addOpUpdateCreatedAt(ops, note.getId(), dbPropertyValue, note.getCreatedAt());
 
                     } else if (dbCreatedAt == 0 && dbPropertyValue != null) {
-                        addOpUpdateCreatedAt(ops, note.getId(), dbPropertyValue, note.getCreatedAt());
+                        addOpUpdateCreatedAt(ops, note, dbPropertyValue, note.getCreatedAt(), bookIds);
 
                     } // else: Neither created-at time nor property are set
                 }
             }
+        }
+
+        long time = System.currentTimeMillis();
+        for (long bookId: bookIds) {
+            BooksClient.setModifiedTime(mContext, bookId, time);
         }
 
         /*
@@ -1017,35 +1025,42 @@ public class Shelf {
         }
 
         notifyDataChanged(mContext);
+        syncOnNoteUpdate();
     }
 
-    private void addOpUpdateCreatedAt(ArrayList<ContentProviderOperation> ops, long id, OrgDateTime dbPropertyValue, long currValue) {
+    private void addOpUpdateCreatedAt(ArrayList<ContentProviderOperation> ops, Note note, OrgDateTime dbPropertyValue, long currValue, Set<Long> bookIds) {
         long value = dbPropertyValue.getCalendar().getTimeInMillis();
 
         if (value != currValue) {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Updating", id, currValue, value);
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Updating created-at time", note.getId(), currValue, value);
 
             ops.add(ContentProviderOperation
-                    .newUpdate(ProviderContract.Notes.ContentUri.notesId(id))
+                    .newUpdate(ProviderContract.Notes.ContentUri.notesId(note.getId()))
                     .withValue(DbNote.CREATED_AT, value)
                     .build());
+
+            bookIds.add(note.getPosition().getBookId());
+
         } else {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Skipping update", id, value);
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Skipping update", note.getId(), value);
         }
     }
 
-    private void addOpUpdateProperty(ArrayList<ContentProviderOperation> ops, long id, String createdAtPropName, long dbCreatedAt, String currPropValue) {
+    private void addOpUpdateProperty(ArrayList<ContentProviderOperation> ops, Note note, String createdAtPropName, long dbCreatedAt, String currPropValue, Set<Long> bookIds) {
         String value = new OrgDateTime(dbCreatedAt, false).toString();
 
         if (! value.equals(currPropValue)) {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Updating", id, createdAtPropName, currPropValue, value);
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Updating property", note.getId(), createdAtPropName, currPropValue, value);
 
             ops.add(ContentProviderOperation
-                    .newUpdate(ProviderContract.NoteProperties.ContentUri.notesIdProperties(id))
+                    .newUpdate(ProviderContract.NoteProperties.ContentUri.notesIdProperties(note.getId()))
                     .withValue(createdAtPropName, value)
                     .build());
+
+            bookIds.add(note.getPosition().getBookId());
+
         } else {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Skipping update", id, createdAtPropName, value);
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Skipping update", note.getId(), createdAtPropName, value);
         }
     }
 
