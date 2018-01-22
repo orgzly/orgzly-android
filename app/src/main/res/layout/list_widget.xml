@@ -64,7 +64,11 @@
         <ListView
             android:id="@+id/list_widget_list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:divider="@color/grey300"
+            android:dividerHeight="1dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"/>
 
         <TextView
             android:id="@+id/list_widget_empty_view"

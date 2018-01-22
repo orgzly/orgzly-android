@@ -19,6 +19,6 @@
         item-menu:menu_for_fling_left="2"
         android:clipToPadding="false"
         android:paddingTop="12dp"
-        android:paddingBottom="@dimen/fragment_horizontal_padding"/>
+        android:paddingBottom="12dp"/>
 
 </RelativeLayout>

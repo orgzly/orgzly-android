@@ -85,7 +85,7 @@
         <item name="item_head_bullet_text_color">@color/black</item>
         <item name="item_head_title_text_color">@color/black</item>
         <item name="item_head_fold_button_text_color">@color/black</item>
-        <item name="item_head_post_title_text_color">#696969</item>
+        <item name="item_head_post_title_text_color">@color/grey700</item>
 
         <item name="line_thin_color">#0c000000</item>
         <item name="line_color">#18000000</item>

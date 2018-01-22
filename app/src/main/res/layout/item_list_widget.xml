@@ -12,11 +12,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
         android:orientation="vertical"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginEnd="8dp"
+        android:minHeight="36dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:layout_weight="1"
@@ -58,7 +60,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:maxLines="1"
-                android:ellipsize="end" />
+                android:ellipsize="end"/>
         </LinearLayout>
 
         <LinearLayout
@@ -125,11 +127,10 @@
         android:layout_weight="0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="3dp"
-        android:layout_gravity="top"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_gravity="center"
         android:src="@drawable/ic_done_black_24dp"
-        android:tint="#333"
+        android:tint="#444444"
         android:clickable="true"/>
 </LinearLayout>
