@@ -11,11 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import com.orgzly.R;
 import com.orgzly.android.Note;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.ui.util.TitleGenerator;
@@ -146,9 +146,15 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
             }
         }
 
-        setupIndentContainer(context, holder.indentContainer, inBook ? note.getPosition().getLevel() - 1 : 0);
+        setupIndentContainer(
+                context,
+                holder.indentContainer,
+                inBook
+                        ? note.getPosition().getLevel() - 1
+                        : 0  // No indentation unless in book
+        );
 
-        updateBullet(context, note, holder);
+        updateBullet(note, holder, false);
 
         if (updateFoldingButton(context, note, holder)) {
             holder.foldButton.setOnClickListener(v -> toggleFoldedState(context, note.getId()));
@@ -270,7 +276,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                     holder.foldButtonText.setText(R.string.fold_button_character);
                 }
             }
-        } // else: No indentation (in search results)
+        }
 
         if (isVisible) {
             holder.foldButton.setVisibility(View.VISIBLE);
@@ -286,9 +292,12 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
     /**
      * Change bullet appearance depending on folding state and number of descendants.
      */
-    private void updateBullet(Context context, Note note, ViewHolder holder) {
-
+    private void updateBullet(Note note, ViewHolder holder, boolean bulletInBookOnly) {
         if (inBook) {
+            if (bulletInBookOnly) {
+                holder.bullet.setVisibility(View.VISIBLE);
+            }
+
             if (note.getPosition().getDescendantsCount() > 0) { // Has descendants
                 if (note.getPosition().isFolded()) {
                     holder.bullet.setText(R.string.bullet_with_children_folded);
@@ -302,8 +311,12 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                 holder.bullet.setTypeface(Typeface.DEFAULT_BOLD);
             }
 
-        } else { // No indentation (in search results)
-            holder.bullet.setTypeface(Typeface.DEFAULT_BOLD);
+        } else {
+            if (bulletInBookOnly) {
+                holder.bullet.setVisibility(View.GONE);
+            } else {
+                holder.bullet.setTypeface(Typeface.DEFAULT_BOLD);
+            }
         }
     }
 
