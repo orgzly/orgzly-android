@@ -1,4 +1,4 @@
-# Properties loaded by Gradle build (e.g. credentials)
+# Properties used by Gradle. See sample.app.properties
 app.properties
 
 # Crowdin configuration file

@@ -10,14 +10,6 @@ android {
     compileSdkVersion 25
     buildToolsVersion '26.0.2'
 
-    /*
-     * Read properties from the file.
-     *
-     * This file contains credentials and it is not checked into Git.
-     * You should create it -- see "app.properties.sample".
-     */
-    Properties properties = loadProperties(getRootProject().file('app.properties'))
-
     defaultConfig {
         applicationId "com.orgzly"
         minSdkVersion 16 // JELLY_BEAN
@@ -26,8 +18,8 @@ android {
         versionName "1.6.2-beta.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "DROPBOX_APP_KEY", properties.getProperty("dropbox.app_key", '""')
-        resValue "string", "dropbox_app_key_schema", properties.getProperty("dropbox.app_key_schema", '')
+        buildConfigField "String", "DROPBOX_APP_KEY", gradle.ext.appProperties.getProperty("dropbox.app_key", '""')
+        resValue "string", "dropbox_app_key_schema", gradle.ext.appProperties.getProperty("dropbox.app_key_schema", '')
     }
 
     buildTypes {
@@ -43,7 +35,7 @@ android {
         debug {
             buildConfigField "boolean", "LOG_DEBUG", "true"
 
-            buildConfigField "String", "DROPBOX_TOKEN", properties.getProperty("dropbox.token", '""')
+            buildConfigField "String", "DROPBOX_TOKEN", gradle.ext.appProperties.getProperty("dropbox.token", '""')
         }
     }
 
@@ -99,8 +91,7 @@ configurations.all {
 }
 
 dependencies {
-    // implementation orgJavaLocation()
-    implementation "com.orgzly:org-java:$org_java_version"
+    implementation orgJavaLocation()
 
     implementation "com.dropbox.core:dropbox-core-sdk:$dropbox_core_sdk_version"
 
@@ -141,23 +132,16 @@ repositories {
     mavenCentral()
 }
 
-// See settings.gradle
+/*
+ * If "orgJavaDir" property is set, load org-java as a module. If property is not set,
+ * use org-java from Maven repository. See settings.gradle.
+ */
 def orgJavaLocation() {
-    if (gradle.ext.orgJavaDir.exists()) {
+    if (gradle.ext.has('orgJavaDir')) {
+        logger.info("app: Using org-java from ${gradle.ext.orgJavaDir}")
         return project(':org-java')
     } else {
+        logger.info("app: Using com.orgzly:org-java:$org_java_version from Maven repository")
         return "com.orgzly:org-java:$org_java_version"
     }
-}
-
-def loadProperties(file) {
-    Properties properties = new Properties()
-
-    if (file.exists()) {
-        properties.load(file.newDataInputStream())
-    } else {
-        logger.warn("Properties file ${file} does not exist")
-    }
-
-    return properties
 }

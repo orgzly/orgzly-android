@@ -1,14 +1,36 @@
-/*
- * Use org-java from local directory instead of the remote repository.
- *
- * If you are working on org-java this can make development process easier.
- * Make sure you "Clean Project" if you change this value.
+/**
+ * Load Orgzly-specific properties from app.properties.
+ * File is not included, see sample.app.properties file.
  */
-gradle.ext.orgJavaDir = new File(settingsDir, '../org-java')
+def loadAppProperties() {
+    Properties properties = new Properties()
 
-if (gradle.ext.orgJavaDir.exists()) {
-    include ':org-java'
-    project(':org-java').projectDir = gradle.ext.orgJavaDir
+    def file = new File(settingsDir, 'app.properties')
+
+    if (file.exists()) {
+        properties.load(file.newDataInputStream())
+    } else {
+        logger.warn("Properties file ${file} does not exist")
+    }
+
+    return properties
+}
+
+gradle.ext.appProperties = loadAppProperties()
+
+// Setup org-java project if "org_java" is set to an existing directory.
+if (gradle.ext.appProperties.org_java_directory?.trim()) {
+    def path = gradle.ext.appProperties.org_java_directory
+
+    def dir = path.startsWith('/') ? new File(path) : new File(settingsDir, path)
+
+    if (dir.exists()) {
+        include ':org-java'
+        project(':org-java').projectDir = dir
+        gradle.ext.orgJavaDir = dir
+    } else {
+        logger.warn("Ignoring non-existent directory $dir")
+    }
 }
 
 include ':app'
