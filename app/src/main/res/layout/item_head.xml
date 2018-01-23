@@ -72,8 +72,6 @@
                 android:layout_toEndOf="@+id/item_head_bullet"
                 android:layout_toLeftOf="@id/item_head_fold_button"
                 android:layout_toStartOf="@id/item_head_fold_button"
-                android:layout_marginLeft="@dimen/padding_4"
-                android:layout_marginStart="@dimen/padding_4"
                 android:layout_marginTop="@dimen/item_head_padding_cozy"
                 android:orientation="vertical">
 
@@ -231,6 +229,8 @@
                 android:layout_toRightOf="@id/item_head_indent_container"
                 android:layout_toEndOf="@id/item_head_indent_container"
                 android:layout_alignTop="@+id/item_head_payload"
+                android:layout_marginRight="@dimen/padding_4"
+                android:layout_marginEnd="@dimen/padding_4"
                 android:gravity="center_horizontal"
                 android:textSize="?attr/item_head_bullet_text_size"
                 android:textColor="?attr/item_head_bullet_text_color"

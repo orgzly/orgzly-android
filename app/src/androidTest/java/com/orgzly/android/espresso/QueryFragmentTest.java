@@ -105,7 +105,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
         searchForText("b.book-one another note");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(1)));
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Another note."), isDisplayed())));
     }
@@ -116,7 +116,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
         searchForText("b.book-one note");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(7)));
     }
 
@@ -125,10 +125,10 @@ public class QueryFragmentTest extends OrgzlyTest {
         defaultSetUp();
 
         searchForText("different");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
         searchForText("another");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(1)));
     }
 
@@ -137,7 +137,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         defaultSetUp();
 
         searchForText("i.todo");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(3)));
     }
 
@@ -146,7 +146,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         defaultSetUp();
 
         searchForText("s.today");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
     }
 
@@ -155,7 +155,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         defaultSetUp();
 
         searchForText("p.a");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
 
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(3)));
 
@@ -169,7 +169,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         defaultSetUp();
 
         searchForText(".p.b");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
 
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(4)));
 
@@ -185,7 +185,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         defaultSetUp();
 
         searchForText("b.book-one note");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(7)));
     }
 
@@ -215,7 +215,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("book-two"), isDisplayed())).perform(click());
         searchForText("b.book-two Note");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(29)));
         onListItem(27).perform(click());
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
@@ -259,7 +259,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         activityRule.launchActivity(null);
 
         searchForText("p.b");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
 
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(4)));
     }
@@ -283,7 +283,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         activityRule.launchActivity(null);
 
         searchForText(".i.todo .i.done");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(5)));
     }
 
@@ -298,7 +298,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         activityRule.launchActivity(null);
 
         searchForText("s.today");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
     }
     @Test
@@ -308,7 +308,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         activityRule.launchActivity(null);
 
         searchForText("d.today");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
     }
 
@@ -324,7 +324,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
         searchForText("t.tag");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(4)));
     }
 
@@ -340,7 +340,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
         searchForText("t.tag1 t.tag2");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(3)));
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note B")), isDisplayed())));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note C")), isDisplayed())));
@@ -366,7 +366,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         pressBack();
 
         searchForText("t.tag3");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
         onListItem(0).onChildView(withId(R.id.item_head_title))
                 .check(matches(allOf(withText("Note D  tag3 • tag2 tag1"), isDisplayed())));
@@ -393,7 +393,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         pressBack();
 
         searchForText("t.tag3");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
         onListItem(0).onChildView(withId(R.id.item_head_title))
                 .check(matches(allOf(withText("Note C  tag3 • tag1 tag2"), isDisplayed())));
@@ -423,7 +423,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withText(R.string.heads_action_menu_item_paste_under)).perform(click());
 
         searchForText("t.tag3");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
         onListItem(0).onChildView(withId(R.id.item_head_title))
                 .check(matches(allOf(withText("Note C  tag3 • tag1 tag2"), isDisplayed())));
@@ -445,7 +445,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
         searchForText("note o.scheduled");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note B")));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note A")));
     }
@@ -466,7 +466,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
         searchForText("s.today .i.done o.s");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note A")));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note C")));
         onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note B")));
@@ -488,7 +488,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
         searchForText("d.today .i.done .o.d");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note B")));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note C")));
         onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note A")));
@@ -499,7 +499,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         defaultSetUp();
 
         searchForText("note");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onListItem(0).onChildView(withId(R.id.item_head_book_name_text)).check(matches(withText("book-one")));
 
         onView(withId(R.id.drawer_layout)).perform(open());
@@ -518,7 +518,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         pressBack();
 
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onListItem(0).onChildView(withId(R.id.item_head_book_name_text)).check(matches(withText("renamed book-one")));
     }
 
@@ -533,7 +533,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText(".t.c");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(4)));
     }
 
@@ -548,7 +548,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText(".t.b");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Note A  a"), isDisplayed())));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Note D"), isDisplayed())));
@@ -565,7 +565,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText("tn.a or tn.b");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note A")), isDisplayed())));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note B")), isDisplayed())));
@@ -582,7 +582,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText("o.p");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note A")), isDisplayed())));
         onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note D")), isDisplayed())));
@@ -600,7 +600,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText(".o.p");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note C")), isDisplayed())));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note D")), isDisplayed())));
         onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note A")), isDisplayed())));
@@ -619,7 +619,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText(".it.todo");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note C")), isDisplayed())));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note D")), isDisplayed())));
@@ -637,7 +637,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText("it.todo");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note A")), isDisplayed())));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
@@ -655,7 +655,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText("it.none");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(1)));
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note D")), isDisplayed())));
     }
@@ -672,7 +672,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText(".it.none");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(3)));
         onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note A")), isDisplayed())));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
@@ -692,7 +692,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_fold_button)).perform(click());
         searchForText("note");
-        onView(withId(R.id.fragment_query_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(3)));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
         onListItem(1).onChildView(withId(R.id.item_head_content)).check(matches(allOf(withText(containsString("Content for Note B")), isDisplayed())));

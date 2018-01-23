@@ -5,32 +5,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
     android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/item_list_widget_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
         android:orientation="vertical"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp"
+        android:minHeight="36dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
-        android:layout_weight="1"
-        android:clickable="true">
+        android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/item_list_widget_title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            tools:text="@string/head_title_sample"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:maxLines="1" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/item_list_widget_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                tools:text="@string/head_title_sample"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:maxLines="1" />
+
+            <ImageView
+                android:id="@+id/item_list_widget_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:src="@drawable/ic_done_black_24dp"
+                android:tint="#444444"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/item_list_widget_scheduled"
@@ -58,7 +75,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:maxLines="1"
-                android:ellipsize="end" />
+                android:ellipsize="end"/>
         </LinearLayout>
 
         <LinearLayout
@@ -119,17 +136,4 @@
                 android:ellipsize="end" />
         </LinearLayout>
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/item_list_widget_done"
-        android:layout_weight="0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="3dp"
-        android:layout_gravity="top"
-        android:src="@drawable/ic_done_black_24dp"
-        android:tint="#333"
-        android:clickable="true"/>
 </LinearLayout>

@@ -59,7 +59,7 @@ public class AgendaFragment extends QueryFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, inflater, container, savedInstanceState);
 
-        return inflater.inflate(R.layout.fragment_agenda, container, false);
+        return inflater.inflate(R.layout.fragment_query_agenda, container, false);
     }
 
     @Override

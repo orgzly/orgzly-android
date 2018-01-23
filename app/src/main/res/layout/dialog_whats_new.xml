@@ -24,6 +24,15 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.6.2-beta.7"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Make widget and query results in app looks consistent (remove bullets and add dividers, for now)"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.6.2-beta.6"
             tools:ignore="HardcodedText"/>
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ViewFlipper
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_query_search_view_flipper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.orgzly.android.ui.views.GesturedListView style="@style/QueryListView"/>
+
+    <TextView
+        style="@style/BigCenteredText"
+        android:text="@string/no_notes_found_after_search"/>
+
+</ViewFlipper>

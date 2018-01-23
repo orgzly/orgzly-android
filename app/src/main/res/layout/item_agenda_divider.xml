@@ -5,17 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
+    android:paddingLeft="@dimen/fragment_horizontal_padding"
+    android:paddingRight="@dimen/fragment_horizontal_padding"
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/widget_list_item_divider_value"
+        android:id="@+id/item_agenda_time_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:maxLines="1"
-        android:textColor="@color/black"
+        android:textColor="?attr/item_head_title_text_color"
+        android:textSize="?attr/item_head_post_title_text_size"
         android:textStyle="bold"
         tools:text="Mon, 25 Sep"/>
 
