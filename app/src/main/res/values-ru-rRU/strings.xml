@@ -132,8 +132,6 @@
   <string name="repo_dropbox_button_linked">Отвязать от Dropbox</string>
   <string name="fragment_settings_title">Настройки</string>
   <string name="updating_notes">Обновление заметок…</string>
-  <string name="todo_keywords_configuration_changed_dialog_title">Ключевые слова изменены</string>
-  <string name="todo_keywords_configuration_changed_dialog_message">Обновить заметки, чтобы отразить изменения?</string>
   <string name="failure">Ой-ой</string>
   <string name="no_notes_found_after_search">Ваш запрос не соответствует заметкам</string>
   <string name="today">Сегодня</string>
