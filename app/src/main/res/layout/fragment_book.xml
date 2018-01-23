@@ -22,7 +22,6 @@
             item-menu:menu_container="@+id/item_head_menu_container"
             item-menu:menu_for_fling_right="0"
             item-menu:menu_for_fling_left="1"
-            android:clipToPadding="false"
             android:paddingTop="8dp"
             android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"/>
 

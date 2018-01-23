@@ -48,9 +48,9 @@ public class SearchFragment extends QueryFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, inflater, container, savedInstanceState);
 
-        View view = inflater.inflate(R.layout.fragment_query, container, false);
+        View view = inflater.inflate(R.layout.fragment_query_search, container, false);
 
-        mViewFlipper = (ViewFlipper) view.findViewById(R.id.fragment_query_view_flipper);
+        mViewFlipper = (ViewFlipper) view.findViewById(R.id.fragment_query_search_view_flipper);
 
         return view;
     }

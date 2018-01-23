@@ -477,11 +477,11 @@ public class MiscTest extends OrgzlyTest {
         // Search results
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText("Scheduled")).perform(click());
-        fragmentTest(activityRule, true, withId(R.id.fragment_query_view_flipper));
+        fragmentTest(activityRule, true, withId(R.id.fragment_query_search_view_flipper));
 
         // Agenda
         searchForText("t.tag3 ad.3");
-        fragmentTest(activityRule, true, withId(R.id.fragment_agenda_container));
+        fragmentTest(activityRule, true, withId(R.id.fragment_query_agenda_container));
     }
 
     @Test
