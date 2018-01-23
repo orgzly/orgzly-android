@@ -17,8 +17,8 @@
         item-menu:menu_for_fling_right="0"
         item-menu:menu_for_fling_left="2"
         android:clipToPadding="false"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"/>
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"/>
 
     <TextView
         style="@style/BigCenteredText"

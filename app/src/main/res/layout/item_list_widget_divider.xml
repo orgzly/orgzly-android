@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<TextView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/widget_list_item_divider_value"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp"
-    android:maxLines="1"
-    android:textColor="@color/black"
-    android:textSize="14sp"
-    android:textStyle="bold"
-    tools:text="Mon, 25 Sep"/>
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/widget_list_item_divider_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        tools:text="Mon, 25 Sep"/>
+
+</LinearLayout>

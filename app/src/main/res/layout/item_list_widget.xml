@@ -5,7 +5,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingLeft="4dp"
     android:orientation="horizontal">
+
+    <!--Bullet -->
+    <TextView
+        android:id="@+id/item_head_bullet"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:gravity="center_horizontal"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:text="@string/bullet"/>
 
     <LinearLayout
         android:id="@+id/item_list_widget_layout"
@@ -14,10 +27,10 @@
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginEnd="4dp"
         android:minHeight="36dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
