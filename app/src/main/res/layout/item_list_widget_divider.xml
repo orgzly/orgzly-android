@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
     android:orientation="horizontal">
 
     <TextView
@@ -12,8 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:maxLines="1"
         android:textColor="@color/black"
         android:textStyle="bold"

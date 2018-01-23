@@ -154,7 +154,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                         : 0  // No indentation unless in book
         );
 
-        updateBullet(note, holder, false);
+        updateBullet(note, holder, true);
 
         if (updateFoldingButton(context, note, holder)) {
             holder.foldButton.setOnClickListener(v -> toggleFoldedState(context, note.getId()));
