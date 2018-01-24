@@ -57,6 +57,7 @@ public class ShelfTestUtils {
         try {
             book = loadBookFromContent(name, BookName.Format.ORG, content, null);
         } catch (IOException e) {
+            e.printStackTrace();
             fail(e.toString());
         }
 
@@ -69,6 +70,7 @@ public class ShelfTestUtils {
         try {
             book = loadBookFromContent(name, BookName.Format.ORG, content, null);
         } catch (IOException e) {
+            e.printStackTrace();
             fail(e.toString());
         }
 
@@ -92,6 +94,7 @@ public class ShelfTestUtils {
             VersionedRook vrook = new VersionedRook(Uri.parse(repoUrl), Uri.parse(url), rev, mtime);
             LocalDbRepoClient.insert(context, vrook, content);
         } catch (IOException e) {
+            e.printStackTrace();
             fail(e.toString());
         }
 

@@ -83,6 +83,34 @@ class CreatedAtTest : OrgzlyTest() {
         assertTrue(shelf.getBook(1).isModifiedAfterLastSync)
     }
 
+    @Test
+    fun testParsingInvalidPropertyValue() {
+        AppPreferences.createdAt(context, true)
+
+        shelfTestUtils.setupBook(
+                "book-a",
+                "* Note [a-1]\n" +
+                        ":PROPERTIES:\n" +
+                        ":CREATED: Invalid format\n" +
+                        ":END:\n")
+    }
+
+    @Test
+    fun testParsingInvalidPropertyValueWhenSyncing() {
+        AppPreferences.createdAt(context, true)
+
+        shelfTestUtils.setupBook(
+                "book-a",
+                "* Note [a-1]\n" +
+                        ":PROPERTIES:\n" +
+                        ":CREATED: [2018-01-01 12:00]\n" +
+                        ":CREATED_AT: Invalid format\n" +
+                        ":END:\n")
+
+        AppPreferences.createdAtProperty(context, "CREATED_AT")
+
+        shelf.syncCreatedAtTimeWithProperty()
+    }
 
     private fun withTempFile(f: (file: File) -> Unit) {
         val file = LocalStorage(context).tempBookFile
@@ -91,6 +119,5 @@ class CreatedAtTest : OrgzlyTest() {
         } finally {
             file.delete()
         }
-
     }
 }

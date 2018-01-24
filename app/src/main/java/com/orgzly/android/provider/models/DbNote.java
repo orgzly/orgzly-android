@@ -190,7 +190,7 @@ public class DbNote implements DbNoteColumns, BaseColumns {
     /**
      * Set created-at value from property.
      */
-    public static  void toContentValues(ContentValues values, OrgProperties properties, String createdAtProperty) {
+    public static void toContentValues(ContentValues values, OrgProperties properties, String createdAtProperty) {
         if (properties.containsKey(createdAtProperty)) { // Property found
             String value = properties.get(createdAtProperty);
             setCreatedAtValue(values, value);
@@ -198,7 +198,7 @@ public class DbNote implements DbNoteColumns, BaseColumns {
     }
 
     private static void setCreatedAtValue(ContentValues values, String value) {
-        OrgRange range = OrgRange.parseOrNull(value);
+        OrgRange range = OrgRange.doParse(value);
         if (range != null) {
             values.put(DbNote.CREATED_AT, range.getStartTime().getCalendar().getTimeInMillis());
         }

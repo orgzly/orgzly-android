@@ -983,7 +983,7 @@ public class Shelf {
 
                     OrgProperties properties = NotesClient.getNoteProperties(mContext, NotesClient.idFromCursor(cursor));
                     String dbPropValue = properties.get(createdAtPropName);
-                    OrgDateTime dbPropertyValue = OrgDateTime.parseOrNull(dbPropValue);
+                    OrgDateTime dbPropertyValue = OrgDateTime.doParse(dbPropValue);
 
                     // Compare dbCreatedAt and dbPropertyValue
                     if (dbCreatedAt > 0 && dbPropertyValue == null) {
