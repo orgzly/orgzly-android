@@ -151,7 +151,7 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
 
     private fun setupAdapter() {
         /* Create adapter using Cursor. */
-        mListAdapter = createFilterCursorAdapter(activity)
+        mListAdapter = createFilterCursorAdapter(activity, R.layout.item_filter)
 
         listAdapter = mListAdapter
     }
@@ -315,7 +315,7 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
         val instance: FiltersFragment
             get() = FiltersFragment()
 
-        fun createFilterCursorAdapter(context: Context): SimpleCursorAdapter {
+        fun createFilterCursorAdapter(context: Context, layout: Int): SimpleCursorAdapter {
             /* Column field names to be bound. */
             val columns = arrayOf(ProviderContract.Filters.Param.NAME, ProviderContract.Filters.Param.QUERY)
 
@@ -323,7 +323,7 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
             val to = intArrayOf(R.id.item_filter_name, R.id.item_filter_query)
 
             /* Create adapter using Cursor. */
-            return SimpleCursorAdapter(context, R.layout.item_filter, null, columns, to, 0)
+            return SimpleCursorAdapter(context, layout, null, columns, to, 0)
         }
     }
 }
