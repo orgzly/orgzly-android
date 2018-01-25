@@ -178,7 +178,6 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
             row.setViewVisibility(R.id.item_list_widget_done, View.GONE);
         }
 
-
         final Intent openIntent = new Intent();
         openIntent.putExtra(AppIntent.EXTRA_CLICK_TYPE, ListWidgetProvider.OPEN_CLICK_TYPE);
         openIntent.putExtra(AppIntent.EXTRA_NOTE_ID, note.getId());
