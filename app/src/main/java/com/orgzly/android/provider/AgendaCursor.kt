@@ -17,9 +17,9 @@ import java.util.*
 object AgendaCursor {
     data class AgendaMergedCursor(val cursor: Cursor, val originalNoteIDs: LongSparseArray<Long>)
 
-    fun create(context: Context, cursor: Cursor, mQuery: String): AgendaMergedCursor {
+    fun create(context: Context, cursor: Cursor, query: String): AgendaMergedCursor {
         val parser = InternalQueryParser()
-        val (_, _, options) = parser.parse(mQuery)
+        val (_, _, options) = parser.parse(query)
 
         var agendaDays = options.agendaDays
 
@@ -48,7 +48,9 @@ object AgendaCursor {
         val deadlineRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.DEADLINE_RANGE_STRING)
 
         var nextId = 1L
-        originalNoteIDs.clear()
+
+
+        val originalNoteIDs = LongSparseArray<Long>()
 
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
@@ -140,12 +142,12 @@ object AgendaCursor {
         return MergeCursor(allCursors.toTypedArray())
     }
 
-    private val originalNoteIDs = LongSparseArray<Long>()
-
     object Columns: BaseColumns, DbNoteColumns {
         const val IS_DIVIDER = "is_divider"
         const val DIVIDER_VALUE = "divider_value"
     }
 
     private const val MAX_DAYS = 30
+
+    // private val TAG = AgendaCursor::class.java.name
 }
