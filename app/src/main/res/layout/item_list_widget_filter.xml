@@ -16,15 +16,16 @@
         android:layout_height="wrap_content"
         android:maxLines="1"
         android:ellipsize="end"
-        android:textSize="?attr/font_medium"
-        android:textColor="?attr/item_head_title_text_color"
+        android:textSize="18sp"
+        android:textColor="@color/black"
         tools:text="@string/filter_name_sample"/>
 
     <TextView
         android:id="@+id/item_filter_query"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="?attr/item_head_post_title_text_color"
+        android:textSize="14sp"
+        android:textColor="@color/grey700"
         tools:text="@string/filter_query_sample_long"/>
 
 </LinearLayout>

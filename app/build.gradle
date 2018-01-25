@@ -14,8 +14,8 @@ android {
         applicationId "com.orgzly"
         minSdkVersion 16 // JELLY_BEAN
         targetSdkVersion 25 // Nougat (7.1)
-        versionCode 93
-        versionName "1.6.2-beta.7"
+        versionCode 94
+        versionName "1.6.2-beta.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "DROPBOX_APP_KEY", gradle.ext.appProperties.getProperty("dropbox.app_key", '""')

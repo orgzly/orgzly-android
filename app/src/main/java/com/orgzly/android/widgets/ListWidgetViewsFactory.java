@@ -28,8 +28,6 @@ import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.OrgHead;
 
-;
-
 public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     private static final String TAG = ListWidgetViewsFactory.class.getName();
 
@@ -78,8 +76,10 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
         try {
             if (isPartitioned) {
                 Cursor cursor = NotesClient.getCursorForQuery(mContext, queryString);
+
                 AgendaCursor.AgendaMergedCursor agendaCursor =
                         AgendaCursor.INSTANCE.create(mContext, cursor, queryString);
+
                 mCursor = agendaCursor.getCursor();
                 originalNoteIDs = agendaCursor.getOriginalNoteIDs();
 
@@ -109,6 +109,8 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public RemoteViews getViewAt(int position) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, position);
+
         RemoteViews row = null;
 
         if (mCursor.moveToPosition(position)) {
@@ -123,8 +125,6 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
                 setupNoteRow(row, mCursor);
             }
         }
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, position, row.getLayoutId());
 
         return row;
     }
@@ -141,7 +141,8 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
         Note note = NotesClient.fromCursor(cursor);
 
         if (isPartitioned) {
-            note.setId(originalNoteIDs.get(note.getId()));
+            Long originalId = originalNoteIDs.get(note.getId());
+            note.setId(originalId);
         }
 
         OrgHead head = note.getHead();
@@ -176,7 +177,6 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
         } else {
             row.setViewVisibility(R.id.item_list_widget_done, View.GONE);
         }
-
 
         final Intent openIntent = new Intent();
         openIntent.putExtra(AppIntent.EXTRA_CLICK_TYPE, ListWidgetProvider.OPEN_CLICK_TYPE);

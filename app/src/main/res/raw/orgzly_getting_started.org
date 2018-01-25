@@ -17,68 +17,58 @@ Fling it left to open a different menu.
 ** Note can have tags :tag1:tag2:
 *** Sub-note inherits the tags :tag3:
 
-If you search for notes tagged “tag1”, this note will be returned as well.
+If you search for notes with tag “tag1”, this note will be returned as well.
 
-** [#A] Note can have a priority
-** TODO Task is a type of note with a TODO state
+** TODO Note can have a state
 
-You can have any number of different states (NEXT, WAIT, ...). You can configure states in Settings.
+You can configure any number of states to use: TODO, NEXT, DONE, etc.
 
-** TODO You can set scheduled time
+*** There are two /types/ of states: to-do and done
+
+*** DONE This is a note with /done/ type of state
+CLOSED: [2018-01-24 Wed 17:00]
+
+** Note can have a scheduled time
 SCHEDULED: <2015-02-20 Fri 15:15>
 
 *** Times can have a repeater
 SCHEDULED: <2015-02-16 Mon .+1d>
 
-** TODO You can set deadline time
-DEADLINE: <2015-02-20 Fri> SCHEDULED: <2015-02-23 Mon>
+** You can also set a deadline time
+DEADLINE: <2015-02-20 Fri>
 
-Both scheduled and deadline times can be used at the same time.
+** Note can use links
 
-** DONE Task can be marked as completed by setting its state to DONE
-CLOSED: [2015-02-20 Fri 20:17]
+Dial a phone number (tel:555-2368) or [[sms:555-2368][send SMS]].
 
-** Note can include different types of links
-
-Dial a phone number (tel:555-2368) or [[sms:555-2368][send SMS]]. Send email to [[mailto:support@orgzly.com][support@orgzly.com]], visit http://www.orgzly.com or read [[http://www.orgzly.com/help][documentation]].
+Send email to [[mailto:support@orgzly.com][support@orgzly.com]], visit http://www.orgzly.com or read [[http://www.orgzly.com/help][documentation]].
 
 ** Basic typographical emphasis is supported
 
-You can make words *bold*, /italic/, _underlined_, =verbatim= , ~code~ and +strike-through+.
+You can make words *bold*, /italic/, _underlined_, =verbatim=, ~code~ and +strike-through+.
 
-* Searching
-** You can search notes by clicking the search icon
-** You can search for text occurring anywhere in the note or narrow down the results using search operators
+* Search
+** There are many search operators supported
+:PROPERTIES:
+:ID:       779F1655-979A-4A35-BE12-916565816180
+:END:
 
-See http://www.orgzly.com/help#Search for more info.
+You can search notes by state, tag, scheduled or deadline time etc.
+
+See http://www.orgzly.com/help#search to learn more.
 
 ** Search queries can be saved for quick access
 
-There are two default saved searches available in the navigation drawer. Try them and notice the operators used.
+Try sample searches from navigation drawer and note the queries they use.
 
-*** You can define your own searches by clicking on “Searches” in the navigation drawer
-* Settings
-
-Settings button is located in the navigation drawer.
-
-** Go through available settings
-
-Modify them to your liking to improve your experience with Orgzly. Check out the dark color scheme!
+You can create your own saved searches by clicking on “Searches” in the navigation drawer.
 
 * Syncing
-** Sync method
 
-Notebooks can be synced with a directory on your device or Dropbox. Soon, additional repository types will be supported such as Git, Google Drive, SSH and more.
-
-** Your notebooks are saved as plain-text files
+** Notebooks can be saved as plain-text files
 
 Files are in the format used by “Org mode”.
 
-** Add a repository from Settings
+** Location (repository) type
 
-Repository is just a directory on your device or Dropbox.
-
-** Start sync
-
-Syncing is currently manual. Button is located in the navigation drawer.
-
+You can keep notebooks synced with a directory on your mobile device, SD card or Dropbox.

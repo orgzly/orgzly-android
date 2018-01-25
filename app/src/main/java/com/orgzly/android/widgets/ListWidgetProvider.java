@@ -111,7 +111,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
     }
 
     private static void updateListContents(Context context) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "updateListContents");
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 
@@ -180,6 +180,8 @@ public class ListWidgetProvider extends AppWidgetProvider {
     }
 
     private static void setFilterFromIntent(Context context, Intent intent) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+
         int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         long filterId = intent.getLongExtra(AppIntent.EXTRA_SAVED_SEARCH_ID, 0);
 
