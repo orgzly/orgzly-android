@@ -84,9 +84,9 @@
         <item name="item_head_state_done_color">@color/green900</item>
         <item name="item_head_state_unknown_color">@color/blue900</item>
 
-        <item name="item_head_bullet_text_color">@color/black</item>
+        <item name="item_head_bullet_text_color">@color/grey700</item>
         <item name="item_head_title_text_color">@color/black</item>
-        <item name="item_head_fold_button_text_color">@color/black</item>
+        <item name="item_head_fold_button_text_color">@color/grey700</item>
         <item name="item_head_post_title_text_color">@color/grey700</item>
 
         <item name="line_thin_color">#0c000000</item>
@@ -225,9 +225,9 @@
         <item name="item_head_state_done_color">@color/green200</item>
         <item name="item_head_state_unknown_color">@color/blue200</item>
 
-        <item name="item_head_bullet_text_color">@color/dark_bg_text_primary</item>
+        <item name="item_head_bullet_text_color">@color/dark_bg_text_secondary</item>
         <item name="item_head_title_text_color">@color/dark_bg_text_primary</item>
-        <item name="item_head_fold_button_text_color">@color/dark_bg_text_primary</item>
+        <item name="item_head_fold_button_text_color">@color/dark_bg_text_secondary</item>
         <item name="item_head_post_title_text_color">@color/dark_bg_text_secondary</item>
 
         <item name="line_thin_color">#0cffffff</item>
