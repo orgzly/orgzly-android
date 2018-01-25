@@ -7,6 +7,8 @@
     android:layout_height="wrap_content"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
     android:orientation="horizontal">
 
     <TextView
@@ -16,6 +18,7 @@
         android:layout_gravity="center_vertical"
         android:maxLines="1"
         android:textColor="@color/black"
+        android:textSize="14sp"
         android:textStyle="bold"
         tools:text="Mon, 25 Sep"/>
 

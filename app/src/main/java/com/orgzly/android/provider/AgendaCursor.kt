@@ -48,8 +48,6 @@ object AgendaCursor {
         val deadlineRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.DEADLINE_RANGE_STRING)
 
         var nextId = 1L
-
-
         val originalNoteIDs = LongSparseArray<Long>()
 
         cursor.moveToFirst()
