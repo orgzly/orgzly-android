@@ -24,6 +24,27 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.6.2-beta.8"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix cursor merging for agenda (attempt to fix potential crash, thanks for the report!)"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Add missing click feedback in widget"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Few smaller design changes"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Update “Getting Started” notebook"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.6.2-beta.7"
             tools:ignore="HardcodedText"/>
 
