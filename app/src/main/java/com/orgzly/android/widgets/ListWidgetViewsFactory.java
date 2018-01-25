@@ -109,6 +109,8 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public RemoteViews getViewAt(int position) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, position);
+
         RemoteViews row = null;
 
         if (mCursor.moveToPosition(position)) {
@@ -123,8 +125,6 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
                 setupNoteRow(row, mCursor);
             }
         }
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, position, row.getLayoutId());
 
         return row;
     }
