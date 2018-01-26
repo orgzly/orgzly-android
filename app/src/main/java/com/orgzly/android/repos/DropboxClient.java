@@ -14,6 +14,7 @@ import com.dropbox.core.v2.files.GetMetadataErrorException;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.LookupError;
 import com.dropbox.core.v2.files.Metadata;
+import com.dropbox.core.v2.files.RelocationResult;
 import com.dropbox.core.v2.files.WriteMode;
 import com.orgzly.BuildConfig;
 import com.orgzly.android.BookName;
@@ -264,7 +265,7 @@ public class DropboxClient {
         linkedOrThrow();
 
         try {
-            dbxClient.files().delete(path);
+            dbxClient.files().deleteV2(path);
 
         } catch (DbxException e) {
             e.printStackTrace();
@@ -281,10 +282,17 @@ public class DropboxClient {
         linkedOrThrow();
 
         try {
-            FileMetadata metadata = (FileMetadata) dbxClient.files().move(from.getPath(), to.getPath());
+            RelocationResult relocationRes = dbxClient.files().moveV2(from.getPath(), to.getPath());
+            Metadata metadata = relocationRes.getMetadata();
 
-            String rev = metadata.getRev();
-            long mtime = metadata.getServerModified().getTime();
+            if (! (metadata instanceof FileMetadata)) {
+                throw new IOException("Relocated object not a file?");
+            }
+
+            FileMetadata fileMetadata = (FileMetadata) metadata;
+
+            String rev = fileMetadata.getRev();
+            long mtime = fileMetadata.getServerModified().getTime();
 
             return new VersionedRook(repoUri, to, rev, mtime);
 
