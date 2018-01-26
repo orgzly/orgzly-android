@@ -2,6 +2,7 @@ package com.orgzly.android.ui.settings
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -67,7 +68,11 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
 
         setContentView(R.layout.activity_settings)
 
+        val myToolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(myToolbar)
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         setTitle(R.string.settings)
 
         // Set action bar and status bar colors

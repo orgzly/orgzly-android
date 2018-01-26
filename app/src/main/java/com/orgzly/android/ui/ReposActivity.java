@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.orgzly.BuildConfig;
@@ -60,16 +61,17 @@ public class ReposActivity extends CommonActivity
 
         setContentView(R.layout.activity_repos);
 
-        mShelf = new Shelf(getApplicationContext());
-        mDropboxClient = new DropboxClient(getApplicationContext());
+        Toolbar myToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
 
 
-        /* onOptionsItemSelected() (android.R.id.home) gets called on press. */
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        // getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         getSupportActionBar().setTitle(R.string.repositories);
+
+        mShelf = new Shelf(getApplicationContext());
+        mDropboxClient = new DropboxClient(getApplicationContext());
 
         if (savedInstanceState == null) {
             Fragment fragment = ReposFragment.getInstance();

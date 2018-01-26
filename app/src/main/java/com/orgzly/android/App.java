@@ -1,13 +1,16 @@
 package com.orgzly.android;
 
-import android.app.Application;
 import android.content.Context;
 import android.preference.PreferenceManager;
+import android.support.multidex.MultiDexApplication;
 
 import com.evernote.android.job.JobManager;
 import com.orgzly.android.ui.settings.SettingsFragment;
 
-public class App extends Application {
+/**
+ * MultiDexApplication
+ */
+public class App extends MultiDexApplication {
     /**
      * Job IDs for {@link android.support.v4.app.JobIntentService#enqueueWork}.
      */

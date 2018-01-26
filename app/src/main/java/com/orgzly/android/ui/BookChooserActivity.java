@@ -2,6 +2,7 @@ package com.orgzly.android.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -31,6 +32,10 @@ public class BookChooserActivity extends CommonActivity
         action = getIntent().getAction();
 
         setContentView(R.layout.activity_bookchooser);
+
+        Toolbar myToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+
         getSupportActionBar().setTitle(R.string.pick_a_notebook);
 
          /* Set status and action bar colors depending on the fragment. */

@@ -18,6 +18,8 @@ android {
         versionName "1.6.2-beta.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        multiDexEnabled true
+
         buildConfigField "String", "DROPBOX_APP_KEY", gradle.ext.appProperties.getProperty("dropbox.app_key", '""')
         resValue "string", "dropbox_app_key_schema", gradle.ext.appProperties.getProperty("dropbox.app_key_schema", '')
     }
@@ -108,11 +110,14 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation "org.jetbrains:annotations:$jetbrains_annotations"
 
+    implementation "com.android.support:multidex:$android_support_multidex_version"
+
     implementation "com.android.support:support-v4:$android_support_version"
     implementation "com.android.support:appcompat-v7:$android_support_version"
     implementation "com.android.support:cardview-v7:$android_support_version"
     implementation "com.android.support:recyclerview-v7:$android_support_version"
     implementation "com.android.support:design:$android_support_version"
+
     implementation "com.android.support.constraint:constraint-layout:$android_constraint_layout"
 
     androidTestImplementation "com.android.support:support-annotations:$android_support_version"

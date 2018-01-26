@@ -18,11 +18,11 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -153,8 +153,16 @@ public class MainActivity extends CommonActivity
 
         setContentView(R.layout.activity_main);
 
+        Toolbar myToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+
         mSavedTitle = mDefaultTitle = getTitle();
         mSavedSubtitle = null;
+
 
         setupDrawer();
 
@@ -195,7 +203,7 @@ public class MainActivity extends CommonActivity
     private void setupDrawer() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
 
         if (mDrawerLayout != null) {
             // Set the drawer toggle as the DrawerListener
@@ -242,9 +250,6 @@ public class MainActivity extends CommonActivity
             mDrawerLayout.addDrawerListener(mDrawerToggle);
         }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
         mSyncFragment = addSyncFragment();
 
         addDrawerFragment();
@@ -253,12 +258,6 @@ public class MainActivity extends CommonActivity
     private void drawerOpened() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
-        /* Causes onPrepareOptionsMenu to be called. */
-        supportInvalidateOptionsMenu();
-
-        getSupportActionBar().setTitle(mDefaultTitle);
-        getSupportActionBar().setSubtitle(null);
-
         mIsDrawerOpen = true;
 
         ActivityUtils.closeSoftKeyboard(this);
@@ -266,12 +265,6 @@ public class MainActivity extends CommonActivity
 
     private void drawerClosed() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
-
-        /* Causes onPrepareOptionsMenu to be called. */
-        supportInvalidateOptionsMenu();
-
-        getSupportActionBar().setTitle(mSavedTitle);
-        getSupportActionBar().setSubtitle(mSavedSubtitle);
 
         mIsDrawerOpen = false;
     }
@@ -524,26 +517,6 @@ public class MainActivity extends CommonActivity
                 return true;
             }
         });
-    }
-
-    /**
-     * Callback for options menu.
-     * Called after each invalidateOptionsMenu().
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        /* Hide all menu items if drawer is visible. */
-        if (mDrawerLayout != null) {
-            menuItemsSetVisible(menu, !mDrawerLayout.isDrawerVisible(GravityCompat.START));
-        }
-
-        return true;
-    }
-
-    private void menuItemsSetVisible(Menu menu, boolean visible) {
-        for (int i = 0; i < menu.size(); i++) {
-            menu.getItem(i).setVisible(visible);
-        }
     }
 
     /**
@@ -1299,6 +1272,11 @@ public class MainActivity extends CommonActivity
             if (selectedCount > 0) {
                 /* Start new action mode. */
                 mActionMode = startSupportActionMode(actionMode);
+
+                /* Lock drawer. Do not allow swipe-to-open while CAB is active. */
+                if (mDrawerLayout != null) {
+                    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }
             }
         }
     }
@@ -1318,6 +1296,11 @@ public class MainActivity extends CommonActivity
         }
         mPromoteDemoteOrMoveRequested = false;
         mActionMode = null;
+
+        /* Unlock drawer. */
+        if (mDrawerLayout != null) {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
     }
 
     private void finishActionMode() {

@@ -91,8 +91,7 @@ public class ActivityUtils {
         }
 
         /* Color action bar. */
-        activity.getSupportActionBar()
-                .setBackgroundDrawable(new ColorDrawable(resources.actionColor));
+        activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(resources.actionColor));
     }
 
     public static class FragmentResources {

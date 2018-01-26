@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -71,11 +72,12 @@ public class ShareActivity extends CommonActivity
 
         setContentView(R.layout.activity_share);
 
+        Toolbar myToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+
         getSupportActionBar().setTitle(R.string.new_note);
 
-         /* Set status and action bar colors depending on the fragment. */
         ActivityUtils.setColorsForFragment(this, null);
-
 
         Data data = getDataFromIntent(getIntent());
 

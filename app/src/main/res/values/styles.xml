@@ -9,7 +9,9 @@
 
          See and try using http://developer.android.com/design/style/typography.html
     -->
-    <style name="AppLightTheme" parent="Theme.Design.Light">
+    <style name="AppLightTheme" parent="Theme.Design.Light.NoActionBar">
+        <item name="windowActionModeOverlay">true</item>
+
         <!-- Avoid white screen appearing briefly. -->
         <item name="android:windowDisablePreview">true</item>
 
@@ -157,7 +159,9 @@
         <item name="oic_item_alpha">0.55</item>
     </style>
 
-    <style name="AppDarkTheme" parent="Theme.Design">
+    <style name="AppDarkTheme" parent="Theme.Design.NoActionBar">
+        <item name="windowActionModeOverlay">true</item>
+
         <!-- Font sizes (defaults) -->
         <item name="font_micro">12sp</item>
         <item name="font_small">14sp</item>
