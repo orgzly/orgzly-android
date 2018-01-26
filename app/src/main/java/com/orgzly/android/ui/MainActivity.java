@@ -477,7 +477,7 @@ public class MainActivity extends CommonActivity
     private void setupSearchView(Menu menu) {
         final MenuItem searchItem = menu.findItem(R.id.activity_action_search);
 
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
 
         searchView.setQueryHint(getString(R.string.search_hint));
 
@@ -517,7 +517,7 @@ public class MainActivity extends CommonActivity
                 if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, str);
 
                 /* Close search. */
-                MenuItemCompat.collapseActionView(searchItem);
+                searchItem.collapseActionView();
 
                 DisplayManager.displayQuery(getSupportFragmentManager(), str.trim());
 
