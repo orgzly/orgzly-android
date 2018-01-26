@@ -626,7 +626,7 @@ public class NoteFragment extends Fragment
 
         /* Refresh action bar items (hide or display, depending on if book is loaded. */
         if (getActivity() != null) {
-            getActivity().supportInvalidateOptionsMenu();
+            getActivity().invalidateOptionsMenu();
         }
     }
 

@@ -150,7 +150,7 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
 
     private fun setupAdapter() {
         /* Create adapter using Cursor. */
-        mListAdapter = createFilterCursorAdapter(activity, R.layout.item_filter)
+        mListAdapter = createFilterCursorAdapter(context!!, R.layout.item_filter)
 
         listAdapter = mListAdapter
     }

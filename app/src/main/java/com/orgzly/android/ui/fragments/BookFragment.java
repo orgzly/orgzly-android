@@ -591,7 +591,7 @@ public class BookFragment extends NoteListFragment
             /* Refresh action bar items (hide or display, depending on if the book has been loaded. */
             FragmentActivity activity = getActivity();
             if (activity != null) {
-                activity.supportInvalidateOptionsMenu();
+                activity.invalidateOptionsMenu();
             }
         }
     }
