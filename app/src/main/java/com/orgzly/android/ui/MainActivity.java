@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -54,10 +55,10 @@ import com.orgzly.android.query.Query;
 import com.orgzly.android.query.user.DottedQueryBuilder;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
+import com.orgzly.android.ui.drawer.DrawerNavigationView;
 import com.orgzly.android.ui.fragments.BookFragment;
 import com.orgzly.android.ui.fragments.BookPrefaceFragment;
 import com.orgzly.android.ui.fragments.BooksFragment;
-import com.orgzly.android.ui.fragments.DrawerFragment;
 import com.orgzly.android.ui.fragments.FilterFragment;
 import com.orgzly.android.ui.fragments.FiltersFragment;
 import com.orgzly.android.ui.fragments.NoteFragment;
@@ -89,8 +90,7 @@ public class MainActivity extends CommonActivity
         SyncFragment.SyncFragmentListener,
         SimpleOneLinerDialog.SimpleOneLinerDialogListener,
         BookPrefaceFragment.EditorListener,
-        NoteListFragment.NoteListFragmentListener,
-        DrawerFragment.DrawerFragmentListener {
+        NoteListFragment.NoteListFragmentListener {
 
     public static final String TAG = MainActivity.class.getName();
 
@@ -104,12 +104,9 @@ public class MainActivity extends CommonActivity
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private DrawerNavigationView drawerNavigationView;
 
-    /**
-     * isDrawerOpen() is not reliable - there was a race condition - closing drawer VS fragment resume.
-     */
-    private boolean mIsDrawerOpen = false;
-
+    private LocalBroadcastManager broadcastManager;
 
     private CharSequence mSavedTitle;
     private CharSequence mSavedSubtitle;
@@ -124,27 +121,7 @@ public class MainActivity extends CommonActivity
 
     private Runnable runnableOnResumeFragments;
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
-
-            if (intent != null) {
-                String action = intent.getAction();
-
-                if (AppIntent.ACTION_OPEN_BOOK.equals(action)) {
-                    long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0);
-                    DisplayManager.displayBook(getSupportFragmentManager(), bookId, 0);
-
-                } else if (AppIntent.ACTION_OPEN_NOTE.equals(action)) {
-                    long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0);
-                    long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0);
-
-                    DisplayManager.displayNote(getSupportFragmentManager(), bookId, noteId);
-                }
-            }
-        }
-    };
+    private BroadcastReceiver receiver = new LocalBroadcastReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +140,8 @@ public class MainActivity extends CommonActivity
         mSavedTitle = mDefaultTitle = getTitle();
         mSavedSubtitle = null;
 
+
+        broadcastManager = LocalBroadcastManager.getInstance(this);
 
         setupDrawer();
 
@@ -205,6 +184,25 @@ public class MainActivity extends CommonActivity
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
+        NavigationView navigationView = mDrawerLayout.findViewById(R.id.drawer_navigation_view);
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            Intent intent = item.getIntent();
+
+            if (intent != null) {
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+
+                // Avoid jerky drawer close by displaying new fragment with a delay
+                new Handler().postDelayed(() -> broadcastManager.sendBroadcast(intent), 200);
+            }
+
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, item, intent);
+
+            return true;
+        });
+
+        drawerNavigationView = new DrawerNavigationView(this, navigationView);
+
         if (mDrawerLayout != null) {
             // Set the drawer toggle as the DrawerListener
             mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
@@ -230,14 +228,14 @@ public class MainActivity extends CommonActivity
                             }
                             break;
 
-                        case 0: // Closed
+                        case 0: // Starting to open the drawer
                             if (slideOffset > 0) {
                                 state = 1;
                                 drawerOpened();
                             }
                             break;
 
-                        case 1: // Opened
+                        case 1: // Starting to close the drawer
                             if (slideOffset == 0) {
                                 state = 0;
                                 drawerClosed();
@@ -254,22 +252,16 @@ public class MainActivity extends CommonActivity
         }
 
         mSyncFragment = addSyncFragment();
-
-        addDrawerFragment();
     }
 
     private void drawerOpened() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
-
-        mIsDrawerOpen = true;
 
         ActivityUtils.closeSoftKeyboard(this);
     }
 
     private void drawerClosed() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
-
-        mIsDrawerOpen = false;
     }
 
     private SyncFragment addSyncFragment() {
@@ -291,15 +283,6 @@ public class MainActivity extends CommonActivity
         }
 
         return fragment;
-    }
-
-    private void addDrawerFragment() {
-        if (getSupportFragmentManager().findFragmentByTag(DrawerFragment.FRAGMENT_TAG) == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.drawer_list_container, DrawerFragment.getInstance(), DrawerFragment.FRAGMENT_TAG)
-                    .commit();
-        }
     }
 
     @Override
@@ -354,7 +337,6 @@ public class MainActivity extends CommonActivity
             /* Open drawer for the first time user. */
             if (currentVersion == 0 && mDrawerLayout != null) {
                 mDrawerLayout.openDrawer(GravityCompat.START);
-                mIsDrawerOpen = true;
             }
 
             displayWhatsNewDialog();
@@ -401,7 +383,6 @@ public class MainActivity extends CommonActivity
         if (mDrawerLayout != null) {
             if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
                 mDrawerLayout.closeDrawer(GravityCompat.START);
-                mIsDrawerOpen = false;
                 return;
             }
         }
@@ -440,7 +421,11 @@ public class MainActivity extends CommonActivity
 
         LocalBroadcastManager bm = LocalBroadcastManager.getInstance(this);
         bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_NOTE));
+        bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_QUERIES));
+        bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_QUERY));
+        bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_BOOKS));
         bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_BOOK));
+        bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_SETTINGS));
     }
 
     /**
@@ -1323,25 +1308,14 @@ public class MainActivity extends CommonActivity
         mSavedTitle = title != null ? title : mDefaultTitle;
         mSavedSubtitle = subTitle;
 
-        /* Do not set titles if drawer is opened.
-         * This check is only needed for when drawer is opened for the first time
-         * programmatically, before fragment got to its onResume().
-         */
-        if (!mIsDrawerOpen) {
-            /* Change titles. */
-            getSupportActionBar().setTitle(mSavedTitle);
-            getSupportActionBar().setSubtitle(mSavedSubtitle);
-        }
+        /* Change titles. */
+        getSupportActionBar().setTitle(mSavedTitle);
+        getSupportActionBar().setSubtitle(mSavedSubtitle);
+
+        drawerNavigationView.refresh(fragmentTag);
 
         /* Set status and action bar colors depending on the fragment. */
         ActivityUtils.setColorsForFragment(this, fragmentTag);
-
-        /* Notify drawer about currently active fragment. */
-        Fragment drawerFragment = getSupportFragmentManager()
-                .findFragmentByTag(DrawerFragment.FRAGMENT_TAG);
-        if (drawerFragment != null) {
-            ((DrawerFragment) drawerFragment).setActiveFragment(fragmentTag);
-        }
 
         /* Update floating action button. */
         MainFab.updateFab(this, fragmentTag, selectionCount);
@@ -1389,60 +1363,53 @@ public class MainActivity extends CommonActivity
         popBackStackAndCloseKeyboard();
     }
 
-//    private void tryDisplayingTooltip() {
-//        if (mTooltip == null) {
-//            mTooltip = Tooltips.display(this, mIsDrawerOpen);
-//
-//            if (mTooltip != null) {
-//                mTooltip.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                    @Override
-//                    public void onDismiss(DialogInterface dialog) {
-//                        mTooltip = null;
-//                    }
-//                });
-//            }
-//        }
-//    }
+    private class LocalBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
-    @Override
-    public void onDrawerItemClicked(final DrawerFragment.DrawerItem item) {
-        /* Don't end action mode if the click was on book - it could be the same book. */
-        if (!(item instanceof DrawerFragment.BookItem)) {
-            finishActionMode();
-        }
-
-        /* Close drawer. */
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        }
-
-        runDelayedAfterDrawerClose(() -> {
-            if (item instanceof DrawerFragment.BooksItem) {
-                DisplayManager.displayBooks(getSupportFragmentManager(), true);
-
-            } else if (item instanceof DrawerFragment.FiltersItem) {
-                DisplayManager.displayFilters(getSupportFragmentManager());
-
-            } else if (item instanceof DrawerFragment.SettingsItem) {
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-
-            } else if (item instanceof DrawerFragment.BookItem) {
-                long bookId = ((DrawerFragment.BookItem) item).id;
-                onBookClicked(bookId);
-
-            } else if (item instanceof DrawerFragment.FilterItem) {
-                String query = ((DrawerFragment.FilterItem) item).query;
-                DisplayManager.displayQuery(getSupportFragmentManager(), query);
+            if (intent != null && intent.getAction() != null) {
+                handleIntent(intent, intent.getAction());
             }
-        });
-    }
+        }
 
-    /* Avoid jerky drawer close by displaying new fragment with a delay.
-     * Previous title might be displayed if loading of the new fragment takes too long and it
-     * might look ugly, showing for only a fraction of a second before being replaced with new one.
-     * FIXME: Maybe move drawer handling here and add a flag for *not* changing the title.
-     */
-    private void runDelayedAfterDrawerClose(Runnable runnable) {
-        new Handler().postDelayed(runnable, 300);
+        private void handleIntent(@NonNull Intent intent, @NonNull String action) {
+            switch (action) {
+                case AppIntent.ACTION_OPEN_NOTE: {
+                    long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0);
+                    long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0);
+                    DisplayManager.displayNote(getSupportFragmentManager(), bookId, noteId);
+                    break;
+                }
+
+                case AppIntent.ACTION_OPEN_QUERIES: {
+                    DisplayManager.displayFilters(getSupportFragmentManager());
+                    break;
+                }
+
+                case AppIntent.ACTION_OPEN_QUERY: {
+                    String query = intent.getStringExtra(AppIntent.EXTRA_QUERY_STRING);
+                    DisplayManager.displayQuery(getSupportFragmentManager(), query);
+                    break;
+                }
+
+                case AppIntent.ACTION_OPEN_BOOKS: {
+                    DisplayManager.displayBooks(getSupportFragmentManager(), true);
+                    break;
+                }
+
+                case AppIntent.ACTION_OPEN_BOOK: {
+                    long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0);
+                    DisplayManager.displayBook(getSupportFragmentManager(), bookId, 0);
+                    break;
+                }
+
+                case AppIntent.ACTION_OPEN_SETTINGS: {
+                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                    break;
+                }
+            }
+
+        }
     }
 }

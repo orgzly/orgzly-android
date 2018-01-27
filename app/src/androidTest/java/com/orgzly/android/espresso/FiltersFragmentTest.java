@@ -100,7 +100,7 @@ public class FiltersFragmentTest extends OrgzlyTest {
     public void testActionModeWhenSelectingFilterThenOpeningBook() {
         onListItem(0).perform(longClick());
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(allOf(withText("book-one"), isDescendantOfA(withId(R.id.fragment_left_drawer_container)))).perform(click());
+        onView(allOf(withText("book-one"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
         onView(withId(R.id.filters_cab_move_up)).check(doesNotExist());
     }
 

@@ -22,6 +22,7 @@ import com.orgzly.android.provider.ProviderContract
 import com.orgzly.android.provider.clients.FiltersClient
 import com.orgzly.android.ui.Fab
 import com.orgzly.android.ui.FragmentListener
+import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.Loaders
 import com.orgzly.android.ui.util.ListViewUtils
 import com.orgzly.android.util.LogUtils
@@ -30,7 +31,7 @@ import java.io.IOException
 /**
  * Displays and allows modifying saved filters.
  */
-class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Cursor> {
+class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Cursor>, DrawerItem {
 
     private var mListAdapter: SimpleCursorAdapter? = null
 
@@ -43,6 +44,8 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
     private var mActionMode: ActionMode? = null
 
     private var dialog: AlertDialog? = null
+
+    override fun getCurrentDrawerItemId() = getDrawerItemId()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -323,6 +326,10 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
 
             /* Create adapter using Cursor. */
             return SimpleCursorAdapter(context, layout, null, columns, to, 0)
+        }
+
+        fun getDrawerItemId(): String {
+            return TAG
         }
     }
 }

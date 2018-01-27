@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/fragment_sync_container"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_sync_container"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:background="?attr/drawer_bg"
+    android:orientation="vertical">
 
     <ProgressBar
         android:id="@+id/sync_progress_bar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:visibility="invisible"
+        android:background="?attr/drawer_bg"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?attr/drawer_divider"/>
 
-    <!-- Sync button.
-         Not using compound drawable as image has to be rotated while syncing. -->
+    <!-- Sync button. Not using compound drawable as image has to be rotated while syncing. -->
     <LinearLayout
         android:id="@+id/sync_button_container"
-        style="@android:style/Widget.Holo.Button.Borderless"
+        style="@style/BorderlessButton"
         android:paddingStart="0dp"
         android:paddingEnd="0dp"
         android:paddingLeft="0dp"
@@ -31,27 +33,33 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/sync_button_icon"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:tint="?attr/item_head_title_text_color"
             android:src="?attr/ic_sync_24dp"
             android:contentDescription="@string/sync"/>
 
         <TextView
             android:id="@+id/sync_button_text"
-            style="@style/DrawerButtonText"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical"
             tools:text="@string/sync_button_sample"
-            android:textSize="?attr/left_drawer_sync_text_size"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:scrollHorizontally="true"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textStyle="normal"
+            android:textStyle="bold"
             android:textColor="?attr/drawer_text"/>
     </LinearLayout>
-
 </LinearLayout>

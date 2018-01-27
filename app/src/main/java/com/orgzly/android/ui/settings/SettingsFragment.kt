@@ -114,7 +114,9 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         }
 
         /* Remove dividers. */
-        // view?.findViewById(android.R.id.list)?.let { (it as? ListView)?.divider = null }
+//        view?.findViewById(android.R.id.list)?.let {
+//            (it as? ListView)?.divider = null
+//        }
 
         return view
     }

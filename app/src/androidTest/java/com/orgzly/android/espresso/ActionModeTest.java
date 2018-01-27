@@ -73,7 +73,7 @@ public class ActionModeTest extends OrgzlyTest {
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
 
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(allOf(withText("Scheduled"), isDescendantOfA(withId(R.id.fragment_left_drawer_container)))).perform(click());
+        onView(allOf(withText("Scheduled"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
 
         onListItem(1).perform(longClick());
 
@@ -111,26 +111,6 @@ public class ActionModeTest extends OrgzlyTest {
         onView(withId(R.id.query_cab_edit)).check(matches(isDisplayed()));
     }
 
-    @Test
-    public void testCabShouldCloseOnQuickBooksOpen() {
-        onListItem(3).perform(longClick());
-
-        onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withText(R.string.notebooks)).perform(click());
-
-        onView(withId(R.id.book_cab_move)).check(doesNotExist());
-    }
-
-    @Test
-    public void testCabShouldCloseOnQueryOpen() {
-        onListItem(3).perform(longClick());
-
-        onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withText("Scheduled")).perform(click());
-
-        onView(withId(R.id.book_cab_move)).check(doesNotExist());
-    }
-
     /* This is for when note click action is reversed - notes can be selected and
      * while selected a note can be opened.
      */
@@ -152,8 +132,8 @@ public class ActionModeTest extends OrgzlyTest {
     @Test
     public void testBackPressClosesDrawer() {
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withId(R.id.drawer_container)).check(matches(isDisplayed()));
+        onView(withId(R.id.drawer_navigation_view)).check(matches(isDisplayed()));
         pressBack();
-        onView(withId(R.id.drawer_container)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.drawer_navigation_view)).check(matches(not(isDisplayed())));
     }
 }

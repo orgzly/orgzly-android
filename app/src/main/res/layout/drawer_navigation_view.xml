@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.NavigationView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_navigation_view"
+    android:theme="@style/NavigationViewForDrawer"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    app:itemIconTint="?attr/item_head_title_text_color"
+    app:itemTextColor="?attr/item_head_title_text_color"
+    android:fitsSystemWindows="true"
+    app:menu="@menu/drawer">
+
+    <!--app:headerLayout="@layout/drawer_header"-->
+
+    <!-- Sync button. -->
+    <FrameLayout
+        android:id="@+id/drawer_sync_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"/>
+
+</android.support.design.widget.NavigationView>

@@ -36,6 +36,7 @@ import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.provider.views.DbBookViewColumns;
 import com.orgzly.android.ui.Fab;
 import com.orgzly.android.ui.FragmentListener;
+import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.UriUtils;
@@ -47,7 +48,8 @@ import com.orgzly.android.util.UriUtils;
 public class BooksFragment extends ListFragment
         implements
         Fab,
-        LoaderManager.LoaderCallbacks<Cursor> {
+        LoaderManager.LoaderCallbacks<Cursor>,
+        DrawerItem {
 
     private static final String TAG = BooksFragment.class.getName();
 
@@ -640,6 +642,15 @@ public class BooksFragment extends ListFragment
                     null,
                     0); // No books ever selected, as we're using the old floating context menu.
         }
+    }
+
+    @Override
+    public String getCurrentDrawerItemId() {
+        return getDrawerItemId();
+    }
+
+    public static String getDrawerItemId() {
+        return TAG;
     }
 
     public interface BooksFragmentListener extends FragmentListener {

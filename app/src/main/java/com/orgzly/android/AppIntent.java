@@ -26,7 +26,11 @@ public class AppIntent {
     public static final String ACTION_CLEAR_DATABASE = "com.orgzly.intent.action.CLEAR_DATABASE";
 
     public static final String ACTION_OPEN_NOTE = "com.orgzly.intent.action.OPEN_NOTE";
+    public static final String ACTION_OPEN_QUERIES = "com.orgzly.intent.action.OPEN_QUERY";
+    public static final String ACTION_OPEN_QUERY = "com.orgzly.intent.action.OPEN_QUERIES";
+    public static final String ACTION_OPEN_BOOKS = "com.orgzly.intent.action.OPEN_BOOKS";
     public static final String ACTION_OPEN_BOOK = "com.orgzly.intent.action.OPEN_BOOK";
+    public static final String ACTION_OPEN_SETTINGS = "com.orgzly.intent.action.OPEN_SETTINGS";
 
     public static final String ACTION_DISPLAY_MESSAGE = "com.orgzly.intent.action.DISPLAY_MESSAGE";
 

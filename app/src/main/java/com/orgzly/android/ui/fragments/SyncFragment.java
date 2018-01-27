@@ -744,7 +744,7 @@ public class SyncFragment extends Fragment {
                 buttonText.setText(prev.buttonText.getText());
 
             } else {
-                progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.INVISIBLE);
 
                 setButtonTextToLastSynced();
             }
@@ -834,7 +834,7 @@ public class SyncFragment extends Fragment {
 
                 case NOT_RUNNING:
                 case FINISHED:
-                    progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.INVISIBLE);
 
                     setAnimation(false);
 
@@ -844,7 +844,7 @@ public class SyncFragment extends Fragment {
 
                 case CANCELED:
                 case FAILED:
-                    progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.INVISIBLE);
 
                     setAnimation(false);
 

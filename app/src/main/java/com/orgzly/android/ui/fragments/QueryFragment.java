@@ -3,6 +3,7 @@ package com.orgzly.android.ui.fragments;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -15,6 +16,7 @@ import com.orgzly.R;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.ui.ActionModeListener;
+import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.org.datetime.OrgDateTime;
@@ -27,7 +29,8 @@ import java.util.TreeSet;
 abstract public class QueryFragment extends NoteListFragment
         implements
         TimestampDialogFragment.OnDateTimeSetListener,
-        LoaderManager.LoaderCallbacks<Cursor> {
+        LoaderManager.LoaderCallbacks<Cursor>,
+        DrawerItem {
 
     private static final String TAG = QueryFragment.class.getName();
 
@@ -50,6 +53,16 @@ abstract public class QueryFragment extends NoteListFragment
      */
     public QueryFragment() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+    }
+
+    @NonNull
+    @Override
+    public String getCurrentDrawerItemId() {
+        return getDrawerItemId(getQuery());
+    }
+
+    public static String getDrawerItemId(String query) {
+        return TAG + " " + query;
     }
 
     @Override

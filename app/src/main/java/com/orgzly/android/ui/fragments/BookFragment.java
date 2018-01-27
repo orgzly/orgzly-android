@@ -39,6 +39,7 @@ import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.ui.ActionModeListener;
 import com.orgzly.android.ui.Fab;
 import com.orgzly.android.ui.HeadsListViewAdapter;
+import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.NoteStateSpinner;
@@ -61,7 +62,8 @@ public class BookFragment extends NoteListFragment
         implements
         Fab,
         TimestampDialogFragment.OnDateTimeSetListener,
-        LoaderManager.LoaderCallbacks<Cursor> {
+        LoaderManager.LoaderCallbacks<Cursor>,
+        DrawerItem {
 
     private static final String TAG = BookFragment.class.getName();
 
@@ -115,6 +117,15 @@ public class BookFragment extends NoteListFragment
         fragment.setArguments(args);
 
         return fragment;
+    }
+
+    @Override
+    public String getCurrentDrawerItemId() {
+        return getDrawerItemId(mBookId);
+    }
+
+    public static String getDrawerItemId(long bookId) {
+        return TAG + " " + bookId;
     }
 
     /**

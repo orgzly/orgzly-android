@@ -278,7 +278,7 @@ public class MiscTest extends OrgzlyTest {
         activityRule.launchActivity(null);
         onView(allOf(withText(R.string.notebooks), isDescendantOfA(withId(R.id.toolbar)))).check(matches(isDisplayed()));
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(allOf(withText("book-one"), isDescendantOfA(withId(R.id.fragment_left_drawer_container)))).perform(click());
+        onView(allOf(withText("book-one"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
         onView(allOf(withText("book-one"), isDescendantOfA(withId(R.id.toolbar)))).check(matches(isDisplayed()));
     }
 
@@ -537,7 +537,7 @@ public class MiscTest extends OrgzlyTest {
 
         /* Books in drawer. */
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(allOf(withText("Notebook Title"), isDescendantOfA(withId(R.id.fragment_left_drawer_container)))).check(matches(isDisplayed()));
+        onView(allOf(withText("Notebook Title"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).check(matches(isDisplayed()));
     }
 
     @Test
@@ -629,7 +629,7 @@ public class MiscTest extends OrgzlyTest {
         onListItem(3).perform(longClick());
         onView(withId(R.id.book_cab_move)).check(matches(isDisplayed()));
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(allOf(withText("booky"), isDescendantOfA(withId(R.id.fragment_left_drawer_container)))).perform(click());
+        onView(allOf(withText("booky"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
         onView(withId(R.id.book_cab_move)).check(matches(isDisplayed()));
     }
 
@@ -654,7 +654,7 @@ public class MiscTest extends OrgzlyTest {
         onListItem(3).perform(longClick());
         onView(withId(R.id.book_cab_move)).check(matches(isDisplayed()));
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(allOf(withText("booky-two"), isDescendantOfA(withId(R.id.fragment_left_drawer_container)))).perform(click());
+        onView(allOf(withText("booky-two"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
 
         onView(withId(R.id.book_cab_move)).check(doesNotExist());
@@ -671,7 +671,7 @@ public class MiscTest extends OrgzlyTest {
         onListItem(1).perform(click());
         onView(withId(R.id.fragment_note_container)).check(matches(isDisplayed()));
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(allOf(withText("booky-one"), isDescendantOfA(withId(R.id.fragment_left_drawer_container)))).perform(click());
+        onView(allOf(withText("booky-one"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
     }
 }

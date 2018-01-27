@@ -6,7 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/main_content"
@@ -32,11 +33,11 @@
             app:pressedTranslationZ="12dp"
             app:borderWidth="0dp"/>
 
-
         <include layout="@layout/toolbar_in_appbar"/>
 
     </android.support.design.widget.CoordinatorLayout>
 
-    <include layout="@layout/drawer"/>
+    <!--<include layout="@layout/drawer"/>-->
+    <include layout="@layout/drawer_navigation_view"/>
 
 </android.support.v4.widget.DrawerLayout>
