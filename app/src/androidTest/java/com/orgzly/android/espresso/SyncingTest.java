@@ -23,6 +23,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.doesNotExis
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerActions.close;
 import static android.support.test.espresso.contrib.DrawerActions.open;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -92,7 +93,8 @@ public class SyncingTest extends OrgzlyTest {
 
         // Open book
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(allOf(withText(R.string.notebooks), isDisplayed())).perform(click());
+        onView(allOf(withText(R.string.notebooks), isDescendantOfA(withId(R.id.fragment_left_drawer_container)))).perform(click());
+
         onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
         onView(allOf(withText("booky"), isDisplayed())).check(matches(isDisplayed()));
         onListItem(0).perform(click());
@@ -105,9 +107,9 @@ public class SyncingTest extends OrgzlyTest {
 
         // Check it is synced
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(allOf(withText(R.string.notebooks), isDisplayed())).perform(click());
+        onView(allOf(withText(R.string.notebooks), isDescendantOfA(withId(R.id.fragment_left_drawer_container)))).perform(click());
         onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
-        onView(allOf(withText("booky"), isDisplayed())).check(matches(isDisplayed()));
+        onView(allOf(withText("booky"), withId(R.id.item_book_title))).check(matches(isDisplayed()));
         onView(allOf(withId(R.id.item_book_modified_after_sync_icon))).check(matches(not(isDisplayed())));
     }
 
@@ -237,7 +239,7 @@ public class SyncingTest extends OrgzlyTest {
 
         sync();
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(allOf(withText(R.string.notebooks), isDisplayed())).perform(click());
+        onView(allOf(withText(R.string.notebooks), isDescendantOfA(withId(R.id.fragment_left_drawer_container)))).perform(click());
         onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
         onView(allOf(withText("booky"), isDisplayed())).check(matches(isDisplayed()));
         onListItem(0).perform(longClick());
@@ -247,7 +249,7 @@ public class SyncingTest extends OrgzlyTest {
 
         sync();
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withText(R.string.notebooks)).perform(click());
+        onView(allOf(withText(R.string.notebooks), isDescendantOfA(withId(R.id.fragment_left_drawer_container)))).perform(click());
         onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
         onView(allOf(withText("booky"), isDisplayed())).check(matches(isDisplayed()));
         onListItem(0).perform(click());
@@ -316,7 +318,7 @@ public class SyncingTest extends OrgzlyTest {
 
         sync();
 
-        onView(allOf(withText("booky"), isDisplayed())).perform(click());
+        onView(allOf(withText("booky"), withId(R.id.item_book_title))).perform(click());
 
         /* Open note "ANTIVIVISECTIONISTS Note #10." and check title. */
         onListItem(10).perform(click());
@@ -335,7 +337,7 @@ public class SyncingTest extends OrgzlyTest {
 
         sync();
 
-        onView(allOf(withText("booky"), isDisplayed())).perform(click());
+        onView(allOf(withText("booky"), withId(R.id.item_book_title))).perform(click());
 
         /* Open note "ANTIVIVISECTIONISTS Note #10." and check title. */
         onListItem(10).perform(click());
@@ -490,7 +492,7 @@ public class SyncingTest extends OrgzlyTest {
         pressBack();
 
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withText(R.string.notebooks)).perform(click());
+        onView(allOf(withText(R.string.notebooks), isDescendantOfA(withId(R.id.fragment_left_drawer_container)))).perform(click());
 
         onView(allOf(withText("booky"), isDisplayed())).perform(longClick());
         onView(withText(R.string.books_context_menu_item_set_link)).perform(click());
@@ -546,7 +548,7 @@ public class SyncingTest extends OrgzlyTest {
         pressBack();
 
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withText(R.string.notebooks)).perform(click());
+        onView(allOf(withText(R.string.notebooks), isDescendantOfA(withId(R.id.fragment_left_drawer_container)))).perform(click());
 
         onView(allOf(withText("booky"), isDisplayed())).perform(longClick());
         onView(withText(R.string.books_context_menu_item_set_link)).perform(click());

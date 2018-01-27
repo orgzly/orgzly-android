@@ -11,20 +11,22 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.openContextualActionModeOverflowMenu;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerActions.open;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
+import static com.orgzly.android.espresso.EspressoUtils.openContextualToolbarOverflowMenu;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
@@ -85,7 +87,7 @@ public class FiltersFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_filters_flipper)).check(matches(isDisplayed()));
 
         onListItem(0).perform(longClick());
-        openContextualActionModeOverflowMenu();
+        openContextualToolbarOverflowMenu();
         onView(withText(R.string.delete)).perform(click());
 
         pressBack();
@@ -98,8 +100,8 @@ public class FiltersFragmentTest extends OrgzlyTest {
     public void testActionModeWhenSelectingFilterThenOpeningBook() {
         onListItem(0).perform(longClick());
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(allOf(withText("book-one"), isDisplayed())).perform(click());
-        onView(withId(R.id.filters_cab_move_up)).check(matches(not(isDisplayed())));
+        onView(allOf(withText("book-one"), isDescendantOfA(withId(R.id.fragment_left_drawer_container)))).perform(click());
+        onView(withId(R.id.filters_cab_move_up)).check(doesNotExist());
     }
 
     @Test

@@ -19,6 +19,7 @@ import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.replaceText;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -26,6 +27,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.EspressoUtils.openContextualToolbarOverflowMenu;
 import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
@@ -63,7 +65,7 @@ public class NewNoteTest extends OrgzlyTest {
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
 
         onListItem(2).perform(longClick());
-        openContextualActionModeOverflowMenu();
+        openContextualToolbarOverflowMenu();
         onView(withText(R.string.new_note)).perform(click());
         onView(withText(R.string.heads_action_menu_item_add_under)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceText("A"), closeSoftKeyboardWithDelay());
@@ -82,7 +84,7 @@ public class NewNoteTest extends OrgzlyTest {
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
 
         onListItem(2).perform(longClick());
-        openContextualActionModeOverflowMenu();
+        openContextualToolbarOverflowMenu();
         onView(withText(R.string.new_note)).perform(click());
         onView(withText(R.string.heads_action_menu_item_add_above)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceText("A"), closeSoftKeyboardWithDelay());
@@ -107,7 +109,7 @@ public class NewNoteTest extends OrgzlyTest {
         onView(allOf(withText("booky"), isDisplayed())).perform(click());
 
         onListItem(2).perform(longClick());
-        openContextualActionModeOverflowMenu();
+        openContextualToolbarOverflowMenu();
         onView(withText(R.string.new_note)).perform(click());
         onView(withText(R.string.heads_action_menu_item_add_below)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceText("A"), closeSoftKeyboardWithDelay());
@@ -135,15 +137,15 @@ public class NewNoteTest extends OrgzlyTest {
         activityRule.launchActivity(null);
         onView(allOf(withText("booky"), isDisplayed())).perform(click());
 
-        onView(withId(R.id.action_context_bar)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.book_cab_move)).check(doesNotExist());
         onListItem(2).perform(longClick());
         /* Swipe left. */
         onListItem(2).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER, GeneralLocation.CENTER_LEFT, Press.FINGER));
-        onView(withId(R.id.action_context_bar)).check(matches(isDisplayed()));
+        onView(withId(R.id.book_cab_move)).check(matches(isDisplayed()));
         onListItem(2).onChildView(withId(R.id.item_menu_new_under_btn)).perform(click());
         onView(withId(R.id.fragment_note_title)).check(matches(isDisplayed()));
         onView(withId(R.id.done)).check(matches(isDisplayed()));
-        onView(withId(R.id.action_context_bar)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.book_cab_move)).check(doesNotExist());
     }
 
     @Test
@@ -182,7 +184,7 @@ public class NewNoteTest extends OrgzlyTest {
         onView(withId(R.id.done)).perform(click());
 
         onListItem(0).perform(longClick());
-        openContextualActionModeOverflowMenu();
+        openContextualToolbarOverflowMenu();
         onView(withText(R.string.new_note)).perform(click());
         onView(withText(R.string.heads_action_menu_item_add_under)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceText("Note"));

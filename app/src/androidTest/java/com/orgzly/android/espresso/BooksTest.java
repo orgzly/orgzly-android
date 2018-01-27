@@ -13,7 +13,6 @@ import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.openContextualActionModeOverflowMenu;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -29,6 +28,7 @@ import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDel
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
+import static com.orgzly.android.espresso.EspressoUtils.openContextualToolbarOverflowMenu;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
@@ -84,10 +84,10 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testReturnToNonExistentBookByPressingBack() {
-        onView(allOf(withText("book-1"), isDisplayed())).perform(click());
+        onView(allOf(withText("book-1"), withId(R.id.item_book_title))).perform(click());
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.notebooks)).perform(click());
-        onView(allOf(withText("book-1"), isDisplayed())).perform(longClick());
+        onView(allOf(withText("book-1"), withId(R.id.item_book_title))).perform(longClick());
         onData(hasToString(containsString(context.getString(R.string.delete)))).perform(click());
         onView(withText(R.string.ok)).perform(click());
         pressBack();
@@ -96,22 +96,26 @@ public class BooksTest extends OrgzlyTest {
         onView(withId(R.id.fab)).check(matches(not(isDisplayed())));
         pressBack();
         onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
-        onView(allOf(withText("book-2"), isDisplayed())).perform(click());
+        onView(allOf(withText("book-2"), withId(R.id.item_book_title))).perform(click());
         onView(allOf(withText(R.string.book_does_not_exist_anymore), isDisplayed())).check(doesNotExist());
     }
 
     @Test
     public void testEnterPrefaceForNonExistentBook() {
-        onView(allOf(withText("book-1"), isDisplayed())).perform(click());
+        onView(allOf(withText("book-1"), withId(R.id.item_book_title))).perform(click());
+
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.notebooks)).perform(click());
-        onView(allOf(withText("book-1"), isDisplayed())).perform(longClick());
+
+        onView(allOf(withText("book-1"), withId(R.id.item_book_title))).perform(longClick());
         onData(hasToString(containsString(context.getString(R.string.delete)))).perform(click());
         onView(withText(R.string.ok)).perform(click());
         pressBack();
-        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
 
-        openContextualActionModeOverflowMenu();
+        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
+        onView(withText(R.string.book_does_not_exist_anymore)).check(matches(isDisplayed()));
+
+        openContextualToolbarOverflowMenu();
         onView(withText(R.string.edit_book_preface)).check(doesNotExist());
     }
 

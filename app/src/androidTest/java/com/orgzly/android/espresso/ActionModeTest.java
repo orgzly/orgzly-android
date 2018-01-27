@@ -14,8 +14,10 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerActions.open;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -71,7 +73,7 @@ public class ActionModeTest extends OrgzlyTest {
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
 
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withText("Scheduled")).perform(click());
+        onView(allOf(withText("Scheduled"), isDescendantOfA(withId(R.id.fragment_left_drawer_container)))).perform(click());
 
         onListItem(1).perform(longClick());
 
@@ -116,7 +118,7 @@ public class ActionModeTest extends OrgzlyTest {
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.notebooks)).perform(click());
 
-        onView(withId(R.id.book_cab_move)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.book_cab_move)).check(doesNotExist());
     }
 
     @Test
@@ -126,7 +128,7 @@ public class ActionModeTest extends OrgzlyTest {
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText("Scheduled")).perform(click());
 
-        onView(withId(R.id.book_cab_move)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.book_cab_move)).check(doesNotExist());
     }
 
     /* This is for when note click action is reversed - notes can be selected and
@@ -141,10 +143,10 @@ public class ActionModeTest extends OrgzlyTest {
         onListItem(3).perform(click()); // Selects
         onListItem(3).perform(longClick()); // Opens note
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
-        onView(withId(R.id.book_cab_move)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.book_cab_move)).check(doesNotExist());
         pressBack();
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
-        onView(withId(R.id.book_cab_move)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.book_cab_move)).check(doesNotExist());
     }
 
     @Test

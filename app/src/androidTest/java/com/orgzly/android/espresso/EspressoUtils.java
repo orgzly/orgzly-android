@@ -16,11 +16,13 @@ import android.widget.Spinner;
 import com.orgzly.R;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 
 import static android.support.test.espresso.Espresso.*;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.*;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.CoreMatchers.allOf;
@@ -156,6 +158,10 @@ class EspressoUtils {
 
         pressBack();
         pressBack();
+    }
+
+    static void openContextualToolbarOverflowMenu() {
+        onView(allOf(withContentDescription("More options"), isDescendantOfA(withId(R.id.toolbar)))).perform(click());
     }
 
     static void searchForText(String str) {

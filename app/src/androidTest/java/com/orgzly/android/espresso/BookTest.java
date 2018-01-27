@@ -26,12 +26,13 @@ import static android.support.test.espresso.contrib.DrawerActions.open;
 import static android.support.test.espresso.contrib.PickerActions.setDate;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.openContextualToolbarOverflowMenu;
 import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
-import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
@@ -134,7 +135,7 @@ public class BookTest extends OrgzlyTest {
 
         onListItem(9).perform(longClick());
 
-        openContextualActionModeOverflowMenu();
+        openContextualToolbarOverflowMenu();
         onView(withText(R.string.schedule)).perform(click());
         onView(withText(R.string.set)).perform(click());
 
@@ -149,7 +150,7 @@ public class BookTest extends OrgzlyTest {
         onListItem(8).perform(longClick());
         onListItem(9).perform(click());
 
-        openContextualActionModeOverflowMenu();
+        openContextualToolbarOverflowMenu();
         onView(withText(R.string.schedule)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
@@ -165,7 +166,7 @@ public class BookTest extends OrgzlyTest {
         onListItem(5).perform(longClick());
         onListItem(8).perform(click());
 
-        openContextualActionModeOverflowMenu();
+        openContextualToolbarOverflowMenu();
         onView(withText(R.string.state)).perform(click());
         onView(withText("TODO")).perform(click());
 
@@ -344,7 +345,7 @@ public class BookTest extends OrgzlyTest {
 
         /* Create new note under folded. */
         onListItem(2).perform(longClick());
-        openContextualActionModeOverflowMenu();
+        openContextualToolbarOverflowMenu();
         onView(withText(R.string.new_note)).perform(click());
         onView(withText(R.string.heads_action_menu_item_add_under)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceText("Created"));
@@ -371,7 +372,7 @@ public class BookTest extends OrgzlyTest {
         onListItem(1).perform(click());
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.notebooks)).perform(click());
-        onView(allOf(withText("book-name"), isDisplayed())).perform(longClick());
+        onView(allOf(withText("book-name"), withId(R.id.item_book_title))).perform(longClick());
         onData(hasToString(containsString(context.getString(R.string.delete)))).perform(click());
         onView(withText(R.string.ok)).perform(click());
         pressBack();
