@@ -247,6 +247,9 @@ public class MainActivity extends CommonActivity
                 }
             };
 
+            // No flipping burgers
+            mDrawerToggle.setDrawerSlideAnimationEnabled(false);
+
             mDrawerLayout.addDrawerListener(mDrawerToggle);
         }
 
