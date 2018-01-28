@@ -6,7 +6,7 @@
 
     <group android:id="@+id/drawer_group" android:checkableBehavior="single">
         <item
-            android:id="@+id/queries"
+            android:id="@+id/searches"
             android:icon="?attr/ic_search_24dp"
             android:title="@string/searches"
             android:checkable="true"

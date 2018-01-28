@@ -119,15 +119,6 @@ public class BookFragment extends NoteListFragment
         return fragment;
     }
 
-    @Override
-    public String getCurrentDrawerItemId() {
-        return getDrawerItemId(mBookId);
-    }
-
-    public static String getDrawerItemId(long bookId) {
-        return TAG + " " + bookId;
-    }
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -736,6 +727,15 @@ public class BookFragment extends NoteListFragment
                 .setNegativeButton(R.string.cancel, (dialog, which) -> {})
                 .create()
                 .show();
+    }
+
+    @Override
+    public String getCurrentDrawerItemId() {
+        return getDrawerItemId(mBookId);
+    }
+
+    public static String getDrawerItemId(long bookId) {
+        return TAG + " " + bookId;
     }
 
     public class MyActionMode implements ActionMode.Callback {

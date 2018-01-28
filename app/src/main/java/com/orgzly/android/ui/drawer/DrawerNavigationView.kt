@@ -30,10 +30,10 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
     init {
         // Add mapping for groups
         menuItemIdMap[BooksFragment.getDrawerItemId()] = R.id.books
-        menuItemIdMap[FiltersFragment.getDrawerItemId()] = R.id.queries
+        menuItemIdMap[FiltersFragment.getDrawerItemId()] = R.id.searches
 
         // Setup intents
-        menu.findItem(R.id.queries).intent = Intent(AppIntent.ACTION_OPEN_QUERIES)
+        menu.findItem(R.id.searches).intent = Intent(AppIntent.ACTION_OPEN_QUERIES)
         menu.findItem(R.id.books).intent = Intent(AppIntent.ACTION_OPEN_BOOKS)
         menu.findItem(R.id.settings).intent = Intent(AppIntent.ACTION_OPEN_SETTINGS)
 

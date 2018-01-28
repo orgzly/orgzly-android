@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -47,6 +49,7 @@ import com.orgzly.android.ui.NotePrioritySpinner;
 import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
+import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
@@ -70,7 +73,8 @@ import java.util.TreeSet;
 public class NoteFragment extends Fragment
         implements
         View.OnClickListener,
-        TimestampDialogFragment.OnDateTimeSetListener {
+        TimestampDialogFragment.OnDateTimeSetListener,
+        DrawerItem {
 
     private static final String TAG = NoteFragment.class.getName();
 
@@ -1121,6 +1125,15 @@ public class NoteFragment extends Fragment
         updateTimestampView(TimeType.SCHEDULED, mScheduledButton, stateSetOp.getScheduled());
         updateTimestampView(TimeType.DEADLINE, mDeadlineButton, stateSetOp.getDeadline());
         updateTimestampView(TimeType.CLOSED, mClosedButton, stateSetOp.getClosed());
+    }
+
+    /**
+     * Mark note's book in the drawer.
+     */
+    @NonNull
+    @Override
+    public String getCurrentDrawerItemId() {
+        return BookFragment.getDrawerItemId(mBookId);
     }
 
     public interface NoteFragmentListener extends FragmentListener {
