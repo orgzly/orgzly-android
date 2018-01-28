@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<menu xmlns:tools="http://schemas.android.com/tools"
+<menu
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:id="@+id/drawer_group_queries" android:checkableBehavior="single">
+
+    <group android:id="@+id/drawer_group" android:checkableBehavior="single">
         <item
             android:id="@+id/queries"
             android:icon="?attr/ic_search_24dp"
             android:title="@string/searches"
             android:checkable="true"
             android:orderInCategory="0"/>
-    </group>
 
-    <group android:id="@+id/drawer_group_books" android:checkableBehavior="single">
         <item
             android:id="@+id/books"
             android:icon="?attr/ic_library_books_24dp"
             android:title="@string/notebooks"
             android:checkable="true"
             android:orderInCategory="2"/>
-    </group>
 
-    <group android:id="@+id/drawer_group_settings">
         <item
             android:id="@+id/settings"
             android:icon="?attr/ic_settings_24dp"
@@ -30,5 +28,4 @@
 
     <!-- Padding for sync button -->
     <item android:orderInCategory="5" tools:ignore="MenuTitle" />
-
 </menu>

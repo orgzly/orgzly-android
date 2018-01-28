@@ -98,7 +98,7 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
             intent.putExtra(AppIntent.EXTRA_QUERY_STRING, query)
 
             val id = generateRandomUniqueId()
-            val item = menu.add(R.id.drawer_group_queries, id, 1, name)
+            val item = menu.add(R.id.drawer_group, id, 1, name)
 
             menuItemIdMap[QueryFragment.getDrawerItemId(query)] = id
 
@@ -118,7 +118,7 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
             intent.putExtra(AppIntent.EXTRA_BOOK_ID, book.id)
 
             val id = generateRandomUniqueId()
-            val item = menu.add(R.id.drawer_group_books, id, 3, BookUtils.getFragmentTitleForBook(book))
+            val item = menu.add(R.id.drawer_group, id, 3, BookUtils.getFragmentTitleForBook(book))
 
             item.intent = intent
             item.isCheckable = true
