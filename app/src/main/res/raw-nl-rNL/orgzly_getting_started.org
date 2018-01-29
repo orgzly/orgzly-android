@@ -1,74 +1,71 @@
-Welcome to Orgzly!
+Welkom bij Orgzly!
 
-* Notes
-** Click on the note to open it
-** Click and hold the note to select it
+* Notities
+** Klik op de notitie om haar te openen
+** Klik en houd ingedrukt om de notitie te selecteren
 
-You can select multiple notes.
+Je kunt meerdere notities selecteren.
 
-** Fling note right to open its quick-menu
+** Veeg de notitie naar rechts om haar snelmenu te openen
 
-Fling it left to open a different menu.
+Veeg naar links om een ander menu te openen.
 
-** Fold a note which contains sub-notes by clicking the icon next to it
-*** There is no limit in number of levels you can have
-**** Use this to better organize your notes
+** Vouw een notitie met subnotities door op het icoon ernaast te klikken
+*** Er is geen limiet op het aantal niveaus dat je kunt hebben
+**** Gebruik dit om je notities beter te organiseren
 
-** Note can have tags :tag1:tag2:
-*** Sub-note inherits the tags :tag3:
+** Een notitie kan labels hebben :label1:label2:
+*** Subnotities erven deze labels :label3:
 
-If you search for notes with tag “tag1”, this note will be returned as well.
+Als je zoekt naar notities met label "label1", wordt deze notitie ook getoond.
 
-** TODO Note can have a state
+** TODO Een notitie kan een status hebben
 
-You can configure any number of states to use: TODO, NEXT, DONE, etc.
+Je kunt zo veel statussen configureren als je wilt: TODO, NEXT, DONE, etc.
 
-*** There are two /types/ of states: to-do and done
+*** Er zijn twee /types/ van statussen: to-do en done
 
-*** DONE This is a note with /done/ type of state
+*** DONE Dit is een notitie met een /done/ type status
 CLOSED: [2018-01-24 Wed 17:00]
 
-** Note can have a scheduled time
+** Notitie kan een geplande tijd hebben
 SCHEDULED: <2015-02-20 Fri 15:15>
 
-*** Times can have a repeater
+*** Tijden kunnen een herhaler hebben
 SCHEDULED: <2015-02-16 Mon .+1d>
 
-** You can also set a deadline time
+** Je kunt ook een deadlinetijd instellen
 DEADLINE: <2015-02-20 Fri>
 
-** Note can use links
+** Een notitie kan links gebruiken
 
-Dial a phone number (tel:555-2368) or [[sms:555-2368][send SMS]].
+Bel een telefoonnummer (tel:555-2368) of [[sms:55-2368][send SMS]].
 
-Send email to [[mailto:support@orgzly.com][support@orgzly.com]], visit http://www.orgzly.com or read [[http://www.orgzly.com/help][documentation]].
+Email [[mailto:support@orgzly.com][support@orgzly.com]], bezoek http://www.orgzly.com of lees [[http://www.orgzly.com/help][documentatie]].
 
-** Basic typographical emphasis is supported
+** Basale typografische nadruk wordt ondersteund
 
-You can make words *bold*, /italic/, _underlined_, =verbatim=, ~code~ and +strike-through+.
+Je kunt worden *dikgedrukt*, /schuin/, _onderstreept_, =verbato=, ~code~ en +doorgestreept+ maken.
 
-* Search
-** There are many search operators supported
-:PROPERTIES:
-:ID:       779F1655-979A-4A35-BE12-916565816180
-:END:
+* Zoeken
+** Er worden veel zoekoperatoren ondersteund
 
-You can search notes by state, tag, scheduled or deadline time etc.
+Je kunt notities doorzoeken op status, label, geplande- of deadlinetijd etc.
 
-See http://www.orgzly.com/help#search to learn more.
+Zie http://www.orgzly.com/help#search voor meer informatie.
 
-** Search queries can be saved for quick access
+** Zoekopdrachten kunnen worden opgeslagen voor snelle toegang
 
-Try sample searches from navigation drawer and note the queries they use.
+Probeer voorbeeldzoekopdrachten vanuit de navigatie lade en let op de zoekopdrachten die ze gebruiken.
 
-You can create your own saved searches by clicking on “Searches” in the navigation drawer.
+Je kunt je eigen opgeslagen zoekopdrachten maken door te klikken op "Zoeken" in de navigatie-lade.
 
-* Syncing
+* Synchroniseren
 
-** Notebooks can be saved as plain-text files
+** Notebooks kunnen worden opgeslagen als platte-tekst bestanden
 
-Files are in the format used by “Org mode”.
+Bestanden zijn in de indeling die wordt gebruikt door "Org-mode".
 
-** Location (repository) type
+** Soort locatie (archief)
 
-You can keep notebooks synced with a directory on your mobile device, SD card or Dropbox.
+Je kunt je notitieboeken synchroniseren met een map op uw mobiele apparaat, SD-kaart of Dropbox.

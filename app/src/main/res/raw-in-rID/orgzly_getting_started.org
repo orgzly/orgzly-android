@@ -1,74 +1,71 @@
-Welcome to Orgzly!
+Selamat datang di Orgzly!
 
-* Notes
-** Click on the note to open it
-** Click and hold the note to select it
+* Catatan
+** Tekan di catatan untuk membuka ini
+** Tekan dan tahan catatan untuk memilih nya
 
-You can select multiple notes.
+Anda dapat membuat beberapa catatan.
 
-** Fling note right to open its quick-menu
+Fling note kanan untuk membuka menu cepatnya
 
-Fling it left to open a different menu.
+Fling itu dibiarkan membuka menu yang berbeda.
 
-** Fold a note which contains sub-notes by clicking the icon next to it
-*** There is no limit in number of levels you can have
-**** Use this to better organize your notes
+** Lipat catatan yang berisi sub-catatan dengan mengklik ikon di sebelahnya
+*** Tidak ada batas jumlah level yang bisa anda miliki
+**** Gunakan ini untuk mengatur catatan anda dengan lebih baik
 
-** Note can have tags :tag1:tag2:
-*** Sub-note inherits the tags :tag3:
+** Catatan harus ada tag :tag1:tag2:
+*** Sub-catatan mewarisi tag :tag3:
 
-If you search for notes with tag “tag1”, this note will be returned as well.
+Jika Anda mencari catatan dengan tag "tag1", catatan ini akan dikembalikan juga.
 
-** TODO Note can have a state
+** Catatan TODO harus memiliki status
 
-You can configure any number of states to use: TODO, NEXT, DONE, etc.
+Anda dapat mengkonfigurasi sejumlah bagian negara untuk menggunakan: TODO, NEXT, DONE, dll.
 
 *** There are two /types/ of states: to-do and done
 
 *** DONE This is a note with /done/ type of state
 CLOSED: [2018-01-24 Wed 17:00]
 
-** Note can have a scheduled time
+** Catatan harus memiliki jadwal waktu
 SCHEDULED: <2015-02-20 Fri 15:15>
 
-*** Times can have a repeater
+*** Waktu bisa memiliki pengulang
 SCHEDULED: <2015-02-16 Mon .+1d>
 
-** You can also set a deadline time
+** Anda juga bisa menetapkan tanggal waktu
 DEADLINE: <2015-02-20 Fri>
 
-** Note can use links
+** Catatan bisa menggunakan tautan
 
 Dial a phone number (tel:555-2368) or [[sms:555-2368][send SMS]].
 
 Send email to [[mailto:support@orgzly.com][support@orgzly.com]], visit http://www.orgzly.com or read [[http://www.orgzly.com/help][documentation]].
 
-** Basic typographical emphasis is supported
+** Dasar tekanan typografi di dukung
 
 You can make words *bold*, /italic/, _underlined_, =verbatim=, ~code~ and +strike-through+.
 
-* Search
-** There are many search operators supported
-:PROPERTIES:
-:ID:       779F1655-979A-4A35-BE12-916565816180
-:END:
+* Pencarian
+Ada banyak operator pencarian yang didukung
 
-You can search notes by state, tag, scheduled or deadline time etc.
+Anda dapat mencari catatan menurut negara, tag, jadal atau tanggal waktu dll.
 
 See http://www.orgzly.com/help#search to learn more.
 
-** Search queries can be saved for quick access
+pertanyaan penelusuran dapat disimpan untuk akses cepat
 
-Try sample searches from navigation drawer and note the queries they use.
+Cobalah contoh penelusuran dari laci navigasi dan catat pertanyaan yang mereka gunakan.
 
-You can create your own saved searches by clicking on “Searches” in the navigation drawer.
+Anda dapat membuat pencarian tersimpan Anda sendiri dengan menekan "Searches" di laci navigasi.
 
-* Syncing
+* Sinkronisasi
 
 ** Notebooks can be saved as plain-text files
 
-Files are in the format used by “Org mode”.
+File dalam format yang digunakan oleh"Org mode".
 
-** Location (repository) type
+** Jenis lokasi (repositori)
 
-You can keep notebooks synced with a directory on your mobile device, SD card or Dropbox.
+Anda dapat menyimpan buku catatan dengan disinkronkan dengan sebuah direktori pada perangkat mobile Anda, kartu SD atau Dropbox.

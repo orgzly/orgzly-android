@@ -49,9 +49,6 @@ You can make words *bold*, /italic/, _underlined_, =verbatim=, ~code~ and +strik
 
 * Search
 ** There are many search operators supported
-:PROPERTIES:
-:ID:       779F1655-979A-4A35-BE12-916565816180
-:END:
 
 You can search notes by state, tag, scheduled or deadline time etc.
 

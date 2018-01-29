@@ -154,10 +154,8 @@ object FiltersClient {
             ops.add(ContentProviderOperation.newInsert(uri).withValues(values).build())
         }
 
-        val result: Array<ContentProviderResult>
-
         try {
-            result = context.contentResolver.applyBatch(ProviderContract.AUTHORITY, ops)
+            context.contentResolver.applyBatch(ProviderContract.AUTHORITY, ops)
         } catch (e: RemoteException) {
             e.printStackTrace()
             throw RuntimeException(e)
@@ -166,7 +164,7 @@ object FiltersClient {
             throw RuntimeException(e)
         }
 
-        return result[0].count
+        return filters.size
     }
 
 }
