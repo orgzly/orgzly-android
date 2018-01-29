@@ -1,74 +1,71 @@
-Welcome to Orgzly!
+¡Bienvenido a Orgzly!
 
-* Notes
-** Click on the note to open it
-** Click and hold the note to select it
+* Notas
+** Haga clic en la nota para abrirla
+** Haga clic y mantenga la nota para seleccionarla
 
-You can select multiple notes.
+Se pueden seleccionar múltiples notas.
 
-** Fling note right to open its quick-menu
+** Arrastre la nota a la derecha para abrir el menú rápido
 
-Fling it left to open a different menu.
+Arrastre a la izquierda para abrir un menú diferente.
 
-** Fold a note which contains sub-notes by clicking the icon next to it
-*** There is no limit in number of levels you can have
-**** Use this to better organize your notes
+** Plegar una nota que contiene subnotas haciendo clic en el icono
+*** No hay límite en el número de niveles que puede tener
+**** Utilice esto para organizar mejor sus notas
 
-** Note can have tags :tag1:tag2:
-*** Sub-note inherits the tags :tag3:
+** Una nota puede tener etiquetas: etiq1:etiq2:
+*** Las subnotas heredan las etiquetas :tag3:
 
-If you search for notes with tag “tag1”, this note will be returned as well.
+Si usted busca notas con la etiqueta "etiq1", esta nota también se devolverá.
 
-** TODO Note can have a state
+** TODO Una nota puede tener un estado
 
-You can configure any number of states to use: TODO, NEXT, DONE, etc.
+Puede configurar cualquier número de estados a utilizar: TODO, NEXT, DONE, etc.
 
-*** There are two /types/ of states: to-do and done
+*** Hay dos /tipos/ de estados: to-do y done
 
-*** DONE This is a note with /done/ type of state
+*** DONE Esta es una nota con el tipo de estado /done/
 CLOSED: [2018-01-24 Wed 17:00]
 
-** Note can have a scheduled time
+** Una nota puede tener una programación
 SCHEDULED: <2015-02-20 Fri 15:15>
 
-*** Times can have a repeater
+*** La fecha puede ser una repetición
 SCHEDULED: <2015-02-16 Mon .+1d>
 
-** You can also set a deadline time
+** También puede establecer un tiempo límite
 DEADLINE: <2015-02-20 Fri>
 
-** Note can use links
+** Una nota puede tener enlaces
 
-Dial a phone number (tel:555-2368) or [[sms:555-2368][send SMS]].
+Marcar un número de teléfono (tel:555-2368) o [[sms:555-2368][enviar SMS]].
 
-Send email to [[mailto:support@orgzly.com][support@orgzly.com]], visit http://www.orgzly.com or read [[http://www.orgzly.com/help][documentation]].
+Enviar email a [[mailto:support@orgzly.com][support@orgzly.com]], visitar http://www.orgzly.com o leer [[http://www.orgzly.com/help][documentation]].
 
-** Basic typographical emphasis is supported
+** Están soportados formatos tipográficos básicos
 
-You can make words *bold*, /italic/, _underlined_, =verbatim=, ~code~ and +strike-through+.
+Puede escribir palabras en *negrita*, /italica/, _subrarradas_, =literal=, ~código~ y +tachadas+.
 
-* Search
-** There are many search operators supported
-:PROPERTIES:
-:ID:       779F1655-979A-4A35-BE12-916565816180
-:END:
+* Buscar
+** Existen muchos operadores de búsqueda soportados
 
-You can search notes by state, tag, scheduled or deadline time etc.
+Puede buscar notas por estado, etiqueta, programación, plazo tiempo, etc.
 
-See http://www.orgzly.com/help#search to learn more.
+Visite http://www.orgzly.com/help#search para aprender más.
 
-** Search queries can be saved for quick access
+** Las consultas se pueden guardar como accesos rápidos
 
-Try sample searches from navigation drawer and note the queries they use.
+Pruebe los ejemplos de búsqueda del cajón de navegación y observe las consultas que utilizan.
 
-You can create your own saved searches by clicking on “Searches” in the navigation drawer.
+Puede crear sus propias búsquedas guardadas haciendo clic en "Búsquedas" en el cajón de navegación.
 
-* Syncing
+* Sincronizando
 
-** Notebooks can be saved as plain-text files
+** Los cuadernos pueden guardarse como archivos de texto plano
 
-Files are in the format used by “Org mode”.
+Los archivos se guardan en formato "Org mode".
 
-** Location (repository) type
+** Tipo de ubicación (repositorio)
 
-You can keep notebooks synced with a directory on your mobile device, SD card or Dropbox.
+Puede guardar cuadernos sincronizados en su dispositivo móvil, tarjeta SD o en Dropbox.

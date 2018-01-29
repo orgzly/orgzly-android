@@ -364,8 +364,8 @@
   <string name="book_never_modified_locally">Jamais modifié localement</string>
   <string name="notes_count_zero">Ne contient aucune note</string>
   <plurals name="notes_count_nonzero">
-    <item quantity="one">Contient <b>%d</b> note(s)</item>
-    <item quantity="other">Contains <b>%d</b> notes</item>
+    <item quantity="one">Contient une note</item>
+    <item quantity="other">Contient <b>%d</b> notes</item>
   </plurals>
   <string name="content_line_count_displayed">Afficher le nombre de lignes</string>
   <string name="content_line_count_displayed_summary">Afficher le nombre de lignes lorsque le contenu n\'est pas affiché</string>
