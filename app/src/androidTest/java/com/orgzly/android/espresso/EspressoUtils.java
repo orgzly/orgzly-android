@@ -7,26 +7,36 @@ import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.action.CloseKeyboardAction;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
+
 import com.orgzly.R;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 
-import static android.support.test.espresso.Espresso.*;
+import static android.support.test.espresso.Espresso.onData;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.*;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.pressKey;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.matcher.RootMatchers.isDialog;
-import static android.support.test.espresso.matcher.ViewMatchers.*;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static android.support.test.espresso.matcher.ViewMatchers.withHint;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 /*
  * Few espresso-related notes:
@@ -161,7 +171,10 @@ class EspressoUtils {
     }
 
     static void openContextualToolbarOverflowMenu() {
-        onView(allOf(withContentDescription("More options"), isDescendantOfA(withId(R.id.toolbar)))).perform(click());
+        onView(allOf(
+                withContentDescription(R.string.abc_action_menu_overflow_description),
+                isDescendantOfA(withId(R.id.toolbar))
+        )).perform(click());
     }
 
     static void searchForText(String str) {
@@ -254,28 +267,6 @@ class EspressoUtils {
             @Override
             public void describeTo(Description description) {
                 description.appendText("a View which is highlighted");
-            }
-        };
-    }
-
-    /**
-     * Set value for {@link NumberPicker}
-     */
-    public static ViewAction setNumber(final int n) {
-        return new ViewAction() {
-            @Override
-            public void perform(UiController uiController, View view) {
-                ((NumberPicker) view).setValue(n);
-            }
-
-            @Override
-            public String getDescription() {
-                return "Set NumberPicker value";
-            }
-
-            @Override
-            public Matcher<View> getConstraints() {
-                return ViewMatchers.isAssignableFrom(NumberPicker.class);
             }
         };
     }
