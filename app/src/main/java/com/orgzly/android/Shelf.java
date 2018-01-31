@@ -514,19 +514,19 @@ public class Shelf {
             case DUMMY_WITHOUT_LINK_AND_ONE_ROOK:
                 loadBookFromRepo(namesake.getRooks().get(0));
                 bookAction = new BookAction(BookAction.Type.INFO,
-                        namesake.getStatus().msg(UriUtils.friendlyUri(namesake.getRooks().get(0).getUri())));
+                        namesake.getStatus().msg(namesake.getRooks().get(0).getUri()));
                 break;
 
             case BOOK_WITH_LINK_AND_ROOK_MODIFIED:
                 loadBookFromRepo(namesake.getLatestLinkedRook());
                 bookAction = new BookAction(BookAction.Type.INFO,
-                        namesake.getStatus().msg(UriUtils.friendlyUri(namesake.getLatestLinkedRook().getUri())));
+                        namesake.getStatus().msg(namesake.getLatestLinkedRook().getUri()));
                 break;
 
             case DUMMY_WITH_LINK:
                 loadBookFromRepo(namesake.getLatestLinkedRook());
                 bookAction = new BookAction(BookAction.Type.INFO,
-                        namesake.getStatus().msg(UriUtils.friendlyUri(namesake.getLatestLinkedRook().getUri())));
+                        namesake.getStatus().msg(namesake.getLatestLinkedRook().getUri()));
                 break;
 
             /* Save local book to repository. */
@@ -536,21 +536,21 @@ public class Shelf {
                 repoUrl = getAllRepos().entrySet().iterator().next().getValue().getUri().toString();
                 fileName = BookName.fileName(namesake.getBook().getName(), BookName.Format.ORG);
                 saveBookToRepo(repoUrl, fileName, namesake.getBook(), BookName.Format.ORG);
-                bookAction = new BookAction(BookAction.Type.INFO, namesake.getStatus().msg(UriUtils.friendlyUri(repoUrl)));
+                bookAction = new BookAction(BookAction.Type.INFO, namesake.getStatus().msg(repoUrl));
                 break;
 
             case BOOK_WITH_LINK_LOCAL_MODIFIED:
                 repoUrl = namesake.getBook().getLastSyncedToRook().getRepoUri().toString();
                 fileName = BookName.getFileName(mContext, namesake.getBook().getLastSyncedToRook().getUri());
                 saveBookToRepo(repoUrl, fileName, namesake.getBook(), BookName.Format.ORG);
-                bookAction = new BookAction(BookAction.Type.INFO, namesake.getStatus().msg(UriUtils.friendlyUri(repoUrl)));
+                bookAction = new BookAction(BookAction.Type.INFO, namesake.getStatus().msg(repoUrl));
                 break;
 
             case ONLY_BOOK_WITH_LINK:
                 repoUrl = namesake.getBook().getLink().getRepoUri().toString();
                 fileName = BookName.getFileName(mContext, namesake.getBook().getLink().getUri());
                 saveBookToRepo(repoUrl, fileName, namesake.getBook(), BookName.Format.ORG);
-                bookAction = new BookAction(BookAction.Type.INFO, namesake.getStatus().msg(UriUtils.friendlyUri(repoUrl)));
+                bookAction = new BookAction(BookAction.Type.INFO, namesake.getStatus().msg(repoUrl));
                 break;
         }
 

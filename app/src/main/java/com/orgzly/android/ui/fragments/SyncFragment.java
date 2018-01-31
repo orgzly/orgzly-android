@@ -277,7 +277,7 @@ public class SyncFragment extends Fragment {
                             null,
                             new BookAction(
                                     BookAction.Type.PROGRESS,
-                                    resources.getString(R.string.force_loading_from_uri, UriUtils.friendlyUri(rook.getUri()))));
+                                    resources.getString(R.string.force_loading_from_uri, rook.getUri())));
 
                     return mShelf.loadBookFromRepo(rook);
 
@@ -307,7 +307,7 @@ public class SyncFragment extends Fragment {
                                 null,
                                 new BookAction(
                                         BookAction.Type.INFO,
-                                        resources.getString(R.string.force_loaded_from_uri, UriUtils.friendlyUri(book.getLastSyncedToRook().getUri()))));
+                                        resources.getString(R.string.force_loaded_from_uri, book.getLastSyncedToRook().getUri())));
                     }
                 }
             }
@@ -480,7 +480,7 @@ public class SyncFragment extends Fragment {
                                 null,
                                 new BookAction(
                                         BookAction.Type.INFO,
-                                        resources.getString(R.string.force_saved_to_uri, UriUtils.friendlyUri(book.getLastSyncedToRook().getUri()))));
+                                        resources.getString(R.string.force_saved_to_uri, book.getLastSyncedToRook().getUri())));
 
                         mListener.onBookSaved(book);
 

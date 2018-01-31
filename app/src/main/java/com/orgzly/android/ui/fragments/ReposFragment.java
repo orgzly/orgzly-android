@@ -150,7 +150,7 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
                 case R.id.item_repo_url:
                     if (! cursor.isNull(columnIndex)) {
                         textView = (TextView) view;
-                        textView.setText(UriUtils.friendlyUri(cursor.getString(columnIndex)));
+                        textView.setText(cursor.getString(columnIndex));
                     }
                     return true;
             }

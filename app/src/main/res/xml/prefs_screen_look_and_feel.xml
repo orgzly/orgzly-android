@@ -45,7 +45,7 @@
 
     <SwitchPreference
         android:key="@string/pref_key_ignore_system_locale"
-        android:title="Use English"
-        android:summary="Ignore default language"
+        android:title="Use English language"
+        android:summary="Ignore default locale"
         android:defaultValue="@bool/pref_default_ignore_system_locale"/>
 </PreferenceScreen>

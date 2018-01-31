@@ -258,23 +258,23 @@ public class BooksFragment extends ListFragment
                 ViewHolder holder = (ViewHolder) view.getTag();
                 if (holder == null) {
                     holder = new ViewHolder();
-                    holder.title = (TextView) view.findViewById(R.id.item_book_title);
+                    holder.title = view.findViewById(R.id.item_book_title);
                     holder.modifiedAfterSyncIcon = view.findViewById(R.id.item_book_modified_after_sync_icon);
                     holder.bookDetailsPadding = view.findViewById(R.id.item_book_details_padding);
-                    holder.subTitle = (TextView) view.findViewById(R.id.item_book_subtitle);
+                    holder.subTitle = view.findViewById(R.id.item_book_subtitle);
                     holder.mtimeContainer = view.findViewById(R.id.item_book_mtime_container);
-                    holder.mtime = (TextView) view.findViewById(R.id.item_book_mtime);
+                    holder.mtime = view.findViewById(R.id.item_book_mtime);
                     holder.linkDetailsContainer = view.findViewById(R.id.item_book_link_container);
                     holder.versionedRookContainer = view.findViewById(R.id.item_book_synced_container);
                     holder.versionedRookUrlContainer = view.findViewById(R.id.item_book_synced_url_container);
                     holder.versionedRookMtimeContainer = view.findViewById(R.id.item_book_synced_mtime_container);
                     holder.versionedRookRevisionContainer = view.findViewById(R.id.item_book_synced_revision_container);
                     holder.lastActionContainer = view.findViewById(R.id.item_book_last_action_container);
-                    holder.lastAction = (TextView) view.findViewById(R.id.item_book_last_action);
+                    holder.lastAction = view.findViewById(R.id.item_book_last_action);
                     holder.usedEncodingContainer = view.findViewById(R.id.item_book_encoding_used_container);
                     holder.detectedEncodingContainer = view.findViewById(R.id.item_book_encoding_detected_container);
                     holder.selectedEncodingContainer = view.findViewById(R.id.item_book_encoding_selected_container);
-                    holder.noteCount = (TextView) view.findViewById(R.id.item_book_note_count);
+                    holder.noteCount = view.findViewById(R.id.item_book_note_count);
                     holder.noteCountContainer = view.findViewById(R.id.item_book_note_count_container);
                     view.setTag(holder);
                 }
@@ -486,7 +486,7 @@ public class BooksFragment extends ListFragment
                     case R.id.item_book_link_url:
                     case R.id.item_book_synced_url:
                         if (hasData) {
-                            viewContent = UriUtils.friendlyUri(cursor.getString(columnIndex));
+                            viewContent = cursor.getString(columnIndex);
                         }
                         break;
 

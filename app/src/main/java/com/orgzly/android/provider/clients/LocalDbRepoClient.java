@@ -151,9 +151,7 @@ public class LocalDbRepoClient {
         );
 
         if (updated != 1) {
-            throw new IOException("Failed moving notebook from " +
-                                  UriUtils.friendlyUri(from) + " to " +
-                                  UriUtils.friendlyUri(to));
+            throw new IOException("Failed moving notebook from " + from + " to " + to);
         }
 
         return get(context, to);

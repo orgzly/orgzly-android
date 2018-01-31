@@ -33,14 +33,6 @@ public class UriUtils {
         return builder.build();
     }
 
-    public static String friendlyUri(String uriString) {
-        return Uri.decode(uriString);
-    }
-
-    public static String friendlyUri(Uri uri) {
-        return friendlyUri(uri.toString());
-    }
-
     /**
      * Create URI from directory.
      */

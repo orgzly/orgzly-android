@@ -631,7 +631,11 @@ public class MainActivity extends CommonActivity
 
         if (note != null) {
             long bookId = note.getPosition().getBookId();
-            DisplayManager.displayNote(getSupportFragmentManager(), bookId, noteId);
+
+            Intent intent = new Intent(AppIntent.ACTION_OPEN_NOTE);
+            intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId);
+            intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
         }
     }
 
