@@ -26,9 +26,11 @@ class FileFilterStore(val context: Context) : FilterStore {
             Filter(filterJson.getString("name"), filterJson.getString("query"))
         }
 
-        val imported = FiltersClient.replaceAll(context, filters)
+        val count = FiltersClient.replaceAll(context, filters)
 
-        notifyUser(context.getString(R.string.imported_filters, imported))
+        val msg = context.resources.getQuantityString(R.plurals.imported_searches, count, count)
+
+        notifyUser(msg)
     }
 
     /**
@@ -53,7 +55,11 @@ class FileFilterStore(val context: Context) : FilterStore {
 
             out.write(json.toString(2))
 
-            notifyUser(context.getString(R.string.exported_filters, json.length()))
+            val count = json.length()
+
+            val msg = context.resources.getQuantityString(R.plurals.exported_searches, count, count)
+
+            notifyUser(msg)
         }
     }
 

@@ -35,7 +35,7 @@
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="@string/select_a_filter"
+                android:text="@string/list_widget_select_search"
                 android:textColor="@color/black"
                 android:textSize="17sp"
                 android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"

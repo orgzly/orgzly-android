@@ -347,9 +347,6 @@
   <string name="default_notebook_desc">Блокнот, используемый при совместном использовании Orgzly или создании новой заметки из текущего уведомления</string>
   <string name="force_utf8">Кодировка UTF-8 принудительно</string>
   <string name="force_utf8_summary">Не определять кодировку, всегда использовать UTF-8</string>
-  <string name="list_widget_name">Поиск в Orgzly</string>
-  <string name="select_a_filter">Выберите фильтр</string>
-  <string name="select_a_filter_long">Выберите фильтр, щелкнув по строке заголовка</string>
   <string name="auto_sync">Автосинхронизация</string>
   <string name="auto_sync_experimental">Автосинхронизация (экспериментальное)</string>
   <string name="auto_sync_experimental_summary">Используется только для локальных хранилищ</string>
@@ -376,8 +373,6 @@
   <string name="styled_text_with_marks_title">Текст с отметками</string>
   <string name="styled_text_with_marks_summary">Сохранять отображаемые отметки (например, *жирный*)</string>
   <string name="no_such_link_target">Заметка с «%1$s» свойством, заданная для «%2$s», не найдена</string>
-  <string name="imported_filters">Импортировано <b>%d</b> фильтров</string>
-  <string name="exported_filters">Экспортировано <b>%d</b> фильтров</string>
   <string name="storage_permissions_missing">Нет разрешения на хранение</string>
   <string name="file_does_not_exist">Файл \"%s\" не существует</string>
   <string name="import_from">Импортировать из «%1$s»?</string>

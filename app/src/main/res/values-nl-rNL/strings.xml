@@ -344,9 +344,6 @@
   <string name="default_notebook_desc">Notitieboekje dat gebruikt wordt voor delen naar Orgzly of het maken van een notitie vanaf een permanente notificatie</string>
   <string name="force_utf8">Forceer UTF-8 encodering</string>
   <string name="force_utf8_summary">Probeer geen encodering te herkennen, gebruik altijd UTF-8</string>
-  <string name="list_widget_name">Orgzly zoeken</string>
-  <string name="select_a_filter">Selecteer een filter</string>
-  <string name="select_a_filter_long">Selecteer een filter door op de titelbalk te klikken</string>
   <string name="auto_sync">Auto-synchroniseer</string>
   <string name="auto_sync_experimental">Auto-synchroniseren (experimenteel)</string>
   <string name="auto_sync_experimental_summary">Wordt alleen voor lokale opslagruimtes gebruikt</string>
@@ -372,8 +369,6 @@
   <string name="styled_text_with_marks_title">Gestijlde tekst met markeringen</string>
   <string name="styled_text_with_marks_summary">Blijf opmaaksymbolen tonen (bijv. *bold*)</string>
   <string name="no_such_link_target">Notitie met \"%1$s\" eigenschap ingesteld op \"%2$s\" niet gevonden</string>
-  <string name="imported_filters"><b>%d</b> filters geïmporteerd</string>
-  <string name="exported_filters"><b>%d</b> filters geëxporteerd</string>
   <string name="storage_permissions_missing">Geen toestemming voor opslag</string>
   <string name="file_does_not_exist">Bestand %s bestaat niet</string>
   <string name="import_from">Importeer uit \"%1$s\"?</string>

@@ -341,9 +341,6 @@
   <string name="default_notebook_desc">在通知中分享或創建新筆記到Orgzly</string>
   <string name="force_utf8">強制使用UTF-8編碼</string>
   <string name="force_utf8_summary">不要檢測編碼，總是使用UTF-8</string>
-  <string name="list_widget_name">Orgzly 搜尋</string>
-  <string name="select_a_filter">選擇篩選器</string>
-  <string name="select_a_filter_long">點擊標題欄時選擇一個篩選器</string>
   <string name="auto_sync">自動同步</string>
   <string name="auto_sync_experimental">自動同步 (實驗性)</string>
   <string name="auto_sync_experimental_summary">只使用本地資料庫</string>
@@ -368,8 +365,6 @@
   <string name="styled_text_with_marks_title">帶標記的文本樣式</string>
   <string name="styled_text_with_marks_summary">保持標記顯示 (如 *粗體*)</string>
   <string name="no_such_link_target">未找到 \"%1$s\" 屬性設置為 \"%2$s\"</string>
-  <string name="imported_filters">匯入 <b>%d </b> 篩選器</string>
-  <string name="exported_filters">匯出 <b>%d </b> 篩選器</string>
   <string name="storage_permissions_missing">沒有存儲許可權</string>
   <string name="file_does_not_exist">檔案 %s 不存在</string>
   <string name="import_from">從 \"%1$s\" 匯入？</string>

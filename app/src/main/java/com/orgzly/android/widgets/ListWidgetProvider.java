@@ -8,11 +8,9 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 import com.orgzly.BuildConfig;
@@ -63,7 +61,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
         remoteViews.setEmptyView(R.id.list_widget_list_view, R.id.list_widget_empty_view);
         if (filter.getQuery() == null) {
-            remoteViews.setTextViewText(R.id.list_widget_empty_view, context.getString(R.string.select_a_filter_long));
+            remoteViews.setTextViewText(R.id.list_widget_empty_view, context.getString(R.string.list_widget_nothing_selected));
         } else {
             remoteViews.setTextViewText(R.id.list_widget_empty_view, context.getString(R.string.no_notes_found_after_search));
         }
@@ -192,7 +190,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
         }
 
         if (filter == null) {
-            filter = new Filter(context.getString(R.string.select_a_filter), null);
+            filter = new Filter(context.getString(R.string.list_widget_select_search), null);
         }
         return filter;
     }

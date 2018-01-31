@@ -344,9 +344,6 @@
   <string name="default_notebook_desc">Orgzly kullanıcısı ile NotDefteri paylaşıldı veya devam eden bildirim yeni bir not oluştur</string>
   <string name="force_utf8">UTF-8\'i kodlamaya zorla</string>
   <string name="force_utf8_summary">Kodlamayı anlamaya çalışmayın, her zaman UTF-8 kullanın</string>
-  <string name="list_widget_name">Orgzly araması</string>
-  <string name="select_a_filter">Bir filtre seç</string>
-  <string name="select_a_filter_long">Başlık çubuğuna tıklayarak bir filtre seç</string>
   <string name="auto_sync">Otomatik eşitleme</string>
   <string name="auto_sync_experimental">Otomatik eşitle (deneme)</string>
   <string name="auto_sync_experimental_summary">Sadece dahili depolar için kullanılır</string>
@@ -372,8 +369,6 @@
   <string name="styled_text_with_marks_title">İşaretler içeren metnin stili</string>
   <string name="styled_text_with_marks_summary">Gösterilen işaretleri kalıcı kıl (örn. *kalın*)</string>
   <string name="no_such_link_target">\"%2$s\" bulunamadığı için notu \"%1$s\" özelliği ile kur</string>
-  <string name="imported_filters"><b>%d</b> filtreleri içe aktarıldı</string>
-  <string name="exported_filters"><b>%d</b> filtreleri dışa aktarıldı</string>
   <string name="storage_permissions_missing">Depolama izni yok</string>
   <string name="file_does_not_exist">%s dosyası mevcut değil</string>
   <string name="import_from">\"%1$s\" \' den içeri aktarılsın mı?</string>

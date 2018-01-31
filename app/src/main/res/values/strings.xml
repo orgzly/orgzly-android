@@ -421,9 +421,9 @@
     <string name="force_utf8">Force UTF-8 encoding</string>
     <string name="force_utf8_summary">Do not try to detect encoding, always use UTF-8</string>
 
-    <string name="list_widget_name">Orgzly search</string>
-    <string name="select_a_filter">Select a filter</string>
-    <string name="select_a_filter_long">Select a filter by clicking on the title bar</string>
+    <string name="list_widget_name">Orgzly notes</string>
+    <string name="list_widget_select_search">Select search</string>
+    <string name="list_widget_nothing_selected">No search selected</string>
 
     <string name="auto_sync">Auto-sync</string>
     <string name="auto_sync_experimental">Auto-sync (experimental)</string>
@@ -461,8 +461,16 @@
 
     <string name="no_such_link_target">Note with “%1$s” property set to “%2$s” not found</string>
 
-    <string name="imported_filters">Imported <b>%d</b> filters</string>
-    <string name="exported_filters">Exported <b>%d</b> filters</string>
+    <plurals name="imported_searches">
+        <item quantity="one">Imported one search</item>
+        <item quantity="other">Imported <b>%d</b> searches</item>
+    </plurals>
+
+    <plurals name="exported_searches">
+        <item quantity="one">Exported one search</item>
+        <item quantity="other">Exported <b>%d</b> searches</item>
+    </plurals>
+
     <string name="storage_permissions_missing">No storage permission</string>
     <string name="file_does_not_exist">File %s does not exist</string>
 

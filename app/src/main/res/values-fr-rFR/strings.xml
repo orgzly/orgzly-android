@@ -344,9 +344,6 @@
   <string name="default_notebook_desc">Bloc-notes utilisé lors du partage vers Orgzly ou lors de la création d\'une note à partir de la notification</string>
   <string name="force_utf8">Forcer l’encodage UTF-8</string>
   <string name="force_utf8_summary">Ne pas tenter de détecter l\'encodage, toujours utiliser UTF-8</string>
-  <string name="list_widget_name">Recherche Orgzly</string>
-  <string name="select_a_filter">Choisir un Filtre</string>
-  <string name="select_a_filter_long">Sélectionnez un filtre en cliquant sur la barre de titre</string>
   <string name="auto_sync">Synchronisation automatique</string>
   <string name="auto_sync_experimental">Synchronisation automatique (expérimental)</string>
   <string name="auto_sync_experimental_summary">Utilisé pour les dépôts locaux uniquement</string>
@@ -372,8 +369,6 @@
   <string name="styled_text_with_marks_title">Texte stylisé avec marques</string>
   <string name="styled_text_with_marks_summary">Conserver l\'affichage des marques (par exemple * gras *)</string>
   <string name="no_such_link_target">Note with “%1$s” property set to “%2$s” not found</string>
-  <string name="imported_filters">Importation de <b>%d</b> filtre(s)</string>
-  <string name="exported_filters">Exportation de <b>%d</b> filtre(s)</string>
   <string name="storage_permissions_missing">Autorisation d\'accès au stockage non accordée</string>
   <string name="file_does_not_exist">Le fichier \"%s\" n\'existe pas</string>
   <string name="import_from">Importer depuis « %1$s » ?</string>

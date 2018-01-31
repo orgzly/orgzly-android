@@ -341,9 +341,6 @@
   <string name="default_notebook_desc">当使用分享到 Orgzly 或从通知栏创建笔记时的默认笔记本</string>
   <string name="force_utf8">强制 UTF-8 编码</string>
   <string name="force_utf8_summary">不要尝试检测编码, 总是使用 UTF-8</string>
-  <string name="list_widget_name">Orgzly 搜索</string>
-  <string name="select_a_filter">选择过滤器</string>
-  <string name="select_a_filter_long">通过单击标题栏选择筛选器</string>
   <string name="auto_sync">自动同步</string>
   <string name="auto_sync_experimental">自动同步（实验功能）</string>
   <string name="auto_sync_experimental_summary">仅用于本地存储库</string>
@@ -368,8 +365,6 @@
   <string name="styled_text_with_marks_title">使用特殊标记表示样式</string>
   <string name="styled_text_with_marks_summary">保持标记显示 (如 * 粗体 *)</string>
   <string name="no_such_link_target">未找到 \"%1$s\" 属性设置为 \"%2$s\" 的笔记</string>
-  <string name="imported_filters">导入 <b>%d </b> 个过滤器</string>
-  <string name="exported_filters">导出 <b>%d </b> 个过滤器</string>
   <string name="storage_permissions_missing">无存储权限</string>
   <string name="file_does_not_exist">文件 %s 不存在</string>
   <string name="import_from">从 \"%1$s\" 导入？</string>

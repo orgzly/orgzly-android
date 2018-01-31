@@ -344,9 +344,6 @@
   <string name="default_notebook_desc">Notizbuch, welches für das Teilen mit Orgzly oder beim Erstellen einer neuen Notiz über die Benachrichtigungen verwendet werden soll</string>
   <string name="force_utf8">UTF-8-Zeichensatz erzwingen</string>
   <string name="force_utf8_summary">Der Zeichensatz wird nicht automatisch erkannt, es wird immer UTF-8 angenommen</string>
-  <string name="list_widget_name">Orgzly Suche</string>
-  <string name="select_a_filter">Filter auswählen</string>
-  <string name="select_a_filter_long">Tap auf die Titelleiste, um einen Filter auszuwählen</string>
   <string name="auto_sync">Automatisch synchronisieren</string>
   <string name="auto_sync_experimental">Automatisch synchronisieren (experimentell)</string>
   <string name="auto_sync_experimental_summary">Wird nur für lokale Ablageorte verwendet</string>
@@ -372,8 +369,6 @@
   <string name="styled_text_with_marks_title">Formatierter Text mit Markierungen</string>
   <string name="styled_text_with_marks_summary">Markierungen (z.B. *fett*) anzeigen</string>
   <string name="no_such_link_target">Notiz, dessen Eigenschaft \"%1$s\" auf \"%2$s\" steht existiert nicht</string>
-  <string name="imported_filters"><b>%d</b> Filter importiert</string>
-  <string name="exported_filters"><b>%d</b> Filter exportiert</string>
   <string name="storage_permissions_missing">Keine Zugriffsberechtigung auf den Speicher</string>
   <string name="file_does_not_exist">Datei %s existiert nicht</string>
   <string name="import_from">Von \"%1$s\" importieren?</string>

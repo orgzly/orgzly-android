@@ -344,9 +344,6 @@
   <string name="default_notebook_desc">Nota usada al compartir a Orgzly o crear una nueva nota desde la notificación actual</string>
   <string name="force_utf8">Codificacion UTF-8 de fuerza</string>
   <string name="force_utf8_summary">No intente detectar codificación, siempre use UTF-8</string>
-  <string name="list_widget_name">Búsqueda de Orgzly</string>
-  <string name="select_a_filter">Seleccionar filtro</string>
-  <string name="select_a_filter_long">Seleccione un filtro haciendo clic en la barra de título</string>
   <string name="auto_sync">Auto-sincronización</string>
   <string name="auto_sync_experimental">Auto-sync (experimental)</string>
   <string name="auto_sync_experimental_summary">Utilizado solo para repositorios locales</string>
@@ -372,8 +369,6 @@
   <string name="styled_text_with_marks_title">Texto estilizado con las marcas</string>
   <string name="styled_text_with_marks_summary">Mantener marcas visibles (por ejemplo *negrita*)</string>
   <string name="no_such_link_target">Nodo con propiedad \"%1$s\" asignado a \"%2$s\" no encontrado</string>
-  <string name="imported_filters">Filtros <b>%d</b> importados</string>
-  <string name="exported_filters">Filtros <b>%d</b> exportados</string>
   <string name="storage_permissions_missing">Sin permiso de almacenamiento</string>
   <string name="file_does_not_exist">El archivo %s no existe</string>
   <string name="import_from">¿Importar desde \"%1$s\"?</string>
