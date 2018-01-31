@@ -1,22 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <!-- Layout direction -->
-    <string name="pref_key_layout_direction" translatable="false">pref_key_layout_direction</string>
-    <string name="pref_default_value_layout_direction" translatable="false">@string/pref_value_layout_direction_locale</string>
-    <string name="pref_value_layout_direction_locale" translatable="false">locale</string>
-    <string name="pref_value_layout_direction_ltr" translatable="false">ltr</string>
-    <string name="pref_value_layout_direction_rtl" translatable="false">rtl</string>
-    <string-array name="layout_direction">
-        <item>@string/layout_direction_locale</item>
-        <item>@string/layout_direction_ltr</item>
-        <item>@string/layout_direction_rtl</item>
-    </string-array>
-    <string-array name="layout_direction_values">
-        <item>@string/pref_value_layout_direction_locale</item>
-        <item>@string/pref_value_layout_direction_ltr</item>
-        <item>@string/pref_value_layout_direction_rtl</item>
-    </string-array>
+    <!-- Overwrite system Locale -->
+    <string name="pref_key_ignore_system_locale" translatable="false">pref_key_ignore_system_locale</string>
+    <bool name="pref_default_ignore_system_locale" translatable="false">false</bool>
 
     <!-- How to display notebook's preface in notebook -->
     <string name="pref_key_preface_in_book" translatable="false">pref_key_preface_in_book</string>

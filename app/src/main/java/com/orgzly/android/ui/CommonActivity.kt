@@ -4,15 +4,16 @@ import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.*
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.MotionEvent
-import android.view.View
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
@@ -21,8 +22,7 @@ import com.orgzly.android.ui.dialogs.WhatsNewDialog
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
-import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import java.util.*
 
 
 /**
@@ -153,6 +153,28 @@ abstract class CommonActivity : AppCompatActivity() {
         return consumed
     }
 
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(baseContext(newBase))
+    }
+
+    private fun baseContext(newBase: Context): Context {
+        var context = newBase
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            val config = Configuration(newBase.resources.configuration)
+
+            if (AppPreferences.ignoreSystemLocale(context)) {
+                config.setLocale(Locale.US)
+            } else {
+                config.setLocale(Locale.getDefault())
+            }
+
+            context = context.createConfigurationContext(config)
+        }
+
+        return context
+    }
+
     /**
      * Set theme and styles.
      */
@@ -161,7 +183,10 @@ abstract class CommonActivity : AppCompatActivity() {
 
         setupTheme()
 
-        setupLayoutDirection()
+        // Required to immediately change layout direction after locale change
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            window.decorView.layoutDirection = baseContext.resources.configuration.layoutDirection
+        }
 
         super.onCreate(savedInstanceState)
 
@@ -229,20 +254,6 @@ abstract class CommonActivity : AppCompatActivity() {
                 .unregisterOnSharedPreferenceChangeListener(settingsChangeListener)
     }
 
-    private fun setupLayoutDirection() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            val setting = AppPreferences.layoutDirection(this)
-
-            val layoutDirection = when (setting) {
-                getString(R.string.pref_value_layout_direction_ltr) -> View.LAYOUT_DIRECTION_LTR
-                getString(R.string.pref_value_layout_direction_rtl) -> View.LAYOUT_DIRECTION_RTL
-                else -> View.LAYOUT_DIRECTION_LOCALE
-            }
-
-            window.decorView.layoutDirection = layoutDirection
-        }
-    }
-
     private fun setupTheme() {
         /*
          * Set theme - color scheme.
@@ -296,7 +307,6 @@ abstract class CommonActivity : AppCompatActivity() {
         }
     }
 
-
     fun popBackStackAndCloseKeyboard() {
         supportFragmentManager.popBackStack()
         ActivityUtils.closeSoftKeyboard(this)
@@ -320,7 +330,7 @@ abstract class CommonActivity : AppCompatActivity() {
         private val PREFS_REQUIRE_IMMEDIATE_ACTIVITY_RECREATE = listOf(
                 R.string.pref_key_font_size,
                 R.string.pref_key_color_scheme,
-                R.string.pref_key_layout_direction
+                R.string.pref_key_ignore_system_locale
         )
     }
 }

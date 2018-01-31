@@ -43,10 +43,9 @@
         android:summary="@string/styled_text_with_marks_summary"
         android:defaultValue="@bool/pref_default_styled_text_with_marks"/>
 
-    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-        android:key="@string/pref_key_layout_direction"
-        android:title="@string/layout_direction"
-        android:entries="@array/layout_direction"
-        android:entryValues="@array/layout_direction_values"
-        android:defaultValue="@string/pref_default_value_layout_direction"/>
+    <SwitchPreference
+        android:key="@string/pref_key_ignore_system_locale"
+        android:title="Use English"
+        android:summary="Ignore default language"
+        android:defaultValue="@bool/pref_default_ignore_system_locale"/>
 </PreferenceScreen>

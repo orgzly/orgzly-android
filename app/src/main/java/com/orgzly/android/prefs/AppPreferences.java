@@ -287,10 +287,10 @@ public class AppPreferences {
                 context.getResources().getString(R.string.pref_default_value_color_scheme));
     }
 
-    public static String layoutDirection(Context context) {
-        return getDefaultSharedPreferences(context).getString(
-                context.getResources().getString(R.string.pref_key_layout_direction),
-                context.getResources().getString(R.string.pref_default_value_layout_direction));
+    public static boolean ignoreSystemLocale(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_ignore_system_locale),
+                context.getResources().getBoolean(R.bool.pref_default_ignore_system_locale));
     }
 
     public static String bookNameInSearchResults(Context context) {

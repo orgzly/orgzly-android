@@ -74,9 +74,12 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
         setDefaultStateForNewNote()
 
-        /* Disable preference for changing the layout, if not on API version that supports that. */
+        /* Disable changing the language if it's not supported in this version. */
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            findPreference(getString(R.string.pref_key_layout_direction))?.isEnabled = false
+            val pref = findPreference(getString(R.string.pref_key_ignore_system_locale))
+            if (pref != null) {
+                preferenceScreen.removePreference(pref)
+            }
         }
 
         /* Update preferences which depend on multiple others. */
