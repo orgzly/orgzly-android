@@ -319,7 +319,7 @@
     <string name="year">Year</string>
 
     <string name="repeater_dialog_title">Repeat</string>
-    <string name="repeater_description">After task is marked complete, repeater will be shift the time</string>
+    <string name="repeater_description">After task is marked complete, repeater will shift the time</string>
     <string name="repeater_description_cumulate">Add period to time</string> <!-- + -->
     <string name="repeater_description_catch_up">Keep adding period to time until time reaches future</string> <!-- ++ -->
     <string name="repeater_description_restart">Add period to current time</string> <!-- .+ -->
