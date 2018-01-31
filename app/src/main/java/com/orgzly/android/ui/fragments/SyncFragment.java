@@ -834,7 +834,7 @@ public class SyncFragment extends Fragment {
 
                 case NOT_RUNNING:
                 case FINISHED:
-                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
 
                     setAnimation(false);
 
