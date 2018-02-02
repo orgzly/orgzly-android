@@ -25,6 +25,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.listViewItemCount;
+import static com.orgzly.android.espresso.EspressoUtils.onList;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static org.hamcrest.Matchers.allOf;
@@ -72,16 +73,16 @@ public class AgendaFragmentTest extends OrgzlyTest {
     public void testWithNoBook() {
         emptySetup();
         searchForText(".it.done (s.7d or d.7d) ad.7");
-        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(7)));
+        onList().check(matches(listViewItemCount(7)));
         searchForText(".it.done (s.7d or d.7d) ad.3");
-        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(3)));
+        onList().check(matches(listViewItemCount(3)));
     }
 
     @Test
     public void testDayAgenda() {
         defaultSetUp();
         searchForText(".it.done (s.7d or d.7d) ad.1");
-        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(4)));
+        onList().check(matches(listViewItemCount(4)));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(endsWith("Note B")), isDisplayed())));
         onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(endsWith("Note C")), isDisplayed())));
         onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(endsWith("Note 2")), isDisplayed())));
@@ -92,7 +93,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         defaultSetUp();
         openAgenda();
         // 7 date headers, 1 Note B, 7 x Note C, 7 x Note 2
-        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(22)));
+        onList().check(matches(listViewItemCount(22)));
     }
 
     @Test
@@ -101,7 +102,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         openAgenda();
         onListItem(1).perform(swipeRight());
         onListItem(1).onChildView(withId(R.id.item_menu_done_state_btn)).perform(click());
-        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(21)));
+        onList().check(matches(listViewItemCount(21)));
     }
 
     @Test
@@ -110,7 +111,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         openAgenda();
         onListItem(2).perform(swipeRight());
         onListItem(2).onChildView(withId(R.id.item_menu_done_state_btn)).perform(click());
-        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(21)));
+        onList().check(matches(listViewItemCount(21)));
     }
 
     @Test
@@ -119,7 +120,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         openAgenda();
         onListItem(3).perform(swipeRight());
         onListItem(3).onChildView(withId(R.id.item_menu_done_state_btn)).perform(click());
-        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(15)));
+        onList().check(matches(listViewItemCount(15)));
     }
 
     @Test
@@ -129,7 +130,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         onListItem(2).perform(swipeRight());
         onListItem(2).onChildView(withId(R.id.item_menu_next_state_btn)).perform(click());
         onListItem(2).onChildView(withId(R.id.item_menu_next_state_btn)).perform(click());
-        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(21)));
+        onList().check(matches(listViewItemCount(21)));
     }
 
     @Test
@@ -148,16 +149,16 @@ public class AgendaFragmentTest extends OrgzlyTest {
                         tomorrow.getDayOfMonth()));
         onView(withText(R.string.ok)).perform(click());
         onView(withText(R.string.set)).perform(click());
-        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(21)));
+        onList().check(matches(listViewItemCount(21)));
     }
 
     @Test
     public void testPersistedSpinnerSelection() {
         defaultSetUp();
         openAgenda();
-        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(22)));
+        onList().check(matches(listViewItemCount(22)));
         activityRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(22)));
+        onList().check(matches(listViewItemCount(22)));
     }
 
     @Test

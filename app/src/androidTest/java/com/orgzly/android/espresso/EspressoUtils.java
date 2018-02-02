@@ -9,9 +9,7 @@ import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.action.CloseKeyboardAction;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import com.orgzly.R;
 
@@ -27,6 +25,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressKey;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.matcher.RootMatchers.isDialog;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -76,12 +75,31 @@ class EspressoUtils {
         onListItem(setting[setting.length-1]).perform(click());
     }
 
+    static ViewInteraction onList() {
+        return onView(allOf(isAssignableFrom(ListView.class), isDisplayed()));
+    }
+
     /**
+     * Matcher for ListView with exactly specified number of items.
      */
+    static TypeSafeMatcher<View> listViewItemCount(final int count) {
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public boolean matchesSafely(View view) {
+                return count == ((ListView) view).getCount();
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("a ListView which contains " + count + " item(s)");
+            }
+        };
+    }
+
     @SuppressWarnings("unchecked")
     public static DataInteraction onListItem(int pos) {
         return onData(anything())
-                .inAdapterView(allOf(withId(android.R.id.list), isDisplayed()))
+                .inAdapterView(allOf(isAssignableFrom(ListView.class), isDisplayed()))
                 .atPosition(pos);
     }
 
@@ -216,23 +234,6 @@ class EspressoUtils {
             public void perform(final UiController uiController, final View view) {
                 mCloseSoftKeyboard.perform(uiController, view);
                 uiController.loopMainThreadForAtLeast(KEYBOARD_DISMISSAL_DELAY_MILLIS);
-            }
-        };
-    }
-
-    /**
-     * Matcher for ListView with exactly specified number of items.
-     */
-    static TypeSafeMatcher<View> listViewItemCount(final int count) {
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public boolean matchesSafely(View view) {
-                return count == ((ListView) view).getCount();
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("a ListView which contains " + count + " item(s)");
             }
         };
     }

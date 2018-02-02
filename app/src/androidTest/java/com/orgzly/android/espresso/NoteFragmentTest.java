@@ -2,7 +2,6 @@ package com.orgzly.android.espresso;
 
 import android.support.test.rule.ActivityTestRule;
 import android.widget.DatePicker;
-import android.widget.ListView;
 import android.widget.TimePicker;
 
 import com.orgzly.R;
@@ -22,7 +21,6 @@ import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.PickerActions.setDate;
 import static android.support.test.espresso.contrib.PickerActions.setTime;
-import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -30,6 +28,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
 import static com.orgzly.android.espresso.EspressoUtils.listViewItemCount;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
+import static com.orgzly.android.espresso.EspressoUtils.onList;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
 import static com.orgzly.android.espresso.EspressoUtils.settingsSetTodoKeywords;
@@ -159,11 +158,11 @@ public class NoteFragmentTest extends OrgzlyTest {
         onListItem(1).perform(click());
         settingsSetTodoKeywords("");
         onView(withId(R.id.fragment_note_state_button)).perform(click());
-        onView(allOf(isAssignableFrom(ListView.class), isDisplayed())).check(matches(listViewItemCount(1))); // Only DONE
+        onList().check(matches(listViewItemCount(1))); // Only DONE
         pressBack();
         settingsSetTodoKeywords("TODO");
         onView(withId(R.id.fragment_note_state_button)).perform(click());
-        onView(allOf(isAssignableFrom(ListView.class), isDisplayed())).check(matches(listViewItemCount(2)));
+        onList().check(matches(listViewItemCount(2)));
     }
 
     @Test
@@ -311,7 +310,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         pressBack();
 
         onView(withId(R.id.fragment_note_priority_button)).perform(click());
-        onView(allOf(isAssignableFrom(ListView.class), isDisplayed())).check(matches(listViewItemCount(1)));
+        onList().check(matches(listViewItemCount(1)));
         pressBack();
 
 
@@ -323,7 +322,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         pressBack();
 
         onView(withId(R.id.fragment_note_priority_button)).perform(click());
-        onView(allOf(isAssignableFrom(ListView.class), isDisplayed())).check(matches(listViewItemCount(3)));
+        onList().check(matches(listViewItemCount(3)));
     }
 
     @Test

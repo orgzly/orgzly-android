@@ -22,6 +22,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
 import static com.orgzly.android.espresso.EspressoUtils.listViewItemCount;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
+import static com.orgzly.android.espresso.EspressoUtils.onList;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -62,7 +63,7 @@ public class CreatedAtTest extends OrgzlyTest {
         enableCreatedAt();
 
         searchForText("cr.le.today");
-        onView(allOf(withId(android.R.id.list), isDisplayed())).check(matches(listViewItemCount(2)));
+        onList().check(matches(listViewItemCount(2)));
 
         // TODO: Search before/after 2018-01-03 expecting 1 note
     }

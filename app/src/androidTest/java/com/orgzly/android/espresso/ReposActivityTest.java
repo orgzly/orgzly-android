@@ -1,6 +1,5 @@
 package com.orgzly.android.espresso;
 
-import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
@@ -28,28 +27,9 @@ public class ReposActivityTest extends OrgzlyTest {
     @Rule
     public ActivityTestRule activityRule = new ActivityTestRule<>(ReposActivity.class, true, false);
 
-    private void startActivityWithIntent(String action, String type, String extraText) {
-        Intent intent = new Intent();
-
-        if (action != null) {
-            intent.setAction(action);
-        }
-
-        if (type != null) {
-            intent.setType(type);
-        }
-
-        if (extraText != null) {
-            intent.putExtra(Intent.EXTRA_TEXT, extraText);
-        }
-
-        activityRule.launchActivity(intent);
-    }
-
     @Test
     public void testSavingWithBogusDirectoryUri() {
-        startActivityWithIntent(Intent.ACTION_VIEW, null, null);
-
+        activityRule.launchActivity(null);
         onView(withId(R.id.fragment_repos_directory)).perform(click());
         onView(withId(R.id.fragment_repo_directory)).perform(replaceText("non-existent-directory"));
         onView(withId(R.id.done)).perform(click());
@@ -63,8 +43,9 @@ public class ReposActivityTest extends OrgzlyTest {
 
         new File(localDir).mkdirs();
 
-        startActivityWithIntent(Intent.ACTION_VIEW, null, null);
+        activityRule.launchActivity(null);
 
+        onView(withId(R.id.fragment_repos_flipper)).check(matches(isDisplayed()));
         onView(withId(R.id.fragment_repos_directory)).perform(click());
         onView(withId(R.id.fragment_repo_directory)).perform(replaceText(repoUri));
         onView(withId(R.id.done)).perform(click());
@@ -80,7 +61,7 @@ public class ReposActivityTest extends OrgzlyTest {
     public void testDropboxRepoWithPercentCharacter() {
         String localDir = "/Documents/user@host%2Fdir";
 
-        startActivityWithIntent(Intent.ACTION_VIEW, null, null);
+        activityRule.launchActivity(null);
 
         onView(withId(R.id.fragment_repos_dropbox)).perform(click());
         onView(withId(R.id.fragment_repo_dropbox_directory)).perform(replaceText(localDir));
