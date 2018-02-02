@@ -601,11 +601,11 @@ public class SyncingTest extends OrgzlyTest {
         sync();
 
         onListItem(0).onChildView(withId(R.id.item_book_link_url))
-                .check(matches(allOf(withText("mock://repo-a/Book Name.org"), isDisplayed())));
+                .check(matches(allOf(withText("mock://repo-a/Book%20Name.org"), isDisplayed())));
         onListItem(0).onChildView(withId(R.id.item_book_synced_url))
-                .check(matches(allOf(withText("mock://repo-a/Book Name.org"), isDisplayed())));
+                .check(matches(allOf(withText("mock://repo-a/Book%20Name.org"), isDisplayed())));
         onListItem(0).onChildView(withId(R.id.item_book_last_action))
-                .check(matches(allOf(withText(endsWith("Loaded from mock://repo-a/Book Name.org")), isDisplayed())));
+                .check(matches(allOf(withText(endsWith("Loaded from mock://repo-a/Book%20Name.org")), isDisplayed())));
     }
 
     @Test

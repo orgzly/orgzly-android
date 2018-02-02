@@ -11,8 +11,10 @@
     <ImageView
         android:layout_gravity="center"
         android:contentDescription="@string/property"
-        android:paddingLeft="8dp"
+        android:paddingLeft="4dp"
+        android:paddingStart="4dp"
         android:paddingRight="12dp"
+        android:paddingEnd="12dp"
         android:src="?attr/ic_info_outline_24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

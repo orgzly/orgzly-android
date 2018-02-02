@@ -2,6 +2,7 @@ package com.orgzly.android.espresso;
 
 import android.support.test.rule.ActivityTestRule;
 import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.TimePicker;
 
 import com.orgzly.R;
@@ -21,16 +22,17 @@ import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.PickerActions.setDate;
 import static android.support.test.espresso.contrib.PickerActions.setTime;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
+import static com.orgzly.android.espresso.EspressoUtils.listViewItemCount;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
-import static com.orgzly.android.espresso.EspressoUtils.onSpinnerString;
+import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
 import static com.orgzly.android.espresso.EspressoUtils.settingsSetTodoKeywords;
-import static com.orgzly.android.espresso.EspressoUtils.spinnerItemCount;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
@@ -131,7 +133,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onListItem(2).perform(click());
 
         onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.fragment_note_state)).perform(click());
+        onView(withId(R.id.fragment_note_state_button)).perform(click());
         onView(withText("DONE")).perform(click());
         onView(withId(R.id.fragment_note_closed_button)).check(matches(allOf(withText(startsWith(currentUserDate())), isDisplayed())));
     }
@@ -144,7 +146,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(userDateTime("<2015-01-11 Sun .+1d/2d>")), isDisplayed())));
         onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
 
-        onView(withId(R.id.fragment_note_state)).perform(click());
+        onView(withId(R.id.fragment_note_state_button)).perform(click());
         onView(withText("DONE")).perform(click());
 
         onView(withText("NOTE")).check(matches(isDisplayed()));
@@ -156,16 +158,19 @@ public class NoteFragmentTest extends OrgzlyTest {
     public void testChangingStateSettingsFromNoteFragment() {
         onListItem(1).perform(click());
         settingsSetTodoKeywords("");
-        onView(withId(R.id.fragment_note_state)).check(matches(spinnerItemCount(2))); // NOTE and others
+        onView(withId(R.id.fragment_note_state_button)).perform(click());
+        onView(allOf(isAssignableFrom(ListView.class), isDisplayed())).check(matches(listViewItemCount(1))); // Only DONE
+        pressBack();
         settingsSetTodoKeywords("TODO");
-        onView(withId(R.id.fragment_note_state)).check(matches(spinnerItemCount(3))); // NOTE and others
+        onView(withId(R.id.fragment_note_state_button)).perform(click());
+        onView(allOf(isAssignableFrom(ListView.class), isDisplayed())).check(matches(listViewItemCount(2)));
     }
 
     @Test
     public void testTitleCanNotBeEmptyForNewNote() {
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.done)).perform(click());
-        onView(withText(R.string.can_not_be_empty)).check(matches(isDisplayed()));
+        onSnackbar().check(matches(withText(R.string.title_can_not_be_empty)));
     }
 
     @Test
@@ -173,7 +178,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onListItem(1).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceText(""));
         onView(withId(R.id.done)).perform(click());
-        onView(withText(R.string.can_not_be_empty)).check(matches(isDisplayed()));
+        onSnackbar().check(matches(withText(R.string.title_can_not_be_empty)));
     }
 
     @Test
@@ -192,8 +197,8 @@ public class NoteFragmentTest extends OrgzlyTest {
     public void testSettingStateRemainsSetAfterRotation() {
         toPortrait(activityRule);
         onListItem(1).perform(click());
-        onView(withId(R.id.fragment_note_state)).perform(click()); // Open spinner
-        onSpinnerString("TODO").perform(click());
+        onView(withId(R.id.fragment_note_state_button)).perform(click());
+        onView(withText("TODO")).perform(click());
         onView(withText("TODO")).check(matches(isDisplayed()));
         toLandscape(activityRule);
         onView(withText("TODO")).check(matches(isDisplayed()));
@@ -203,11 +208,11 @@ public class NoteFragmentTest extends OrgzlyTest {
     public void testSettingPriorityRemainsSetAfterRotation() {
         toPortrait(activityRule);
         onListItem(1).perform(click());
-        onView(withId(R.id.fragment_note_priority)).perform(click()); // Open spinner
-        onSpinnerString("B").perform(click());
-        onView(withText("B")).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_note_priority_button)).perform(click());
+        onView(withText("B")).perform(click());
+        onView(withText(context.getString(R.string.priority_with_argument, "B"))).check(matches(isDisplayed()));
         toLandscape(activityRule);
-        onView(withText("B")).check(matches(isDisplayed()));
+        onView(withText(context.getString(R.string.priority_with_argument, "B"))).check(matches(isDisplayed()));
     }
 
     @Test
@@ -237,8 +242,8 @@ public class NoteFragmentTest extends OrgzlyTest {
     public void testRemovingDoneStateRemovesClosedTime() {
         onListItem(5).perform(click());
         onView(withId(R.id.fragment_note_closed_button)).check(matches(allOf(withText(userDateTime("[2014-01-01 Wed 20:07]")), isDisplayed())));
-        onView(withId(R.id.fragment_note_state)).perform(click()); // Open spinner
-        onSpinnerString("NOTE").perform(click());
+        onView(withId(R.id.fragment_note_state_button)).perform(click());
+        onView(withText(R.string.clear)).perform(click());
         onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
     }
 
@@ -305,7 +310,10 @@ public class NoteFragmentTest extends OrgzlyTest {
         pressBack();
         pressBack();
 
-        onView(withId(R.id.fragment_note_priority)).check(matches(spinnerItemCount(2)));
+        onView(withId(R.id.fragment_note_priority_button)).perform(click());
+        onView(allOf(isAssignableFrom(ListView.class), isDisplayed())).check(matches(listViewItemCount(1)));
+        pressBack();
+
 
         /* Change lowest priority to C. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
@@ -314,7 +322,8 @@ public class NoteFragmentTest extends OrgzlyTest {
         pressBack();
         pressBack();
 
-        onView(withId(R.id.fragment_note_priority)).check(matches(spinnerItemCount(4)));
+        onView(withId(R.id.fragment_note_priority_button)).perform(click());
+        onView(allOf(isAssignableFrom(ListView.class), isDisplayed())).check(matches(listViewItemCount(3)));
     }
 
     @Test

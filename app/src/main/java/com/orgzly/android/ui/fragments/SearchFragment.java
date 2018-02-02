@@ -15,9 +15,10 @@ import android.widget.ViewFlipper;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.ui.HeadsListViewAdapter;
 import com.orgzly.android.ui.Loaders;
-import com.orgzly.android.ui.NoteStateSpinner;
+import com.orgzly.android.ui.NoteStates;
 import com.orgzly.android.ui.Selection;
 import com.orgzly.android.util.LogUtils;
 
@@ -50,7 +51,7 @@ public class SearchFragment extends QueryFragment {
 
         View view = inflater.inflate(R.layout.fragment_query_search, container, false);
 
-        mViewFlipper = (ViewFlipper) view.findViewById(R.id.fragment_query_search_view_flipper);
+        mViewFlipper = view.findViewById(R.id.fragment_query_search_view_flipper);
 
         return view;
     }
@@ -184,7 +185,9 @@ public class SearchFragment extends QueryFragment {
                     SubMenu subMenu = menuItem.getSubMenu();
                     if (subMenu != null) {
                         subMenu.clear();
-                        for (String str: new NoteStateSpinner(getActivity(), null).getValues()) {
+
+                        subMenu.add(STATE_ITEM_GROUP, Menu.NONE, Menu.NONE, NoteStates.NO_STATE_KEYWORD);
+                        for (String str: NoteStates.Companion.fromPreferences(getActivity()).getArray()) {
                             subMenu.add(STATE_ITEM_GROUP, Menu.NONE, Menu.NONE, str);
                         }
                     }

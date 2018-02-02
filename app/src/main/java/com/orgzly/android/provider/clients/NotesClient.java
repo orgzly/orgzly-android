@@ -27,7 +27,7 @@ import com.orgzly.android.query.Condition;
 import com.orgzly.android.query.Query;
 import com.orgzly.android.query.user.InternalQueryBuilder;
 import com.orgzly.android.ui.NotePlace;
-import com.orgzly.android.ui.NoteStateSpinner;
+import com.orgzly.android.ui.NoteStates;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
@@ -183,7 +183,7 @@ public class NotesClient {
         OrgHead head = new OrgHead();
 
         String state = cursor.getString(cursor.getColumnIndex(DbNoteView.STATE));
-        if (NoteStateSpinner.isSet(state)) {
+        if (NoteStates.Companion.isKeyword(state)) {
             head.setState(state);
         } else {
             head.setState(null);
@@ -690,12 +690,11 @@ public class NotesClient {
         ContentValues values = new ContentValues();
         values.put(ProviderContract.NotesState.Param.NOTE_IDS, noteIdsCommaSeparated);
 
-        /**
+        /*
          * TODO: Do not update state in DB with NO_STATE_KEYWORD - that should be UI-only thing
-         * Then stop checking for it in NoteStateSpinner.isSet
+         * Then stop checking for it with NoteStates.isKeyword()
          */
-        values.put(ProviderContract.NotesState.Param.STATE,
-                state != null ? state : NoteStateSpinner.NO_STATE_KEYWORD);
+        values.put(ProviderContract.NotesState.Param.STATE, state != null ? state : NoteStates.NO_STATE_KEYWORD);
 
         context.getContentResolver().update(ProviderContract.NotesState.ContentUri.notesState(), values, null, null);
 

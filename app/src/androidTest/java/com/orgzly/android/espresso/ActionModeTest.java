@@ -120,8 +120,8 @@ public class ActionModeTest extends OrgzlyTest {
         EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_REVERSED_NOTE_CLICK_ACTION);
         pressBack();
         pressBack();
-        onListItem(3).perform(click()); // Selects
-        onListItem(3).perform(longClick()); // Opens note
+        onListItem(3).perform(click()); // Select note
+        onListItem(3).perform(longClick()); // Open note
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
         onView(withId(R.id.book_cab_move)).check(doesNotExist());
         pressBack();

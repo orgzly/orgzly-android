@@ -39,10 +39,10 @@ import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.ui.ActionModeListener;
 import com.orgzly.android.ui.Fab;
 import com.orgzly.android.ui.HeadsListViewAdapter;
+import com.orgzly.android.ui.NoteStates;
 import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.NotePlace;
-import com.orgzly.android.ui.NoteStateSpinner;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.ui.Selection;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
@@ -880,7 +880,8 @@ public class BookFragment extends NoteListFragment
                     SubMenu subMenu = menuItem.getSubMenu();
                     if (subMenu != null) {
                         subMenu.clear();
-                        for (String str: new NoteStateSpinner(getActivity(), null).getValues()) {
+                        subMenu.add(STATE_ITEM_GROUP, Menu.NONE, Menu.NONE, NoteStates.NO_STATE_KEYWORD);
+                        for (String str: NoteStates.Companion.fromPreferences(getActivity()).getArray()) {
                             subMenu.add(STATE_ITEM_GROUP, Menu.NONE, Menu.NONE, str);
                         }
                     }

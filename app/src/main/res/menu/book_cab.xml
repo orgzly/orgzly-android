@@ -85,7 +85,7 @@
 
     <item
         android:id="@+id/book_cab_state"
-        android:icon="?attr/ic_storage_24dp"
+        android:icon="?attr/ic_flag_24dp"
         app:showAsAction="never"
         android:title="@string/state">
 

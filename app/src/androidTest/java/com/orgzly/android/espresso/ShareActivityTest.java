@@ -140,35 +140,6 @@ public class ShareActivityTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_title)).check(matches(withText("")));
     }
 
-
-    // TODO: Failing from time to time due to:
-    // android.view.WindowLeaked: Activity com.orgzly.android.ui.ShareActivity has leaked window android.widget.PopupWindow$PopupDecorView
-    @Test
-    public void testSettingStateRemainsSetAfterRotation() {
-        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", null);
-        toPortrait(activityRule);
-        onView(withId(R.id.fragment_note_state)).perform(click()); // Open spinner
-        onSpinnerString("TODO").perform(click());
-        onView(withId(R.id.fragment_note_state)).perform(scrollTo());
-        onView(withText("TODO")).check(matches(isDisplayed()));
-        toLandscape(activityRule);
-        onView(withId(R.id.fragment_note_state)).perform(scrollTo());
-        onView(withText("TODO")).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void testSettingPriorityRemainsSetAfterRotation() {
-        startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", null);
-        toPortrait(activityRule);
-        onView(withId(R.id.fragment_note_priority)).perform(click()); // Open spinner
-        onSpinnerString("B").perform(click());
-        onView(withId(R.id.fragment_note_priority)).perform(scrollTo());
-        onView(withText("B")).check(matches(isDisplayed()));
-        toLandscape(activityRule);
-        onView(withId(R.id.fragment_note_priority)).perform(scrollTo());
-        onView(withText("B")).check(matches(isDisplayed()));
-    }
-
     @Test
     public void testSettingScheduledTimeRemainsSetAfterRotation() {
         startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", null);

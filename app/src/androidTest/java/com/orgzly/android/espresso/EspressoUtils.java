@@ -9,6 +9,7 @@ import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.action.CloseKeyboardAction;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -232,23 +233,6 @@ class EspressoUtils {
             @Override
             public void describeTo(Description description) {
                 description.appendText("a ListView which contains " + count + " item(s)");
-            }
-        };
-    }
-
-    /**
-     * Matcher for Spinner with exactly specified number of items.
-     */
-    static TypeSafeMatcher<View> spinnerItemCount(final int count) {
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public boolean matchesSafely(View view) {
-                return count == ((Spinner) view).getCount();
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("a Spinner which contains " + count + " item(s)");
             }
         };
     }

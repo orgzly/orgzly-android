@@ -34,6 +34,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerActions.open;
 import static android.support.test.espresso.contrib.PickerActions.setDate;
 import static android.support.test.espresso.contrib.PickerActions.setTime;
+import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
@@ -239,9 +240,11 @@ public class MiscTest extends OrgzlyTest {
         activityRule.launchActivity(null);
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
         onView(withId(R.id.fab)).perform(click());
+
         /* Change state to NOTE to avoid having 1 or more spaces before title after keyword in book fragment. */
-        onView(withId(R.id.fragment_note_state)).perform(click()); // Open spinner
-        onData(allOf(instanceOf(String.class), is("NOTE"))).perform(click());
+        onView(withId(R.id.fragment_note_state_button)).perform(click());
+        onView(withText(R.string.clear)).perform(click());
+
         onView(withId(R.id.fragment_note_title))
                 .perform(replaceText("    Title with empty spaces all around   "), closeSoftKeyboardWithDelay());
         onView(withId(R.id.done)).perform(click());
@@ -385,26 +388,27 @@ public class MiscTest extends OrgzlyTest {
         onListItem(1).perform(click());
 
         /* TO DO -> DONE */
-        onView(withId(R.id.fragment_note_state)).perform(click()); // Open spinner
-        onData(allOf(instanceOf(String.class), is("DONE"))).perform(click());
+        onView(withId(R.id.fragment_note_state_button)).perform(click());
+        onView(withText("DONE")).perform(click());
+
         onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
 
         /* DONE -> NOTE */
-        onView(withId(R.id.fragment_note_state)).perform(click()); // Open spinner
-        onData(allOf(instanceOf(String.class), is("NOTE"))).perform(click());
+        onView(withId(R.id.fragment_note_state_button)).perform(click());
+        onView(withText(R.string.clear)).perform(click());
         onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
 
         /* NOTE -> DONE */
-        onView(withId(R.id.fragment_note_state)).perform(click()); // Open spinner
-        onData(allOf(instanceOf(String.class), is("DONE"))).perform(click());
+        onView(withId(R.id.fragment_note_state_button)).perform(click());
+        onView(withText("DONE")).perform(click());
         onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(userDateTime("<2015-01-30 Fri 04:05 +6d>"))));
 
         /* NOTE -> OLD */
-        onView(withId(R.id.fragment_note_state)).perform(click()); // Open spinner
-        onData(allOf(instanceOf(String.class), is("OLD"))).perform(click());
+        onView(withId(R.id.fragment_note_state_button)).perform(click());
+        onView(withText("OLD")).perform(click());
         onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(userDateTime("<2015-02-05 Thu 04:05 +6d>"))));
     }

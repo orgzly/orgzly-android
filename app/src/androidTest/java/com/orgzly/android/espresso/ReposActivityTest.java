@@ -70,7 +70,7 @@ public class ReposActivityTest extends OrgzlyTest {
         onView(withId(R.id.done)).perform(click());
         onView(withId(R.id.fragment_repos_flipper)).check(matches(isDisplayed()));
 
-        onListItem(0).onChildView(withId(R.id.item_repo_url)).check(matches(withText("file:" + localDir)));
+        onListItem(0).onChildView(withId(R.id.item_repo_url)).check(matches(withText(repoUri)));
         onListItem(0).perform(click());
 
         onView(withId(R.id.fragment_repo_directory)).check(matches(withText(repoUri)));
@@ -87,7 +87,7 @@ public class ReposActivityTest extends OrgzlyTest {
         onView(withId(R.id.done)).perform(click());
         onView(withId(R.id.fragment_repos_flipper)).check(matches(isDisplayed()));
 
-        onListItem(0).onChildView(withId(R.id.item_repo_url)).check(matches(withText("dropbox:" + localDir)));
+        onListItem(0).onChildView(withId(R.id.item_repo_url)).check(matches(withText("dropbox:/Documents/user%40host%252Fdir")));
         onListItem(0).perform(click());
 
         onView(withId(R.id.fragment_repo_dropbox_directory)).check(matches(withText(localDir)));

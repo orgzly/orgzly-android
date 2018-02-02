@@ -3,7 +3,6 @@
 <ViewFlipper
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_note_view_flipper"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -27,58 +26,26 @@
                 android:id="@+id/fragment_note_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
+                android:layout_marginBottom="8dp"
                 android:inputType="text|textCapSentences"
                 android:imeOptions="actionDone"
                 android:hint="@string/fragment_note_title_hint"
                 tools:text="@string/head_title_sample"
                 android:freezesText="true"/>
 
-            <!-- State -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginTop="@dimen/ui_element_spacing"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="8dp"
-                    android:layout_gravity="center"
-                    android:src="?attr/ic_storage_24dp"
-                    android:contentDescription="@string/tags"/>
-
-                <Spinner
-                    android:id="@+id/fragment_note_state"
-                    android:layout_width="match_parent"
-                    android:dropDownWidth="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:prompt="@string/state_spinner_prompt"
-                    android:freezesText="true"/>
-            </LinearLayout>
-
             <!-- Tags. -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginTop="@dimen/ui_element_spacing"
+                android:layout_marginBottom="8dp"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="8dp"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:src="?attr/ic_label_outline_24dp"
                     android:contentDescription="@string/tags"/>
 
@@ -86,9 +53,9 @@
                 <MultiAutoCompleteTextView
                     android:id="@+id/fragment_note_tags"
                     android:layout_width="match_parent"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginStart="9dp"
                     android:inputType="text"
                     android:hint="@string/fragment_note_tags_hint"
                     android:completionThreshold="2"
@@ -96,38 +63,27 @@
                     android:textColor="?attr/main_text_color"/>
             </LinearLayout>
 
-            <!-- Priority -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginTop="@dimen/ui_element_spacing"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="8dp"
-                    android:layout_gravity="center"
-                    android:src="?attr/ic_priority_high_24dp"
-                    android:contentDescription="@string/tags"/>
+            <!-- State -->
+            <Button
+                android:id="@+id/fragment_note_state_button"
+                style="@style/NoteTimeButton"
+                android:drawableStart="?attr/ic_flag_24dp"
+                android:drawableLeft="?attr/ic_flag_24dp"
+                tools:text="TODO"
+                android:freezesText="true"/>
 
-                <Spinner
-                    android:id="@+id/fragment_note_priority"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownWidth="wrap_content"
-                    android:prompt="@string/priority_spinner_prompt"
-                    android:freezesText="true"/>
-            </LinearLayout>
+            <!-- Priority -->
+            <Button
+                android:id="@+id/fragment_note_priority_button"
+                style="@style/NoteTimeButton"
+                android:drawableStart="?attr/ic_trending_up_24dp"
+                android:drawableLeft="?attr/ic_trending_up_24dp"
+                tools:text="Priority A"
+                android:freezesText="true"/>
 
             <Button
                 android:id="@+id/fragment_note_scheduled_button"
                 style="@style/NoteTimeButton"
-                android:layout_marginTop="@dimen/padding_8"
                 android:drawableStart="?attr/ic_today_24dp"
                 android:drawableLeft="?attr/ic_today_24dp"
                 android:text="@string/schedule_button_hint"
@@ -184,9 +140,6 @@
                 android:id="@+id/body_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginTop="@dimen/ui_element_spacing"
                 android:minHeight="@dimen/fragment_note_body_edit_min_height"
                 android:gravity="start|bottom"
                 android:freezesText="true"

@@ -3,7 +3,6 @@ package com.orgzly.android.ui.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,23 +11,18 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.ViewFlipper;
@@ -43,8 +37,8 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.NotePlace;
-import com.orgzly.android.ui.NotePrioritySpinner;
-import com.orgzly.android.ui.NoteStateSpinner;
+import com.orgzly.android.ui.NotePriorities;
+import com.orgzly.android.ui.NoteStates;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.drawer.DrawerItem;
@@ -117,11 +111,12 @@ public class NoteFragment extends Fragment
 
     private ScrollView scrollView;
 
-    private NoteStateSpinner mState;
-    private NotePrioritySpinner mPriority;
-
     private EditText mTitleView;
+
     private MultiAutoCompleteTextView mTagsView;
+
+    private Button mState;
+    private Button mPriority;
 
     private Button mScheduledButton;
     private Button mDeadlineButton;
@@ -138,6 +133,8 @@ public class NoteFragment extends Fragment
     private ViewFlipper mViewFlipper;
 
     private UserTimeFormatter mUserTimeFormatter;
+
+    private AlertDialog dialog;
 
     public static NoteFragment getInstance(boolean isNew, long bookId, long noteId, Place place, String initialTitle, String initialContent) {
         NoteFragment fragment = new NoteFragment();
@@ -197,8 +194,6 @@ public class NoteFragment extends Fragment
         setHasOptionsMenu(true);
     }
 
-    private boolean mStateSpinnerReady = false;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, inflater, container, savedInstanceState);
@@ -206,48 +201,7 @@ public class NoteFragment extends Fragment
         final View top = inflater.inflate(R.layout.fragment_note, container, false);
 
 
-        scrollView = (ScrollView) top.findViewById(R.id.fragment_note_container);
-
-        mPriority = new NotePrioritySpinner(getActivity(), (Spinner) top.findViewById(R.id.fragment_note_priority));
-        mState = new NoteStateSpinner(getActivity(), (Spinner) top.findViewById(R.id.fragment_note_state));
-
-        /*
-         * Act after state change only if there was a touch (ie user clicked on the spinner).
-         */
-        mState.getSpinner().setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent ev) {
-                if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-                    mStateSpinnerReady = true;
-                    // Load your spinner here
-                }
-                return false;
-            }
-        });
-
-        /*
-         * On state change - update state and timestamps.
-         *
-         * There could be issues with onItemSelected called on initialization, not as a result
-         * of user selection, which is why mStateSpinnerReady is being used.
-         *
-         * http://stackoverflow.com/questions/2562248/android-how-to-keep-onitemselected-from-firing-off-on-a-newly-instantiated-spin
-         */
-        mState.getSpinner().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (mStateSpinnerReady) {
-                    String state = parent.getItemAtPosition(position).toString();
-                    updateNoteForStateChange(getActivity(), mNote, state);
-                }
-
-                mStateSpinnerReady = false;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        scrollView = top.findViewById(R.id.fragment_note_container);
 
         mTitleView = top.findViewById(R.id.fragment_note_title);
 
@@ -259,15 +213,12 @@ public class NoteFragment extends Fragment
         mTitleView.setMaxLines(3);
 
         /* Keyboard's action button pressed. */
-        mTitleView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                save();
-                return true;
-            }
+        mTitleView.setOnEditorActionListener((v, actionId, event) -> {
+            save();
+            return true;
         });
 
-        mTagsView = (MultiAutoCompleteTextView) top.findViewById(R.id.fragment_note_tags);
+        mTagsView = top.findViewById(R.id.fragment_note_tags);
 
         /* Hint causes minimum width - when tags' width is smaller then hint's, there is empty space. */
         mTagsView.addTextChangedListener(new TextWatcher() {
@@ -289,22 +240,28 @@ public class NoteFragment extends Fragment
             }
         });
 
-        mScheduledButton = (Button) top.findViewById(R.id.fragment_note_scheduled_button);
+        mPriority = top.findViewById(R.id.fragment_note_priority_button);
+        mPriority.setOnClickListener(this);
+
+        mState = top.findViewById(R.id.fragment_note_state_button);
+        mState.setOnClickListener(this);
+
+        mScheduledButton = top.findViewById(R.id.fragment_note_scheduled_button);
         mScheduledButton.setOnClickListener(this);
 
-        mDeadlineButton = (Button) top.findViewById(R.id.fragment_note_deadline_button);
+        mDeadlineButton = top.findViewById(R.id.fragment_note_deadline_button);
         mDeadlineButton.setOnClickListener(this);
 
-        mClosedButton = (Button) top.findViewById(R.id.fragment_note_closed_button);
+        mClosedButton = top.findViewById(R.id.fragment_note_closed_button);
         mClosedButton.setOnClickListener(this);
 
-        propertyList = (LinearLayout) top.findViewById(R.id.property_list);
-        addProperty = (Button) top.findViewById(R.id.add_property);
+        propertyList = top.findViewById(R.id.property_list);
+        addProperty = top.findViewById(R.id.add_property);
         addProperty.setOnClickListener(this);
 
-        bodyEdit = (EditText) top.findViewById(R.id.body_edit);
+        bodyEdit = top.findViewById(R.id.body_edit);
 
-        bodyView = (TextView) top.findViewById(R.id.body_view);
+        bodyView = top.findViewById(R.id.body_view);
 
 //        bodyView.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
@@ -326,37 +283,32 @@ public class NoteFragment extends Fragment
             bodyView.setTypeface(Typeface.MONOSPACE);
         }
 
-        editSwitch = (ToggleButton) top.findViewById(R.id.edit_content_toggle);
+        editSwitch = top.findViewById(R.id.edit_content_toggle);
 
-        editSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, buttonView, isChecked);
+        editSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, buttonView, isChecked);
 
-                if (isChecked) {
-                    bodyView.setVisibility(View.GONE);
+            if (isChecked) {
+                bodyView.setVisibility(View.GONE);
 
-                    bodyEdit.setVisibility(View.VISIBLE);
+                bodyEdit.setVisibility(View.VISIBLE);
 
-                } else {
-                    bodyEdit.setVisibility(View.GONE);
+            } else {
+                bodyEdit.setVisibility(View.GONE);
 
-                    bodyView.setText(OrgFormatter.INSTANCE.parse(getContext(), bodyEdit.getText().toString()));
-                    bodyView.setVisibility(View.VISIBLE);
+                bodyView.setText(OrgFormatter.INSTANCE.parse(getContext(), bodyEdit.getText().toString()));
+                bodyView.setVisibility(View.VISIBLE);
 
-                    ActivityUtils.closeSoftKeyboard(getActivity());
-                }
-
+                ActivityUtils.closeSoftKeyboard(getActivity());
             }
+
         });
 
-        editSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, editSwitch.isChecked());
+        editSwitch.setOnClickListener(view -> {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, editSwitch.isChecked());
 
-                if (editSwitch.isChecked()) { // Clicked to edit content
-                    ActivityUtils.openSoftKeyboard(getActivity(), bodyEdit);
+            if (editSwitch.isChecked()) { // Clicked to edit content
+                ActivityUtils.openSoftKeyboard(getActivity(), bodyEdit);
 
 //                    new Handler().postDelayed(new Runnable() {
 //                        @Override
@@ -365,14 +317,13 @@ public class NoteFragment extends Fragment
 //                        }
 //                    }, 500);
 
-                } else { // Clicked to finish editing content
-                    scrollView.smoothScrollTo(0, 0);
-                }
+            } else { // Clicked to finish editing content
+                scrollView.smoothScrollTo(0, 0);
             }
         });
 
 
-        mViewFlipper = (ViewFlipper) top.findViewById(R.id.fragment_note_view_flipper);
+        mViewFlipper = top.findViewById(R.id.fragment_note_view_flipper);
 
         return top;
     }
@@ -471,11 +422,9 @@ public class NoteFragment extends Fragment
     private void updateViewsFromNote() {
         OrgHead head = mNote.getHead();
 
-        /* State. */
-        mState.setCurrentValue(head.getState());
+        setStateView(head.getState());
 
-        /* Priority. */
-        mPriority.setCurrentValue(head.getPriority());
+        setPriorityView(head.getPriority());
 
         /* Title. */
         mTitleView.setText(head.getTitle());
@@ -510,8 +459,8 @@ public class NoteFragment extends Fragment
     private void addPropertyToList(String propName, String propValue) {
         final ViewGroup propView = (ViewGroup) View.inflate(getActivity(), R.layout.note_property, null);
 
-        final TextView name  = (TextView) propView.findViewById(R.id.name);
-        final TextView value = (TextView) propView.findViewById(R.id.value);
+        final TextView name  = propView.findViewById(R.id.name);
+        final TextView value = propView.findViewById(R.id.value);
         final View delete = propView.findViewById(R.id.delete);
 
         if (propName != null && propValue != null) { // Existing property
@@ -536,8 +485,9 @@ public class NoteFragment extends Fragment
     private void updateNoteFromViews() {
         OrgHead head = mNote.getHead();
 
-        head.setState(mState.getCurrentValue());
-        head.setPriority(mPriority.getCurrentValue());
+        head.setState(mState.getTag() != null ? (String) mState.getTag() : null);
+
+        head.setPriority(mPriority.getTag() != null ? (String) mPriority.getTag() : null);
 
         /* Replace new lines with spaces, in case multi-line text has been pasted. */
         head.setTitle(mTitleView.getText().toString().replaceAll("\n", " ").trim());
@@ -653,9 +603,6 @@ public class NoteFragment extends Fragment
         super.onResume();
 
         announceChangesToActivity();
-
-        mState.updatePossibleValues(getActivity().getApplicationContext());
-        mPriority.updatePossibleValues(getActivity().getApplicationContext());
     }
 
     private void announceChangesToActivity() {
@@ -693,6 +640,16 @@ public class NoteFragment extends Fragment
         super.onDetach();
 
         mListener = null;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
     }
 
     private void parseArguments() {
@@ -738,24 +695,14 @@ public class NoteFragment extends Fragment
          * if it has been deleted and the user went back to it.
          */
         if (mNote != null && isNoteModified()) {
-            new AlertDialog.Builder(getContext())
+            dialog = new AlertDialog.Builder(getContext())
                     .setTitle(R.string.note_has_been_modified)
                     .setMessage(R.string.discard_or_save_changes)
-                    .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            save();
-                        }
-                    })
-                    .setNegativeButton(R.string.discard, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            cancel();
-                        }
-                    })
+                    .setPositiveButton(R.string.save, (dialog, which) -> save())
+                    .setNegativeButton(R.string.discard, (dialog, which) -> cancel())
                     .setNeutralButton(R.string.cancel, null)
-                    .create()
-                    .show();
+                    .create();
+            dialog.show();
 
             return true;
 
@@ -765,7 +712,21 @@ public class NoteFragment extends Fragment
     }
 
     public boolean isNoteModified() {
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Pre: State from view tag: " + mState.getTag());
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Pre: State from note    : " + mNote.getHead().getState());
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Pre: Prio from view tag: " + mPriority.getTag());
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Pre: Prio from note    : " + mNote.getHead().getPriority());
+
         updateNoteFromViews();
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Post: State from view tag: " + mState.getTag());
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Post: State from note    : " + mNote.getHead().getState());
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Post: Prio from view tag: " + mPriority.getTag());
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Post: Prio from note    : " + mNote.getHead().getPriority());
+
 
         long currentHash = noteHash(mNote);
         long originalHash = getArguments().getLong(ARG_ORIGINAL_NOTE_HASH);
@@ -842,7 +803,7 @@ public class NoteFragment extends Fragment
 
         /* Set state for a new note. */
         String stateKeyword = AppPreferences.newNoteState(getContext());
-        if (NoteStateSpinner.isSet(stateKeyword)) {
+        if (NoteStates.Companion.isKeyword(stateKeyword)) {
             head.setState(stateKeyword);
         } else {
             head.setState(null);
@@ -873,6 +834,58 @@ public class NoteFragment extends Fragment
         DialogFragment f = null;
 
         switch (view.getId()) {
+            case R.id.fragment_note_state_button:
+                NoteStates states = NoteStates.Companion.fromPreferences(getContext());
+
+                String[] keywords = states.getArray();
+
+                int currentState = -1;
+                if (mState.getTag() != null) {
+                    currentState = states.indexOf((String) mState.getTag());
+                }
+
+                dialog = new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.state)
+                        .setSingleChoiceItems(keywords, currentState, (dialog, which) -> {
+                            // On state change - update state and timestamps
+                            updateNoteForStateChange(getActivity(), mNote, states.get(which));
+                            dialog.dismiss();
+                        })
+                        .setNeutralButton(R.string.clear, (dialog, which) -> {
+                            // On state change - update state and timestamps
+                            updateNoteForStateChange(getActivity(), mNote, NoteStates.NO_STATE_KEYWORD);
+                        })
+                        .setNegativeButton(R.string.cancel, null)
+                        .create();
+
+                dialog.show();
+
+                break;
+
+            case R.id.fragment_note_priority_button:
+                NotePriorities priorities = NotePriorities.Companion.fromPreferences(getContext());
+
+                keywords = priorities.getArray();
+
+                int currentPriority = -1;
+                if (mPriority.getTag() != null) {
+                    currentPriority = priorities.indexOf((String) mPriority.getTag());
+                }
+
+                dialog = new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.priority)
+                        .setSingleChoiceItems(keywords, currentPriority, (dialog, which) -> {
+                            setPriorityView(priorities.get(which));
+                            dialog.dismiss();
+                        })
+                        .setNeutralButton(R.string.clear, (dialog, which) -> setPriorityView(null))
+                        .setNegativeButton(R.string.cancel, null)
+                        .create();
+
+                dialog.show();
+
+                break;
+
             /* Setting scheduled time. */
             case R.id.fragment_note_scheduled_button:
                 f = TimestampDialogFragment.getInstance(
@@ -1021,7 +1034,7 @@ public class NoteFragment extends Fragment
     }
 
     private void delete() {
-        new AlertDialog.Builder(getContext())
+        dialog = new AlertDialog.Builder(getContext())
                 .setTitle(R.string.delete_note)
                 .setMessage(R.string.delete_note_and_all_subnotes)
                 .setPositiveButton(R.string.delete, (dialog, which) -> {
@@ -1030,8 +1043,8 @@ public class NoteFragment extends Fragment
                     }
                 })
                 .setNegativeButton(R.string.cancel, (dialog, which) -> { })
-                .create()
-                .show();
+                .create();
+        dialog.show();
     }
 
     private void cancel() {
@@ -1103,7 +1116,8 @@ public class NoteFragment extends Fragment
     private void updateNoteForStateChange(Context context, Note note, String state) {
         StateChangeLogic stateSetOp = new StateChangeLogic(AppPreferences.doneKeywordsSet(context));
 
-        stateSetOp.setState(state,
+        stateSetOp.setState(
+                state,
                 note.getHead().getState(),
                 note.getHead().getScheduled(),
                 note.getHead().getDeadline());
@@ -1115,10 +1129,32 @@ public class NoteFragment extends Fragment
         note.getHead().setClosed(stateSetOp.getClosed());
 
         /* Update views. */
-        mState.setCurrentValue(stateSetOp.getState());
+
+        setStateView(stateSetOp.getState());
+
         updateTimestampView(TimeType.SCHEDULED, mScheduledButton, stateSetOp.getScheduled());
         updateTimestampView(TimeType.DEADLINE, mDeadlineButton, stateSetOp.getDeadline());
         updateTimestampView(TimeType.CLOSED, mClosedButton, stateSetOp.getClosed());
+    }
+
+    private void setStateView(String state) {
+        if (state == null || NoteStates.NO_STATE_KEYWORD.equals(state)) {
+            mState.setText(NoteStates.NO_STATE_KEYWORD);
+            mState.setTag(null);
+        } else {
+            mState.setText(state);
+            mState.setTag(state);
+        }
+    }
+
+    private void setPriorityView(String priority) {
+        if (priority == null) {
+            mPriority.setText(getString(R.string.default_priority));
+            mPriority.setTag(null);
+        } else {
+            mPriority.setText(getString(R.string.priority_with_argument, priority));
+            mPriority.setTag(priority);
+        }
     }
 
     /**

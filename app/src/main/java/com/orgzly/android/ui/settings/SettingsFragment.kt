@@ -19,7 +19,7 @@ import com.orgzly.android.Notifications
 import com.orgzly.android.Shelf
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-import com.orgzly.android.ui.NoteStateSpinner
+import com.orgzly.android.ui.NoteStates
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
 import java.util.*
@@ -273,7 +273,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
             /* NOTE followed by to-do keywords */
             val entries = LinkedHashSet<CharSequence>()
-            entries.add(NoteStateSpinner.NO_STATE_KEYWORD)
+            entries.add(NoteStates.NO_STATE_KEYWORD)
             entries.addAll(AppPreferences.todoKeywordsSet(context))
             val entriesArray = entries.toTypedArray()
 
@@ -286,7 +286,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
             if (entries.contains(value)) {
                 pref.value = value
             } else {
-                pref.value = NoteStateSpinner.NO_STATE_KEYWORD
+                pref.value = NoteStates.NO_STATE_KEYWORD
             }
         }
     }

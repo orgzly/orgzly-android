@@ -19,7 +19,7 @@ import com.orgzly.R;
 import com.orgzly.android.provider.AgendaCursor;
 import com.orgzly.android.ui.AgendaListViewAdapter;
 import com.orgzly.android.ui.Loaders;
-import com.orgzly.android.ui.NoteStateSpinner;
+import com.orgzly.android.ui.NoteStates;
 import com.orgzly.android.ui.Selection;
 import com.orgzly.android.util.LogUtils;
 
@@ -213,7 +213,8 @@ public class AgendaFragment extends QueryFragment {
                     SubMenu subMenu = menuItem.getSubMenu();
                     if (subMenu != null) {
                         subMenu.clear();
-                        for (String str: new NoteStateSpinner(getActivity(), null).getValues()) {
+                        subMenu.add(STATE_ITEM_GROUP, Menu.NONE, Menu.NONE, NoteStates.NO_STATE_KEYWORD);
+                        for (String str: NoteStates.Companion.fromPreferences(getActivity()).getArray()) {
                             subMenu.add(STATE_ITEM_GROUP, Menu.NONE, Menu.NONE, str);
                         }
                     }
