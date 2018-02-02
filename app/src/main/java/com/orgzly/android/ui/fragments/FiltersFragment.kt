@@ -2,13 +2,11 @@ package com.orgzly.android.ui.fragments
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
 import android.support.v4.app.ListFragment
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.Loader
-import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.widget.SimpleCursorAdapter
 import android.view.*
 import android.widget.AbsListView
@@ -16,10 +14,10 @@ import android.widget.ListView
 import android.widget.ViewFlipper
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.AppIntent
 import com.orgzly.android.filter.FileFilterStore
 import com.orgzly.android.provider.ProviderContract
 import com.orgzly.android.provider.clients.FiltersClient
+import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.Fab
 import com.orgzly.android.ui.FragmentListener
 import com.orgzly.android.ui.drawer.DrawerItem
@@ -139,11 +137,8 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
         try {
             val file = FileFilterStore(context!!).file()
             f(R.string.searches, getString(resId, file))
-
         } catch(e: IOException) {
-            val intent = Intent(AppIntent.ACTION_DISPLAY_MESSAGE)
-            intent.putExtra(AppIntent.EXTRA_MESSAGE, e.localizedMessage)
-            LocalBroadcastManager.getInstance(context!!).sendBroadcast(intent)
+            context?.let { CommonActivity.showSnackbar(it, e.localizedMessage) }
         }
     }
 

@@ -75,7 +75,7 @@ abstract class CommonActivity : AppCompatActivity() {
                 AppIntent.ACTION_UPDATING_NOTES_ENDED ->
                     progressDialog?.dismiss()
 
-                AppIntent.ACTION_DISPLAY_MESSAGE ->
+                AppIntent.ACTION_SHOW_SNACKBAR ->
                     showSimpleSnackbarLong(intent.getStringExtra(AppIntent.EXTRA_MESSAGE))
             }
         }
@@ -198,7 +198,7 @@ abstract class CommonActivity : AppCompatActivity() {
         intentFilter.addAction(AppIntent.ACTION_DB_CLEARED)
         intentFilter.addAction(AppIntent.ACTION_UPDATING_NOTES_STARTED)
         intentFilter.addAction(AppIntent.ACTION_UPDATING_NOTES_ENDED)
-        intentFilter.addAction(AppIntent.ACTION_DISPLAY_MESSAGE)
+        intentFilter.addAction(AppIntent.ACTION_SHOW_SNACKBAR)
         LocalBroadcastManager.getInstance(this).registerReceiver(actionReceiver, intentFilter)
 
         PreferenceManager.getDefaultSharedPreferences(this)
@@ -333,5 +333,11 @@ abstract class CommonActivity : AppCompatActivity() {
                 R.string.pref_key_color_scheme,
                 R.string.pref_key_ignore_system_locale
         )
+
+        fun showSnackbar(context: Context, msg: String) {
+            val intent = Intent(AppIntent.ACTION_SHOW_SNACKBAR)
+            intent.putExtra(AppIntent.EXTRA_MESSAGE, msg)
+            LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
+        }
     }
 }

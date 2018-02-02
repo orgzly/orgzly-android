@@ -33,12 +33,12 @@ import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.sync.BookNamesake;
 import com.orgzly.android.sync.BookSyncStatus;
 import com.orgzly.android.sync.SyncService;
+import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.CircularArrayList;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
-import com.orgzly.android.util.UriUtils;
 import com.orgzly.android.widgets.ListWidgetProvider;
 import com.orgzly.org.OrgHead;
 import com.orgzly.org.OrgProperties;
@@ -1080,15 +1080,12 @@ public class Shelf {
             intent = new Intent(AppIntent.ACTION_OPEN_NOTE);
             intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId);
             intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
+            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
         } else {
             String msg = mContext.getString(R.string.no_such_link_target, propName, propValue);
-
-            intent = new Intent(AppIntent.ACTION_DISPLAY_MESSAGE);
-            intent.putExtra(AppIntent.EXTRA_MESSAGE, msg);
+            CommonActivity.Companion.showSnackbar(mContext, msg);
         }
-
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 
     // TODO: Used by tests only for now

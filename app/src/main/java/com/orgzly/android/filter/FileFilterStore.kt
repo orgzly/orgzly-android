@@ -1,13 +1,11 @@
 package com.orgzly.android.filter
 
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
-import android.support.v4.content.LocalBroadcastManager
 import com.orgzly.R
-import com.orgzly.android.AppIntent
 import com.orgzly.android.LocalStorage
 import com.orgzly.android.provider.clients.FiltersClient
+import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.util.MiscUtils
 import org.json.JSONArray
 import org.json.JSONException
@@ -30,7 +28,7 @@ class FileFilterStore(val context: Context) : FilterStore {
 
         val msg = context.resources.getQuantityString(R.plurals.imported_searches, count, count)
 
-        notifyUser(msg)
+        CommonActivity.showSnackbar(context, msg)
     }
 
     /**
@@ -44,7 +42,7 @@ class FileFilterStore(val context: Context) : FilterStore {
         return try {
             JSONArray(JSONTokener(fileContent))
         } catch (e: JSONException) {
-            notifyUser(e.localizedMessage)
+            CommonActivity.showSnackbar(context, e.localizedMessage)
             return null
         }
     }
@@ -59,7 +57,7 @@ class FileFilterStore(val context: Context) : FilterStore {
 
             val msg = context.resources.getQuantityString(R.plurals.exported_searches, count, count)
 
-            notifyUser(msg)
+            CommonActivity.showSnackbar(context, msg)
         }
     }
 
@@ -79,12 +77,6 @@ class FileFilterStore(val context: Context) : FilterStore {
     fun file(): File {
         val dir = LocalStorage(context).downloadsDirectory()
         return File(dir, FILE_NAME)
-    }
-
-    private fun notifyUser(msg: String) {
-        val intent = Intent(AppIntent.ACTION_DISPLAY_MESSAGE)
-        intent.putExtra(AppIntent.EXTRA_MESSAGE, msg)
-        LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
     }
 
     companion object {

@@ -32,7 +32,7 @@ public class AppIntent {
     public static final String ACTION_OPEN_BOOK = "com.orgzly.intent.action.OPEN_BOOK";
     public static final String ACTION_OPEN_SETTINGS = "com.orgzly.intent.action.OPEN_SETTINGS";
 
-    public static final String ACTION_DISPLAY_MESSAGE = "com.orgzly.intent.action.DISPLAY_MESSAGE";
+    public static final String ACTION_SHOW_SNACKBAR = "com.orgzly.intent.action.SHOW_SNACKBAR";
 
     public static final String EXTRA_MESSAGE = "com.orgzly.intent.extra.MESSAGE";
     public static final String EXTRA_BOOK_ID = "com.orgzly.intent.extra.BOOK_ID";
