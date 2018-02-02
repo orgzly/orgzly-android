@@ -130,6 +130,7 @@
         <item name="ic_library_books_24dp">@drawable/ic_library_books_black_24dp</item>
         <item name="ic_link_18dp">@drawable/ic_link_black_18dp</item>
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_black_24dp</item>
+        <item name="ic_priority_high_24dp">@drawable/ic_priority_high_black_24dp</item>
         <item name="ic_repeat_24dp">@drawable/ic_repeat_black_24dp</item>
         <item name="ic_rotate_left_24dp">@drawable/ic_rotate_left_black_24dp</item>
         <item name="ic_rotate_right_24dp">@drawable/ic_rotate_right_black_24dp</item>
@@ -270,6 +271,7 @@
         <item name="ic_library_books_24dp">@drawable/ic_library_books_white_24dp</item>
         <item name="ic_link_18dp">@drawable/ic_link_white_18dp</item>
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_white_24dp</item>
+        <item name="ic_priority_high_24dp">@drawable/ic_priority_high_white_24dp</item>
         <item name="ic_repeat_24dp">@drawable/ic_repeat_white_24dp</item>
         <item name="ic_rotate_left_24dp">@drawable/ic_rotate_left_white_24dp</item>
         <item name="ic_rotate_right_24dp">@drawable/ic_rotate_right_white_24dp</item>

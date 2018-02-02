@@ -22,44 +22,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- State and priority. -->
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/ui_element_spacing"
-                android:orientation="horizontal">
-
-                <Spinner
-                    android:id="@+id/fragment_note_priority"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:dropDownWidth="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="4dp"
-                    android:prompt="@string/priority_spinner_prompt"
-                    android:freezesText="true"/>
-
-                <Spinner
-                    android:id="@+id/fragment_note_state"
-                    android:layout_width="wrap_content"
-                    android:dropDownWidth="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@id/fragment_note_priority"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    android:prompt="@string/state_spinner_prompt"
-                    android:freezesText="true"/>
-
-            </RelativeLayout>
-
-
             <!-- Title -->
             <EditText
                 android:id="@+id/fragment_note_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/ui_element_spacing"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 android:inputType="text|textCapSentences"
@@ -67,6 +34,35 @@
                 android:hint="@string/fragment_note_title_hint"
                 tools:text="@string/head_title_sample"
                 android:freezesText="true"/>
+
+            <!-- State -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="@dimen/ui_element_spacing"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="8dp"
+                    android:layout_gravity="center"
+                    android:src="?attr/ic_storage_24dp"
+                    android:contentDescription="@string/tags"/>
+
+                <Spinner
+                    android:id="@+id/fragment_note_state"
+                    android:layout_width="match_parent"
+                    android:dropDownWidth="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:prompt="@string/state_spinner_prompt"
+                    android:freezesText="true"/>
+            </LinearLayout>
 
             <!-- Tags. -->
             <LinearLayout
@@ -100,6 +96,33 @@
                     android:textColor="?attr/main_text_color"/>
             </LinearLayout>
 
+            <!-- Priority -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:layout_marginTop="@dimen/ui_element_spacing"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="8dp"
+                    android:layout_gravity="center"
+                    android:src="?attr/ic_priority_high_24dp"
+                    android:contentDescription="@string/tags"/>
+
+                <Spinner
+                    android:id="@+id/fragment_note_priority"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:dropDownWidth="wrap_content"
+                    android:prompt="@string/priority_spinner_prompt"
+                    android:freezesText="true"/>
+            </LinearLayout>
 
             <Button
                 android:id="@+id/fragment_note_scheduled_button"
