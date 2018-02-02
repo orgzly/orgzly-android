@@ -39,7 +39,7 @@
                     android:layout_marginRight="4dp"
                     android:prompt="@string/priority_spinner_prompt"
                     android:freezesText="true"/>
-                
+
                 <Spinner
                     android:id="@+id/fragment_note_state"
                     android:layout_width="wrap_content"
@@ -53,25 +53,20 @@
 
             </RelativeLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/fragment_note_title_input_layout"
+
+            <!-- Title -->
+            <EditText
+                android:id="@+id/fragment_note_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/ui_element_spacing"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
-                app:errorEnabled="true"
-                app:hintEnabled="false">
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/fragment_note_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text|textCapSentences"
-                    android:imeOptions="actionDone"
-                    android:hint="@string/fragment_note_title_hint"
-                    tools:text="@string/head_title_sample"
-                    android:freezesText="true"/>
-            </android.support.design.widget.TextInputLayout>
+                android:inputType="text|textCapSentences"
+                android:imeOptions="actionDone"
+                android:hint="@string/fragment_note_title_hint"
+                tools:text="@string/head_title_sample"
+                android:freezesText="true"/>
 
             <!-- Tags. -->
             <LinearLayout
@@ -79,6 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
+                android:layout_marginTop="@dimen/ui_element_spacing"
                 android:orientation="horizontal">
 
                 <ImageView

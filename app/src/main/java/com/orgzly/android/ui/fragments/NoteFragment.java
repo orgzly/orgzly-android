@@ -7,10 +7,8 @@ import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -122,7 +120,6 @@ public class NoteFragment extends Fragment
     private NoteStateSpinner mState;
     private NotePrioritySpinner mPriority;
 
-    private TextInputLayout titleInputLayout;
     private EditText mTitleView;
     private MultiAutoCompleteTextView mTagsView;
 
@@ -252,9 +249,7 @@ public class NoteFragment extends Fragment
             }
         });
 
-        titleInputLayout = (TextInputLayout) top.findViewById(R.id.fragment_note_title_input_layout);
-        mTitleView = (EditText) top.findViewById(R.id.fragment_note_title);
-        MiscUtils.clearErrorOnTextChange(mTitleView, titleInputLayout);
+        mTitleView = top.findViewById(R.id.fragment_note_title);
 
         /*
          * Only works when set from code.
@@ -1074,17 +1069,16 @@ public class NoteFragment extends Fragment
 
     private boolean updateNoteFromViewsAndVerify() {
         updateNoteFromViews();
+        return isTitleValid();
+    }
 
-        Activity activity = getActivity();
-
+    private boolean isTitleValid() {
         if (TextUtils.isEmpty(mNote.getHead().getTitle())) {
-            if (activity != null) {
-                titleInputLayout.setError(getString(R.string.can_not_be_empty));
-            }
+            CommonActivity.Companion.showSnackbar(getContext(), getString(R.string.title_can_not_be_empty));
             return false;
+        } else {
+            return true;
         }
-
-        return true;
     }
 
     /**

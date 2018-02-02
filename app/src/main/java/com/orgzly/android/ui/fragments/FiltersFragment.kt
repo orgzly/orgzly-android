@@ -137,8 +137,8 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
         try {
             val file = FileFilterStore(context!!).file()
             f(R.string.searches, getString(resId, file))
-        } catch(e: IOException) {
-            context?.let { CommonActivity.showSnackbar(it, e.localizedMessage) }
+        } catch (e: IOException) {
+            CommonActivity.showSnackbar(context, e.localizedMessage)
         }
     }
 
