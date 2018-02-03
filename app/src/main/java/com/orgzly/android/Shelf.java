@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
@@ -212,6 +213,11 @@ public class Shelf {
 
         /* Write book. */
         writeBookToFile(book, format, file);
+
+        /* Make file immediately visible when using MTP.
+         * See https://github.com/orgzly/orgzly-android/issues/44
+         */
+        MediaScannerConnection.scanFile(mContext, new String[] { file.getAbsolutePath() }, null, null);
 
         return file;
     }
