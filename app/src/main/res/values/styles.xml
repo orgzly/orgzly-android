@@ -61,9 +61,9 @@
 
         <item name="main_text_color">@color/black</item>
 
-        <item name="status_bar_default">#87877c</item>
+        <item name="status_bar_default">#e687877c</item>
         <item name="action_bar_default">#cfcfc4</item>
-        <item name="status_bar_in_query">#607D8B</item>
+        <item name="status_bar_in_query">#e6607d8b</item>
         <item name="action_bar_in_query">#B0BEC5</item>
         <item name="status_bar_in_settings">#795548</item>
         <item name="action_bar_in_settings">#BCAAA4</item>
