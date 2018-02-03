@@ -17,7 +17,6 @@
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:minHeight="36dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:layout_weight="1">
