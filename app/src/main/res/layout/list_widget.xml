@@ -15,12 +15,10 @@
 
         <ImageView
             android:id="@+id/list_widget_header_icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginStart="6dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/cic_orgzly_logo" />
+            android:src="@drawable/ic_launcher_foreground" />
 
         <LinearLayout
             android:id="@+id/list_widget_header_bar"
@@ -33,8 +31,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
                 android:text="@string/list_widget_select_search"
                 android:textColor="@color/black"
                 android:textSize="17sp"
@@ -49,8 +47,8 @@
             android:id="@+id/list_widget_header_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_add_black_24dp" />
     </LinearLayout>
