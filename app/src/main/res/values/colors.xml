@@ -5,22 +5,33 @@
 <resources>
     <!-- Material colors
          https://material.io/guidelines/style/color.html#color-color-palette -->
-    <color name="red200">#EF9A9A</color>
-    <color name="red900">#B71C1C</color>
-    <color name="green200">#A5D6A7</color>
-    <color name="green900">#1B5E20</color>
-    <color name="blue200">#90CAF9</color>
-    <color name="blue900">#0D47A1</color>
-    <color name="grey100">#f5f5f5</color>
-    <color name="grey300">#e0e0e0</color>
-    <color name="grey700">#616161</color>
+
+    <color name="red_200">#EF9A9A</color>
+    <color name="red_900">#B71C1C</color>
+
+    <color name="green_200">#A5D6A7</color>
+    <color name="green_900">#1B5E20</color>
+
+    <color name="blue_200">#90CAF9</color>
+    <color name="blue_900">#0D47A1</color>
+
+    <color name="grey_100">#f5f5f5</color>
+    <color name="grey_300">#e0e0e0</color>
+    <color name="grey_700">#616161</color>
+    <color name="grey_900">#212121</color>
+
+    <color name="blue_grey_700">#455A64</color>
+    <color name="blue_grey_900">#263238</color>
+
+    <color name="brown_700">#5D4037</color>
+    <color name="brown_900">#3E2723</color>
 
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
 
     <!-- http://www.google.com/design/spec/style/color.html#color-themes -->
     <color name="dark_theme_status_bar">#000000</color>
-    <color name="dark_theme_app_bar">#212121</color>
+    <color name="dark_theme_app_bar">@color/grey_900</color>
     <color name="dark_theme_bg">#303030</color>
     <color name="dark_theme_cards_and_dialogs">#424242</color>
 

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:orientation="horizontal"
-        android:background="#B0BEC5"
+        android:background="#f0b0bec5"
         android:elevation="1dp" tools:targetApi="21">
 
         <ImageView
@@ -18,7 +18,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_launcher_foreground" />
+            android:src="@drawable/ic_launcher_foreground"/>
 
         <LinearLayout
             android:id="@+id/list_widget_header_bar"
@@ -50,6 +50,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center_vertical"
+            android:tint="@color/grey_900"
             android:src="@drawable/ic_add_black_24dp" />
     </LinearLayout>
 
@@ -57,13 +58,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/white">
+        android:background="#f0ffffff">
 
         <ListView
             android:id="@+id/list_widget_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@color/grey300"
+            android:divider="@color/grey_300"
             android:dividerHeight="1dp"/>
 
         <TextView

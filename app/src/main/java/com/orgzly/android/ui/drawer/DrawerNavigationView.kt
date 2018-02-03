@@ -3,6 +3,7 @@ package com.orgzly.android.ui.drawer
 import android.content.Intent
 import android.content.res.Resources
 import android.database.Cursor
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.view.Menu
@@ -111,6 +112,8 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
     private fun updateBooksFromCursor(cursor: Cursor) {
         removeItemsWithOrder(3)
 
+        val syncIcon = getSyncIcon()
+
         forEachRow(cursor) {
             val book = BooksClient.fromCursor(cursor)
 
@@ -124,10 +127,12 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
             item.isCheckable = true
 
             if (book.isModifiedAfterLastSync) {
-                val icon = getBookOutOfSyncIcon()
-                if (icon != 0) {
-                    item.setIcon(icon)
-                }
+                item.setIcon(syncIcon)
+            }
+
+            if (book.isDummy) {
+                // item.isEnabled = false
+                item.setIcon(syncIcon)
             }
 
             menuItemIdMap[BookFragment.getDrawerItemId(book.id)] = id
@@ -145,14 +150,11 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
         }
     }
 
-    private fun getBookOutOfSyncIcon(): Int {
+    private fun getSyncIcon(): Int {
         val typedArray = activity.obtainStyledAttributes(R.styleable.Icons)
-
-        val resId = typedArray.getResourceId(R.styleable.Icons_ic_sync_18dp, 0)
-
+        val icon = typedArray.getResourceId(R.styleable.Icons_ic_sync_18dp, 0)
         typedArray.recycle()
-
-        return resId
+        return icon
     }
 
     private fun generateRandomUniqueId(): Int {

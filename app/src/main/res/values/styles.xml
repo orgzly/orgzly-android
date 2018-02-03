@@ -57,7 +57,7 @@
         <item name="colorPrimaryDark">@color/black</item>
 
         <!-- Make buttons lighter. -->
-        <item name="android:colorButtonNormal" tools:targetApi="21">@color/grey100</item>
+        <item name="android:colorButtonNormal" tools:targetApi="21">@color/grey_100</item>
 
         <item name="main_text_color">@color/black</item>
 
@@ -68,25 +68,25 @@
         <item name="status_bar_in_settings">#795548</item>
         <item name="action_bar_in_settings">#BCAAA4</item>
 
-        <item name="fragment_books_bg_color">@color/grey300</item>
+        <item name="fragment_books_bg_color">@color/grey_300</item>
         <item name="item_book_card_bg_color">@color/white</item>
 
         <item name="drawer_text">#333333</item>
         <item name="drawer_bg">@color/white</item>
-        <item name="drawer_divider">@color/grey300</item>
+        <item name="drawer_divider">@color/grey_300</item>
         <item name="drawer_marker">@color/black</item>
 
         <item name="item_book_title_color">@color/black</item>
-        <item name="item_book_error_color">@color/red900</item>
+        <item name="item_book_error_color">@color/red_900</item>
 
-        <item name="item_head_state_todo_color">@color/red900</item>
-        <item name="item_head_state_done_color">@color/green900</item>
-        <item name="item_head_state_unknown_color">@color/blue900</item>
+        <item name="item_head_state_todo_color">@color/red_900</item>
+        <item name="item_head_state_done_color">@color/green_900</item>
+        <item name="item_head_state_unknown_color">@color/blue_900</item>
 
-        <item name="item_head_bullet_text_color">@color/grey700</item>
+        <item name="item_head_bullet_text_color">@color/grey_700</item>
         <item name="item_head_title_text_color">@color/black</item>
-        <item name="item_head_fold_button_text_color">@color/grey700</item>
-        <item name="item_head_post_title_text_color">@color/grey700</item>
+        <item name="item_head_fold_button_text_color">@color/grey_700</item>
+        <item name="item_head_post_title_text_color">@color/grey_700</item>
 
         <item name="line_thin_color">#0c000000</item>
         <item name="line_color">#18000000</item>
@@ -202,12 +202,12 @@
 
         <item name="main_text_color">@color/dark_bg_text_primary</item>
 
-        <item name="status_bar_default">#000000</item>
-        <item name="action_bar_default">#212121</item>
-        <item name="status_bar_in_query">#263238</item>
-        <item name="action_bar_in_query">#455A64</item>
-        <item name="status_bar_in_settings">#3E2723</item>
-        <item name="action_bar_in_settings">#5D4037</item>
+        <item name="status_bar_default">@color/black</item>
+        <item name="action_bar_default">@color/grey_900</item>
+        <item name="status_bar_in_query">@color/blue_grey_900</item>
+        <item name="action_bar_in_query">@color/blue_grey_700</item>
+        <item name="status_bar_in_settings">@color/brown_900</item>
+        <item name="action_bar_in_settings">@color/brown_700</item>
 
         <item name="fragment_books_bg_color">@color/dark_theme_bg</item>
         <item name="item_book_card_bg_color">@color/dark_theme_cards_and_dialogs</item>
@@ -218,11 +218,11 @@
         <item name="drawer_marker">@color/dark_bg_text_primary</item>
 
         <item name="item_book_title_color">@color/dark_bg_text_primary</item>
-        <item name="item_book_error_color">@color/red200</item>
+        <item name="item_book_error_color">@color/red_200</item>
 
-        <item name="item_head_state_todo_color">@color/red200</item>
-        <item name="item_head_state_done_color">@color/green200</item>
-        <item name="item_head_state_unknown_color">@color/blue200</item>
+        <item name="item_head_state_todo_color">@color/red_200</item>
+        <item name="item_head_state_done_color">@color/green_200</item>
+        <item name="item_head_state_unknown_color">@color/blue_200</item>
 
         <item name="item_head_bullet_text_color">@color/dark_bg_text_secondary</item>
         <item name="item_head_title_text_color">@color/dark_bg_text_primary</item>
