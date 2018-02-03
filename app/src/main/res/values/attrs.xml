@@ -124,7 +124,7 @@
         <attr name="ic_sync_24dp" format="reference"/>
         <attr name="ic_today_18dp" format="reference"/>
         <attr name="ic_today_24dp" format="reference"/>
-        <attr name="ic_trending_up_24dp" format="reference"/>
+        <attr name="ic_star_border_24dp" format="reference"/>
         <attr name="ic_unfold_more_24dp" format="reference"/>
         <attr name="ic_warning_24dp" format="reference"/>
 

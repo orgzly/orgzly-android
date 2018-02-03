@@ -76,8 +76,8 @@
             <Button
                 android:id="@+id/fragment_note_priority_button"
                 style="@style/NoteTimeButton"
-                android:drawableStart="?attr/ic_trending_up_24dp"
-                android:drawableLeft="?attr/ic_trending_up_24dp"
+                android:drawableStart="?attr/ic_star_border_24dp"
+                android:drawableLeft="?attr/ic_star_border_24dp"
                 tools:text="Priority A"
                 android:freezesText="true"/>
 
