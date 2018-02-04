@@ -868,12 +868,7 @@ public class Shelf {
     /**
      * Using current states configuration, update states and titles for all notes.
      * Keywords that were part of the title can become states and vice versa.
-     *
-     * Also updates created-at in the database for all notes based on the created property keyword,
-     * in case time doesn't already exist.
-     *
-     * Affected books' mtime will *not* be updated.
-     **/
+     */
     public void reParseNotesStateAndTitles() throws IOException {
         ArrayList<ContentProviderOperation> ops = new ArrayList<>();
 

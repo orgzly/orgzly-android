@@ -63,8 +63,6 @@
   <string name="fragment_note_title_hint">标题</string>
   <string name="fragment_note_tags_hint" tools:ignore="typos">标签</string>
   <string name="import_org_file">导入 Org 文件</string>
-  <string name="state_spinner_prompt">状态</string>
-  <string name="priority_spinner_prompt">优先级</string>
   <string name="message_dropbox_unlinked">没有连接到Dropbox.</string>
   <string name="message_dropbox_linked">成功连接到Dropbox</string>
   <!-- Preferences (Settings). -->

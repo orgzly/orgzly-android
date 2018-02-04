@@ -63,8 +63,6 @@
   <string name="fragment_note_title_hint">標題</string>
   <string name="fragment_note_tags_hint" tools:ignore="typos">標記標籤</string>
   <string name="import_org_file">匯入Org檔案</string>
-  <string name="state_spinner_prompt">狀態</string>
-  <string name="priority_spinner_prompt">優先順序</string>
   <string name="message_dropbox_unlinked">取消Dropbox連結</string>
   <string name="message_dropbox_linked">已成功連結到Dropbox</string>
   <!-- Preferences (Settings). -->

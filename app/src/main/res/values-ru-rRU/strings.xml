@@ -69,8 +69,6 @@
   <string name="fragment_note_title_hint">Заголовок</string>
   <string name="fragment_note_tags_hint" tools:ignore="typos">тег тег</string>
   <string name="import_org_file">Импортировать Org-файл</string>
-  <string name="state_spinner_prompt">Состояние</string>
-  <string name="priority_spinner_prompt">Приоритет</string>
   <string name="message_dropbox_unlinked">Отвязано от Drobpox</string>
   <string name="message_dropbox_linked">Успешно привязано к Dropbox</string>
   <!-- Preferences (Settings). -->

@@ -66,8 +66,6 @@
   <string name="fragment_note_title_hint">عنوان</string>
   <string name="fragment_note_tags_hint" tools:ignore="typos">برچسب برچسب</string>
   <string name="import_org_file">وارد کردن پرونده Org</string>
-  <string name="state_spinner_prompt">وضعیت</string>
-  <string name="priority_spinner_prompt">اولویت</string>
   <string name="message_dropbox_unlinked">جدا کردن از دراپ‌باکس</string>
   <string name="message_dropbox_linked">با موفقیت به دراپ‌باکس متصل شد</string>
   <!-- Preferences (Settings). -->
