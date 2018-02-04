@@ -417,10 +417,21 @@ public class AppPreferences {
         updateStaticKeywords(context);
     }
 
-    /*
-     * TO-DO keywords
-     */
+    /** Get first to-do state. */
+    public static String getFirstTodoState(Context context) {
+        return getFirstState(AppPreferences.todoKeywordsSet(context));
+    }
 
+    /** Get first done state. */
+    public static String getFirstDoneState(Context context) {
+        return getFirstState(AppPreferences.doneKeywordsSet(context));
+    }
+
+    private static String getFirstState(Set<String> states) {
+        return states.iterator().hasNext() ? states.iterator().next() : null;
+    }
+
+    /** Get all to-do states. */
     public static Set<String> todoKeywordsSet(Context context) {
         synchronized (AppPreferences.class) {
             if (todoKeywords == null) {
@@ -431,6 +442,17 @@ public class AppPreferences {
         }
     }
 
+    /** Get all done states. */
+    public static Set<String> doneKeywordsSet(Context context) {
+        synchronized (AppPreferences.class) {
+            if (doneKeywords == null) {
+                updateStaticKeywords(context);
+            }
+            return doneKeywords;
+        }
+    }
+
+    /** Parses states preference, which can be slow. */
     public static void updateStaticKeywords(Context context) {
         synchronized (AppPreferences.class) {
             todoKeywords = new LinkedHashSet<>();
@@ -440,19 +462,6 @@ public class AppPreferences {
                 todoKeywords.addAll(workflow.getTodoKeywords());
                 doneKeywords.addAll(workflow.getDoneKeywords());
             }
-        }
-    }
-
-    /*
-     * DONE keywords
-     */
-
-    public static Set<String> doneKeywordsSet(Context context) {
-        synchronized (AppPreferences.class) {
-            if (doneKeywords == null) {
-                updateStaticKeywords(context);
-            }
-            return doneKeywords;
         }
     }
 

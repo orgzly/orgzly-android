@@ -777,7 +777,7 @@ public class Shelf {
         Note note = getNote(noteId);
 
         if (note != null) {
-            String state = getNote(noteId).getHead().getState();
+            String state = note.getHead().getState();
 
             if (state != null && AppPreferences.isDoneKeyword(mContext, state)) {
                 setStateToFirstTodo(noteId);
@@ -791,7 +791,7 @@ public class Shelf {
      * Sets the state of the note to the first to-do-type state defined in Settings.
      */
     private void setStateToFirstTodo(long noteId) {
-        String state = getFirstTodoState();
+        String state = AppPreferences.getFirstTodoState(mContext);
         setNoteState(noteId, state);
     }
 
@@ -799,22 +799,9 @@ public class Shelf {
      * Sets the state of the note to the first done-type state defined in Settings.
      */
     public void setStateToFirstDone(long noteId) {
-        String state = getFirstDoneState();
+        String state = AppPreferences.getFirstDoneState(mContext);
         setNoteState(noteId, state);
     }
-
-    private String getFirstTodoState() {
-        return getFirstState(AppPreferences.todoKeywordsSet(mContext));
-    }
-
-    private String getFirstDoneState() {
-        return getFirstState(AppPreferences.doneKeywordsSet(mContext));
-    }
-
-    private String getFirstState(Set<String> states) {
-        return states.iterator().hasNext() ? states.iterator().next() : null;
-    }
-
 
     public static void notifyDataChanged(Context context) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
