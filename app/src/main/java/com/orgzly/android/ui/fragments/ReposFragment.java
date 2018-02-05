@@ -86,7 +86,7 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_repos, container, false);
 
-        mViewFlipper = (ViewFlipper) view.findViewById(R.id.fragment_repos_flipper);
+        mViewFlipper = view.findViewById(R.id.fragment_repos_flipper);
 
         /* Hide or setup new Dropbox repo button. */
         View newDropboxRepoButton = view.findViewById(R.id.fragment_repos_dropbox);

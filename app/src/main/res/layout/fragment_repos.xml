@@ -12,61 +12,43 @@
         android:layout_height="match_parent"
         style="@style/ListView"/>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/fragment_padding">
-
-        <Space
-            android:layout_height="0dp"
-            android:layout_width="0dp"
-            android:layout_weight="0.5">
-        </Space>
-
-        <TextView
-            style="@style/BigCenteredText"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/create_new_repository_for_syncing"
-            android:gravity="center"/>
+            android:orientation="vertical"
+            android:layout_gravity="top"
+            android:padding="@dimen/fragment_padding">
 
-        <Space
-            android:layout_height="0dp"
-            android:layout_width="0dp"
-            android:layout_weight="0.5">
-        </Space>
+            <TextView
+                style="@style/BigCenteredText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/create_new_repository_for_syncing"
+                android:gravity="center"/>
 
-        <Button
-            android:id="@+id/fragment_repos_dropbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:layout_marginBottom="48dp"
-            android:drawableTop="?attr/oic_dropbox_not_linked"
-            android:text="@string/dropbox"/>
+            <Button
+                android:id="@+id/fragment_repos_dropbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:drawableTop="?attr/oic_dropbox_not_linked"
+                android:text="@string/dropbox"/>
 
-        <Button
-            android:id="@+id/fragment_repos_directory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:drawableTop="?attr/ic_folder_open_48dp"
-            android:text="@string/directory"/>
+            <Button
+                android:id="@+id/fragment_repos_directory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:drawableTop="?attr/ic_folder_open_48dp"
+                android:text="@string/directory"/>
 
-        <Space
-            android:layout_height="0dp"
-            android:layout_width="0dp"
-            android:layout_weight="2">
-        </Space>
-
-    </LinearLayout>
-
-    <!--<TextView-->
-    <!--style="@style/BigCenteredText"-->
-    <!--android:text="@string/no_repos"/>-->
+        </LinearLayout>
+    </ScrollView>
 
 </ViewFlipper>
