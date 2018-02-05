@@ -197,6 +197,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginStart="1dp"
                     tools:text="@string/note_content_sample"
                     android:textSize="?attr/item_head_sub_title_content_text"
                     android:textColor="?attr/item_head_post_title_text_color"/>

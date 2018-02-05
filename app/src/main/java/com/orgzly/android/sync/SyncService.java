@@ -178,9 +178,6 @@ public class SyncService extends Service {
                 }
             }
 
-            status.set(SyncStatus.Type.STARTING, null, 0, 0);
-            announceActiveSyncStatus();
-
             Notifications.ensureSyncNotificationSetup(context);
 
             // Always run in foreground (since Oreo, before possibly switching to scheduled job)
@@ -214,6 +211,8 @@ public class SyncService extends Service {
                 }
             }
 
+            status.set(SyncStatus.Type.STARTING, null, 0, 0);
+            announceActiveSyncStatus();
 
             /* Get the list of local and remote books from all repositories.
              * Group them by name.

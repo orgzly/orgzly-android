@@ -145,7 +145,7 @@ public class Provider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, uri.toString(), projection, selection, selectionArgs, sortOrder);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Running query", uri.toString(), projection, selection, selectionArgs, sortOrder);
 
         /* Gets a readable database. This will trigger its creation if it doesn't already exist. */
         SQLiteDatabase db = mOpenHelper.getReadableDatabase();

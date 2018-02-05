@@ -206,9 +206,9 @@
 
         <item name="main_text_color">@color/dark_bg_text_primary</item>
 
-        <item name="status_bar_default">@color/black</item>
+        <item name="status_bar_default">#e6000000</item>
         <item name="action_bar_default">@color/grey_900</item>
-        <item name="status_bar_in_query">@color/blue_grey_900</item>
+        <item name="status_bar_in_query">#f0263238</item>
         <item name="action_bar_in_query">@color/blue_grey_700</item>
         <item name="status_bar_in_settings">@color/brown_900</item>
         <item name="action_bar_in_settings">@color/brown_700</item>
