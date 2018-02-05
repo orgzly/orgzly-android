@@ -2,6 +2,7 @@ package com.orgzly.android.ui;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -21,7 +22,7 @@ public class ViewHolder /* extends RecyclerView.ViewHolder */ {
 
     public ViewGroup indentContainer;
 
-    public TextView bullet;
+    public ImageView bullet;
 
     public TextView title;
     public View payload;
@@ -51,32 +52,32 @@ public class ViewHolder /* extends RecyclerView.ViewHolder */ {
 
         container = itemView.findViewById(R.id.item_head_container);
 
-        bookNameLeftFromNoteText = (TextView) itemView.findViewById(R.id.item_head_book_name_before_note_text);
+        bookNameLeftFromNoteText = itemView.findViewById(R.id.item_head_book_name_before_note_text);
         bookNameUnderNote = itemView.findViewById(R.id.item_head_book_name);
-        bookNameUnderNoteText = (TextView) itemView.findViewById(R.id.item_head_book_name_text);
+        bookNameUnderNoteText = itemView.findViewById(R.id.item_head_book_name_text);
 
-        indentContainer = (ViewGroup) itemView.findViewById(R.id.item_head_indent_container);
-        bullet = (TextView) itemView.findViewById(R.id.item_head_bullet);
+        indentContainer = itemView.findViewById(R.id.item_head_indent_container);
+        bullet = itemView.findViewById(R.id.item_head_bullet);
 
         payload = itemView.findViewById(R.id.item_head_payload);
 
-        title = (TextView) itemView.findViewById(R.id.item_head_title);
+        title = itemView.findViewById(R.id.item_head_title);
 
         scheduled = itemView.findViewById(R.id.item_head_scheduled);
-        scheduledText = (TextView) itemView.findViewById(R.id.item_head_scheduled_text);
+        scheduledText = itemView.findViewById(R.id.item_head_scheduled_text);
 
         deadline = itemView.findViewById(R.id.item_head_deadline);
-        deadlineText = (TextView) itemView.findViewById(R.id.item_head_deadline_text);
+        deadlineText = itemView.findViewById(R.id.item_head_deadline_text);
 
         closed = itemView.findViewById(R.id.item_head_closed);
-        closedText = (TextView) itemView.findViewById(R.id.item_head_closed_text);
+        closedText = itemView.findViewById(R.id.item_head_closed_text);
 
-        content = (TextView) itemView.findViewById(R.id.item_head_content);
+        content = itemView.findViewById(R.id.item_head_content);
 
-        menuContainer = (ViewGroup) itemView.findViewById(R.id.item_head_menu_container);
-        menuFlipper = (ViewFlipper) itemView.findViewById(R.id.item_head_menu_flipper);
+        menuContainer = itemView.findViewById(R.id.item_head_menu_container);
+        menuFlipper = itemView.findViewById(R.id.item_head_menu_flipper);
 
         foldButton = itemView.findViewById(R.id.item_head_fold_button);
-        foldButtonText = (TextView) itemView.findViewById(R.id.item_head_fold_button_text);
+        foldButtonText = itemView.findViewById(R.id.item_head_fold_button_text);
     }
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:descendantFocusability="blocksDescendants">
 
@@ -74,6 +74,8 @@
                 android:layout_toLeftOf="@id/item_head_fold_button"
                 android:layout_toStartOf="@id/item_head_fold_button"
                 android:layout_marginTop="@dimen/item_head_padding_cozy"
+                android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
                 android:orientation="vertical">
 
 
@@ -223,19 +225,15 @@
             </LinearLayout>
 
             <!--Bullet -->
-            <TextView
+            <ImageView
                 android:id="@+id/item_head_bullet"
                 android:layout_width="?attr/item_head_indent_width"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/item_head_indent_container"
-                android:layout_toEndOf="@id/item_head_indent_container"
+                android:layout_height="?attr/item_head_indent_width"
+                android:layout_marginTop="2dp"
                 android:layout_alignTop="@+id/item_head_payload"
-                android:layout_marginRight="@dimen/padding_4"
-                android:layout_marginEnd="@dimen/padding_4"
-                android:gravity="center_horizontal"
-                android:textSize="?attr/item_head_bullet_text_size"
-                android:textColor="?attr/item_head_bullet_text_color"
-                android:text="@string/bullet"/>
+                android:layout_toEndOf="@+id/item_head_indent_container"
+                android:layout_toRightOf="@+id/item_head_indent_container"
+                android:src="?attr/bullet_folded"/>
 
         </RelativeLayout>
     </LinearLayout>

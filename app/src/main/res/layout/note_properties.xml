@@ -19,7 +19,7 @@
 
     <Button
         android:id="@+id/add_property"
-        style="@style/NoteTimeButton"
+        style="@style/NoteFragmentButton"
         android:drawableStart="?attr/ic_info_outline_24dp"
         android:drawableLeft="?attr/ic_info_outline_24dp"
         android:text="@string/add_property"

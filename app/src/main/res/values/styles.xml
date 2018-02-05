@@ -155,6 +155,10 @@
         <item name="oic_tomorrow_36dp">@drawable/cic_tomorrow_black_36dp</item>
 
         <item name="oic_item_alpha">0.55</item>
+
+        <item name="bullet_default">@drawable/bullet_state_default_dark</item>
+        <item name="bullet_folded">@drawable/bullet_state_folded_dark</item>
+        <item name="bullet_unfolded">@drawable/bullet_state_default_dark</item>
     </style>
 
     <style name="AppDarkTheme" parent="Theme.Design.NoActionBar">
@@ -296,6 +300,10 @@
         <item name="oic_tomorrow_36dp">@drawable/cic_tomorrow_white_36dp</item>
 
         <item name="oic_item_alpha">0.7</item>
+
+        <item name="bullet_default">@drawable/bullet_state_default_light</item>
+        <item name="bullet_folded">@drawable/bullet_state_folded_light</item>
+        <item name="bullet_unfolded">@drawable/bullet_state_default_light</item>
     </style>
 
     <!-- Color schemes -->
@@ -443,7 +451,7 @@
 
     </style>
 
-    <style name="NoteTimeButton" parent="BorderlessButton">
+    <style name="NoteFragmentButton" parent="BorderlessButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">4dp</item>

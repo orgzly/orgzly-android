@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
@@ -36,6 +37,8 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
 
     private final UserTimeFormatter userTimeFormatter;
 
+    private Drawable[] bulletDrawables;
+
     public HeadsListViewAdapter(Context context, Selection selection, GesturedListViewItemMenus toolbars, boolean inBook) {
         super(context, R.layout.item_head, null, new String[0], new int[0], 0);
 
@@ -44,17 +47,23 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         this.inBook = inBook;
 
         this.userTimeFormatter = new UserTimeFormatter(context);
-        this.titleGenerator = new TitleGenerator(context, inBook, getTitleAttributes());
-    }
 
-    private TitleGenerator.TitleAttributes getTitleAttributes() {
         TypedArray typedArray = mContext.obtainStyledAttributes(new int[] {
                 R.attr.item_head_state_todo_color,
                 R.attr.item_head_state_done_color,
                 R.attr.item_head_state_unknown_color,
                 R.attr.item_head_post_title_text_size,
-                R.attr.item_head_post_title_text_color
+                R.attr.item_head_post_title_text_color,
+                R.attr.bullet_default,
+                R.attr.bullet_folded,
+                R.attr.bullet_unfolded
         });
+
+        this.bulletDrawables = new Drawable[] {
+                typedArray.getDrawable(5),
+                typedArray.getDrawable(6),
+                typedArray.getDrawable(7)
+        };
 
         TitleGenerator.TitleAttributes attributes = new TitleGenerator.TitleAttributes(
                 typedArray.getColor(0, 0),
@@ -63,9 +72,9 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                 typedArray.getDimensionPixelSize(3, 0),
                 typedArray.getColor(4, 0));
 
-        typedArray.recycle();
+        this.titleGenerator = new TitleGenerator(context, inBook, attributes);
 
-        return attributes;
+        typedArray.recycle();
     }
 
     @Override
@@ -154,7 +163,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                         : 0  // No indentation unless in book
         );
 
-        updateBullet(note, holder, true);
+        updateBullet(note, holder);
 
         if (updateFoldingButton(context, note, holder)) {
             holder.foldButton.setOnClickListener(v -> toggleFoldedState(context, note.getId()));
@@ -292,31 +301,22 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
     /**
      * Change bullet appearance depending on folding state and number of descendants.
      */
-    private void updateBullet(Note note, ViewHolder holder, boolean bulletInBookOnly) {
+    private void updateBullet(Note note, ViewHolder holder) {
         if (inBook) {
-            if (bulletInBookOnly) {
-                holder.bullet.setVisibility(View.VISIBLE);
-            }
+            holder.bullet.setVisibility(View.VISIBLE);
 
-            if (note.getPosition().getDescendantsCount() > 0) { // Has descendants
-                if (note.getPosition().isFolded()) {
-                    holder.bullet.setText(R.string.bullet_with_children_folded);
-                } else {
-                    holder.bullet.setText(R.string.bullet_with_children_unfolded);
+            if (note.getPosition().getDescendantsCount() > 0) { // With descendants
+                if (note.getPosition().isFolded()) { // Folded
+                    holder.bullet.setImageDrawable(bulletDrawables[1]);
+                } else { // Not folded
+                    holder.bullet.setImageDrawable(bulletDrawables[2]);
                 }
-                holder.bullet.setTypeface(Typeface.DEFAULT);
-
-            } else { // Has no descendants
-                holder.bullet.setText(R.string.bullet);
-                holder.bullet.setTypeface(Typeface.DEFAULT_BOLD);
+            } else { // No descendants
+                holder.bullet.setImageDrawable(bulletDrawables[0]);
             }
 
         } else {
-            if (bulletInBookOnly) {
-                holder.bullet.setVisibility(View.GONE);
-            } else {
-                holder.bullet.setTypeface(Typeface.DEFAULT_BOLD);
-            }
+            holder.bullet.setVisibility(View.GONE);
         }
     }
 

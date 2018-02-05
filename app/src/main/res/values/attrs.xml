@@ -138,5 +138,9 @@
         <attr name="oic_tomorrow_36dp" format="reference"/>
 
         <attr name="oic_item_alpha" format="float"/>
+
+        <attr name="bullet_default" format="reference"/>
+        <attr name="bullet_folded" format="reference"/>
+        <attr name="bullet_unfolded" format="reference"/>
     </declare-styleable>
 </resources>
