@@ -85,7 +85,7 @@
 
         <item name="item_head_bullet_text_color">@color/grey_700</item>
         <item name="item_head_title_text_color">@color/black</item>
-        <item name="item_head_fold_button_text_color">@color/grey_700</item>
+        <item name="item_head_fold_button_text_color">@color/grey_600</item>
         <item name="item_head_post_title_text_color">@color/grey_700</item>
 
         <item name="line_thin_color">#0c000000</item>
@@ -156,9 +156,9 @@
 
         <item name="oic_item_alpha">0.55</item>
 
-        <item name="bullet_default">@drawable/bullet_state_default_dark</item>
-        <item name="bullet_folded">@drawable/bullet_state_folded_dark</item>
-        <item name="bullet_unfolded">@drawable/bullet_state_default_dark</item>
+        <item name="bullet_default">@drawable/bullet_state_default</item>
+        <item name="bullet_folded">@drawable/bullet_state_folded</item>
+        <item name="bullet_unfolded">@drawable/bullet_state_default</item>
     </style>
 
     <style name="AppDarkTheme" parent="Theme.Design.NoActionBar">
@@ -301,9 +301,9 @@
 
         <item name="oic_item_alpha">0.7</item>
 
-        <item name="bullet_default">@drawable/bullet_state_default_light</item>
-        <item name="bullet_folded">@drawable/bullet_state_folded_light</item>
-        <item name="bullet_unfolded">@drawable/bullet_state_default_light</item>
+        <item name="bullet_default">@drawable/bullet_state_default_dark</item>
+        <item name="bullet_folded">@drawable/bullet_state_folded_dark</item>
+        <item name="bullet_unfolded">@drawable/bullet_state_default_dark</item>
     </style>
 
     <!-- Color schemes -->
@@ -334,6 +334,10 @@
         <item name="browser_footer_bg_color">@color/dark_theme_status_bar</item>
 
         <item name="snackbar_bg_color">@color/dark_theme_app_bar</item>
+
+        <item name="bullet_default">@drawable/bullet_state_default_dark</item>
+        <item name="bullet_folded">@drawable/bullet_state_folded_black</item>
+        <item name="bullet_unfolded">@drawable/bullet_state_default_dark</item>
     </style>
 
     <style name="FontSize"/>

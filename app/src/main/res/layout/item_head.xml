@@ -43,14 +43,13 @@
             <!-- Fold button and its text. -->
             <View
                 android:id="@+id/item_head_fold_button"
-                android:clickable="true"
-                android:focusable="true"
                 android:layout_width="48dp"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="true"/>
+                android:clickable="true"
+                android:focusable="true" />
             <TextView
                 android:id="@+id/item_head_fold_button_text"
                 android:layout_width="48dp"
@@ -74,8 +73,8 @@
                 android:layout_toLeftOf="@id/item_head_fold_button"
                 android:layout_toStartOf="@id/item_head_fold_button"
                 android:layout_marginTop="@dimen/item_head_padding_cozy"
-                android:layout_marginLeft="2dp"
-                android:layout_marginStart="2dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
                 android:orientation="vertical">
 
 

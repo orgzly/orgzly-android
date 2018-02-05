@@ -8,13 +8,15 @@
         android:bottom="8dp"
         android:left="8dp"
         android:gravity="center">
+
         <shape android:shape="oval">
             <size
                 android:width="8dp"
                 android:height="8dp" />
 
-            <solid android:color="@color/dark_bg_text_secondary"/>
+            <solid android:color="@color/grey_600"/>
         </shape>
+
     </item>
 
 </layer-list>

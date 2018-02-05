@@ -7,17 +7,13 @@
         android:right="5dp"
         android:bottom="5dp"
         android:left="5dp">
-        <shape
-            android:shape="oval">
 
-            <!--<solid android:color="@android:color/transparent" />-->
-
-            <solid
-                android:color="@color/grey_700"/>
-
+        <shape android:shape="oval">
+            <solid android:color="@color/grey_800"/>
         </shape>
+
     </item>
 
-    <item android:drawable="@drawable/bullet_state_default_light"/>
+    <item android:drawable="@drawable/bullet_state_default_dark"/>
 
 </layer-list>
