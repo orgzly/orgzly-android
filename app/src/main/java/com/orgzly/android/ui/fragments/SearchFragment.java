@@ -147,18 +147,13 @@ public class SearchFragment extends QueryFragment {
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader, cursor);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader);
 
         if (mListAdapter == null) {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "adapter is null, view is destroyed?");
             return;
         }
 
-        /*
-         * Swapping instead of changing Cursor here, to keep the old one open.
-         * Loader should release the old Cursor - see note in
-         * {@link LoaderManager.LoaderCallbacks#onLoadFinished).
-         */
         mListAdapter.swapCursor(cursor);
 
         mActionModeListener.updateActionModeForSelection(mSelection.getCount(), new MyActionMode());

@@ -165,7 +165,7 @@ public class AgendaFragment extends QueryFragment {
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader, cursor);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader);
 
         if (loader.getId() != currentLoaderId) {
             LogUtils.d(TAG, "Skip callback from loader " + loader.getId());

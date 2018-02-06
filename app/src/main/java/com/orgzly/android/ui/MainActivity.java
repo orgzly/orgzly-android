@@ -1316,7 +1316,7 @@ public class MainActivity extends CommonActivity
         getSupportActionBar().setTitle(mSavedTitle);
         getSupportActionBar().setSubtitle(mSavedSubtitle);
 
-        drawerNavigationView.refresh(fragmentTag);
+        drawerNavigationView.updateActiveFragment(fragmentTag);
 
         /* Set status and action bar colors depending on the fragment. */
         ActivityUtils.setColorsForFragment(this, fragmentTag);

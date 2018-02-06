@@ -3,9 +3,9 @@ package com.orgzly.android.ui.drawer
 import android.content.Intent
 import android.content.res.Resources
 import android.database.Cursor
-import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.content.Loader
 import android.view.Menu
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -16,7 +16,10 @@ import com.orgzly.android.provider.clients.BooksClient
 import com.orgzly.android.provider.clients.FiltersClient
 import com.orgzly.android.ui.Loaders
 import com.orgzly.android.ui.MainActivity
-import com.orgzly.android.ui.fragments.*
+import com.orgzly.android.ui.fragments.BookFragment
+import com.orgzly.android.ui.fragments.BooksFragment
+import com.orgzly.android.ui.fragments.FiltersFragment
+import com.orgzly.android.ui.fragments.QueryFragment
 import com.orgzly.android.util.LogUtils
 import java.util.*
 
@@ -38,17 +41,15 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
         menu.findItem(R.id.books).intent = Intent(AppIntent.ACTION_OPEN_BOOKS)
         menu.findItem(R.id.settings).intent = Intent(AppIntent.ACTION_OPEN_SETTINGS)
 
-        // Init loaders
-        activity.supportLoaderManager.initLoader(Loaders.DRAWER_BOOKS, null, this)
-        activity.supportLoaderManager.initLoader(Loaders.DRAWER_FILTERS, null, this)
-    }
-
-    fun refresh(fragmentTag: String) {
-        this.activeFragmentTag = fragmentTag
-
         // Restart Loaders in case settings changed (e.g. notebooks order)
         activity.supportLoaderManager.restartLoader(Loaders.DRAWER_BOOKS, null, this)
         activity.supportLoaderManager.restartLoader(Loaders.DRAWER_FILTERS, null, this)
+    }
+
+    fun updateActiveFragment(fragmentTag: String) {
+        this.activeFragmentTag = fragmentTag
+
+        setActiveItem(fragmentTag)
     }
 
     private fun setActiveItem(fragmentTag: String) {
@@ -67,7 +68,7 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
         }
     }
 
-    override fun onCreateLoader(id: Int, args: Bundle?): android.support.v4.content.Loader<Cursor> {
+    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
         return when (id) {
             Loaders.DRAWER_FILTERS -> FiltersClient.getCursorLoader(activity)
             Loaders.DRAWER_BOOKS -> BooksClient.getCursorLoader(activity)
@@ -75,8 +76,8 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
         }
     }
 
-    override fun onLoadFinished(loader: android.support.v4.content.Loader<Cursor>, cursor: Cursor) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(MainActivity.TAG)
+    override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader)
 
         when (loader.id) {
             Loaders.DRAWER_FILTERS -> updateQueriesFromCursor(cursor)
@@ -193,6 +194,10 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
         }
     }
 
-    override fun onLoaderReset(loader: android.support.v4.content.Loader<Cursor>) {
+    override fun onLoaderReset(loader: Loader<Cursor>) {
+    }
+
+    companion object {
+        private val TAG = DrawerNavigationView::class.java.name
     }
 }

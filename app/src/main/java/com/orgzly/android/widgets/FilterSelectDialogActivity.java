@@ -53,7 +53,8 @@ public class FilterSelectDialogActivity extends AppCompatActivity implements Loa
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader);
         mListAdapter.swapCursor(cursor);
     }
 

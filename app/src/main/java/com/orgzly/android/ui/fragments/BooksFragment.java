@@ -609,7 +609,7 @@ public class BooksFragment extends ListFragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader, cursor);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader);
 
         mListAdapter.swapCursor(cursor);
 

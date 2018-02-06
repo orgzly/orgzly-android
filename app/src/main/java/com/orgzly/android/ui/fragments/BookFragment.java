@@ -574,11 +574,11 @@ public class BookFragment extends NoteListFragment
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, cursorLoader, cursor);
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader);
 
         if (mIsViewCreated) {
-            if (cursorLoader.getId() == Loaders.BOOK_FRAGMENT_BOOK) {
+            if (loader.getId() == Loaders.BOOK_FRAGMENT_BOOK) {
                 Book book = null;
                 if (cursor.moveToFirst()) {
                     book = BooksClient.fromCursor(cursor);
@@ -586,7 +586,7 @@ public class BookFragment extends NoteListFragment
                 bookLoaded(book);
                 mLastBookId = mBookId;
 
-            } else if (cursorLoader.getId() == Loaders.BOOK_FRAGMENT_NOTES) {
+            } else if (loader.getId() == Loaders.BOOK_FRAGMENT_NOTES) {
                 notesLoaded(cursor);
             }
 
@@ -679,11 +679,6 @@ public class BookFragment extends NoteListFragment
     private void notesLoaded(Cursor cursor) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, cursor);
 
-        /*
-         * Swapping instead of changing Cursor here, to keep the old one open.
-         * Loader should release the old Cursor - see note in
-         * {@link LoaderManager.LoaderCallbacks#onLoadFinished).
-         */
         mListAdapter.swapCursor(cursor);
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "after swap: cursor/adapter count: " + cursor.getCount() + "/" + mListAdapter.getCount());

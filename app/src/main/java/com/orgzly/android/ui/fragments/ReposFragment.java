@@ -25,12 +25,9 @@ import android.widget.ViewFlipper;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.provider.ProviderContract;
-import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.util.ActivityUtils;
-import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
-import com.orgzly.android.util.UriUtils;
 
 /**
  * Displays user-configurable repositories.
@@ -259,12 +256,9 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        /*
-         * Swapping instead of changing Cursor here, to keep the old one open.
-         * Loader should release the old Cursor - see note in
-         * {@link LoaderManager.LoaderCallbacks#onLoadFinished).
-         */
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader);
+
         mListAdapter.swapCursor(cursor);
 
         if (mListAdapter.getCount() > 0) {

@@ -171,7 +171,9 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
         return FiltersClient.getCursorLoader(activity!!)
     }
 
-    override fun onLoadFinished(cursorLoader: Loader<Cursor>, cursor: Cursor) {
+    override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader)
+
         if (mIsViewCreated) {
             /*
              * Swapping instead of changing Cursor here, to keep the old one open.
