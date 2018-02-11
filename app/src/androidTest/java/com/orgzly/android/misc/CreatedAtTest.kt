@@ -84,6 +84,24 @@ class CreatedAtTest : OrgzlyTest() {
     }
 
     @Test
+    fun testBookMarkedSyncedAfterSettingCreatedAtTime() {
+        shelfTestUtils.setupRepo("mock://repo-a")
+        shelfTestUtils.setupBook(
+                "book-a",
+                "* Note [a-1]\n" +
+                        ":PROPERTIES:\n" +
+                        ":CREATED: [2018-01-01 12:00]\n" +
+                        ":END:\n")
+        shelf.sync()
+
+        AppPreferences.createdAt(context, true)
+
+        shelf.syncCreatedAtTimeWithProperty()
+
+        assertFalse(shelf.getBook(1).isModifiedAfterLastSync)
+    }
+
+    @Test
     fun testParsingInvalidPropertyValue() {
         AppPreferences.createdAt(context, true)
 

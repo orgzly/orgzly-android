@@ -983,7 +983,7 @@ public class Shelf {
                     } else if (dbCreatedAt > 0 && dbPropertyValue != null) {
                         // Use older created-at
                         if (dbPropertyValue.getCalendar().getTimeInMillis() < dbCreatedAt) {
-                            addOpUpdateCreatedAt(ops, note, dbPropertyValue, note.getCreatedAt(), bookIds);
+                            addOpUpdateCreatedAt(ops, note, dbPropertyValue, note.getCreatedAt());
                         } else {
                             addOpUpdateProperty(ops, note, createdAtPropName, dbCreatedAt, dbPropValue, bookIds);
                         }
@@ -992,7 +992,7 @@ public class Shelf {
                         // addOpUpdateCreatedAt(ops, note.getId(), dbPropertyValue, note.getCreatedAt());
 
                     } else if (dbCreatedAt == 0 && dbPropertyValue != null) {
-                        addOpUpdateCreatedAt(ops, note, dbPropertyValue, note.getCreatedAt(), bookIds);
+                        addOpUpdateCreatedAt(ops, note, dbPropertyValue, note.getCreatedAt());
 
                     } // else: Neither created-at time nor property are set
                 }
@@ -1018,7 +1018,7 @@ public class Shelf {
         syncOnNoteUpdate();
     }
 
-    private void addOpUpdateCreatedAt(ArrayList<ContentProviderOperation> ops, Note note, OrgDateTime dbPropertyValue, long currValue, Set<Long> bookIds) {
+    private void addOpUpdateCreatedAt(ArrayList<ContentProviderOperation> ops, Note note, OrgDateTime dbPropertyValue, long currValue) {
         long value = dbPropertyValue.getCalendar().getTimeInMillis();
 
         if (value != currValue) {
@@ -1028,8 +1028,6 @@ public class Shelf {
                     .newUpdate(ProviderContract.Notes.ContentUri.notesId(note.getId()))
                     .withValue(DbNote.CREATED_AT, value)
                     .build());
-
-            bookIds.add(note.getPosition().getBookId());
 
         } else {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Skipping update", note.getId(), value);

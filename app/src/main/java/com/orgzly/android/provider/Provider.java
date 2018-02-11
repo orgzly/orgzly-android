@@ -123,6 +123,8 @@ public class Provider extends ContentProvider {
 
     @Override
     public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation> operations) throws OperationApplicationException {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, operations.size());
+
         ContentProviderResult[] results;
 
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
