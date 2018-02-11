@@ -930,12 +930,11 @@ public class StructureTest extends OrgzlyTest {
                 "* D :d:\n");
 
         shelf.cut(book.getId(), shelf.getNote("B").getId());
-         shelf.paste(book.getId(), shelf.getNote("D").getId(), Place.UNDER);
+        shelf.paste(book.getId(), shelf.getNote("D").getId(), Place.UNDER);
 
         assertEquals(1, shelf.getNote("B").getInheritedTags().size());
         assertEquals(2, shelf.getNote("C").getInheritedTags().size());
     }
-
 
     /* Make sure root node's rgt is larger then notes'. */
     @Test

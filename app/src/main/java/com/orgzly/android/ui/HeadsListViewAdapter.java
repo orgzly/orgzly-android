@@ -143,7 +143,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
 
     @Override
     public void bindView(final View view, final Context context, Cursor cursor) {
-        final Note note = NotesClient.fromCursor(cursor);
+        final Note note = NotesClient.fromCursor(cursor, inBook);
         final OrgHead head = note.getHead();
         final ViewHolder holder = (ViewHolder) view.getTag();
 
@@ -154,6 +154,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                 view.setVisibility(View.GONE);
             }
         }
+
 
         setupIndentContainer(
                 context,

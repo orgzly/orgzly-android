@@ -50,8 +50,6 @@ public class NotesClient {
         void onNote(Note note);
     }
 
-
-
     public static void forEachBookNote(Context context, String bookName, NotesClientInterface notesClientInterface) {
         Cursor cursor = NotesClient.getCursorForBook(context, bookName);
 
@@ -145,10 +143,11 @@ public class NotesClient {
         }
     }
 
-    // TODO: If we were to move our created at time detection from Shelf to here (thereby necessitating
-    // a change to org-java), we could properly show created times in the widget & search results.
-    // Would that be necessary?
     public static Note fromCursor(Cursor cursor) {
+        return fromCursor(cursor, true);
+    }
+
+    public static Note fromCursor(Cursor cursor, boolean inBook) {
         long id = idFromCursor(cursor);
 
         long createdAt = cursor.getLong(cursor.getColumnIndex(DbNoteView.CREATED_AT));
@@ -167,9 +166,11 @@ public class NotesClient {
         note.setPosition(position);
         note.setContentLines(contentLines);
 
-        String inheritedTags = cursor.getString(cursor.getColumnIndex(DbNoteView.INHERITED_TAGS));
-        if (! TextUtils.isEmpty(inheritedTags)) {
-            note.setInheritedTags(DbNote.dbDeSerializeTags(inheritedTags));
+        if (!inBook) {
+            String inheritedTags = cursor.getString(cursor.getColumnIndex(DbNoteView.INHERITED_TAGS));
+            if (! TextUtils.isEmpty(inheritedTags)) {
+                note.setInheritedTags(DbNote.dbDeSerializeTags(inheritedTags));
+            }
         }
 
         return note;
@@ -429,17 +430,13 @@ public class NotesClient {
      * Currently used only by tests -- title is not unique and notebook ID is not even specified.
      */
     public static Note getNote(Context context, String title) {
-        Cursor cursor = context.getContentResolver().query(
-                ProviderContract.Notes.ContentUri.notes(), null, DbNoteView.TITLE + "= ?", new String[] { title }, null);
-
-        try {
-            if (cursor.moveToFirst()) {
-                return fromCursor(cursor);
+        try (Cursor cursor = context.getContentResolver().query(
+                ProviderContract.Notes.ContentUri.notes(), null, DbNoteView.TITLE + "= ?", new String[]{title}, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                return fromCursor(cursor, false);
             } else {
                 throw new NoSuchElementException("Note with title " + title + " was not found in " + ProviderContract.Notes.ContentUri.notes());
             }
-        } finally {
-            cursor.close();
         }
     }
 

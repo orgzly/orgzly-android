@@ -50,11 +50,11 @@ import com.orgzly.android.provider.models.DbVersionedRook;
 import com.orgzly.android.provider.views.DbBookView;
 import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.provider.views.DbTimeView;
-import com.orgzly.android.query.sql.SqlQuery;
 import com.orgzly.android.query.Query;
 import com.orgzly.android.query.QueryParser;
-import com.orgzly.android.query.user.InternalQueryParser;
+import com.orgzly.android.query.sql.SqlQuery;
 import com.orgzly.android.query.sql.SqliteQueryBuilder;
+import com.orgzly.android.query.user.InternalQueryParser;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.EncodingDetect;
 import com.orgzly.android.util.LogUtils;
@@ -153,6 +153,7 @@ public class Provider extends ContentProvider {
         SQLiteDatabase db = mOpenHelper.getReadableDatabase();
 
         String table;
+        String query;
         Cursor cursor = null;
 
         switch (uris.matcher.match(uri)) {
@@ -182,12 +183,26 @@ public class Provider extends ContentProvider {
                 break;
 
             case ProviderUris.BOOKS_ID_NOTES:
-                table = DbNoteView.VIEW_NAME;
-
                 long bookId = Long.parseLong(uri.getPathSegments().get(1));
 
-                selection = DbNoteView.BOOK_ID + "=" + bookId + " AND " + DatabaseUtils.WHERE_VISIBLE_NOTES;
-                selectionArgs = null;
+                table = null;
+
+                query = "SELECT " + DbNote.TABLE + ".*,"
+                        + " a." + DbOrgRange.STRING + " AS " + DbNoteView.SCHEDULED_RANGE_STRING + ","
+                        + " b." + DbOrgRange.STRING + " AS " + DbNoteView.DEADLINE_RANGE_STRING + ","
+                        + " c." + DbOrgRange.STRING + " AS " + DbNoteView.CLOSED_RANGE_STRING + ","
+                        + " d." + DbOrgRange.STRING + " AS " + DbNoteView.CLOCK_RANGE_STRING
+                        + " FROM " + DbNote.TABLE
+                        + GenericDatabaseUtils.join(DbOrgRange.TABLE, "a", DbOrgRange._ID, DbNote.TABLE, DbNote.SCHEDULED_RANGE_ID)
+                        + GenericDatabaseUtils.join(DbOrgRange.TABLE, "b", DbOrgRange._ID, DbNote.TABLE, DbNote.DEADLINE_RANGE_ID)
+                        + GenericDatabaseUtils.join(DbOrgRange.TABLE, "c", DbOrgRange._ID, DbNote.TABLE, DbNote.CLOSED_RANGE_ID)
+                        + GenericDatabaseUtils.join(DbOrgRange.TABLE, "d", DbOrgRange._ID, DbNote.TABLE, DbNote.CLOCK_RANGE_ID)
+                        + " WHERE " + field(DbNote.TABLE, DbNote.BOOK_ID) + "=" + bookId + " AND " + DatabaseUtils.WHERE_VISIBLE_NOTES
+                        + " ORDER BY " + DbNote.LFT;
+
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Notes for book " + bookId + ": " + query);
+                cursor = db.rawQuery(query, null);
+
                 break;
 
             case ProviderUris.NOTES_WITH_PROPERTY:
@@ -196,8 +211,8 @@ public class Provider extends ContentProvider {
 
                 selection =
                         "LOWER(" + field("tpropertyname", DbPropertyName.NAME) + ") = ? AND " +
-                        "LOWER(" + field("tpropertyvalue", DbPropertyValue.VALUE) + ") = ? AND " +
-                        field("tnotes", DbNote._ID) + " IS NOT NULL";
+                                "LOWER(" + field("tpropertyvalue", DbPropertyValue.VALUE) + ") = ? AND " +
+                                field("tnotes", DbNote._ID) + " IS NOT NULL";
 
                 selectionArgs = new String[] { propName.toLowerCase(), propValue.toLowerCase() };
 
@@ -275,15 +290,15 @@ public class Provider extends ContentProvider {
             case ProviderUris.TIMES:
                 table = null;
 
-                String query = "SELECT " +
-                               DbTimeView.NOTE_ID + ", " +
-                               DbTimeView.BOOK_ID + ", " +
-                               DbTimeView.BOOK_NAME + ", " +
-                               DbTimeView.NOTE_STATE + ", " +
-                               DbTimeView.NOTE_TITLE + ", " +
-                               DbTimeView.TIME_TYPE + ", " +
-                               DbTimeView.ORG_TIMESTAMP_STRING +
-                               " FROM " + DbTimeView.VIEW_NAME;
+                query = "SELECT " +
+                        DbTimeView.NOTE_ID + ", " +
+                        DbTimeView.BOOK_ID + ", " +
+                        DbTimeView.BOOK_NAME + ", " +
+                        DbTimeView.NOTE_STATE + ", " +
+                        DbTimeView.NOTE_TITLE + ", " +
+                        DbTimeView.TIME_TYPE + ", " +
+                        DbTimeView.ORG_TIMESTAMP_STRING +
+                        " FROM " + DbTimeView.VIEW_NAME;
 
                 cursor = db.rawQuery(query, null);
 
@@ -298,7 +313,7 @@ public class Provider extends ContentProvider {
         }
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Cursor count: " + cursor.getCount() + " for " +
-                                                   table + " " + selection + " " + (selectionArgs != null ? TextUtils.join(",", selectionArgs) : ""));
+                table + " " + selection + " " + (selectionArgs != null ? TextUtils.join(",", selectionArgs) : ""));
 
         cursor.setNotificationUri(getContext().getContentResolver(), ProviderContract.AUTHORITY_URI);
 
@@ -567,26 +582,26 @@ public class Provider extends ContentProvider {
         long id = db.insertOrThrow(DbNote.TABLE, null, values);
 
         db.execSQL("INSERT INTO " + DbNoteAncestor.TABLE +
-                   " (" + DbNoteAncestor.BOOK_ID + ", " +
-                   DbNoteAncestor.NOTE_ID +
-                   ", " + DbNoteAncestor.ANCESTOR_NOTE_ID + ") " +
-                   "SELECT " + field(DbNote.TABLE, DbNote.BOOK_ID) + ", " +
-                   field(DbNote.TABLE, DbNote._ID) + ", " +
-                   field("a", DbNote._ID) +
-                   " FROM " + DbNote.TABLE +
-                   " JOIN " + DbNote.TABLE + " a ON (" +
-                   field(DbNote.TABLE, DbNote.BOOK_ID) + " = " + field("a", DbNote.BOOK_ID) + " AND " +
-                   field("a", DbNote.LFT) + " < " + field(DbNote.TABLE, DbNote.LFT) + " AND " +
-                   field(DbNote.TABLE, DbNote.RGT) + " < " + field("a", DbNote.RGT) + ")" +
-                   " WHERE " + field(DbNote.TABLE, DbNote._ID) + " = " + id + " AND " + field("a", DbNote.LEVEL) + " > 0");
+                " (" + DbNoteAncestor.BOOK_ID + ", " +
+                DbNoteAncestor.NOTE_ID +
+                ", " + DbNoteAncestor.ANCESTOR_NOTE_ID + ") " +
+                "SELECT " + field(DbNote.TABLE, DbNote.BOOK_ID) + ", " +
+                field(DbNote.TABLE, DbNote._ID) + ", " +
+                field("a", DbNote._ID) +
+                " FROM " + DbNote.TABLE +
+                " JOIN " + DbNote.TABLE + " a ON (" +
+                field(DbNote.TABLE, DbNote.BOOK_ID) + " = " + field("a", DbNote.BOOK_ID) + " AND " +
+                field("a", DbNote.LFT) + " < " + field(DbNote.TABLE, DbNote.LFT) + " AND " +
+                field(DbNote.TABLE, DbNote.RGT) + " < " + field("a", DbNote.RGT) + ")" +
+                " WHERE " + field(DbNote.TABLE, DbNote._ID) + " = " + id + " AND " + field("a", DbNote.LEVEL) + " > 0");
 
         return ContentUris.withAppendedId(uri, id);
     }
 
     private void incrementDescendantsCountForAncestors(SQLiteDatabase db, long bookId, long lft, long rgt) {
         db.execSQL("UPDATE " + DbNote.TABLE +
-                   " SET " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " = " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " + 1 " +
-                   "WHERE " + DatabaseUtils.whereAncestors(bookId, lft, rgt));
+                " SET " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " = " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " + 1 " +
+                "WHERE " + DatabaseUtils.whereAncestors(bookId, lft, rgt));
     }
 
     private int getMaxRgt(SQLiteDatabase db, long bookId) {
@@ -664,7 +679,7 @@ public class Provider extends ContentProvider {
 
     private static final String DELETE_CURRENT_VERSIONED_ROOKS_FOR_ROOK_ID =
             "DELETE FROM " + DbCurrentVersionedRook.TABLE +
-            " WHERE " + DbCurrentVersionedRook.VERSIONED_ROOK_ID + " IN (" + VERSIONED_ROOK_IDS_FOR_ROOK_ID + ")";
+                    " WHERE " + DbCurrentVersionedRook.VERSIONED_ROOK_ID + " IN (" + VERSIONED_ROOK_IDS_FOR_ROOK_ID + ")";
 
     private Uri insertCurrentRook(SQLiteDatabase db, Uri uri, ContentValues contentValues) {
         String repoUrl = contentValues.getAsString(ProviderContract.CurrentRooks.Param.REPO_URL);
@@ -853,8 +868,8 @@ public class Provider extends ContentProvider {
     private int removeBooksLinksForRepo(SQLiteDatabase db, String repoId) {
         /* Rooks which use passed repo. */
         String rookIds = "SELECT DISTINCT " + DbRook._ID +
-                         " FROM " + DbRook.TABLE +
-                         " WHERE " + DbRook.REPO_ID + " = " + repoId;
+                " FROM " + DbRook.TABLE +
+                " WHERE " + DbRook.REPO_ID + " = " + repoId;
 
         return db.delete(DbBookLink.TABLE, DbBookLink.ROOK_ID + " IN (" + rookIds + ")", null);
     }
@@ -1083,13 +1098,13 @@ public class Provider extends ContentProvider {
 
         /* Select only notes which don't already have the target state. */
         String notesSelection = DbNote._ID + " IN (" + ids + ") AND (" +
-                                DbNoteView.STATE + " IS NULL OR " + DbNoteView.STATE + " != ?)";
+                DbNoteView.STATE + " IS NULL OR " + DbNoteView.STATE + " != ?)";
 
         String[] selectionArgs = { targetState };
 
         /* Select notebooks which will be affected. */
         String booksSelection = DbBook._ID + " IN (SELECT DISTINCT " +
-                                DbNote.BOOK_ID + " FROM " + DbNote.TABLE + " WHERE " + notesSelection + ")";
+                DbNote.BOOK_ID + " FROM " + DbNote.TABLE + " WHERE " + notesSelection + ")";
 
         /* Notebooks must be updated before notes, because selection checks
          * for notes what will be affected.
@@ -1519,7 +1534,7 @@ public class Provider extends ContentProvider {
 
         if (BuildConfig.LOG_DEBUG)
             LogUtils.d(TAG, bookName + ": Parsing done in " +
-                            (System.currentTimeMillis() - startedAt) + " ms");
+                    (System.currentTimeMillis() - startedAt) + " ms");
 
         if (rookUrl != null) {
             updateOrInsertBookLink(db, bookId, repoUrl, rookUrl);
