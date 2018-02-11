@@ -23,52 +23,34 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            return super.getView(position, null, parent);
-
-        } else {
-            boolean isViewDivider = (boolean) convertView.getTag(R.id.is_divider_view_tag);
-
-            Cursor cursor = (Cursor) getItem(position);
-            boolean isRowDivider = AgendaCursor.INSTANCE.isDivider(cursor);
-
-            if (isRowDivider != isViewDivider) {
-                // do not use @convertView
-                return super.getView(position, null, parent);
-            } else {
-                return super.getView(position, convertView, parent);
-            }
-        }
-    }
-
-    @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        View view;
+
         if (AgendaCursor.INSTANCE.isDivider(cursor)) {
-            View view = LayoutInflater.from(context).inflate(R.layout.item_agenda_divider, null);
+            view = LayoutInflater.from(context).inflate(R.layout.item_agenda_divider, null);
 
-            TextView textView = (TextView) view.findViewById(R.id.item_agenda_time_text);
-            textView.setText(cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.DIVIDER_VALUE)));
+            DividerHolder divider = (DividerHolder) view.getTag();
+            if (divider == null) {
+                divider = new DividerHolder(view);
+                view.setTag(divider);
+            }
 
-            view.setTag(R.id.is_divider_view_tag, Boolean.TRUE);
-
-            return view;
+            divider.text.setText(cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.DIVIDER_VALUE)));
 
         } else {
-            View v = super.newView(context, cursor, parent);
-            v.setTag(R.id.is_divider_view_tag, Boolean.FALSE);
-            return v;
+            view = super.newView(context, cursor, parent);
         }
+
+        return view;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         boolean isRowDivider = getCursorType(cursor) == DIVIDER_VIEW_TYPE;
-        boolean isViewDivider = (boolean) view.getTag(R.id.is_divider_view_tag);
 
-        if (isRowDivider && isViewDivider) {
-            TextView textView = (TextView) view.findViewById(R.id.item_agenda_time_text);
-            textView.setText(cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.DIVIDER_VALUE)));
+        if (isRowDivider) {
+            DividerHolder divider = (DividerHolder) view.getTag();
+            divider.text.setText(cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.DIVIDER_VALUE)));
 
             int[] margins = getMarginsForListDensity(context);
             view.setPadding(view.getPaddingLeft(), margins[0], view.getPaddingRight(), margins[0]);
@@ -94,6 +76,14 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
             return DIVIDER_VIEW_TYPE;
         } else {
             return NOTE_VIEW_TYPE;
+        }
+    }
+
+    private class DividerHolder {
+        TextView text;
+
+        DividerHolder(View view) {
+            text = view.findViewById(R.id.item_agenda_time_text);
         }
     }
 }

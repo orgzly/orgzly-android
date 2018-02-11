@@ -78,11 +78,6 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return super.getView(position, convertView, parent);
-    }
-
-    @Override
     public View newView(Context context, final Cursor cursor, ViewGroup parent) {
         View view = super.newView(context, cursor, parent);
 

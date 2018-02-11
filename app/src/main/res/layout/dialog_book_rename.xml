@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/name"
             android:inputType="text"
+            android:selectAllOnFocus="true"
             tools:text="@string/book_name_sample"/>
     </android.support.design.widget.TextInputLayout>
 
