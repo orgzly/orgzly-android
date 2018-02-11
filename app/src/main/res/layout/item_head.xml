@@ -73,8 +73,6 @@
                 android:layout_toLeftOf="@id/item_head_fold_button"
                 android:layout_toStartOf="@id/item_head_fold_button"
                 android:layout_marginTop="@dimen/item_head_padding_cozy"
-                android:layout_marginLeft="6dp"
-                android:layout_marginStart="6dp"
                 android:orientation="vertical">
 
 
@@ -234,6 +232,8 @@
                 android:layout_alignTop="@+id/item_head_payload"
                 android:layout_toEndOf="@+id/item_head_indent_container"
                 android:layout_toRightOf="@+id/item_head_indent_container"
+                android:layout_marginRight="6dp"
+                android:layout_marginEnd="6dp"
                 android:src="?attr/bullet_folded"/>
 
         </RelativeLayout>
