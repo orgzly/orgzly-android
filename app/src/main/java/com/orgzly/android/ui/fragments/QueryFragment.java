@@ -13,11 +13,10 @@ import android.view.MenuInflater;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.Shelf;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.ui.ActionModeListener;
-import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
+import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 
@@ -91,9 +90,6 @@ abstract public class QueryFragment extends NoteListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onActivityCreated(savedInstanceState);
-
-        /* Activity created - context available. Create Shelf and populate list with data. */
-        mShelf = new Shelf(getActivity().getApplicationContext());
 
         mActionModeListener.updateActionModeForSelection(mSelection.getCount(), getNewActionMode());
     }

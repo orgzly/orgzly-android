@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.AgendaCursor;
 import com.orgzly.android.ui.AgendaListViewAdapter;
 import com.orgzly.android.ui.Loaders;
@@ -75,36 +76,10 @@ public class AgendaFragment extends QueryFragment {
             return true;
         });
 
-        // noteId needs to be translated since they are different now!
-
         getListView().setOnItemMenuButtonClickListener(
-                (buttonId, noteId) -> {
-                    noteId = originalNoteIDs.get(noteId);
-                    switch (buttonId) {
-                        case R.id.item_menu_schedule_btn:
-                            displayScheduleTimestampDialog(R.id.item_menu_schedule_btn, noteId);
-                            break;
-
-                        case R.id.item_menu_prev_state_btn:
-                            mListener.onStateCycleRequest(noteId, -1);
-                            break;
-
-                        case R.id.item_menu_next_state_btn:
-                            mListener.onStateCycleRequest(noteId, 1);
-                            break;
-
-                        case R.id.item_menu_done_state_btn:
-                            mListener.onStateFlipRequest(noteId);
-                            break;
-
-                        case R.id.item_menu_open_btn:
-                            mListener.onNoteScrollToRequest(noteId);
-                            break;
-                    }
-
-
-                    return false;
-                });
+                (itemView, buttonId, noteId) ->
+                        // Pass the original note ID
+                        onButtonClick(mListener, itemView, buttonId, originalNoteIDs.get(noteId)));
 
         /* Create a selection. */
         mSelection = new Selection();
@@ -209,30 +184,8 @@ public class AgendaFragment extends QueryFragment {
                     break;
 
                 case R.id.query_cab_state:
-                    /* Add all known states to menu. */
-                    SubMenu subMenu = menuItem.getSubMenu();
-                    if (subMenu != null) {
-                        subMenu.clear();
-                        subMenu.add(STATE_ITEM_GROUP, Menu.NONE, Menu.NONE, NoteStates.NO_STATE_KEYWORD);
-                        for (String str: NoteStates.Companion.fromPreferences(getActivity()).getArray()) {
-                            subMenu.add(STATE_ITEM_GROUP, Menu.NONE, Menu.NONE, str);
-                        }
-                    }
+                    openNoteStateDialog(mListener, originalSelectedIds(), null);
                     break;
-
-                default:
-                    /* Click on one of the state keywords. */
-                    if (menuItem.getGroupId() == STATE_ITEM_GROUP) {
-                        if (mListener != null) {
-                            selectionIds = originalSelectedIds();
-                            if (!selectionIds.isEmpty()) {
-                                mListener.onStateChangeRequest(selectionIds, menuItem.getTitle().toString());
-                            }
-                        }
-                        return true;
-                    }
-
-                    return false; // Not handled.
             }
 
             return true; // Handled.

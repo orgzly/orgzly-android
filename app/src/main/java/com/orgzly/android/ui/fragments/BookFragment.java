@@ -19,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,7 +30,6 @@ import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Book;
 import com.orgzly.android.BookUtils;
-import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.provider.clients.BooksClient;
@@ -39,13 +37,12 @@ import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.ui.ActionModeListener;
 import com.orgzly.android.ui.Fab;
 import com.orgzly.android.ui.HeadsListViewAdapter;
-import com.orgzly.android.ui.NoteStates;
-import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.ui.Selection;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
+import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.ui.views.GesturedListView;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.OrgFormatter;
@@ -73,8 +70,6 @@ public class BookFragment extends NoteListFragment
     /* Arguments. */
     private static final String ARG_BOOK_ID = "bookId";
     private static final String ARG_NOTE_ID = "noteId";
-
-    private static final int STATE_ITEM_GROUP = 1;
 
     private static final int[] ITEMS_HIDDEN_ON_MULTIPLE_SELECTED_NOTES = {
             R.id.book_cab_new,
@@ -170,9 +165,6 @@ public class BookFragment extends NoteListFragment
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onActivityCreated(savedInstanceState);
 
-        /* Activity created - context available. Create Shelf and populate list with data. */
-        mShelf = new Shelf(getActivity().getApplicationContext());
-
         /*
          * If loader is for last loaded book, just init, do not restart.
          * Trying not to reset the loader and null the adapter, to keep the scroll position.
@@ -237,53 +229,35 @@ public class BookFragment extends NoteListFragment
 
         /* Item toolbar listener. */
         getListView().setOnItemMenuButtonClickListener(
-                new GesturedListView.OnItemMenuButtonClickListener() {
-                    @Override
-                    public boolean onMenuButtonClick(int buttonId, long noteId) {
-                        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, buttonId, noteId);
+                (itemView, buttonId, noteId) -> {
+                    if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, buttonId, noteId);
 
-                        switch (buttonId) {
-                            case R.id.item_menu_schedule_btn:
-                                displayScheduleTimestampDialog(R.id.item_menu_schedule_btn, noteId);
-                                break;
+                    switch (buttonId) {
+                        case R.id.item_menu_delete_btn:
+                            TreeSet<Long> ids = new TreeSet<>();
+                            ids.add(noteId);
 
-                            case R.id.item_menu_prev_state_btn:
-                                listener.onStateCycleRequest(noteId, -1);
-                                break;
+                            delete(ids);
 
-                            case R.id.item_menu_next_state_btn:
-                                listener.onStateCycleRequest(noteId, 1);
-                                break;
+                            /* Remove selection. */
+                            mSelection.clearSelection();
 
-                            case R.id.item_menu_done_state_btn:
-                                listener.onStateFlipRequest(noteId);
-                                break;
+                            break;
 
-                            case R.id.item_menu_delete_btn:
-                                TreeSet<Long> ids = new TreeSet<>();
-                                ids.add(noteId);
+                        case R.id.item_menu_new_above_btn:
+                            listener.onNoteNewRequest(new NotePlace(mBookId, noteId, Place.ABOVE));
+                            break;
 
-                                delete(ids);
+                        case R.id.item_menu_new_under_btn:
+                            listener.onNoteNewRequest(new NotePlace(mBookId, noteId, Place.UNDER));
+                            break;
 
-                                /* Remove selection. */
-                                mSelection.clearSelection();
+                        case R.id.item_menu_new_below_btn:
+                            listener.onNoteNewRequest(new NotePlace(mBookId, noteId, Place.BELOW));
+                            break;
 
-                                break;
-
-                            case R.id.item_menu_new_above_btn:
-                                listener.onNoteNewRequest(new NotePlace(mBookId, noteId, Place.ABOVE));
-                                break;
-
-                            case R.id.item_menu_new_under_btn:
-                                listener.onNoteNewRequest(new NotePlace(mBookId, noteId, Place.UNDER));
-                                break;
-
-                            case R.id.item_menu_new_below_btn:
-                                listener.onNoteNewRequest(new NotePlace(mBookId, noteId, Place.BELOW));
-                                break;
-                        }
-
-                        return false;
+                        default:
+                            onButtonClick(listener, itemView, buttonId, noteId);
                     }
                 });
 
@@ -306,6 +280,7 @@ public class BookFragment extends NoteListFragment
         mSelection.restoreIds(savedInstanceState);
         /* Reset from ids will be performed after loading the data. */
     }
+
 
     @Override
     public void onPause() {
@@ -511,7 +486,7 @@ public class BookFragment extends NoteListFragment
 
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG,
                     "Scrolling to note " + noteId +
-                    " took " + (System.currentTimeMillis() - t) + "ms");
+                            " took " + (System.currentTimeMillis() - t) + "ms");
         }
     }
 
@@ -715,13 +690,14 @@ public class BookFragment extends NoteListFragment
     }
 
     private void delete(final TreeSet<Long> ids) {
-        new AlertDialog.Builder(getContext())
+        dialog = new AlertDialog.Builder(getContext())
                 .setTitle(R.string.delete_notes)
                 .setMessage(R.string.delete_notes_and_all_subnotes)
                 .setPositiveButton(R.string.delete, (dialog, which) -> listener.onNotesDeleteRequest(mBookId, ids))
                 .setNegativeButton(R.string.cancel, (dialog, which) -> {})
-                .create()
-                .show();
+                .create();
+
+        dialog.show();
     }
 
     @Override
@@ -871,25 +847,8 @@ public class BookFragment extends NoteListFragment
                     break;
 
                 case R.id.book_cab_state:
-                    /* Add all known states to menu. */
-                    SubMenu subMenu = menuItem.getSubMenu();
-                    if (subMenu != null) {
-                        subMenu.clear();
-                        subMenu.add(STATE_ITEM_GROUP, Menu.NONE, Menu.NONE, NoteStates.NO_STATE_KEYWORD);
-                        for (String str: NoteStates.Companion.fromPreferences(getActivity()).getArray()) {
-                            subMenu.add(STATE_ITEM_GROUP, Menu.NONE, Menu.NONE, str);
-                        }
-                    }
+                    openNoteStateDialog(listener, mSelection.getIds(), null);
                     break;
-
-                default:
-                    /* State. */
-                    if (menuItem.getGroupId() == STATE_ITEM_GROUP) {
-                        listener.onStateChangeRequest(mSelection.getIds(), menuItem.getTitle().toString());
-                        return true;
-                    }
-
-                    return false; // Not handled.
             }
 
             return true; // Handled.

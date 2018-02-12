@@ -16,6 +16,45 @@ class NoteStates {
 
     operator fun get(i: Int) = values[i]
 
+
+    fun getNext(keyword: String?): String? {
+        if (values.isEmpty()) {
+            return null
+        }
+
+        return if (keyword == null || keyword == NO_STATE_KEYWORD) {
+            values.first()
+
+        } else {
+            val nextIndex = indexOf(keyword) + 1
+
+            if (nextIndex < values.size) {
+                values[nextIndex]
+            } else {
+                null
+            }
+        }
+    }
+
+    fun getPrevious(keyword: String?): String? {
+        if (values.isEmpty()) {
+            return null
+        }
+
+        return if (keyword == null || keyword == NO_STATE_KEYWORD) {
+            values.last()
+
+        } else {
+            val nextIndex = indexOf(keyword) - 1
+
+            if (nextIndex >= 0) {
+                values[nextIndex]
+            } else {
+                null
+            }
+        }
+    }
+
     companion object {
         const val NO_STATE_KEYWORD = "NOTE" // TODO: Stop using it
 

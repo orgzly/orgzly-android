@@ -203,7 +203,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(longClick());
         onView(withId(R.id.query_cab_edit)).perform(click());
         onView(withText(R.string.state)).perform(click());
-        onView(withText("NOTE")).perform(click());
+        onView(withText(R.string.clear)).perform(click());
         onList().check(matches(listViewItemCount(2)));
     }
 

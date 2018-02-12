@@ -142,6 +142,10 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
         final OrgHead head = note.getHead();
         final ViewHolder holder = (ViewHolder) view.getTag();
 
+        /* Attach some often used data to the view to avoid having to query for it later. */
+        view.setTag(R.id.note_view_state, head.getState());
+
+
         if (inBook) {
             if (note.getPosition().getFoldedUnderId() == 0) {
                 view.setVisibility(View.VISIBLE);

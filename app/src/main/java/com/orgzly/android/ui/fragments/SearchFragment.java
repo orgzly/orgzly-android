@@ -15,7 +15,6 @@ import android.widget.ViewFlipper;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.provider.ProviderContract;
 import com.orgzly.android.ui.HeadsListViewAdapter;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.NoteStates;
@@ -68,31 +67,8 @@ public class SearchFragment extends QueryFragment {
         });
 
         getListView().setOnItemMenuButtonClickListener(
-                (buttonId, noteId) -> {
-                    switch (buttonId) {
-                        case R.id.item_menu_schedule_btn:
-                            displayScheduleTimestampDialog(R.id.item_menu_schedule_btn, noteId);
-                            break;
-
-                        case R.id.item_menu_prev_state_btn:
-                            mListener.onStateCycleRequest(noteId, -1);
-                            break;
-
-                        case R.id.item_menu_next_state_btn:
-                            mListener.onStateCycleRequest(noteId, 1);
-                            break;
-
-                        case R.id.item_menu_done_state_btn:
-                            mListener.onStateFlipRequest(noteId);
-                            break;
-
-                        case R.id.item_menu_open_btn:
-                            mListener.onNoteScrollToRequest(noteId);
-                            break;
-                    }
-
-                    return false;
-                });
+                (itemView, buttonId, noteId) ->
+                        onButtonClick(mListener, itemView, buttonId, noteId));
 
         /* Create a selection. */
         mSelection = new Selection();
@@ -176,28 +152,8 @@ public class SearchFragment extends QueryFragment {
                     break;
 
                 case R.id.query_cab_state:
-                    /* Add all known states to menu. */
-                    SubMenu subMenu = menuItem.getSubMenu();
-                    if (subMenu != null) {
-                        subMenu.clear();
-
-                        subMenu.add(STATE_ITEM_GROUP, Menu.NONE, Menu.NONE, NoteStates.NO_STATE_KEYWORD);
-                        for (String str: NoteStates.Companion.fromPreferences(getActivity()).getArray()) {
-                            subMenu.add(STATE_ITEM_GROUP, Menu.NONE, Menu.NONE, str);
-                        }
-                    }
+                    openNoteStateDialog(mListener, mSelection.getIds(), null);
                     break;
-
-                default:
-                    /* Click on one of the state keywords. */
-                    if (menuItem.getGroupId() == STATE_ITEM_GROUP) {
-                        if (mListener != null) {
-                            mListener.onStateChangeRequest(mSelection.getIds(), menuItem.getTitle().toString());
-                        }
-                        return true;
-                    }
-
-                    return false; // Not handled.
             }
 
             return true; // Handled.

@@ -31,8 +31,6 @@
                 android:icon="?attr/ic_flag_24dp"
                 app:showAsAction="always"
                 android:title="@string/state">
-
-                <menu /> <!-- Added dynamically from configured states. -->
             </item>
         </menu>
     </item>

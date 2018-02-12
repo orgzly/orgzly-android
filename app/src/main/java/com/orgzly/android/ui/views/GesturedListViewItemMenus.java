@@ -117,12 +117,9 @@ public class GesturedListViewItemMenus {
                 LogUtils.d(TAG, "Found " + buttons.size() + " quick-menu buttons for id " + itemId);
 
             for (final View button : buttons) {
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mListener != null) {
-                            mListener.onMenuButtonClick(button.getId(), itemId);
-                        }
+                button.setOnClickListener(v -> {
+                    if (mListener != null) {
+                        mListener.onMenuButtonClick(itemView, button.getId(), itemId);
                     }
                 });
             }

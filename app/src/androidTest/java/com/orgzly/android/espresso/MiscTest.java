@@ -349,7 +349,7 @@ public class MiscTest extends OrgzlyTest {
         /* DONE -> NOTE */
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.state)).perform(click());
-        onView(withText("NOTE")).perform(click());
+        onView(withText(R.string.clear)).perform(click());
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("Note"))));
         onListItem(1).onChildView(withId(R.id.item_head_closed)).check(matches(not(isDisplayed())));
         onListItem(1).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));

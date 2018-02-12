@@ -22,24 +22,32 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/item_menu_schedule_btn"
                 style="@style/ItemQuickMenuButton"
                 android:contentDescription="@string/schedule"
                 android:src="?attr/ic_today_24dp"/>
+
             <ImageButton
                 android:id="@+id/item_menu_prev_state_btn"
                 style="@style/ItemQuickMenuButton"
                 android:contentDescription="@string/prev_state"
                 android:src="?attr/ic_rotate_left_24dp"/>
+
+            <ImageButton
+                android:id="@+id/item_menu_state_btn"
+                style="@style/ItemQuickMenuButton"
+                android:contentDescription="@string/state"
+                android:src="?attr/ic_flag_24dp"/>
+
             <ImageButton
                 android:id="@+id/item_menu_next_state_btn"
                 style="@style/ItemQuickMenuButton"
                 android:contentDescription="@string/next_state"
                 android:src="?attr/ic_rotate_right_24dp"/>
+
             <ImageButton
                 android:id="@+id/item_menu_done_state_btn"
                 style="@style/ItemQuickMenuButton"
@@ -50,8 +58,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/item_menu_delete_btn"

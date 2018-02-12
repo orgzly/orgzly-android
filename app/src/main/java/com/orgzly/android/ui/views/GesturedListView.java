@@ -339,7 +339,7 @@ public class GesturedListView extends ListView implements GestureDetector.OnGest
     }
 
     public interface OnItemMenuButtonClickListener {
-        boolean onMenuButtonClick(int buttonId, long itemId);
+        void onMenuButtonClick(View itemView, int buttonId, long itemId);
     }
 
     public enum Gesture {
