@@ -370,7 +370,7 @@
     <string name="display_inherited_tags_in_search_results">Inherited tags in search results</string>
     <string name="display_inherited_tags_in_search_results_summary">Display inherited tags in search results</string>
 
-    <string name="new_note_notification">Create note and sync</string>
+    <string name="new_note_notification">New note and sync</string>
     <string name="new_note_notification_summary">Quickly create new note or sync notebooks from notification drawer</string>
 
     <string name="show_sync_notifications_title">Sync failure</string>

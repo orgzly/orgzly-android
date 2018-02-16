@@ -12,6 +12,8 @@ import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
 import java.io.File
+import java.io.FileNotFoundException
+import java.io.IOException
 
 
 class FileFilterStore(val context: Context) : FilterStore {
@@ -35,12 +37,18 @@ class FileFilterStore(val context: Context) : FilterStore {
      * Parse JSON content.
      */
     private fun parseJson(uri: Uri): JSONArray? {
-        val fileContent = context.contentResolver.openInputStream(uri).use { stream ->
-            MiscUtils.readStream(stream)
-        }
-
         return try {
+
+            val fileContent = context.contentResolver.openInputStream(uri).use { stream ->
+                MiscUtils.readStream(stream)
+            }
+
             JSONArray(JSONTokener(fileContent))
+
+        } catch (e: FileNotFoundException) {
+            CommonActivity.showSnackbar(context, e.localizedMessage)
+            return null
+
         } catch (e: JSONException) {
             CommonActivity.showSnackbar(context, e.localizedMessage)
             return null
