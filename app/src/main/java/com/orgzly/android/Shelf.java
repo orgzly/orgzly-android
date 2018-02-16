@@ -59,7 +59,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Local books storage
@@ -288,9 +287,7 @@ public class Shelf {
 
     public void setNoteState(long noteId, String state) {
         if (state != null) {
-            Set<Long> ids = new TreeSet<>();
-            ids.add(noteId);
-            setNotesState(ids, state);
+            setNotesState(MiscUtils.set(noteId), state);
         }
     }
 
@@ -353,10 +350,7 @@ public class Shelf {
     }
 
     public int promote(long bookId, long noteId) {
-        Set<Long> noteIds = new HashSet<>();
-        noteIds.add(noteId);
-
-        return promote(bookId, noteIds);
+        return promote(bookId, MiscUtils.set(noteId));
     }
 
     public int promote(long bookId, Set<Long> noteIds) {
@@ -366,10 +360,7 @@ public class Shelf {
     }
 
     public int demote(long bookId, long noteId) {
-        Set<Long> noteIds = new HashSet<>();
-        noteIds.add(noteId);
-
-        return demote(bookId, noteIds);
+        return demote(bookId, MiscUtils.set(noteId));
     }
 
     public int demote(long bookId, Set<Long> noteIds) {
@@ -379,10 +370,7 @@ public class Shelf {
     }
 
     public int cut(long bookId, long noteId) {
-        Set<Long> noteIds = new HashSet<>();
-        noteIds.add(noteId);
-
-        return cut(bookId, noteIds);
+        return cut(bookId, MiscUtils.set(noteId));
     }
 
     public int cut(long bookId, Set<Long> noteIds) {
@@ -714,13 +702,10 @@ public class Shelf {
 
         String nextState = allStates.get(nextIndex);
 
-        Set<Long> noteIds = new HashSet<>();
-        noteIds.add(note.getId());
-
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Setting state for " + note.getHead().getTitle() + " to " + nextState +
                                                    ": " + currentIndex + " -> " + nextIndex + " (" + allStates.size() + " total states)");
 
-        setNotesState(noteIds, nextState);
+        setNotesState(MiscUtils.set(note.getId()), nextState);
     }
 
     public void deleteFilters(Set<Long> ids) {

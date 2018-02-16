@@ -44,6 +44,7 @@ import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
+import com.orgzly.android.util.MiscUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 
 import java.io.File;
@@ -923,7 +924,7 @@ public class SyncFragment extends Fragment {
      * @param noteIds Set of notes' IDs
      */
     @SuppressLint("StaticFieldLeak")
-    public void deleteNotes(final long bookId, final TreeSet<Long> noteIds) {
+    public void deleteNotes(final long bookId, final Set<Long> noteIds) {
         new AsyncTask<Void, Void, Integer>() {
             @Override
             protected Integer doInBackground(Void... params) {
@@ -941,10 +942,7 @@ public class SyncFragment extends Fragment {
     }
 
     public void deleteNotes(long bookId, long noteId) {
-        TreeSet<Long> noteIds = new TreeSet<>();
-        noteIds.add(noteId);
-
-        deleteNotes(bookId, noteIds);
+        deleteNotes(bookId, MiscUtils.set(noteId));
     }
 
     /**
@@ -955,7 +953,7 @@ public class SyncFragment extends Fragment {
      * @param noteIds Set of notes' IDs
      */
     @SuppressLint("StaticFieldLeak")
-    public void cutNotes(final long bookId, final TreeSet<Long> noteIds) {
+    public void cutNotes(final long bookId, final Set<Long> noteIds) {
         new AsyncTask<Void, Void, Integer>() {
             @Override
             protected Integer doInBackground(Void... params) {

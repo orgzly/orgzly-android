@@ -702,9 +702,7 @@ public class MainActivity extends CommonActivity
 
 
         /* Animate updated note. */
-//        Set<Long> set = new HashSet<>();
-//        set.add(note.getId());
-//        animateNotesAfterEdit(set);
+//        animateNotesAfterEdit(MiscUtils.set(note.getId()));
     }
 
     @Override
@@ -771,7 +769,7 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onNotesDeleteRequest(final long bookId, final TreeSet<Long> noteIds) {
+    public void onNotesDeleteRequest(final long bookId, final Set<Long> noteIds) {
         mSyncFragment.deleteNotes(bookId, noteIds);
     }
 
@@ -789,7 +787,7 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onNotesCutRequest(long bookId, TreeSet<Long> noteIds) {
+    public void onNotesCutRequest(long bookId, Set<Long> noteIds) {
         mSyncFragment.cutNotes(bookId, noteIds);
     }
 

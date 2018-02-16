@@ -17,11 +17,13 @@ import android.widget.CompoundButton;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.util.LogUtils;
+import com.orgzly.android.util.MiscUtils;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgRepeater;
 
 import java.util.Calendar;
+import java.util.Set;
 import java.util.TreeSet;
 
 public class TimestampDialogFragment extends DialogFragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
@@ -85,13 +87,10 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
      * @return
      */
     public static TimestampDialogFragment getInstance(int id, int title, long noteId, OrgDateTime time) {
-        TreeSet<Long> noteIds = new TreeSet<>();
-        noteIds.add(noteId);
-
-        return TimestampDialogFragment.getInstance(id, title, noteIds, time);
+        return TimestampDialogFragment.getInstance(id, title, MiscUtils.set(noteId), time);
     }
 
-    public static TimestampDialogFragment getInstance(int id, int title, TreeSet<Long> noteIds, OrgDateTime time) {
+    public static TimestampDialogFragment getInstance(int id, int title, Set<Long> noteIds, OrgDateTime time) {
         TimestampDialogFragment fragment = new TimestampDialogFragment();
 
         /* Set arguments for fragment. */
@@ -110,7 +109,7 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
         return fragment;
     }
 
-    private static long[] toArray(TreeSet<Long> set) {
+    private static long[] toArray(Set<Long> set) {
         int i = 0;
         long[] result = new long[set.size()];
 

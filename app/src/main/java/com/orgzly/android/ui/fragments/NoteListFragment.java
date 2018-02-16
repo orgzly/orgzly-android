@@ -1,7 +1,6 @@
 package com.orgzly.android.ui.fragments;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
@@ -22,6 +21,7 @@ import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.dialogs.NoteStateDialog;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.views.GesturedListView;
+import com.orgzly.android.util.MiscUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 
 import java.util.Set;
@@ -91,18 +91,15 @@ public abstract class NoteListFragment extends ListFragment {
     }
 
     protected void displayScheduleTimestampDialog(int id, long noteId) {
-        TreeSet<Long> noteIds = new TreeSet<>();
-        noteIds.add(noteId);
-
-        displayScheduleTimestampDialog(id, noteIds);
+        displayScheduleTimestampDialog(id, MiscUtils.set(noteId));
     }
 
-    protected void displayScheduleTimestampDialog(int id, TreeSet<Long> noteIds) {
+    protected void displayScheduleTimestampDialog(int id, Set<Long> noteIds) {
         OrgDateTime time = null;
 
         /* If there is only one note, use its time as dialog's default. */
         if (noteIds.size() == 1) {
-            time = getScheduledTimeForNote(noteIds.first());
+            time = getScheduledTimeForNote(noteIds.iterator().next());
         }
 
         TimestampDialogFragment f = TimestampDialogFragment.getInstance(
@@ -147,28 +144,28 @@ public abstract class NoteListFragment extends ListFragment {
 
             case R.id.item_menu_prev_state_btn:
                 listener.onStateChangeRequest(
-                        noteSet(noteId),
+                        MiscUtils.set(noteId),
                         states.getPrevious(currentState));
                 break;
 
             case R.id.item_menu_state_btn:
-                openNoteStateDialog(listener, noteSet(noteId), currentState);
+                openNoteStateDialog(listener, MiscUtils.set(noteId), currentState);
                 break;
 
             case R.id.item_menu_next_state_btn:
                 listener.onStateChangeRequest(
-                        noteSet(noteId),
+                        MiscUtils.set(noteId),
                         states.getNext(currentState));
                 break;
 
             case R.id.item_menu_done_state_btn:
                 if (currentState != null && AppPreferences.isDoneKeyword(getContext(), currentState)) {
                     listener.onStateChangeRequest(
-                            noteSet(noteId),
+                            MiscUtils.set(noteId),
                             AppPreferences.getFirstTodoState(getContext()));
                 } else {
                     listener.onStateChangeRequest(
-                            noteSet(noteId),
+                            MiscUtils.set(noteId),
                             AppPreferences.getFirstDoneState(getContext()));
                 }
 
@@ -192,12 +189,6 @@ public abstract class NoteListFragment extends ListFragment {
         );
 
         dialog.show();
-    }
-
-    protected Set<Long> noteSet(Long noteId) {
-        Set<Long> ids = new TreeSet<>();
-        ids.add(noteId);
-        return ids;
     }
 
     /**

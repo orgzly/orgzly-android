@@ -23,7 +23,10 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class MiscUtils {
     public static final int SNACKBAR_WITH_ACTION_DURATION = 8000;
@@ -288,5 +291,12 @@ public class MiscUtils {
         }
 
         return list;
+    }
+
+
+    public static Set<Long> set(Long noteId) {
+        Set<Long> ids = new HashSet<>();
+        ids.add(noteId);
+        return ids;
     }
 }

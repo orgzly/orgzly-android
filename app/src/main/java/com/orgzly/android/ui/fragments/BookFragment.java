@@ -45,6 +45,7 @@ import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.ui.views.GesturedListView;
 import com.orgzly.android.util.LogUtils;
+import com.orgzly.android.util.MiscUtils;
 import com.orgzly.android.util.OrgFormatter;
 import com.orgzly.org.datetime.OrgDateTime;
 
@@ -234,10 +235,7 @@ public class BookFragment extends NoteListFragment
 
                     switch (buttonId) {
                         case R.id.item_menu_delete_btn:
-                            TreeSet<Long> ids = new TreeSet<>();
-                            ids.add(noteId);
-
-                            delete(ids);
+                            delete(MiscUtils.set(noteId));
 
                             /* Remove selection. */
                             mSelection.clearSelection();
@@ -689,7 +687,7 @@ public class BookFragment extends NoteListFragment
         } : null;
     }
 
-    private void delete(final TreeSet<Long> ids) {
+    private void delete(final Set<Long> ids) {
         dialog = new AlertDialog.Builder(getContext())
                 .setTitle(R.string.delete_notes)
                 .setMessage(R.string.delete_notes_and_all_subnotes)
@@ -877,8 +875,8 @@ public class BookFragment extends NoteListFragment
     public interface BookFragmentListener extends NoteListFragmentListener {
         void onBookPrefaceEditRequest(Book book);
 
-        void onNotesDeleteRequest(long bookId, TreeSet<Long> noteIds);
-        void onNotesCutRequest(long bookId, TreeSet<Long> noteIds);
+        void onNotesDeleteRequest(long bookId, Set<Long> noteIds);
+        void onNotesCutRequest(long bookId, Set<Long> noteIds);
         void onNotesPasteRequest(long bookId, long noteId, Place place);
         void onNotesPromoteRequest(long bookId, Set<Long> noteIds);
         void onNotesDemoteRequest(long bookId, Set<Long> noteIds);
