@@ -55,7 +55,7 @@
         <attr name="drawer_bg" format="color"/>
         <attr name="drawer_text" format="color"/>
         <attr name="drawer_divider" format="color"/>
-        <attr name="drawer_marker" format="color"/>
+        <attr name="drawer_item_bg" format="reference"/>
 
         <attr name="item_book_title_color" format="color"/>
         <attr name="item_book_error_color" format="color"/>

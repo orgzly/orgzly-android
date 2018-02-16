@@ -10,6 +10,7 @@
     android:layout_gravity="start"
     app:itemIconTint="?attr/item_head_title_text_color"
     app:itemTextColor="?attr/item_head_title_text_color"
+    app:itemBackground="?attr/drawer_item_bg"
     android:fitsSystemWindows="true"
     app:menu="@menu/drawer">
 

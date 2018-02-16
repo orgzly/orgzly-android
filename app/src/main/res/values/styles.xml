@@ -74,7 +74,7 @@
         <item name="drawer_text">#333333</item>
         <item name="drawer_bg">@color/white</item>
         <item name="drawer_divider">@color/grey_300</item>
-        <item name="drawer_marker">@color/black</item>
+        <item name="drawer_item_bg">@drawable/drawer_item_selector</item>
 
         <item name="item_book_title_color">@color/black</item>
         <item name="item_book_error_color">@color/red_900</item>
@@ -219,7 +219,7 @@
         <item name="drawer_text">@color/dark_bg_text_primary</item>
         <item name="drawer_bg">@color/dark_theme_cards_and_dialogs</item>
         <item name="drawer_divider">@color/dark_bg_text_mute</item>
-        <item name="drawer_marker">@color/dark_bg_text_primary</item>
+        <item name="drawer_item_bg">@drawable/drawer_item_selector_dark</item>
 
         <item name="item_book_title_color">@color/dark_bg_text_primary</item>
         <item name="item_book_error_color">@color/red_200</item>
@@ -330,6 +330,7 @@
         <item name="item_book_card_bg_color">@color/dark_theme_status_bar</item>
 
         <item name="drawer_bg">@color/dark_theme_status_bar</item>
+        <item name="drawer_item_bg">@drawable/drawer_item_selector_black</item>
 
         <item name="browser_footer_bg_color">@color/dark_theme_status_bar</item>
 
