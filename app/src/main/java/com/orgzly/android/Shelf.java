@@ -740,12 +740,15 @@ public class Shelf {
             BooksClient.removeLink(mContext, book.getId());
 
         } else {
-            String fileName;
+             String fileName = null;
 
-            /* Use file name used in last sync, if last sync exists. */
+            // Use file name used in last sync, if last sync exists
             if (book.getLastSyncedToRook() != null) {
                 fileName = BookName.getFileName(mContext, book.getLastSyncedToRook().getUri());
-            } else {
+            }
+
+            // Use book's name
+            if (fileName == null) {
                 fileName = BookName.fileName(book.getName(), BookName.Format.ORG);
             }
 
