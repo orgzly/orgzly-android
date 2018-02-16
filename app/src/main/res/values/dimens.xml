@@ -9,7 +9,6 @@
     <dimen name="fragment_horizontal_padding">16dp</dimen>
     <dimen name="fragment_vertical_padding">16dp</dimen>
 
-
     <dimen name="item_head_padding">6dp</dimen>
 
     <dimen name="item_head_min_height">48dp</dimen>

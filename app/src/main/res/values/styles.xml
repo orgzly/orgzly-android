@@ -60,6 +60,7 @@
         <item name="android:colorButtonNormal" tools:targetApi="21">@color/grey_100</item>
 
         <item name="main_text_color">@color/black</item>
+        <item name="main_text_color_muted">#60000000</item>
 
         <item name="status_bar_default">#e687877c</item>
         <item name="action_bar_default">#cfcfc4</item>
@@ -205,6 +206,7 @@
         <item name="colorPrimaryDark">@color/white</item>
 
         <item name="main_text_color">@color/dark_bg_text_primary</item>
+        <item name="main_text_color_muted">#60ffffff</item>
 
         <item name="status_bar_default">#e6000000</item>
         <item name="action_bar_default">@color/grey_900</item>
@@ -565,6 +567,7 @@
 
     <style name="NavigationViewForDrawer">
         <item name="android:listDivider">@null</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
 </resources>

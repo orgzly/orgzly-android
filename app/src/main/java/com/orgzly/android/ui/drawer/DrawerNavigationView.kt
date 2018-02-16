@@ -1,15 +1,22 @@
 package com.orgzly.android.ui.drawer
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Resources
 import android.database.Cursor
 import android.os.Bundle
+import android.support.annotation.ColorInt
+import android.support.annotation.DrawableRes
 import android.support.design.widget.NavigationView
 import android.support.v4.content.Loader
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.view.Menu
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
+import com.orgzly.android.Book
 import com.orgzly.android.BookUtils
 import com.orgzly.android.provider.ProviderContract
 import com.orgzly.android.provider.clients.BooksClient
@@ -113,7 +120,7 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
     private fun updateBooksFromCursor(cursor: Cursor) {
         removeItemsWithOrder(3)
 
-        val syncIcon = getSyncIcon()
+        val attrs = getAttributes()
 
         forEachRow(cursor) {
             val book = BooksClient.fromCursor(cursor)
@@ -122,22 +129,32 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
             intent.putExtra(AppIntent.EXTRA_BOOK_ID, book.id)
 
             val id = generateRandomUniqueId()
-            val item = menu.add(R.id.drawer_group, id, 3, BookUtils.getFragmentTitleForBook(book))
+            val item = menu.add(R.id.drawer_group, id, 3, getBookText(book, attrs))
 
             item.intent = intent
             item.isCheckable = true
 
-            if (book.isModifiedAfterLastSync) {
-                item.setIcon(syncIcon)
-            }
 
-            if (book.isDummy) {
-                // item.isEnabled = false
-                item.setIcon(syncIcon)
+            if (book.isModifiedAfterLastSync) {
+                item.setIcon(attrs.syncIcon)
             }
 
             menuItemIdMap[BookFragment.getDrawerItemId(book.id)] = id
         }
+    }
+
+    private data class Attributes(@DrawableRes val syncIcon: Int, @ColorInt val mutedTextColor: Int)
+
+    private fun getBookText(book: Book, attr: Attributes): CharSequence {
+        val name = BookUtils.getFragmentTitleForBook(book)
+
+        val sb = SpannableString(name)
+
+        if (book.isDummy) {
+            sb.setSpan(ForegroundColorSpan(attr.mutedTextColor), 0, sb.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+        }
+
+        return sb
     }
 
     // TODO: Move this to some utility class
@@ -151,11 +168,16 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
         }
     }
 
-    private fun getSyncIcon(): Int {
-        val typedArray = activity.obtainStyledAttributes(R.styleable.Icons)
-        val icon = typedArray.getResourceId(R.styleable.Icons_ic_sync_18dp, 0)
-        typedArray.recycle()
-        return icon
+    @SuppressLint("ResourceType")
+    private fun getAttributes(): Attributes {
+        val typedArray = activity.obtainStyledAttributes(intArrayOf(
+                R.attr.ic_sync_18dp,
+                R.attr.main_text_color_muted))
+        try {
+            return Attributes(typedArray.getResourceId(0, 0), typedArray.getColor(1, 0))
+        } finally {
+            typedArray.recycle()
+        }
     }
 
     private fun generateRandomUniqueId(): Int {

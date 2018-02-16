@@ -41,6 +41,7 @@
 
     <declare-styleable name="ColorScheme">
         <attr name="main_text_color" format="color"/>
+        <attr name="main_text_color_muted" format="color"/>
 
         <attr name="status_bar_default" format="color"/>
         <attr name="action_bar_default" format="color"/>
