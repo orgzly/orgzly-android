@@ -1,7 +1,6 @@
 package com.orgzly.android.ui
 
 import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -36,8 +35,7 @@ abstract class CommonActivity : AppCompatActivity() {
 
     /* Dialogs to be dismissed onPause. */
     private var whatsNewDialog: AlertDialog? = null
-    private var promptDialog: AlertDialog? = null
-    private var progressDialog: ProgressDialog? = null
+    private var progressDialog: AlertDialog? = null
 
     /* Actions. */
     private var restartActivity = false
@@ -67,10 +65,8 @@ abstract class CommonActivity : AppCompatActivity() {
                     clearFragmentBackstack = true
 
                 AppIntent.ACTION_UPDATING_NOTES_STARTED -> {
-                    progressDialog = ProgressDialog(this@CommonActivity)
-                    progressDialog?.setMessage(resources.getString(R.string.updating_notes))
-                    progressDialog?.isIndeterminate = true
-                    progressDialog?.show()
+                    progressDialog?.dismiss()
+                    progressDialog = progressDialogBuilder(R.string.updating_notes).show()
                 }
 
                 AppIntent.ACTION_UPDATING_NOTES_ENDED ->
@@ -225,16 +221,10 @@ abstract class CommonActivity : AppCompatActivity() {
             whatsNewDialog = null
         }
 
-        promptDialog?.let {
-            it.dismiss()
-            promptDialog = null
-        }
-
         progressDialog?.let {
             it.dismiss()
             progressDialog = null
         }
-
     }
 
     protected fun displayWhatsNewDialog() {
@@ -315,15 +305,18 @@ abstract class CommonActivity : AppCompatActivity() {
     }
 
 
-    fun promptUser(title: Int, message: String, positiveAction: Runnable) {
-        promptDialog?.dismiss()
+    fun progressDialogBuilder(title: Int, message: String? = null): AlertDialog.Builder {
+        val view = View.inflate(this, R.layout.dialog_progress_bar, null)
 
-        promptDialog = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
                 .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(R.string.ok, { _, _ -> positiveAction.run() })
-                .setNegativeButton(R.string.cancel, null)
-                .show()
+                .setView(view)
+
+        if (message != null) {
+            builder.setMessage(message)
+        }
+
+        return builder
     }
 
     companion object {

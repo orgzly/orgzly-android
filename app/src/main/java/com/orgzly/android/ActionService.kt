@@ -56,9 +56,9 @@ class ActionService : JobIntentService() {
         localBroadcastManager.sendBroadcast(intent)
     }
 
-    private fun updatingNotesProgress(f: () -> Unit) {
+    private fun updatingNotesProgress(updateNotes: () -> Unit) {
         localBroadcastManager.sendBroadcast(Intent(AppIntent.ACTION_UPDATING_NOTES_STARTED))
-        f()
+        updateNotes()
         localBroadcastManager.sendBroadcast(Intent(AppIntent.ACTION_UPDATING_NOTES_ENDED))
     }
 

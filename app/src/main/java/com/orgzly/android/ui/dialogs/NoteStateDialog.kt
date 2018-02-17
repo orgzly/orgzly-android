@@ -17,11 +17,10 @@ object NoteStateDialog {
                     onSelection(states[which])
                     d.dismiss()
                 }
-                .setNeutralButton(R.string.clear) { d, _ ->
+                .setNeutralButton(R.string.clear) { _, _ ->
                     onClear()
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .create()
     }
-
 }
