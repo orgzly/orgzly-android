@@ -29,6 +29,7 @@ import android.widget.ViewFlipper;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.App;
 import com.orgzly.android.Book;
 import com.orgzly.android.BookUtils;
 import com.orgzly.android.Note;
@@ -219,6 +220,12 @@ public class NoteFragment extends Fragment
         });
 
         mTagsView = top.findViewById(R.id.fragment_note_tags);
+
+        mTagsView.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus && mTagsView.getAdapter() == null) {
+                setupTagsViewAdapter();
+            }
+        });
 
         /* Hint causes minimum width - when tags' width is smaller then hint's, there is empty space. */
         mTagsView.addTextChangedListener(new TextWatcher() {
@@ -521,8 +528,6 @@ public class NoteFragment extends Fragment
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onActivityCreated(savedInstanceState);
 
-        setupTagsView();
-
         if (mBookId != 0) {
             mBook = mShelf.getBook(mBookId); // FIXME: ANR reported
         }
@@ -579,22 +584,24 @@ public class NoteFragment extends Fragment
         }
     }
 
-    /*
-     * Auto-complete tags using all known tags from database.
+    /**
+     * Set adapter for tags view for auto-complete.
      */
-    private void setupTagsView() {
-        /* Collect all known tags. */
-        String[] knownTags = mShelf.getAllTags(0);
+    private void setupTagsViewAdapter() {
+        App.EXECUTORS.getDiskIO().execute(() -> {
+            String[] knownTags = mShelf.getAllTags(0);
 
-        /* White text on light gray background, when using android.R.layout.simple_dropdown_item_1line
-         * See https://code.google.com/p/android/issues/detail?id=5237#c8
-         */
-        // ArrayAdapter <String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, knownTags);
-        ArrayAdapter <String> adapter = new ArrayAdapter<>(getActivity(), R.layout.dropdown_item, knownTags);
+            Context context = getContext();
 
-        mTagsView.setAdapter(adapter);
+            if (context != null) {
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.dropdown_item, knownTags);
 
-        mTagsView.setTokenizer(new SpaceTokenizer());
+                App.EXECUTORS.getMainThread().execute(() -> {
+                    mTagsView.setAdapter(adapter);
+                    mTagsView.setTokenizer(new SpaceTokenizer());
+                });
+            }
+        });
     }
 
     @Override

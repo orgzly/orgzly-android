@@ -18,6 +18,7 @@ public class App extends MultiDexApplication {
     public static final int REMINDER_SERVICE_JOB_ID = 2;
     public static final int NOTIFICATION_SERVICE_JOB_ID = 3;
 
+    public static final AppExecutors EXECUTORS = new AppExecutors();
 
     @Override
     public void onCreate() {
