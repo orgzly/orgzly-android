@@ -27,6 +27,7 @@ import com.orgzly.android.provider.models.DbRook;
 import com.orgzly.android.provider.models.DbRookUrl;
 import com.orgzly.android.provider.models.DbSearch;
 import com.orgzly.android.provider.models.DbVersionedRook;
+import com.orgzly.android.provider.views.DbNoteBasicView;
 import com.orgzly.android.provider.views.DbTimeView;
 import com.orgzly.android.provider.views.DbBookView;
 import com.orgzly.android.provider.views.DbNoteView;
@@ -147,6 +148,7 @@ public class Database extends SQLiteOpenHelper {
     private void dropAllViews(SQLiteDatabase db) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, db.getPath());
 
+        db.execSQL(DbNoteBasicView.DROP_SQL);
         db.execSQL(DbNoteView.DROP_SQL);
         db.execSQL(DbBookView.DROP_SQL);
         db.execSQL(DbTimeView.DROP_SQL);
@@ -156,6 +158,7 @@ public class Database extends SQLiteOpenHelper {
     private void createAllViews(SQLiteDatabase db) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, db.getPath());
 
+        db.execSQL(DbNoteBasicView.CREATE_SQL);
         db.execSQL(DbNoteView.CREATE_SQL);
         db.execSQL(DbBookView.CREATE_SQL);
         db.execSQL(DbTimeView.CREATE_SQL);

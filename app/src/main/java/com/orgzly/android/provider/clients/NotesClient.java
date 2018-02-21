@@ -144,10 +144,10 @@ public class NotesClient {
     }
 
     public static Note fromCursor(Cursor cursor) {
-        return fromCursor(cursor, true);
+        return fromCursor(cursor, false);
     }
 
-    public static Note fromCursor(Cursor cursor, boolean inBook) {
+    public static Note fromCursor(Cursor cursor, boolean withExtras) {
         long id = idFromCursor(cursor);
 
         long createdAt = cursor.getLong(cursor.getColumnIndex(DbNoteView.CREATED_AT));
@@ -166,7 +166,7 @@ public class NotesClient {
         note.setPosition(position);
         note.setContentLines(contentLines);
 
-        if (!inBook) {
+        if (withExtras) {
             String inheritedTags = cursor.getString(cursor.getColumnIndex(DbNoteView.INHERITED_TAGS));
             if (! TextUtils.isEmpty(inheritedTags)) {
                 note.setInheritedTags(DbNote.dbDeSerializeTags(inheritedTags));
@@ -429,11 +429,11 @@ public class NotesClient {
      * Returns first note that matches the title.
      * Currently used only by tests -- title is not unique and notebook ID is not even specified.
      */
-    public static Note getNote(Context context, String title) {
+    public static Note getNote(Context context, String title, boolean withExtras) {
         try (Cursor cursor = context.getContentResolver().query(
-                ProviderContract.Notes.ContentUri.notes(), null, DbNoteView.TITLE + "= ?", new String[]{title}, null)) {
+                ProviderContract.Notes.ContentUri.notesWithExtras(), null, DbNoteView.TITLE + "= ?", new String[]{title}, null)) {
             if (cursor != null && cursor.moveToFirst()) {
-                return fromCursor(cursor, false);
+                return fromCursor(cursor, withExtras);
             } else {
                 throw new NoSuchElementException("Note with title " + title + " was not found in " + ProviderContract.Notes.ContentUri.notes());
             }

@@ -161,6 +161,13 @@ public class ProviderContract {
                 return Uri.withAppendedPath(AUTHORITY_URI, MatcherUri.NOTES);
             }
 
+            public static Uri notesWithExtras() {
+                return Uri.withAppendedPath(AUTHORITY_URI, MatcherUri.NOTES)
+                        .buildUpon()
+                        .appendQueryParameter("with-extras", "yes")
+                        .build();
+            }
+
             public static Uri notesId(long id) {
                 return ContentUris.withAppendedId(notes(), id);
             }

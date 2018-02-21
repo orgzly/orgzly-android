@@ -48,6 +48,7 @@ import com.orgzly.android.provider.models.DbRookUrl;
 import com.orgzly.android.provider.models.DbSearch;
 import com.orgzly.android.provider.models.DbVersionedRook;
 import com.orgzly.android.provider.views.DbBookView;
+import com.orgzly.android.provider.views.DbNoteBasicView;
 import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.provider.views.DbTimeView;
 import com.orgzly.android.query.Query;
@@ -174,7 +175,11 @@ public class Provider extends ContentProvider {
                 break;
 
             case ProviderUris.NOTES:
-                table = DbNoteView.VIEW_NAME;
+                if ("yes".equals(uri.getQueryParameter("with-extras"))) {
+                    table = DbNoteView.VIEW_NAME;
+                } else {
+                    table = DbNoteBasicView.VIEW_NAME;
+                }
                 break;
 
             case ProviderUris.NOTES_SEARCH_QUERIED:
@@ -1098,7 +1103,7 @@ public class Provider extends ContentProvider {
 
         /* Select only notes which don't already have the target state. */
         String notesSelection = DbNote._ID + " IN (" + ids + ") AND (" +
-                DbNoteView.STATE + " IS NULL OR " + DbNoteView.STATE + " != ?)";
+                DbNote.STATE + " IS NULL OR " + DbNote.STATE + " != ?)";
 
         String[] selectionArgs = { targetState };
 
@@ -1146,12 +1151,12 @@ public class Provider extends ContentProvider {
 
         /* Get all notes that don't already have the same state. */
         Cursor cursor = db.query(
-                DbNoteView.VIEW_NAME,
+                DbNoteBasicView.VIEW_NAME,
                 new String[] {
-                        DbNoteView._ID,
-                        DbNoteView.SCHEDULED_RANGE_STRING,
-                        DbNoteView.DEADLINE_RANGE_STRING,
-                        DbNoteView.STATE,
+                        DbNoteBasicView._ID,
+                        DbNoteBasicView.SCHEDULED_RANGE_STRING,
+                        DbNoteBasicView.DEADLINE_RANGE_STRING,
+                        DbNoteBasicView.STATE,
                 },
                 notesSelection,
                 selectionArgs,

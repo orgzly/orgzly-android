@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:orientation="horizontal"
-        android:background="#f0b0bec5"
+        android:background="#fab0bec5"
         android:elevation="1dp" tools:targetApi="21">
 
         <ImageView
@@ -58,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#f0ffffff">
+        android:background="#faffffff">
 
         <ListView
             android:id="@+id/list_widget_list_view"

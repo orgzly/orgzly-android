@@ -61,8 +61,9 @@ public class DatabaseMigration {
     private static final int DB_VER_16 = 145;
     private static final int DB_VER_17 = 146;
     private static final int DB_VER_18 = 147;
+    private static final int DB_VER_19 = 148;
 
-    static final int DB_VER_CURRENT = DB_VER_18;
+    static final int DB_VER_CURRENT = DB_VER_19;
 
     /**
      * Start from the old version and go through all changes. No breaks.
@@ -148,6 +149,9 @@ public class DatabaseMigration {
                     notifyUserIfSlow = null;
                 }
                 addAndSetCreatedAt(db, context);
+
+            case DB_VER_18:
+                /* notes_basic_view created. */
         }
     }
 

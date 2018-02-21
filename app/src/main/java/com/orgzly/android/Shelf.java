@@ -307,7 +307,11 @@ public class Shelf {
     }
 
     public Note getNote(String title) {
-        return NotesClient.getNote(mContext, title);
+        return NotesClient.getNote(mContext, title, false);
+    }
+
+    public Note getNoteWithExtras(String title) {
+        return NotesClient.getNote(mContext, title, true);
     }
 
     public int updateNote(Note note) {
