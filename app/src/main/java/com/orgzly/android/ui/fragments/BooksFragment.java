@@ -2,10 +2,13 @@ package com.orgzly.android.ui.fragments;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -36,10 +39,9 @@ import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.provider.views.DbBookViewColumns;
 import com.orgzly.android.ui.Fab;
 import com.orgzly.android.ui.FragmentListener;
-import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.ui.Loaders;
+import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.util.LogUtils;
-import com.orgzly.android.util.UriUtils;
 
 /**
  * Displays all notebooks.
@@ -67,6 +69,18 @@ public class BooksFragment extends ListFragment
     private boolean mAddOptions = true;
     private boolean mShowContextMenu = true;
 
+    /**
+     * If sort order changes, destroy the loader so it is recreated.
+     */
+    private SharedPreferences.OnSharedPreferenceChangeListener prefListener = (sharedPreferences, key) -> {
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            if (activity.getString(R.string.pref_key_notebooks_sort_order).equals(key)) {
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, activity, key);
+                activity.getSupportLoaderManager().destroyLoader(Loaders.BOOKS_FRAGMENT);
+            }
+        }
+    };
 
     public static BooksFragment getInstance() {
         return getInstance(true, true);
@@ -158,6 +172,9 @@ public class BooksFragment extends ListFragment
         super.onActivityCreated(savedInstanceState);
 
         getActivity().getSupportLoaderManager().initLoader(Loaders.BOOKS_FRAGMENT, null, this);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        prefs.registerOnSharedPreferenceChangeListener(prefListener);
     }
 
     @Override
@@ -170,9 +187,6 @@ public class BooksFragment extends ListFragment
     public void onResume() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onResume();
-
-        /* In case books sort order preference has been changed. */
-        getActivity().getSupportLoaderManager().restartLoader(Loaders.BOOKS_FRAGMENT, null, this);
 
         announceChangesToActivity();
     }
@@ -189,6 +203,15 @@ public class BooksFragment extends ListFragment
         super.onDetach();
 
         mListener = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+        super.onDestroy();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        prefs.unregisterOnSharedPreferenceChangeListener(prefListener);
     }
 
     private SimpleCursorAdapter createAdapter() {
