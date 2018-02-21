@@ -21,6 +21,7 @@ import com.orgzly.android.NotesBatch;
 import com.orgzly.android.provider.DatabaseUtils;
 import com.orgzly.android.provider.GenericDatabaseUtils;
 import com.orgzly.android.provider.ProviderContract;
+import com.orgzly.android.provider.models.DbBook;
 import com.orgzly.android.provider.models.DbNote;
 import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.query.Condition;
@@ -278,7 +279,7 @@ public class NotesClient {
     /**
      * Insert as last note if position is not specified.
      */
-    public static Note create(Context context, Note note, NotePlace target) {
+    public static Note create(Context context, Note note, NotePlace target, long time) {
         ContentValues values = new ContentValues();
         toContentValues(values, note);
 
@@ -320,6 +321,13 @@ public class NotesClient {
                     .build()
             );
         }
+
+        // Update book's modification time
+        ops.add(ContentProviderOperation
+                .newUpdate(ProviderContract.Books.ContentUri.books())
+                .withValue(DbBook.MTIME, time)
+                .withSelection(DbBook._ID + " = " + note.getPosition().getBookId(), null)
+                .build());
 
 
         ContentProviderResult[] result;

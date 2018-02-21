@@ -335,9 +335,7 @@ public class Shelf {
         }
 
         /* Create new note. */
-        Note insertedNote = NotesClient.create(mContext, note, target);
-
-        BooksClient.setModifiedTime(mContext, note.getPosition().getBookId(), time);
+        Note insertedNote = NotesClient.create(mContext, note, target, time);
 
         notifyDataChanged(mContext);
         syncOnNoteCreate();

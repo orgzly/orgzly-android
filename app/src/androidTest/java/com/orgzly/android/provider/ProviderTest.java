@@ -158,7 +158,7 @@ public class ProviderTest extends OrgzlyTest {
 
         Note note = new Note();
         note.getPosition().setBookId(book.getId());
-        NotesClient.create(context, note, null);
+        NotesClient.create(context, note, null, System.currentTimeMillis());
 
         note1 = NotesClient.getNote(context, 1).getPosition();
         root = NotesClient.getNote(context, 2).getPosition();
