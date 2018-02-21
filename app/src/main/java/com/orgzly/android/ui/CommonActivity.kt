@@ -61,8 +61,10 @@ abstract class CommonActivity : AppCompatActivity() {
                 AppIntent.ACTION_BOOK_IMPORTED ->
                     showSimpleSnackbarLong(R.string.notebook_imported)
 
-                AppIntent.ACTION_DB_CLEARED ->
+                AppIntent.ACTION_DB_CLEARED -> {
+                    showSimpleSnackbarLong(R.string.clear_database_performed)
                     clearFragmentBackstack = true
+                }
 
                 AppIntent.ACTION_UPDATING_NOTES_STARTED -> {
                     progressDialog?.dismiss()

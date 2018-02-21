@@ -118,7 +118,6 @@
     <string name="options_menu_item_search">Search</string>
 
     <string name="message_book_deleted">Notebook deleted</string>
-    <string name="clear_database_dialog_message">Clear local database?</string>
     <string name="no_user_repos_configured_pref_summary">None configured yet</string>
     <string name="repos_options_menu_new_repo">New Repository</string>
     <string name="book_name_already_exists">Notebook %s already exists.</string>
@@ -127,7 +126,9 @@
     <string name="version">What\'s new</string>
     <string name="search_hint">Search notes</string>
     <string name="clear_database">Clear database</string>
+    <string name="clear_database_dialog_message">Clear local database?</string>
     <string name="clear_database_summary">Clear local database</string>
+    <string name="clear_database_performed">Database cleared</string>
 
     <string name="reload_getting_started">Import “Getting Started with Orgzly”</string>
     <string name="reload_getting_started_summary">Import the latest version of the notebook</string>
