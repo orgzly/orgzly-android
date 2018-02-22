@@ -3,6 +3,7 @@ package com.orgzly.android.util
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
+import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.*
@@ -75,9 +76,7 @@ object OrgFormatter {
 
         parsePlainLinks(ssb, PLAIN_LINK, linkify)
 
-        parseMarkup(ssb, context)
-
-        return ssb
+        return parseMarkup(ssb, context)
     }
 
     /**
@@ -178,29 +177,47 @@ object OrgFormatter {
         ssb.setSpan(URLSpan(link), start, end, FLAGS)
     }
 
-    private fun parseMarkup(ssb: SpannableStringBuilder, context: Context?) {
+    enum class SpanType {
+        BOLD,
+        ITALIC,
+        UNDERLINE,
+        MONOSPACE,
+        STRIKETHROUGH
+    }
+
+    private fun newSpan(type: SpanType): Any {
+        return when (type) {
+            SpanType.BOLD -> StyleSpan(Typeface.BOLD)
+            SpanType.ITALIC -> StyleSpan(Typeface.ITALIC)
+            SpanType.UNDERLINE -> UnderlineSpan()
+            SpanType.MONOSPACE -> TypefaceSpan("monospace")
+            SpanType.STRIKETHROUGH -> StrikethroughSpan()
+        }
+    }
+
+    data class StyledRegion(val start: Int, val end: Int, val type: SpanType, val content: String)
+
+    private fun parseMarkup(ssb: SpannableStringBuilder, context: Context?): SpannableStringBuilder {
         /* Parse if context is null or if option is enabled. */
         if (context != null && !AppPreferences.styleText(context)) {
-            return
+            return ssb
         }
 
         val withMarks = AppPreferences.styledTextWithMarks(context)
 
-        fun setMarkupSpan(matcher: Matcher, group: Int, span: Any) {
-            // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Type matched", withMarks, matcher.start(group), matcher.end(group))
+        val styledRegions: MutableList<StyledRegion> = mutableListOf()
 
+        fun setMarkupSpan(matcher: Matcher, group: Int, spanType: SpanType) {
+            // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Type matched", withMarks, matcher.start(group), matcher.end(group))
             if (withMarks) {
-                ssb.setSpan(span, matcher.start(group), matcher.end(group), FLAGS)
+                ssb.setSpan(newSpan(spanType), matcher.start(group), matcher.end(group), FLAGS)
 
             } else {
                 // Next group matches content only, without markers.
                 val content = matcher.group(group + 1)
 
-                ssb.replace(matcher.start(group), matcher.end(group), content)
-
-                ssb.setSpan(span, matcher.start(group), matcher.start(group) + content.length, FLAGS)
-
-                matcher.reset(ssb) // sbb size modified, reset Matcher
+                // Remember the position and the type of span
+                styledRegions.add(StyledRegion(matcher.start(group), matcher.end(group), spanType, content))
             }
         }
 
@@ -210,13 +227,41 @@ object OrgFormatter {
             // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Matched", ssb.toString(), MARKUP_PATTERN, m.groupCount(), m.group(), m.start(), m.end())
 
             when {
-                m.group(1)  != null -> setMarkupSpan(m,  1, StyleSpan(Typeface.BOLD))
-                m.group(3)  != null -> setMarkupSpan(m,  3, StyleSpan(Typeface.ITALIC))
-                m.group(5)  != null -> setMarkupSpan(m,  5, UnderlineSpan())
-                m.group(7)  != null -> setMarkupSpan(m,  7, TypefaceSpan("monospace"))
-                m.group(9)  != null -> setMarkupSpan(m,  9, TypefaceSpan("monospace"))
-                m.group(11) != null -> setMarkupSpan(m, 11, StrikethroughSpan())
+                m.group(1)  != null -> setMarkupSpan(m,  1, SpanType.BOLD)
+                m.group(3)  != null -> setMarkupSpan(m,  3, SpanType.ITALIC)
+                m.group(5)  != null -> setMarkupSpan(m,  5, SpanType.UNDERLINE)
+                m.group(7)  != null -> setMarkupSpan(m,  7, SpanType.MONOSPACE)
+                m.group(9)  != null -> setMarkupSpan(m,  9, SpanType.MONOSPACE)
+                m.group(11) != null -> setMarkupSpan(m, 11, SpanType.STRIKETHROUGH)
             }
+        }
+
+        if (styledRegions.isNotEmpty()) {
+
+            val builder = SpannableStringBuilder()
+
+            var pos = 0
+            styledRegions.forEach { region ->
+                // Append everything before region
+                if (region.start > pos) {
+                    builder.append(ssb.subSequence(pos, region.start))
+                }
+
+                // Create spanned string
+                val str = SpannableString(region.content)
+                str.setSpan(newSpan(region.type), 0, str.length, FLAGS)
+
+                // Append spanned string
+                builder.append(str)
+
+                // Move current position after region
+                pos = region.end
+            }
+
+            return builder
+
+        } else {
+            return ssb
         }
     }
 
