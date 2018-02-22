@@ -25,16 +25,16 @@
         android:defaultValue="@string/pref_default_value_font_size"/>
 
     <SwitchPreference
-        android:key="@string/pref_key_style_text"
-        android:title="@string/style_text_title"
-        android:summary="@string/style_text_summary"
-        android:defaultValue="@bool/pref_default_style_text"/>
-
-    <SwitchPreference
         android:key="@string/pref_key_is_font_monospaced"
         android:title="@string/monospaced_font"
         android:summary="@string/monospaced_font_summary"
         android:defaultValue="@bool/pref_default_is_font_monospaced"/>
+
+    <SwitchPreference
+        android:key="@string/pref_key_style_text"
+        android:title="@string/style_text_title"
+        android:summary="@string/style_text_summary"
+        android:defaultValue="@bool/pref_default_style_text"/>
 
     <SwitchPreference
         android:key="@string/pref_key_styled_text_with_marks"
