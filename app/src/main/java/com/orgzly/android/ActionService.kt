@@ -26,12 +26,12 @@ class ActionService : JobIntentService() {
                 importGettingStartedNotebook()
 
             AppIntent.ACTION_REPARSE_NOTES ->
-                updatingNotesProgress {
+                notesUpdateBroadcast {
                     shelf.reParseNotesStateAndTitles()
                 }
 
             AppIntent.ACTION_SYNC_CREATED_AT_WITH_PROPERTY ->
-                updatingNotesProgress {
+                notesUpdateBroadcast {
                     shelf.syncCreatedAtTimeWithProperty()
                 }
 
@@ -56,7 +56,7 @@ class ActionService : JobIntentService() {
         localBroadcastManager.sendBroadcast(intent)
     }
 
-    private fun updatingNotesProgress(updateNotes: () -> Unit) {
+    private fun notesUpdateBroadcast(updateNotes: () -> Unit) {
         localBroadcastManager.sendBroadcast(Intent(AppIntent.ACTION_UPDATING_NOTES_STARTED))
         updateNotes()
         localBroadcastManager.sendBroadcast(Intent(AppIntent.ACTION_UPDATING_NOTES_ENDED))

@@ -16,13 +16,23 @@
 
         <ImageView
             android:id="@+id/list_widget_header_icon"
+            style="@style/BorderlessButton"
+            android:padding="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
             android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_launcher_foreground"/>
 
         <LinearLayout
             android:id="@+id/list_widget_header_bar"
+            style="@style/BorderlessButton"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:gravity="left"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent">
@@ -32,24 +42,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:text="@string/list_widget_select_search"
                 android:textColor="@color/black"
                 android:textSize="17sp"
                 android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
                 android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
-                android:drawablePadding="2dp"
+                android:drawablePadding="4dp"
                 android:ellipsize="end"
                 android:maxLines="1"/>
         </LinearLayout>
 
-        <ImageView
+        <ImageButton
             android:id="@+id/list_widget_header_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            style="@style/BorderlessButton"
+            android:padding="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:tint="@color/grey_900"
             android:src="@drawable/ic_add_black_24dp" />
