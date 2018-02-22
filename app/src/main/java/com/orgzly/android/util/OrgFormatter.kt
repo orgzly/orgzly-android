@@ -187,7 +187,7 @@ object OrgFormatter {
         val withMarks = AppPreferences.styledTextWithMarks(context)
 
         fun setMarkupSpan(matcher: Matcher, group: Int, span: Any) {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Type matched", withMarks, matcher.start(group), matcher.end(group))
+            // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Type matched", withMarks, matcher.start(group), matcher.end(group))
 
             if (withMarks) {
                 ssb.setSpan(span, matcher.start(group), matcher.end(group), FLAGS)
@@ -207,7 +207,7 @@ object OrgFormatter {
         val m = MARKUP_PATTERN.matcher(ssb)
 
         while (m.find()) {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Matched", ssb.toString(), MARKUP_PATTERN, m.groupCount(), m.group(), m.start(), m.end())
+            // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Matched", ssb.toString(), MARKUP_PATTERN, m.groupCount(), m.group(), m.start(), m.end())
 
             when {
                 m.group(1)  != null -> setMarkupSpan(m,  1, StyleSpan(Typeface.BOLD))
@@ -220,5 +220,5 @@ object OrgFormatter {
         }
     }
 
-    private val TAG = OrgFormatter::class.java.name
+    // private val TAG = OrgFormatter::class.java.name
 }
