@@ -1,10 +1,5 @@
 package com.orgzly.android.util;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-
-import com.orgzly.android.prefs.AppPreferences;
-
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -20,7 +15,6 @@ import java.util.LongSummaryStatistics;
  */
 @Ignore
 public class OrgFormatterSpeedTest {
-    private static Context context;
     private static String string;
 
     private static final int ITERATIONS = 5;
@@ -30,11 +24,7 @@ public class OrgFormatterSpeedTest {
 
     @BeforeClass
     public static void setup() throws Exception {
-        context = InstrumentationRegistry.getTargetContext();
-
         string = readStringFromResource(RESOURCE);
-
-        AppPreferences.styledTextWithMarks(context, false);
     }
 
     @Test
@@ -46,7 +36,7 @@ public class OrgFormatterSpeedTest {
         for (int i = 0; i < ITERATIONS; i++) {
             t1 = System.currentTimeMillis();
 
-            OrgFormatter.INSTANCE.parse(context, string);
+            OrgFormatter.INSTANCE.parse(string);
 
             t2 = System.currentTimeMillis();
 

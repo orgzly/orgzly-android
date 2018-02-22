@@ -69,7 +69,7 @@ public class TitleGenerator {
         }
 
         /* Title. */
-        builder.append(OrgFormatter.INSTANCE.parse(mContext, head.getTitle()));
+        builder.append(OrgFormatter.INSTANCE.parse(head.getTitle(), mContext));
 
         /* Append note ID. */
         // builder.append(TITLE_SEPARATOR).append("#").append(String.valueOf(note.getId()));

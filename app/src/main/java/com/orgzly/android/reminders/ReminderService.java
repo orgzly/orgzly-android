@@ -400,10 +400,11 @@ public class ReminderService extends JobIntentService {
             }
 
             builder.setContentTitle(OrgFormatter.INSTANCE.parse(
-                    context,
                     noteReminder.getPayload().title,
+                    context,
                     false // Do not linkify links in notification
             ));
+
             builder.setContentText(line);
 
             builder.setStyle(new NotificationCompat.InboxStyle()

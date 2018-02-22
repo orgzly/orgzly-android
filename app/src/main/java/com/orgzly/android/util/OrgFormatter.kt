@@ -8,7 +8,6 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.*
 import android.view.View
-import com.orgzly.BuildConfig
 import com.orgzly.android.ActionService
 import com.orgzly.android.AppIntent
 import com.orgzly.android.prefs.AppPreferences
@@ -19,30 +18,30 @@ import java.util.regex.Pattern
  *
  */
 object OrgFormatter {
-    private val LINK_SCHEMES = "https?|mailto|tel|voicemail|geo|sms|smsto|mms|mmsto"
+    private const val LINK_SCHEMES = "https?|mailto|tel|voicemail|geo|sms|smsto|mms|mmsto"
 
     // tel:1234567
-    private val PLAIN_LINK = "(($LINK_SCHEMES):\\S+)"
+    private const val PLAIN_LINK = "(($LINK_SCHEMES):\\S+)"
 
     /* Same as the above, but ] ends the link too. Used for bracket links. */
-    private val BRACKET_LINK = "(($LINK_SCHEMES):[^]\\s]+)"
+    private const val BRACKET_LINK = "(($LINK_SCHEMES):[^]\\s]+)"
 
     // #custom id
-    private val CUSTOM_ID_LINK = "(#([^]]+))"
+    private const val CUSTOM_ID_LINK = "(#([^]]+))"
 
     // id:CABA8098-5969-429E-A780-94C8E0A9D206
-    private val HD = "[0-9a-fA-F]"
-    private val ID_LINK = "(id:($HD{8}-(?:$HD{4}-){3}$HD{12}))"
+    private const val HD = "[0-9a-fA-F]"
+    private const val ID_LINK = "(id:($HD{8}-(?:$HD{4}-){3}$HD{12}))"
 
     /* Allows anything as a link. Probably needs some constraints.
      * See http://orgmode.org/manual/External-links.html and org-any-link-re
      */
-    private val BRACKET_ANY_LINK = "(([^]]+))"
+    private const val BRACKET_ANY_LINK = "(([^]]+))"
 
-    private val PRE = "- \t('\"{"
-    private val POST = "- \\t.,:!?;'\")}\\["
-    private val BORDER = "\\S"
-    private val BODY = ".*?(?:\n.*?)?"
+    private const val PRE = "- \t('\"{"
+    private const val POST = "- \\t.,:!?;'\")}\\["
+    private const val BORDER = "\\S"
+    private const val BODY = ".*?(?:\n.*?)?"
 
     // Added .{0} for the next find() to match from the beginning
     private fun markupRegex(marker: Char): String =
@@ -60,23 +59,40 @@ object OrgFormatter {
     private fun bracketLinkPattern(str: String) = Pattern.compile("\\[\\[$str]]")
     private fun namedBracketLinkPattern(str: String) = Pattern.compile("\\[\\[$str]\\[([^]]+)]]")
 
-    private val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+    private const val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+
+    data class Config(val style: Boolean = true, val withMarks: Boolean = false, val linkify: Boolean = true) {
+        constructor(context: Context, linkify: Boolean): this(
+                AppPreferences.styleText(context),
+                AppPreferences.styledTextWithMarks(context),
+                linkify)
+    }
 
     @JvmOverloads
-    fun parse(context: Context, str: String, linkify: Boolean = true): SpannableStringBuilder {
+    fun parse(str: String, context: Context? = null, linkify: Boolean = true): SpannableStringBuilder {
+        val config = if (context == null) {
+            Config(linkify = linkify)
+        } else {
+            Config(context, linkify)
+        }
+
+        return this.parse(str, config)
+    }
+
+    fun parse(str: String, config: Config): SpannableStringBuilder {
         val ssb = SpannableStringBuilder(str)
 
-        parsePropertyLinks(ssb, CUSTOM_ID_LINK, "CUSTOM_ID", linkify)
-        parsePropertyLinks(ssb, ID_LINK, "ID", linkify)
+        parsePropertyLinks(ssb, CUSTOM_ID_LINK, "CUSTOM_ID", config.linkify)
+        parsePropertyLinks(ssb, ID_LINK, "ID", config.linkify)
 
-        parseOrgLinksWithName(ssb, BRACKET_LINK, linkify)
+        parseOrgLinksWithName(ssb, BRACKET_LINK, config.linkify)
         parseOrgLinksWithName(ssb, BRACKET_ANY_LINK, false)
 
-        parseOrgLinks(ssb, BRACKET_LINK, linkify)
+        parseOrgLinks(ssb, BRACKET_LINK, config.linkify)
 
-        parsePlainLinks(ssb, PLAIN_LINK, linkify)
+        parsePlainLinks(ssb, PLAIN_LINK, config.linkify)
 
-        return parseMarkup(ssb, context)
+        return parseMarkup(ssb, config)
     }
 
     /**
@@ -197,19 +213,17 @@ object OrgFormatter {
 
     data class StyledRegion(val start: Int, val end: Int, val type: SpanType, val content: String)
 
-    private fun parseMarkup(ssb: SpannableStringBuilder, context: Context?): SpannableStringBuilder {
-        /* Parse if context is null or if option is enabled. */
-        if (context != null && !AppPreferences.styleText(context)) {
+    private fun parseMarkup(ssb: SpannableStringBuilder, config: Config): SpannableStringBuilder {
+        if (!config.style) {
             return ssb
         }
-
-        val withMarks = AppPreferences.styledTextWithMarks(context)
 
         val styledRegions: MutableList<StyledRegion> = mutableListOf()
 
         fun setMarkupSpan(matcher: Matcher, group: Int, spanType: SpanType) {
             // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Type matched", withMarks, matcher.start(group), matcher.end(group))
-            if (withMarks) {
+
+            if (config.withMarks) {
                 ssb.setSpan(newSpan(spanType), matcher.start(group), matcher.end(group), FLAGS)
 
             } else {

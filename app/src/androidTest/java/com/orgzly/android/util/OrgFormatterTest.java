@@ -6,7 +6,6 @@ import android.text.style.URLSpan;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.prefs.AppPreferences;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -17,13 +16,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class OrgFormatterTest extends OrgzlyTest {
-    @Before
-    public void setup() throws Exception {
-        super.setUp();
-
-        AppPreferences.styledTextWithMarks(context, false);
-    }
-
     @Test
     public void testLinksMultiLine() throws Exception {
         OrgSpannable spannable = new OrgSpannable(
@@ -134,7 +126,7 @@ public class OrgFormatterTest extends OrgzlyTest {
         OrgSpan[] spans;
 
         public OrgSpannable(String str) {
-            SpannableStringBuilder ssb = OrgFormatter.INSTANCE.parse(context, str);
+            SpannableStringBuilder ssb = OrgFormatter.INSTANCE.parse(str, context);
 
             string = ssb.toString();
 
