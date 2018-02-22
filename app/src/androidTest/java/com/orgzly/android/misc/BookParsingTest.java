@@ -207,7 +207,7 @@ public class BookParsingTest extends OrgzlyTest {
     @Test
     public void testLoadingHuge() throws IOException {
         if (runResourcesDemandingTest()) {
-            onBookFile("org/org-issues.10x.org").onLoad();
+            onBookFile("org/large.org").onLoad();
         }
     }
 
