@@ -15,20 +15,30 @@ import java.util.LongSummaryStatistics;
  */
 @Ignore
 public class OrgFormatterSpeedTest {
-    private static String string;
+    private static String markup;
+    private static String links;
 
     private static final int ITERATIONS = 5;
     private static final int SKIP_FIRST = 2;
 
-    private static final String RESOURCE = "assets/org/markup-heavy-content.org";
 
     @BeforeClass
     public static void setup() throws Exception {
-        string = readStringFromResource(RESOURCE);
+        markup = readStringFromResource("assets/org/markup-heavy-content.org");
+        links = readStringFromResource("assets/org/links-heavy-content.org");
     }
 
     @Test
-    public void testSpeed() throws IOException {
+    public void markupHeavy() throws IOException {
+        test(markup);
+    }
+
+    @Test
+    public void linksHeavy() throws IOException {
+        test(links);
+    }
+
+    public void test(String str) throws IOException {
         long t1, t2;
 
         long[] times = new long[ITERATIONS];
@@ -36,7 +46,7 @@ public class OrgFormatterSpeedTest {
         for (int i = 0; i < ITERATIONS; i++) {
             t1 = System.currentTimeMillis();
 
-            OrgFormatter.INSTANCE.parse(string);
+            OrgFormatter.INSTANCE.parse(str);
 
             t2 = System.currentTimeMillis();
 
