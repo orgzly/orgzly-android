@@ -10,9 +10,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class OrgFormatterTest extends OrgzlyTest {
@@ -22,20 +20,19 @@ public class OrgFormatterTest extends OrgzlyTest {
                 "[[http://www.orgzly.com]]\n" +
                         "[[http://www.orgzly.com]]");
 
-        assertEquals("http://www.orgzly.com\n" +
-                "http://www.orgzly.com", spannable.string);
+        assertThat(spannable.string, is("http://www.orgzly.com\nhttp://www.orgzly.com"));
 
-        assertEquals(2, spannable.spans.length);
+        assertThat(spannable.spans.length, is(2));
 
-        assertEquals(0, spannable.spans[0].start);
-        assertEquals(21, spannable.spans[0].end);
-        assertEquals("URLSpan", spannable.spans[0].className);
-        assertEquals("http://www.orgzly.com", spannable.spans[0].url);
+        assertThat(spannable.spans[0].start, is(0));
+        assertThat(spannable.spans[0].end, is(21));
+        assertThat(spannable.spans[0].className, is("URLSpan"));
+        assertThat(spannable.spans[0].url, is("http://www.orgzly.com"));
 
-        assertEquals(22, spannable.spans[1].start);
-        assertEquals(43, spannable.spans[1].end);
-        assertEquals("URLSpan", spannable.spans[1].className);
-        assertEquals("http://www.orgzly.com", spannable.spans[1].url);
+        assertThat(spannable.spans[1].start, is(22));
+        assertThat(spannable.spans[1].end, is(43));
+        assertThat(spannable.spans[1].className, is("URLSpan"));
+        assertThat(spannable.spans[1].url, is("http://www.orgzly.com"));
     }
 
     @Test
@@ -43,14 +40,14 @@ public class OrgFormatterTest extends OrgzlyTest {
         OrgSpannable spannable = new OrgSpannable(
                 "[[http://www.orgzly.com][Orgzly]]");
 
-        assertEquals("Orgzly", spannable.string);
+        assertThat(spannable.string, is("Orgzly"));
 
-        assertEquals(1, spannable.spans.length);
+        assertThat(spannable.spans.length, is(1));
 
-        assertEquals(0, spannable.spans[0].start);
-        assertEquals(6, spannable.spans[0].end);
-        assertEquals("URLSpan", spannable.spans[0].className);
-        assertEquals("http://www.orgzly.com", spannable.spans[0].url);
+        assertThat(spannable.spans[0].start, is(0));
+        assertThat(spannable.spans[0].end, is(6));
+        assertThat(spannable.spans[0].className, is("URLSpan"));
+        assertThat(spannable.spans[0].url, is("http://www.orgzly.com"));
     }
 
     @Test
@@ -58,22 +55,24 @@ public class OrgFormatterTest extends OrgzlyTest {
         OrgSpannable spannable = new OrgSpannable(
                 "AAA http://www.x.com BBB [[http://www.y.com]]CCC [[http://www.z.com][Z]]DDD");
 
-        assertEquals("AAA http://www.x.com BBB http://www.y.comCCC ZDDD", spannable.string);
+        assertThat(spannable.string, is("AAA http://www.x.com BBB http://www.y.comCCC ZDDD"));
 
-        assertEquals(3, spannable.spans.length);
+        assertThat(spannable.spans.length, is(3));
 
-        // Different values on different devices. Refactor OrgFormatter.
-        for (int i: Arrays.asList(0, 2)) {
-            assertThat(spannable.spans[i].start, anyOf(is(4), is(45)));
-            assertThat(spannable.spans[i].end, anyOf(is(20), is(46)));
-            assertThat(spannable.spans[i].className, is("URLSpan"));
-            assertThat(spannable.spans[i].url, anyOf(is("http://www.x.com"), is("http://www.z.com")));
-        }
+        assertThat(spannable.spans[0].start, is(4));
+        assertThat(spannable.spans[0].end, is(20));
+        assertThat(spannable.spans[0].className, is("URLSpan"));
+        assertThat(spannable.spans[0].url, is("http://www.x.com"));
 
-        assertEquals(25, spannable.spans[1].start);
-        assertEquals(41, spannable.spans[1].end);
-        assertEquals("URLSpan", spannable.spans[1].className);
-        assertEquals("http://www.y.com", spannable.spans[1].url);
+        assertThat(spannable.spans[1].start, is(25));
+        assertThat(spannable.spans[1].end, is(41));
+        assertThat(spannable.spans[1].className, is("URLSpan"));
+        assertThat(spannable.spans[1].url, is("http://www.y.com"));
+
+        assertThat(spannable.spans[2].start, is(45));
+        assertThat(spannable.spans[2].end, is(46));
+        assertThat(spannable.spans[2].className, is("URLSpan"));
+        assertThat(spannable.spans[2].url, is("http://www.z.com"));
     }
 
     @Test
@@ -81,22 +80,24 @@ public class OrgFormatterTest extends OrgzlyTest {
         OrgSpannable spannable = new OrgSpannable(
                 "AAA mailto:x@x.com BBB [[mailto:y@y.com]]CCC [[mailto:z@z.com][Z]]DDD");
 
-        assertEquals("AAA mailto:x@x.com BBB mailto:y@y.comCCC ZDDD", spannable.string);
+        assertThat(spannable.string, is("AAA mailto:x@x.com BBB mailto:y@y.comCCC ZDDD"));
 
-        assertEquals(3, spannable.spans.length);
+        assertThat(spannable.spans.length, is(3));
 
-        // Different values on different devices. Refactor OrgFormatter.
-        for (int i: Arrays.asList(0, 2)) {
-            assertThat(spannable.spans[i].start, anyOf(is(4), is(41)));
-            assertThat(spannable.spans[i].end, anyOf(is(18), is(42)));
-            assertThat(spannable.spans[i].className, is("URLSpan"));
-            assertThat(spannable.spans[i].url, anyOf(is("mailto:x@x.com"), is("mailto:z@z.com")));
-        }
+        assertThat(spannable.spans[0].start, is(4));
+        assertThat(spannable.spans[0].end, is(18));
+        assertThat(spannable.spans[0].className, is("URLSpan"));
+        assertThat(spannable.spans[0].url, is("mailto:x@x.com"));
 
-        assertEquals(23, spannable.spans[1].start);
-        assertEquals(37, spannable.spans[1].end);
-        assertEquals("URLSpan", spannable.spans[1].className);
-        assertEquals("mailto:y@y.com", spannable.spans[1].url);
+        assertThat(spannable.spans[1].start, is(23));
+        assertThat(spannable.spans[1].end, is(37));
+        assertThat(spannable.spans[1].className, is("URLSpan"));
+        assertThat(spannable.spans[1].url, is("mailto:y@y.com"));
+
+        assertThat(spannable.spans[2].start, is(41));
+        assertThat(spannable.spans[2].end, is(42));
+        assertThat(spannable.spans[2].className, is("URLSpan"));
+        assertThat(spannable.spans[2].url, is("mailto:z@z.com"));
     }
 
     @Test
@@ -105,16 +106,24 @@ public class OrgFormatterTest extends OrgzlyTest {
 
         OrgSpannable spannable = new OrgSpannable("*a* *b*");
 
-        assertEquals("*a* *b*", spannable.string);
+        assertThat(spannable.string, is("*a* *b*"));
 
-        assertEquals(2, spannable.spans.length);
-        assertEquals(0, spannable.spans[0].start);
-        assertEquals(3, spannable.spans[0].end);
-        assertEquals(4, spannable.spans[1].start);
-        assertEquals(7, spannable.spans[1].end);
+        assertThat(spannable.spans.length, is(2));
+
+        assertThat(spannable.spans[0].start, is(0));
+        assertThat(spannable.spans[0].end, is(3));
+
+        assertThat(spannable.spans[1].start, is(4));
+        assertThat(spannable.spans[1].end, is(7));
     }
 
-    private class OrgSpan {
+    @Test
+    public void testMarkupWithTrailingCharacters() {
+        OrgSpannable spannable = new OrgSpannable("*a* b");
+        assertThat(spannable.string, is("a b"));
+    }
+
+    private class SpanItem {
         int start;
         int end;
         String className;
@@ -122,29 +131,36 @@ public class OrgFormatterTest extends OrgzlyTest {
     }
 
     private class OrgSpannable {
-        String string;
-        OrgSpan[] spans;
+        final String string;
+        final SpanItem[] spans;
 
         public OrgSpannable(String str) {
             SpannableStringBuilder ssb = OrgFormatter.INSTANCE.parse(str, context);
 
             string = ssb.toString();
 
+
             Object[] allSpans = ssb.getSpans(0, ssb.length() - 1, Object.class);
 
-            spans = new OrgSpan[allSpans.length];
+            spans = new SpanItem[allSpans.length];
 
             for (int i = 0; i < allSpans.length; i++) {
-                spans[i] = new OrgSpan();
+                Object span = allSpans[i];
+                SpanItem spanItem = new SpanItem();
 
-                spans[i].start = ssb.getSpanStart(allSpans[i]);
-                spans[i].end = ssb.getSpanEnd(allSpans[i]);
-                spans[i].className = allSpans[i].getClass().getSimpleName();
+                spanItem.start = ssb.getSpanStart(span);
+                spanItem.end = ssb.getSpanEnd(span);
+                spanItem.className = span.getClass().getSimpleName();
 
-                if (allSpans[i] instanceof URLSpan) {
-                    spans[i].url = ((URLSpan)allSpans[i]).getURL();
+                if (span instanceof URLSpan) {
+                    spanItem.url = ((URLSpan)span).getURL();
                 }
+
+                spans[i] = spanItem;
             }
+
+            // Sort spans in the order they appear
+            Arrays.sort(spans, (o1, o2) -> o1.start - o2.start);
         }
     }
 }

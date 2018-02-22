@@ -61,6 +61,8 @@ object OrgFormatter {
 
     private const val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 
+    data class SpanRegion(val start: Int, val end: Int, val content: String, val span: Any? = null)
+
     data class Config(val style: Boolean = true, val withMarks: Boolean = false, val linkify: Boolean = true) {
         constructor(context: Context, linkify: Boolean): this(
                 AppPreferences.styleText(context),
@@ -80,59 +82,65 @@ object OrgFormatter {
     }
 
     fun parse(str: String, config: Config): SpannableStringBuilder {
-        val ssb = SpannableStringBuilder(str)
+        var ssb = SpannableStringBuilder(str)
 
-        parsePropertyLinks(ssb, CUSTOM_ID_LINK, "CUSTOM_ID", config.linkify)
-        parsePropertyLinks(ssb, ID_LINK, "ID", config.linkify)
+        ssb = parsePropertyLinks(ssb, CUSTOM_ID_LINK, "CUSTOM_ID", config.linkify)
+        ssb = parsePropertyLinks(ssb, ID_LINK, "ID", config.linkify)
 
-        parseOrgLinksWithName(ssb, BRACKET_LINK, config.linkify)
-        parseOrgLinksWithName(ssb, BRACKET_ANY_LINK, false)
+        ssb = parseOrgLinksWithName(ssb, BRACKET_LINK, config.linkify)
+        ssb = parseOrgLinksWithName(ssb, BRACKET_ANY_LINK, false)
 
-        parseOrgLinks(ssb, BRACKET_LINK, config.linkify)
+        ssb = parseOrgLinks(ssb, BRACKET_LINK, config.linkify)
 
         parsePlainLinks(ssb, PLAIN_LINK, config.linkify)
 
-        return parseMarkup(ssb, config)
+        ssb = parseMarkup(ssb, config)
+
+        return ssb
     }
+
+//    private fun logSpans(ssb: SpannableStringBuilder) {
+//        val spans = ssb.getSpans(0, ssb.length - 1, Any::class.java)
+//        LogUtils.d(TAG, "--- Spans ---", spans.size)
+//        spans.forEach {
+//            LogUtils.d(TAG, "Span", it, it.javaClass.simpleName, ssb.getSpanStart(it), ssb.getSpanEnd(it))
+//        }
+//    }
 
     /**
      * [[ http://link.com ][ name ]]
      */
-    private fun parseOrgLinksWithName(ssb: SpannableStringBuilder, linkRegex: String, createLinks: Boolean) {
+    private fun parseOrgLinksWithName(ssb: SpannableStringBuilder, linkRegex: String, linkify: Boolean): SpannableStringBuilder {
         val p = namedBracketLinkPattern(linkRegex)
         val m = p.matcher(ssb)
 
-        while (m.find()) {
-            val link = m.group(1)
-            val name = m.group(3)
+        return collectRegions(ssb) { spanRegions ->
+            while (m.find()) {
+                val link = m.group(1)
+                val name = m.group(3)
 
-            ssb.replace(m.start(), m.end(), name)
+                val span = if (linkify) URLSpan(link) else null
 
-            if (createLinks) {
-                setUrlSpan(ssb, link, m.start(), m.start() + name.length)
+                spanRegions.add(SpanRegion(m.start(), m.end(), name, span))
             }
-
-            m.reset(ssb) // sbb size modified, reset Matcher
         }
     }
 
     /**
      * [[ http://link.com ]]
      */
-    private fun parseOrgLinks(ssb: SpannableStringBuilder, linkRegex: String, createLinks: Boolean) {
+    private fun parseOrgLinks(ssb: SpannableStringBuilder, linkRegex: String, linkify: Boolean): SpannableStringBuilder {
         val p = bracketLinkPattern(linkRegex)
         val m = p.matcher(ssb)
 
-        while (m.find()) {
-            val link = m.group(1)
+        return collectRegions(ssb) { spanRegions ->
+            while (m.find()) {
+                val link = m.group(1)
 
-            ssb.replace(m.start(), m.end(), link)
+                val span = if (linkify) URLSpan(link) else null
 
-            if (createLinks) {
-                setUrlSpan(ssb, link, m.start(), m.start() + link.length)
+                spanRegions.add(SpanRegion(m.start(), m.end(), link, span))
             }
-
-            m.reset(ssb) // sbb size modified, reset Matcher
         }
     }
 
@@ -140,18 +148,32 @@ object OrgFormatter {
      * [[ #custom id ]] and [[ #custom id ][ link ]]
      * [[ id:id ]] and [[ id:id ][ link ]]
      */
-    private fun parsePropertyLinks(ssb: SpannableStringBuilder, linkRegex: String, propName: String, createLinks: Boolean) {
-        fun p(p: Pattern, propGroup: Int, linkGroup: Int) {
-            val m = p.matcher(ssb)
+    private fun parsePropertyLinks(ssb: SpannableStringBuilder, linkRegex: String, propName: String, linkify: Boolean): SpannableStringBuilder {
+        var builder = parsePropertyLinkType(ssb, linkify, propName, namedBracketLinkPattern(linkRegex), 2, 3)
+        builder = parsePropertyLinkType(builder, linkify, propName, bracketLinkPattern(linkRegex), 2, 1)
 
+        return builder
+    }
+
+    private fun parsePropertyLinkType(
+            ssb: SpannableStringBuilder,
+            linkify: Boolean,
+            propName: String,
+            p: Pattern,
+            propGroup: Int,
+            linkGroup: Int): SpannableStringBuilder {
+
+        val m = p.matcher(ssb)
+
+        return collectRegions(ssb) { spanRegions ->
             while (m.find()) {
                 val link = m.group(linkGroup)
                 val propValue = m.group(propGroup)
 
                 ssb.replace(m.start(), m.end(), link)
 
-                if (createLinks) {
-                    ssb.setSpan(object : ClickableSpan() {
+                val span = if (linkify) {
+                    object : ClickableSpan() {
                         override fun onClick(widget: View) {
                             val intent = Intent(widget.context, ActionService::class.java)
                             intent.action = AppIntent.ACTION_OPEN_NOTE
@@ -159,38 +181,34 @@ object OrgFormatter {
                             intent.putExtra(AppIntent.EXTRA_PROPERTY_VALUE, propValue)
                             ActionService.enqueueWork(widget.context, intent)
                         }
-                    }, m.start(), m.start() + link.length, FLAGS)
+                    }
+
+                } else {
+                    null
                 }
 
-                m.reset(ssb) // sbb size modified, reset Matcher
+                spanRegions.add(SpanRegion(m.start(), m.end(), link, span))
             }
         }
-
-        p(namedBracketLinkPattern(linkRegex), 2, 3)
-        p(bracketLinkPattern(linkRegex), 2, 1)
     }
 
     /**
      * http://link.com
      */
-    private fun parsePlainLinks(ssb: SpannableStringBuilder, linkRegex: String, createLinks: Boolean) {
-        if (createLinks) {
+    private fun parsePlainLinks(ssb: SpannableStringBuilder, linkRegex: String, linkify: Boolean) {
+        if (linkify) {
             val p = linkPattern(linkRegex)
             val m = p.matcher(ssb)
 
             while (m.find()) {
                 val link = m.group(1)
 
-                // Make sure first character has no URLSpan
+                // Make sure first character has no URLSpan already
                 if (ssb.getSpans(m.start(), m.start() + 1, URLSpan::class.java).isEmpty()) {
-                    setUrlSpan(ssb, link, m.start(), m.end())
+                    ssb.setSpan(URLSpan(link), m.start(), m.end(), FLAGS)
                 }
             }
         }
-    }
-
-    private fun setUrlSpan(ssb: SpannableStringBuilder, link: String, start: Int, end: Int) {
-        ssb.setSpan(URLSpan(link), start, end, FLAGS)
     }
 
     enum class SpanType {
@@ -211,14 +229,12 @@ object OrgFormatter {
         }
     }
 
-    data class StyledRegion(val start: Int, val end: Int, val type: SpanType, val content: String)
-
     private fun parseMarkup(ssb: SpannableStringBuilder, config: Config): SpannableStringBuilder {
         if (!config.style) {
             return ssb
         }
 
-        val styledRegions: MutableList<StyledRegion> = mutableListOf()
+        val spanRegions: MutableList<SpanRegion> = mutableListOf()
 
         fun setMarkupSpan(matcher: Matcher, group: Int, spanType: SpanType) {
             // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Type matched", withMarks, matcher.start(group), matcher.end(group))
@@ -230,8 +246,7 @@ object OrgFormatter {
                 // Next group matches content only, without markers.
                 val content = matcher.group(group + 1)
 
-                // Remember the position and the type of span
-                styledRegions.add(StyledRegion(matcher.start(group), matcher.end(group), spanType, content))
+                spanRegions.add(SpanRegion(matcher.start(group), matcher.end(group), content, newSpan(spanType)))
             }
         }
 
@@ -250,12 +265,23 @@ object OrgFormatter {
             }
         }
 
-        if (styledRegions.isNotEmpty()) {
+        return buildFromRegions(ssb, spanRegions)
+    }
 
+
+    private fun collectRegions(ssb: SpannableStringBuilder, collect: (MutableList<SpanRegion>) -> Any): SpannableStringBuilder {
+        val spanRegions: MutableList<SpanRegion> = mutableListOf()
+        collect(spanRegions)
+        return buildFromRegions(ssb, spanRegions)
+    }
+
+    private fun buildFromRegions(ssb: SpannableStringBuilder, spanRegions: MutableList<SpanRegion>): SpannableStringBuilder {
+        if (spanRegions.isNotEmpty()) {
             val builder = SpannableStringBuilder()
 
             var pos = 0
-            styledRegions.forEach { region ->
+
+            spanRegions.forEach { region ->
                 // Append everything before region
                 if (region.start > pos) {
                     builder.append(ssb.subSequence(pos, region.start))
@@ -263,13 +289,21 @@ object OrgFormatter {
 
                 // Create spanned string
                 val str = SpannableString(region.content)
-                str.setSpan(newSpan(region.type), 0, str.length, FLAGS)
+
+                if (region.span != null) {
+                    str.setSpan(region.span, 0, str.length, FLAGS)
+                }
 
                 // Append spanned string
                 builder.append(str)
 
                 // Move current position after region
                 pos = region.end
+            }
+
+            // Append the rest
+            if (pos < ssb.length) {
+                builder.append(ssb.subSequence(pos, ssb.length))
             }
 
             return builder

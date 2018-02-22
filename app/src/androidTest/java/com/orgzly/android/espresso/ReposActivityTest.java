@@ -30,6 +30,7 @@ public class ReposActivityTest extends OrgzlyTest {
     @Test
     public void testSavingWithBogusDirectoryUri() {
         activityRule.launchActivity(null);
+        onView(withId(R.id.fragment_repos_flipper)).check(matches(isDisplayed()));
         onView(withId(R.id.fragment_repos_directory)).perform(click());
         onView(withId(R.id.fragment_repo_directory)).perform(replaceText("non-existent-directory"));
         onView(withId(R.id.done)).perform(click());
