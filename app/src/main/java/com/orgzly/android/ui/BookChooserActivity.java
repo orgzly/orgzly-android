@@ -2,11 +2,16 @@ package com.orgzly.android.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.pm.ShortcutInfoCompat;
+import android.support.v4.content.pm.ShortcutManagerCompat;
+import android.support.v4.graphics.drawable.IconCompat;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
+import com.orgzly.android.Book;
 import com.orgzly.android.BookUtils;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.ui.fragments.BooksFragment;
@@ -58,36 +63,53 @@ public class BookChooserActivity extends CommonActivity
     public void onBookClicked(long bookId) {
         if (action != null && action.equals(Intent.ACTION_CREATE_SHORTCUT)) {
 
-            /* If this intent is used, shortcut's label will be overwritten (set to "Orgzly")
-             * with some launchers (like Nova) on every app update.
-             * It looks like it's due to setting action to ACTION_MAIN and category to
-             * CATEGORY_LAUNCHER (which main activity uses)
-             */
-             // Intent launchIntent = Intent.makeRestartActivityTask(new ComponentName(this, MainActivity.class));
-
-            Intent launchIntent = new Intent(this, MainActivity.class);
-            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            launchIntent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
-
-            Intent shortcut = new Intent(Intent.ACTION_CREATE_SHORTCUT);
-
+            // Get Book by its ID
             Shelf shelf = new Shelf(this);
-            String title = BookUtils.getFragmentTitleForBook(shelf.getBook(bookId));
-            if (title == null) {
-                setResult(RESULT_CANCELED, shortcut);
+            Book book = shelf.getBook(bookId);
+
+            if (book == null) {
+                Toast.makeText(this, R.string.book_does_not_exist_anymore, Toast.LENGTH_SHORT).show();
+                setResult(RESULT_CANCELED);
                 finish();
                 return;
             }
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, title);
 
-            Intent.ShortcutIconResource icon = Intent.ShortcutIconResource.fromContext(this, R.drawable.cic_orgzly_logo_with_notebook);
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
+            String id = "notebook-" + bookId;
+            String name = book.getName();
+            String title = BookUtils.getFragmentTitleForBook(book);
+            Intent launchIntent = createLaunchIntent(book);
+            IconCompat icon = createIcon();
 
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, launchIntent);
+            ShortcutInfoCompat shortcut =
+                    new ShortcutInfoCompat.Builder(this, id)
+                            .setShortLabel(name)
+                            .setLongLabel(title)
+                            .setIcon(icon)
+                            .setIntent(launchIntent)
+                            .build();
 
-            setResult(RESULT_OK, shortcut);
+            setResult(RESULT_OK, ShortcutManagerCompat.createShortcutResultIntent(this, shortcut));
+
             finish();
         }
+    }
+
+    /**
+     * Create intent for opening specified notebook.
+     */
+    private Intent createLaunchIntent(Book book) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra(AppIntent.EXTRA_BOOK_ID, book.getId());
+        return intent;
+    }
+
+    /**
+     * Create icon for the shortcut.
+     */
+    private IconCompat createIcon() {
+        return IconCompat.createWithResource(this, R.mipmap.cic_shortcut_notebook);
     }
 
     @Override
