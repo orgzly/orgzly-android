@@ -33,7 +33,7 @@
             app:pressedTranslationZ="12dp"
             app:borderWidth="0dp"/>
 
-        <include layout="@layout/toolbar_in_appbar"/>
+        <include layout="@layout/app_bar"/>
 
     </android.support.design.widget.CoordinatorLayout>
 

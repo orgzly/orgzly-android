@@ -36,6 +36,6 @@
             android:layout_weight="1"/>
     </LinearLayout>
 
-    <include layout="@layout/toolbar_in_appbar"/>
+    <include layout="@layout/app_bar"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -15,6 +15,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="com.orgzly.android.ui.ReposActivity"/>
 
-    <include layout="@layout/toolbar_in_appbar"/>
+    <include layout="@layout/app_bar"/>
 
 </android.support.design.widget.CoordinatorLayout>

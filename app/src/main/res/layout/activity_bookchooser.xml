@@ -15,6 +15,6 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <include layout="@layout/toolbar_in_appbar"/>
+    <include layout="@layout/app_bar"/>
 
 </android.support.design.widget.CoordinatorLayout>
