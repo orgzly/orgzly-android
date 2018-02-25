@@ -56,18 +56,14 @@
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/black</item>
 
+        <item name="android:statusBarColor">#e687877c</item>
+        <item name="app_bar_bg_color">#cfcfc4</item>
+
         <!-- Make buttons lighter. -->
         <item name="android:colorButtonNormal" tools:targetApi="21">@color/grey_100</item>
 
         <item name="main_text_color">@color/black</item>
         <item name="main_text_color_muted">#60000000</item>
-
-        <item name="status_bar_default">#e687877c</item>
-        <item name="action_bar_default">#cfcfc4</item>
-        <item name="status_bar_in_query">#e6607d8b</item>
-        <item name="action_bar_in_query">#B0BEC5</item>
-        <item name="status_bar_in_settings">#795548</item>
-        <item name="action_bar_in_settings">#BCAAA4</item>
 
         <item name="item_bg">@drawable/item_selector</item>
 
@@ -207,15 +203,11 @@
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryDark">@color/white</item>
 
+        <item name="android:statusBarColor">#e6000000</item>
+        <item name="app_bar_bg_color">@color/grey_900</item>
+
         <item name="main_text_color">@color/dark_bg_text_primary</item>
         <item name="main_text_color_muted">#60ffffff</item>
-
-        <item name="status_bar_default">#e6000000</item>
-        <item name="action_bar_default">@color/grey_900</item>
-        <item name="status_bar_in_query">#f0263238</item>
-        <item name="action_bar_in_query">@color/blue_grey_700</item>
-        <item name="status_bar_in_settings">@color/brown_900</item>
-        <item name="action_bar_in_settings">@color/brown_700</item>
 
         <item name="item_bg">@drawable/item_selector_dark</item>
 
@@ -325,12 +317,8 @@
         <item name="android:itemBackground">@color/dark_theme_status_bar</item>
         <item name="android:colorButtonNormal" tools:targetApi="21">@color/dark_theme_app_bar</item>
 
-        <item name="status_bar_default">@color/dark_theme_status_bar</item>
-        <item name="action_bar_default">@color/dark_theme_status_bar</item>
-        <item name="status_bar_in_query">@color/dark_theme_status_bar</item>
-        <item name="action_bar_in_query">@color/dark_theme_status_bar</item>
-        <item name="status_bar_in_settings">@color/dark_theme_status_bar</item>
-        <item name="action_bar_in_settings">@color/dark_theme_status_bar</item>
+        <item name="android:statusBarColor">#000000</item>
+        <item name="app_bar_bg_color">@color/dark_theme_status_bar</item>
 
         <item name="item_bg">@drawable/item_selector_black</item>
 

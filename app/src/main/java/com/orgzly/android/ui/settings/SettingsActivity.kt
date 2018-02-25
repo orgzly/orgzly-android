@@ -75,9 +75,6 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
 
         setTitle(R.string.settings)
 
-        // Set action bar and status bar colors
-        ActivityUtils.setColorsForFragment(this, SettingsFragment.FRAGMENT_TAG)
-
         if (savedInstanceState == null) {
             val fragment = SettingsFragment.getInstance()
 

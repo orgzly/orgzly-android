@@ -257,7 +257,7 @@ public class MainActivity extends CommonActivity
     private void drawerOpened() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
-        ActivityUtils.closeSoftKeyboard(this);
+        ActivityUtils.INSTANCE.closeSoftKeyboard(this);
     }
 
     private void drawerClosed() {
@@ -894,9 +894,9 @@ public class MainActivity extends CommonActivity
 
         final Activity activity = this;
 
-        dialog.setOnShowListener(d -> ActivityUtils.openSoftKeyboard(activity, name));
+        dialog.setOnShowListener(d -> ActivityUtils.INSTANCE.openSoftKeyboard(activity, name));
 
-        dialog.setOnDismissListener(d -> ActivityUtils.closeSoftKeyboard(activity));
+        dialog.setOnDismissListener(d -> ActivityUtils.INSTANCE.closeSoftKeyboard(activity));
 
         if (originalLinkUri != null) {
             name.addTextChangedListener(new TextWatcher() {
@@ -1310,9 +1310,6 @@ public class MainActivity extends CommonActivity
         getSupportActionBar().setSubtitle(mSavedSubtitle);
 
         drawerNavigationView.updateActiveFragment(fragmentTag);
-
-        /* Set status and action bar colors depending on the fragment. */
-        ActivityUtils.setColorsForFragment(this, fragmentTag);
 
         /* Update floating action button. */
         MainFab.INSTANCE.updateFab(this, fragmentTag, selectionCount);

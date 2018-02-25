@@ -413,7 +413,7 @@ public class ReminderService extends JobIntentService {
             );
 
             /* Open note on notification click. */
-            PendingIntent openPi = ActivityUtils.mainActivityPendingIntent(
+            PendingIntent openPi = ActivityUtils.INSTANCE.mainActivityPendingIntent(
                     context, noteReminder.getPayload().bookId, noteReminder.getPayload().noteId);
             builder.setContentIntent(openPi);
 

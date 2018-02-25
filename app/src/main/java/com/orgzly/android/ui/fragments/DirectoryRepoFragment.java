@@ -137,7 +137,7 @@ public class DirectoryRepoFragment extends RepoFragment {
 
             if (activity != null) {
                 /* Close the keyboard before opening the browser. */
-                ActivityUtils.closeSoftKeyboard(getActivity());
+                ActivityUtils.INSTANCE.closeSoftKeyboard(getActivity());
 
                 /* Open internal browser. */
                 ((CommonActivity) activity).runWithPermission(

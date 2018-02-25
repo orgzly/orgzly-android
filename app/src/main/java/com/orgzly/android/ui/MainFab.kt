@@ -1,6 +1,5 @@
 package com.orgzly.android.ui
 
-import android.content.res.ColorStateList
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.FragmentActivity
 import com.orgzly.R
@@ -34,7 +33,6 @@ object MainFab {
             if (resources.fabDrawable != null && fabAction != null) {
                 fab.show()
 
-                fab.backgroundTintList = ColorStateList.valueOf(resources.actionColor)
                 fab.setImageDrawable(resources.fabDrawable)
 
                 fab.setOnClickListener { fabAction.run() }

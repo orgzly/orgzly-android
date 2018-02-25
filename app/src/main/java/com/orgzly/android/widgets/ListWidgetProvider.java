@@ -223,7 +223,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
         long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0L);
         long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0L);
 
-        PendingIntent pi = ActivityUtils.mainActivityPendingIntent(context, bookId, noteId);
+        PendingIntent pi = ActivityUtils.INSTANCE.mainActivityPendingIntent(context, bookId, noteId);
         try {
             pi.send();
         } catch (PendingIntent.CanceledException e) {

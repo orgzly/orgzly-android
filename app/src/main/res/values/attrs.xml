@@ -43,12 +43,7 @@
         <attr name="main_text_color" format="color"/>
         <attr name="main_text_color_muted" format="color"/>
 
-        <attr name="status_bar_default" format="color"/>
-        <attr name="action_bar_default" format="color"/>
-        <attr name="status_bar_in_query" format="color"/>
-        <attr name="action_bar_in_query" format="color"/>
-        <attr name="status_bar_in_settings" format="color"/>
-        <attr name="action_bar_in_settings" format="color"/>
+        <attr name="app_bar_bg_color" format="color"/>
 
         <attr name="item_bg" format="reference" />
 

@@ -88,15 +88,13 @@ public class ReposActivity extends CommonActivity
         super.onResume();
 
         dropboxCompleteAuthentication();
-
-        ActivityUtils.setColorsForFragment(this, ReposFragment.FRAGMENT_TAG);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                ActivityUtils.closeSoftKeyboard(this);
+                ActivityUtils.INSTANCE.closeSoftKeyboard(this);
                 super.onBackPressed();
                 return true;
 

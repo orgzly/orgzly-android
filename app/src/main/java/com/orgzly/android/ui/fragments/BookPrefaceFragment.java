@@ -107,7 +107,7 @@ public class BookPrefaceFragment extends Fragment {
 
         // Open keyboard
         if (activity != null) {
-            ActivityUtils.openSoftKeyboard(activity, contentView);
+            ActivityUtils.INSTANCE.openSoftKeyboard(activity, contentView);
         }
 
         /* Parse arguments - set content. */

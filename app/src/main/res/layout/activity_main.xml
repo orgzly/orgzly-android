@@ -29,6 +29,7 @@
             android:src="?attr/ic_add_24dp"
             android:layout_gravity="end|bottom"
             android:layout_margin="@dimen/fab_margin"
+            app:backgroundTint="?attr/app_bar_bg_color"
             app:elevation="6dp"
             app:pressedTranslationZ="12dp"
             app:borderWidth="0dp"/>

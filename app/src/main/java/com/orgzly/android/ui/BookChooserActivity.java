@@ -43,9 +43,6 @@ public class BookChooserActivity extends CommonActivity
 
         getSupportActionBar().setTitle(R.string.pick_a_notebook);
 
-         /* Set status and action bar colors depending on the fragment. */
-        ActivityUtils.setColorsForFragment(this, null);
-
         setupFragments(savedInstanceState);
     }
 

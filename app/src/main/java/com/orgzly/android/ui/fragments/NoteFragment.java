@@ -306,7 +306,7 @@ public class NoteFragment extends Fragment
                 bodyView.setText(OrgFormatter.INSTANCE.parse(bodyEdit.getText().toString(), getContext()));
                 bodyView.setVisibility(View.VISIBLE);
 
-                ActivityUtils.closeSoftKeyboard(getActivity());
+                ActivityUtils.INSTANCE.closeSoftKeyboard(getActivity());
             }
 
         });
@@ -315,7 +315,7 @@ public class NoteFragment extends Fragment
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, editSwitch.isChecked());
 
             if (editSwitch.isChecked()) { // Clicked to edit content
-                ActivityUtils.openSoftKeyboard(getActivity(), bodyEdit);
+                ActivityUtils.INSTANCE.openSoftKeyboard(getActivity(), bodyEdit);
 
 //                    new Handler().postDelayed(new Runnable() {
 //                        @Override
@@ -477,7 +477,7 @@ public class NoteFragment extends Fragment
         } else { // User creating new property
             Activity activity = getActivity();
             if (activity != null) {
-                ActivityUtils.openSoftKeyboard(activity, name);
+                ActivityUtils.INSTANCE.openSoftKeyboard(activity, name);
             }
         }
 
@@ -546,7 +546,7 @@ public class NoteFragment extends Fragment
              * some initial values (for example from ShareActivity).
              */
             if (TextUtils.isEmpty(mInitialTitle) && TextUtils.isEmpty(mInitialContent)) {
-                ActivityUtils.openSoftKeyboard(getActivity(), mTitleView);
+                ActivityUtils.INSTANCE.openSoftKeyboard(getActivity(), mTitleView);
             }
 
         } else { /* Get existing note from database. */

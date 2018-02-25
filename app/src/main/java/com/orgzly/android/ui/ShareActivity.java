@@ -77,8 +77,6 @@ public class ShareActivity extends CommonActivity
 
         getSupportActionBar().setTitle(R.string.new_note);
 
-        ActivityUtils.setColorsForFragment(this, null);
-
         Data data = getDataFromIntent(getIntent());
 
         setupFragments(savedInstanceState, data);

@@ -120,7 +120,7 @@ public class FilterFragment extends Fragment implements DrawerItem {
          * For new filters focus on name, for existing focus on query.
          */
         if (viewToFocus != null && getActivity() != null) {
-            ActivityUtils.openSoftKeyboard(getActivity(), viewToFocus);
+            ActivityUtils.INSTANCE.openSoftKeyboard(getActivity(), viewToFocus);
         }
     }
 

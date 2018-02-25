@@ -123,7 +123,7 @@ public class DropboxRepoFragment extends RepoFragment {
 
         /* Open a soft keyboard. */
         if (getActivity() != null) {
-            ActivityUtils.openSoftKeyboard(getActivity(), mDirectory);
+            ActivityUtils.INSTANCE.openSoftKeyboard(getActivity(), mDirectory);
         }
 
         return view;

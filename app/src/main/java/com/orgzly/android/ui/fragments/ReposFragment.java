@@ -179,7 +179,7 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
         super.onResume();
 
         /* Close soft keyboard. Required when coming back from one of the RepoFragment fragments. */
-        ActivityUtils.closeSoftKeyboard(getActivity());
+        ActivityUtils.INSTANCE.closeSoftKeyboard(getActivity());
     }
 
     /**
