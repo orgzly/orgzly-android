@@ -1315,7 +1315,7 @@ public class MainActivity extends CommonActivity
         ActivityUtils.setColorsForFragment(this, fragmentTag);
 
         /* Update floating action button. */
-        MainFab.updateFab(this, fragmentTag, selectionCount);
+        MainFab.INSTANCE.updateFab(this, fragmentTag, selectionCount);
     }
 
     @Override

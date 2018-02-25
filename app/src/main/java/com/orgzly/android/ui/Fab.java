@@ -1,7 +1,7 @@
 package com.orgzly.android.ui;
 
 /**
- * Implemented by fragments that are using floating action button.
+ * Implemented by fragments supporting floating action button.
  */
 public interface Fab {
     Runnable getFabAction();

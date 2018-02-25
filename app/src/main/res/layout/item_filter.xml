@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     style="@style/ListViewItem"
     android:gravity="center"
-    android:background="@drawable/list_item_selector"
+    android:background="?attr/item_bg"
     android:orientation="vertical">
 
     <TextView

@@ -1,11 +1,8 @@
 package com.orgzly.android.ui
 
 import android.content.Context
-import com.orgzly.R
-
 import com.orgzly.android.prefs.AppPreferences
-
-import java.util.ArrayList
+import java.util.*
 
 class NotePriorities {
     private val values = ArrayList<String>()
