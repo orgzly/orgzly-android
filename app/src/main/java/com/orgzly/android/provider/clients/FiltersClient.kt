@@ -164,6 +164,8 @@ object FiltersClient {
             throw RuntimeException(e)
         }
 
+        updateWidgets(context)
+
         return filters.size
     }
 
