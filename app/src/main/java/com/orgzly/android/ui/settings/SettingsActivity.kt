@@ -10,7 +10,6 @@ import com.orgzly.android.ActionService
 import com.orgzly.android.AppIntent
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.settings.SettingsFragment.SettingsFragmentListener
-import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
 
 
@@ -54,6 +53,7 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
 
         supportFragmentManager
                 .beginTransaction()
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
                 .addToBackStack(null)
                 .replace(R.id.activity_settings_container, fragment)
                 .commit()

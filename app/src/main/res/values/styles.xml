@@ -15,6 +15,8 @@
         <!-- Avoid white screen appearing briefly. -->
         <item name="android:windowDisablePreview">true</item>
 
+        <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
+
         <!-- Font sizes (defaults) -->
         <item name="font_micro">12sp</item>
         <item name="font_small">14sp</item>
@@ -162,6 +164,8 @@
 
     <style name="AppDarkTheme" parent="Theme.Design.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
+
+        <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
 
         <!-- Font sizes (defaults) -->
         <item name="font_micro">12sp</item>
@@ -405,6 +409,13 @@
         <!--<item name="android:textAppearanceButton">@style/TextAppearance.AppCompat.Button</item>-->
         <!--<item name="android:textAppearanceSmall">@style/TextAppearance.AppCompat.Medium</item>-->
         <!--<item name="android:textAppearanceMedium">@style/TextAppearance.AppCompat.Large</item>-->
+    </style>
+
+    <style name="WindowAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/fragment_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/fragment_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fragment_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/fragment_exit</item>
     </style>
 
     <!-- Timestamp dialog. -->

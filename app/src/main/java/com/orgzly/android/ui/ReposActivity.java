@@ -192,6 +192,7 @@ public class ReposActivity extends CommonActivity
     private void displayRepoFragment(Fragment fragment, String tag) {
         getSupportFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
                 .addToBackStack(null)
                 .replace(R.id.activity_repos_frame, fragment, tag)
                 .commit();

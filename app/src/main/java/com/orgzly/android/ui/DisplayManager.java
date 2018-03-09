@@ -30,7 +30,7 @@ public class DisplayManager {
 
     // private static final int FRAGMENT_TRANSITION = FragmentTransaction.TRANSIT_FRAGMENT_OPEN;
     // private static final int FRAGMENT_TRANSITION = FragmentTransaction.TRANSIT_NONE;
-    private static final int FRAGMENT_TRANSITION = FragmentTransaction.TRANSIT_FRAGMENT_FADE;
+    // private static final int FRAGMENT_TRANSITION = FragmentTransaction.TRANSIT_FRAGMENT_FADE;
 
     /**
      * Displays fragment for a new filter.
@@ -42,7 +42,7 @@ public class DisplayManager {
         /* Add fragment. */
         fragmentManager
                 .beginTransaction()
-                .setTransition(FRAGMENT_TRANSITION)
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
                 .addToBackStack(null)
                 .replace(R.id.single_pane_container, fragment, FilterFragment.FRAGMENT_TAG)
                 .commit();
@@ -58,7 +58,7 @@ public class DisplayManager {
         /* Add fragment. */
         fragmentManager
                 .beginTransaction()
-                .setTransition(FRAGMENT_TRANSITION)
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
                 .addToBackStack(null)
                 .replace(R.id.single_pane_container, fragment, FilterFragment.FRAGMENT_TAG)
                 .commit();
@@ -82,7 +82,7 @@ public class DisplayManager {
 
         FragmentTransaction t = fragmentManager
                 .beginTransaction()
-                .setTransition(FRAGMENT_TRANSITION)
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
                 .addToBackStack(null)
                 .replace(R.id.single_pane_container, fragment, FiltersFragment.Companion.getFRAGMENT_TAG());
 
@@ -103,7 +103,7 @@ public class DisplayManager {
 
         FragmentTransaction t = fragmentManager
                 .beginTransaction()
-                .setTransition(FRAGMENT_TRANSITION)
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
                 .replace(R.id.single_pane_container, fragment, BooksFragment.FRAGMENT_TAG);
 
         if (addToBackStack) {
@@ -124,7 +124,7 @@ public class DisplayManager {
             /* Add fragment. */
             fragmentManager
                     .beginTransaction()
-                    .setTransition(FRAGMENT_TRANSITION)
+                    .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
                     .addToBackStack(null)
                     .replace(R.id.single_pane_container, fragment, BookFragment.FRAGMENT_TAG)
                     .commit();
@@ -156,14 +156,13 @@ public class DisplayManager {
         /* Add fragment. */
         fragmentManager
                 .beginTransaction()
-                .setTransition(FRAGMENT_TRANSITION)
-                        // .setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
                 .addToBackStack(null)
                 .replace(R.id.single_pane_container, fragment, NoteFragment.FRAGMENT_TAG)
                 .commit();
 
         // .setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left, R.anim.slide_in_from_left, R.anim.slide_out_to_right)
-        // .setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
+        // .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
     }
 
     public static void displayQuery(FragmentManager fragmentManager, @NonNull String queryString) {
@@ -193,7 +192,7 @@ public class DisplayManager {
         // Add fragment.
         fragmentManager
                 .beginTransaction()
-                .setTransition(FRAGMENT_TRANSITION)
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
                 .addToBackStack(null)
                 .replace(R.id.single_pane_container, fragment, tag)
                 .commit();
@@ -206,7 +205,7 @@ public class DisplayManager {
         /* Add fragment. */
         fragmentManager
                 .beginTransaction()
-                .setTransition(FRAGMENT_TRANSITION)
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
                 .addToBackStack(null)
                 .replace(R.id.single_pane_container, fragment, BookPrefaceFragment.FRAGMENT_TAG)
                 .commit();
