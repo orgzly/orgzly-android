@@ -194,17 +194,23 @@ class GesturedListViewItemMenu {
         containerView.startAnimation(animations);
     }
 
-    public void startClosing() {
+    public void startClosing(boolean animate) {
         /* Already closed or closing. */
         if (containerState == GesturedListViewItemMenuState.CLOSING || containerState == GesturedListViewItemMenuState.CLOSED) {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Menu already in CLOSED or CLOSING state");
             return;
         }
 
+        final ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) containerView.getLayoutParams();
+
+        if (!animate) {
+            closeContainer(params);
+            return;
+        }
+
         containerState = GesturedListViewItemMenuState.CLOSING;
         ViewCompat.setHasTransientState(containerView, true);
 
-        final ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) containerView.getLayoutParams();
 
         Animation animation;
         AnimationSet animations = new AnimationSet(false);

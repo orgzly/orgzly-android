@@ -18,6 +18,7 @@ object AgendaCursor {
 
     data class AgendaMergedCursor(val cursor: Cursor, val originalNoteIDs: Map<Long, NoteForDay>)
 
+
     fun create(context: Context, cursor: Cursor, query: String): AgendaMergedCursor {
         val parser = InternalQueryParser()
         val (_, _, options) = parser.parse(query)

@@ -80,7 +80,7 @@ public class GesturedListViewItemMenus {
                 } else {
                     /* If the menu for this gesture is already opened, close it. */
                     if (menu.isOpenedForGesture(gesture)) {
-                        menu.startClosing();
+                        menu.startClosing(true);
                         return true;
                     }
                 }
@@ -155,8 +155,16 @@ public class GesturedListViewItemMenus {
             if (id != idToKeepOpened) { /* Close unless it's a specified id. */
                 GesturedListViewItemMenu menu = openedMenus.get(id);
 
-                menu.startClosing();
+                menu.startClosing(true);
             }
+        }
+    }
+
+    public void closeAll() {
+        for (int i = 0; i < openedMenus.size(); i++) {
+            long id = openedMenus.keyAt(i);
+            GesturedListViewItemMenu menu = openedMenus.get(id);
+            menu.startClosing(false);
         }
     }
 
@@ -184,5 +192,19 @@ public class GesturedListViewItemMenus {
 
     public void setListener(GesturedListView.OnItemMenuButtonClickListener listener) {
         mListener = listener;
+    }
+
+    public Long getOpenedId() {
+        for (int i = 0; i < openedMenus.size(); i++) {
+            long id = openedMenus.keyAt(i);
+
+            GesturedListViewItemMenu menu = openedMenus.get(id);
+
+            if (!menu.isClosed()) {
+                return id;
+            }
+        }
+
+        return null;
     }
 }

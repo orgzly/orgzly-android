@@ -7,6 +7,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.util.LongSparseArray;
 import android.support.v7.view.ActionMode;
 import android.util.ArrayMap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -158,18 +159,21 @@ public class AgendaFragment extends QueryFragment {
                 AgendaCursor.INSTANCE.create(getContext(), cursor, getQuery());
 
 
+        Long openedQuickMenuId = getListView().getItemMenus().getOpenedId();
+        if (openedQuickMenuId != null) {
+            if (isSameNote(openedQuickMenuId, agendaMergedCursor)) {
+                getListView().getItemMenus().closeAll();
+            }
+        }
+
 
         Set<Long> nonExistingSelectedIds = new HashSet<>();
         for (Long id: mSelection.getIds()) {
-            AgendaCursor.NoteForDay prevSelected = originalNoteIDs.get(id);
-            AgendaCursor.NoteForDay currSelected = agendaMergedCursor.getOriginalNoteIDs().get(id);
-
-            if (currSelected == null || prevSelected == null || !prevSelected.equals(currSelected)) {
+            if (isSameNote(id, agendaMergedCursor)) {
                 nonExistingSelectedIds.add(id);
             }
         }
         mSelection.deselectAll(nonExistingSelectedIds);
-
 
 
         originalNoteIDs = agendaMergedCursor.getOriginalNoteIDs();
@@ -178,7 +182,11 @@ public class AgendaFragment extends QueryFragment {
         mActionModeListener.updateActionModeForSelection(mSelection.getCount(), new MyActionMode());
     }
 
-
+    private boolean isSameNote(long id, AgendaCursor.AgendaMergedCursor agendaMergedCursor) {
+        AgendaCursor.NoteForDay prevSelected = originalNoteIDs.get(id);
+        AgendaCursor.NoteForDay currSelected = agendaMergedCursor.getOriginalNoteIDs().get(id);
+        return currSelected == null || prevSelected == null || !prevSelected.equals(currSelected);
+    }
 
     protected class MyActionMode extends QueryFragment.MyActionMode {
         @Override
