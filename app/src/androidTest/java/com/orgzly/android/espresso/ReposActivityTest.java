@@ -64,6 +64,7 @@ public class ReposActivityTest extends OrgzlyTest {
 
         activityRule.launchActivity(null);
 
+        onView(withId(R.id.fragment_repos_flipper)).check(matches(isDisplayed()));
         onView(withId(R.id.fragment_repos_dropbox)).perform(click());
         onView(withId(R.id.fragment_repo_dropbox_directory)).perform(replaceText(localDir));
         onView(withId(R.id.done)).perform(click());

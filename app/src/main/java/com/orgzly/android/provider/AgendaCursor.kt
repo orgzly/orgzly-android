@@ -5,7 +5,6 @@ import android.database.Cursor
 import android.database.MatrixCursor
 import android.database.MergeCursor
 import android.provider.BaseColumns
-import android.support.v4.util.LongSparseArray
 import com.orgzly.android.provider.models.DbNoteColumns
 import com.orgzly.android.provider.views.DbNoteViewColumns
 import com.orgzly.android.query.user.InternalQueryParser
@@ -15,7 +14,9 @@ import org.joda.time.DateTime
 import java.util.*
 
 object AgendaCursor {
-    data class AgendaMergedCursor(val cursor: Cursor, val originalNoteIDs: LongSparseArray<Long>)
+    data class NoteForDay(val noteId: Long, val day: DateTime)
+
+    data class AgendaMergedCursor(val cursor: Cursor, val originalNoteIDs: Map<Long, NoteForDay>)
 
     fun create(context: Context, cursor: Cursor, query: String): AgendaMergedCursor {
         val parser = InternalQueryParser()
@@ -48,7 +49,7 @@ object AgendaCursor {
         val deadlineRangeStrIdx = cursor.getColumnIndex(DbNoteViewColumns.DEADLINE_RANGE_STRING)
 
         var nextId = 1L
-        val originalNoteIDs = LongSparseArray<Long>()
+        val originalNoteIDs = mutableMapOf<Long, NoteForDay>()
 
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
@@ -60,38 +61,34 @@ object AgendaCursor {
             )
 
             // Add notes to each day
-            dates
-                    .asSequence()
-                    .mapNotNull {
-                        agenda[it.millis]
-                    }
-                    .forEach { matrixCursor ->
-                        val rowBuilder = matrixCursor.newRow()
+            dates.forEach { dd ->
+                agenda[dd.millis]?.let {
+                    val rowBuilder = it.newRow()
 
-                        for (col in columnNames) {
-                            when {
-                                col.equals(BaseColumns._ID) -> {
-                                    // Add next id
-                                    rowBuilder.add(nextId)
+                    for (col in columnNames) {
+                        when {
+                            col.equals(BaseColumns._ID) -> {
+                                // Add next id
+                                rowBuilder.add(nextId)
 
-                                    // Update map of original ids
-                                    val noteId = cursor.getLong(cursor.getColumnIndex(col))
-                                    originalNoteIDs.put(nextId, noteId)
+                                // Update map of original ids
+                                val noteId = cursor.getLong(cursor.getColumnIndex(col))
+                                originalNoteIDs[nextId] = NoteForDay(noteId, dd)
 
-                                    nextId++
-                                }
-
-                                col.equals(Columns.IS_DIVIDER) ->
-                                    // Mark row as not being a divider
-                                    rowBuilder.add(0)
-
-                                else ->
-                                    // Actual note's data
-                                    rowBuilder.add(cursor.getString(cursor.getColumnIndex(col)))
+                                nextId++
                             }
-                        }
 
+                            col.equals(Columns.IS_DIVIDER) ->
+                                // Mark row as not being a divider
+                                rowBuilder.add(0)
+
+                            else ->
+                                // Actual note's data
+                                rowBuilder.add(cursor.getString(cursor.getColumnIndex(col)))
+                        }
                     }
+                }
+            }
 
             cursor.moveToNext()
         }

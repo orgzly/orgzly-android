@@ -6,24 +6,26 @@ import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.support.v4.util.LongSparseArray;
 import android.support.v7.view.ActionMode;
+import android.util.ArrayMap;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.AgendaCursor;
 import com.orgzly.android.ui.AgendaListViewAdapter;
 import com.orgzly.android.ui.Loaders;
-import com.orgzly.android.ui.NoteStates;
 import com.orgzly.android.ui.Selection;
+import com.orgzly.android.ui.SelectionUtils;
 import com.orgzly.android.util.LogUtils;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 
@@ -33,8 +35,8 @@ public class AgendaFragment extends QueryFragment {
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = AgendaFragment.class.getName();
 
-    /* Maps agenda's item ID to note ID */
-    private LongSparseArray<Long> originalNoteIDs = new LongSparseArray<>();
+    /* Maps agenda's item ID to real note ID */
+    private Map<Long, AgendaCursor.NoteForDay> originalNoteIDs = new HashMap<>();
 
     int currentLoaderId = -1;
 
@@ -71,7 +73,7 @@ public class AgendaFragment extends QueryFragment {
         /* On long click */
         getListView().setOnItemLongClickListener((parent, view1, position, id) -> {
             if (mListAdapter.getItemViewType(position) != AgendaListViewAdapter.DIVIDER_VIEW_TYPE) {
-                mListener.onNoteLongClick(AgendaFragment.this, view1, position, id, originalNoteIDs.get(id));
+                mListener.onNoteLongClick(AgendaFragment.this, view1, position, id, originalNoteIDs.get(id).getNoteId());
             }
             return true;
         });
@@ -79,7 +81,7 @@ public class AgendaFragment extends QueryFragment {
         getListView().setOnItemMenuButtonClickListener(
                 (itemView, buttonId, noteId) ->
                         // Pass the original note ID
-                        onButtonClick(mListener, itemView, buttonId, originalNoteIDs.get(noteId)));
+                        onButtonClick(mListener, itemView, buttonId, originalNoteIDs.get(noteId).getNoteId()));
 
         /* Create a selection. */
         mSelection = new Selection();
@@ -124,7 +126,7 @@ public class AgendaFragment extends QueryFragment {
         int itemViewType = mListAdapter.getItemViewType(position);
 
         if (itemViewType == AgendaListViewAdapter.NOTE_VIEW_TYPE) {
-            mListener.onNoteClick(this, view, position, id, originalNoteIDs.get(id));
+            mListener.onNoteClick(this, view, position, id, originalNoteIDs.get(id).getNoteId());
         }
     }
 
@@ -155,15 +157,23 @@ public class AgendaFragment extends QueryFragment {
         AgendaCursor.AgendaMergedCursor agendaMergedCursor =
                 AgendaCursor.INSTANCE.create(getContext(), cursor, getQuery());
 
-        Cursor mergedCursor = agendaMergedCursor.getCursor();
-        originalNoteIDs = agendaMergedCursor.getOriginalNoteIDs();
 
-        /*
-         * Swapping instead of changing Cursor here, to keep the old one open.
-         * Loader should release the old Cursor - see note in
-         * {@link LoaderManager.LoaderCallbacks#onLoadFinished).
-         */
-        mListAdapter.swapCursor(mergedCursor);
+
+        Set<Long> nonExistingSelectedIds = new HashSet<>();
+        for (Long id: mSelection.getIds()) {
+            AgendaCursor.NoteForDay prevSelected = originalNoteIDs.get(id);
+            AgendaCursor.NoteForDay currSelected = agendaMergedCursor.getOriginalNoteIDs().get(id);
+
+            if (currSelected == null || prevSelected == null || !prevSelected.equals(currSelected)) {
+                nonExistingSelectedIds.add(id);
+            }
+        }
+        mSelection.deselectAll(nonExistingSelectedIds);
+
+
+
+        originalNoteIDs = agendaMergedCursor.getOriginalNoteIDs();
+        mListAdapter.swapCursor(agendaMergedCursor.getCursor());
 
         mActionModeListener.updateActionModeForSelection(mSelection.getCount(), new MyActionMode());
     }
@@ -194,15 +204,9 @@ public class AgendaFragment extends QueryFragment {
         private TreeSet<Long> originalSelectedIds() {
             TreeSet<Long> selectionIds = new TreeSet<>();
             for (Long id: mSelection.getIds()) {
-                Long originalId = originalNoteIDs.get(id);
-                /*
-                 * Original ID might be missing if user selects a note before it's gone
-                 * (because of sync re-loading a notebook for example).  Adding null to TreeSet
-                 * throws NullPointerException.  TODO: De-select notes and remove this check
-                 */
-                if (originalId != null) {
-                    selectionIds.add(originalId);
-                }
+                AgendaCursor.NoteForDay originalId = originalNoteIDs.get(id);
+                long noteId = originalId.getNoteId();
+                selectionIds.add(noteId);
             }
             return selectionIds;
         }

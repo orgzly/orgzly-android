@@ -702,7 +702,7 @@ public class QueryFragmentTest extends OrgzlyTest {
     }
 
     @Test
-    public void testDeSelectRemovedNote() {
+    public void testDeSelectRemovedNoteInSearch() {
         shelfTestUtils.setupBook("notebook", "* TODO Note A\n* TODO Note B");
         activityRule.launchActivity(null);
 
@@ -719,6 +719,31 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withText(R.string.clear)).perform(click());
 
         onList().check(matches(listViewItemCount(1)));
+        onView(withId(R.id.action_bar_title)).check(doesNotExist());
+    }
+
+    @Test
+    public void testDeSelectRemovedNoteInAgenda() {
+        shelfTestUtils.setupBook(
+                "notebook",
+                "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>\n"
+                + "* TODO Note B\nSCHEDULED: <2018-01-01 .+1d>\n");
+
+        activityRule.launchActivity(null);
+
+        searchForText("i.todo ad.3");
+
+        onListItem(1).perform(longClick());
+
+        onList().check(matches(listViewItemCount(9)));
+        onView(withId(R.id.action_bar_title)).check(matches(withText("1")));
+
+        // Remove state from selected note
+        onView(withId(R.id.query_cab_edit)).perform(click());
+        onView(withText(R.string.state)).perform(click());
+        onView(withText(R.string.clear)).perform(click());
+
+        onList().check(matches(listViewItemCount(6)));
         onView(withId(R.id.action_bar_title)).check(doesNotExist());
     }
 }

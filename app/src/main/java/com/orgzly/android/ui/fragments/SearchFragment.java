@@ -128,7 +128,7 @@ public class SearchFragment extends QueryFragment {
             return;
         }
 
-        SelectionUtils.removeNonExistingIdsFromSelection(mSelection, cursor);
+        SelectionUtils.INSTANCE.removeNonExistingIdsFromSelection(mSelection, cursor);
 
         mListAdapter.swapCursor(cursor);
 

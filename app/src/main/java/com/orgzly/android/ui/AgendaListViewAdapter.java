@@ -2,6 +2,7 @@ package com.orgzly.android.ui;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.provider.BaseColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,8 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
 
         if (isRowDivider) {
             DividerHolder divider = (DividerHolder) view.getTag();
-            divider.text.setText(cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.DIVIDER_VALUE)));
+            String value = cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.DIVIDER_VALUE));
+            divider.text.setText(value);
 
             int[] margins = getMarginsForListDensity(context);
             view.setPadding(view.getPaddingLeft(), margins[0], view.getPaddingRight(), margins[0]);

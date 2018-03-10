@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Binder;
 import android.provider.BaseColumns;
-import android.support.v4.util.LongSparseArray;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -28,12 +27,14 @@ import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.OrgHead;
 
+import java.util.Map;
+
 public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     private static final String TAG = ListWidgetViewsFactory.class.getName();
 
     private boolean isPartitioned;
     private Cursor mCursor;
-    private LongSparseArray<Long> originalNoteIDs;
+    private Map<Long, AgendaCursor.NoteForDay> originalNoteIDs;
 
     private Context mContext;
     private String queryString;
@@ -141,7 +142,7 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
         Note note = NotesClient.fromCursor(cursor);
 
         if (isPartitioned) {
-            Long originalId = originalNoteIDs.get(note.getId());
+            Long originalId = originalNoteIDs.get(note.getId()).getNoteId();
             note.setId(originalId);
         }
 

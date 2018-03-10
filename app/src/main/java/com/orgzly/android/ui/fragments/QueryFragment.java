@@ -36,8 +36,6 @@ abstract public class QueryFragment extends NoteListFragment
     /** Arguments. */
     protected static final String ARG_QUERY = "query";
 
-    protected static final int STATE_ITEM_GROUP = 1;
-
     protected SimpleCursorAdapter mListAdapter;
 
     protected NoteListFragmentListener mListener;
