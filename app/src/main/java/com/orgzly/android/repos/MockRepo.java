@@ -2,6 +2,7 @@ package com.orgzly.android.repos;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.SystemClock;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,37 +45,25 @@ public class MockRepo implements Repo {
 
     @Override
     public List<VersionedRook> getBooks() throws IOException {
-        try {
-            Thread.sleep(SLEEP_FOR_GET_BOOKS);
-        } catch (InterruptedException e) { }
-
+        SystemClock.sleep(SLEEP_FOR_GET_BOOKS);
         return localDbRepo.getBooks();
     }
 
     @Override
     public VersionedRook retrieveBook(Uri uri, File file) throws IOException {
-        try {
-            Thread.sleep(SLEEP_FOR_RETRIEVE_BOOK);
-        } catch (InterruptedException e) { }
-
+        SystemClock.sleep(SLEEP_FOR_RETRIEVE_BOOK);
         return localDbRepo.retrieveBook(uri, file);
     }
 
     @Override
     public VersionedRook storeBook(File file, String fileName) throws IOException {
-        try {
-            Thread.sleep(SLEEP_FOR_STORE_BOOK);
-        } catch (InterruptedException e) { }
-
+        SystemClock.sleep(SLEEP_FOR_STORE_BOOK);
         return localDbRepo.storeBook(file, fileName);
     }
 
     @Override
     public VersionedRook renameBook(Uri fromUri, String name) throws IOException {
-        try {
-            Thread.sleep(SLEEP_FOR_STORE_BOOK);
-        } catch (InterruptedException e) { }
-
+        SystemClock.sleep(SLEEP_FOR_STORE_BOOK);
         return localDbRepo.renameBook(fromUri, name);
     }
 

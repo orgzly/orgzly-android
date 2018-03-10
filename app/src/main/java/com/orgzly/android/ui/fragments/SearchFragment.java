@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.support.v7.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -17,8 +15,8 @@ import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.ui.HeadsListViewAdapter;
 import com.orgzly.android.ui.Loaders;
-import com.orgzly.android.ui.NoteStates;
 import com.orgzly.android.ui.Selection;
+import com.orgzly.android.ui.SelectionUtils;
 import com.orgzly.android.util.LogUtils;
 
 /**
@@ -129,6 +127,8 @@ public class SearchFragment extends QueryFragment {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "adapter is null, view is destroyed?");
             return;
         }
+
+        SelectionUtils.removeNonExistingIdsFromSelection(mSelection, cursor);
 
         mListAdapter.swapCursor(cursor);
 

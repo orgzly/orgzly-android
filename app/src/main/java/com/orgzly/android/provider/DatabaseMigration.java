@@ -72,7 +72,7 @@ public class DatabaseMigration {
 
         /* Simulate slow upgrade. */
         // notifyUserIfSlow.run();
-        // try { Thread.sleep(5000); } catch (InterruptedException e) { e.printStackTrace(); }
+        // SystemClock.sleep(5000);
 
         switch (oldVersion) {
             case DB_VER_1:

@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.orgzly.R;
 
+import java.util.Collection;
 import java.util.TreeSet;
 
 public class Selection {
@@ -39,6 +40,10 @@ public class Selection {
 
     public void deselect(long noteId) {
         mSelectedIds.remove(noteId);
+    }
+
+    public void deselectAll(Collection<Long> noteIds) {
+        mSelectedIds.removeAll(noteIds);
     }
 
     public void toggle(View view, long noteId) {

@@ -1,6 +1,7 @@
 package com.orgzly.android.espresso;
 
 import android.content.pm.ActivityInfo;
+import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.UiController;
@@ -156,12 +157,7 @@ class EspressoUtils {
         activityRule.getActivity().setRequestedOrientation(requestedOrientation);
 
         /* Not pretty, but it does seem to fix testFragments from randomly failing. */
-        try {
-            // Thread.sleep(1000);
-            Thread.sleep(750);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        SystemClock.sleep(750);
     }
 
     static DataInteraction onSpinnerString(String value) {
@@ -201,7 +197,7 @@ class EspressoUtils {
         onView(withHint(R.string.search_hint)).perform(replaceText(str), pressKey(66));
 
         /* TODO: Ugh. */
-        try { Thread.sleep(300); } catch (InterruptedException e) { e.printStackTrace(); }
+        SystemClock.sleep(300);
     }
 
     /**

@@ -1,10 +1,14 @@
 package com.orgzly.android.espresso;
 
+import android.content.Intent;
+import android.os.SystemClock;
 import android.support.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.sync.BookSyncStatus;
+import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.MainActivity;
 
 import org.junit.Rule;
@@ -28,7 +32,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
+import static com.orgzly.android.espresso.EspressoUtils.listViewItemCount;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
+import static com.orgzly.android.espresso.EspressoUtils.onList;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.onSpinnerString;
 import static com.orgzly.android.espresso.EspressoUtils.settingsSetTodoKeywords;
@@ -49,7 +55,6 @@ public class SyncingTest extends OrgzlyTest {
     private void sync() {
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withId(R.id.sync_button_container)).perform(click());
-        // onView(withId(R.id.sync_button_text)).check(matches(withText(startsWith("Last sync:"))));
         onView(withId(R.id.drawer_layout)).perform(close());
     }
 
@@ -634,5 +639,41 @@ public class SyncingTest extends OrgzlyTest {
 
         onListItem(0).onChildView(withId(R.id.item_book_last_action))
                 .check(matches(withText(endsWith(errMsg))));
+    }
+
+    @Test
+    public void testDeSelectRemovedNote() {
+        shelfTestUtils.setupRepo("mock://repo-a");
+        shelfTestUtils.setupRook(
+                "mock://repo-a",
+                "mock://repo-a/book-a.org",
+                "* TODO Note [a-1]\n* TODO Note [a-2]",
+                "1520077116000",
+                1520077116000L);
+        activityRule.launchActivity(null);
+
+        sync();
+
+        onListItem(0).perform(click());
+        onListItem(0).perform(longClick());
+
+        onList().check(matches(listViewItemCount(2)));
+        onView(withId(R.id.action_bar_title)).check(matches(withText("1")));
+
+        shelfTestUtils.setupRook(
+                "mock://repo-a",
+                "mock://repo-a/book-a.org",
+                "* TODO Note [a-1]",
+                "1520681916000",
+                1520681916000L);
+
+        // Sync by starting the service directly, to keep note selected
+        Intent intent = new Intent(context, SyncService.class);
+        intent.setAction(AppIntent.ACTION_SYNC_START);
+        context.startService(intent);
+        SystemClock.sleep(1000);
+
+        onList().check(matches(listViewItemCount(1)));
+        onView(withId(R.id.action_bar_title)).check(doesNotExist());
     }
 }

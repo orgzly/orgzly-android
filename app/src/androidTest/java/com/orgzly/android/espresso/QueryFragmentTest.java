@@ -20,10 +20,12 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerActions.open;
 import static android.support.test.espresso.contrib.PickerActions.setDate;
 import static android.support.test.espresso.contrib.PickerActions.setTime;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -697,5 +699,26 @@ public class QueryFragmentTest extends OrgzlyTest {
         onList().check(matches(listViewItemCount(3)));
         onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
         onListItem(1).onChildView(withId(R.id.item_head_content)).check(matches(allOf(withText(containsString("Content for Note B")), isDisplayed())));
+    }
+
+    @Test
+    public void testDeSelectRemovedNote() {
+        shelfTestUtils.setupBook("notebook", "* TODO Note A\n* TODO Note B");
+        activityRule.launchActivity(null);
+
+        searchForText("i.todo");
+
+        onListItem(0).perform(longClick());
+
+        onList().check(matches(listViewItemCount(2)));
+        onView(withId(R.id.action_bar_title)).check(matches(withText("1")));
+
+        // Remove state from selected note
+        onView(withId(R.id.query_cab_edit)).perform(click());
+        onView(withText(R.string.state)).perform(click());
+        onView(withText(R.string.clear)).perform(click());
+
+        onList().check(matches(listViewItemCount(1)));
+        onView(withId(R.id.action_bar_title)).check(doesNotExist());
     }
 }

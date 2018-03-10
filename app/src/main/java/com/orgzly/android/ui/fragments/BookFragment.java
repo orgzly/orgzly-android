@@ -41,6 +41,7 @@ import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.ui.Selection;
+import com.orgzly.android.ui.SelectionUtils;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.ui.views.GesturedListView;
@@ -651,6 +652,8 @@ public class BookFragment extends NoteListFragment
 
     private void notesLoaded(Cursor cursor) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, cursor);
+
+        SelectionUtils.removeNonExistingIdsFromSelection(mSelection, cursor);
 
         mListAdapter.swapCursor(cursor);
 
