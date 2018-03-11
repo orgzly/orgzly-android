@@ -317,8 +317,11 @@ public class Provider extends ContentProvider {
             cursor = db.query(table, projection, selection, selectionArgs, null, null, sortOrder);
         }
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Cursor count: " + cursor.getCount() + " for " +
-                table + " " + selection + " " + (selectionArgs != null ? TextUtils.join(",", selectionArgs) : ""));
+        if (BuildConfig.LOG_DEBUG)
+            LogUtils.d(TAG, "Cursor count: " + cursor.getCount()
+                            + " for " + uri.toString() + " "
+                            + table + " " + selection + " "
+                            + (selectionArgs != null ? TextUtils.join(",", selectionArgs) : ""));
 
         cursor.setNotificationUri(getContext().getContentResolver(), ProviderContract.AUTHORITY_URI);
 

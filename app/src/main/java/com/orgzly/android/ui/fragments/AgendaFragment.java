@@ -107,7 +107,7 @@ public class AgendaFragment extends QueryFragment {
         int id = Loaders.generateLoaderId(Loaders.AGENDA_FRAGMENT, mQuery);
         currentLoaderId = id;
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Loader #" + id + " for: " + mQuery);
-        getActivity().getSupportLoaderManager().restartLoader(id, null, this);
+        getActivity().getSupportLoaderManager().initLoader(id, null, this);
     }
 
     @Override
