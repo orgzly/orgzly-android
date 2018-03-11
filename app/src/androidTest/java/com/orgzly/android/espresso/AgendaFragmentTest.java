@@ -18,6 +18,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.swipeRight;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerActions.open;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -185,5 +186,30 @@ public class AgendaFragmentTest extends OrgzlyTest {
         openAgenda();
         onListItem(2).perform(longClick());
         onView(withId(R.id.fragment_note_title)).check(matches(withText("Note C")));
+    }
+
+    @Test
+    public void testDeSelectRemovedNoteInAgenda() {
+        shelfTestUtils.setupBook(
+                "notebook",
+                "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>\n"
+                + "* TODO Note B\nSCHEDULED: <2018-01-01 .+1d>\n");
+
+        activityRule.launchActivity(null);
+
+        searchForText("i.todo ad.3");
+
+        onListItem(1).perform(longClick());
+
+        onList().check(matches(listViewItemCount(9)));
+        onView(withId(R.id.action_bar_title)).check(matches(withText("1")));
+
+        // Remove state from selected note
+        onView(withId(R.id.query_cab_edit)).perform(click());
+        onView(withText(R.string.state)).perform(click());
+        onView(withText(R.string.clear)).perform(click());
+
+        onList().check(matches(listViewItemCount(6)));
+        onView(withId(R.id.action_bar_title)).check(doesNotExist());
     }
 }

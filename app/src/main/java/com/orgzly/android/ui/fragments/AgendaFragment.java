@@ -4,10 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.support.v4.util.LongSparseArray;
 import android.support.v7.view.ActionMode;
-import android.util.ArrayMap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +17,6 @@ import com.orgzly.android.provider.AgendaCursor;
 import com.orgzly.android.ui.AgendaListViewAdapter;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.Selection;
-import com.orgzly.android.ui.SelectionUtils;
 import com.orgzly.android.util.LogUtils;
 
 import java.util.HashMap;

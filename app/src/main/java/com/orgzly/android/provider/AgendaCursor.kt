@@ -109,14 +109,14 @@ object AgendaCursor {
         return cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.DIVIDER_VALUE))
     }
 
-    private fun mergeDates(id: Long, agenda: Map<Long, MatrixCursor>, userTimeFormatter: UserTimeFormatter): MergeCursor {
+    private fun mergeDates(id: Long, agenda: Map<Long, MatrixCursor>, timeFormatter: UserTimeFormatter): MergeCursor {
         var nextId = id
-        val allCursors = ArrayList<Cursor>()
+        val cursors = ArrayList<Cursor>()
 
         for (dateMilli in agenda.keys) {
             val date = DateTime(dateMilli)
 
-            /* Add divider. */
+            // Add divider
             val dateCursor = MatrixCursor(arrayOf(
                     BaseColumns._ID,
                     Columns.DIVIDER_VALUE,
@@ -125,17 +125,18 @@ object AgendaCursor {
             val dateRow = dateCursor.newRow()
 
             dateRow.add(nextId++)
-            dateRow.add(userTimeFormatter.formatDate(date))
+            dateRow.add(timeFormatter.formatDate(date))
             dateRow.add(1)
 
-            allCursors.add(dateCursor)
+            cursors.add(dateCursor)
 
+            // Add notes
             agenda[dateMilli]?.let {
-                allCursors.add(it)
+                cursors.add(it)
             }
         }
 
-        return MergeCursor(allCursors.toTypedArray())
+        return MergeCursor(cursors.toTypedArray())
     }
 
     object Columns: BaseColumns, DbNoteColumns {
