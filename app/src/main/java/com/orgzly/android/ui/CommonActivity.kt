@@ -208,7 +208,8 @@ abstract class CommonActivity : AppCompatActivity() {
         super.onResume()
 
         if (restartActivity) {
-            Handler().post(this@CommonActivity::recreate)
+            recreate()
+            // Handler().post(this@CommonActivity::recreate)
             restartActivity = false
         }
     }
