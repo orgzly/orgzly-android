@@ -20,7 +20,7 @@ public class BookNamesake {
     /** Local book. */
     private Book book;
 
-    /** Remote versioned books. TODO: Is this even used? We don't want to support 1->many links, it would be too confusing. */
+    /** Remote versioned books. */
     private List<VersionedRook> versionedRooks = new ArrayList<>();
 
     /** Current remote book that the local one is linking to. */
@@ -118,7 +118,7 @@ public class BookNamesake {
     /* TODO: Case: Remote book deleted? */
     public void updateStatus(int reposCount) {
         /* Sanity check. Group's name must come from somewhere - local or remote books. */
-        if (book == null && versionedRooks.size() == 0) {
+        if (book == null && versionedRooks.isEmpty()) {
             throw new IllegalStateException("BookNameGroup does not contain any books");
         }
 
@@ -133,7 +133,7 @@ public class BookNamesake {
 
             return;
 
-        } else if (versionedRooks.size() == 0) {
+        } else if (versionedRooks.isEmpty()) {
             /* Local book only */
 
             if (book.isDummy()) { /* Only dummy exists. */
