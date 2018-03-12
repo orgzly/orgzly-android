@@ -4,7 +4,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.v4.provider.DocumentFile;
 
+import com.orgzly.BuildConfig;
 import com.orgzly.android.repos.Rook;
+import com.orgzly.android.util.LogUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,6 +16,8 @@ import java.util.regex.Pattern;
  * Given a book name and a format - constructs a filename.
  */
 public class BookName {
+    private static final String TAG = BookName.class.getName();
+
     private static final Pattern PATTERN = Pattern.compile("(.*)\\.(org)(\\.txt)?$");
     private static final Pattern SKIP_PATTERN = Pattern.compile("^\\.#.*");
 
@@ -39,6 +43,13 @@ public class BookName {
         } else { // Just get the last path segment
             fileName = uri.getLastPathSegment();
         }
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(
+                TAG,
+                uri,
+                documentFile,
+                documentFile != null ? documentFile.getName() : "no-doc-no-name",
+                fileName);
 
         return fileName;
     }

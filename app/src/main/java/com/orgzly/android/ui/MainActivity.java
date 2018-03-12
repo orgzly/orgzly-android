@@ -818,7 +818,7 @@ public class MainActivity extends CommonActivity
         }
 
         View view = View.inflate(this, R.layout.dialog_book_delete, null);
-        final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
+        final CheckBox checkBox = view.findViewById(R.id.checkbox);
 
         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             switch (which) {
@@ -841,7 +841,7 @@ public class MainActivity extends CommonActivity
                         .setPositiveButton(R.string.ok, dialogClickListener)
                         .setNegativeButton(R.string.cancel, dialogClickListener);
 
-        if (book.getLink() != null) {
+        if (book.hasLink()) {
             builder.setView(view);
         }
 
@@ -858,10 +858,8 @@ public class MainActivity extends CommonActivity
         }
 
         final View dialogView = View.inflate(this, R.layout.dialog_book_rename, null);
-        final TextInputLayout nameInputLayout = (TextInputLayout) dialogView.findViewById(R.id.name_input_layout);
-        final EditText name = (EditText) dialogView.findViewById(R.id.name);
-
-        Uri originalLinkUri = book.getLink() != null ? book.getLink().getUri() : null;
+        final TextInputLayout nameInputLayout = dialogView.findViewById(R.id.name_input_layout);
+        final EditText name = dialogView.findViewById(R.id.name);
 
         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             switch (which) {
@@ -898,23 +896,21 @@ public class MainActivity extends CommonActivity
 
         dialog.setOnDismissListener(d -> ActivityUtils.INSTANCE.closeSoftKeyboard(activity));
 
-        if (originalLinkUri != null) {
-            name.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                }
+        name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
-                @Override
-                public void afterTextChanged(Editable str) {
-                    /* Disable the button is nothing is entered. */
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(!TextUtils.isEmpty(str));
-                }
-            });
-        }
+            @Override
+            public void afterTextChanged(Editable str) {
+                /* Disable the button is nothing is entered. */
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(!TextUtils.isEmpty(str));
+            }
+        });
 
         dialog.show();
     }
@@ -963,7 +959,7 @@ public class MainActivity extends CommonActivity
         spinner.setAdapter(adapter);
 
         /* Set spinner to current book's link. */
-        if (book.getLink() != null) {
+        if (book.hasLink()) {
             Integer pos = items.get(book.getLink().getRepoUri().toString());
             if (pos != null) {
                 spinner.setSelection(pos);

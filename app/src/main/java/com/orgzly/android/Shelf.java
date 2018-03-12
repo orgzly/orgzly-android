@@ -635,7 +635,7 @@ public class Shelf {
         }
 
         /* Make sure link's repo is the same as sync book repo. */
-        if (book.getLink() != null && book.getLastSyncedToRook() != null) {
+        if (book.hasLink() && book.getLastSyncedToRook() != null) {
             if (! book.getLink().getUri().equals(book.getLastSyncedToRook().getUri())) {
                 String s = BookSyncStatus.ROOK_AND_VROOK_HAVE_DIFFERENT_REPOS.toString();
                 setBookStatus(book, s, new BookAction(BookAction.Type.ERROR, s));
@@ -755,6 +755,8 @@ public class Shelf {
             }
 
             Uri rookUri = RepoFactory.getFromUri(mContext, repoUrl).getUriForFilename(fileName);
+
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, repoUrl, fileName, rookUri);
 
             if (rookUri != null) {
                 BooksClient.setLink(mContext, book.getId(), repoUrl, rookUri.toString());

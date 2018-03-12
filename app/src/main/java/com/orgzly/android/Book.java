@@ -100,6 +100,10 @@ public class Book {
         return rook;
     }
 
+    public boolean hasLink() {
+        return rook != null;
+    }
+
     public boolean isDummy() {
         return isDummy;
     }

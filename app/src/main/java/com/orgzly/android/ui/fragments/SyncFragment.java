@@ -440,7 +440,7 @@ public class SyncFragment extends Fragment {
                         String fileName;
 
                         /* Prefer link. */
-                        if (book.getLink() != null) {
+                        if (book.hasLink()) {
                             Rook link = book.getLink();
                             repoUrl = link.getRepoUri().toString();
                             fileName = BookName.getFileName(getContext(), link.getUri());

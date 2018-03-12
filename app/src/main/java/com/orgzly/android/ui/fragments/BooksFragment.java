@@ -330,7 +330,7 @@ public class BooksFragment extends ListFragment
                 placer.displayDetailByCondition(holder.mtimeContainer, isPreferenceActivated(R.string.pref_value_book_details_mtime, context));
 
                 /* If book has no link - remove related rows. */
-                if (book.getLink() != null) {
+                if (book.hasLink()) {
                     placer.displayDetailByCondition(holder.linkDetailsContainer, isPreferenceActivated(R.string.pref_value_book_details_link_url, context));
                 } else {
                     placer.hideElement(holder.linkDetailsContainer);
