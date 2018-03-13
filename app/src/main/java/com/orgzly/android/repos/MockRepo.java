@@ -50,9 +50,9 @@ public class MockRepo implements Repo {
     }
 
     @Override
-    public VersionedRook retrieveBook(Uri uri, File file) throws IOException {
+    public VersionedRook retrieveBook(String fileName, File file) throws IOException {
         SystemClock.sleep(SLEEP_FOR_RETRIEVE_BOOK);
-        return localDbRepo.retrieveBook(uri, file);
+        return localDbRepo.retrieveBook(fileName, file);
     }
 
     @Override

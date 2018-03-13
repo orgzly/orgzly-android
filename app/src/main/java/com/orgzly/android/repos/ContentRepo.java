@@ -111,21 +111,21 @@ public class ContentRepo implements Repo {
     }
 
     @Override
-    public VersionedRook retrieveBook(Uri uri, File destinationFile) throws IOException {
-        DocumentFile sourceFile = DocumentFile.fromSingleUri(context, uri);
+    public VersionedRook retrieveBook(String fileName, File destinationFile) throws IOException {
+        DocumentFile sourceFile = repoDocumentFile.findFile(fileName);
+        if (sourceFile == null) {
+            throw new FileNotFoundException("Book " + fileName + " not found in " + repoUri);
+        }
 
         /* "Download" the file. */
-        InputStream is = context.getContentResolver().openInputStream(uri);
-        try {
+        try (InputStream is = context.getContentResolver().openInputStream(sourceFile.getUri())) {
             MiscUtils.writeStreamToFile(is, destinationFile);
-        } finally {
-            is.close();
         }
 
         String rev = String.valueOf(sourceFile.lastModified());
         long mtime = sourceFile.lastModified();
 
-        return new VersionedRook(repoUri, uri, rev, mtime);
+        return new VersionedRook(repoUri, sourceFile.getUri(), rev, mtime);
     }
 
     @Override

@@ -99,7 +99,9 @@ public class DirectoryRepo implements Repo {
     }
 
     @Override
-    public VersionedRook retrieveBook(Uri uri, File destinationFile) throws IOException {
+    public VersionedRook retrieveBook(String fileName, File destinationFile) throws IOException {
+        Uri uri = repoUri.buildUpon().appendPath(fileName).build();
+
         File sourceFile = new File(uri.getPath());
 
         /* "Download" the file. */

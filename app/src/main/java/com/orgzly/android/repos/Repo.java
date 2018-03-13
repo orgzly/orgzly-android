@@ -31,7 +31,7 @@ public interface Repo {
     /**
      * Download the latest available revision of the book and store its content to {@code File}.
      */
-    VersionedRook retrieveBook(Uri uri, File destination) throws IOException;
+    VersionedRook retrieveBook(String fileName, File destination) throws IOException;
 
     /**
      * Uploads book storing it under given filename under repo's url.

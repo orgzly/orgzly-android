@@ -46,7 +46,8 @@ public class LocalDbRepo implements Repo {
     }
 
     @Override
-    public VersionedRook retrieveBook(Uri uri, File file) throws IOException {
+    public VersionedRook retrieveBook(String fileName, File file) throws IOException {
+        Uri uri = repoUri.buildUpon().appendPath(fileName).build();
         return LocalDbRepoClient.retrieveBook(mContext, repoUri, uri, file);
     }
 

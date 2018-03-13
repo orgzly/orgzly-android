@@ -567,13 +567,13 @@ public class Shelf {
             throw new IOException("Unsupported repository URL \"" + rook.getRepoUri() + "\"");
         }
 
-        File tmpFile = getTempBookFile();
+        String fileName = BookName.getFileName(mContext, rook.getUri());
 
+        File tmpFile = getTempBookFile();
         try {
             /* Download from repo. */
-            VersionedRook vrook = repo.retrieveBook(rook.getUri(), tmpFile);
+            VersionedRook vrook = repo.retrieveBook(fileName, tmpFile);
 
-            String fileName = BookName.getFileName(mContext, vrook.getUri());
             BookName bookName = BookName.fromFileName(fileName);
 
             /* Store from file to Shelf. */
