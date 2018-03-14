@@ -62,8 +62,9 @@ public class DatabaseMigration {
     private static final int DB_VER_17 = 146;
     private static final int DB_VER_18 = 147;
     private static final int DB_VER_19 = 148;
+    private static final int DB_VER_20 = 149;
 
-    static final int DB_VER_CURRENT = DB_VER_19;
+    static final int DB_VER_CURRENT = DB_VER_20;
 
     /**
      * Start from the old version and go through all changes. No breaks.
@@ -152,7 +153,15 @@ public class DatabaseMigration {
 
             case DB_VER_18:
                 /* notes_basic_view created. */
+
+            case DB_VER_19:
+                addRepoIdToBookLinks(db);
         }
+    }
+
+    private static void addRepoIdToBookLinks(SQLiteDatabase db) {
+        db.execSQL("ALTER TABLE book_links ADD COLUMN repo_id INTEGER");
+        db.execSQL("UPDATE book_links SET repo_id = (SELECT repo_id FROM rooks WHERE rooks._id = rook_id)");
     }
 
     private static void addAndSetCreatedAt(SQLiteDatabase db, Context context) {

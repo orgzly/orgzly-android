@@ -103,14 +103,14 @@ public class DirectoryRepoTest extends OrgzlyTest {
 
         assertEquals(repoUriString, book.getLastSyncedToRook().getRepoUri().toString());
         assertEquals(repoUriString + "/booky.org", book.getLastSyncedToRook().getUri().toString());
-        assertEquals(repoUriString + "/booky.org", book.getLink().getUri().toString());
+        assertEquals(repoUriString + "/booky.org", book.getRook().getUri().toString());
 
         shelf.renameBook(book, "booky-renamed");
         book = shelf.getBook("booky-renamed");
 
         assertEquals(repoUriString, book.getLastSyncedToRook().getRepoUri().toString());
         assertEquals(repoUriString + "/booky-renamed.org", book.getLastSyncedToRook().getUri().toString());
-        assertEquals(repoUriString + "/booky-renamed.org", book.getLink().getUri().toString());
+        assertEquals(repoUriString + "/booky-renamed.org", book.getRook().getUri().toString());
     }
 
 

@@ -52,7 +52,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 
 /**
@@ -266,7 +265,7 @@ public class SyncFragment extends Fragment {
                         throw new IOException(resources.getString(R.string.book_does_not_exist_anymore));
                     }
 
-                    Rook rook = book.getLink();
+                    Rook rook = book.getRook();
 
                     if (rook == null) {
                         throw new IOException(resources.getString(R.string.message_book_has_no_link));
@@ -440,8 +439,8 @@ public class SyncFragment extends Fragment {
                         String fileName;
 
                         /* Prefer link. */
-                        if (book.hasLink()) {
-                            Rook link = book.getLink();
+                        if (book.hasRook()) {
+                            Rook link = book.getRook();
                             repoUrl = link.getRepoUri().toString();
                             fileName = BookName.getFileName(getContext(), link.getUri());
 

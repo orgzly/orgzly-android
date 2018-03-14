@@ -166,9 +166,9 @@ public class Shelf {
     // TODO: Do in Provider under transaction
     public void deleteBook(Book book, boolean deleteLinked) throws IOException {
         if (deleteLinked) {
-            Repo repo = RepoFactory.getFromUri(mContext, book.getLink().getRepoUri());
+            Repo repo = RepoFactory.getFromUri(mContext, book.getRook().getRepoUri());
             if (repo != null) {
-                repo.delete(book.getLink().getUri());
+                repo.delete(book.getRook().getUri());
             }
         }
 
@@ -543,8 +543,8 @@ public class Shelf {
                 break;
 
             case ONLY_BOOK_WITH_LINK:
-                repoUrl = namesake.getBook().getLink().getRepoUri().toString();
-                fileName = BookName.getFileName(mContext, namesake.getBook().getLink().getUri());
+                repoUrl = namesake.getBook().getRook().getRepoUri().toString();
+                fileName = BookName.getFileName(mContext, namesake.getBook().getRook().getUri());
                 saveBookToRepo(repoUrl, fileName, namesake.getBook(), BookName.Format.ORG);
                 bookAction = new BookAction(BookAction.Type.INFO, namesake.getStatus().msg(repoUrl));
                 break;
@@ -635,8 +635,8 @@ public class Shelf {
         }
 
         /* Make sure link's repo is the same as sync book repo. */
-        if (book.hasLink() && book.getLastSyncedToRook() != null) {
-            if (! book.getLink().getUri().equals(book.getLastSyncedToRook().getUri())) {
+        if (book.hasRook() && book.getLastSyncedToRook() != null) {
+            if (! book.getRook().getUri().equals(book.getLastSyncedToRook().getUri())) {
                 String s = BookSyncStatus.ROOK_AND_VROOK_HAVE_DIFFERENT_REPOS.toString();
                 setBookStatus(book, s, new BookAction(BookAction.Type.ERROR, s));
                 return;

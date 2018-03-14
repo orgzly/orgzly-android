@@ -86,10 +86,17 @@ public class BooksClient {
         book.setUsedEncoding(cursor.getString(cursor.getColumnIndexOrThrow(ProviderContract.Books.Param.USED_ENCODING)));
 
         /* Set link. */
-        if (! cursor.isNull(cursor.getColumnIndexOrThrow(ProviderContract.Books.Param.LINK_ROOK_URL))) {
-            Uri linkRepoUri = Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(ProviderContract.Books.Param.LINK_REPO_URL)));
-            Uri linkRookUri = Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(ProviderContract.Books.Param.LINK_ROOK_URL)));
-            book.setLink(new Rook(linkRepoUri, linkRookUri));
+        int linkRepoUriColumn = cursor.getColumnIndexOrThrow(ProviderContract.Books.Param.LINK_REPO_URL);
+        if (! cursor.isNull(linkRepoUriColumn)) {
+            Uri uri = Uri.parse(cursor.getString(linkRepoUriColumn));
+            book.setLinkRepo(uri);
+        }
+
+        /* Set rook. */
+        if (! cursor.isNull(cursor.getColumnIndexOrThrow(ProviderContract.Books.Param.ROOK_URL))) {
+            Uri rookUri = Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(ProviderContract.Books.Param.ROOK_URL)));
+            Uri rookRepoUri = Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(ProviderContract.Books.Param.ROOK_REPO_URL)));
+            book.setRook(new Rook(rookRepoUri, rookUri));
         }
 
         /* Set versioned rook. */

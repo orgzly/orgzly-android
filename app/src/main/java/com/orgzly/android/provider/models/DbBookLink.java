@@ -12,6 +12,7 @@ public class DbBookLink implements DbBookLinkColumns, BaseColumns {
             "CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
             _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             BOOK_ID + " INTEGER," +
+            REPO_ID + " INTEGER," +
             ROOK_ID + " INTEGER," +
             "UNIQUE(" + BOOK_ID + "))"
     };

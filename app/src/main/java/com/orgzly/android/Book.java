@@ -1,5 +1,7 @@
 package com.orgzly.android;
 
+import android.net.Uri;
+
 import com.orgzly.android.repos.Rook;
 import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.sync.BookSyncStatus;
@@ -26,7 +28,10 @@ public class Book {
     /** Last modified time. */
     private long modificationTime;
 
-    /** Link to remote book. */
+    /** Link. */
+    private Uri linkRepoUri;
+
+    /** Remote book. */
     private Rook rook;
 
     /** Remote book that this book has been synced to last. */
@@ -92,15 +97,27 @@ public class Book {
         this.lastSyncedToRook = vrook;
     }
 
-    public void setLink(Rook rook) {
+    public void setLinkRepo(Uri uri) {
+        this.linkRepoUri = uri;
+    }
+
+    public Uri getLinkRepo() {
+        return linkRepoUri;
+    }
+
+    public boolean hasLinkRepo() {
+        return linkRepoUri != null;
+    }
+
+    public void setRook(Rook rook) {
         this.rook = rook;
     }
 
-    public Rook getLink() {
+    public Rook getRook() {
         return rook;
     }
 
-    public boolean hasLink() {
+    public boolean hasRook() {
         return rook != null;
     }
 

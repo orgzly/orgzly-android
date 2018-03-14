@@ -28,8 +28,10 @@ public class DbBookView implements BaseColumns, DbBookColumns, DbBookViewColumns
             "CREATE VIEW " + VIEW_NAME + " AS " +
             "SELECT " + DbBook.TABLE + ".*, " +
 
-            "t_link_rook_repos.repo_url AS " + LINK_REPO_URL + ", " +
-            "t_link_rook_urls.rook_url AS " + LINK_ROOK_URL + ", " +
+            "t_link_repo.repo_url AS " + LINK_REPO_URL + ", " +
+
+            "t_link_rook_urls.rook_url AS " + ROOK_URL + ", " +
+            "t_link_rook_repos.repo_url AS " + ROOK_REPO_URL + ", " +
 
             "t_sync_revision_rook_repos.repo_url AS " + SYNCED_REPO_URL + ", " +
             "t_sync_revision_rook_urls.rook_url AS " + SYNCED_ROOK_URL + ", " +
@@ -41,6 +43,9 @@ public class DbBookView implements BaseColumns, DbBookColumns, DbBookViewColumns
             "FROM " + DbBook.TABLE + " " +
 
             GenericDatabaseUtils.join(DbBookLink.TABLE, "t_links", DbBookLink.BOOK_ID, DbBook.TABLE, DbBook._ID) +
+
+            GenericDatabaseUtils.join(DbRepo.TABLE, "t_link_repo", DbRepo._ID, "t_links", DbBookLink.REPO_ID) +
+
             GenericDatabaseUtils.join(DbRook.TABLE, "t_link_rooks", DbRook._ID, "t_links", DbBookLink.ROOK_ID) +
             GenericDatabaseUtils.join(DbRepo.TABLE, "t_link_rook_repos", DbRepo._ID, "t_link_rooks", DbRook.REPO_ID) +
             GenericDatabaseUtils.join(DbRookUrl.TABLE, "t_link_rook_urls", DbRookUrl._ID, "t_link_rooks", DbRook.ROOK_URL_ID) +
@@ -72,7 +77,8 @@ public class DbBookView implements BaseColumns, DbBookColumns, DbBookViewColumns
             LAST_ACTION_TYPE,
             LAST_ACTION,
             LINK_REPO_URL,
-            LINK_ROOK_URL,
+            ROOK_URL,
+            ROOK_REPO_URL,
             SYNCED_REPO_URL,
             SYNCED_ROOK_URL,
             SYNCED_ROOK_REVISION,

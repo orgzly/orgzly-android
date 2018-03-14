@@ -98,7 +98,7 @@ public class ProviderTest extends OrgzlyTest {
 
         Book book = shelf.getBook(1);
 
-        assertNotNull(book.getLink());
+        assertNotNull(book.getRook());
         assertNull(book.getLastSyncedToRook());
     }
 

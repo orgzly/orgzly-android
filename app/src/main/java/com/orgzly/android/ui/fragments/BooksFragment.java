@@ -224,7 +224,7 @@ public class BooksFragment extends ListFragment
                 ProviderContract.Books.Param.MTIME,
                 ProviderContract.Books.Param.LAST_ACTION,
                 ProviderContract.Books.Param.LINK_REPO_URL,
-                ProviderContract.Books.Param.LINK_ROOK_URL,
+                ProviderContract.Books.Param.ROOK_URL,
                 ProviderContract.Books.Param.SYNCED_REPO_URL,
                 ProviderContract.Books.Param.SYNCED_ROOK_URL,
                 ProviderContract.Books.Param.SYNCED_ROOK_REVISION,
@@ -330,7 +330,7 @@ public class BooksFragment extends ListFragment
                 placer.displayDetailByCondition(holder.mtimeContainer, isPreferenceActivated(R.string.pref_value_book_details_mtime, context));
 
                 /* If book has no link - remove related rows. */
-                if (book.hasLink()) {
+                if (book.hasRook()) {
                     placer.displayDetailByCondition(holder.linkDetailsContainer, isPreferenceActivated(R.string.pref_value_book_details_link_url, context));
                 } else {
                     placer.hideElement(holder.linkDetailsContainer);

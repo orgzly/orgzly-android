@@ -216,8 +216,8 @@ public class Provider extends ContentProvider {
 
                 selection =
                         "LOWER(" + field("tpropertyname", DbPropertyName.NAME) + ") = ? AND " +
-                                "LOWER(" + field("tpropertyvalue", DbPropertyValue.VALUE) + ") = ? AND " +
-                                field("tnotes", DbNote._ID) + " IS NOT NULL";
+                        "LOWER(" + field("tpropertyvalue", DbPropertyValue.VALUE) + ") = ? AND " +
+                        field("tnotes", DbNote._ID) + " IS NOT NULL";
 
                 selectionArgs = new String[] { propName.toLowerCase(), propValue.toLowerCase() };
 
@@ -590,26 +590,26 @@ public class Provider extends ContentProvider {
         long id = db.insertOrThrow(DbNote.TABLE, null, values);
 
         db.execSQL("INSERT INTO " + DbNoteAncestor.TABLE +
-                " (" + DbNoteAncestor.BOOK_ID + ", " +
-                DbNoteAncestor.NOTE_ID +
-                ", " + DbNoteAncestor.ANCESTOR_NOTE_ID + ") " +
-                "SELECT " + field(DbNote.TABLE, DbNote.BOOK_ID) + ", " +
-                field(DbNote.TABLE, DbNote._ID) + ", " +
-                field("a", DbNote._ID) +
-                " FROM " + DbNote.TABLE +
-                " JOIN " + DbNote.TABLE + " a ON (" +
-                field(DbNote.TABLE, DbNote.BOOK_ID) + " = " + field("a", DbNote.BOOK_ID) + " AND " +
-                field("a", DbNote.LFT) + " < " + field(DbNote.TABLE, DbNote.LFT) + " AND " +
-                field(DbNote.TABLE, DbNote.RGT) + " < " + field("a", DbNote.RGT) + ")" +
-                " WHERE " + field(DbNote.TABLE, DbNote._ID) + " = " + id + " AND " + field("a", DbNote.LEVEL) + " > 0");
+                   " (" + DbNoteAncestor.BOOK_ID + ", " +
+                   DbNoteAncestor.NOTE_ID +
+                   ", " + DbNoteAncestor.ANCESTOR_NOTE_ID + ") " +
+                   "SELECT " + field(DbNote.TABLE, DbNote.BOOK_ID) + ", " +
+                   field(DbNote.TABLE, DbNote._ID) + ", " +
+                   field("a", DbNote._ID) +
+                   " FROM " + DbNote.TABLE +
+                   " JOIN " + DbNote.TABLE + " a ON (" +
+                   field(DbNote.TABLE, DbNote.BOOK_ID) + " = " + field("a", DbNote.BOOK_ID) + " AND " +
+                   field("a", DbNote.LFT) + " < " + field(DbNote.TABLE, DbNote.LFT) + " AND " +
+                   field(DbNote.TABLE, DbNote.RGT) + " < " + field("a", DbNote.RGT) + ")" +
+                   " WHERE " + field(DbNote.TABLE, DbNote._ID) + " = " + id + " AND " + field("a", DbNote.LEVEL) + " > 0");
 
         return ContentUris.withAppendedId(uri, id);
     }
 
     private void incrementDescendantsCountForAncestors(SQLiteDatabase db, long bookId, long lft, long rgt) {
         db.execSQL("UPDATE " + DbNote.TABLE +
-                " SET " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " = " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " + 1 " +
-                "WHERE " + DatabaseUtils.whereAncestors(bookId, lft, rgt));
+                   " SET " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " = " + ProviderContract.Notes.UpdateParam.DESCENDANTS_COUNT + " + 1 " +
+                   "WHERE " + DatabaseUtils.whereAncestors(bookId, lft, rgt));
     }
 
     private int getMaxRgt(SQLiteDatabase db, long bookId) {
@@ -665,7 +665,7 @@ public class Provider extends ContentProvider {
         String rookRevision = values.getAsString(ProviderContract.BooksIdSaved.Param.ROOK_REVISION);
         long rookMtime = values.getAsLong(ProviderContract.BooksIdSaved.Param.ROOK_MTIME);
 
-        long repoId = getOrInsertRepoUrl(db, repoUrl);
+        long repoId = getOrInsertRepo(db, repoUrl);
         long rookUrlId = DbRookUrl.getOrInsert(db, rookUrl);
         long rookId = getOrInsertRook(db, rookUrlId, repoId);
         long versionedRookId = getOrInsertVersionedRook(db, rookId, rookRevision, rookMtime);
@@ -687,7 +687,7 @@ public class Provider extends ContentProvider {
 
     private static final String DELETE_CURRENT_VERSIONED_ROOKS_FOR_ROOK_ID =
             "DELETE FROM " + DbCurrentVersionedRook.TABLE +
-                    " WHERE " + DbCurrentVersionedRook.VERSIONED_ROOK_ID + " IN (" + VERSIONED_ROOK_IDS_FOR_ROOK_ID + ")";
+            " WHERE " + DbCurrentVersionedRook.VERSIONED_ROOK_ID + " IN (" + VERSIONED_ROOK_IDS_FOR_ROOK_ID + ")";
 
     private Uri insertCurrentRook(SQLiteDatabase db, Uri uri, ContentValues contentValues) {
         String repoUrl = contentValues.getAsString(ProviderContract.CurrentRooks.Param.REPO_URL);
@@ -695,7 +695,7 @@ public class Provider extends ContentProvider {
         String revision = contentValues.getAsString(ProviderContract.CurrentRooks.Param.ROOK_REVISION);
         long mtime = contentValues.getAsLong(ProviderContract.CurrentRooks.Param.ROOK_MTIME);
 
-        long repoUrlId = getOrInsertRepoUrl(db, repoUrl);
+        long repoUrlId = getOrInsertRepo(db, repoUrl);
         long rookUrlId = DbRookUrl.getOrInsert(db, rookUrl);
         long rookId = getOrInsertRook(db, rookUrlId, repoUrlId);
         long versionedRookId = getOrInsertVersionedRook(db, rookId, revision, mtime);
@@ -744,7 +744,7 @@ public class Provider extends ContentProvider {
         return id;
     }
 
-    private long getOrInsertRepoUrl(SQLiteDatabase db, String repoUrl) {
+    private long getOrInsertRepo(SQLiteDatabase db, String repoUrl) {
         long id = DatabaseUtils.getId(
                 db,
                 DbRepo.TABLE,
@@ -871,15 +871,6 @@ public class Provider extends ContentProvider {
         result = db.delete(table, selection, selectionArgs);
 
         return result;
-    }
-
-    private int removeBooksLinksForRepo(SQLiteDatabase db, String repoId) {
-        /* Rooks which use passed repo. */
-        String rookIds = "SELECT DISTINCT " + DbRook._ID +
-                " FROM " + DbRook.TABLE +
-                " WHERE " + DbRook.REPO_ID + " = " + repoId;
-
-        return db.delete(DbBookLink.TABLE, DbBookLink.ROOK_ID + " IN (" + rookIds + ")", null);
     }
 
     @Override
@@ -1106,13 +1097,13 @@ public class Provider extends ContentProvider {
 
         /* Select only notes which don't already have the target state. */
         String notesSelection = DbNote._ID + " IN (" + ids + ") AND (" +
-                DbNote.STATE + " IS NULL OR " + DbNote.STATE + " != ?)";
+                                DbNote.STATE + " IS NULL OR " + DbNote.STATE + " != ?)";
 
         String[] selectionArgs = { targetState };
 
         /* Select notebooks which will be affected. */
         String booksSelection = DbBook._ID + " IN (SELECT DISTINCT " +
-                DbNote.BOOK_ID + " FROM " + DbNote.TABLE + " WHERE " + notesSelection + ")";
+                                DbNote.BOOK_ID + " FROM " + DbNote.TABLE + " WHERE " + notesSelection + ")";
 
         /* Notebooks must be updated before notes, because selection checks
          * for notes what will be affected.
@@ -1232,12 +1223,13 @@ public class Provider extends ContentProvider {
     }
 
     private int updateOrInsertBookLink(SQLiteDatabase db, long bookId, String repoUrl, String rookUrl) {
-        long repoUrlId = getOrInsertRepoUrl(db, repoUrl);
+        long repoId = getOrInsertRepo(db, repoUrl);
         long rookUrlId = DbRookUrl.getOrInsert(db, rookUrl);
-        long rookId = getOrInsertRook(db, rookUrlId, repoUrlId);
+        long rookId = getOrInsertRook(db, rookUrlId, repoId);
 
         ContentValues values = new ContentValues();
         values.put(DbBookLink.BOOK_ID, bookId);
+        values.put(DbBookLink.REPO_ID, repoId);
         values.put(DbBookLink.ROOK_ID, rookId);
 
         long id = DatabaseUtils.getId(db, DbBookLink.TABLE, DbBookLink.BOOK_ID + "=" + bookId, null);
@@ -1250,6 +1242,16 @@ public class Provider extends ContentProvider {
         return 1;
     }
 
+    private int removeBooksLinksForRepo(SQLiteDatabase db, String repoId) {
+        /* Rooks which use passed repo. */
+        String rookIds = "SELECT DISTINCT " + DbRook._ID +
+                         " FROM " + DbRook.TABLE +
+                         " WHERE " + DbRook.REPO_ID + " = " + repoId;
+
+        return db.delete(DbBookLink.TABLE, DbBookLink.ROOK_ID + " IN (" + rookIds + ") OR "
+                                           + DbBookLink.REPO_ID + " = " + repoId, null);
+    }
+
     private int updateOrInsertBookSync(
             SQLiteDatabase db,
             long bookId,
@@ -1258,7 +1260,7 @@ public class Provider extends ContentProvider {
             String revision,
             long mtime) {
 
-        long repoUrlId = getOrInsertRepoUrl(db, repoUrl);
+        long repoUrlId = getOrInsertRepo(db, repoUrl);
         long rookUrlId = DbRookUrl.getOrInsert(db, rookUrl);
         long rookId = getOrInsertRook(db, rookUrlId, repoUrlId);
         long rookRevisionId = getOrInsertVersionedRook(db, rookId, revision, mtime);
@@ -1276,7 +1278,6 @@ public class Provider extends ContentProvider {
 
         return 1;
     }
-
 
     private Uri getOrInsertBook(SQLiteDatabase db, String name) {
         Cursor cursor = db.query(
@@ -1542,7 +1543,7 @@ public class Provider extends ContentProvider {
 
         if (BuildConfig.LOG_DEBUG)
             LogUtils.d(TAG, bookName + ": Parsing done in " +
-                    (System.currentTimeMillis() - startedAt) + " ms");
+                            (System.currentTimeMillis() - startedAt) + " ms");
 
         if (rookUrl != null) {
             updateOrInsertBookLink(db, bookId, repoUrl, rookUrl);

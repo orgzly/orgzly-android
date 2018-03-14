@@ -77,7 +77,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class MainActivity extends CommonActivity
         implements
@@ -841,7 +840,7 @@ public class MainActivity extends CommonActivity
                         .setPositiveButton(R.string.ok, dialogClickListener)
                         .setNegativeButton(R.string.cancel, dialogClickListener);
 
-        if (book.hasLink()) {
+        if (book.hasRook()) {
             builder.setView(view);
         }
 
@@ -959,8 +958,8 @@ public class MainActivity extends CommonActivity
         spinner.setAdapter(adapter);
 
         /* Set spinner to current book's link. */
-        if (book.hasLink()) {
-            Integer pos = items.get(book.getLink().getRepoUri().toString());
+        if (book.hasRook()) {
+            Integer pos = items.get(book.getRook().getRepoUri().toString());
             if (pos != null) {
                 spinner.setSelection(pos);
             }
