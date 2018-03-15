@@ -94,11 +94,11 @@ public class ProviderTest extends OrgzlyTest {
     public void testLinkingBook() {
         shelfTestUtils.setupRepo("mock://repo-a");
         shelfTestUtils.setupBook("book-1", "Local content for book 1");
-        shelfTestUtils.setBookLink(1, "mock://repo-a", "mock://repo-a/book-1.org");
+        shelfTestUtils.setBookLink(1, "mock://repo-a");
 
         Book book = shelf.getBook(1);
 
-        assertNotNull(book.getRook());
+        assertNotNull(book.getLinkRepo());
         assertNull(book.getLastSyncedToRook());
     }
 

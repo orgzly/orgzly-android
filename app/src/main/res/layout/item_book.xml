@@ -138,8 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:visibility="gone">
+                        android:gravity="center_vertical">
 
                         <ImageView
                             style="@style/BookItemInfoIcon"
@@ -155,27 +154,6 @@
                             android:layout_marginEnd="8dp"
                             android:layout_marginRight="8dp"
                             tools:text="@string/repo_url_sample"
-                            android:textSize="?attr/item_book_details_text_size"/>
-                    </LinearLayout>
-
-                    <!-- Link URL -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            style="@style/BookItemInfoIcon"
-                            android:src="?attr/ic_link_18dp"
-                            android:alpha="?attr/oic_item_alpha"
-                            android:contentDescription="@string/book_link"/>
-
-                        <TextView
-                            android:id="@+id/item_book_link_url"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="@string/rook_url_long_sample"
                             android:textSize="?attr/item_book_details_text_size"/>
                     </LinearLayout>
 

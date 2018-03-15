@@ -117,7 +117,6 @@
     <string name="tap_to_create_new_note">Tap to create a new note</string>
     <string name="options_menu_item_search">Search</string>
 
-    <string name="message_book_deleted">Notebook deleted</string>
     <string name="no_user_repos_configured_pref_summary">None configured yet</string>
     <string name="repos_options_menu_new_repo">New Repository</string>
     <string name="book_name_already_exists">Notebook %s already exists.</string>
@@ -191,8 +190,6 @@
     <string name="repositories">Repositories</string>
     <string name="invalid_repo_url">Invalid repository URL “%s”</string>
     <string name="message_unsupported_repository_type">Unsupported repository type</string>
-    <string name="also_delete_linked_book">Delete linked remote notebook</string>
-    <string name="message_deleting_book_failed">Deleting notebook failed: %s</string>
     <string name="fragment_left_drawer_list_view_content_description">Left Drawer</string>
     <string name="drawer_item">Drawer Item</string>
     <string name="prev_state">Prev State</string>
@@ -234,6 +231,13 @@
     <string name="failed_renaming_book">Failed renaming notebook</string>
     <string name="failed_renaming_book_with_reason">Renaming failed: %s</string>
     <string name="renamed_book_from">Renamed from “%s”</string>
+
+    <string name="also_delete_linked_book">Delete linked remote notebook</string>
+    <string name="delete_with_quoted_argument">Delete “%s”</string>
+    <string name="delete_also_with_argument">Also delete %s</string>
+    <string name="delete_notebook_question">Delete this notebook?</string>
+    <string name="message_deleting_book_failed">Deleting notebook failed: %s</string>
+    <string name="message_book_deleted">Notebook deleted</string>
 
     <string name="priority_with_argument">Priority %s</string>
     <string name="default_priority">Default priority</string>

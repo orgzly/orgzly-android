@@ -31,9 +31,6 @@ public class Book {
     /** Link. */
     private Uri linkRepoUri;
 
-    /** Remote book. */
-    private Rook rook;
-
     /** Remote book that this book has been synced to last. */
     private VersionedRook lastSyncedToRook;
 
@@ -105,20 +102,8 @@ public class Book {
         return linkRepoUri;
     }
 
-    public boolean hasLinkRepo() {
+    public boolean hasLink() {
         return linkRepoUri != null;
-    }
-
-    public void setRook(Rook rook) {
-        this.rook = rook;
-    }
-
-    public Rook getRook() {
-        return rook;
-    }
-
-    public boolean hasRook() {
-        return rook != null;
     }
 
     public boolean isDummy() {

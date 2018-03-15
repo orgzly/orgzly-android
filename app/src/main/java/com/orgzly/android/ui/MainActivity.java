@@ -35,6 +35,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -817,7 +818,8 @@ public class MainActivity extends CommonActivity
         }
 
         View view = View.inflate(this, R.layout.dialog_book_delete, null);
-        final CheckBox checkBox = view.findViewById(R.id.checkbox);
+        CheckBox checkBox = view.findViewById(R.id.dialog_book_delete_checkbox);
+        TextView textView = view.findViewById(R.id.dialog_book_delete_text);
 
         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             switch (which) {
@@ -835,12 +837,13 @@ public class MainActivity extends CommonActivity
 
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(this)
-                        .setTitle("Delete " + MiscUtils.quotedString(book.getName()))
-                        .setMessage("Delete this notebook?")
-                        .setPositiveButton(R.string.ok, dialogClickListener)
+                        .setTitle(getString(R.string.delete_with_quoted_argument, book.getName()))
+                        .setMessage(R.string.delete_notebook_question)
+                        .setPositiveButton(R.string.delete, dialogClickListener)
                         .setNegativeButton(R.string.cancel, dialogClickListener);
 
-        if (book.hasRook()) {
+        if (book.getLastSyncedToRook() != null) {
+            textView.setText(book.getLastSyncedToRook().getUri().toString());
             builder.setView(view);
         }
 
@@ -958,8 +961,8 @@ public class MainActivity extends CommonActivity
         spinner.setAdapter(adapter);
 
         /* Set spinner to current book's link. */
-        if (book.hasRook()) {
-            Integer pos = items.get(book.getRook().getRepoUri().toString());
+        if (book.hasLink()) {
+            Integer pos = items.get(book.getLinkRepo().toString());
             if (pos != null) {
                 spinner.setSelection(pos);
             }
@@ -1007,7 +1010,7 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onForceLoadRequest(long bookId) {
-        mSyncFragment.loadBook(bookId);
+        mSyncFragment.forceLoadBook(bookId);
     }
 
     /**

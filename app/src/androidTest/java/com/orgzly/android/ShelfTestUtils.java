@@ -74,16 +74,13 @@ public class ShelfTestUtils {
             fail(e.toString());
         }
 
-        String fileName = BookName.fileName(book.getName(), BookName.Format.ORG);
-        Uri rookUri = Uri.parse(linkRepoUrl).buildUpon().appendPath(fileName).build();
-
-        BooksClient.setLink(context, book.getId(), linkRepoUrl, rookUri.toString());
+        BooksClient.setLink(context, book.getId(), linkRepoUrl);
 
         return book;
     }
 
-    public void setBookLink(long bookId, String repoUrl, String rookUrl) {
-        BooksClient.setLink(context, bookId, repoUrl, rookUrl);
+    public void setBookLink(long bookId, String repoUrl) {
+        BooksClient.setLink(context, bookId, repoUrl);
     }
 
     /**

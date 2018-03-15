@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/padding_4">
+    android:paddingLeft="@dimen/padding_16"
+    android:paddingRight="@dimen/padding_16"
+    android:orientation="vertical">
 
     <CheckBox
-        android:id="@+id/checkbox"
+        android:id="@+id/dialog_book_delete_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
+        android:layout_gravity="start|center_vertical"
+        android:gravity="start|center_vertical"
         android:text="@string/also_delete_linked_book"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/dialog_book_delete_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        tools:text="content://com.android.providers.downloads.documents/tree/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg/document/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg%2Fgtd.org"/>
+
+</LinearLayout>

@@ -254,7 +254,7 @@ public class SyncFragment extends Fragment {
      * Load book from repository.
      */
     @SuppressLint("StaticFieldLeak")
-    public void loadBook(final long bookId) {
+    public void forceLoadBook(final long bookId) {
         new AsyncTask<Void, Object, Object>() {
             @Override
             protected Object doInBackground(Void... params) {
@@ -265,9 +265,7 @@ public class SyncFragment extends Fragment {
                         throw new IOException(resources.getString(R.string.book_does_not_exist_anymore));
                     }
 
-                    Rook rook = book.getRook();
-
-                    if (rook == null) {
+                    if (book.getLinkRepo() == null) {
                         throw new IOException(resources.getString(R.string.message_book_has_no_link));
                     }
 
@@ -276,9 +274,9 @@ public class SyncFragment extends Fragment {
                             null,
                             new BookAction(
                                     BookAction.Type.PROGRESS,
-                                    resources.getString(R.string.force_loading_from_uri, rook.getUri())));
+                                    resources.getString(R.string.force_loading_from_uri, book.getLinkRepo())));
 
-                    return mShelf.loadBookFromRepo(rook);
+                    return mShelf.loadBookFromRepo(book.getLinkRepo(), BookName.getFileName(getContext(), book));
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -439,15 +437,13 @@ public class SyncFragment extends Fragment {
                         String fileName;
 
                         /* Prefer link. */
-                        if (book.hasRook()) {
-                            Rook link = book.getRook();
-                            repoUrl = link.getRepoUri().toString();
-                            fileName = BookName.getFileName(getContext(), link.getUri());
-
+                        if (book.hasLink()) {
+                            repoUrl = book.getLinkRepo().toString();
                         } else {
                             repoUrl = repoForSavingBook();
-                            fileName = BookName.fileName(book.getName(), BookName.Format.ORG);
                         }
+
+                        fileName = BookName.getFileName(getContext(), book);
 
                         mShelf.setBookStatus(book, null,
                                 new BookAction(BookAction.Type.PROGRESS,

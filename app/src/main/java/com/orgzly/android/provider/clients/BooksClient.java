@@ -92,13 +92,6 @@ public class BooksClient {
             book.setLinkRepo(uri);
         }
 
-        /* Set rook. */
-        if (! cursor.isNull(cursor.getColumnIndexOrThrow(ProviderContract.Books.Param.ROOK_URL))) {
-            Uri rookUri = Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(ProviderContract.Books.Param.ROOK_URL)));
-            Uri rookRepoUri = Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(ProviderContract.Books.Param.ROOK_REPO_URL)));
-            book.setRook(new Rook(rookRepoUri, rookUri));
-        }
-
         /* Set versioned rook. */
         if (! cursor.isNull(cursor.getColumnIndexOrThrow(ProviderContract.Books.Param.SYNCED_ROOK_URL))) {
             Uri syncRookUri = Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(ProviderContract.Books.Param.SYNCED_ROOK_URL)));
@@ -159,10 +152,9 @@ public class BooksClient {
     /**
      * Update book's link URL.
      */
-    public static int setLink(Context context, long bookId, String repoUrl, String rookUrl) {
+    public static int setLink(Context context, long bookId, String repoUrl) {
         ContentValues values = new ContentValues();
         values.put(ProviderContract.BookLinks.Param.REPO_URL, repoUrl);
-        values.put(ProviderContract.BookLinks.Param.ROOK_URL, rookUrl);
 
         return context.getContentResolver().update(ProviderContract.BookLinks.ContentUri.booksIdLinks(bookId), values, null, null);
     }

@@ -1,8 +1,11 @@
 package com.orgzly.android.espresso;
 
 import android.content.Intent;
+import android.os.Environment;
 import android.os.SystemClock;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.uiautomator.UiDevice;
 
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
@@ -13,9 +16,14 @@ import com.orgzly.android.ui.MainActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 
+import java.io.File;
 import java.io.IOException;
 
+import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
@@ -249,7 +257,7 @@ public class SyncingTest extends OrgzlyTest {
         onView(allOf(withText("booky"), isDisplayed())).check(matches(isDisplayed()));
         onListItem(0).perform(longClick());
         onData(hasToString(containsString(context.getString(R.string.delete)))).perform(click());
-        onView(withText(R.string.ok)).perform(click());
+        onView(withText(R.string.delete)).perform(click());
         onView(withId(R.id.item_book_card_view)).check(doesNotExist());
 
         sync();
@@ -289,7 +297,7 @@ public class SyncingTest extends OrgzlyTest {
         onView(allOf(withText(R.string.notebooks), isDisplayed())).perform(click());
 
         /* Make sure book has been uploaded to repo and is linked now. */
-        onListItem(0).onChildView(withId(R.id.item_book_link_url)).check(matches(allOf(withText("mock://repo-a/booky.org"), isDisplayed())));
+        onListItem(0).onChildView(withId(R.id.item_book_link_repo)).check(matches(allOf(withText("mock://repo-a"), isDisplayed())));
         onListItem(0).onChildView(withId(R.id.item_book_synced_url)).check(matches(allOf(withText("mock://repo-a/booky.org"), isDisplayed())));
 
         /* Modify remote book directly. */
@@ -338,7 +346,7 @@ public class SyncingTest extends OrgzlyTest {
         /* Delete book */
         onListItem(0).perform(longClick());
         onData(hasToString(containsString(context.getString(R.string.delete)))).perform(click());
-        onView(withText(R.string.ok)).perform(click());
+        onView(withText(R.string.delete)).perform(click());
 
         sync();
 
@@ -370,7 +378,7 @@ public class SyncingTest extends OrgzlyTest {
         onSpinnerString("mock://repo-b").perform(click());
         onView(withText(R.string.set)).perform(click());
 
-        onView(withText("mock://repo-b/book-1.org")).check(matches(isDisplayed()));
+        onListItem(0).onChildView(withId(R.id.item_book_link_repo)).check(matches(withText("mock://repo-b")));
 
         sync();
 
@@ -389,7 +397,7 @@ public class SyncingTest extends OrgzlyTest {
         onSpinnerString("mock://repo-a").perform(click());
         onView(withText(R.string.set)).perform(click());
 
-        onView(withText("mock://repo-a/book-1.org")).check(matches(isDisplayed()));
+        onListItem(0).onChildView(withId(R.id.item_book_link_repo)).check(matches(withText("mock://repo-a")));
 
         sync();
 
@@ -480,7 +488,7 @@ public class SyncingTest extends OrgzlyTest {
         activityRule.launchActivity(null);
 
         sync();
-        onListItem(0).onChildView(withId(R.id.item_book_link_url)).check(matches(allOf(withText("mock://repo-a/booky.org"), isDisplayed())));
+        onListItem(0).onChildView(withId(R.id.item_book_link_repo)).check(matches(allOf(withText("mock://repo-a"), isDisplayed())));
         onListItem(0).onChildView(withId(R.id.item_book_synced_url)).check(matches(allOf(withText("mock://repo-a/booky.org"), isDisplayed())));
         onListItem(0).onChildView(withId(R.id.item_book_encoding_used)).check(matches((withText("UTF-8 used"))));
         onListItem(0).onChildView(withId(R.id.item_book_encoding_detected)).check(matches((withText("UTF-8 detected"))));
@@ -506,7 +514,7 @@ public class SyncingTest extends OrgzlyTest {
         onSpinnerString("dropbox:/repo-b").perform(click());
         onView(withText(R.string.set)).perform(click());
 
-        onListItem(0).onChildView(withId(R.id.item_book_link_url)).check(matches(allOf(withText("dropbox:/repo-b/booky.org"), isDisplayed())));
+        onListItem(0).onChildView(withId(R.id.item_book_link_repo)).check(matches(allOf(withText("dropbox:/repo-b"), isDisplayed())));
         onListItem(0).onChildView(withId(R.id.item_book_synced_url)).check(matches(allOf(withText("mock://repo-a/booky.org"), isDisplayed())));
         onListItem(0).onChildView(withId(R.id.item_book_encoding_used)).check(matches((withText("UTF-8 used"))));
         onListItem(0).onChildView(withId(R.id.item_book_encoding_detected)).check(matches((withText("UTF-8 detected"))));
@@ -566,7 +574,7 @@ public class SyncingTest extends OrgzlyTest {
         shelfTestUtils.setupBook("booky", "", "mock://repo-a");
         activityRule.launchActivity(null);
 
-        onListItem(0).onChildView(withId(R.id.item_book_link_url)).check(matches(allOf(withText("mock://repo-a/booky.org"), isDisplayed())));
+        onListItem(0).onChildView(withId(R.id.item_book_link_repo)).check(matches(allOf(withText("mock://repo-a"), isDisplayed())));
 
         onView(allOf(withText("booky"), isDisplayed())).perform(longClick());
         onView(withText(R.string.books_context_menu_item_set_link)).perform(click());
@@ -585,8 +593,8 @@ public class SyncingTest extends OrgzlyTest {
 
         sync();
 
+        onListItem(0).onChildView(withId(R.id.item_book_link_repo)).check(matches(allOf(withText("mock://repo-a"), isDisplayed())));
         onListItem(0).onChildView(withId(R.id.item_book_last_action)).check(matches(withText(containsString("Loaded from mock://repo-a/booky.org.txt"))));
-        onListItem(0).onChildView(withId(R.id.item_book_link_url)).check(matches(allOf(withText("mock://repo-a/booky.org.txt"), isDisplayed())));
 
         onView(allOf(withText("booky"), isDisplayed())).perform(longClick());
         onView(withText(R.string.books_context_menu_item_set_link)).perform(click());
@@ -594,7 +602,8 @@ public class SyncingTest extends OrgzlyTest {
         onSpinnerString("mock://repo-a").perform(click());
         onView(withText(R.string.set)).perform(click());
 
-        onListItem(0).onChildView(withId(R.id.item_book_link_url)).check(matches(allOf(withText("mock://repo-a/booky.org.txt"), isDisplayed())));
+        onListItem(0).onChildView(withId(R.id.item_book_link_repo)).check(matches(allOf(withText("mock://repo-a"), isDisplayed())));
+        onListItem(0).onChildView(withId(R.id.item_book_synced_url)).check(matches(allOf(withText("mock://repo-a/booky.org.txt"), isDisplayed())));
     }
 
     @Test
@@ -605,8 +614,6 @@ public class SyncingTest extends OrgzlyTest {
 
         sync();
 
-        onListItem(0).onChildView(withId(R.id.item_book_link_url))
-                .check(matches(allOf(withText("mock://repo-a/Book%20Name.org"), isDisplayed())));
         onListItem(0).onChildView(withId(R.id.item_book_synced_url))
                 .check(matches(allOf(withText("mock://repo-a/Book%20Name.org"), isDisplayed())));
         onListItem(0).onChildView(withId(R.id.item_book_last_action))

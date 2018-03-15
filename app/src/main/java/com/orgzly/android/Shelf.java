@@ -166,9 +166,9 @@ public class Shelf {
     // TODO: Do in Provider under transaction
     public void deleteBook(Book book, boolean deleteLinked) throws IOException {
         if (deleteLinked) {
-            Repo repo = RepoFactory.getFromUri(mContext, book.getRook().getRepoUri());
+            Repo repo = RepoFactory.getFromUri(mContext, book.getLastSyncedToRook().getRepoUri());
             if (repo != null) {
-                repo.delete(book.getRook().getUri());
+                repo.delete(book.getLastSyncedToRook().getUri());
             }
         }
 
@@ -543,8 +543,8 @@ public class Shelf {
                 break;
 
             case ONLY_BOOK_WITH_LINK:
-                repoUrl = namesake.getBook().getRook().getRepoUri().toString();
-                fileName = BookName.getFileName(mContext, namesake.getBook().getRook().getUri());
+                repoUrl = namesake.getBook().getLinkRepo().toString();
+                fileName = BookName.fileName(namesake.getBook().getName(), BookName.Format.ORG);
                 saveBookToRepo(repoUrl, fileName, namesake.getBook(), BookName.Format.ORG);
                 bookAction = new BookAction(BookAction.Type.INFO, namesake.getStatus().msg(repoUrl));
                 break;
@@ -560,14 +560,18 @@ public class Shelf {
      * @throws IOException
      */
     public Book loadBookFromRepo(Rook rook) throws IOException {
+        String fileName = BookName.getFileName(mContext, rook.getUri());
+
+        return loadBookFromRepo(rook.getRepoUri(), fileName);
+    }
+
+    public Book loadBookFromRepo(Uri repoUri, String fileName) throws IOException {
         Book book;
 
-        Repo repo = RepoFactory.getFromUri(mContext, rook.getRepoUri());
+        Repo repo = RepoFactory.getFromUri(mContext, repoUri);
         if (repo == null) {
-            throw new IOException("Unsupported repository URL \"" + rook.getRepoUri() + "\"");
+            throw new IOException("Unsupported repository URL \"" + repoUri + "\"");
         }
-
-        String fileName = BookName.getFileName(mContext, rook.getUri());
 
         File tmpFile = getTempBookFile();
         try {
@@ -635,8 +639,8 @@ public class Shelf {
         }
 
         /* Make sure link's repo is the same as sync book repo. */
-        if (book.hasRook() && book.getLastSyncedToRook() != null) {
-            if (! book.getRook().getUri().equals(book.getLastSyncedToRook().getUri())) {
+        if (book.hasLink() && book.getLastSyncedToRook() != null) {
+            if (! book.getLinkRepo().equals(book.getLastSyncedToRook().getRepoUri())) {
                 String s = BookSyncStatus.ROOK_AND_VROOK_HAVE_DIFFERENT_REPOS.toString();
                 setBookStatus(book, s, new BookAction(BookAction.Type.ERROR, s));
                 return;
@@ -740,27 +744,8 @@ public class Shelf {
     public void setLink(Book book, String repoUrl) {
         if (repoUrl == null) {
             BooksClient.removeLink(mContext, book.getId());
-
         } else {
-             String fileName = null;
-
-            // Use file name used in last sync, if last sync exists
-            if (book.getLastSyncedToRook() != null) {
-                fileName = BookName.getFileName(mContext, book.getLastSyncedToRook().getUri());
-            }
-
-            // Use book's name
-            if (fileName == null) {
-                fileName = BookName.fileName(book.getName(), BookName.Format.ORG);
-            }
-
-            Uri rookUri = RepoFactory.getFromUri(mContext, repoUrl).getUriForFilename(fileName);
-
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, repoUrl, fileName, rookUri);
-
-            if (rookUri != null) {
-                BooksClient.setLink(mContext, book.getId(), repoUrl, rookUri.toString());
-            }
+            BooksClient.setLink(mContext, book.getId(), repoUrl);
         }
     }
 

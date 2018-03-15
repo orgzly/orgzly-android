@@ -31,6 +31,19 @@ public class BookName {
         mFormat = format;
     }
 
+    public static String getFileName(Context context, Book book) {
+//        if (book.hasRook()) {
+//            return getFileName(context, book.getRook().getUri());
+//
+//        } else
+        if (book.getLastSyncedToRook() != null) {
+            return getFileName(context, book.getLastSyncedToRook().getUri());
+
+        } else {
+            return fileName(book.getName(), Format.ORG);
+        }
+    }
+
     public static String getFileName(Context context, Uri uri) {
         String fileName;
 

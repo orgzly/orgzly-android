@@ -373,7 +373,7 @@ public class BookTest extends OrgzlyTest {
         onView(withText(R.string.notebooks)).perform(click());
         onView(allOf(withText("book-name"), withId(R.id.item_book_title))).perform(longClick());
         onData(hasToString(containsString(context.getString(R.string.delete)))).perform(click());
-        onView(withText(R.string.ok)).perform(click());
+        onView(withText(R.string.delete)).perform(click());
         pressBack();
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
         onView(withText(R.string.note_does_not_exist_anymore)).check(matches(isDisplayed()));

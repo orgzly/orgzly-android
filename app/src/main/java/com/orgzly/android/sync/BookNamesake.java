@@ -140,7 +140,7 @@ public class BookNamesake {
                 status = BookSyncStatus.ONLY_DUMMY;
 
             } else {
-                if (book.hasRook()) { /* Only local book with a link. */
+                if (book.hasLink()) { /* Only local book with a link. */
                     status = BookSyncStatus.ONLY_BOOK_WITH_LINK;
 
                 } else { /* Only local book without link. */
@@ -157,7 +157,7 @@ public class BookNamesake {
 
         /* Both local book and one or more remote books exist at this point ... */
 
-        if (book.hasRook()) { // Book has link set.
+        if (book.hasLink()) { // Book has link set.
 
             VersionedRook latestLinkedRook = getLatestLinkedRookVersion(book, versionedRooks);
 
@@ -225,7 +225,7 @@ public class BookNamesake {
     /** Find latest (current) remote book that local one links to. */
     private VersionedRook getLatestLinkedRookVersion(Book book, List<VersionedRook> vrooks) {
         for (VersionedRook vrook : vrooks) {
-            if (book.getRook().getUri().equals(vrook.getUri())) {
+            if (book.getLinkRepo().equals(vrook.getRepoUri())) {
                 return vrook;
             }
         }

@@ -1207,16 +1207,15 @@ public class Provider extends ContentProvider {
         return notesUpdated;
     }
 
+    /** User-requested change of link. */
     private int updateLinkForBook(SQLiteDatabase db, Uri uri, ContentValues contentValues) {
         long bookId = Long.parseLong(uri.getPathSegments().get(1));
         String repoUrl = contentValues.getAsString(ProviderContract.BookLinks.Param.REPO_URL);
-        String rookUrl = contentValues.getAsString(ProviderContract.BookLinks.Param.ROOK_URL);
 
-        if (repoUrl == null || rookUrl == null) {
-            /* Remove link for book. */
+        if (repoUrl == null) { // Remove link for book
             db.delete(DbBookLink.TABLE, DbBookLink.BOOK_ID + "=" + bookId, null);
         } else {
-            updateOrInsertBookLink(db, bookId, repoUrl, rookUrl);
+            updateOrInsertBookLink(db, bookId, repoUrl, null);
         }
 
         return 1;
@@ -1224,13 +1223,18 @@ public class Provider extends ContentProvider {
 
     private int updateOrInsertBookLink(SQLiteDatabase db, long bookId, String repoUrl, String rookUrl) {
         long repoId = getOrInsertRepo(db, repoUrl);
-        long rookUrlId = DbRookUrl.getOrInsert(db, rookUrl);
-        long rookId = getOrInsertRook(db, rookUrlId, repoId);
 
         ContentValues values = new ContentValues();
         values.put(DbBookLink.BOOK_ID, bookId);
         values.put(DbBookLink.REPO_ID, repoId);
-        values.put(DbBookLink.ROOK_ID, rookId);
+
+        if (rookUrl != null) {
+            long rookUrlId = DbRookUrl.getOrInsert(db, rookUrl);
+            long rookId = getOrInsertRook(db, rookUrlId, repoId);
+            values.put(DbBookLink.ROOK_ID, rookId);
+        } else {
+            values.putNull(DbBookLink.ROOK_ID);
+        }
 
         long id = DatabaseUtils.getId(db, DbBookLink.TABLE, DbBookLink.BOOK_ID + "=" + bookId, null);
         if (id != 0) {

@@ -224,7 +224,6 @@ public class BooksFragment extends ListFragment
                 ProviderContract.Books.Param.MTIME,
                 ProviderContract.Books.Param.LAST_ACTION,
                 ProviderContract.Books.Param.LINK_REPO_URL,
-                ProviderContract.Books.Param.ROOK_URL,
                 ProviderContract.Books.Param.SYNCED_REPO_URL,
                 ProviderContract.Books.Param.SYNCED_ROOK_URL,
                 ProviderContract.Books.Param.SYNCED_ROOK_REVISION,
@@ -241,7 +240,6 @@ public class BooksFragment extends ListFragment
                 R.id.item_book_mtime,
                 R.id.item_book_last_action,
                 R.id.item_book_link_repo,
-                R.id.item_book_link_url,
                 R.id.item_book_synced_repo,
                 R.id.item_book_synced_url,
                 R.id.item_book_synced_revision,
@@ -330,7 +328,7 @@ public class BooksFragment extends ListFragment
                 placer.displayDetailByCondition(holder.mtimeContainer, isPreferenceActivated(R.string.pref_value_book_details_mtime, context));
 
                 /* If book has no link - remove related rows. */
-                if (book.hasRook()) {
+                if (book.hasLink()) {
                     placer.displayDetailByCondition(holder.linkDetailsContainer, isPreferenceActivated(R.string.pref_value_book_details_link_url, context));
                 } else {
                     placer.hideElement(holder.linkDetailsContainer);
@@ -506,7 +504,7 @@ public class BooksFragment extends ListFragment
                         }
                         break;
 
-                    case R.id.item_book_link_url:
+                    case R.id.item_book_link_repo:
                     case R.id.item_book_synced_url:
                         if (hasData) {
                             viewContent = cursor.getString(columnIndex);
