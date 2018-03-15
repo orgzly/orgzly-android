@@ -18,7 +18,7 @@ public class OrgFormatterTest extends OrgzlyTest {
     public void testLinksMultiLine() throws Exception {
         OrgSpannable spannable = new OrgSpannable(
                 "[[http://www.orgzly.com]]\n" +
-                        "[[http://www.orgzly.com]]");
+                "[[http://www.orgzly.com]]");
 
         assertThat(spannable.string, is("http://www.orgzly.com\nhttp://www.orgzly.com"));
 
@@ -121,6 +121,31 @@ public class OrgFormatterTest extends OrgzlyTest {
     public void testMarkupWithTrailingCharacters() {
         OrgSpannable spannable = new OrgSpannable("*a* b");
         assertThat(spannable.string, is("a b"));
+    }
+
+    @Test
+    public void testIdLink() {
+        OrgSpannable spannable = new OrgSpannable(
+                "[[id:AA4E5D54-CB34-492E-967B-3657B26143E7][Vivamus at arcu velit]]\n" +
+                "\n" +
+                "Sed in fermentum diam\n" +
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit");
+
+        assertThat(spannable.string, is(
+                "Vivamus at arcu velit\n" +
+                "\n" +
+                "Sed in fermentum diam\n" +
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit"));
+
+        assertThat(spannable.spans.length, is(1));
+        assertThat(spannable.spans[0].start, is(0));
+        assertThat(spannable.spans[0].end, is(21));
+    }
+
+    @Test
+    public void testPlainLinkWithTrailingSlash() {
+        OrgSpannable spannable = new OrgSpannable("http://orgzly.com/");
+        assertThat(spannable.string, is("http://orgzly.com/"));
     }
 
     private class SpanItem {
