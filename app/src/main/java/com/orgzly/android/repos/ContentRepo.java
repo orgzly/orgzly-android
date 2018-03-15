@@ -51,25 +51,6 @@ public class ContentRepo implements Repo {
     }
 
     @Override
-    public Uri getUriForFilename(String fileName) {
-        DocumentFile file = repoDocumentFile.findFile(fileName);
-
-        if (file == null) {
-            /* Create, then delete the file.
-             * TODO: Ugly hack as API doesn't allow getting URI for a non-existent file.
-             * TODO: The whole linking business needs to be re-designed.
-             */
-            file = repoDocumentFile.createFile("text/*", fileName);
-            if (file == null) {
-                return null;
-            }
-            file.delete();
-        }
-
-        return file.getUri();
-    }
-
-    @Override
     public List<VersionedRook> getBooks() throws IOException {
         List<VersionedRook> result = new ArrayList<>();
 
@@ -79,9 +60,7 @@ public class ContentRepo implements Repo {
             // Can't compare TreeDocumentFile
             // Arrays.sort(files);
 
-            for (int i = 0; i < files.length; i++) {
-                DocumentFile file = files[i];
-
+            for (DocumentFile file : files) {
                 if (BookName.isSupportedFormatFileName(file.getName())) {
 
                     if (BuildConfig.LOG_DEBUG) {

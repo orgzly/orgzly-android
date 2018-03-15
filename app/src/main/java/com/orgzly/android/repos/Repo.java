@@ -17,9 +17,6 @@ public interface Repo {
      */
     Uri getUri();
 
-    /** Append filename to repo's URI. */
-    Uri getUriForFilename(String fileName);
-
     /**
      * Retrieve the list of all available books.
      *

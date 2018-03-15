@@ -10,7 +10,6 @@ import com.orgzly.android.util.UriUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,20 +61,11 @@ public class DirectoryRepo implements Repo {
     }
 
     @Override
-    public Uri getUriForFilename(String fileName) {
-        return repoUri.buildUpon().appendPath(fileName).build();
-    }
-
-    @Override
     public List<VersionedRook> getBooks() throws IOException {
         List<VersionedRook> result = new ArrayList<>();
 
-        File[] files = mDirectory.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String filename) {
-                return BookName.isSupportedFormatFileName(filename);
-            }
-        });
+        File[] files = mDirectory.listFiles((dir, filename) ->
+                BookName.isSupportedFormatFileName(filename));
 
         if (files != null) {
             Arrays.sort(files);
