@@ -43,9 +43,8 @@ object OrgFormatter {
     private const val BORDER = "\\S"
     private const val BODY = ".*?(?:\n.*?)?"
 
-    // Added .{0} for the next find() to match from the beginning
     private fun markupRegex(marker: Char): String =
-            "(?:^|.{0}|[$PRE])([$marker]($BORDER|$BORDER$BODY$BORDER)[$marker])(?:[$POST]|$)"
+            "(?:^|\\G|[$PRE])([$marker]($BORDER|$BORDER$BODY$BORDER)[$marker])(?:[$POST]|$)"
 
     private val MARKUP_PATTERN = Pattern.compile(
             markupRegex('*') + "|" +
