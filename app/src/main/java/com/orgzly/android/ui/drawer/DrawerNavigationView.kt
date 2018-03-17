@@ -48,9 +48,8 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
         menu.findItem(R.id.books).intent = Intent(AppIntent.ACTION_OPEN_BOOKS)
         menu.findItem(R.id.settings).intent = Intent(AppIntent.ACTION_OPEN_SETTINGS)
 
-        // Restart Loaders in case settings changed (e.g. notebooks order)
-        activity.supportLoaderManager.restartLoader(Loaders.DRAWER_BOOKS, null, this)
-        activity.supportLoaderManager.restartLoader(Loaders.DRAWER_FILTERS, null, this)
+        activity.supportLoaderManager.initLoader(Loaders.DRAWER_BOOKS, null, this)
+        activity.supportLoaderManager.initLoader(Loaders.DRAWER_FILTERS, null, this)
     }
 
     fun updateActiveFragment(fragmentTag: String) {

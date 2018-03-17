@@ -1,5 +1,6 @@
 package com.orgzly.android.ui;
 
+import android.support.v4.app.LoaderManager;
 import android.util.SparseArray;
 
 import java.util.HashMap;
@@ -17,9 +18,11 @@ public class Loaders {
 
     public static final int AGENDA_FRAGMENT = 8;
 
-    private static int nextAvailableId = 9;
+    private static final int NEXT_AVAILABLE_ID = 9;
 
-    private static SparseArray<HashMap<String, Integer>> ids = new SparseArray<>(5);
+    private static int nextAvailableId = NEXT_AVAILABLE_ID;
+
+    private static SparseArray<HashMap<String, Integer>> ids = new SparseArray<>(2);
 
     public static int generateLoaderId(int fragmentLoaderId, String arg) {
         Integer id;
@@ -37,5 +40,18 @@ public class Loaders {
         }
 
         return id;
+    }
+
+    /**
+     * Destroy all loaders. TODO: Only when Settings change could have affected the results
+     */
+    public static void destroyAll(LoaderManager loaderManager) {
+        for (int i = 0; i < nextAvailableId; i++) {
+            if (loaderManager.getLoader(i) != null) {
+                loaderManager.destroyLoader(i);
+            }
+        }
+        nextAvailableId = NEXT_AVAILABLE_ID;
+        ids.clear();
     }
 }

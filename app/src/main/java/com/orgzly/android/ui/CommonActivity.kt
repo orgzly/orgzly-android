@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.support.v4.content.LocalBroadcastManager
@@ -208,9 +207,12 @@ abstract class CommonActivity : AppCompatActivity() {
         super.onResume()
 
         if (restartActivity) {
+            Loaders.destroyAll(supportLoaderManager)
+
             recreate()
             // Handler().post(this@CommonActivity::recreate)
             restartActivity = false
+
         }
     }
 
