@@ -17,6 +17,8 @@
 
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
 
+        <item name="colorAccent">@color/blue_grey_500</item>
+
         <!-- Font sizes (defaults) -->
         <item name="font_micro">12sp</item>
         <item name="font_small">14sp</item>
@@ -57,7 +59,7 @@
 
         <item name="android:statusBarColor">#e6757575</item>
 
-        <item name="app_bar_bg_color">#BDBDBD</item>
+        <item name="app_bar_bg_color">@color/grey_300</item>
 
         <!-- Make buttons lighter. -->
         <item name="android:colorButtonNormal" tools:targetApi="21">@color/grey_100</item>
@@ -65,7 +67,7 @@
 
         <item name="item_bg">@drawable/item_selector</item>
 
-        <item name="fragment_books_bg_color">@color/light_theme_status_bar</item>
+        <item name="fragment_books_bg_color">@color/light_theme_app_bar</item>
         <item name="item_book_card_bg_color">@color/light_theme_cards_and_dialogs</item>
 
         <item name="drawer_bg">@color/white</item>
@@ -154,6 +156,8 @@
         <item name="windowActionModeOverlay">true</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
+
+        <item name="colorAccent">@color/blue_grey_300</item>
 
         <!-- Font sizes (defaults) -->
         <item name="font_micro">12sp</item>
