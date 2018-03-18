@@ -14,7 +14,7 @@
                 android:width="8dp"
                 android:height="8dp" />
 
-            <solid android:color="@color/dark_bg_text_secondary"/>
+            <solid android:color="@color/white_text_secondary_color"/>
         </shape>
 
     </item>

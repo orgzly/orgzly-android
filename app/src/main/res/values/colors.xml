@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- Use minimum number of different colors. -->
-
 <resources>
-    <!-- Material colors
-         https://material.io/guidelines/style/color.html#color-color-palette -->
+    <!-- https://material.io/guidelines/style/color.html#color-color-palette -->
 
     <color name="red_200">#EF9A9A</color>
     <color name="red_900">#B71C1C</color>
@@ -15,9 +12,10 @@
     <color name="blue_200">#90CAF9</color>
     <color name="blue_900">#0D47A1</color>
 
-    <color name="grey_100">#f5f5f5</color>
+    <color name="grey_50">#FAFAFA</color>
+    <color name="grey_100">#F5F5F5</color>
     <color name="grey_200">#EEEEEE</color>
-    <color name="grey_300">#e0e0e0</color>
+    <color name="grey_300">#E0E0E0</color>
     <color name="grey_400">#BDBDBD</color>
     <color name="grey_500">#9E9E9E</color>
     <color name="grey_600">#757575</color>
@@ -43,18 +41,31 @@
     <color name="white">#FFFFFF</color>
 
     <!-- http://www.google.com/design/spec/style/color.html#color-themes -->
-    <color name="dark_theme_status_bar">#000000</color>
-    <color name="dark_theme_app_bar">@color/grey_900</color>
-    <color name="dark_theme_bg">#303030</color>
-    <color name="dark_theme_cards_and_dialogs">#424242</color>
 
-    <!-- http://www.google.com/design/spec/style/color.html#color-ui-color-application -->
-    <color name="dark_bg_text_primary">#ffffff</color>
-    <color name="dark_bg_text_secondary">#b4ffffff</color>
-    <color name="dark_bg_text_mute">#4dffffff</color>
+    <color name="light_theme_status_bar">@color/grey_300</color>
+    <color name="light_theme_app_bar">@color/grey_100</color>
+    <color name="light_theme_background">@color/grey_50</color>
+    <color name="light_theme_cards_and_dialogs">@color/white</color>
+
+    <color name="dark_theme_status_bar">@color/black</color>
+    <color name="dark_theme_app_bar">@color/grey_900</color>
+    <color name="dark_theme_background">#303030</color>
+    <color name="dark_theme_cards_and_dialogs">@color/grey_800</color>
+
+    <!-- https://material.io/guidelines/style/color.html#color-usability -->
+
+    <color name="dark_text_primary_color">#DE000000</color> <!-- 87% -->
+    <color name="dark_text_secondary_color">#8A000000</color> <!-- 54% -->
+    <color name="dark_text_disabled_color">#61000000</color> <!-- 38% -->
+
+    <color name="white_text_primary_color">#FFFFFF</color> <!-- 100% -->
+    <color name="white_text_secondary_color">#B3FFFFFF</color> <!-- 70% -->
+    <color name="white_text_disabled_color">#80FFFFFF</color> <!-- 50% -->
+
 
     <color name="item_head_selected_bg">#3238caff</color>
 
     <color name="notification">@color/black</color>
+
 </resources>
 

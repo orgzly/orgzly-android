@@ -58,8 +58,8 @@
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/black</item>
 
-        <item name="android:statusBarColor">#e687877c</item>
-        <item name="app_bar_bg_color">#cfcfc4</item>
+        <item name="android:statusBarColor">#e6757575</item>
+        <item name="app_bar_bg_color">#BDBDBD</item>
 
         <!-- Make buttons lighter. -->
         <item name="android:colorButtonNormal" tools:targetApi="21">@color/grey_100</item>
@@ -84,10 +84,10 @@
         <item name="item_head_state_done_color">@color/green_900</item>
         <item name="item_head_state_unknown_color">@color/blue_900</item>
 
-        <item name="item_head_bullet_text_color">@color/grey_700</item>
-        <item name="item_head_title_text_color">@color/black</item>
-        <item name="item_head_fold_button_text_color">@color/grey_600</item>
-        <item name="item_head_post_title_text_color">@color/grey_700</item>
+        <item name="item_head_bullet_text_color">@color/dark_text_secondary_color</item>
+        <item name="item_head_title_text_color">@color/dark_text_primary_color</item>
+        <item name="item_head_fold_button_text_color">@color/dark_text_secondary_color</item>
+        <item name="item_head_post_title_text_color">@color/dark_text_secondary_color</item>
 
         <item name="line_thin_color">#0c000000</item>
         <item name="line_color">#18000000</item>
@@ -210,35 +210,35 @@
         <item name="android:statusBarColor">#e6000000</item>
         <item name="app_bar_bg_color">@color/grey_900</item>
 
-        <item name="main_text_color">@color/dark_bg_text_primary</item>
+        <item name="main_text_color">@color/white_text_primary_color</item>
         <item name="main_text_color_muted">#60ffffff</item>
 
         <item name="item_bg">@drawable/item_selector_dark</item>
 
-        <item name="fragment_books_bg_color">@color/dark_theme_bg</item>
+        <item name="fragment_books_bg_color">@color/dark_theme_background</item>
         <item name="item_book_card_bg_color">@color/dark_theme_cards_and_dialogs</item>
 
-        <item name="drawer_text">@color/dark_bg_text_primary</item>
+        <item name="drawer_text">@color/white_text_primary_color</item>
         <item name="drawer_bg">@color/dark_theme_cards_and_dialogs</item>
-        <item name="drawer_divider">@color/dark_bg_text_mute</item>
+        <item name="drawer_divider">@color/white_text_disabled_color</item>
         <item name="drawer_item_bg">@drawable/drawer_item_selector_dark</item>
 
-        <item name="item_book_title_color">@color/dark_bg_text_primary</item>
+        <item name="item_book_title_color">@color/white_text_primary_color</item>
         <item name="item_book_error_color">@color/red_200</item>
 
         <item name="item_head_state_todo_color">@color/red_200</item>
         <item name="item_head_state_done_color">@color/green_200</item>
         <item name="item_head_state_unknown_color">@color/blue_200</item>
 
-        <item name="item_head_bullet_text_color">@color/dark_bg_text_secondary</item>
-        <item name="item_head_title_text_color">@color/dark_bg_text_primary</item>
-        <item name="item_head_fold_button_text_color">@color/dark_bg_text_secondary</item>
-        <item name="item_head_post_title_text_color">@color/dark_bg_text_secondary</item>
+        <item name="item_head_bullet_text_color">@color/white_text_secondary_color</item>
+        <item name="item_head_title_text_color">@color/white_text_primary_color</item>
+        <item name="item_head_fold_button_text_color">@color/white_text_secondary_color</item>
+        <item name="item_head_post_title_text_color">@color/white_text_secondary_color</item>
 
         <item name="line_thin_color">#0cffffff</item>
         <item name="line_color">#18ffffff</item>
 
-        <item name="big_centered_text_color">@color/dark_bg_text_primary</item>
+        <item name="big_centered_text_color">@color/white_text_primary_color</item>
 
         <item name="browser_footer_bg_color">@color/dark_theme_cards_and_dialogs</item>
 
