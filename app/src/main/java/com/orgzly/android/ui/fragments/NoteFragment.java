@@ -42,7 +42,7 @@ import com.orgzly.android.ui.NotePriorities;
 import com.orgzly.android.ui.NoteStates;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
-import com.orgzly.android.ui.drawer.DrawerItem;
+import com.orgzly.android.ui.drawer.DrawerListed;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
@@ -67,7 +67,7 @@ public class NoteFragment extends Fragment
         implements
         View.OnClickListener,
         TimestampDialogFragment.OnDateTimeSetListener,
-        DrawerItem {
+        DrawerListed {
 
     private static final String TAG = NoteFragment.class.getName();
 

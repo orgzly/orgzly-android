@@ -198,10 +198,10 @@ public class Provider extends ContentProvider {
                         + " c." + DbOrgRange.STRING + " AS " + DbNoteView.CLOSED_RANGE_STRING + ","
                         + " d." + DbOrgRange.STRING + " AS " + DbNoteView.CLOCK_RANGE_STRING
                         + " FROM " + DbNote.TABLE
-                        + GenericDatabaseUtils.join(DbOrgRange.TABLE, "a", DbOrgRange._ID, DbNote.TABLE, DbNote.SCHEDULED_RANGE_ID)
-                        + GenericDatabaseUtils.join(DbOrgRange.TABLE, "b", DbOrgRange._ID, DbNote.TABLE, DbNote.DEADLINE_RANGE_ID)
-                        + GenericDatabaseUtils.join(DbOrgRange.TABLE, "c", DbOrgRange._ID, DbNote.TABLE, DbNote.CLOSED_RANGE_ID)
-                        + GenericDatabaseUtils.join(DbOrgRange.TABLE, "d", DbOrgRange._ID, DbNote.TABLE, DbNote.CLOCK_RANGE_ID)
+                        + join(DbOrgRange.TABLE, "a", DbOrgRange._ID, DbNote.TABLE, DbNote.SCHEDULED_RANGE_ID)
+                        + join(DbOrgRange.TABLE, "b", DbOrgRange._ID, DbNote.TABLE, DbNote.DEADLINE_RANGE_ID)
+                        + join(DbOrgRange.TABLE, "c", DbOrgRange._ID, DbNote.TABLE, DbNote.CLOSED_RANGE_ID)
+                        + join(DbOrgRange.TABLE, "d", DbOrgRange._ID, DbNote.TABLE, DbNote.CLOCK_RANGE_ID)
                         + " WHERE " + field(DbNote.TABLE, DbNote.BOOK_ID) + "=" + bookId + " AND " + DatabaseUtils.WHERE_VISIBLE_NOTES
                         + " ORDER BY " + DbNote.LFT;
 

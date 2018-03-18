@@ -5,6 +5,6 @@ package com.orgzly.android.ui.drawer
  *
  * Used to flag (check) [android.view.MenuItem] active fragment in the drawer.
  */
-interface DrawerItem {
+interface DrawerListed {
     fun getCurrentDrawerItemId(): String
 }

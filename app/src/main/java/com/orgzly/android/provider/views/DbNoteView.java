@@ -10,7 +10,6 @@ import com.orgzly.android.provider.models.DbNoteColumns;
 import com.orgzly.android.provider.models.DbOrgRange;
 import com.orgzly.android.provider.models.DbOrgTimestamp;
 
-import static com.orgzly.android.provider.GenericDatabaseUtils.field;
 import static com.orgzly.android.provider.GenericDatabaseUtils.ms2StartOfDay;
 
 /**
@@ -78,5 +77,5 @@ public class DbNoteView implements DbNoteViewColumns, DbNoteColumns, BaseColumns
             GenericDatabaseUtils.join(DbNoteAncestor.TABLE, "t_note_ancestors", DbNoteAncestor.NOTE_ID, DbNote.TABLE, DbNote._ID) +
             GenericDatabaseUtils.join(DbNote.TABLE, "t_notes_with_inherited_tags", DbNote._ID, "t_note_ancestors", DbNoteAncestor.ANCESTOR_NOTE_ID) +
 
-            " GROUP BY " + field(DbNote.TABLE, DbNote._ID);
+            " GROUP BY " + GenericDatabaseUtils.field(DbNote.TABLE, DbNote._ID);
 }

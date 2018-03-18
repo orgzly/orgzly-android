@@ -52,8 +52,7 @@ object AgendaCursor {
         var nextId = 1L
         val originalNoteIDs = mutableMapOf<Long, NoteForDay>()
 
-        cursor.moveToFirst()
-        while (!cursor.isAfterLast) {
+        GenericDatabaseUtils.forEachRow(cursor) {
             // Expand each note if it has a repeater or is a range
             val dates = AgendaUtils.expandOrgDateTime(
                     arrayOf(cursor.getString(scheduledRangeStrIdx), cursor.getString(deadlineRangeStrIdx)),
@@ -90,8 +89,6 @@ object AgendaCursor {
                     }
                 }
             }
-
-            cursor.moveToNext()
         }
 
         val userTimeFormatter = UserTimeFormatter(context)

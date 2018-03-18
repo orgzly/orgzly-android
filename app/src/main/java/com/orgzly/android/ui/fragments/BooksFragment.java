@@ -40,7 +40,7 @@ import com.orgzly.android.provider.views.DbBookViewColumns;
 import com.orgzly.android.ui.Fab;
 import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.Loaders;
-import com.orgzly.android.ui.drawer.DrawerItem;
+import com.orgzly.android.ui.drawer.DrawerListed;
 import com.orgzly.android.util.LogUtils;
 
 /**
@@ -51,7 +51,7 @@ public class BooksFragment extends ListFragment
         implements
         Fab,
         LoaderManager.LoaderCallbacks<Cursor>,
-        DrawerItem {
+        DrawerListed {
 
     private static final String TAG = BooksFragment.class.getName();
 

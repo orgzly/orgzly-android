@@ -4,6 +4,7 @@ import android.database.Cursor
 import android.provider.BaseColumns
 
 import com.orgzly.BuildConfig
+import com.orgzly.android.provider.GenericDatabaseUtils
 import com.orgzly.android.util.LogUtils
 
 import java.util.HashSet
@@ -16,11 +17,10 @@ object SelectionUtils {
             val t = System.currentTimeMillis()
 
             val existingIds = HashSet<Long>()
-            cursor.moveToFirst()
-            while (!cursor.isAfterLast) {
+
+            GenericDatabaseUtils.forEachRow(cursor) {
                 val id = cursor.getLong(cursor.getColumnIndex(BaseColumns._ID))
                 existingIds.add(id)
-                cursor.moveToNext()
             }
 
             val nonExistingSelectedIds = selection.ids

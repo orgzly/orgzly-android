@@ -6,6 +6,7 @@ import android.support.v4.content.CursorLoader
 import android.support.v4.util.LongSparseArray
 import com.orgzly.android.AppIntent
 import com.orgzly.android.filter.Filter
+import com.orgzly.android.provider.GenericDatabaseUtils
 import com.orgzly.android.provider.ProviderContract
 import com.orgzly.android.provider.models.DbSearch
 import com.orgzly.android.widgets.ListWidgetProvider
@@ -50,10 +51,8 @@ object FiltersClient {
                 ProviderContract.Filters.Param.NAME + " LIKE ?",
                 arrayOf(name), null)
 
-        cursor?.use {
-            cursor.moveToFirst()
-
-            while (!cursor.isAfterLast) {
+        cursor.use {
+            GenericDatabaseUtils.forEachRow(cursor) {
                 val id = cursor.getLong(0)
 
                 val filter = Filter(
@@ -61,7 +60,6 @@ object FiltersClient {
                         cursor.getString(2))
 
                 result.put(id, filter)
-                cursor.moveToNext()
             }
         }
 
@@ -121,15 +119,12 @@ object FiltersClient {
                 null,
                 SORT_ORDER)
 
-        cursor?.use {
-            cursor.moveToFirst()
-            while (!cursor.isAfterLast) {
+        cursor.use {
+            GenericDatabaseUtils.forEachRow(cursor) {
                 val name = cursor.getString(0)
                 val query = cursor.getString(1)
 
                 func(Filter(name, query))
-
-                cursor.moveToNext()
             }
         }
     }

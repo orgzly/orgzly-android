@@ -33,7 +33,7 @@ public class CycleVisibilityAction implements Action {
     /** Check if unfolded notes exist. */
     private boolean unfoldedNotesExist(SQLiteDatabase db, long bookId) {
         String selection = DatabaseUtils.whereUncutBookNotes(bookId) + " AND " +
-                GenericDatabaseUtils.whereNullOrZero(DbNote.IS_FOLDED);
+                           GenericDatabaseUtils.whereNullOrZero(DbNote.IS_FOLDED);
 
         Cursor cursor = db.query(DbNote.TABLE, DatabaseUtils.PROJECTION_FOR_COUNT, selection, null, null, null, null);
         try {

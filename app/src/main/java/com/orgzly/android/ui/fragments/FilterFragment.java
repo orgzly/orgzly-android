@@ -2,7 +2,6 @@ package com.orgzly.android.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.LongSparseArray;
@@ -21,11 +20,11 @@ import com.orgzly.R;
 import com.orgzly.android.filter.Filter;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.ui.FragmentListener;
-import com.orgzly.android.ui.drawer.DrawerItem;
+import com.orgzly.android.ui.drawer.DrawerListed;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 
-public class FilterFragment extends Fragment implements DrawerItem {
+public class FilterFragment extends Fragment implements DrawerListed {
     private static final String TAG = FilterFragment.class.getName();
 
     private static final String ARG_ID = "id";

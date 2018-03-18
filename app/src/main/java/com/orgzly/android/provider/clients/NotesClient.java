@@ -543,22 +543,18 @@ public class NotesClient {
      * @return note id or 0 if none found
      */
     public static long getFirstNoteId(Context context, long bookId) {
-        Cursor cursor = context.getContentResolver().query(
+        try (Cursor cursor = context.getContentResolver().query(
                 ProviderContract.Notes.ContentUri.notes(),
                 DatabaseUtils.PROJECTION_FOR_ID,
                 DatabaseUtils.whereUncutBookNotes(bookId),
                 null,
                 DbNoteView.LFT
-        );
-
-        try {
-            if (cursor.moveToFirst()) {
+        )) {
+            if (cursor != null && cursor.moveToFirst()) {
                 return cursor.getLong(0);
             } else { // No records found.
                 return 0;
             }
-        } finally {
-            cursor.close();
         }
     }
 

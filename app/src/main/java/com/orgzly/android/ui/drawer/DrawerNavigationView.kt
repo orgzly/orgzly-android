@@ -18,6 +18,7 @@ import com.orgzly.R
 import com.orgzly.android.AppIntent
 import com.orgzly.android.Book
 import com.orgzly.android.BookUtils
+import com.orgzly.android.provider.GenericDatabaseUtils
 import com.orgzly.android.provider.ProviderContract
 import com.orgzly.android.provider.clients.BooksClient
 import com.orgzly.android.provider.clients.FiltersClient
@@ -63,7 +64,7 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
 
         val fragment = activity.supportFragmentManager.findFragmentByTag(activeFragmentTag)
 
-        if (fragment is DrawerItem) {
+        if (fragment is DrawerListed) {
             val fragmentMenuItemId = fragment.getCurrentDrawerItemId()
 
             val itemId = menuItemIdMap[fragmentMenuItemId]
@@ -98,7 +99,7 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
     private fun updateQueriesFromCursor(cursor: Cursor) {
         removeItemsWithOrder(1)
 
-        forEachRow(cursor) {
+        GenericDatabaseUtils.forEachRow(cursor) {
             val name = cursor.getString(cursor.getColumnIndex(ProviderContract.Filters.Param.NAME))
             val query = cursor.getString(cursor.getColumnIndex(ProviderContract.Filters.Param.QUERY))
 
@@ -121,7 +122,7 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
 
         val attrs = getAttributes()
 
-        forEachRow(cursor) {
+        GenericDatabaseUtils.forEachRow(cursor) {
             val book = BooksClient.fromCursor(cursor)
 
             val intent = Intent(AppIntent.ACTION_OPEN_BOOK)
@@ -154,17 +155,6 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
         }
 
         return sb
-    }
-
-    // TODO: Move this to some utility class
-    private fun forEachRow(cursor: Cursor, f: (Cursor) -> Unit) {
-        cursor.moveToFirst()
-
-        while (!cursor.isAfterLast) {
-            f(cursor)
-
-            cursor.moveToNext()
-        }
     }
 
     @SuppressLint("ResourceType")
