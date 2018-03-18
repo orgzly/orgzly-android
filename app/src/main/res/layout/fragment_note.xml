@@ -60,7 +60,7 @@
                     android:hint="@string/fragment_note_tags_hint"
                     android:completionThreshold="2"
                     android:freezesText="true"
-                    android:textColor="?attr/main_text_color"/>
+                    android:textColor="?attr/text_highlighted_color"/>
             </LinearLayout>
 
             <!-- State -->

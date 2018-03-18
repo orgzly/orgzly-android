@@ -52,7 +52,7 @@ public class BookUtils {
 
             /* Get error color attribute. */
             TypedArray arr = context.obtainStyledAttributes(
-                    new int[]{R.attr.item_book_error_color});
+                    new int[]{R.attr.text_error_color});
             int color = arr.getColor(0, 0);
             arr.recycle();
 

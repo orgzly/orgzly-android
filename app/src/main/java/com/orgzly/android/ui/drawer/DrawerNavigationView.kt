@@ -171,7 +171,7 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
     private fun getAttributes(): Attributes {
         val typedArray = activity.obtainStyledAttributes(intArrayOf(
                 R.attr.ic_sync_18dp,
-                R.attr.main_text_color_muted))
+                R.attr.text_disabled_color))
         try {
             return Attributes(typedArray.getResourceId(0, 0), typedArray.getColor(1, 0))
         } finally {

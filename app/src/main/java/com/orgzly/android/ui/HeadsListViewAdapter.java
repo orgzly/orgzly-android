@@ -53,7 +53,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                 R.attr.item_head_state_done_color,
                 R.attr.item_head_state_unknown_color,
                 R.attr.item_head_post_title_text_size,
-                R.attr.item_head_post_title_text_color,
+                R.attr.text_secondary_color,
                 R.attr.bullet_default,
                 R.attr.bullet_folded,
                 R.attr.bullet_unfolded

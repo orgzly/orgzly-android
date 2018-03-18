@@ -17,7 +17,6 @@
         <attr name="font_medium" format="dimension"/>
         <attr name="font_large" format="dimension"/>
 
-        <attr name="item_book_title_text_size" format="dimension"/>
         <attr name="item_book_subtitle_text_size" format="dimension"/>
         <attr name="item_book_details_text_size" format="dimension"/>
         <attr name="item_head_book_name_text" format="dimension"/>
@@ -29,8 +28,6 @@
         <attr name="item_head_sub_title_content_text" format="dimension"/>
         <attr name="item_repo_text_size" format="dimension"/>
         <attr name="fragment_note_time_buttons_text_size" format="dimension"/>
-        <attr name="big_centered_text_size" format="dimension"/>
-        <attr name="browser_text_size" format="dimension"/>
 
         <!-- Icons sizes, but depend on set font size. -->
         <attr name="item_book_info_icon_size" format="dimension"/>
@@ -40,9 +37,6 @@
     </declare-styleable>
 
     <declare-styleable name="ColorScheme">
-        <attr name="main_text_color" format="color"/>
-        <attr name="main_text_color_muted" format="color"/>
-
         <attr name="app_bar_bg_color" format="color"/>
 
         <attr name="item_bg" format="reference" />
@@ -51,30 +45,20 @@
         <attr name="item_book_card_bg_color" format="color"/>
 
         <attr name="drawer_bg" format="color"/>
-        <attr name="drawer_text" format="color"/>
         <attr name="drawer_divider" format="color"/>
         <attr name="drawer_item_bg" format="reference"/>
 
-        <attr name="item_book_title_color" format="color"/>
-        <attr name="item_book_error_color" format="color"/>
-
-        <!-- Color of state keyword. -->
         <attr name="item_head_state_todo_color" format="color"/>
         <attr name="item_head_state_done_color" format="color"/>
         <attr name="item_head_state_unknown_color" format="color"/>
 
-        <attr name="item_head_bullet_text_color" format="color"/>
-        <attr name="item_head_title_text_color" format="color"/>
-        <attr name="item_head_fold_button_text_color" format="color"/>
+        <attr name="text_primary_color" format="color"/>
+        <attr name="text_secondary_color" format="color"/>
+        <attr name="text_disabled_color" format="color"/>
+        <attr name="text_highlighted_color" format="color"/>
+        <attr name="text_error_color" format="color"/>
 
-        <attr name="item_head_post_title_text_color" format="color"/>
-
-        <attr name="line_thin_color" format="color"/>
-        <attr name="line_color" format="color"/>
-
-        <attr name="big_centered_text_color" format="color"/>
-
-        <attr name="browser_footer_bg_color" format="color"/>
+        <attr name="indent_line_color" format="color"/>
 
         <attr name="snackbar_bg_color" format="color"/>
     </declare-styleable>

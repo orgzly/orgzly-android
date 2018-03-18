@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
-        android:textSize="?attr/browser_text_size"
+        android:textSize="?attr/font_medium"
         tools:text="FileOrDirectory"/>
 
 </LinearLayout>

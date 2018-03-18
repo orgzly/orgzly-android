@@ -57,8 +57,8 @@
                         android:layout_alignParentLeft="true"
                         tools:text="@string/book_title_sample"
                         android:textStyle="bold"
-                        android:textSize="?attr/item_book_title_text_size"
-                        android:textColor="?attr/item_book_title_color"/>
+                        android:textSize="?attr/font_large"
+                        android:textColor="?attr/text_primary_color"/>
                 </RelativeLayout>
 
                 <TextView

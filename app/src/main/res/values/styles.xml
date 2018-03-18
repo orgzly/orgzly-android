@@ -23,7 +23,6 @@
         <item name="font_medium">18sp</item>
         <item name="font_large">22sp</item>
 
-        <item name="item_book_title_text_size">22sp</item>
         <item name="item_book_subtitle_text_size">18sp</item>
         <item name="item_book_details_text_size">12sp</item>
 
@@ -37,8 +36,6 @@
 
         <item name="item_repo_text_size">14sp</item>
         <item name="fragment_note_time_buttons_text_size">14sp</item>
-        <item name="big_centered_text_size">22sp</item>
-        <item name="browser_text_size">18sp</item>
 
         <!-- Icon sizes -->
         <item name="item_book_info_icon_size">14dp</item>
@@ -59,42 +56,33 @@
         <item name="colorPrimaryDark">@color/black</item>
 
         <item name="android:statusBarColor">#e6757575</item>
+
         <item name="app_bar_bg_color">#BDBDBD</item>
 
         <!-- Make buttons lighter. -->
         <item name="android:colorButtonNormal" tools:targetApi="21">@color/grey_100</item>
 
-        <item name="main_text_color">@color/black</item>
-        <item name="main_text_color_muted">#60000000</item>
 
         <item name="item_bg">@drawable/item_selector</item>
 
-        <item name="fragment_books_bg_color">@color/grey_300</item>
-        <item name="item_book_card_bg_color">@color/white</item>
+        <item name="fragment_books_bg_color">@color/light_theme_status_bar</item>
+        <item name="item_book_card_bg_color">@color/light_theme_cards_and_dialogs</item>
 
-        <item name="drawer_text">#333333</item>
         <item name="drawer_bg">@color/white</item>
         <item name="drawer_divider">@color/grey_300</item>
         <item name="drawer_item_bg">@drawable/drawer_item_selector</item>
-
-        <item name="item_book_title_color">@color/black</item>
-        <item name="item_book_error_color">@color/red_900</item>
 
         <item name="item_head_state_todo_color">@color/red_900</item>
         <item name="item_head_state_done_color">@color/green_900</item>
         <item name="item_head_state_unknown_color">@color/blue_900</item>
 
-        <item name="item_head_bullet_text_color">@color/dark_text_secondary_color</item>
-        <item name="item_head_title_text_color">@color/dark_text_primary_color</item>
-        <item name="item_head_fold_button_text_color">@color/dark_text_secondary_color</item>
-        <item name="item_head_post_title_text_color">@color/dark_text_secondary_color</item>
+        <item name="text_primary_color">@color/dark_text_primary_color</item>
+        <item name="text_secondary_color">@color/dark_text_secondary_color</item>
+        <item name="text_disabled_color">@color/dark_text_disabled_color</item>
+        <item name="text_highlighted_color">@color/black</item>
+        <item name="text_error_color">@color/red_900</item>
 
-        <item name="line_thin_color">#0c000000</item>
-        <item name="line_color">#18000000</item>
-
-        <item name="big_centered_text_color">#696969</item>
-
-        <item name="browser_footer_bg_color">@color/white</item>
+        <item name="indent_line_color">#0c000000</item>
 
         <item name="snackbar_bg_color">#323232</item> <!-- Default color -->
 
@@ -173,7 +161,6 @@
         <item name="font_medium">18sp</item>
         <item name="font_large">22sp</item>
 
-        <item name="item_book_title_text_size">22sp</item>
         <item name="item_book_subtitle_text_size">18sp</item>
         <item name="item_book_details_text_size">12sp</item>
 
@@ -187,8 +174,6 @@
 
         <item name="item_repo_text_size">14sp</item>
         <item name="fragment_note_time_buttons_text_size">14sp</item>
-        <item name="big_centered_text_size">22sp</item>
-        <item name="browser_text_size">18sp</item>
 
         <!-- Icon sizes -->
         <item name="item_book_info_icon_size">14dp</item>
@@ -208,41 +193,31 @@
         <item name="colorPrimaryDark">@color/white</item>
 
         <item name="android:statusBarColor">#e6000000</item>
-        <item name="app_bar_bg_color">@color/grey_900</item>
 
-        <item name="main_text_color">@color/white_text_primary_color</item>
-        <item name="main_text_color_muted">#60ffffff</item>
+        <item name="app_bar_bg_color">@color/dark_theme_app_bar</item>
 
         <item name="item_bg">@drawable/item_selector_dark</item>
 
         <item name="fragment_books_bg_color">@color/dark_theme_background</item>
         <item name="item_book_card_bg_color">@color/dark_theme_cards_and_dialogs</item>
 
-        <item name="drawer_text">@color/white_text_primary_color</item>
         <item name="drawer_bg">@color/dark_theme_cards_and_dialogs</item>
         <item name="drawer_divider">@color/white_text_disabled_color</item>
         <item name="drawer_item_bg">@drawable/drawer_item_selector_dark</item>
-
-        <item name="item_book_title_color">@color/white_text_primary_color</item>
-        <item name="item_book_error_color">@color/red_200</item>
 
         <item name="item_head_state_todo_color">@color/red_200</item>
         <item name="item_head_state_done_color">@color/green_200</item>
         <item name="item_head_state_unknown_color">@color/blue_200</item>
 
-        <item name="item_head_bullet_text_color">@color/white_text_secondary_color</item>
-        <item name="item_head_title_text_color">@color/white_text_primary_color</item>
-        <item name="item_head_fold_button_text_color">@color/white_text_secondary_color</item>
-        <item name="item_head_post_title_text_color">@color/white_text_secondary_color</item>
+        <item name="text_primary_color">@color/white_text_primary_color</item>
+        <item name="text_secondary_color">@color/white_text_secondary_color</item>
+        <item name="text_disabled_color">#60ffffff</item>
+        <item name="text_highlighted_color">@color/white_text_primary_color</item>
+        <item name="text_error_color">@color/red_200</item>
 
-        <item name="line_thin_color">#0cffffff</item>
-        <item name="line_color">#18ffffff</item>
+        <item name="indent_line_color">#0cffffff</item>
 
-        <item name="big_centered_text_color">@color/white_text_primary_color</item>
-
-        <item name="browser_footer_bg_color">@color/dark_theme_cards_and_dialogs</item>
-
-        <item name="snackbar_bg_color">#323232</item>  <!-- Default color -->
+        <item name="snackbar_bg_color">@color/dark_theme_background</item>
 
         <!-- / Color scheme -->
 
@@ -322,6 +297,7 @@
         <item name="android:colorButtonNormal" tools:targetApi="21">@color/dark_theme_app_bar</item>
 
         <item name="android:statusBarColor">#000000</item>
+
         <item name="app_bar_bg_color">@color/dark_theme_status_bar</item>
 
         <item name="item_bg">@drawable/item_selector_black</item>
@@ -332,9 +308,7 @@
         <item name="drawer_bg">@color/dark_theme_status_bar</item>
         <item name="drawer_item_bg">@drawable/drawer_item_selector_black</item>
 
-        <item name="browser_footer_bg_color">@color/dark_theme_status_bar</item>
-
-        <item name="snackbar_bg_color">@color/dark_theme_app_bar</item>
+        <item name="snackbar_bg_color">@color/dark_theme_status_bar</item>
 
         <item name="bullet_default">@drawable/bullet_state_default_dark</item>
         <item name="bullet_folded">@drawable/bullet_state_folded_black</item>
@@ -349,7 +323,6 @@
         <item name="font_medium">18sp</item>
         <item name="font_large">22sp</item>
 
-        <item name="item_book_title_text_size">22sp</item>
         <item name="item_book_subtitle_text_size">18sp</item>
         <item name="item_book_details_text_size">12sp</item>
 
@@ -363,8 +336,6 @@
 
         <item name="item_repo_text_size">14sp</item>
         <item name="fragment_note_time_buttons_text_size">14sp</item>
-        <item name="big_centered_text_size">22sp</item>
-        <item name="browser_text_size">18sp</item>
 
         <!-- Icon sizes -->
         <item name="item_book_info_icon_size">14dp</item>
@@ -378,9 +349,8 @@
         <item name="font_micro">16sp</item>
         <item name="font_small">18sp</item>
         <item name="font_medium">22sp</item>
-        <item name="font_large">33sp</item>
+        <item name="font_large">24sp</item>
 
-        <item name="item_book_title_text_size">25sp</item>
         <item name="item_book_subtitle_text_size">20sp</item>
         <item name="item_book_details_text_size">18sp</item>
 
@@ -395,9 +365,6 @@
         <item name="item_repo_text_size">20sp</item>
 
         <item name="fragment_note_time_buttons_text_size">18sp</item>
-
-        <item name="big_centered_text_size">28sp</item>
-        <item name="browser_text_size">22sp</item>
 
         <item name="android:textSize">20sp</item>
 
@@ -440,7 +407,7 @@
         <item name="android:minHeight">48dp</item>
 
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
-        <item name="android:textColor">?attr/main_text_color</item>
+        <item name="android:textColor">?attr/text_highlighted_color</item>
         <!--<item name="android:textStyle">bold</item>-->
     </style>
 
@@ -452,7 +419,7 @@
         <item name="android:minHeight">48dp</item>
 
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
-        <item name="android:textColor">?attr/main_text_color</item>
+        <item name="android:textColor">?attr/text_highlighted_color</item>
         <!--<item name="android:textStyle">bold</item>-->
     </style>
 
@@ -525,9 +492,9 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>
 
+        <item name="android:textColor">?attr/text_secondary_color</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">?attr/big_centered_text_size</item>
-        <item name="android:textColor">?attr/big_centered_text_color</item>
+        <item name="android:textSize">?attr/font_large</item>
     </style>
 
     <style name="ItemQuickMenuButton" parent="android:style/Widget.Holo.Button.Borderless">

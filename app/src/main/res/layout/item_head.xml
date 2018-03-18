@@ -35,7 +35,7 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textSize="?attr/item_head_book_name_text"
-                android:textColor="?attr/item_head_title_text_color"
+                android:textColor="?attr/text_primary_color"
                 android:textStyle="italic"
                 tools:text="@string/book_name_sample"
                 android:visibility="gone"/>
@@ -59,7 +59,7 @@
                 android:layout_alignTop="@+id/item_head_payload"
                 android:gravity="center_horizontal"
                 android:textSize="?attr/item_head_fold_button_text_size"
-                android:textColor="?attr/item_head_fold_button_text_color"
+                android:textColor="?attr/text_secondary_color"
                 android:text="@string/unfold_button_character"/>
 
             <!-- Title, planning times and body. -->
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     tools:text="@string/note_title_sample"
                     android:textSize="?attr/item_head_title_text_size"
-                    android:textColor="?attr/item_head_title_text_color"/>
+                    android:textColor="?attr/text_primary_color"/>
 
                 <!-- Notebook's name. -->
                 <LinearLayout
@@ -105,7 +105,7 @@
                         android:layout_height="wrap_content"
                         tools:text="@string/book_name_sample"
                         android:textSize="?attr/item_head_sub_title_text"
-                        android:textColor="?attr/item_head_post_title_text_color"
+                        android:textColor="?attr/text_secondary_color"
                         android:layout_marginStart="4dp"
                         android:layout_marginLeft="4dp"/>
                 </LinearLayout>
@@ -130,7 +130,7 @@
                         android:layout_height="wrap_content"
                         tools:text="@string/note_scheduled_sample"
                         android:textSize="?attr/item_head_sub_title_text"
-                        android:textColor="?attr/item_head_post_title_text_color"
+                        android:textColor="?attr/text_secondary_color"
                         android:layout_marginStart="4dp"
                         android:layout_marginLeft="4dp"/>
                 </LinearLayout>
@@ -155,7 +155,7 @@
                         android:layout_height="wrap_content"
                         tools:text="@string/note_deadline_sample"
                         android:textSize="?attr/item_head_sub_title_text"
-                        android:textColor="?attr/item_head_post_title_text_color"
+                        android:textColor="?attr/text_secondary_color"
                         android:layout_marginStart="4dp"
                         android:layout_marginLeft="4dp"/>
 
@@ -183,7 +183,7 @@
                         android:layout_height="wrap_content"
                         tools:text="@string/note_closed_sample"
                         android:textSize="?attr/item_head_sub_title_text"
-                        android:textColor="?attr/item_head_post_title_text_color"
+                        android:textColor="?attr/text_secondary_color"
                         android:layout_marginStart="4dp"
                         android:layout_marginLeft="4dp"/>
                 </LinearLayout>
@@ -198,7 +198,7 @@
                     android:layout_marginStart="1dp"
                     tools:text="@string/note_content_sample"
                     android:textSize="?attr/item_head_sub_title_content_text"
-                    android:textColor="?attr/item_head_post_title_text_color"/>
+                    android:textColor="?attr/text_secondary_color"/>
             </LinearLayout>
 
             <!-- Indent. -->

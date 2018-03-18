@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="?attr/browser_footer_bg_color"
+        android:background="?android:attr/windowBackground"
         android:elevation="2dp" tools:targetApi="21">
 
         <!-- No shortcuts by default, they could be created by browser implementation. -->
@@ -31,7 +31,7 @@
             android:gravity="center"
             android:padding="@dimen/padding_4"
             tools:text="@string/directory_sample"
-            android:textSize="?attr/browser_text_size"
+            android:textSize="?attr/font_medium"
             android:textStyle="bold"/>
     </LinearLayout>
 
@@ -47,7 +47,7 @@
         android:orientation="horizontal"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
-        android:background="?attr/browser_footer_bg_color"
+        android:background="?android:attr/windowBackground"
         android:elevation="2dp" tools:targetApi="21">
 
         <Button
