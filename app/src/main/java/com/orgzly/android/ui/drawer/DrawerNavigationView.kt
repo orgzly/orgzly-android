@@ -13,6 +13,7 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.view.Menu
+import android.widget.ImageView
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
@@ -134,16 +135,15 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
             item.intent = intent
             item.isCheckable = true
 
-
             if (book.isModifiedAfterLastSync) {
-                item.setIcon(attrs.syncIcon)
+                item.setActionView(R.layout.drawer_item_action)
             }
 
             menuItemIdMap[BookFragment.getDrawerItemId(book.id)] = id
         }
     }
 
-    private data class Attributes(@DrawableRes val syncIcon: Int, @ColorInt val mutedTextColor: Int)
+    private data class Attributes(@ColorInt val mutedTextColor: Int)
 
     private fun getBookText(book: Book, attr: Attributes): CharSequence {
         val name = BookUtils.getFragmentTitleForBook(book)
@@ -159,11 +159,9 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
 
     @SuppressLint("ResourceType")
     private fun getAttributes(): Attributes {
-        val typedArray = activity.obtainStyledAttributes(intArrayOf(
-                R.attr.ic_sync_18dp,
-                R.attr.text_disabled_color))
+        val typedArray = activity.obtainStyledAttributes(intArrayOf(R.attr.text_disabled_color))
         try {
-            return Attributes(typedArray.getResourceId(0, 0), typedArray.getColor(1, 0))
+            return Attributes(typedArray.getColor(0, 0))
         } finally {
             typedArray.recycle()
         }
