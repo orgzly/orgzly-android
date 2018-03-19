@@ -195,9 +195,6 @@ class EspressoUtils {
     static void searchForText(String str) {
         onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
         onView(withHint(R.string.search_hint)).perform(replaceText(str), pressKey(66));
-
-        /* TODO: Ugh. */
-        SystemClock.sleep(300);
     }
 
     /**
