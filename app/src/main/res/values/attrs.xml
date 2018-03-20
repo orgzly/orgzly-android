@@ -41,6 +41,8 @@
 
         <attr name="item_bg" format="reference" />
 
+        <attr name="item_selected_bg_color" format="color" />
+
         <attr name="fragment_books_bg_color" format="color"/>
         <attr name="item_book_card_bg_color" format="color"/>
 

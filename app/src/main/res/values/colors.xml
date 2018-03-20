@@ -63,8 +63,6 @@
     <color name="white_text_disabled_color">#80FFFFFF</color> <!-- 50% -->
 
 
-    <color name="item_head_selected_bg">#3238caff</color>
-
     <color name="notification">@color/black</color>
 
 </resources>

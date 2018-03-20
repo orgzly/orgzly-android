@@ -1,6 +1,8 @@
 package com.orgzly.android.ui;
 
+import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.view.View;
 
 import com.orgzly.R;
@@ -14,9 +16,18 @@ public class Selection {
     /** IDs of selected notes. */
     private TreeSet<Long> mSelectedIds = new TreeSet<>();
 
+    @ColorInt
+    private int bgColor = 0;
+
     public void updateView(View view, long noteId) {
+        if (bgColor == 0) {
+            TypedArray arr = view.getContext().obtainStyledAttributes(R.styleable.ColorScheme);
+            bgColor = arr.getColor(R.styleable.ColorScheme_item_selected_bg_color, 0);
+            arr.recycle();
+        }
+
         if (mSelectedIds.contains(noteId)) {
-            view.setBackgroundResource(R.color.item_head_selected_bg);
+            view.setBackgroundColor(bgColor);
         } else {
             view.setBackgroundResource(0);
         }
