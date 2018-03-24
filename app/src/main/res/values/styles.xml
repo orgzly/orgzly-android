@@ -323,6 +323,8 @@
         <item name="drawer_bg">@color/dark_theme_status_bar</item>
         <item name="drawer_item_bg">@drawable/drawer_item_selector_black</item>
 
+        <item name="indent_line_color">#1cffffff</item>
+
         <item name="snackbar_bg_color">@color/dark_theme_status_bar</item>
 
         <item name="bullet_default">@drawable/bullet_state_default_dark</item>
