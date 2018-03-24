@@ -3,10 +3,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:top="8dp"
-        android:right="8dp"
-        android:bottom="8dp"
-        android:left="8dp"
+        android:top="@dimen/bullet_inner_inset"
+        android:right="@dimen/bullet_inner_inset"
+        android:bottom="@dimen/bullet_inner_inset"
+        android:left="@dimen/bullet_inner_inset"
         android:gravity="center">
 
         <shape android:shape="oval">

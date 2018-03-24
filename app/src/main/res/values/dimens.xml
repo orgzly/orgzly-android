@@ -37,6 +37,8 @@
     <dimen name="list_view_with_fab_bottom_padding">88dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-
     <dimen name="design_navigation_icon_padding" tools:override="true">16dp</dimen>
+
+    <dimen name="bullet_inner_inset">8dp</dimen>
+    <dimen name="bullet_outer_inset">5dp</dimen>
 </resources>

@@ -65,5 +65,9 @@
 
     <color name="notification">@color/black</color>
 
+    <color name="light_theme_item_selected_bg_color">#3290A4AE</color>
+    <color name="dark_theme_item_selected_bg_color">#3290A4AE</color>
+    <color name="black_theme_item_selected_bg_color">#3290A4AE</color>
+
 </resources>
 

@@ -3,10 +3,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:top="5dp"
-        android:right="5dp"
-        android:bottom="5dp"
-        android:left="5dp">
+        android:top="@dimen/bullet_outer_inset"
+        android:right="@dimen/bullet_outer_inset"
+        android:bottom="@dimen/bullet_outer_inset"
+        android:left="@dimen/bullet_outer_inset">
 
         <shape android:shape="oval">
             <solid android:color="@color/grey_800"/>
