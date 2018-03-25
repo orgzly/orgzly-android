@@ -1,25 +1,87 @@
 package com.orgzly.android.query
 
 class QueryTokenizer(val str: String, private val groupOpen: String, private val groupClose: String) {
-    private var tokenizer = QuotedStringTokenizer(normalizeQuery(str), " ", false, true)
+    val tokens = tokanize(str)
 
-    fun hasMoreTokens(): Boolean = tokenizer.hasMoreTokens()
-    fun nextToken(): String = tokenizer.nextToken()
+    var nextToken = 0
 
-    // Space-separate group open/close characters.
-    // FIXME: Support groups in QuotedStringTokenizer and remove this hack
-    private fun normalizeQuery(str: String): String =
-            getTokens(getTokens(" $str ", groupOpen).joinToString(" $groupOpen "), groupClose).joinToString(" $groupClose ")
+    fun hasMoreTokens(): Boolean = nextToken < tokens.size
 
-    private fun getTokens(str: String, delim: String): List<String> {
-        val tokens = mutableListOf<String>()
+    fun nextToken() = tokens[nextToken++]
 
-        val tokenizer = QuotedStringTokenizer(str, delim, false, true)
+    private fun tokanize(str: String): List<String> {
+        return tokenRegex.findAll(str).map { it.value }.toList()
+    }
 
-        while (tokenizer.hasMoreTokens()) {
-            tokens.add(tokenizer.nextToken())
+    companion object {
+        val TAG: String = QueryTokenizer::class.java.name
+
+        private const val char = """[^")( ]"""
+        private const val doubleQuoted = """"[^"\\]*(?:\\.[^"\\]*)*""""
+        private const val doubleQuotedWithPrefix = """$char*$doubleQuoted"""
+        private const val groupOpener = """\("""
+        private const val groupCloser  = """\)"""
+        private const val rest = """$char+"""
+
+        private val tokenRegex =
+                listOf(doubleQuotedWithPrefix, groupOpener, groupCloser, rest)
+                        .joinToString("|").toRegex()
+
+
+        fun unquote(s: String): String {
+            if (s.length < 2) {
+                return s
+            }
+
+            val first = s[0]
+            val last = s[s.length - 1]
+            if (first != last || first != '"') {
+                return s
+            }
+            val b = StringBuilder(s.length - 2)
+            var quote = false
+            for (i in 1 until s.length - 1) {
+                val c = s[i]
+
+                if (c == '\\' && !quote) {
+                    quote = true
+                    continue
+                }
+                quote = false
+                b.append(c)
+            }
+
+            return b.toString()
         }
 
-        return tokens.toList()
+        fun quote(s: String, delim: String): String {
+            if (s.isEmpty()) {
+                return "\"\""
+            }
+
+            for (i in 0 until s.length) {
+                val c = s[i]
+                if (c == '"' || c == '\\' || delim.indexOf(c) >= 0) {
+                    return quoteUnconditionally(s)
+                }
+            }
+
+            return s
+        }
+
+        fun quoteUnconditionally(s: String): String {
+            val builder = StringBuilder(s.length + 8)
+            builder.append('"')
+            for (i in 0 until s.length) {
+                val c = s[i]
+                if (c == '"') {
+                    builder.append('\\')
+                }
+                builder.append(c)
+                continue
+            }
+            builder.append('"')
+            return builder.toString()
+        }
     }
 }

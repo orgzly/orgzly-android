@@ -112,7 +112,7 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                     Parameter(
                             queryString = "(( i.todo) )",
                             expectedQueryString = "i.todo",
-                            expectedSqlSelection = "(COALESCE(state, '') = ?)",
+                            expectedSqlSelection = "((COALESCE(state, '') = ?))",
                             expectedSelectionArgs = listOf("TODO")
                     ),
                     Parameter(
@@ -259,6 +259,11 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             queryString = "s.ge.3d",
                             expectedQueryString = "s.ge.3d",
                             expectedSqlSelection = "(${DbNoteView.SCHEDULED_TIME_TIMESTAMP} != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3)} <= ${DbNoteView.SCHEDULED_TIME_TIMESTAMP})"
+                    ),
+                    Parameter(
+                            queryString = "((i.todo s.no) or i.later) o.state",
+                            expectedQueryString = "(i.todo s.none or i.later) o.state",
+                            expectedQuerySortOrders = listOf(SortOrder.State())
                     )
             )
         }

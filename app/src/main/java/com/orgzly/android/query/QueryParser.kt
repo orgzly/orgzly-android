@@ -183,7 +183,7 @@ abstract class QueryParser {
         }
     }
 
-    protected fun unQuote(token: String): String = QuotedStringTokenizer.unquote(token)
+    protected fun unQuote(token: String): String = QueryTokenizer.unquote(token)
 
     /**
      * AND has precedence over OR

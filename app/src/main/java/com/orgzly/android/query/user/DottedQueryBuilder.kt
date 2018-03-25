@@ -1,7 +1,6 @@
 package com.orgzly.android.query.user
 
 import com.orgzly.android.query.*
-import com.orgzly.android.query.QuotedStringTokenizer
 
 open class DottedQueryBuilder {
     fun build(query: Query): String {
@@ -115,13 +114,12 @@ open class DottedQueryBuilder {
     }
 
 
-    private fun quote(s: String, always: Boolean = false) = if (always) {
-        val sb = StringBuilder()
-        QuotedStringTokenizer.quote(sb, s)
-        sb.toString()
-
-    } else {
-        QuotedStringTokenizer.quote(s, " ")
+    private fun quote(s: String, unconditionally: Boolean = false): String {
+        return if (unconditionally) {
+            QueryTokenizer.quoteUnconditionally(s)
+        } else {
+            QueryTokenizer.quote(s, " ")
+        }
     }
 
     private fun dot(order: SortOrder) = if (order.desc) "." else ""
