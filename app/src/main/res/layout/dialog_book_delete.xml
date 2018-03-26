@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="@dimen/padding_16"
     android:paddingLeft="@dimen/padding_16"
     android:paddingRight="@dimen/padding_16"
     android:orientation="vertical">
@@ -15,13 +16,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start|center_vertical"
         android:gravity="start|center_vertical"
-        android:text="@string/also_delete_linked_book"/>
+        android:text="@string/also_delete_linked_book"
+        android:textColor="?attr/text_primary_color"/>
 
     <TextView
         android:id="@+id/dialog_book_delete_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textColor="?attr/text_disabled_color"
         tools:text="content://com.android.providers.downloads.documents/tree/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg/document/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg%2Fgtd.org"/>
 
 </LinearLayout>

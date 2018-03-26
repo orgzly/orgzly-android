@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -821,6 +823,22 @@ public class MainActivity extends CommonActivity
         CheckBox checkBox = view.findViewById(R.id.dialog_book_delete_checkbox);
         TextView textView = view.findViewById(R.id.dialog_book_delete_text);
 
+        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            TypedArray typedArray = obtainStyledAttributes(new int[] {
+                    R.attr.text_primary_color,
+                    R.attr.text_disabled_color
+            });
+            int color;
+            if (isChecked) {
+                color = typedArray.getColor(0, 0);
+            } else {
+                color = typedArray.getColor(1, 0);
+            }
+            typedArray.recycle();
+
+            textView.setTextColor(color);
+        });
+
         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
@@ -838,7 +856,6 @@ public class MainActivity extends CommonActivity
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(this)
                         .setTitle(getString(R.string.delete_with_quoted_argument, book.getName()))
-                        .setMessage(R.string.delete_notebook_question)
                         .setPositiveButton(R.string.delete, dialogClickListener)
                         .setNegativeButton(R.string.cancel, dialogClickListener);
 

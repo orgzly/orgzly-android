@@ -302,8 +302,6 @@
     <style name="AppDarkTheme.Black">
         <item name="android:windowBackground">@color/dark_theme_status_bar</item>
 
-        <item name="android:alertDialogTheme">@style/BlackAlertDialogTheme</item>
-
         <item name="android:itemBackground">@color/dark_theme_status_bar</item>
         <item name="android:colorButtonNormal" tools:targetApi="21">@color/dark_theme_app_bar</item>
 
@@ -331,11 +329,6 @@
         <item name="bullet_folded">@drawable/bullet_state_folded_black</item>
         <item name="bullet_unfolded">@drawable/bullet_state_default_dark</item>
     </style>
-
-    <style name="BlackAlertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="android:windowBackground">@color/dark_theme_status_bar</item>
-    </style>
-
 
     <style name="FontSize"/>
 

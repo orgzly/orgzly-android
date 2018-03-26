@@ -20,6 +20,7 @@
     <string name="dropbox">Dropbox</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="delete_with_quoted_argument">Delete “%s”</string>
     <string name="name">Name</string>
     <string name="value">Value</string>
     <string name="query">Query</string>
@@ -233,9 +234,6 @@
     <string name="renamed_book_from">Renamed from “%s”</string>
 
     <string name="also_delete_linked_book">Delete linked remote notebook</string>
-    <string name="delete_with_quoted_argument">Delete “%s”</string>
-    <string name="delete_also_with_argument">Also delete %s</string>
-    <string name="delete_notebook_question">Delete this notebook?</string>
     <string name="message_deleting_book_failed">Deleting notebook failed: %s</string>
     <string name="message_book_deleted">Notebook deleted</string>
 

@@ -2,7 +2,7 @@
 
 <resources>
     <!-- Duration of animation for opening, closing and switching an item menu. -->
-    <integer name="item_menu_animation_duration">200</integer>
+    <integer name="item_menu_animation_duration">150</integer>
 
     <!-- Height of the menu when fully opened. Used in animation. -->
     <dimen name="item_menu_height">48dp</dimen>
