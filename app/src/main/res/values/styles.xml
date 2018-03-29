@@ -57,7 +57,7 @@
 
         <item name="colorAccent">@color/blue_grey_500</item>
 
-        <item name="android:statusBarColor">#e6757575</item>
+        <item name="android:statusBarColor" tools:targetApi="21">#e6757575</item>
 
         <item name="app_bar_bg_color">@color/grey_300</item>
 
@@ -198,7 +198,7 @@
 
         <item name="colorAccent">@color/blue_grey_400</item>
 
-        <item name="android:statusBarColor">#e6000000</item>
+        <item name="android:statusBarColor" tools:targetApi="21">#e6000000</item>
 
         <item name="app_bar_bg_color">@color/dark_theme_app_bar</item>
 
@@ -307,7 +307,7 @@
 
         <item name="colorAccent">@color/blue_grey_300</item>
 
-        <item name="android:statusBarColor">#000000</item>
+        <item name="android:statusBarColor" tools:targetApi="21">#000000</item>
 
         <item name="app_bar_bg_color">@color/dark_theme_status_bar</item>
 
