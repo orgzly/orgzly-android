@@ -494,5 +494,6 @@
 
     <string name="notification_channel_settings">Notifications</string>
     <string name="notification_channel_settings_summary">Sound, vibrate, notification dot</string>
+    <string name="hide_note_metadata">Hide metadata</string>
 
 </resources>

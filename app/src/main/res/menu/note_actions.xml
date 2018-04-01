@@ -1,0 +1,31 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AlwaysShowAction">
+
+    <item
+        android:id="@+id/close"
+        android:icon="?attr/ic_close_24dp"
+        app:showAsAction="always"
+        android:title="@string/close"/>
+
+    <item
+        android:id="@+id/done"
+        android:icon="?attr/ic_done_24dp"
+        app:showAsAction="always"
+        android:title="@string/done"/>
+
+    <item
+        android:id="@+id/hide_metadata"
+        android:icon="?attr/ic_unfold_more_24dp"
+        app:showAsAction="never"
+        android:title="@string/hide_note_metadata"
+        android:checkable="true"/>
+
+    <item
+        android:id="@+id/delete"
+        android:icon="?attr/ic_delete_24dp"
+        app:showAsAction="never"
+        android:title="@string/delete"/>
+</menu>

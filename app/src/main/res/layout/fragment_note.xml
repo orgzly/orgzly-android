@@ -19,7 +19,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:animateLayoutChanges="true">
 
             <!-- Title -->
             <EditText
@@ -33,84 +34,93 @@
                 tools:text="@string/head_title_sample"
                 android:freezesText="true"/>
 
-            <!-- Tags. -->
+            <!-- Metadata -->
             <LinearLayout
+                android:id="@+id/fragment_note_metadata"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginStart="5dp"
-                    android:src="?attr/ic_label_outline_24dp"
-                    android:contentDescription="@string/tags"/>
-
-                <!-- Text is black with dark theme (known issue). Set its color. -->
-                <MultiAutoCompleteTextView
-                    android:id="@+id/fragment_note_tags"
+                <!-- Tags. -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="9dp"
-                    android:layout_marginStart="9dp"
-                    android:inputType="text"
-                    android:hint="@string/fragment_note_tags_hint"
-                    android:completionThreshold="2"
-                    android:freezesText="true"
-                    android:textColor="?attr/text_highlighted_color"/>
-            </LinearLayout>
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
 
-            <!-- State -->
-            <Button
-                android:id="@+id/fragment_note_state_button"
-                style="@style/NoteFragmentButton"
-                android:drawableStart="?attr/ic_flag_24dp"
-                android:drawableLeft="?attr/ic_flag_24dp"
-                tools:text="TODO"
-                android:freezesText="true"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
+                        android:src="?attr/ic_label_outline_24dp"
+                        android:contentDescription="@string/tags"/>
 
-            <!-- Priority -->
-            <Button
-                android:id="@+id/fragment_note_priority_button"
-                style="@style/NoteFragmentButton"
-                android:drawableStart="?attr/ic_star_border_24dp"
-                android:drawableLeft="?attr/ic_star_border_24dp"
-                tools:text="Priority A"
-                android:freezesText="true"/>
+                    <!-- Text is black with dark theme (known issue). Set its color. -->
+                    <MultiAutoCompleteTextView
+                        android:id="@+id/fragment_note_tags"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="9dp"
+                        android:layout_marginStart="9dp"
+                        android:inputType="text"
+                        android:hint="@string/fragment_note_tags_hint"
+                        android:completionThreshold="2"
+                        android:freezesText="true"
+                        android:textColor="?attr/text_highlighted_color"/>
+                </LinearLayout>
 
-            <Button
-                android:id="@+id/fragment_note_scheduled_button"
-                style="@style/NoteFragmentButton"
-                android:drawableStart="?attr/ic_today_24dp"
-                android:drawableLeft="?attr/ic_today_24dp"
-                android:text="@string/schedule_button_hint"
-                tools:text="@string/note_scheduled_sample"
-                android:freezesText="true"/>
+                <!-- State -->
+                <Button
+                    android:id="@+id/fragment_note_state_button"
+                    style="@style/NoteFragmentButton"
+                    android:drawableStart="?attr/ic_flag_24dp"
+                    android:drawableLeft="?attr/ic_flag_24dp"
+                    tools:text="TODO"
+                    android:freezesText="true"/>
 
-            <Button
-                android:id="@+id/fragment_note_deadline_button"
-                style="@style/NoteFragmentButton"
-                android:drawableStart="?attr/ic_alarm_24dp"
-                android:drawableLeft="?attr/ic_alarm_24dp"
-                android:text="@string/deadline_button_hint"
-                android:freezesText="true"/>
+                <!-- Priority -->
+                <Button
+                    android:id="@+id/fragment_note_priority_button"
+                    style="@style/NoteFragmentButton"
+                    android:drawableStart="?attr/ic_star_border_24dp"
+                    android:drawableLeft="?attr/ic_star_border_24dp"
+                    tools:text="Priority A"
+                    android:freezesText="true"/>
 
-            <Button
-                android:id="@+id/fragment_note_closed_button"
-                style="@style/NoteFragmentButton"
-                android:drawableStart="?attr/ic_done_24dp"
-                android:drawableLeft="?attr/ic_done_24dp"
-                android:text="@string/closed_button_hint"
-                android:freezesText="true"/>
+                <Button
+                    android:id="@+id/fragment_note_scheduled_button"
+                    style="@style/NoteFragmentButton"
+                    android:drawableStart="?attr/ic_today_24dp"
+                    android:drawableLeft="?attr/ic_today_24dp"
+                    android:text="@string/schedule_button_hint"
+                    tools:text="@string/note_scheduled_sample"
+                    android:freezesText="true"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/fragment_note_deadline_button"
+                    style="@style/NoteFragmentButton"
+                    android:drawableStart="?attr/ic_alarm_24dp"
+                    android:drawableLeft="?attr/ic_alarm_24dp"
+                    android:text="@string/deadline_button_hint"
+                    android:freezesText="true"/>
 
-                <include layout="@layout/note_properties"/>
+                <Button
+                    android:id="@+id/fragment_note_closed_button"
+                    style="@style/NoteFragmentButton"
+                    android:drawableStart="?attr/ic_done_24dp"
+                    android:drawableLeft="?attr/ic_done_24dp"
+                    android:text="@string/closed_button_hint"
+                    android:freezesText="true"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <include layout="@layout/note_properties"/>
+                </LinearLayout>
+
             </LinearLayout>
 
             <ToggleButton

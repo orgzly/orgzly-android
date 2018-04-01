@@ -69,6 +69,9 @@
     <string name="pref_key_styled_text_with_marks" translatable="false">pref_key_styled_text_with_marks</string>
     <bool name="pref_default_styled_text_with_marks" translatable="false">false</bool>
 
+    <string name="pref_key_is_note_metadata_visible" translatable="false">pref_key_is_note_metadata_visible</string>
+    <bool name="pref_default_is_note_metadata_visible" translatable="false">true</bool>
+
     <!-- Notebooks' sort order. -->
     <string name="pref_key_notebooks_sort_order" translatable="false">pref_key_notebooks_sort_order</string>
     <string name="pref_default_notebooks_sort_order" translatable="false">@string/pref_value_notebooks_sort_order_name</string>

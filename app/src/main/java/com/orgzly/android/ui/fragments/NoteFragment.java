@@ -114,6 +114,8 @@ public class NoteFragment extends Fragment
 
     private EditText mTitleView;
 
+    private ViewGroup metadata;
+
     private MultiAutoCompleteTextView mTagsView;
 
     private Button mState;
@@ -218,6 +220,9 @@ public class NoteFragment extends Fragment
             save();
             return true;
         });
+
+        metadata = top.findViewById(R.id.fragment_note_metadata);
+        setMetadataVisibility(AppPreferences.isNoteMetadataVisible(getContext()));
 
         mTagsView = top.findViewById(R.id.fragment_note_tags);
 
@@ -998,7 +1003,7 @@ public class NoteFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
 
-        inflater.inflate(R.menu.close_done_delete, menu);
+        inflater.inflate(R.menu.note_actions, menu);
 
         /* Remove search item. */
         menu.removeItem(R.id.activity_action_search);
@@ -1006,7 +1011,14 @@ public class NoteFragment extends Fragment
         if (mNote == null) { // Displaying non-existent note.
             menu.removeItem(R.id.close);
             menu.removeItem(R.id.done);
+            menu.removeItem(R.id.hide_metadata);
             menu.removeItem(R.id.delete);
+
+        } else {
+            MenuItem hideMetadata = menu.findItem(R.id.hide_metadata);
+            if (hideMetadata != null) {
+                hideMetadata.setChecked(!AppPreferences.isNoteMetadataVisible(getContext()));
+            }
         }
 
         /* Newly created note cannot be deleted. */
@@ -1028,7 +1040,12 @@ public class NoteFragment extends Fragment
                 if (!isAskingForConfirmationForModifiedNote()) {
                     cancel();
                 }
+                return true;
 
+            case R.id.hide_metadata:
+                item.setChecked(!item.isChecked()); // Toggle
+                AppPreferences.isNoteMetadataVisible(getContext(), !item.isChecked());
+                setMetadataVisibility(!item.isChecked());
                 return true;
 
             case R.id.delete:
@@ -1038,6 +1055,10 @@ public class NoteFragment extends Fragment
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void setMetadataVisibility(boolean visible) {
+        metadata.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     private void delete() {

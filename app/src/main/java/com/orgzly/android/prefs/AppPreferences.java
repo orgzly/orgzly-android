@@ -495,6 +495,20 @@ public class AppPreferences {
         getDefaultSharedPreferences(context).edit().putString(key, value).apply();
     }
 
+    /*
+     * Note's metadata visibility
+     */
+
+    public static boolean isNoteMetadataVisible(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_is_note_metadata_visible),
+                context.getResources().getBoolean(R.bool.pref_default_is_note_metadata_visible));
+    }
+
+    public static void isNoteMetadataVisible(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_is_note_metadata_visible);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
 
     /*
      * State flags and values.
