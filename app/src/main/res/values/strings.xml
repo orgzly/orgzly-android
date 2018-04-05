@@ -69,7 +69,7 @@
     <string name="no_notes_pasted">Nothing to paste</string>
 
     <string name="fragment_note_title_hint">Title</string>
-    <string name="fragment_note_tags_hint" tools:ignore="typos">tag tag</string>
+    <string name="fragment_note_tags_hint" tools:ignore="typos">Tag tag</string>
 
     <string name="import_org_file">Import Org file</string>
 
@@ -251,7 +251,9 @@
     <string name="use_created_at_property_summary">Sync created-at time using a property</string>
 
     <string name="created_at_property">Created-at property</string>
-    <string name="property_name">Property Name</string>
+
+    <string name="property_name">Property name</string>
+    <string name="property_value">Property value</string>
 
     <string name="reminder_for_scheduled">Scheduled: %s</string>
     <string name="reminder_for_deadline">Deadline: %s</string>

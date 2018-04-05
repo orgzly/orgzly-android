@@ -147,7 +147,7 @@
         <item name="oic_today_36dp">@drawable/cic_today_black_36dp</item>
         <item name="oic_tomorrow_36dp">@drawable/cic_tomorrow_black_36dp</item>
 
-        <item name="oic_item_alpha">0.55</item>
+        <item name="oic_item_alpha">0.54</item>
 
         <item name="bullet_default">@drawable/bullet_state_default</item>
         <item name="bullet_folded">@drawable/bullet_state_folded</item>
@@ -284,7 +284,7 @@
         <item name="oic_today_36dp">@drawable/cic_today_white_36dp</item>
         <item name="oic_tomorrow_36dp">@drawable/cic_tomorrow_white_36dp</item>
 
-        <item name="oic_item_alpha">0.7</item>
+        <item name="oic_item_alpha">0.70</item>
 
         <item name="bullet_default">@drawable/bullet_state_default_dark</item>
         <item name="bullet_folded">@drawable/bullet_state_folded_dark</item>
@@ -443,23 +443,24 @@
     <!-- Note fragment. -->
 
     <style name="BorderlessButton" parent="Base.Widget.AppCompat.Button.Borderless">
-
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
     </style>
 
-    <style name="NoteFragmentButton" parent="BorderlessButton">
-        <item name="android:layout_width">wrap_content</item>
+    <style name="NoteFragmentListItem">
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingLeft">4dp</item>
-        <item name="android:paddingStart" tools:targetApi="jelly_bean_mr1">4dp</item>
-        <item name="android:paddingRight">4dp</item>
-        <item name="android:paddingEnd" tools:targetApi="jelly_bean_mr1">4dp</item>
-        <item name="android:drawablePadding">16dp</item>
-        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:gravity">center_vertical</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:textSize">?fragment_note_time_buttons_text_size</item>
-        <!-- From Lollipop button text is all caps? -->
-        <item name="android:textAllCaps">false</item>
+    </style>
 
+    <style name="NoteFragmentListItemSpinnerButton" parent="Widget.AppCompat.Spinner.Underlined">
+        <item name="android:backgroundTint">?attr/text_disabled_color</item>
+        <item name="android:focusable">true</item>
+        <item name="android:paddingRight">32dp</item>
+        <item name="android:paddingEnd">32dp</item>
     </style>
 
     <style name="BookItemInfoIcon">

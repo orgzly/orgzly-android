@@ -2,22 +2,14 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical">
+    style="@style/NoteFragmentListItem">
 
     <ImageView
-        android:layout_gravity="center"
-        android:contentDescription="@string/property"
-        android:paddingLeft="4dp"
-        android:paddingStart="4dp"
-        android:paddingRight="12dp"
-        android:paddingEnd="12dp"
-        android:src="?attr/ic_info_outline_24dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/property"
+        android:src="?attr/ic_info_outline_24dp"
+        android:alpha="?attr/oic_item_alpha"/>
 
     <EditText
         android:id="@+id/name"
@@ -26,9 +18,10 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:textSize="?fragment_note_time_buttons_text_size"
-        android:hint="@string/name"
-        tools:text="CREATED"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:hint="@string/property_name"
         android:saveEnabled="false"
         android:text=""/>
 
@@ -43,9 +36,8 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:textSize="?fragment_note_time_buttons_text_size"
-        android:hint="@string/value"
-        tools:text="[2016-06-29 Wed 09:34]"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:hint="@string/property_value"
         android:saveEnabled="false"
         android:text=""/>
 
@@ -55,6 +47,7 @@
         android:contentDescription="@string/new_above"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:src="?attr/ic_close_24dp"/>
+        android:src="?attr/ic_close_24dp"
+        android:alpha="?attr/oic_item_alpha"/>
 
 </LinearLayout>

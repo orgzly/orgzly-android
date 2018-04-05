@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.Layout;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -41,7 +42,7 @@ public class TextViewWithLinks extends AppCompatTextView {
             int line = layout.getLineForVertical((int) event.getY() - getTotalPaddingTop());
             int offset = getOffsetForPosition(event.getX(), event.getY());
 
-            if (isEventOnText(event, layout, line) && getText() != null && getText() instanceof Spanned) {
+            if (isEventOnText(event, layout, line) && !TextUtils.isEmpty(getText()) && getText() instanceof Spanned) {
                 Spanned spanned = (Spanned) getText();
 
                 ClickableSpan[] links = spanned.getSpans(offset, offset, ClickableSpan.class);

@@ -22,7 +22,6 @@ import org.junit.runner.RunWith;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -34,7 +33,6 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerActions.open;
 import static android.support.test.espresso.contrib.PickerActions.setDate;
 import static android.support.test.espresso.contrib.PickerActions.setTime;
-import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
@@ -53,7 +51,6 @@ import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
@@ -391,25 +388,25 @@ public class MiscTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_state_button)).perform(click());
         onView(withText("DONE")).perform(click());
 
-        onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.fragment_note_closed_edit_text)).check(matches(not(isDisplayed())));
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
 
         /* DONE -> NOTE */
         onView(withId(R.id.fragment_note_state_button)).perform(click());
         onView(withText(R.string.clear)).perform(click());
-        onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.fragment_note_closed_edit_text)).check(matches(not(isDisplayed())));
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
 
         /* NOTE -> DONE */
         onView(withId(R.id.fragment_note_state_button)).perform(click());
         onView(withText("DONE")).perform(click());
-        onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.fragment_note_closed_edit_text)).check(matches(not(isDisplayed())));
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(userDateTime("<2015-01-30 Fri 04:05 +6d>"))));
 
         /* NOTE -> OLD */
         onView(withId(R.id.fragment_note_state_button)).perform(click());
         onView(withText("OLD")).perform(click());
-        onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.fragment_note_closed_edit_text)).check(matches(not(isDisplayed())));
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(userDateTime("<2015-02-05 Thu 04:05 +6d>"))));
     }
 

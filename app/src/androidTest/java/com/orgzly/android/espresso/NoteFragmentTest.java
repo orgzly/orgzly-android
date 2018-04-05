@@ -131,10 +131,10 @@ public class NoteFragmentTest extends OrgzlyTest {
     public void testStateToDoneShouldAddClosedTime() {
         onListItem(2).perform(click());
 
-        onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.fragment_note_closed_edit_text)).check(matches(not(isDisplayed())));
         onView(withId(R.id.fragment_note_state_button)).perform(click());
         onView(withText("DONE")).perform(click());
-        onView(withId(R.id.fragment_note_closed_button)).check(matches(allOf(withText(startsWith(currentUserDate())), isDisplayed())));
+        onView(withId(R.id.fragment_note_closed_edit_text)).check(matches(allOf(withText(startsWith(currentUserDate())), isDisplayed())));
     }
 
     @Test
@@ -143,14 +143,14 @@ public class NoteFragmentTest extends OrgzlyTest {
 
         onView(withText("NOTE")).check(matches(isDisplayed()));
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(userDateTime("<2015-01-11 Sun .+1d/2d>")), isDisplayed())));
-        onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.fragment_note_closed_edit_text)).check(matches(not(isDisplayed())));
 
         onView(withId(R.id.fragment_note_state_button)).perform(click());
         onView(withText("DONE")).perform(click());
 
         onView(withText("NOTE")).check(matches(isDisplayed()));
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(not(withText(userDateTime("<2015-01-11 Sun .+1d/2d>")))));
-        onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.fragment_note_closed_edit_text)).check(matches(not(isDisplayed())));
     }
 
     @Test
@@ -189,7 +189,7 @@ public class NoteFragmentTest extends OrgzlyTest {
     @Test
     public void testClosedTimeInNoteFragmentIsSameAsInList() {
         onListItem(5).perform(click());
-        onView(withId(R.id.fragment_note_closed_button)).check(matches(allOf(withText(userDateTime("[2014-01-01 Wed 20:07]")), isDisplayed())));
+        onView(withId(R.id.fragment_note_closed_edit_text)).check(matches(allOf(withText(userDateTime("[2014-01-01 Wed 20:07]")), isDisplayed())));
     }
 
     @Test
@@ -240,10 +240,10 @@ public class NoteFragmentTest extends OrgzlyTest {
     @Test
     public void testRemovingDoneStateRemovesClosedTime() {
         onListItem(5).perform(click());
-        onView(withId(R.id.fragment_note_closed_button)).check(matches(allOf(withText(userDateTime("[2014-01-01 Wed 20:07]")), isDisplayed())));
+        onView(withId(R.id.fragment_note_closed_edit_text)).check(matches(allOf(withText(userDateTime("[2014-01-01 Wed 20:07]")), isDisplayed())));
         onView(withId(R.id.fragment_note_state_button)).perform(click());
         onView(withText(R.string.clear)).perform(click());
-        onView(withId(R.id.fragment_note_closed_button)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.fragment_note_closed_edit_text)).check(matches(not(isDisplayed())));
     }
 
     @Test

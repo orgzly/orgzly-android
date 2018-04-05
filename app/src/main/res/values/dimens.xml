@@ -32,7 +32,6 @@
 
     <dimen name="ui_element_spacing">8dp</dimen>
     <dimen name="item_head_book_preface_min_height">48dp</dimen>
-    <dimen name="fragment_note_body_edit_min_height">48dp</dimen>
 
     <dimen name="list_view_with_fab_bottom_padding">88dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
