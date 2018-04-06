@@ -4,16 +4,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:padding="@dimen/screen_edge"
+    android:orientation="vertical">
 
     <Spinner
         android:id="@+id/dialog_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_8"
-        android:layout_marginLeft="@dimen/padding_16"
-        android:layout_marginRight="@dimen/padding_16"
         android:freezesText="true"/>
 
 </LinearLayout>

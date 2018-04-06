@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              style="@style/ListViewItem"
-              android:orientation="horizontal">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/ListViewItem"
+    android:orientation="horizontal">
 
     <!--<ImageView-->
-        <!--style="@style/BookItemInfoIcon"-->
-        <!--android:src="@drawable/oic_repo_item"-->
-        <!--android:contentDescription="@string/repo_url"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--/>-->
+    <!--style="@style/BookItemInfoIcon"-->
+    <!--android:src="@drawable/oic_repo_item"-->
+    <!--android:contentDescription="@string/repo_url"-->
+    <!--android:layout_gravity="center_vertical"-->
+    <!--/>-->
 
     <TextView
         android:id="@+id/item_repo_url"

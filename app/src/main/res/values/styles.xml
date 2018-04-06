@@ -450,17 +450,16 @@
     <style name="NoteFragmentListItem">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginLeft">@dimen/screen_edge</item>
+        <item name="android:layout_marginRight">@dimen/screen_edge</item>
         <item name="android:minHeight">48dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:orientation">horizontal</item>
     </style>
 
     <style name="NoteFragmentListItemSpinnerButton" parent="Widget.AppCompat.Spinner.Underlined">
-        <item name="android:backgroundTint">?attr/text_disabled_color</item>
         <item name="android:focusable">true</item>
-        <!--<item name="android:paddingRight">32dp</item>-->
-        <!--<item name="android:paddingEnd">32dp</item>-->
+        <item name="android:paddingRight">32dp</item>
     </style>
 
     <style name="BookItemInfoIcon">
@@ -494,17 +493,17 @@
     </style>
 
     <style name="ListViewItem">
-        <item name="android:paddingTop">@dimen/item_head_padding</item>
-        <item name="android:paddingBottom">@dimen/item_head_padding</item>
-        <item name="android:paddingLeft">@dimen/fragment_horizontal_padding</item>
-        <item name="android:paddingRight">@dimen/fragment_horizontal_padding</item>
-        <item name="android:minHeight">@dimen/item_head_min_height</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingLeft">@dimen/screen_edge</item>
+        <item name="android:paddingRight">@dimen/screen_edge</item>
+        <item name="android:minHeight">48dp</item>
     </style>
 
     <style name="BigCenteredText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">@dimen/fragment_padding</item>
+        <item name="android:layout_margin">@dimen/screen_edge</item>
 
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>

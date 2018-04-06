@@ -971,7 +971,7 @@ public class MainActivity extends CommonActivity
         }
 
         View view = getLayoutInflater().inflate(R.layout.dialog_spinner, null, false);
-        final Spinner spinner = (Spinner) view.findViewById(R.id.dialog_spinner);
+        final Spinner spinner = view.findViewById(R.id.dialog_spinner);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(spinner.getContext(), R.layout.spinner_item, new ArrayList<>(items.keySet()));
         adapter.setDropDownViewResource(R.layout.dropdown_item);

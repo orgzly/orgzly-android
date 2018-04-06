@@ -20,13 +20,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="top"
-            android:padding="@dimen/fragment_padding">
+            android:padding="@dimen/screen_edge">
 
             <TextView
                 style="@style/BigCenteredText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:padding="@dimen/space_between_content_areas"
                 android:text="@string/create_new_repository_for_syncing"
                 android:gravity="center"/>
 

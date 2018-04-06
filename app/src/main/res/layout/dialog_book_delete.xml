@@ -3,11 +3,9 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/padding_16"
-    android:paddingLeft="@dimen/padding_16"
-    android:paddingRight="@dimen/padding_16"
+    android:padding="@dimen/screen_edge"
     android:orientation="vertical">
 
     <CheckBox
@@ -17,6 +15,8 @@
         android:layout_gravity="start|center_vertical"
         android:gravity="start|center_vertical"
         android:text="@string/also_delete_linked_book"
+        android:paddingLeft="8dp"
+        android:paddingStart="8dp"
         android:textColor="?attr/text_primary_color"/>
 
     <TextView

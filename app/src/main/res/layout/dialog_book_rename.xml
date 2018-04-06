@@ -7,10 +7,8 @@
     android:id="@+id/dialog_book_rename_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/padding_16"
-    android:paddingLeft="@dimen/padding_16"
-    android:paddingRight="@dimen/padding_16">
+    android:padding="@dimen/screen_edge"
+    android:orientation="vertical">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/name_input_layout"

@@ -27,12 +27,11 @@
                 android:id="@+id/fragment_note_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="@dimen/screen_edge"
+                android:layout_marginStart="@dimen/screen_edge"
+                android:layout_marginRight="@dimen/screen_edge"
+                android:layout_marginEnd="@dimen/screen_edge"
+                android:layout_marginTop="@dimen/screen_edge"
                 android:inputType="text|textCapSentences"
                 android:imeOptions="actionDone"
                 android:hint="@string/fragment_note_title_hint"
@@ -40,7 +39,10 @@
                 android:freezesText="true"/>
 
             <!-- Location (notebook and specific path in the future) -->
-            <LinearLayout style="@style/NoteFragmentListItem">
+            <LinearLayout
+                style="@style/NoteFragmentListItem"
+                android:layout_marginTop="@dimen/space_between_content_areas">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -52,6 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/content_left_margin_from_icon"
                     android:layout_marginStart="@dimen/content_left_margin_from_icon"
+                    android:textColor="?attr/text_primary_color"
                     tools:text="GTD"/>
                 <TextView
                     style="@style/NoteFragmentListItemSpinnerButton"
@@ -89,8 +92,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
                         android:layout_marginStart="@dimen/padded_content_left_margin_from_icon"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginEnd="16dp"
                         android:inputType="text"
                         android:hint="@string/fragment_note_tags_hint"
                         android:completionThreshold="2"
@@ -207,12 +208,12 @@
                     android:src="?attr/ic_edit_24dp"
                     android:alpha="?attr/oic_item_alpha"/>
                 <ToggleButton
+                    android:id="@+id/edit_content_toggle"
                     style="@style/BorderlessButton"
                     android:paddingLeft="4dp"
                     android:paddingStart="4dp"
                     android:paddingRight="4dp"
                     android:paddingEnd="4dp"
-                    android:id="@+id/edit_content_toggle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
@@ -226,26 +227,27 @@
                 android:id="@+id/body_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginLeft="@dimen/screen_edge"
+                android:layout_marginRight="@dimen/screen_edge"
                 android:layout_marginTop="@dimen/ui_element_spacing"
                 android:inputType="text|textCapSentences|textMultiLine"
                 android:hint="@string/fragment_note_content_hint"
-                android:gravity="start|bottom"
+                android:gravity="start|top"
                 android:freezesText="true"
-                android:padding="@dimen/item_head_padding"
                 android:visibility="gone"/>
 
             <com.orgzly.android.ui.views.FixedTextView
                 android:id="@+id/body_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:minHeight="48dp"
+                android:layout_marginLeft="@dimen/screen_edge"
+                android:layout_marginRight="@dimen/screen_edge"
+                android:layout_marginTop="@dimen/ui_element_spacing"
                 android:freezesText="true"
-                android:gravity="start|bottom"
-                android:padding="@dimen/item_head_padding"
-                android:textIsSelectable="true" />
+                android:gravity="start|top"
+                android:textIsSelectable="true"
+                tools:text="Note content"/>
         </LinearLayout>
     </ScrollView>
 

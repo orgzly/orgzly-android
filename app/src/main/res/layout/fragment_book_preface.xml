@@ -6,10 +6,7 @@
     android:id="@+id/fragment_book_preface_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/fragment_horizontal_padding"
-    android:paddingRight="@dimen/fragment_horizontal_padding"
-    android:paddingTop="@dimen/fragment_vertical_padding"
-    android:paddingBottom="@dimen/fragment_vertical_padding"
+    android:padding="@dimen/screen_edge"
     android:clipToPadding="false"
     android:fadeScrollbars="false"
     android:scrollbarStyle="outsideOverlay">
@@ -17,9 +14,6 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/ui_element_spacing"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
         app:hintEnabled="true">
         <android.support.design.widget.TextInputEditText
             android:id="@+id/fragment_book_preface_content"

@@ -12,16 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start|center_vertical"
-        android:layout_margin="@dimen/padding_8"
+        android:layout_margin="2dp"
         card_view:cardCornerRadius="0dp"
         card_view:cardElevation="2dp"
-        card_view:cardBackgroundColor="?attr/item_book_card_bg_color">
+        card_view:cardBackgroundColor="?attr/item_book_card_bg_color"
+        android:foreground="?android:attr/selectableItemBackground">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/item_book_padding">
+            android:padding="16dp"
+            android:orientation="vertical">
 
             <!-- Title. -->
             <LinearLayout
@@ -79,7 +80,7 @@
                 <View
                     android:id="@+id/item_book_details_padding"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/padding_8"/>
+                    android:layout_height="@dimen/space_between_content_areas"/>
 
                 <!-- Modification time -->
                 <LinearLayout
@@ -303,8 +304,6 @@
                         android:id="@+id/item_book_encoding_detected"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/padding_8"
-                        android:layout_marginRight="@dimen/padding_4"
                         android:textSize="?attr/item_book_details_text_size"
                         tools:text="@string/encoding_detected_sample"/>
 
@@ -328,8 +327,6 @@
                         android:id="@+id/item_book_encoding_used"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/padding_8"
-                        android:layout_marginRight="@dimen/padding_4"
                         android:textSize="?attr/item_book_details_text_size"
                         tools:text="@string/encoding_used_sample"/>
 

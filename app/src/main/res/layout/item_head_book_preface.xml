@@ -4,13 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_book_header_container"
+    style="@style/ListViewItem"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minHeight="@dimen/item_head_book_preface_min_height"
-    android:paddingLeft="@dimen/fragment_horizontal_padding"
-    android:paddingRight="@dimen/fragment_horizontal_padding"
-    android:paddingTop="@dimen/item_head_padding"
-    android:paddingBottom="@dimen/item_head_padding"
     android:orientation="vertical"
     android:gravity="center_vertical">
 

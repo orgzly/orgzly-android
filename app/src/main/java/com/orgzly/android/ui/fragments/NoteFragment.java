@@ -343,7 +343,6 @@ public class NoteFragment extends Fragment
 
                 ActivityUtils.INSTANCE.closeSoftKeyboard(getActivity());
             }
-
         });
 
         editSwitch.setOnClickListener(view -> {

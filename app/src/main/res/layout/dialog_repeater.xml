@@ -9,16 +9,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_16"
+        android:padding="@dimen/screen_edge"
         android:gravity="center"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/padding_4"
+            android:layout_marginBottom="@dimen/space_between_content_areas"
             android:gravity="center"
-            android:text="@string/repeater_description"/>
+            android:text="@string/repeater_description"
+            android:lines="2"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,8 +36,8 @@
                 android:id="@+id/dialog_timestamp_repeater_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/padding_8"
-                android:layout_marginRight="@dimen/padding_8"/>
+                android:layout_marginLeft="@dimen/space_between_content_areas"
+                android:layout_marginRight="@dimen/space_between_content_areas"/>
 
             <NumberPicker
                 android:id="@+id/dialog_timestamp_repeater_unit"
@@ -44,11 +45,12 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
+        <!-- lines=2 added to avoid layout change on different length descriptions -->
         <TextView
             android:id="@+id/dialog_timestamp_repeater_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_4"
+            android:layout_marginTop="@dimen/space_between_content_areas"
             android:gravity="center"
             tools:text="@string/repeater_description_cumulate"
             android:lines="2"/>

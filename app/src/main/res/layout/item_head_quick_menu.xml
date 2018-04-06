@@ -8,8 +8,8 @@
     android:id="@+id/item_head_menu_container"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:paddingLeft="@dimen/fragment_horizontal_padding"
-    android:paddingRight="@dimen/fragment_horizontal_padding"
+    android:paddingLeft="@dimen/screen_edge"
+    android:paddingRight="@dimen/screen_edge"
     android:orientation="vertical"
     android:visibility="visible"
     android:gravity="center">

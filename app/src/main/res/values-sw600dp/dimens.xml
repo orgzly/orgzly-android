@@ -5,12 +5,13 @@
          screen margins) for sw600dp devices (e.g. 7" tablets) here.
     -->
 
-    <dimen name="padding_4">6dp</dimen>
-    <dimen name="padding_8">12dp</dimen>
-    <dimen name="padding_16">24dp</dimen>
-
     <dimen name="list_view_with_fab_bottom_padding">104dp</dimen>
+
     <dimen name="fab_margin">24dp</dimen>
+
+    <dimen name="screen_edge">24dp</dimen>
+
+    <dimen name="item_head_book_name_width">120dp</dimen>
 
     <!--
     Layout alias to replace the single-pane version of the layout with a

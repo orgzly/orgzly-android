@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:minHeight="48dp"
             android:gravity="center"
-            android:padding="@dimen/padding_4"
+            android:padding="4dp"
             tools:text="@string/directory_sample"
             android:textSize="?attr/font_medium"
             android:textStyle="bold"/>
