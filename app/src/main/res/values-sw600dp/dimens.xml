@@ -13,6 +13,8 @@
 
     <dimen name="item_head_book_name_width">120dp</dimen>
 
+    <dimen name="spinner_min_width">360dp</dimen>
+
     <!--
     Layout alias to replace the single-pane version of the layout with a
     two-pane version on Large screens.

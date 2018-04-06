@@ -59,10 +59,6 @@
                 <TextView
                     style="@style/NoteFragmentListItemSpinnerButton"
                     android:id="@+id/fragment_note_location_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
-                    android:layout_marginStart="@dimen/padded_content_left_margin_from_icon"
                     tools:text="GTD"
                     android:visibility="gone"/>
 
@@ -109,10 +105,6 @@
                     <TextView
                         android:id="@+id/fragment_note_state_button"
                         style="@style/NoteFragmentListItemSpinnerButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
-                        android:layout_marginStart="@dimen/padded_content_left_margin_from_icon"
                         android:hint="@string/state"
                         tools:text="TODO"/>
                 </LinearLayout>
@@ -127,10 +119,6 @@
                     <TextView
                         android:id="@+id/fragment_note_priority_button"
                         style="@style/NoteFragmentListItemSpinnerButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
-                        android:layout_marginStart="@dimen/padded_content_left_margin_from_icon"
                         android:hint="@string/priority"
                         tools:text="Priority A"/>
                 </LinearLayout>
@@ -145,10 +133,6 @@
                     <TextView
                         android:id="@+id/fragment_note_scheduled_button"
                         style="@style/NoteFragmentListItemSpinnerButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
-                        android:layout_marginStart="@dimen/padded_content_left_margin_from_icon"
                         android:hint="@string/schedule_button_hint"/>
                 </LinearLayout>
 
@@ -162,10 +146,6 @@
                     <TextView
                         android:id="@+id/fragment_note_deadline_button"
                         style="@style/NoteFragmentListItemSpinnerButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
-                        android:layout_marginStart="@dimen/padded_content_left_margin_from_icon"
                         android:hint="@string/deadline_button_hint"
                         tools:text="@string/note_deadline_sample"/>
                 </LinearLayout>
@@ -182,10 +162,6 @@
                     <TextView
                         android:id="@+id/fragment_note_closed_edit_text"
                         style="@style/NoteFragmentListItemSpinnerButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
-                        android:layout_marginStart="@dimen/padded_content_left_margin_from_icon"
                         android:hint="@string/closed_button_hint"/>
                 </LinearLayout>
 

@@ -34,4 +34,6 @@
     <dimen name="screen_edge">16dp</dimen>
 
     <dimen name="space_between_content_areas">8dp</dimen>
+
+    <dimen name="spinner_min_width">200dp</dimen>
 </resources>

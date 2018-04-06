@@ -459,7 +459,11 @@
 
     <style name="NoteFragmentListItemSpinnerButton" parent="Widget.AppCompat.Spinner.Underlined">
         <item name="android:focusable">true</item>
-        <item name="android:paddingRight">32dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:minWidth">@dimen/spinner_min_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/padded_content_left_margin_from_icon</item>
+        <!--<item name="android:layout_marginRight">@dimen/screen_edge</item>-->
     </style>
 
     <style name="BookItemInfoIcon">
