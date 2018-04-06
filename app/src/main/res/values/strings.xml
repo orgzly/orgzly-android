@@ -162,6 +162,7 @@
     <string name="book_last_action">Notebook last action</string>
     <string name="book_notes_count">Notes count</string>
     <string name="pref_title_notebooks">Notes &amp; Notebooks</string>
+    <string name="notebook">Notebook</string>
     <string name="notebooks">Notebooks</string>
     <string name="searches">Searches</string>
     <string name="search">Search</string>

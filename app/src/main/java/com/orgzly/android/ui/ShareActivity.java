@@ -1,17 +1,14 @@
 package com.orgzly.android.ui;
 
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
@@ -22,13 +19,12 @@ import com.orgzly.android.Shelf;
 import com.orgzly.android.filter.Filter;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.query.Query;
+import com.orgzly.android.query.QueryUtils;
 import com.orgzly.android.query.user.DottedQueryParser;
 import com.orgzly.android.ui.fragments.NoteFragment;
 import com.orgzly.android.ui.fragments.SyncFragment;
-import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
-import com.orgzly.android.query.QueryUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 
 import java.io.File;
@@ -54,14 +50,12 @@ public class ShareActivity extends CommonActivity
     /** Shared text files are read and their content is stored as note content. */
     private static final long MAX_TEXT_FILE_LENGTH_FOR_CONTENT = 1024 * 1024 * 2; // 2 MB
 
-    private static final String SPINNER_POSITION_KEY = "position";
-
     private SyncFragment mSyncFragment;
     private NoteFragment mNoteFragment;
 
-    private Spinner mBooksSpinner;
-
     private String mError;
+
+    private AlertDialog dialog;
 
 
     @Override
@@ -80,10 +74,16 @@ public class ShareActivity extends CommonActivity
         Data data = getDataFromIntent(getIntent());
 
         setupFragments(savedInstanceState, data);
+    }
 
-        setupBooksSpinner(savedInstanceState);
+    @Override
+    protected void onPause() {
+        super.onPause();
 
-        setupBooksSpinnerAdapter(savedInstanceState, data);
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
     }
 
     public Data getDataFromIntent(Intent intent) {
@@ -119,8 +119,8 @@ public class ShareActivity extends CommonActivity
                         /* Don't read large files. */
                         if (file.length() > MAX_TEXT_FILE_LENGTH_FOR_CONTENT) {
                             mError = "File has " + file.length() +
-                                    " bytes (refusing to read files larger then " +
-                                    MAX_TEXT_FILE_LENGTH_FOR_CONTENT + " bytes)";
+                                     " bytes (refusing to read files larger then " +
+                                     MAX_TEXT_FILE_LENGTH_FOR_CONTENT + " bytes)";
 
                         } else {
                             data.content = MiscUtils.readStringFromFile(file);
@@ -170,55 +170,25 @@ public class ShareActivity extends CommonActivity
         return data;
     }
 
-    private void setupBooksSpinnerAdapter(final Bundle savedInstanceState, Data data) {
-        new AsyncTask<Void, Void, List<Book>>() {
-            @Override
-            protected List<Book> doInBackground(Void... params) {
-                return getBooksList();
-            }
-
-            @Override
-            protected void onPostExecute(List<Book> books) {
-                ArrayAdapter<Book> adapter = new ArrayAdapter<>(ShareActivity.this, R.layout.spinner_item, books);
-
-                adapter.setDropDownViewResource(R.layout.dropdown_item);
-
-                mBooksSpinner.setAdapter(adapter);
-
-                if (savedInstanceState != null && savedInstanceState.containsKey(SPINNER_POSITION_KEY)) {
-                    mBooksSpinner.setSelection(savedInstanceState.getInt(SPINNER_POSITION_KEY, 0), false);
-                } else if (data != null && data.bookId != null) {
-                    for (int i = 0; i < books.size(); i++) {
-                        if (books.get(i).getId() == data.bookId) {
-                            mBooksSpinner.setSelection(i);
-                            break;
-                        }
-                    }
-                } else {
-                    String defaultBook = AppPreferences.shareNotebook(getApplicationContext());
-                    for (int i=0; i<books.size(); i++) {
-                        if (defaultBook.equals(books.get(i).getName())) {
-                            mBooksSpinner.setSelection(i);
-                            break;
-                        }
-                    }
-                }
-            }
-        }.execute();
-    }
-
     private void setupFragments(Bundle savedInstanceState, Data data) {
-         /* Setup fragments. */
         if (savedInstanceState == null) { /* Create and add fragments. */
 
             mSyncFragment = SyncFragment.getInstance();
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(mSyncFragment, SyncFragment.FRAGMENT_TAG)
                     .commit();
 
-            long fragmentBookId = data.bookId == null ? 0 : data.bookId;
-            mNoteFragment = NoteFragment.getInstance(true, fragmentBookId, 0, Place.UNSPECIFIED, data.title, data.content);
+            long bookId;
+            if (data.bookId == null) {
+                bookId = getTargetBook().getId();
+            } else {
+                bookId = data.bookId;
+            }
+
+            mNoteFragment = NoteFragment.forSharedNote(bookId, data.title, data.content);
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.activity_share_main, mNoteFragment, NoteFragment.FRAGMENT_TAG)
@@ -228,34 +198,6 @@ public class ShareActivity extends CommonActivity
             mSyncFragment = (SyncFragment) getSupportFragmentManager().findFragmentByTag(SyncFragment.FRAGMENT_TAG);
             mNoteFragment = (NoteFragment) getSupportFragmentManager().findFragmentByTag(NoteFragment.FRAGMENT_TAG);
         }
-    }
-
-    private void setupBooksSpinner(Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
-
-        mBooksSpinner = (Spinner) findViewById(R.id.activity_share_books_spinner);
-
-        /* On spinner book select - update note's book. */
-        mBooksSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, mBooksSpinner.getSelectedItem(), mNoteFragment);
-
-                if (mBooksSpinner.getSelectedItem() != null) {
-                    Book book = (Book) mBooksSpinner.getSelectedItem();
-
-                    if (book != null && mNoteFragment != null) {
-                        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Setting book for fragment", book);
-
-                        mNoteFragment.setBook(book);
-                    }
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
     }
 
     @Override
@@ -271,38 +213,34 @@ public class ShareActivity extends CommonActivity
         }
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        if (mBooksSpinner != null && mBooksSpinner.getSelectedItem() != null) {
-            outState.putInt(SPINNER_POSITION_KEY, mBooksSpinner.getSelectedItemPosition());
-        }
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, outState);
-    }
-
     /**
-     * Collects list of books from database.
-     * If there are no books available, create one.
+     * Returns default book if it exists, or first one found.
+     * If there are no books, default book will be created.
      */
-    private List<Book> getBooksList() {
+    private Book getTargetBook() {
         Shelf shelf = new Shelf(this);
 
         List<Book> books = shelf.getBooks();
 
+        String defaultBookName = AppPreferences.shareNotebook(getApplicationContext());
+
         if (books.size() == 0) {
             try {
-                Book book = shelf.createBook(AppPreferences.shareNotebook(getApplicationContext()));
-                books.add(book);
+                return shelf.createBook(defaultBookName);
             } catch (IOException e) {
-                // TODO: Test and handle better.
                 e.printStackTrace();
                 finish();
             }
+
+        } else {
+            for (int i = 0; i < books.size(); i++) {
+                if (defaultBookName.equals(books.get(i).getName())) {
+                    return books.get(i);
+                }
+            }
         }
 
-        return books;
+        return books.get(0);
     }
 
     public static PendingIntent createNewNoteIntent(Context context, Filter filter) {

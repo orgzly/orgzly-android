@@ -151,7 +151,7 @@ public class DisplayManager {
         }
 
         /* Create fragment. */
-        Fragment fragment = NoteFragment.getInstance(isNew, bookId, noteId, place, null, null);
+        Fragment fragment = NoteFragment.forBook(isNew, bookId, noteId, place);
 
         /* Add fragment. */
         fragmentManager

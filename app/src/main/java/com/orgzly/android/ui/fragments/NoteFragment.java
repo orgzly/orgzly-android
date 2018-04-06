@@ -21,7 +21,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.ViewFlipper;
@@ -40,6 +39,7 @@ import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.NotePriorities;
 import com.orgzly.android.ui.NoteStates;
 import com.orgzly.android.ui.Place;
+import com.orgzly.android.ui.ShareActivity;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.drawer.DrawerListed;
 import com.orgzly.android.ui.util.ActivityUtils;
@@ -55,8 +55,10 @@ import com.orgzly.org.datetime.OrgRange;
 import com.orgzly.org.parser.OrgParserWriter;
 import com.orgzly.org.utils.StateChangeLogic;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TreeSet;
 
 /**
@@ -111,6 +113,9 @@ public class NoteFragment extends Fragment
 
     private EditText title;
 
+    private TextView locationView;
+    private TextView locationButtonView;
+
     private ViewGroup metadata;
 
     private MultiAutoCompleteTextView tagsView;
@@ -137,18 +142,36 @@ public class NoteFragment extends Fragment
 
     private AlertDialog dialog;
 
-    public static NoteFragment getInstance(boolean isNew, long bookId, long noteId, Place place, String initialTitle, String initialContent) {
+    public static NoteFragment forSharedNote(long bookId, String title, String content) {
+        return getInstance(true, bookId, 0, Place.UNSPECIFIED, title, content);
+    }
+
+    public static NoteFragment forBook(boolean isNew, long bookId, long noteId, Place place) {
+        return getInstance(isNew, bookId, noteId, place, null, null);
+    }
+
+    private static NoteFragment getInstance(boolean isNew, long bookId, long noteId, Place place, String initialTitle, String initialContent) {
         NoteFragment fragment = new NoteFragment();
+
         Bundle args = new Bundle();
 
         args.putBoolean(ARG_IS_NEW, isNew);
 
         args.putLong(ARG_BOOK_ID, bookId);
-        if (noteId > 0) args.putLong(ARG_NOTE_ID, noteId);
+
+        if (noteId > 0) {
+            args.putLong(ARG_NOTE_ID, noteId);
+        }
+
         args.putString(ARG_PLACE, place.toString());
 
-        if (initialTitle   != null) args.putString(ARG_TITLE, initialTitle);
-        if (initialContent != null) args.putString(ARG_CONTENT, initialContent);
+        if (initialTitle != null) {
+            args.putString(ARG_TITLE, initialTitle);
+        }
+
+        if (initialContent != null) {
+            args.putString(ARG_CONTENT, initialContent);
+        }
 
         fragment.setArguments(args);
 
@@ -216,6 +239,18 @@ public class NoteFragment extends Fragment
             save();
             return true;
         });
+
+        locationView = top.findViewById(R.id.fragment_note_location);
+        locationButtonView = top.findViewById(R.id.fragment_note_location_button);
+
+        if (getActivity() instanceof ShareActivity) {
+            locationView.setVisibility(View.GONE);
+            locationButtonView.setVisibility(View.VISIBLE);
+            locationButtonView.setOnClickListener(this);
+        } else {
+            locationView.setVisibility(View.VISIBLE);
+            locationButtonView.setVisibility(View.GONE);
+        }
 
         metadata = top.findViewById(R.id.fragment_note_metadata);
         setMetadataVisibility(AppPreferences.isNoteMetadataVisible(getContext()));
@@ -551,9 +586,9 @@ public class NoteFragment extends Fragment
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onActivityCreated(savedInstanceState);
 
-        if (mBookId != 0) {
-            book = mShelf.getBook(mBookId); // FIXME: ANR reported
-        }
+        book = mShelf.getBook(mBookId); // FIXME: ANR reported
+        locationView.setText(book.getName());
+        locationButtonView.setText(book.getName());
 
         if (mIsNew) { /* Creating new note. */
             note = new Note();
@@ -794,7 +829,7 @@ public class NoteFragment extends Fragment
                 }
                 break;
 
-                case CLOSED:
+            case CLOSED:
                 /*
                  * Do not display CLOSED button if it's not set.
                  * It will be updated on state change.
@@ -864,6 +899,36 @@ public class NoteFragment extends Fragment
         DialogFragment f = null;
 
         switch (view.getId()) {
+            case R.id.fragment_note_location_button:
+                List<Book> books = getBooksList();
+
+                String[] bookNames = new String[books.size()];
+                for (int i = 0; i < books.size(); i++) {
+                    bookNames[i] = books.get(i).getName();
+                }
+
+                int selected = getSelectedBook(books, mBookId);
+
+                dialog = new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.state)
+                        .setSingleChoiceItems(bookNames, selected, (dialog, which) -> {
+                            Book book = books.get(which);
+
+                            if (book != null) {
+                                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Setting book for fragment", book);
+                                setBook(book);
+                            }
+
+
+                            dialog.dismiss();
+                        })
+                        .setNegativeButton(R.string.cancel, null)
+                        .create();
+
+                dialog.show();
+
+                break;
+
             case R.id.fragment_note_state_button:
                 NoteStates states = NoteStates.Companion.fromPreferences(getContext());
 
@@ -950,6 +1015,55 @@ public class NoteFragment extends Fragment
         }
     }
 
+    private List<Book> getBooksList() {
+        List<Book> books = mShelf.getBooks();
+
+        if (books.size() == 0) {
+            try {
+                Book book = mShelf.createBook(AppPreferences.shareNotebook(getContext()));
+                books.add(book);
+            } catch (IOException e) {
+                // TODO: Test and handle better.
+                e.printStackTrace();
+            }
+        }
+
+        return books;
+    }
+
+    private Book createDefaultBook() {
+        try {
+            return mShelf.createBook(AppPreferences.shareNotebook(getContext()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private int getSelectedBook(List<Book> books, long bookId) {
+        int selected = -1;
+
+        if (bookId != -1) {
+            for (int i = 0; i < books.size(); i++) {
+                if (books.get(i).getId() == bookId) {
+                    selected = i;
+                    break;
+                }
+            }
+
+        } else {
+            String defaultBookName = AppPreferences.shareNotebook(getContext());
+            for (int i = 0; i < books.size(); i++) {
+                if (defaultBookName.equals(books.get(i).getName())) {
+                    selected = i;
+                    break;
+                }
+            }
+        }
+
+        return selected;
+    }
+
     @Override /* TimestampDialog */
     public void onDateTimeSet(int id, TreeSet<Long> noteIds, OrgDateTime time) {
         if (note == null) {
@@ -1007,9 +1121,9 @@ public class NoteFragment extends Fragment
     public void onDateTimeAborted(int id, TreeSet<Long> noteIds) {
     }
 
-	/*
-	 * Options Menu.
-	 */
+    /*
+     * Options Menu.
+     */
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -1145,6 +1259,9 @@ public class NoteFragment extends Fragment
         mBookId = book.getId();
 
         note.getPosition().setBookId(mBookId);
+
+        locationView.setText(book.getName());
+        locationButtonView.setText(book.getName());
 
         getArguments().putLong(ARG_BOOK_ID, book.getId());
     }

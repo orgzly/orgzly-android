@@ -40,4 +40,7 @@
 
     <dimen name="bullet_inner_inset">8dp</dimen>
     <dimen name="bullet_outer_inset">5dp</dimen>
+
+    <dimen name="content_left_margin_from_icon">32dp</dimen>
+    <dimen name="padded_content_left_margin_from_icon">30dp</dimen>
 </resources>
