@@ -13,9 +13,9 @@
         style="@style/ListView"
         android:divider="@null"
         android:dividerHeight="8dp"
-        android:paddingLeft="@dimen/screen_edge"
-        android:paddingRight="@dimen/screen_edge"
-        android:paddingTop="@dimen/screen_edge"
+        android:paddingLeft="@dimen/screen_edge_minus_2dp"
+        android:paddingRight="@dimen/screen_edge_minus_2dp"
+        android:paddingTop="@dimen/screen_edge_minus_2dp"
         android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
         android:clipToPadding="false"/>
 

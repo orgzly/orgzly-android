@@ -19,6 +19,7 @@
     <string name="browse">Browse</string>
     <string name="dropbox">Dropbox</string>
     <string name="edit">Edit</string>
+    <string name="edit_note">Edit note</string>
     <string name="delete">Delete</string>
     <string name="delete_with_quoted_argument">Delete “%s”</string>
     <string name="name">Name</string>
@@ -69,7 +70,7 @@
     <string name="no_notes_pasted">Nothing to paste</string>
 
     <string name="fragment_note_title_hint">Title</string>
-    <string name="fragment_note_tags_hint" tools:ignore="typos">Tag tag</string>
+    <string name="fragment_note_tags_hint" tools:ignore="typos">tag tag</string>
 
     <string name="import_org_file">Import Org file</string>
 

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
-             android:id="@+id/fragment_filters_flipper"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<ViewFlipper
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_filters_flipper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ListView
         android:id="@android:id/list"
@@ -16,6 +17,6 @@
     <TextView
         style="@style/BigCenteredText"
         android:text="@string/no_filters"
-        android:paddingBottom="@dimen/fab_margin"/>
+        android:paddingBottom="@dimen/screen_edge"/>
 
 </ViewFlipper>

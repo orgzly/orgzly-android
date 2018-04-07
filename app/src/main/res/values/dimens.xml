@@ -32,8 +32,9 @@
     <dimen name="padded_content_left_margin_from_icon">30dp</dimen>
 
     <dimen name="screen_edge">16dp</dimen>
+    <dimen name="screen_edge_minus_2dp">14dp</dimen>
 
     <dimen name="space_between_content_areas">8dp</dimen>
 
-    <dimen name="spinner_min_width">200dp</dimen>
+    <dimen name="fragment_note_field_min_width">200dp</dimen>
 </resources>

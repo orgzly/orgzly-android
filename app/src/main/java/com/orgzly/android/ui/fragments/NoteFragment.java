@@ -673,7 +673,7 @@ public class NoteFragment extends Fragment
         if (mListener != null) {
             mListener.announceChanges(
                     NoteFragment.FRAGMENT_TAG,
-                    BookUtils.getFragmentTitleForBook(book),
+                    getString(R.string.edit_note),
                     BookUtils.getFragmentSubtitleForBook(getContext(), book),
                     0);
         }

@@ -10,10 +10,9 @@
     <dimen name="fab_margin">24dp</dimen>
 
     <dimen name="screen_edge">24dp</dimen>
+    <dimen name="screen_edge_minus_2dp">22dp</dimen>
 
     <dimen name="item_head_book_name_width">120dp</dimen>
-
-    <dimen name="spinner_min_width">360dp</dimen>
 
     <!--
     Layout alias to replace the single-pane version of the layout with a
