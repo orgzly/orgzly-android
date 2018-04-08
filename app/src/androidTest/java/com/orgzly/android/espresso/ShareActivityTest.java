@@ -12,7 +12,6 @@ import com.orgzly.android.ui.ShareActivity;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -23,7 +22,6 @@ import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertTrue;
 
@@ -61,14 +59,10 @@ public class ShareActivityTest extends OrgzlyTest {
     public void testDefaultBookRemainsSetAfterRotation() {
         startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", null);
         toPortrait(activityRule);
-        onData(anything())
-                .inAdapterView(allOf(withId(R.id.activity_share_books_spinner), isDisplayed()))
-                .atPosition(0)
+        onView(allOf(withId(R.id.fragment_note_location_button), isDisplayed()))
                 .check(matches(withText(context.getString(R.string.default_share_notebook))));
         toLandscape(activityRule);
-        onData(anything())
-                .inAdapterView(allOf(withId(R.id.activity_share_books_spinner), isDisplayed()))
-                .atPosition(0)
+        onView(allOf(withId(R.id.fragment_note_location_button), isDisplayed()))
                 .check(matches(withText(context.getString(R.string.default_share_notebook))));
     }
 
@@ -79,20 +73,18 @@ public class ShareActivityTest extends OrgzlyTest {
         shelfTestUtils.setupBook("book-three", "");
         startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", null);
         toPortrait(activityRule);
-        onView(withId(R.id.activity_share_books_spinner)).perform(click()); // Open spinner
+        onView(withId(R.id.fragment_note_location_button)).perform(click());
         onView(withText("book-two")).perform(click());
-        onView(withText("book-two")).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_note_location_button)).check(matches(withText("book-two")));
         toLandscape(activityRule);
-        onView(withText("book-two")).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_note_location_button)).check(matches(withText("book-two")));
     }
 
     @Test
     public void testDefaultBookName() {
         startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", null);
 
-        onData(anything())
-                .inAdapterView(allOf(withId(R.id.activity_share_books_spinner), isDisplayed()))
-                .atPosition(0)
+        onView(allOf(withId(R.id.fragment_note_location_button), isDisplayed()))
                 .check(matches(withText(context.getString(R.string.default_share_notebook))));
     }
 
@@ -141,12 +133,12 @@ public class ShareActivityTest extends OrgzlyTest {
     public void testSettingScheduledTimeRemainsSetAfterRotation() {
         startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", null);
         toPortrait(activityRule);
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(R.string.schedule_button_hint)));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText("")));
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
         onView(withText(R.string.set)).perform(click());
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(defaultDialogUserDate())), isDisplayed())));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(startsWith(defaultDialogUserDate()))));
         toLandscape(activityRule);
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(allOf(withText(startsWith(defaultDialogUserDate())), isDisplayed())));
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(startsWith(defaultDialogUserDate()))));
     }
 
     @Test
@@ -172,9 +164,7 @@ public class ShareActivityTest extends OrgzlyTest {
         shelfTestUtils.setupBook("foo", "doesn't matter");
         startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", "b.foo");
 
-        onData(anything())
-                .inAdapterView(allOf(withId(R.id.activity_share_books_spinner), isDisplayed()))
-                .atPosition(0)
+        onView(allOf(withId(R.id.fragment_note_location_button), isDisplayed()))
                 .check(matches(withText("foo")));
     }
 }

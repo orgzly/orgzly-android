@@ -363,7 +363,8 @@ public class BookTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_title)).perform(replaceText("Title"));
         onView(withId(R.id.done)).perform(click());
         onListItem(41).perform(click());
-        onView(withId(R.id.name)).check(matches(allOf(isDisplayed(), withText(R.string.created_property_name))));
+        onView(allOf(withId(R.id.name), withText(R.string.created_property_name))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.name), withText(""))).check(matches(isDisplayed()));
     }
 
     @Test
