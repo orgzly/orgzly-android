@@ -23,7 +23,7 @@ public class WhatsNewChange extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.text_list_item, this, true);
 
-        TextView c = ((TextView) view.findViewById(R.id.content));
+        TextView c = view.findViewById(R.id.content);
         c.setText(MiscUtils.fromHtml(content));
         c.setMovementMethod(LinkMovementMethod.getInstance());
     }
