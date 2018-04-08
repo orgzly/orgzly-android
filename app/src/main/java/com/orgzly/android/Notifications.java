@@ -38,7 +38,7 @@ public class Notifications {
         /* Build notification */
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.ONGOING)
                 .setOngoing(true)
-                .setSmallIcon(R.drawable.cic_orgzly_notification)
+                .setSmallIcon(R.drawable.ic_logo_for_notification)
                 .setContentTitle(context.getString(R.string.new_note))
                 .setContentText(context.getString(R.string.tap_to_create_new_note))
                 .setColor(ContextCompat.getColor(context, R.color.notification))
@@ -110,7 +110,7 @@ public class Notifications {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.SYNC_FAILED)
                 .setAutoCancel(true)
-                .setSmallIcon(R.drawable.cic_orgzly_notification)
+                .setSmallIcon(R.drawable.ic_logo_for_notification)
                 .setContentTitle(context.getString(R.string.syncing_failed_title))
                 .setColor(ContextCompat.getColor(context, R.color.notification))
                 .setContentIntent(openOrgzlyPendingIntent);

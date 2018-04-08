@@ -379,7 +379,7 @@ public class ReminderService extends JobIntentService {
                     .setCategory(NotificationCompat.CATEGORY_REMINDER)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
                     .setColor(ContextCompat.getColor(context, R.color.notification))
-                    .setSmallIcon(R.drawable.cic_orgzly_notification);
+                    .setSmallIcon(R.drawable.ic_logo_for_notification);
 
             NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender();
 

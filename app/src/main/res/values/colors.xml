@@ -63,7 +63,7 @@
     <color name="white_text_disabled_color">#80FFFFFF</color> <!-- 50% -->
 
 
-    <color name="notification">@color/black</color>
+    <color name="notification">@color/blue_grey_700</color>
 
     <color name="light_theme_item_selected_bg_color">#3290A4AE</color>
     <color name="dark_theme_item_selected_bg_color">#3290A4AE</color>
