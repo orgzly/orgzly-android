@@ -586,8 +586,11 @@ public class NoteFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
 
         book = mShelf.getBook(mBookId); // FIXME: ANR reported
-        locationView.setText(book.getName());
-        locationButtonView.setText(book.getName());
+
+        if (book != null) {
+            locationView.setText(book.getName());
+            locationButtonView.setText(book.getName());
+        }
 
         if (mIsNew) { /* Creating new note. */
             note = new Note();
@@ -673,7 +676,7 @@ public class NoteFragment extends Fragment
         if (mListener != null) {
             mListener.announceChanges(
                     NoteFragment.FRAGMENT_TAG,
-                    getString(R.string.edit_note),
+                    BookUtils.getFragmentTitleForBook(book),
                     BookUtils.getFragmentSubtitleForBook(getContext(), book),
                     0);
         }
@@ -1251,10 +1254,10 @@ public class NoteFragment extends Fragment
      * Updates the current book this note belongs to. Only makes sense for new notes.
      * TODO: Should be setPosition and allow filing under specific note
      */
-    public void setBook(Book book) {
+    public void setBook(Book newBook) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, book);
 
-        this.book = book;
+        book = newBook;
         mBookId = book.getId();
 
         note.getPosition().setBookId(mBookId);
