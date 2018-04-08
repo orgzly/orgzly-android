@@ -1,0 +1,71 @@
+Üdv az Orgzly jegyzetelőben!
+
+* Jegyzetek
+** Koppintson a bejegyzés megnyitásához
+** Tartsa lenyomva a bejegyzés kijelöléséhez
+
+Kiválaszthatsz több bejegyzést is.
+
+** Jobbra simítva megnyílik a gyorsmenü
+
+Balra simítva egy másik menü nyílik meg.
+
+** Ha egy bejegyzés tartalmaz aljegyzeteket is, be lehet hajtogatni azokat, ha az ikonra koppintasz mellette
+*** Nincs korlátozva, hogy hány szinten lehet aljegyzet
+**** Így könnyebb elrendezni a bejegyzéseket
+
+** Lehet címkéket is ragasztani bejegyzésekre :címke1:címke2:
+*** Az aljegyzet örökli a címkéket :címke3:
+
+Ha jegyzeteket keresel "címke1" címkével, ez a bejegyzés is benne lesz az eredményben.
+
+** TODO Egy bejegyzésnek állapota is lehet
+
+Létre lehet hozni akárhány állapot jelzőt: TODO, NEXT, DONE, stb.
+
+*** Kétféle /típusa/ lehet az állapotoknak: to-do (tennivaló) és done (kész)
+
+*** DONE Ennek a bejegyzésnek az állapota /done/, vagyis /kész/
+CLOSED: [2018-01-24 Wed 17:00]
+
+** Egy bejegyzést ütemezni is lehet
+SCHEDULED: <2015-02-20 Fri 15:15>
+
+*** Ismétlődő időt is be lehet állítani
+SCHEDULED: <2015-02-16 Mon .+1d>
+
+** Határidőt is be lehet állítani
+DEADLINE: <2015-02-20 Fri>
+
+** A bejegyzésben kapcsolódás is létrehozható
+
+Tárcsázzunk egy számot (tel:555-2368) vagy [[sms:555-2368][küldjünk SMS-t]].
+
+Levél mehet a [[mailto:support@orgzly.com][support@orgzly.com]] címre, látogassuk meg a http://www.orgzly.com oldalt vagy olvassuk el a [[http://www.orgzly.com/help][dokumentációt]].
+
+** Az alapvető tipográfiai kiemeléseket támogatja a program
+
+Lehet egy szó *félkövér*, /dőlt/, _aláhúzva_, =szó szerinti=, ~kód~ és +áthúzva+.
+
+* Keresés
+** Elég sok kereső operátort támogat a program
+
+Rá lehet keresni például állapotra, címkékre, ütemezésre vagy határidőre, stb.
+
+Erről többet a http://www.orgzly.com/help#search oldalon tanulhatsz.
+
+** A keresési kifejezéseket el lehet menteni, hogy gyorsan hozzáférjünk később
+
+Próbáld ki a kész kereséseket a navigációs fiókban és tekintsd meg ott a lekérdezéseket.
+
+Létrehozhatsz saját elmentett kereséseket a navigációs fiókban a "Keresés"-re koppintva.
+
+* Szinkronizálás
+
+** A jegyzettömböket szövegfáljként lehet menteni
+
+A mentett fájlok formátuma “Org mode”.
+
+** A tárolók típusa
+
+Szinkronizálni lehet a jegyzettömböket egy könyvtárral a mobil eszközön, az SD kártyán, vagy a Dropbox-ban.

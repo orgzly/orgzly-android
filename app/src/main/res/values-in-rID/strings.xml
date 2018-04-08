@@ -32,7 +32,7 @@
   <string name="reminder_snooze">Tunda</string>
   <string name="close">Tutup</string>
   <string name="import_">Impor</string>
-  <!-- "import" is reserved -->
+  <!-- Reserved keyword -->
   <string name="export">Ekspor</string>
   <string name="imported">Telah diimpor</string>
   <string name="created">Dibuat</string>
@@ -48,6 +48,8 @@
   <string name="agenda_period">Agenda hari</string>
   <string name="time">Waktu</string>
   <string name="repeater">Pengulang</string>
+  <string name="state">Keadaan</string>
+  <string name="priority">Prioritas</string>
   <plurals name="notes_deleted">
     <item quantity="other">Catatan <b>%d</b> dihapus</item>
   </plurals>
@@ -103,7 +105,6 @@
   <string name="tap_to_create_new_note">Ketuk untuk membuat catatan baru</string>
   <string name="options_menu_item_search">Cari</string>
   <string name="message_book_deleted">Notebook dihapus</string>
-  <string name="clear_database_dialog_message">Hapus database lokal?</string>
   <string name="no_user_repos_configured_pref_summary">Belum dikonfigurasi</string>
   <string name="repos_options_menu_new_repo">Repositori baru</string>
   <string name="book_name_already_exists">Notebook %s sudah ada.</string>
@@ -112,7 +113,9 @@
   <string name="version">Apa yang baru</string>
   <string name="search_hint">Cari catatan</string>
   <string name="clear_database">Hapus database</string>
+  <string name="clear_database_dialog_message">Hapus database lokal?</string>
   <string name="clear_database_summary">Hapus database lokal</string>
+  <string name="clear_database_performed">Database cleared</string>
   <string name="reload_getting_started">Impor \"Memulai dengan Orgzly\"</string>
   <string name="reload_getting_started_summary">Impor versi terbaru notebook</string>
   <string name="notebook_imported">Notebook diimpor</string>
@@ -123,6 +126,8 @@
   <string name="repo_dropbox_button_not_linked">Hubungkan ke DropBox</string>
   <string name="repo_dropbox_button_linked">Lepaskan Hubungan dari DropBox</string>
   <string name="fragment_settings_title">Setelan</string>
+  <string name="notes_update_needed_dialog_title">Preference affects notes</string>
+  <string name="notes_update_needed_dialog_message">Update notes to reflect the changes?</string>
   <string name="updating_notes">Memperbarui catatan…</string>
   <string name="failure">Uh oh</string>
   <string name="no_notes_found_after_search">Pencarian Anda tidak sesuai dengan catatan</string>
@@ -173,6 +178,7 @@
   <string name="confirm_unlinking_from_dropbox_title">Lepaskan Hubungan dari DropBox?</string>
   <string name="confirm_unlinking_from_dropbox_message">Anda tidak dapat menyinkronkan ke DropBox sampai Anda menautkannya lagi.</string>
   <string name="note_book_not_set">Notebook tidak diatur</string>
+  <string name="title_can_not_be_empty">Title cannot be empty</string>
   <string name="can_not_be_empty">Tidak bisa kosong</string>
   <string name="no_notebooks">Anda tidak memiliki notebook</string>
   <string name="no_notes">Notebook tidak memiliki catatan</string>
@@ -195,18 +201,20 @@
   <string name="failed_renaming_book">Gagal mengganti nama notebook</string>
   <string name="failed_renaming_book_with_reason">Gagal mengganti nama: %s</string>
   <string name="renamed_book_from">Mengganti nama dari \"%s\"</string>
+  <string name="priority_with_argument">Priority %s</string>
   <string name="default_priority">Prioritas bawaan</string>
   <string name="lowest_priority">Prioritas terendah</string>
   <string name="todo_states">Kata kunci untuk tugas aktif (todo)</string>
   <string name="done_states">Kata kunci untuk menyelesaikan tugas (selesai)</string>
-  <string name="created_at_property">Dibuat pada properti</string>
-  <string name="property_name">Nama Properti</string>
   <string name="created_at">Dibuat pada</string>
   <string name="insert_note_creation_time">Masukkan waktu pembuatan catatan</string>
+  <string name="use_created_at_property">Use property for created-at time</string>
+  <string name="use_created_at_property_summary">Sync created-at time using a property</string>
+  <string name="created_at_property">Dibuat pada properti</string>
+  <string name="property_name">Nama Properti</string>
   <string name="reminder_for_scheduled">Dijadwalkan: %s</string>
   <string name="reminder_for_deadline">Tenggat waktu: %s</string>
   <string name="scheduled_new_notes_for_today">Jadwal baru catatan untuk hari ini</string>
-  <string name="state">Keadaan</string>
   <string name="fold_content">Lipat konten</string>
   <string name="allow_folding_of_content">Memungkinkan melipat konten</string>
   <string name="display_content_in_search">Tampilkan konten dalam pencarian</string>
@@ -242,6 +250,7 @@
   <string name="force_saving_failed">Menyimpan paksa gagal: %s</string>
   <string name="force_loading_failed">Memuat paksa gagal: %s</string>
   <string name="loaded_from_resource">Dimuat dari sumber daya %s</string>
+  <string name="notebook_files">Notebook files</string>
   <string name="org_file_format">Format file org</string>
   <string name="org_file_format_summary">Format notebook yang diekspor</string>
   <string name="separate_notes_with_new_line">Pisahkan catatan dengan garis kosong</string>
@@ -306,8 +315,8 @@
   <string name="display_inherited_tags_in_search_results_summary">Tampilkan label yang diwariskan di hasil pencarian</string>
   <string name="new_note_notification">Buat catatan dan sinkron</string>
   <string name="new_note_notification_summary">Segera buat catatan baru atau sinkronkan notebook dari laci pemberitahuan</string>
-  <string name="show_sync_notifications_title">Status sinkron</string>
-  <string name="show_sync_notifications_summary">Tampilkan pemberitahuan selama sinkron dan setelah kegagalan sinkronisasi</string>
+  <string name="show_sync_notifications_title">Sync failure</string>
+  <string name="show_sync_notifications_summary">Display notification on sync failure</string>
   <string name="prefs_title_reminders">Pengingat</string>
   <string name="pref_title_reminders_for_scheduled_times">Dijadwalkan</string>
   <string name="pref_title_summary_reminders_for_scheduled_times">Tampilkan pemberitahuan untuk catatan dengan waktu terjadwal</string>
@@ -339,6 +348,9 @@
   <string name="default_notebook_desc">Notebook digunakan saat berbagi ke Orgzly atau membuat catatan baru dari pemberitahuan yang sedang berlangsung</string>
   <string name="force_utf8">Memaksa pengkodean UTF-8</string>
   <string name="force_utf8_summary">Jangan mencoba mendeteksi pengkodean, selalu gunakan UTF-8</string>
+  <string name="list_widget_name">Orgzly notes</string>
+  <string name="list_widget_select_search">Select search</string>
+  <string name="list_widget_nothing_selected">No search selected</string>
   <string name="auto_sync">Sinkron otomatis</string>
   <string name="auto_sync_experimental">Singkron otomatis (eksperimental)</string>
   <string name="auto_sync_experimental_summary">Digunakan untuk repositori lokal saja</string>
@@ -363,9 +375,26 @@
   <string name="styled_text_with_marks_title">Gaya teks dengan tanda</string>
   <string name="styled_text_with_marks_summary">Simpan tanda yang ditampilkan (misalnya *bold*)</string>
   <string name="no_such_link_target">Dicatat dengan \"%1$s\" properti diatur ke \"%2$s\" tidak ditemukan</string>
+  <plurals name="imported_searches">
+    <item quantity="other">Imported <b>%d</b> searches</item>
+  </plurals>
+  <plurals name="exported_searches">
+    <item quantity="other">Exported <b>%d</b> searches</item>
+  </plurals>
   <string name="storage_permissions_missing">Tidak ada izin penyimpanan</string>
   <string name="file_does_not_exist">File %s tidak ada</string>
   <string name="import_from">Impor dari \"%1$s\"?</string>
   <string name="export_to">Ekspor dari \"%1$s\"?</string>
   <string name="primary_storage_not_available">Penyimpanan utama tidak tersedia</string>
+  <!-- Notification channels -->
+  <string name="reminders_channel_name">Reminders</string>
+  <string name="reminders_channel_description">Display for scheduled or due tasks</string>
+  <string name="ongoing_channel_name">Ongoing (new note)</string>
+  <string name="ongoing_channel_description">Quickly create new note or initiate sync</string>
+  <string name="sync_progress_channel_name">Sync progress</string>
+  <string name="sync_progress_channel_description">Display sync progress</string>
+  <string name="sync_failed_channel_name">Failed sync</string>
+  <string name="sync_failed_channel_description">Display when syncing fails</string>
+  <string name="notification_channel_settings">Notifications</string>
+  <string name="notification_channel_settings_summary">Sound, vibrate, notification dot</string>
 </resources>

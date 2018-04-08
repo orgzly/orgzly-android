@@ -1,71 +1,71 @@
-Welcome to Orgzly!
+Orgzly'e Hoşgeldiniz!
 
-* Notes
-** Click on the note to open it
-** Click and hold the note to select it
+Notlar
+Açmak için nota tıklayın
+Notu seçmek için tıklayın ve basılı tutun
 
-You can select multiple notes.
+Birden fazla not seçebilirsiniz.
 
-** Fling note right to open its quick-menu
+Hızlı menü nota sağ tıklanırsa açılır
 
-Fling it left to open a different menu.
+Nota sol tıklanırsa farklı bir menü açılır.
 
-** Fold a note which contains sub-notes by clicking the icon next to it
-*** There is no limit in number of levels you can have
-**** Use this to better organize your notes
+Yanındaki simgeler tıklandığında alt notları içeren notlar kapanır
+Sahip olabileceğiniz seviyelerin sınırı yoktur
+Notlarınızı daha iyi düzenlemek için bunu kullanın
 
-** Note can have tags :tag1:tag2:
-*** Sub-note inherits the tags :tag3:
+Not etiketleri olabilir :etiket1:tag2:
+Alt not etiketleri devralır :tag3:
 
-If you search for notes with tag “tag1”, this note will be returned as well.
+Eğer "Tag1" etiketi içeren notları ararsanız, bu not da döndürülür.
 
-** TODO Note can have a state
+TODO Not bir durumu belirtebilir
 
-You can configure any number of states to use: TODO, NEXT, DONE, etc.
+Kullanılacak herhangi bir sınıfta durumu yapılandırabilirsiniz: TODO, NEXT, DONE, vb.
 
-*** There are two /types/ of states: to-do and done
+İki tür sınıf vardır: to-do ve done
 
-*** DONE This is a note with /done/ type of state
-CLOSED: [2018-01-24 Wed 17:00]
+DONE Bu notta bir sınıf türüdür
+CLOSED: [2018-01-24 Çarş. 17:00]
 
-** Note can have a scheduled time
-SCHEDULED: <2015-02-20 Fri 15:15>
+Not belirlenmiş bir zaman içerebilir
+SCHEDULED: <2015-02-20 Cuma 15:15>
 
-*** Times can have a repeater
-SCHEDULED: <2015-02-16 Mon .+1d>
+Zamanlar bir tekrarlayıcı olabilir
+SCHEDULED: <2015-02-16 Pzt. .+1d>
 
-** You can also set a deadline time
-DEADLINE: <2015-02-20 Fri>
+Ayrıca zaman sınırı olarak bir tarih ayarlayabilirsiniz
+DEADLINE: <2015-02-20 Cuma>
 
-** Note can use links
+Not bağlantıları kullanabilir
 
-Dial a phone number (tel:555-2368) or [[sms:555-2368][send SMS]].
+Telefon numarasını tuşlayın (tel:555-2368) ya da [[sms:555-2368][SMS gönderin]].
 
-Send email to [[mailto:support@orgzly.com][support@orgzly.com]], visit http://www.orgzly.com or read [[http://www.orgzly.com/help][documentation]].
+[[Mailto: support@orgzly.com] [support@orgzly.com] adresine e-posta gönderin, http://www.orgzly.com adresini ziyaret edin veya [[http://www.orgzly.com/help][documentation] adresini ziyaret edin.]].
 
-** Basic typographical emphasis is supported
+Temel yazı karakteri önemi desteklenmektedir
 
-You can make words *bold*, /italic/, _underlined_, =verbatim=, ~code~ and +strike-through+.
+Kelimeleri * kalın *, / italik /, _altıçizili_, = kelimesi kelimesine =, ~ kod ~ ve + doğrudan vurgulama + yapabilirsiniz.
 
-* Search
-** There are many search operators supported
+Arama
+Birçok arama operatörü desteklenmektedir
 
-You can search notes by state, tag, scheduled or deadline time etc.
+Notları sınıfına, etiketine, zamanlanmış veya son teslim zamanı vb. Göre arayabilirsiniz.
 
-See http://www.orgzly.com/help#search to learn more.
+Daha fazlası için http://www.orgzly.com/help#search siteyi görün.
 
-** Search queries can be saved for quick access
+Arama sorguları hızlı sorgu için kaydedilebilir
 
-Try sample searches from navigation drawer and note the queries they use.
+Gezinme penceresinden örnek aramaları deneyin ve kullandıkları soruları not edin.
 
-You can create your own saved searches by clicking on “Searches” in the navigation drawer.
+Gezinme penceresinde bulunan "Aramalar" ı tıklayarak kendi kaydedilmiş aramalarınızı oluşturabilirsiniz.
 
-* Syncing
+Senkronizasyon
 
-** Notebooks can be saved as plain-text files
+Dizüstü bilgisayarlar düz metin dosyaları olarak kaydedilebilir
 
-Files are in the format used by “Org mode”.
+Dosyalar "Org mode" tarafından kullanılmış formatları içerir.
 
-** Location (repository) type
+Konum (depo) türü
 
-You can keep notebooks synced with a directory on your mobile device, SD card or Dropbox.
+Dizüstü bilgisayarlarınızı mobil cihazınızdaki, SD kartınızdaki veya Dropbox'taki bir dizinde senkronize şekilde tutabilirsiniz.

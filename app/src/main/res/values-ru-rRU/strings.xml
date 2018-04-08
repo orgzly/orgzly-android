@@ -32,7 +32,7 @@
   <string name="reminder_snooze">Отложить</string>
   <string name="close">Закрыть</string>
   <string name="import_">Импорт</string>
-  <!-- "import" is reserved -->
+  <!-- Reserved keyword -->
   <string name="export">Экспорт</string>
   <string name="imported">Импортировано</string>
   <string name="created">Создано</string>
@@ -48,21 +48,26 @@
   <string name="agenda_period">Расписание дней</string>
   <string name="time">Время</string>
   <string name="repeater">Повтор</string>
+  <string name="state">Состояние</string>
+  <string name="priority">Приоритет</string>
   <plurals name="notes_deleted">
     <item quantity="one">Заметка удалена</item>
-    <item quantity="few">Deleted <b>%d</b> notes</item>
+    <item quantity="few">Удалено <b>%d</b> заметок</item>
+    <item quantity="many">Удалено <b>%d</b> заметок</item>
     <item quantity="other">Удалено <b>%d</b> заметок</item>
   </plurals>
   <string name="no_notes_deleted">Нет удаленных заметок</string>
   <plurals name="notes_cut">
     <item quantity="one">Вырезать заметку</item>
-    <item quantity="few">Cut <b>%d</b> notes</item>
+    <item quantity="few">Вырезать <b>%d</b> заметок</item>
+    <item quantity="many">Вырезать <b>%d</b> заметок</item>
     <item quantity="other">Вырезать <b>%d</b> заметок</item>
   </plurals>
   <string name="no_notes_cut">Нет заметок</string>
   <plurals name="notes_pasted">
     <item quantity="one">Заметка вставлена</item>
-    <item quantity="few">Pasted <b>%d</b> notes</item>
+    <item quantity="few">Вставлено <b>%d</b> заметок</item>
+    <item quantity="many">Вставлено <b>%d</b> заметок</item>
     <item quantity="other">Вставлено <b>%d</b> заметок</item>
   </plurals>
   <string name="no_notes_pasted">Нечего вставлять</string>
@@ -109,7 +114,6 @@
   <string name="tap_to_create_new_note">Нажмите, чтобы создать новую заметку</string>
   <string name="options_menu_item_search">Поиск</string>
   <string name="message_book_deleted">Блокнот удален</string>
-  <string name="clear_database_dialog_message">Очистить локальную базу данных?</string>
   <string name="no_user_repos_configured_pref_summary">Все еще не настроено</string>
   <string name="repos_options_menu_new_repo">Новое хранилище</string>
   <string name="book_name_already_exists">Блокнот %s уже существует.</string>
@@ -118,7 +122,9 @@
   <string name="version">Что нового</string>
   <string name="search_hint">Поиск заметок</string>
   <string name="clear_database">Очистить базу данных</string>
+  <string name="clear_database_dialog_message">Очистить локальную базу данных?</string>
   <string name="clear_database_summary">Очистить локальную базу данных</string>
+  <string name="clear_database_performed">База данных очищена</string>
   <string name="reload_getting_started">Импортировать «Начало работы с Orgzly»</string>
   <string name="reload_getting_started_summary">Импортировать последнюю версию блокнота</string>
   <string name="notebook_imported">Блокнот импортирован</string>
@@ -129,6 +135,8 @@
   <string name="repo_dropbox_button_not_linked">Привязать к Dropbox</string>
   <string name="repo_dropbox_button_linked">Отвязать от Dropbox</string>
   <string name="fragment_settings_title">Настройки</string>
+  <string name="notes_update_needed_dialog_title">Влияет на заметки</string>
+  <string name="notes_update_needed_dialog_message">Обновить заметки, чтобы отразить изменения?</string>
   <string name="updating_notes">Обновление заметок…</string>
   <string name="failure">Ой-ой</string>
   <string name="no_notes_found_after_search">Ваш запрос не соответствует заметкам</string>
@@ -179,6 +187,7 @@
   <string name="confirm_unlinking_from_dropbox_title">Отвязать от Dropbox?</string>
   <string name="confirm_unlinking_from_dropbox_message">Вы не сможете синхронизировать с Dropbox до тех пор, пока не привяжетесь к нему снова.</string>
   <string name="note_book_not_set">Блокнот не задан</string>
+  <string name="title_can_not_be_empty">Заголовок не может быть пустым</string>
   <string name="can_not_be_empty">Не может быть пустым</string>
   <string name="no_notebooks">У вас нет блокнотов</string>
   <string name="no_notes">Блокнот не содержит заметок</string>
@@ -201,24 +210,26 @@
   <string name="failed_renaming_book">Не удалось переименовать блокнот</string>
   <string name="failed_renaming_book_with_reason">Не удалось переименовать: %s</string>
   <string name="renamed_book_from">Переименовано из \"%s\"</string>
+  <string name="priority_with_argument">Приоритет %s</string>
   <string name="default_priority">Приоритет по умолчанию</string>
   <string name="lowest_priority">Низший приоритет</string>
   <string name="todo_states">Ключевые слова для активных (todo) задач</string>
   <string name="done_states">Ключевые слова для выполненных (done) задач</string>
-  <string name="created_at_property">Создано в свойстве</string>
-  <string name="property_name">Имя свойства</string>
   <string name="created_at">Время создания</string>
   <string name="insert_note_creation_time">Вставлять время создания заметки</string>
+  <string name="use_created_at_property">Использовать свойство для созданного во время</string>
+  <string name="use_created_at_property_summary">Синхронизировать время создания используемого свойства</string>
+  <string name="created_at_property">Создано в свойстве</string>
+  <string name="property_name">Имя свойства</string>
   <string name="reminder_for_scheduled">Запланировано: %s</string>
   <string name="reminder_for_deadline">Крайний срок: %s</string>
   <string name="scheduled_new_notes_for_today">График новых заметок на сегодня</string>
-  <string name="state">Состояние</string>
   <string name="fold_content">Сложить содержимое</string>
   <string name="allow_folding_of_content">Разрешить складывание содержимого</string>
   <string name="display_content_in_search">Содержимое в поиске</string>
   <string name="display_content_in_search_results">Отображать содержимое в результатах поиска</string>
   <string name="display_content">Отображать содержимое</string>
-  <string name="display_both_title_and_content">Отображать оба заголовка и содержимое</string>
+  <string name="display_both_title_and_content">Отображать и заголовок, и содержимое</string>
   <string name="display_planning_times">Время планирования</string>
   <string name="display_planning_times_summary">Отображать запланированное, окончательное и закрытое время</string>
   <string name="density">Плотность</string>
@@ -248,6 +259,7 @@
   <string name="force_saving_failed">Принудительное сохранение не удалось: %s</string>
   <string name="force_loading_failed">Принудительная загрузка не удалась: %s</string>
   <string name="loaded_from_resource">Загружено из ресурса %s</string>
+  <string name="notebook_files">Файлы блокнота</string>
   <string name="org_file_format">Формат Org-файла</string>
   <string name="org_file_format_summary">Формат экспортированных блокнотов</string>
   <string name="separate_notes_with_new_line">Разделять заметки пустой строкой</string>
@@ -312,8 +324,8 @@
   <string name="display_inherited_tags_in_search_results_summary">Отображать теги в результатах поиска</string>
   <string name="new_note_notification">Создать заметку и синхронизировать</string>
   <string name="new_note_notification_summary">Быстро создавать новую заметку или синхронизировать блокноты из панели уведомлений</string>
-  <string name="show_sync_notifications_title">Состояние синхронизации</string>
-  <string name="show_sync_notifications_summary">Отображать уведомление во время синхронизации и после ее сбоя</string>
+  <string name="show_sync_notifications_title">Ошибка синхронизации</string>
+  <string name="show_sync_notifications_summary">Отображать уведомление о сбое синхронизации</string>
   <string name="prefs_title_reminders">Напоминания</string>
   <string name="pref_title_reminders_for_scheduled_times">Запланировано</string>
   <string name="pref_title_summary_reminders_for_scheduled_times">Отображать уведомление для заметок с запланированным временем</string>
@@ -345,6 +357,9 @@
   <string name="default_notebook_desc">Блокнот, используемый при совместном использовании Orgzly или создании новой заметки из текущего уведомления</string>
   <string name="force_utf8">Кодировка UTF-8 принудительно</string>
   <string name="force_utf8_summary">Не определять кодировку, всегда использовать UTF-8</string>
+  <string name="list_widget_name">Заметки Orgzly</string>
+  <string name="list_widget_select_search">Выберите поиск</string>
+  <string name="list_widget_nothing_selected">Поиск не выбран</string>
   <string name="auto_sync">Автосинхронизация</string>
   <string name="auto_sync_experimental">Автосинхронизация (экспериментальное)</string>
   <string name="auto_sync_experimental_summary">Используется только для локальных хранилищ</string>
@@ -361,7 +376,8 @@
   <string name="notes_count_zero">Не содержит заметок</string>
   <plurals name="notes_count_nonzero">
     <item quantity="one">Содержит заметку <b>%d</b></item>
-    <item quantity="few">Contains <b>%d</b> notes</item>
+    <item quantity="few">Содержит <b>%d</b> заметок</item>
+    <item quantity="many">Содержит <b>%d</b> заметок</item>
     <item quantity="other">Содержит <b>%d</b> заметок</item>
   </plurals>
   <string name="content_line_count_displayed">Количество строк содержимого</string>
@@ -371,9 +387,32 @@
   <string name="styled_text_with_marks_title">Текст с отметками</string>
   <string name="styled_text_with_marks_summary">Сохранять отображаемые отметки (например, *жирный*)</string>
   <string name="no_such_link_target">Заметка с «%1$s» свойством, заданная для «%2$s», не найдена</string>
+  <plurals name="imported_searches">
+    <item quantity="one">Импортировано запросов: <b>%d</b></item>
+    <item quantity="few">Импортировано запросов: <b>%d</b></item>
+    <item quantity="many">Импортировано запросов: <b>%d</b></item>
+    <item quantity="other">Импортировано запросов: <b>%d</b></item>
+  </plurals>
+  <plurals name="exported_searches">
+    <item quantity="one">Экспортирован один запрос</item>
+    <item quantity="few">Экспортировано <b>%d</b> запросов</item>
+    <item quantity="many">Экспортировано <b>%d</b> запросов</item>
+    <item quantity="other">Экспортировано <b>%d</b> запросов</item>
+  </plurals>
   <string name="storage_permissions_missing">Нет разрешения на хранение</string>
   <string name="file_does_not_exist">Файл \"%s\" не существует</string>
   <string name="import_from">Импортировать из «%1$s»?</string>
   <string name="export_to">Экспортировать в «%1$s»?</string>
   <string name="primary_storage_not_available">Основное хранилище недоступно</string>
+  <!-- Notification channels -->
+  <string name="reminders_channel_name">Напоминания</string>
+  <string name="reminders_channel_description">Отображать запланированные или истекшие задачи</string>
+  <string name="ongoing_channel_name">Текущая (новая заметка)</string>
+  <string name="ongoing_channel_description">Быстро создать новую заметку или инициировать синхронизацию</string>
+  <string name="sync_progress_channel_name">Синхронизация в процессе</string>
+  <string name="sync_progress_channel_description">Показывать процесс синхронизации</string>
+  <string name="sync_failed_channel_name">Ошибка синхронизации</string>
+  <string name="sync_failed_channel_description">Отображать при сбое синхронизации</string>
+  <string name="notification_channel_settings">Уведомления</string>
+  <string name="notification_channel_settings_summary">Звук, вибрация, точка оповещения</string>
 </resources>

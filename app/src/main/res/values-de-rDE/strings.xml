@@ -3,7 +3,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <string name="sync">Synchronisieren</string>
   <string name="settings">Einstellungen</string>
-  <string name="ok">Okay</string>
+  <string name="ok">OK</string>
   <string name="yes">Ja</string>
   <string name="unlink">Verknüpfung lösen</string>
   <!-- Unlink from Dropbox -->
@@ -13,7 +13,7 @@
   <string name="new_">Neu</string>
   <!-- "new" is reserved -->
   <string name="select">Auswählen</string>
-  <string name="set">Festlegen</string>
+  <string name="set">Setzen</string>
   <string name="add">Hinzufügen</string>
   <string name="not_now">Nicht jetzt</string>
   <string name="save">Speichern</string>
@@ -30,17 +30,17 @@
   <string name="mark_as_done">Als erledigt markieren</string>
   <string name="mark_as_done_with_repeater">%s neu planen</string>
   <string name="reminder_snooze">Später erinnern</string>
-  <string name="close">Schliessen</string>
+  <string name="close">Schließen</string>
   <string name="import_">Importieren</string>
-  <!-- "import" is reserved -->
-  <string name="export">Export</string>
+  <!-- Reserved keyword -->
+  <string name="export">Exportieren</string>
   <string name="imported">Importiert</string>
   <string name="created">Erstellt</string>
   <string name="states">Status</string>
   <string name="note">Notiz</string>
   <string name="notes">Notizen</string>
   <string name="property">Eigenschaft</string>
-  <string name="import_as">Importieren als…</string>
+  <string name="import_as">Importieren als …</string>
   <string name="new_notebook">Neues Notizbuch</string>
   <string name="new_folder">Neuer Ordner</string>
   <string name="scheduled">Geplant</string>
@@ -48,6 +48,8 @@
   <string name="agenda_period">Agenda-Tage</string>
   <string name="time">Zeit</string>
   <string name="repeater">Wiederholung</string>
+  <string name="state">Status</string>
+  <string name="priority">Priorität</string>
   <plurals name="notes_deleted">
     <item quantity="one">Notiz gelöscht</item>
     <item quantity="other"><b>%d</b> Notizen gelöscht</item>
@@ -92,9 +94,9 @@
   <string name="move">Verschieben</string>
   <string name="cut">Ausschneiden</string>
   <string name="paste">Einfügen</string>
-  <string name="heads_action_menu_item_add_above">Darüber anlagen</string>
-  <string name="heads_action_menu_item_add_under">Eingerückt anlegen</string>
-  <string name="heads_action_menu_item_add_below">Darunter anlegen</string>
+  <string name="heads_action_menu_item_add_above">Neuer Eintrag oberhalb</string>
+  <string name="heads_action_menu_item_add_under">Neuer Eintrag innerhalb</string>
+  <string name="heads_action_menu_item_add_below">Neuer Eintrag unterhalb</string>
   <string name="heads_action_menu_item_paste_above">Darüber einfügen</string>
   <string name="heads_action_menu_item_paste_under">Eingerückt einfügen</string>
   <string name="heads_action_menu_item_paste_below">Darunter einfügen</string>
@@ -106,7 +108,6 @@
   <string name="tap_to_create_new_note">Antippen, um eine neue Notiz zu erstellen</string>
   <string name="options_menu_item_search">Suchen</string>
   <string name="message_book_deleted">Notizbuch gelöscht</string>
-  <string name="clear_database_dialog_message">Lokale Datenbank leeren?</string>
   <string name="no_user_repos_configured_pref_summary">Noch keine eingerichtet</string>
   <string name="repos_options_menu_new_repo">Neues Repository</string>
   <string name="book_name_already_exists">Notizbuch %s existiert bereits.</string>
@@ -115,7 +116,9 @@
   <string name="version">Was ist neu?</string>
   <string name="search_hint">Notizen suchen</string>
   <string name="clear_database">Datenbank leeren</string>
+  <string name="clear_database_dialog_message">Lokale Datenbank leeren?</string>
   <string name="clear_database_summary">Lokale Datenbank leeren</string>
+  <string name="clear_database_performed">Datenbank geleert</string>
   <string name="reload_getting_started">Importiere \"Erste Schritte mit Orgzly\"</string>
   <string name="reload_getting_started_summary">Die aktuellste Version des Notizbuchs importieren</string>
   <string name="notebook_imported">Notizbuch importiert</string>
@@ -126,6 +129,8 @@
   <string name="repo_dropbox_button_not_linked">Mit der Dropbox verknüpfen</string>
   <string name="repo_dropbox_button_linked">Verknüpfung mit der Dropbox aufheben</string>
   <string name="fragment_settings_title">Einstellungen</string>
+  <string name="notes_update_needed_dialog_title">Einstellung beeinflusst die Notizen</string>
+  <string name="notes_update_needed_dialog_message">Notizen aktualisieren um Änderungen sichtbar zu machen?</string>
   <string name="updating_notes">Aktualisiere Notizen…</string>
   <string name="failure">Oh Oh</string>
   <string name="no_notes_found_after_search">Die Suchanfrage ergab keine Treffer</string>
@@ -176,6 +181,7 @@
   <string name="confirm_unlinking_from_dropbox_title">Verknüpfung mit der Dropbox aufheben?</string>
   <string name="confirm_unlinking_from_dropbox_message">Eine Synchronisierung mit der Dropbox ist nicht mehr möglich, so lange keine Verknüpfung mehr besteht.</string>
   <string name="note_book_not_set">Notizbuch nicht gesetzt</string>
+  <string name="title_can_not_be_empty">Titel darf nicht leer sein</string>
   <string name="can_not_be_empty">Darf nicht leer sein</string>
   <string name="no_notebooks">Keine Notizbücher vorhanden</string>
   <string name="no_notes">Notizbuch hat keine Notizen</string>
@@ -198,18 +204,20 @@
   <string name="failed_renaming_book">Notizbuch umbenennen ist fehlgeschlagen</string>
   <string name="failed_renaming_book_with_reason">Umbenennen in %s fehlgeschlagen</string>
   <string name="renamed_book_from">Umbenannt von \"%s\"</string>
+  <string name="priority_with_argument">Priorität %s</string>
   <string name="default_priority">Standardpriorität</string>
   <string name="lowest_priority">Niedrigste Priorität</string>
   <string name="todo_states">Schlüsselwörter für aktive Aufgaben</string>
   <string name="done_states">Schlüsselwörter für erledigte Aufgaben</string>
-  <string name="created_at_property">\"Erstellt am\"-Eigenschaft</string>
-  <string name="property_name">Name der Eigenschaft</string>
   <string name="created_at">Erstellt am</string>
   <string name="insert_note_creation_time">Erstellungszeit der Notiz einfügen</string>
+  <string name="use_created_at_property">Einstellung für \"Erstellt am\" verwenden</string>
+  <string name="use_created_at_property_summary">\"Erstellt am\"-Zeit mit einer Einstellung synchronisieren</string>
+  <string name="created_at_property">\"Erstellt am\"-Eigenschaft</string>
+  <string name="property_name">Name der Eigenschaft</string>
   <string name="reminder_for_scheduled">Geplant: %s</string>
   <string name="reminder_for_deadline">Termin: %s</string>
   <string name="scheduled_new_notes_for_today">Neue Notizen für heute planen</string>
-  <string name="state">Status</string>
   <string name="fold_content">Inhalt einklappen</string>
   <string name="allow_folding_of_content">Inhalt einklappen erlauben</string>
   <string name="display_content_in_search">Inhalt in der Suche anzeigen</string>
@@ -245,6 +253,7 @@
   <string name="force_saving_failed">Erzwungenes Speichern fehlgeschlagen: %s</string>
   <string name="force_loading_failed">Erzwungenes Laden fehlgeschlagen: %s</string>
   <string name="loaded_from_resource">Geladen von Ressource %s</string>
+  <string name="notebook_files">Datein Notizbuchs</string>
   <string name="org_file_format">Org Dateiformat</string>
   <string name="org_file_format_summary">Dateiformat für exportierte Notizbücher</string>
   <string name="separate_notes_with_new_line">Notizen mit einer Leerzeile trennen</string>
@@ -309,8 +318,8 @@
   <string name="display_inherited_tags_in_search_results_summary">Zeigt eingerückte Tags in den Suchergebnissen an</string>
   <string name="new_note_notification">Notiz erstellen und Synchronisieren</string>
   <string name="new_note_notification_summary">Über eine Benachrichtigung neue Notizen anlegen oder Notizbücher synchronisieren</string>
-  <string name="show_sync_notifications_title">Status der Synchronisierung</string>
-  <string name="show_sync_notifications_summary">Benachrichtigung während der Synchronisierung (und bei Fehlern) anzeigen</string>
+  <string name="show_sync_notifications_title">Synchronisationsfehler</string>
+  <string name="show_sync_notifications_summary">Benachrichtigung bei Synchronisationsfehler</string>
   <string name="prefs_title_reminders">Erinnerungen</string>
   <string name="pref_title_reminders_for_scheduled_times">Geplant</string>
   <string name="pref_title_summary_reminders_for_scheduled_times">Benachrichtigung für Notizen mit geplantem Zeitpunkt anzeigen</string>
@@ -318,7 +327,7 @@
   <string name="pref_title_summary_reminders_for_deadline_times">Benachrichtigungen für Notizen mit festgelegtem Termin anzeigen</string>
   <string name="pref_title_reminders_sound">Ton</string>
   <string name="pref_title_reminders_vibrate">Vibration</string>
-  <string name="pref_title_reminders_led">Licht</string>
+  <string name="pref_title_reminders_led">Notification-LED</string>
   <string name="pref_title_snooze_time">Schlummer-Zeit (Minuten)</string>
   <string name="pref_title_snooze_type">Schlummer-Typ</string>
   <string name="primary_storage">Haupt-Speicherort</string>
@@ -342,6 +351,9 @@
   <string name="default_notebook_desc">Notizbuch, welches für das Teilen mit Orgzly oder beim Erstellen einer neuen Notiz über die Benachrichtigungen verwendet werden soll</string>
   <string name="force_utf8">UTF-8-Zeichensatz erzwingen</string>
   <string name="force_utf8_summary">Der Zeichensatz wird nicht automatisch erkannt, es wird immer UTF-8 angenommen</string>
+  <string name="list_widget_name">Orgzly Notizen</string>
+  <string name="list_widget_select_search">Suche auswählen</string>
+  <string name="list_widget_nothing_selected">Keine Suche ausgewählt</string>
   <string name="auto_sync">Automatisch synchronisieren</string>
   <string name="auto_sync_experimental">Automatisch synchronisieren (experimentell)</string>
   <string name="auto_sync_experimental_summary">Wird nur für lokale Ablageorte verwendet</string>
@@ -367,9 +379,28 @@
   <string name="styled_text_with_marks_title">Formatierter Text mit Markierungen</string>
   <string name="styled_text_with_marks_summary">Markierungen (z.B. *fett*) anzeigen</string>
   <string name="no_such_link_target">Notiz, dessen Eigenschaft \"%1$s\" auf \"%2$s\" steht existiert nicht</string>
+  <plurals name="imported_searches">
+    <item quantity="one">Eine Abfrage importiert</item>
+    <item quantity="other"><b>%d</b> Abfragen importiert</item>
+  </plurals>
+  <plurals name="exported_searches">
+    <item quantity="one">Eine Abfrage exportiert</item>
+    <item quantity="other"><b>%d</b> Suchen exportiert</item>
+  </plurals>
   <string name="storage_permissions_missing">Keine Zugriffsberechtigung auf den Speicher</string>
   <string name="file_does_not_exist">Datei %s existiert nicht</string>
   <string name="import_from">Von \"%1$s\" importieren?</string>
   <string name="export_to">Nach \"%1$s\" exportieren?</string>
   <string name="primary_storage_not_available">Haupt-Speicherort ist nicht verfügbar</string>
+  <!-- Notification channels -->
+  <string name="reminders_channel_name">Erinnerungen</string>
+  <string name="reminders_channel_description">Ansicht für geplante und fällige Aufgaben</string>
+  <string name="ongoing_channel_name">Laufend (neue Notiz)</string>
+  <string name="ongoing_channel_description">Schnell neue Notiz erstellen oder Synchronisation starten</string>
+  <string name="sync_progress_channel_name">Synchronisationsfortschritt</string>
+  <string name="sync_progress_channel_description">Synchronisationsfortschritt anzeigen</string>
+  <string name="sync_failed_channel_name">Synchronisation fehlgeschlagen</string>
+  <string name="sync_failed_channel_description">Benachrichtigung wenn Synchronisation fehlschlägt</string>
+  <string name="notification_channel_settings">Benachrichtigungen</string>
+  <string name="notification_channel_settings_summary">Klang, Vibration, Notification-LED</string>
 </resources>

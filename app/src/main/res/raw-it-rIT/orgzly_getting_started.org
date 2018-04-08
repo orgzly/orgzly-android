@@ -1,0 +1,71 @@
+Benvenuto su Orgzly!
+
+* Note
+** Clicca sulla nota per aprirla
+** Tieni premuta la nota per selezionarla
+
+Puoi selezionare più note.
+
+** Tieni premuto e muovi velocemente a destra per aprire il suo menu rapido
+
+Tieni premuto muovendo velocemente a sinistra per aprire un menu diverso.
+
+** Apri una nota che contiene sotto-note premendo sull'icona vicina ad essa
+** Non ci sono limiti al numero di livelli che puoi avere
+**** Usalo per meglio organizzare le tue note
+
+*** Ora puoi avere anche le etichette :tag1:tag2:
+*** La sotto-nota eredita l'etichetta :tag3:
+
+Se cerchi delle note con l'etichetta "etichetta1", questa nota sarà egualmente restituita.
+
+** DAFARE La nota può avere uno stato
+
+Puoi configurare un qualsiasi numero di stati da usare: DAFARE, PROSSIMO, FATTO, ecc.
+
+*** Ci sono due /tipi/ di stati: da-fare e completato
+
+*** COMPLETATO Questa è una nota con il tipo di stato /completato/
+CLOSED: [2018-01-24 Mer 17:00]
+
+** La nota può avere un orario programmato
+SCHEDULED: <2015-02-20 Ven 15:15>
+
+*** Gli orari possono avere una ripetizione
+SCHEDULED: <2015-02-16 Lun .+1d>
+
+** Puoi anche stabilire una scadenza
+DEADLINE: <2015-02-20 Ven>
+
+** Le note possono usare collegamenti
+
+Chiama un numero di telefono (tel:555-2368) o [[sms:555-2368][send SMS]].
+
+Invia un'e-mail a [[mailto:support@orgzly.com][support@orgzly.com]], Visita http://www.orgzly.com o leggi [[http://www.orgzly.com/help][documentation]].
+
+** Sono supportati i livelli di formattazione base
+
+Puoi usare parole in *grassetto*, /corsivo/, _sottolineato_, =scandito=, ~tipo codice~ e +barrato+.
+
+* Cerca
+** Sono supportati molti diversi operatori di ricerca
+
+Puoi cercare nelle note a seconda dello stato, dell'etichetta, della programmazione o della scadenza ecc.
+
+Vai su http://www.orgzly.com/help#search per saperne di più.
+
+** Le stringhe di ricerca possono essere salvate per un rapido accesso
+
+Prova a fare ricerche semplici dal cassetto di navigazione e nota quali stringhe usino.
+
+Puoi creare le proprie ricerche salvate premendo su "Ricerche" nel menu di navigazione.
+
+* Sincronizzazione
+
+** I taccuini possono essere salvati come file di testo
+
+I file sono nel formato usato da "Org mode".
+
+** Tipo di localizzazione (deposito)
+
+Puoi tenere sincronizzati i taccuini sul tuo dispositivo mobile in una directory, su di una scheda di memoria o su Dropbox.

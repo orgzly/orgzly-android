@@ -32,7 +32,7 @@
   <string name="reminder_snooze">Sluimeren</string>
   <string name="close">Sluiten</string>
   <string name="import_">Importeren</string>
-  <!-- "import" is reserved -->
+  <!-- Reserved keyword -->
   <string name="export">Exporteren</string>
   <string name="imported">Geïmporteerd</string>
   <string name="created">Gemaakt op</string>
@@ -48,6 +48,8 @@
   <string name="agenda_period">Agenda dagen</string>
   <string name="time">Tijd</string>
   <string name="repeater">Herhaler</string>
+  <string name="state">Status</string>
+  <string name="priority">Prioriteit</string>
   <plurals name="notes_deleted">
     <item quantity="one">Notitie verwijderd</item>
     <item quantity="other">Verwijderde <b>%d</b> notities</item>
@@ -106,7 +108,6 @@
   <string name="tap_to_create_new_note">Tik om een nieuwe notitie te maken</string>
   <string name="options_menu_item_search">Zoeken</string>
   <string name="message_book_deleted">Notitieboekje verwijderd</string>
-  <string name="clear_database_dialog_message">Lokale database leegmaken?</string>
   <string name="no_user_repos_configured_pref_summary">Nog niets geconfigureerd</string>
   <string name="repos_options_menu_new_repo">Nieuwe Repository</string>
   <string name="book_name_already_exists">Shrift %s bestaat al.</string>
@@ -115,7 +116,9 @@
   <string name="version">Wat er nieuw is</string>
   <string name="search_hint">Doorzoek notities</string>
   <string name="clear_database">Database leegmaken</string>
+  <string name="clear_database_dialog_message">Lokale database leegmaken?</string>
   <string name="clear_database_summary">Locale database leegmaken</string>
+  <string name="clear_database_performed">Database gewist</string>
   <string name="reload_getting_started">Importeer \"Aan de slag met Orgzly\"</string>
   <string name="reload_getting_started_summary">Importeer de laatste versie van het notitieboekje</string>
   <string name="notebook_imported">Notitieboekje geïmporteerd</string>
@@ -126,6 +129,8 @@
   <string name="repo_dropbox_button_not_linked">Koppelen met Dropbox</string>
   <string name="repo_dropbox_button_linked">Ontkoppel van Dropbox</string>
   <string name="fragment_settings_title">Instellingen</string>
+  <string name="notes_update_needed_dialog_title">Voorkeur is van invloed op notities</string>
+  <string name="notes_update_needed_dialog_message">Notities bijwerken om wijzingingen weer te geven?</string>
   <string name="updating_notes">Notities worden bijgewerkt…</string>
   <string name="failure">Oh oh</string>
   <string name="no_notes_found_after_search">Je zoekopdracht matcht met geen notities</string>
@@ -176,6 +181,7 @@
   <string name="confirm_unlinking_from_dropbox_title">Ontkoppel van Dropbox?</string>
   <string name="confirm_unlinking_from_dropbox_message">Je kunt niet kunnen synchroniseren met Dropbox totdat je er opnieuw mee verbindt.</string>
   <string name="note_book_not_set">Notitieboekje niet ingesteld</string>
+  <string name="title_can_not_be_empty">Titel mag niet leeg zijn</string>
   <string name="can_not_be_empty">Mag niet leeg zijn</string>
   <string name="no_notebooks">Je hebt geen notitieboekjes</string>
   <string name="no_notes">Notitieboekje heeft geen notities</string>
@@ -198,18 +204,20 @@
   <string name="failed_renaming_book">Notitieboekjesnaam wijzigen mislukt</string>
   <string name="failed_renaming_book_with_reason">Naam wijzigen mislukt: %s</string>
   <string name="renamed_book_from">Naam gewijzigd van \"%s\"</string>
+  <string name="priority_with_argument">Prioriteit %s</string>
   <string name="default_priority">Standaardprioriteit</string>
   <string name="lowest_priority">Laagste prioriteit</string>
   <string name="todo_states">Zoekwoord voor actieve (todo) taken</string>
   <string name="done_states">Zoekwoorden voor afgeronde (done) taken</string>
-  <string name="created_at_property">Bij eigenschap gemaakt</string>
-  <string name="property_name">Eigenschapsnaam</string>
   <string name="created_at">Gemaakt op</string>
   <string name="insert_note_creation_time">Voeg aanmaaktijd van notitie toe</string>
+  <string name="use_created_at_property">Gebruik eigenschap voor creatie-tijd</string>
+  <string name="use_created_at_property_summary">Synchroniseer gemaakt-op tijd middels een eigenschap</string>
+  <string name="created_at_property">Bij eigenschap gemaakt</string>
+  <string name="property_name">Eigenschapsnaam</string>
   <string name="reminder_for_scheduled">Gepland: %s</string>
   <string name="reminder_for_deadline">Deadline: %s</string>
   <string name="scheduled_new_notes_for_today">Rooster nieuwe notities voor vandaag</string>
-  <string name="state">Status</string>
   <string name="fold_content">Vouw inhoud</string>
   <string name="allow_folding_of_content">Sta het opvouwen van inhoud toe</string>
   <string name="display_content_in_search">Laat inhoud in zoekopdracht zien</string>
@@ -245,6 +253,7 @@
   <string name="force_saving_failed">Geforceerd opslaan mislukt: %s</string>
   <string name="force_loading_failed">Geforceerd laden mislukt: %s</string>
   <string name="loaded_from_resource">Geladen van bron %s</string>
+  <string name="notebook_files">Notitieboekjebestanden</string>
   <string name="org_file_format">Org bestandstype</string>
   <string name="org_file_format_summary">Bestandstype van geëxporteerde notitieboekjes</string>
   <string name="separate_notes_with_new_line">Scheidt notities met een witregel</string>
@@ -309,8 +318,8 @@
   <string name="display_inherited_tags_in_search_results_summary">Georven tags weergeven in zoekresultaten</string>
   <string name="new_note_notification">Maak notitie en synchroniseer</string>
   <string name="new_note_notification_summary">Maak snel een nieuwe notitie of synchroniseer notitieboekjes vanaf de notificatiebalk</string>
-  <string name="show_sync_notifications_title">Synchronisatiestatus</string>
-  <string name="show_sync_notifications_summary">Notificatie laten zien tijdens het synchroniseren en na synchronisatiefout</string>
+  <string name="show_sync_notifications_title">Synchronisatiefout</string>
+  <string name="show_sync_notifications_summary">Toon melding bij synchronisatiefout</string>
   <string name="prefs_title_reminders">Herinneringen</string>
   <string name="pref_title_reminders_for_scheduled_times">Gepland</string>
   <string name="pref_title_summary_reminders_for_scheduled_times">Toon notificatie voor notities met geplande tijd</string>
@@ -342,6 +351,9 @@
   <string name="default_notebook_desc">Notitieboekje dat gebruikt wordt voor delen naar Orgzly of het maken van een notitie vanaf een permanente notificatie</string>
   <string name="force_utf8">Forceer UTF-8 encodering</string>
   <string name="force_utf8_summary">Probeer geen encodering te herkennen, gebruik altijd UTF-8</string>
+  <string name="list_widget_name">Orgzly notities</string>
+  <string name="list_widget_select_search">Selecteer zoeken</string>
+  <string name="list_widget_nothing_selected">Geen zoekopdracht geselecteerd</string>
   <string name="auto_sync">Auto-synchroniseer</string>
   <string name="auto_sync_experimental">Auto-synchroniseren (experimenteel)</string>
   <string name="auto_sync_experimental_summary">Wordt alleen voor lokale opslagruimtes gebruikt</string>
@@ -367,9 +379,28 @@
   <string name="styled_text_with_marks_title">Gestijlde tekst met markeringen</string>
   <string name="styled_text_with_marks_summary">Blijf opmaaksymbolen tonen (bijv. *bold*)</string>
   <string name="no_such_link_target">Notitie met \"%1$s\" eigenschap ingesteld op \"%2$s\" niet gevonden</string>
+  <plurals name="imported_searches">
+    <item quantity="one">Een zoekopdracht geïmporteerd</item>
+    <item quantity="other"><b>%d</b> zoekopdrachten geïmporteerd</item>
+  </plurals>
+  <plurals name="exported_searches">
+    <item quantity="one">Een zoekopdracht geëxporteerd</item>
+    <item quantity="other"><b>%d</b> zoekopdrachten geëxporteerd</item>
+  </plurals>
   <string name="storage_permissions_missing">Geen toestemming voor opslag</string>
   <string name="file_does_not_exist">Bestand %s bestaat niet</string>
   <string name="import_from">Importeer uit \"%1$s\"?</string>
   <string name="export_to">Exporteer naar \"%1$s\"?</string>
   <string name="primary_storage_not_available">Primaire opslag niet beschikbaar</string>
+  <!-- Notification channels -->
+  <string name="reminders_channel_name">Herinneringen</string>
+  <string name="reminders_channel_description">Weergeven voor geplande taken of taken die aan de beurt zijn</string>
+  <string name="ongoing_channel_name">Doorlopend (nieuwe notitie)</string>
+  <string name="ongoing_channel_description">Snel nieuwe notitie maken of synchronisatie starten</string>
+  <string name="sync_progress_channel_name">Synchronisatievoortgang</string>
+  <string name="sync_progress_channel_description">Toon synchronisatievoortgang</string>
+  <string name="sync_failed_channel_name">Mislukte synchronisatie</string>
+  <string name="sync_failed_channel_description">Toon wanneer synchroniseren mislukt is</string>
+  <string name="notification_channel_settings">Notificaties</string>
+  <string name="notification_channel_settings_summary">Geluid, vibratie, notificatiestip</string>
 </resources>
