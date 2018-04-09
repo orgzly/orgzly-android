@@ -22,9 +22,26 @@
             android:text="@string/whats_new_intro"/>
 
 
+
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="v1.6.3"
+            android:text="v1.6.3-beta.2"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Handle invalid org times in created-at migration"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Use match_parent for fields in note fragment (fixes tags autocomplete dropdown width issue)"/>
+
+
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.6.3-beta.1"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
