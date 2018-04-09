@@ -464,6 +464,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">@dimen/padded_content_left_margin_from_icon</item>
         <!--<item name="android:layout_marginRight">@dimen/screen_edge</item>-->
+        <item name="android:backgroundTint" tools:targetApi="lollipop">?attr/text_disabled_color</item>
     </style>
 
     <style name="BookItemInfoIcon">
