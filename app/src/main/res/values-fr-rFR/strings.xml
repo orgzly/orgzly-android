@@ -250,8 +250,8 @@
   <string name="force_loaded_from_uri">%s chargé de manière forcée</string>
   <string name="force_saving_to_uri">Sauvegarde forcée de %s…</string>
   <string name="force_saved_to_uri">%s sauvegardé de manière forcée</string>
-  <string name="force_saving_failed">La sauvegarde forcée de %s a échoué</string>
-  <string name="force_loading_failed">Le chargement forcé de %s a échoué</string>
+  <string name="force_saving_failed">La sauvegarde forcée a échoué: %s</string>
+  <string name="force_loading_failed">Le chargement forcé a échoué: %s</string>
   <string name="loaded_from_resource">Chargement de la ressource %s</string>
   <string name="notebook_files">Fichiers du bloc-notes</string>
   <string name="org_file_format">Format de fichier Org</string>

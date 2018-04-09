@@ -250,8 +250,8 @@
   <string name="force_loaded_from_uri">Caricamento forzato da %s</string>
   <string name="force_saving_to_uri">Forza salvataggio su %s …</string>
   <string name="force_saved_to_uri">Salvataggio forzato su %s</string>
-  <string name="force_saving_failed">Il salvataggio forzato di %s non è riuscito</string>
-  <string name="force_loading_failed">Il caricamento forzato di %s non è riuscito</string>
+  <string name="force_saving_failed">Il salvataggio forzato non è riuscito: %s</string>
+  <string name="force_loading_failed">Il caricamento forzato non è riuscito: %s</string>
   <string name="loaded_from_resource">Caricato dalla risorsa %s</string>
   <string name="notebook_files">File del taccuino</string>
   <string name="org_file_format">Formato del file Org</string>

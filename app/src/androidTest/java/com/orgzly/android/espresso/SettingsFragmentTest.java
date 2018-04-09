@@ -57,10 +57,8 @@ public class SettingsFragmentTest extends OrgzlyTest {
         pressBack();
         pressBack();
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
-        onView(withText(startsWith("Welcome to Orgzly!"))).check(matches(isDisplayed()));
         onListItem(1).perform(click());
         onView(withId(R.id.fragment_note_container)).check(matches(isDisplayed()));
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Notes")));
     }
 
     @Test
