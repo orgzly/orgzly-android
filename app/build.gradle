@@ -14,8 +14,8 @@ android {
         minSdkVersion 16 // Jelly Bean (4.1)
         targetSdkVersion 27 // Oreo (8.1)
         applicationId "com.orgzly"
-        versionCode 96
-        versionName "1.6.3-beta.1"
+        versionCode 97
+        versionName "1.6.3-beta.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
