@@ -192,11 +192,12 @@ public class DatabaseMigration {
                 null,
                 null,
                 null)) {
+
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 long noteId = cursor.getLong(0);
                 String propValue = cursor.getString(1);
 
-                OrgDateTime dateTime = OrgDateTime.parseOrNull(propValue);
+                OrgDateTime dateTime = OrgDateTime.doParse(propValue);
 
                 if (dateTime != null) {
                     long millis = dateTime.getCalendar().getTimeInMillis();
