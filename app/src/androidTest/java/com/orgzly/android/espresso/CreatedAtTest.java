@@ -69,7 +69,7 @@ public class CreatedAtTest extends OrgzlyTest {
     }
 
     @Test
-    public void testSortOrdder() {
+    public void testSortOrder() {
         enableCreatedAt();
 
         searchForText("o.cr");
