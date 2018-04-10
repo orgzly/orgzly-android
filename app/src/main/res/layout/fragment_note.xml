@@ -19,6 +19,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/screen_edge"
+            android:paddingBottom="@dimen/screen_edge"
             android:orientation="vertical"
             android:animateLayoutChanges="true">
 
@@ -31,7 +33,6 @@
                 android:layout_marginStart="@dimen/screen_edge"
                 android:layout_marginRight="@dimen/screen_edge"
                 android:layout_marginEnd="@dimen/screen_edge"
-                android:layout_marginTop="@dimen/screen_edge"
                 android:inputType="text|textCapSentences"
                 android:imeOptions="actionDone"
                 android:hint="@string/fragment_note_title_hint"
