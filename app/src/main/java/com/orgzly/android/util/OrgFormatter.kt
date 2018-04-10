@@ -11,6 +11,7 @@ import android.view.View
 import com.orgzly.android.ActionService
 import com.orgzly.android.AppIntent
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.ui.views.TextViewWithMarkup
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -169,11 +170,9 @@ object OrgFormatter {
                 val span = if (linkify) {
                     object : ClickableSpan() {
                         override fun onClick(widget: View) {
-                            val intent = Intent(widget.context, ActionService::class.java)
-                            intent.action = AppIntent.ACTION_OPEN_NOTE
-                            intent.putExtra(AppIntent.EXTRA_PROPERTY_NAME, propName)
-                            intent.putExtra(AppIntent.EXTRA_PROPERTY_VALUE, propValue)
-                            ActionService.enqueueWork(widget.context, intent)
+                            if (widget is TextViewWithMarkup) {
+                                widget.openNoteWithProperty(propName, propValue);
+                            }
                         }
                     }
 

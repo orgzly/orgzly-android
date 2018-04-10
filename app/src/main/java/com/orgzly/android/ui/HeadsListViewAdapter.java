@@ -21,7 +21,6 @@ import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.provider.views.DbNoteView;
 import com.orgzly.android.ui.util.TitleGenerator;
 import com.orgzly.android.ui.views.GesturedListViewItemMenus;
-import com.orgzly.android.util.OrgFormatter;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.OrgHead;
 
@@ -205,7 +204,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                 holder.content.setTypeface(Typeface.MONOSPACE);
             }
 
-            holder.content.setText(OrgFormatter.INSTANCE.parse(head.getContent(), context));
+            holder.content.setRawText(head.getContent());
 
             holder.content.setVisibility(View.VISIBLE);
 

@@ -7,6 +7,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.orgzly.R;
+import com.orgzly.android.ui.views.TextViewWithMarkup;
 
 /**
  *
@@ -36,7 +37,7 @@ public class ViewHolder /* extends RecyclerView.ViewHolder */ {
     public View closed;
     public TextView closedText;
 
-    public TextView content;
+    public TextViewWithMarkup content;
 
     public ViewGroup menuContainer;
     public ViewFlipper menuFlipper;

@@ -43,9 +43,9 @@ import com.orgzly.android.ui.ShareActivity;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.drawer.DrawerListed;
 import com.orgzly.android.ui.util.ActivityUtils;
+import com.orgzly.android.ui.views.TextViewWithMarkup;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
-import com.orgzly.android.util.OrgFormatter;
 import com.orgzly.android.util.SpaceTokenizer;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.OrgHead;
@@ -133,7 +133,7 @@ public class NoteFragment extends Fragment
 
     private ToggleButton editSwitch;
     private EditText bodyEdit;
-    private TextView bodyView;
+    private TextViewWithMarkup bodyView;
 
     /** Used to switch to note-does-not-exist view, if the note has been deleted. */
     private ViewFlipper mViewFlipper;
@@ -338,7 +338,7 @@ public class NoteFragment extends Fragment
             } else {
                 bodyEdit.setVisibility(View.GONE);
 
-                bodyView.setText(OrgFormatter.INSTANCE.parse(bodyEdit.getText().toString(), getContext()));
+                bodyView.setRawText(bodyEdit.getText());
                 bodyView.setVisibility(View.VISIBLE);
 
                 ActivityUtils.INSTANCE.closeSoftKeyboard(getActivity());
@@ -485,7 +485,7 @@ public class NoteFragment extends Fragment
 
         /* Content. */
         bodyEdit.setText(head.getContent());
-        bodyView.setText(OrgFormatter.INSTANCE.parse(head.getContent(), getContext()));
+        bodyView.setRawText(head.getContent());
     }
 
     private void addPropertyToList(String propName, String propValue) {

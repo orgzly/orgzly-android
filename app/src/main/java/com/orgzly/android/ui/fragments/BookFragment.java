@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.orgzly.BuildConfig;
@@ -45,9 +44,9 @@ import com.orgzly.android.ui.SelectionUtils;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.drawer.DrawerListed;
 import com.orgzly.android.ui.views.GesturedListView;
+import com.orgzly.android.ui.views.TextViewWithMarkup;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
-import com.orgzly.android.util.OrgFormatter;
 import com.orgzly.org.datetime.OrgDateTime;
 
 import java.util.Set;
@@ -89,7 +88,7 @@ public class BookFragment extends NoteListFragment
     private static long mLastBookId;
 
     private View mHeader;
-    private TextView mPrefaceText;
+    private TextViewWithMarkup mPrefaceText;
     private View mNoNotesText;
 
     private SimpleCursorAdapter mListAdapter;
@@ -196,7 +195,7 @@ public class BookFragment extends NoteListFragment
         // setupGestureDetector(listView);
         mHeader = inflater.inflate(R.layout.item_head_book_preface, listView, false);
 
-        mPrefaceText = (TextView) mHeader.findViewById(R.id.fragment_book_header_text);
+        mPrefaceText = mHeader.findViewById(R.id.fragment_book_header_text);
         if (getActivity() != null && AppPreferences.isFontMonospaced(getContext())) {
             mPrefaceText.setTypeface(Typeface.MONOSPACE);
         }
@@ -633,7 +632,7 @@ public class BookFragment extends NoteListFragment
                 mPrefaceText.setEllipsize(null);
             }
 
-            mPrefaceText.setText(OrgFormatter.INSTANCE.parse(mBook.getPreface(), getContext()));
+            mPrefaceText.setRawText(mBook.getPreface());
 
         } else {
             // Remove header

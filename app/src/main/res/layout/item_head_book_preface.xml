@@ -10,7 +10,7 @@
     android:orientation="vertical"
     android:gravity="center_vertical">
 
-    <com.orgzly.android.ui.views.TextViewWithLinks
+    <com.orgzly.android.ui.views.TextViewWithMarkup
         android:id="@+id/fragment_book_header_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

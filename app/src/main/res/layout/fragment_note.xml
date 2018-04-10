@@ -211,7 +211,7 @@
                 android:freezesText="true"
                 android:visibility="gone"/>
 
-            <com.orgzly.android.ui.views.TextViewWithLinks
+            <com.orgzly.android.ui.views.TextViewWithMarkup
                 android:id="@+id/body_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

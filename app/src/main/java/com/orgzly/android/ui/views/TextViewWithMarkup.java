@@ -1,6 +1,7 @@
 package com.orgzly.android.ui.views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.Layout;
@@ -12,23 +13,26 @@ import android.view.MotionEvent;
 import android.widget.TextView;
 
 import com.orgzly.BuildConfig;
+import com.orgzly.android.ActionService;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.util.LogUtils;
+import com.orgzly.android.util.OrgFormatter;
 
 /**
- * {@link TextView} with links support.
+ * {@link TextView} with markup support.
  */
-public class TextViewWithLinks extends AppCompatTextView {
-    public static final String TAG = TextViewWithLinks.class.getName();
+public class TextViewWithMarkup extends AppCompatTextView {
+    public static final String TAG = TextViewWithMarkup.class.getName();
 
-    public TextViewWithLinks(Context context) {
+    public TextViewWithMarkup(Context context) {
         super(context);
     }
 
-    public TextViewWithLinks(Context context, AttributeSet attrs) {
+    public TextViewWithMarkup(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public TextViewWithLinks(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TextViewWithMarkup(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -77,7 +81,7 @@ public class TextViewWithLinks extends AppCompatTextView {
         float top = layout.getLineTop(line) + getTotalPaddingTop();
 
         return left <= event.getX() && event.getX() <= right &&
-               top <= event.getY() && event.getY() <= bottom;
+                top <= event.getY() && event.getY() <= bottom;
     }
 
     /**
@@ -98,5 +102,17 @@ public class TextViewWithLinks extends AppCompatTextView {
         }
 
         return super.dispatchTouchEvent(event);
+    }
+
+    public void setRawText(CharSequence str) {
+        setText(OrgFormatter.INSTANCE.parse(str.toString(), getContext()));
+    }
+
+    public void openNoteWithProperty(String name, String value) {
+        Intent intent = new Intent(getContext(), ActionService.class);
+        intent.setAction(AppIntent.ACTION_OPEN_NOTE);
+        intent.putExtra(AppIntent.EXTRA_PROPERTY_NAME, name);
+        intent.putExtra(AppIntent.EXTRA_PROPERTY_VALUE, value);
+        ActionService.Companion.enqueueWork(getContext(), intent);
     }
 }
