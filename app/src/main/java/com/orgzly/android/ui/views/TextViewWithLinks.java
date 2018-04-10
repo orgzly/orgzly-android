@@ -79,4 +79,24 @@ public class TextViewWithLinks extends AppCompatTextView {
         return left <= event.getX() && event.getX() <= right &&
                top <= event.getY() && event.getY() <= bottom;
     }
+
+    /**
+     * Workaround for https://code.google.com/p/android/issues/detail?id=191430
+     * (IllegalArgumentException when marking text and then clicking on the view)
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        int selectionStart = getSelectionStart();
+        int selectionEnd = getSelectionEnd();
+
+        if (selectionStart != selectionEnd) {
+            if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                CharSequence text = getText();
+                setText(null);
+                setText(text);
+            }
+        }
+
+        return super.dispatchTouchEvent(event);
+    }
 }
