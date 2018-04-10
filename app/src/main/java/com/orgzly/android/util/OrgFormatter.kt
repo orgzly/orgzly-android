@@ -1,15 +1,13 @@
 package com.orgzly.android.util
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Typeface
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.*
 import android.view.View
-import com.orgzly.android.ActionService
-import com.orgzly.android.AppIntent
+import com.orgzly.BuildConfig
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.views.TextViewWithMarkup
 import java.util.regex.Matcher
@@ -55,12 +53,17 @@ object OrgFormatter {
                     markupRegex('~') + "|" +
                     markupRegex('+'), Pattern.MULTILINE)
 
+    private val DRAWER_PATTERN = Pattern.compile(
+            """^[ \t]*:([-a-zA-Z_0-9]+):[ \t]*\n(.*?)\n[ \t]*:END:[ \t]*$""",
+            Pattern.CASE_INSENSITIVE or Pattern.MULTILINE or Pattern.DOTALL)
+
+
     private fun namelessBracketLinkPattern(str: String) = Pattern.compile("\\[\\[$str]]")
     private fun namedBracketLinkPattern(str: String) = Pattern.compile("\\[\\[$str]\\[([^]]+)]]")
 
     private const val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 
-    data class SpanRegion(val start: Int, val end: Int, val content: String, val span: Any? = null)
+    data class SpanRegion(val start: Int, val end: Int, val content: CharSequence, val span: Any? = null)
 
     data class Config(val style: Boolean = true, val withMarks: Boolean = false, val linkify: Boolean = true) {
         constructor(context: Context, linkify: Boolean): this(
@@ -94,6 +97,8 @@ object OrgFormatter {
         parsePlainLinks(ssb, PLAIN_LINK, config.linkify)
 
         ssb = parseMarkup(ssb, config)
+
+        ssb = parseDrawers(ssb)
 
         return ssb
     }
@@ -171,7 +176,7 @@ object OrgFormatter {
                     object : ClickableSpan() {
                         override fun onClick(widget: View) {
                             if (widget is TextViewWithMarkup) {
-                                widget.openNoteWithProperty(propName, propValue);
+                                widget.openNoteWithProperty(propName, propValue)
                             }
                         }
                     }
@@ -261,6 +266,31 @@ object OrgFormatter {
         return buildFromRegions(ssb, spanRegions)
     }
 
+    private fun parseDrawers(ssb: SpannableStringBuilder): SpannableStringBuilder {
+        val m = DRAWER_PATTERN.matcher(ssb)
+
+        return collectRegions(ssb) { spanRegions ->
+            while (m.find()) {
+                val name = m.group(1)
+
+                // Use subSequence to keep existing spans
+                val contentStart = m.start(2)
+                val contentEnd = m.end(2)
+                val content = ssb.subSequence(contentStart, contentEnd)
+
+
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found drawer", name, content, "All:'${m.group(0)}'")
+
+                val drawerSpanned = TextViewWithMarkup.drawerSpanned(name, content, isFolded = true)
+
+                val start = if (m.group(0).startsWith("\n")) m.start() + 1 else m.start()
+                val end = if (m.group(0).endsWith("\n")) m.end() - 1 else m.end()
+
+                spanRegions.add(SpanRegion(start, end, drawerSpanned))
+            }
+        }
+    }
+
     private fun collectRegions(ssb: SpannableStringBuilder, collect: (MutableList<SpanRegion>) -> Any): SpannableStringBuilder {
         val spanRegions: MutableList<SpanRegion> = mutableListOf()
 
@@ -307,5 +337,5 @@ object OrgFormatter {
         }
     }
 
-    // private val TAG = OrgFormatter::class.java.name
+    private val TAG = OrgFormatter::class.java.name
 }
