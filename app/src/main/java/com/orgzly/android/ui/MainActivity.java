@@ -34,7 +34,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -110,14 +109,6 @@ public class MainActivity extends CommonActivity
 
     private LocalBroadcastManager broadcastManager;
 
-    private CharSequence mSavedTitle;
-    private CharSequence mSavedSubtitle;
-
-    /**
-     * Original title used when book is not being displayed.
-     */
-    private CharSequence mDefaultTitle;
-
     private ActionMode mActionMode;
     private boolean mPromoteDemoteOrMoveRequested = false;
 
@@ -137,11 +128,6 @@ public class MainActivity extends CommonActivity
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
-
-        mSavedTitle = mDefaultTitle = getTitle();
-        mSavedSubtitle = null;
-
 
         broadcastManager = LocalBroadcastManager.getInstance(this);
 
@@ -865,7 +851,6 @@ public class MainActivity extends CommonActivity
         }
 
         builder.show();
-
     }
 
     @Override
@@ -1316,13 +1301,8 @@ public class MainActivity extends CommonActivity
     public void announceChanges(String fragmentTag, CharSequence title, CharSequence subTitle, int selectionCount) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, fragmentTag, title, subTitle, selectionCount);
 
-        /* Save titles so they can be restored after drawer open/close. */
-        mSavedTitle = title != null ? title : mDefaultTitle;
-        mSavedSubtitle = subTitle;
-
-        /* Change titles. */
-        getSupportActionBar().setTitle(mSavedTitle);
-        getSupportActionBar().setSubtitle(mSavedSubtitle);
+        getSupportActionBar().setTitle(title);
+        getSupportActionBar().setSubtitle(subTitle);
 
         drawerNavigationView.updateActiveFragment(fragmentTag);
 

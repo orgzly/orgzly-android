@@ -204,7 +204,8 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
     private fun announceChangesToActivity() {
         mListener?.announceChanges(
                 FRAGMENT_TAG,
-                getString(R.string.searches), null,
+                getString(R.string.searches),
+                null,
                 listView.checkedItemCount)
     }
 

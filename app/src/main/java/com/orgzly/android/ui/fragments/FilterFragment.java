@@ -132,10 +132,12 @@ public class FilterFragment extends Fragment implements DrawerListed {
     }
 
     private void announceChangesToActivity() {
-        if (isEditingExistingFilter()) {
-            mListener.announceChanges(FRAGMENT_TAG, getString(R.string.search), null, 0);
-        } else {
-            mListener.announceChanges(FRAGMENT_TAG, getString(R.string.new_search), null, 0);
+        if (mListener != null) {
+            mListener.announceChanges(
+                    FRAGMENT_TAG,
+                    getString(isEditingExistingFilter() ? R.string.search : R.string.new_search),
+                    null,
+                    0);
         }
     }
 
