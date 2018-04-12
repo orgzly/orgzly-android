@@ -116,6 +116,8 @@ public class MainActivity extends CommonActivity
 
     private BroadcastReceiver receiver = new LocalBroadcastReceiver();
 
+    private AlertDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
@@ -351,6 +353,11 @@ public class MainActivity extends CommonActivity
 
         LocalBroadcastManager bm = LocalBroadcastManager.getInstance(this);
         bm.unregisterReceiver(receiver);
+
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
     }
 
     @Override
@@ -850,7 +857,7 @@ public class MainActivity extends CommonActivity
             builder.setView(view);
         }
 
-        builder.show();
+        dialog = builder.show();
     }
 
     @Override
@@ -885,7 +892,7 @@ public class MainActivity extends CommonActivity
 
         name.setText(book.getName());
 
-        final AlertDialog dialog = builder.create();
+        dialog = builder.create();
 
         /* Finish on keyboard action press. */
         name.setOnEditorActionListener((v, actionId, event) -> {
@@ -989,7 +996,7 @@ public class MainActivity extends CommonActivity
             }
         };
 
-        new AlertDialog.Builder(this)
+        dialog = new AlertDialog.Builder(this)
                 .setTitle("Link " + MiscUtils.quotedString(book.getName()) + " to repository")
                 .setView(view)
                 .setPositiveButton(R.string.set, dialogClickListener)
