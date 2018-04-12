@@ -1,11 +1,8 @@
 package com.orgzly.android.espresso;
 
 import android.content.Intent;
-import android.os.Environment;
 import android.os.SystemClock;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.uiautomator.UiDevice;
 
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
@@ -16,14 +13,9 @@ import com.orgzly.android.ui.MainActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
 
-import java.io.File;
 import java.io.IOException;
 
-import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
@@ -82,6 +74,7 @@ public class SyncingTest extends OrgzlyTest {
 
         onView(allOf(withText("booky"), isDisplayed())).perform(longClick());
         onView(withText(R.string.books_context_menu_item_force_load)).perform(click());
+        onView(withText(R.string.overwrite)).perform(click());
         onListItem(0).onChildView(withId(R.id.item_book_last_action))
                 .check(matches((withText(containsString(context.getString(R.string.force_loaded_from_uri, "mock://repo-a/booky.org"))))));
 
@@ -133,6 +126,7 @@ public class SyncingTest extends OrgzlyTest {
         activityRule.launchActivity(null);
         onView(allOf(withText("booky"), isDisplayed())).perform(longClick());
         onView(withText(R.string.books_context_menu_item_force_load)).perform(click());
+        onView(withText(R.string.overwrite)).perform(click());
         onView(withText(endsWith(context.getString(R.string.message_book_has_no_link)))).check(matches(isDisplayed()));
     }
 
@@ -145,6 +139,7 @@ public class SyncingTest extends OrgzlyTest {
 
         onView(allOf(withText("booky"), isDisplayed())).perform(longClick());
         onView(withText(R.string.books_context_menu_item_force_load)).perform(click());
+        onView(withText(R.string.overwrite)).perform(click());
         onView(withText(endsWith(context.getString(R.string.message_book_has_no_link))))
                 .check(matches(isDisplayed()));
     }
@@ -169,10 +164,12 @@ public class SyncingTest extends OrgzlyTest {
 
         onView(allOf(withText("book-one"), isDisplayed())).perform(longClick());
         onView(withText(R.string.books_context_menu_item_force_load)).perform(click());
+        onView(withText(R.string.overwrite)).perform(click());
         onView(withText(containsString(context.getString(R.string.force_loaded_from_uri, "mock://repo-a/book-one.org")))).check(matches(isDisplayed()));
 
         onView(allOf(withText("book-one"), isDisplayed())).perform(longClick());
         onView(withText(R.string.books_context_menu_item_force_load)).perform(click());
+        onView(withText(R.string.overwrite)).perform(click());
         onView(withText(containsString(context.getString(R.string.force_loaded_from_uri, "mock://repo-a/book-one.org")))).check(matches(isDisplayed()));
     }
 
@@ -186,6 +183,7 @@ public class SyncingTest extends OrgzlyTest {
 
         onView(allOf(withText("book-one"), isDisplayed())).perform(longClick());
         onView(withText(R.string.books_context_menu_item_force_save)).perform(click());
+        onView(withText(R.string.overwrite)).perform(click());
         onView(withText(endsWith(context.getString(R.string.force_saving_failed, context.getString(R.string.multiple_repos))))).check(matches(isDisplayed()));
     }
 
@@ -196,6 +194,7 @@ public class SyncingTest extends OrgzlyTest {
         activityRule.launchActivity(null);
         onView(allOf(withText("book-one"), isDisplayed())).perform(longClick());
         onView(withText(R.string.books_context_menu_item_force_save)).perform(click());
+        onView(withText(R.string.overwrite)).perform(click());
         onView(withText(endsWith(context.getString(R.string.force_saving_failed, context.getString(R.string.no_repos))))).check(matches(isDisplayed()));
     }
 
@@ -208,6 +207,7 @@ public class SyncingTest extends OrgzlyTest {
 
         onView(allOf(withText("book-one"), isDisplayed())).perform(longClick());
         onView(withText(R.string.books_context_menu_item_force_save)).perform(click());
+        onView(withText(R.string.overwrite)).perform(click());
         onView(withText(containsString(context.getString(R.string.force_saved_to_uri, "mock://repo-a/book-one.org")))).check(matches(isDisplayed()));
     }
 
@@ -219,6 +219,7 @@ public class SyncingTest extends OrgzlyTest {
 
         onView(allOf(withText("booky"), isDisplayed())).perform(longClick());
         onView(withText(R.string.books_context_menu_item_force_save)).perform(click());
+        onView(withText(R.string.overwrite)).perform(click());
         onView(withText(containsString(context.getString(R.string.force_saved_to_uri, "mock://repo-a/booky.org")))).check(matches(isDisplayed()));
     }
 

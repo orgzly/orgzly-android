@@ -32,6 +32,7 @@
     <string name="close">Close</string>
     <string name="import_">Import</string> <!-- Reserved keyword -->
     <string name="export">Export</string>
+    <string name="overwrite">Overwrite</string>
     <string name="imported">Imported</string>
     <string name="created">Created</string>
     <string name="states">States</string>
@@ -499,5 +500,7 @@
     <string name="notification_channel_settings">Notifications</string>
     <string name="notification_channel_settings_summary">Sound, vibrate, notification dot</string>
     <string name="hide_note_metadata">Hide metadata</string>
+    <string name="overwrite_local_notebook_question">Overwrite local notebook?</string>
+    <string name="overwrite_remote_notebook_question">Overwrite remote notebook?</string>
 
 </resources>

@@ -1006,7 +1006,12 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onForceSaveRequest(long bookId) {
-        mSyncFragment.forceSaveBook(bookId);
+        dialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.books_context_menu_item_force_save)
+                .setMessage(R.string.overwrite_remote_notebook_question)
+                .setPositiveButton(R.string.overwrite, (dialog, which) -> mSyncFragment.forceSaveBook(bookId))
+                .setNegativeButton(R.string.cancel, null)
+                .show();
     }
 
     @Override
@@ -1019,7 +1024,12 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onForceLoadRequest(long bookId) {
-        mSyncFragment.forceLoadBook(bookId);
+        dialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.books_context_menu_item_force_load)
+                .setMessage(R.string.overwrite_local_notebook_question)
+                .setPositiveButton(R.string.overwrite, (dialog, which) -> mSyncFragment.forceLoadBook(bookId))
+                .setNegativeButton(R.string.cancel, null)
+                .show();
     }
 
     /**
