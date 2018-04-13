@@ -22,7 +22,9 @@
   <string name="browse">Parcourir</string>
   <string name="dropbox">Dropbox</string>
   <string name="edit">Modifier</string>
+  <string name="edit_note">Modifier la note</string>
   <string name="delete">Supprimer</string>
+  <string name="delete_with_quoted_argument">Supprimer “%s”</string>
   <string name="name">Nom</string>
   <string name="value">Valeur</string>
   <string name="query">Requête</string>
@@ -107,7 +109,6 @@
   <string name="new_note">Nouvelle note</string>
   <string name="tap_to_create_new_note">Touchez pour créer une nouvelle note</string>
   <string name="options_menu_item_search">Rechercher</string>
-  <string name="message_book_deleted">Bloc-notes supprimé</string>
   <string name="no_user_repos_configured_pref_summary">Rien n\'est encore configuré</string>
   <string name="repos_options_menu_new_repo">Nouveau dépôt</string>
   <string name="book_name_already_exists">Le bloc-notes %s existe déjà.</string>
@@ -144,6 +145,7 @@
   <string name="book_last_action">Dernière action du bloc-notes</string>
   <string name="book_notes_count">Nombre de notes</string>
   <string name="pref_title_notebooks">Notes &amp; Bloc-notes</string>
+  <string name="notebook">Bloc-notes</string>
   <string name="notebooks">Bloc-notes</string>
   <string name="searches">Recherches</string>
   <string name="search">Chercher</string>
@@ -169,8 +171,6 @@
   <string name="repositories">Dépôts</string>
   <string name="invalid_repo_url">URL du dépôt invalide « %s »</string>
   <string name="message_unsupported_repository_type">Type de dépôt non pris en charge</string>
-  <string name="also_delete_linked_book">Supprimer le bloc-notes distant associé</string>
-  <string name="message_deleting_book_failed">La suppression du bloc-notes a échoué: %s</string>
   <string name="fragment_left_drawer_list_view_content_description">Panneau latéral de gauche</string>
   <string name="drawer_item">Élément du panneau latéral</string>
   <string name="prev_state">État précédent</string>
@@ -204,6 +204,9 @@
   <string name="failed_renaming_book">Le bloc-notes n\'a pas pu être renommé</string>
   <string name="failed_renaming_book_with_reason">Échec du renommage: %s</string>
   <string name="renamed_book_from">Renommé à partir de « %s »</string>
+  <string name="also_delete_linked_book">Supprimer le bloc-notes distant associé</string>
+  <string name="message_deleting_book_failed">La suppression du bloc-notes a échoué: %s</string>
+  <string name="message_book_deleted">Bloc-notes supprimé</string>
   <string name="priority_with_argument">Priorité %s</string>
   <string name="default_priority">Priorité par défaut</string>
   <string name="lowest_priority">Priorité la plus basse</string>
@@ -215,6 +218,7 @@
   <string name="use_created_at_property_summary">Synchronise l\'heure du créé-pour en utilisant une propriété</string>
   <string name="created_at_property">Propriété du créé-pour</string>
   <string name="property_name">Nom de la propriété</string>
+  <string name="property_value">Valeur de la propriété</string>
   <string name="reminder_for_scheduled">Planifiée : %s</string>
   <string name="reminder_for_deadline">Échéance %s</string>
   <string name="scheduled_new_notes_for_today">Planifier les nouvelles notes pour aujourd\'hui</string>
@@ -403,4 +407,5 @@
   <string name="sync_failed_channel_description">Montre lors de la synchronisation échoue</string>
   <string name="notification_channel_settings">Notifications</string>
   <string name="notification_channel_settings_summary">Son, vibreur, point de notification</string>
+  <string name="hide_note_metadata">Masquer les métadonnées</string>
 </resources>

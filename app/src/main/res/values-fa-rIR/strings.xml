@@ -22,7 +22,9 @@
   <string name="browse">مرور</string>
   <string name="dropbox">دراپ‌باکس</string>
   <string name="edit">ویرایش</string>
+  <string name="edit_note">Edit note</string>
   <string name="delete">حذف</string>
+  <string name="delete_with_quoted_argument">Delete “%s”</string>
   <string name="name">نام</string>
   <string name="value">مقدار</string>
   <string name="query">جستار</string>
@@ -107,7 +109,6 @@
   <string name="new_note">یادداشت جدید</string>
   <string name="tap_to_create_new_note">برای ایجاد یادداشت جدید ضربه بزنید</string>
   <string name="options_menu_item_search">جستجو</string>
-  <string name="message_book_deleted">دفترچه حذف شد</string>
   <string name="no_user_repos_configured_pref_summary">هنوز پیکربندی نشده</string>
   <string name="repos_options_menu_new_repo">مخزن جدید</string>
   <string name="book_name_already_exists">دفترچه %s هم‌اکنون وجود دارد.</string>
@@ -144,6 +145,7 @@
   <string name="book_last_action">آخرین تغییر دفترچه</string>
   <string name="book_notes_count">Notes count</string>
   <string name="pref_title_notebooks">دفترچه‌ها</string>
+  <string name="notebook">Notebook</string>
   <string name="notebooks">دفترچه‌ها</string>
   <string name="searches">جستجوها</string>
   <string name="search">جستجو</string>
@@ -169,8 +171,6 @@
   <string name="repositories">مخازن</string>
   <string name="invalid_repo_url">مخزن نامعتبر به نشانی “%s”</string>
   <string name="message_unsupported_repository_type">نوع مخزن پشتیبانی نشده</string>
-  <string name="also_delete_linked_book">حذف دفترچه پیوند داده‌شده راه دور</string>
-  <string name="message_deleting_book_failed">ناتوان در حذف دفترچه: %s</string>
   <string name="fragment_left_drawer_list_view_content_description">کشوی چپ</string>
   <string name="drawer_item">مورد کشو</string>
   <string name="prev_state">وضعیت قبل</string>
@@ -204,6 +204,9 @@
   <string name="failed_renaming_book">تغییر نام دفترچه‌ها شکست خورد</string>
   <string name="failed_renaming_book_with_reason">ناتوان در تغییر نام دفترچه: %s</string>
   <string name="renamed_book_from">نام از “%s” تغییر یافت</string>
+  <string name="also_delete_linked_book">حذف دفترچه پیوند داده‌شده راه دور</string>
+  <string name="message_deleting_book_failed">ناتوان در حذف دفترچه: %s</string>
+  <string name="message_book_deleted">دفترچه حذف شد</string>
   <string name="priority_with_argument">Priority %s</string>
   <string name="default_priority">اولویت پیشفرض</string>
   <string name="lowest_priority">کمترین اولویت</string>
@@ -215,6 +218,7 @@
   <string name="use_created_at_property_summary">Sync created-at time using a property</string>
   <string name="created_at_property">ویژگی ایجاد شده در</string>
   <string name="property_name">نام ویژگی</string>
+  <string name="property_value">Property value</string>
   <string name="reminder_for_scheduled">Scheduled: %s</string>
   <string name="reminder_for_deadline">Deadline: %s</string>
   <string name="scheduled_new_notes_for_today">برنامه‌ریزی یادداشت جدید برای امروز</string>
@@ -403,4 +407,5 @@
   <string name="sync_failed_channel_description">Display when syncing fails</string>
   <string name="notification_channel_settings">Notifications</string>
   <string name="notification_channel_settings_summary">Sound, vibrate, notification dot</string>
+  <string name="hide_note_metadata">Hide metadata</string>
 </resources>

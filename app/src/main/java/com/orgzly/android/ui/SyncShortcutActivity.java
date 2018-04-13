@@ -16,7 +16,7 @@ public class SyncShortcutActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startService(new Intent(this, SyncService.class).setAction(AppIntent.ACTION_SYNC_START));
+        SyncService.start(this, new Intent(this, SyncService.class).setAction(AppIntent.ACTION_SYNC_START));
         finish();
     }
 }

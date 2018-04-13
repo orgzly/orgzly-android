@@ -820,13 +820,13 @@ public class Shelf {
         intent.setAction(AppIntent.ACTION_SYNC_START);
         intent.putExtra(AppIntent.EXTRA_IS_AUTOMATIC, true);
 
-        mContext.startService(intent);
+        SyncService.start(mContext, intent);
     }
 
     public void directedSync() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         Intent intent = new Intent(mContext, SyncService.class);
-        mContext.startService(intent);
+        SyncService.start(mContext, intent);
     }
 
     /**
