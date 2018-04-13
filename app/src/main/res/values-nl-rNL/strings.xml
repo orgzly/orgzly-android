@@ -22,7 +22,9 @@
   <string name="browse">Bladeren</string>
   <string name="dropbox">Dropbox</string>
   <string name="edit">Bewerk</string>
+  <string name="edit_note">Edit note</string>
   <string name="delete">Verwijder</string>
+  <string name="delete_with_quoted_argument">Delete “%s”</string>
   <string name="name">Naam</string>
   <string name="value">Waarde</string>
   <string name="query">Zoekopdracht</string>
@@ -107,7 +109,6 @@
   <string name="new_note">Nieuwe notitie</string>
   <string name="tap_to_create_new_note">Tik om een nieuwe notitie te maken</string>
   <string name="options_menu_item_search">Zoeken</string>
-  <string name="message_book_deleted">Notitieboekje verwijderd</string>
   <string name="no_user_repos_configured_pref_summary">Nog niets geconfigureerd</string>
   <string name="repos_options_menu_new_repo">Nieuwe Repository</string>
   <string name="book_name_already_exists">Shrift %s bestaat al.</string>
@@ -144,6 +145,7 @@
   <string name="book_last_action">Laatste actie van scrift</string>
   <string name="book_notes_count">Aantal notities</string>
   <string name="pref_title_notebooks">Notities &amp; Notitieboekjes</string>
+  <string name="notebook">Notebook</string>
   <string name="notebooks">Notitieboekjes</string>
   <string name="searches">Zoekopdrachten</string>
   <string name="search">Zoeken</string>
@@ -169,8 +171,6 @@
   <string name="repositories">Opslagruimtes</string>
   <string name="invalid_repo_url">Ongeldige opslagruimte-URL \"%s\"</string>
   <string name="message_unsupported_repository_type">Niet-ondersteund opslagruimte type</string>
-  <string name="also_delete_linked_book">Verwijder gekoppelde notitieboekje op server</string>
-  <string name="message_deleting_book_failed">Notitieboekje verwijderen mislukt: %s</string>
   <string name="fragment_left_drawer_list_view_content_description">Linker Menu</string>
   <string name="drawer_item">Menu-item</string>
   <string name="prev_state">Vorige toestand</string>
@@ -204,6 +204,9 @@
   <string name="failed_renaming_book">Notitieboekjesnaam wijzigen mislukt</string>
   <string name="failed_renaming_book_with_reason">Naam wijzigen mislukt: %s</string>
   <string name="renamed_book_from">Naam gewijzigd van \"%s\"</string>
+  <string name="also_delete_linked_book">Verwijder gekoppelde notitieboekje op server</string>
+  <string name="message_deleting_book_failed">Notitieboekje verwijderen mislukt: %s</string>
+  <string name="message_book_deleted">Notitieboekje verwijderd</string>
   <string name="priority_with_argument">Prioriteit %s</string>
   <string name="default_priority">Standaardprioriteit</string>
   <string name="lowest_priority">Laagste prioriteit</string>
@@ -215,6 +218,7 @@
   <string name="use_created_at_property_summary">Synchroniseer gemaakt-op tijd middels een eigenschap</string>
   <string name="created_at_property">Bij eigenschap gemaakt</string>
   <string name="property_name">Eigenschapsnaam</string>
+  <string name="property_value">Property value</string>
   <string name="reminder_for_scheduled">Gepland: %s</string>
   <string name="reminder_for_deadline">Deadline: %s</string>
   <string name="scheduled_new_notes_for_today">Rooster nieuwe notities voor vandaag</string>
@@ -403,4 +407,5 @@
   <string name="sync_failed_channel_description">Toon wanneer synchroniseren mislukt is</string>
   <string name="notification_channel_settings">Notificaties</string>
   <string name="notification_channel_settings_summary">Geluid, vibratie, notificatiestip</string>
+  <string name="hide_note_metadata">Hide metadata</string>
 </resources>

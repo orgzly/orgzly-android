@@ -22,7 +22,9 @@
   <string name="browse">Peramban</string>
   <string name="dropbox">Dropbox</string>
   <string name="edit">Sunting</string>
+  <string name="edit_note">Edit note</string>
   <string name="delete">Hapus</string>
+  <string name="delete_with_quoted_argument">Delete “%s”</string>
   <string name="name">Nama</string>
   <string name="value">Nilai</string>
   <string name="query">Permintaan</string>
@@ -104,7 +106,6 @@
   <string name="new_note">Catatan baru</string>
   <string name="tap_to_create_new_note">Ketuk untuk membuat catatan baru</string>
   <string name="options_menu_item_search">Cari</string>
-  <string name="message_book_deleted">Notebook dihapus</string>
   <string name="no_user_repos_configured_pref_summary">Belum dikonfigurasi</string>
   <string name="repos_options_menu_new_repo">Repositori baru</string>
   <string name="book_name_already_exists">Notebook %s sudah ada.</string>
@@ -141,6 +142,7 @@
   <string name="book_last_action">Tindakan terakhir notebook</string>
   <string name="book_notes_count">Hitungan catatan</string>
   <string name="pref_title_notebooks">Catatan &amp; Notebook</string>
+  <string name="notebook">Notebook</string>
   <string name="notebooks">Notebook</string>
   <string name="searches">Pencarian</string>
   <string name="search">Cari</string>
@@ -166,8 +168,6 @@
   <string name="repositories">Repositori</string>
   <string name="invalid_repo_url">URL Repositori tidak valid %s</string>
   <string name="message_unsupported_repository_type">Jenis repositori tidak didukung</string>
-  <string name="also_delete_linked_book">Hapus terkait remote notebook</string>
-  <string name="message_deleting_book_failed">Gagal menghapus notebook: %s</string>
   <string name="fragment_left_drawer_list_view_content_description">Laci Kiri</string>
   <string name="drawer_item">Item Laci</string>
   <string name="prev_state">Negara yang sebenarnya</string>
@@ -201,6 +201,9 @@
   <string name="failed_renaming_book">Gagal mengganti nama notebook</string>
   <string name="failed_renaming_book_with_reason">Gagal mengganti nama: %s</string>
   <string name="renamed_book_from">Mengganti nama dari \"%s\"</string>
+  <string name="also_delete_linked_book">Hapus terkait remote notebook</string>
+  <string name="message_deleting_book_failed">Gagal menghapus notebook: %s</string>
+  <string name="message_book_deleted">Notebook dihapus</string>
   <string name="priority_with_argument">Priority %s</string>
   <string name="default_priority">Prioritas bawaan</string>
   <string name="lowest_priority">Prioritas terendah</string>
@@ -212,6 +215,7 @@
   <string name="use_created_at_property_summary">Sync created-at time using a property</string>
   <string name="created_at_property">Dibuat pada properti</string>
   <string name="property_name">Nama Properti</string>
+  <string name="property_value">Property value</string>
   <string name="reminder_for_scheduled">Dijadwalkan: %s</string>
   <string name="reminder_for_deadline">Tenggat waktu: %s</string>
   <string name="scheduled_new_notes_for_today">Jadwal baru catatan untuk hari ini</string>
@@ -397,4 +401,5 @@
   <string name="sync_failed_channel_description">Display when syncing fails</string>
   <string name="notification_channel_settings">Notifications</string>
   <string name="notification_channel_settings_summary">Sound, vibrate, notification dot</string>
+  <string name="hide_note_metadata">Hide metadata</string>
 </resources>

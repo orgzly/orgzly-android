@@ -19,11 +19,11 @@ Vous pouvez sélectionner plusieurs notes.
 
 Si vous recherchez des notes avec l'étiquette « tag1 », cette note sera retournée aussi de même.
 
-** La note TODO peut avoir un état
+** TODO La note peut avoir un état
 
 Vous pouvez configurer n’importe quel nombre d’états à utiliser : TODO, NEXT, DONE, etc.
 
-Il y a deux /types/ des États : choses à faire et fait
+*** Il y a deux /types/ des États : choses à faire et fait
 
 *** DONE C'est une note avec un type d'état /fait/
 CLOSED: [2018-01-24 Mer 17:00]
