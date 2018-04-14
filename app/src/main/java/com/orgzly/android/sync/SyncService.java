@@ -53,6 +53,10 @@ public class SyncService extends Service {
     public void onCreate() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
+        startForeground(
+                Notifications.SYNC_IN_PROGRESS,
+                Notifications.createSyncInProgressNotification(getApplicationContext()));
+
         shelf = new Shelf(this);
 
         status.loadFromPreferences(this);
@@ -188,12 +192,6 @@ public class SyncService extends Service {
             }
 
             Notifications.ensureSyncNotificationSetup(context);
-
-            // Always run in foreground (since Oreo, before possibly switching to scheduled job)
-            startForeground(
-                    Notifications.SYNC_IN_PROGRESS,
-                    Notifications.createSyncInProgressNotification(getApplicationContext()));
-
 
             /* There are no repositories configured. */
             if (repos.size() == 0) {
