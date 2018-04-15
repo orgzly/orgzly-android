@@ -53,6 +53,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -193,7 +194,7 @@ public class Shelf {
         if (book != null) {
             File file = getTempBookFile();
             try {
-                writeBookToFile(book, format, file);
+                NotesExporter.Companion.getInstance(mContext, format).exportBook(book, file);
                 return MiscUtils.readStringFromFile(file);
             } finally {
                 file.delete();
@@ -211,7 +212,7 @@ public class Shelf {
         File file = mLocalStorage.getExportFile(book, format);
 
         /* Write book. */
-        writeBookToFile(book, format, file);
+        NotesExporter.Companion.getInstance(mContext, format).exportBook(book, file);
 
         /* Make file immediately visible when using MTP.
          * See https://github.com/orgzly/orgzly-android/issues/44
@@ -219,64 +220,6 @@ public class Shelf {
         MediaScannerConnection.scanFile(mContext, new String[] { file.getAbsolutePath() }, null, null);
 
         return file;
-    }
-
-    /**
-     * Writes content of book from database to specified file.
-     * TODO: Do in Provider under transaction
-     */
-    public void writeBookToFile(final Book book, BookName.Format format, File file) throws IOException {
-
-        /* Use the same encoding. */
-        String encoding = book.getUsedEncoding();
-        if (encoding == null) {
-            encoding = Charset.defaultCharset().name();
-        }
-
-        final PrintWriter out = new PrintWriter(file, encoding);
-
-        try {
-            String separateNotesWithNewLine = AppPreferences.separateNotesWithNewLine(mContext);
-            String createdAtPropertyName = AppPreferences.createdAtProperty(mContext);
-            boolean useCreatedAtProperty = AppPreferences.createdAt(mContext);
-
-            OrgParserSettings parserSettings = OrgParserSettings.getBasic();
-
-            if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_always).equals(separateNotesWithNewLine)) {
-                parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.ALWAYS;
-            } else if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_multi_line_notes_only).equals(separateNotesWithNewLine)) {
-                parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.MULTI_LINE_NOTES_ONLY;
-            } else if (mContext.getString(R.string.pref_value_separate_notes_with_new_line_never).equals(separateNotesWithNewLine)) {
-                parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.NEVER;
-            }
-
-            parserSettings.separateHeaderAndContentWithNewLine = AppPreferences.separateHeaderAndContentWithNewLine(mContext);
-            parserSettings.tagsColumn = AppPreferences.tagsColumn(mContext);
-            parserSettings.orgIndentMode = AppPreferences.orgIndentMode(mContext);
-            parserSettings.orgIndentIndentationPerLevel = AppPreferences.orgIndentIndentationPerLevel(mContext);
-
-            final OrgParserWriter parserWriter = new OrgParserWriter(parserSettings);
-
-            // Write preface
-            out.write(parserWriter.whiteSpacedFilePreface(book.getPreface()));
-
-            // Write notes
-            NotesClient.forEachBookNote(mContext, book.getName(), note -> {
-                // Update note properties with created-at property, if the time exists.
-                if (useCreatedAtProperty && createdAtPropertyName != null && note.getCreatedAt() > 0) {
-                    OrgDateTime time = new OrgDateTime(note.getCreatedAt(), false);
-                    note.getHead().addProperty(createdAtPropertyName, time.toString());
-                }
-
-                out.write(parserWriter.whiteSpacedHead(
-                        note.getHead(),
-                        note.getPosition().getLevel(),
-                        book.getOrgFileSettings().isIndented()));
-            });
-
-        } finally {
-            out.close();
-        }
     }
 
     public void setNotesScheduledTime(Set<Long> noteIds, OrgDateTime time) {
@@ -609,7 +552,7 @@ public class Shelf {
         File tmpFile = getTempBookFile();
         try {
             /* Write to temporary file. */
-            writeBookToFile(book, format, tmpFile);
+            NotesExporter.Companion.getInstance(mContext, format).exportBook(book, tmpFile);
 
             /* Upload to repo. */
             uploadedBook = repo.storeBook(tmpFile, fileName);
