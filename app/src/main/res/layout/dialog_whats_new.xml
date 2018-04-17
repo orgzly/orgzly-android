@@ -24,49 +24,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="v1.6.3-beta.4"
-            tools:ignore="HardcodedText"/>
-
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange"
-            app:text="Fix starting SyncService on Oreo"/>
-
-
-
-        <TextView
-            style="@style/WhatsNewVersion"
-            android:text="v1.6.3-beta.3"
-            tools:ignore="HardcodedText"/>
-
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange"
-            app:text="Use thicker outer circle for folded note's bullet"/>
-
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange"
-            app:text="Add bottom padding to note and query fragments"/>
-
-
-
-        <TextView
-            style="@style/WhatsNewVersion"
-            android:text="v1.6.3-beta.2"
-            tools:ignore="HardcodedText"/>
-
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange"
-            app:text="Handle invalid org times in created-at migration"/>
-
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange"
-            app:text="Use match_parent for fields in note fragment (fixes tags autocomplete dropdown width issue)"/>
-
-
-
-
-        <TextView
-            style="@style/WhatsNewVersion"
-            android:text="v1.6.3-beta.1"
+            android:text="v1.6.3"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange

@@ -71,11 +71,15 @@ public class SyncService extends Service {
         if (intent != null && AppIntent.ACTION_SYNC_START.equals(intent.getAction())) {
             if (!isRunning()) {
                 start(isTriggeredAutomatically);
+            } else {
+                stopSelf();
             }
 
         } else if (intent != null && AppIntent.ACTION_SYNC_STOP.equals(intent.getAction())) {
             if (isRunning()) {
                 stop();
+            } else {
+                stopSelf();
             }
 
         } else {

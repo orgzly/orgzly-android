@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.orgzly">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.orgzly">
 
     <!-- Initially added for Dropbox sync. -->
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -141,5 +144,10 @@
 
         <receiver
             android:name=".android.NotificationBroadcastReceiver"/>
+
+        <receiver
+            android:name=".android.ActionReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver" />
     </application>
 </manifest>
