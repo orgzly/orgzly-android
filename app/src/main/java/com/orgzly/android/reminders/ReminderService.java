@@ -273,7 +273,7 @@ public class ReminderService extends JobIntentService {
 
             int jobId = ReminderJob.scheduleJob(exactMs);
 
-            log = jobRunTimeString(jobId) + " for “" + firstNote.getPayload().title + "”";
+            log = "#" + jobId + " @ " + jobRunTimeString(jobId) + " for “" + firstNote.getPayload().title + "”";
 
         } else {
             log = "No notes found";
