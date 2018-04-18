@@ -4,6 +4,7 @@ import android.content.Context;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDexApplication;
 
+import com.evernote.android.job.JobConfig;
 import com.evernote.android.job.JobManager;
 import com.orgzly.android.ui.settings.SettingsFragment;
 
@@ -17,6 +18,7 @@ public class App extends MultiDexApplication {
     public static final int ACTION_SERVICE_JOB_ID = 1;
     public static final int REMINDER_SERVICE_JOB_ID = 2;
     public static final int NOTIFICATION_SERVICE_JOB_ID = 3;
+    public static final int LAST_JOB_ID = 100;
 
     public static final AppExecutors EXECUTORS = new AppExecutors();
 
@@ -26,6 +28,7 @@ public class App extends MultiDexApplication {
 
         App.setDefaultPreferences(this, false);
 
+        JobConfig.setJobIdOffset(LAST_JOB_ID);
         JobManager.create(this).addJobCreator(new AppJobCreator());
 
         NotificationChannels.INSTANCE.createAll(this);
