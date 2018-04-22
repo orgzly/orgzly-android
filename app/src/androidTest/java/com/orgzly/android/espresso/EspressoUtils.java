@@ -56,7 +56,7 @@ class EspressoUtils {
     static final int[] SETTINGS_STATE_KEYWORDS = { 1, 16 };
     static final int[] SETTINGS_DEFAULT_PRIORITY = { 1, 17 };
     static final int[] SETTINGS_LOWEST_PRIORITY = { 1, 18 };
-    static final int[] SETTINGS_NEW_NOTE_STATE = { 1, 20 };
+    static final int[] SETTINGS_NEW_NOTE_STATE = { 1, 21 };
 
     static final int[] SETTINGS_REPOS = { 4, 0 };
     static final int[] SETTINGS_AUTO_SYNC_TOGGLE = { 4, 1, 1 };

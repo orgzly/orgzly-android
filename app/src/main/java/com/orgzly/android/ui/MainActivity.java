@@ -32,10 +32,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.orgzly.BuildConfig;
@@ -75,8 +73,6 @@ import com.orgzly.org.datetime.OrgDateTime;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -951,56 +947,37 @@ public class MainActivity extends CommonActivity
             return;
         }
 
-        LinkedHashMap<String, Integer> items = new LinkedHashMap<>();
-        int itemIndex = 0;
+        String currentLink = null;
+        if (book.hasLink()) {
+            currentLink = book.getLinkRepo().toString();
+        }
 
-        /* Add "no link" item. */
-        items.put(getString(R.string.no_link), itemIndex++);
+        int checkedItem = -1;
+
+        CharSequence[] items = new CharSequence[repos.size()];
 
         /* Add repositories. */
+        int itemIndex = 0;
         for (String repoUri : repos.keySet()) {
-            items.put(repoUri, itemIndex++);
-        }
-
-        View view = getLayoutInflater().inflate(R.layout.dialog_spinner, null, false);
-        final Spinner spinner = view.findViewById(R.id.dialog_spinner);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(spinner.getContext(), R.layout.spinner_item, new ArrayList<>(items.keySet()));
-        adapter.setDropDownViewResource(R.layout.dropdown_item);
-        spinner.setAdapter(adapter);
-
-        /* Set spinner to current book's link. */
-        if (book.hasLink()) {
-            Integer pos = items.get(book.getLinkRepo().toString());
-            if (pos != null) {
-                spinner.setSelection(pos);
+            if (repoUri.equals(currentLink)) {
+                checkedItem = itemIndex ;
             }
+            items[itemIndex++] = repoUri;
         }
-
-        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
-            switch (which) {
-                case DialogInterface.BUTTON_POSITIVE:
-                    Shelf shelf = new Shelf(MainActivity.this);
-                    String repoUrl = (String) spinner.getSelectedItem();
-
-                    if (getString(R.string.no_link).equals(repoUrl)) {
-                        shelf.setLink(book, null);
-                    } else {
-                        shelf.setLink(book, repoUrl);
-                    }
-
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    break;
-            }
-        };
 
         dialog = new AlertDialog.Builder(this)
                 .setTitle("Link " + MiscUtils.quotedString(book.getName()) + " to repository")
-                .setView(view)
-                .setPositiveButton(R.string.set, dialogClickListener)
-                .setNegativeButton(R.string.cancel, dialogClickListener)
+                .setSingleChoiceItems(items, checkedItem, (d, which) -> {
+                    Shelf shelf = new Shelf(MainActivity.this);
+                    shelf.setLink(book, items[which].toString());
+                    dialog.dismiss();
+                    dialog = null;
+                })
+                .setNeutralButton(R.string.remove_notebook_link, (dialog, which) -> {
+                    Shelf shelf = new Shelf(MainActivity.this);
+                    shelf.setLink(book, null);
+                })
+                .setNegativeButton(R.string.cancel, null)
                 .show();
     }
 

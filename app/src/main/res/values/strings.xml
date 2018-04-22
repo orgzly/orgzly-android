@@ -15,7 +15,7 @@
     <string name="not_now">Not now</string>
     <string name="save">Save</string>
     <string name="discard">Discard</string>
-    <string name="no_link">No Link</string>
+    <string name="remove_notebook_link">Remove link</string>
     <string name="browse">Browse</string>
     <string name="dropbox">Dropbox</string>
     <string name="edit">Edit</string>
