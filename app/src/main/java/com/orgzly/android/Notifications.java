@@ -45,11 +45,19 @@ public class Notifications {
                 .setContentIntent(resultPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_MIN); // Don't show icon on status bar
 
-        /* add sync action */
+        /* Add open action */
+        PendingIntent openAppPendingIntent = PendingIntent.getActivity(
+                context, 0, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.addAction(
+                R.drawable.ic_open_in_new_white_24dp,
+                context.getString(R.string.open),
+                openAppPendingIntent);
+
+        /* Add sync action */
         Intent syncIntent = new Intent(context, SyncService.class);
         syncIntent.setAction(AppIntent.ACTION_SYNC_START);
-
-        PendingIntent syncPendingIntent = PendingIntent.getService(context, 0, syncIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent syncPendingIntent = PendingIntent.getService(
+                context, 0, syncIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.addAction(
                     R.drawable.ic_sync_white_24dp,
                     context.getString(R.string.sync),
@@ -91,29 +99,29 @@ public class Notifications {
     };
 
     public static Notification createSyncInProgressNotification(Context context) {
-        PendingIntent openOrgzlyPendingIntent = PendingIntent.getActivity(context, 0,
-                new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent openAppPendingIntent = PendingIntent.getActivity(
+                context, 0, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.SYNC_PROGRESS)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_sync_white_24dp)
                 .setContentTitle(context.getString(R.string.syncing_in_progress))
                 .setColor(ContextCompat.getColor(context, R.color.notification))
-                .setContentIntent(openOrgzlyPendingIntent);
+                .setContentIntent(openAppPendingIntent);
 
         return builder.build();
     }
 
     private static void createSyncFailedNotification(Context context, SyncStatus status) {
-        PendingIntent openOrgzlyPendingIntent = PendingIntent.getActivity(context, 0,
-                new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent openAppPendingIntent = PendingIntent.getActivity(
+                context, 0, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.SYNC_FAILED)
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.ic_logo_for_notification)
                 .setContentTitle(context.getString(R.string.syncing_failed_title))
                 .setColor(ContextCompat.getColor(context, R.color.notification))
-                .setContentIntent(openOrgzlyPendingIntent);
+                .setContentIntent(openAppPendingIntent);
 
         if (status.type == SyncStatus.Type.FAILED) {
             builder.setContentText(status.message);
