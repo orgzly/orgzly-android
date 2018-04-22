@@ -319,6 +319,19 @@
         <item>Z</item>
     </string-array>
 
+    <string name="pref_key_log_on_done" translatable="false">pref_key_log_on_done</string>
+    <string name="pref_default_log_on_done" translatable="false">nothing</string>
+
+    <string-array name="log_on_done">
+        <item>@string/nothing</item>
+        <item>@string/time</item>
+    </string-array>
+
+    <string-array name="log_on_done_values">
+        <item>nothing</item>
+        <item>time</item>
+    </string-array>
+
     <!-- Separate notes with an empty line -->
     <string name="pref_key_separate_notes_with_new_line" translatable="false">pref_key_separate_notes_with_new_line</string>
     <string name="pref_default_separate_notes_with_new_line" translatable="false">@string/pref_value_separate_notes_with_new_line_multi_line_notes_only</string>

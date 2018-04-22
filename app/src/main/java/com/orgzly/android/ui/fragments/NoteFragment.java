@@ -46,6 +46,7 @@ import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.ui.views.TextViewWithMarkup;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
+import com.orgzly.android.util.OrgFormatter;
 import com.orgzly.android.util.SpaceTokenizer;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.OrgHead;
@@ -59,6 +60,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -945,12 +947,12 @@ public class NoteFragment extends Fragment
                         .setTitle(R.string.state)
                         .setSingleChoiceItems(keywords, currentState, (dialog, which) -> {
                             // On state change - update state and timestamps
-                            updateNoteForStateChange(getActivity(), note, states.get(which));
+                            setState(note, states.get(which));
                             dialog.dismiss();
                         })
                         .setNeutralButton(R.string.clear, (dialog, which) -> {
                             // On state change - update state and timestamps
-                            updateNoteForStateChange(getActivity(), note, NoteStates.NO_STATE_KEYWORD);
+                            setState(note, NoteStates.NO_STATE_KEYWORD);
                         })
                         .setNegativeButton(R.string.cancel, null)
                         .create();
@@ -1272,28 +1274,43 @@ public class NoteFragment extends Fragment
         return mNoteId;
     }
 
-    private void updateNoteForStateChange(Context context, Note note, String state) {
-        StateChangeLogic stateSetOp = new StateChangeLogic(AppPreferences.doneKeywordsSet(context));
+    /**
+     * Update state, timestamps, last-repeat and logbook.
+     */
+    private void setState(Note note, String state) {
+        updateNoteFromViews();
 
-        stateSetOp.setState(
+        String originalState = note.getHead().getState();
+
+        Set<String> doneKeywords = AppPreferences.doneKeywordsSet(getContext());
+
+        StateChangeLogic stateChangeLogic = new StateChangeLogic(doneKeywords);
+
+        stateChangeLogic.setState(
                 state,
                 note.getHead().getState(),
                 note.getHead().getScheduled(),
                 note.getHead().getDeadline());
 
-        /* Update note. */
-        note.getHead().setState(stateSetOp.getState());
-        note.getHead().setScheduled(stateSetOp.getScheduled());
-        note.getHead().setDeadline(stateSetOp.getDeadline());
-        note.getHead().setClosed(stateSetOp.getClosed());
+        note.getHead().setState(stateChangeLogic.getState());
 
-        /* Update views. */
+        note.getHead().setScheduled(stateChangeLogic.getScheduled());
+        note.getHead().setDeadline(stateChangeLogic.getDeadline());
+        note.getHead().setClosed(stateChangeLogic.getClosed());
 
-        setStateView(stateSetOp.getState());
+        if (stateChangeLogic.isShifted()) {
+            String datetime = new OrgDateTime(false).toString();
 
-        updateTimestampView(TimeType.SCHEDULED, stateSetOp.getScheduled());
-        updateTimestampView(TimeType.DEADLINE, stateSetOp.getDeadline());
-        updateTimestampView(TimeType.CLOSED, stateSetOp.getClosed());
+            note.getHead().addProperty(OrgFormatter.LAST_REPEAT_PROPERTY, datetime);
+
+            if ("time".equals(AppPreferences.logOnDone(getContext()))) {
+                String logEntry = OrgFormatter.INSTANCE.stateChangeLine(originalState, state, datetime);
+                String content = OrgFormatter.INSTANCE.insertLogbookEntryLine(note.getHead().getContent(), logEntry);
+                note.getHead().setContent(content);
+            }
+        }
+
+        updateViewsFromNote();
     }
 
     private void setStateView(String state) {

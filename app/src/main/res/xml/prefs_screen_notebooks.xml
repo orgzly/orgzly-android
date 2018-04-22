@@ -101,25 +101,32 @@
 
     <PreferenceCategory android:title="@string/note">
 
-    <com.orgzly.android.prefs.StatesPreference
-        android:key="@string/pref_key_states"
-        android:title="@string/states"
-        android:dialogTitle="@string/states"
-        android:defaultValue="@string/pref_default_states"/>
+        <com.orgzly.android.prefs.StatesPreference
+            android:key="@string/pref_key_states"
+            android:title="@string/states"
+            android:dialogTitle="@string/states"
+            android:defaultValue="@string/pref_default_states"/>
 
-    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-        android:key="@string/pref_key_default_priority"
-        android:title="@string/default_priority"
-        android:entries="@array/priorities"
-        android:entryValues="@array/priority_values"
-        android:defaultValue="@string/pref_default_default_priority"/>
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_default_priority"
+            android:title="@string/default_priority"
+            android:entries="@array/priorities"
+            android:entryValues="@array/priority_values"
+            android:defaultValue="@string/pref_default_default_priority"/>
 
-    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-        android:key="@string/pref_key_min_priority"
-        android:title="@string/lowest_priority"
-        android:entries="@array/priorities"
-        android:entryValues="@array/priority_values"
-        android:defaultValue="@string/pref_default_min_priority"/>
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_min_priority"
+            android:title="@string/lowest_priority"
+            android:entries="@array/priorities"
+            android:entryValues="@array/priority_values"
+            android:defaultValue="@string/pref_default_min_priority"/>
+
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_log_on_done"
+            android:title="@string/log_on_done"
+            android:entries="@array/log_on_done"
+            android:entryValues="@array/log_on_done_values"
+            android:defaultValue="@string/pref_default_log_on_done"/>
 
     </PreferenceCategory>
 

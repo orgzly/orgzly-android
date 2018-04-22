@@ -49,6 +49,7 @@
     <string name="repeater">Repeater</string>
     <string name="state">State</string>
     <string name="priority">Priority</string>
+    <string name="nothing">Nothing</string>
 
     <plurals name="notes_deleted">
         <item quantity="one">Note deleted</item>
@@ -502,5 +503,6 @@
     <string name="hide_note_metadata">Hide metadata</string>
     <string name="overwrite_local_notebook_question">Overwrite local notebook?</string>
     <string name="overwrite_remote_notebook_question">Overwrite remote notebook?</string>
+    <string name="log_on_done">Log after marking note as done</string>
 
 </resources>

@@ -59,6 +59,7 @@ import com.orgzly.android.query.user.InternalQueryParser;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.EncodingDetect;
 import com.orgzly.android.util.LogUtils;
+import com.orgzly.android.util.OrgFormatter;
 import com.orgzly.org.OrgFile;
 import com.orgzly.org.OrgProperties;
 import com.orgzly.org.datetime.OrgDateTime;
@@ -1004,9 +1005,7 @@ public class Provider extends ContentProvider {
                     long nameId = DbPropertyName.getOrInsert(db, propName);
                     long valueId = DbPropertyValue.getOrInsert(db, propValue);
 
-                    // Delete note properties that match the name
-                    String sql = "DELETE FROM note_properties WHERE note_id = " + noteId + " AND property_id IN (SELECT _id FROM properties WHERE name_id = " + nameId + ")"; // TODO
-                    db.execSQL(sql);
+                    deleteNoteProperty(db, noteId, nameId);
 
                     int nextPosition = getLastPropertyPositionForNote(db, noteId) + 1;
 
@@ -1065,6 +1064,18 @@ public class Provider extends ContentProvider {
         // FIXME: Hard to read - some cases above return, some are reaching this
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, table, contentValues, selection, selectionArgs);
         return db.update(table, contentValues, selection, selectionArgs);
+    }
+
+    /*
+     * Delete note properties with given name ID.
+     */
+    private void deleteNoteProperty(SQLiteDatabase db, long noteId, long nameId) {
+        String sql = "DELETE FROM " + DbNoteProperty.TABLE
+                     + " WHERE " + DbNoteProperty.NOTE_ID + " = " + noteId
+                     + " AND " + DbNoteProperty.PROPERTY_ID
+                     + " IN (SELECT " + DbProperty._ID + " FROM " + DbProperty.TABLE
+                     + " WHERE " + DbProperty.NAME_ID + " = " + nameId + ")";
+        db.execSQL(sql);
     }
 
     private int getLastPropertyPositionForNote(SQLiteDatabase db, long noteId) {
@@ -1140,7 +1151,7 @@ public class Provider extends ContentProvider {
      * If current state is to-do and there is no repeater
      * set the state and keep the timestamp intact.
      */
-    private int setDoneStateForNotes(SQLiteDatabase db, String state, String notesSelection, String[] selectionArgs) {
+    private int setDoneStateForNotes(SQLiteDatabase db, String targetState, String notesSelection, String[] selectionArgs) {
         int notesUpdated = 0;
 
         /* Get all notes that don't already have the same state. */
@@ -1151,6 +1162,7 @@ public class Provider extends ContentProvider {
                         DbNoteBasicView.SCHEDULED_RANGE_STRING,
                         DbNoteBasicView.DEADLINE_RANGE_STRING,
                         DbNoteBasicView.STATE,
+                        DbNoteBasicView.CONTENT,
                 },
                 notesSelection,
                 selectionArgs,
@@ -1162,12 +1174,19 @@ public class Provider extends ContentProvider {
 
         try {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                long noteId = cursor.getLong(0);
+                String noteScheduled = cursor.getString(1);
+                String noteDeadline = cursor.getString(2);
+                String noteState = cursor.getString(3);
+                String noteContent = cursor.getString(4);
+
                 StateChangeLogic stateSetOp = new StateChangeLogic(AppPreferences.doneKeywordsSet(getContext()));
 
-                stateSetOp.setState(state,
-                        cursor.getString(3),
-                        OrgRange.parseOrNull(cursor.getString(1)),
-                        OrgRange.parseOrNull(cursor.getString(2)));
+                stateSetOp.setState(
+                        targetState,
+                        noteState,
+                        OrgRange.parseOrNull(noteScheduled),
+                        OrgRange.parseOrNull(noteDeadline));
 
                 ContentValues values = new ContentValues();
 
@@ -1197,7 +1216,19 @@ public class Provider extends ContentProvider {
 
                 replaceTimestampRangeStringsWithIds(db, values);
 
-                notesUpdated += db.update(DbNote.TABLE, values, DbNote._ID + "=" + cursor.getString(0), null);
+                if (stateSetOp.isShifted()) {
+                    String time = new OrgDateTime(false).toString();
+
+                    updateOrInsertNoteProperty(db, noteId, OrgFormatter.LAST_REPEAT_PROPERTY, time);
+
+                    if ("time".equals(AppPreferences.logOnDone(getContext()))) {
+                        String stateChangeLine = OrgFormatter.INSTANCE.stateChangeLine(noteState, targetState, time);
+                        noteContent = OrgFormatter.INSTANCE.insertLogbookEntryLine(noteContent, stateChangeLine);
+                        values.put(DbNote.CONTENT, noteContent);
+                    }
+                }
+
+                notesUpdated += db.update(DbNote.TABLE, values, DbNote._ID + "=" + noteId, null);
             }
 
         } finally {
@@ -1205,6 +1236,37 @@ public class Provider extends ContentProvider {
         }
 
         return notesUpdated;
+    }
+
+
+    private long updateOrInsertNoteProperty(SQLiteDatabase db, long noteId, String name, String value) {
+        long nameId = DbPropertyName.getOrInsert(db, name);
+        long valueId = DbPropertyValue.getOrInsert(db, value);
+        long propertyId = DbProperty.getOrInsert(db, nameId, valueId);
+
+        Cursor cursor = db.query(
+                DbNoteProperty.TABLE,
+                new String[] { DbNoteProperty._ID, DbNoteProperty.POSITION},
+                DbNoteProperty.NOTE_ID + " = " + noteId + " AND " + DbNoteProperty.PROPERTY_ID + " IN (SELECT " + DbProperty._ID + " FROM " + DbProperty.TABLE + "  WHERE " + DbProperty.NAME_ID + " = " + nameId + ")",
+                null,
+                null,
+                null,
+                null
+        );
+
+        int position;
+
+        if (cursor != null && cursor.moveToFirst()) { // Property with the same name already exists
+            long notePropertyId = cursor.getLong(0);
+            position = cursor.getInt(1);
+
+            GenericDatabaseUtils.delete(db, DbNoteProperty.TABLE, notePropertyId);
+
+        } else { // New property
+            position = getLastPropertyPositionForNote(db, noteId) + 1;
+        }
+
+        return DbNoteProperty.getOrInsert(db, noteId, position, propertyId);
     }
 
     /** User-requested change of link. */

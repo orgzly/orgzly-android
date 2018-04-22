@@ -496,6 +496,21 @@ public class AppPreferences {
     }
 
     /*
+     * Log on done
+     */
+
+    public static String logOnDone(Context context) {
+        return getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_log_on_done),
+                context.getResources().getString(R.string.pref_default_log_on_done));
+    }
+
+    public static void logOnDone(Context context, String value) {
+        String key = context.getResources().getString(R.string.pref_key_log_on_done);
+        getDefaultSharedPreferences(context).edit().putString(key, value).apply();
+    }
+
+    /*
      * Note's metadata visibility
      */
 

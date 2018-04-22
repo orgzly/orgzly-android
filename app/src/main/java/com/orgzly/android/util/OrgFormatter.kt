@@ -53,10 +53,16 @@ object OrgFormatter {
                     markupRegex('~') + "|" +
                     markupRegex('+'), Pattern.MULTILINE)
 
-    private val DRAWER_PATTERN = Pattern.compile(
-            """^[ \t]*:([-a-zA-Z_0-9]+):[ \t]*\n(.*?)\n[ \t]*:END:[ \t]*$""",
+    const val LAST_REPEAT_PROPERTY = "LAST_REPEAT"
+
+    private const val LOGBOOK_DRAWER_NAME = "LOGBOOK"
+
+    private fun drawerPattern(name: String) = Pattern.compile(
+            """^[ \t]*:($name):[ \t]*\n(.*?)\n[ \t]*:END:[ \t]*$""",
             Pattern.CASE_INSENSITIVE or Pattern.MULTILINE or Pattern.DOTALL)
 
+    private val ANY_DRAWER_PATTERN = drawerPattern("[-a-zA-Z_0-9]+")
+    private val LOGBOOK_DRAWER_PATTERN = drawerPattern(LOGBOOK_DRAWER_NAME)
 
     private fun namelessBracketLinkPattern(str: String) = Pattern.compile("\\[\\[$str]]")
     private fun namedBracketLinkPattern(str: String) = Pattern.compile("\\[\\[$str]\\[([^]]+)]]")
@@ -267,7 +273,7 @@ object OrgFormatter {
     }
 
     private fun parseDrawers(ssb: SpannableStringBuilder): SpannableStringBuilder {
-        val m = DRAWER_PATTERN.matcher(ssb)
+        val m = ANY_DRAWER_PATTERN.matcher(ssb)
 
         return collectRegions(ssb) { spanRegions ->
             while (m.find()) {
@@ -335,6 +341,35 @@ object OrgFormatter {
         } else {
             return ssb
         }
+    }
+
+    fun insertLogbookEntryLine(content: String?, entry: String): String {
+        return if (content.isNullOrEmpty()) {
+            insertLogbookEntryLineWithoutDrawer(content, entry)
+
+        } else {
+            val m = LOGBOOK_DRAWER_PATTERN.matcher(content)
+
+            if (m.find()) {
+                val start = m.start(2) // Content start
+                StringBuilder(content).insert(start, "$entry\n").toString()
+
+            } else {
+                insertLogbookEntryLineWithoutDrawer(content, entry)
+            }
+        }
+    }
+
+    private fun insertLogbookEntryLineWithoutDrawer(content: String?, entry: String): String {
+        val prefixedContent = if (content.isNullOrEmpty()) "" else "\n\n$content"
+        return ":$LOGBOOK_DRAWER_NAME:\n$entry\n:END:$prefixedContent"
+    }
+
+    fun stateChangeLine(fromState: String?, toState: String?, time: String): String {
+        val from = if (fromState.isNullOrEmpty()) "" else fromState
+        val to = if (toState.isNullOrEmpty()) "" else toState
+
+        return String.format("- State %-12s from %-12s %s", "\"$to\"", "\"$from\"", time)
     }
 
     private val TAG = OrgFormatter::class.java.name

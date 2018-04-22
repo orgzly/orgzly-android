@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
+import android.provider.BaseColumns
 import android.text.TextUtils
 import java.util.*
 
@@ -70,5 +71,10 @@ object GenericDatabaseUtils {
             f(cursor)
             cursor.moveToNext()
         }
+    }
+
+    @JvmStatic
+    fun delete(db: SQLiteDatabase, table: String, id: Long): Int {
+        return db.delete(table, BaseColumns._ID + " = " + id, null)
     }
 }
