@@ -631,16 +631,8 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onNoteScrollToRequest(long noteId) {
-        // TODO: Avoid using Shelf from activity directly
-        Shelf shelf = new Shelf(this);
-        Note note = shelf.getNote(noteId);
-
-        if (note != null) {
-            long bookId = note.getPosition().getBookId();
-            mSyncFragment.sparseTree(bookId, noteId);
-            DisplayManager.displayBook(getSupportFragmentManager(), bookId, noteId);
-        }
+    public void onNoteFocusInBookRequest(long noteId) {
+        mSyncFragment.focusNoteInBook(noteId);
     }
 
     /**
@@ -1383,7 +1375,8 @@ public class MainActivity extends CommonActivity
 
                 case AppIntent.ACTION_OPEN_BOOK: {
                     long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0);
-                    DisplayManager.displayBook(getSupportFragmentManager(), bookId, 0);
+                    long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0);
+                    DisplayManager.displayBook(getSupportFragmentManager(), bookId, noteId);
                     break;
                 }
 

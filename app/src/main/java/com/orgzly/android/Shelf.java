@@ -46,15 +46,11 @@ import com.orgzly.org.OrgProperties;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.parser.OrgParsedFile;
 import com.orgzly.org.parser.OrgParser;
-import com.orgzly.org.parser.OrgParserSettings;
 import com.orgzly.org.parser.OrgParserWriter;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

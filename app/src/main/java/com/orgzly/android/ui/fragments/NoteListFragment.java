@@ -25,7 +25,6 @@ import com.orgzly.android.util.MiscUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Fragment which is displaying a list of notes,
@@ -133,7 +132,7 @@ public abstract class NoteListFragment extends ListFragment {
             /* Query fragments. */
 
             case R.id.item_menu_open_btn:
-                listener.onNoteScrollToRequest(noteId);
+                listener.onNoteFocusInBookRequest(noteId);
                 break;
 
             /* Right fling */
@@ -202,7 +201,7 @@ public abstract class NoteListFragment extends ListFragment {
     }
 
     public interface NoteListFragmentListener extends FragmentListener {
-        void onNoteScrollToRequest(long noteId);
+        void onNoteFocusInBookRequest(long noteId);
         void onNoteNewRequest(NotePlace target);
         void onNoteClick(NoteListFragment fragment, View view, int position, long id, long noteId);
         void onNoteLongClick(NoteListFragment fragment, View view, int position, long id, long noteId);

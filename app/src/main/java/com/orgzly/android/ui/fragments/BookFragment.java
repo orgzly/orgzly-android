@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
@@ -191,8 +192,8 @@ public class BookFragment extends NoteListFragment
 
         View view = inflater.inflate(R.layout.fragment_book, container, false);
 
-        final ListView listView = (ListView) view.findViewById(android.R.id.list);
-        // setupGestureDetector(listView);
+        final ListView listView = view.findViewById(android.R.id.list);
+
         mHeader = inflater.inflate(R.layout.item_head_book_preface, listView, false);
 
         mPrefaceText = mHeader.findViewById(R.id.fragment_book_header_text);
@@ -464,6 +465,8 @@ public class BookFragment extends NoteListFragment
     }
 
     private void scrollToNoteIfSet() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+
         long noteId = getArguments().getLong(ARG_NOTE_ID, 0);
 
         if (noteId > 0) {
@@ -476,7 +479,7 @@ public class BookFragment extends NoteListFragment
                     scrollToCursorPosition(i);
 
                     /* Make sure we don't scroll again (for example after configuration change). */
-                    getArguments().remove(ARG_NOTE_ID);
+                    new Handler().postDelayed(() -> getArguments().remove(ARG_NOTE_ID), 500);
 
                     break;
                 }

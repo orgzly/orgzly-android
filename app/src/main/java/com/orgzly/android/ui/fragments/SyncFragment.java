@@ -37,7 +37,6 @@ import com.orgzly.android.filter.Filter;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.BooksClient;
 import com.orgzly.android.repos.Repo;
-import com.orgzly.android.repos.Rook;
 import com.orgzly.android.sync.SyncStatus;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.NotePlace;
@@ -217,7 +216,7 @@ public class SyncFragment extends Fragment {
             @Override
             protected Object doInBackground(Void ... params) { /* Executing on a different thread. */
                 try {
-                     /* Check if book name already exists in database. */
+                    /* Check if book name already exists in database. */
                     if (mShelf.doesBookExist(bookName)) {
                         return resources.getString(R.string.book_name_already_exists, bookName);
                     }
@@ -378,12 +377,30 @@ public class SyncFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    public void sparseTree(final long bookId, final long noteId) {
-        new AsyncTask<Void, Void, Void>() {
+    public void focusNoteInBook(final long noteId) {
+        new AsyncTask<Void, Void, Long>() {
             @Override
-            protected Void doInBackground(Void... params) {
-                BooksClient.sparseTree(getContext(), bookId, noteId);
-                return null;
+            protected Long doInBackground(Void... params) {
+                Long bookId = null;
+
+                Note note = mShelf.getNote(noteId);
+
+                if (note != null) {
+                    bookId = note.getPosition().getBookId();
+                    BooksClient.sparseTree(getContext(), bookId, noteId);
+                }
+
+                return bookId;
+            }
+
+            @Override
+            protected void onPostExecute(Long bookId) {
+                if (bookId != null) {
+                    Intent intent = new Intent(AppIntent.ACTION_OPEN_BOOK);
+                    intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
+                    intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId);
+                    LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+                }
             }
         }.execute();
     }
