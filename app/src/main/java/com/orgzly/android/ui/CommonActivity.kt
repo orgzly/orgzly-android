@@ -235,11 +235,11 @@ abstract class CommonActivity : AppCompatActivity() {
     protected fun displayWhatsNewDialog() {
         whatsNewDialog?.dismiss()
 
-        val dialog = WhatsNewDialog.create(this)
-        dialog.setOnDismissListener { _ -> whatsNewDialog = null }
-        dialog.show()
-
-        whatsNewDialog = dialog
+        whatsNewDialog = WhatsNewDialog.create(this)
+        whatsNewDialog?.let {
+            it.setOnDismissListener { _ -> whatsNewDialog = null }
+            it.show()
+        }
     }
 
     override fun onDestroy() {

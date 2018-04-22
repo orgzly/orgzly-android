@@ -25,9 +25,9 @@ object AgendaCursor {
 
         var agendaDays = options.agendaDays
 
-        if (agendaDays > MAX_DAYS) {
-            agendaDays = MAX_DAYS
-        }
+//        if (agendaDays > MAX_DAYS) {
+//            agendaDays = MAX_DAYS
+//        }
 
         // Add IS_DIVIDER column
         val columnNames = arrayOfNulls<String>(cursor.columnNames.size + 1)
@@ -141,7 +141,7 @@ object AgendaCursor {
         const val DIVIDER_VALUE = "divider_value"
     }
 
-    private const val MAX_DAYS = 30
+//    private const val MAX_DAYS = 30
 
-    // private val TAG = AgendaCursor::class.java.name
+//    private val TAG = AgendaCursor::class.java.name
 }
