@@ -620,6 +620,11 @@ public class NoteFragment extends Fragment
 
                 mViewFlipper.setDisplayedChild(0);
 
+                // If there is no content, start in edit mode
+                if (!note.getHead().hasContent()) {
+                    editSwitch.setChecked(true);
+                }
+
             } else {
                 mViewFlipper.setDisplayedChild(1);
             }
