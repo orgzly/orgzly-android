@@ -44,6 +44,7 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
     private static final String ARG_HOUR = "hour";
     private static final String ARG_MINUTE = "minute";
 
+    private static final String ARG_REPEATER = "repeater";
     private static final String ARG_USE_REPEAT = "use_repeat";
 
     private static final String ARG_END_TIME_HOUR = "end_time_hour";
@@ -132,6 +133,7 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
         state.putInt(ARG_HOUR, mCurrentHour);
         state.putInt(ARG_MINUTE, mCurrentMinute);
 
+        state.putString(ARG_REPEATER, mRepeaterPicker.getText().toString());
         state.putBoolean(ARG_USE_REPEAT, mIsRepeaterUsed.isChecked());
 
         state.putInt(ARG_END_TIME_HOUR, mCurrentEndTimeHour);
@@ -251,6 +253,7 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
             mCurrentHour = savedInstanceState.getInt(ARG_HOUR);
             mCurrentMinute = savedInstanceState.getInt(ARG_MINUTE);
 
+            mRepeaterPicker.setText(savedInstanceState.getString(ARG_REPEATER));
             mIsRepeaterUsed.setChecked(savedInstanceState.getBoolean(ARG_USE_REPEAT));
 
             mCurrentEndTimeHour = savedInstanceState.getInt(ARG_END_TIME_HOUR);

@@ -8,9 +8,11 @@ import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.action.CloseKeyboardAction;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 
 import com.orgzly.R;
 
@@ -245,6 +247,27 @@ class EspressoUtils {
             @Override
             public void describeTo(Description description) {
                 description.appendText("a View which is highlighted");
+            }
+        };
+    }
+
+    public static ViewAction setNumber(final int num) {
+        return new ViewAction() {
+            @Override
+            public void perform(UiController uiController, View view) {
+                NumberPicker np = (NumberPicker) view;
+                np.setValue(num);
+
+            }
+
+            @Override
+            public String getDescription() {
+                return "Set the passed number into the NumberPicker";
+            }
+
+            @Override
+            public Matcher<View> getConstraints() {
+                return ViewMatchers.isAssignableFrom(NumberPicker.class);
             }
         };
     }

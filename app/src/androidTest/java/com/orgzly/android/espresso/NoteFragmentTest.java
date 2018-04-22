@@ -1,5 +1,6 @@
 package com.orgzly.android.espresso;
 
+import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.rule.ActivityTestRule;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -32,6 +33,7 @@ import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onList;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
+import static com.orgzly.android.espresso.EspressoUtils.setNumber;
 import static com.orgzly.android.espresso.EspressoUtils.settingsSetTodoKeywords;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
@@ -291,6 +293,12 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withClassName(equalTo(TimePicker.class.getName()))).perform(setTime(9, 15));
         onView(withText(R.string.ok)).perform(click());
 
+        /* Set repeater. */
+        onView(withId(R.id.dialog_timestamp_repeater_check)).perform(scrollTo(), click());
+        onView(withId(R.id.dialog_timestamp_repeater_picker)).perform(scrollTo(), click());
+        onView(withId(R.id.dialog_timestamp_repeater_value)).perform(setNumber(3));
+        onView(withText(R.string.ok)).perform(click());
+
         /* Rotate screen. */
         toLandscape(activityRule);
 
@@ -298,7 +306,7 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withText(R.string.set)).perform(click());
 
         onView(withId(R.id.fragment_note_deadline_button))
-                .check(matches(withText(userDateTime("<2014-04-01 Tue 09:15>"))));
+                .check(matches(withText(userDateTime("<2014-04-01 Tue 09:15 .+3w>"))));
     }
 
     @Test
