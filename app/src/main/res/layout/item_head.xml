@@ -68,8 +68,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/item_head_bullet"
-                android:layout_toEndOf="@+id/item_head_bullet"
+                android:layout_toRightOf="@+id/item_head_bullet_container"
+                android:layout_toEndOf="@+id/item_head_bullet_container"
                 android:layout_toLeftOf="@id/item_head_fold_button"
                 android:layout_toStartOf="@id/item_head_fold_button"
                 android:layout_marginTop="@dimen/item_head_padding_cozy"
@@ -224,17 +224,35 @@
             </LinearLayout>
 
             <!--Bullet -->
-            <ImageView
-                android:id="@+id/item_head_bullet"
+            <RelativeLayout
+                android:id="@+id/item_head_bullet_container"
                 android:layout_width="?attr/item_head_indent_width"
-                android:layout_height="?attr/item_head_indent_width"
-                android:layout_marginTop="2dp"
+                android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/item_head_payload"
                 android:layout_toEndOf="@+id/item_head_indent_container"
                 android:layout_toRightOf="@+id/item_head_indent_container"
-                android:layout_marginRight="6dp"
-                android:layout_marginEnd="6dp"
-                android:src="?attr/bullet_folded"/>
+                android:layout_marginRight="4dp"
+                android:layout_marginEnd="4dp">
+
+                <!-- Dummy text for aligning bullet. TODO: Rewrite this whole layout -->
+                <TextView
+                    android:id="@+id/bullet_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textSize="?attr/item_head_title_text_size"
+                    android:text="I" tools:ignore="HardcodedText"
+                    android:visibility="invisible"/>
+
+                <ImageView
+                    android:id="@+id/item_head_bullet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/bullet_text"
+                    android:layout_centerHorizontal="true"
+                    android:src="?attr/bullet_folded"
+                    android:visibility="visible"/>
+            </RelativeLayout>
 
         </RelativeLayout>
     </LinearLayout>

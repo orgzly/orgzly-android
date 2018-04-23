@@ -11,8 +11,8 @@
 
         <shape android:shape="oval">
             <size
-                android:width="8dp"
-                android:height="8dp" />
+                android:width="@dimen/bullet_inner_size"
+                android:height="@dimen/bullet_inner_size" />
 
             <solid android:color="@color/grey_700"/>
         </shape>
