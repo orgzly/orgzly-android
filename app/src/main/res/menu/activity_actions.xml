@@ -25,7 +25,8 @@
 
     <item
         android:id="@+id/activity_action_sync"
-        app:showAsAction="never"
+        android:icon="?attr/ic_sync_24dp"
+        app:showAsAction="ifRoom"
         android:orderInCategory="10"
         android:title="@string/sync"/>
 
