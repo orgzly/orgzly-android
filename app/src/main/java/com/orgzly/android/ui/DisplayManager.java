@@ -146,23 +146,20 @@ public class DisplayManager {
     private static void displayNote(FragmentManager fragmentManager, boolean isNew, long bookId, long noteId, Place place) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookId, noteId);
 
-        if (bookId <= 0) {
-            throw new IllegalArgumentException("Invalid book id (" + bookId + ")");
+        if (bookId > 0) {
+            /* Create fragment. */
+            Fragment fragment = NoteFragment.forBook(isNew, bookId, noteId, place);
+
+            /* Add fragment. */
+            fragmentManager
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
+                    .addToBackStack(null)
+                    .replace(R.id.single_pane_container, fragment, NoteFragment.FRAGMENT_TAG)
+                    .commit();
+        } else {
+            Log.e(TAG, "displayNote: Invalid book id " + bookId);
         }
-
-        /* Create fragment. */
-        Fragment fragment = NoteFragment.forBook(isNew, bookId, noteId, place);
-
-        /* Add fragment. */
-        fragmentManager
-                .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
-                .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, NoteFragment.FRAGMENT_TAG)
-                .commit();
-
-        // .setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left, R.anim.slide_in_from_left, R.anim.slide_out_to_right)
-        // .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
     }
 
     public static void displayQuery(FragmentManager fragmentManager, @NonNull String queryString) {
