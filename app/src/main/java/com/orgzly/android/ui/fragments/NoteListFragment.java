@@ -107,9 +107,7 @@ public abstract class NoteListFragment extends ListFragment {
                 noteIds,
                 time);
 
-        f.setTargetFragment(this, 0);
-
-        f.show(getActivity().getSupportFragmentManager(), TimestampDialogFragment.FRAGMENT_TAG);
+        f.show(getChildFragmentManager(), TimestampDialogFragment.FRAGMENT_TAG);
     }
 
     private OrgDateTime getScheduledTimeForNote(long id) {

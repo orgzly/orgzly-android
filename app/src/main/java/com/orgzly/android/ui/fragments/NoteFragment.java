@@ -1019,8 +1019,7 @@ public class NoteFragment extends Fragment
         }
 
         if (f != null) {
-            f.setTargetFragment(this, 0);
-            f.show(getActivity().getSupportFragmentManager(), TimestampDialogFragment.FRAGMENT_TAG);
+            f.show(getChildFragmentManager(), TimestampDialogFragment.FRAGMENT_TAG);
         }
     }
 

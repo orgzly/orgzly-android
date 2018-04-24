@@ -169,10 +169,11 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
         /* This makes sure that the fragment has implemented
          * the callback interface. If not, it throws an exception
          */
-        if (!(getTargetFragment() instanceof OnDateTimeSetListener)) {
-            throw new IllegalStateException("Fragment " + getTargetFragment() + " must implement " + OnDateTimeSetListener.class);
+        if (!(getParentFragment() instanceof OnDateTimeSetListener)) {
+            throw new IllegalStateException("Fragment " + getParentFragment() + " must implement " + OnDateTimeSetListener.class);
         }
-        mActivityListener = (OnDateTimeSetListener) getTargetFragment();
+
+        mActivityListener = (OnDateTimeSetListener) getParentFragment();
 
 
         mContext = getActivity();
