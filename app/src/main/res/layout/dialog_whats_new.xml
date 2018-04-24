@@ -24,6 +24,36 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.6.5-beta.1"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fold drawers, unfold on click temporarily"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Log time shifting to &lt;tt&gt;LOGBOOK&lt;/tt&gt; drawer"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Update &lt;tt&gt;LAST_REPEAT&lt;/tt&gt; property after shifting time"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Keep habit deadline on time shift"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Handle content lines formatted as org headings"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Various smaller improvements"/>
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.6.4"
             tools:ignore="HardcodedText"/>
 
