@@ -71,11 +71,12 @@ object OrgFormatter {
 
     data class SpanRegion(val start: Int, val end: Int, val content: CharSequence, val span: Any? = null)
 
-    data class Config(val style: Boolean = true, val withMarks: Boolean = false, val linkify: Boolean = true) {
+    data class Config(val style: Boolean = true, val withMarks: Boolean = false, val linkify: Boolean = true, val foldDrawers: Boolean = true) {
         constructor(context: Context, linkify: Boolean): this(
                 AppPreferences.styleText(context),
                 AppPreferences.styledTextWithMarks(context),
-                linkify)
+                linkify,
+                AppPreferences.drawersFolded(context))
     }
 
     @JvmOverloads
@@ -104,7 +105,7 @@ object OrgFormatter {
 
         ssb = parseMarkup(ssb, config)
 
-        ssb = parseDrawers(ssb)
+        ssb = parseDrawers(ssb, config.foldDrawers)
 
         return ssb
     }
@@ -272,7 +273,7 @@ object OrgFormatter {
         return buildFromRegions(ssb, spanRegions)
     }
 
-    private fun parseDrawers(ssb: SpannableStringBuilder): SpannableStringBuilder {
+    private fun parseDrawers(ssb: SpannableStringBuilder, foldDrawers: Boolean): SpannableStringBuilder {
         val m = ANY_DRAWER_PATTERN.matcher(ssb)
 
         return collectRegions(ssb) { spanRegions ->
@@ -287,7 +288,7 @@ object OrgFormatter {
 
                 if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found drawer", name, content, "All:'${m.group(0)}'")
 
-                val drawerSpanned = TextViewWithMarkup.drawerSpanned(name, content, isFolded = true)
+                val drawerSpanned = TextViewWithMarkup.drawerSpanned(name, content, foldDrawers)
 
                 val start = if (m.group(0).startsWith("\n")) m.start() + 1 else m.start()
                 val end = if (m.group(0).endsWith("\n")) m.end() - 1 else m.end()

@@ -22,7 +22,7 @@ class StateChangeTest : OrgzlyTest() {
     override fun setUp() {
         super.setUp()
 
-        AppPreferences.logOnDone(context, "time")
+        AppPreferences.logOnTimeShift(context, true)
     }
 
     /**

@@ -504,6 +504,9 @@
     <string name="hide_note_metadata">Hide metadata</string>
     <string name="overwrite_local_notebook_question">Overwrite local notebook?</string>
     <string name="overwrite_remote_notebook_question">Overwrite remote notebook?</string>
-    <string name="log_on_done">Log after marking note as done</string>
+    <string name="drawers_folded_by_default">Drawers folded</string>
+    <string name="drawers_folded_by_default_summary">Fold drawers by default</string>
+    <string name="log_on_time_shift">Log to drawer on time shift</string>
+    <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
 
 </resources>

@@ -121,12 +121,17 @@
             android:entryValues="@array/priority_values"
             android:defaultValue="@string/pref_default_min_priority"/>
 
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-            android:key="@string/pref_key_log_on_done"
-            android:title="@string/log_on_done"
-            android:entries="@array/log_on_done"
-            android:entryValues="@array/log_on_done_values"
-            android:defaultValue="@string/pref_default_log_on_done"/>
+        <SwitchPreference
+            android:key="@string/pref_key_drawers_folded"
+            android:title="@string/drawers_folded_by_default"
+            android:summary="@string/drawers_folded_by_default_summary"
+            android:defaultValue="@bool/pref_default_drawers_folded"/>
+
+        <SwitchPreference
+            android:key="@string/pref_key_log_on_time_shift"
+            android:title="@string/log_on_time_shift"
+            android:summary="@string/log_on_time_shift_summary"
+            android:defaultValue="@bool/pref_default_log_on_time_shift"/>
 
     </PreferenceCategory>
 

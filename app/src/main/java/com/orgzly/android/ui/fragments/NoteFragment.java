@@ -1307,7 +1307,7 @@ public class NoteFragment extends Fragment
 
             note.getHead().addProperty(OrgFormatter.LAST_REPEAT_PROPERTY, datetime);
 
-            if ("time".equals(AppPreferences.logOnDone(getContext()))) {
+            if (AppPreferences.logOnTimeShift(getContext())) {
                 String logEntry = OrgFormatter.INSTANCE.stateChangeLine(originalState, state, datetime);
                 String content = OrgFormatter.INSTANCE.insertLogbookEntryLine(note.getHead().getContent(), logEntry);
                 note.getHead().setContent(content);

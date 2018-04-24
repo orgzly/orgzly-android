@@ -496,18 +496,33 @@ public class AppPreferences {
     }
 
     /*
-     * Log on done
+     * Fold drawers
      */
 
-    public static String logOnDone(Context context) {
-        return getDefaultSharedPreferences(context).getString(
-                context.getResources().getString(R.string.pref_key_log_on_done),
-                context.getResources().getString(R.string.pref_default_log_on_done));
+    public static boolean drawersFolded(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_drawers_folded),
+                context.getResources().getBoolean(R.bool.pref_default_drawers_folded));
     }
 
-    public static void logOnDone(Context context, String value) {
-        String key = context.getResources().getString(R.string.pref_key_log_on_done);
-        getDefaultSharedPreferences(context).edit().putString(key, value).apply();
+    public static void drawersFolded(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_drawers_folded);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
+
+    /*
+     * Log on time shift
+     */
+
+    public static boolean logOnTimeShift(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_log_on_time_shift),
+                context.getResources().getBoolean(R.bool.pref_default_log_on_time_shift));
+    }
+
+    public static void logOnTimeShift(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_log_on_time_shift);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
     }
 
     /*
