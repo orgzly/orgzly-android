@@ -302,7 +302,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
      */
     private void updateBullet(Note note, ViewHolder holder) {
         if (inBook) {
-            holder.bullet.setVisibility(View.VISIBLE);
+            holder.bulletContainer.setVisibility(View.VISIBLE);
 
             if (note.getPosition().getDescendantsCount() > 0) { // With descendants
                 if (note.getPosition().isFolded()) { // Folded
@@ -315,7 +315,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
             }
 
         } else {
-            holder.bullet.setVisibility(View.GONE);
+            holder.bulletContainer.setVisibility(View.GONE);
         }
     }
 
