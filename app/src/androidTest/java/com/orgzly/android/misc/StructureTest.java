@@ -15,6 +15,7 @@ import com.orgzly.org.OrgHead;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -1009,4 +1010,46 @@ public class StructureTest extends OrgzlyTest {
         assertEquals(expectedBook, actual);
     }
 
+    @Test
+    public void testRefile() throws IOException {
+        Book book = shelfTestUtils.setupBook(
+                "Source",
+                "* TODO First\n" +
+                        "SCHEDULED: <2018-04-24 Tue>\n" +
+                        "\n" +
+                        "content\n" +
+                        "\n" +
+                        "** 1.1\n" +
+                        "** 1.2\n" +
+                        "\n" +
+                        "* TODO RefileMe\n" +
+                        "SCHEDULED: <2018-04-23 Mon>\n" +
+                        "\n" +
+                        "** 2.1\n" +
+                        "** 2.2\n" +
+                        "\n" +
+                        "* TODO Third\n"
+
+        );
+
+        Book targetBook = shelfTestUtils.setupBook(
+                "REFILE",
+                "* TODO RefiledPreviously\n"
+                );
+
+        Note refileNote = shelf.getNote("RefileMe");
+
+        shelf.refile(book.getId(), Collections.singleton(refileNote.getId()), targetBook.getId());
+
+        String actual = shelf.getBookContent("REFILE", BookName.Format.ORG);
+
+        String expectedBook = "* TODO RefiledPreviously\n" +
+                "* TODO RefileMe\n" +
+                "SCHEDULED: <2018-04-23 Mon>\n" +
+                "\n" +
+                "** 2.1\n" +
+                "** 2.2\n";
+
+        assertEquals(expectedBook, actual);
+    }
 }

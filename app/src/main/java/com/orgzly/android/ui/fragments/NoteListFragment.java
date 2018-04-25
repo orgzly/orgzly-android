@@ -8,6 +8,7 @@ import android.support.v7.view.ActionMode;
 import android.view.View;
 
 import com.orgzly.R;
+import com.orgzly.android.Book;
 import com.orgzly.android.Note;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
@@ -24,6 +25,7 @@ import com.orgzly.android.ui.views.GesturedListView;
 import com.orgzly.android.util.MiscUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -170,6 +172,20 @@ public abstract class NoteListFragment extends ListFragment {
         }
     }
 
+    protected void openNoteRefileDialog(NoteListFragmentListener listener, long sourceBookId, Set<Long> noteIds) {
+        List<Book> books = mShelf.getBooks(); // TODO blocking, should use cursor, etc
+        String[] names = new String[books.size()];
+        for (int i = 0; i < books.size(); i++) {
+            names[i] = books.get(i).getName();
+        }
+        AlertDialog ddd = new AlertDialog.Builder(getContext()).setTitle("Refile")
+                // TODO use setSingleChoice to preserve choice?
+                .setItems(names, (d, which) -> {
+                    Book target = books.get(which);
+                    listener.onNotesRefileRequest(sourceBookId, noteIds, target.getId());
+                }).create();
+        ddd.show();
+    }
 
     protected void openNoteStateDialog(NoteListFragmentListener listener, Set<Long> noteIds, String currentState) {
         dialog = NoteStateDialog.INSTANCE.create(
@@ -204,6 +220,7 @@ public abstract class NoteListFragment extends ListFragment {
         void onNoteClick(NoteListFragment fragment, View view, int position, long id, long noteId);
         void onNoteLongClick(NoteListFragment fragment, View view, int position, long id, long noteId);
 
+        void onNotesRefileRequest(long sourceBookId, Set<Long> noteIds, long targetBookId);
         void onStateChangeRequest(Set<Long> noteIds, String state);
         void onStateFlipRequest(long noteId);
         void onScheduledTimeUpdateRequest(Set<Long> noteIds, OrgDateTime time);

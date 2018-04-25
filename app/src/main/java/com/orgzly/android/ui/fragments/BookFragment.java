@@ -823,6 +823,10 @@ public class BookFragment extends NoteListFragment
                     actionMode.finish(); /* Close action mode. */
                     break;
 
+                case R.id.book_cab_refile:
+                    openNoteRefileDialog(listener, mBookId, mSelection.getIds());
+                    break;
+
                 case R.id.book_cab_paste_under:
                     pasteNotes(Place.UNDER);
                     actionMode.finish(); /* Close action mode. */
@@ -886,6 +890,7 @@ public class BookFragment extends NoteListFragment
         void onNotesPromoteRequest(long bookId, Set<Long> noteIds);
         void onNotesDemoteRequest(long bookId, Set<Long> noteIds);
         void onNotesMoveRequest(long bookId, long noteId, int offset);
+        void onNotesRefileRequest(long sourceBookId, Set<Long> noteIds, long targetBookId);
 
         void onCycleVisibilityRequest(Book book);
     }

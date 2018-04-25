@@ -448,6 +448,17 @@ public class NotesClient {
         }
     }
 
+    public static Note getRootNode(Context context, long bookId) {
+        try (Cursor cursor = context.getContentResolver().query(
+                ProviderContract.Notes.ContentUri.notes(), null, DbNoteView.BOOK_ID + "= ? AND " + DbNoteView.LEVEL + "= 0", new String[] {String.valueOf(bookId)}, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                return fromCursor(cursor, false);
+            } else {
+                throw new IllegalStateException("Book " + bookId + " has no root node");
+            }
+        }
+    }
+
     public static List<Long[]> getNotesWithProperty(Context context, String propName, String propValue) {
         List<Long[]> results = new ArrayList<>();
 
