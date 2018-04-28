@@ -111,6 +111,7 @@
         <attr name="ic_star_border_24dp" format="reference"/>
         <attr name="ic_unfold_more_24dp" format="reference"/>
         <attr name="ic_warning_24dp" format="reference"/>
+        <attr name="ic_refile_24dp" format="reference"/>
 
         <attr name="oic_dropbox_linked" format="reference"/>
         <attr name="oic_dropbox_not_linked" format="reference"/>

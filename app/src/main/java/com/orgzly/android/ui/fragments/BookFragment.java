@@ -50,6 +50,7 @@ import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -253,6 +254,10 @@ public class BookFragment extends NoteListFragment
 
                         case R.id.item_menu_new_below_btn:
                             listener.onNoteNewRequest(new NotePlace(mBookId, noteId, Place.BELOW));
+                            break;
+
+                        case R.id.item_menu_refile_btn:
+                            openNoteRefileDialog(listener, mBookId, Collections.singleton(noteId));
                             break;
 
                         default:

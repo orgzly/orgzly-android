@@ -1019,11 +1019,11 @@ public class SyncFragment extends Fragment {
 
 
     @SuppressLint("StaticFieldLeak")
-    public void refileNotes(final long bookId, final Set<Long> noteIds, final long targetBookId) {
+    public void refileNotes(final long sourceBookId, final Set<Long> noteIds, final long targetBookId) {
         new AsyncTask<Void, Void, Integer>() {
             @Override
             protected Integer doInBackground(Void... voids) {
-                return mShelf.refile(bookId, noteIds, targetBookId);
+                return mShelf.refile(sourceBookId, noteIds, targetBookId);
             }
 
             @Override
