@@ -78,7 +78,8 @@ public class BookFragment extends NoteListFragment
             R.id.book_cab_new,
             R.id.book_cab_cut,
             R.id.book_cab_paste,
-            R.id.book_cab_move
+            R.id.book_cab_move,
+            R.id.book_cab_refile
     };
 
     private BookFragmentListener listener;
