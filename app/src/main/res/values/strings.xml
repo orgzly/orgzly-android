@@ -92,6 +92,7 @@
 
     <string name="schedule">Schedule</string>
     <string name="refile">Refile</string>
+    <string name="refile_to">Refile to</string>
     <string name="deadline">Deadline</string>
     <string name="closed">Closed</string>
 

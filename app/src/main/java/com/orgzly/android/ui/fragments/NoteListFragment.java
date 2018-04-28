@@ -173,18 +173,17 @@ public abstract class NoteListFragment extends ListFragment {
     }
 
     protected void openNoteRefileDialog(NoteListFragmentListener listener, long sourceBookId, Set<Long> noteIds) {
-        List<Book> books = mShelf.getBooks(); // TODO blocking, should use cursor, etc
-        String[] names = new String[books.size()];
+        List<Book> books = mShelf.getBooks();
+        String[] book_names = new String[books.size()];
         for (int i = 0; i < books.size(); i++) {
-            names[i] = books.get(i).getName();
+            book_names[i] = books.get(i).getName();
         }
-        AlertDialog ddd = new AlertDialog.Builder(getContext()).setTitle("Refile")
-                // TODO use setSingleChoice to preserve choice?
-                .setItems(names, (d, which) -> {
+        AlertDialog refile_dialog = new AlertDialog.Builder(getContext()).setTitle(R.string.refile_to)
+                .setItems(book_names, (d, which) -> {
                     Book target = books.get(which);
                     listener.onNotesRefileRequest(sourceBookId, noteIds, target.getId());
                 }).create();
-        ddd.show();
+        refile_dialog.show();
     }
 
     protected void openNoteStateDialog(NoteListFragmentListener listener, Set<Long> noteIds, String currentState) {
