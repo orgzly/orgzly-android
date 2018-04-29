@@ -18,6 +18,7 @@
   <string name="not_now">الآن نه</string>
   <string name="save">دخیره</string>
   <string name="discard">صرف نظر</string>
+  <string name="remove_notebook_link">Remove link</string>
   <string name="browse">مرور</string>
   <string name="dropbox">دراپ‌باکس</string>
   <string name="edit">ویرایش</string>
@@ -35,6 +36,7 @@
   <string name="import_">Import</string>
   <!-- Reserved keyword -->
   <string name="export">استخراج</string>
+  <string name="overwrite">Overwrite</string>
   <string name="imported">وارد شد</string>
   <string name="created">ایجاد شد</string>
   <string name="states">وضعیت‌ها</string>
@@ -51,6 +53,8 @@
   <string name="repeater">Repeater</string>
   <string name="state">وضعیت</string>
   <string name="priority">Priority</string>
+  <string name="nothing">Nothing</string>
+  <string name="open">Open</string>
   <plurals name="notes_deleted">
     <item quantity="one">%d یادداشت حذف شد</item>
     <item quantity="other"><b>%d</b> یادداشت حذف شد</item>
@@ -407,4 +411,10 @@
   <string name="notification_channel_settings">Notifications</string>
   <string name="notification_channel_settings_summary">Sound, vibrate, notification dot</string>
   <string name="hide_note_metadata">Hide metadata</string>
+  <string name="overwrite_local_notebook_question">Overwrite local notebook?</string>
+  <string name="overwrite_remote_notebook_question">Overwrite remote notebook?</string>
+  <string name="drawers_folded_by_default">Drawers folded</string>
+  <string name="drawers_folded_by_default_summary">Fold drawers by default</string>
+  <string name="log_on_time_shift">Log to drawer on time shift</string>
+  <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
 </resources>

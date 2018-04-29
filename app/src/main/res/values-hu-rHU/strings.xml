@@ -18,6 +18,7 @@
   <string name="not_now">Ne most</string>
   <string name="save">Mentés</string>
   <string name="discard">Elvetés</string>
+  <string name="remove_notebook_link">Remove link</string>
   <string name="browse">Tallózás</string>
   <string name="dropbox">Dropbox</string>
   <string name="edit">Szerkesztés</string>
@@ -35,6 +36,7 @@
   <string name="import_">Betöltés</string>
   <!-- Reserved keyword -->
   <string name="export">Mentés</string>
+  <string name="overwrite">Overwrite</string>
   <string name="imported">Betöltve</string>
   <string name="created">Létrehozva</string>
   <string name="states">Állapotok</string>
@@ -51,6 +53,8 @@
   <string name="repeater">Ismétlő</string>
   <string name="state">Állapot</string>
   <string name="priority">Fontosság</string>
+  <string name="nothing">Nothing</string>
+  <string name="open">Open</string>
   <plurals name="notes_deleted">
     <item quantity="one">Bejegyzés törölve</item>
     <item quantity="other"><b>%d</b> bejegyzés törölve</item>
@@ -407,4 +411,10 @@
   <string name="notification_channel_settings">Értesítések</string>
   <string name="notification_channel_settings_summary">Hang, rezgés, értesítés pont</string>
   <string name="hide_note_metadata">Hide metadata</string>
+  <string name="overwrite_local_notebook_question">Overwrite local notebook?</string>
+  <string name="overwrite_remote_notebook_question">Overwrite remote notebook?</string>
+  <string name="drawers_folded_by_default">Drawers folded</string>
+  <string name="drawers_folded_by_default_summary">Fold drawers by default</string>
+  <string name="log_on_time_shift">Log to drawer on time shift</string>
+  <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
 </resources>
