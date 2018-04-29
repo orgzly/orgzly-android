@@ -18,6 +18,7 @@
   <string name="not_now">Non ora</string>
   <string name="save">Salva</string>
   <string name="discard">Ignora</string>
+  <string name="remove_notebook_link">Rimuovi il collegamento</string>
   <string name="browse">Cerca</string>
   <string name="dropbox">Dropbox</string>
   <string name="edit">Modifica</string>
@@ -35,6 +36,7 @@
   <string name="import_">Importa</string>
   <!-- Reserved keyword -->
   <string name="export">Esporta</string>
+  <string name="overwrite">Sovrascrivi</string>
   <string name="imported">Importa</string>
   <string name="created">Creato</string>
   <string name="states">Stati</string>
@@ -51,6 +53,8 @@
   <string name="repeater">Ripetitore</string>
   <string name="state">Stato</string>
   <string name="priority">Priorità</string>
+  <string name="nothing">Nessuno</string>
+  <string name="open">Apri</string>
   <plurals name="notes_deleted">
     <item quantity="one">Nota cancellata</item>
     <item quantity="other">Cancellate <b>%d</b> note</item>
@@ -407,4 +411,10 @@
   <string name="notification_channel_settings">Notifiche</string>
   <string name="notification_channel_settings_summary">Suono, vibrazione, puntino di notifica</string>
   <string name="hide_note_metadata">Nascondi i metadati</string>
+  <string name="overwrite_local_notebook_question">Sovrascrivere il taccuino locale?</string>
+  <string name="overwrite_remote_notebook_question">Sovrascrivere il taccuino remoto?</string>
+  <string name="drawers_folded_by_default">Menu chiuso</string>
+  <string name="drawers_folded_by_default_summary">Chiudi il menu di default</string>
+  <string name="log_on_time_shift">Registra sul menu durante lo spostamento temporale</string>
+  <string name="log_on_time_shift_summary">Registra l\'orario quando la nota con il ripetitore è segnata come completata</string>
 </resources>

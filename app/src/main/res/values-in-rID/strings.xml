@@ -18,6 +18,7 @@
   <string name="not_now">Jangan sekarang</string>
   <string name="save">Simpan</string>
   <string name="discard">Buang</string>
+  <string name="remove_notebook_link">Remove link</string>
   <string name="browse">Peramban</string>
   <string name="dropbox">Dropbox</string>
   <string name="edit">Sunting</string>
@@ -35,6 +36,7 @@
   <string name="import_">Impor</string>
   <!-- Reserved keyword -->
   <string name="export">Ekspor</string>
+  <string name="overwrite">Overwrite</string>
   <string name="imported">Telah diimpor</string>
   <string name="created">Dibuat</string>
   <string name="states">Propinsi</string>
@@ -51,6 +53,8 @@
   <string name="repeater">Pengulang</string>
   <string name="state">Keadaan</string>
   <string name="priority">Prioritas</string>
+  <string name="nothing">Nothing</string>
+  <string name="open">Open</string>
   <plurals name="notes_deleted">
     <item quantity="other">Catatan <b>%d</b> dihapus</item>
   </plurals>
@@ -401,4 +405,10 @@
   <string name="notification_channel_settings">Notifications</string>
   <string name="notification_channel_settings_summary">Sound, vibrate, notification dot</string>
   <string name="hide_note_metadata">Hide metadata</string>
+  <string name="overwrite_local_notebook_question">Overwrite local notebook?</string>
+  <string name="overwrite_remote_notebook_question">Overwrite remote notebook?</string>
+  <string name="drawers_folded_by_default">Drawers folded</string>
+  <string name="drawers_folded_by_default_summary">Fold drawers by default</string>
+  <string name="log_on_time_shift">Log to drawer on time shift</string>
+  <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
 </resources>

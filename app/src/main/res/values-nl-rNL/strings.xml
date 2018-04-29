@@ -18,6 +18,7 @@
   <string name="not_now">Niet nu</string>
   <string name="save">Opslaan</string>
   <string name="discard">Weggooien</string>
+  <string name="remove_notebook_link">Remove link</string>
   <string name="browse">Bladeren</string>
   <string name="dropbox">Dropbox</string>
   <string name="edit">Bewerk</string>
@@ -35,6 +36,7 @@
   <string name="import_">Importeren</string>
   <!-- Reserved keyword -->
   <string name="export">Exporteren</string>
+  <string name="overwrite">Overwrite</string>
   <string name="imported">Geïmporteerd</string>
   <string name="created">Gemaakt op</string>
   <string name="states">Statussen</string>
@@ -51,6 +53,8 @@
   <string name="repeater">Herhaler</string>
   <string name="state">Status</string>
   <string name="priority">Prioriteit</string>
+  <string name="nothing">Nothing</string>
+  <string name="open">Open</string>
   <plurals name="notes_deleted">
     <item quantity="one">Notitie verwijderd</item>
     <item quantity="other">Verwijderde <b>%d</b> notities</item>
@@ -407,4 +411,10 @@
   <string name="notification_channel_settings">Notificaties</string>
   <string name="notification_channel_settings_summary">Geluid, vibratie, notificatiestip</string>
   <string name="hide_note_metadata">Hide metadata</string>
+  <string name="overwrite_local_notebook_question">Overwrite local notebook?</string>
+  <string name="overwrite_remote_notebook_question">Overwrite remote notebook?</string>
+  <string name="drawers_folded_by_default">Drawers folded</string>
+  <string name="drawers_folded_by_default_summary">Fold drawers by default</string>
+  <string name="log_on_time_shift">Log to drawer on time shift</string>
+  <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
 </resources>

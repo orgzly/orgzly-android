@@ -18,6 +18,7 @@
   <string name="not_now">Plus tard</string>
   <string name="save">Sauvegarder</string>
   <string name="discard">Jeter</string>
+  <string name="remove_notebook_link">Remove link</string>
   <string name="browse">Parcourir</string>
   <string name="dropbox">Dropbox</string>
   <string name="edit">Modifier</string>
@@ -35,6 +36,7 @@
   <string name="import_">Importer</string>
   <!-- Reserved keyword -->
   <string name="export">Exporter</string>
+  <string name="overwrite">Overwrite</string>
   <string name="imported">Importé</string>
   <string name="created">Créé</string>
   <string name="states">États</string>
@@ -51,6 +53,8 @@
   <string name="repeater">Répéteur</string>
   <string name="state">État</string>
   <string name="priority">Priorité</string>
+  <string name="nothing">Nothing</string>
+  <string name="open">Open</string>
   <plurals name="notes_deleted">
     <item quantity="one">Note supprimée</item>
     <item quantity="other">Supprimé <b>%d</b> notes</item>
@@ -407,4 +411,10 @@
   <string name="notification_channel_settings">Notifications</string>
   <string name="notification_channel_settings_summary">Son, vibreur, point de notification</string>
   <string name="hide_note_metadata">Masquer les métadonnées</string>
+  <string name="overwrite_local_notebook_question">Overwrite local notebook?</string>
+  <string name="overwrite_remote_notebook_question">Overwrite remote notebook?</string>
+  <string name="drawers_folded_by_default">Drawers folded</string>
+  <string name="drawers_folded_by_default_summary">Fold drawers by default</string>
+  <string name="log_on_time_shift">Log to drawer on time shift</string>
+  <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
 </resources>

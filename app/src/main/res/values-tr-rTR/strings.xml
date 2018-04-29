@@ -18,6 +18,7 @@
   <string name="not_now">Şimdi değil</string>
   <string name="save">Kaydet</string>
   <string name="discard">At-iptal et</string>
+  <string name="remove_notebook_link">Remove link</string>
   <string name="browse">Gözat</string>
   <string name="dropbox">Dropbox</string>
   <string name="edit">Düzenle</string>
@@ -35,6 +36,7 @@
   <string name="import_">İçeri al</string>
   <!-- Reserved keyword -->
   <string name="export">Dşarı Aktar</string>
+  <string name="overwrite">Overwrite</string>
   <string name="imported">İçeri alındı</string>
   <string name="created">Oluştur</string>
   <string name="states">Durum</string>
@@ -51,6 +53,8 @@
   <string name="repeater">Tekrarlayıcı</string>
   <string name="state">Durum</string>
   <string name="priority">Priority</string>
+  <string name="nothing">Nothing</string>
+  <string name="open">Open</string>
   <plurals name="notes_deleted">
     <item quantity="one">Not Silindi</item>
     <item quantity="other">Silindi <b>%d</b> notlar</item>
@@ -407,4 +411,10 @@
   <string name="notification_channel_settings">Bildirimler</string>
   <string name="notification_channel_settings_summary">Ses, titreşim, bildirim noktası</string>
   <string name="hide_note_metadata">Hide metadata</string>
+  <string name="overwrite_local_notebook_question">Overwrite local notebook?</string>
+  <string name="overwrite_remote_notebook_question">Overwrite remote notebook?</string>
+  <string name="drawers_folded_by_default">Drawers folded</string>
+  <string name="drawers_folded_by_default_summary">Fold drawers by default</string>
+  <string name="log_on_time_shift">Log to drawer on time shift</string>
+  <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
 </resources>

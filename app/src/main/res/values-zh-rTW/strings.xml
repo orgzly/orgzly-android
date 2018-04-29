@@ -18,6 +18,7 @@
   <string name="not_now">現在不要</string>
   <string name="save">儲存</string>
   <string name="discard">取消</string>
+  <string name="remove_notebook_link">移除連結</string>
   <string name="browse">瀏覽</string>
   <string name="dropbox">Dropbox</string>
   <string name="edit">編輯</string>
@@ -35,6 +36,7 @@
   <string name="import_">匯入</string>
   <!-- Reserved keyword -->
   <string name="export">匯出</string>
+  <string name="overwrite">覆寫</string>
   <string name="imported">已匯入</string>
   <string name="created">已建立</string>
   <string name="states">狀態</string>
@@ -51,6 +53,8 @@
   <string name="repeater">重複</string>
   <string name="state">狀態</string>
   <string name="priority">優先順序</string>
+  <string name="nothing">沒有</string>
+  <string name="open">打開</string>
   <plurals name="notes_deleted">
     <item quantity="other">已刪除 <b>%d</b> 筆記</item>
   </plurals>
@@ -401,4 +405,10 @@
   <string name="notification_channel_settings">通知訊息</string>
   <string name="notification_channel_settings_summary">聲音, 震動, 通知</string>
   <string name="hide_note_metadata">隱藏中繼資料</string>
+  <string name="overwrite_local_notebook_question">是否覆蓋本地筆記本？</string>
+  <string name="overwrite_remote_notebook_question">是否覆蓋遠端筆記本？</string>
+  <string name="drawers_folded_by_default">抽屜折疊</string>
+  <string name="drawers_folded_by_default_summary">預設折疊抽屜</string>
+  <string name="log_on_time_shift">按時間順序登錄抽屜</string>
+  <string name="log_on_time_shift_summary">帶有重複時間的筆記標記完成時記錄時間</string>
 </resources>
