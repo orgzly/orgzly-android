@@ -2,12 +2,9 @@ package com.orgzly.android.widgets;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Binder;
 import android.provider.BaseColumns;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -33,28 +30,32 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
     private static final String TAG = ListWidgetViewsFactory.class.getName();
 
     private boolean isPartitioned;
-    private Cursor mCursor;
+    private Cursor cursor;
     private Map<Long, AgendaCursor.NoteForDay> originalNoteIDs;
 
-    private Context mContext;
+    private Context context;
     private String queryString;
     private TitleGenerator titleGenerator;
     private UserTimeFormatter userTimeFormatter;
 
-    public ListWidgetViewsFactory(Context mContext, String queryString) {
-        this.mContext = mContext;
-        // this should be a query string, which doesn't match anything
+    public ListWidgetViewsFactory(Context context, String queryString) {
+        this.context = context;
+
+        // Query string which doesn't match anything
         this.queryString = queryString != null ? queryString : ".b.a b.a";
 
-        this.userTimeFormatter = new UserTimeFormatter(mContext);
-        this.titleGenerator = new TitleGenerator(mContext, false, new TitleGenerator.TitleAttributes(
-                Color.rgb(0xdc, 0,0),
-                Color.rgb(0, 0x80,0),
-                Color.rgb(0, 0,0xff),
-                // see http://stackoverflow.com/a/8296048/7757713
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, Resources.getSystem().getDisplayMetrics()),
-                Color.rgb(0x69, 0x69,0x69)
-        ));
+        this.userTimeFormatter = new UserTimeFormatter(context);
+
+        TitleGenerator.TitleAttributes attrs;
+
+        attrs = new TitleGenerator.TitleAttributes(
+                context.getResources().getColor(R.color.widget_light_state_todo_color),
+                context.getResources().getColor(R.color.widget_light_state_done_color),
+                context.getResources().getColor(R.color.widget_light_state_unknown_color),
+                (int) context.getResources().getDimension(R.dimen.widget_post_title_text_size),
+                context.getResources().getColor(R.color.widget_light_post_title_color));
+
+        this.titleGenerator = new TitleGenerator(context, false, attrs);
     }
 
     @Override
@@ -62,8 +63,8 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public void onDataSetChanged() {
-        if (mCursor != null) {
-            mCursor.close();
+        if (cursor != null) {
+            cursor.close();
         }
 
         // Parse query
@@ -76,16 +77,16 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
         final long token = Binder.clearCallingIdentity();
         try {
             if (isPartitioned) {
-                Cursor cursor = NotesClient.getCursorForQuery(mContext, queryString);
+                Cursor cursor = NotesClient.getCursorForQuery(context, queryString);
 
                 AgendaCursor.AgendaMergedCursor agendaCursor =
-                        AgendaCursor.INSTANCE.create(mContext, cursor, queryString);
+                        AgendaCursor.INSTANCE.create(context, cursor, queryString);
 
-                mCursor = agendaCursor.getCursor();
+                this.cursor = agendaCursor.getCursor();
                 originalNoteIDs = agendaCursor.getOriginalNoteIDs();
 
             } else {
-                mCursor = NotesClient.getCursorForQuery(mContext, queryString);
+                cursor = NotesClient.getCursorForQuery(context, queryString);
             }
 
         } finally {
@@ -95,15 +96,15 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public void onDestroy() {
-        if (mCursor != null) {
-            mCursor.close();
+        if (cursor != null) {
+            cursor.close();
         }
     }
 
     @Override
     public int getCount() {
-        if (mCursor != null) {
-            return mCursor.getCount();
+        if (cursor != null) {
+            return cursor.getCount();
         }
         return 0;
     }
@@ -114,16 +115,16 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
 
         RemoteViews row = null;
 
-        if (mCursor.moveToPosition(position)) {
-            String packageName = mContext.getPackageName();
+        if (cursor.moveToPosition(position)) {
+            String packageName = context.getPackageName();
 
-            if (isPartitioned && AgendaCursor.INSTANCE.isDivider(mCursor)) {
+            if (isPartitioned && AgendaCursor.INSTANCE.isDivider(cursor)) {
                 row = new RemoteViews(packageName, R.layout.item_list_widget_divider);
-                setupDividerRow(row, mCursor);
+                setupDividerRow(row, cursor);
 
             } else {
                 row = new RemoteViews(packageName, R.layout.item_list_widget);
-                setupNoteRow(row, mCursor);
+                setupNoteRow(row, cursor);
             }
         }
 
@@ -150,7 +151,7 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
         row.setTextViewText(R.id.item_list_widget_title, titleGenerator.generateTitle(note, head));
 
         /* Closed time. */
-        if (head.hasClosed() && AppPreferences.displayPlanning(mContext)) {
+        if (head.hasClosed() && AppPreferences.displayPlanning(context)) {
             row.setTextViewText(R.id.item_list_widget_closed_text, userTimeFormatter.formatAll(head.getClosed()));
             row.setViewVisibility(R.id.item_list_widget_closed, View.VISIBLE);
         } else {
@@ -158,7 +159,7 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
         }
 
         /* Deadline time. */
-        if (head.hasDeadline() && AppPreferences.displayPlanning(mContext)) {
+        if (head.hasDeadline() && AppPreferences.displayPlanning(context)) {
             row.setTextViewText(R.id.item_list_widget_deadline_text, userTimeFormatter.formatAll(head.getDeadline()));
             row.setViewVisibility(R.id.item_list_widget_deadline, View.VISIBLE);
         } else {
@@ -166,14 +167,14 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
         }
 
         /* Scheduled time. */
-        if (head.hasScheduled() && AppPreferences.displayPlanning(mContext)) {
+        if (head.hasScheduled() && AppPreferences.displayPlanning(context)) {
             row.setTextViewText(R.id.item_list_widget_scheduled_text, userTimeFormatter.formatAll(head.getScheduled()));
             row.setViewVisibility(R.id.item_list_widget_scheduled, View.VISIBLE);
         } else {
             row.setViewVisibility(R.id.item_list_widget_scheduled, View.GONE);
         }
 
-        if (AppPreferences.todoKeywordsSet(mContext).contains(head.getState())) {
+        if (AppPreferences.todoKeywordsSet(context).contains(head.getState())) {
             row.setViewVisibility(R.id.item_list_widget_done, View.VISIBLE);
         } else {
             row.setViewVisibility(R.id.item_list_widget_done, View.GONE);
@@ -207,8 +208,8 @@ public class ListWidgetViewsFactory implements RemoteViewsService.RemoteViewsFac
     public long getItemId(int position) {
         long id;
 
-        if (mCursor.moveToPosition(position)) {
-            id = mCursor.getLong(mCursor.getColumnIndex(BaseColumns._ID));
+        if (cursor.moveToPosition(position)) {
+            id = cursor.getLong(cursor.getColumnIndex(BaseColumns._ID));
 
         } else {
             id = -position;

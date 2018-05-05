@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 tools:text="@string/head_title_sample"
-                android:textColor="@color/black"
+                android:textColor="@color/widget_light_title_color"
                 android:textSize="@dimen/widget_title_text_size"
                 android:maxLines="1" />
 
@@ -52,7 +52,7 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
                 android:src="@drawable/ic_done_black_24dp"
-                android:tint="#444444"/>
+                android:tint="#444444" />
 
         </LinearLayout>
 
@@ -77,12 +77,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="@string/note_scheduled_sample"
-                android:textColor="#696969"
+                android:textColor="@color/widget_light_post_title_color"
                 android:textSize="@dimen/widget_post_title_text_size"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:maxLines="1"
-                android:ellipsize="end"/>
+                android:ellipsize="end" />
         </LinearLayout>
 
         <LinearLayout
@@ -106,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="@string/note_deadline_sample"
-                android:textColor="#696969"
+                android:textColor="@color/widget_light_post_title_color"
                 android:textSize="@dimen/widget_post_title_text_size"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
@@ -135,7 +135,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="@string/note_closed_sample"
-                android:textColor="#696969"
+                android:textColor="@color/widget_light_post_title_color"
                 android:textSize="@dimen/widget_post_title_text_size"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"

@@ -69,5 +69,22 @@
     <color name="dark_theme_item_selected_bg_color">#3290A4AE</color>
     <color name="black_theme_item_selected_bg_color">#3290A4AE</color>
 
+    <color name="widget_light_header_bg_color">#fa607d8b</color>
+    <color name="widget_light_header_text_color">@color/white_text_primary_color</color>
+    <color name="widget_light_list_bg_color">#faffffff</color>
+    <color name="widget_light_state_todo_color">@color/red_900</color>
+    <color name="widget_light_state_done_color">@color/green_900</color>
+    <color name="widget_light_state_unknown_color">@color/blue_900</color>
+    <color name="widget_light_title_color">@color/dark_text_primary_color</color>
+    <color name="widget_light_post_title_color">@color/dark_text_secondary_color</color>
+
+    <!--<color name="widget_light_header_bg_color">@color/dark_theme_app_bar</color>-->
+    <!--<color name="widget_light_header_text_color">@color/white_text_primary_color</color>-->
+    <!--<color name="widget_light_list_bg_color">@color/dark_theme_cards_and_dialogs</color>-->
+    <!--<color name="widget_light_state_todo_color">@color/red_200</color>-->
+    <!--<color name="widget_light_state_done_color">@color/green_200</color>-->
+    <!--<color name="widget_light_state_unknown_color">@color/blue_200</color>-->
+    <!--<color name="widget_light_title_color">@color/white_text_primary_color</color>-->
+    <!--<color name="widget_light_post_title_color">@color/white_text_secondary_color</color>-->
 </resources>
 

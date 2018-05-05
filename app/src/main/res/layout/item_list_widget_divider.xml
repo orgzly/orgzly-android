@@ -17,9 +17,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:maxLines="1"
-        android:textColor="@color/black"
+        android:textColor="@color/widget_light_title_color"
         android:textSize="@dimen/widget_title_text_size"
         android:textStyle="bold"
-        tools:text="Mon, 25 Sep"/>
+        tools:text="Mon, 25 Sep" />
 
 </LinearLayout>
