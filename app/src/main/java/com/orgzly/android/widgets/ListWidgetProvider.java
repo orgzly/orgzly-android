@@ -97,7 +97,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
     }
 
     private static void updateAppWidgetLayouts(Context context) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "updateAppWidgetLayouts");
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 
