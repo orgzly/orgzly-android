@@ -35,7 +35,7 @@
                 android:ellipsize="end"
                 tools:text="@string/head_title_sample"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/widget_title_text_size"
                 android:maxLines="1" />
 
             <ImageView
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 tools:text="@string/note_scheduled_sample"
                 android:textColor="#696969"
-                android:textSize="14sp"
+                android:textSize="@dimen/widget_post_title_text_size"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:maxLines="1"
@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 tools:text="@string/note_deadline_sample"
                 android:textColor="#696969"
-                android:textSize="14sp"
+                android:textSize="@dimen/widget_post_title_text_size"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:maxLines="1"
@@ -136,7 +136,7 @@
                 android:layout_height="wrap_content"
                 tools:text="@string/note_closed_sample"
                 android:textColor="#696969"
-                android:textSize="14sp"
+                android:textSize="@dimen/widget_post_title_text_size"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:maxLines="1"

@@ -18,7 +18,7 @@
         android:layout_gravity="center_vertical"
         android:maxLines="1"
         android:textColor="@color/black"
-        android:textSize="14sp"
+        android:textSize="@dimen/widget_title_text_size"
         android:textStyle="bold"
         tools:text="Mon, 25 Sep"/>
 
