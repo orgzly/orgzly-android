@@ -64,8 +64,8 @@ class EspressoUtils {
     static final int[] SETTINGS_CREATED_AT = { 4, 3 };
     static final int[] SETTINGS_CREATED_AT_PROPERTY = { 4, 4 };
 
-    static final int[] IMPORT_GETTING_STARTED = { 5, 0 };
-    static final int[] SETTINGS_CLEAR_DATABASE = { 5, 1 };
+    static final int[] IMPORT_GETTING_STARTED = { 6, 0 };
+    static final int[] SETTINGS_CLEAR_DATABASE = { 6, 1 };
 
 
     static void tapToSetting(int[] setting) {

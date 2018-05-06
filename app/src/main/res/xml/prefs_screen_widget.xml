@@ -11,7 +11,6 @@
         android:entryValues="@array/color_scheme_values"
         android:defaultValue="@string/pref_default_value_color_scheme" />
 
-
     <com.orgzly.android.prefs.IntegerPreference
         android:key="@string/pref_key_widget_opacity"
         android:title="@string/background_opacity"
@@ -20,5 +19,12 @@
         android:defaultValue="@string/pref_default_widget_opacity"
         app:min="0"
         app:max="100" />
+
+    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        android:key="@string/pref_key_widget_update_frequency"
+        android:title="@string/update_frequency"
+        android:entries="@array/widget_update_frequency"
+        android:entryValues="@array/widget_update_frequency_values"
+        android:defaultValue="@string/pref_default_widget_update_frequency"/>
 
 </PreferenceScreen>

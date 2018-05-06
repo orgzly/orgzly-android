@@ -365,6 +365,21 @@
     <string name="pref_key_widget_opacity" translatable="false">pref_key_widget_opacity</string>
     <string name="pref_default_widget_opacity" translatable="false">98</string>
 
+    <string name="pref_key_widget_update_frequency" translatable="false">pref_key_widget_update_frequency</string>
+    <string name="pref_default_widget_update_frequency" translatable="false">60</string>
+    <string-array name="widget_update_frequency">
+        <item>5 min</item>
+        <item>15 min</item>
+        <item>30 min</item>
+        <item>1 h</item>
+    </string-array>
+    <string-array name="widget_update_frequency_values">
+        <item>5</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+    </string-array>
+
 
     <!-- These do not store any data. -->
     <string name="pref_key_repos" translatable="false">pref_key_repos</string>

@@ -510,5 +510,6 @@
     <string name="log_on_time_shift">Log to drawer on time shift</string>
     <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
     <string name="background_opacity">Background opacity</string>
+    <string name="update_frequency">Update frequency</string>
 
 </resources>

@@ -18,6 +18,7 @@ import com.orgzly.R;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.filter.Filter;
 import com.orgzly.android.Shelf;
+import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.ui.MainActivity;
 import com.orgzly.android.ui.ShareActivity;
@@ -110,6 +111,8 @@ public class ListWidgetProvider extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidgetLayout(context, appWidgetManager, appWidgetId);
         }
+
+        scheduleUpdate(context);
     }
 
     private static void updateListContents(Context context) {
@@ -149,16 +152,29 @@ public class ListWidgetProvider extends AppWidgetProvider {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         PendingIntent intent = getAlarmIntent(context);
+
         alarmManager.cancel(intent);
 
-        /* repeat after every full hour because results of search can change on new day
-            because of timezones repeat every hour instead of every day */
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.add(Calendar.HOUR_OF_DAY, 1);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 1);
-        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR, intent);
+        int intervalMin = AppPreferences.widgetUpdateFrequency(context);
+        long intervalMillis = intervalMin * 60 * 1000;
+
+        long now = System.currentTimeMillis();
+        Calendar triggerAt = Calendar.getInstance();
+        triggerAt.setTimeInMillis(now);
+        triggerAt.set(Calendar.MILLISECOND, 1);
+        triggerAt.set(Calendar.SECOND, 0);
+        triggerAt.set(Calendar.MINUTE, 0);
+        do {
+            triggerAt.add(Calendar.MINUTE, intervalMin);
+        } while (triggerAt.getTimeInMillis() < now);
+
+        alarmManager.setInexactRepeating(
+                AlarmManager.RTC,
+                triggerAt.getTimeInMillis(),
+                intervalMillis,
+                intent);
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, triggerAt.getTimeInMillis(), intervalMillis);
     }
 
     private static void clearUpdate(Context context) {
