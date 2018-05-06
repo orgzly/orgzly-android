@@ -223,11 +223,14 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
             }
         }
 
-        /* Update widget for changed color scheme. */
-        if (getString(R.string.pref_key_widget_color_scheme) == key) {
-            val intent = Intent(context, ListWidgetProvider::class.java)
-            intent.action = AppIntent.ACTION_UPDATE_LAYOUT_LIST_WIDGET
-            context?.sendBroadcast(intent)
+        /* Update widget for changed style. */
+        when (key) {
+            getString(R.string.pref_key_widget_color_scheme),
+            getString(R.string.pref_key_widget_opacity) -> {
+                val intent = Intent(context, ListWidgetProvider::class.java)
+                intent.action = AppIntent.ACTION_UPDATE_LAYOUT_LIST_WIDGET
+                context?.sendBroadcast(intent)
+            }
         }
 
         /* Reminders for scheduled notes. Reset last run time. */
@@ -257,7 +260,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
         if (scheduled != null && deadline != null) {
             val remindersEnabled = (scheduled as TwoStatePreference).isChecked
-                    || (deadline as TwoStatePreference).isChecked
+                                   || (deadline as TwoStatePreference).isChecked
 
             /* These do not exist on Oreo and later */
             findPreference(getString(R.string.pref_key_reminders_sound))?.isEnabled = remindersEnabled

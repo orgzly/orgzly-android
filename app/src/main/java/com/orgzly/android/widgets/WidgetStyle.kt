@@ -9,6 +9,7 @@ import com.orgzly.R
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.util.TitleGenerator
 
+
 object WidgetStyle {
     fun updateWidget(remoteViews: RemoteViews, context: Context) {
         remoteViews.setInt(
@@ -118,11 +119,13 @@ object WidgetStyle {
 
     @ColorInt
     fun headerBackground(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
+        val color = when (AppPreferences.widgetColorScheme(context)) {
             "dark" -> ContextCompat.getColor(context, R.color.widget_dark_header_bg_color)
             "black" -> ContextCompat.getColor(context, R.color.widget_black_header_bg_color)
             else -> ContextCompat.getColor(context, R.color.widget_light_header_bg_color)
         }
+
+        return withOpacity(context, color)
     }
 
     @ColorInt
@@ -136,11 +139,13 @@ object WidgetStyle {
 
     @ColorInt
     private fun listBackgroundColor(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
+        val color = when (AppPreferences.widgetColorScheme(context)) {
             "dark" -> ContextCompat.getColor(context, R.color.widget_dark_list_bg_color)
             "black" -> ContextCompat.getColor(context, R.color.widget_black_list_bg_color)
             else -> ContextCompat.getColor(context, R.color.widget_light_list_bg_color)
         }
+
+        return withOpacity(context, color)
     }
 
     @DrawableRes
@@ -173,5 +178,11 @@ object WidgetStyle {
             "dark", "black" -> R.drawable.ic_done_white_24dp
             else -> R.drawable.ic_done_black_24dp
         }
+    }
+
+    @ColorInt
+    private fun withOpacity(context: Context, @ColorInt color: Int): Int {
+        val opacity = AppPreferences.widgetOpacity(context) / 100f
+        return ((opacity * 0xFF).toInt() shl 24) or (color and 0x00ffffff)
     }
 }

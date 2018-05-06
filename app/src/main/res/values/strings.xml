@@ -509,5 +509,6 @@
     <string name="drawers_folded_by_default_summary">Fold drawers by default</string>
     <string name="log_on_time_shift">Log to drawer on time shift</string>
     <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
+    <string name="background_opacity">Background opacity</string>
 
 </resources>

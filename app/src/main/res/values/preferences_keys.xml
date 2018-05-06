@@ -362,11 +362,16 @@
     <string name="pref_key_widget_color_scheme" translatable="false">pref_key_widget_color_scheme</string>
     <string name="pref_default_widget_color_scheme" translatable="false">light</string>
 
+    <string name="pref_key_widget_opacity" translatable="false">pref_key_widget_opacity</string>
+    <string name="pref_default_widget_opacity" translatable="false">98</string>
+
+
     <!-- These do not store any data. -->
     <string name="pref_key_repos" translatable="false">pref_key_repos</string>
     <string name="pref_key_version" translatable="false">pref_key_version</string>
     <string name="pref_key_reload_getting_started" translatable="false">pref_key_reload_getting_started</string>
     <string name="pref_key_clear_database" translatable="false">pref_key_clear_database</string>
+
 
     <!-- State-type preferences, not changeable by user. They have no defaults. -->
     <string name="pref_key_dropbox_token" translatable="false">pref_key_dropbox_token</string>

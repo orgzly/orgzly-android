@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/widget">
 
     <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
@@ -9,6 +9,16 @@
         android:title="@string/color_scheme"
         android:entries="@array/color_scheme"
         android:entryValues="@array/color_scheme_values"
-        android:defaultValue="@string/pref_default_value_color_scheme"/>
+        android:defaultValue="@string/pref_default_value_color_scheme" />
+
+
+    <com.orgzly.android.prefs.IntegerPreference
+        android:key="@string/pref_key_widget_opacity"
+        android:title="@string/background_opacity"
+        android:inputType="numberSigned"
+        android:selectAllOnFocus="true"
+        android:defaultValue="@string/pref_default_widget_opacity"
+        app:min="0"
+        app:max="100" />
 
 </PreferenceScreen>

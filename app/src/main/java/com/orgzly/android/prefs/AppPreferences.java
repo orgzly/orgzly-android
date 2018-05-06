@@ -550,6 +550,12 @@ public class AppPreferences {
                 context.getResources().getString(R.string.pref_default_widget_color_scheme));
     }
 
+    public static int widgetOpacity(Context context) {
+        return Integer.valueOf(getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_widget_opacity),
+                context.getResources().getString(R.string.pref_default_widget_opacity)));
+    }
+
     /*
      * State flags and values.
      * They have no default values, they are not set by user.
