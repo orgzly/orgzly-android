@@ -1,6 +1,7 @@
 package com.orgzly.android.ui.settings
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
@@ -22,6 +23,7 @@ import com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
 import com.orgzly.android.ui.NoteStates
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
+import com.orgzly.android.widgets.ListWidgetProvider
 import java.util.*
 
 /**
@@ -221,6 +223,13 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
             }
         }
 
+        /* Update widget for changed color scheme. */
+        if (getString(R.string.pref_key_widget_color_scheme) == key) {
+            val intent = Intent(context, ListWidgetProvider::class.java)
+            intent.action = AppIntent.ACTION_UPDATE_LAYOUT_LIST_WIDGET
+            context?.sendBroadcast(intent)
+        }
+
         /* Reminders for scheduled notes. Reset last run time. */
         if (getString(R.string.pref_key_use_reminders_for_scheduled_times) == key) {
             AppPreferences.reminderLastRunForScheduled(context, 0L)
@@ -332,6 +341,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
                 "prefs_screen_auto_sync" to R.xml.prefs_screen_auto_sync, // Sub-screen
                 "prefs_screen_org_file_format" to R.xml.prefs_screen_org_file_format, // Sub-screen
                 "prefs_screen_org_mode_tags_indent" to R.xml.prefs_screen_org_mode_tags_indent, // Sub-screen
+                "prefs_screen_widget" to R.xml.prefs_screen_widget, // Sub-screen
                 "prefs_screen_app" to R.xml.prefs_screen_app
         )
 

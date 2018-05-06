@@ -78,13 +78,22 @@
     <color name="widget_light_title_color">@color/dark_text_primary_color</color>
     <color name="widget_light_post_title_color">@color/dark_text_secondary_color</color>
 
-    <!--<color name="widget_light_header_bg_color">@color/dark_theme_app_bar</color>-->
-    <!--<color name="widget_light_header_text_color">@color/white_text_primary_color</color>-->
-    <!--<color name="widget_light_list_bg_color">@color/dark_theme_cards_and_dialogs</color>-->
-    <!--<color name="widget_light_state_todo_color">@color/red_200</color>-->
-    <!--<color name="widget_light_state_done_color">@color/green_200</color>-->
-    <!--<color name="widget_light_state_unknown_color">@color/blue_200</color>-->
-    <!--<color name="widget_light_title_color">@color/white_text_primary_color</color>-->
-    <!--<color name="widget_light_post_title_color">@color/white_text_secondary_color</color>-->
+    <color name="widget_dark_header_bg_color">@color/dark_theme_app_bar</color>
+    <color name="widget_dark_header_text_color">@color/white_text_primary_color</color>
+    <color name="widget_dark_list_bg_color">@color/dark_theme_cards_and_dialogs</color>
+    <color name="widget_dark_state_todo_color">@color/red_200</color>
+    <color name="widget_dark_state_done_color">@color/green_200</color>
+    <color name="widget_dark_state_unknown_color">@color/blue_200</color>
+    <color name="widget_dark_title_color">@color/white_text_primary_color</color>
+    <color name="widget_dark_post_title_color">@color/white_text_secondary_color</color>
+
+    <color name="widget_black_header_bg_color">@color/black</color>
+    <color name="widget_black_header_text_color">@color/white_text_primary_color</color>
+    <color name="widget_black_list_bg_color">@color/black</color>
+    <color name="widget_black_state_todo_color">@color/red_200</color>
+    <color name="widget_black_state_done_color">@color/green_200</color>
+    <color name="widget_black_state_unknown_color">@color/blue_200</color>
+    <color name="widget_black_title_color">@color/white_text_primary_color</color>
+    <color name="widget_black_post_title_color">@color/white_text_secondary_color</color>
 </resources>
 

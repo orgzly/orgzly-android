@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/widget">
+
+    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        android:key="@string/pref_key_widget_color_scheme"
+        android:title="@string/color_scheme"
+        android:entries="@array/color_scheme"
+        android:entryValues="@array/color_scheme_values"
+        android:defaultValue="@string/pref_default_value_color_scheme"/>
+
+</PreferenceScreen>

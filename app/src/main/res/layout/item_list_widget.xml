@@ -51,8 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
-                android:src="@drawable/ic_done_black_24dp"
-                android:tint="#444444" />
+                android:src="@drawable/ic_done_black_24dp" />
 
         </LinearLayout>
 
@@ -66,6 +65,7 @@
             android:visibility="visible">
 
             <ImageView
+                android:id="@+id/item_list_widget_scheduled_icon"
                 android:layout_height="14dp"
                 android:layout_width="14dp"
                 android:alpha="0.55"
@@ -95,6 +95,7 @@
             android:visibility="gone">
 
             <ImageView
+                android:id="@+id/item_list_widget_deadline_icon"
                 android:layout_height="14dp"
                 android:layout_width="14dp"
                 android:alpha="0.55"
@@ -124,6 +125,7 @@
             android:visibility="gone">
 
             <ImageView
+                android:id="@+id/item_list_widget_closed_icon"
                 android:layout_height="14dp"
                 android:layout_width="14dp"
                 android:alpha="0.55"

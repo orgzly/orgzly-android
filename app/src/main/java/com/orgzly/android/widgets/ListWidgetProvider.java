@@ -39,7 +39,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "onUpdate");
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         for (int appWidgetId : appWidgetIds) {
             updateAppWidgetLayout(context, appWidgetManager, appWidgetId);
@@ -47,9 +47,13 @@ public class ListWidgetProvider extends AppWidgetProvider {
     }
 
     private static void updateAppWidgetLayout(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+
         Filter filter = getFilter(context, appWidgetId);
 
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.list_widget);
+
+        WidgetStyle.INSTANCE.updateWidget(remoteViews, context);
 
         Intent serviceIntent = new Intent(context, ListWidgetService.class);
         serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);

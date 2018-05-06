@@ -51,6 +51,7 @@
     <string name="priority">Priority</string>
     <string name="nothing">Nothing</string>
     <string name="open">Open</string>
+    <string name="widget">Widget</string>
 
     <plurals name="notes_deleted">
         <item quantity="one">Note deleted</item>

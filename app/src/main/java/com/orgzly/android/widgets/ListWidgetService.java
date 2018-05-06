@@ -53,17 +53,6 @@ public class ListWidgetService extends RemoteViewsService {
             this.queryString = queryString != null ? queryString : ".b.a b.a";
 
             this.userTimeFormatter = new UserTimeFormatter(context);
-
-            TitleGenerator.TitleAttributes attrs;
-
-            attrs = new TitleGenerator.TitleAttributes(
-                    context.getResources().getColor(R.color.widget_light_state_todo_color),
-                    context.getResources().getColor(R.color.widget_light_state_done_color),
-                    context.getResources().getColor(R.color.widget_light_state_unknown_color),
-                    (int) context.getResources().getDimension(R.dimen.widget_post_title_text_size),
-                    context.getResources().getColor(R.color.widget_light_post_title_color));
-
-            this.titleGenerator = new TitleGenerator(context, false, attrs);
         }
 
         @Override
@@ -73,6 +62,9 @@ public class ListWidgetService extends RemoteViewsService {
         @Override
         public void onDataSetChanged() {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+
+            TitleGenerator.TitleAttributes attrs = WidgetStyle.INSTANCE.getTitleAttributes(context);
+            this.titleGenerator = new TitleGenerator(context, false, attrs);
 
             if (cursor != null) {
                 cursor.close();
@@ -132,10 +124,12 @@ public class ListWidgetService extends RemoteViewsService {
                 if (isPartitioned && AgendaCursor.INSTANCE.isDivider(cursor)) {
                     row = new RemoteViews(packageName, R.layout.item_list_widget_divider);
                     setupDividerRow(row, cursor);
+                    WidgetStyle.INSTANCE.updateDivider(row, context);
 
                 } else {
                     row = new RemoteViews(packageName, R.layout.item_list_widget);
                     setupNoteRow(row, cursor);
+                    WidgetStyle.INSTANCE.updateNote(row, context);
                 }
             }
 
@@ -149,6 +143,7 @@ public class ListWidgetService extends RemoteViewsService {
 
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, row, cursor, value);
         }
+
 
         private void setupNoteRow(RemoteViews row, Cursor cursor) {
             Note note = NotesClient.fromCursor(cursor);
@@ -236,4 +231,6 @@ public class ListWidgetService extends RemoteViewsService {
             return true;
         }
     }
+
+
 }

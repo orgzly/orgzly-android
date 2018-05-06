@@ -30,6 +30,11 @@
         android:key="prefs_screen_sync"/>
 
     <PreferenceScreen
+        android:title="@string/widget"
+        android:icon="?attr/ic_widgets_24dp"
+        android:key="prefs_screen_widget"/>
+
+    <PreferenceScreen
         android:title="@string/app"
         android:icon="?attr/ic_info_outline_24dp"
         android:key="prefs_screen_app"/>
