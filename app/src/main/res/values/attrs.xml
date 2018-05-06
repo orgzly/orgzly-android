@@ -7,6 +7,11 @@
         <attr name="menu_for_fling_left" format="integer"/>
     </declare-styleable>
 
+    <declare-styleable name="IntegerRange">
+        <attr name="min" format="integer"/>
+        <attr name="max" format="integer"/>
+    </declare-styleable>
+
     <declare-styleable name="WhatsNewChange">
         <attr name="text" format="string"/>
     </declare-styleable>

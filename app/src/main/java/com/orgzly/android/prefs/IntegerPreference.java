@@ -1,19 +1,35 @@
 package com.orgzly.android.prefs;
 
 import android.content.Context;
-import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.preference.EditTextPreference;
 import android.util.AttributeSet;
 
 import com.orgzly.R;
 
-public class PositiveIntegerPreference extends EditTextPreference {
-    public PositiveIntegerPreference(Context context, AttributeSet attrs, int defStyle) {
+public class IntegerPreference extends EditTextPreference {
+    private int min = Integer.MIN_VALUE;
+    private int max = Integer.MAX_VALUE;
+
+    public IntegerPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        parseAttrs(attrs);
     }
 
-    public PositiveIntegerPreference(Context context, AttributeSet attrs) {
+    public IntegerPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+        parseAttrs(attrs);
+    }
+
+    private void parseAttrs(AttributeSet attrs) {
+        if (attrs != null) {
+            TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.IntegerRange);
+
+            min = typedArray.getInt(R.styleable.IntegerRange_min, Integer.MIN_VALUE);
+            max = typedArray.getInt(R.styleable.IntegerRange_max, Integer.MAX_VALUE);
+
+            typedArray.recycle();
+        }
     }
 
     @Override
@@ -38,7 +54,7 @@ public class PositiveIntegerPreference extends EditTextPreference {
         if (s != null && s.length() > 0) {
             try {
                 int n = Integer.parseInt(s);
-                if (n > 0) {
+                if (min <= n && n <= max) {
                     return String.valueOf(n);
                 }
             } catch (NumberFormatException e) {

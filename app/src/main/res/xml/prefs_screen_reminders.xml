@@ -2,19 +2,20 @@
 
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/prefs_title_reminders">
 
     <SwitchPreference
         android:key="@string/pref_key_use_reminders_for_scheduled_times"
         android:title="@string/pref_title_reminders_for_scheduled_times"
         android:summary="@string/pref_title_summary_reminders_for_scheduled_times"
-        android:defaultValue="@bool/pref_default_value_use_reminders_for_scheduled_times"/>
+        android:defaultValue="@bool/pref_default_value_use_reminders_for_scheduled_times" />
 
     <SwitchPreference
         android:key="@string/pref_key_use_reminders_for_deadline_times"
         android:title="@string/pref_title_reminders_for_deadline_times"
         android:summary="@string/pref_title_summary_reminders_for_deadline_times"
-        android:defaultValue="@bool/pref_default_value_use_reminders_for_deadline_times"/>
+        android:defaultValue="@bool/pref_default_value_use_reminders_for_deadline_times" />
 
     <PreferenceCategory
         android:key="@string/pref_key_reminders_notification_settings"
@@ -23,33 +24,34 @@
         <SwitchPreference
             android:key="@string/pref_key_reminders_sound"
             android:title="@string/pref_title_reminders_sound"
-            android:defaultValue="@bool/pref_default_value_reminders_sound"/>
+            android:defaultValue="@bool/pref_default_value_reminders_sound" />
 
         <SwitchPreference
             android:key="@string/pref_key_reminders_led"
             android:title="@string/pref_title_reminders_led"
-            android:defaultValue="@bool/pref_default_value_reminders_led"/>
+            android:defaultValue="@bool/pref_default_value_reminders_led" />
 
         <SwitchPreference
             android:key="@string/pref_key_reminders_vibrate"
             android:title="@string/pref_title_reminders_vibrate"
-            android:defaultValue="@bool/pref_default_value_reminders_vibrate"/>
+            android:defaultValue="@bool/pref_default_value_reminders_vibrate" />
 
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/reminder_snooze">
-        <com.orgzly.android.prefs.PositiveIntegerPreference
+        <com.orgzly.android.prefs.IntegerPreference
             android:key="@string/pref_key_snooze_time"
             android:title="@string/pref_title_snooze_time"
             android:inputType="numberSigned"
             android:selectAllOnFocus="true"
-            android:defaultValue="@string/pref_default_value_snooze_time"/>
+            android:defaultValue="@string/pref_default_value_snooze_time"
+            app:min="1" />
 
         <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
             android:key="@string/pref_key_snooze_type"
             android:title="@string/pref_title_snooze_type"
             android:entries="@array/snooze_types"
             android:entryValues="@array/snooze_type_values"
-            android:defaultValue="@string/pref_default_value_snooze_type"/>
+            android:defaultValue="@string/pref_default_value_snooze_type" />
     </PreferenceCategory>
 </PreferenceScreen>
