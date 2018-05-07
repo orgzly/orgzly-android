@@ -73,7 +73,6 @@
         <item name="item_book_card_bg_color">@color/light_theme_cards_and_dialogs</item>
 
         <item name="drawer_bg">@color/white</item>
-        <item name="drawer_divider">@color/grey_300</item>
         <item name="drawer_item_bg">@drawable/drawer_item_selector</item>
 
         <item name="item_head_state_todo_color">@color/red_900</item>
@@ -212,7 +211,6 @@
         <item name="item_book_card_bg_color">@color/dark_theme_cards_and_dialogs</item>
 
         <item name="drawer_bg">@color/dark_theme_cards_and_dialogs</item>
-        <item name="drawer_divider">@color/white_text_disabled_color</item>
         <item name="drawer_item_bg">@drawable/drawer_item_selector_dark</item>
 
         <item name="item_head_state_todo_color">@color/red_200</item>

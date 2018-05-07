@@ -18,7 +18,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?attr/drawer_divider"/>
+        android:background="?android:listDivider"/>
 
     <!-- Sync button. Not using compound drawable as image has to be rotated while syncing. -->
     <LinearLayout

@@ -52,7 +52,6 @@
         <attr name="item_book_card_bg_color" format="color"/>
 
         <attr name="drawer_bg" format="color"/>
-        <attr name="drawer_divider" format="color"/>
         <attr name="drawer_item_bg" format="reference"/>
 
         <attr name="item_head_state_todo_color" format="color"/>
