@@ -178,16 +178,18 @@ public abstract class NoteListFragment extends ListFragment {
         for (int i = 0; i < books.size(); i++) {
             book_names[i] = books.get(i).getName();
         }
-        AlertDialog refile_dialog = new AlertDialog.Builder(getContext()).setTitle(R.string.refile_to)
+
+        dialog = new AlertDialog.Builder(getContext())
+                .setTitle(R.string.refile_to)
                 .setItems(book_names, (d, which) -> {
                     Book target = books.get(which);
                     listener.onNotesRefileRequest(sourceBookId, noteIds, target.getId());
-                }).create();
-        refile_dialog.show();
+                })
+                .show();
     }
 
     protected void openNoteStateDialog(NoteListFragmentListener listener, Set<Long> noteIds, String currentState) {
-        dialog = NoteStateDialog.INSTANCE.create(
+        dialog = NoteStateDialog.INSTANCE.show(
                 getContext(),
                 currentState,
                 (state) -> {
@@ -197,10 +199,7 @@ public abstract class NoteListFragment extends ListFragment {
                 () -> {
                     listener.onStateChangeRequest(noteIds, NoteStates.NO_STATE_KEYWORD);
                     return null;
-                }
-        );
-
-        dialog.show();
+                });
     }
 
     /**

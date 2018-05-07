@@ -450,7 +450,7 @@ public class NotesClient {
 
     public static Note getRootNode(Context context, long bookId) {
         try (Cursor cursor = context.getContentResolver().query(
-                ProviderContract.Notes.ContentUri.notes(), null, DbNoteView.BOOK_ID + "= ? AND " + DbNoteView.LEVEL + "= 0", new String[] {String.valueOf(bookId)}, null)) {
+                ProviderContract.Notes.ContentUri.notes(), null, DbNoteView.BOOK_ID + "=" + bookId + " AND " + DbNoteView.LEVEL + "= 0", null, null)) {
             if (cursor != null && cursor.moveToFirst()) {
                 return fromCursor(cursor, false);
             } else {

@@ -6,7 +6,7 @@ import com.orgzly.R
 import com.orgzly.android.ui.NoteStates
 
 object NoteStateDialog {
-    fun create(context: Context, currentState: String?, onSelection: (String) -> Unit, onClear: () -> Unit): AlertDialog {
+    fun show(context: Context, currentState: String?, onSelection: (String) -> Unit, onClear: () -> Unit): AlertDialog {
         val states = NoteStates.fromPreferences(context)
 
         val currentStateIndex = if (currentState != null) states.indexOf(currentState) else -1
@@ -21,6 +21,6 @@ object NoteStateDialog {
                     onClear()
                 }
                 .setNegativeButton(R.string.cancel, null)
-                .create()
+                .show()
     }
 }
