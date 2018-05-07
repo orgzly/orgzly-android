@@ -73,6 +73,9 @@ import com.orgzly.org.datetime.OrgDateTime;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -1119,7 +1122,16 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
+    public void onNotesRefileRequest(long sourceBookId, Set<Long> noteIds, long targetBookId) {
+        mSyncFragment.refileNotes(sourceBookId, noteIds, targetBookId);
+    }
+
+    @Override
     public void onNotesMoved(int count) {
+    }
+
+    @Override
+    public void onNotesRefiled(int count) {
     }
 
     @Override

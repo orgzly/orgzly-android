@@ -138,6 +138,7 @@
         <item name="ic_unfold_more_24dp">@drawable/ic_unfold_more_black_24dp</item>
         <item name="ic_warning_24dp">@drawable/ic_warning_black_24dp</item>
         <item name="ic_widgets_24dp">@drawable/ic_widgets_black_24dp</item>
+        <item name="ic_refile_24dp">@drawable/ic_open_in_browser_black_24dp</item>
 
         <item name="oic_dropbox_linked">@drawable/cic_dropbox_blue_48px</item>
         <item name="oic_dropbox_not_linked">@drawable/cic_dropbox_black_48px</item>
@@ -276,6 +277,7 @@
         <item name="ic_unfold_more_24dp">@drawable/ic_unfold_more_white_24dp</item>
         <item name="ic_warning_24dp">@drawable/ic_warning_white_24dp</item>
         <item name="ic_widgets_24dp">@drawable/ic_widgets_white_24dp</item>
+        <item name="ic_refile_24dp">@drawable/ic_open_in_browser_white_24dp</item>
 
         <item name="oic_dropbox_linked">@drawable/cic_dropbox_blue_48px</item>
         <item name="oic_dropbox_not_linked">@drawable/cic_dropbox_white_48px</item>

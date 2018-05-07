@@ -83,6 +83,12 @@
                 style="@style/ItemQuickMenuButton"
                 android:contentDescription="@string/new_below"
                 android:src="?attr/oic_new_below_24dp"/>
+
+            <ImageButton
+                android:id="@+id/item_menu_refile_btn"
+                style="@style/ItemQuickMenuButton"
+                android:contentDescription="@string/refile"
+                android:src="?attr/ic_refile_24dp"/>
         </LinearLayout>
 
         <LinearLayout

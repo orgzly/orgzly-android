@@ -50,6 +50,7 @@ import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -77,7 +78,8 @@ public class BookFragment extends NoteListFragment
             R.id.book_cab_new,
             R.id.book_cab_cut,
             R.id.book_cab_paste,
-            R.id.book_cab_move
+            R.id.book_cab_move,
+            R.id.book_cab_refile
     };
 
     private BookFragmentListener listener;
@@ -253,6 +255,10 @@ public class BookFragment extends NoteListFragment
 
                         case R.id.item_menu_new_below_btn:
                             listener.onNoteNewRequest(new NotePlace(mBookId, noteId, Place.BELOW));
+                            break;
+
+                        case R.id.item_menu_refile_btn:
+                            openNoteRefileDialog(listener, mBookId, Collections.singleton(noteId));
                             break;
 
                         default:
@@ -823,6 +829,10 @@ public class BookFragment extends NoteListFragment
                     actionMode.finish(); /* Close action mode. */
                     break;
 
+                case R.id.book_cab_refile:
+                    openNoteRefileDialog(listener, mBookId, mSelection.getIds());
+                    break;
+
                 case R.id.book_cab_paste_under:
                     pasteNotes(Place.UNDER);
                     actionMode.finish(); /* Close action mode. */
@@ -886,6 +896,7 @@ public class BookFragment extends NoteListFragment
         void onNotesPromoteRequest(long bookId, Set<Long> noteIds);
         void onNotesDemoteRequest(long bookId, Set<Long> noteIds);
         void onNotesMoveRequest(long bookId, long noteId, int offset);
+        void onNotesRefileRequest(long sourceBookId, Set<Long> noteIds, long targetBookId);
 
         void onCycleVisibilityRequest(Book book);
     }

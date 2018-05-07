@@ -328,6 +328,14 @@ public class Shelf {
         return result;
     }
 
+
+    public int refile(long bookId, Set<Long> noteIds, long targetBookId) {
+        int result = cut(bookId, noteIds);
+        Note root = NotesClient.getRootNode(mContext, targetBookId);
+        paste(targetBookId, root.getId(), Place.UNDER);
+        return result;
+    }
+
     public NotesBatch paste(long bookId, long noteId, Place place) {
         NotesBatch batch = NotesClient.paste(mContext, bookId, noteId, place);
         if (batch != null) {

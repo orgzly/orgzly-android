@@ -1017,6 +1017,22 @@ public class SyncFragment extends Fragment {
         }.execute();
     }
 
+
+    @SuppressLint("StaticFieldLeak")
+    public void refileNotes(final long sourceBookId, final Set<Long> noteIds, final long targetBookId) {
+        new AsyncTask<Void, Void, Integer>() {
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                return mShelf.refile(sourceBookId, noteIds, targetBookId);
+            }
+
+            @Override
+            protected void onPostExecute(Integer result) {
+                mListener.onNotesRefiled(result);
+            }
+        }.execute();
+    }
+
     public interface SyncFragmentListener {
         void onBookCreated(Book book);
         void onBookCreationFailed(Exception exception);
@@ -1047,6 +1063,7 @@ public class SyncFragment extends Fragment {
         void onNotesCut(int count);
 
         void onNotesMoved(int result);
+        void onNotesRefiled(int result);
 
         void onFailure(String message);
     }

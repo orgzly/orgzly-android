@@ -367,6 +367,10 @@ public class ShareActivity extends CommonActivity
     }
 
     @Override
+    public void onNotesRefiled(int result) {
+    }
+
+    @Override
     public void onFailure(String message) {
         showSimpleSnackbarLong(message);
     }
