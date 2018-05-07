@@ -84,13 +84,6 @@
     </item>
 
     <item
-        android:id="@+id/book_cab_refile"
-        android:icon="?attr/ic_open_in_browser_24dp"
-        app:showAsAction="never"
-        android:title="@string/refile">
-    </item>
-
-    <item
         android:id="@+id/book_cab_state"
         android:icon="?attr/ic_flag_24dp"
         app:showAsAction="never"
@@ -99,6 +92,13 @@
 
     <!--</menu>-->
     <!--</item>-->
+
+    <item
+        android:id="@+id/book_cab_refile"
+        android:icon="?attr/ic_open_in_browser_24dp"
+        app:showAsAction="never"
+        android:title="@string/refile">
+    </item>
 
     <item
         android:id="@+id/book_cab_delete_note"
