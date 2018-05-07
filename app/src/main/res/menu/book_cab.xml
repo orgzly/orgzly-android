@@ -85,7 +85,7 @@
 
     <item
         android:id="@+id/book_cab_refile"
-        android:icon="?attr/ic_refile_24dp"
+        android:icon="?attr/ic_open_in_browser_24dp"
         app:showAsAction="never"
         android:title="@string/refile">
     </item>

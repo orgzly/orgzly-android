@@ -88,7 +88,7 @@
                 android:id="@+id/item_menu_refile_btn"
                 style="@style/ItemQuickMenuButton"
                 android:contentDescription="@string/refile"
-                android:src="?attr/ic_refile_24dp"/>
+                android:src="?attr/ic_open_in_browser_24dp"/>
         </LinearLayout>
 
         <LinearLayout

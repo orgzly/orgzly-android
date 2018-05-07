@@ -124,6 +124,7 @@
         <item name="ic_library_books_24dp">@drawable/ic_library_books_black_24dp</item>
         <item name="ic_link_18dp">@drawable/ic_link_black_18dp</item>
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_black_24dp</item>
+        <item name="ic_open_in_browser_24dp">@drawable/ic_open_in_browser_black_24dp</item>
         <item name="ic_repeat_24dp">@drawable/ic_repeat_black_24dp</item>
         <item name="ic_rotate_left_24dp">@drawable/ic_rotate_left_black_24dp</item>
         <item name="ic_rotate_right_24dp">@drawable/ic_rotate_right_black_24dp</item>
@@ -138,7 +139,6 @@
         <item name="ic_unfold_more_24dp">@drawable/ic_unfold_more_black_24dp</item>
         <item name="ic_warning_24dp">@drawable/ic_warning_black_24dp</item>
         <item name="ic_widgets_24dp">@drawable/ic_widgets_black_24dp</item>
-        <item name="ic_refile_24dp">@drawable/ic_open_in_browser_black_24dp</item>
 
         <item name="oic_dropbox_linked">@drawable/cic_dropbox_blue_48px</item>
         <item name="oic_dropbox_not_linked">@drawable/cic_dropbox_black_48px</item>
@@ -263,6 +263,7 @@
         <item name="ic_library_books_24dp">@drawable/ic_library_books_white_24dp</item>
         <item name="ic_link_18dp">@drawable/ic_link_white_18dp</item>
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_white_24dp</item>
+        <item name="ic_open_in_browser_24dp">@drawable/ic_open_in_browser_white_24dp</item>
         <item name="ic_repeat_24dp">@drawable/ic_repeat_white_24dp</item>
         <item name="ic_rotate_left_24dp">@drawable/ic_rotate_left_white_24dp</item>
         <item name="ic_rotate_right_24dp">@drawable/ic_rotate_right_white_24dp</item>
@@ -277,7 +278,6 @@
         <item name="ic_unfold_more_24dp">@drawable/ic_unfold_more_white_24dp</item>
         <item name="ic_warning_24dp">@drawable/ic_warning_white_24dp</item>
         <item name="ic_widgets_24dp">@drawable/ic_widgets_white_24dp</item>
-        <item name="ic_refile_24dp">@drawable/ic_open_in_browser_white_24dp</item>
 
         <item name="oic_dropbox_linked">@drawable/cic_dropbox_blue_48px</item>
         <item name="oic_dropbox_not_linked">@drawable/cic_dropbox_white_48px</item>
