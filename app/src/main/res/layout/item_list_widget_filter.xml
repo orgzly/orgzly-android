@@ -7,7 +7,6 @@
     android:layout_height="wrap_content"
     style="@style/ListViewItem"
     android:gravity="center"
-    android:background="@drawable/item_selector"
     android:orientation="vertical">
 
     <TextView
@@ -17,7 +16,7 @@
         android:maxLines="1"
         android:ellipsize="end"
         android:textSize="18sp"
-        android:textColor="@color/black"
+        android:textStyle="bold"
         tools:text="@string/filter_name_sample"/>
 
     <TextView
@@ -25,7 +24,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:textColor="@color/grey_700"
         tools:text="@string/filter_query_sample_long"/>
 
 </LinearLayout>

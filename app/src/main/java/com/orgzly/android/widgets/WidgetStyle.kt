@@ -4,6 +4,8 @@ import android.content.Context
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
+import android.view.Window
 import android.widget.RemoteViews
 import com.orgzly.R
 import com.orgzly.android.prefs.AppPreferences
@@ -11,6 +13,15 @@ import com.orgzly.android.ui.util.TitleGenerator
 
 
 object WidgetStyle {
+    fun updateActivity(activity: AppCompatActivity) {
+        when (AppPreferences.widgetColorScheme(activity)) {
+            "dark", "black" -> activity.setTheme(R.style.Theme_AppCompat_Dialog_Alert)
+            else -> activity.setTheme(R.style.Theme_AppCompat_Light_Dialog_Alert)
+        }
+
+        activity.supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+    }
+
     fun updateWidget(remoteViews: RemoteViews, context: Context) {
         remoteViews.setInt(
                 R.id.list_widget_header_container,

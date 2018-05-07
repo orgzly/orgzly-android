@@ -9,9 +9,9 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
@@ -19,6 +19,9 @@ import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.ui.fragments.FiltersFragment;
 import com.orgzly.android.util.LogUtils;
 
+/**
+ * Widget's filter selection.
+ */
 public class FilterSelectDialogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
     private static final String TAG = FilterSelectDialogActivity.class.getName();
 
@@ -26,15 +29,15 @@ public class FilterSelectDialogActivity extends AppCompatActivity implements Loa
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        WidgetStyle.INSTANCE.updateActivity(this);
 
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-//        setTitle(R.string.select_a_filter);
+        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_filter_select_dialog);
 
         /* Create adapter using Cursor. */
-        mListAdapter = FiltersFragment.Companion.createFilterCursorAdapter(this, R.layout.item_list_widget_filter);
+        mListAdapter = FiltersFragment.Companion.createFilterCursorAdapter(
+                this, R.layout.item_list_widget_filter);
 
         ListView list = findViewById(R.id.filter_select_list);
 
