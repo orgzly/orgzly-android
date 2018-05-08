@@ -23,6 +23,9 @@
 
     <dimen name="fab_margin">16dp</dimen>
 
+    <!-- Padding for sync button -->
+    <dimen name="design_navigation_padding_bottom" tools:override="true">64dp</dimen>
+
     <dimen name="design_navigation_icon_padding" tools:override="true">16dp</dimen>
 
     <dimen name="bullet_inner_size">8dp</dimen>

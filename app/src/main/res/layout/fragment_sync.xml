@@ -12,7 +12,7 @@
         android:id="@+id/sync_progress_bar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="16dp"
         android:background="?attr/drawer_bg"/>
 
     <View
@@ -24,7 +24,6 @@
     <LinearLayout
         android:id="@+id/sync_button_container"
         style="@style/BorderlessButton"
-        android:padding="0dp"
         android:paddingLeft="@dimen/screen_edge"
         android:paddingStart="@dimen/screen_edge"
         android:paddingRight="@dimen/screen_edge"
