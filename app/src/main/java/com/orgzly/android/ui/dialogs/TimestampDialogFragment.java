@@ -20,6 +20,7 @@ import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.datetime.OrgDateTime;
+import com.orgzly.org.datetime.OrgDelay;
 import com.orgzly.org.datetime.OrgRepeater;
 
 import java.util.Calendar;
@@ -47,6 +48,8 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
     private static final String ARG_REPEATER = "repeater";
     private static final String ARG_USE_REPEAT = "use_repeat";
 
+    private static final String ARG_DELAY = "delay";
+
     private static final String ARG_END_TIME_HOUR = "end_time_hour";
     private static final String ARG_END_TIME_MINUTE = "end_time_minute";
 
@@ -68,6 +71,8 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
 
     private Button mRepeaterPicker;
     private CompoundButton mIsRepeaterUsed;
+
+    private OrgDelay delay;
 
     private int mCurrentYear;
     private int mCurrentMonth;
@@ -135,6 +140,10 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
 
         state.putString(ARG_REPEATER, mRepeaterPicker.getText().toString());
         state.putBoolean(ARG_USE_REPEAT, mIsRepeaterUsed.isChecked());
+
+        if (delay != null) {
+            state.putString(ARG_DELAY, delay.toString());
+        }
 
         state.putInt(ARG_END_TIME_HOUR, mCurrentEndTimeHour);
         state.putInt(ARG_END_TIME_MINUTE, mCurrentEndTimeMinute);
@@ -257,6 +266,10 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
             mRepeaterPicker.setText(savedInstanceState.getString(ARG_REPEATER));
             mIsRepeaterUsed.setChecked(savedInstanceState.getBoolean(ARG_USE_REPEAT));
 
+            if (savedInstanceState.getString(ARG_DELAY) != null) {
+                delay = OrgDelay.parse(savedInstanceState.getString(ARG_DELAY));
+            }
+
             mCurrentEndTimeHour = savedInstanceState.getInt(ARG_END_TIME_HOUR);
             mCurrentEndTimeMinute = savedInstanceState.getInt(ARG_END_TIME_MINUTE);
         }
@@ -302,6 +315,10 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
 
             if (time.hasRepeater()) {
                 mRepeaterPicker.setText(time.getRepeater().toString());
+            }
+
+            if (time.hasDelay()) {
+                delay = time.getDelay();
             }
         }
     }
@@ -415,6 +432,10 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
             OrgRepeater repeater = OrgRepeater.parse(mRepeaterPicker.getText().toString());
             builder.setHasRepeater(true);
             builder.setRepeater(repeater);
+        }
+
+        if (delay != null) {
+            builder.setDelay(delay);
         }
 
         return builder.build();
