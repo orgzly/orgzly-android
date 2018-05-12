@@ -42,16 +42,11 @@ object OrgFormatter {
     private const val BORDER = "\\S"
     private const val BODY = ".*?(?:\n.*?)?"
 
-    private fun markupRegex(marker: Char): String =
-            "(?:^|\\G|[$PRE])([$marker]($BORDER|$BORDER$BODY$BORDER)[$marker])(?:[$POST]|$)"
+    private const val MARKUP_CHARS = "*/_=~+"
 
     private val MARKUP_PATTERN = Pattern.compile(
-            markupRegex('*') + "|" +
-                    markupRegex('/') + "|" +
-                    markupRegex('_') + "|" +
-                    markupRegex('=') + "|" +
-                    markupRegex('~') + "|" +
-                    markupRegex('+'), Pattern.MULTILINE)
+            "(?:^|\\G|[$PRE])(([$MARKUP_CHARS])($BORDER|$BORDER$BODY$BORDER)\\2)(?:[$POST]|$)",
+            Pattern.MULTILINE)
 
     const val LAST_REPEAT_PROPERTY = "LAST_REPEAT"
 
@@ -69,7 +64,7 @@ object OrgFormatter {
 
     private const val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 
-    data class SpanRegion(val start: Int, val end: Int, val content: CharSequence, val span: Any? = null)
+    data class SpanRegion(val start: Int, val end: Int, val content: CharSequence, val spans: List<Any?> = listOf())
 
     data class Config(val style: Boolean = true, val withMarks: Boolean = false, val linkify: Boolean = true, val foldDrawers: Boolean = true) {
         constructor(context: Context, linkify: Boolean): this(
@@ -132,7 +127,7 @@ object OrgFormatter {
 
                 val span = if (linkify) URLSpan(link) else null
 
-                spanRegions.add(SpanRegion(m.start(), m.end(), name, span))
+                spanRegions.add(SpanRegion(m.start(), m.end(), name, listOf(span)))
             }
         }
     }
@@ -150,7 +145,7 @@ object OrgFormatter {
 
                 val span = if (linkify) URLSpan(link) else null
 
-                spanRegions.add(SpanRegion(m.start(), m.end(), link, span))
+                spanRegions.add(SpanRegion(m.start(), m.end(), link, listOf(span)))
             }
         }
     }
@@ -192,7 +187,7 @@ object OrgFormatter {
                     null
                 }
 
-                spanRegions.add(SpanRegion(m.start(), m.end(), link, span))
+                spanRegions.add(SpanRegion(m.start(), m.end(), link, listOf(span)))
             }
         }
     }
@@ -224,6 +219,36 @@ object OrgFormatter {
         STRIKETHROUGH
     }
 
+    /**
+     * @return Number of types found
+     */
+    private fun spanTypes(str: String, f: (SpanType) -> Any): Int {
+        var found = 0
+
+        for (i in 0 until str.length/2) {
+            val fst = str[i]
+            val lst = str[str.length - 1 - i]
+
+            if (fst == lst) {
+                val type = when (fst) {
+                    '*' -> SpanType.BOLD
+                    '/' -> SpanType.ITALIC
+                    '_' -> SpanType.UNDERLINE
+                    '=' -> SpanType.MONOSPACE
+                    '~' -> SpanType.MONOSPACE
+                    '+' -> SpanType.STRIKETHROUGH
+                    else -> return found
+                }
+
+                f(type)
+
+                found++
+            }
+        }
+
+        return found
+    }
+
     private fun newSpan(type: SpanType): Any {
         return when (type) {
             SpanType.BOLD -> StyleSpan(Typeface.BOLD)
@@ -241,17 +266,29 @@ object OrgFormatter {
 
         val spanRegions: MutableList<SpanRegion> = mutableListOf()
 
-        fun setMarkupSpan(matcher: Matcher, group: Int, spanType: SpanType) {
+        fun setMarkupSpan(matcher: Matcher) {
             // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Type matched", matcher.start(group), matcher.end(group))
 
+            val str = matcher.group(1)
+            val start = matcher.start(1)
+            val end = matcher.end(1)
+
             if (config.withMarks) {
-                ssb.setSpan(newSpan(spanType), matcher.start(group), matcher.end(group), FLAGS)
+                spanTypes(str) { type ->
+                    ssb.setSpan(newSpan(type), start, end, FLAGS)
+                }
 
             } else {
-                // Next group matches content only, without markers.
-                val content = matcher.group(group + 1)
+                val spans = mutableListOf<Any>()
 
-                spanRegions.add(SpanRegion(matcher.start(group), matcher.end(group), content, newSpan(spanType)))
+                val found = spanTypes(str) {
+                    spans.add(newSpan(it))
+                }
+
+                // Content only, without markers
+                val content = str.substring(found, str.length - found)
+
+                spanRegions.add(SpanRegion(start, end, content, spans))
             }
         }
 
@@ -259,15 +296,7 @@ object OrgFormatter {
 
         while (m.find()) {
             // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Matched", ssb.toString(), MARKUP_PATTERN, m.groupCount(), m.group(), m.start(), m.end())
-
-            when {
-                m.group(1)  != null -> setMarkupSpan(m,  1, SpanType.BOLD)
-                m.group(3)  != null -> setMarkupSpan(m,  3, SpanType.ITALIC)
-                m.group(5)  != null -> setMarkupSpan(m,  5, SpanType.UNDERLINE)
-                m.group(7)  != null -> setMarkupSpan(m,  7, SpanType.MONOSPACE)
-                m.group(9)  != null -> setMarkupSpan(m,  9, SpanType.MONOSPACE)
-                m.group(11) != null -> setMarkupSpan(m, 11, SpanType.STRIKETHROUGH)
-            }
+            setMarkupSpan(m)
         }
 
         return buildFromRegions(ssb, spanRegions)
@@ -286,7 +315,7 @@ object OrgFormatter {
                 val content = ssb.subSequence(contentStart, contentEnd)
 
 
-                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found drawer", name, content, "All:'${m.group(0)}'")
+                // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found drawer", name, content, "All:'${m.group(0)}'")
 
                 val drawerSpanned = TextViewWithMarkup.drawerSpanned(name, content, foldDrawers)
 
@@ -321,8 +350,9 @@ object OrgFormatter {
                 // Create spanned string
                 val str = SpannableString(region.content)
 
-                if (region.span != null) {
-                    str.setSpan(region.span, 0, str.length, FLAGS)
+                // Set spans
+                region.spans.forEach { span ->
+                    str.setSpan(span, 0, str.length, FLAGS)
                 }
 
                 // Append spanned string
