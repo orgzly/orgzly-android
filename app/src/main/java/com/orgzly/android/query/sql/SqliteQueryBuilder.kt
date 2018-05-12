@@ -25,7 +25,7 @@ class SqliteQueryBuilder(val context: Context) {
         hasDeadlineCondition = false
         hasCreatedCondition = false
 
-        where = toString(query.condition, true)
+        where = toString(query.condition)
 
         order = buildOrderBy(query.sortOrders)
 
@@ -149,18 +149,13 @@ class SqliteQueryBuilder(val context: Context) {
         return o.joinToString(", ")
     }
 
-    private fun joinConditions(members: List<Condition>, operator: String, isOuter: Boolean): String =
-            if (isOuter) {
-                members.joinToString(separator = " $operator ") {
-                    toString(it)
-                }
-            } else {
-                members.joinToString(prefix = "(", separator = " $operator ", postfix = ")") {
-                    toString(it)
-                }
-            }
+    private fun joinConditions(members: List<Condition>, operator: String): String {
+        return members.joinToString(prefix = "(", separator = " $operator ", postfix = ")") {
+            toString(it)
+        }
+    }
 
-    private fun toString(expr: Condition?, isOuter: Boolean = false): String {
+    private fun toString(expr: Condition?): String {
         fun not(not: Boolean, selection: String): String = if (not) "NOT($selection)" else selection
 
         return when (expr) {
@@ -236,8 +231,8 @@ class SqliteQueryBuilder(val context: Context) {
                 "(${DbNote.TITLE} LIKE ? OR ${DbNote.CONTENT} LIKE ? OR ${DbNote.TAGS} LIKE ?)"
             }
 
-            is Condition.Or -> joinConditions(expr.operands, "OR", isOuter)
-            is Condition.And -> joinConditions(expr.operands, "AND", isOuter)
+            is Condition.Or -> joinConditions(expr.operands, "OR")
+            is Condition.And -> joinConditions(expr.operands, "AND")
 
             null -> "" // No conditions
         }

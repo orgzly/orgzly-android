@@ -43,162 +43,162 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                     Parameter(
                             queryString = "i.todo",
                             expectedQueryString = "i.todo",
-                            expectedSqlSelection = "COALESCE(state, '') = ?",
+                            expectedSqlSelection = "(COALESCE(state, '') = ?)",
                             expectedSelectionArgs = listOf("TODO")
                     ),
                     Parameter(
                             queryString = "i.todo t.work",
                             expectedQueryString = "i.todo t.work",
-                            expectedSqlSelection = "COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
+                            expectedSqlSelection = "(COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
                             expectedSelectionArgs = listOf("TODO", "%work%", "%work%")
                     ),
                     Parameter(
                             queryString = "i.todo and t.work",
                             expectedQueryString = "i.todo t.work",
-                            expectedSqlSelection = "COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
+                            expectedSqlSelection = "(COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
                             expectedSelectionArgs = listOf("TODO", "%work%", "%work%"),
                             expectedQuerySortOrders = listOf()
                     ),
                     Parameter(
                             queryString = "i.todo AND t.work",
                             expectedQueryString = "i.todo t.work",
-                            expectedSqlSelection = "COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
+                            expectedSqlSelection = "(COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
                             expectedSelectionArgs = listOf("TODO", "%work%", "%work%"),
                             expectedQuerySortOrders = listOf()
                     ),
                     Parameter(
                             queryString = "i.todo or i.next",
                             expectedQueryString = "i.todo or i.next",
-                            expectedSqlSelection = "COALESCE(state, '') = ? OR COALESCE(state, '') = ?",
+                            expectedSqlSelection = "(COALESCE(state, '') = ? OR COALESCE(state, '') = ?)",
                             expectedSelectionArgs = listOf("TODO", "NEXT"),
                             expectedParsedQuery = "Query(condition=Or(operands=[HasState(state=todo, not=false), HasState(state=next, not=false)]), sortOrders=[], options=Options(agendaDays=0))"
                     ),
                     Parameter(
                             queryString = "i.todo OR i.next",
                             expectedQueryString = "i.todo or i.next",
-                            expectedSqlSelection = "COALESCE(state, '') = ? OR COALESCE(state, '') = ?",
+                            expectedSqlSelection = "(COALESCE(state, '') = ? OR COALESCE(state, '') = ?)",
                             expectedSelectionArgs = listOf("TODO", "NEXT")
                     ),
                     Parameter(
                             queryString = "i.todo or i.next and t.work",
                             expectedQueryString = "i.todo or i.next t.work",
-                            expectedSqlSelection = "COALESCE(state, '') = ? OR (COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
+                            expectedSqlSelection = "(COALESCE(state, '') = ? OR (COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)))",
                             expectedSelectionArgs = listOf("TODO", "NEXT", "%work%", "%work%")
                     ),
                     Parameter(
                             queryString = "i.todo and t.work or i.next",
                             expectedQueryString = "i.todo t.work or i.next",
-                            expectedSqlSelection = "(COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)) OR COALESCE(state, '') = ?",
+                            expectedSqlSelection = "((COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)) OR COALESCE(state, '') = ?)",
                             expectedSelectionArgs = listOf("TODO", "%work%", "%work%", "NEXT")
                     ),
                     Parameter(
                             queryString = "i.todo t.work or i.next t.home",
                             expectedQueryString = "i.todo t.work or i.next t.home",
-                            expectedSqlSelection = "(COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)) OR (COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
+                            expectedSqlSelection = "((COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)) OR (COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)))",
                             expectedSelectionArgs = listOf("TODO", "%work%", "%work%", "NEXT", "%home%", "%home%")
                     ),
                     Parameter(
                             queryString = "( i.todo t.work ) or i.next",
                             expectedQueryString = "i.todo t.work or i.next",
-                            expectedSqlSelection = "(COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)) OR COALESCE(state, '') = ?",
+                            expectedSqlSelection = "((COALESCE(state, '') = ? AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)) OR COALESCE(state, '') = ?)",
                             expectedSelectionArgs = listOf("TODO", "%work%", "%work%", "NEXT")
                     ),
                     Parameter(
                             queryString = "i.todo (i.next or t.work)",
                             expectedQueryString = "i.todo (i.next or t.work)",
-                            expectedSqlSelection = "COALESCE(state, '') = ? AND (COALESCE(state, '') = ? OR (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
+                            expectedSqlSelection = "(COALESCE(state, '') = ? AND (COALESCE(state, '') = ? OR (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)))",
                             expectedSelectionArgs = listOf("TODO", "NEXT", "%work%", "%work%")
                     ),
                     Parameter(
                             queryString = "(( i.todo) )",
                             expectedQueryString = "i.todo",
-                            expectedSqlSelection = "((COALESCE(state, '') = ?))",
+                            expectedSqlSelection = "(((COALESCE(state, '') = ?)))",
                             expectedSelectionArgs = listOf("TODO")
                     ),
                     Parameter(
                             queryString = "(it.todo b.gtd )or .s.none",
                             expectedQueryString = "it.todo b.gtd or .s.none",
-                            expectedSqlSelection = "(COALESCE(state, '') IN (?, ?) AND book_name = ?) OR (title LIKE ? OR content LIKE ? OR tags LIKE ?)",
+                            expectedSqlSelection = "((COALESCE(state, '') IN (?, ?) AND book_name = ?) OR (title LIKE ? OR content LIKE ? OR tags LIKE ?))",
                             expectedSelectionArgs = listOf("TODO", "NEXT", "gtd", "%.s.none%", "%.s.none%", "%.s.none%")
                     ),
                     Parameter(
                             queryString = "it.todo",
                             expectedQueryString = "it.todo",
-                            expectedSqlSelection = "COALESCE(state, '') IN (?, ?)",
+                            expectedSqlSelection = "(COALESCE(state, '') IN (?, ?))",
                             expectedSelectionArgs = listOf("TODO", "NEXT")
                     ),
                     Parameter(
                             queryString = ".it.none",
                             expectedQueryString = ".it.none",
-                            expectedSqlSelection = "NOT(COALESCE(state, '') = '')",
+                            expectedSqlSelection = "(NOT(COALESCE(state, '') = ''))",
                             expectedSelectionArgs = listOf()
                     ),
                     Parameter(
                             queryString = "i.todo (t.work or o.p i.next) .o.book t.home",
                             expectedQueryString = "i.todo (t.work or i.next) t.home o.p .o.b",
-                            expectedSqlSelection = "COALESCE(state, '') = ? AND ((COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?) OR COALESCE(state, '') = ?) AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
+                            expectedSqlSelection = "(COALESCE(state, '') = ? AND ((COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?) OR COALESCE(state, '') = ?) AND (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
                             expectedSelectionArgs = listOf("TODO", "%work%", "%work%", "NEXT", "%home%", "%home%"),
                             expectedQuerySortOrders = listOf(SortOrder.Priority(), SortOrder.Book(desc = true))
                     ),
                     Parameter(
                             queryString = ".i.done ( t.t1 or t.t2)",
                             expectedQueryString = ".i.done (t.t1 or t.t2)",
-                            expectedSqlSelection = "NOT(COALESCE(state, '') = ?) AND ((COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?) OR (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
+                            expectedSqlSelection = "(NOT(COALESCE(state, '') = ?) AND ((COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?) OR (COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)))",
                             expectedSelectionArgs = listOf("DONE", "%t1%", "%t1%", "%t2%", "%t2%")
                     ),
                     Parameter(
                             queryString = "tnn.tag1",
                             expectedQueryString = "tnn.tag1",
-                            expectedSqlSelection = "(title LIKE ? OR content LIKE ? OR tags LIKE ?)",
+                            expectedSqlSelection = "((title LIKE ? OR content LIKE ? OR tags LIKE ?))",
                             expectedSelectionArgs = listOf("%tnn.tag1%", "%tnn.tag1%", "%tnn.tag1%")
                     ),
                     Parameter(
                             queryString = "p.",
                             expectedQueryString = "p.",
-                            expectedSqlSelection = "(title LIKE ? OR content LIKE ? OR tags LIKE ?)",
+                            expectedSqlSelection = "((title LIKE ? OR content LIKE ? OR tags LIKE ?))",
                             expectedSelectionArgs = listOf("%p.%", "%p.%", "%p.%")
                     ),
                     Parameter( // Operator with no expression before it
                             queryString = "and t.tag",
                             expectedQueryString = "t.tag",
-                            expectedSqlSelection = "(COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?)",
+                            expectedSqlSelection = "((COALESCE(tags, '') LIKE ? OR COALESCE(inherited_tags, '') LIKE ?))",
                             expectedSelectionArgs = listOf("%tag%", "%tag%")
                     ),
                     Parameter(
                             queryString = "i.todo (b.\"book(1) name\" or b.book2)",
                             expectedQueryString = "i.todo (b.\"book(1) name\" or b.book2)",
-                            expectedSqlSelection = "COALESCE(state, '') = ? AND (book_name = ? OR book_name = ?)",
+                            expectedSqlSelection = "(COALESCE(state, '') = ? AND (book_name = ? OR book_name = ?))",
                             expectedSelectionArgs = listOf("TODO", "book(1) name", "book2")
                     ),
                     Parameter(
                             queryString = "s.le.3d",
                             expectedQueryString = "s.3d",
-                            expectedSqlSelection = "(scheduled_time_timestamp != 0 AND scheduled_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3+1) + ")"
+                            expectedSqlSelection = "((scheduled_time_timestamp != 0 AND scheduled_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3+1) + "))"
                     ),
                     Parameter(
                             queryString = "d.tom",
                             expectedQueryString = "d.tomorrow",
-                            expectedSqlSelection = "(deadline_time_timestamp != 0 AND deadline_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 1+1) + ")"
+                            expectedSqlSelection = "((deadline_time_timestamp != 0 AND deadline_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 1+1) + "))"
                     ),
                     Parameter(
                             queryString = "c.eq.today",
                             expectedQueryString = "c.today",
-                            expectedSqlSelection = "(closed_time_timestamp != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 0)} <= closed_time_timestamp AND closed_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 0+1) + ")"
+                            expectedSqlSelection = "((closed_time_timestamp != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 0)} <= closed_time_timestamp AND closed_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 0+1) + "))"
                     ),
                     Parameter(
                             queryString = "c.ge.-1d", // Since yesterday
                             expectedQueryString = "c.ge.yesterday",
-                            expectedSqlSelection = "(closed_time_timestamp != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, -1)} <= closed_time_timestamp)"
+                            expectedSqlSelection = "((closed_time_timestamp != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, -1)} <= closed_time_timestamp))"
                     ),
                     Parameter(
                             queryString = "c.gt.-1h",
                             expectedQueryString = "c.gt.-1h",
-                            expectedSqlSelection = "(closed_time_timestamp != 0 AND ${TimeUtils.timeFromNow(Calendar.HOUR_OF_DAY, 0)} <= closed_time_timestamp)"
+                            expectedSqlSelection = "((closed_time_timestamp != 0 AND ${TimeUtils.timeFromNow(Calendar.HOUR_OF_DAY, 0)} <= closed_time_timestamp))"
                     ),
                     Parameter(
                             queryString = "p.a",
                             expectedQueryString = "p.a",
-                            expectedSqlSelection = "LOWER(COALESCE(NULLIF(priority, ''), ?)) = ?",
+                            expectedSqlSelection = "(LOWER(COALESCE(NULLIF(priority, ''), ?)) = ?)",
                             expectedSelectionArgs = listOf("B", "a") // TODO: Normalize
                     ),
                     Parameter(
@@ -219,14 +219,14 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                     Parameter(
                             queryString = "\"(o.s o.d)\"",
                             expectedQueryString = "\"(o.s o.d)\"",
-                            expectedSqlSelection = "(title LIKE ? OR content LIKE ? OR tags LIKE ?)",
+                            expectedSqlSelection = "((title LIKE ? OR content LIKE ? OR tags LIKE ?))",
                             expectedSelectionArgs = listOf("%(o.s o.d)%", "%(o.s o.d)%", "%(o.s o.d)%")
                     ),
                     Parameter(
                             queryString = "\"or\"",
                             expectedQueryString = "\"or\"",
                             expectedParsedQuery = "Query(condition=And(operands=[HasText(text=or, isQuoted=true)]), sortOrders=[], options=Options(agendaDays=0))",
-                            expectedSqlSelection = "(title LIKE ? OR content LIKE ? OR tags LIKE ?)",
+                            expectedSqlSelection = "((title LIKE ? OR content LIKE ? OR tags LIKE ?))",
                             expectedSelectionArgs = listOf("%or%", "%or%", "%or%")
                     ),
                     Parameter(
@@ -258,7 +258,7 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                     Parameter(
                             queryString = "s.ge.3d",
                             expectedQueryString = "s.ge.3d",
-                            expectedSqlSelection = "(${DbNoteView.SCHEDULED_TIME_TIMESTAMP} != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3)} <= ${DbNoteView.SCHEDULED_TIME_TIMESTAMP})"
+                            expectedSqlSelection = "((${DbNoteView.SCHEDULED_TIME_TIMESTAMP} != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3)} <= ${DbNoteView.SCHEDULED_TIME_TIMESTAMP}))"
                     ),
                     Parameter(
                             queryString = "((i.todo s.no) or i.later) o.state",
