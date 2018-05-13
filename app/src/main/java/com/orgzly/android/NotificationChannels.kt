@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
+import android.support.annotation.RequiresApi
 import com.orgzly.R
 import com.orgzly.android.reminders.ReminderService
 
@@ -14,24 +15,22 @@ import com.orgzly.android.reminders.ReminderService
  */
 object NotificationChannels {
 
-    @JvmField val ONGOING = "ongoing"
-    @JvmField val REMINDERS = "reminders"
-    @JvmField val SYNC_PROGRESS = "sync-progress"
-    @JvmField val SYNC_FAILED = "sync-failed"
-
+    const val ONGOING = "ongoing"
+    const val REMINDERS = "reminders"
+    const val SYNC_PROGRESS = "sync-progress"
+    const val SYNC_FAILED = "sync-failed"
 
     fun createAll(context: Context) {
-        createForOngoing(context)
-        createForReminders(context)
-        createForSyncProgress(context)
-        createForSyncFailed(context)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createForOngoing(context)
+            createForReminders(context)
+            createForSyncProgress(context)
+            createForSyncFailed(context)
+        }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createForReminders(context: Context) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            return
-        }
-
         val id = REMINDERS
         val name = context.getString(R.string.reminders_channel_name)
         val description = context.getString(R.string.reminders_channel_description)
@@ -52,6 +51,7 @@ object NotificationChannels {
         mNotificationManager.createNotificationChannel(channel)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createForOngoing(context: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return
@@ -70,10 +70,9 @@ object NotificationChannels {
 
         val mNotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         mNotificationManager.createNotificationChannel(channel)
-
-        return
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createForSyncProgress(context: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return
@@ -92,10 +91,9 @@ object NotificationChannels {
 
         val mNotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         mNotificationManager.createNotificationChannel(channel)
-
-        return
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createForSyncFailed(context: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return
@@ -114,7 +112,5 @@ object NotificationChannels {
 
         val mNotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         mNotificationManager.createNotificationChannel(channel)
-
-        return
     }
 }
