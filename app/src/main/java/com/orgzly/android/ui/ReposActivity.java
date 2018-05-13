@@ -16,16 +16,14 @@ import com.orgzly.android.Shelf;
 import com.orgzly.android.provider.clients.ReposClient;
 import com.orgzly.android.repos.ContentRepo;
 import com.orgzly.android.repos.DirectoryRepo;
-import com.orgzly.android.repos.DropboxClient;
 import com.orgzly.android.repos.DropboxRepo;
 import com.orgzly.android.repos.MockRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.fragments.DirectoryRepoFragment;
-import com.orgzly.android.ui.fragments.DropboxRepoFragment;
-import com.orgzly.android.ui.fragments.browser.FileBrowserFragment;
 import com.orgzly.android.ui.fragments.ReposFragment;
+import com.orgzly.android.ui.fragments.browser.FileBrowserFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.UriUtils;
@@ -35,10 +33,9 @@ import java.io.File;
 /**
  * Configuring repositories.
  */
-public class ReposActivity extends CommonActivity
+public class ReposActivity extends RepoActivity
         implements
         SimpleOneLinerDialog.SimpleOneLinerDialogListener,
-        DropboxRepoFragment.DropboxRepoFragmentListener,
         DirectoryRepoFragment.DirectoryRepoFragmentListener,
         FileBrowserFragment.BrowserFragmentListener,
         ReposFragment.ReposFragmentListener {
@@ -52,8 +49,6 @@ public class ReposActivity extends CommonActivity
 
 
     private Shelf mShelf;
-
-    private DropboxClient mDropboxClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +66,6 @@ public class ReposActivity extends CommonActivity
         getSupportActionBar().setTitle(R.string.repositories);
 
         mShelf = new Shelf(getApplicationContext());
-        mDropboxClient = new DropboxClient(getApplicationContext());
 
         if (savedInstanceState == null) {
             Fragment fragment = ReposFragment.getInstance();
@@ -81,13 +75,6 @@ public class ReposActivity extends CommonActivity
                     .replace(R.id.activity_repos_frame, fragment, ReposFragment.FRAGMENT_TAG)
                     .commit();
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        dropboxCompleteAuthentication();
     }
 
     @Override
@@ -110,32 +97,10 @@ public class ReposActivity extends CommonActivity
         popBackStackAndCloseKeyboard();
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private void addRepoUrl(final String url) {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                mShelf.addRepoUrl(url);
-                return null;
-            }
-        }.execute();
-    }
-
     @Override
     public void onRepoUpdateRequest(long id, Repo repo) {
         updateRepoUrl(id, repo.getUri().toString());
         popBackStackAndCloseKeyboard();
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private void updateRepoUrl(final long id, final String url) {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                mShelf.updateRepoUrl(id, url);
-                return null;
-            }
-        }.execute();
     }
 
     @Override
@@ -146,7 +111,7 @@ public class ReposActivity extends CommonActivity
     @Override
     public void onRepoNewRequest(int id) {
         if (id == R.id.repos_options_menu_item_new_dropbox) {
-            displayRepoFragment(DropboxRepoFragment.getInstance(), DropboxRepoFragment.FRAGMENT_TAG);
+            DropboxRepoActivity.start(this);
 
         } else if (id == R.id.repos_options_menu_item_new_external_storage_directory) {
             displayRepoFragment(DirectoryRepoFragment.getInstance(), DirectoryRepoFragment.FRAGMENT_TAG);
@@ -179,7 +144,7 @@ public class ReposActivity extends CommonActivity
         Repo repo = RepoFactory.getFromUri(this, url);
 
         if (repo instanceof DropboxRepo || repo instanceof MockRepo) {  // TODO: Remove Mock from here
-            displayRepoFragment(DropboxRepoFragment.getInstance(id), DropboxRepoFragment.FRAGMENT_TAG);
+            DropboxRepoActivity.start(this, id);
 
         } else if (repo instanceof DirectoryRepo || repo instanceof ContentRepo) {
             displayRepoFragment(DirectoryRepoFragment.getInstance(id), DirectoryRepoFragment.FRAGMENT_TAG);
@@ -196,40 +161,6 @@ public class ReposActivity extends CommonActivity
                 .addToBackStack(null)
                 .replace(R.id.activity_repos_frame, fragment, tag)
                 .commit();
-    }
-
-    /**
-     * Toggle Dropbox link. Link to Dropbox or unlink from it, depending on current state.
-     * @return true if there was a change (Dropbox has been unlinked).
-     */
-    @Override
-    public boolean onDropboxLinkToggleRequest() {
-        if (mDropboxClient.isLinked()) {
-            mDropboxClient.unlink();
-            showSimpleSnackbarLong(R.string.message_dropbox_unlinked);
-            return true;
-
-        } else {
-            mDropboxClient.beginAuthentication(this);
-            return false;
-        }
-    }
-
-    /**
-     * Complete Dropbox linking.
-     * After starting Dropbox authentication, user will return to activity.
-     * We need to finish the process of authentication.
-     */
-    private void dropboxCompleteAuthentication() {
-        if (! mDropboxClient.isLinked()) {
-            if (mDropboxClient.finishAuthentication()) {
-                showSimpleSnackbarLong(R.string.message_dropbox_linked);
-            }
-        }
-    }
-    @Override
-    public boolean isDropboxLinked() {
-        return mDropboxClient.isLinked();
     }
 
     @Override

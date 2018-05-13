@@ -36,6 +36,9 @@ abstract class CommonActivity : AppCompatActivity() {
     private var whatsNewDialog: AlertDialog? = null
     private var progressDialog: AlertDialog? = null
 
+    /* Any dialog displayed from activities. */
+    var alertDialog: AlertDialog? = null
+
     /* Actions. */
     private var restartActivity = false
     @JvmField protected var clearFragmentBackstack = false
@@ -229,6 +232,11 @@ abstract class CommonActivity : AppCompatActivity() {
         progressDialog?.let {
             it.dismiss()
             progressDialog = null
+        }
+
+        alertDialog?.let {
+            it.dismiss()
+            alertDialog = null
         }
     }
 

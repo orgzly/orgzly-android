@@ -66,6 +66,11 @@
         </activity>
 
         <activity
+            android:name="com.orgzly.android.ui.DropboxRepoActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+
+        <activity
             android:name="com.orgzly.android.ui.BookChooserActivity"
             android:label="@string/book_shortcut_label"
             android:icon="@mipmap/cic_shortcut_notebook">
