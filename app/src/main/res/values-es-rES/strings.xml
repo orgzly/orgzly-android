@@ -55,6 +55,7 @@
   <string name="priority">Prioridad</string>
   <string name="nothing">Nada</string>
   <string name="open">Abrir</string>
+  <string name="widget">Widget</string>
   <plurals name="notes_deleted">
     <item quantity="one">Nota eliminada</item>
     <item quantity="other">Notas <b>%d</b> eliminadas</item>
@@ -85,6 +86,8 @@
   <string name="drawer_close">Cerrar menú</string>
   <string name="drawer_open">Abrir menu</string>
   <string name="schedule">Programar</string>
+  <string name="refile">Refile</string>
+  <string name="refile_to">Refile to</string>
   <string name="deadline">Fecha Límite</string>
   <string name="closed">Cerrada</string>
   <!-- TODO: Not hints, rename -->
@@ -417,4 +420,6 @@
   <string name="drawers_folded_by_default_summary">Plegar cajones por defecto</string>
   <string name="log_on_time_shift">Registrar en menú cuando cambie el tiempo</string>
   <string name="log_on_time_shift_summary">Registrar tiempo al marcar nota con repetición como hecho</string>
+  <string name="background_opacity">Background opacity</string>
+  <string name="update_frequency">Update frequency</string>
 </resources>

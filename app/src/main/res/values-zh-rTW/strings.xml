@@ -55,6 +55,7 @@
   <string name="priority">優先順序</string>
   <string name="nothing">沒有</string>
   <string name="open">打開</string>
+  <string name="widget">桌面小工具</string>
   <plurals name="notes_deleted">
     <item quantity="other">已刪除 <b>%d</b> 筆記</item>
   </plurals>
@@ -82,6 +83,8 @@
   <string name="drawer_close">關閉抽屜</string>
   <string name="drawer_open">打開抽屜</string>
   <string name="schedule">日程</string>
+  <string name="refile">重新提交</string>
+  <string name="refile_to">重新提交到</string>
   <string name="deadline">截止時間</string>
   <string name="closed">已關閉</string>
   <!-- TODO: Not hints, rename -->
@@ -411,4 +414,6 @@
   <string name="drawers_folded_by_default_summary">預設折疊抽屜</string>
   <string name="log_on_time_shift">按時間順序登錄抽屜</string>
   <string name="log_on_time_shift_summary">帶有重複時間的筆記標記完成時記錄時間</string>
+  <string name="background_opacity">背景不透明度</string>
+  <string name="update_frequency">更新頻率</string>
 </resources>

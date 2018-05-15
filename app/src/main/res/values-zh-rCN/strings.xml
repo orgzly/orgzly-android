@@ -15,19 +15,19 @@
   <string name="select">选择</string>
   <string name="set">设定</string>
   <string name="add">添加</string>
-  <string name="not_now">不是现在</string>
+  <string name="not_now">以后再说</string>
   <string name="save">保存</string>
   <string name="discard">不保存</string>
-  <string name="remove_notebook_link">移除连接</string>
+  <string name="remove_notebook_link">移除链接</string>
   <string name="browse">浏览</string>
   <string name="dropbox">Dropbox</string>
   <string name="edit">编辑</string>
   <string name="edit_note">编辑笔记</string>
   <string name="delete">删除</string>
-  <string name="delete_with_quoted_argument">删除“%s”</string>
+  <string name="delete_with_quoted_argument">删除 “%s”</string>
   <string name="name">名称</string>
   <string name="value">值</string>
-  <string name="query">查询串</string>
+  <string name="query">查询</string>
   <string name="done">完成</string>
   <string name="mark_as_done">标记为已完成</string>
   <string name="mark_as_done_with_repeater">重新计划 %s</string>
@@ -47,24 +47,25 @@
   <string name="new_notebook">新建笔记本</string>
   <string name="new_folder">新建文件夹</string>
   <string name="scheduled">计划</string>
-  <string name="agenda">待办事项</string>
-  <string name="agenda_period">待办事项日</string>
+  <string name="agenda">应办事项</string>
+  <string name="agenda_period">应办事项日期</string>
   <string name="time">时间</string>
   <string name="repeater">重复器</string>
   <string name="state">状态</string>
   <string name="priority">优先级</string>
   <string name="nothing">无</string>
   <string name="open">打开</string>
+  <string name="widget">桌面小部件</string>
   <plurals name="notes_deleted">
-    <item quantity="other">已删除 <b>%d</b> 笔记</item>
+    <item quantity="other">已删除 <b>%d</b> 条笔记</item>
   </plurals>
-  <string name="no_notes_deleted">无笔记被删除</string>
+  <string name="no_notes_deleted">没有删除的笔记</string>
   <plurals name="notes_cut">
-    <item quantity="other">剪切 <b>%d</b> 笔记</item>
+    <item quantity="other">剪切 <b>%d</b> 条笔记</item>
   </plurals>
-  <string name="no_notes_cut">没有笔记剪切</string>
+  <string name="no_notes_cut">没有笔记被剪切</string>
   <plurals name="notes_pasted">
-    <item quantity="other">已粘贴 <b>%d</b> 笔记</item>
+    <item quantity="other">已粘贴 <b>%d</b> 条笔记</item>
   </plurals>
   <string name="no_notes_pasted">无可粘贴内容</string>
   <string name="fragment_note_title_hint">标题</string>
@@ -82,6 +83,8 @@
   <string name="drawer_close">关闭抽屉</string>
   <string name="drawer_open">打开抽屉</string>
   <string name="schedule">计划</string>
+  <string name="refile">再次提交</string>
+  <string name="refile_to">再次提交到</string>
   <string name="deadline">截止期限</string>
   <string name="closed">已关闭</string>
   <!-- TODO: Not hints, rename -->
@@ -278,12 +281,12 @@
   <string name="month">月</string>
   <string name="year">年</string>
   <string name="repeater_dialog_title">重复</string>
-  <string name="repeater_description">在任务被标记为完成后，重复器将改变设定时间。</string>
-  <string name="repeater_description_cumulate">添加间隔时间到设定时间上</string>
+  <string name="repeater_description">在任务被标记为完成后，重复器将改变计划时间。</string>
+  <string name="repeater_description_cumulate">添加间隔时间到上一个计划时间</string>
   <!-- + -->
-  <string name="repeater_description_catch_up">持续添加间隔时间到设定时间上直到设定时间达到今后</string>
+  <string name="repeater_description_catch_up">持续添加间隔时间直到计划时间超过当前时间</string>
   <!-- ++ -->
-  <string name="repeater_description_restart">添加间隔时间到当前的设定时间上</string>
+  <string name="repeater_description_restart">添加间隔时间到当前时间</string>
   <!-- .+ -->
   <string name="displayed_book_details_local_mtime">本地修改时间</string>
   <string name="displayed_book_details_link_url">链接网址</string>
@@ -411,4 +414,6 @@
   <string name="drawers_folded_by_default_summary">以默认收起抽屉</string>
   <string name="log_on_time_shift">在时间改变时记录到抽屉</string>
   <string name="log_on_time_shift_summary">当有重复器的笔记被标记为完成时记录时间</string>
+  <string name="background_opacity">背景不透明度</string>
+  <string name="update_frequency">更新频率</string>
 </resources>

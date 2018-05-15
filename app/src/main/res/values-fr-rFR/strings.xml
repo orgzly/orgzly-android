@@ -18,7 +18,7 @@
   <string name="not_now">Plus tard</string>
   <string name="save">Sauvegarder</string>
   <string name="discard">Jeter</string>
-  <string name="remove_notebook_link">Remove link</string>
+  <string name="remove_notebook_link">Supprimer le lien</string>
   <string name="browse">Parcourir</string>
   <string name="dropbox">Dropbox</string>
   <string name="edit">Modifier</string>
@@ -53,8 +53,9 @@
   <string name="repeater">Répéteur</string>
   <string name="state">État</string>
   <string name="priority">Priorité</string>
-  <string name="nothing">Nothing</string>
-  <string name="open">Open</string>
+  <string name="nothing">Rien</string>
+  <string name="open">Ouvrir</string>
+  <string name="widget">Widget</string>
   <plurals name="notes_deleted">
     <item quantity="one">Note supprimée</item>
     <item quantity="other">Supprimé <b>%d</b> notes</item>
@@ -85,6 +86,8 @@
   <string name="drawer_close">Fermer panneau latéral</string>
   <string name="drawer_open">Ouvrir le panneau latéral</string>
   <string name="schedule">Planification</string>
+  <string name="refile">Refile</string>
+  <string name="refile_to">Refile to</string>
   <string name="deadline">Échéance</string>
   <string name="closed">Fermé</string>
   <!-- TODO: Not hints, rename -->
@@ -417,4 +420,6 @@
   <string name="drawers_folded_by_default_summary">Fold drawers by default</string>
   <string name="log_on_time_shift">Log to drawer on time shift</string>
   <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
+  <string name="background_opacity">Opacité de l\'arrière-plan</string>
+  <string name="update_frequency">Fréquence de mise à jour</string>
 </resources>

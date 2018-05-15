@@ -18,13 +18,13 @@
   <string name="not_now">Ne most</string>
   <string name="save">Mentés</string>
   <string name="discard">Elvetés</string>
-  <string name="remove_notebook_link">Remove link</string>
+  <string name="remove_notebook_link">Hivatkozás eltávolítása</string>
   <string name="browse">Tallózás</string>
   <string name="dropbox">Dropbox</string>
   <string name="edit">Szerkesztés</string>
-  <string name="edit_note">Edit note</string>
+  <string name="edit_note">Jegyzet szerkesztése</string>
   <string name="delete">Törlés</string>
-  <string name="delete_with_quoted_argument">Delete “%s”</string>
+  <string name="delete_with_quoted_argument">\"%s\" törlése</string>
   <string name="name">Név</string>
   <string name="value">Érték</string>
   <string name="query">Lekérdezés</string>
@@ -36,7 +36,7 @@
   <string name="import_">Betöltés</string>
   <!-- Reserved keyword -->
   <string name="export">Mentés</string>
-  <string name="overwrite">Overwrite</string>
+  <string name="overwrite">Felülírás</string>
   <string name="imported">Betöltve</string>
   <string name="created">Létrehozva</string>
   <string name="states">Állapotok</string>
@@ -53,8 +53,9 @@
   <string name="repeater">Ismétlő</string>
   <string name="state">Állapot</string>
   <string name="priority">Fontosság</string>
-  <string name="nothing">Nothing</string>
-  <string name="open">Open</string>
+  <string name="nothing">Semmi</string>
+  <string name="open">Megnyit</string>
+  <string name="widget">Kisalkalmazás</string>
   <plurals name="notes_deleted">
     <item quantity="one">Bejegyzés törölve</item>
     <item quantity="other"><b>%d</b> bejegyzés törölve</item>
@@ -85,6 +86,8 @@
   <string name="drawer_close">Fiók bezárása</string>
   <string name="drawer_open">Fiók megnyitása</string>
   <string name="schedule">Ütemezés</string>
+  <string name="refile">Újraír</string>
+  <string name="refile_to">Újraírás máshova</string>
   <string name="deadline">Határidő</string>
   <string name="closed">Zárva</string>
   <!-- TODO: Not hints, rename -->
@@ -148,7 +151,7 @@
   <string name="book_last_action">Jegyzettömb utolsó művelet</string>
   <string name="book_notes_count">Bejegyzések száma</string>
   <string name="pref_title_notebooks">Bejegyzések &amp; Jegyzettömbök</string>
-  <string name="notebook">Notebook</string>
+  <string name="notebook">Jegyzettömb</string>
   <string name="notebooks">Jegyzettömbök</string>
   <string name="searches">Keresések</string>
   <string name="search">Keresés</string>
@@ -221,7 +224,7 @@
   <string name="use_created_at_property_summary">Tulajdonság felhasználása a létrehozás időpontjának szinkronizálásához</string>
   <string name="created_at_property">Létrehozás időpontja tulajdonság</string>
   <string name="property_name">Tulajdonság neve</string>
-  <string name="property_value">Property value</string>
+  <string name="property_value">Tulajdonság értéke</string>
   <string name="reminder_for_scheduled">Ütemezett: %s</string>
   <string name="reminder_for_deadline">Határidő: %s</string>
   <string name="scheduled_new_notes_for_today">Új bejegyzéseket mára ütemezzem</string>
@@ -410,11 +413,13 @@
   <string name="sync_failed_channel_description">Szinkronizálás hiba megjelenítése</string>
   <string name="notification_channel_settings">Értesítések</string>
   <string name="notification_channel_settings_summary">Hang, rezgés, értesítés pont</string>
-  <string name="hide_note_metadata">Hide metadata</string>
-  <string name="overwrite_local_notebook_question">Overwrite local notebook?</string>
-  <string name="overwrite_remote_notebook_question">Overwrite remote notebook?</string>
-  <string name="drawers_folded_by_default">Drawers folded</string>
-  <string name="drawers_folded_by_default_summary">Fold drawers by default</string>
-  <string name="log_on_time_shift">Log to drawer on time shift</string>
-  <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
+  <string name="hide_note_metadata">Metaadatok elrejtése</string>
+  <string name="overwrite_local_notebook_question">Felülírja a helyi jegyzettömböt?</string>
+  <string name="overwrite_remote_notebook_question">Felülírja a távoli jegyzettömböt?</string>
+  <string name="drawers_folded_by_default">Bejegyzések behajtva</string>
+  <string name="drawers_folded_by_default_summary">Alapból behajtott bejegyzések</string>
+  <string name="log_on_time_shift">Időeltoláskor bejegyzést ír</string>
+  <string name="log_on_time_shift_summary">Jegyezze fel az időt amikor időismétléses bejegyzést készre jelölök</string>
+  <string name="background_opacity">Háttér áttetszősége</string>
+  <string name="update_frequency">Frissítés gyakorisága</string>
 </resources>
