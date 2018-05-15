@@ -24,6 +24,27 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.6.6"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Configure widgets' color scheme and transparency"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Configure widgets' update frequency"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="New action for moving note to the end of selected notebook"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Various bug fixes and improvements"/>
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.6.5"
             tools:ignore="HardcodedText"/>
 

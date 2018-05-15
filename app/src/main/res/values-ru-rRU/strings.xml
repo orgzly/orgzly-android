@@ -55,6 +55,7 @@
   <string name="priority">Приоритет</string>
   <string name="nothing">Пусто</string>
   <string name="open">Открыть</string>
+  <string name="widget">Widget</string>
   <plurals name="notes_deleted">
     <item quantity="one">Заметка удалена</item>
     <item quantity="few">Удалено <b>%d</b> заметок</item>
@@ -91,6 +92,8 @@
   <string name="drawer_close">Закрыть меню</string>
   <string name="drawer_open">Открыть меню</string>
   <string name="schedule">График</string>
+  <string name="refile">Refile</string>
+  <string name="refile_to">Refile to</string>
   <string name="deadline">Крайний срок</string>
   <string name="closed">Закрыто</string>
   <!-- TODO: Not hints, rename -->
@@ -425,8 +428,10 @@
   <string name="hide_note_metadata">Скрыть метаданные</string>
   <string name="overwrite_local_notebook_question">Перезаписать локальный блокнот?</string>
   <string name="overwrite_remote_notebook_question">Перезаписать удаленный блокнот?</string>
-  <string name="drawers_folded_by_default">Drawers folded</string>
-  <string name="drawers_folded_by_default_summary">Fold drawers by default</string>
+  <string name="drawers_folded_by_default">Меню свёрнуто</string>
+  <string name="drawers_folded_by_default_summary">Сворачивать меню по умолчанию</string>
   <string name="log_on_time_shift">Log to drawer on time shift</string>
-  <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
+  <string name="log_on_time_shift_summary">Логировать время завершения повторяющихся заметок</string>
+  <string name="background_opacity">Background opacity</string>
+  <string name="update_frequency">Update frequency</string>
 </resources>

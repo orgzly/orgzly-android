@@ -13,12 +13,12 @@
   <string name="new_">Neu</string>
   <!-- "new" is reserved -->
   <string name="select">Auswählen</string>
-  <string name="set">Setzen</string>
+  <string name="set">Festlegen</string>
   <string name="add">Hinzufügen</string>
   <string name="not_now">Nicht jetzt</string>
   <string name="save">Speichern</string>
   <string name="discard">Verwerfen</string>
-  <string name="remove_notebook_link">Link löschen</string>
+  <string name="remove_notebook_link">Link entfernen</string>
   <string name="browse">Durchsuchen</string>
   <string name="dropbox">Dropbox</string>
   <string name="edit">Bearbeiten</string>
@@ -55,6 +55,7 @@
   <string name="priority">Priorität</string>
   <string name="nothing">Nichts</string>
   <string name="open">Öffnen</string>
+  <string name="widget">Widget</string>
   <plurals name="notes_deleted">
     <item quantity="one">Notiz gelöscht</item>
     <item quantity="other"><b>%d</b> Notizen gelöscht</item>
@@ -85,6 +86,8 @@
   <string name="drawer_close">Schließe Seitenleiste</string>
   <string name="drawer_open">Seitenleiste öffnen</string>
   <string name="schedule">Planen</string>
+  <string name="refile">Neu ablegen</string>
+  <string name="refile_to">Ablegen in</string>
   <string name="deadline">Termin</string>
   <string name="closed">Geschlossen</string>
   <!-- TODO: Not hints, rename -->
@@ -113,7 +116,7 @@
   <string name="tap_to_create_new_note">Antippen, um eine neue Notiz zu erstellen</string>
   <string name="options_menu_item_search">Suchen</string>
   <string name="no_user_repos_configured_pref_summary">Noch keine eingerichtet</string>
-  <string name="repos_options_menu_new_repo">Neues Repository</string>
+  <string name="repos_options_menu_new_repo">Neue Ablage</string>
   <string name="book_name_already_exists">Notizbuch %s existiert bereits.</string>
   <string name="filter_name_already_exists">Gleichnamige Suche existiert bereits</string>
   <string name="failed_creating_directory">Konnte Verzeichnis %s nicht erzeugen</string>
@@ -412,9 +415,11 @@
   <string name="notification_channel_settings_summary">Klang, Vibration, Notification-LED</string>
   <string name="hide_note_metadata">Metadaten verbergen</string>
   <string name="overwrite_local_notebook_question">Überschreiben lokales Notizbuch?</string>
-  <string name="overwrite_remote_notebook_question">Overwrite remote notebook?</string>
-  <string name="drawers_folded_by_default">Drawers folded</string>
-  <string name="drawers_folded_by_default_summary">Fold drawers by default</string>
-  <string name="log_on_time_shift">Log to drawer on time shift</string>
-  <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
+  <string name="overwrite_remote_notebook_question">Das entfernte Notizbuch überschreiben?</string>
+  <string name="drawers_folded_by_default">Ordner eingeklappt</string>
+  <string name="drawers_folded_by_default_summary">Ordner standardmäßig einklappen</string>
+  <string name="log_on_time_shift">Hinweis im Menü bei zeitlicher Abweichung</string>
+  <string name="log_on_time_shift_summary">Zeit aktualisieren, wenn eine wiederkehrende Notiz als erledigt markiert wird</string>
+  <string name="background_opacity">Hintergrunddeckkraft</string>
+  <string name="update_frequency">Aktualisierungsintervall</string>
 </resources>

@@ -55,6 +55,7 @@
   <string name="priority">Priority</string>
   <string name="nothing">Nothing</string>
   <string name="open">Open</string>
+  <string name="widget">Widget</string>
   <plurals name="notes_deleted">
     <item quantity="one">Not Silindi</item>
     <item quantity="other">Silindi <b>%d</b> notlar</item>
@@ -85,6 +86,8 @@
   <string name="drawer_close">Çekmeyi kapa</string>
   <string name="drawer_open">Çekmeyi aç</string>
   <string name="schedule">Planlama</string>
+  <string name="refile">Refile</string>
+  <string name="refile_to">Refile to</string>
   <string name="deadline">Son tarih</string>
   <string name="closed">Kapalı</string>
   <!-- TODO: Not hints, rename -->
@@ -417,4 +420,6 @@
   <string name="drawers_folded_by_default_summary">Fold drawers by default</string>
   <string name="log_on_time_shift">Log to drawer on time shift</string>
   <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
+  <string name="background_opacity">Background opacity</string>
+  <string name="update_frequency">Update frequency</string>
 </resources>
