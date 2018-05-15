@@ -22,10 +22,9 @@
             android:text="@string/whats_new_intro"/>
 
 
-
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="v1.6.6-beta.1"
+            android:text="v1.6.6"
             tools:ignore="HardcodedText"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -43,8 +42,6 @@
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
             app:text="Various bug fixes and improvements"/>
-
-
 
         <TextView
             style="@style/WhatsNewVersion"
