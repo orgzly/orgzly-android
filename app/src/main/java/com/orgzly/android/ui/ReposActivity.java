@@ -23,7 +23,7 @@ import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.fragments.DirectoryRepoFragment;
 import com.orgzly.android.ui.fragments.ReposFragment;
-import com.orgzly.android.ui.fragments.browser.FileBrowserFragment;
+import com.orgzly.android.ui.browser.FileBrowserFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.UriUtils;
@@ -169,7 +169,7 @@ public class ReposActivity extends RepoActivity
         getSupportFragmentManager()
                 .beginTransaction()
                 .addToBackStack(null)
-                .replace(R.id.activity_repos_frame, FileBrowserFragment.getInstance(dir), FileBrowserFragment.FRAGMENT_TAG)
+                .replace(R.id.activity_repos_frame, FileBrowserFragment.Companion.getInstance(dir), FileBrowserFragment.Companion.getFRAGMENT_TAG())
                 .commit();
     }
 
@@ -208,7 +208,7 @@ public class ReposActivity extends RepoActivity
         File file = new File(currentDir, value);
 
         if (file.mkdir()) {
-            Fragment f = getSupportFragmentManager().findFragmentByTag(FileBrowserFragment.FRAGMENT_TAG);
+            Fragment f = getSupportFragmentManager().findFragmentByTag(FileBrowserFragment.Companion.getFRAGMENT_TAG());
 
             if (f != null) {
                 FileBrowserFragment fragment = (FileBrowserFragment) f;

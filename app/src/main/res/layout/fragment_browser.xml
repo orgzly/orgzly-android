@@ -3,7 +3,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/browser_container"
+    android:id="@+id/fragment_browser_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -17,14 +17,14 @@
 
         <!-- No shortcuts by default, they could be created by browser implementation. -->
         <LinearLayout
-            android:id="@+id/browser_shortcuts"
+            android:id="@+id/fragment_browser_shortcuts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
         </LinearLayout>
 
         <TextView
-            android:id="@+id/browser_title"
+            android:id="@+id/fragment_browser_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
@@ -51,21 +51,21 @@
         android:elevation="2dp" tools:targetApi="21">
 
         <Button
-            android:id="@+id/browser_button_cancel"
+            android:id="@+id/fragment_browser_button_cancel"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:text="@string/cancel"/>
 
         <Button
-            android:id="@+id/browser_button_create"
+            android:id="@+id/fragment_browser_button_create"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:text="@string/new_"/>
 
         <Button
-            android:id="@+id/browser_button_use"
+            android:id="@+id/fragment_browser_button_use"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
