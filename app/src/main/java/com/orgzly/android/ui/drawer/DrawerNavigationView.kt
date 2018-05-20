@@ -33,7 +33,9 @@ import com.orgzly.android.util.LogUtils
 import java.util.*
 
 
-internal class DrawerNavigationView(private val activity: MainActivity, navView: NavigationView) : android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor> {
+internal class DrawerNavigationView(private val activity: MainActivity, navView: NavigationView) :
+        android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor> {
+
     private val menu: Menu = navView.menu
 
     private val menuItemIdMap = hashMapOf<String, Int>()

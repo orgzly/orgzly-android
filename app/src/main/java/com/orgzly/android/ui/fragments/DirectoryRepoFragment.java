@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
 import android.view.ContextMenu;
@@ -28,6 +27,7 @@ import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.ReposActivity;
+import com.orgzly.android.ui.BrowserActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
@@ -42,7 +42,7 @@ public class DirectoryRepoFragment extends RepoFragment {
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = DirectoryRepoFragment.class.getName();
 
-    private DirectoryRepoFragmentListener mListener;
+    private RepoFragmentListener mListener;
 
     private Uri mSelectedUri;
     private TextInputLayout directoryInputLayout;
@@ -104,7 +104,7 @@ public class DirectoryRepoFragment extends RepoFragment {
         MiscUtils.clearErrorOnTextChange(mUriView, directoryInputLayout);
 
         view.findViewById(R.id.fragment_repo_directory_browse_button)
-                .setOnClickListener(v -> onOpenBrowser());
+                .setOnClickListener(v -> openFileBrowser());
 
         if (savedInstanceState == null && TextUtils.isEmpty(mUriView.getText()) && mSelectedUri == null) {
             setFromArgument();
@@ -113,7 +113,7 @@ public class DirectoryRepoFragment extends RepoFragment {
         return view;
     }
 
-    private void onOpenBrowser() {
+    private void openFileBrowser() {
         boolean browserStarted = false;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -124,7 +124,7 @@ public class DirectoryRepoFragment extends RepoFragment {
              */
             try {
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                getActivity().startActivityForResult(intent, ReposActivity.ACTION_OPEN_DOCUMENT_TREE_REQUEST_CODE);
+                getActivity().startActivityForResult(intent, ReposActivity.ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION);
                 browserStarted = true;
 
             } catch (ActivityNotFoundException e) {
@@ -141,19 +141,22 @@ public class DirectoryRepoFragment extends RepoFragment {
 
                 /* Open internal browser. */
                 ((CommonActivity) activity).runWithPermission(
-                        AppPermissions.Usage.LOCAL_REPO,
-                        this::startBrowserDelayed
+                        AppPermissions.Usage.LOCAL_REPO, () -> startBrowser(activity)
                 );
             }
         }
     }
-    
-    /**
-     * Delay opening the browser.
-     * Buttons would briefly appear in the middle of the screen because of the opened keyboard.
-     */
-    private void startBrowserDelayed() {
-        new Handler().postDelayed(this::startBrowser, 100);
+
+    private void startBrowser(Activity activity) {
+        Intent intent = new Intent(Intent.ACTION_VIEW).setClass(activity, BrowserActivity.class);
+
+        if (! TextUtils.isEmpty(mUriView.getText())) {
+            String uri = mUriView.getText().toString();
+            String path = Uri.parse(uri).getPath();
+            intent.putExtra(BrowserActivity.ARG_STARTING_DIRECTORY, path);
+        }
+
+        activity.startActivityForResult(intent, ReposActivity.ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION);
     }
 
     private void setFromArgument() {
@@ -161,20 +164,6 @@ public class DirectoryRepoFragment extends RepoFragment {
             long repoId = getArguments().getLong(ARG_REPO_ID);
 
             mSelectedUri = Uri.parse(ReposClient.getUrl(getActivity(), repoId));
-        }
-    }
-
-    private void startBrowser() {
-        String uri = null;
-
-        if (! TextUtils.isEmpty(mUriView.getText())) {
-            uri = mUriView.getText().toString();
-        }
-
-        if (uri != null) {
-            mListener.onBrowseDirectories(Uri.parse(uri).getPath());
-        } else {
-            mListener.onBrowseDirectories(null);
         }
     }
 
@@ -197,9 +186,9 @@ public class DirectoryRepoFragment extends RepoFragment {
          * the callback interface. If not, it throws an exception
          */
         try {
-            mListener = (DirectoryRepoFragmentListener) getActivity();
+            mListener = (RepoFragmentListener) getActivity();
         } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString() + " must implement " + DirectoryRepoFragmentListener.class);
+            throw new ClassCastException(getActivity().toString() + " must implement " + RepoFragmentListener.class);
         }
     }
 
@@ -288,9 +277,5 @@ public class DirectoryRepoFragment extends RepoFragment {
 
     public void updateUri(Uri uri) {
         mSelectedUri = uri;
-    }
-
-    public interface DirectoryRepoFragmentListener extends RepoFragmentListener {
-        void onBrowseDirectories(String dir);
     }
 }

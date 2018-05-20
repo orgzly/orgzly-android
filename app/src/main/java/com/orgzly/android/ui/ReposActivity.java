@@ -20,33 +20,21 @@ import com.orgzly.android.repos.DropboxRepo;
 import com.orgzly.android.repos.MockRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
-import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.fragments.DirectoryRepoFragment;
+import com.orgzly.android.ui.fragments.RepoFragment.RepoFragmentListener;
 import com.orgzly.android.ui.fragments.ReposFragment;
-import com.orgzly.android.ui.browser.FileBrowserFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
-import com.orgzly.android.util.UriUtils;
-
-import java.io.File;
 
 /**
  * Configuring repositories.
  */
 public class ReposActivity extends RepoActivity
-        implements
-        SimpleOneLinerDialog.SimpleOneLinerDialogListener,
-        DirectoryRepoFragment.DirectoryRepoFragmentListener,
-        FileBrowserFragment.BrowserFragmentListener,
-        ReposFragment.ReposFragmentListener {
+        implements ReposFragment.ReposFragmentListener, RepoFragmentListener {
 
     public static final String TAG = ReposActivity.class.getName();
 
-    public static final int ACTION_OPEN_DOCUMENT_TREE_REQUEST_CODE = 0;
-
-    private static final int DIALOG_CREATE_DIRECTORY_ID = 1;
-    private static final String DIALOG_CREATE_DIRECTORY_ARG_DIRECTORY = "directory";
-
+    public static final int ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION = 0;
 
     private Shelf mShelf;
 
@@ -58,7 +46,6 @@ public class ReposActivity extends RepoActivity
 
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -164,90 +151,29 @@ public class ReposActivity extends RepoActivity
     }
 
     @Override
-    public void onBrowseDirectories(String dir) {
-        // Open the browser
-        getSupportFragmentManager()
-                .beginTransaction()
-                .addToBackStack(null)
-                .replace(R.id.activity_repos_frame, FileBrowserFragment.Companion.getInstance(dir), FileBrowserFragment.Companion.getFRAGMENT_TAG())
-                .commit();
-    }
-
-    @Override
-    public void onBrowserCancel() {
-        getSupportFragmentManager().popBackStack();
-    }
-
-    @Override
-    public void onBrowserCreate(String currentItem) {
-        Bundle bundle = new Bundle();
-        bundle.putString(DIALOG_CREATE_DIRECTORY_ARG_DIRECTORY, currentItem);
-
-        SimpleOneLinerDialog
-                .getInstance(DIALOG_CREATE_DIRECTORY_ID, R.string.new_folder, R.string.name, R.string.create, R.string.cancel, null, bundle)
-                .show(getSupportFragmentManager(), SimpleOneLinerDialog.FRAGMENT_TAG);
-    }
-
-    @Override
-    public void onBrowserUse(String item) {
-        DirectoryRepoFragment fragment =
-                (DirectoryRepoFragment) getSupportFragmentManager()
-                        .findFragmentByTag(DirectoryRepoFragment.FRAGMENT_TAG);
-
-        Uri uri = UriUtils.uriFromPath(DirectoryRepo.SCHEME, item);
-
-        fragment.updateUri(uri);
-
-        getSupportFragmentManager().popBackStack();
-    }
-
-    @Override
-    public void onSimpleOneLinerDialogValue(int id, String value, Bundle bundle) {
-        String currentDir = bundle.getString(DIALOG_CREATE_DIRECTORY_ARG_DIRECTORY);
-
-        File file = new File(currentDir, value);
-
-        if (file.mkdir()) {
-            Fragment f = getSupportFragmentManager().findFragmentByTag(FileBrowserFragment.Companion.getFRAGMENT_TAG());
-
-            if (f != null) {
-                FileBrowserFragment fragment = (FileBrowserFragment) f;
-                fragment.refresh();
-            }
-
-        } else {
-            String message = getResources().getString(
-                    R.string.failed_creating_directory,
-                    file.toString());
-
-            showSimpleSnackbarLong(message);
-        }
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, requestCode, resultCode, data);
 
         switch (requestCode) {
-            case ACTION_OPEN_DOCUMENT_TREE_REQUEST_CODE:
+            case ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION:
                 if (resultCode == RESULT_OK) {
-                    Uri treeUri = data.getData();
+                    Uri uri = data.getData();
 
                     // Persist permissions
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        grantUriPermission(getPackageName(), treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        grantUriPermission(getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
                         final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION |
                                               Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 
-                        getContentResolver().takePersistableUriPermission(treeUri, takeFlags);
+                        getContentResolver().takePersistableUriPermission(uri, takeFlags);
                     }
 
                     DirectoryRepoFragment fragment =
                             (DirectoryRepoFragment) getSupportFragmentManager()
                                     .findFragmentByTag(DirectoryRepoFragment.FRAGMENT_TAG);
 
-                    fragment.updateUri(treeUri);
+                    fragment.updateUri(uri);
                 }
 
                 break;

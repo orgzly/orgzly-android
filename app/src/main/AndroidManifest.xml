@@ -70,6 +70,8 @@
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
+        <activity android:name=".android.ui.BrowserActivity" />
+
         <activity
             android:name="com.orgzly.android.ui.BookChooserActivity"
             android:label="@string/book_shortcut_label"
