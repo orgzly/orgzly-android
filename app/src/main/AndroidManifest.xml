@@ -61,16 +61,19 @@
         </activity>
 
         <activity
-            android:name="com.orgzly.android.ui.ReposActivity"
+            android:name=".android.ui.repos.ReposActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
         <activity
-            android:name="com.orgzly.android.ui.DropboxRepoActivity"
+            android:name=".android.ui.repos.DropboxRepoActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
-        <activity android:name=".android.ui.BrowserActivity" />
+        <activity
+            android:name=".android.ui.repos.BrowserActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
 
         <activity
             android:name="com.orgzly.android.ui.BookChooserActivity"

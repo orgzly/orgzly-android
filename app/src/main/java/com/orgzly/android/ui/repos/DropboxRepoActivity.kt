@@ -1,4 +1,4 @@
-package com.orgzly.android.ui
+package com.orgzly.android.ui.repos
 
 import android.app.Activity
 import android.app.AlertDialog

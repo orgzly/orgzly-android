@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="com.orgzly.android.ui.ReposActivity"/>
+        tools:context="com.orgzly.android.ui.repos.ReposActivity"/>
 
     <include layout="@layout/app_bar"/>
 

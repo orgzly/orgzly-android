@@ -4,7 +4,7 @@ import android.support.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.ui.ReposActivity;
+import com.orgzly.android.ui.repos.ReposActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

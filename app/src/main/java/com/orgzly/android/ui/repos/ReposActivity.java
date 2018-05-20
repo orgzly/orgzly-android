@@ -1,4 +1,4 @@
-package com.orgzly.android.ui;
+package com.orgzly.android.ui.repos;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -20,9 +20,7 @@ import com.orgzly.android.repos.DropboxRepo;
 import com.orgzly.android.repos.MockRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
-import com.orgzly.android.ui.fragments.DirectoryRepoFragment;
-import com.orgzly.android.ui.fragments.RepoFragment.RepoFragmentListener;
-import com.orgzly.android.ui.fragments.ReposFragment;
+import com.orgzly.android.ui.repos.RepoFragment.RepoFragmentListener;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 

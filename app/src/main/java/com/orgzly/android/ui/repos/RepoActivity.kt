@@ -1,8 +1,9 @@
-package com.orgzly.android.ui
+package com.orgzly.android.ui.repos
 
 import android.annotation.SuppressLint
 import android.os.AsyncTask
 import com.orgzly.android.Shelf
+import com.orgzly.android.ui.CommonActivity
 
 open class RepoActivity : CommonActivity() {
     companion object {

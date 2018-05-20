@@ -1,4 +1,4 @@
-package com.orgzly.android.ui
+package com.orgzly.android.ui.repos
 
 import android.app.Activity
 import android.content.Intent
@@ -11,6 +11,7 @@ import android.widget.*
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.repos.DirectoryRepo
+import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils

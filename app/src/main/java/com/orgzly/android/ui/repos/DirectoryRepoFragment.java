@@ -1,4 +1,4 @@
-package com.orgzly.android.ui.fragments;
+package com.orgzly.android.ui.repos;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -26,8 +26,6 @@ import com.orgzly.android.repos.DirectoryRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.ui.CommonActivity;
-import com.orgzly.android.ui.ReposActivity;
-import com.orgzly.android.ui.BrowserActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;

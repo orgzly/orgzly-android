@@ -64,6 +64,7 @@ import com.orgzly.android.ui.fragments.FiltersFragment;
 import com.orgzly.android.ui.fragments.NoteFragment;
 import com.orgzly.android.ui.fragments.NoteListFragment;
 import com.orgzly.android.ui.fragments.SyncFragment;
+import com.orgzly.android.ui.repos.ReposActivity;
 import com.orgzly.android.ui.settings.SettingsActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.AppPermissions;
@@ -73,9 +74,6 @@ import com.orgzly.org.datetime.OrgDateTime;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 

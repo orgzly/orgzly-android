@@ -1,4 +1,4 @@
-package com.orgzly.android.ui.fragments;
+package com.orgzly.android.ui.repos;
 
 import android.support.v4.app.Fragment;
 

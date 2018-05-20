@@ -12,7 +12,7 @@ import com.orgzly.R;
 import com.orgzly.android.NotePosition;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.MainActivity;
-import com.orgzly.android.ui.ReposActivity;
+import com.orgzly.android.ui.repos.ReposActivity;
 
 import org.hamcrest.Matcher;
 import org.junit.Rule;
