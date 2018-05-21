@@ -24,8 +24,6 @@ public class App extends MultiDexApplication {
 
     public static final AppExecutors EXECUTORS = new AppExecutors();
 
-public class App extends Application {
-
     private static Context context;
 
     @Override

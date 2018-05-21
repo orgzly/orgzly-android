@@ -40,6 +40,7 @@ import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.CircularArrayList;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
+import com.orgzly.android.util.UriUtils;
 import com.orgzly.android.widgets.ListWidgetProvider;
 import com.orgzly.org.OrgHead;
 import com.orgzly.org.OrgProperties;
@@ -443,7 +444,7 @@ public class Shelf {
                 handleTwoWaySync((Repo.TwoWaySync) repo, namesake);
                 return new BookAction(
                         BookAction.Type.INFO,
-                        namesake.getStatus().msg(UriUtils.friendlyUri(repo.getUri().toString())));
+                        namesake.getStatus().msg(repo.getUri().toString()));
             }
         }
 
@@ -600,7 +601,7 @@ public class Shelf {
         VersionedRook newRook = currentRook;
         File dbFile = getTempBookFile();
         try {
-            writeBookToFile(book, BookName.Format.ORG, dbFile);
+            NotesExporter.Companion.getInstance(mContext, BookName.Format.ORG).exportBook(book, dbFile);
             Repo.TwoWaySync.TwoWaySyncResult result = sync.syncBook(
                     someRook.getUri(), currentRook, dbFile);
             newRook = result.newRook;

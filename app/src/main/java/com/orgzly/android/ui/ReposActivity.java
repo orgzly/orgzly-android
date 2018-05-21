@@ -23,6 +23,7 @@ import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.fragments.DirectoryRepoFragment;
+import com.orgzly.android.ui.fragments.FileBrowserOpener;
 import com.orgzly.android.ui.fragments.GitRepoFragment;
 import com.orgzly.android.ui.fragments.browser.FileBrowserFragment;
 import com.orgzly.android.ui.fragments.ReposFragment;

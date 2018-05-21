@@ -145,7 +145,13 @@ public class GitRepo implements Repo, Repo.TwoWaySync {
         return walk().parseCommit(ObjectId.fromString(revisionString));
     }
 
-    public VersionedRook retrieveBook(Uri sourceUri, File destinationFile) throws IOException {
+    @Override
+    public VersionedRook retrieveBook(String fileName, File destination) throws IOException {
+
+        // public VersionedRook retrieveBook(Uri sourceUri, File destinationFile)
+        // FIXME: Interface changed, this will not work
+        Uri sourceUri = Uri.parse(fileName);
+
         VersionedRook current = CurrentRooksClient.get(
                 App.getAppContext(), getUri().toString(), sourceUri.toString());
         RevCommit currentCommit = null;
@@ -158,7 +164,7 @@ public class GitRepo implements Repo, Repo.TwoWaySync {
         synchronizer.mergeWithRemote();
         synchronizer.tryPushIfUpdated(currentCommit);
         synchronizer.safelyRetrieveLatestVersionOfFile(
-                sourceUri.getPath(), destinationFile, currentCommit);
+                sourceUri.getPath(), destination, currentCommit);
 
         return currentVersionedRook(sourceUri);
     }

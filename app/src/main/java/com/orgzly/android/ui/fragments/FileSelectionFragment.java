@@ -69,12 +69,12 @@ public class FileSelectionFragment extends Fragment
     private void startBrowser() {
         /* Close the keyboard before opening the browser. */
         if (getActivity() != null) {
-            ActivityUtils.closeSoftKeyboard(getActivity());
+            ActivityUtils.INSTANCE.closeSoftKeyboard(getActivity());
         }
 
         /* Do not open the browser unless we have the storage permission. */
-        if (!AppPermissions.isGrantedOrRequest((CommonActivity) getActivity(),
-                AppPermissions.FOR_LOCAL_REPO)) {
+        if (!AppPermissions.INSTANCE.isGrantedOrRequest((CommonActivity) getActivity(),
+                AppPermissions.Usage.LOCAL_REPO)) {
             return;
         }
 

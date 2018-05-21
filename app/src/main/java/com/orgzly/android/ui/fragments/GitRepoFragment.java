@@ -233,7 +233,7 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
         setPreferenceEdits();
 
         getActivity().getSupportFragmentManager().popBackStack();
-        ActivityUtils.closeSoftKeyboard(getActivity());
+        ActivityUtils.INSTANCE.closeSoftKeyboard(getActivity());
     }
 
     private String getSettingName(int setting) {
