@@ -141,6 +141,7 @@
         <item name="ic_widgets_24dp">@drawable/ic_widgets_black_24dp</item>
 
         <item name="oic_dropbox_linked">@drawable/cic_dropbox_blue_48px</item>
+        <item name="oic_git_48dp">@drawable/cic_git_black_48dp</item>
         <item name="oic_dropbox_not_linked">@drawable/cic_dropbox_black_48px</item>
         <item name="oic_new_above_24dp">@drawable/cic_new_above_black_24dp</item>
         <item name="oic_new_below_24dp">@drawable/cic_new_below_black_24dp</item>
@@ -280,6 +281,7 @@
         <item name="ic_widgets_24dp">@drawable/ic_widgets_white_24dp</item>
 
         <item name="oic_dropbox_linked">@drawable/cic_dropbox_blue_48px</item>
+        <item name="oic_git_48dp">@drawable/cic_git_white_48dp</item>
         <item name="oic_dropbox_not_linked">@drawable/cic_dropbox_white_48px</item>
         <item name="oic_new_above_24dp">@drawable/cic_new_above_white_24dp</item>
         <item name="oic_new_below_24dp">@drawable/cic_new_below_white_24dp</item>

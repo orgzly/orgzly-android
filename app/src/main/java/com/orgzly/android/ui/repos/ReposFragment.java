@@ -95,6 +95,9 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
             newDropboxRepoButton.setVisibility(View.GONE);
         }
 
+        view.findViewById(R.id.fragment_repos_git).setOnClickListener(v ->
+                mListener.onRepoNewRequest(R.id.repos_options_menu_item_new_git));
+
         view.findViewById(R.id.fragment_repos_directory).setOnClickListener(v ->
                 mListener.onRepoNewRequest(R.id.repos_options_menu_item_new_external_storage_directory));
 
@@ -213,22 +216,22 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
                 mListener.onRepoNewRequest(item.getItemId());
                 return true;
 
+            case R.id.repos_options_menu_item_new_git:
+                mListener.onRepoNewRequest(item.getItemId());
+                return true;
+
             case R.id.repos_options_menu_item_new_external_storage_directory:
                 mListener.onRepoNewRequest(item.getItemId());
                 return true;
-            case R.id.repos_options_menu_item_new_git:
-                if (AppPermissions.INSTANCE.isGrantedOrRequest((CommonActivity) getActivity(), AppPermissions.Usage.LOCAL_REPO)) {
-                    mListener.onRepoNewRequest(item.getItemId());
-                }
-                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-   /*
-    * Context menu.
-    */
+    /*
+     * Context menu.
+     */
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -237,7 +240,7 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-		/* Get ID of the item. */
+        /* Get ID of the item. */
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         switch (item.getItemId()) {

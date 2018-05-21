@@ -520,6 +520,6 @@
     <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
     <string name="background_opacity">Background opacity</string>
     <string name="update_frequency">Update frequency</string>
+    <string name="git">Git</string>
 
-    <string name="browserFragmentListner">listener</string>
 </resources>

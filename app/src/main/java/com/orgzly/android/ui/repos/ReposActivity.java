@@ -106,11 +106,11 @@ public class ReposActivity extends RepoActivity
             case R.id.repos_options_menu_item_new_dropbox:
                 DropboxRepoActivity.start(this);
                 return;
-            case R.id.repos_options_menu_item_new_external_storage_directory:
-                displayRepoFragment(DirectoryRepoFragment.getInstance(), DirectoryRepoFragment.FRAGMENT_TAG);
-                return;
             case R.id.repos_options_menu_item_new_git:
                 displayRepoFragment(GitRepoFragment.getInstance(), GitRepoFragment.FRAGMENT_TAG);
+                return;
+            case R.id.repos_options_menu_item_new_external_storage_directory:
+                displayRepoFragment(DirectoryRepoFragment.getInstance(), DirectoryRepoFragment.FRAGMENT_TAG);
                 return;
             default:
                 throw new IllegalArgumentException("Unknown repo menu item clicked: " + id);

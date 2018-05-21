@@ -40,6 +40,15 @@
                 android:text="@string/dropbox"/>
 
             <Button
+                android:id="@+id/fragment_repos_git"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:drawableTop="?attr/oic_git_48dp"
+                android:text="@string/git"/>
+
+            <Button
                 android:id="@+id/fragment_repos_directory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
