@@ -84,6 +84,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
 }
 
 // Warning:Conflict with dependency 'com.android.support:support-annotations'. Resolved versions for app (23.1.1) and test app (23.0.1) differ.
@@ -92,6 +96,9 @@ configurations.all {
     resolutionStrategy {
         force "com.android.support:design:$android_support_version"
     }
+
+    exclude module: 'httpclient'
+    exclude module: 'commons-logging'
 }
 
 dependencies {

@@ -50,3 +50,8 @@
 -dontnote android.support.**
 
 -dontwarn org.joda.convert.**
+
+
+-dontwarn org.eclipse.jgit.**
+-dontwarn com.jcraft.**
+-dontwarn org.slf4j.**
