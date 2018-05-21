@@ -282,6 +282,4 @@ public class DirectoryRepoFragment extends RepoFragment implements FileBrowserOp
     public void handleBrowseResult(Uri uri) {
         updateUri(uri);
     }
-
-    public interface DirectoryRepoFragmentListener extends RepoFragmentListener, FileBrowserOpener {}
 }

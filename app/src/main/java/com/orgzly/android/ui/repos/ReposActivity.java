@@ -21,6 +21,7 @@ import com.orgzly.android.repos.GitRepo;
 import com.orgzly.android.repos.MockRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
+import com.orgzly.android.ui.fragments.FileBrowserOpener;
 import com.orgzly.android.ui.fragments.GitRepoFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
@@ -29,7 +30,10 @@ import com.orgzly.android.util.LogUtils;
  * Configuring repositories.
  */
 public class ReposActivity extends RepoActivity
-        implements ReposFragment.ReposFragmentListener, RepoFragment.RepoFragmentListener {
+        implements
+        ReposFragment.ReposFragmentListener,
+        RepoFragment.RepoFragmentListener,
+        FileBrowserOpener {
 
     public static final String TAG = ReposActivity.class.getName();
 
@@ -187,5 +191,10 @@ public class ReposActivity extends RepoActivity
 
                 break;
         }
+    }
+
+    @Override
+    public void browseDirectory(Uri uri, BrowserResultHandler resultHandler, boolean allowFileSelection) {
+
     }
 }

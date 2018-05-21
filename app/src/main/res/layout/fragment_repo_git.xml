@@ -6,6 +6,7 @@
     android:id="@+id/fragment_repo_directory_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/screen_edge"
     android:orientation="vertical"
     tools:context=".android.ui.MainActivity">
 

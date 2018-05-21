@@ -48,7 +48,7 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
     private View view;
     private long repoId;
     private RepoPreferences repoPreferences;
-    private GitRepoFragmentListener mListener;
+    private RepoFragmentListener mListener;
 
     private EditTextPreference[] editTextPreferences;
 
@@ -179,14 +179,15 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         /* This makes sure that the container activity has implemented
          * the callback interface. If not, it throws an exception
          */
         try {
-            mListener = (GitRepoFragmentListener) getActivity();
+            mListener = (RepoFragmentListener) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                    getActivity().toString() + " must implement " + GitRepoFragmentListener.class);
+                    getActivity().toString() + " must implement " + RepoFragmentListener.class);
         }
     }
 
@@ -384,6 +385,4 @@ public class GitRepoFragment extends RepoFragment implements GitPreferences {
 
         }
     }
-
-    public interface GitRepoFragmentListener extends RepoFragmentListener {}
 }
