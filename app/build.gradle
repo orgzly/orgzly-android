@@ -22,6 +22,8 @@ android {
 
         buildConfigField "String", "DROPBOX_APP_KEY", gradle.ext.appProperties.getProperty("dropbox.app_key", '""')
         resValue "string", "dropbox_app_key_schema", gradle.ext.appProperties.getProperty("dropbox.app_key_schema", '')
+
+        buildConfigField "boolean", "IS_GIT_ENABLED", "false"
     }
 
     buildTypes {

@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -87,21 +88,32 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
 
         mViewFlipper = view.findViewById(R.id.fragment_repos_flipper);
 
-        /* Hide or setup new Dropbox repo button. */
-        View newDropboxRepoButton = view.findViewById(R.id.fragment_repos_dropbox);
+        setupNoReposButtons(view);
+
+        return view;
+    }
+
+    private void setupNoReposButtons(View view) {
+        View button;
+
+        button = view.findViewById(R.id.fragment_repos_dropbox);
         if (BuildConfig.IS_DROPBOX_ENABLED) {
-            newDropboxRepoButton.setOnClickListener(v -> mListener.onRepoNewRequest(R.id.repos_options_menu_item_new_dropbox));
+            button.setOnClickListener(v ->
+                    mListener.onRepoNewRequest(R.id.repos_options_menu_item_new_dropbox));
         } else {
-            newDropboxRepoButton.setVisibility(View.GONE);
+            button.setVisibility(View.GONE);
         }
 
-        view.findViewById(R.id.fragment_repos_git).setOnClickListener(v ->
-                mListener.onRepoNewRequest(R.id.repos_options_menu_item_new_git));
+        button = view.findViewById(R.id.fragment_repos_git);
+        if (BuildConfig.IS_GIT_ENABLED) {
+            button.setOnClickListener(v ->
+                    mListener.onRepoNewRequest(R.id.repos_options_menu_item_new_git));
+        } else {
+            button.setVisibility(View.GONE);
+        }
 
         view.findViewById(R.id.fragment_repos_directory).setOnClickListener(v ->
                 mListener.onRepoNewRequest(R.id.repos_options_menu_item_new_external_storage_directory));
-
-        return view;
     }
 
     @Override
@@ -198,10 +210,14 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
         if (mListAdapter == null || mListAdapter.getCount() > 0) {
             inflater.inflate(R.menu.repos_actions, menu);
 
-            // Remove Dropbox from the menu
+            SubMenu newRepos = menu.findItem(R.id.repos_options_menu_item_new).getSubMenu();
+
             if (!BuildConfig.IS_DROPBOX_ENABLED) {
-                menu.findItem(R.id.repos_options_menu_item_new).getSubMenu()
-                        .removeItem(R.id.repos_options_menu_item_new_dropbox);
+                newRepos.removeItem(R.id.repos_options_menu_item_new_dropbox);
+            }
+
+            if (!BuildConfig.IS_GIT_ENABLED) {
+                newRepos.removeItem(R.id.repos_options_menu_item_new_git);
             }
         }
     }

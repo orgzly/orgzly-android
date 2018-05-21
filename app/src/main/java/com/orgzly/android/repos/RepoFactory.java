@@ -22,22 +22,23 @@ public class RepoFactory {
                         return new ContentRepo(context, uri);
 
                     case DropboxRepo.SCHEME:
-                        if (! BuildConfig.IS_DROPBOX_ENABLED) {
-                            return null;
+                        if (BuildConfig.IS_DROPBOX_ENABLED) {
+                            if (uri.getAuthority() == null) { // There should be no authority
+                                return new DropboxRepo(context, uri);
+                            }
                         }
 
-                        /* There should be no authority. */
-                        if (uri.getAuthority() != null) {
-                            return null;
-                        }
-                        return new DropboxRepo(context, uri);
                     case GitRepo.SCHEME:
-                        return GitRepo.buildFromUri(context, uri);
+                        if (BuildConfig.IS_GIT_ENABLED) {
+                            return GitRepo.buildFromUri(context, uri);
+                        }
+
                     case DirectoryRepo.SCHEME:
                         return new DirectoryRepo(uriString, false);
 
                     case MockRepo.SCHEME:
                         return new MockRepo(context, uriString);
+
                     default:
                         return GitRepo.buildFromUri(context, uri);
                 }
