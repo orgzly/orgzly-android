@@ -436,15 +436,17 @@ public class Shelf {
         BookAction bookAction = null;
 
         // XXX: This is a pretty nasty hack that completely circumvents the existing code path
-        VersionedRook rook = namesake.getRooks().get(0);
-        if (rook != null && namesake.getStatus() != BookSyncStatus.NO_CHANGE) {
-            Uri repoUri = rook.getRepoUri();
-            Repo repo = getRepo(repoUri);
-            if (repo instanceof Repo.TwoWaySync) {
-                handleTwoWaySync((Repo.TwoWaySync) repo, namesake);
-                return new BookAction(
-                        BookAction.Type.INFO,
-                        namesake.getStatus().msg(repo.getUri().toString()));
+        if (!namesake.getRooks().isEmpty()) {
+            VersionedRook rook = namesake.getRooks().get(0);
+            if (rook != null && namesake.getStatus() != BookSyncStatus.NO_CHANGE) {
+                Uri repoUri = rook.getRepoUri();
+                Repo repo = getRepo(repoUri);
+                if (repo instanceof Repo.TwoWaySync) {
+                    handleTwoWaySync((Repo.TwoWaySync) repo, namesake);
+                    return new BookAction(
+                            BookAction.Type.INFO,
+                            namesake.getStatus().msg(repo.getUri().toString()));
+                }
             }
         }
 
