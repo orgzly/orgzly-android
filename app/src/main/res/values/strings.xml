@@ -190,6 +190,13 @@
     <string name="fragment_repo_dropbox_directory_desc">Directory inside Dropbox (e.g. “/Documents/Orgzly”)</string>
     <string name="directory_uri">Directory URI</string>
 
+    <string name="fragment_repo_external_storage_directory_desc">Directory location (e.g. “file:/sdcard/orgzly”)</string>
+    <string name="fragment_repo_ssh_key_location_desc">SSH key location (e.g. “file:/sdcard/id_rsa”)</string>
+    <string name="fragment_repo_git_author">Git author (e.g. My Name)</string>
+    <string name="fragment_repo_git_email">Git email (e.g. me@email.com)</string>
+    <string name="fragment_repo_git_branch">Git branch (e.g. master)</string>
+    <string name="fragment_repo_git_remote_address">Git remote address (e.g. git@github.com:orgzly/orgzly-android.git)</string>
+
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Share action not set</string>
     <string name="share_action_not_supported">Share action %s is not supported</string>
@@ -514,4 +521,5 @@
     <string name="background_opacity">Background opacity</string>
     <string name="update_frequency">Update frequency</string>
 
+    <string name="browserFragmentListner">listener</string>
 </resources>

@@ -26,13 +26,14 @@ import com.orgzly.android.repos.DirectoryRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.ui.CommonActivity;
+import com.orgzly.android.ui.fragments.FileBrowserOpener;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 
 
-public class DirectoryRepoFragment extends RepoFragment {
+public class DirectoryRepoFragment extends RepoFragment implements FileBrowserOpener.BrowserResultHandler {
     private static final String TAG = DirectoryRepoFragment.class.getName();
 
     private static final String ARG_REPO_ID = "repo_id";
@@ -65,8 +66,7 @@ public class DirectoryRepoFragment extends RepoFragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public DirectoryRepoFragment() {
-    }
+    public DirectoryRepoFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -276,4 +276,12 @@ public class DirectoryRepoFragment extends RepoFragment {
     public void updateUri(Uri uri) {
         mSelectedUri = uri;
     }
+
+
+    @Override
+    public void handleBrowseResult(Uri uri) {
+        updateUri(uri);
+    }
+
+    public interface DirectoryRepoFragmentListener extends RepoFragmentListener, FileBrowserOpener {}
 }

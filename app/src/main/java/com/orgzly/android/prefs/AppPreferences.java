@@ -2,11 +2,17 @@ package com.orgzly.android.prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
+import android.net.Uri;
+import android.os.Environment;
 import com.orgzly.R;
 import com.orgzly.android.App;
 import com.orgzly.org.OrgStatesWorkflow;
 
+import org.eclipse.jgit.transport.URIish;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -26,7 +32,7 @@ public class AppPreferences {
     private static Set<String> doneKeywords;
 
     /* Shared Preferences for states. */
-    private static SharedPreferences getStateSharedPreferences(Context context) {
+    public static SharedPreferences getStateSharedPreferences(Context context) {
         return context.getSharedPreferences("state", Context.MODE_PRIVATE);
     }
 
@@ -579,6 +585,60 @@ public class AppPreferences {
     public static void dropboxToken(Context context, String value) {
         String key = context.getResources().getString(R.string.pref_key_dropbox_token);
         getStateSharedPreferences(context).edit().putString(key, value).apply();
+    }
+
+    /*
+     * Git Sync
+     */
+
+    public static String gitAuthor(Context context) {
+        return getStateSharedPreferences(context).getString("pref_key_git_author", null);
+    }
+
+    public static void gitAuthor(Context context, String value) {
+        getStateSharedPreferences(context).edit().putString("pref_key_git_author", value).apply();
+    }
+
+    public static String gitEmail(Context context) {
+        return getStateSharedPreferences(context).getString("pref_key_git_email", null);
+    }
+
+    public static void gitEmail(Context context, String value) {
+        getStateSharedPreferences(context).edit().putString("pref_key_git_email", value).apply();
+    }
+
+    public static String gitSSHKeyPath(Context context) {
+        return getStateSharedPreferences(context).getString("pref_key_git_ssh_key_path", null);
+    }
+
+    public static void gitSSHKeyPath(Context context, String value) {
+        getStateSharedPreferences(context).edit().putString(
+                "pref_key_git_ssh_key_path", value).apply();
+    }
+
+    public static String defaultRepositoryStorageDirectory(Context context) {
+        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        return getStringFromSelector(
+                context, R.string.pref_key_git_default_repository_directory, path.toString());
+    }
+
+    public static String repositoryStoragePathForUri(Context context, Uri repoUri)  {
+        String directoryFilename = repoUri.toString();
+        try {
+            directoryFilename = new URIish(directoryFilename).getPath();
+        } catch (URISyntaxException e) {
+            directoryFilename = directoryFilename.replaceAll("/[^A-Za-z0-9 ]/", "");
+        }
+        Uri baseUri = Uri.parse(defaultRepositoryStorageDirectory(context));
+        return baseUri.buildUpon().appendPath(directoryFilename).build().getPath();
+    }
+
+    private static String getStringFromSelector(Context context, int selector, String def) {
+        return getStateSharedPreferences(context).getString(getSelector(context, selector), def);
+    }
+
+    private static String getSelector(Context context, int selector) {
+        return context.getResources().getString(selector);
     }
 
     /*

@@ -25,8 +25,10 @@ import android.widget.ViewFlipper;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.provider.ProviderContract;
+import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.Loaders;
 import com.orgzly.android.ui.util.ActivityUtils;
+import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
 
 /**
@@ -214,7 +216,11 @@ public class ReposFragment extends ListFragment implements LoaderManager.LoaderC
             case R.id.repos_options_menu_item_new_external_storage_directory:
                 mListener.onRepoNewRequest(item.getItemId());
                 return true;
-
+            case R.id.repos_options_menu_item_new_git:
+                if (AppPermissions.INSTANCE.isGrantedOrRequest((CommonActivity) getActivity(), AppPermissions.Usage.LOCAL_REPO)) {
+                    mListener.onRepoNewRequest(item.getItemId());
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

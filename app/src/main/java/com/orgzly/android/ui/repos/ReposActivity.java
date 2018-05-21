@@ -17,10 +17,11 @@ import com.orgzly.android.provider.clients.ReposClient;
 import com.orgzly.android.repos.ContentRepo;
 import com.orgzly.android.repos.DirectoryRepo;
 import com.orgzly.android.repos.DropboxRepo;
+import com.orgzly.android.repos.GitRepo;
 import com.orgzly.android.repos.MockRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
-import com.orgzly.android.ui.repos.RepoFragment.RepoFragmentListener;
+import com.orgzly.android.ui.fragments.GitRepoFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 
@@ -28,7 +29,7 @@ import com.orgzly.android.util.LogUtils;
  * Configuring repositories.
  */
 public class ReposActivity extends RepoActivity
-        implements ReposFragment.ReposFragmentListener, RepoFragmentListener {
+        implements ReposFragment.ReposFragmentListener, RepoFragment.RepoFragmentListener {
 
     public static final String TAG = ReposActivity.class.getName();
 
@@ -63,6 +64,12 @@ public class ReposActivity extends RepoActivity
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -95,14 +102,18 @@ public class ReposActivity extends RepoActivity
 
     @Override
     public void onRepoNewRequest(int id) {
-        if (id == R.id.repos_options_menu_item_new_dropbox) {
-            DropboxRepoActivity.start(this);
-
-        } else if (id == R.id.repos_options_menu_item_new_external_storage_directory) {
-            displayRepoFragment(DirectoryRepoFragment.getInstance(), DirectoryRepoFragment.FRAGMENT_TAG);
-
-        } else {
-            throw new IllegalArgumentException("Unknown repo menu item clicked: " + id);
+        switch (id) {
+            case R.id.repos_options_menu_item_new_dropbox:
+                DropboxRepoActivity.start(this);
+                return;
+            case R.id.repos_options_menu_item_new_external_storage_directory:
+                displayRepoFragment(DirectoryRepoFragment.getInstance(), DirectoryRepoFragment.FRAGMENT_TAG);
+                return;
+            case R.id.repos_options_menu_item_new_git:
+                displayRepoFragment(GitRepoFragment.getInstance(), GitRepoFragment.FRAGMENT_TAG);
+                return;
+            default:
+                throw new IllegalArgumentException("Unknown repo menu item clicked: " + id);
         }
     }
 
@@ -130,10 +141,10 @@ public class ReposActivity extends RepoActivity
 
         if (repo instanceof DropboxRepo || repo instanceof MockRepo) {  // TODO: Remove Mock from here
             DropboxRepoActivity.start(this, id);
-
         } else if (repo instanceof DirectoryRepo || repo instanceof ContentRepo) {
             displayRepoFragment(DirectoryRepoFragment.getInstance(id), DirectoryRepoFragment.FRAGMENT_TAG);
-
+        } else if (repo instanceof GitRepo) {
+            displayRepoFragment(GitRepoFragment.getInstance(id), GitRepoFragment.FRAGMENT_TAG);
         } else {
             showSimpleSnackbarLong(R.string.message_unsupported_repository_type);
         }

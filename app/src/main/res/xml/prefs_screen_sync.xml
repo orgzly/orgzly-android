@@ -11,7 +11,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="com.orgzly"
-            android:targetClass="com.orgzly.android.ui.ReposActivity"/>
+            android:targetClass="com.orgzly.android.ui.repos.ReposActivity"/>
     </Preference>
 
     <PreferenceScreen

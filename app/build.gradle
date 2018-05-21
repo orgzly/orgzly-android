@@ -106,6 +106,7 @@ dependencies {
     implementation "com.evernote:android-job:$evernote_android_job_version"
 
     implementation "joda-time:joda-time:$joda_time_version"
+    implementation "org.eclipse.jgit:org.eclipse.jgit:$jgit_version"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains:annotations:$jetbrains_annotations"

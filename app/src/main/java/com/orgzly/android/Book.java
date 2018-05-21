@@ -1,7 +1,7 @@
 package com.orgzly.android;
 
 import android.net.Uri;
-
+import android.util.Log;
 import com.orgzly.android.repos.Rook;
 import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.sync.BookSyncStatus;

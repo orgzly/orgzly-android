@@ -13,7 +13,7 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
-
+import android.util.Log;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.filter.Filter;
@@ -40,6 +40,7 @@ import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.CircularArrayList;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
+import com.orgzly.android.util.UriUtils;
 import com.orgzly.android.widgets.ListWidgetProvider;
 import com.orgzly.org.OrgHead;
 import com.orgzly.org.OrgProperties;
@@ -434,6 +435,19 @@ public class Shelf {
         String fileName;
         BookAction bookAction = null;
 
+        // XXX: This is a pretty nasty hack that completely circumvents the existing code path
+        VersionedRook rook = namesake.getRooks().get(0);
+        if (rook != null && namesake.getStatus() != BookSyncStatus.NO_CHANGE) {
+            Uri repoUri = rook.getRepoUri();
+            Repo repo = getRepo(repoUri);
+            if (repo instanceof Repo.TwoWaySync) {
+                handleTwoWaySync((Repo.TwoWaySync) repo, namesake);
+                return new BookAction(
+                        BookAction.Type.INFO,
+                        namesake.getStatus().msg(repo.getUri().toString()));
+            }
+        }
+
         switch (namesake.getStatus()) {
             case NO_CHANGE:
                 bookAction = new BookAction(BookAction.Type.INFO, namesake.getStatus().msg());
@@ -445,6 +459,7 @@ public class Shelf {
             case ONLY_BOOK_WITHOUT_LINK_AND_MULTIPLE_REPOS:
             case BOOK_WITH_LINK_AND_ROOK_EXISTS_BUT_LINK_POINTING_TO_DIFFERENT_ROOK:
             case CONFLICT_BOTH_BOOK_AND_ROOK_MODIFIED:
+
             case CONFLICT_BOOK_WITH_LINK_AND_ROOK_BUT_NEVER_SYNCED_BEFORE:
             case CONFLICT_LAST_SYNCED_ROOK_AND_LATEST_ROOK_ARE_DIFFERENT:
             case ONLY_DUMMY:
@@ -501,6 +516,15 @@ public class Shelf {
         return bookAction;
     }
 
+    private Repo getRepo(Uri repoUrl) throws IOException {
+        Repo repo = RepoFactory.getFromUri(mContext, repoUrl);
+
+        if (repo == null) {
+            throw new IOException("Unsupported repository URL \"" + repoUrl + "\"");
+        }
+        return repo;
+    }
+
     /**
      * Downloads remote book, parses it and stores it to {@link Shelf}.
      * @return book now linked to remote one
@@ -545,13 +569,10 @@ public class Shelf {
      * @throws IOException
      */
     public Book saveBookToRepo(String repoUrl, String fileName, Book book, BookName.Format format) throws IOException {
-        Repo repo = RepoFactory.getFromUri(mContext, repoUrl);
-
-        if (repo == null) {
-            throw new IOException("Unsupported repository URL \"" + repoUrl + "\"");
-        }
 
         VersionedRook uploadedBook;
+
+        Repo repo = getRepo(Uri.parse(repoUrl));
 
         File tmpFile = getTempBookFile();
         try {
@@ -569,6 +590,36 @@ public class Shelf {
         book.setLastSyncedToRook(uploadedBook);
 
         BooksClient.saved(mContext, book.getId(), uploadedBook);
+
+        return book;
+    }
+
+    public Book handleTwoWaySync(Repo.TwoWaySync sync, BookNamesake namesake) throws IOException {
+        Book book = namesake.getBook();
+        VersionedRook currentRook = book.getLastSyncedToRook();
+        VersionedRook someRook = currentRook == null ? namesake.getRooks().get(0) : currentRook;
+        VersionedRook newRook = currentRook;
+        File dbFile = getTempBookFile();
+        try {
+            NotesExporter.Companion.getInstance(mContext, BookName.Format.ORG).exportBook(book, dbFile);
+            Repo.TwoWaySync.TwoWaySyncResult result = sync.syncBook(
+                    someRook.getUri(), currentRook, dbFile);
+            newRook = result.newRook;
+            if (result.loadFile != null) {
+                String fileName = BookName.getFileName(mContext, newRook.getUri());
+                BookName bookName = BookName.fromFileName(fileName);
+                Log.i("Git", String.format("Loading from file %s", result.loadFile.toString()));
+                book = loadBookFromFile(bookName.getName(), bookName.getFormat(),
+                        result.loadFile, newRook);
+                BooksClient.setModificationTime(mContext, book.getId(), 0);
+            }
+            book.setLastSyncedToRook(newRook);
+        } finally {
+            /* Delete temporary files. */
+            dbFile.delete();
+        }
+
+        BooksClient.saved(mContext, book.getId(), newRook);
 
         return book;
     }
