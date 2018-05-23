@@ -1,10 +1,14 @@
 package com.orgzly.android.ui.repos
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.AsyncTask
+import android.os.Build
 import com.orgzly.android.Shelf
 import com.orgzly.android.ui.CommonActivity
 
+@SuppressLint("Registered")
 open class RepoActivity : CommonActivity() {
     companion object {
         val TAG: String = RepoActivity::class.java.name
@@ -32,5 +36,18 @@ open class RepoActivity : CommonActivity() {
                 return null
             }
         }.execute()
+    }
+
+    fun persistPermissions(uri: Uri) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            grantUriPermission(packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+            val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+
+            contentResolver.takePersistableUriPermission(uri, takeFlags)
+        }
+    }
+
+    open fun updateUri(uri: Uri) {
     }
 }

@@ -27,21 +27,6 @@ import com.orgzly.android.util.MiscUtils
 import com.orgzly.android.util.UriUtils
 
 class DropboxRepoActivity : RepoActivity() {
-    companion object {
-        private val TAG: String = DropboxRepoActivity::class.java.name
-
-        private const val ARG_REPO_ID = "repo_id"
-
-        @JvmStatic
-        @JvmOverloads
-        fun start(activity: Activity, repoId: Long = 0) {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.setClass(activity, DropboxRepoActivity::class.java)
-            intent.putExtra(ARG_REPO_ID, repoId)
-
-            activity.startActivity(intent)
-        }
-    }
 
     private lateinit var icon: ImageView
     private lateinit var button: Button
@@ -59,6 +44,7 @@ class DropboxRepoActivity : RepoActivity() {
 
         setContentView(R.layout.activity_repo_dropbox)
 
+
         val myToolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(myToolbar)
 
@@ -66,13 +52,12 @@ class DropboxRepoActivity : RepoActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setTitle(R.string.dropbox)
 
-        // supportActionBar?.setTitle(R.string.repositories)
 
         /* Dropbox link / unlink button. */
         button = findViewById(R.id.fragment_repo_dropbox_link_button)
         button.setOnClickListener {
             if (isDropboxLinked()) {
-                areYouSureYouWantToUnlink()
+                toggleLinkAfterConfirmation()
             } else {
                 toogleLink()
             }
@@ -87,7 +72,7 @@ class DropboxRepoActivity : RepoActivity() {
         directory.maxLines = 3
 
         directory.setOnEditorActionListener { _, _, _ ->
-            save()
+            saveAndFinish()
             finish()
             true
         }
@@ -124,18 +109,14 @@ class DropboxRepoActivity : RepoActivity() {
         return true
     }
 
-    /**
-     * Callback for options menu.
-     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.done -> {
-                save()
-                finish()
+                saveAndFinish()
                 true
             }
 
-            R.id.close, R.id.home -> {
+            R.id.close, android.R.id.home -> {
                 finish()
                 true
             }
@@ -145,7 +126,7 @@ class DropboxRepoActivity : RepoActivity() {
         }
     }
 
-    private fun save() {
+    private fun saveAndFinish() {
         val directory = directory.text.toString().trim { it <= ' ' }
 
         if (TextUtils.isEmpty(directory)) {
@@ -170,9 +151,11 @@ class DropboxRepoActivity : RepoActivity() {
         } else { // Add new repository
             addRepoUrl(repo.uri.toString())
         }
+
+        finish()
     }
 
-    private fun areYouSureYouWantToUnlink() {
+    private fun toggleLinkAfterConfirmation() {
         val dialogClickListener = DialogInterface.OnClickListener { _, which ->
             if (which == DialogInterface.BUTTON_POSITIVE) {
                 toogleLink()
@@ -250,5 +233,21 @@ class DropboxRepoActivity : RepoActivity() {
 
     private fun isDropboxLinked(): Boolean {
         return client.isLinked
+    }
+
+    companion object {
+        private val TAG: String = DropboxRepoActivity::class.java.name
+
+        private const val ARG_REPO_ID = "repo_id"
+
+        @JvmStatic
+        @JvmOverloads
+        fun start(activity: Activity, repoId: Long = 0) {
+            val intent = Intent(Intent.ACTION_VIEW)
+                    .setClass(activity, DropboxRepoActivity::class.java)
+                    .putExtra(ARG_REPO_ID, repoId)
+
+            activity.startActivity(intent)
+        }
     }
 }

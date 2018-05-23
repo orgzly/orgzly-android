@@ -1,16 +1,13 @@
 package com.orgzly.android.ui.repos;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.provider.clients.ReposClient;
@@ -24,7 +21,6 @@ import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.ui.fragments.FileBrowserOpener;
 import com.orgzly.android.ui.fragments.GitRepoFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
-import com.orgzly.android.util.LogUtils;
 
 /**
  * Configuring repositories.
@@ -36,8 +32,6 @@ public class ReposActivity extends RepoActivity
         FileBrowserOpener {
 
     public static final String TAG = ReposActivity.class.getName();
-
-    public static final int ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION = 0;
 
     private Shelf mShelf;
 
@@ -110,12 +104,15 @@ public class ReposActivity extends RepoActivity
             case R.id.repos_options_menu_item_new_dropbox:
                 DropboxRepoActivity.start(this);
                 return;
+
             case R.id.repos_options_menu_item_new_git:
                 displayRepoFragment(GitRepoFragment.getInstance(), GitRepoFragment.FRAGMENT_TAG);
                 return;
+
             case R.id.repos_options_menu_item_new_external_storage_directory:
-                displayRepoFragment(DirectoryRepoFragment.getInstance(), DirectoryRepoFragment.FRAGMENT_TAG);
+                DirectoryRepoActivity.start(this);
                 return;
+
             default:
                 throw new IllegalArgumentException("Unknown repo menu item clicked: " + id);
         }
@@ -145,10 +142,13 @@ public class ReposActivity extends RepoActivity
 
         if (repo instanceof DropboxRepo || repo instanceof MockRepo) {  // TODO: Remove Mock from here
             DropboxRepoActivity.start(this, id);
+
         } else if (repo instanceof DirectoryRepo || repo instanceof ContentRepo) {
-            displayRepoFragment(DirectoryRepoFragment.getInstance(id), DirectoryRepoFragment.FRAGMENT_TAG);
+            DirectoryRepoActivity.start(this, id);
+
         } else if (repo instanceof GitRepo) {
             displayRepoFragment(GitRepoFragment.getInstance(id), GitRepoFragment.FRAGMENT_TAG);
+
         } else {
             showSimpleSnackbarLong(R.string.message_unsupported_repository_type);
         }
@@ -161,36 +161,6 @@ public class ReposActivity extends RepoActivity
                 .addToBackStack(null)
                 .replace(R.id.activity_repos_frame, fragment, tag)
                 .commit();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION:
-                if (resultCode == RESULT_OK) {
-                    Uri uri = data.getData();
-
-                    // Persist permissions
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        grantUriPermission(getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-                        final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                                              Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
-
-                        getContentResolver().takePersistableUriPermission(uri, takeFlags);
-                    }
-
-                    DirectoryRepoFragment fragment =
-                            (DirectoryRepoFragment) getSupportFragmentManager()
-                                    .findFragmentByTag(DirectoryRepoFragment.FRAGMENT_TAG);
-
-                    fragment.updateUri(uri);
-                }
-
-                break;
-        }
     }
 
     @Override

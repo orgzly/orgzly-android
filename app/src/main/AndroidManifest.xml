@@ -71,6 +71,11 @@
         </activity>
 
         <activity
+            android:name=".android.ui.repos.DirectoryRepoActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+
+        <activity
             android:name=".android.ui.repos.BrowserActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
