@@ -15,7 +15,6 @@ import com.orgzly.android.Book;
 import com.orgzly.android.BookUtils;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.ui.fragments.BooksFragment;
-import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 
 /**
@@ -38,10 +37,7 @@ public class BookChooserActivity extends CommonActivity
 
         setContentView(R.layout.activity_bookchooser);
 
-        Toolbar myToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
-
-        getSupportActionBar().setTitle(R.string.pick_a_notebook);
+        setupActionBar(R.string.pick_a_notebook, false);
 
         setupFragments(savedInstanceState);
     }

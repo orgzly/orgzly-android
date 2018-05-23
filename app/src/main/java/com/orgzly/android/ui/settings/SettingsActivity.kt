@@ -68,12 +68,7 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
 
         setContentView(R.layout.activity_settings)
 
-        val myToolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(myToolbar)
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        setTitle(R.string.settings)
+        setupActionBar(R.string.settings)
 
         if (savedInstanceState == null) {
             val fragment = SettingsFragment.getInstance()

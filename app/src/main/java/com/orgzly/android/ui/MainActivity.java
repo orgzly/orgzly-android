@@ -122,11 +122,7 @@ public class MainActivity extends CommonActivity
 
         setContentView(R.layout.activity_main);
 
-        Toolbar myToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        setupActionBar();
 
         broadcastManager = LocalBroadcastManager.getInstance(this);
 

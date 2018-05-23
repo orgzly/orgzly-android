@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.TextInputLayout
-import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
@@ -44,14 +43,7 @@ class DropboxRepoActivity : RepoActivity() {
 
         setContentView(R.layout.activity_repo_dropbox)
 
-
-        val myToolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(myToolbar)
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar?.setTitle(R.string.dropbox)
-
+        setupActionBar(R.string.dropbox)
 
         /* Dropbox link / unlink button. */
         button = findViewById(R.id.fragment_repo_dropbox_link_button)

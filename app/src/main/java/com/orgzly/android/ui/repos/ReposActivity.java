@@ -41,13 +41,7 @@ public class ReposActivity extends RepoActivity
 
         setContentView(R.layout.activity_repos);
 
-        Toolbar myToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-        getSupportActionBar().setTitle(R.string.repositories);
+        setupActionBar(R.string.repositories);
 
         mShelf = new Shelf(getApplicationContext());
 

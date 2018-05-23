@@ -66,10 +66,7 @@ public class ShareActivity extends CommonActivity
 
         setContentView(R.layout.activity_share);
 
-        Toolbar myToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
-
-        getSupportActionBar().setTitle(R.string.new_note);
+        setupActionBar(R.string.new_note, false);
 
         Data data = getDataFromIntent(getIntent());
 

@@ -12,6 +12,7 @@ import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.view.MotionEvent
 import android.view.View
 import com.orgzly.BuildConfig
@@ -283,6 +284,21 @@ abstract class CommonActivity : AppCompatActivity() {
         }
     }
 
+    @JvmOverloads
+    fun setupActionBar(title: Int? = null, homeButton: Boolean = true) {
+        val myToolbar = findViewById<Toolbar>(R.id.toolbar)
+
+        setSupportActionBar(myToolbar)
+
+        if (homeButton) {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setHomeButtonEnabled(true)
+        }
+
+        if (title != null) {
+            supportActionBar?.setTitle(title)
+        }
+    }
 
     private var runAfterPermissionGrant: Runnable? = null
 

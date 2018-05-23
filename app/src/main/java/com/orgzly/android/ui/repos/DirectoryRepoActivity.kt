@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TextInputLayout
-import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
@@ -36,13 +35,7 @@ class DirectoryRepoActivity : RepoActivity() {
 
         setContentView(R.layout.activity_repo_directory)
 
-        val myToolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(myToolbar)
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar?.setTitle(R.string.directory)
-
+        setupActionBar(R.string.directory)
 
         directoryInputLayout = findViewById(R.id.fragment_repo_directory_input_layout)
 

@@ -46,14 +46,6 @@ class BrowserActivity :
         loadFileListFromNext(true)
     }
 
-    private fun setupActionBar() {
-        val myToolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(myToolbar)
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
 
