@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.orgzly.R;
@@ -18,8 +17,6 @@ import com.orgzly.android.repos.GitRepo;
 import com.orgzly.android.repos.MockRepo;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
-import com.orgzly.android.ui.fragments.FileBrowserOpener;
-import com.orgzly.android.ui.fragments.GitRepoFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 
 /**
@@ -28,8 +25,7 @@ import com.orgzly.android.ui.util.ActivityUtils;
 public class ReposActivity extends RepoActivity
         implements
         ReposFragment.ReposFragmentListener,
-        RepoFragment.RepoFragmentListener,
-        FileBrowserOpener {
+        RepoFragment.RepoFragmentListener {
 
     public static final String TAG = ReposActivity.class.getName();
 
@@ -100,7 +96,7 @@ public class ReposActivity extends RepoActivity
                 return;
 
             case R.id.repos_options_menu_item_new_git:
-                displayRepoFragment(GitRepoFragment.getInstance(), GitRepoFragment.FRAGMENT_TAG);
+                GitRepoActivity.start(this);
                 return;
 
             case R.id.repos_options_menu_item_new_external_storage_directory:
@@ -141,24 +137,10 @@ public class ReposActivity extends RepoActivity
             DirectoryRepoActivity.start(this, id);
 
         } else if (repo instanceof GitRepo) {
-            displayRepoFragment(GitRepoFragment.getInstance(id), GitRepoFragment.FRAGMENT_TAG);
+            GitRepoActivity.start(this, id);
 
         } else {
             showSimpleSnackbarLong(R.string.message_unsupported_repository_type);
         }
-    }
-
-    private void displayRepoFragment(Fragment fragment, String tag) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
-                .addToBackStack(null)
-                .replace(R.id.activity_repos_frame, fragment, tag)
-                .commit();
-    }
-
-    @Override
-    public void browseDirectory(Uri uri, BrowserResultHandler resultHandler, boolean allowFileSelection) {
-
     }
 }

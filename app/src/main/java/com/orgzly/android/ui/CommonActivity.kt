@@ -116,8 +116,7 @@ abstract class CommonActivity : AppCompatActivity() {
     }
 
     fun showSimpleSnackbarLong(message: String) {
-        val view = findViewById<View>(R.id.main_content)
-        if (view != null) {
+        findViewById<View>(R.id.main_content)?.let { view ->
             showSnackbar(Snackbar.make(view, message, Snackbar.LENGTH_LONG))
         }
     }

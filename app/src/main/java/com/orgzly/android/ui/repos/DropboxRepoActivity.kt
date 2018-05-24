@@ -39,8 +39,6 @@ class DropboxRepoActivity : RepoActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        repoId = intent.getLongExtra(ARG_REPO_ID, 0)
-
         setContentView(R.layout.activity_repo_dropbox)
 
         setupActionBar(R.string.dropbox)
@@ -68,6 +66,8 @@ class DropboxRepoActivity : RepoActivity() {
             finish()
             true
         }
+
+        repoId = intent.getLongExtra(ARG_REPO_ID, 0)
 
         // Set directory value for existing repository being edited
         if (repoId != 0L) {

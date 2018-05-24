@@ -71,6 +71,11 @@
         </activity>
 
         <activity
+            android:name=".android.ui.repos.GitRepoActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+
+        <activity
             android:name=".android.ui.repos.DirectoryRepoActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>

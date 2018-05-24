@@ -500,7 +500,7 @@ public class MiscTest extends OrgzlyTest {
 
         // Directory repo
         onListItem(1).perform(click());
-        fragmentTest(rule, false, withId(R.id.fragment_repo_directory_container));
+        fragmentTest(rule, false, withId(R.id.activity_repo_directory_container));
         pressBack();
 
         // Dropbox repo

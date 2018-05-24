@@ -30,31 +30,29 @@ class DirectoryRepoActivity : RepoActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        repoId = intent.getLongExtra(ARG_REPO_ID, 0)
-
-
         setContentView(R.layout.activity_repo_directory)
 
         setupActionBar(R.string.directory)
 
-        directoryInputLayout = findViewById(R.id.fragment_repo_directory_input_layout)
+        directoryInputLayout = findViewById(R.id.activity_repo_directory_input_layout)
 
-        directory = findViewById(R.id.fragment_repo_directory)
+        directory = findViewById(R.id.activity_repo_directory)
 
         // Not working when done in XML
         directory.setHorizontallyScrolling(false)
         directory.maxLines = 3
 
-        directory.setOnEditorActionListener { v, _, _ ->
+        directory.setOnEditorActionListener {   _, _, _ ->
             saveAndFinish()
             true
         }
 
         MiscUtils.clearErrorOnTextChange(directory, directoryInputLayout)
 
-        findViewById<View>(R.id.fragment_repo_directory_browse_button)
+        findViewById<View>(R.id.activity_repo_directory_browse_button)
                 .setOnClickListener { _ -> startFileBrowser() }
 
+        repoId = intent.getLongExtra(ARG_REPO_ID, 0)
 
         /* Set directory value for existing repository being edited. */
         if (repoId != 0L) {
@@ -97,6 +95,23 @@ class DirectoryRepoActivity : RepoActivity() {
         }
 
         startActivityForResult(intent, ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(RepoActivity.TAG, requestCode, resultCode, data)
+
+        when (requestCode) {
+            ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION ->
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    val uri = data.data
+
+                    if (uri != null) {
+                        persistPermissions(uri)
+
+                        updateUri(uri)
+                    }
+                }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -162,23 +177,6 @@ class DirectoryRepoActivity : RepoActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(RepoActivity.TAG, requestCode, resultCode, data)
-
-        when (requestCode) {
-            ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION ->
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    val uri = data.data
-
-                    if (uri != null) {
-                        persistPermissions(uri)
-
-                        updateUri(uri)
-                    }
-                }
-        }
-    }
-
     override fun updateUri(uri: Uri) {
         directory.setText(uri.toString())
     }
@@ -189,7 +187,6 @@ class DirectoryRepoActivity : RepoActivity() {
         private const val ARG_REPO_ID = "repo_id"
 
         const val ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION = 0
-
 
         @JvmStatic
         @JvmOverloads

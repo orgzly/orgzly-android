@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
-import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.*
 import android.widget.*
@@ -32,6 +31,8 @@ class BrowserActivity :
     private var currentItem: String? = null
     private var nextItem: String? = null
 
+    private var isFileSelectable: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,6 +43,8 @@ class BrowserActivity :
         setupViews()
 
         setNextItemFromArguments(savedInstanceState)
+
+        isFileSelectable = intent.getBooleanExtra(ARG_IS_FILE_SELECTABLE, false)
 
         loadFileListFromNext(true)
     }
@@ -79,7 +82,7 @@ class BrowserActivity :
         }
 
         findViewById<View>(R.id.activity_browser_button_use).setOnClickListener {
-            use(currentItem)
+            useAndFinish(currentItem)
         }
     }
 
@@ -137,7 +140,7 @@ class BrowserActivity :
         loadFileListFromNext(false)
     }
 
-    private fun use(item: String?) {
+    private fun useAndFinish(item: String?) {
         val uri = UriUtils.uriFromPath(DirectoryRepo.SCHEME, item)
 
         setResult(Activity.RESULT_OK, Intent().setData(uri))
@@ -179,6 +182,9 @@ class BrowserActivity :
                 if (sel.isDirectory) {
                     nextItem = sel.absolutePath
                     loadFileListFromNext(false)
+
+                } else if (isFileSelectable) {
+                    useAndFinish(sel.absolutePath)
                 }
             }
 
@@ -331,6 +337,7 @@ class BrowserActivity :
 
         const val ARG_STARTING_DIRECTORY = "starting_directory"
         const val ARG_DIRECTORY = "directory"
+        const val ARG_IS_FILE_SELECTABLE = "is_file_selectable"
 
         private val FILENAME_FILTER = FilenameFilter { dir, name ->
             File(dir, name).let {

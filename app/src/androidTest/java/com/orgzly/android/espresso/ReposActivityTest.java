@@ -32,7 +32,7 @@ public class ReposActivityTest extends OrgzlyTest {
         activityRule.launchActivity(null);
         onView(withId(R.id.fragment_repos_flipper)).check(matches(isDisplayed()));
         onView(withId(R.id.fragment_repos_directory)).perform(click());
-        onView(withId(R.id.fragment_repo_directory)).perform(replaceText("non-existent-directory"));
+        onView(withId(R.id.activity_repo_directory)).perform(replaceText("non-existent-directory"));
         onView(withId(R.id.done)).perform(click());
     }
 
@@ -48,14 +48,14 @@ public class ReposActivityTest extends OrgzlyTest {
 
         onView(withId(R.id.fragment_repos_flipper)).check(matches(isDisplayed()));
         onView(withId(R.id.fragment_repos_directory)).perform(click());
-        onView(withId(R.id.fragment_repo_directory)).perform(replaceText(repoUri));
+        onView(withId(R.id.activity_repo_directory)).perform(replaceText(repoUri));
         onView(withId(R.id.done)).perform(click());
         onView(withId(R.id.fragment_repos_flipper)).check(matches(isDisplayed()));
 
         onListItem(0).onChildView(withId(R.id.item_repo_url)).check(matches(withText(repoUri)));
         onListItem(0).perform(click());
 
-        onView(withId(R.id.fragment_repo_directory)).check(matches(withText(repoUri)));
+        onView(withId(R.id.activity_repo_directory)).check(matches(withText(repoUri)));
     }
 
     @Test
