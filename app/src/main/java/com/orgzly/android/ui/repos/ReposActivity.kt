@@ -27,6 +27,7 @@ import com.orgzly.android.repos.RepoFactory
 import com.orgzly.android.ui.Loaders
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
+import kotlinx.android.synthetic.main.activity_repos.*
 
 /**
  * Configuring repositories.
@@ -35,10 +36,6 @@ class ReposActivity :
         RepoActivity(),
         AdapterView.OnItemClickListener,
         LoaderManager.LoaderCallbacks<Cursor> {
-
-    private lateinit var viewFlipper: ViewFlipper
-
-    private lateinit var listView: ListView
 
     private lateinit var listAdapter: SimpleCursorAdapter
 
@@ -55,14 +52,11 @@ class ReposActivity :
 
         setupNoReposButtons()
 
-        viewFlipper = findViewById(R.id.fragment_repos_flipper)
-
-        listView = findViewById(android.R.id.list)
-        listView.onItemClickListener = this
+        list.onItemClickListener = this
 
         listAdapter = setupAdapter()
-        listView.adapter = listAdapter
-        registerForContextMenu(listView)
+        list.adapter = listAdapter
+        registerForContextMenu(list)
 
         supportLoaderManager?.initLoader(Loaders.REPOS_FRAGMENT, null, this)
     }
@@ -107,7 +101,7 @@ class ReposActivity :
     }
 
     private fun setupNoReposButtons() {
-        findViewById<Button>(R.id.fragment_repos_dropbox).let {
+        activity_repos_dropbox.let {
             if (BuildConfig.IS_DROPBOX_ENABLED) {
                 it.setOnClickListener {
                     startRepoActivity(R.id.repos_options_menu_item_new_dropbox)
@@ -117,7 +111,7 @@ class ReposActivity :
             }
         }
 
-        findViewById<Button>(R.id.fragment_repos_git).let {
+        activity_repos_git.let {
             if (BuildConfig.IS_GIT_ENABLED) {
                 it.setOnClickListener {
                     startRepoActivity(R.id.repos_options_menu_item_new_git)
@@ -127,7 +121,7 @@ class ReposActivity :
             }
         }
 
-        findViewById<View>(R.id.fragment_repos_directory).setOnClickListener {
+        activity_repos_directory.setOnClickListener {
             startRepoActivity(R.id.repos_options_menu_item_new_external_storage_directory)
         }
     }
@@ -262,9 +256,9 @@ class ReposActivity :
         listAdapter.swapCursor(data)
 
         if (listAdapter.count > 0) {
-            viewFlipper.displayedChild = 0
+            activity_repos_flipper.displayedChild = 0
         } else {
-            viewFlipper.displayedChild = 1
+            activity_repos_flipper.displayedChild = 1
         }
 
         invalidateOptionsMenu()

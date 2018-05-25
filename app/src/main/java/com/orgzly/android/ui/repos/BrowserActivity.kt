@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.view.*
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.repos.DirectoryRepo
@@ -15,6 +17,8 @@ import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.UriUtils
+import kotlinx.android.synthetic.main.activity_browser.*
+import kotlinx.android.synthetic.main.item_browser.view.*
 import java.io.File
 import java.io.FilenameFilter
 import java.util.*
@@ -74,14 +78,14 @@ class BrowserActivity :
     }
 
     private fun setupViews() {
-        listView = findViewById(android.R.id.list)
+        listView = list
         listView.onItemClickListener = this
 
-        findViewById<View>(R.id.activity_browser_button_create).setOnClickListener {
+        activity_browser_button_create.setOnClickListener {
             create()
         }
 
-        findViewById<View>(R.id.activity_browser_button_use).setOnClickListener {
+        activity_browser_button_use.setOnClickListener {
             useAndFinish(currentItem)
         }
     }
@@ -317,10 +321,10 @@ class BrowserActivity :
                 val view = convertView ?: LayoutInflater.from(context).inflate(
                         R.layout.item_browser, parent, false)
 
-                val textView = view.findViewById<TextView>(R.id.item_browser_name)
+                val textView = view.item_browser_name
                 textView.text = itemList[position].name
 
-                val imageView = view.findViewById<ImageView>(R.id.item_browser_icon)
+                val imageView = view.item_browser_icon
                 imageView.setImageResource(itemList[position].icon)
 
                 return view

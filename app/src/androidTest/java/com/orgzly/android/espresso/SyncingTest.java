@@ -486,7 +486,7 @@ public class SyncingTest extends OrgzlyTest {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
         EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_REPOS);
         onListItem(0).perform(click());
-        onView(withId(R.id.fragment_repo_dropbox_directory)).perform(replaceText("repo-b"));
+        onView(withId(R.id.activity_repo_dropbox_directory)).perform(replaceText("repo-b"));
         onActionItemClick(R.id.done, R.string.done);
         pressBack();
         pressBack();
@@ -527,10 +527,10 @@ public class SyncingTest extends OrgzlyTest {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
         EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_REPOS);
         onListItem(0).perform(click());
-        onView(withId(R.id.fragment_repo_dropbox_directory)).perform(replaceText("repo-1"));
+        onView(withId(R.id.activity_repo_dropbox_directory)).perform(replaceText("repo-1"));
         onActionItemClick(R.id.done, R.string.done);
         onListItem(0).perform(click());
-        onView(withId(R.id.fragment_repo_dropbox_directory)).perform(replaceText("repo-2"));
+        onView(withId(R.id.activity_repo_dropbox_directory)).perform(replaceText("repo-2"));
         onActionItemClick(R.id.done, R.string.done);
         pressBack();
         pressBack();

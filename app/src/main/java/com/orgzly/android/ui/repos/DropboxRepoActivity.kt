@@ -7,13 +7,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.support.design.widget.TextInputLayout
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.provider.clients.ReposClient
@@ -24,13 +20,9 @@ import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.android.util.UriUtils
+import kotlinx.android.synthetic.main.activity_repo_dropbox.*
 
 class DropboxRepoActivity : RepoActivity() {
-
-    private lateinit var icon: ImageView
-    private lateinit var button: Button
-    private lateinit var directoryInputLayout: TextInputLayout
-    private lateinit var directory: EditText
 
     private lateinit var client: DropboxClient
 
@@ -44,8 +36,7 @@ class DropboxRepoActivity : RepoActivity() {
         setupActionBar(R.string.dropbox)
 
         /* Dropbox link / unlink button. */
-        button = findViewById(R.id.fragment_repo_dropbox_link_button)
-        button.setOnClickListener {
+        activity_repo_dropbox_link_button.setOnClickListener {
             if (isDropboxLinked()) {
                 toggleLinkAfterConfirmation()
             } else {
@@ -53,15 +44,11 @@ class DropboxRepoActivity : RepoActivity() {
             }
         }
 
-        icon = findViewById(R.id.fragment_repo_dropbox_icon)
-
-        directory = findViewById(R.id.fragment_repo_dropbox_directory)
-
         // Not working when done in XML
-        directory.setHorizontallyScrolling(false)
-        directory.maxLines = 3
+        activity_repo_dropbox_directory.setHorizontallyScrolling(false)
+        activity_repo_dropbox_directory.maxLines = 3
 
-        directory.setOnEditorActionListener { _, _, _ ->
+        activity_repo_dropbox_directory.setOnEditorActionListener { _, _, _ ->
             saveAndFinish()
             finish()
             true
@@ -72,15 +59,13 @@ class DropboxRepoActivity : RepoActivity() {
         // Set directory value for existing repository being edited
         if (repoId != 0L) {
             val repoUri = Uri.parse(ReposClient.getUrl(this, repoId))
-            directory.setText(repoUri.path)
+            activity_repo_dropbox_directory.setText(repoUri.path)
         }
 
-        directoryInputLayout = findViewById(R.id.fragment_repo_dropbox_directory_input_layout)
-
-        MiscUtils.clearErrorOnTextChange(directory, directoryInputLayout)
+        MiscUtils.clearErrorOnTextChange(activity_repo_dropbox_directory, activity_repo_dropbox_directory_input_layout)
 
         // Open keyboard after activity has been fully displayed
-        Handler().postDelayed({ ActivityUtils.openSoftKeyboard(this, directory) }, 150)
+        Handler().postDelayed({ ActivityUtils.openSoftKeyboard(this, activity_repo_dropbox_directory) }, 150)
 
         client = DropboxClient(applicationContext)
     }
@@ -119,13 +104,13 @@ class DropboxRepoActivity : RepoActivity() {
     }
 
     private fun saveAndFinish() {
-        val directory = directory.text.toString().trim { it <= ' ' }
+        val directory = activity_repo_dropbox_directory.text.toString().trim { it <= ' ' }
 
         if (TextUtils.isEmpty(directory)) {
-            directoryInputLayout.error = getString(R.string.can_not_be_empty)
+            activity_repo_dropbox_directory_input_layout.error = getString(R.string.can_not_be_empty)
             return
         } else {
-            directoryInputLayout.error = null
+            activity_repo_dropbox_directory_input_layout.error = null
         }
 
         val uri = UriUtils.uriFromPath(DropboxRepo.SCHEME, directory)
@@ -133,7 +118,7 @@ class DropboxRepoActivity : RepoActivity() {
         val repo = RepoFactory.getFromUri(this, uri)
 
         if (repo == null) {
-            directoryInputLayout.error = getString(R.string.invalid_repo_url, uri)
+            activity_repo_dropbox_directory_input_layout.error = getString(R.string.invalid_repo_url, uri)
             return
         }
 
@@ -216,10 +201,10 @@ class DropboxRepoActivity : RepoActivity() {
 
         typedArray.recycle()
 
-        button.text = text
+        activity_repo_dropbox_link_button.text = text
 
         if (imageResource != 0) {
-            icon.setImageResource(imageResource)
+            activity_repo_dropbox_icon.setImageResource(imageResource)
         }
     }
 

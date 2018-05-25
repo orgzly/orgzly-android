@@ -496,7 +496,7 @@ public class MiscTest extends OrgzlyTest {
         rule.launchActivity(null);
 
         // List of repos
-        fragmentTest(rule, false, withId(R.id.fragment_repos_flipper));
+        fragmentTest(rule, false, withId(R.id.activity_repos_flipper));
 
         // Directory repo
         onListItem(1).perform(click());
@@ -505,7 +505,7 @@ public class MiscTest extends OrgzlyTest {
 
         // Dropbox repo
         onListItem(0).perform(click());
-        fragmentTest(rule, false, withId(R.id.fragment_repo_dropbox_container));
+        fragmentTest(rule, false, withId(R.id.activity_repo_dropbox_container));
     }
 
     private void fragmentTest(ActivityTestRule rule, boolean hasSearchMenuItem, Matcher<View> matcher) {

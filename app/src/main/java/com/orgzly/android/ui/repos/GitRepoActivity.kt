@@ -30,13 +30,9 @@ import java.io.IOException
 class GitRepoActivity : RepoActivity(), GitPreferences {
     private lateinit var fields: Array<Field>
 
-    data class Field(var editText: EditText, var layout: TextInputLayout, var preference: Int)
-
     private var repoId: Long = 0
 
-    init {
-        repoId = -1
-    }
+    data class Field(var editText: EditText, var layout: TextInputLayout, var preference: Int)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,19 +48,19 @@ class GitRepoActivity : RepoActivity(), GitPreferences {
                         R.string.pref_key_git_repository_filepath),
                 Field(
                         activity_repo_git_ssh_key,
-                        findViewById(R.id.activity_repo_git_ssh_key_layout),
+                        activity_repo_git_ssh_key_layout,
                         R.string.pref_key_git_ssh_key_path),
                 Field(
                         activity_repo_git_author,
-                        findViewById(R.id.activity_repo_git_author_layout),
+                        activity_repo_git_author_layout,
                         R.string.pref_key_git_author),
                 Field(
                         activity_repo_git_email,
-                        findViewById(R.id.activity_repo_git_email_layout),
+                        activity_repo_git_email_layout,
                         R.string.pref_key_git_email),
                 Field(
                         activity_repo_git_branch,
-                        findViewById(R.id.activity_repo_git_branch_layout),
+                        activity_repo_git_branch_layout,
                         R.string.pref_key_git_branch_name))
 
 
@@ -171,7 +167,7 @@ class GitRepoActivity : RepoActivity(), GitPreferences {
 
     private fun save() {
         val remoteUriString = remoteUri().toString()
-        if (repoId < 0) {
+        if (repoId == 0L) {
             ReposClient.insert(this, remoteUriString)
             repoId = ReposClient.getId(this, remoteUriString)
         }

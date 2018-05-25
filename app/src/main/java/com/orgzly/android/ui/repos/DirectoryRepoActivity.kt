@@ -5,12 +5,9 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.TextInputLayout
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.EditText
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.provider.clients.ReposClient
@@ -19,11 +16,9 @@ import com.orgzly.android.repos.RepoFactory
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
+import kotlinx.android.synthetic.main.activity_repo_directory.*
 
 class DirectoryRepoActivity : RepoActivity() {
-
-    private lateinit var directoryInputLayout: TextInputLayout
-    private lateinit var directory: EditText
 
     private var repoId: Long = 0
 
@@ -34,30 +29,25 @@ class DirectoryRepoActivity : RepoActivity() {
 
         setupActionBar(R.string.directory)
 
-        directoryInputLayout = findViewById(R.id.activity_repo_directory_input_layout)
-
-        directory = findViewById(R.id.activity_repo_directory)
-
         // Not working when done in XML
-        directory.setHorizontallyScrolling(false)
-        directory.maxLines = 3
+        activity_repo_directory.setHorizontallyScrolling(false)
+        activity_repo_directory.maxLines = 3
 
-        directory.setOnEditorActionListener {   _, _, _ ->
+        activity_repo_directory.setOnEditorActionListener { _, _, _ ->
             saveAndFinish()
             true
         }
 
-        MiscUtils.clearErrorOnTextChange(directory, directoryInputLayout)
+        MiscUtils.clearErrorOnTextChange(activity_repo_directory, activity_repo_directory_input_layout)
 
-        findViewById<View>(R.id.activity_repo_directory_browse_button)
-                .setOnClickListener { _ -> startFileBrowser() }
+        activity_repo_directory_browse_button.setOnClickListener { _ -> startFileBrowser() }
 
         repoId = intent.getLongExtra(ARG_REPO_ID, 0)
 
         /* Set directory value for existing repository being edited. */
         if (repoId != 0L) {
             val uri = ReposClient.getUrl(this, repoId)
-            directory.setText(uri)
+            activity_repo_directory.setText(uri)
         }
     }
 
@@ -88,8 +78,8 @@ class DirectoryRepoActivity : RepoActivity() {
     private fun startLocalFileBrowser() {
         val intent = Intent(Intent.ACTION_VIEW).setClass(this, BrowserActivity::class.java)
 
-        if (!TextUtils.isEmpty(directory.text)) {
-            val uri = directory.text.toString()
+        if (!TextUtils.isEmpty(activity_repo_directory.text)) {
+            val uri = activity_repo_directory.text.toString()
             val path = Uri.parse(uri).path
             intent.putExtra(BrowserActivity.ARG_STARTING_DIRECTORY, path)
         }
@@ -140,13 +130,13 @@ class DirectoryRepoActivity : RepoActivity() {
     }
 
     private fun saveAndFinish() {
-        val uriString = directory.text.toString().trim { it <= ' ' }
+        val uriString = activity_repo_directory.text.toString().trim { it <= ' ' }
 
         if (TextUtils.isEmpty(uriString)) {
-            directoryInputLayout.error = getString(R.string.can_not_be_empty)
+            activity_repo_directory_input_layout.error = getString(R.string.can_not_be_empty)
             return
         } else {
-            directoryInputLayout.error = null
+            activity_repo_directory_input_layout.error = null
         }
 
         val uri = Uri.parse(uriString)
@@ -154,7 +144,7 @@ class DirectoryRepoActivity : RepoActivity() {
         val repo = RepoFactory.getFromUri(this, uri)
 
         if (repo == null) {
-            directoryInputLayout.error = getString(R.string.invalid_repo_url, uri)
+            activity_repo_directory_input_layout.error = getString(R.string.invalid_repo_url, uri)
             return
         }
 
@@ -178,7 +168,7 @@ class DirectoryRepoActivity : RepoActivity() {
     }
 
     override fun updateUri(uri: Uri) {
-        directory.setText(uri.toString())
+        activity_repo_directory.setText(uri.toString())
     }
 
     companion object {
