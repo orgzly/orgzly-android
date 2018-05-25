@@ -587,7 +587,8 @@ public class BooksFragment extends ListFragment
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         /* Get ID of the item. */
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         long bookId = info.id;
 
         switch (item.getItemId()) {
