@@ -36,7 +36,7 @@ example:
 - ~./gradlew build~ builds the project and generates APK files
 - ~./gradlew connectedAndroidTest~ runs instrumented unit tests
 
-Make sure you [[http://goo.gl/qVu1yV][turn off animations]] for the device you're testing on.
+Make sure you [[https://developer.android.com/training/testing/espresso/setup][turn off animations]] for the device you're testing on.
 
 ** License
 
