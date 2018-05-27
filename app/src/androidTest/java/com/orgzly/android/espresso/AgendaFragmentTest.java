@@ -125,16 +125,6 @@ public class AgendaFragmentTest extends OrgzlyTest {
     }
 
     @Test
-    public void testChangeStateUntilDone() {
-        defaultSetUp();
-        openAgenda();
-        onListItem(2).perform(swipeRight());
-        onListItem(2).onChildView(withId(R.id.item_menu_next_state_btn)).perform(click());
-        onListItem(2).onChildView(withId(R.id.item_menu_next_state_btn)).perform(click());
-        onList().check(matches(listViewItemCount(21)));
-    }
-
-    @Test
     public void testShiftRepeaterTaskToTomorrow() {
         DateTime tomorrow = DateTime.now().withTimeAtStartOfDay().plusDays(1);
 

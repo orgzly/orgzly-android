@@ -109,11 +109,6 @@ public class SearchFragment extends QueryFragment {
     }
 
     @Override
-    public String getFragmentTag() {
-        return FRAGMENT_TAG;
-    }
-
-    @Override
     public ActionMode.Callback getNewActionMode() {
         return new MyActionMode();
     }
@@ -147,7 +142,11 @@ public class SearchFragment extends QueryFragment {
 
             switch (menuItem.getItemId()) {
                 case R.id.query_cab_schedule:
-                    displayScheduleTimestampDialog(R.id.query_cab_schedule, mSelection.getIds());
+                    displayTimestampDialog(R.id.query_cab_schedule, mSelection.getIds());
+                    break;
+
+                case R.id.query_cab_deadline:
+                    displayTimestampDialog(R.id.query_cab_deadline, mSelection.getIds());
                     break;
 
                 case R.id.query_cab_state:

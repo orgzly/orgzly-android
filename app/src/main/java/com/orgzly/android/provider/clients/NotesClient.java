@@ -661,6 +661,14 @@ public class NotesClient {
     }
 
     public static void updateScheduledTime(Context context, Set<Long> noteIds, OrgDateTime time) {
+        updatePlanningTime(context, noteIds, time, ProviderContract.Notes.UpdateParam.SCHEDULED_STRING);
+    }
+
+    public static void updateDeadlineTime(Context context, Set<Long> noteIds, OrgDateTime time) {
+        updatePlanningTime(context, noteIds, time, ProviderContract.Notes.UpdateParam.DEADLINE_STRING);
+    }
+
+    private static void updatePlanningTime(Context context, Set<Long> noteIds, OrgDateTime time, String key) {
         ArrayList<ContentProviderOperation> ops = new ArrayList<>();
 
         String noteIdsCommaSeparated = TextUtils.join(",", noteIds);
@@ -669,9 +677,9 @@ public class NotesClient {
         ContentValues values = new ContentValues();
 
         if (time != null) {
-            values.put(ProviderContract.Notes.UpdateParam.SCHEDULED_STRING, new OrgRange(time).toString());
+            values.put(key, new OrgRange(time).toString());
         } else {
-            values.putNull(ProviderContract.Notes.UpdateParam.SCHEDULED_STRING);
+            values.putNull(key);
         }
 
         ops.add(ContentProviderOperation

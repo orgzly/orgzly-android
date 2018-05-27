@@ -128,11 +128,6 @@ public class AgendaFragment extends QueryFragment {
     }
 
     @Override
-    public String getFragmentTag() {
-        return FRAGMENT_TAG;
-    }
-
-    @Override
     public ActionMode.Callback getNewActionMode() {
         return new MyActionMode();
     }
@@ -193,7 +188,14 @@ public class AgendaFragment extends QueryFragment {
                 case R.id.query_cab_schedule:
                     selectionIds = originalSelectedIds();
                     if (!selectionIds.isEmpty()) {
-                        displayScheduleTimestampDialog(R.id.query_cab_schedule, selectionIds);
+                        displayTimestampDialog(R.id.query_cab_schedule, selectionIds);
+                    }
+                    break;
+
+                case R.id.query_cab_deadline:
+                    selectionIds = originalSelectedIds();
+                    if (!selectionIds.isEmpty()) {
+                        displayTimestampDialog(R.id.query_cab_deadline, selectionIds);
                     }
                     break;
 

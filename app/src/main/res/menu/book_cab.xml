@@ -84,6 +84,13 @@
     </item>
 
     <item
+        android:id="@+id/book_cab_deadline"
+        android:icon="?attr/ic_alarm_24dp"
+        app:showAsAction="never"
+        android:title="@string/deadline">
+    </item>
+
+    <item
         android:id="@+id/book_cab_state"
         android:icon="?attr/ic_flag_24dp"
         app:showAsAction="never"

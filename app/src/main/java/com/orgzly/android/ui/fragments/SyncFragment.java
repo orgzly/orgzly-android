@@ -628,14 +628,16 @@ public class SyncFragment extends Fragment {
                 mShelf.setNotesScheduledTime(noteIds, time);
                 return null;
             }
+        }.execute();
+    }
 
+    @SuppressLint("StaticFieldLeak")
+    public void updateDeadlineTime(final Set<Long> noteIds, final OrgDateTime time) {
+        new AsyncTask<Void, Void, Void>() {
             @Override
-            protected void onPostExecute(Void aVoid) {
-                if (mListener != null) {
-                    mListener.onScheduledTimeUpdated(noteIds, time);
-                } else {
-                    Log.w(TAG, "Listener not set, not calling onScheduledTimeUpdated");
-                }
+            protected Void doInBackground(Void... params) {
+                mShelf.setNotesDeadlineTime(noteIds, time);
+                return null;
             }
         }.execute();
     }
@@ -1050,8 +1052,6 @@ public class SyncFragment extends Fragment {
 
         void onBookDeleted(Book book);
         void onBookDeletingFailed(Book book, IOException exception);
-
-        void onScheduledTimeUpdated(Set<Long> noteIds, OrgDateTime time);
 
         void onNoteCreated(Note note);
         void onNoteCreatingFailed();

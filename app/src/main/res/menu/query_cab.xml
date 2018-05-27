@@ -27,6 +27,13 @@
             </item>
 
             <item
+                android:id="@+id/query_cab_deadline"
+                android:icon="?attr/ic_alarm_24dp"
+                app:showAsAction="always"
+                android:title="@string/deadline">
+            </item>
+
+            <item
                 android:id="@+id/query_cab_state"
                 android:icon="?attr/ic_flag_24dp"
                 app:showAsAction="always"

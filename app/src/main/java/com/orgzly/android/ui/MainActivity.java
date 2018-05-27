@@ -732,13 +732,13 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onCycleVisibilityRequest(Book book) {
-        mSyncFragment.cycleVisibility(book);
+    public void onDeadlineTimeUpdateRequest(Set<Long> noteIds, OrgDateTime time) {
+        mSyncFragment.updateDeadlineTime(noteIds, time);
     }
 
     @Override
-    public void onScheduledTimeUpdated(Set<Long> noteIds, OrgDateTime time) {
-        // animateNotesAfterEdit(noteIds);
+    public void onCycleVisibilityRequest(Book book) {
+        mSyncFragment.cycleVisibility(book);
     }
 
     @Override /* BookFragment */

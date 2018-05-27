@@ -331,10 +331,6 @@ public class ShareActivity extends CommonActivity
     }
 
     @Override
-    public void onScheduledTimeUpdated(Set<Long> noteIds, OrgDateTime time) {
-    }
-
-    @Override
     public void onNoteCreated(Note note) {
         finish();
     }

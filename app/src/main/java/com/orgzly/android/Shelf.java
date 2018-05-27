@@ -225,6 +225,12 @@ public class Shelf {
         syncOnNoteUpdate();
     }
 
+    public void setNotesDeadlineTime(Set<Long> noteIds, OrgDateTime time) {
+        NotesClient.updateDeadlineTime(mContext, noteIds, time);
+        notifyDataChanged(mContext);
+        syncOnNoteUpdate();
+    }
+
     public void setNoteState(long noteId, String state) {
         if (state != null) {
             setNotesState(MiscUtils.set(noteId), state);

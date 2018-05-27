@@ -286,6 +286,10 @@ public class BookFragment extends NoteListFragment
         /* Reset from ids will be performed after loading the data. */
     }
 
+    @Override
+    public NoteListFragmentListener getListener() {
+        return listener;
+    }
 
     @Override
     public void onPause() {
@@ -408,35 +412,6 @@ public class BookFragment extends NoteListFragment
         }
     }
 
-    @Override
-    public void onDateTimeSet(int id, TreeSet<Long> noteIds, OrgDateTime time) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id, time);
-
-        switch (id) {
-            case R.id.book_cab_schedule:
-            case R.id.item_menu_schedule_btn:
-                listener.onScheduledTimeUpdateRequest(noteIds, time);
-                break;
-        }
-    }
-
-    @Override
-    public void onDateTimeCleared(int id, TreeSet<Long> noteIds) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id);
-
-        switch (id) {
-            case R.id.book_cab_schedule:
-            case R.id.item_menu_schedule_btn:
-                listener.onScheduledTimeUpdateRequest(noteIds,  null);
-                break;
-        }
-    }
-
-    @Override
-    public void onDateTimeAborted(int id, TreeSet<Long> noteIds) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id);
-    }
-
    /*
     * Actions
     */
@@ -509,11 +484,6 @@ public class BookFragment extends NoteListFragment
 
     public Book getBook() {
         return mBook;
-    }
-
-    @Override
-    public String getFragmentTag() {
-        return FRAGMENT_TAG;
     }
 
     @Override
@@ -797,7 +767,8 @@ public class BookFragment extends NoteListFragment
                     break;
 
                 case R.id.book_cab_schedule:
-                    displayScheduleTimestampDialog(R.id.book_cab_schedule, mSelection.getIds());
+                case R.id.book_cab_deadline:
+                    displayTimestampDialog(menuItem.getItemId(), mSelection.getIds());
                     break;
 
                 case R.id.book_cab_cut:
