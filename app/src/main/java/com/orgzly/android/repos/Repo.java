@@ -42,19 +42,4 @@ public interface Repo {
     void delete(Uri uri) throws IOException;
 
     String toString();
-
-    // XXX: This is a v2 sync interface that allows for conflict resolution between local and remote versions
-    public interface TwoWaySync {
-        class TwoWaySyncResult {
-            public VersionedRook newRook;
-            public File loadFile;
-
-            TwoWaySyncResult(VersionedRook r, File f) {
-                loadFile = f;
-                newRook = r;
-            }
-        }
-        TwoWaySyncResult syncBook(
-                Uri uri, VersionedRook current, File fromDB) throws IOException;
-    }
 }

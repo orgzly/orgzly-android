@@ -39,7 +39,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GitRepo implements Repo, Repo.TwoWaySync {
+public class GitRepo implements Repo, TwoWaySyncRepo {
     public final static String SCHEME = "git";
 
     public static GitTransportSetter getTransportSetter(GitPreferences preferences) {

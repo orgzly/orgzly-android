@@ -30,6 +30,8 @@ import com.orgzly.android.reminders.ReminderService;
 import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.repos.Rook;
+import com.orgzly.android.repos.TwoWaySyncRepo;
+import com.orgzly.android.repos.TwoWaySyncResult;
 import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.sync.BookNamesake;
 import com.orgzly.android.sync.BookSyncStatus;
@@ -40,7 +42,6 @@ import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.CircularArrayList;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
-import com.orgzly.android.util.UriUtils;
 import com.orgzly.android.widgets.ListWidgetProvider;
 import com.orgzly.org.OrgHead;
 import com.orgzly.org.OrgProperties;
@@ -447,8 +448,8 @@ public class Shelf {
             if (rook != null && namesake.getStatus() != BookSyncStatus.NO_CHANGE) {
                 Uri repoUri = rook.getRepoUri();
                 Repo repo = getRepo(repoUri);
-                if (repo instanceof Repo.TwoWaySync) {
-                    handleTwoWaySync((Repo.TwoWaySync) repo, namesake);
+                if (repo instanceof TwoWaySyncRepo) {
+                    handleTwoWaySync((TwoWaySyncRepo) repo, namesake);
                     return new BookAction(
                             BookAction.Type.INFO,
                             namesake.getStatus().msg(repo.getUri().toString()));
@@ -602,7 +603,7 @@ public class Shelf {
         return book;
     }
 
-    public Book handleTwoWaySync(Repo.TwoWaySync sync, BookNamesake namesake) throws IOException {
+    public Book handleTwoWaySync(TwoWaySyncRepo repo, BookNamesake namesake) throws IOException {
         Book book = namesake.getBook();
         VersionedRook currentRook = book.getLastSyncedToRook();
         VersionedRook someRook = currentRook == null ? namesake.getRooks().get(0) : currentRook;
@@ -610,15 +611,14 @@ public class Shelf {
         File dbFile = getTempBookFile();
         try {
             NotesExporter.Companion.getInstance(mContext, BookName.Format.ORG).exportBook(book, dbFile);
-            Repo.TwoWaySync.TwoWaySyncResult result = sync.syncBook(
-                    someRook.getUri(), currentRook, dbFile);
-            newRook = result.newRook;
-            if (result.loadFile != null) {
+            TwoWaySyncResult result = repo.syncBook(someRook.getUri(), currentRook, dbFile);
+            newRook = result.getNewRook();
+            if (result.getLoadFile() != null) {
                 String fileName = BookName.getFileName(mContext, newRook.getUri());
                 BookName bookName = BookName.fromFileName(fileName);
-                Log.i("Git", String.format("Loading from file %s", result.loadFile.toString()));
+                Log.i("Git", String.format("Loading from file %s", result.getLoadFile().toString()));
                 book = loadBookFromFile(bookName.getName(), bookName.getFormat(),
-                        result.loadFile, newRook);
+                        result.getLoadFile(), newRook);
                 BooksClient.setModificationTime(mContext, book.getId(), 0);
             }
             book.setLastSyncedToRook(newRook);
