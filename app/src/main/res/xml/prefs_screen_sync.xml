@@ -25,7 +25,7 @@
             android:key="@string/pref_key_is_created_at_added"
             android:title="@string/use_created_at_property"
             android:summary="@string/use_created_at_property_summary"
-            android:defaultValue="@bool/pref_default_value_is_created_at_added"/>
+            android:defaultValue="@bool/pref_default_is_created_at_added"/>
 
         <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
             android:key="@string/pref_key_created_at_property"

@@ -44,7 +44,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         val resourceName = arguments?.getString(ARG_RESOURCE)
 
         when (resourceName) {
-            null -> addPreferencesFromResource(R.xml.preferences) // Headings
+            null -> addPreferencesFromResource(R.xml.prefs) // Headings
 
             in PREFS_RESOURCES -> addPreferencesFromResource(PREFS_RESOURCES.getValue(resourceName))
         }

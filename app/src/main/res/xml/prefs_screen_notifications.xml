@@ -8,11 +8,11 @@
         android:key="@string/pref_key_new_note_notification"
         android:title="@string/new_note_notification"
         android:summary="@string/new_note_notification_summary"
-        android:defaultValue="@bool/pref_default_value_new_note_notification"/>
+        android:defaultValue="@bool/pref_default_new_note_notification"/>
 
     <SwitchPreference
         android:key="@string/pref_key_show_sync_notifications"
         android:title="@string/show_sync_notifications_title"
         android:summary="@string/show_sync_notifications_summary"
-        android:defaultValue="@bool/pref_default_value_show_sync_notifications"/>
+        android:defaultValue="@bool/pref_default_show_sync_notifications"/>
 </PreferenceScreen>

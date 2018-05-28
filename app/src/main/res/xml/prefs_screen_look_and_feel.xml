@@ -15,14 +15,14 @@
         android:title="@string/color_scheme"
         android:entries="@array/color_scheme"
         android:entryValues="@array/color_scheme_values"
-        android:defaultValue="@string/pref_default_value_color_scheme"/>
+        android:defaultValue="@string/pref_default_color_scheme"/>
 
     <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
         android:key="@string/pref_key_font_size"
         android:title="@string/font_size"
         android:entries="@array/font_sizes"
         android:entryValues="@array/font_sizes_values"
-        android:defaultValue="@string/pref_default_value_font_size"/>
+        android:defaultValue="@string/pref_default_font_size"/>
 
     <SwitchPreference
         android:key="@string/pref_key_is_font_monospaced"

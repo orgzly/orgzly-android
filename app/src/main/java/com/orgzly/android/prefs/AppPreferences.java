@@ -11,7 +11,6 @@ import com.orgzly.org.OrgStatesWorkflow;
 import org.eclipse.jgit.transport.URIish;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -140,7 +139,7 @@ public class AppPreferences {
     public static String prefaceDisplay(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_preface_in_book),
-                context.getResources().getString(R.string.pref_default_value_preface_in_book));
+                context.getResources().getString(R.string.pref_default_preface_in_book));
     }
 
     public static void prefaceDisplay(Context context, String value) {
@@ -192,7 +191,7 @@ public class AppPreferences {
     public static boolean createdAt(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_is_created_at_added),
-                context.getResources().getBoolean(R.bool.pref_default_value_is_created_at_added));
+                context.getResources().getBoolean(R.bool.pref_default_is_created_at_added));
     }
 
     public static void createdAt(Context context, boolean value) {
@@ -226,13 +225,13 @@ public class AppPreferences {
     public static boolean newNoteNotification(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_new_note_notification),
-                context.getResources().getBoolean(R.bool.pref_default_value_new_note_notification));
+                context.getResources().getBoolean(R.bool.pref_default_new_note_notification));
     }
 
     public static boolean remindersForScheduledEnabled(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_use_reminders_for_scheduled_times),
-                context.getResources().getBoolean(R.bool.pref_default_value_use_reminders_for_scheduled_times));
+                context.getResources().getBoolean(R.bool.pref_default_use_reminders_for_scheduled_times));
     }
 
     public static void remindersForScheduledEnabled(Context context, boolean value) {
@@ -243,7 +242,7 @@ public class AppPreferences {
     public static boolean remindersForDeadlineEnabled(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_use_reminders_for_deadline_times),
-                context.getResources().getBoolean(R.bool.pref_default_value_use_reminders_for_deadline_times));
+                context.getResources().getBoolean(R.bool.pref_default_use_reminders_for_deadline_times));
     }
 
     public static void remindersForDeadlineEnabled(Context context, boolean value) {
@@ -254,43 +253,43 @@ public class AppPreferences {
     public static boolean remindersSound(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_reminders_sound),
-                context.getResources().getBoolean(R.bool.pref_default_value_reminders_sound));
+                context.getResources().getBoolean(R.bool.pref_default_reminders_sound));
     }
 
     public static boolean remindersLed(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_reminders_led),
-                context.getResources().getBoolean(R.bool.pref_default_value_reminders_led));
+                context.getResources().getBoolean(R.bool.pref_default_reminders_led));
     }
 
     public static boolean remindersVibrate(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_reminders_vibrate),
-                context.getResources().getBoolean(R.bool.pref_default_value_reminders_vibrate));
+                context.getResources().getBoolean(R.bool.pref_default_reminders_vibrate));
     }
 
     public static int remindersSnoozeTime(Context context) {
         return Integer.valueOf(getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_snooze_time),
-                context.getResources().getString(R.string.pref_default_value_snooze_time)));
+                context.getResources().getString(R.string.pref_default_snooze_time)));
     }
 
     public static String remindersSnoozeRelativeTo(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_snooze_type),
-                context.getResources().getString(R.string.pref_default_value_snooze_type));
+                context.getResources().getString(R.string.pref_default_snooze_type));
     }
 
     public static boolean showSyncNotifications(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_show_sync_notifications),
-                context.getResources().getBoolean(R.bool.pref_default_value_show_sync_notifications));
+                context.getResources().getBoolean(R.bool.pref_default_show_sync_notifications));
     }
 
     public static String colorScheme(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_color_scheme),
-                context.getResources().getString(R.string.pref_default_value_color_scheme));
+                context.getResources().getString(R.string.pref_default_color_scheme));
     }
 
     public static boolean ignoreSystemLocale(Context context) {
@@ -302,7 +301,7 @@ public class AppPreferences {
     public static String bookNameInSearchResults(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_book_name_in_search),
-                context.getResources().getString(R.string.pref_default_value_book_name_in_search));
+                context.getResources().getString(R.string.pref_default_book_name_in_search));
     }
 
     public static boolean inheritedTagsInSearchResults(Context context) {
@@ -319,7 +318,7 @@ public class AppPreferences {
     public static String fontSize(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_font_size),
-                context.getResources().getString(R.string.pref_default_value_font_size));
+                context.getResources().getString(R.string.pref_default_font_size));
     }
 
     public static Set<String> displayedBookDetails(Context context) {
@@ -385,7 +384,7 @@ public class AppPreferences {
     public static boolean isNewNoteScheduled(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_is_new_note_scheduled),
-                context.getResources().getBoolean(R.bool.pref_default_value_is_new_note_scheduled));
+                context.getResources().getBoolean(R.bool.pref_default_is_new_note_scheduled));
     }
 
     /*
@@ -395,7 +394,7 @@ public class AppPreferences {
     public static String newNoteState(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_new_note_state),
-                context.getResources().getString(R.string.pref_default_value_new_note_state));
+                context.getResources().getString(R.string.pref_default_new_note_state));
     }
 
     public static void newNoteState(Context context, String value) {
@@ -716,24 +715,24 @@ public class AppPreferences {
     public static boolean autoSync(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_auto_sync),
-                context.getResources().getBoolean(R.bool.pref_default_value_auto_sync));
+                context.getResources().getBoolean(R.bool.pref_default_auto_sync));
     }
 
     public static boolean syncOnNoteCreate(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_auto_sync_on_note_create),
-                context.getResources().getBoolean(R.bool.pref_default_value_auto_sync_on_note_create));
+                context.getResources().getBoolean(R.bool.pref_default_auto_sync_on_note_create));
     }
 
     public static boolean syncOnNoteUpdate(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_auto_sync_on_note_update),
-                context.getResources().getBoolean(R.bool.pref_default_value_auto_sync_on_note_update));
+                context.getResources().getBoolean(R.bool.pref_default_auto_sync_on_note_update));
     }
 
     public static boolean syncOnResume(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_auto_sync_on_resume),
-                context.getResources().getBoolean(R.bool.pref_default_value_auto_sync_on_resume));
+                context.getResources().getBoolean(R.bool.pref_default_auto_sync_on_resume));
     }
 }

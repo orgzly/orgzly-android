@@ -9,7 +9,7 @@
         android:title="@string/color_scheme"
         android:entries="@array/color_scheme"
         android:entryValues="@array/color_scheme_values"
-        android:defaultValue="@string/pref_default_value_color_scheme" />
+        android:defaultValue="@string/pref_default_color_scheme" />
 
     <com.orgzly.android.prefs.IntegerPreference
         android:key="@string/pref_key_widget_opacity"

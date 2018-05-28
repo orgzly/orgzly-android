@@ -7,7 +7,7 @@
 
     <!-- How to display notebook's preface in notebook -->
     <string name="pref_key_preface_in_book" translatable="false">pref_key_preface_in_book</string>
-    <string name="pref_default_value_preface_in_book" translatable="false">@string/pref_value_preface_in_book_hide</string>
+    <string name="pref_default_preface_in_book" translatable="false">@string/pref_value_preface_in_book_hide</string>
     <string name="pref_value_preface_in_book_hide" translatable="false">hide</string>
     <string name="pref_value_preface_in_book_full" translatable="false">full</string>
     <string name="pref_value_preface_in_book_few_lines" translatable="false">few_lines</string>
@@ -33,7 +33,7 @@
 
     <!-- Book name in search results. -->
     <string name="pref_key_book_name_in_search" translatable="false">pref_key_book_name_in_search</string>
-    <string name="pref_default_value_book_name_in_search" translatable="false">@string/pref_value_book_name_in_search_2</string>
+    <string name="pref_default_book_name_in_search" translatable="false">@string/pref_value_book_name_in_search_2</string>
     <string name="pref_value_book_name_in_search_0" translatable="false">0</string>
     <string name="pref_value_book_name_in_search_1" translatable="false">1</string>
     <string name="pref_value_book_name_in_search_2" translatable="false">2</string>
@@ -105,7 +105,7 @@
 
     <!-- Color scheme. -->
     <string name="pref_key_color_scheme" translatable="false">pref_key_color_scheme</string>
-    <string name="pref_default_value_color_scheme" translatable="false">@string/pref_value_color_scheme_light</string>
+    <string name="pref_default_color_scheme" translatable="false">@string/pref_value_color_scheme_light</string>
     <string name="pref_value_color_scheme_light" translatable="false">light</string>
     <string name="pref_value_color_scheme_dark" translatable="false">dark</string>
     <string name="pref_value_color_scheme_black" translatable="false">black</string>
@@ -122,7 +122,7 @@
 
     <!-- Font size. -->
     <string name="pref_key_font_size" translatable="false">pref_key_font_size</string>
-    <string name="pref_default_value_font_size" translatable="false">@string/pref_value_font_size_default</string>
+    <string name="pref_default_font_size" translatable="false">@string/pref_value_font_size_default</string>
     <string name="pref_value_font_size_small" translatable="false">small</string>
     <string name="pref_value_font_size_default" translatable="false">default</string>
     <string name="pref_value_font_size_large" translatable="false">large</string>
@@ -179,13 +179,13 @@
     </string-array>
 
     <string name="pref_key_new_note_state" translatable="false">pref_key_new_note_state</string>
-    <string name="pref_default_value_new_note_state" translatable="false">NOTE</string>
+    <string name="pref_default_new_note_state" translatable="false">NOTE</string>
 
     <string name="pref_key_is_new_note_scheduled" translatable="false">pref_key_is_new_note_scheduled</string>
-    <bool name="pref_default_value_is_new_note_scheduled" translatable="false">false</bool>
+    <bool name="pref_default_is_new_note_scheduled" translatable="false">false</bool>
 
     <string name="pref_key_is_created_at_added" translatable="false">pref_key_is_created_at_added</string>
-    <bool name="pref_default_value_is_created_at_added" translatable="false">false</bool>
+    <bool name="pref_default_is_created_at_added" translatable="false">false</bool>
 
     <string name="pref_key_created_at_property" translatable="false">pref_key_created_at_property</string>
     <string name="pref_default_created_at_property" translatable="false">@string/created_property_name</string>
@@ -197,40 +197,40 @@
     <bool name="pref_default_force_utf8" translatable="false">false</bool>
 
     <string name="pref_key_new_note_notification" translatable="false">pref_key_new_note_notification</string>
-    <bool name="pref_default_value_new_note_notification" translatable="false">false</bool>
+    <bool name="pref_default_new_note_notification" translatable="false">false</bool>
 
     <string name="pref_key_reminders_sound" translatable="false">pref_key_reminders_sound</string>
-    <bool name="pref_default_value_reminders_sound" translatable="false">true</bool>
+    <bool name="pref_default_reminders_sound" translatable="false">true</bool>
 
     <string name="pref_key_reminders_vibrate" translatable="false">pref_key_reminders_vibrate</string>
-    <bool name="pref_default_value_reminders_vibrate" translatable="false">false</bool>
+    <bool name="pref_default_reminders_vibrate" translatable="false">false</bool>
 
     <string name="pref_key_reminders_led" translatable="false">pref_key_reminders_led</string>
-    <bool name="pref_default_value_reminders_led" translatable="false">true</bool>
+    <bool name="pref_default_reminders_led" translatable="false">true</bool>
 
     <!-- Auto-sync -->
 
     <string name="pref_key_auto_sync" translatable="false">pref_key_auto_sync</string>
-    <bool name="pref_default_value_auto_sync" translatable="false">false</bool>
+    <bool name="pref_default_auto_sync" translatable="false">false</bool>
 
     <string name="pref_key_auto_sync_on_note_create" translatable="false">pref_key_auto_sync_on_note_create</string>
-    <bool name="pref_default_value_auto_sync_on_note_create" translatable="false">false</bool>
+    <bool name="pref_default_auto_sync_on_note_create" translatable="false">false</bool>
 
     <string name="pref_key_auto_sync_on_note_update" translatable="false">pref_key_auto_sync_on_note_update</string>
-    <bool name="pref_default_value_auto_sync_on_note_update" translatable="false">false</bool>
+    <bool name="pref_default_auto_sync_on_note_update" translatable="false">false</bool>
 
     <string name="pref_key_auto_sync_on_resume" translatable="false">pref_key_auto_sync_on_resume</string>
-    <bool name="pref_default_value_auto_sync_on_resume" translatable="false">false</bool>
+    <bool name="pref_default_auto_sync_on_resume" translatable="false">false</bool>
 
     <string name="pref_key_auto_sync_on_repo_change" translatable="false">pref_key_auto_sync_on_repo_change</string>
-    <bool name="pref_default_value_auto_sync_on_repo_change" translatable="false">false</bool>
+    <bool name="pref_default_auto_sync_on_repo_change" translatable="false">false</bool>
 
 
     <string name="pref_key_snooze_time" translatable="false">pref_key_snooze_time</string>
-    <string name="pref_default_value_snooze_time" translatable="false">5</string>
+    <string name="pref_default_snooze_time" translatable="false">5</string>
 
     <string name="pref_key_snooze_type" translatable="false">pref_key_snooze_type</string>
-    <string name="pref_default_value_snooze_type">button</string>
+    <string name="pref_default_snooze_type">button</string>
     <string-array name="snooze_types">
         <item>Relative to when you tap the snooze button</item>
         <item>Relative to reminder time</item>
@@ -241,16 +241,16 @@
     </string-array>
 
     <string name="pref_key_use_reminders_for_scheduled_times" translatable="false">pref_key_use_reminders_for_scheduled_times</string>
-    <bool name="pref_default_value_use_reminders_for_scheduled_times" translatable="false">false</bool>
+    <bool name="pref_default_use_reminders_for_scheduled_times" translatable="false">false</bool>
 
     <string name="pref_key_use_reminders_for_deadline_times" translatable="false">pref_key_use_reminders_for_deadline_times</string>
-    <bool name="pref_default_value_use_reminders_for_deadline_times" translatable="false">false</bool>
+    <bool name="pref_default_use_reminders_for_deadline_times" translatable="false">false</bool>
 
     <string name="pref_key_reminders_channel_notification_settings" translatable="false">pref_key_reminders_channel_notification_settings</string>
     <string name="pref_key_reminders_notification_settings" translatable="false">pref_key_reminders_notification_settings</string>
 
     <string name="pref_key_show_sync_notifications" translatable="false">pref_key_show_sync_notifications</string>
-    <bool name="pref_default_value_show_sync_notifications" translatable="false">false</bool>
+    <bool name="pref_default_show_sync_notifications" translatable="false">false</bool>
 
     <string name="pref_key_states" translatable="false">pref_key_states</string>
     <string name="pref_default_states" translatable="false">TODO NEXT | DONE</string>
