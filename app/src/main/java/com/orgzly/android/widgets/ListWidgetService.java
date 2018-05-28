@@ -146,7 +146,7 @@ public class ListWidgetService extends RemoteViewsService {
 
 
         private void setupNoteRow(RemoteViews row, Cursor cursor) {
-            Note note = NotesClient.fromCursor(cursor);
+            Note note = NotesClient.fromCursor(cursor, true);
 
             if (isPartitioned) {
                 Long originalId = originalNoteIDs.get(note.getId()).getNoteId();
