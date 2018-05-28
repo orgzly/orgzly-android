@@ -27,6 +27,7 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
+            <!-- Title -->
             <TextView
                 android:id="@+id/item_list_widget_title"
                 android:layout_width="0dp"
@@ -35,9 +36,10 @@
                 android:ellipsize="end"
                 tools:text="@string/head_title_sample"
                 android:textColor="@color/widget_light_title_color"
-                android:textSize="@dimen/widget_title_text_size"
+                android:textSize="@dimen/widget_title_text_size_14"
                 android:maxLines="1" />
 
+            <!-- Checkmark -->
             <ImageView
                 android:id="@+id/item_list_widget_done"
                 style="?android:attr/borderlessButtonStyle"
@@ -55,6 +57,7 @@
 
         </LinearLayout>
 
+        <!-- Scheduled time -->
         <LinearLayout
             android:id="@+id/item_list_widget_scheduled"
             android:layout_width="match_parent"
@@ -78,13 +81,14 @@
                 android:layout_height="wrap_content"
                 tools:text="@string/note_scheduled_sample"
                 android:textColor="@color/widget_light_post_title_color"
-                android:textSize="@dimen/widget_post_title_text_size"
+                android:textSize="@dimen/widget_post_title_text_size_14"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:maxLines="1"
                 android:ellipsize="end" />
         </LinearLayout>
 
+        <!-- Deadline time -->
         <LinearLayout
             android:id="@+id/item_list_widget_deadline"
             android:layout_width="match_parent"
@@ -108,13 +112,14 @@
                 android:layout_height="wrap_content"
                 tools:text="@string/note_deadline_sample"
                 android:textColor="@color/widget_light_post_title_color"
-                android:textSize="@dimen/widget_post_title_text_size"
+                android:textSize="@dimen/widget_post_title_text_size_14"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:maxLines="1"
                 android:ellipsize="end" />
         </LinearLayout>
 
+        <!-- Closed time -->
         <LinearLayout
             android:id="@+id/item_list_widget_closed"
             android:layout_width="match_parent"
@@ -138,7 +143,7 @@
                 android:layout_height="wrap_content"
                 tools:text="@string/note_closed_sample"
                 android:textColor="@color/widget_light_post_title_color"
-                android:textSize="@dimen/widget_post_title_text_size"
+                android:textSize="@dimen/widget_post_title_text_size_14"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:maxLines="1"

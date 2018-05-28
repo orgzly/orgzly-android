@@ -562,6 +562,12 @@ public class AppPreferences {
                 context.getResources().getString(R.string.pref_default_widget_opacity)));
     }
 
+    public static int widgetFontSize(Context context) {
+        return Integer.valueOf(getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_widget_font_size),
+                context.getResources().getString(R.string.pref_default_widget_font_size)));
+    }
+
     public static int widgetUpdateFrequency(Context context) {
         return Integer.valueOf(getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_widget_update_frequency),

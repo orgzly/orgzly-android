@@ -364,6 +364,17 @@
     <string name="pref_key_widget_opacity" translatable="false">pref_key_widget_opacity</string>
     <string name="pref_default_widget_opacity" translatable="false">98</string>
 
+    <string name="pref_key_widget_font_size" translatable="false">pref_key_widget_font_size</string>
+    <string name="pref_default_widget_font_size" translatable="false">14</string>
+    <string-array name="widget_font_sizes">
+        <item>@string/font_size_default</item>
+        <item>@string/font_size_large</item>
+    </string-array>
+    <string-array name="widget_font_sizes_values">
+        <item>14</item>
+        <item>16</item>
+    </string-array>
+
     <string name="pref_key_widget_update_frequency" translatable="false">pref_key_widget_update_frequency</string>
     <string name="pref_default_widget_update_frequency" translatable="false">60</string>
     <string-array name="widget_update_frequency">

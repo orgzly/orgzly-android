@@ -226,6 +226,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         /* Update widget for changed style. */
         when (key) {
             getString(R.string.pref_key_widget_color_scheme),
+            getString(R.string.pref_key_widget_font_size),
             getString(R.string.pref_key_widget_opacity),
             getString(R.string.pref_key_widget_update_frequency) -> {
                 val intent = Intent(context, ListWidgetProvider::class.java)

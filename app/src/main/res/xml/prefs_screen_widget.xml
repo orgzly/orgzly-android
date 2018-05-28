@@ -21,6 +21,13 @@
         app:max="100" />
 
     <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        android:key="@string/pref_key_widget_font_size"
+        android:title="@string/font_size"
+        android:entries="@array/widget_font_sizes"
+        android:entryValues="@array/widget_font_sizes_values"
+        android:defaultValue="@string/pref_default_widget_font_size" />
+
+    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
         android:key="@string/pref_key_widget_update_frequency"
         android:title="@string/update_frequency"
         android:entries="@array/widget_update_frequency"

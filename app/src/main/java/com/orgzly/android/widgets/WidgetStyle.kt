@@ -5,6 +5,7 @@ import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.util.TypedValue
 import android.view.Window
 import android.widget.RemoteViews
 import com.orgzly.R
@@ -28,6 +29,11 @@ object WidgetStyle {
                 "setBackgroundColor",
                 WidgetStyle.headerBackground(context))
 
+        remoteViews.setTextViewTextSize(
+                R.id.list_widget_header_filter,
+                TypedValue.COMPLEX_UNIT_PX,
+                WidgetStyle.headerTextSize(context))
+
         remoteViews.setTextColor(
                 R.id.list_widget_header_filter,
                 WidgetStyle.headerTextColor(context))
@@ -43,12 +49,22 @@ object WidgetStyle {
     }
 
     fun updateDivider(remoteViews: RemoteViews, context: Context) {
+        remoteViews.setTextViewTextSize(
+                R.id.widget_list_item_divider_value,
+                TypedValue.COMPLEX_UNIT_PX,
+                WidgetStyle.titleTextSize(context))
+
         remoteViews.setTextColor(
                 R.id.widget_list_item_divider_value,
                 WidgetStyle.primaryTextColor(context))
     }
 
     fun updateNote(remoteViews: RemoteViews, context: Context) {
+        remoteViews.setTextViewTextSize(
+                R.id.item_list_widget_title,
+                TypedValue.COMPLEX_UNIT_PX,
+                WidgetStyle.titleTextSize(context))
+
         remoteViews.setTextColor(
                 R.id.item_list_widget_title,
                 WidgetStyle.primaryTextColor(context))
@@ -56,6 +72,11 @@ object WidgetStyle {
         remoteViews.setImageViewResource(
                 R.id.item_list_widget_scheduled_icon,
                 WidgetStyle.scheduledIcon(context))
+
+        remoteViews.setTextViewTextSize(
+                R.id.item_list_widget_scheduled_text,
+                TypedValue.COMPLEX_UNIT_PX,
+                WidgetStyle.postTitleTextSize(context))
 
         remoteViews.setTextColor(
                 R.id.item_list_widget_scheduled_text,
@@ -65,6 +86,11 @@ object WidgetStyle {
                 R.id.item_list_widget_deadline_icon,
                 WidgetStyle.deadlineIcon(context))
 
+        remoteViews.setTextViewTextSize(
+                R.id.item_list_widget_deadline_text,
+                TypedValue.COMPLEX_UNIT_PX,
+                WidgetStyle.postTitleTextSize(context))
+
         remoteViews.setTextColor(
                 R.id.item_list_widget_deadline_text,
                 WidgetStyle.secondaryTextColor(context))
@@ -72,6 +98,11 @@ object WidgetStyle {
         remoteViews.setImageViewResource(
                 R.id.item_list_widget_closed_icon,
                 WidgetStyle.closedIcon(context))
+
+        remoteViews.setTextViewTextSize(
+                R.id.item_list_widget_closed_text,
+                TypedValue.COMPLEX_UNIT_PX,
+                WidgetStyle.postTitleTextSize(context))
 
         remoteViews.setTextColor(
                 R.id.item_list_widget_closed_text,
@@ -89,7 +120,7 @@ object WidgetStyle {
                         ContextCompat.getColor(context, R.color.widget_dark_state_todo_color),
                         ContextCompat.getColor(context, R.color.widget_dark_state_done_color),
                         ContextCompat.getColor(context, R.color.widget_dark_state_unknown_color),
-                        context.resources.getDimension(R.dimen.widget_post_title_text_size).toInt(),
+                        postTitleTextSize(context).toInt(),
                         ContextCompat.getColor(context, R.color.widget_dark_post_title_color))
 
             "black" ->
@@ -97,7 +128,7 @@ object WidgetStyle {
                         ContextCompat.getColor(context, R.color.widget_black_state_todo_color),
                         ContextCompat.getColor(context, R.color.widget_black_state_done_color),
                         ContextCompat.getColor(context, R.color.widget_black_state_unknown_color),
-                        context.resources.getDimension(R.dimen.widget_post_title_text_size).toInt(),
+                        postTitleTextSize(context).toInt(),
                         ContextCompat.getColor(context, R.color.widget_black_post_title_color))
 
             else ->
@@ -105,8 +136,29 @@ object WidgetStyle {
                         ContextCompat.getColor(context, R.color.widget_light_state_todo_color),
                         ContextCompat.getColor(context, R.color.widget_light_state_done_color),
                         ContextCompat.getColor(context, R.color.widget_light_state_unknown_color),
-                        context.resources.getDimension(R.dimen.widget_post_title_text_size).toInt(),
+                        postTitleTextSize(context).toInt(),
                         ContextCompat.getColor(context, R.color.widget_light_post_title_color))
+        }
+    }
+
+    private fun titleTextSize(context: Context): Float {
+        return when (AppPreferences.widgetFontSize(context)) {
+            16 -> context.resources.getDimension(R.dimen.widget_title_text_size_16)
+            else -> context.resources.getDimension(R.dimen.widget_title_text_size_14)
+        }
+    }
+
+    private fun postTitleTextSize(context: Context): Float {
+        return when (AppPreferences.widgetFontSize(context)) {
+            16 -> context.resources.getDimensionPixelOffset(R.dimen.widget_post_title_text_size_16).toFloat()
+            else -> context.resources.getDimensionPixelOffset(R.dimen.widget_post_title_text_size_14).toFloat()
+        }
+    }
+
+    private fun headerTextSize(context: Context): Float {
+        return when (AppPreferences.widgetFontSize(context)) {
+            16 -> context.resources.getDimension(R.dimen.widget_header_text_size_16)
+            else -> context.resources.getDimension(R.dimen.widget_header_text_size_14)
         }
     }
 

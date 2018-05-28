@@ -13,7 +13,7 @@
     android:paddingBottom="4dp"
     android:maxLines="1"
     android:textColor="@color/widget_light_title_color"
-    android:textSize="@dimen/widget_title_text_size"
+    android:textSize="@dimen/widget_title_text_size_14"
     android:textStyle="bold"
     tools:text="Mon, 25 Sep" />
 
