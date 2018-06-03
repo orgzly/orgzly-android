@@ -225,6 +225,17 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                     // TODO: How to update the note without causing a recursion?
                     //NotesClient.update(context, note);
                     holder.content.addTextChangedListener(this);
+
+                    // Consider doing this?
+                    /*
+                    if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Text modified in list", s);
+                    ActionService.Companion.enqueueWork(
+                            context,
+                            new Intent(context, ActionService.class)
+                                    .setAction(AppIntent.ACTION_UPDATE_NOTE)
+                                    .putExtra(AppIntent.EXTRA_NOTE_CONTENT, s.toString()));
+                                        */
+
                 }
             });
 

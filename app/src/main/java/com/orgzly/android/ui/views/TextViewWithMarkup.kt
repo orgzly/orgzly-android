@@ -17,6 +17,8 @@ import com.orgzly.android.util.OrgFormatter
 
 /**
  * [TextView] with markup support.
+ *
+ * Used for title, content and preface text.
  */
 class TextViewWithMarkup : TextViewFixed {
     constructor(context: Context) : super(context)

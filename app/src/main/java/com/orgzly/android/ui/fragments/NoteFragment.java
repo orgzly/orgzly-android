@@ -318,6 +318,7 @@ public class NoteFragment extends Fragment
 
             @Override
             public void afterTextChanged(Editable s) {
+                // TODO: Don't do this replacement?
                 bodyEdit.removeTextChangedListener(this);
                 Matcher matcher = Pattern.compile("(\n|^)[Cc] ").matcher(s);
                 while(matcher.find()) {
@@ -345,21 +346,6 @@ public class NoteFragment extends Fragment
                 bodyEdit.setText(text);
             }
         });
-
-//        bodyView.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                editMode(true, true);
-//                return false;
-//            }
-//        });
-
-//        bodyView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                editMode(true, true);
-//            }
-//        });
 
         if (getActivity() != null && AppPreferences.isFontMonospaced(getContext())) {
             bodyEdit.setTypeface(Typeface.MONOSPACE);

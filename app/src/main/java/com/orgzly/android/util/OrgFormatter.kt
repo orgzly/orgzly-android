@@ -49,8 +49,6 @@ object OrgFormatter {
             "(?:^|\\G|[$PRE])(([$MARKUP_CHARS])($BORDER|$BORDER$BODY$BORDER)\\2)(?:[$POST]|$)",
             Pattern.MULTILINE)
 
-    const val CHECKBOX = "(\\[([ Xx])\\][ \n])"
-
     const val LAST_REPEAT_PROPERTY = "LAST_REPEAT"
 
     private const val LOGBOOK_DRAWER_NAME = "LOGBOOK"
@@ -64,6 +62,8 @@ object OrgFormatter {
 
     private fun namelessBracketLinkPattern(str: String) = Pattern.compile("\\[\\[$str]]")
     private fun namedBracketLinkPattern(str: String) = Pattern.compile("\\[\\[$str]\\[([^]]+)]]")
+
+    private val CHECKBOXES_PATTERN = Pattern.compile("""^\s*-\s+(\[[ X]])""", Pattern.MULTILINE)
 
     private const val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 
@@ -88,8 +88,12 @@ object OrgFormatter {
         return this.parse(str, config)
     }
 
-    fun parse(str: String, config: Config): SpannableStringBuilder {
+    private fun parse(str: String, config: Config): SpannableStringBuilder {
         var ssb = SpannableStringBuilder(str)
+
+        // parseCheckboxes must be first, since checkboxes need to know
+        // their position in str
+        parseCheckboxes(ssb)
 
         ssb = parsePropertyLinks(ssb, CUSTOM_ID_LINK, "CUSTOM_ID", config.linkify)
         ssb = parsePropertyLinks(ssb, ID_LINK, "ID", config.linkify)
@@ -100,8 +104,6 @@ object OrgFormatter {
         ssb = parseOrgLinks(ssb, BRACKET_LINK, config.linkify)
 
         parsePlainLinks(ssb, PLAIN_LINK, config.linkify)
-
-        parseCheckboxes(ssb)
 
         ssb = parseMarkup(ssb, config)
 
@@ -311,12 +313,11 @@ object OrgFormatter {
      * Parse checkboxes and add CheckboxSpans to ssb
      */
     private fun parseCheckboxes(ssb: SpannableStringBuilder) {
-        val p = Pattern.compile(CHECKBOX)
-        val m = p.matcher(ssb)
+        val m = CHECKBOXES_PATTERN.matcher(ssb)
 
         while (m.find()) {
             val content = m.group(1)
-            ssb.setSpan(CheckboxSpan(content, m.start(), m.end()), m.start(), m.end(), FLAGS)
+            ssb.setSpan(CheckboxSpan(content, m.start(1), m.end(1)), m.start(1), m.end(1), FLAGS)
         }
     }
 

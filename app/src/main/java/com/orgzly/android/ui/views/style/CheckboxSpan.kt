@@ -19,11 +19,12 @@ class CheckboxSpan(val content: CharSequence, val rawStart: Int, val rawEnd: Int
     }
 
     override fun updateDrawState(tp: TextPaint) {
-        if(isChecked())
+        /*if(isChecked())
             tp.color = Color.GREEN
         else
-            tp.color = Color.RED
+            tp.color = Color.RED*/
         typeface.updateDrawState(tp)
+        tp.isUnderlineText = true
     }
 
     fun isChecked(): Boolean {
