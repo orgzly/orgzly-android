@@ -6,10 +6,9 @@ import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.text.style.TypefaceSpan
 import android.view.View
-import com.orgzly.R
 import com.orgzly.android.ui.views.TextViewWithMarkup
 
-class CheckboxSpan(val content: CharSequence) : ClickableSpan() {
+class CheckboxSpan(val content: CharSequence, val rawStart: Int, val rawEnd: Int) : ClickableSpan() {
 
     private val typeface = TypefaceSpan("monospace")
 

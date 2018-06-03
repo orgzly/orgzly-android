@@ -341,7 +341,8 @@ public class NoteFragment extends Fragment
             @Override
             public void afterTextChanged(Editable s) {
                 // Update bodyEdit text when checkboxes are clicked
-                bodyEdit.setText(s.toString());
+                CharSequence text = bodyView.getRawText();
+                bodyEdit.setText(text);
             }
         });
 

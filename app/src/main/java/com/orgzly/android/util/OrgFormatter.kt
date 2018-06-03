@@ -316,7 +316,7 @@ object OrgFormatter {
 
         while (m.find()) {
             val content = m.group(1)
-            ssb.setSpan(CheckboxSpan(content), m.start(), m.end(), FLAGS)
+            ssb.setSpan(CheckboxSpan(content, m.start(), m.end()), m.start(), m.end(), FLAGS)
         }
     }
 

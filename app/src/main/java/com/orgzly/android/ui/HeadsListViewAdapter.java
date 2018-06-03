@@ -219,9 +219,12 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                 @Override
                 public void afterTextChanged(Editable s) {
                     // Update note when checkboxes are clicked
-                    head.setContent(s.toString());
+                    holder.content.removeTextChangedListener(this);
+                    head.setContent(holder.content.getRawText().toString());
                     note.setHead(head);
-                    NotesClient.update(context, note);
+                    // TODO: How to update the note without causing a recursion?
+                    //NotesClient.update(context, note);
+                    holder.content.addTextChangedListener(this);
                 }
             });
 
