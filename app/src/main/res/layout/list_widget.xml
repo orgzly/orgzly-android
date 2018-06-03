@@ -73,8 +73,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
+            android:paddingTop="@dimen/widget_padding"
+            android:paddingBottom="@dimen/widget_padding"
+            android:paddingLeft="@dimen/widget_padding"
+            android:paddingStart="@dimen/widget_padding"
             android:divider="@null"
             android:dividerHeight="0dp" />
 

@@ -49,4 +49,6 @@
     <dimen name="widget_title_text_size_16">16sp</dimen>
     <dimen name="widget_post_title_text_size_16">14sp</dimen>
     <dimen name="widget_header_text_size_16">17sp</dimen>
+
+    <dimen name="widget_padding">2dp</dimen>
 </resources>

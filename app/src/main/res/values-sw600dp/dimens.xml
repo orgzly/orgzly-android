@@ -14,6 +14,8 @@
 
     <dimen name="item_head_book_name_width">120dp</dimen>
 
+    <dimen name="widget_padding">4dp</dimen>
+
     <!--
     Layout alias to replace the single-pane version of the layout with a
     two-pane version on Large screens.
