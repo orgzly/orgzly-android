@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
@@ -137,6 +138,7 @@ public class NoteFragment extends Fragment
     private LinearLayout propertyList;
 
     private ToggleButton editSwitch;
+    private Button checkboxButton;
     private EditText bodyEdit;
     private TextViewWithMarkup bodyView;
 
@@ -365,6 +367,8 @@ public class NoteFragment extends Fragment
             bodyView.setTypeface(Typeface.MONOSPACE);
         }
 
+        checkboxButton = top.findViewById(R.id.insert_checkbox_button);
+
         editSwitch = top.findViewById(R.id.edit_content_toggle);
 
         editSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -374,9 +378,11 @@ public class NoteFragment extends Fragment
                 bodyView.setVisibility(View.GONE);
 
                 bodyEdit.setVisibility(View.VISIBLE);
+                checkboxButton.setVisibility(View.VISIBLE);
 
             } else {
                 bodyEdit.setVisibility(View.GONE);
+                checkboxButton.setVisibility(View.GONE);
 
                 bodyView.setRawText(bodyEdit.getText());
                 bodyView.setVisibility(View.VISIBLE);
@@ -393,6 +399,10 @@ public class NoteFragment extends Fragment
             }
         });
 
+        checkboxButton.setOnClickListener(view -> {
+            int sel = bodyEdit.getSelectionStart();
+            bodyEdit.getText().replace(sel, sel, "\n- [ ]");
+        });
 
         mViewFlipper = top.findViewById(R.id.fragment_note_view_flipper);
 
