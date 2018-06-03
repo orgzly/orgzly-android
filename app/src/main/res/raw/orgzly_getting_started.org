@@ -47,10 +47,11 @@ Send email to [[mailto:support@orgzly.com][support@orgzly.com]], visit http://ww
 
 You can make words *bold*, /italic/, _underlined_, =verbatim=, ~code~ and +strike-through+.
 
-** Checkboxes are supported
+** Checkboxes in lists are supported
 - [X] Task 1
 - [ ] Task 2
 Click the checkbox to check/uncheck it.
+Press enter on the end of the line to add a new checkbox line.
 
 * Search
 ** There are many search operators supported

@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -307,24 +308,36 @@ public class NoteFragment extends Fragment
 
         bodyEdit = top.findViewById(R.id.body_edit);
 
-        bodyEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                // TODO: Don't do this replacement?
-                bodyEdit.removeTextChangedListener(this);
-                Matcher matcher = Pattern.compile("(\n|^)[Cc] ").matcher(s);
-                while(matcher.find()) {
-                    s.replace(matcher.start(), matcher.end(), matcher.group(1) + "[ ] ");
+        bodyEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(event != null && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    // Enter was pressed
+                    int sel = bodyEdit.getSelectionStart();
+                    String text = bodyEdit.getText().toString();
+                    // Is it on the end of line?
+                    boolean onEndOfLine = false;
+                    if(sel == text.length()) {
+                        onEndOfLine = true;
+                    } else {
+                        char endOfLineChar = text.charAt(sel);
+                        onEndOfLine = (endOfLineChar == '\n');
+                    }
+                    if(!onEndOfLine) return false;
+                    // Does the line begin with a checkbox?
+                    int startOfLine = text.lastIndexOf("\n", sel - 1) + 1;
+                    String line = text.substring(startOfLine, sel);
+                    Pattern p = Pattern.compile("(^\\s*-\\s+\\[)[ X]\\]");
+                    Matcher m = p.matcher(line);
+                    if(m.find()) {
+                        // Insert checkbox
+                        String replacement = '\n' + m.group(1) + " ] ";
+                        bodyEdit.getText().replace(sel, sel, replacement);
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
-                bodyEdit.addTextChangedListener(this);
+                return false;
             }
         });
 
