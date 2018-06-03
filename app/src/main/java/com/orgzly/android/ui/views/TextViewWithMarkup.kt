@@ -12,6 +12,7 @@ import com.orgzly.android.ActionService
 import com.orgzly.android.AppIntent
 import com.orgzly.android.ui.views.style.DrawerEndSpan
 import com.orgzly.android.ui.views.style.DrawerSpan
+import com.orgzly.android.ui.views.style.CheckboxSpan
 import com.orgzly.android.util.OrgFormatter
 
 /**
@@ -73,6 +74,29 @@ class TextViewWithMarkup : TextViewFixed {
         text = builder
     }
 
+    fun toggleCheckbox(checkboxSpan: CheckboxSpan) {
+        val textSpanned = text as Spanned
+
+        val checkboxStart = textSpanned.getSpanStart(checkboxSpan)
+        val checkboxEnd = textSpanned.getSpanEnd(checkboxSpan)
+
+        val builder = SpannableStringBuilder(text)
+
+        var oldContent = checkboxSpan.content
+        var check = "X"
+        if (checkboxSpan.isChecked()) {
+            check = " "
+        }
+        var content = (oldContent.substring(0, 1) + check
+                + oldContent.substring(2, oldContent.length))
+        val replacement = checkboxSpanned(content)
+
+        builder.removeSpan(checkboxSpan)
+        builder.replace(checkboxStart, checkboxEnd, replacement)
+
+        text = builder
+    }
+
     companion object {
         fun drawerSpanned(name: String, content: CharSequence, isFolded: Boolean): Spanned {
 
@@ -104,6 +128,21 @@ class TextViewWithMarkup : TextViewFixed {
 
                 builder.append("\n").append(endSpannable)
             }
+
+            return builder
+        }
+
+        fun checkboxSpanned(content: CharSequence): Spanned {
+
+            val builder = SpannableStringBuilder()
+
+            val beginSpannable = SpannableString(content)
+            beginSpannable.setSpan(
+                    CheckboxSpan(content),
+                    0,
+                    beginSpannable.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            builder.append(beginSpannable)
 
             return builder
         }

@@ -10,6 +10,7 @@ import android.view.View
 import com.orgzly.BuildConfig
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.views.TextViewWithMarkup
+import com.orgzly.android.ui.views.style.CheckboxSpan
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -47,6 +48,8 @@ object OrgFormatter {
     private val MARKUP_PATTERN = Pattern.compile(
             "(?:^|\\G|[$PRE])(([$MARKUP_CHARS])($BORDER|$BORDER$BODY$BORDER)\\2)(?:[$POST]|$)",
             Pattern.MULTILINE)
+
+    const val CHECKBOX = "(\\[([ Xx])\\][ \n])"
 
     const val LAST_REPEAT_PROPERTY = "LAST_REPEAT"
 
@@ -97,6 +100,8 @@ object OrgFormatter {
         ssb = parseOrgLinks(ssb, BRACKET_LINK, config.linkify)
 
         parsePlainLinks(ssb, PLAIN_LINK, config.linkify)
+
+        parseCheckboxes(ssb)
 
         ssb = parseMarkup(ssb, config)
 
@@ -300,6 +305,19 @@ object OrgFormatter {
         }
 
         return buildFromRegions(ssb, spanRegions)
+    }
+
+    /**
+     * Parse checkboxes and add CheckboxSpans to ssb
+     */
+    private fun parseCheckboxes(ssb: SpannableStringBuilder) {
+        val p = Pattern.compile(CHECKBOX)
+        val m = p.matcher(ssb)
+
+        while (m.find()) {
+            val content = m.group(1)
+            ssb.setSpan(CheckboxSpan(content), m.start(), m.end(), FLAGS)
+        }
     }
 
     private fun parseDrawers(ssb: SpannableStringBuilder, foldDrawers: Boolean): SpannableStringBuilder {

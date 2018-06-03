@@ -62,6 +62,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Note editor.
@@ -305,7 +307,43 @@ public class NoteFragment extends Fragment
 
         bodyEdit = top.findViewById(R.id.body_edit);
 
+        bodyEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                bodyEdit.removeTextChangedListener(this);
+                Matcher matcher = Pattern.compile("(\n|^)[Cc] ").matcher(s);
+                while(matcher.find()) {
+                    s.replace(matcher.start(), matcher.end(), matcher.group(1) + "[ ] ");
+                }
+                bodyEdit.addTextChangedListener(this);
+            }
+        });
+
         bodyView = top.findViewById(R.id.body_view);
+
+        bodyView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Update bodyEdit text when checkboxes are clicked
+                bodyEdit.setText(s.toString());
+            }
+        });
 
 //        bodyView.setOnTouchListener(new View.OnTouchListener() {
 //            @Override

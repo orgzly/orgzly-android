@@ -8,6 +8,8 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -205,6 +207,23 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
             }
 
             holder.content.setRawText(head.getContent());
+            holder.content.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    // Update note when checkboxes are clicked
+                    head.setContent(s.toString());
+                    note.setHead(head);
+                    NotesClient.update(context, note);
+                }
+            });
 
             holder.content.setVisibility(View.VISIBLE);
 
