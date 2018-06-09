@@ -167,12 +167,6 @@ class ReposActivity :
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> {
-                ActivityUtils.closeSoftKeyboard(this)
-                super.onBackPressed()
-                true
-            }
-
             R.id.repos_options_menu_item_new_dropbox -> {
                 startRepoActivity(item.itemId)
                 return true
@@ -186,6 +180,11 @@ class ReposActivity :
             R.id.repos_options_menu_item_new_external_storage_directory -> {
                 startRepoActivity(item.itemId)
                 return true
+            }
+
+            android.R.id.home -> {
+                finish()
+                true
             }
 
             else -> super.onOptionsItemSelected(item)
