@@ -17,11 +17,12 @@
             android:id="@android:id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            style="@style/ListView"/>
+            style="@style/ListView" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/space_between_content_areas"
                     android:text="@string/create_new_repository_for_syncing"
-                    android:gravity="center"/>
+                    android:gravity="center" />
 
                 <Button
                     android:id="@+id/activity_repos_dropbox"
@@ -44,7 +45,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:drawableTop="?attr/oic_dropbox_not_linked"
-                    android:text="@string/dropbox"/>
+                    android:text="@string/dropbox" />
 
                 <Button
                     android:id="@+id/activity_repos_git"
@@ -53,7 +54,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:drawableTop="?attr/oic_git_48dp"
-                    android:text="@string/git"/>
+                    android:text="@string/git" />
 
                 <Button
                     android:id="@+id/activity_repos_directory"
@@ -62,13 +63,14 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:drawableTop="?attr/ic_folder_open_48dp"
-                    android:text="@string/directory"/>
+                    android:text="@string/directory" />
 
             </LinearLayout>
+
         </ScrollView>
 
     </ViewFlipper>
 
-    <include layout="@layout/app_bar"/>
+    <include layout="@layout/app_bar" />
 
 </android.support.design.widget.CoordinatorLayout>

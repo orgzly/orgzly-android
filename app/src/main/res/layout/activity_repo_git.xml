@@ -147,6 +147,7 @@
             </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
+
     </ScrollView>
 
     <include layout="@layout/app_bar"/>
