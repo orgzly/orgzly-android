@@ -20,6 +20,7 @@ object NotificationChannels {
     const val SYNC_PROGRESS = "sync-progress"
     const val SYNC_FAILED = "sync-failed"
 
+    @JvmStatic
     fun createAll(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createForOngoing(context)

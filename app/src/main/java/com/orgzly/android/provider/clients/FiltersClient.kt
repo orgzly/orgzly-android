@@ -13,11 +13,14 @@ import com.orgzly.android.widgets.ListWidgetProvider
 import java.util.ArrayList
 
 object FiltersClient {
+    @JvmStatic
     val SORT_ORDER = ProviderContract.Filters.Param.POSITION + ", " + ProviderContract.Filters.Param._ID
 
+    @JvmStatic
     fun getCursorLoader(context: Context): CursorLoader =
             CursorLoader(context, ProviderContract.Filters.ContentUri.filters(), null, null, null, SORT_ORDER)
 
+    @JvmStatic
     operator fun get(context: Context, id: Long): Filter? {
         val cursor = context.contentResolver.query(
                 ContentUris.withAppendedId(ProviderContract.Filters.ContentUri.filters(), id),
@@ -42,6 +45,7 @@ object FiltersClient {
      *
      * @return First filter that matches the name (case insensitive)
      */
+    @JvmStatic
     fun getByNameIgnoreCase(context: Context, name: String): LongSparseArray<Filter> {
         val result = LongSparseArray<Filter>()
 
@@ -71,12 +75,14 @@ object FiltersClient {
      *
      * @param id
      */
+    @JvmStatic
     fun delete(context: Context, id: Long) {
         context.contentResolver.delete(ContentUris.withAppendedId(ProviderContract.Filters.ContentUri.filters(), id), null, null)
 
         updateWidgets(context)
     }
 
+    @JvmStatic
     fun update(context: Context, id: Long, filter: Filter) {
         val values = ContentValues()
 
@@ -88,6 +94,7 @@ object FiltersClient {
         updateWidgets(context)
     }
 
+    @JvmStatic
     fun create(context: Context, filter: Filter) {
         val values = ContentValues()
 
@@ -97,10 +104,12 @@ object FiltersClient {
         context.contentResolver.insert(ProviderContract.Filters.ContentUri.filters(), values)
     }
 
+    @JvmStatic
     fun moveUp(context: Context, id: Long) {
         context.contentResolver.update(ProviderContract.Filters.ContentUri.filtersIdUp(id), null, null, null)
     }
 
+    @JvmStatic
     fun moveDown(context: Context, id: Long) {
         context.contentResolver.update(ProviderContract.Filters.ContentUri.filtersIdDown(id), null, null, null)
     }

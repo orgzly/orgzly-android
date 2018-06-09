@@ -54,7 +54,7 @@ public class LocalDbRepoTest extends OrgzlyTest {
         File tmpFile = shelf.getTempBookFile();
 
         try {
-            NotesExporter.Companion.getInstance(context).exportBook(book, tmpFile);
+            NotesExporter.getInstance(context).exportBook(book, tmpFile);
             repo = RepoFactory.getFromUri(context, "mock://repo-a");
             repo.storeBook(tmpFile, BookName.fileName(book.getName(), BookName.Format.ORG));
         } finally {

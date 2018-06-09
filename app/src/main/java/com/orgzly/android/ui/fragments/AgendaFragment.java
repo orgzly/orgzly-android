@@ -147,7 +147,7 @@ public class AgendaFragment extends QueryFragment {
         }
 
         AgendaCursor.AgendaMergedCursor agendaMergedCursor =
-                AgendaCursor.INSTANCE.create(getContext(), cursor, getQuery());
+                AgendaCursor.create(getContext(), cursor, getQuery());
 
 
         Long openedQuickMenuId = getListView().getItemMenus().getOpenedId();

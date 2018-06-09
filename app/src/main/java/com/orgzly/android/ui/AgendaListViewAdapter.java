@@ -27,7 +27,7 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         View view;
 
-        if (AgendaCursor.INSTANCE.isDivider(cursor)) {
+        if (AgendaCursor.isDivider(cursor)) {
             view = LayoutInflater.from(context).inflate(R.layout.item_agenda_divider, null);
 
             DividerHolder divider = (DividerHolder) view.getTag();
@@ -74,7 +74,7 @@ public class AgendaListViewAdapter extends HeadsListViewAdapter {
     }
 
     private int getCursorType(Cursor cursor) {
-        if (AgendaCursor.INSTANCE.isDivider(cursor)) {
+        if (AgendaCursor.isDivider(cursor)) {
             return DIVIDER_VIEW_TYPE;
         } else {
             return NOTE_VIEW_TYPE;

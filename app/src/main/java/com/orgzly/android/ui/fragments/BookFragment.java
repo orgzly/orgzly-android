@@ -631,7 +631,7 @@ public class BookFragment extends NoteListFragment
     private void notesLoaded(Cursor cursor) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, cursor);
 
-        SelectionUtils.INSTANCE.removeNonExistingIdsFromSelection(mSelection, cursor);
+        SelectionUtils.removeNonExistingIdsFromSelection(mSelection, cursor);
 
         mListAdapter.swapCursor(cursor);
 

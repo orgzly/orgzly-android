@@ -185,7 +185,7 @@ public class NotesClient {
         OrgHead head = new OrgHead();
 
         String state = cursor.getString(cursor.getColumnIndex(DbNoteView.STATE));
-        if (NoteStates.Companion.isKeyword(state)) {
+        if (NoteStates.isKeyword(state)) {
             head.setState(state);
         } else {
             head.setState(null);

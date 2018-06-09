@@ -96,7 +96,7 @@ public class FilterFragment extends Fragment implements DrawerListed {
         if (isEditingExistingFilter()) { /* Existing filter. */
             long id = getArguments().getLong(ARG_ID);
 
-            Filter filter = FiltersClient.INSTANCE.get(getActivity(), id);
+            Filter filter = FiltersClient.get(getActivity(), id);
 
             if (filter != null) {
                 mName.setText(filter.getName());
@@ -119,7 +119,7 @@ public class FilterFragment extends Fragment implements DrawerListed {
          * For new filters focus on name, for existing focus on query.
          */
         if (viewToFocus != null && getActivity() != null) {
-            ActivityUtils.INSTANCE.openSoftKeyboard(getActivity(), viewToFocus);
+            ActivityUtils.openSoftKeyboard(getActivity(), viewToFocus);
         }
     }
 
@@ -255,7 +255,7 @@ public class FilterFragment extends Fragment implements DrawerListed {
      * Checks if filter with the same name (ignoring case) already exists.
      */
     private boolean sameNameFilterExists(String name) {
-        LongSparseArray<Filter> filters = FiltersClient.INSTANCE.getByNameIgnoreCase(getContext(), name);
+        LongSparseArray<Filter> filters = FiltersClient.getByNameIgnoreCase(getContext(), name);
 
         if (isEditingExistingFilter()) {
             long id = getArguments().getLong(ARG_ID);
@@ -280,7 +280,7 @@ public class FilterFragment extends Fragment implements DrawerListed {
 
     @Override
     public String getCurrentDrawerItemId() {
-        return FiltersFragment.Companion.getDrawerItemId();
+        return FiltersFragment.getDrawerItemId();
     }
 
     public interface FilterFragmentListener extends FragmentListener {

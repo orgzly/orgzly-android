@@ -153,7 +153,7 @@ public abstract class NoteListFragment extends ListFragment
     }
 
     protected void openNoteStateDialog(NoteListFragmentListener listener, Set<Long> noteIds, String currentState) {
-        dialog = NoteStateDialog.INSTANCE.show(
+        dialog = NoteStateDialog.show(
                 getContext(),
                 currentState,
                 (state) -> {

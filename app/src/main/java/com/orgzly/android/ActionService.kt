@@ -107,6 +107,7 @@ class ActionService : JobIntentService() {
         const val GETTING_STARTED_NOTEBOOK_NAME = "Getting Started with Orgzly"
         const val GETTING_STARTED_NOTEBOOK_RESOURCE_ID = R.raw.orgzly_getting_started
 
+        @JvmStatic
         fun enqueueWork(context: Context, action: String) {
             val intent = Intent(context, ActionService::class.java)
 

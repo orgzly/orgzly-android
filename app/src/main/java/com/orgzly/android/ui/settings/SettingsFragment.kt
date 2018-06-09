@@ -337,6 +337,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         /* Using headers file & fragments didn't work well - transitions were
          * not smooth, previous fragment would be briefly displayed.
          */
+        @JvmStatic
         val PREFS_RESOURCES: HashMap<String, Int> = hashMapOf(
                 "prefs_screen_look_and_feel" to R.xml.prefs_screen_look_and_feel,
                 "prefs_screen_notebooks" to R.xml.prefs_screen_notebooks,

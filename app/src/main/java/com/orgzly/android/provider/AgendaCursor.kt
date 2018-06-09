@@ -18,7 +18,7 @@ object AgendaCursor {
 
     data class AgendaMergedCursor(val cursor: Cursor, val originalNoteIDs: Map<Long, NoteForDay>)
 
-
+    @JvmStatic
     fun create(context: Context, cursor: Cursor, query: String): AgendaMergedCursor {
         val parser = InternalQueryParser()
         val (_, _, options) = parser.parse(query)
@@ -98,10 +98,12 @@ object AgendaCursor {
         return AgendaMergedCursor(mergedCursor, originalNoteIDs)
     }
 
+    @JvmStatic
     fun isDivider(cursor: Cursor): Boolean {
         return cursor.getInt(cursor.getColumnIndex(AgendaCursor.Columns.IS_DIVIDER)) == 1
     }
 
+    @JvmStatic
     fun getDividerDate(cursor: Cursor): String {
         return cursor.getString(cursor.getColumnIndex(AgendaCursor.Columns.DIVIDER_VALUE))
     }

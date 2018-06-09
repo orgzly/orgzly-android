@@ -54,7 +54,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.list_widget);
 
-        WidgetStyle.INSTANCE.updateWidget(remoteViews, context);
+        WidgetStyle.updateWidget(remoteViews, context);
 
         Intent serviceIntent = new Intent(context, ListWidgetService.class);
         serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
@@ -206,7 +206,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
         long filterId = context.getSharedPreferences(PREFERENCES_ID, Context.MODE_PRIVATE).getLong(getFilterPreferenceKey(appWidgetId), -1);
         Filter filter = null;
         if (filterId != -1) {
-            filter = FiltersClient.INSTANCE.get(context, filterId);
+            filter = FiltersClient.get(context, filterId);
         }
 
         if (filter == null) {
@@ -243,7 +243,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
         long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0L);
         long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0L);
 
-        PendingIntent pi = ActivityUtils.INSTANCE.mainActivityPendingIntent(context, bookId, noteId);
+        PendingIntent pi = ActivityUtils.mainActivityPendingIntent(context, bookId, noteId);
         try {
             pi.send();
         } catch (PendingIntent.CanceledException e) {

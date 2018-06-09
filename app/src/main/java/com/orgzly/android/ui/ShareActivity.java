@@ -136,7 +136,7 @@ public class ShareActivity extends CommonActivity
 
                 if (intent.hasExtra(AppIntent.EXTRA_FILTER)) {
                     Query query = new DottedQueryParser().parse(intent.getStringExtra(AppIntent.EXTRA_FILTER));
-                    String bookName = QueryUtils.INSTANCE.extractFirstBookNameFromQuery(query.getCondition());
+                    String bookName = QueryUtils.extractFirstBookNameFromQuery(query.getCondition());
 
                     if (bookName != null) {
                         Book book = new Shelf(this).getBook(bookName);

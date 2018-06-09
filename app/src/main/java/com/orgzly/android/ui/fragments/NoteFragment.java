@@ -343,7 +343,7 @@ public class NoteFragment extends Fragment
                 bodyView.setRawText(bodyEdit.getText());
                 bodyView.setVisibility(View.VISIBLE);
 
-                ActivityUtils.INSTANCE.closeSoftKeyboard(getActivity());
+                ActivityUtils.closeSoftKeyboard(getActivity());
             }
         });
 
@@ -351,7 +351,7 @@ public class NoteFragment extends Fragment
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, editSwitch.isChecked());
 
             if (editSwitch.isChecked()) { // Clicked to edit content
-                ActivityUtils.INSTANCE.openSoftKeyboard(getActivity(), bodyEdit);
+                ActivityUtils.openSoftKeyboard(getActivity(), bodyEdit);
             }
         });
 
@@ -608,7 +608,7 @@ public class NoteFragment extends Fragment
              * some initial values (for example from ShareActivity).
              */
             if (TextUtils.isEmpty(mInitialTitle) && TextUtils.isEmpty(mInitialContent)) {
-                ActivityUtils.INSTANCE.openSoftKeyboard(getActivity(), title);
+                ActivityUtils.openSoftKeyboard(getActivity(), title);
             }
 
         } else { /* Get existing note from database. */
@@ -877,7 +877,7 @@ public class NoteFragment extends Fragment
 
         /* Set state for a new note. */
         String stateKeyword = AppPreferences.newNoteState(getContext());
-        if (NoteStates.Companion.isKeyword(stateKeyword)) {
+        if (NoteStates.isKeyword(stateKeyword)) {
             head.setState(stateKeyword);
         } else {
             head.setState(null);
@@ -939,7 +939,7 @@ public class NoteFragment extends Fragment
                 break;
 
             case R.id.fragment_note_state_button:
-                NoteStates states = NoteStates.Companion.fromPreferences(getContext());
+                NoteStates states = NoteStates.fromPreferences(getContext());
 
                 String[] keywords = states.getArray();
 
@@ -967,7 +967,7 @@ public class NoteFragment extends Fragment
                 break;
 
             case R.id.fragment_note_priority_button:
-                NotePriorities priorities = NotePriorities.Companion.fromPreferences(getContext());
+                NotePriorities priorities = NotePriorities.fromPreferences(getContext());
 
                 keywords = priorities.getArray();
 
@@ -1249,7 +1249,7 @@ public class NoteFragment extends Fragment
 
     private boolean isTitleValid() {
         if (TextUtils.isEmpty(note.getHead().getTitle())) {
-            CommonActivity.Companion.showSnackbar(getContext(), getString(R.string.title_can_not_be_empty));
+            CommonActivity.showSnackbar(getContext(), getString(R.string.title_can_not_be_empty));
             return false;
         } else {
             return true;
@@ -1308,8 +1308,8 @@ public class NoteFragment extends Fragment
             note.getHead().addProperty(OrgFormatter.LAST_REPEAT_PROPERTY, datetime);
 
             if (AppPreferences.logOnTimeShift(getContext())) {
-                String logEntry = OrgFormatter.INSTANCE.stateChangeLine(originalState, state, datetime);
-                String content = OrgFormatter.INSTANCE.insertLogbookEntryLine(note.getHead().getContent(), logEntry);
+                String logEntry = OrgFormatter.stateChangeLine(originalState, state, datetime);
+                String content = OrgFormatter.insertLogbookEntryLine(note.getHead().getContent(), logEntry);
                 note.getHead().setContent(content);
             }
         }

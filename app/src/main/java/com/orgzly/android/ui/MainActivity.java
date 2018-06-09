@@ -240,7 +240,7 @@ public class MainActivity extends CommonActivity
     private void drawerOpened() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
-        ActivityUtils.INSTANCE.closeSoftKeyboard(this);
+        ActivityUtils.closeSoftKeyboard(this);
     }
 
     private void drawerClosed() {
@@ -312,7 +312,7 @@ public class MainActivity extends CommonActivity
         if (isNewVersion) {
             /* Import Getting Started notebook. */
             if (!AppPreferences.isGettingStartedNotebookLoaded(this)) {
-                ActionService.Companion.enqueueWork(
+                ActionService.enqueueWork(
                         MainActivity.this,
                         AppIntent.ACTION_IMPORT_GETTING_STARTED_NOTEBOOK);
             }
@@ -888,9 +888,9 @@ public class MainActivity extends CommonActivity
 
         final Activity activity = this;
 
-        dialog.setOnShowListener(d -> ActivityUtils.INSTANCE.openSoftKeyboard(activity, name));
+        dialog.setOnShowListener(d -> ActivityUtils.openSoftKeyboard(activity, name));
 
-        dialog.setOnDismissListener(d -> ActivityUtils.INSTANCE.closeSoftKeyboard(activity));
+        dialog.setOnDismissListener(d -> ActivityUtils.closeSoftKeyboard(activity));
 
         name.addTextChangedListener(new TextWatcher() {
             @Override
@@ -1299,7 +1299,7 @@ public class MainActivity extends CommonActivity
         drawerNavigationView.updateActiveFragment(fragmentTag);
 
         /* Update floating action button. */
-        MainFab.INSTANCE.updateFab(this, fragmentTag, selectionCount);
+        MainFab.updateFab(this, fragmentTag, selectionCount);
     }
 
     @Override

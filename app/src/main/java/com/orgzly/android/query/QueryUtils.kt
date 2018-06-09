@@ -1,6 +1,7 @@
 package com.orgzly.android.query
 
 object QueryUtils {
+    @JvmStatic
     fun extractFirstBookNameFromQuery(condition: Condition?): String? {
         if (condition is Condition.And) {
             val (operands) = condition

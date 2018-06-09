@@ -63,7 +63,7 @@ public class ListWidgetService extends RemoteViewsService {
         public void onDataSetChanged() {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
-            TitleGenerator.TitleAttributes attrs = WidgetStyle.INSTANCE.getTitleAttributes(context);
+            TitleGenerator.TitleAttributes attrs = WidgetStyle.getTitleAttributes(context);
             this.titleGenerator = new TitleGenerator(context, false, attrs);
 
             if (cursor != null) {
@@ -83,7 +83,7 @@ public class ListWidgetService extends RemoteViewsService {
                     Cursor cursor = NotesClient.getCursorForQuery(context, queryString);
 
                     AgendaCursor.AgendaMergedCursor agendaCursor =
-                            AgendaCursor.INSTANCE.create(context, cursor, queryString);
+                            AgendaCursor.create(context, cursor, queryString);
 
                     this.cursor = agendaCursor.getCursor();
                     originalNoteIDs = agendaCursor.getOriginalNoteIDs();
@@ -121,15 +121,15 @@ public class ListWidgetService extends RemoteViewsService {
             if (cursor.moveToPosition(position)) {
                 String packageName = context.getPackageName();
 
-                if (isPartitioned && AgendaCursor.INSTANCE.isDivider(cursor)) {
+                if (isPartitioned && AgendaCursor.isDivider(cursor)) {
                     row = new RemoteViews(packageName, R.layout.item_list_widget_divider);
                     setupDividerRow(row, cursor);
-                    WidgetStyle.INSTANCE.updateDivider(row, context);
+                    WidgetStyle.updateDivider(row, context);
 
                 } else {
                     row = new RemoteViews(packageName, R.layout.item_list_widget);
                     setupNoteRow(row, cursor);
-                    WidgetStyle.INSTANCE.updateNote(row, context);
+                    WidgetStyle.updateNote(row, context);
                 }
             }
 
@@ -137,7 +137,7 @@ public class ListWidgetService extends RemoteViewsService {
         }
 
         private void setupDividerRow(RemoteViews row, Cursor cursor) {
-            String value = AgendaCursor.INSTANCE.getDividerDate(cursor);
+            String value = AgendaCursor.getDividerDate(cursor);
 
             row.setTextViewText(R.id.widget_list_item_divider_value, value);
 

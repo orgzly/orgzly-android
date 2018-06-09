@@ -192,7 +192,7 @@ public class Shelf {
         if (book != null) {
             File file = getTempBookFile();
             try {
-                NotesExporter.Companion.getInstance(mContext, format).exportBook(book, file);
+                NotesExporter.getInstance(mContext, format).exportBook(book, file);
                 return MiscUtils.readStringFromFile(file);
             } finally {
                 file.delete();
@@ -210,7 +210,7 @@ public class Shelf {
         File file = mLocalStorage.getExportFile(book, format);
 
         /* Write book. */
-        NotesExporter.Companion.getInstance(mContext, format).exportBook(book, file);
+        NotesExporter.getInstance(mContext, format).exportBook(book, file);
 
         /* Make file immediately visible when using MTP.
          * See https://github.com/orgzly/orgzly-android/issues/44
@@ -586,7 +586,7 @@ public class Shelf {
         File tmpFile = getTempBookFile();
         try {
             /* Write to temporary file. */
-            NotesExporter.Companion.getInstance(mContext, format).exportBook(book, tmpFile);
+            NotesExporter.getInstance(mContext, format).exportBook(book, tmpFile);
 
             /* Upload to repo. */
             uploadedBook = repo.storeBook(tmpFile, fileName);
@@ -610,7 +610,7 @@ public class Shelf {
         VersionedRook newRook = currentRook;
         File dbFile = getTempBookFile();
         try {
-            NotesExporter.Companion.getInstance(mContext, BookName.Format.ORG).exportBook(book, dbFile);
+            NotesExporter.getInstance(mContext, BookName.Format.ORG).exportBook(book, dbFile);
             TwoWaySyncResult result = repo.syncBook(someRook.getUri(), currentRook, dbFile);
             newRook = result.getNewRook();
             if (result.getLoadFile() != null) {
@@ -723,24 +723,24 @@ public class Shelf {
     public void deleteFilters(Set<Long> ids) {
         // TODO: Send a single request. */
         for (long id: ids) {
-            FiltersClient.INSTANCE.delete(mContext, id);
+            FiltersClient.delete(mContext, id);
         }
     }
 
     public void createFilter(Filter filter) {
-        FiltersClient.INSTANCE.create(mContext, filter);
+        FiltersClient.create(mContext, filter);
     }
 
     public void updateFilter(long id, Filter filter) {
-        FiltersClient.INSTANCE.update(mContext, id, filter);
+        FiltersClient.update(mContext, id, filter);
     }
 
     public void moveFilterUp(long id) {
-        FiltersClient.INSTANCE.moveUp(mContext, id);
+        FiltersClient.moveUp(mContext, id);
     }
 
     public void moveFilterDown(long id) {
-        FiltersClient.INSTANCE.moveDown(mContext, id);
+        FiltersClient.moveDown(mContext, id);
     }
 
     public void cycleVisibility(Book book) {
@@ -1053,7 +1053,7 @@ public class Shelf {
 
         } else {
             String msg = mContext.getString(R.string.no_such_link_target, propName, propValue);
-            CommonActivity.Companion.showSnackbar(mContext, msg);
+            CommonActivity.showSnackbar(mContext, msg);
         }
     }
 

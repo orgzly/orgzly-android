@@ -310,11 +310,14 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
         private val TAG = FiltersFragment::class.java.name
 
         /** Name used for [android.app.FragmentManager].  */
+        @JvmStatic
         val FRAGMENT_TAG: String = FiltersFragment::class.java.name
 
+        @JvmStatic
         val instance: FiltersFragment
             get() = FiltersFragment()
 
+        @JvmStatic
         fun createFilterCursorAdapter(context: Context, layout: Int): SimpleCursorAdapter {
             /* Column field names to be bound. */
             val columns = arrayOf(ProviderContract.Filters.Param.NAME, ProviderContract.Filters.Param.QUERY)
@@ -326,6 +329,7 @@ class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Curso
             return SimpleCursorAdapter(context, layout, null, columns, to, 0)
         }
 
+        @JvmStatic
         fun getDrawerItemId(): String {
             return TAG
         }

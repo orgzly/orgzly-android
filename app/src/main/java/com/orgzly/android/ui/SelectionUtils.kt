@@ -12,6 +12,7 @@ import java.util.HashSet
 object SelectionUtils {
     private val TAG = SelectionUtils::class.java.name
 
+    @JvmStatic
     fun removeNonExistingIdsFromSelection(selection: Selection, cursor: Cursor) {
         if (selection.count > 0) {
             val t = System.currentTimeMillis()

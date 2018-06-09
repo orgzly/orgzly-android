@@ -135,13 +135,13 @@ public class SimpleOneLinerDialog extends DialogFragment {
                         }
 
                         /* Closing due to used android:windowSoftInputMode="stateUnchanged" */
-                        ActivityUtils.INSTANCE.closeSoftKeyboard(getActivity());
+                        ActivityUtils.closeSoftKeyboard(getActivity());
                     }
                 })
                 .setNegativeButton(mNegativeButtonText, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         /* Closing due to used android:windowSoftInputMode="stateUnchanged" */
-                        ActivityUtils.INSTANCE.closeSoftKeyboard(getActivity());
+                        ActivityUtils.closeSoftKeyboard(getActivity());
                     }
                 })
                 .create();
@@ -155,7 +155,7 @@ public class SimpleOneLinerDialog extends DialogFragment {
             }
         });
 
-        ActivityUtils.INSTANCE.openSoftKeyboard(getActivity(), input);
+        ActivityUtils.openSoftKeyboard(getActivity(), input);
 
         return dialog;
     }

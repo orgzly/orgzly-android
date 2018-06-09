@@ -58,6 +58,7 @@ class NoteStates {
     companion object {
         const val NO_STATE_KEYWORD = "NOTE" // TODO: Stop using it
 
+        @JvmStatic
         fun fromPreferences(context: Context): NoteStates {
             val noteStates = NoteStates()
 
@@ -67,6 +68,7 @@ class NoteStates {
             return noteStates
         }
 
+        @JvmStatic
         fun isKeyword(keyword: String?): Boolean {
             return keyword != null && keyword != NO_STATE_KEYWORD
         }

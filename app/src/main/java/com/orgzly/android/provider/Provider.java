@@ -1222,8 +1222,8 @@ public class Provider extends ContentProvider {
                     updateOrInsertNoteProperty(db, noteId, OrgFormatter.LAST_REPEAT_PROPERTY, time);
 
                     if (AppPreferences.logOnTimeShift(getContext())) {
-                        String stateChangeLine = OrgFormatter.INSTANCE.stateChangeLine(noteState, targetState, time);
-                        noteContent = OrgFormatter.INSTANCE.insertLogbookEntryLine(noteContent, stateChangeLine);
+                        String stateChangeLine = OrgFormatter.stateChangeLine(noteState, targetState, time);
+                        noteContent = OrgFormatter.insertLogbookEntryLine(noteContent, stateChangeLine);
                         values.put(DbNote.CONTENT, noteContent);
                     }
                 }

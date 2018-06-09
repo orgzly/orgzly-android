@@ -29,14 +29,14 @@ public class FilterSelectDialogActivity extends AppCompatActivity implements Loa
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        WidgetStyle.INSTANCE.updateActivity(this);
+        WidgetStyle.updateActivity(this);
 
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_filter_select_dialog);
 
         /* Create adapter using Cursor. */
-        mListAdapter = FiltersFragment.Companion.createFilterCursorAdapter(
+        mListAdapter = FiltersFragment.createFilterCursorAdapter(
                 this, R.layout.item_list_widget_filter);
 
         ListView list = findViewById(R.id.filter_select_list);
@@ -52,7 +52,7 @@ public class FilterSelectDialogActivity extends AppCompatActivity implements Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return FiltersClient.INSTANCE.getCursorLoader(this);
+        return FiltersClient.getCursorLoader(this);
     }
 
     @Override

@@ -10,6 +10,7 @@ object MainFab {
     /**
      * Update floating action button's look and action
      */
+    @JvmStatic
     fun updateFab(activity: FragmentActivity, fragmentTag: String, selectionCount: Int) {
         val fab = activity.findViewById(R.id.fab) as FloatingActionButton
 

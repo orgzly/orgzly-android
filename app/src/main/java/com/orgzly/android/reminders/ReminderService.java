@@ -399,7 +399,7 @@ public class ReminderService extends JobIntentService {
                 builder.setLights(Color.BLUE, 1000, 5000);
             }
 
-            builder.setContentTitle(OrgFormatter.INSTANCE.parse(
+            builder.setContentTitle(OrgFormatter.parse(
                     noteReminder.getPayload().title,
                     context,
                     false // Do not linkify links in notification
@@ -413,7 +413,7 @@ public class ReminderService extends JobIntentService {
             );
 
             /* Open note on notification click. */
-            PendingIntent openPi = ActivityUtils.INSTANCE.mainActivityPendingIntent(
+            PendingIntent openPi = ActivityUtils.mainActivityPendingIntent(
                     context, noteReminder.getPayload().bookId, noteReminder.getPayload().noteId);
             builder.setContentIntent(openPi);
 

@@ -356,6 +356,7 @@ abstract class CommonActivity : AppCompatActivity() {
                 R.string.pref_key_ignore_system_locale
         )
 
+        @JvmStatic
         fun showSnackbar(context: Context?, msg: String) {
             if (context != null) {
                 val intent = Intent(AppIntent.ACTION_SHOW_SNACKBAR)

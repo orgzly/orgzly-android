@@ -46,7 +46,7 @@ public class OrgFormatterSpeedTest {
         for (int i = 0; i < ITERATIONS; i++) {
             t1 = System.currentTimeMillis();
 
-            OrgFormatter.INSTANCE.parse(str);
+            OrgFormatter.parse(str);
 
             t2 = System.currentTimeMillis();
 

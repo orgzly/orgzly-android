@@ -13,6 +13,7 @@ import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.util.ActivityUtils
 
 object AppPermissions {
+    @JvmStatic
     fun isGrantedOrRequest(activity: CommonActivity, requestCode: Usage): Boolean {
         val permission = permissionForRequest(requestCode)
         val rationale = rationaleForRequest(requestCode)
@@ -37,6 +38,7 @@ object AppPermissions {
         }
     }
 
+    @JvmStatic
     fun isGranted(context: Context, requestCode: Usage): Boolean {
         val permission = permissionForRequest(requestCode)
         return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED

@@ -427,7 +427,7 @@ public class BookParsingTest extends OrgzlyTest {
                 /* Write from db -> temp file. */
                 File file = shelf.getTempBookFile();
                 try {
-                    NotesExporter.Companion.getInstance(context).exportBook(book, file);
+                    NotesExporter.getInstance(context).exportBook(book, file);
                     assertEquals("Notebook", expacted, MiscUtils.readStringFromFile(file));
                 } finally {
                     file.delete();

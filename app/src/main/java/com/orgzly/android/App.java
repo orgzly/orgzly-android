@@ -36,12 +36,12 @@ public class App extends MultiDexApplication {
         App.context = getApplicationContext();
         JobManager.create(this).addJobCreator(new AppJobCreator());
 
-        NotificationChannels.INSTANCE.createAll(this);
+        NotificationChannels.createAll(this);
     }
 
     public static void setDefaultPreferences(Context context, boolean readAgain) {
         if (readAgain || !PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PreferenceManager.KEY_HAS_SET_DEFAULT_VALUES, false)) {
-            for (int res: SettingsFragment.Companion.getPREFS_RESOURCES().values()) {
+            for (int res: SettingsFragment.getPREFS_RESOURCES().values()) {
                 PreferenceManager.setDefaultValues(context, res, true);
             }
         }

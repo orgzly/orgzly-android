@@ -15,6 +15,7 @@ class NotesExporter private constructor(
         val context: Context, val format: BookName.Format = BookName.Format.ORG) {
 
     companion object {
+        @JvmStatic
         @JvmOverloads
         fun getInstance(context: Context, format: BookName.Format = BookName.Format.ORG): NotesExporter {
             return NotesExporter(context, format)

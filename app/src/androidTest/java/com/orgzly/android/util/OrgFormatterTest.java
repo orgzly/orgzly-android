@@ -192,7 +192,7 @@ public class OrgFormatterTest extends OrgzlyTest {
         final SpanItem[] spans;
 
         public OrgSpannable(String str) {
-            SpannableStringBuilder ssb = OrgFormatter.INSTANCE.parse(str, context);
+            SpannableStringBuilder ssb = OrgFormatter.parse(str, context);
 
             string = ssb.toString();
 

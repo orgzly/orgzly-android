@@ -74,6 +74,7 @@ object OrgFormatter {
                 AppPreferences.drawersFolded(context))
     }
 
+    @JvmStatic
     @JvmOverloads
     fun parse(str: String, context: Context? = null, linkify: Boolean = true): SpannableStringBuilder {
         val config = if (context == null) {
@@ -374,6 +375,7 @@ object OrgFormatter {
         }
     }
 
+    @JvmStatic
     fun insertLogbookEntryLine(content: String?, entry: String): String {
         return if (content.isNullOrEmpty()) {
             insertLogbookEntryLineWithoutDrawer(content, entry)
@@ -396,6 +398,7 @@ object OrgFormatter {
         return ":$LOGBOOK_DRAWER_NAME:\n$entry\n:END:$prefixedContent"
     }
 
+    @JvmStatic
     fun stateChangeLine(fromState: String?, toState: String?, time: String): String {
         val from = if (fromState.isNullOrEmpty()) "" else fromState
         val to = if (toState.isNullOrEmpty()) "" else toState

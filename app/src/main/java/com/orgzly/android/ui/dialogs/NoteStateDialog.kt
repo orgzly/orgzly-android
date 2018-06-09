@@ -6,6 +6,7 @@ import com.orgzly.R
 import com.orgzly.android.ui.NoteStates
 
 object NoteStateDialog {
+    @JvmStatic
     fun show(context: Context, currentState: String?, onSelection: (String) -> Unit, onClear: () -> Unit): AlertDialog {
         val states = NoteStates.fromPreferences(context)
 

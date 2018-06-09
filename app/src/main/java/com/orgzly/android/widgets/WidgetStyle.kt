@@ -14,6 +14,7 @@ import com.orgzly.android.ui.util.TitleGenerator
 
 
 object WidgetStyle {
+    @JvmStatic
     fun updateActivity(activity: AppCompatActivity) {
         when (AppPreferences.widgetColorScheme(activity)) {
             "dark", "black" -> activity.setTheme(R.style.Theme_AppCompat_Dialog_Alert)
@@ -23,6 +24,7 @@ object WidgetStyle {
         activity.supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
     }
 
+    @JvmStatic
     fun updateWidget(remoteViews: RemoteViews, context: Context) {
         remoteViews.setInt(
                 R.id.list_widget_header_container,
@@ -48,6 +50,7 @@ object WidgetStyle {
                 WidgetStyle.listBackgroundColor(context))
     }
 
+    @JvmStatic
     fun updateDivider(remoteViews: RemoteViews, context: Context) {
         remoteViews.setTextViewTextSize(
                 R.id.widget_list_item_divider_value,
@@ -59,6 +62,7 @@ object WidgetStyle {
                 WidgetStyle.primaryTextColor(context))
     }
 
+    @JvmStatic
     fun updateNote(remoteViews: RemoteViews, context: Context) {
         remoteViews.setTextViewTextSize(
                 R.id.item_list_widget_title,
@@ -113,6 +117,7 @@ object WidgetStyle {
                 WidgetStyle.doneIcon(context))
     }
 
+    @JvmStatic
     fun getTitleAttributes(context: Context): TitleGenerator.TitleAttributes {
         return when (AppPreferences.widgetColorScheme(context)) {
             "dark" ->

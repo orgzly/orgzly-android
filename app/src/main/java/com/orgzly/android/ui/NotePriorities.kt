@@ -15,6 +15,7 @@ class NotePriorities {
     operator fun get(i: Int) = values[i]
 
     companion object {
+        @JvmStatic
         fun fromPreferences(context: Context): NotePriorities {
             val obj = NotePriorities()
 

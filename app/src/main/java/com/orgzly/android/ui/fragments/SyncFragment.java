@@ -97,7 +97,7 @@ public class SyncFragment extends Fragment {
                 case NO_STORAGE_PERMISSION:
                     Activity activity = getActivity();
                     if (activity != null) {
-                        AppPermissions.INSTANCE.isGrantedOrRequest((CommonActivity) activity, AppPermissions.Usage.SYNC_START);
+                        AppPermissions.isGrantedOrRequest((CommonActivity) activity, AppPermissions.Usage.SYNC_START);
                     }
                     break;
 
