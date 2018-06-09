@@ -774,8 +774,7 @@ public class BookFragment extends NoteListFragment
                 case R.id.book_cab_cut:
                 case R.id.book_cab_delete_note:
                     /* Get currently selected notes' IDs. */
-                    TreeSet<Long> ids = new TreeSet<>();
-                    ids.addAll(mSelection.getIds());
+                    TreeSet<Long> ids = new TreeSet<>(mSelection.getIds());
 
                     if (menuItem.getItemId() == R.id.book_cab_cut) {
                         listener.onNotesCutRequest(mBookId, ids);

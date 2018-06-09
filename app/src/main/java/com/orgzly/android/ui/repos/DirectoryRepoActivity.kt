@@ -62,6 +62,7 @@ class DirectoryRepoActivity : RepoActivity() {
              */
             try {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                intent.putExtra("android.content.extra.SHOW_ADVANCED", true) // Shows SD card
                 startActivityForResult(intent, ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION)
                 browserStarted = true
 

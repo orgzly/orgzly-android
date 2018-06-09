@@ -23,6 +23,7 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
@@ -293,10 +294,7 @@ public class MiscUtils {
         return list;
     }
 
-
     public static Set<Long> set(Long noteId) {
-        Set<Long> ids = new HashSet<>();
-        ids.add(noteId);
-        return ids;
+        return Collections.singleton(noteId);
     }
 }
