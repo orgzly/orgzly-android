@@ -99,49 +99,48 @@ public class Database extends SQLiteOpenHelper {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, db.getPath());
 
         /* CREATE tables */
-        for (String sql : DbRepo.CREATE_SQL) db.execSQL(sql);
         for (String sql : DbBook.CREATE_SQL) db.execSQL(sql);
-        for (String sql : DbNote.CREATE_SQL) db.execSQL(sql);
-        for (String sql : DbOrgTimestamp.CREATE_SQL) db.execSQL(sql);
-        for (String sql : DbOrgRange.CREATE_SQL) db.execSQL(sql);
-        for (String sql : DbSearch.CREATE_SQL) db.execSQL(sql);
         for (String sql : DbBookLink.CREATE_SQL) db.execSQL(sql);
         for (String sql : DbBookSync.CREATE_SQL) db.execSQL(sql);
-        for (String sql : DbRookUrl.CREATE_SQL) db.execSQL(sql);
-        for (String sql : DbRook.CREATE_SQL) db.execSQL(sql);
-        for (String sql : DbVersionedRook.CREATE_SQL) db.execSQL(sql);
         for (String sql : DbCurrentVersionedRook.CREATE_SQL) db.execSQL(sql);
         for (String sql : DbDbRepo.CREATE_SQL) db.execSQL(sql);
+        for (String sql : DbNote.CREATE_SQL) db.execSQL(sql);
+        for (String sql : DbNoteAncestor.CREATE_SQL) db.execSQL(sql);
         for (String sql : DbNoteProperty.CREATE_SQL) db.execSQL(sql);
+        for (String sql : DbOrgRange.CREATE_SQL) db.execSQL(sql);
+        for (String sql : DbOrgTimestamp.CREATE_SQL) db.execSQL(sql);
+        for (String sql : DbProperty.CREATE_SQL) db.execSQL(sql);
         for (String sql : DbPropertyName.CREATE_SQL) db.execSQL(sql);
         for (String sql : DbPropertyValue.CREATE_SQL) db.execSQL(sql);
-        for (String sql : DbProperty.CREATE_SQL) db.execSQL(sql);
-        for (String sql : DbNoteAncestor.CREATE_SQL) db.execSQL(sql);
+        for (String sql : DbRepo.CREATE_SQL) db.execSQL(sql);
+        for (String sql : DbRook.CREATE_SQL) db.execSQL(sql);
+        for (String sql : DbRookUrl.CREATE_SQL) db.execSQL(sql);
+        for (String sql : DbSearch.CREATE_SQL) db.execSQL(sql);
+        for (String sql : DbVersionedRook.CREATE_SQL) db.execSQL(sql);
     }
 
     private void dropAllTables(SQLiteDatabase db) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, db.getPath());
 
         /* DROP tables */
-        db.execSQL(DbRepo.DROP_SQL);
         db.execSQL(DbBook.DROP_SQL);
-        db.execSQL(DbNote.DROP_SQL);
-        db.execSQL(DbOrgTimestamp.DROP_SQL);
-        db.execSQL(DbOrgRange.DROP_SQL);
-        db.execSQL(DbSearch.DROP_SQL);
         db.execSQL(DbBookLink.DROP_SQL);
         db.execSQL(DbBookSync.DROP_SQL);
-        db.execSQL(DbRookUrl.DROP_SQL);
-        db.execSQL(DbRook.DROP_SQL);
-        db.execSQL(DbVersionedRook.DROP_SQL);
         db.execSQL(DbCurrentVersionedRook.DROP_SQL);
         db.execSQL(DbDbRepo.DROP_SQL);
+        db.execSQL(DbNote.DROP_SQL);
+        db.execSQL(DbNoteAncestor.DROP_SQL);
         db.execSQL(DbNoteProperty.DROP_SQL);
+        db.execSQL(DbOrgRange.DROP_SQL);
+        db.execSQL(DbOrgTimestamp.DROP_SQL);
+        db.execSQL(DbProperty.DROP_SQL);
         db.execSQL(DbPropertyName.DROP_SQL);
         db.execSQL(DbPropertyValue.DROP_SQL);
-        db.execSQL(DbProperty.DROP_SQL);
-        db.execSQL(DbNoteAncestor.DROP_SQL);
-
+        db.execSQL(DbRepo.DROP_SQL);
+        db.execSQL(DbRook.DROP_SQL);
+        db.execSQL(DbRookUrl.DROP_SQL);
+        db.execSQL(DbSearch.DROP_SQL);
+        db.execSQL(DbVersionedRook.DROP_SQL);
     }
 
     /** DROP views */
