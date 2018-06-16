@@ -36,7 +36,7 @@
   <string name="import_">Importer</string>
   <!-- Reserved keyword -->
   <string name="export">Exporter</string>
-  <string name="overwrite">Overwrite</string>
+  <string name="overwrite">Écraser</string>
   <string name="imported">Importé</string>
   <string name="created">Créé</string>
   <string name="states">États</string>
@@ -83,11 +83,11 @@
   <string name="message_note_created">Note créée</string>
   <string name="message_failed_creating_note">Échec de création de la note</string>
   <string name="message_failed_updating_note">Échec de mise à jour de la note</string>
-  <string name="drawer_close">Fermer panneau latéral</string>
-  <string name="drawer_open">Ouvrir le panneau latéral</string>
+  <string name="drawer_close">Replier ce panneau</string>
+  <string name="drawer_open">Déplier ce panneau</string>
   <string name="schedule">Planification</string>
-  <string name="refile">Refile</string>
-  <string name="refile_to">Refile to</string>
+  <string name="refile">Traiter automatiquement</string>
+  <string name="refile_to">Traiter automatiquement vers</string>
   <string name="deadline">Échéance</string>
   <string name="closed">Fermé</string>
   <!-- TODO: Not hints, rename -->
@@ -102,7 +102,7 @@
   <string name="move">Déplacer</string>
   <string name="cut">Couper</string>
   <string name="paste">Coller</string>
-  <string name="heads_action_menu_item_add_above">Nouvelle dessus</string>
+  <string name="heads_action_menu_item_add_above">Avant</string>
   <string name="heads_action_menu_item_add_under">En dessous</string>
   <string name="heads_action_menu_item_add_below">Après</string>
   <string name="heads_action_menu_item_paste_above">Coller avant</string>
@@ -169,6 +169,12 @@
   <string name="directory">Dossier</string>
   <string name="fragment_repo_dropbox_directory_desc">Dossier à l’intérieur de Dropbox (par exemple « / Documents/Orgzly »)</string>
   <string name="directory_uri">URI du répertoire</string>
+  <string name="git_url_hint">Adresse distante (par exemple : git@github.com:orgzly/orgzly-android.git)</string>
+  <string name="git_directory_hint">Emplacement du dossier (par exemple : file:/sdcard/orgzly)</string>
+  <string name="git_ssh_key_hint">Emplacement de la clé SSH (par exemple : file:/sdcard/id_rsa)</string>
+  <string name="git_author_hint">Auteur (par exemple : Jean Dupont)</string>
+  <string name="git_email_hint">Courriel (par exemple : jean@dupont.fr)</string>
+  <string name="git_branch_hint">Branche (par exemple : master)</string>
   <!-- Share button - error messages (set as title). -->
   <string name="share_action_not_set">Action de partage non configurée</string>
   <string name="share_action_not_supported">L\'action de partage %s n\'est pas supportée</string>
@@ -177,8 +183,8 @@
   <string name="repositories">Dépôts</string>
   <string name="invalid_repo_url">URL du dépôt invalide « %s »</string>
   <string name="message_unsupported_repository_type">Type de dépôt non pris en charge</string>
-  <string name="fragment_left_drawer_list_view_content_description">Panneau latéral de gauche</string>
-  <string name="drawer_item">Élément du panneau latéral</string>
+  <string name="fragment_left_drawer_list_view_content_description">Panneau de gauche</string>
+  <string name="drawer_item">Élément du panneau</string>
   <string name="prev_state">État précédent</string>
   <string name="next_state">État suivant</string>
   <string name="new_above">Avant</string>
@@ -199,7 +205,7 @@
   <string name="up">Monter</string>
   <string name="notebook_modified">Bloc-notes modifié</string>
   <string name="permissions_rationale_for_local_repo">La synchronisation avec un dossier local nécessite l\'autorisation d\'accès au stockage</string>
-  <string name="permissions_rationale_for_book_export">L\'export d\'un bloc-notes nécessite l\'autorisation d\'accès au stockage</string>
+  <string name="permissions_rationale_for_book_export">L\'export d\'un bloc-notes nécessite l\'autorisation d\'accès au stockage des fichiers</string>
   <string name="permissions_rationale_for_sync_start">La synchronisation avec un dépôt local nécessite l\'autorisation d\'accès au stockage</string>
   <string name="cycle_visibility">Tout Déplier/Replier</string>
   <string name="running_database_update">Mise à jour de la base de données…</string>
@@ -244,8 +250,8 @@
   <string name="notebooks_sort_order">Ordre de tri des bloc-notes</string>
   <string name="font_size">Taille de police</string>
   <string name="color_scheme">Jeu de couleurs</string>
-  <string name="monospaced_font">Police à espacement fixe</string>
-  <string name="monospaced_font_summary">Utiliser une police à espacement fixe pour le contenu des note et la préface du carnet</string>
+  <string name="monospaced_font">Police à chasse fixe</string>
+  <string name="monospaced_font_summary">Utiliser une police à chasse fixe pour le contenu des notes et la préface du bloc-notes</string>
   <string name="reversed_note_click_action">Renverse la note en cliquant</string>
   <string name="reversed_note_click_action_summary">Clic pour sélectionner la note, clic long pour ouvrir</string>
   <string name="look_and_feel">Apparence</string>
@@ -264,8 +270,8 @@
   <string name="force_loading_failed">Le chargement forcé a échoué: %s</string>
   <string name="loaded_from_resource">Chargement de la ressource %s</string>
   <string name="notebook_files">Fichiers du bloc-notes</string>
-  <string name="org_file_format">Format de fichier Org</string>
-  <string name="org_file_format_summary">Format des bloc-notes exportés</string>
+  <string name="org_file_format">Composition du fichier Org</string>
+  <string name="org_file_format_summary">Mise en forme des bloc-notes exportés</string>
   <string name="separate_notes_with_new_line">Séparer les notes avec une ligne vide</string>
   <string name="separate_header_and_content_with_new_line">Séparer l\'entête et le contenu</string>
   <string name="separate_header_and_content_with_new_line_summary">Séparer l\'entête et le contenu avec une ligne vide</string>
@@ -338,11 +344,11 @@
   <string name="pref_title_reminders_sound">Son</string>
   <string name="pref_title_reminders_vibrate">Vibration</string>
   <string name="pref_title_reminders_led">Lumière</string>
-  <string name="pref_title_snooze_time">Temps de mise en veille (minutes)</string>
-  <string name="pref_title_snooze_type">Type de mise en veille</string>
+  <string name="pref_title_snooze_time">Durée du report (minutes)</string>
+  <string name="pref_title_snooze_type">Type de report</string>
   <string name="primary_storage">Stockage principal</string>
   <string name="book_exported">Bloc-notes exporté vers %s</string>
-  <string name="failed_exporting_book">Échec d’exportation du carnet : %s</string>
+  <string name="failed_exporting_book">Échec de l’export du bloc-notes : %s</string>
   <string name="edit_book_preface">Modifier la préface</string>
   <string name="book_preface_hint">Texte affiché avant la première note</string>
   <string name="layout_direction">Sens de lecture</string>
@@ -384,10 +390,10 @@
   </plurals>
   <string name="content_line_count_displayed">Afficher le nombre de lignes</string>
   <string name="content_line_count_displayed_summary">Afficher le nombre de lignes lorsque le contenu n\'est pas affiché</string>
-  <string name="style_text_title">Texte de style</string>
-  <string name="style_text_summary">Utiliser un marquage spécifique pour l\'accentuation ou le texte à largeur fixe</string>
-  <string name="styled_text_with_marks_title">Texte stylisé avec marques</string>
-  <string name="styled_text_with_marks_summary">Conserver l\'affichage des marques (par exemple * gras *)</string>
+  <string name="style_text_title">Composition du texte</string>
+  <string name="style_text_summary">Suivre les marques du texte pour les passages à mettre en exergue ou à rendre avec une police à chasse fixe</string>
+  <string name="styled_text_with_marks_title">Affichage des marques dans le texte</string>
+  <string name="styled_text_with_marks_summary">Conserver l\'affichage des marques (par exemple : *gras*)</string>
   <string name="no_such_link_target">La note avec la propriété “%1$s” fixée à “%2$s” n\'a pas été trouvée</string>
   <plurals name="imported_searches">
     <item quantity="one">Importée une seule recherche</item>
@@ -414,12 +420,13 @@
   <string name="notification_channel_settings">Notifications</string>
   <string name="notification_channel_settings_summary">Son, vibreur, point de notification</string>
   <string name="hide_note_metadata">Masquer les métadonnées</string>
-  <string name="overwrite_local_notebook_question">Overwrite local notebook?</string>
-  <string name="overwrite_remote_notebook_question">Overwrite remote notebook?</string>
-  <string name="drawers_folded_by_default">Drawers folded</string>
-  <string name="drawers_folded_by_default_summary">Fold drawers by default</string>
-  <string name="log_on_time_shift">Log to drawer on time shift</string>
-  <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
+  <string name="overwrite_local_notebook_question">Écraser le bloc-note local ?</string>
+  <string name="overwrite_remote_notebook_question">Écraser le bloc-note distant ?</string>
+  <string name="drawers_folded_by_default">Panneaux repliés</string>
+  <string name="drawers_folded_by_default_summary">Replier les panneaux par défaut</string>
+  <string name="log_on_time_shift">Ajouter une entrée au panneau lors d\'un changement de temps</string>
+  <string name="log_on_time_shift_summary">Journaliser l\'heure lorsqu\'une note avec une répétition est marquée comme terminée</string>
   <string name="background_opacity">Opacité de l\'arrière-plan</string>
   <string name="update_frequency">Fréquence de mise à jour</string>
+  <string name="git">Git</string>
 </resources>

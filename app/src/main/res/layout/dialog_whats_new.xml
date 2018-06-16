@@ -24,6 +24,29 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.6.7"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support larger font size for widget" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Add buttons for setting deadline time" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Display inherited tags in widget" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Handle large values for tags indentation" />
+
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.6.6"
             tools:ignore="HardcodedText"/>
 

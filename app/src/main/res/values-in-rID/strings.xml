@@ -166,6 +166,12 @@
   <string name="directory">Direktori</string>
   <string name="fragment_repo_dropbox_directory_desc">Direktori di dalam DropBox (e.g. “/Documents/Orgzly”)</string>
   <string name="directory_uri">Direktori URI</string>
+  <string name="git_url_hint">Remote address (e.g. git@github.com:orgzly/orgzly-android.git)</string>
+  <string name="git_directory_hint">Directory location (e.g. “file:/sdcard/orgzly”)</string>
+  <string name="git_ssh_key_hint">SSH key location (e.g. “file:/sdcard/id_rsa”)</string>
+  <string name="git_author_hint">Author (e.g. John Doe)</string>
+  <string name="git_email_hint">Email (e.g. john@email.com)</string>
+  <string name="git_branch_hint">Branch (e.g. master)</string>
   <!-- Share button - error messages (set as title). -->
   <string name="share_action_not_set">Bagikan tindakan tidak diatur</string>
   <string name="share_action_not_supported">Bagikan tindakan %s tidak didukung</string>
@@ -416,4 +422,5 @@
   <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
   <string name="background_opacity">Background opacity</string>
   <string name="update_frequency">Update frequency</string>
+  <string name="git">Git</string>
 </resources>
