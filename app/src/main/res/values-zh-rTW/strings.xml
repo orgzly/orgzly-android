@@ -166,6 +166,12 @@
   <string name="directory">資料夾</string>
   <string name="fragment_repo_dropbox_directory_desc">Dropbox 內的資料夾 (例如 “/Documents/Orgzly”)</string>
   <string name="directory_uri">資料夾 URI</string>
+  <string name="git_url_hint">Remote 遠端位址 (如 git@github:orgzly/orgzly-android.git)</string>
+  <string name="git_directory_hint">目錄位址 (如 \"file:/sdcard/orgzly\")</string>
+  <string name="git_ssh_key_hint">SSH 金鑰位址 (如 \"file:/sdcard/id_rsa\")</string>
+  <string name="git_author_hint">作者 (如 無名氏)</string>
+  <string name="git_email_hint">電子郵件 (例如 john@email.com)</string>
+  <string name="git_branch_hint">Branch 分支 (如 master)</string>
   <!-- Share button - error messages (set as title). -->
   <string name="share_action_not_set">沒有設置共用</string>
   <string name="share_action_not_supported">不支援 %s 共用操作</string>
@@ -416,4 +422,5 @@
   <string name="log_on_time_shift_summary">帶有重複時間的筆記標記完成時記錄時間</string>
   <string name="background_opacity">背景不透明度</string>
   <string name="update_frequency">更新頻率</string>
+  <string name="git">Git</string>
 </resources>

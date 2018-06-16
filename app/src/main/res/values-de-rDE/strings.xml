@@ -169,6 +169,12 @@
   <string name="directory">Verzeichnis</string>
   <string name="fragment_repo_dropbox_directory_desc">Verzeichnis in Dropbox (z.B. \"/Dokumente/Orgzly\")</string>
   <string name="directory_uri">Verzeichnis-URI</string>
+  <string name="git_url_hint">Remote-Adresse (z.B. git@github.com:orgzly/orgzly-android.git)</string>
+  <string name="git_directory_hint">Verzeichnispfad (z.B. \"file:/sdcard/orgzly\")</string>
+  <string name="git_ssh_key_hint">SSH-Schlüssel-Pfad (z.B. \"file:/sdcard/id_rsa\")</string>
+  <string name="git_author_hint">Autor (z.B. Hans Meier)</string>
+  <string name="git_email_hint">E-Mail (z.B. hans@web.de)</string>
+  <string name="git_branch_hint">Branch (z.B. master)</string>
   <!-- Share button - error messages (set as title). -->
   <string name="share_action_not_set">Teilen-Aktion noch nicht festgelegt</string>
   <string name="share_action_not_supported">Teilen-Aktion %s wird nicht unterstützt</string>
@@ -422,4 +428,5 @@
   <string name="log_on_time_shift_summary">Zeit aktualisieren, wenn eine wiederkehrende Notiz als erledigt markiert wird</string>
   <string name="background_opacity">Hintergrunddeckkraft</string>
   <string name="update_frequency">Aktualisierungsintervall</string>
+  <string name="git">Git</string>
 </resources>

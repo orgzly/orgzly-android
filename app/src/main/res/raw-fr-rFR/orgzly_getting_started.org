@@ -1,4 +1,4 @@
-Bienvenu en Orgzly!
+Bienvenue dans Orgzly!
 
 * Notes
 ** Cliquez sur la note pour l’ouvrir
@@ -6,66 +6,66 @@ Bienvenu en Orgzly!
 
 Vous pouvez sélectionner plusieurs notes.
 
-** Appuyez et déplacez rapidement vers droit pour ouvrir le menu rapide
+** Appuyez et glissez rapidement vers la droite pour ouvrir le menu rapide
 
-** Appuyez et déplacez rapidement vers gauche pour ouvrir un menu diffèrent.
+** Appuyez et glissez rapidement vers la gauche pour ouvrir un menu différent.
 
-** Ouvrez une note qui contient des sub-notes en cliquant l'icône voisine
+** Ouvrez une note qui contient des sous-notes en cliquant sur l'icône voisine
 *** Il n’y a pas de limite au nombre de niveaux que vous pouvez avoir
-**** Utilisez ceci pour mieux organiser vos notes
+**** Vous pouvez utiliser ça pour mieux organiser vos notes
 
-** Note peut avoir des étiquettes : tag1:tag2 :
-*** La sub-note hérite les étiquettes :tag3:
+** Les notes peuvent avoir des étiquettes :tag1:tag2:
+*** Les sous-notes héritent des étiquettes parentes :tag3:
 
-Si vous recherchez des notes avec l'étiquette « tag1 », cette note sera retournée aussi de même.
+Si vous recherchez des notes avec l'étiquette « tag1 », cette note sera également retournée.
 
-** TODO La note peut avoir un état
+** TODO Les notes peuvent avoir un état
 
-Vous pouvez configurer n’importe quel nombre d’états à utiliser : TODO, NEXT, DONE, etc.
+Vous pouvez configurer tous les états que vous souhaitez : TODO, NEXT, DONE, etc.
 
-*** Il y a deux /types/ des États : choses à faire et fait
+*** Il y a deux /types/ d'état : à faire et terminé
 
 *** DONE C'est une note avec un type d'état /fait/
 CLOSED: [2018-01-24 Mer 17:00]
 
-** La note peut avoir un temps programmé
+** La note peut avoir une date de début programmée
 SCHEDULED: <2015-02-20 Ven 15:15>
 
 *** L'horaire peut avoir un répetiteur
 SCHEDULED: <2015-02-16 Lun .+1d>
 
-** Vous pouvez également définir une écheance
+** Vous pouvez également définir une échéance
 DEADLINE: <2015-02-20 Fri>
 
 ** Les notes peuvent utiliser des liens
 
-Composez un numéro de téléphone (tel:555-2368) ou [[sms:555-2368][send SMS]].
+Vous pouvez composer un numéro de téléphone (tel:0123456789) ou [[sms:0623456789][envoyer un SMS]].
 
-Envoyez un courriel [[mailto:support@orgzly.com][support@orgzly.com]], visitez http://www.orgzly.com ou lisez [[http://www.orgzly.com/help][documentation]].
+Vous pouvez également envoyer un courriel [[mailto:support@orgzly.com][support@orgzly.com]], visiter http://www.orgzly.com ou lire la [[http://www.orgzly.com/help][documentation]].
 
-** Un formatage base est supporté
+** Un formatage de base est supporté
 
-Vous pouvez rendres les mots *en gras*, /italique/, _souligné_, =verbatim=, ~en code~ et +barré+.
+Vous pouvez mettre les mots en *gras*, /italique/, _souligné_, =verbatim=, ~en code~ ou les +biffer+.
 
-* Cherchez
+* Recherche
 ** Il y a beaucoup d’opérateurs de recherche supportés
 
-Vous pouvez rechercher des notes par état, étiquette, pianification ou écheance et cetera.
+Vous pouvez rechercher des notes par état, étiquette, planification, échéance, etc.
 
 Voir http://www.orgzly.com/help#search pour en savoir plus.
 
-** Les requêtes de recherche peuvent être enregistrées pour un accès rapide
+** Les recherches peuvent être enregistrées pour un accès rapide
 
-Essayez les recherches échantillon de menu et notez les requêtes qu’elles utilisent.
+Essayez les exemples de recherche du menu et notez les requêtes qu’elles utilisent.
 
 Vous pouvez créer vos propres recherches enregistrées en cliquant sur « Recherche » dans le menu de navigation.
 
 * Synchronisation
 
-** Les bloc-notes peuvent être énregistrées comme fichiers de texte
+** Les bloc-notes peuvent être enregistrés comme de simples fichiers de texte
 
-Les fichiers ont le format utilisé par "Org mode".
+Les fichiers suivent les règles de formatage « Org mode ».
 
-** Type de localisation (repository)
+** Emplacements des dépôts
 
-Vous pouvez maintenir les bloc-notes synchronisés avec un répertoire sur votre dispositif, carte de mémoire SD ou Dropbox.
+Vous pouvez garder les bloc-notes synchronisés avec un dossier de votre appareil, sur une carte mémoire SD ou avec Dropbox.

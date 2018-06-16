@@ -55,7 +55,7 @@
   <string name="priority">Приоритет</string>
   <string name="nothing">Пусто</string>
   <string name="open">Открыть</string>
-  <string name="widget">Widget</string>
+  <string name="widget">Виджет</string>
   <plurals name="notes_deleted">
     <item quantity="one">Заметка удалена</item>
     <item quantity="few">Удалено <b>%d</b> заметок</item>
@@ -92,8 +92,8 @@
   <string name="drawer_close">Закрыть меню</string>
   <string name="drawer_open">Открыть меню</string>
   <string name="schedule">График</string>
-  <string name="refile">Refile</string>
-  <string name="refile_to">Refile to</string>
+  <string name="refile">Переместить</string>
+  <string name="refile_to">Переместить в</string>
   <string name="deadline">Крайний срок</string>
   <string name="closed">Закрыто</string>
   <!-- TODO: Not hints, rename -->
@@ -156,7 +156,7 @@
   <string name="book_link_details">Сведения о ссылке на блокнот</string>
   <string name="book_last_action">Последнее действие блокнота</string>
   <string name="book_notes_count">Количество заметок</string>
-  <string name="pref_title_notebooks">Заметки &amp; Блокноты</string>
+  <string name="pref_title_notebooks">Заметки и блокноты</string>
   <string name="notebook">Блокнот</string>
   <string name="notebooks">Блокноты</string>
   <string name="searches">Поисковые запросы</string>
@@ -175,6 +175,12 @@
   <string name="directory">Каталог</string>
   <string name="fragment_repo_dropbox_directory_desc">Каталог внутри Dropbox (например, «/Documents/Orgzly»)</string>
   <string name="directory_uri">Каталог URI</string>
+  <string name="git_url_hint">Remote address (e.g. git@github.com:orgzly/orgzly-android.git)</string>
+  <string name="git_directory_hint">Directory location (e.g. “file:/sdcard/orgzly”)</string>
+  <string name="git_ssh_key_hint">SSH key location (e.g. “file:/sdcard/id_rsa”)</string>
+  <string name="git_author_hint">Author (e.g. John Doe)</string>
+  <string name="git_email_hint">Email (e.g. john@email.com)</string>
+  <string name="git_branch_hint">Branch (e.g. master)</string>
   <!-- Share button - error messages (set as title). -->
   <string name="share_action_not_set">Действие «Поделиться» не задано</string>
   <string name="share_action_not_supported">Действие «Поделиться» %s не поддерживается</string>
@@ -430,8 +436,9 @@
   <string name="overwrite_remote_notebook_question">Перезаписать удаленный блокнот?</string>
   <string name="drawers_folded_by_default">Меню свёрнуто</string>
   <string name="drawers_folded_by_default_summary">Сворачивать меню по умолчанию</string>
-  <string name="log_on_time_shift">Log to drawer on time shift</string>
+  <string name="log_on_time_shift">Логировать время завершения</string>
   <string name="log_on_time_shift_summary">Логировать время завершения повторяющихся заметок</string>
-  <string name="background_opacity">Background opacity</string>
-  <string name="update_frequency">Update frequency</string>
+  <string name="background_opacity">Прозрачность фона</string>
+  <string name="update_frequency">Частота обновления</string>
+  <string name="git">Git</string>
 </resources>

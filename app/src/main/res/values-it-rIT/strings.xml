@@ -86,8 +86,8 @@
   <string name="drawer_close">Chiudi Menu</string>
   <string name="drawer_open">Apri Menu</string>
   <string name="schedule">Programma</string>
-  <string name="refile">Refile</string>
-  <string name="refile_to">Refile to</string>
+  <string name="refile">Sposta in</string>
+  <string name="refile_to">Sposta in</string>
   <string name="deadline">Data di scadenza</string>
   <string name="closed">Chiuso</string>
   <!-- TODO: Not hints, rename -->
@@ -102,9 +102,9 @@
   <string name="move">Sposta</string>
   <string name="cut">Taglia</string>
   <string name="paste">Incolla</string>
-  <string name="heads_action_menu_item_add_above">Nuovo sopra</string>
-  <string name="heads_action_menu_item_add_under">Nuovo indentato</string>
-  <string name="heads_action_menu_item_add_below">Nuovo sotto</string>
+  <string name="heads_action_menu_item_add_above">Sopra</string>
+  <string name="heads_action_menu_item_add_under">Indentata</string>
+  <string name="heads_action_menu_item_add_below">Sotto</string>
   <string name="heads_action_menu_item_paste_above">Incolla sopra</string>
   <string name="heads_action_menu_item_paste_under">Incolla indentato</string>
   <string name="heads_action_menu_item_paste_below">Incolla sotto</string>
@@ -169,6 +169,12 @@
   <string name="directory">Directory</string>
   <string name="fragment_repo_dropbox_directory_desc">La directory all\'interno di Dropbox (es. “/Documenti/Orgzly”)</string>
   <string name="directory_uri">Directory dell\'URL</string>
+  <string name="git_url_hint">Indirizzo remoto (es. git@github.com:orgzly / orgzly-android.git)</string>
+  <string name="git_directory_hint">Percorso directory (es. \"file:/sdcard/orgzly\")</string>
+  <string name="git_ssh_key_hint">Posizione della chiave SSH (es. “file:/sdcard/id_rsa”)</string>
+  <string name="git_author_hint">Autore (es. Sergio Rossi)</string>
+  <string name="git_email_hint">E-mail (es. sergio@email.com)</string>
+  <string name="git_branch_hint">Ramo (es. master)</string>
   <!-- Share button - error messages (set as title). -->
   <string name="share_action_not_set">Condividi azione non stabilita</string>
   <string name="share_action_not_supported">L\'azione condivisa %s non è supportata</string>
@@ -181,9 +187,9 @@
   <string name="drawer_item">Elemento del Menu</string>
   <string name="prev_state">Stato precedente</string>
   <string name="next_state">Prossimo stato</string>
-  <string name="new_above">Nuovo sopra</string>
-  <string name="new_under">Nuovo indentato</string>
-  <string name="new_below">Nuovo sotto</string>
+  <string name="new_above">Sopra</string>
+  <string name="new_under">Indentata</string>
+  <string name="new_below">Sotto</string>
   <string name="confirm_unlinking_from_dropbox_title">Scollega da Dropbox?</string>
   <string name="confirm_unlinking_from_dropbox_message">Non sarai in grado di sincronizzare fino a che non ti ricollegherai di nuovo a Dropbox.</string>
   <string name="note_book_not_set">Taccuino non stabilito</string>
@@ -420,6 +426,7 @@
   <string name="drawers_folded_by_default_summary">Chiudi il menu di default</string>
   <string name="log_on_time_shift">Registra sul menu durante lo spostamento temporale</string>
   <string name="log_on_time_shift_summary">Registra l\'orario quando la nota con il ripetitore è segnata come completata</string>
-  <string name="background_opacity">Background opacity</string>
-  <string name="update_frequency">Update frequency</string>
+  <string name="background_opacity">Opacità sfondo</string>
+  <string name="update_frequency">Frequenza di aggiornamento</string>
+  <string name="git">Git</string>
 </resources>
