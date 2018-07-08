@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import com.orgzly.android.Shelf
+import com.orgzly.android.repos.ContentRepo
 import com.orgzly.android.ui.CommonActivity
 
 @SuppressLint("Registered")
@@ -39,7 +40,7 @@ open class RepoActivity : CommonActivity() {
     }
 
     fun persistPermissions(uri: Uri) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && ContentRepo.SCHEME == uri.scheme) {
             grantUriPermission(packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
             val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
