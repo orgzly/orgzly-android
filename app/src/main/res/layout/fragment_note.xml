@@ -197,15 +197,6 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textOn="@string/note_content_finish_editing"
                     android:textOff="@string/note_content_start_editing"/>
-                <Button
-                    android:id="@+id/insert_checkbox_button"
-                    android:layout_marginLeft="30dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- [ ]"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:visibility="gone"
-                    style="@style/BorderlessButton"/>
             </LinearLayout>
 
             <EditText

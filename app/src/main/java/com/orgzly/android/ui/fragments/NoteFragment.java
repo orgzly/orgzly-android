@@ -138,7 +138,6 @@ public class NoteFragment extends Fragment
     private LinearLayout propertyList;
 
     private ToggleButton editSwitch;
-    private Button checkboxButton;
     private EditText bodyEdit;
     private TextViewWithMarkup bodyView;
 
@@ -312,34 +311,31 @@ public class NoteFragment extends Fragment
 
         bodyEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(event != null && event.getAction() == KeyEvent.ACTION_DOWN) {
-                    // Enter was pressed
-                    int sel = bodyEdit.getSelectionStart();
-                    String text = bodyEdit.getText().toString();
-                    // Is it on the end of line?
-                    boolean onEndOfLine = false;
-                    if(sel == text.length()) {
-                        onEndOfLine = true;
-                    } else {
-                        char endOfLineChar = text.charAt(sel);
-                        onEndOfLine = (endOfLineChar == '\n');
-                    }
-                    if(!onEndOfLine) return false;
-                    // Does the line begin with a checkbox?
-                    int startOfLine = text.lastIndexOf("\n", sel - 1) + 1;
-                    String line = text.substring(startOfLine, sel);
-                    Pattern p = Pattern.compile("(^\\s*-\\s+\\[)[ X]\\]");
-                    Matcher m = p.matcher(line);
-                    if(m.find()) {
-                        // Insert checkbox
-                        String replacement = '\n' + m.group(1) + " ] ";
-                        bodyEdit.getText().replace(sel, sel, replacement);
-                        return true;
-                    } else {
-                        return false;
+                if (event != null && event.getAction() == KeyEvent.ACTION_DOWN) { // Enter pressed
+                    if (isAtEndOfLine(bodyEdit)) {
+                        int sel = bodyEdit.getSelectionStart();
+                        String text = bodyEdit.getText().toString();
+
+                        // Does the line begin with a checkbox?
+                        int startOfLine = text.lastIndexOf("\n", sel - 1) + 1;
+                        String line = text.substring(startOfLine, sel);
+                        Pattern p = Pattern.compile("(^\\s*-\\s+\\[)[ X]\\]");
+                        Matcher m = p.matcher(line);
+                        if (m.find()) {
+                            // Insert checkbox
+                            String replacement = '\n' + m.group(1) + " ] ";
+                            bodyEdit.getText().replace(sel, sel, replacement);
+                            return true;
+                        }
                     }
                 }
                 return false;
+            }
+
+            private boolean isAtEndOfLine(EditText editText) {
+                int sel = editText.getSelectionStart();
+                String text = editText.getText().toString();
+                return sel == text.length() || text.charAt(sel) == '\n';
             }
         });
 
@@ -367,8 +363,6 @@ public class NoteFragment extends Fragment
             bodyView.setTypeface(Typeface.MONOSPACE);
         }
 
-        checkboxButton = top.findViewById(R.id.insert_checkbox_button);
-
         editSwitch = top.findViewById(R.id.edit_content_toggle);
 
         editSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -378,11 +372,9 @@ public class NoteFragment extends Fragment
                 bodyView.setVisibility(View.GONE);
 
                 bodyEdit.setVisibility(View.VISIBLE);
-                checkboxButton.setVisibility(View.VISIBLE);
 
             } else {
                 bodyEdit.setVisibility(View.GONE);
-                checkboxButton.setVisibility(View.GONE);
 
                 bodyView.setRawText(bodyEdit.getText());
                 bodyView.setVisibility(View.VISIBLE);
@@ -397,11 +389,6 @@ public class NoteFragment extends Fragment
             if (editSwitch.isChecked()) { // Clicked to edit content
                 ActivityUtils.openSoftKeyboard(getActivity(), bodyEdit);
             }
-        });
-
-        checkboxButton.setOnClickListener(view -> {
-            int sel = bodyEdit.getSelectionStart();
-            bodyEdit.getText().replace(sel, sel, "\n- [ ]");
         });
 
         mViewFlipper = top.findViewById(R.id.fragment_note_view_flipper);

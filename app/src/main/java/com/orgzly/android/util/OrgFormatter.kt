@@ -318,7 +318,11 @@ object OrgFormatter {
 
         while (m.find()) {
             val content = m.group(1)
-            ssb.setSpan(CheckboxSpan(content, m.start(1), m.end(1)), m.start(1), m.end(1), FLAGS)
+            val start = m.start(1)
+            val end = m.end(1)
+            ssb.setSpan(CheckboxSpan(content, start, end), start, end, FLAGS)
+            ssb.setSpan(TypefaceSpan("monospace"), start, end, FLAGS)
+            ssb.setSpan(StyleSpan(Typeface.BOLD), start, end, FLAGS)
         }
     }
 

@@ -98,13 +98,8 @@ class TextViewWithMarkup : TextViewFixed {
 
         val builder = SpannableStringBuilder(text)
 
-        var oldContent = checkboxSpan.content
-        var check = "X"
-        if (checkboxSpan.isChecked()) {
-            check = " "
-        }
-        var content = (oldContent.substring(0, 1) + check
-                + oldContent.substring(2, oldContent.length))
+        val content = if (checkboxSpan.isChecked()) "[ ]" else "[X]"
+
         val replacement = checkboxSpanned(content, checkboxSpan.rawStart, checkboxSpan.rawEnd)
 
         builder.removeSpan(checkboxSpan)
@@ -154,17 +149,15 @@ class TextViewWithMarkup : TextViewFixed {
 
         fun checkboxSpanned(content: CharSequence, rawStart: Int, rawEnd: Int): Spanned {
 
-            val builder = SpannableStringBuilder()
-
             val beginSpannable = SpannableString(content)
+
             beginSpannable.setSpan(
                     CheckboxSpan(content, rawStart, rawEnd),
                     0,
                     beginSpannable.length,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            builder.append(beginSpannable)
 
-            return builder
+            return beginSpannable
         }
 
         val TAG: String = TextViewWithMarkup::class.java.name
