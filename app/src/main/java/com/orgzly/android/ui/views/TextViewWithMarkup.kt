@@ -8,11 +8,13 @@ import android.text.Spanned
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.TextView
+import com.orgzly.BuildConfig
 import com.orgzly.android.ActionService
 import com.orgzly.android.AppIntent
 import com.orgzly.android.ui.views.style.DrawerEndSpan
 import com.orgzly.android.ui.views.style.DrawerSpan
 import com.orgzly.android.ui.views.style.CheckboxSpan
+import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.OrgFormatter
 
 /**
@@ -29,6 +31,8 @@ class TextViewWithMarkup : TextViewFixed {
 
     private var rawText: CharSequence? = null
 
+    private var onUserTextChanged: Runnable? = null
+
     fun setRawText(text: CharSequence) {
         rawText = text
         setText(OrgFormatter.parse(text.toString(), context))
@@ -36,6 +40,10 @@ class TextViewWithMarkup : TextViewFixed {
 
     fun getRawText() : CharSequence? {
         return rawText
+    }
+
+    fun setUserTextChangedListener(runnable: Runnable) {
+        onUserTextChanged = runnable
     }
 
     fun openNoteWithProperty(name: String, value: String) {
@@ -81,6 +89,8 @@ class TextViewWithMarkup : TextViewFixed {
     }
 
     fun toggleCheckbox(checkboxSpan: CheckboxSpan) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TextViewWithMarkup.TAG, checkboxSpan)
+
         val textSpanned = text as Spanned
 
         val checkboxStart = textSpanned.getSpanStart(checkboxSpan)
@@ -103,6 +113,8 @@ class TextViewWithMarkup : TextViewFixed {
         var newRawText = rawText as CharSequence
         newRawText = newRawText.replaceRange(checkboxSpan.rawStart, checkboxSpan.rawEnd, replacement)
         setRawText(newRawText)
+
+        onUserTextChanged?.run()
     }
 
     companion object {

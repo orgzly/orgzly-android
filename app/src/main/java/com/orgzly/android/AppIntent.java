@@ -32,11 +32,14 @@ public class AppIntent {
     public static final String ACTION_OPEN_BOOK = "com.orgzly.intent.action.OPEN_BOOK";
     public static final String ACTION_OPEN_SETTINGS = "com.orgzly.intent.action.OPEN_SETTINGS";
 
+    public static final String ACTION_UPDATE_NOTE = "com.orgzly.intent.action.UPDATE_NOTE";
+
     public static final String ACTION_SHOW_SNACKBAR = "com.orgzly.intent.action.SHOW_SNACKBAR";
 
     public static final String EXTRA_MESSAGE = "com.orgzly.intent.extra.MESSAGE";
     public static final String EXTRA_BOOK_ID = "com.orgzly.intent.extra.BOOK_ID";
     public static final String EXTRA_NOTE_ID = "com.orgzly.intent.extra.NOTE_ID";
+    public static final String EXTRA_NOTE_CONTENT = "com.orgzly.intent.extra.NOTE_CONTENT";
     public static final String EXTRA_QUERY_STRING = "com.orgzly.intent.extra.QUERY_STRING";
     public static final String EXTRA_PROPERTY_NAME  = "com.orgzly.intent.extra.PROPERTY_NAME";
     public static final String EXTRA_PROPERTY_VALUE  = "com.orgzly.intent.extra.PROPERTY_VALUE";

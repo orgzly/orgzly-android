@@ -275,6 +275,39 @@ public class NotesClient {
         return result[0].count;
     }
 
+    public static int updateContent(Context context, long bookId, long noteId, String content) {
+        ArrayList<ContentProviderOperation> ops = new ArrayList<>();
+
+        ContentValues values = new ContentValues();
+        values.put(DbNote.CONTENT, content);
+
+        // Update content
+        ops.add(ContentProviderOperation
+                .newUpdate(ProviderContract.Notes.ContentUri.notes())
+                .withValues(values)
+                .withSelection(DbNote._ID + " = " + noteId, null)
+                .build()
+        );
+
+        // Update book's modification time
+        ops.add(ContentProviderOperation
+                .newUpdate(ProviderContract.Books.ContentUri.books())
+                .withValue(DbBook.MTIME, System.currentTimeMillis())
+                .withSelection(DbBook._ID + " = " + bookId, null)
+                .build());
+
+        ContentProviderResult[] result;
+
+        try {
+            result = context.getContentResolver().applyBatch(ProviderContract.AUTHORITY, ops);
+        } catch (RemoteException | OperationApplicationException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+        return result[0].count;
+    }
+
 
     /**
      * Insert as last note if position is not specified.
