@@ -625,8 +625,8 @@ public class NoteFragment extends Fragment
         book = mShelf.getBook(mBookId); // FIXME: ANR reported
 
         if (book != null) {
-            locationView.setText(book.getName());
-            locationButtonView.setText(book.getName());
+            locationView.setText(BookUtils.getFragmentTitleForBook(book));
+            locationButtonView.setText(BookUtils.getFragmentTitleForBook(book));
         }
 
         if (mIsNew) { /* Creating new note. */
@@ -1303,8 +1303,8 @@ public class NoteFragment extends Fragment
 
         note.getPosition().setBookId(mBookId);
 
-        locationView.setText(book.getName());
-        locationButtonView.setText(book.getName());
+        locationView.setText(BookUtils.getFragmentTitleForBook(book));
+        locationButtonView.setText(BookUtils.getFragmentTitleForBook(book));
 
         getArguments().putLong(ARG_BOOK_ID, book.getId());
     }
