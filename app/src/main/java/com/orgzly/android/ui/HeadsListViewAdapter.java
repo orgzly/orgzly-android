@@ -8,6 +8,8 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -205,6 +207,37 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
             }
 
             holder.content.setRawText(head.getContent());
+            holder.content.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    // Update note when checkboxes are clicked
+                    holder.content.removeTextChangedListener(this);
+                    head.setContent(holder.content.getRawText().toString());
+                    note.setHead(head);
+                    // TODO: How to update the note without causing a recursion?
+                    //NotesClient.update(context, note);
+                    holder.content.addTextChangedListener(this);
+
+                    // Consider doing this?
+                    /*
+                    if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Text modified in list", s);
+                    ActionService.Companion.enqueueWork(
+                            context,
+                            new Intent(context, ActionService.class)
+                                    .setAction(AppIntent.ACTION_UPDATE_NOTE)
+                                    .putExtra(AppIntent.EXTRA_NOTE_CONTENT, s.toString()));
+                                        */
+
+                }
+            });
 
             holder.content.setVisibility(View.VISIBLE);
 

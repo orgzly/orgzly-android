@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
@@ -62,6 +64,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Note editor.
@@ -134,6 +138,7 @@ public class NoteFragment extends Fragment
     private LinearLayout propertyList;
 
     private ToggleButton editSwitch;
+    private Button checkboxButton;
     private EditText bodyEdit;
     private TextViewWithMarkup bodyView;
 
@@ -305,27 +310,64 @@ public class NoteFragment extends Fragment
 
         bodyEdit = top.findViewById(R.id.body_edit);
 
+        bodyEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(event != null && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    // Enter was pressed
+                    int sel = bodyEdit.getSelectionStart();
+                    String text = bodyEdit.getText().toString();
+                    // Is it on the end of line?
+                    boolean onEndOfLine = false;
+                    if(sel == text.length()) {
+                        onEndOfLine = true;
+                    } else {
+                        char endOfLineChar = text.charAt(sel);
+                        onEndOfLine = (endOfLineChar == '\n');
+                    }
+                    if(!onEndOfLine) return false;
+                    // Does the line begin with a checkbox?
+                    int startOfLine = text.lastIndexOf("\n", sel - 1) + 1;
+                    String line = text.substring(startOfLine, sel);
+                    Pattern p = Pattern.compile("(^\\s*-\\s+\\[)[ X]\\]");
+                    Matcher m = p.matcher(line);
+                    if(m.find()) {
+                        // Insert checkbox
+                        String replacement = '\n' + m.group(1) + " ] ";
+                        bodyEdit.getText().replace(sel, sel, replacement);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                return false;
+            }
+        });
+
         bodyView = top.findViewById(R.id.body_view);
 
-//        bodyView.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                editMode(true, true);
-//                return false;
-//            }
-//        });
+        bodyView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
-//        bodyView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                editMode(true, true);
-//            }
-//        });
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Update bodyEdit text when checkboxes are clicked
+                CharSequence text = bodyView.getRawText();
+                bodyEdit.setText(text);
+            }
+        });
 
         if (getActivity() != null && AppPreferences.isFontMonospaced(getContext())) {
             bodyEdit.setTypeface(Typeface.MONOSPACE);
             bodyView.setTypeface(Typeface.MONOSPACE);
         }
+
+        checkboxButton = top.findViewById(R.id.insert_checkbox_button);
 
         editSwitch = top.findViewById(R.id.edit_content_toggle);
 
@@ -336,9 +378,11 @@ public class NoteFragment extends Fragment
                 bodyView.setVisibility(View.GONE);
 
                 bodyEdit.setVisibility(View.VISIBLE);
+                checkboxButton.setVisibility(View.VISIBLE);
 
             } else {
                 bodyEdit.setVisibility(View.GONE);
+                checkboxButton.setVisibility(View.GONE);
 
                 bodyView.setRawText(bodyEdit.getText());
                 bodyView.setVisibility(View.VISIBLE);
@@ -355,6 +399,10 @@ public class NoteFragment extends Fragment
             }
         });
 
+        checkboxButton.setOnClickListener(view -> {
+            int sel = bodyEdit.getSelectionStart();
+            bodyEdit.getText().replace(sel, sel, "\n- [ ]");
+        });
 
         mViewFlipper = top.findViewById(R.id.fragment_note_view_flipper);
 
