@@ -98,6 +98,7 @@ open class DottedQueryBuilder {
                     is SortOrder.Priority -> dot(order) + "o.p"
                     is SortOrder.State -> dot(order) + "o.state"
                     is SortOrder.Created -> dot(order) + "o.cr"
+                    is SortOrder.Position -> dot(order) + "o.pos"
                 })
             }
         }

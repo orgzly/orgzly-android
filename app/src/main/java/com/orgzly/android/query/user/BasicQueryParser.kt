@@ -90,8 +90,10 @@ open class BasicQueryParser : QueryParser() {
             }),
             SortOrderMatch("""^(-)?sort-order:(?:state|st)$""", { match ->
                 SortOrder.State(match.groupValues[1].isNotEmpty())
+            }),
+            SortOrderMatch("""^(-)?sort-order:(?:position|pos)$""", { match ->
+                SortOrder.Position(match.groupValues[1].isNotEmpty())
             })
-
     )
 
     override val supportedOptions = listOf(

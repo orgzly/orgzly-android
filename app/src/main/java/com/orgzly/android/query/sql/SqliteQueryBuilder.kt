@@ -139,6 +139,10 @@ class SqliteQueryBuilder(val context: Context) {
                             } + " ELSE ${states.size} END")
                         }
                     }
+
+                    is SortOrder.Position -> {
+                        o.add(DbNoteView.LFT + if (order.desc) " DESC" else "")
+                    }
                 }
             }
         }

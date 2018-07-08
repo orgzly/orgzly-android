@@ -91,6 +91,9 @@ open class DottedQueryParser : QueryParser() {
             }),
             SortOrderMatch("""^(\.)?o\.(?:state|st)$""", { match ->
                 SortOrder.State(match.groupValues[1].isNotEmpty())
+            }),
+            SortOrderMatch("""^(\.)?o\.(?:position|pos)$""", { match ->
+                SortOrder.Position(match.groupValues[1].isNotEmpty())
             })
     )
 
