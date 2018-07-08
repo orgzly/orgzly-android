@@ -10,6 +10,7 @@ import android.view.View
 import com.orgzly.BuildConfig
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.views.TextViewWithMarkup
+import com.orgzly.android.ui.views.style.CheckboxSpan
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -62,6 +63,8 @@ object OrgFormatter {
     private fun namelessBracketLinkPattern(str: String) = Pattern.compile("\\[\\[$str]]")
     private fun namedBracketLinkPattern(str: String) = Pattern.compile("\\[\\[$str]\\[([^]]+)]]")
 
+    private val CHECKBOXES_PATTERN = Pattern.compile("""^\s*-\s+(\[[ X]])""", Pattern.MULTILINE)
+
     private const val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 
     data class SpanRegion(val start: Int, val end: Int, val content: CharSequence, val spans: List<Any?> = listOf())
@@ -86,8 +89,12 @@ object OrgFormatter {
         return this.parse(str, config)
     }
 
-    fun parse(str: String, config: Config): SpannableStringBuilder {
+    private fun parse(str: String, config: Config): SpannableStringBuilder {
         var ssb = SpannableStringBuilder(str)
+
+        // parseCheckboxes must be first, since checkboxes need to know
+        // their position in str
+        parseCheckboxes(ssb)
 
         ssb = parsePropertyLinks(ssb, CUSTOM_ID_LINK, "CUSTOM_ID", config.linkify)
         ssb = parsePropertyLinks(ssb, ID_LINK, "ID", config.linkify)
@@ -301,6 +308,22 @@ object OrgFormatter {
         }
 
         return buildFromRegions(ssb, spanRegions)
+    }
+
+    /**
+     * Parse checkboxes and add CheckboxSpans to ssb
+     */
+    private fun parseCheckboxes(ssb: SpannableStringBuilder) {
+        val m = CHECKBOXES_PATTERN.matcher(ssb)
+
+        while (m.find()) {
+            val content = m.group(1)
+            val start = m.start(1)
+            val end = m.end(1)
+            ssb.setSpan(CheckboxSpan(content, start, end), start, end, FLAGS)
+            ssb.setSpan(TypefaceSpan("monospace"), start, end, FLAGS)
+            ssb.setSpan(StyleSpan(Typeface.BOLD), start, end, FLAGS)
+        }
     }
 
     private fun parseDrawers(ssb: SpannableStringBuilder, foldDrawers: Boolean): SpannableStringBuilder {

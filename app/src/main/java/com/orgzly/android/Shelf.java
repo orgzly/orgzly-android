@@ -268,6 +268,13 @@ public class Shelf {
         return result;
     }
 
+    public int updateContent(long bookId, long noteId, String content) {
+        int result = NotesClient.updateContent(mContext, bookId, noteId, content);
+        notifyDataChanged(mContext);
+        syncOnNoteUpdate();
+        return result;
+    }
+
     public Note createNote(Note note, NotePlace target) {
 
         long time = System.currentTimeMillis();

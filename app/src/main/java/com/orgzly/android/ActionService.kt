@@ -46,6 +46,13 @@ class ActionService : JobIntentService() {
                                 intent.getStringExtra(AppIntent.EXTRA_PROPERTY_VALUE))
                 }
 
+            AppIntent.ACTION_UPDATE_NOTE -> {
+                val bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0)
+                val noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0)
+                val content = intent.getStringExtra(AppIntent.EXTRA_NOTE_CONTENT)
+
+                shelf.updateContent(bookId, noteId, content)
+            }
         }
     }
 

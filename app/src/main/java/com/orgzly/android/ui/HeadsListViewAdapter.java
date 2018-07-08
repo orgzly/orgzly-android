@@ -2,18 +2,23 @@ package com.orgzly.android.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.orgzly.R;
+import com.orgzly.android.ActionService;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Note;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
@@ -205,6 +210,16 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
             }
 
             holder.content.setRawText(head.getContent());
+
+            /* If content changes (for example by toggling the checkbox), update the note. */
+            holder.content.setUserTextChangedListener(() ->
+                    ActionService.Companion.enqueueWork(
+                            context,
+                            new Intent(context, ActionService.class)
+                                    .setAction(AppIntent.ACTION_UPDATE_NOTE)
+                                    .putExtra(AppIntent.EXTRA_BOOK_ID, note.getPosition().getBookId())
+                                    .putExtra(AppIntent.EXTRA_NOTE_ID, note.getId())
+                                    .putExtra(AppIntent.EXTRA_NOTE_CONTENT, holder.content.getRawText())));
 
             holder.content.setVisibility(View.VISIBLE);
 

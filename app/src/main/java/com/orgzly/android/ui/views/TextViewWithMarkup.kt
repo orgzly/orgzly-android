@@ -8,14 +8,19 @@ import android.text.Spanned
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.TextView
+import com.orgzly.BuildConfig
 import com.orgzly.android.ActionService
 import com.orgzly.android.AppIntent
 import com.orgzly.android.ui.views.style.DrawerEndSpan
 import com.orgzly.android.ui.views.style.DrawerSpan
+import com.orgzly.android.ui.views.style.CheckboxSpan
+import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.OrgFormatter
 
 /**
  * [TextView] with markup support.
+ *
+ * Used for title, content and preface text.
  */
 class TextViewWithMarkup : TextViewFixed {
     constructor(context: Context) : super(context)
@@ -26,9 +31,19 @@ class TextViewWithMarkup : TextViewFixed {
 
     private var rawText: CharSequence? = null
 
+    private var onUserTextChanged: Runnable? = null
+
     fun setRawText(text: CharSequence) {
         rawText = text
         setText(OrgFormatter.parse(text.toString(), context))
+    }
+
+    fun getRawText() : CharSequence? {
+        return rawText
+    }
+
+    fun setUserTextChangedListener(runnable: Runnable) {
+        onUserTextChanged = runnable
     }
 
     fun openNoteWithProperty(name: String, value: String) {
@@ -73,6 +88,30 @@ class TextViewWithMarkup : TextViewFixed {
         text = builder
     }
 
+    fun toggleCheckbox(checkboxSpan: CheckboxSpan) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TextViewWithMarkup.TAG, checkboxSpan)
+
+        val textSpanned = text as Spanned
+
+        val checkboxStart = textSpanned.getSpanStart(checkboxSpan)
+        val checkboxEnd = textSpanned.getSpanEnd(checkboxSpan)
+
+        val builder = SpannableStringBuilder(text)
+
+        val content = if (checkboxSpan.isChecked()) "[ ]" else "[X]"
+
+        val replacement = checkboxSpanned(content, checkboxSpan.rawStart, checkboxSpan.rawEnd)
+
+        builder.removeSpan(checkboxSpan)
+        builder.replace(checkboxStart, checkboxEnd, replacement)
+
+        var newRawText = rawText as CharSequence
+        newRawText = newRawText.replaceRange(checkboxSpan.rawStart, checkboxSpan.rawEnd, replacement)
+        setRawText(newRawText)
+
+        onUserTextChanged?.run()
+    }
+
     companion object {
         fun drawerSpanned(name: String, content: CharSequence, isFolded: Boolean): Spanned {
 
@@ -106,6 +145,19 @@ class TextViewWithMarkup : TextViewFixed {
             }
 
             return builder
+        }
+
+        fun checkboxSpanned(content: CharSequence, rawStart: Int, rawEnd: Int): Spanned {
+
+            val beginSpannable = SpannableString(content)
+
+            beginSpannable.setSpan(
+                    CheckboxSpan(content, rawStart, rawEnd),
+                    0,
+                    beginSpannable.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+            return beginSpannable
         }
 
         val TAG: String = TextViewWithMarkup::class.java.name
