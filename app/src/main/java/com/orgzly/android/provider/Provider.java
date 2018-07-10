@@ -1219,7 +1219,9 @@ public class Provider extends ContentProvider {
                 if (stateSetOp.isShifted()) {
                     String time = new OrgDateTime(false).toString();
 
-                    updateOrInsertNoteProperty(db, noteId, OrgFormatter.LAST_REPEAT_PROPERTY, time);
+                    if (AppPreferences.setLastRepeatOnTimeShift(getContext())) {
+                        updateOrInsertNoteProperty(db, noteId, OrgFormatter.LAST_REPEAT_PROPERTY, time);
+                    }
 
                     if (AppPreferences.logOnTimeShift(getContext())) {
                         String stateChangeLine = OrgFormatter.stateChangeLine(noteState, targetState, time);

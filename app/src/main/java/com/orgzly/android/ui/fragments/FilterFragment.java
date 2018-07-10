@@ -20,11 +20,11 @@ import com.orgzly.R;
 import com.orgzly.android.filter.Filter;
 import com.orgzly.android.provider.clients.FiltersClient;
 import com.orgzly.android.ui.FragmentListener;
-import com.orgzly.android.ui.drawer.DrawerListed;
+import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 
-public class FilterFragment extends Fragment implements DrawerListed {
+public class FilterFragment extends Fragment implements DrawerItem {
     private static final String TAG = FilterFragment.class.getName();
 
     private static final String ARG_ID = "id";

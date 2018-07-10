@@ -527,6 +527,16 @@ public class AppPreferences {
     }
 
     /*
+     * Set LAST_REPEAT property on time shift
+     */
+
+    public static boolean setLastRepeatOnTimeShift(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_set_last_repeat_on_time_shift),
+                context.getResources().getBoolean(R.bool.pref_default_set_last_repeat_on_time_shift));
+    }
+
+    /*
      * Note's metadata visibility
      */
 

@@ -133,6 +133,12 @@
             android:summary="@string/log_on_time_shift_summary"
             android:defaultValue="@bool/pref_default_log_on_time_shift"/>
 
+        <SwitchPreference
+            android:key="@string/pref_key_set_last_repeat_on_time_shift"
+            android:title="@string/set_last_repeat_on_time_shift"
+            android:summary="@string/set_last_repeat_on_time_shift_summary"
+            android:defaultValue="@bool/pref_default_set_last_repeat_on_time_shift"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefs_title_new_note">

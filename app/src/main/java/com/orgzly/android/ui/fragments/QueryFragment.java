@@ -16,7 +16,7 @@ import com.orgzly.R;
 import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.ui.ActionModeListener;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
-import com.orgzly.android.ui.drawer.DrawerListed;
+import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.util.LogUtils;
 
 /**
@@ -26,7 +26,7 @@ abstract public class QueryFragment extends NoteListFragment
         implements
         TimestampDialogFragment.OnDateTimeSetListener,
         LoaderManager.LoaderCallbacks<Cursor>,
-        DrawerListed {
+        DrawerItem {
 
     private static final String TAG = QueryFragment.class.getName();
 

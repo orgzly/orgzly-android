@@ -20,7 +20,7 @@ import com.orgzly.android.provider.clients.FiltersClient
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.Fab
 import com.orgzly.android.ui.FragmentListener
-import com.orgzly.android.ui.drawer.DrawerListed
+import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.Loaders
 import com.orgzly.android.ui.util.ListViewUtils
 import com.orgzly.android.util.LogUtils
@@ -29,7 +29,7 @@ import java.io.IOException
 /**
  * Displays and allows modifying saved filters.
  */
-class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Cursor>, DrawerListed {
+class FiltersFragment : ListFragment(), Fab, LoaderManager.LoaderCallbacks<Cursor>, DrawerItem {
 
     private var mListAdapter: SimpleCursorAdapter? = null
 

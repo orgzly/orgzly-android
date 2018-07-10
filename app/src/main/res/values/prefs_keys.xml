@@ -325,6 +325,9 @@
     <string name="pref_key_log_on_time_shift" translatable="false">pref_key_log_on_time_shift</string>
     <bool name="pref_default_log_on_time_shift" translatable="false">false</bool>
 
+    <string name="pref_key_set_last_repeat_on_time_shift" translatable="false">pref_key_set_last_repeat_on_time_shift</string>
+    <bool name="pref_default_set_last_repeat_on_time_shift" translatable="false">true</bool>
+
     <!-- Separate notes with an empty line -->
     <string name="pref_key_separate_notes_with_new_line" translatable="false">pref_key_separate_notes_with_new_line</string>
     <string name="pref_default_separate_notes_with_new_line" translatable="false">@string/pref_value_separate_notes_with_new_line_multi_line_notes_only</string>

@@ -43,12 +43,11 @@ import com.orgzly.android.ui.Place;
 import com.orgzly.android.ui.Selection;
 import com.orgzly.android.ui.SelectionUtils;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
-import com.orgzly.android.ui.drawer.DrawerListed;
+import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.ui.views.GesturedListView;
 import com.orgzly.android.ui.views.TextViewWithMarkup;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
-import com.orgzly.org.datetime.OrgDateTime;
 
 import java.util.Collections;
 import java.util.Set;
@@ -63,7 +62,7 @@ public class BookFragment extends NoteListFragment
         Fab,
         TimestampDialogFragment.OnDateTimeSetListener,
         LoaderManager.LoaderCallbacks<Cursor>,
-        DrawerListed {
+        DrawerItem {
 
     private static final String TAG = BookFragment.class.getName();
 

@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
@@ -43,7 +42,7 @@ import com.orgzly.android.ui.NoteStates;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.ui.ShareActivity;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
-import com.orgzly.android.ui.drawer.DrawerListed;
+import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.ui.views.TextViewWithMarkup;
 import com.orgzly.android.util.LogUtils;
@@ -74,7 +73,7 @@ public class NoteFragment extends Fragment
         implements
         View.OnClickListener,
         TimestampDialogFragment.OnDateTimeSetListener,
-        DrawerListed {
+        DrawerItem {
 
     private static final String TAG = NoteFragment.class.getName();
 
@@ -1340,7 +1339,9 @@ public class NoteFragment extends Fragment
         if (stateChangeLogic.isShifted()) {
             String datetime = new OrgDateTime(false).toString();
 
-            note.getHead().addProperty(OrgFormatter.LAST_REPEAT_PROPERTY, datetime);
+            if (AppPreferences.setLastRepeatOnTimeShift(getContext())) {
+                note.getHead().addProperty(OrgFormatter.LAST_REPEAT_PROPERTY, datetime);
+            }
 
             if (AppPreferences.logOnTimeShift(getContext())) {
                 String logEntry = OrgFormatter.stateChangeLine(originalState, state, datetime);
