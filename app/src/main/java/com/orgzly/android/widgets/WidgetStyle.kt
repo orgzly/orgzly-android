@@ -64,6 +64,8 @@ object WidgetStyle {
 
     @JvmStatic
     fun updateNote(remoteViews: RemoteViews, context: Context) {
+        /* Title */
+
         remoteViews.setTextViewTextSize(
                 R.id.item_list_widget_title,
                 TypedValue.COMPLEX_UNIT_PX,
@@ -72,6 +74,23 @@ object WidgetStyle {
         remoteViews.setTextColor(
                 R.id.item_list_widget_title,
                 WidgetStyle.primaryTextColor(context))
+
+        /* Book name */
+
+        remoteViews.setImageViewResource(
+                R.id.item_list_widget_book_icon,
+                WidgetStyle.bookIcon(context))
+
+        remoteViews.setTextViewTextSize(
+                R.id.item_list_widget_book_text,
+                TypedValue.COMPLEX_UNIT_PX,
+                WidgetStyle.postTitleTextSize(context))
+
+        remoteViews.setTextColor(
+                R.id.item_list_widget_book_text,
+                WidgetStyle.secondaryTextColor(context))
+
+        /* Scheduled time */
 
         remoteViews.setImageViewResource(
                 R.id.item_list_widget_scheduled_icon,
@@ -86,6 +105,8 @@ object WidgetStyle {
                 R.id.item_list_widget_scheduled_text,
                 WidgetStyle.secondaryTextColor(context))
 
+        /* Deadline time */
+
         remoteViews.setImageViewResource(
                 R.id.item_list_widget_deadline_icon,
                 WidgetStyle.deadlineIcon(context))
@@ -99,6 +120,8 @@ object WidgetStyle {
                 R.id.item_list_widget_deadline_text,
                 WidgetStyle.secondaryTextColor(context))
 
+        /* Closed time */
+
         remoteViews.setImageViewResource(
                 R.id.item_list_widget_closed_icon,
                 WidgetStyle.closedIcon(context))
@@ -111,6 +134,8 @@ object WidgetStyle {
         remoteViews.setTextColor(
                 R.id.item_list_widget_closed_text,
                 WidgetStyle.secondaryTextColor(context))
+
+        /* Done icon */
 
         remoteViews.setImageViewResource(
                 R.id.item_list_widget_done,
@@ -214,6 +239,14 @@ object WidgetStyle {
         }
 
         return withOpacity(context, color)
+    }
+
+    @DrawableRes
+    private fun bookIcon(context: Context): Int {
+        return when (AppPreferences.widgetColorScheme(context)) {
+            "dark", "black" -> R.drawable.ic_folder_open_white_18dp
+            else -> R.drawable.ic_folder_open_black_18dp
+        }
     }
 
     @DrawableRes

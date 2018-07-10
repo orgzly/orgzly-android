@@ -57,6 +57,37 @@
 
         </LinearLayout>
 
+        <!-- Notebook name -->
+        <LinearLayout
+            android:id="@+id/item_list_widget_book"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
+            android:gravity="center_vertical"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/item_list_widget_book_icon"
+                android:layout_height="14dp"
+                android:layout_width="14dp"
+                android:alpha="0.55"
+                android:src="@drawable/ic_folder_open_black_18dp"
+                android:contentDescription="@string/notebook" />
+
+            <TextView
+                android:id="@+id/item_list_widget_book_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/book_name_sample"
+                android:textColor="@color/widget_light_post_title_color"
+                android:textSize="@dimen/widget_post_title_text_size_14"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+        </LinearLayout>
+
         <!-- Scheduled time -->
         <LinearLayout
             android:id="@+id/item_list_widget_scheduled"

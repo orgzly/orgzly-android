@@ -579,6 +579,12 @@ public class AppPreferences {
                 context.getResources().getString(R.string.pref_default_widget_update_frequency)));
     }
 
+    public static boolean widgetDisplayBookName(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_widget_display_book_name),
+                context.getResources().getBoolean(R.bool.pref_default_widget_display_book_name));
+    }
+
     /*
      * State flags and values.
      * They have no default values, they are not set by user.

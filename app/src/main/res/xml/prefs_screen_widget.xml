@@ -34,4 +34,9 @@
         android:entryValues="@array/widget_update_frequency_values"
         android:defaultValue="@string/pref_default_widget_update_frequency"/>
 
+    <SwitchPreference
+        android:key="@string/pref_key_widget_display_book_name"
+        android:title="@string/display_notebook_name"
+        android:defaultValue="@bool/pref_default_widget_display_book_name"/>
+
 </PreferenceScreen>

@@ -16,6 +16,7 @@ import com.orgzly.android.Note;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.provider.AgendaCursor;
 import com.orgzly.android.provider.clients.NotesClient;
+import com.orgzly.android.provider.views.DbNoteViewColumns;
 import com.orgzly.android.query.Query;
 import com.orgzly.android.query.QueryParser;
 import com.orgzly.android.query.user.InternalQueryParser;
@@ -155,6 +156,15 @@ public class ListWidgetService extends RemoteViewsService {
 
             OrgHead head = note.getHead();
             row.setTextViewText(R.id.item_list_widget_title, titleGenerator.generateTitle(note, head));
+
+            /* Notebook name. */
+            if (AppPreferences.widgetDisplayBookName(context)) {
+                String bookName = cursor.getString(cursor.getColumnIndex(DbNoteViewColumns.BOOK_NAME));
+                row.setTextViewText(R.id.item_list_widget_book_text, bookName);
+                row.setViewVisibility(R.id.item_list_widget_book, View.VISIBLE);
+            } else {
+                row.setViewVisibility(R.id.item_list_widget_book, View.GONE);
+            }
 
             /* Closed time. */
             if (head.hasClosed() && AppPreferences.displayPlanning(context)) {

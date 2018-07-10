@@ -393,6 +393,9 @@
         <item>60</item>
     </string-array>
 
+    <string name="pref_key_widget_display_book_name" translatable="false">pref_key_widget_display_book_name</string>
+    <bool name="pref_default_widget_display_book_name" translatable="false">false</bool>
+
     <!-- Git preferences -->
     <string name="pref_key_git_author" traslatable="false">pref_key_git_author</string>
     <string name="pref_key_git_email" traslatable="false">pref_key_git_email</string>
