@@ -42,7 +42,7 @@ object ActivityUtils {
             Handler().postDelayed({
                 val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-            }, 100)
+            }, 200)
 
         } else {
             Log.w(TAG, "Can't open keyboard because view " + view +
