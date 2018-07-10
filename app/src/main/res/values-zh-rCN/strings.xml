@@ -3,7 +3,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <string name="sync">同步</string>
   <string name="settings">设置</string>
-  <string name="ok">好的</string>
+  <string name="ok">确定</string>
   <string name="yes">是</string>
   <string name="unlink">断开连接</string>
   <!-- Unlink from Dropbox -->
@@ -47,8 +47,8 @@
   <string name="new_notebook">新建笔记本</string>
   <string name="new_folder">新建文件夹</string>
   <string name="scheduled">计划</string>
-  <string name="agenda">应办事项</string>
-  <string name="agenda_period">应办事项日期</string>
+  <string name="agenda">待办事项</string>
+  <string name="agenda_period">待办事项日期</string>
   <string name="time">时间</string>
   <string name="repeater">重复器</string>
   <string name="state">状态</string>
@@ -59,9 +59,9 @@
   <plurals name="notes_deleted">
     <item quantity="other">已删除 <b>%d</b> 条笔记</item>
   </plurals>
-  <string name="no_notes_deleted">没有删除的笔记</string>
+  <string name="no_notes_deleted">没有笔记被删除</string>
   <plurals name="notes_cut">
-    <item quantity="other">剪切 <b>%d</b> 条笔记</item>
+    <item quantity="other">已剪切 <b>%d</b> 条笔记</item>
   </plurals>
   <string name="no_notes_cut">没有笔记被剪切</string>
   <plurals name="notes_pasted">
@@ -72,7 +72,7 @@
   <string name="fragment_note_tags_hint" tools:ignore="typos">标签</string>
   <string name="import_org_file">导入Org文件</string>
   <string name="message_dropbox_unlinked">已从Dropbox断开连接</string>
-  <string name="message_dropbox_linked">已成功连接到Dropbox</string>
+  <string name="message_dropbox_linked">已成功连接到 Dropbox</string>
   <!-- Preferences (Settings). -->
   <string name="repos_preference_title">存储库</string>
   <string name="repos_preference_summary">用于同步笔记本的位置</string>
