@@ -21,41 +21,16 @@
         android:paddingBottom="4dp"
         android:layout_weight="1">
 
-        <LinearLayout
+        <!-- Title -->
+        <TextView
+            android:id="@+id/item_list_widget_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <!-- Title -->
-            <TextView
-                android:id="@+id/item_list_widget_title"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                tools:text="@string/head_title_sample"
-                android:textColor="@color/widget_light_title_color"
-                android:textSize="@dimen/widget_title_text_size_14"
-                android:maxLines="1" />
-
-            <!-- Checkmark -->
-            <ImageView
-                android:id="@+id/item_list_widget_done"
-                style="?android:attr/borderlessButtonStyle"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
-                android:src="@drawable/ic_done_black_24dp" />
-
-        </LinearLayout>
+            android:ellipsize="end"
+            tools:text="@string/head_title_sample"
+            android:textColor="@color/widget_light_title_color"
+            android:textSize="@dimen/widget_title_text_size_14"
+            android:maxLines="1" />
 
         <!-- Notebook name -->
         <LinearLayout
@@ -181,4 +156,19 @@
                 android:ellipsize="end" />
         </LinearLayout>
     </LinearLayout>
+
+    <!-- Checkmark -->
+    <ImageView
+        android:id="@+id/item_list_widget_done"
+        style="?android:attr/borderlessButtonStyle"
+        android:alpha="0.87"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:paddingTop="@dimen/widget_padding"
+        android:paddingBottom="0dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_done_black_24dp" />
 </LinearLayout>
