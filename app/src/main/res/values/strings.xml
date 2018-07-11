@@ -122,6 +122,7 @@
     <string name="heads_moving_action_menu_item_up">Up</string>
     <string name="heads_moving_action_menu_item_demote">Demote</string>
     <string name="new_note">New note</string>
+    <string name="quick_note">Quick note</string>
     <string name="tap_to_create_new_note">Tap to create a new note</string>
     <string name="options_menu_item_search">Search</string>
 

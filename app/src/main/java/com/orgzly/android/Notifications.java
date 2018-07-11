@@ -7,7 +7,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.RemoteInput;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import com.orgzly.BuildConfig;
@@ -20,6 +22,8 @@ import com.orgzly.android.ui.ShareActivity;
 import com.orgzly.android.util.LogUtils;
 
 import java.util.List;
+
+import static com.orgzly.android.NewNoteBroadcastReceiver.NOTE_TITLE;
 
 public class Notifications {
     public static final String TAG = Notifications.class.getName();
@@ -44,6 +48,22 @@ public class Notifications {
                 .setColor(ContextCompat.getColor(context, R.color.notification))
                 .setContentIntent(resultPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_MIN); // Don't show icon on status bar
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            PendingIntent newNotePendingIntent = PendingIntent.getBroadcast(
+                    context, 0, new Intent(context, NewNoteBroadcastReceiver.class), 0);
+
+            RemoteInput remoteInput = new RemoteInput.Builder(NOTE_TITLE)
+                    .setLabel(context.getString(R.string.quick_note))
+                    .build();
+
+            /* Add new note action */
+            NotificationCompat.Action action = new NotificationCompat.Action.Builder(
+                    R.drawable.ic_add_white_24dp, context.getString(R.string.quick_note), newNotePendingIntent)
+                    .addRemoteInput(remoteInput)
+                    .build();
+            builder.addAction(action);
+        }
 
         /* Add open action */
         PendingIntent openAppPendingIntent = PendingIntent.getActivity(
