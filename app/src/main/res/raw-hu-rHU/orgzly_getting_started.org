@@ -47,6 +47,14 @@ Levél mehet a [[mailto:support@orgzly.com][support@orgzly.com]] címre, látoga
 
 Lehet egy szó *félkövér*, /dőlt/, _aláhúzva_, =szó szerinti=, ~kód~ és +áthúzva+.
 
+** Checkbox list is available
+
+- [X] Task 1
+- [ ] Task 2
+- [ ] Task 3
+
+Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
+
 * Keresés
 ** Elég sok kereső operátort támogat a program
 

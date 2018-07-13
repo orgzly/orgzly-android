@@ -252,8 +252,8 @@
   <string name="color_scheme">Jeu de couleurs</string>
   <string name="monospaced_font">Police à chasse fixe</string>
   <string name="monospaced_font_summary">Utiliser une police à chasse fixe pour le contenu des notes et la préface du bloc-notes</string>
-  <string name="reversed_note_click_action">Renverse la note en cliquant</string>
-  <string name="reversed_note_click_action_summary">Clic pour sélectionner la note, clic long pour ouvrir</string>
+  <string name="reversed_note_click_action">Inverser les actions sur les notes</string>
+  <string name="reversed_note_click_action_summary">Appui simple pour sélectionner une note, appui long pour l\'ouvrir</string>
   <string name="look_and_feel">Apparence</string>
   <string name="notes_list">Liste des notes</string>
   <string name="prefs_title_new_note">Nouvelle note</string>
@@ -330,6 +330,7 @@
   <string name="duplicate_keywords_not_allowed">Le mot clé %s est déjà utilisé</string>
   <string name="no_states_defined">Aucun état défini</string>
   <string name="book_name_in_search">Nom des bloc-notes dans les résultats de recherche</string>
+  <string name="display_notebook_name">Display notebook name</string>
   <string name="display_inherited_tags_in_search_results">Tags hérités dans les résultats de recherche</string>
   <string name="display_inherited_tags_in_search_results_summary">Afficher les tags hérités dans les résultats de recherche</string>
   <string name="new_note_notification">Créer une note et synchroniser</string>
@@ -391,7 +392,7 @@
   <string name="content_line_count_displayed">Afficher le nombre de lignes</string>
   <string name="content_line_count_displayed_summary">Afficher le nombre de lignes lorsque le contenu n\'est pas affiché</string>
   <string name="style_text_title">Composition du texte</string>
-  <string name="style_text_summary">Suivre les marques du texte pour les passages à mettre en exergue ou à rendre avec une police à chasse fixe</string>
+  <string name="style_text_summary">Suivre les marques du texte pour les passages à mettre en exergue ou à afficher avec une police à chasse fixe</string>
   <string name="styled_text_with_marks_title">Affichage des marques dans le texte</string>
   <string name="styled_text_with_marks_summary">Conserver l\'affichage des marques (par exemple : *gras*)</string>
   <string name="no_such_link_target">La note avec la propriété “%1$s” fixée à “%2$s” n\'a pas été trouvée</string>
@@ -426,6 +427,8 @@
   <string name="drawers_folded_by_default_summary">Replier les panneaux par défaut</string>
   <string name="log_on_time_shift">Ajouter une entrée au panneau lors d\'un changement de temps</string>
   <string name="log_on_time_shift_summary">Journaliser l\'heure lorsqu\'une note avec une répétition est marquée comme terminée</string>
+  <string name="set_last_repeat_on_time_shift">Set property on time shift</string>
+  <string name="set_last_repeat_on_time_shift_summary">Set time when note with repeater is marked as done</string>
   <string name="background_opacity">Opacité de l\'arrière-plan</string>
   <string name="update_frequency">Fréquence de mise à jour</string>
   <string name="git">Git</string>

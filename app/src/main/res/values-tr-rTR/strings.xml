@@ -330,6 +330,7 @@
   <string name="duplicate_keywords_not_allowed">Anahtar kelime %s zaten kullanılıyor</string>
   <string name="no_states_defined">Tanımlanan sınıf yok</string>
   <string name="book_name_in_search">NotDefteri içinde arama sonuçları</string>
+  <string name="display_notebook_name">Display notebook name</string>
   <string name="display_inherited_tags_in_search_results">Arama sonuçlarında devralınan etiketler</string>
   <string name="display_inherited_tags_in_search_results_summary">Devralınan etiketleri arama sonuçlarında göster</string>
   <string name="new_note_notification">Not oluştur ve eşitle</string>
@@ -426,6 +427,8 @@
   <string name="drawers_folded_by_default_summary">Fold drawers by default</string>
   <string name="log_on_time_shift">Log to drawer on time shift</string>
   <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
+  <string name="set_last_repeat_on_time_shift">Set property on time shift</string>
+  <string name="set_last_repeat_on_time_shift_summary">Set time when note with repeater is marked as done</string>
   <string name="background_opacity">Background opacity</string>
   <string name="update_frequency">Update frequency</string>
   <string name="git">Git</string>

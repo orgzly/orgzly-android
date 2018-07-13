@@ -330,6 +330,7 @@
   <string name="duplicate_keywords_not_allowed">Schlüsselwort %s wird beteits verwendet</string>
   <string name="no_states_defined">Keine Status definiert</string>
   <string name="book_name_in_search">Name des Notizbuchs in den Suchergebnissen</string>
+  <string name="display_notebook_name">Display notebook name</string>
   <string name="display_inherited_tags_in_search_results">Tags in Suchergebnissen einrücken</string>
   <string name="display_inherited_tags_in_search_results_summary">Zeigt eingerückte Tags in den Suchergebnissen an</string>
   <string name="new_note_notification">Notiz erstellen und Synchronisieren</string>
@@ -426,6 +427,8 @@
   <string name="drawers_folded_by_default_summary">Ordner standardmäßig einklappen</string>
   <string name="log_on_time_shift">Hinweis im Menü bei zeitlicher Abweichung</string>
   <string name="log_on_time_shift_summary">Zeit aktualisieren, wenn eine wiederkehrende Notiz als erledigt markiert wird</string>
+  <string name="set_last_repeat_on_time_shift">Set property on time shift</string>
+  <string name="set_last_repeat_on_time_shift_summary">Set time when note with repeater is marked as done</string>
   <string name="background_opacity">Hintergrunddeckkraft</string>
   <string name="update_frequency">Aktualisierungsintervall</string>
   <string name="git">Git</string>

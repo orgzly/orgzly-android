@@ -330,6 +330,7 @@
   <string name="duplicate_keywords_not_allowed">Keyword %s wordt al gebruikt</string>
   <string name="no_states_defined">Geen statussen gedefiniëerd</string>
   <string name="book_name_in_search">Naam van notitieboekje in zoekresultaten</string>
+  <string name="display_notebook_name">Display notebook name</string>
   <string name="display_inherited_tags_in_search_results">Georven tags in zoekresultaten</string>
   <string name="display_inherited_tags_in_search_results_summary">Georven tags weergeven in zoekresultaten</string>
   <string name="new_note_notification">Maak notitie en synchroniseer</string>
@@ -426,6 +427,8 @@
   <string name="drawers_folded_by_default_summary">Laden standaard vouwen</string>
   <string name="log_on_time_shift">Log to drawer on time shift</string>
   <string name="log_on_time_shift_summary">Log time when note with repeater is marked as done</string>
+  <string name="set_last_repeat_on_time_shift">Set property on time shift</string>
+  <string name="set_last_repeat_on_time_shift_summary">Set time when note with repeater is marked as done</string>
   <string name="background_opacity">Background opacity</string>
   <string name="update_frequency">Update frequency</string>
   <string name="git">Git</string>

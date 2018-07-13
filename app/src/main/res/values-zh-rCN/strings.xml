@@ -3,7 +3,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <string name="sync">同步</string>
   <string name="settings">设置</string>
-  <string name="ok">好的</string>
+  <string name="ok">确定</string>
   <string name="yes">是</string>
   <string name="unlink">断开连接</string>
   <!-- Unlink from Dropbox -->
@@ -47,8 +47,8 @@
   <string name="new_notebook">新建笔记本</string>
   <string name="new_folder">新建文件夹</string>
   <string name="scheduled">计划</string>
-  <string name="agenda">应办事项</string>
-  <string name="agenda_period">应办事项日期</string>
+  <string name="agenda">待办事项</string>
+  <string name="agenda_period">待办事项日期</string>
   <string name="time">时间</string>
   <string name="repeater">重复器</string>
   <string name="state">状态</string>
@@ -57,22 +57,22 @@
   <string name="open">打开</string>
   <string name="widget">桌面小部件</string>
   <plurals name="notes_deleted">
-    <item quantity="other">已删除 <b>%d</b> 条笔记</item>
+    <item quantity="other">已删除 <b>%d</b> 笔记</item>
   </plurals>
-  <string name="no_notes_deleted">没有删除的笔记</string>
+  <string name="no_notes_deleted">没有笔记被删除</string>
   <plurals name="notes_cut">
-    <item quantity="other">剪切 <b>%d</b> 条笔记</item>
+    <item quantity="other">已剪切 <b>%d</b> 条笔记</item>
   </plurals>
   <string name="no_notes_cut">没有笔记被剪切</string>
   <plurals name="notes_pasted">
-    <item quantity="other">已粘贴 <b>%d</b> 条笔记</item>
+    <item quantity="other">已粘贴 <b>%d</b> 笔记</item>
   </plurals>
   <string name="no_notes_pasted">无可粘贴内容</string>
   <string name="fragment_note_title_hint">标题</string>
   <string name="fragment_note_tags_hint" tools:ignore="typos">标签</string>
   <string name="import_org_file">导入Org文件</string>
   <string name="message_dropbox_unlinked">已从Dropbox断开连接</string>
-  <string name="message_dropbox_linked">已成功连接到Dropbox</string>
+  <string name="message_dropbox_linked">已成功连接到 Dropbox</string>
   <!-- Preferences (Settings). -->
   <string name="repos_preference_title">存储库</string>
   <string name="repos_preference_summary">用于同步笔记本的位置</string>
@@ -327,6 +327,7 @@
   <string name="duplicate_keywords_not_allowed">关键字 %s 已使用</string>
   <string name="no_states_defined">无已定义状态</string>
   <string name="book_name_in_search">搜索结果中的笔记本名称</string>
+  <string name="display_notebook_name">显示笔记本名称</string>
   <string name="display_inherited_tags_in_search_results">搜索结果中的被继承标签</string>
   <string name="display_inherited_tags_in_search_results_summary">在搜索结果中显示被继承标签</string>
   <string name="new_note_notification">新建笔记并同步</string>
@@ -420,6 +421,8 @@
   <string name="drawers_folded_by_default_summary">默认收起抽屉</string>
   <string name="log_on_time_shift">在时间改变时记录到抽屉</string>
   <string name="log_on_time_shift_summary">当有重复器的笔记被标记为完成时记录时间</string>
+  <string name="set_last_repeat_on_time_shift">在时间改变时设定属性</string>
+  <string name="set_last_repeat_on_time_shift_summary">当有重复器的笔记被标记为完成时设定时间</string>
   <string name="background_opacity">背景不透明度</string>
   <string name="update_frequency">更新频率</string>
   <string name="git">Git</string>

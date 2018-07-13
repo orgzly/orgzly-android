@@ -24,6 +24,28 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.6.8"
+            tools:ignore="HardcodedText"/>
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Toggling checkboxes" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Sorting notes by position in notebook (&lt;tt&gt;o.pos&lt;/tt&gt;)" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Preference to display notebook name in widget" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Preference to disable &lt;tt&gt;LAST_REPEAT&lt;/tt&gt; property" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.6.7"
             tools:ignore="HardcodedText"/>
 
@@ -42,7 +64,6 @@
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
             app:text="Handle large values for tags indentation" />
-
 
 
         <TextView

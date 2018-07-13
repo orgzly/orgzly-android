@@ -330,6 +330,7 @@
   <string name="duplicate_keywords_not_allowed">%s kulcsszó már használt</string>
   <string name="no_states_defined">Nincs állapot definiálva</string>
   <string name="book_name_in_search">Jegyzettömb neve a keresés eredményében</string>
+  <string name="display_notebook_name">Display notebook name</string>
   <string name="display_inherited_tags_in_search_results">Örökölt címkék a keresési eredményekben</string>
   <string name="display_inherited_tags_in_search_results_summary">Örökölt címkék megmutatása a keresési eredményekben</string>
   <string name="new_note_notification">Bejegyzés létrehozása és szinkronizálás</string>
@@ -426,6 +427,8 @@
   <string name="drawers_folded_by_default_summary">Alapból behajtott bejegyzések</string>
   <string name="log_on_time_shift">Időeltoláskor bejegyzést ír</string>
   <string name="log_on_time_shift_summary">Jegyezze fel az időt amikor időismétléses bejegyzést készre jelölök</string>
+  <string name="set_last_repeat_on_time_shift">Set property on time shift</string>
+  <string name="set_last_repeat_on_time_shift_summary">Set time when note with repeater is marked as done</string>
   <string name="background_opacity">Háttér áttetszősége</string>
   <string name="update_frequency">Frissítés gyakorisága</string>
   <string name="git">Git</string>
