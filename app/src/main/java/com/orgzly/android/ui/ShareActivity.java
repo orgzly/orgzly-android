@@ -7,17 +7,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v7.widget.Toolbar;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.Book;
+import com.orgzly.android.BookUtils;
 import com.orgzly.android.Note;
 import com.orgzly.android.NotesBatch;
 import com.orgzly.android.Shelf;
 import com.orgzly.android.filter.Filter;
-import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.query.Query;
 import com.orgzly.android.query.QueryUtils;
 import com.orgzly.android.query.user.DottedQueryParser;
@@ -25,12 +24,9 @@ import com.orgzly.android.ui.fragments.NoteFragment;
 import com.orgzly.android.ui.fragments.SyncFragment;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
-import com.orgzly.org.datetime.OrgDateTime;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Activity started when shared to Orgzly.
@@ -177,20 +173,25 @@ public class ShareActivity extends CommonActivity
                     .add(mSyncFragment, SyncFragment.FRAGMENT_TAG)
                     .commit();
 
-            long bookId;
-            if (data.bookId == null) {
-                bookId = getTargetBook().getId();
-            } else {
-                bookId = data.bookId;
+            try {
+                long bookId;
+                if (data.bookId == null) {
+                    bookId = BookUtils.getTargetBook(this).getId();
+                } else {
+                    bookId = data.bookId;
+                }
+
+                mNoteFragment = NoteFragment.forSharedNote(bookId, data.title, data.content);
+
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.activity_share_main, mNoteFragment, NoteFragment.FRAGMENT_TAG)
+                        .commit();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                // bail out here
+                finish();
             }
-
-            mNoteFragment = NoteFragment.forSharedNote(bookId, data.title, data.content);
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.activity_share_main, mNoteFragment, NoteFragment.FRAGMENT_TAG)
-                    .commit();
-
         } else { /* Get existing fragments. */
             mSyncFragment = (SyncFragment) getSupportFragmentManager().findFragmentByTag(SyncFragment.FRAGMENT_TAG);
             mNoteFragment = (NoteFragment) getSupportFragmentManager().findFragmentByTag(NoteFragment.FRAGMENT_TAG);
@@ -208,36 +209,6 @@ public class ShareActivity extends CommonActivity
             showSimpleSnackbarLong(mError);
             mError = null;
         }
-    }
-
-    /**
-     * Returns default book if it exists, or first one found.
-     * If there are no books, default book will be created.
-     */
-    private Book getTargetBook() {
-        Shelf shelf = new Shelf(this);
-
-        List<Book> books = shelf.getBooks();
-
-        String defaultBookName = AppPreferences.shareNotebook(getApplicationContext());
-
-        if (books.size() == 0) {
-            try {
-                return shelf.createBook(defaultBookName);
-            } catch (IOException e) {
-                e.printStackTrace();
-                finish();
-            }
-
-        } else {
-            for (int i = 0; i < books.size(); i++) {
-                if (defaultBookName.equals(books.get(i).getName())) {
-                    return books.get(i);
-                }
-            }
-        }
-
-        return books.get(0);
     }
 
     public static PendingIntent createNewNoteIntent(Context context, Filter filter) {

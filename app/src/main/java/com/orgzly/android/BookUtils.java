@@ -7,6 +7,10 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 
 import com.orgzly.R;
+import com.orgzly.android.prefs.AppPreferences;
+
+import java.io.IOException;
+import java.util.List;
 
 public class BookUtils {
     /**
@@ -63,5 +67,26 @@ public class BookUtils {
         }
 
         return str;
+    }
+
+    /**
+     * Returns default book if it exists, or first one found.
+     * If there are no books, default book will be created.
+     */
+    public static Book getTargetBook(Context context) throws IOException {
+        Shelf shelf = new Shelf(context);
+        List<Book> books = shelf.getBooks();
+        String defaultBookName = AppPreferences.shareNotebook(context);
+
+        if (books.size() == 0) {
+            return shelf.createBook(defaultBookName);
+        } else {
+            for (Book book : books) {
+                if (defaultBookName.equals(book.getName())) {
+                    return book;
+                }
+            }
+            return books.get(0);
+        }
     }
 }

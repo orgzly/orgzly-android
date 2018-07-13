@@ -165,6 +165,8 @@
         <receiver
             android:name=".android.NotificationBroadcastReceiver"/>
 
+        <receiver android:name=".android.NewNoteBroadcastReceiver"/>
+
         <receiver
             android:name=".android.ActionReceiver"
             android:exported="true"
