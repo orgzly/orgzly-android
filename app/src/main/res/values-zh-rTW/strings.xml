@@ -327,6 +327,7 @@
   <string name="duplicate_keywords_not_allowed">關鍵字%s 已使用</string>
   <string name="no_states_defined">未定義任何狀態</string>
   <string name="book_name_in_search">搜尋結果中的筆記本名稱</string>
+  <string name="display_notebook_name">顯示筆記本名稱</string>
   <string name="display_inherited_tags_in_search_results">在搜尋結果中包含繼承標籤</string>
   <string name="display_inherited_tags_in_search_results_summary">在搜尋結果中顯示繼承標籤</string>
   <string name="new_note_notification">創建筆記並同步</string>
@@ -420,6 +421,8 @@
   <string name="drawers_folded_by_default_summary">預設折疊抽屜</string>
   <string name="log_on_time_shift">按時間順序登錄抽屜</string>
   <string name="log_on_time_shift_summary">帶有重複時間的筆記標記完成時記錄時間</string>
+  <string name="set_last_repeat_on_time_shift">按時間設置屬性</string>
+  <string name="set_last_repeat_on_time_shift_summary">帶有重複時間的筆記標記完成時記錄時間</string>
   <string name="background_opacity">背景不透明度</string>
   <string name="update_frequency">更新頻率</string>
   <string name="git">Git</string>

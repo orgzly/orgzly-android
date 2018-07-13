@@ -47,6 +47,14 @@ Email [[mailto:support@orgzly.com][support@orgzly.com]], bezoek http://www.orgzl
 
 Je kunt worden *dikgedrukt*, /schuin/, _onderstreept_, =verbato=, ~code~ en +doorgestreept+ maken.
 
+** Checkbox list is available
+
+- [X] Task 1
+- [ ] Task 2
+- [ ] Task 3
+
+Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
+
 * Zoeken
 ** Er worden veel zoekoperatoren ondersteund
 

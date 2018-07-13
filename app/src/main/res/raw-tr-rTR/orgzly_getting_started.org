@@ -47,6 +47,14 @@ Temel yazı karakteri önemi desteklenmektedir
 
 Kelimeleri * kalın *, / italik /, _altıçizili_, = kelimesi kelimesine =, ~ kod ~ ve + doğrudan vurgulama + yapabilirsiniz.
 
+** Checkbox list is available
+
+- [X] Task 1
+- [ ] Task 2
+- [ ] Task 3
+
+Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
+
 Arama
 Birçok arama operatörü desteklenmektedir
 

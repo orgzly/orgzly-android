@@ -47,6 +47,14 @@ Senden Sie eine E-Mail an [[mailto:support@orgzly.com][support@orgzly.com]], bes
 
 Sie können Wörter *fett*, /kursiv/, _unterstrichen_, =als Zitat=, ~als Code~ und +durchgestrichen+ darstellen.
 
+** Checkbox list is available
+
+- [X] Task 1
+- [ ] Task 2
+- [ ] Task 3
+
+Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
+
 * Suche
 ** Es werden viele Suchoperatoren unterstützt
 

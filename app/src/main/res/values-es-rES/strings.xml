@@ -330,6 +330,7 @@
   <string name="duplicate_keywords_not_allowed">Palabra clave %s usada</string>
   <string name="no_states_defined">No hay estados definidos</string>
   <string name="book_name_in_search">Nombre de la nota en los resultados de busqueda</string>
+  <string name="display_notebook_name">Mostrar nombre de bloc de notas</string>
   <string name="display_inherited_tags_in_search_results">Tags heredadas en los resultados de búsqueda</string>
   <string name="display_inherited_tags_in_search_results_summary">Mostrar etiquetas heredadas en los resultados de la búsqueda</string>
   <string name="new_note_notification">Crear nota y sincronizar</string>
@@ -426,6 +427,8 @@
   <string name="drawers_folded_by_default_summary">Plegar cajones por defecto</string>
   <string name="log_on_time_shift">Registrar en menú cuando cambie el tiempo</string>
   <string name="log_on_time_shift_summary">Registrar tiempo al marcar nota con repetición como hecho</string>
+  <string name="set_last_repeat_on_time_shift">Poner propiedad al cambiar la hora</string>
+  <string name="set_last_repeat_on_time_shift_summary">Poner la hora cuando se marque como hecha una nota con repetición</string>
   <string name="background_opacity">Opacidad del fondo</string>
   <string name="update_frequency">Frecuencia de actualización</string>
   <string name="git">Git</string>

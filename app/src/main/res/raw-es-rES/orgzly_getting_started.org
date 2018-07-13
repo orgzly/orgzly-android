@@ -47,6 +47,14 @@ Enviar email a [[mailto:support@orgzly.com][support@orgzly.com]], visitar http:/
 
 Puede escribir palabras en *negrita*, /italica/, _subrarradas_, =literal=, ~código~ y +tachadas+.
 
+** Checkbox list is available
+
+- [X] Task 1
+- [ ] Task 2
+- [ ] Task 3
+
+Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
+
 * Buscar
 ** Existen muchos operadores de búsqueda soportados
 

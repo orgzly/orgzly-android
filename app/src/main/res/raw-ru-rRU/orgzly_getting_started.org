@@ -47,6 +47,14 @@ DEADLINE: <2015-02-20 Fri>
 
 Вы можете сделать текст *жирным*, /курсивным/, _подчеркнутым_, =выделенным=, ~моноширинным~ и +зачеркнутым+.
 
+** Checkbox list is available
+
+- [X] Task 1
+- [ ] Task 2
+- [ ] Task 3
+
+Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
+
 * Поиск
 ** Поддерживаются разнообразные критерии поиска
 

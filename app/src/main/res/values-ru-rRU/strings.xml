@@ -336,6 +336,7 @@
   <string name="duplicate_keywords_not_allowed">Ключевое слово %s уже используется</string>
   <string name="no_states_defined">Состояния не определены</string>
   <string name="book_name_in_search">Название блокнота в результатах поиска</string>
+  <string name="display_notebook_name">Display notebook name</string>
   <string name="display_inherited_tags_in_search_results">Унаследованные теги в поиске</string>
   <string name="display_inherited_tags_in_search_results_summary">Отображать теги в результатах поиска</string>
   <string name="new_note_notification">Создать заметку и синхронизировать</string>
@@ -438,6 +439,8 @@
   <string name="drawers_folded_by_default_summary">Сворачивать меню по умолчанию</string>
   <string name="log_on_time_shift">Логировать время завершения</string>
   <string name="log_on_time_shift_summary">Логировать время завершения повторяющихся заметок</string>
+  <string name="set_last_repeat_on_time_shift">Set property on time shift</string>
+  <string name="set_last_repeat_on_time_shift_summary">Set time when note with repeater is marked as done</string>
   <string name="background_opacity">Прозрачность фона</string>
   <string name="update_frequency">Частота обновления</string>
   <string name="git">Git</string>

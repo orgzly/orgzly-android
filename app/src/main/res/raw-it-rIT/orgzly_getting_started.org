@@ -47,6 +47,14 @@ Invia un'e-mail a [[mailto:support@orgzly.com][support@orgzly.com]], Visita http
 
 Puoi usare parole in *grassetto*, /corsivo/, _sottolineato_, =scandito=, ~tipo codice~ e +barrato+.
 
+** Checkbox list is available
+
+- [X] Task 1
+- [ ] Task 2
+- [ ] Task 3
+
+Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
+
 * Cerca
 ** Sono supportati molti diversi operatori di ricerca
 

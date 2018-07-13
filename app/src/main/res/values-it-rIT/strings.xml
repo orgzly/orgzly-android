@@ -330,6 +330,7 @@
   <string name="duplicate_keywords_not_allowed">La parola chiave %s è già stata usata</string>
   <string name="no_states_defined">Nessuno stato definito</string>
   <string name="book_name_in_search">Nome del taccuino nei risultati della ricerca</string>
+  <string name="display_notebook_name">Display notebook name</string>
   <string name="display_inherited_tags_in_search_results">Etichette ereditate nei risultati della ricerca</string>
   <string name="display_inherited_tags_in_search_results_summary">Mostra le etichette ereditate nei risultati della ricerca</string>
   <string name="new_note_notification">Crea una nota e sincronizza</string>
@@ -426,6 +427,8 @@
   <string name="drawers_folded_by_default_summary">Chiudi il menu di default</string>
   <string name="log_on_time_shift">Registra sul menu durante lo spostamento temporale</string>
   <string name="log_on_time_shift_summary">Registra l\'orario quando la nota con il ripetitore è segnata come completata</string>
+  <string name="set_last_repeat_on_time_shift">Set property on time shift</string>
+  <string name="set_last_repeat_on_time_shift_summary">Set time when note with repeater is marked as done</string>
   <string name="background_opacity">Opacità sfondo</string>
   <string name="update_frequency">Frequenza di aggiornamento</string>
   <string name="git">Git</string>

@@ -47,6 +47,14 @@ Vous pouvez également envoyer un courriel [[mailto:support@orgzly.com][support@
 
 Vous pouvez mettre les mots en *gras*, /italique/, _souligné_, =verbatim=, ~en code~ ou les +biffer+.
 
+** Checkbox list is available
+
+- [X] Task 1
+- [ ] Task 2
+- [ ] Task 3
+
+Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
+
 * Recherche
 ** Il y a beaucoup d’opérateurs de recherche supportés
 
