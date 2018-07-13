@@ -4,20 +4,25 @@ import android.content.pm.ActivityInfo;
 import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.DataInteraction;
+import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.action.CloseKeyboardAction;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
+import android.text.Spanned;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import com.orgzly.R;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 
 import static android.support.test.espresso.Espresso.onData;
@@ -268,6 +273,57 @@ class EspressoUtils {
             @Override
             public Matcher<View> getConstraints() {
                 return ViewMatchers.isAssignableFrom(NumberPicker.class);
+            }
+        };
+    }
+
+    public static ViewAction clickClickableSpan(final CharSequence textToClick) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return Matchers.instanceOf(TextView.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Click ClickableSpan";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                TextView textView = (TextView) view;
+                Spanned spannableString = (Spanned) textView.getText();
+
+                if (spannableString.length() == 0) {
+                    // TextView is empty, nothing to do
+                    throw new NoMatchingViewException.Builder()
+                            .includeViewHierarchy(true)
+                            .withRootView(textView)
+                            .build();
+                }
+
+                // Get the links inside the TextView and check if we find textToClick
+                ClickableSpan[] spans = spannableString.getSpans(0, spannableString.length(), ClickableSpan.class);
+                if (spans.length > 0) {
+                    ClickableSpan spanCandidate;
+                    for (ClickableSpan span : spans) {
+                        spanCandidate = span;
+                        int start = spannableString.getSpanStart(spanCandidate);
+                        int end = spannableString.getSpanEnd(spanCandidate);
+                        CharSequence sequence = spannableString.subSequence(start, end);
+                        if (textToClick.toString().equals(sequence.toString())) {
+                            span.onClick(textView);
+                            return;
+                        }
+                    }
+                }
+
+                // textToClick not found in TextView
+                throw new NoMatchingViewException.Builder()
+                        .includeViewHierarchy(true)
+                        .withRootView(textView)
+                        .build();
+
             }
         };
     }
