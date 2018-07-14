@@ -67,34 +67,40 @@ object OrgFormatter {
 
     private const val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 
-    data class SpanRegion(val start: Int, val end: Int, val content: CharSequence, val spans: List<Any?> = listOf())
+    private data class SpanRegion(
+            val start: Int,
+            val end: Int,
+            val content: CharSequence,
+            val spans: List<Any?> = listOf())
 
-    data class Config(val style: Boolean = true, val withMarks: Boolean = false, val linkify: Boolean = true, val foldDrawers: Boolean = true) {
-        constructor(context: Context, linkify: Boolean): this(
-                AppPreferences.styleText(context),
-                AppPreferences.styledTextWithMarks(context),
+    private data class Config(
+            val style: Boolean = true,
+            val withMarks: Boolean = false,
+            val foldDrawers: Boolean = true,
+            val linkify: Boolean = true,
+            val parseCheckboxes: Boolean = true) {
+
+        constructor(context: Context?, linkify: Boolean, parseCheckboxes: Boolean): this(
+                context != null && AppPreferences.styleText(context),
+                context != null && AppPreferences.styledTextWithMarks(context),
+                context != null && AppPreferences.drawersFolded(context),
                 linkify,
-                AppPreferences.drawersFolded(context))
+                parseCheckboxes)
     }
 
     @JvmStatic
     @JvmOverloads
-    fun parse(str: String, context: Context? = null, linkify: Boolean = true): SpannableStringBuilder {
-        val config = if (context == null) {
-            Config(linkify = linkify)
-        } else {
-            Config(context, linkify)
-        }
-
-        return this.parse(str, config)
+    fun parse(str: String, context: Context? = null, linkify: Boolean = true, parseCheckboxes: Boolean = true): SpannableStringBuilder {
+        return this.parse(str, Config(context, linkify, parseCheckboxes))
     }
 
     private fun parse(str: String, config: Config): SpannableStringBuilder {
         var ssb = SpannableStringBuilder(str)
 
-        // parseCheckboxes must be first, since checkboxes need to know
-        // their position in str
-        parseCheckboxes(ssb)
+        /* Must be first, since checkboxes need to know their position in str. */
+        if (config.parseCheckboxes) {
+            parseCheckboxes(ssb)
+        }
 
         ssb = parsePropertyLinks(ssb, CUSTOM_ID_LINK, "CUSTOM_ID", config.linkify)
         ssb = parsePropertyLinks(ssb, ID_LINK, "ID", config.linkify)

@@ -38,6 +38,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.clickClickableSpan;
 import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
 import static com.orgzly.android.espresso.EspressoUtils.isHighlighted;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
@@ -674,5 +675,17 @@ public class MiscTest extends OrgzlyTest {
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(allOf(withText("booky-one"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testCheckboxInTitle() {
+        shelfTestUtils.setupBook("book-name", "* - [ ] Checkbox");
+        activityRule.launchActivity(null);
+
+        onView(allOf(withText("book-name"), isDisplayed())).perform(click());
+
+        onListItem(0).onChildView(withId(R.id.item_head_title)).perform(clickClickableSpan("[ ]"));
+
+        onView(withId(R.id.fragment_note_container)).check(matches(isDisplayed()));
     }
 }

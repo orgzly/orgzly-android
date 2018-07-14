@@ -402,7 +402,8 @@ public class ReminderService extends JobIntentService {
             builder.setContentTitle(OrgFormatter.parse(
                     noteReminder.getPayload().title,
                     context,
-                    false // Do not linkify links in notification
+                    false, // Do not linkify links in notification,
+                    false // Do not parse checkboxes
             ));
 
             builder.setContentText(line);
