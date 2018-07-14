@@ -17,7 +17,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.clickClickableSpan;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
-import static org.hamcrest.CoreMatchers.containsString;
 
 public class InternalLinksTest extends OrgzlyTest {
     @Rule
@@ -61,17 +60,9 @@ public class InternalLinksTest extends OrgzlyTest {
     }
 
     @Test
-    public void testInternalLink() {
-        onListItem(0).perform(click());
-        onView(withText("#Link to note in a different book"))
-                .perform(clickClickableSpan("#Link to note in a different book"));
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-3]")));
-    }
-
-    @Test
     public void testDifferentCaseUuidInternalLink() {
         onListItem(0).perform(click());
-        onView(withText("id:bdce923b-C3CD-41ED-B58E-8BDF8BABA54F"))
+        onListItem(0).onChildView(withId(R.id.item_head_content))
                 .perform(clickClickableSpan("id:bdce923b-C3CD-41ED-B58E-8BDF8BABA54F"));
         onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-2]")));
     }
@@ -79,8 +70,16 @@ public class InternalLinksTest extends OrgzlyTest {
     @Test
     public void testDifferentCaseCustomIdInternalLink() {
         onListItem(0).perform(click());
-        onView(withText(containsString("#Different case custom id")))
+        onListItem(1).onChildView(withId(R.id.item_head_content))
                 .perform(clickClickableSpan("#Different case custom id"));
         onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-1]")));
+    }
+
+    @Test
+    public void testInternalLink() {
+        onListItem(0).perform(click());
+        onListItem(2).onChildView(withId(R.id.item_head_content))
+                .perform(clickClickableSpan("#Link to note in a different book"));
+        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-3]")));
     }
 }
