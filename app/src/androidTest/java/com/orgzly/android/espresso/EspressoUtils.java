@@ -9,10 +9,17 @@ import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.action.CloseKeyboardAction;
+import android.support.test.espresso.action.GeneralClickAction;
+import android.support.test.espresso.action.GeneralLocation;
+import android.support.test.espresso.action.Press;
+import android.support.test.espresso.action.Tap;
+import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
+import android.view.InputDevice;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.NumberPicker;
@@ -286,21 +293,13 @@ class EspressoUtils {
 
             @Override
             public String getDescription() {
-                return "Click ClickableSpan";
+                return "Click text";
             }
 
             @Override
             public void perform(UiController uiController, View view) {
                 TextView textView = (TextView) view;
                 Spanned spannableString = (Spanned) textView.getText();
-
-                if (spannableString.length() == 0) {
-                    // TextView is empty, nothing to do
-                    throw new NoMatchingViewException.Builder()
-                            .includeViewHierarchy(true)
-                            .withRootView(textView)
-                            .build();
-                }
 
                 // Get the links inside the TextView and check if we find textToClick
                 ClickableSpan[] spans = spannableString.getSpans(0, spannableString.length(), ClickableSpan.class);
@@ -318,12 +317,8 @@ class EspressoUtils {
                     }
                 }
 
-                // textToClick not found in TextView
-                throw new NoMatchingViewException.Builder()
-                        .includeViewHierarchy(true)
-                        .withRootView(textView)
-                        .build();
-
+                // Fall-back to just click the entire view
+                click().perform(uiController, view);
             }
         };
     }
