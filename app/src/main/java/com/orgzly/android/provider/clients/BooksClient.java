@@ -265,6 +265,16 @@ public class BooksClient {
                 ContentUris.withAppendedId(ProviderContract.Books.ContentUri.books(), book.getId()), values, null, null);
     }
 
+    public static int updatePreface(Context context, long bookId, String preface) {
+        ContentValues values = new ContentValues();
+
+        values.put(ProviderContract.Books.Param.PREFACE, preface);
+        values.put(ProviderContract.Books.Param.MTIME, System.currentTimeMillis());
+
+        return context.getContentResolver().update(
+                ContentUris.withAppendedId(ProviderContract.Books.ContentUri.books(), bookId), values, null, null);
+    }
+
     public static int setModificationTime(Context context, long id, long time) {
         ContentValues values = new ContentValues();
         values.put(ProviderContract.Books.Param.MTIME, time);

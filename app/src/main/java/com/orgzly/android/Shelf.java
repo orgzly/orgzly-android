@@ -643,6 +643,13 @@ public class Shelf {
         return BooksClient.updateSettings(mContext, book);
     }
 
+    public int updateBookPreface(long bookId, String preface) {
+        int result = BooksClient.updatePreface(mContext, bookId, preface);
+        notifyDataChanged(mContext);
+        syncOnNoteUpdate();
+        return result;
+    }
+
     public void renameBook(Book book, String name) throws IOException {
         String oldName = book.getName();
 
@@ -667,7 +674,7 @@ public class Shelf {
             }
         }
 
-         /* Prefer link. */
+        /* Prefer link. */
         if (book.getLastSyncedToRook() != null) {
             VersionedRook vrook = book.getLastSyncedToRook();
             Repo repo = RepoFactory.getFromUri(mContext, vrook.getRepoUri());

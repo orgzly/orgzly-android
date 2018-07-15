@@ -2,6 +2,7 @@ package com.orgzly.android.ui.fragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -28,6 +29,8 @@ import android.widget.ViewFlipper;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.ActionService;
+import com.orgzly.android.AppIntent;
 import com.orgzly.android.Book;
 import com.orgzly.android.BookUtils;
 import com.orgzly.android.prefs.AppPreferences;
@@ -201,6 +204,16 @@ public class BookFragment extends NoteListFragment
         if (getActivity() != null && AppPreferences.isFontMonospaced(getContext())) {
             mPrefaceText.setTypeface(Typeface.MONOSPACE);
         }
+
+        /* If preface changes (for example by toggling the checkbox), update it. */
+        mPrefaceText.setUserTextChangedListener(() ->
+                ActionService.Companion.enqueueWork(
+                        getActivity(),
+                        new Intent(getActivity(), ActionService.class)
+                                .setAction(AppIntent.ACTION_UPDATE_BOOK)
+                                .putExtra(AppIntent.EXTRA_BOOK_ID, mBookId)
+                                .putExtra(AppIntent.EXTRA_BOOK_PREFACE, mPrefaceText.getRawText())));
+
 
         mViewFlipper = (ViewFlipper) view.findViewById(R.id.fragment_book_view_flipper);
 
