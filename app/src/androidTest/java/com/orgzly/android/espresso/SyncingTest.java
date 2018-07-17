@@ -2,6 +2,7 @@ package com.orgzly.android.espresso;
 
 import android.content.Intent;
 import android.os.SystemClock;
+import android.support.test.espresso.matcher.PreferenceMatchers;
 import android.support.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
@@ -87,8 +88,10 @@ public class SyncingTest extends OrgzlyTest {
 
         // Set preference
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_AUTO_SYNC_TOGGLE);
-        EspressoUtils.tapLastSetting(EspressoUtils.SETTINGS_AUTO_SYNC_NOTE_CREATED);
+        onData(PreferenceMatchers.withTitle(R.string.sync)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.auto_sync_experimental)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.auto_sync)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.pref_title_sync_after_note_create)).perform(click());
         pressBack();
         pressBack();
         pressBack();
@@ -484,7 +487,8 @@ public class SyncingTest extends OrgzlyTest {
 
         /* Rename repository. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_REPOS);
+        onData(PreferenceMatchers.withTitle(R.string.sync)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.repos_preference_title)).perform(click());
         onListItem(0).perform(click());
         onView(withId(R.id.activity_repo_dropbox_directory)).perform(replaceText("repo-b"));
         onActionItemClick(R.id.done, R.string.done);
@@ -525,7 +529,8 @@ public class SyncingTest extends OrgzlyTest {
 
         /* Rename all repositories. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_REPOS);
+        onData(PreferenceMatchers.withTitle(R.string.sync)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.repos_preference_title)).perform(click());
         onListItem(0).perform(click());
         onView(withId(R.id.activity_repo_dropbox_directory)).perform(replaceText("repo-1"));
         onActionItemClick(R.id.done, R.string.done);

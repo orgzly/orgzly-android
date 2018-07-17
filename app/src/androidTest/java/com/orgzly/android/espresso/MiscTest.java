@@ -1,6 +1,7 @@
 package com.orgzly.android.espresso;
 
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.matcher.PreferenceMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.text.format.DateFormat;
@@ -22,6 +23,7 @@ import org.junit.runner.RunWith;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -123,7 +125,8 @@ public class MiscTest extends OrgzlyTest {
         onView(allOf(withText("book-two"), isDisplayed())).perform(click());
         onView(withText("Note #2.")).perform(click());
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CLEAR_DATABASE);
+        onData(PreferenceMatchers.withTitle(R.string.app)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.clear_database)).perform(click());
         onView(withText(R.string.ok)).perform(click());
         pressBack();
         pressBack();

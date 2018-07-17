@@ -1,6 +1,7 @@
 package com.orgzly.android.espresso;
 
 import android.support.test.espresso.contrib.PickerActions;
+import android.support.test.espresso.matcher.PreferenceMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -316,7 +317,8 @@ public class NoteFragmentTest extends OrgzlyTest {
 
         /* Change lowest priority to A. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_LOWEST_PRIORITY);
+        onData(PreferenceMatchers.withTitle(R.string.pref_title_notebooks)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.lowest_priority)).perform(click());
         onData(hasToString(containsString("A"))).perform(click());
         pressBack();
         pressBack();
@@ -327,7 +329,8 @@ public class NoteFragmentTest extends OrgzlyTest {
 
         /* Change lowest priority to C. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_LOWEST_PRIORITY);
+        onData(PreferenceMatchers.withTitle(R.string.pref_title_notebooks)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.lowest_priority)).perform(click());
         onData(hasToString(containsString("C"))).perform(click());
         pressBack();
         pressBack();

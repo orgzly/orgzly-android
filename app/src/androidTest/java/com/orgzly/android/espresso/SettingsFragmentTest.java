@@ -1,5 +1,6 @@
 package com.orgzly.android.espresso;
 
+import android.support.test.espresso.matcher.PreferenceMatchers;
 import android.support.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
@@ -45,15 +46,16 @@ public class SettingsFragmentTest extends OrgzlyTest {
     @Test
     public void testImportingGettingStartedFromGettingStartedNotebook() {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-
-        EspressoUtils.tapToSetting(EspressoUtils.IMPORT_GETTING_STARTED);
+        onData(PreferenceMatchers.withTitle(R.string.app)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.reload_getting_started)).perform(click());
         pressBack();
         pressBack();
         onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
         onView(allOf(withText("Getting Started with Orgzly"), isDisplayed())).perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.IMPORT_GETTING_STARTED);
+        onData(PreferenceMatchers.withTitle(R.string.app)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.reload_getting_started)).perform(click());
         pressBack();
         pressBack();
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
@@ -65,14 +67,15 @@ public class SettingsFragmentTest extends OrgzlyTest {
     public void testAddingNewTodoKeywordInSettingsAndChangingStateToItForNewNote() {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
 
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_STATE_KEYWORDS);
+        onData(PreferenceMatchers.withTitle(R.string.pref_title_notebooks)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.states)).perform(click());
 
         onView(withId(R.id.todo_states)).perform(replaceText("TODO XXX YYY ZZZ"));
 
         onView(withText(R.string.ok)).perform(click());
         onView(withText(R.string.not_now)).perform(click());
 
-        EspressoUtils.tapLastSetting(EspressoUtils.SETTINGS_NEW_NOTE_STATE);
+        onData(PreferenceMatchers.withTitle(R.string.state)).perform(click());
 
         onData(hasToString(containsString("ZZZ"))).perform(click());
     }
@@ -81,13 +84,14 @@ public class SettingsFragmentTest extends OrgzlyTest {
     public void testAddingNewTodoKeywordInSettingsNewNoteShouldHaveDefaultState() {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
 
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_STATE_KEYWORDS);
+        onData(PreferenceMatchers.withTitle(R.string.pref_title_notebooks)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.states)).perform(click());
 
         onView(withId(R.id.todo_states)).perform(replaceText("TODO ZZZ"), closeSoftKeyboardWithDelay());
         onView(withText(R.string.ok)).perform(click());
         onView(withText(R.string.not_now)).perform(click());
 
-        EspressoUtils.tapLastSetting(EspressoUtils.SETTINGS_NEW_NOTE_STATE);
+        onData(PreferenceMatchers.withTitle(R.string.state)).perform(click());
 
         onData(hasToString(containsString("NOTE"))).perform(click());
     }
@@ -97,7 +101,8 @@ public class SettingsFragmentTest extends OrgzlyTest {
         AppPreferences.states(context, "|");
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
 
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_STATE_KEYWORDS);
+        onData(PreferenceMatchers.withTitle(R.string.pref_title_notebooks)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.states)).perform(click());
         onView(withId(R.id.todo_states)).perform(replaceText("TODO"));
         onView(withText(R.string.ok)).perform(click());
         onView(withText(R.string.not_now)).perform(click());
@@ -110,7 +115,8 @@ public class SettingsFragmentTest extends OrgzlyTest {
         AppPreferences.newNoteState(context, "YYY");
 
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_NEW_NOTE_STATE);
+        onData(PreferenceMatchers.withTitle(R.string.pref_title_notebooks)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.state)).perform(click());
 
         onView(withText("YYY")).check(matches(isDisplayed()));
     }
@@ -121,7 +127,8 @@ public class SettingsFragmentTest extends OrgzlyTest {
         AppPreferences.newNoteState(context, "YYY");
 
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_NEW_NOTE_STATE);
+        onData(PreferenceMatchers.withTitle(R.string.pref_title_notebooks)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.state)).perform(click());
 
         onData(hasToString(containsString("YYY"))).perform(click());
     }
@@ -132,10 +139,13 @@ public class SettingsFragmentTest extends OrgzlyTest {
         AppPreferences.minPriority(context, "E");
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
 
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_LOWEST_PRIORITY);
+        onData(PreferenceMatchers.withTitle(R.string.pref_title_notebooks)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.lowest_priority)).perform(click());
         onData(hasToString(containsString("B"))).perform(click());
 
-        onView(allOf(withText(R.string.default_priority), hasSibling(withText("B")))).check(matches(isDisplayed()));
+        onData(PreferenceMatchers.withTitle(R.string.default_priority))
+                .onChildView(withText("B"))
+                .check(matches(isDisplayed()));
     }
 
     @Test
@@ -144,9 +154,12 @@ public class SettingsFragmentTest extends OrgzlyTest {
         AppPreferences.minPriority(context, "E");
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
 
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_DEFAULT_PRIORITY);
+        onData(PreferenceMatchers.withTitle(R.string.pref_title_notebooks)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.default_priority)).perform(click());
         onData(hasToString(containsString("X"))).perform(click());
 
-        onView(allOf(withText(R.string.lowest_priority), hasSibling(withText("X")))).check(matches(isDisplayed()));
+        onData(PreferenceMatchers.withTitle(R.string.lowest_priority))
+                .onChildView(withText("X"))
+                .check(matches(isDisplayed()));
     }
 }

@@ -1,5 +1,6 @@
 package com.orgzly.android.espresso;
 
+import android.support.test.espresso.matcher.PreferenceMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.widget.EditText;
 
@@ -11,6 +12,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -124,7 +126,8 @@ public class CreatedAtTest extends OrgzlyTest {
 
     private void enableCreatedAt() {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CREATED_AT);
+        onData(PreferenceMatchers.withTitle(R.string.sync)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.use_created_at_property)).perform(click());
         onView(withText(R.string.yes)).perform(click());
         pressBack();
         pressBack();
@@ -132,7 +135,8 @@ public class CreatedAtTest extends OrgzlyTest {
 
     private void changeCreatedAtProperty(String propName) {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_CREATED_AT_PROPERTY);
+        onData(PreferenceMatchers.withTitle(R.string.sync)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.created_at_property)).perform(click());
         onView(instanceOf(EditText.class)).perform(replaceText(propName), closeSoftKeyboardWithDelay());
         onView(withText(R.string.ok)).perform(click());
         onView(withText(R.string.yes)).perform(click());

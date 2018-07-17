@@ -8,6 +8,7 @@ import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.action.CloseKeyboardAction;
+import android.support.test.espresso.matcher.PreferenceMatchers;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.text.Spanned;
@@ -54,34 +55,6 @@ import static org.hamcrest.Matchers.not;
  * - replaceText() is preferred over typeText() as it is much faster.
  */
 class EspressoUtils {
-    static final int[] SETTINGS_REVERSED_NOTE_CLICK_ACTION = { 0, 0 };
-
-    static final int[] SETTINGS_DISPLAY_CONTENT = { 1, 10 };
-    static final int[] SETTINGS_STATE_KEYWORDS = { 1, 16 };
-    static final int[] SETTINGS_DEFAULT_PRIORITY = { 1, 17 };
-    static final int[] SETTINGS_LOWEST_PRIORITY = { 1, 18 };
-    static final int[] SETTINGS_NEW_NOTE_STATE = { 1, 24 };
-
-    static final int[] SETTINGS_REPOS = { 4, 0 };
-    static final int[] SETTINGS_AUTO_SYNC_TOGGLE = { 4, 1, 1 };
-    static final int[] SETTINGS_AUTO_SYNC_NOTE_CREATED = { 4, 1, 2 };
-    static final int[] SETTINGS_CREATED_AT = { 4, 3 };
-    static final int[] SETTINGS_CREATED_AT_PROPERTY = { 4, 4 };
-
-    static final int[] IMPORT_GETTING_STARTED = { 6, 0 };
-    static final int[] SETTINGS_CLEAR_DATABASE = { 6, 1 };
-
-
-    static void tapToSetting(int[] setting) {
-        for (int s: setting) {
-            onListItem(s).perform(click());
-        }
-    }
-
-    static void tapLastSetting(int[] setting) {
-        onListItem(setting[setting.length-1]).perform(click());
-    }
-
     static ViewInteraction onList() {
         return onView(allOf(isAssignableFrom(ListView.class), isDisplayed()));
     }
@@ -181,7 +154,8 @@ class EspressoUtils {
     private static void settingsSetKeywords(int viewId, String keywords) {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
 
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_STATE_KEYWORDS);
+        onData(PreferenceMatchers.withTitle(R.string.pref_title_notebooks)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.states)).perform(click());
 
         onView(withId(viewId)).perform(replaceText(keywords), closeSoftKeyboardWithDelay());
         onView(withText(R.string.ok)).perform(click());

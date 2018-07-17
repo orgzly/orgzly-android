@@ -1,5 +1,6 @@
 package com.orgzly.android.espresso;
 
+import android.support.test.espresso.matcher.PreferenceMatchers;
 import android.support.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
@@ -10,6 +11,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -117,7 +119,8 @@ public class ActionModeTest extends OrgzlyTest {
     @Test
     public void testSelectingNoteThenOpeningNoteAndGoingBack() {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        EspressoUtils.tapToSetting(EspressoUtils.SETTINGS_REVERSED_NOTE_CLICK_ACTION);
+        onData(PreferenceMatchers.withTitle(R.string.look_and_feel)).perform(click());
+        onData(PreferenceMatchers.withTitle(R.string.reversed_note_click_action)).perform(click());
         pressBack();
         pressBack();
         onListItem(3).perform(click()); // Select note
