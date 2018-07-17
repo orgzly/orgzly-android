@@ -540,15 +540,32 @@ public class AppPreferences {
      * Note's metadata visibility
      */
 
-    public static boolean isNoteMetadataVisible(Context context) {
-        return getDefaultSharedPreferences(context).getBoolean(
-                context.getResources().getString(R.string.pref_key_is_note_metadata_visible),
-                context.getResources().getBoolean(R.bool.pref_default_is_note_metadata_visible));
+    public static String noteMetadataVisibility(Context context) {
+        return getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_note_metadata_visibility),
+                context.getResources().getString(R.string.pref_default_note_metadata_visibility));
     }
 
-    public static void isNoteMetadataVisible(Context context, boolean value) {
-        String key = context.getResources().getString(R.string.pref_key_is_note_metadata_visible);
+    public static void noteMetadataVisibility(Context context, String value) {
+        String key = context.getResources().getString(R.string.pref_key_note_metadata_visibility);
+        getDefaultSharedPreferences(context).edit().putString(key, value).apply();
+    }
+
+    public static boolean alwaysShowSetNoteMetadata(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_always_show_set_note_metadata),
+                context.getResources().getBoolean(R.bool.pref_default_always_show_set_note_metadata));
+    }
+
+    public static void alwaysShowSetNoteMetadata(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_always_show_set_note_metadata);
         getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
+
+    public static Set<String> selectedNoteMetadata(Context context) {
+        return getDefaultSharedPreferences(context).getStringSet(
+                context.getResources().getString(R.string.pref_key_selected_note_metadata),
+                new HashSet<>(Arrays.asList(context.getResources().getStringArray(R.array.pref_default_selected_note_metadata))));
     }
 
     /*

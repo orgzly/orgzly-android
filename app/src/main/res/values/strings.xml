@@ -268,6 +268,7 @@
 
     <string name="created_at_property">Created-at property</string>
 
+    <string name="properties">Properties</string>
     <string name="property_name">Property name</string>
     <string name="property_value">Property value</string>
 
@@ -526,5 +527,11 @@
     <string name="background_opacity">Background opacity</string>
     <string name="update_frequency">Update frequency</string>
     <string name="git">Git</string>
+    <string name="metadata">Metadata</string>
+    <string name="selected_metadata_summary">Metadata you can choose to always display in note</string>
+    <string name="show_all">Show all</string>
+    <string name="always_show_set">Always show set</string>
+    <string name="show_selected">Show selected</string>
+    <string name="hide_all">Hide all</string>
 
 </resources>

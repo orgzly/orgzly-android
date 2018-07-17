@@ -8,24 +8,42 @@
         android:id="@+id/close"
         android:icon="?attr/ic_close_24dp"
         app:showAsAction="always"
-        android:title="@string/close"/>
+        android:title="@string/close" />
 
     <item
         android:id="@+id/done"
         android:icon="?attr/ic_done_24dp"
         app:showAsAction="always"
-        android:title="@string/done"/>
+        android:title="@string/done" />
 
     <item
         android:id="@+id/hide_metadata"
         android:icon="?attr/ic_unfold_more_24dp"
         app:showAsAction="never"
-        android:title="@string/hide_note_metadata"
-        android:checkable="true"/>
+        android:title="@string/metadata">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/metadata_show_all"
+                    android:title="@string/show_all" />
+                <item
+                    android:id="@+id/metadata_show_selected"
+                    android:title="@string/show_selected" />
+                <item
+                    android:id="@+id/metadata_show_none"
+                    android:title="@string/hide_all" />
+            </group>
+
+            <item
+                android:id="@+id/metadata_always_show_set"
+                android:title="@string/always_show_set"
+                android:checkable="true" />
+        </menu>
+    </item>
 
     <item
         android:id="@+id/delete"
         android:icon="?attr/ic_delete_24dp"
         app:showAsAction="never"
-        android:title="@string/delete"/>
+        android:title="@string/delete" />
 </menu>

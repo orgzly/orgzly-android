@@ -67,13 +67,16 @@
 
             <!-- Metadata -->
             <LinearLayout
-                android:id="@+id/fragment_note_metadata"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:animateLayoutChanges="true">
 
                 <!-- Tags. -->
-                <LinearLayout style="@style/NoteFragmentListItem">
+                <LinearLayout
+                    android:id="@+id/fragment_note_tags_container"
+                    style="@style/NoteFragmentListItem">
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -96,7 +99,10 @@
                 </LinearLayout>
 
                 <!-- State -->
-                <LinearLayout style="@style/NoteFragmentListItem">
+                <LinearLayout
+                    android:id="@+id/fragment_note_state_container"
+                    style="@style/NoteFragmentListItem">
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -110,7 +116,10 @@
                 </LinearLayout>
 
                 <!-- Priority -->
-                <LinearLayout style="@style/NoteFragmentListItem">
+                <LinearLayout
+                    android:id="@+id/fragment_note_priority_container"
+                    style="@style/NoteFragmentListItem">
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -124,7 +133,10 @@
                 </LinearLayout>
 
                 <!-- Scheduled time -->
-                <LinearLayout style="@style/NoteFragmentListItem">
+                <LinearLayout
+                    android:id="@+id/fragment_note_scheduled_time_container"
+                    style="@style/NoteFragmentListItem">
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -137,7 +149,10 @@
                 </LinearLayout>
 
                 <!-- Deadline time -->
-                <LinearLayout style="@style/NoteFragmentListItem">
+                <LinearLayout
+                    android:id="@+id/fragment_note_deadline_time_container"
+                    style="@style/NoteFragmentListItem">
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -152,8 +167,9 @@
 
                 <!-- Closed time -->
                 <LinearLayout
-                    android:id="@+id/fragment_note_closed"
+                    android:id="@+id/fragment_note_closed_time_container"
                     style="@style/NoteFragmentListItem">
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -167,7 +183,7 @@
 
                 <!-- List of properties -->
                 <LinearLayout
-                    android:id="@+id/property_list"
+                    android:id="@+id/note_fragment_properties_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">

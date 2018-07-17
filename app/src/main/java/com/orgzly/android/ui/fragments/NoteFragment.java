@@ -121,20 +121,25 @@ public class NoteFragment extends Fragment
     private TextView locationView;
     private TextView locationButtonView;
 
-    private ViewGroup metadata;
-
+    private View tagsContainer;
     private MultiAutoCompleteTextView tagsView;
 
+    private View stateContainer;
     private TextView state;
+
+    private View priorityContainer;
     private TextView priority;
 
+    private View scheduledTimeContainer;
     private TextView scheduledButton;
+
+    private View deadlineTimeContainer;
     private TextView deadlineButton;
 
-    private ViewGroup closed;
+    private ViewGroup closedTimeContainer;
     private TextView closedText;
 
-    private LinearLayout propertyList;
+    private LinearLayout propertiesContainer;
 
     private ToggleButton editSwitch;
     private EditText bodyEdit;
@@ -257,8 +262,7 @@ public class NoteFragment extends Fragment
             locationButtonView.setVisibility(View.GONE);
         }
 
-        metadata = top.findViewById(R.id.fragment_note_metadata);
-        setMetadataVisibility(AppPreferences.isNoteMetadataVisible(getContext()));
+        tagsContainer = top.findViewById(R.id.fragment_note_tags_container);
 
         tagsView = top.findViewById(R.id.fragment_note_tags);
 
@@ -288,23 +292,27 @@ public class NoteFragment extends Fragment
             }
         });
 
+        priorityContainer = top.findViewById(R.id.fragment_note_priority_container);
         priority = top.findViewById(R.id.fragment_note_priority_button);
         priority.setOnClickListener(this);
 
+        stateContainer = top.findViewById(R.id.fragment_note_state_container);
         state = top.findViewById(R.id.fragment_note_state_button);
         state.setOnClickListener(this);
 
+        scheduledTimeContainer = top.findViewById(R.id.fragment_note_scheduled_time_container);
         scheduledButton = top.findViewById(R.id.fragment_note_scheduled_button);
         scheduledButton.setOnClickListener(this);
 
+        deadlineTimeContainer = top.findViewById(R.id.fragment_note_deadline_time_container);
         deadlineButton = top.findViewById(R.id.fragment_note_deadline_button);
         deadlineButton.setOnClickListener(this);
 
-        closed = top.findViewById(R.id.fragment_note_closed);
+        closedTimeContainer = top.findViewById(R.id.fragment_note_closed_time_container);
         closedText = top.findViewById(R.id.fragment_note_closed_edit_text);
         closedText.setOnClickListener(this);
 
-        propertyList = top.findViewById(R.id.property_list);
+        propertiesContainer = top.findViewById(R.id.note_fragment_properties_container);
 
         bodyEdit = top.findViewById(R.id.body_edit);
 
@@ -391,6 +399,8 @@ public class NoteFragment extends Fragment
         });
 
         mViewFlipper = top.findViewById(R.id.fragment_note_view_flipper);
+
+        setMetadataVisibility();
 
         return top;
     }
@@ -509,7 +519,7 @@ public class NoteFragment extends Fragment
         updateTimestampView(TimeType.CLOSED, head.getClosed());
 
         /* Properties. */
-        propertyList.removeAllViews();
+        propertiesContainer.removeAllViews();
         if (head.hasProperties()) {
             OrgProperties properties = head.getProperties();
             for (String name: properties.keySet()) {
@@ -525,9 +535,9 @@ public class NoteFragment extends Fragment
     }
 
     private void addPropertyToList(String propName, String propValue) {
-        View.inflate(getActivity(), R.layout.fragment_note_property, propertyList);
+        View.inflate(getActivity(), R.layout.fragment_note_property, propertiesContainer);
 
-        final ViewGroup propView = (ViewGroup) propertyList.getChildAt(propertyList.getChildCount() - 1);
+        final ViewGroup propView = (ViewGroup) propertiesContainer.getChildAt(propertiesContainer.getChildCount() - 1);
 
         final EditText name  = propView.findViewById(R.id.name);
         final EditText value = propView.findViewById(R.id.value);
@@ -543,7 +553,7 @@ public class NoteFragment extends Fragment
                 name.setText(null);
                 value.setText(null);
             } else {
-                propertyList.removeView(propView);
+                propertiesContainer.removeView(propView);
             }
         });
 
@@ -572,11 +582,11 @@ public class NoteFragment extends Fragment
     }
 
     private boolean isLastProperty(View view) {
-        return propertyList.getChildAt(propertyList.getChildCount() - 1) == view;
+        return propertiesContainer.getChildAt(propertiesContainer.getChildCount() - 1) == view;
     }
 
     private boolean isOnlyProperty(View view) {
-        return propertyList.getChildCount() == 1 && propertyList.getChildAt(0) == view;
+        return propertiesContainer.getChildCount() == 1 && propertiesContainer.getChildAt(0) == view;
     }
 
     /**
@@ -596,8 +606,8 @@ public class NoteFragment extends Fragment
 
         /* Add properties. */
         head.removeProperties();
-        for (int i = 0; i < propertyList.getChildCount(); i++){
-            View property = propertyList.getChildAt(i);
+        for (int i = 0; i < propertiesContainer.getChildCount(); i++) {
+            View property = propertiesContainer.getChildAt(i);
 
             CharSequence name = ((TextView) property.findViewById(R.id.name)).getText();
             CharSequence value = ((TextView) property.findViewById(R.id.value)).getText();
@@ -879,9 +889,9 @@ public class NoteFragment extends Fragment
                  */
                 if (range != null) {
                     closedText.setText(mUserTimeFormatter.formatAll(range));
-                    closed.setVisibility(View.VISIBLE);
+                    closedTimeContainer.setVisibility(View.VISIBLE);
                 } else {
-                    closed.setVisibility(View.GONE);
+                    closedTimeContainer.setVisibility(View.GONE);
                 }
                 break;
         }
@@ -1183,9 +1193,20 @@ public class NoteFragment extends Fragment
             menu.removeItem(R.id.delete);
 
         } else {
-            MenuItem hideMetadata = menu.findItem(R.id.hide_metadata);
-            if (hideMetadata != null) {
-                hideMetadata.setChecked(!AppPreferences.isNoteMetadataVisible(getContext()));
+            String metadataVisibility = AppPreferences.noteMetadataVisibility(getContext());
+
+            if ("all".equals(metadataVisibility)) {
+                MenuItem item = menu.findItem(R.id.metadata_show_all);
+                item.setChecked(true);
+            } else if ("none".equals(metadataVisibility)) {
+                MenuItem item = menu.findItem(R.id.metadata_show_none);
+                item.setChecked(true);
+            } else if ("set".equals(metadataVisibility)) {
+                MenuItem item = menu.findItem(R.id.metadata_always_show_set);
+                item.setChecked(true);
+            } else {
+                MenuItem item = menu.findItem(R.id.metadata_show_selected);
+                item.setChecked(true);
             }
         }
 
@@ -1210,10 +1231,28 @@ public class NoteFragment extends Fragment
                 }
                 return true;
 
-            case R.id.hide_metadata:
-                item.setChecked(!item.isChecked()); // Toggle
-                AppPreferences.isNoteMetadataVisible(getContext(), !item.isChecked());
-                setMetadataVisibility(!item.isChecked());
+            case R.id.metadata_show_all:
+                item.setChecked(true);
+                AppPreferences.noteMetadataVisibility(getContext(), "all");
+                setMetadataVisibility();
+                return true;
+
+            case R.id.metadata_show_selected:
+                item.setChecked(true);
+                AppPreferences.noteMetadataVisibility(getContext(), "selected");
+                setMetadataVisibility();
+                return true;
+
+            case R.id.metadata_show_none:
+                item.setChecked(true);
+                AppPreferences.noteMetadataVisibility(getContext(), "none");
+                setMetadataVisibility();
+                return true;
+
+            case R.id.metadata_always_show_set:
+                item.setChecked(!item.isChecked());
+                AppPreferences.alwaysShowSetNoteMetadata(getContext(), item.isChecked());
+                setMetadataVisibility();
                 return true;
 
             case R.id.delete:
@@ -1225,8 +1264,52 @@ public class NoteFragment extends Fragment
         }
     }
 
-    private void setMetadataVisibility(boolean visible) {
-        metadata.setVisibility(visible ? View.VISIBLE : View.GONE);
+    private void setMetadataVisibility() {
+            setMetadataVisibility(
+                    "tags",
+                    tagsContainer,
+                    !TextUtils.isEmpty(tagsView.getText()));
+
+            setMetadataVisibility(
+                    "state",
+                    stateContainer,
+                    !TextUtils.isEmpty(state.getText()));
+
+            setMetadataVisibility(
+                    "priority",
+                    priorityContainer,
+                    !TextUtils.isEmpty(priority.getText()));
+
+            setMetadataVisibility(
+                    "scheduled_time",
+                    scheduledTimeContainer,
+                    !TextUtils.isEmpty(scheduledButton.getText()));
+
+            setMetadataVisibility(
+                    "deadline_time",
+                    deadlineTimeContainer,
+                    !TextUtils.isEmpty(deadlineButton.getText()));
+
+            setMetadataVisibility(
+                    "properties",
+                    propertiesContainer,
+                    propertiesContainer.getChildCount() > 1);
+    }
+
+    private void setMetadataVisibility(String name, View container, boolean isSet) {
+        Context context = getContext();
+
+        if (context != null) {
+            String visibility = AppPreferences.noteMetadataVisibility(context);
+            Set<String> selected = AppPreferences.selectedNoteMetadata(context);
+            boolean showSet = AppPreferences.alwaysShowSetNoteMetadata(context);
+
+            boolean isVisible = "all".equals(visibility)
+                                || ("selected".equals(visibility) && selected.contains(name))
+                                || (showSet && isSet);
+
+            container.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        }
     }
 
     private void delete() {

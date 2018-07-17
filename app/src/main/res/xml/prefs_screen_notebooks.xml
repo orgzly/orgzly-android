@@ -121,6 +121,15 @@
             android:entryValues="@array/priority_values"
             android:defaultValue="@string/pref_default_min_priority"/>
 
+        <MultiSelectListPreference
+            android:key="@string/pref_key_selected_note_metadata"
+            android:title="@string/metadata"
+            android:dialogTitle="@string/metadata"
+            android:summary="@string/selected_metadata_summary"
+            android:entries="@array/note_metadata"
+            android:entryValues="@array/note_metadata_values"
+            android:defaultValue="@array/pref_default_selected_note_metadata"/>
+
         <SwitchPreference
             android:key="@string/pref_key_drawers_folded"
             android:title="@string/drawers_folded_by_default"
