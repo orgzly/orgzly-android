@@ -311,10 +311,6 @@ public class ShareActivity extends CommonActivity
     }
 
     @Override
-    public void onNoteUpdated(Note note) {
-    }
-
-    @Override
     public void onNoteUpdatingFailed(Note note) {
     }
 
@@ -324,14 +320,6 @@ public class ShareActivity extends CommonActivity
 
     @Override
     public void onNotesCut(int count) {
-    }
-
-    @Override
-    public void onNotesMoved(int result) {
-    }
-
-    @Override
-    public void onNotesRefiled(int result) {
     }
 
     @Override

@@ -697,10 +697,6 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onNoteUpdated(Note note) {
-    }
-
-    @Override
     public void onNoteUpdatingFailed(Note note) {
         showSimpleSnackbarLong(R.string.message_failed_updating_note);
     }
@@ -1118,14 +1114,6 @@ public class MainActivity extends CommonActivity
     @Override
     public void onNotesRefileRequest(long sourceBookId, Set<Long> noteIds, long targetBookId) {
         mSyncFragment.refileNotes(sourceBookId, noteIds, targetBookId);
-    }
-
-    @Override
-    public void onNotesMoved(int count) {
-    }
-
-    @Override
-    public void onNotesRefiled(int count) {
     }
 
     @Override

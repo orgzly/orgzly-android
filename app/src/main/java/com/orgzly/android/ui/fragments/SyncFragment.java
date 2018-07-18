@@ -899,9 +899,7 @@ public class SyncFragment extends Fragment {
             @Override
             protected void onPostExecute(Integer noOfUpdated) {
                 if (mListener != null) {
-                    if (noOfUpdated == 1) {
-                        mListener.onNoteUpdated(note);
-                    } else {
+                    if (noOfUpdated != 1) {
                         mListener.onNoteUpdatingFailed(note);
                     }
                 }
@@ -1011,11 +1009,6 @@ public class SyncFragment extends Fragment {
             protected Integer doInBackground(Void... voids) {
                 return mShelf.move(bookId, noteId, offset);
             }
-
-            @Override
-            protected void onPostExecute(Integer result) {
-                mListener.onNotesMoved(result);
-            }
         }.execute();
     }
 
@@ -1026,11 +1019,6 @@ public class SyncFragment extends Fragment {
             @Override
             protected Integer doInBackground(Void... voids) {
                 return mShelf.refile(sourceBookId, noteIds, targetBookId);
-            }
-
-            @Override
-            protected void onPostExecute(Integer result) {
-                mListener.onNotesRefiled(result);
             }
         }.execute();
     }
@@ -1056,14 +1044,10 @@ public class SyncFragment extends Fragment {
         void onNoteCreated(Note note);
         void onNoteCreatingFailed();
 
-        void onNoteUpdated(Note note);
         void onNoteUpdatingFailed(Note note);
 
         void onNotesDeleted(int count);
         void onNotesCut(int count);
-
-        void onNotesMoved(int result);
-        void onNotesRefiled(int result);
 
         void onFailure(String message);
     }
