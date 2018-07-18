@@ -312,7 +312,7 @@ public class NoteFragment extends Fragment
         closedText = top.findViewById(R.id.fragment_note_closed_edit_text);
         closedText.setOnClickListener(this);
 
-        propertiesContainer = top.findViewById(R.id.note_fragment_properties_container);
+        propertiesContainer = top.findViewById(R.id.fragment_note_properties_container);
 
         bodyEdit = top.findViewById(R.id.body_edit);
 
@@ -399,8 +399,6 @@ public class NoteFragment extends Fragment
         });
 
         mViewFlipper = top.findViewById(R.id.fragment_note_view_flipper);
-
-        setMetadataVisibility();
 
         return top;
     }
@@ -537,7 +535,7 @@ public class NoteFragment extends Fragment
     private void addPropertyToList(String propName, String propValue) {
         View.inflate(getActivity(), R.layout.fragment_note_property, propertiesContainer);
 
-        final ViewGroup propView = (ViewGroup) propertiesContainer.getChildAt(propertiesContainer.getChildCount() - 1);
+        final ViewGroup propView = lastProperty();
 
         final EditText name  = propView.findViewById(R.id.name);
         final EditText value = propView.findViewById(R.id.value);
@@ -558,7 +556,7 @@ public class NoteFragment extends Fragment
         });
 
         /*
-         * Add new empty property is last one is being edited.
+         * Add new empty property if last one is being edited.
          */
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -582,11 +580,15 @@ public class NoteFragment extends Fragment
     }
 
     private boolean isLastProperty(View view) {
-        return propertiesContainer.getChildAt(propertiesContainer.getChildCount() - 1) == view;
+        return lastProperty() == view;
     }
 
     private boolean isOnlyProperty(View view) {
         return propertiesContainer.getChildCount() == 1 && propertiesContainer.getChildAt(0) == view;
+    }
+
+    private ViewGroup lastProperty() {
+        return (ViewGroup) propertiesContainer.getChildAt(propertiesContainer.getChildCount() - 1);
     }
 
     /**
@@ -721,6 +723,8 @@ public class NoteFragment extends Fragment
         super.onResume();
 
         announceChangesToActivity();
+
+        setMetadataVisibility();
     }
 
     private void announceChangesToActivity() {
@@ -1196,18 +1200,15 @@ public class NoteFragment extends Fragment
             String metadataVisibility = AppPreferences.noteMetadataVisibility(getContext());
 
             if ("all".equals(metadataVisibility)) {
-                MenuItem item = menu.findItem(R.id.metadata_show_all);
-                item.setChecked(true);
+                menu.findItem(R.id.metadata_show_all).setChecked(true);
             } else if ("none".equals(metadataVisibility)) {
-                MenuItem item = menu.findItem(R.id.metadata_show_none);
-                item.setChecked(true);
-            } else if ("set".equals(metadataVisibility)) {
-                MenuItem item = menu.findItem(R.id.metadata_always_show_set);
-                item.setChecked(true);
+                menu.findItem(R.id.metadata_show_none).setChecked(true);
             } else {
-                MenuItem item = menu.findItem(R.id.metadata_show_selected);
-                item.setChecked(true);
+                menu.findItem(R.id.metadata_show_selected).setChecked(true);
             }
+
+            menu.findItem(R.id.metadata_always_show_set)
+                    .setChecked(AppPreferences.alwaysShowSetNoteMetadata(getContext()));
         }
 
         /* Newly created note cannot be deleted. */
@@ -1265,35 +1266,40 @@ public class NoteFragment extends Fragment
     }
 
     private void setMetadataVisibility() {
-            setMetadataVisibility(
-                    "tags",
-                    tagsContainer,
-                    !TextUtils.isEmpty(tagsView.getText()));
+        setMetadataVisibility(
+                "tags",
+                tagsContainer,
+                !TextUtils.isEmpty(tagsView.getText()));
 
-            setMetadataVisibility(
-                    "state",
-                    stateContainer,
-                    !TextUtils.isEmpty(state.getText()));
+        setMetadataVisibility(
+                "state",
+                stateContainer,
+                !TextUtils.isEmpty(state.getText()));
 
-            setMetadataVisibility(
-                    "priority",
-                    priorityContainer,
-                    !TextUtils.isEmpty(priority.getText()));
+        setMetadataVisibility(
+                "priority",
+                priorityContainer,
+                !TextUtils.isEmpty(priority.getText()));
 
-            setMetadataVisibility(
-                    "scheduled_time",
-                    scheduledTimeContainer,
-                    !TextUtils.isEmpty(scheduledButton.getText()));
+        setMetadataVisibility(
+                "scheduled_time",
+                scheduledTimeContainer,
+                !TextUtils.isEmpty(scheduledButton.getText()));
 
-            setMetadataVisibility(
-                    "deadline_time",
-                    deadlineTimeContainer,
-                    !TextUtils.isEmpty(deadlineButton.getText()));
+        setMetadataVisibility(
+                "deadline_time",
+                deadlineTimeContainer,
+                !TextUtils.isEmpty(deadlineButton.getText()));
 
-            setMetadataVisibility(
-                    "properties",
-                    propertiesContainer,
-                    propertiesContainer.getChildCount() > 1);
+        setMetadataVisibility(
+                "properties",
+                propertiesContainer,
+                propertiesContainer.getChildCount() > 1);
+
+        setMetadataVisibility(
+                null,
+                lastProperty(),
+                false);
     }
 
     private void setMetadataVisibility(String name, View container, boolean isSet) {
@@ -1305,7 +1311,7 @@ public class NoteFragment extends Fragment
             boolean showSet = AppPreferences.alwaysShowSetNoteMetadata(context);
 
             boolean isVisible = "all".equals(visibility)
-                                || ("selected".equals(visibility) && selected.contains(name))
+                                || ("selected".equals(visibility) && name != null && selected.contains(name))
                                 || (showSet && isSet);
 
             container.setVisibility(isVisible ? View.VISIBLE : View.GONE);

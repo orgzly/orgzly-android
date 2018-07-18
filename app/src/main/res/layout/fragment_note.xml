@@ -183,7 +183,7 @@
 
                 <!-- List of properties -->
                 <LinearLayout
-                    android:id="@+id/note_fragment_properties_container"
+                    android:id="@+id/fragment_note_properties_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
