@@ -157,12 +157,9 @@ class ReposActivity :
             if (!BuildConfig.IS_GIT_ENABLED) {
                 newRepos.removeItem(R.id.repos_options_menu_item_new_git)
             }
-
-            return true
-
-        } else {
-            return false
         }
+
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
