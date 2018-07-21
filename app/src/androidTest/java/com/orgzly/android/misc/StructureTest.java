@@ -52,34 +52,6 @@ public class StructureTest extends OrgzlyTest {
     }
 
     @Test
-    public void testBookSetupTitles() {
-        shelfTestUtils.setupBook("notebook", "" +
-                                             "description\n" +
-                                             "* Note #1.\n" +
-                                             "* Note #2.\n" +
-                                             "** Note #3.\n" +
-                                             "** Note #4.\n" +
-                                             "*** Note #5.\n" +
-                                             "**** Note #6.\n" +
-                                             "** Note #7.\n" +
-                                             "* Note #8.\n" +
-                                             "**** Note #9.\n" +
-                                             "** Note #10.\n" +
-                                             "");
-
-        assertEquals("Note #1.", NotesClient.getNote(context, 1).getHead().getTitle());
-        assertEquals("Note #2.", NotesClient.getNote(context, 7).getHead().getTitle());
-        assertEquals("Note #3.", NotesClient.getNote(context, 2).getHead().getTitle());
-        assertEquals("Note #4.", NotesClient.getNote(context, 5).getHead().getTitle());
-        assertEquals("Note #5.", NotesClient.getNote(context, 4).getHead().getTitle());
-        assertEquals("Note #6.", NotesClient.getNote(context, 3).getHead().getTitle());
-        assertEquals("Note #7.", NotesClient.getNote(context, 6).getHead().getTitle());
-        assertEquals("Note #8.", NotesClient.getNote(context, 10).getHead().getTitle());
-        assertEquals("Note #9.", NotesClient.getNote(context, 8).getHead().getTitle());
-        assertEquals("Note #10.", NotesClient.getNote(context, 9).getHead().getTitle());
-    }
-
-    @Test
     public void testBookSetupLevels() {
         shelfTestUtils.setupBook("notebook", "" +
                                              "description\n" +
@@ -95,17 +67,17 @@ public class StructureTest extends OrgzlyTest {
                                              "** Note #10.\n" +
                                              "");
 
-        assertEquals(0, NotesClient.getNote(context, 11).getPosition().getLevel());
-        assertEquals(1, NotesClient.getNote(context, 1).getPosition().getLevel());
-        assertEquals(1, NotesClient.getNote(context, 7).getPosition().getLevel());
-        assertEquals(2, NotesClient.getNote(context, 2).getPosition().getLevel());
-        assertEquals(2, NotesClient.getNote(context, 5).getPosition().getLevel());
-        assertEquals(3, NotesClient.getNote(context, 4).getPosition().getLevel());
-        assertEquals(4, NotesClient.getNote(context, 3).getPosition().getLevel());
-        assertEquals(2, NotesClient.getNote(context, 6).getPosition().getLevel());
-        assertEquals(1, NotesClient.getNote(context, 10).getPosition().getLevel());
-        assertEquals(4, NotesClient.getNote(context, 8).getPosition().getLevel());
-        assertEquals(2, NotesClient.getNote(context, 9).getPosition().getLevel());
+        assertEquals(0, shelf.getNote("").getPosition().getLevel());
+        assertEquals(1, shelf.getNote("Note #1.").getPosition().getLevel());
+        assertEquals(1, shelf.getNote("Note #2.").getPosition().getLevel());
+        assertEquals(2, shelf.getNote("Note #3.").getPosition().getLevel());
+        assertEquals(2, shelf.getNote("Note #4.").getPosition().getLevel());
+        assertEquals(3, shelf.getNote("Note #5.").getPosition().getLevel());
+        assertEquals(4, shelf.getNote("Note #6.").getPosition().getLevel());
+        assertEquals(2, shelf.getNote("Note #7.").getPosition().getLevel());
+        assertEquals(1, shelf.getNote("Note #8.").getPosition().getLevel());
+        assertEquals(4, shelf.getNote("Note #9.").getPosition().getLevel());
+        assertEquals(2, shelf.getNote("Note #10.").getPosition().getLevel());
     }
 
     @Test
@@ -125,8 +97,8 @@ public class StructureTest extends OrgzlyTest {
                                                          "");
 
         Set<Long> ids = new HashSet<>();
-        ids.add(1L);
-        ids.add(2L);
+        ids.add(shelf.getNote("Note #1.").getId());
+        ids.add(shelf.getNote("Note #3.").getId());
 
         shelf.cut(book.getId(), ids);
 
@@ -944,9 +916,9 @@ public class StructureTest extends OrgzlyTest {
         shelf.cut(book.getId(), shelf.getNote("Note 1").getId());
         shelf.paste(book.getId(), shelf.getNote("Note 2").getId(), Place.BELOW);
 
-        // Note with ID 3 is root note
-        assertTrue(shelf.getNote(3).getPosition().getRgt() > shelf.getNote("Note 1").getPosition().getRgt());
-        assertTrue(shelf.getNote(3).getPosition().getRgt() > shelf.getNote("Note 2").getPosition().getRgt());
+        // Compare to root note
+        assertTrue(shelf.getNote("").getPosition().getRgt() > shelf.getNote("Note 1").getPosition().getRgt());
+        assertTrue(shelf.getNote("").getPosition().getRgt() > shelf.getNote("Note 2").getPosition().getRgt());
     }
 
     /* After moving one note under another, test lft and rgt od third newly created note. */

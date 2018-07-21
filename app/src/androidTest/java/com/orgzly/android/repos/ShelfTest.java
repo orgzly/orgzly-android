@@ -26,7 +26,7 @@ public class ShelfTest extends OrgzlyTest {
         shelf.createBook("booky");
 
         /* Make sure root node is created. */
-        Note note = shelf.getNote(1);
+        Note note = shelf.getNote("");
         assertEquals(1, note.getPosition().getLft());
         assertEquals(2, note.getPosition().getRgt());
         assertEquals(0, note.getPosition().getLevel());

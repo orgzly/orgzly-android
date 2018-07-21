@@ -47,36 +47,6 @@ public class BookParsingTest extends OrgzlyTest {
     }
 
     @Test
-    public void testBookContent1() {
-        onBook("Sample book used for tests\n\n\n* Note")
-                .onLoad()
-                .isContent("Sample book used for tests")
-                .isNoteTitle(1, "Note")
-                .isNoteLevel(1, 1)
-                .isWhenSaved("Sample book used for tests\n\n* Note\n");
-    }
-
-    @Test
-    public void testBookContentPrefixedWithSpaces() {
-        onBook("  Sample book used for tests\n\n\n* Note")
-                .onLoad()
-                .isContent("  Sample book used for tests")
-                .isNoteTitle(1, "Note")
-                .isNoteLevel(1, 1)
-                .isWhenSaved("  Sample book used for tests\n\n* Note\n");
-    }
-
-    @Test
-    public void testBookContent2() {
-        onBook("\nSample book used for tests\n\n\n* Note")
-                .onLoad()
-                .isContent("Sample book used for tests")
-                .isNoteTitle(1, "Note")
-                .isNoteLevel(1, 1)
-                .isWhenSaved("Sample book used for tests\n\n* Note\n");
-    }
-
-    @Test
     public void testSavingWithPriorities() {
         onBook("\nSample book used for tests\n\n\n* Note 1\n* [#B] Note 2\n* [#A] Note 3")
                 .onLoad()
@@ -403,20 +373,6 @@ public class BookParsingTest extends OrgzlyTest {
 
             Book book = shelf.getBooks().get(0);
             assertEquals("Content", str, book.getPreface());
-            return this;
-        }
-
-        public TestedBook isNoteTitle(int note, String str) {
-            if (book == null) fail("Notebook not loaded. Call onLoad()");
-
-            assertEquals("Title", str, shelf.getNote(note).getHead().getTitle());
-            return this;
-        }
-
-        public TestedBook isNoteLevel(int note, int level) {
-            if (book == null) fail("Notebook not loaded. Call onLoad()");
-
-            assertEquals("Note level", level, shelf.getNote(note).getPosition().getLevel());
             return this;
         }
 

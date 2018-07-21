@@ -19,28 +19,25 @@ class SettingsTest : OrgzlyTest() {
         AppPreferences.states(context, "TODO|DONE")
         shelf.reParseNotesStateAndTitles()
 
-        shelf.getNote(1).let { note ->
+        shelf.getNote("Title").let { note ->
             assertEquals("TODO", note.head.state)
             assertEquals("A", note.head.priority)
-            assertEquals("Title", note.head.title)
         }
 
         AppPreferences.states(context, "")
         shelf.reParseNotesStateAndTitles()
 
-        shelf.getNote(1).let { note ->
+        shelf.getNote("TODO [#A] Title").let { note ->
             assertNull(note.head.state)
             assertNull(note.head.priority)
-            assertEquals("TODO [#A] Title", note.head.title)
         }
 
         AppPreferences.states(context, "TODO|DONE")
         shelf.reParseNotesStateAndTitles()
 
-        shelf.getNote(1).let { note ->
+        shelf.getNote("Title").let { note ->
             assertEquals("TODO", note.head.state)
             assertEquals("A", note.head.priority)
-            assertEquals("Title", note.head.title)
         }
     }
 
@@ -49,14 +46,14 @@ class SettingsTest : OrgzlyTest() {
     fun testStarInContent() {
         shelfTestUtils.setupBook("booky", "* TODO [#A] Title")
 
-        shelf.getNote(1).let { note ->
+        shelf.getNote("Title").let { note ->
             note.head.content = "Content\n* with star\nin the middle"
             shelf.updateNote(note)
         }
 
         shelf.reParseNotesStateAndTitles()
 
-        shelf.getNote(1).let {
+        shelf.getNote("Title").let {
             assertEquals("TODO", it.head.state)
             assertEquals("A", it.head.priority)
             assertEquals("Title", it.head.title)

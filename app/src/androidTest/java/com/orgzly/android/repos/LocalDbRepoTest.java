@@ -50,7 +50,7 @@ public class LocalDbRepoTest extends OrgzlyTest {
         long now = System.currentTimeMillis();
 
         /* Write local book's content to a temporary file. */
-        Book book = shelf.getBook(1); // by bookId
+        Book book = shelf.getBook("local-book-1");
         File tmpFile = shelf.getTempBookFile();
 
         try {

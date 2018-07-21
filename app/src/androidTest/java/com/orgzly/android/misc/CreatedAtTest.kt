@@ -77,12 +77,12 @@ class CreatedAtTest : OrgzlyTest() {
 
         shelf.sync()
 
-        assertFalse(shelf.getBook(1).isModifiedAfterLastSync)
+        assertFalse(shelf.getBook("book-a").isModifiedAfterLastSync)
 
         AppPreferences.createdAtProperty(context, "CREATED_AT")
         shelf.syncCreatedAtTimeWithProperty()
 
-        assertTrue(shelf.getBook(1).isModifiedAfterLastSync)
+        assertTrue(shelf.getBook("book-a").isModifiedAfterLastSync)
     }
 
     @Test
@@ -100,7 +100,7 @@ class CreatedAtTest : OrgzlyTest() {
 
         shelf.syncCreatedAtTimeWithProperty()
 
-        assertFalse(shelf.getBook(1).isModifiedAfterLastSync)
+        assertFalse(shelf.getBook("book-a").isModifiedAfterLastSync)
     }
 
     @Test

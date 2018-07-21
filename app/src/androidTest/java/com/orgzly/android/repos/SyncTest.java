@@ -64,7 +64,7 @@ public class SyncTest extends OrgzlyTest {
 
         shelf.sync();
 
-        Note note = shelf.getNote(2); /* ID 1 was a root from dummy which was deleted. */
+        Note note = shelf.getNote("Note");
         OrgRange range = note.getHead().getScheduled();
         assertEquals("<2015-01-13 уто 13:00-14:14>--<2015-01-14 сре 14:10-15:20>", range.toString());
     }
@@ -231,12 +231,12 @@ public class SyncTest extends OrgzlyTest {
     public void testOnlyBookWithLink() {
         shelfTestUtils.setupRepo("mock://repo-a");
 
-        shelfTestUtils.setupBook("book-1", "Content");
-        shelfTestUtils.setBookLink(1, "mock://repo-a");
+        Book book = shelfTestUtils.setupBook("book-1", "Content");
+        shelfTestUtils.setBookLink(book.getId(), "mock://repo-a");
 
         shelf.sync();
 
-        Book book = shelf.getBooks().get(0);
+        book = shelf.getBooks().get(0);
         assertEquals(BookSyncStatus.ONLY_BOOK_WITH_LINK, book.getSyncStatus());
     }
 
