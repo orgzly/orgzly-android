@@ -242,7 +242,10 @@ class ReposActivity :
     override fun onCreateLoader(id: Int, args: Bundle?): android.support.v4.content.Loader<Cursor> {
         return CursorLoader(
                 this,
-                ProviderContract.Repos.ContentUri.repos(), null, null, null,
+                ProviderContract.Repos.ContentUri.repos(),
+                null,
+                null,
+                null,
                 ProviderContract.Repos.Param.REPO_URL)
     }
 
