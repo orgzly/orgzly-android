@@ -3,7 +3,8 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.orgzly">
+    package="com.orgzly"
+    android:installLocation="auto">
 
     <!-- Initially added for Dropbox sync. -->
     <uses-permission android:name="android.permission.INTERNET"/>
