@@ -11,36 +11,36 @@ open class DottedQueryParser : QueryParser() {
     override val logicalOr = listOf("or", "OR")
 
     override val conditions = listOf(
-            ConditionMatch("""^(\.)?b\.(.+)""", { match ->
+            ConditionMatch("""^(\.)?b\.(.+)""") { match ->
                 Condition.InBook(unQuote(match.groupValues[2]), match.groupValues[1].isNotEmpty())
-            }),
+            },
 
-            ConditionMatch("""^(\.)?i\.(.+)""", { match ->
+            ConditionMatch("""^(\.)?i\.(.+)""") { match ->
                 Condition.HasState(unQuote(match.groupValues[2]), match.groupValues[1].isNotEmpty())
-            }),
+            },
 
-            ConditionMatch("""^(\.)?it\.(todo|done|none)""", { match ->
+            ConditionMatch("""^(\.)?it\.(todo|done|none)""") { match ->
                 val stateType = StateType.valueOf(match.groupValues[2].toUpperCase())
                 Condition.HasStateType(stateType, match.groupValues[1].isNotEmpty())
-            }),
+            },
 
-            ConditionMatch("""^(\.)?p\.([a-zA-Z])""", { match ->
+            ConditionMatch("""^(\.)?p\.([a-zA-Z])""") { match ->
                 Condition.HasPriority(match.groupValues[2], match.groupValues[1].isNotEmpty())
-            }),
+            },
 
-            ConditionMatch("""^(\.)?ps\.([a-zA-Z])""", { match ->
+            ConditionMatch("""^(\.)?ps\.([a-zA-Z])""") { match ->
                 Condition.HasSetPriority(match.groupValues[2], match.groupValues[1].isNotEmpty())
-            }),
+            },
 
-            ConditionMatch("""^(\.)?t\.(.+)""", { match ->
+            ConditionMatch("""^(\.)?t\.(.+)""") { match ->
                 Condition.HasTag(unQuote(match.groupValues[2]), match.groupValues[1].isNotEmpty())
-            }),
+            },
 
-            ConditionMatch("""^tn\.(.+)""", { match ->
+            ConditionMatch("""^tn\.(.+)""") { match ->
                 Condition.HasOwnTag(unQuote(match.groupValues[1]))
-            }),
+            },
 
-            ConditionMatch("""^(s|d|c|cr)(?:\.(eq|ne|lt|le|gt|ge))?\.(.+)""", { match ->
+            ConditionMatch("""^(s|d|c|cr)(?:\.(eq|ne|lt|le|gt|ge))?\.(.+)""") { match ->
                 val timeTypeMatch = match.groupValues[1]
                 val relationMatch = match.groupValues[2]
                 val intervalMatch = match.groupValues[3]
@@ -67,40 +67,40 @@ open class DottedQueryParser : QueryParser() {
                 } else {
                     null // Ignore this match
                 }
-            })
+            }
     )
 
     override val sortOrders = listOf(
-            SortOrderMatch("""^(\.)?o\.(?:scheduled|sched|s)$""", { match ->
+            SortOrderMatch("""^(\.)?o\.(?:scheduled|sched|s)$""") { match ->
                 SortOrder.Scheduled(match.groupValues[1].isNotEmpty())
-            }),
-            SortOrderMatch("""^(\.)?o\.(?:deadline|dead|d)$""", { match ->
+            },
+            SortOrderMatch("""^(\.)?o\.(?:deadline|dead|d)$""") { match ->
                 SortOrder.Deadline(match.groupValues[1].isNotEmpty())
-            }),
-            SortOrderMatch("""^(\.)?o\.(?:closed|close|c)$""", { match ->
+            },
+            SortOrderMatch("""^(\.)?o\.(?:closed|close|c)$""") { match ->
                 SortOrder.Closed(match.groupValues[1].isNotEmpty())
-            }),
-            SortOrderMatch("""^(\.)?o\.(?:created|cr)$""", { match ->
+            },
+            SortOrderMatch("""^(\.)?o\.(?:created|cr)$""") { match ->
                 SortOrder.Created(match.groupValues[1].isNotEmpty())
-            }),
-            SortOrderMatch("""^(\.)?o\.(?:priority|prio|pri|p)$""", { match ->
+            },
+            SortOrderMatch("""^(\.)?o\.(?:priority|prio|pri|p)$""") { match ->
                 SortOrder.Priority(match.groupValues[1].isNotEmpty())
-            }),
-            SortOrderMatch("""^(\.)?o\.(?:notebook|book|b)$""", { match ->
+            },
+            SortOrderMatch("""^(\.)?o\.(?:notebook|book|b)$""") { match ->
                 SortOrder.Book(match.groupValues[1].isNotEmpty())
-            }),
-            SortOrderMatch("""^(\.)?o\.(?:state|st)$""", { match ->
+            },
+            SortOrderMatch("""^(\.)?o\.(?:state|st)$""") { match ->
                 SortOrder.State(match.groupValues[1].isNotEmpty())
-            }),
-            SortOrderMatch("""^(\.)?o\.(?:position|pos)$""", { match ->
+            },
+            SortOrderMatch("""^(\.)?o\.(?:position|pos)$""") { match ->
                 SortOrder.Position(match.groupValues[1].isNotEmpty())
-            })
+            }
     )
 
     override val supportedOptions = listOf(
-            OptionMatch("""^ad\.(\d+)$""", { match, options ->
+            OptionMatch("""^ad\.(\d+)$""") { match, options ->
                 val days = match.groupValues[1].toInt()
                 if (days > 0) options.copy(agendaDays = days) else null
-            })
+            }
     )
 }
