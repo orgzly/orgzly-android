@@ -1386,7 +1386,7 @@ class Provider : ContentProvider() {
 
                             /* Insert note's properties. */
                             var pos = 1
-                            node.head.properties.forEach { propName, propValue ->
+                            node.head.properties.forEach { (propName, propValue) ->
                                 var nameId: Long? = propNameDbIds[propName]
                                 if (nameId == null) {
                                     nameId = DbPropertyName.getOrInsert(db, propName)
