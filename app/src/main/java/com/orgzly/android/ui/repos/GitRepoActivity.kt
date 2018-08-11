@@ -145,7 +145,7 @@ class GitRepoActivity : RepoActivity(), GitPreferences {
 
         } else {
             e.printStackTrace()
-            showSimpleSnackbarLong(e.toString())
+            showSnackbar(e.toString())
         }
     }
 

@@ -24,7 +24,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -512,7 +511,7 @@ public class MainActivity extends CommonActivity
                 return true;
 
             case R.id.activity_action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                openSettings();
                 return true;
 
             default:
@@ -687,7 +686,7 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onNoteCreatingFailed() {
-        showSimpleSnackbarLong(R.string.message_failed_creating_note);
+        showSnackbar(R.string.message_failed_creating_note);
     }
 
     @Override
@@ -698,7 +697,7 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onNoteUpdatingFailed(Note note) {
-        showSimpleSnackbarLong(R.string.message_failed_updating_note);
+        showSnackbar(R.string.message_failed_updating_note);
     }
 
     @Override
@@ -759,7 +758,7 @@ public class MainActivity extends CommonActivity
             message = getResources().getQuantityString(R.plurals.notes_deleted, count, count);
         }
 
-        showSimpleSnackbarLong(message);
+        showSnackbar(message);
     }
 
     @Override
@@ -777,7 +776,7 @@ public class MainActivity extends CommonActivity
             message = getResources().getQuantityString(R.plurals.notes_cut, count, count);
         }
 
-        showSimpleSnackbarLong(message);
+        showSnackbar(message);
     }
 
     /**
@@ -1045,7 +1044,7 @@ public class MainActivity extends CommonActivity
 
     @Override /* SyncFragment */
     public void onBookCreationFailed(Exception exception) {
-        showSimpleSnackbarLong(exception.getMessage());
+        showSnackbar(exception.getMessage());
     }
 
     /**
@@ -1064,7 +1063,7 @@ public class MainActivity extends CommonActivity
 
     @Override /* SyncFragment */
     public void onBookExported(File file) {
-        showSimpleSnackbarLong(getString(R.string.book_exported, file.getAbsolutePath()));
+        showSnackbar(getString(R.string.book_exported, file.getAbsolutePath()));
     }
 
     /**
@@ -1085,7 +1084,7 @@ public class MainActivity extends CommonActivity
 
     @Override /* SyncFragment */
     public void onBookExportFailed(Exception e) {
-        showSimpleSnackbarLong(getString(R.string.failed_exporting_book, e.getLocalizedMessage()));
+        showSnackbar(getString(R.string.failed_exporting_book, e.getLocalizedMessage()));
     }
 
     @Override
@@ -1118,7 +1117,7 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onFailure(String message) {
-        showSimpleSnackbarLong(message);
+        showSnackbar(message);
     }
 
     @Override
@@ -1128,17 +1127,17 @@ public class MainActivity extends CommonActivity
                 batch.getCount(),
                 batch.getCount());
 
-        showSimpleSnackbarLong(message);
+        showSnackbar(message);
     }
 
     @Override
     public void onNotesNotPasted() {
-        showSimpleSnackbarLong(getResources().getString(R.string.no_notes_pasted));
+        showSnackbar(getResources().getString(R.string.no_notes_pasted));
     }
 
     @Override /* SyncFragment */
     public void onBookDeleted(Book book) {
-        showSimpleSnackbarLong(R.string.message_book_deleted);
+        showSnackbar(R.string.message_book_deleted);
     }
 
     @Override
@@ -1147,7 +1146,7 @@ public class MainActivity extends CommonActivity
                 R.string.message_deleting_book_failed,
                 exception.toString());
 
-        showSimpleSnackbarLong(message);
+        showSnackbar(message);
     }
 
     @Override
@@ -1332,6 +1331,10 @@ public class MainActivity extends CommonActivity
         popBackStackAndCloseKeyboard();
     }
 
+    private void openSettings() {
+        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+    }
+
     private class LocalBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -1375,7 +1378,7 @@ public class MainActivity extends CommonActivity
                 }
 
                 case AppIntent.ACTION_OPEN_SETTINGS: {
-                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                    openSettings();
                     break;
                 }
             }

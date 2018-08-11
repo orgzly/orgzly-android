@@ -161,7 +161,7 @@ class DropboxRepoActivity : RepoActivity() {
     private fun onDropboxLinkToggleRequest(): Boolean {
         return if (client.isLinked) {
             client.unlink()
-            showSimpleSnackbarLong(R.string.message_dropbox_unlinked)
+            showSnackbar(R.string.message_dropbox_unlinked)
             true
 
         } else {
@@ -178,7 +178,7 @@ class DropboxRepoActivity : RepoActivity() {
     private fun dropboxCompleteAuthentication() {
         if (!client.isLinked) {
             if (client.finishAuthentication()) {
-                showSimpleSnackbarLong(R.string.message_dropbox_linked)
+                showSnackbar(R.string.message_dropbox_linked)
             }
         }
     }

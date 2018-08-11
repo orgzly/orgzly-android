@@ -62,10 +62,10 @@ abstract class CommonActivity : AppCompatActivity() {
                 }
 
                 AppIntent.ACTION_BOOK_IMPORTED ->
-                    showSimpleSnackbarLong(R.string.notebook_imported)
+                    showSnackbar(R.string.notebook_imported)
 
                 AppIntent.ACTION_DB_CLEARED -> {
-                    showSimpleSnackbarLong(R.string.clear_database_performed)
+                    showSnackbar(R.string.clear_database_performed)
                     clearFragmentBackstack = true
                 }
 
@@ -78,7 +78,7 @@ abstract class CommonActivity : AppCompatActivity() {
                     progressDialog?.dismiss()
 
                 AppIntent.ACTION_SHOW_SNACKBAR ->
-                    showSimpleSnackbarLong(intent.getStringExtra(AppIntent.EXTRA_MESSAGE))
+                    showSnackbar(intent.getStringExtra(AppIntent.EXTRA_MESSAGE))
             }
         }
     }
@@ -111,11 +111,11 @@ abstract class CommonActivity : AppCompatActivity() {
         }
     }
 
-    fun showSimpleSnackbarLong(resId: Int) {
-        showSimpleSnackbarLong(getString(resId))
+    fun showSnackbar(resId: Int) {
+        showSnackbar(getString(resId))
     }
 
-    fun showSimpleSnackbarLong(message: String) {
+    fun showSnackbar(message: String) {
         findViewById<View>(R.id.main_content)?.let { view ->
             showSnackbar(Snackbar.make(view, message, Snackbar.LENGTH_LONG))
         }

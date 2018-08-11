@@ -215,7 +215,7 @@
                     android:textOff="@string/note_content_start_editing"/>
             </LinearLayout>
 
-            <EditText
+            <com.orgzly.android.ui.views.EditTextWithMarkup
                 android:id="@+id/body_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -135,7 +135,7 @@ class BrowserActivity :
 
         } else {
             val message = resources.getString(R.string.failed_creating_directory, file.toString())
-            showSimpleSnackbarLong(message)
+            showSnackbar(message)
         }
     }
 

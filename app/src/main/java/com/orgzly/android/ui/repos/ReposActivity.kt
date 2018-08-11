@@ -25,7 +25,6 @@ import com.orgzly.android.repos.GitRepo
 import com.orgzly.android.repos.MockRepo
 import com.orgzly.android.repos.RepoFactory
 import com.orgzly.android.ui.Loaders
-import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
 import kotlinx.android.synthetic.main.activity_repos.*
 
@@ -234,7 +233,7 @@ class ReposActivity :
             GitRepoActivity.start(this, id)
 
         } else {
-            showSimpleSnackbarLong(R.string.message_unsupported_repository_type)
+            showSnackbar(R.string.message_unsupported_repository_type)
         }
     }
 

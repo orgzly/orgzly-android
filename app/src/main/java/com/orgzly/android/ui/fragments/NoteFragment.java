@@ -316,36 +316,6 @@ public class NoteFragment extends Fragment
 
         bodyEdit = top.findViewById(R.id.body_edit);
 
-        bodyEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event != null && event.getAction() == KeyEvent.ACTION_DOWN) { // Enter pressed
-                    if (isAtEndOfLine(bodyEdit)) {
-                        int sel = bodyEdit.getSelectionStart();
-                        String text = bodyEdit.getText().toString();
-
-                        // Does the line begin with a checkbox?
-                        int startOfLine = text.lastIndexOf("\n", sel - 1) + 1;
-                        String line = text.substring(startOfLine, sel);
-                        Pattern p = Pattern.compile("(^\\s*-\\s+\\[)[ X]\\]");
-                        Matcher m = p.matcher(line);
-                        if (m.find()) {
-                            // Insert checkbox
-                            String replacement = '\n' + m.group(1) + " ] ";
-                            bodyEdit.getText().replace(sel, sel, replacement);
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            }
-
-            private boolean isAtEndOfLine(EditText editText) {
-                int sel = editText.getSelectionStart();
-                String text = editText.getText().toString();
-                return sel == text.length() || text.charAt(sel) == '\n';
-            }
-        });
-
         bodyView = top.findViewById(R.id.body_view);
 
         bodyView.addTextChangedListener(new TextWatcher() {
@@ -1343,7 +1313,7 @@ public class NoteFragment extends Fragment
         if (note.getPosition().getBookId() == 0) {
             Activity activity = getActivity();
             if (activity != null) {
-                ((CommonActivity) activity).showSimpleSnackbarLong(R.string.note_book_not_set);
+                ((CommonActivity) activity).showSnackbar(R.string.note_book_not_set);
             }
             return;
         }

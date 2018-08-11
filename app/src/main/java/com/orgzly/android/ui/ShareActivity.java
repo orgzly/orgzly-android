@@ -206,7 +206,7 @@ public class ShareActivity extends CommonActivity
         shelf.syncOnResume();
 
         if (mError != null) {
-            showSimpleSnackbarLong(mError);
+            showSnackbar(mError);
             mError = null;
         }
     }
@@ -324,7 +324,7 @@ public class ShareActivity extends CommonActivity
 
     @Override
     public void onFailure(String message) {
-        showSimpleSnackbarLong(message);
+        showSnackbar(message);
     }
 
     private class Data {
