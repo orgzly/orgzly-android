@@ -86,8 +86,8 @@
   <string name="drawer_close">Replier ce panneau</string>
   <string name="drawer_open">Déplier ce panneau</string>
   <string name="schedule">Planification</string>
-  <string name="refile">Traiter automatiquement</string>
-  <string name="refile_to">Traiter automatiquement vers</string>
+  <string name="refile">Reclasser</string>
+  <string name="refile_to">Reclasser vers</string>
   <string name="deadline">Échéance</string>
   <string name="closed">Fermé</string>
   <!-- TODO: Not hints, rename -->
@@ -113,6 +113,7 @@
   <string name="heads_moving_action_menu_item_up">Monter</string>
   <string name="heads_moving_action_menu_item_demote">Rétrograder</string>
   <string name="new_note">Nouvelle note</string>
+  <string name="quick_note">Quick note</string>
   <string name="tap_to_create_new_note">Touchez pour créer une nouvelle note</string>
   <string name="options_menu_item_search">Rechercher</string>
   <string name="no_user_repos_configured_pref_summary">Rien n\'est encore configuré</string>
@@ -229,6 +230,7 @@
   <string name="use_created_at_property">Utilise la propriété pour l\'heure du crée-pour</string>
   <string name="use_created_at_property_summary">Synchronise l\'heure du créé-pour en utilisant une propriété</string>
   <string name="created_at_property">Propriété du créé-pour</string>
+  <string name="properties">Properties</string>
   <string name="property_name">Nom de la propriété</string>
   <string name="property_value">Valeur de la propriété</string>
   <string name="reminder_for_scheduled">Planifiée : %s</string>
@@ -432,4 +434,10 @@
   <string name="background_opacity">Opacité de l\'arrière-plan</string>
   <string name="update_frequency">Fréquence de mise à jour</string>
   <string name="git">Git</string>
+  <string name="metadata">Metadata</string>
+  <string name="selected_metadata_summary">Metadata you can choose to always display in note</string>
+  <string name="show_all">Show all</string>
+  <string name="always_show_set">Always show set</string>
+  <string name="show_selected">Show selected</string>
+  <string name="hide_all">Hide all</string>
 </resources>

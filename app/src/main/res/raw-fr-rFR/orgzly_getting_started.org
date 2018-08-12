@@ -47,13 +47,13 @@ Vous pouvez également envoyer un courriel [[mailto:support@orgzly.com][support@
 
 Vous pouvez mettre les mots en *gras*, /italique/, _souligné_, =verbatim=, ~en code~ ou les +biffer+.
 
-** Checkbox list is available
+** Liste de cases à cocher
 
-- [X] Task 1
-- [ ] Task 2
-- [ ] Task 3
+- [X] Tâche 1
+- [X] Tâche 2
+- [X] Tâche 3
 
-Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
+Un appui sur la case à cocher change son état. Un retour à la ligne crée une nouvelle case à cocher.
 
 * Recherche
 ** Il y a beaucoup d’opérateurs de recherche supportés

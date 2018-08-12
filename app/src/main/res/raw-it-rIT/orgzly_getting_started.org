@@ -47,13 +47,13 @@ Invia un'e-mail a [[mailto:support@orgzly.com][support@orgzly.com]], Visita http
 
 Puoi usare parole in *grassetto*, /corsivo/, _sottolineato_, =scandito=, ~tipo codice~ e +barrato+.
 
-** Checkbox list is available
+* * E' disponile l'elenco con caselle da spuntare
 
-- [X] Task 1
-- [ ] Task 2
-- [ ] Task 3
+- [X] Attività 1
+- [ ] Attività 2
+- [ ] Attività 3
 
-Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
+Fare clic sulla casella per attivarlo. Premere il pulsante nuova riga alla fine della linea per creare un nuovo elemento.
 
 * Cerca
 ** Sono supportati molti diversi operatori di ricerca

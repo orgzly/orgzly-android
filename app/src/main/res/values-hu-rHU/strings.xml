@@ -113,6 +113,7 @@
   <string name="heads_moving_action_menu_item_up">Fel</string>
   <string name="heads_moving_action_menu_item_demote">Lefokozás</string>
   <string name="new_note">Új bejegyzés</string>
+  <string name="quick_note">Quick note</string>
   <string name="tap_to_create_new_note">Koppints egy új bejegyzés létrehozásához</string>
   <string name="options_menu_item_search">Keresés</string>
   <string name="no_user_repos_configured_pref_summary">Egy sincs még beállítva</string>
@@ -229,6 +230,7 @@
   <string name="use_created_at_property">\"Létrehozás időpontja\" tulajdonság neve</string>
   <string name="use_created_at_property_summary">Tulajdonság felhasználása a létrehozás időpontjának szinkronizálásához</string>
   <string name="created_at_property">Létrehozás időpontja tulajdonság</string>
+  <string name="properties">Properties</string>
   <string name="property_name">Tulajdonság neve</string>
   <string name="property_value">Tulajdonság értéke</string>
   <string name="reminder_for_scheduled">Ütemezett: %s</string>
@@ -432,4 +434,10 @@
   <string name="background_opacity">Háttér áttetszősége</string>
   <string name="update_frequency">Frissítés gyakorisága</string>
   <string name="git">Git</string>
+  <string name="metadata">Metadata</string>
+  <string name="selected_metadata_summary">Metadata you can choose to always display in note</string>
+  <string name="show_all">Show all</string>
+  <string name="always_show_set">Always show set</string>
+  <string name="show_selected">Show selected</string>
+  <string name="hide_all">Hide all</string>
 </resources>

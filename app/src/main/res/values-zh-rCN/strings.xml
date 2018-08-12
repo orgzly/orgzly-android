@@ -110,6 +110,7 @@
   <string name="heads_moving_action_menu_item_up">上移</string>
   <string name="heads_moving_action_menu_item_demote">降级</string>
   <string name="new_note">新建笔记</string>
+  <string name="quick_note">快速笔记</string>
   <string name="tap_to_create_new_note">点击来创建新的笔记</string>
   <string name="options_menu_item_search">搜索</string>
   <string name="no_user_repos_configured_pref_summary">尚未配置</string>
@@ -226,6 +227,7 @@
   <string name="use_created_at_property">为创建时间使用属性</string>
   <string name="use_created_at_property_summary">使用属性来同步创建时间</string>
   <string name="created_at_property">创建属性</string>
+  <string name="properties">属性</string>
   <string name="property_name">属性名称</string>
   <string name="property_value">属性值</string>
   <string name="reminder_for_scheduled">计划：%s</string>
@@ -426,4 +428,10 @@
   <string name="background_opacity">背景不透明度</string>
   <string name="update_frequency">更新频率</string>
   <string name="git">Git</string>
+  <string name="metadata">元数据</string>
+  <string name="selected_metadata_summary">元数据始终在笔记中显示</string>
+  <string name="show_all">显示全部</string>
+  <string name="always_show_set">始终显示设定</string>
+  <string name="show_selected">显示已选择</string>
+  <string name="hide_all">隐藏全部</string>
 </resources>

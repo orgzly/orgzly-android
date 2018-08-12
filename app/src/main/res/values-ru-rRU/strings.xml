@@ -119,6 +119,7 @@
   <string name="heads_moving_action_menu_item_up">Вверх</string>
   <string name="heads_moving_action_menu_item_demote">Понизить</string>
   <string name="new_note">Новая заметка</string>
+  <string name="quick_note">Quick note</string>
   <string name="tap_to_create_new_note">Нажмите, чтобы создать новую заметку</string>
   <string name="options_menu_item_search">Поиск</string>
   <string name="no_user_repos_configured_pref_summary">Все еще не настроено</string>
@@ -235,6 +236,7 @@
   <string name="use_created_at_property">Использовать свойство для созданного во время</string>
   <string name="use_created_at_property_summary">Синхронизировать время создания используемого свойства</string>
   <string name="created_at_property">Создано в свойстве</string>
+  <string name="properties">Properties</string>
   <string name="property_name">Имя свойства</string>
   <string name="property_value">Значения свойства</string>
   <string name="reminder_for_scheduled">Запланировано: %s</string>
@@ -444,4 +446,10 @@
   <string name="background_opacity">Прозрачность фона</string>
   <string name="update_frequency">Частота обновления</string>
   <string name="git">Git</string>
+  <string name="metadata">Metadata</string>
+  <string name="selected_metadata_summary">Metadata you can choose to always display in note</string>
+  <string name="show_all">Show all</string>
+  <string name="always_show_set">Always show set</string>
+  <string name="show_selected">Show selected</string>
+  <string name="hide_all">Hide all</string>
 </resources>
