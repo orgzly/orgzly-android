@@ -30,6 +30,7 @@ import static com.orgzly.android.espresso.EspressoUtils.onList;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -138,7 +139,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
                         tomorrow.getYear(),
                         tomorrow.getMonthOfYear(),
                         tomorrow.getDayOfMonth()));
-        onView(withText(R.string.ok)).perform(click());
+        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
         onView(withText(R.string.set)).perform(click());
         onList().check(matches(listViewItemCount(21)));
     }

@@ -200,7 +200,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
                 val minPri = sharedPreferences.getString(key, null)
 
                 // Default priority is lower then minimum
-                if (defPri.compareTo(minPri!!, ignoreCase = true) > 0) { // minPri -> defPri
+                if (defPri.compareTo(minPri, ignoreCase = true) > 0) { // minPri -> defPri
                     /* Must use preference directly to update the view too. */
                     pref.value = minPri
                 }
@@ -216,7 +216,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
                 val defPri = sharedPreferences.getString(key, null)
 
                 // Default priority is lower then minimum
-                if (minPri.compareTo(defPri!!, ignoreCase = true) < 0) { // minPri -> defPri
+                if (minPri.compareTo(defPri, ignoreCase = true) < 0) { // minPri -> defPri
                     /* Must use preference directly to update the view too. */
                     pref.value = defPri
                 }

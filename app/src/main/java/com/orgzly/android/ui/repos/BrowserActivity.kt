@@ -198,7 +198,7 @@ class BrowserActivity :
     }
 
     private fun fileList(path: String?): Array<File>? {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Trying to get a list of files in " + path!!)
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Trying to get a list of files in $path")
 
         if (path != null) {
             val file = File(path)

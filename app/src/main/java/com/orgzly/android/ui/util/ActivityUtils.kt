@@ -93,7 +93,7 @@ object ActivityUtils {
 
         return PendingIntent.getActivity(
                 context,
-                java.lang.Long.valueOf(noteId)!!.toInt(),
+                noteId.toInt(),
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
     }

@@ -39,6 +39,7 @@ import static com.orgzly.android.espresso.EspressoUtils.settingsSetTodoKeywords;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasToString;
@@ -261,12 +262,12 @@ public class NoteFragmentTest extends OrgzlyTest {
         /* Set date. */
         onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
-        onView(withText(R.string.ok)).perform(click());
+        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
 
         /* Set time. */
         onView(withId(R.id.dialog_timestamp_time_picker)).perform(scrollTo(), click());
         onView(withClassName(equalTo(TimePicker.class.getName()))).perform(setTime(15, 15));
-        onView(withText(R.string.ok)).perform(click());
+        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
 
         onView(withText(R.string.set)).perform(click());
 
@@ -287,12 +288,12 @@ public class NoteFragmentTest extends OrgzlyTest {
         /* Set date. */
         onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
-        onView(withText(R.string.ok)).perform(click());
+        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
 
         /* Set time. */
         onView(withId(R.id.dialog_timestamp_time_picker)).perform(scrollTo(), click());
         onView(withClassName(equalTo(TimePicker.class.getName()))).perform(setTime(9, 15));
-        onView(withText(R.string.ok)).perform(click());
+        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
 
         /* Set repeater. */
         onView(withId(R.id.dialog_timestamp_repeater_check)).perform(scrollTo(), click());
