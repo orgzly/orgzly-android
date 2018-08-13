@@ -154,8 +154,8 @@ class EspressoUtils {
     private static void settingsSetKeywords(int viewId, String keywords) {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
 
-        onData(PreferenceMatchers.withTitle(R.string.pref_title_notebooks)).perform(click());
-        onData(PreferenceMatchers.withTitle(R.string.states)).perform(click());
+        onData(PreferenceMatchers.withKey("prefs_screen_notebooks")).perform(click());
+        onData(PreferenceMatchers.withKey("pref_key_states")).perform(click());
 
         onView(withId(viewId)).perform(replaceText(keywords), closeSoftKeyboardWithDelay());
         onView(withText(R.string.ok)).perform(click());

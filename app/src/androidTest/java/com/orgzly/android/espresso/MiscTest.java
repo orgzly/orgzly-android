@@ -126,8 +126,8 @@ public class MiscTest extends OrgzlyTest {
         onView(allOf(withText("book-two"), isDisplayed())).perform(click());
         onView(withText("Note #2.")).perform(click());
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withTitle(R.string.app)).perform(click());
-        onData(PreferenceMatchers.withTitle(R.string.clear_database)).perform(click());
+        onData(PreferenceMatchers.withKey("prefs_screen_app")).perform(click());
+        onData(PreferenceMatchers.withKey("pref_key_clear_database")).perform(click());
         onView(withText(R.string.ok)).perform(click());
         pressBack();
         pressBack();

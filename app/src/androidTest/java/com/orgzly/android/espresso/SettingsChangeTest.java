@@ -67,8 +67,8 @@ public class SettingsChangeTest extends OrgzlyTest {
         onListItem(index + 1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
 
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withTitle(R.string.pref_title_notebooks)).perform(click());
-        onData(PreferenceMatchers.withTitle(R.string.default_priority)).perform(click());
+        onData(PreferenceMatchers.withKey("prefs_screen_notebooks")).perform(click());
+        onData(PreferenceMatchers.withKey("pref_key_default_priority")).perform(click());
         onData(hasToString(containsString("A"))).perform(click());
         pressBack();
         pressBack();
@@ -83,8 +83,8 @@ public class SettingsChangeTest extends OrgzlyTest {
         onListItem(0).onChildView(withId(R.id.item_head_content)).check(matches(allOf(withText(containsString("Content for [a-1]")), isDisplayed())));
 
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withTitle(R.string.pref_title_notebooks)).perform(click());
-        onData(PreferenceMatchers.withTitle(R.string.display_content)).perform(click());
+        onData(PreferenceMatchers.withKey("prefs_screen_notebooks")).perform(click());
+        onData(PreferenceMatchers.withKey("pref_key_is_notes_content_displayed_in_list")).perform(click());
         pressBack();
         pressBack();
 

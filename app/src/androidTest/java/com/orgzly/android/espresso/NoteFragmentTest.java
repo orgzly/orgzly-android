@@ -318,8 +318,8 @@ public class NoteFragmentTest extends OrgzlyTest {
 
         /* Change lowest priority to A. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withTitle(R.string.pref_title_notebooks)).perform(click());
-        onData(PreferenceMatchers.withTitle(R.string.lowest_priority)).perform(click());
+        onData(PreferenceMatchers.withKey("prefs_screen_notebooks")).perform(click());
+        onData(PreferenceMatchers.withKey("pref_key_min_priority")).perform(click());
         onData(hasToString(containsString("A"))).perform(click());
         pressBack();
         pressBack();
@@ -330,8 +330,8 @@ public class NoteFragmentTest extends OrgzlyTest {
 
         /* Change lowest priority to C. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withTitle(R.string.pref_title_notebooks)).perform(click());
-        onData(PreferenceMatchers.withTitle(R.string.lowest_priority)).perform(click());
+        onData(PreferenceMatchers.withKey("prefs_screen_notebooks")).perform(click());
+        onData(PreferenceMatchers.withKey("pref_key_min_priority")).perform(click());
         onData(hasToString(containsString("C"))).perform(click());
         pressBack();
         pressBack();

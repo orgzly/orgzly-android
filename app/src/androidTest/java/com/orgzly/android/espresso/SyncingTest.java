@@ -88,10 +88,10 @@ public class SyncingTest extends OrgzlyTest {
 
         // Set preference
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withTitle(R.string.sync)).perform(click());
-        onData(PreferenceMatchers.withTitle(R.string.auto_sync_experimental)).perform(click());
-        onData(PreferenceMatchers.withTitle(R.string.auto_sync)).perform(click());
-        onData(PreferenceMatchers.withTitle(R.string.pref_title_sync_after_note_create)).perform(click());
+        onData(PreferenceMatchers.withKey("prefs_screen_sync")).perform(click());
+        onData(PreferenceMatchers.withKey("prefs_screen_auto_sync")).perform(click());
+        onData(PreferenceMatchers.withKey("pref_key_auto_sync")).perform(click());
+        onData(PreferenceMatchers.withKey("pref_key_auto_sync_on_note_create")).perform(click());
         pressBack();
         pressBack();
         pressBack();
@@ -487,8 +487,8 @@ public class SyncingTest extends OrgzlyTest {
 
         /* Rename repository. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withTitle(R.string.sync)).perform(click());
-        onData(PreferenceMatchers.withTitle(R.string.repos_preference_title)).perform(click());
+        onData(PreferenceMatchers.withKey("prefs_screen_sync")).perform(click());
+        onData(PreferenceMatchers.withKey("pref_key_repos")).perform(click());
         onListItem(0).perform(click());
         onView(withId(R.id.activity_repo_dropbox_directory)).perform(replaceText("repo-b"));
         onActionItemClick(R.id.done, R.string.done);
@@ -529,8 +529,8 @@ public class SyncingTest extends OrgzlyTest {
 
         /* Rename all repositories. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withTitle(R.string.sync)).perform(click());
-        onData(PreferenceMatchers.withTitle(R.string.repos_preference_title)).perform(click());
+        onData(PreferenceMatchers.withKey("prefs_screen_sync")).perform(click());
+        onData(PreferenceMatchers.withKey("pref_key_repos")).perform(click());
         onListItem(0).perform(click());
         onView(withId(R.id.activity_repo_dropbox_directory)).perform(replaceText("repo-1"));
         onActionItemClick(R.id.done, R.string.done);

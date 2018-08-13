@@ -41,17 +41,19 @@ public class CreatedAtTest extends OrgzlyTest {
     public void setUp() throws Exception {
         super.setUp();
 
+        String createdProperty = context.getString(R.string.created_property_name);
+
         shelfTestUtils.setupBook(
                 "book-a",
                 "* Note [a-1]\n" +
                 ":PROPERTIES:\n" +
-                ":CREATED: [2018-01-05]\n" +
+                ":" + createdProperty + ": [2018-01-05]\n" +
                 ":ADDED: [2018-01-01]\n" +
                 ":END:\n" +
                 "SCHEDULED: <2018-01-01>\n" +
                 "* Note [a-2]\n" +
                 ":PROPERTIES:\n" +
-                ":CREATED: [2018-01-02]\n" +
+                ":" + createdProperty + ": [2018-01-02]\n" +
                 ":ADDED: [2018-01-04]\n" +
                 ":END:\n" +
                 "SCHEDULED: <2014-01-01>\n"
@@ -126,8 +128,8 @@ public class CreatedAtTest extends OrgzlyTest {
 
     private void enableCreatedAt() {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withTitle(R.string.sync)).perform(click());
-        onData(PreferenceMatchers.withTitle(R.string.use_created_at_property)).perform(click());
+        onData(PreferenceMatchers.withKey("prefs_screen_sync")).perform(click());
+        onData(PreferenceMatchers.withKey("pref_key_is_created_at_added")).perform(click());
         onView(withText(R.string.yes)).perform(click());
         pressBack();
         pressBack();
@@ -135,8 +137,8 @@ public class CreatedAtTest extends OrgzlyTest {
 
     private void changeCreatedAtProperty(String propName) {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withTitle(R.string.sync)).perform(click());
-        onData(PreferenceMatchers.withTitle(R.string.created_at_property)).perform(click());
+        onData(PreferenceMatchers.withKey("prefs_screen_sync")).perform(click());
+        onData(PreferenceMatchers.withKey("pref_key_created_at_property")).perform(click());
         onView(instanceOf(EditText.class)).perform(replaceText(propName), closeSoftKeyboardWithDelay());
         onView(withText(R.string.ok)).perform(click());
         onView(withText(R.string.yes)).perform(click());
