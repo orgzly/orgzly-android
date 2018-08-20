@@ -22,22 +22,9 @@
             android:text="@string/whats_new_intro"/>
 
 
-
-
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="v1.6.9-beta.2"
-            tools:ignore="HardcodedText" />
-
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange"
-            app:text="Few fixes for older Android versions" />
-
-
-
-        <TextView
-            style="@style/WhatsNewVersion"
-            android:text="v1.6.9-beta.1"
+            android:text="v1.6.9"
             tools:ignore="HardcodedText" />
 
         <com.orgzly.android.ui.views.WhatsNewChange
@@ -63,7 +50,6 @@
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
             app:text="Don't parse checkboxes in title" />
-
 
 
         <TextView
