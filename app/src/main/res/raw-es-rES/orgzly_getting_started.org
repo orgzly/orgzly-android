@@ -47,13 +47,13 @@ Enviar email a [[mailto:support@orgzly.com][support@orgzly.com]], visitar http:/
 
 Puede escribir palabras en *negrita*, /italica/, _subrarradas_, =literal=, ~código~ y +tachadas+.
 
-** Checkbox list is available
+** Hay disponible lista de verificación
 
-- [X] Task 1
-- [ ] Task 2
-- [ ] Task 3
+- [X] Tarea 1
+- [ ] Tarea 2
+- [ ] Tarea 3
 
-Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
+Pulsa la caja de verificación para alternar su estado. Pulsa el botón de nueva línea al final de la línea para crear un nuevo elemento.
 
 * Buscar
 ** Existen muchos operadores de búsqueda soportados
