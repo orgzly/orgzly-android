@@ -113,6 +113,7 @@
   <string name="heads_moving_action_menu_item_up">Arriba</string>
   <string name="heads_moving_action_menu_item_demote">Degradar</string>
   <string name="new_note">Nueva nota</string>
+  <string name="quick_note">Nota rápida</string>
   <string name="tap_to_create_new_note">Pulsa + para crear un nuevo evento</string>
   <string name="options_menu_item_search">Búsqueda</string>
   <string name="no_user_repos_configured_pref_summary">Ninguno configurado todavía</string>
@@ -229,6 +230,7 @@
   <string name="use_created_at_property">Utilice la propiedad creado-en</string>
   <string name="use_created_at_property_summary">Sincronización creado-en mediante una propiedad</string>
   <string name="created_at_property">Creado en la propiedad</string>
+  <string name="properties">Propiedades</string>
   <string name="property_name">Nombre de la propiedad</string>
   <string name="property_value">Valor de la propiedad</string>
   <string name="reminder_for_scheduled">Programado para: %s</string>
@@ -432,4 +434,10 @@
   <string name="background_opacity">Opacidad del fondo</string>
   <string name="update_frequency">Frecuencia de actualización</string>
   <string name="git">Git</string>
+  <string name="metadata">Metadatos</string>
+  <string name="selected_metadata_summary">Usted puede elegir mostrar siempre en la nota metadatos</string>
+  <string name="show_all">Mostrar todos</string>
+  <string name="always_show_set">Siempre mostrar seleccionados</string>
+  <string name="show_selected">Mostrar seleccionados</string>
+  <string name="hide_all">Ocultar todos</string>
 </resources>

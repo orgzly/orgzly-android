@@ -1,6 +1,7 @@
 package com.orgzly.android.misc
 
 import android.support.test.rule.ActivityTestRule
+import com.orgzly.R
 import com.orgzly.android.BookName
 import com.orgzly.android.LocalStorage
 import com.orgzly.android.NotesExporter
@@ -21,11 +22,13 @@ class CreatedAtTest : OrgzlyTest() {
     fun testImportUsesCreatedAtValue() {
         AppPreferences.createdAt(context, true)
 
+        val createdProperty = context.getString(R.string.created_property_name)
+
         shelfTestUtils.setupBook(
                 "book-a",
                 "* Note [a-1]\n" +
                         ":PROPERTIES:\n" +
-                        ":CREATED: [2018-01-01 12:00]\n" +
+                        ":" + createdProperty + ": [2018-01-01 12:00]\n" +
                         ":END:\n")
 
         val note = shelf.getNote("Note [a-1]")
@@ -64,13 +67,15 @@ class CreatedAtTest : OrgzlyTest() {
     fun testBookMarkedNotSyncedAfterAddingNewProperty() {
         AppPreferences.createdAt(context, true)
 
+        val createdProperty = context.getString(R.string.created_property_name)
+
         shelfTestUtils.setupRepo("mock://repo-a")
         shelfTestUtils.setupRook(
                 "mock://repo-a",
                 "mock://repo-a/book-a.org",
                 "* Note [a-1]\n" +
                         ":PROPERTIES:\n" +
-                        ":CREATED: [2018-01-01 12:00]\n" +
+                        ":" + createdProperty + ": [2018-01-01 12:00]\n" +
                         ":END:\n",
                 "0abcdef",
                 1400067156)

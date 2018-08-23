@@ -38,7 +38,7 @@ class ReposActivity :
 
     private lateinit var listAdapter: SimpleCursorAdapter
 
-    private var mShelf: Shelf? = null
+    private lateinit var mShelf: Shelf
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,12 +142,12 @@ class ReposActivity :
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Do not display add icon if there are no repositories - large repo buttons will be shown
         if (listAdapter.count > 0) {
             menuInflater.inflate(R.menu.repos_actions, menu)
 
-            val newRepos = menu!!.findItem(R.id.repos_options_menu_item_new).subMenu
+            val newRepos = menu.findItem(R.id.repos_options_menu_item_new).subMenu
 
             if (!BuildConfig.IS_DROPBOX_ENABLED) {
                 newRepos.removeItem(R.id.repos_options_menu_item_new_dropbox)
@@ -212,7 +212,7 @@ class ReposActivity :
     private fun deleteRepo(id: Long) {
         object : AsyncTask<Void, Void, Void>() {
             override fun doInBackground(vararg params: Void): Void? {
-                mShelf!!.deleteRepo(id)
+                mShelf.deleteRepo(id)
                 return null
             }
         }.execute()

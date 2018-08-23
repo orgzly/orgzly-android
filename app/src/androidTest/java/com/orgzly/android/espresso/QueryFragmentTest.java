@@ -36,6 +36,7 @@ import static com.orgzly.android.espresso.EspressoUtils.onList;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
@@ -239,10 +240,10 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
-        onView(withText(R.string.ok)).perform(click());
+        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
         onView(withId(R.id.dialog_timestamp_time_picker)).perform(scrollTo(), click());
         onView(withClassName(equalTo(TimePicker.class.getName()))).perform(setTime(9, 15));
-        onView(withText(R.string.ok)).perform(click());
+        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
         onView(withText(R.string.set)).perform(click());
 
         onList().check(matches(listViewItemCount(2)));

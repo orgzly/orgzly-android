@@ -241,12 +241,12 @@ class Provider : ContentProvider() {
         }
 
         if (BuildConfig.LOG_DEBUG)
-            LogUtils.d(TAG, "Cursor count: " + cursor!!.count
+            LogUtils.d(TAG, "Cursor count: " + cursor?.count
                             + " for " + uri.toString() + " "
                             + table + " " + selection + " "
                             + if (selectionArgs != null) TextUtils.join(",", selectionArgs) else "")
 
-        cursor!!.setNotificationUri(context!!.contentResolver, ProviderContract.AUTHORITY_URI)
+        cursor?.setNotificationUri(context.contentResolver, ProviderContract.AUTHORITY_URI)
 
         return cursor
     }
@@ -258,7 +258,7 @@ class Provider : ContentProvider() {
         val parser = InternalQueryParser()
         val query = parser.parse(queryString)
 
-        val queryBuilder = SqliteQueryBuilder(context!!)
+        val queryBuilder = SqliteQueryBuilder(context)
         val (selection1, selectionArgs1, orderBy) = queryBuilder.build(query)
 
         // If order hasn't been passed, try getting it from the query.
@@ -1386,7 +1386,7 @@ class Provider : ContentProvider() {
 
                             /* Insert note's properties. */
                             var pos = 1
-                            node.head.properties.forEach { propName, propValue ->
+                            node.head.properties.forEach { (propName, propValue) ->
                                 var nameId: Long? = propNameDbIds[propName]
                                 if (nameId == null) {
                                     nameId = DbPropertyName.getOrInsert(db, propName)
@@ -1568,7 +1568,7 @@ class Provider : ContentProvider() {
         val uri = ProviderContract.AUTHORITY_URI
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, uri.toString())
-        context!!.contentResolver.notifyChange(uri, null)
+        context.contentResolver.notifyChange(uri, null)
     }
 
     /**

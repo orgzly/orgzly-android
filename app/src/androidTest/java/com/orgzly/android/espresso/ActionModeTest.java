@@ -119,8 +119,8 @@ public class ActionModeTest extends OrgzlyTest {
     @Test
     public void testSelectingNoteThenOpeningNoteAndGoingBack() {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withTitle(R.string.look_and_feel)).perform(click());
-        onData(PreferenceMatchers.withTitle(R.string.reversed_note_click_action)).perform(click());
+        onData(PreferenceMatchers.withKey("prefs_screen_look_and_feel")).perform(click());
+        onData(PreferenceMatchers.withKey("pref_key_is_reverse_click_action")).perform(click());
         pressBack();
         pressBack();
         onListItem(3).perform(click()); // Select note

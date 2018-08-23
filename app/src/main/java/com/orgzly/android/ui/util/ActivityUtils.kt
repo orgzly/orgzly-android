@@ -24,29 +24,33 @@ object ActivityUtils {
     private val TAG = ActivityUtils::class.java.name
 
     @JvmStatic
-    fun closeSoftKeyboard(activity: Activity) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Hiding keyboard in activity " + activity)
+    fun closeSoftKeyboard(activity: Activity?) {
+        if (activity != null) {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Hiding keyboard in activity $activity")
 
-        // If no view currently has focus, create a new one to grab a window token from it
-        val view = activity.currentFocus ?: View(activity)
+            // If no view currently has focus, create a new one to grab a window token from it
+            val view = activity.currentFocus ?: View(activity)
 
-        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+            val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 
     @JvmStatic
-    fun openSoftKeyboard(activity: Activity, view: View) {
-        if (view.requestFocus()) {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Showing keyboard for view $view in activity $activity")
+    fun openSoftKeyboard(activity: Activity?, view: View) {
+        if (activity != null) {
+            if (view.requestFocus()) {
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Showing keyboard for view $view in activity $activity")
 
-            Handler().postDelayed({
-                val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-            }, 200)
+                Handler().postDelayed({
+                    val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+                }, 200)
 
-        } else {
-            Log.w(TAG, "Can't open keyboard because view " + view +
-                    " failed to get focus in activity " + activity)
+            } else {
+                Log.w(TAG, "Can't open keyboard because view " + view +
+                           " failed to get focus in activity " + activity)
+            }
         }
     }
 
@@ -89,7 +93,7 @@ object ActivityUtils {
 
         return PendingIntent.getActivity(
                 context,
-                java.lang.Long.valueOf(noteId)!!.toInt(),
+                noteId.toInt(),
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
     }

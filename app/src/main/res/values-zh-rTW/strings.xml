@@ -83,8 +83,8 @@
   <string name="drawer_close">關閉抽屜</string>
   <string name="drawer_open">打開抽屜</string>
   <string name="schedule">日程</string>
-  <string name="refile">重新提交</string>
-  <string name="refile_to">重新提交到</string>
+  <string name="refile">移動筆記</string>
+  <string name="refile_to">移動筆記到</string>
   <string name="deadline">截止時間</string>
   <string name="closed">已關閉</string>
   <!-- TODO: Not hints, rename -->
@@ -110,6 +110,7 @@
   <string name="heads_moving_action_menu_item_up">向上</string>
   <string name="heads_moving_action_menu_item_demote">降級</string>
   <string name="new_note">新增筆記</string>
+  <string name="quick_note">快速筆記</string>
   <string name="tap_to_create_new_note">點擊創建新筆記</string>
   <string name="options_menu_item_search">搜尋</string>
   <string name="no_user_repos_configured_pref_summary">尚未配置</string>
@@ -226,6 +227,7 @@
   <string name="use_created_at_property">在創建時使用屬性</string>
   <string name="use_created_at_property_summary">同步在創建使用屬性時</string>
   <string name="created_at_property">在屬性中創建</string>
+  <string name="properties">屬性</string>
   <string name="property_name">屬性名稱</string>
   <string name="property_value">屬性值</string>
   <string name="reminder_for_scheduled">預定時間: %s</string>
@@ -426,4 +428,10 @@
   <string name="background_opacity">背景不透明度</string>
   <string name="update_frequency">更新頻率</string>
   <string name="git">Git</string>
+  <string name="metadata">中繼資料</string>
+  <string name="selected_metadata_summary">可以選擇始終顯示筆記中的中繼資料</string>
+  <string name="show_all">顯示全部</string>
+  <string name="always_show_set">總是顯示選單</string>
+  <string name="show_selected">顯示已選取的項目</string>
+  <string name="hide_all">隱藏全部</string>
 </resources>

@@ -113,6 +113,7 @@
   <string name="heads_moving_action_menu_item_up">Yukarı</string>
   <string name="heads_moving_action_menu_item_demote">Düşür</string>
   <string name="new_note">Yeni not</string>
+  <string name="quick_note">Quick note</string>
   <string name="tap_to_create_new_note">Yeni bir not oluşturmak için dokunun</string>
   <string name="options_menu_item_search">Arama</string>
   <string name="no_user_repos_configured_pref_summary">Henüz yapılandırılmadı</string>
@@ -229,6 +230,7 @@
   <string name="use_created_at_property">Yaratılan zaman için özellik kullan</string>
   <string name="use_created_at_property_summary">Senkron yaratılan zamanda kullanılan bir özellik</string>
   <string name="created_at_property">Özellik Oluşturuldu</string>
+  <string name="properties">Properties</string>
   <string name="property_name">Özellik Adı</string>
   <string name="property_value">Property value</string>
   <string name="reminder_for_scheduled">Zamanlanan: %s</string>
@@ -432,4 +434,10 @@
   <string name="background_opacity">Background opacity</string>
   <string name="update_frequency">Update frequency</string>
   <string name="git">Git</string>
+  <string name="metadata">Metadata</string>
+  <string name="selected_metadata_summary">Metadata you can choose to always display in note</string>
+  <string name="show_all">Show all</string>
+  <string name="always_show_set">Always show set</string>
+  <string name="show_selected">Show selected</string>
+  <string name="hide_all">Hide all</string>
 </resources>

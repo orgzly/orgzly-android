@@ -81,7 +81,8 @@ public class FiltersFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_filter_flipper)).check(matches(isDisplayed()));
 
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withText(R.string.searches)).perform(click());
+        onView(allOf(withText(R.string.searches), isDescendantOfA(withId(R.id.drawer_navigation_view))))
+                .perform(click());
         onView(withId(R.id.fragment_filters_flipper)).check(matches(isDisplayed()));
 
         onListItem(0).perform(longClick());

@@ -24,8 +24,38 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.6.9"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Quick note from ongoing notification" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Display only set or selected metadata in note view" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support checkboxes in notebook's preface" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Allow installing app on the external storage" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix checkbox-on-enter to work with soft keyboard" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Don't parse checkboxes in title" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.6.8"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -47,7 +77,7 @@
         <TextView
             style="@style/WhatsNewVersion"
             android:text="v1.6.7"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -138,7 +168,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Option to hide metadata in note fragment"/>
+            app:text="Option to hide metadata in note view"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -343,7 +373,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Display book's last action error in subtitle"/>
+            app:text="Display notebook's last action error in subtitle"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -555,7 +585,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Minor design improvements in note editor"/>
+            app:text="Minor design improvements in note view"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
@@ -605,7 +635,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Fix &lt;tt&gt;b&lt;/tt&gt; search operator parsing (dot as a book name)"/>
+            app:text="Fix &lt;tt&gt;b&lt;/tt&gt; search operator parsing (dot as a notebook name)"/>
 
         <TextView
             style="@style/WhatsNewVersion"
@@ -623,7 +653,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Links (http and mailto) support in note editor"/>
+            app:text="Links (http and mailto) support in note view"/>
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
