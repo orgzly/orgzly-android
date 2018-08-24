@@ -1,13 +1,17 @@
 package com.orgzly.android.git;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.orgzly.android.App;
 import com.orgzly.android.repos.GitRepo;
 import com.orgzly.android.util.MiscUtils;
-import org.eclipse.jgit.api.*;
+
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.MergeResult;
+import org.eclipse.jgit.api.ResetCommand;
+import org.eclipse.jgit.api.Status;
+import org.eclipse.jgit.api.TransportCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
@@ -158,17 +162,14 @@ public class GitFileSynchronizer {
     public void tryPush() {
         final TransportCommand pushCommand = transportSetter().setTransport(
                 git.push().setRemote(preferences.remoteName()));
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    pushCommand.call();
-                } catch (GitAPIException e) {
-                    e.printStackTrace();
-                }
-                return null;
+
+        App.EXECUTORS.diskIO().execute(() -> {
+            try {
+                pushCommand.call();
+            } catch (GitAPIException e) {
+                e.printStackTrace();
             }
-        }.execute();
+        });
     }
 
     private void gitResetMerge() throws IOException, GitAPIException {
@@ -192,7 +193,7 @@ public class GitFileSynchronizer {
         ensureReposIsClean();
         try {
             fetch();
-            // TODO: XXX maybe:
+            // FIXME: maybe:
             // checkoutSelected();
             RevCommit current = currentHead();
             RevCommit mergeTarget = getCommit(

@@ -12,27 +12,27 @@ public class RepoFactoryTest extends OrgzlyTest {
 
     @Test
     public void testCreateRepoFromUrl1() {
-        Repo repo = RepoFactory.getFromUri(context, "dropbox:");
+        SyncRepo repo = repoFactory.getFromUri(context, "dropbox:");
         assertTrue(repo instanceof DropboxRepo);
         assertEquals("dropbox:", repo.getUri().toString());
     }
 
     @Test
     public void testCreateRepoFromUrl2() {
-        Repo repo = RepoFactory.getFromUri(context, "dropbox:/path");
+        SyncRepo repo = repoFactory.getFromUri(context, "dropbox:/path");
         assertTrue(repo instanceof DropboxRepo);
         assertEquals("dropbox:/path", repo.getUri().toString());
     }
 
     @Test
     public void testCreateRepoFromUrl10() {
-        Repo repo = RepoFactory.getFromUri(context, "mock://authority/path");
+        SyncRepo repo = repoFactory.getFromUri(context, "mock://authority/path");
         assertTrue(repo instanceof MockRepo);
         assertEquals("mock://authority/path", repo.getUri().toString());
     }
 
     @Test
     public void testCreateRepoFromUrl100() {
-        assertNull(RepoFactory.getFromUri(context, "I am not a valid Uri"));
+        assertNull(repoFactory.getFromUri(context, "I am not a valid Uri"));
     }
 }

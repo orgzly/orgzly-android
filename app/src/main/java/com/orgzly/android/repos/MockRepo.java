@@ -1,31 +1,33 @@
 package com.orgzly.android.repos;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.SystemClock;
+
+
+import com.orgzly.android.data.DbRepoBookRepository;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 /**
- * Wrapper around {@link com.orgzly.android.repos.LocalDbRepo}.
+ * Wrapper around {@link DatabaseRepo}.
  *
  * Simulates slow network.
  *
- * TODO: Use LocalDirRepo instead, remove LocalDbRepo.
+ * TODO: Use {@link DirectoryRepo} instead, remove {@link DbRepoBookRepository}.
  */
-public class MockRepo implements Repo {
+public class MockRepo implements SyncRepo {
     public static final String SCHEME = "mock";
 
     private static final long SLEEP_FOR_GET_BOOKS = 100;
     private static final long SLEEP_FOR_RETRIEVE_BOOK = 200;
     private static final long SLEEP_FOR_STORE_BOOK = 200;
 
-    private LocalDbRepo localDbRepo;
+    private DatabaseRepo databaseRepo;
 
-    public MockRepo(Context context, String url) {
-        localDbRepo = new LocalDbRepo(context, url);
+    public MockRepo(DbRepoBookRepository dbRepo, String url) {
+        databaseRepo = new DatabaseRepo(dbRepo, url);
     }
 
     @Override
@@ -35,31 +37,31 @@ public class MockRepo implements Repo {
 
     @Override
     public Uri getUri() {
-        return localDbRepo.getUri();
+        return databaseRepo.getUri();
     }
 
     @Override
     public List<VersionedRook> getBooks() throws IOException {
         SystemClock.sleep(SLEEP_FOR_GET_BOOKS);
-        return localDbRepo.getBooks();
+        return databaseRepo.getBooks();
     }
 
     @Override
     public VersionedRook retrieveBook(String fileName, File file) throws IOException {
         SystemClock.sleep(SLEEP_FOR_RETRIEVE_BOOK);
-        return localDbRepo.retrieveBook(fileName, file);
+        return databaseRepo.retrieveBook(fileName, file);
     }
 
     @Override
     public VersionedRook storeBook(File file, String fileName) throws IOException {
         SystemClock.sleep(SLEEP_FOR_STORE_BOOK);
-        return localDbRepo.storeBook(file, fileName);
+        return databaseRepo.storeBook(file, fileName);
     }
 
     @Override
     public VersionedRook renameBook(Uri fromUri, String name) throws IOException {
         SystemClock.sleep(SLEEP_FOR_STORE_BOOK);
-        return localDbRepo.renameBook(fromUri, name);
+        return databaseRepo.renameBook(fromUri, name);
     }
 
     @Override

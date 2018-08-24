@@ -2,11 +2,11 @@ package com.orgzly.android.misc;
 
 import android.util.Log;
 
-import com.orgzly.android.Book;
-import com.orgzly.android.BookName;
+import com.orgzly.android.BookFormat;
 import com.orgzly.android.LipsumBookGenerator;
 import com.orgzly.android.NotesExporter;
 import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.util.MiscUtils;
 
 import org.junit.Test;
@@ -305,12 +305,12 @@ public class BookParsingTest extends OrgzlyTest {
         }
 
         public TestedBook onLoad() {
-            shelf.clearDatabase();
+            dataRepository.clearDatabase();
 
             File tmpFile = bookSource.getTmpFile();
             try {
                 /* Load from file. */
-                shelf.loadBookFromFile("Notebook", BookName.Format.ORG, tmpFile);
+                dataRepository.loadBookFromFile("Notebook", BookFormat.ORG, tmpFile);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -320,14 +320,14 @@ public class BookParsingTest extends OrgzlyTest {
                 tmpFile.delete();
             }
 
-            book = shelf.getBooks().get(0);
+            book = dataRepository.getBooks().get(0).getBook();
 
             return this;
         }
 
         public TestedBook onGet() {
             try {
-                book = shelf.getBooks().get(0);
+                book = dataRepository.getBooks().get(0).getBook();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -339,7 +339,7 @@ public class BookParsingTest extends OrgzlyTest {
 
         public TestedBook onGetFailed() {
             try {
-                book = shelf.getBooks().get(0);
+                book = dataRepository.getBooks().get(0).getBook();
                 fail("Book should fail to load");
 
             } catch (Exception e) {
@@ -350,12 +350,12 @@ public class BookParsingTest extends OrgzlyTest {
         }
 
         public TestedBook onLoadFailed() {
-            shelf.clearDatabase();
+            dataRepository.clearDatabase();
 
             File tmpFile = bookSource.getTmpFile();
             try {
                 /* Load from file. */
-                shelf.loadBookFromFile("Notebook", BookName.Format.ORG, tmpFile);
+                dataRepository.loadBookFromFile("Notebook", BookFormat.ORG, tmpFile);
                 fail("Book should fail to load");
 
             } catch (IOException e) {
@@ -371,7 +371,7 @@ public class BookParsingTest extends OrgzlyTest {
         public TestedBook isContent(String str) {
             if (book == null) fail("Notebook not loaded. Call onLoad().");
 
-            Book book = shelf.getBooks().get(0);
+            Book book = dataRepository.getBooks().get(0).getBook();
             assertEquals("Content", str, book.getPreface());
             return this;
         }
@@ -381,9 +381,9 @@ public class BookParsingTest extends OrgzlyTest {
 
             try {
                 /* Write from db -> temp file. */
-                File file = shelf.getTempBookFile();
+                File file = dataRepository.getTempBookFile();
                 try {
-                    NotesExporter.getInstance(context).exportBook(book, file);
+                    new NotesExporter(context, dataRepository).exportBook(book, file);
                     assertEquals("Notebook", expacted, MiscUtils.readStringFromFile(file));
                 } finally {
                     file.delete();
@@ -414,7 +414,7 @@ public class BookParsingTest extends OrgzlyTest {
             File file = null;
 
             try {
-                file = shelf.getTempBookFile();
+                file = dataRepository.getTempBookFile();
                 MiscUtils.writeStringToFile(content, file);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -443,7 +443,7 @@ public class BookParsingTest extends OrgzlyTest {
             File file = null;
 
             try {
-                file = shelf.getTempBookFile();
+                file = dataRepository.getTempBookFile();
                 MiscUtils.writeStreamToFile(stream, file);
                 stream.close();
             } catch (IOException e) {

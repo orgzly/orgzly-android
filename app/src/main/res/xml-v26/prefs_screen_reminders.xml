@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen
+<androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/prefs_title_reminders">
@@ -18,7 +18,7 @@
         android:defaultValue="@bool/pref_default_use_reminders_for_deadline_times" />
 
     <!-- Open system settings to configure reminders' notification channel -->
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:key="@string/pref_key_reminders_channel_notification_settings"
         android:title="@string/notification_channel_settings"
         android:summary="@string/notification_channel_settings_summary">
@@ -26,7 +26,7 @@
             <extra android:name="android.provider.extra.CHANNEL_ID" android:value="reminders" />
             <extra android:name="android.provider.extra.APP_PACKAGE" android:value="com.orgzly" />
         </intent>
-    </PreferenceScreen>
+    </androidx.preference.PreferenceScreen>
 
     <com.orgzly.android.prefs.IntegerPreference
         android:key="@string/pref_key_snooze_time"
@@ -42,4 +42,4 @@
         android:entries="@array/snooze_types"
         android:entryValues="@array/snooze_type_values"
         android:defaultValue="@string/pref_default_snooze_type" />
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

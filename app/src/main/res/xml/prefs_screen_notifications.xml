@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen
+<androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/prefs_title_notifications">
 
@@ -15,4 +15,4 @@
         android:title="@string/show_sync_notifications_title"
         android:summary="@string/show_sync_notifications_summary"
         android:defaultValue="@bool/pref_default_show_sync_notifications"/>
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

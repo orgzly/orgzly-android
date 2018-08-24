@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen
+<androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/settings">
 
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:title="@string/look_and_feel"
         android:icon="?attr/ic_settings_24dp"
         android:key="prefs_screen_look_and_feel"/>
 
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:title="@string/pref_title_notebooks"
         android:icon="?attr/ic_library_books_24dp"
         android:key="prefs_screen_notebooks"/>
 
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:title="@string/prefs_title_notifications"
         android:icon="?attr/ic_notifications_none_24dp"
         android:key="prefs_screen_notifications"/>
 
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:title="@string/prefs_title_reminders"
         android:icon="?attr/ic_alarm_24dp"
         android:key="prefs_screen_reminders"/>
 
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:title="@string/sync"
         android:icon="?attr/ic_sync_24dp"
         android:key="prefs_screen_sync"/>
 
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:title="@string/widget"
         android:icon="?attr/ic_widgets_24dp"
         android:key="prefs_screen_widget"/>
 
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:title="@string/app"
         android:icon="?attr/ic_info_outline_24dp"
         android:key="prefs_screen_app"/>
 
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

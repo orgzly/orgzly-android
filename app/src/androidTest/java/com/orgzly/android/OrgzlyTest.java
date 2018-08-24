@@ -4,13 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Handler;
-import android.support.test.InstrumentationRegistry;
 
 import com.orgzly.R;
+import com.orgzly.android.data.DataRepository;
+import com.orgzly.android.data.DbRepoBookRepository;
+import com.orgzly.android.db.OrgzlyDatabase;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.prefs.AppPreferencesValues;
-import com.orgzly.android.provider.clients.DbClient;
+import com.orgzly.android.repos.RepoFactory;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.datetime.OrgDateTime;
 
@@ -21,6 +22,8 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import androidx.test.platform.app.InstrumentationRegistry;
+
 /**
  * Sets up the environment for tests, such as shelf, preferences and contexts.
  *
@@ -28,39 +31,54 @@ import java.util.Calendar;
  */
 public class OrgzlyTest {
     protected Context context;
-    protected Shelf shelf;
-    protected ShelfTestUtils shelfTestUtils;
+
+    protected TestUtils testUtils;
 
     private AppPreferencesValues prefValues;
 
+    protected DbRepoBookRepository dbRepoBookRepository;
+
     private UserTimeFormatter userTimeFormatter;
+
+    protected DataRepository dataRepository;
+
+    protected RepoFactory repoFactory;
+
+    private OrgzlyDatabase database;
 
     @Before
     public void setUp() throws Exception {
-        context = InstrumentationRegistry.getTargetContext();
+        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        shelf = new Shelf(context);
-        shelfTestUtils = new ShelfTestUtils(context, shelf);
+        database = OrgzlyDatabase.forFile(context, OrgzlyDatabase.NAME_FOR_TESTS);
+
+        dbRepoBookRepository = new DbRepoBookRepository(database);
+
+        repoFactory = new RepoFactory(dbRepoBookRepository);
+
+        dataRepository = new DataRepository(
+                context,
+                database,
+                repoFactory,
+                context.getResources(),
+                new LocalStorage(context));
+
+        testUtils = new TestUtils(context, dataRepository, repoFactory, dbRepoBookRepository);
 
         userTimeFormatter = new UserTimeFormatter(context);
 
-        // new LocalFileStorage(context).cleanup();
+        // new LocalStorage(context).cleanup();
 
-        /* Request content provider to close the current database
-         * and open a new one with a different name.
-         */
-        DbClient.toTest(context);
-
-        /* Recreate all tables. */
-        DbClient.recreateTables(context);
+        dataRepository.clearDatabase();
 
         setupPreferences();
     }
 
     @After
     public void tearDown() throws Exception {
-        // new Handler(InstrumentationRegistry.getTargetContext().getMainLooper()).post(() -> restorePreferences());
         restorePreferences();
+
+        database.close();
     }
 
     private void setupPreferences() {
@@ -68,7 +86,7 @@ public class OrgzlyTest {
         prefValues = AppPreferences.getAllValues(context);
 
         /* Set all preferences to their default values. */
-        AppPreferences.setToDefaults(context);
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> AppPreferences.setToDefaults(context));
 
         /* Modify preferences for tests. */
         setPreferencesForTests();
@@ -89,8 +107,8 @@ public class OrgzlyTest {
         /* Manual notebook already loaded. */
         AppPreferences.isGettingStartedNotebookLoaded(context, true);
 
-        /* Click to open notes. */
-        AppPreferences.isReverseNoteClickAction(context, false);
+        /* Default states. */
+        AppPreferences.states(context, "TODO NEXT | DONE");
 
         /* Display *all* notebook info. */
         AppPreferences.displayedBookDetails(context,

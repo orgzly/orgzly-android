@@ -7,7 +7,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import androidx.fragment.app.DialogFragment;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +17,13 @@ import android.widget.CompoundButton;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.util.LogUtils;
-import com.orgzly.android.util.MiscUtils;
 import com.orgzly.android.util.UserTimeFormatter;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgDelay;
 import com.orgzly.org.datetime.OrgRepeater;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -93,7 +93,7 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
      * @return
      */
     public static TimestampDialogFragment getInstance(int id, int title, long noteId, OrgDateTime time) {
-        return TimestampDialogFragment.getInstance(id, title, MiscUtils.set(noteId), time);
+        return TimestampDialogFragment.getInstance(id, title, Collections.singleton(noteId), time);
     }
 
     public static TimestampDialogFragment getInstance(int id, int title, Set<Long> noteIds, OrgDateTime time) {

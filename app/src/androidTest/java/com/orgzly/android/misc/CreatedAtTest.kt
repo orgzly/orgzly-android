@@ -1,41 +1,35 @@
 package com.orgzly.android.misc
 
-import android.support.test.rule.ActivityTestRule
 import com.orgzly.R
-import com.orgzly.android.BookName
+import com.orgzly.android.BookFormat
 import com.orgzly.android.LocalStorage
 import com.orgzly.android.NotesExporter
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.MainActivity
 import com.orgzly.org.datetime.OrgDateTime
 import org.junit.Assert.*
-import org.junit.Rule
 import org.junit.Test
 import java.io.File
 
 class CreatedAtTest : OrgzlyTest() {
-    @get:Rule
-    var activityRule: ActivityTestRule<*> = ActivityTestRule(MainActivity::class.java, true, false)
-
     @Test
     fun testImportUsesCreatedAtValue() {
         AppPreferences.createdAt(context, true)
 
         val createdProperty = context.getString(R.string.created_property_name)
 
-        shelfTestUtils.setupBook(
+        testUtils.setupBook(
                 "book-a",
                 "* Note [a-1]\n" +
                         ":PROPERTIES:\n" +
                         ":" + createdProperty + ": [2018-01-01 12:00]\n" +
                         ":END:\n")
 
-        val note = shelf.getNote("Note [a-1]")
+        val note = dataRepository.getNote("Note [a-1]")
 
         assertEquals(
                 OrgDateTime.parse("[2018-01-01 12:00]").calendar.timeInMillis,
-                note.createdAt)
+                note?.createdAt)
     }
 
 
@@ -44,7 +38,7 @@ class CreatedAtTest : OrgzlyTest() {
     fun testExportSetsOneCreatedAtProperty() {
         AppPreferences.createdAt(context, true)
 
-        val book = shelfTestUtils.setupBook(
+        val book = testUtils.setupBook(
                 "book-a",
                 "* Note [a-1]\n" +
                         ":PROPERTIES:\n" +
@@ -52,25 +46,25 @@ class CreatedAtTest : OrgzlyTest() {
                         ":END:\n")
 
         withTempFile { file ->
-            NotesExporter.getInstance(context).exportBook(book, file)
+            NotesExporter(context, dataRepository).exportBook(book.book, file)
 
-            shelf.loadBookFromFile("book-a", BookName.Format.ORG, file)
+            dataRepository.loadBookFromFile("book-a", BookFormat.ORG, file)
 
-            val note = shelf.getNote("Note [a-1]")
+            val note = dataRepository.getNote("Note [a-1]")
 
-            assertEquals(1, shelf.getNoteProperties(note.id).size)
+            assertEquals(1, dataRepository.getNoteProperties(note!!.id).size)
         }
     }
 
 
     @Test
-    fun testBookMarkedNotSyncedAfterAddingNewProperty() {
+    fun testBookOutOfSyncAfterDifferentCreatedAtPropertyName() {
         AppPreferences.createdAt(context, true)
 
         val createdProperty = context.getString(R.string.created_property_name)
 
-        shelfTestUtils.setupRepo("mock://repo-a")
-        shelfTestUtils.setupRook(
+        testUtils.setupRepo("mock://repo-a")
+        testUtils.setupRook(
                 "mock://repo-a",
                 "mock://repo-a/book-a.org",
                 "* Note [a-1]\n" +
@@ -80,39 +74,39 @@ class CreatedAtTest : OrgzlyTest() {
                 "0abcdef",
                 1400067156)
 
-        shelf.sync()
+        testUtils.sync()
 
-        assertFalse(shelf.getBook("book-a").isModifiedAfterLastSync)
+        assertFalse(dataRepository.getBookView("book-a")!!.isOutOfSync())
 
         AppPreferences.createdAtProperty(context, "CREATED_AT")
-        shelf.syncCreatedAtTimeWithProperty()
+        dataRepository.syncCreatedAtTimeWithProperty()
 
-        assertTrue(shelf.getBook("book-a").isModifiedAfterLastSync)
+        assertTrue(dataRepository.getBookView("book-a")!!.isOutOfSync())
     }
 
     @Test
     fun testBookMarkedSyncedAfterSettingCreatedAtTime() {
-        shelfTestUtils.setupRepo("mock://repo-a")
-        shelfTestUtils.setupBook(
+        testUtils.setupRepo("mock://repo-a")
+        testUtils.setupBook(
                 "book-a",
                 "* Note [a-1]\n" +
                         ":PROPERTIES:\n" +
                         ":CREATED: [2018-01-01 12:00]\n" +
                         ":END:\n")
-        shelf.sync()
+        testUtils.sync()
 
         AppPreferences.createdAt(context, true)
 
-        shelf.syncCreatedAtTimeWithProperty()
+        dataRepository.syncCreatedAtTimeWithProperty()
 
-        assertFalse(shelf.getBook("book-a").isModifiedAfterLastSync)
+        assertFalse(dataRepository.getBookView("book-a")!!.isOutOfSync())
     }
 
     @Test
     fun testParsingInvalidPropertyValue() {
         AppPreferences.createdAt(context, true)
 
-        shelfTestUtils.setupBook(
+        testUtils.setupBook(
                 "book-a",
                 "* Note [a-1]\n" +
                         ":PROPERTIES:\n" +
@@ -124,7 +118,7 @@ class CreatedAtTest : OrgzlyTest() {
     fun testParsingInvalidPropertyValueWhenSyncing() {
         AppPreferences.createdAt(context, true)
 
-        shelfTestUtils.setupBook(
+        testUtils.setupBook(
                 "book-a",
                 "* Note [a-1]\n" +
                         ":PROPERTIES:\n" +
@@ -134,7 +128,7 @@ class CreatedAtTest : OrgzlyTest() {
 
         AppPreferences.createdAtProperty(context, "CREATED_AT")
 
-        shelf.syncCreatedAtTimeWithProperty()
+        dataRepository.syncCreatedAtTimeWithProperty()
     }
 
     private fun withTempFile(f: (file: File) -> Unit) {

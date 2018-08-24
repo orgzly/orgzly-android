@@ -1,8 +1,9 @@
 package com.orgzly.android.prefs;
 
 import android.content.Context;
-import android.preference.EditTextPreference;
 import android.util.AttributeSet;
+
+import androidx.preference.EditTextPreference;
 
 /**
  * {@link EditTextPreference} with summary set to its current value.

@@ -1,23 +1,24 @@
 package com.orgzly.android.espresso;
 
 import android.content.Intent;
-import android.support.test.rule.ActivityTestRule;
+import androidx.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
-import com.orgzly.android.NotePosition;
+import com.orgzly.android.db.entity.NotePosition;
 import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.ui.ShareActivity;
+import com.orgzly.android.ui.share.ShareActivity;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
@@ -25,15 +26,13 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertTrue;
 
-/**
- *
- */
+//@Ignore
 @SuppressWarnings("unchecked")
 public class ShareActivityTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new ActivityTestRule<>(ShareActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(ShareActivity.class, true, false);
 
-    private void startActivityWithIntent(String action, String type, String extraText, String filterQuery) {
+    private void startActivityWithIntent(String action, String type, String extraText, String searchQuery) {
         Intent intent = new Intent();
 
         if (action != null) {
@@ -48,8 +47,8 @@ public class ShareActivityTest extends OrgzlyTest {
             intent.putExtra(Intent.EXTRA_TEXT, extraText);
         }
 
-        if (filterQuery != null) {
-            intent.putExtra(AppIntent.EXTRA_FILTER, filterQuery);
+        if (searchQuery != null) {
+            intent.putExtra(AppIntent.EXTRA_QUERY_STRING, searchQuery);
         }
 
         activityRule.launchActivity(intent);
@@ -68,9 +67,9 @@ public class ShareActivityTest extends OrgzlyTest {
 
     @Test
     public void testBookRemainsSetAfterRotation() {
-        shelfTestUtils.setupBook("book-one", "");
-        shelfTestUtils.setupBook("book-two", "");
-        shelfTestUtils.setupBook("book-three", "");
+        testUtils.setupBook("book-one", "");
+        testUtils.setupBook("book-two", "");
+        testUtils.setupBook("book-three", "");
         startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", null);
         toPortrait(activityRule);
         onView(withId(R.id.fragment_note_location_button)).perform(click());
@@ -143,14 +142,14 @@ public class ShareActivityTest extends OrgzlyTest {
 
     @Test
     public void testNoteInsertedLast() {
-        shelfTestUtils.setupBook("book-one", "* Note 1\n** Note 2");
+        testUtils.setupBook("book-one", "* Note 1\n** Note 2");
         startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "Note 3", null);
 
         onView(withId(R.id.done)).perform(click());
 
-        NotePosition n1 = shelf.getNote("Note 1").getPosition();
-        NotePosition n2 = shelf.getNote("Note 2").getPosition();
-        NotePosition n3 = shelf.getNote("Note 3").getPosition();
+        NotePosition n1 = dataRepository.getNote("Note 1").getPosition();
+        NotePosition n2 = dataRepository.getNote("Note 2").getPosition();
+        NotePosition n3 = dataRepository.getNote("Note 3").getPosition();
 
         assertTrue(n1.getLft() < n2.getLft());
         assertTrue(n2.getLft() < n2.getRgt());
@@ -160,8 +159,8 @@ public class ShareActivityTest extends OrgzlyTest {
     }
 
     @Test
-    public void testPresetBookFromFilterQuery() {
-        shelfTestUtils.setupBook("foo", "doesn't matter");
+    public void testPresetBookFromSearchQuery() {
+        testUtils.setupBook("foo", "doesn't matter");
         startActivityWithIntent(Intent.ACTION_SEND, "text/plain", "This is some shared text", "b.foo");
 
         onView(allOf(withId(R.id.fragment_note_location_button), isDisplayed()))

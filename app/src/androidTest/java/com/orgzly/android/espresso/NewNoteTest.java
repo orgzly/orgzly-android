@@ -1,126 +1,111 @@
 package com.orgzly.android.espresso;
 
-import android.support.test.espresso.action.GeneralLocation;
-import android.support.test.espresso.action.GeneralSwipeAction;
-import android.support.test.espresso.action.Press;
-import android.support.test.espresso.action.Swipe;
-import android.support.test.rule.ActivityTestRule;
-
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.ui.MainActivity;
+import com.orgzly.android.ui.main.MainActivity;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.openContextualActionModeOverflowMenu;
-import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.longClick;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
-import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onListItem;
-import static com.orgzly.android.espresso.EspressoUtils.openContextualToolbarOverflowMenu;
-import static com.orgzly.android.espresso.EspressoUtils.searchForText;
-import static org.hamcrest.CoreMatchers.not;
+import androidx.test.rule.ActivityTestRule;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.onBook;
+import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
 
 /**
  *
  */
+//@Ignore
 @SuppressWarnings("unchecked")
 public class NewNoteTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
 
     @Test
     public void testNewNoteInEmptyNotebook() {
-        shelfTestUtils.setupBook("notebook", "");
+        testUtils.setupBook("notebook", "");
         activityRule.launchActivity(null);
-
-        onView(allOf(withText("notebook"), isDisplayed())).perform(click());
+        onBook(0).perform(click());
 
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.fragment_note_title))
-                .perform(replaceText("new note created by test"), closeSoftKeyboardWithDelay());
+                .perform(replaceTextCloseKeyboard("new note created by test"));
         onView(withId(R.id.done)).perform(click());
 
-        onListItem(0)
-                .onChildView(withId(R.id.item_head_title))
+        onNoteInBook(1, R.id.item_head_title)
                 .check(matches(allOf(withText("new note created by test"), isDisplayed())));
     }
 
     @Test
     public void testNewNoteUnder() {
-        shelfTestUtils.setupBook("notebook", "description\n* 1\n** 2\n*** 3\n*** 4\n** 5\n* 6");
+        testUtils.setupBook("notebook", "description\n* 1\n** 2\n*** 3\n*** 4\n** 5\n* 6");
         activityRule.launchActivity(null);
-        onView(allOf(withText("notebook"), isDisplayed())).perform(click());
+        onBook(0).perform(click());
 
-        onListItem(2).perform(longClick());
-        openContextualToolbarOverflowMenu();
-        onView(withText(R.string.new_note)).perform(click());
-        onView(withText(R.string.heads_action_menu_item_add_under)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceText("A"), closeSoftKeyboardWithDelay());
+        onNoteInBook(2).perform(click());
+        onView(withId(R.id.bottom_action_bar_new)).perform(click());
+        onView(withText(R.string.new_under)).perform(click());
+        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("A"));
         onView(withId(R.id.done)).perform(click());
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText("2")));
-        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(withText("3")));
-        onListItem(4).onChildView(withId(R.id.item_head_title)).check(matches(withText("4")));
-        onListItem(5).onChildView(withId(R.id.item_head_title)).check(matches(withText("A")));
-        shelfTestUtils.assertBook("notebook", "description\n\n* 1\n** 2\n*** 3\n*** 4\n*** A\n** 5\n* 6\n");
+        onNoteInBook(2, R.id.item_head_title).check(matches(withText("2")));
+        onNoteInBook(3, R.id.item_head_title).check(matches(withText("3")));
+        onNoteInBook(4, R.id.item_head_title).check(matches(withText("4")));
+        onNoteInBook(5, R.id.item_head_title).check(matches(withText("A")));
+        testUtils.assertBook("notebook", "description\n\n* 1\n** 2\n*** 3\n*** 4\n*** A\n** 5\n* 6\n");
     }
 
     @Test
     public void testNewNoteAbove() {
-        shelfTestUtils.setupBook("notebook", "description\n* 1\n** 2\n*** 3\n*** 4\n** 5\n* 6");
+        testUtils.setupBook("notebook", "description\n* 1\n** 2\n*** 3\n*** 4\n** 5\n* 6");
         activityRule.launchActivity(null);
-        onView(allOf(withText("notebook"), isDisplayed())).perform(click());
+        onBook(0).perform(click());
 
-        onListItem(2).perform(longClick());
-        openContextualToolbarOverflowMenu();
-        onView(withText(R.string.new_note)).perform(click());
-        onView(withText(R.string.heads_action_menu_item_add_above)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceText("A"), closeSoftKeyboardWithDelay());
+        onNoteInBook(2).perform(click());
+        onView(withId(R.id.bottom_action_bar_new)).perform(click());
+        onView(withText(R.string.new_above)).perform(click());
+        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("A"));
         onView(withId(R.id.done)).perform(click());
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText("1")));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText("A")));
-        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(withText("2")));
-        shelfTestUtils.assertBook("notebook", "description\n\n* 1\n** A\n** 2\n*** 3\n*** 4\n** 5\n* 6\n");
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText("1")));
+        onNoteInBook(2, R.id.item_head_title).check(matches(withText("A")));
+        onNoteInBook(3, R.id.item_head_title).check(matches(withText("2")));
+        testUtils.assertBook("notebook", "description\n\n* 1\n** A\n** 2\n*** 3\n*** 4\n** 5\n* 6\n");
     }
 
     @Test
     public void testNewNoteBelow() {
-        shelfTestUtils.setupBook("booky", "Booky Preface\n" +
+        testUtils.setupBook("booky", "Booky Preface\n" +
                                           "* 1\n" +
                                           "** 2\n" +
                                           "*** 3\n" +
                                           "*** 4\n" +
                                           "** 5\n" +
                                           "* 6");
-
         activityRule.launchActivity(null);
-        onView(allOf(withText("booky"), isDisplayed())).perform(click());
+        onBook(0).perform(click());
 
-        onListItem(2).perform(longClick());
-        openContextualToolbarOverflowMenu();
-        onView(withText(R.string.new_note)).perform(click());
-        onView(withText(R.string.heads_action_menu_item_add_below)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceText("A"), closeSoftKeyboardWithDelay());
+        onNoteInBook(2).perform(click());
+        onView(withId(R.id.bottom_action_bar_new)).perform(click());
+        onView(withText(R.string.new_below)).perform(click());
+        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("A"));
         onView(withId(R.id.done)).perform(click());
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText("2")));
-        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(withText("3")));
-        onListItem(4).onChildView(withId(R.id.item_head_title)).check(matches(withText("4")));
-        onListItem(5).onChildView(withId(R.id.item_head_title)).check(matches(withText("A")));
-        onListItem(6).onChildView(withId(R.id.item_head_title)).check(matches(withText("5")));
+        onNoteInBook(2, R.id.item_head_title).check(matches(withText("2")));
+        onNoteInBook(3, R.id.item_head_title).check(matches(withText("3")));
+        onNoteInBook(4, R.id.item_head_title).check(matches(withText("4")));
+        onNoteInBook(5, R.id.item_head_title).check(matches(withText("A")));
+        onNoteInBook(6, R.id.item_head_title).check(matches(withText("5")));
 
-        shelfTestUtils.assertBook("booky", "Booky Preface\n" +
+        testUtils.assertBook("booky", "Booky Preface\n" +
                                            "\n" +
                                            "* 1\n" +
                                            "** 2\n" +
@@ -132,45 +117,27 @@ public class NewNoteTest extends OrgzlyTest {
     }
 
     @Test
-    public void testNewNoteFromQuickMenuWhenCabIsDisplayed() {
-        shelfTestUtils.setupBook("booky", "Booky Preface\n* 1\n** 2\n*** 3\n*** 4\n** 5\n* 6");
-        activityRule.launchActivity(null);
-        onView(allOf(withText("booky"), isDisplayed())).perform(click());
-
-        onView(withId(R.id.book_cab_move)).check(doesNotExist());
-        onListItem(2).perform(longClick());
-        /* Swipe left. */
-        onListItem(2).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER, GeneralLocation.CENTER_LEFT, Press.FINGER));
-        onView(withId(R.id.book_cab_move)).check(matches(isDisplayed()));
-        onListItem(2).onChildView(withId(R.id.item_menu_new_under_btn)).perform(click());
-        onView(withId(R.id.fragment_note_title)).check(matches(isDisplayed()));
-        onView(withId(R.id.done)).check(matches(isDisplayed()));
-        onView(withId(R.id.book_cab_move)).check(doesNotExist());
-    }
-
-    @Test
     public void testNewNoteAfterMovingNotesAround() {
-        shelfTestUtils.setupBook("notebook-1", "");
+        testUtils.setupBook("notebook-1", "");
         activityRule.launchActivity(null);
+        onBook(0).perform(click());
 
-        onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
-
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceText("A"));
+        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("A"));
         onView(withId(R.id.done)).perform(click());
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceText("B"));
+        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("B"));
         onView(withId(R.id.done)).perform(click());
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceText("C"));
+        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("C"));
         onView(withId(R.id.done)).perform(click());
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceText("Parent 1"));
+        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("Parent 1"));
         onView(withId(R.id.done)).perform(click());
 
         /* Move A B and C under Parent 1. */
         for (int i = 0; i < 3; i++) {
-            onListItem(0).perform(longClick());
+            onNoteInBook(1).perform(click());
             onView(withId(R.id.book_cab_move)).perform(click());
             onView(withId(R.id.notes_action_move_down)).perform(click());
             onView(withId(R.id.notes_action_move_down)).perform(click());
@@ -180,16 +147,15 @@ public class NewNoteTest extends OrgzlyTest {
         }
 
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceText("Parent 2"));
+        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("Parent 2"));
         onView(withId(R.id.done)).perform(click());
 
-        onListItem(0).perform(longClick());
-        openContextualToolbarOverflowMenu();
-        onView(withText(R.string.new_note)).perform(click());
-        onView(withText(R.string.heads_action_menu_item_add_under)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceText("Note"));
+        onNoteInBook(1).perform(click());
+        onView(withId(R.id.bottom_action_bar_new)).perform(click());
+        onView(withText(R.string.new_under)).perform(click());
+        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("Note"));
         onView(withId(R.id.done)).perform(click());
 
-        onListItem(4).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note"))));
+        onNoteInBook(5, R.id.item_head_title).check(matches(withText(endsWith("Note"))));
     }
 }

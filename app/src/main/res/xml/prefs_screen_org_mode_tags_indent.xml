@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen
+<androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/tags_indent">
@@ -27,4 +27,4 @@
         android:inputType="number"
         android:defaultValue="@string/pref_default_org_indent_indentation_per_level"
         app:min="0" />
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

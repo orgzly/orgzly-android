@@ -24,6 +24,7 @@ public class UserTimeFormatter {
     private Formatter formatter;
 
 
+    // TODO: Inject it where used
     public UserTimeFormatter(Context context) {
         mContext = context;
     }
@@ -77,7 +78,7 @@ public class UserTimeFormatter {
         return formatDate(time.getCalendar().getTimeInMillis());
     }
 
-    private String formatDate(long timestamp) {
+    public String formatDate(long timestamp) {
         int flags = DateUtils.FORMAT_SHOW_DATE |
                     DateUtils.FORMAT_ABBREV_MONTH |
                     DateUtils.FORMAT_SHOW_WEEKDAY |
@@ -87,8 +88,10 @@ public class UserTimeFormatter {
     }
 
     public String formatTime(OrgDateTime time) {
-        long timestamp = time.getCalendar().getTimeInMillis();
+        return formatTime(time.getCalendar().getTimeInMillis());
+    }
 
+    public String formatTime(long timestamp) {
         int flags = DateUtils.FORMAT_SHOW_TIME;
 
         return format(timestamp, timestamp, flags);

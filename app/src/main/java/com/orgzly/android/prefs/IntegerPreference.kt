@@ -1,10 +1,10 @@
 package com.orgzly.android.prefs
 
 import android.content.Context
-import android.preference.EditTextPreference
 import android.util.AttributeSet
 import android.view.View
 import android.widget.EditText
+import androidx.preference.EditTextPreference
 import com.orgzly.R
 
 class IntegerPreference : EditTextPreference {
@@ -30,22 +30,23 @@ class IntegerPreference : EditTextPreference {
         }
     }
 
-    override fun onAddEditTextToDialogView(dialogView: View, editText: EditText) {
-        super.onAddEditTextToDialogView(dialogView, editText)
-
-        editText.setOnEditorActionListener { _, _, _ ->
-            dialog?.dismiss()
-            true
-        }
-    }
-
-    override fun onDialogClosed(positiveResult: Boolean) {
-        val value = editText.text.toString()
-        super.onDialogClosed(validateIntegerValue(value) != null)
-    }
+    // TODO: Support keyboard action key
+//    override fun onAddEditTextToDialogView(dialogView: View, editText: EditText) {
+//        super.onAddEditTextToDialogView(dialogView, editText)
+//
+//        editText.setOnEditorActionListener { _, _, _ ->
+//            dialog?.dismiss()
+//            true
+//        }
+//    }
+//
+//    override fun onDialogClosed(positiveResult: Boolean) {
+//        val value = editText.text.toString()
+//        super.onDialogClosed(validateIntegerValue(value) != null)
+//    }
 
     override fun setText(text: String) {
-        validateIntegerValue(text).let {
+        validateIntegerValue(text)?.let {
             super.setText(it)
             summary = it
         }

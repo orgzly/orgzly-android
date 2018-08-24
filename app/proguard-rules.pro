@@ -20,10 +20,6 @@
 # Keep line numbers and file names
 -keepattributes SourceFile,LineNumberTable
 
-# For avoiding: SupportMenuInflater: Cannot instantiate class: android.support.v7.widget.SearchView
-
--keep class android.support.v7.widget.SearchView { *; }
-
 # Dropbox SDK Serialization
 
 -keepattributes *Annotation*,EnclosingMethod,InnerClasses,Signature
@@ -50,7 +46,6 @@
 -dontnote android.support.**
 
 -dontwarn org.joda.convert.**
-
 
 -dontwarn org.eclipse.jgit.**
 -dontwarn com.jcraft.**

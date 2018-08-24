@@ -10,11 +10,10 @@ import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 
-import com.orgzly.android.Note;
+import com.orgzly.android.db.entity.Note;
+import com.orgzly.android.db.entity.NoteView;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.util.OrgFormatter;
-import com.orgzly.org.OrgHead;
-import com.orgzly.org.datetime.OrgDateTime;
 
 import java.util.List;
 
@@ -42,20 +41,22 @@ public class TitleGenerator {
         this.attributes = attributes;
     }
 
-    public CharSequence generateTitle(Note note, OrgHead head) {
+    public CharSequence generateTitle(NoteView noteView) {
+        Note note = noteView.getNote();
+
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         /* State. */
-        if (head.getState() != null) {
-            builder.append(generateState(head));
+        if (note.getState() != null) {
+            builder.append(generateState(note));
         }
 
         /* Priority. */
-        if (head.getPriority() != null) {
+        if (note.getPriority() != null) {
             if (builder.length() > 0) {
                 builder.append(TITLE_SEPARATOR);
             }
-            builder.append(generatePriority(head));
+            builder.append(generatePriority(note));
         }
 
         /* Bold everything up until now. */
@@ -69,7 +70,7 @@ public class TitleGenerator {
         }
 
         /* Title. */
-        builder.append(OrgFormatter.parse(head.getTitle(), mContext, true, false));
+        builder.append(OrgFormatter.parse(note.getTitle(), mContext, true, false));
 
         /* Append note ID. */
         // builder.append(TITLE_SEPARATOR).append("#").append(String.valueOf(note.getId()));
@@ -79,36 +80,28 @@ public class TitleGenerator {
         boolean hasPostTitleText = false;
 
         /* Tags. */
-        if (head.hasTags()) {
-            builder.append(TITLE_SEPARATOR).append(generateTags(head.getTags()));
+        if (note.hasTags()) {
+            builder.append(TITLE_SEPARATOR).append(generateTags(note.getTagsList()));
             hasPostTitleText = true;
         }
 
         /* Inherited tags in search results. */
-        if (!inBook && note.hasInheritedTags() && AppPreferences.inheritedTagsInSearchResults(mContext)) {
-            if (head.hasTags()) {
+        if (!inBook && noteView.hasInheritedTags() && AppPreferences.inheritedTagsInSearchResults(mContext)) {
+            if (note.hasTags()) {
                 builder.append(INHERITED_TAGS_SEPARATOR);
             } else {
                 builder.append(TITLE_SEPARATOR);
             }
-            builder.append(generateTags(note.getInheritedTags()));
+            builder.append(generateTags(noteView.getInheritedTagsList()));
             hasPostTitleText = true;
         }
 
         /* Content line number. */
-        if (head.hasContent() && AppPreferences.contentLineCountDisplayed(mContext)) {
+        if (note.hasContent() && AppPreferences.contentLineCountDisplayed(mContext)) {
             if (!shouldDisplayContent(note)) {
-                builder.append(TITLE_SEPARATOR).append(String.valueOf(note.getContentLines()));
+                builder.append(TITLE_SEPARATOR).append(String.valueOf(note.getContentLineCount()));
                 hasPostTitleText = true;
             }
-        }
-
-        if (false) {
-            String times = note.getCreatedAt() > 0
-                    ? new OrgDateTime(note.getCreatedAt(), false).toString()
-                    : "N/A";
-            builder.append("  ").append(times);
-            hasPostTitleText = true;
         }
 
         /* Change font style of text after title. */
@@ -148,14 +141,14 @@ public class TitleGenerator {
         return new SpannableString(TextUtils.join(TAGS_SEPARATOR, tags));
     }
 
-    private CharSequence generateState(OrgHead head) {
-        SpannableString str = new SpannableString(head.getState());
+    private CharSequence generateState(Note note) {
+        SpannableString str = new SpannableString(note.getState());
 
         ForegroundColorSpan color;
 
-        if (AppPreferences.todoKeywordsSet(mContext).contains(head.getState())) {
+        if (AppPreferences.todoKeywordsSet(mContext).contains(note.getState())) {
             color = attributes.colorTodo;
-        } else if (AppPreferences.doneKeywordsSet(mContext).contains(head.getState())) {
+        } else if (AppPreferences.doneKeywordsSet(mContext).contains(note.getState())) {
             color = attributes.colorDone;
         } else {
             color = attributes.colorUnknown;
@@ -166,8 +159,8 @@ public class TitleGenerator {
         return str;
     }
 
-    private CharSequence generatePriority(OrgHead head) {
-        return "#" + head.getPriority();
+    private CharSequence generatePriority(Note note) {
+        return "#" + note.getPriority();
     }
 
     public static class TitleAttributes {

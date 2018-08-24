@@ -1,7 +1,6 @@
 package com.orgzly.android.ui.views
 
 import android.content.Context
-import android.content.Intent
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -9,11 +8,10 @@ import android.util.AttributeSet
 import android.util.Log
 import android.widget.TextView
 import com.orgzly.BuildConfig
-import com.orgzly.android.ActionService
-import com.orgzly.android.AppIntent
+import com.orgzly.android.ui.main.MainActivity
+import com.orgzly.android.ui.views.style.CheckboxSpan
 import com.orgzly.android.ui.views.style.DrawerEndSpan
 import com.orgzly.android.ui.views.style.DrawerSpan
-import com.orgzly.android.ui.views.style.CheckboxSpan
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.OrgFormatter
 
@@ -24,14 +22,12 @@ import com.orgzly.android.util.OrgFormatter
  */
 class TextViewWithMarkup : TextViewFixed {
     constructor(context: Context) : super(context)
-
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    private var rawText: CharSequence? = null
+    var onUserTextChangeListener: Runnable? = null
 
-    private var onUserTextChanged: Runnable? = null
+    private var rawText: CharSequence? = null
 
     fun setRawText(text: CharSequence) {
         rawText = text
@@ -43,16 +39,13 @@ class TextViewWithMarkup : TextViewFixed {
         return rawText
     }
 
-    fun setUserTextChangedListener(runnable: Runnable) {
-        onUserTextChanged = runnable
+    // TODO: Consider getting MainActivity's *VieWModel* here instead
+    fun openNoteWithProperty(name: String, value: String) {
+        MainActivity.openNoteWithProperty(name, value)
     }
 
-    fun openNoteWithProperty(name: String, value: String) {
-        val intent = Intent(context, ActionService::class.java)
-        intent.action = AppIntent.ACTION_OPEN_NOTE
-        intent.putExtra(AppIntent.EXTRA_PROPERTY_NAME, name)
-        intent.putExtra(AppIntent.EXTRA_PROPERTY_VALUE, value)
-        ActionService.enqueueWork(context, intent)
+    fun openFileLink(path: String) {
+        MainActivity.openFileLink(path)
     }
 
     fun toggleDrawer(drawerSpan: DrawerSpan) {
@@ -110,7 +103,7 @@ class TextViewWithMarkup : TextViewFixed {
         newRawText = newRawText.replaceRange(checkboxSpan.rawStart, checkboxSpan.rawEnd, replacement)
         setRawText(newRawText)
 
-        onUserTextChanged?.run()
+        onUserTextChangeListener?.run()
     }
 
     companion object {

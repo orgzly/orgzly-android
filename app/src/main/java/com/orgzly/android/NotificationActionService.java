@@ -3,10 +3,12 @@ package com.orgzly.android;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.app.JobIntentService;
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
 
 import com.orgzly.BuildConfig;
+import com.orgzly.android.usecase.UseCaseRunner;
+import com.orgzly.android.usecase.NoteUpdateStateDone;
 import com.orgzly.android.reminders.SnoozeJob;
 import com.orgzly.android.util.LogUtils;
 
@@ -31,9 +33,7 @@ public class NotificationActionService extends JobIntentService {
             long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0);
 
             if (noteId > 0) {
-                Shelf shelf = new Shelf(this);
-                shelf.setStateToFirstDone(noteId);
-                shelf.syncOnNoteUpdate();
+                UseCaseRunner.run(new NoteUpdateStateDone(noteId));
             } else {
                 throw new IllegalArgumentException("Missing note ID");
             }

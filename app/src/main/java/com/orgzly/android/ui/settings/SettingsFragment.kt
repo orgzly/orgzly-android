@@ -6,21 +6,22 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.preference.Preference
-import android.preference.PreferenceManager
-import android.preference.PreferenceScreen
-import android.preference.TwoStatePreference
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.github.machinarius.preferencefragment.PreferenceFragment
+import androidx.preference.*
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
-import com.orgzly.android.Notifications
-import com.orgzly.android.Shelf
+import com.orgzly.android.ui.notifications.Notifications
+import com.orgzly.android.usecase.UseCase
+import com.orgzly.android.usecase.NoteReparseStateAndTitles
+import com.orgzly.android.usecase.NoteSyncCreatedAtTimeWithProperty
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+import com.orgzly.android.prefs.StatesPreference
+import com.orgzly.android.prefs.StatesPreferenceFragment
+import com.orgzly.android.reminders.ReminderService
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.NoteStates
 import com.orgzly.android.ui.util.ActivityUtils
@@ -32,12 +33,10 @@ import java.util.*
 /**
  * Displays settings.
  */
-class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
-    private var mListener: SettingsFragmentListener? = null
+class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+    private var listener: Listener? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource()
 
         setupPreferences()
@@ -63,14 +62,14 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
         findPreference(getString(R.string.pref_key_clear_database))?.let {
             it.setOnPreferenceClickListener { _ ->
-                mListener?.onDatabaseClearRequest()
+                listener?.onDatabaseClearRequest()
                 true
             }
         }
 
         findPreference(getString(R.string.pref_key_reload_getting_started))?.let {
             it.setOnPreferenceClickListener { _ ->
-                mListener?.onGettingStartedNotebookReloadRequest()
+                listener?.onGettingStartedNotebookReloadRequest()
                 true
             }
         }
@@ -98,7 +97,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
             /* Display changelog dialog when version is clicked. */
             pref.setOnPreferenceClickListener { _ ->
-                mListener?.onWhatsNewDisplayRequest()
+                listener?.onWhatsNewDisplayRequest()
                 true
             }
         }
@@ -129,16 +128,34 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         return view
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        mListener = activity as SettingsFragmentListener
+        listener = activity as Listener
+    }
+
+    /*
+     * Display custom preference's dialog.
+     */
+    override fun onDisplayPreferenceDialog(preference: Preference?) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, preference)
+
+        if (preference is StatesPreference) {
+            fragmentManager?.let {
+                val fragment = StatesPreferenceFragment.getInstance(preference)
+                fragment.setTargetFragment(this, 0)
+                fragment.show(it, StatesPreferenceFragment.FRAGMENT_TAG)
+            }
+
+        } else {
+            super.onDisplayPreferenceDialog(preference)
+        }
     }
 
     override fun onResume() {
         super.onResume()
 
-        mListener?.onTitleChange(preferenceScreen?.title)
+        listener?.onTitleChange(preferenceScreen?.title)
 
         /* Start to listen for any preference changes. */
         PreferenceManager.getDefaultSharedPreferences(activity)
@@ -156,7 +173,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     override fun onDetach() {
         super.onDetach()
 
-        mListener = null
+        listener = null
     }
 
     /**
@@ -175,7 +192,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
                 /* Re-parse notes. */
                 ActivityUtils.closeSoftKeyboard(activity)
-                mListener?.onNotesUpdateRequest(AppIntent.ACTION_REPARSE_NOTES)
+                listener?.onNotesUpdateRequest(NoteReparseStateAndTitles())
 
                 setDefaultStateForNewNote()
             }
@@ -184,7 +201,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
             getString(R.string.pref_key_is_created_at_added),
             getString(R.string.pref_key_created_at_property) -> {
                 if (AppPreferences.createdAt(context)) {
-                    mListener?.onNotesUpdateRequest(AppIntent.ACTION_SYNC_CREATED_AT_WITH_PROPERTY)
+                    listener?.onNotesUpdateRequest(NoteSyncCreatedAtTimeWithProperty())
                 }
             }
 
@@ -206,8 +223,9 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
                     val minPri = sharedPreferences.getString(key, null)
 
                     // Default priority is lower then minimum
-                    if (defPri.compareTo(minPri, ignoreCase = true) > 0) { // minPri -> defPri
-                        /* Must use preference directly to update the view too. */
+                    if (minPri != null && defPri.compareTo(minPri, ignoreCase = true) > 0) {
+                        // minPri -> defPri
+                        // Must use preference directly to update the view too
                         pref.value = minPri
                     }
                 }
@@ -222,8 +240,9 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
                     val defPri = sharedPreferences.getString(key, null)
 
                     // Default priority is lower then minimum
-                    if (minPri.compareTo(defPri, ignoreCase = true) < 0) { // minPri -> defPri
-                        /* Must use preference directly to update the view too. */
+                    if (defPri != null && minPri.compareTo(defPri, ignoreCase = true) < 0) {
+                        // minPri -> defPri
+                        // Must use preference directly to update the view too
                         pref.value = defPri
                     }
                 }
@@ -264,9 +283,10 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
          *
          * For example:
          * - Changing states or priorities can affect the displayed data
-         * - Enabling or disabling reminders need to trigger service notification
+         * - Enabling or disabling reminders needs to trigger reminder service notification
          */
-        Shelf.notifyDataChanged(context)
+        ReminderService.notifyDataChanged(context)
+        ListWidgetProvider.notifyDataChanged(context)
     }
 
     private fun updateRemindersScreen() {
@@ -275,7 +295,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
         if (scheduled != null && deadline != null) {
             val remindersEnabled = (scheduled as TwoStatePreference).isChecked
-                    || (deadline as TwoStatePreference).isChecked
+                                   || (deadline as TwoStatePreference).isChecked
 
             /* These do not exist on Oreo and later */
             findPreference(getString(R.string.pref_key_reminders_sound))?.isEnabled = remindersEnabled
@@ -318,21 +338,21 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         }
     }
 
-    override fun onPreferenceTreeClick(preferenceScreen: PreferenceScreen?, preference: Preference?): Boolean {
+    override fun onPreferenceTreeClick(preference: androidx.preference.Preference?): Boolean {
         if (preference != null && preference is PreferenceScreen) {
             preference.key?.let { key ->
                 if (key in PREFS_RESOURCES) {
-                    mListener?.onPreferenceScreen(key)
+                    listener?.onPreferenceScreen(key)
                     return true
                 }
             }
         }
 
-        return false
+        return super.onPreferenceTreeClick(preference)
     }
 
-    interface SettingsFragmentListener {
-        fun onNotesUpdateRequest(action: String)
+    interface Listener {
+        fun onNotesUpdateRequest(action: UseCase)
         fun onDatabaseClearRequest()
         fun onGettingStartedNotebookReloadRequest()
         fun onWhatsNewDisplayRequest()
@@ -350,7 +370,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         /* Using headers file & fragments didn't work well - transitions were
          * not smooth, previous fragment would be briefly displayed.
          */
-        @JvmStatic
+        @JvmField
         val PREFS_RESOURCES: HashMap<String, Int> = hashMapOf(
                 "prefs_screen_look_and_feel" to R.xml.prefs_screen_look_and_feel,
                 "prefs_screen_notebooks" to R.xml.prefs_screen_notebooks,

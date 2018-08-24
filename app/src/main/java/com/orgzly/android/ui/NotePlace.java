@@ -1,5 +1,7 @@
 package com.orgzly.android.ui;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Selected target note.
  * Used when pasting or creating new notes.
@@ -28,6 +30,7 @@ public class NotePlace {
         return noteId;
     }
 
+    @NotNull
     public Place getPlace() {
         return place;
     }

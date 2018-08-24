@@ -13,7 +13,7 @@
         <intent
             android:action="android.intent.action.SEND"
             android:targetPackage="com.orgzly"
-            android:targetClass="com.orgzly.android.ui.ShareActivity" />
+            android:targetClass="com.orgzly.android.ui.share.ShareActivity" />
     </shortcut>
 
     <shortcut

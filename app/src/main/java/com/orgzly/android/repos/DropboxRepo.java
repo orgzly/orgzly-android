@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import java.util.List;
 
-public class DropboxRepo implements Repo {
+public class DropboxRepo implements SyncRepo {
     public static final String SCHEME = "dropbox";
 
     private final Uri repoUri;

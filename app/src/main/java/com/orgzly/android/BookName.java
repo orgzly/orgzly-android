@@ -2,7 +2,7 @@ package com.orgzly.android;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.v4.provider.DocumentFile;
+import androidx.documentfile.provider.DocumentFile;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.android.repos.Rook;
@@ -23,24 +23,20 @@ public class BookName {
 
     private final String mFileName;
     private final String mName;
-    private final Format mFormat;
+    private final BookFormat mFormat;
 
-    private BookName(String fileName, String name, Format format) {
+    private BookName(String fileName, String name, BookFormat format) {
         mFileName = fileName;
         mName = name;
         mFormat = format;
     }
 
-    public static String getFileName(Context context, Book book) {
-//        if (book.hasRook()) {
-//            return getFileName(context, book.getRook().getUri());
-//
-//        } else
-        if (book.getLastSyncedToRook() != null) {
-            return getFileName(context, book.getLastSyncedToRook().getUri());
+    public static String getFileName(Context context, com.orgzly.android.db.entity.BookView bookView) {
+        if (bookView.getSyncedTo() != null) {
+            return getFileName(context, bookView.getSyncedTo().getUri());
 
         } else {
-            return fileName(book.getName(), Format.ORG);
+            return fileName(bookView.getBook().getName(), BookFormat.ORG);
         }
     }
 
@@ -75,8 +71,8 @@ public class BookName {
         return PATTERN.matcher(fileName).matches() && !SKIP_PATTERN.matcher(fileName).matches();
     }
 
-    public static String fileName(String name, Format format) {
-        if (format == Format.ORG) {
+    public static String fileName(String name, BookFormat format) {
+        if (format == BookFormat.ORG) {
             return name + ".org";
 
         } else {
@@ -93,7 +89,7 @@ public class BookName {
                 String extension = m.group(2);
 
                 if (extension.equals("org")) {
-                    return new BookName(fileName, name, Format.ORG);
+                    return new BookName(fileName, name, BookFormat.ORG);
                 }
             }
         }
@@ -105,7 +101,7 @@ public class BookName {
         return mName;
     }
 
-    public Format getFormat() {
+    public BookFormat getFormat() {
         return mFormat;
     }
 
@@ -113,7 +109,4 @@ public class BookName {
         return mFileName;
     }
 
-    public enum Format {
-        ORG
-    }
 }

@@ -2,10 +2,12 @@ package com.orgzly.android.query
 
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.assertThat
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
+//@Ignore
 @RunWith(value = Parameterized::class)
 class QueryTokenizerTest(private val param: Parameter) {
 

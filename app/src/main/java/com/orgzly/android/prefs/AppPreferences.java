@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static androidx.preference.PreferenceManager.getDefaultSharedPreferences;
 
 
 /**
@@ -360,21 +360,6 @@ public class AppPreferences {
         return Integer.valueOf(getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_org_indent_indentation_per_level),
                 context.getResources().getString(R.string.pref_default_org_indent_indentation_per_level)));
-    }
-
-    /*
-     * Click action.
-     */
-
-    public static boolean isReverseNoteClickAction(Context context) {
-        return getDefaultSharedPreferences(context).getBoolean(
-                context.getResources().getString(R.string.pref_key_is_reverse_click_action),
-                context.getResources().getBoolean(R.bool.pref_default_is_reverse_click_action));
-    }
-
-    public static void isReverseNoteClickAction(Context context, boolean value) {
-        String key = context.getResources().getString(R.string.pref_key_is_reverse_click_action);
-        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
     }
 
     /*

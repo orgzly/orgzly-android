@@ -1,8 +1,9 @@
 package com.orgzly.android.prefs;
 
 import android.content.Context;
-import android.preference.ListPreference;
 import android.util.AttributeSet;
+
+import androidx.preference.ListPreference;
 
 /**
  * {@link ListPreference} with summary set to its current value.

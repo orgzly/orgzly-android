@@ -3,26 +3,27 @@ package com.orgzly.android.ui.settings
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.MenuItem
-import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.ActionService
-import com.orgzly.android.AppIntent
+import com.orgzly.android.App
 import com.orgzly.android.ui.CommonActivity
-import com.orgzly.android.ui.settings.SettingsFragment.SettingsFragmentListener
-import com.orgzly.android.util.LogUtils
+import com.orgzly.android.ui.settings.SettingsFragment.Listener
+import com.orgzly.android.usecase.BookImportGettingStarted
+import com.orgzly.android.usecase.DatabaseClear
+import com.orgzly.android.usecase.UseCase
+import com.orgzly.android.usecase.UseCaseRunner
 
 
-class SettingsActivity : CommonActivity(), SettingsFragmentListener {
+class SettingsActivity : CommonActivity(), Listener {
     override fun onWhatsNewDisplayRequest() {
         displayWhatsNewDialog()
     }
 
-    override fun onNotesUpdateRequest(action: String) {
-        AlertDialog.Builder(this)
+    override fun onNotesUpdateRequest(action: UseCase) {
+        alertDialog = AlertDialog.Builder(this)
                 .setTitle(R.string.notes_update_needed_dialog_title)
                 .setMessage(R.string.notes_update_needed_dialog_message)
                 .setPositiveButton(R.string.yes) { _, _ ->
-                    ActionService.enqueueWork(this, action)
+                    UseCaseRunner.enqueue(action)
                 }
                 .setNegativeButton(R.string.not_now, null)
                 .show()
@@ -32,19 +33,24 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
      * Wipe database, after prompting user for confirmation.
      */
     override fun onDatabaseClearRequest() {
-        AlertDialog.Builder(this)
+        alertDialog = AlertDialog.Builder(this)
                 .setTitle(R.string.clear_database)
                 .setMessage(R.string.clear_database_dialog_message)
                 .setPositiveButton(R.string.ok) { _, _ ->
-                    ActionService.enqueueWork(this, AppIntent.ACTION_CLEAR_DATABASE)
+                    App.EXECUTORS.diskIO().execute {
+                        UseCaseRunner.run(DatabaseClear())
+
+                        App.EXECUTORS.mainThread().execute {
+                            showSnackbar(R.string.clear_database_performed)
+                        }
+                    }
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
     }
 
     override fun onGettingStartedNotebookReloadRequest() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
-        ActionService.enqueueWork(this, AppIntent.ACTION_IMPORT_GETTING_STARTED_NOTEBOOK)
+        UseCaseRunner.enqueue(BookImportGettingStarted())
     }
 
     override fun onPreferenceScreen(resource: String) {

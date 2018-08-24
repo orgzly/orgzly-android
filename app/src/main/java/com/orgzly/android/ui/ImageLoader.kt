@@ -7,8 +7,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Environment
-import android.support.v4.content.FileProvider
-import android.support.v4.content.res.ResourcesCompat
+import androidx.core.content.FileProvider
+import androidx.core.content.res.ResourcesCompat
 import android.text.Spannable
 import android.text.style.ImageSpan
 import android.view.View

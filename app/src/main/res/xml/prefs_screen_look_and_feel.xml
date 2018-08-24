@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen
+<androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/look_and_feel">
-
-    <SwitchPreference
-        android:key="@string/pref_key_is_reverse_click_action"
-        android:title="@string/reversed_note_click_action"
-        android:summary="@string/reversed_note_click_action_summary"
-        android:defaultValue="@bool/pref_default_is_reverse_click_action"/>
 
     <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
         android:key="@string/pref_key_color_scheme"
@@ -55,4 +49,4 @@
         android:summary="Ignore default locale"
         android:defaultValue="@bool/pref_default_ignore_system_locale"/>
 
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

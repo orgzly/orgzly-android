@@ -1,16 +1,8 @@
 package com.orgzly.android.espresso;
 
 import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 import android.os.SystemClock;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.DataInteraction;
-import android.support.test.espresso.UiController;
-import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.ViewInteraction;
-import android.support.test.espresso.action.CloseKeyboardAction;
-import android.support.test.espresso.matcher.PreferenceMatchers;
-import android.support.test.espresso.matcher.ViewMatchers;
-import android.support.test.rule.ActivityTestRule;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
 import android.view.View;
@@ -19,32 +11,45 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.orgzly.R;
+import com.orgzly.android.ui.SpanUtils;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 
-import static android.support.test.espresso.Espresso.onData;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
-import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.pressKey;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.matcher.RootMatchers.isDialog;
-import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
-import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
-import static android.support.test.espresso.matcher.ViewMatchers.withHint;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import java.util.Optional;
+
+import androidx.annotation.IdRes;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.espresso.DataInteraction;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.action.CloseKeyboardAction;
+import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.ActivityTestRule;
+
+import static androidx.test.espresso.Espresso.onData;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.pressKey;
+import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static androidx.test.espresso.matcher.ViewMatchers.withHint;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 
 /*
  * Few espresso-related notes:
@@ -55,8 +60,12 @@ import static org.hamcrest.Matchers.not;
  * - replaceText() is preferred over typeText() as it is much faster.
  */
 class EspressoUtils {
-    static ViewInteraction onList() {
+    static ViewInteraction onListView() {
         return onView(allOf(isAssignableFrom(ListView.class), isDisplayed()));
+    }
+
+    static ViewInteraction onRecyclerView() {
+        return onView(allOf(isAssignableFrom(RecyclerView.class), isDisplayed()));
     }
 
     /**
@@ -76,15 +85,171 @@ class EspressoUtils {
         };
     }
 
+    static TypeSafeMatcher<View> recyclerViewItemCount(final int count) {
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public boolean matchesSafely(View view) {
+                return count == ((RecyclerView) view).getAdapter().getItemCount();
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText(
+                        "a RecyclerView adapter which contains " + count + " item(s)");
+            }
+        };
+    }
+
+    static TypeSafeMatcher<View> toolbarItemCount(final int count) {
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public boolean matchesSafely(View view) {
+                return count == ((Toolbar) view).getChildCount();
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("a Toolbar which contains " + count + " item(s)");
+            }
+        };
+    }
+
     @SuppressWarnings("unchecked")
     public static DataInteraction onListItem(int pos) {
         return onData(anything())
-                .inAdapterView(allOf(isAssignableFrom(ListView.class), isDisplayed()))
+                .inAdapterView(allOf(isAssignableFrom(ListView.class),isDisplayed()))
                 .atPosition(pos);
     }
 
+    public static ViewInteraction onItemInDrawer(int position, @IdRes int childView) {
+        return onRecyclerViewItem(R.id.design_navigation_view, position, childView);
+    }
+
+    public static ViewInteraction onBook(int position) {
+        return onBook(position, -1);
+    }
+
+    public static ViewInteraction onBook(int position, @IdRes int childView) {
+        return onRecyclerViewItem(R.id.fragment_books_recycler_view, position, childView);
+    }
+
+    public static ViewInteraction onPreface() {
+        return onNoteInBook(0, -1);
+    }
+
+    public static ViewInteraction onPreface(@IdRes int childView) {
+        return onNoteInBook(0, childView);
+    }
+
+    public static ViewInteraction onNotesInBook() {
+        return onView(withId(R.id.fragment_notes_book_recycler_view));
+    }
+
+    public static ViewInteraction onNoteInBook(int position) {
+        return onNoteInBook(position, -1);
+    }
+
+    public static ViewInteraction onNoteInBook(int position, @IdRes int childView) {
+        return onRecyclerViewItem(R.id.fragment_notes_book_recycler_view, position, childView);
+    }
+
+    public static ViewInteraction onNotesInSearch() {
+        return onView(withId(R.id.fragment_query_search_recycler_view));
+    }
+
+    public static ViewInteraction onNoteInSearch(int position) {
+        return onNoteInSearch(position, -1);
+    }
+
+    public static ViewInteraction onNoteInSearch(int position, @IdRes int childView) {
+        return onRecyclerViewItem(R.id.fragment_query_search_recycler_view, position, childView);
+    }
+
+    public static ViewInteraction onNotesInAgenda() {
+        return onView(withId(R.id.fragment_query_agenda_recycler_view));
+    }
+
+    public static ViewInteraction onItemInAgenda(int position) {
+        return onItemInAgenda(position, -1);
+    }
+
+    public static ViewInteraction onItemInAgenda(int position, @IdRes int childView) {
+        return onRecyclerViewItem(R.id.fragment_query_agenda_recycler_view, position, childView);
+    }
+
+    public static ViewInteraction onSavedSearch(int position) {
+        return onRecyclerViewItem(R.id.fragment_saved_searches_recycler_view, position, -1);
+    }
+
+    public static ViewInteraction onRecyclerViewItem(@IdRes int recyclerView, int position, @IdRes int childView) {
+        onView(withId(recyclerView)).perform(RecyclerViewActions.scrollToPosition(position));
+
+        return onView(new EspressoRecyclerViewMatcher(recyclerView)
+                .atPositionOnView(position, childView));
+    }
+
+    private static class EspressoRecyclerViewMatcher {
+        private final int recyclerViewId;
+
+        private EspressoRecyclerViewMatcher(int recyclerViewId) {
+            this.recyclerViewId = recyclerViewId;
+        }
+
+        public Matcher<View> atPosition(final int position) {
+            return atPositionOnView(position, -1);
+        }
+
+        public Matcher<View> atPositionOnView(final int position, final int targetViewId) {
+
+            return new TypeSafeMatcher<View>() {
+                Resources resources = null;
+                View childView;
+
+                public void describeTo(Description description) {
+                    String idDescription = Integer.toString(recyclerViewId);
+                    if (this.resources != null) {
+                        try {
+                            idDescription = this.resources.getResourceName(recyclerViewId);
+                        } catch (Resources.NotFoundException var4) {
+                            idDescription = String.format("%s (resource name not found)", recyclerViewId);
+                        }
+                    }
+
+                    description.appendText("with id: " + idDescription);
+                }
+
+                public boolean matchesSafely(View view) {
+
+                    this.resources = view.getResources();
+
+                    if (childView == null) {
+                        RecyclerView recyclerView = view.getRootView().findViewById(recyclerViewId);
+                        if (recyclerView != null && recyclerView.getId() == recyclerViewId) {
+                            RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
+                            if (holder != null) {
+                                childView = holder.itemView;
+                            } else {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                    }
+
+                    if (targetViewId == -1) {
+                        return view == childView;
+                    } else {
+                        View targetView = childView.findViewById(targetViewId);
+                        return view == targetView;
+                    }
+
+                }
+            };
+        }
+    }
+
     static ViewInteraction onSnackbar() {
-        return onView(withId(android.support.design.R.id.snackbar_text));
+        return onView(withId(com.google.android.material.R.id.snackbar_text));
     }
 
     /*
@@ -119,7 +284,7 @@ class EspressoUtils {
 
             // Open the overflow menu OR open the options menu,
             // depending on if the device has a hardware or software overflow menu button.
-            openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+            openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getTargetContext());
             onView(withText(resourceId)).perform(click());
         }
     }
@@ -139,8 +304,10 @@ class EspressoUtils {
         SystemClock.sleep(750);
     }
 
-    static DataInteraction onSpinnerString(String value) {
-        return onData(allOf(instanceOf(String.class), is(value))).inRoot(not(isDialog()));
+    public static void clickSetting(String key, int title) {
+        onView(withId(R.id.recycler_view))
+                .perform(RecyclerViewActions.actionOnItem(
+                        hasDescendant(withText(title)), click()));
     }
 
     static void settingsSetTodoKeywords(String keywords) {
@@ -154,10 +321,10 @@ class EspressoUtils {
     private static void settingsSetKeywords(int viewId, String keywords) {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
 
-        onData(PreferenceMatchers.withKey("prefs_screen_notebooks")).perform(click());
-        onData(PreferenceMatchers.withKey("pref_key_states")).perform(click());
+        clickSetting("prefs_screen_notebooks", R.string.pref_title_notebooks);
+        clickSetting("pref_key_states", R.string.states);
 
-        onView(withId(viewId)).perform(replaceText(keywords), closeSoftKeyboardWithDelay());
+        onView(withId(viewId)).perform(replaceTextCloseKeyboard(keywords));
         onView(withText(R.string.ok)).perform(click());
         onView(withText(R.string.yes)).perform(click());
 
@@ -175,6 +342,10 @@ class EspressoUtils {
     static void searchForText(String str) {
         onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
         onView(withHint(R.string.search_hint)).perform(replaceText(str), pressKey(66));
+    }
+
+    static ViewAction[] replaceTextCloseKeyboard(String str) {
+        return new ViewAction[] { replaceText(str), closeSoftKeyboardWithDelay() };
     }
 
     /**
@@ -265,26 +436,25 @@ class EspressoUtils {
             @Override
             public void perform(UiController uiController, View view) {
                 TextView textView = (TextView) view;
-                Spanned spannableString = (Spanned) textView.getText();
+                Spanned spannable = (Spanned) textView.getText();
 
-                // Get the links inside the TextView and check if we find textToClick
-                ClickableSpan[] spans = spannableString.getSpans(0, spannableString.length(), ClickableSpan.class);
-                if (spans.length > 0) {
-                    ClickableSpan spanCandidate;
-                    for (ClickableSpan span : spans) {
-                        spanCandidate = span;
-                        int start = spannableString.getSpanStart(spanCandidate);
-                        int end = spannableString.getSpanEnd(spanCandidate);
-                        CharSequence sequence = spannableString.subSequence(start, end);
-                        if (textToClick.toString().equals(sequence.toString())) {
-                            span.onClick(textView);
-                            return;
-                        }
+                ClickableSpan clickable = null;
+                for (ClickableSpan span: SpanUtils.getSpans(spannable, ClickableSpan.class)) {
+                    int start = spannable.getSpanStart(span);
+                    int end = spannable.getSpanEnd(span);
+
+                    CharSequence sequence = spannable.subSequence(start, end);
+                    if (sequence.toString().contains(textToClick)) {
+                        clickable = span;
+                        break;
                     }
                 }
 
-                // Fall-back to just click the entire view
-                click().perform(uiController, view);
+                if (clickable != null) {
+                    clickable.onClick(textView);
+                } else {
+                    throw new IllegalStateException("No clickable span found in " + spannable);
+                }
             }
         };
     }

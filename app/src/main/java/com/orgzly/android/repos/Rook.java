@@ -2,7 +2,6 @@ package com.orgzly.android.repos;
 
 import android.net.Uri;
 
-import com.orgzly.android.BookName;
 
 /**
  * Remote notebook.

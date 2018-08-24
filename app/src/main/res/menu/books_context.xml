@@ -1,40 +1,43 @@
 <menu
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item
-        android:id="@+id/books_context_menu_rename"
-        android:title="@string/books_context_menu_item_rename">
-    </item>
-
-    <item
-        android:id="@+id/books_context_menu_set_link"
-        android:title="@string/books_context_menu_item_set_link">
-    </item>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/books_context_menu_force_load"
-        android:title="@string/books_context_menu_item_force_load">
+        android:title="@string/books_context_menu_item_force_load"
+        android:icon="?attr/ic_file_download_24dp"
+        app:showAsAction="always">
     </item>
 
     <item
         android:id="@+id/books_context_menu_force_save"
-        android:title="@string/books_context_menu_item_force_save">
+        android:title="@string/books_context_menu_item_force_save"
+        android:icon="?attr/ic_file_upload_24dp"
+        app:showAsAction="always">
+    </item>
+
+    <item
+        android:id="@+id/books_context_menu_rename"
+        android:title="@string/books_context_menu_item_rename"
+        app:showAsAction="never">
+    </item>
+
+    <item
+        android:id="@+id/books_context_menu_set_link"
+        android:title="@string/books_context_menu_item_set_link"
+        app:showAsAction="never">
     </item>
 
     <item
         android:id="@+id/books_context_menu_export"
-        android:title="@string/export">
+        android:title="@string/export"
+        app:showAsAction="never">
     </item>
-
-    <!--<item-->
-    <!--android:id="@+id/books_context_menu_rename"-->
-    <!--android:icon="?attr/oic_rename_book_context"-->
-    <!--android:title="@string/books_context_menu_item_rename">-->
-    <!--</item>-->
 
     <item
         android:id="@+id/books_context_menu_delete"
-        android:title="@string/delete">
+        android:title="@string/delete"
+        app:showAsAction="never">
     </item>
 
 </menu>

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:descendantFocusability="blocksDescendants">
 
     <!-- TODO: Why do we need this layout? -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <!-- Note. -->
         <RelativeLayout
@@ -20,7 +21,7 @@
             android:paddingLeft="@dimen/screen_edge"
             android:paddingStart="@dimen/screen_edge">
 
-            <!-- TODO We don't want padding right, so that the button goes to the end. But what about search view? -->
+            <!-- TODO: We don't want padding right, so that the button goes to the end. But what about search view? -->
 
             <!-- Notebook's name. -->
             <TextView
@@ -100,9 +101,14 @@
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/schedule"/>
                     <TextView
-                        style="@style/HeadItemInfo"
                         android:id="@+id/item_head_book_name_text"
-                        tools:text="@string/book_name_sample"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="@string/book_name_sample"
+                        android:textSize="?attr/item_head_sub_title_text"
+                        android:textColor="?attr/text_secondary_color"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginLeft="4dp"/>
                 </LinearLayout>
 
                 <!-- Scheduled time -->
@@ -120,9 +126,14 @@
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/schedule"/>
                     <TextView
-                        style="@style/HeadItemInfo"
                         android:id="@+id/item_head_scheduled_text"
-                        tools:text="@string/note_scheduled_sample"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="@string/note_scheduled_sample"
+                        android:textSize="?attr/item_head_sub_title_text"
+                        android:textColor="?attr/text_secondary_color"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginLeft="4dp"/>
                 </LinearLayout>
 
                 <!-- Deadline time -->
@@ -140,9 +151,14 @@
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/deadline"/>
                     <TextView
-                        style="@style/HeadItemInfo"
                         android:id="@+id/item_head_deadline_text"
-                        tools:text="@string/note_deadline_sample"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="@string/note_deadline_sample"
+                        android:textSize="?attr/item_head_sub_title_text"
+                        android:textColor="?attr/text_secondary_color"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginLeft="4dp"/>
 
                 </LinearLayout>
 
@@ -163,9 +179,14 @@
                         android:contentDescription="@string/closed"/>
 
                     <TextView
-                        style="@style/HeadItemInfo"
                         android:id="@+id/item_head_closed_text"
-                        tools:text="@string/note_closed_sample"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="@string/note_closed_sample"
+                        android:textSize="?attr/item_head_sub_title_text"
+                        android:textColor="?attr/text_secondary_color"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginLeft="4dp"/>
                 </LinearLayout>
 
                 <!-- Content -->
@@ -238,6 +259,6 @@
     </LinearLayout>
 
     <!-- Quick menu. -->
-    <include layout="@layout/item_head_quick_menu"/>
+    <!--<include layout="@layout/item_head_quick_menu"/>-->
 
 </LinearLayout>

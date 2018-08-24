@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.DocumentsContract;
-import android.support.v4.provider.DocumentFile;
+import androidx.documentfile.provider.DocumentFile;
 import android.util.Log;
 
 import com.orgzly.BuildConfig;
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Using DocumentFile, for devices running Lollipop or later.
  */
-public class ContentRepo implements Repo {
+public class ContentRepo implements SyncRepo {
     private static final String TAG = ContentRepo.class.getName();
 
     public static final String SCHEME = "content";

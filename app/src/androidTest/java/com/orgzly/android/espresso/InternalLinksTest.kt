@@ -1,29 +1,33 @@
 package com.orgzly.android.espresso
 
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers.*
-import android.support.test.rule.ActivityTestRule
+import androidx.test.rule.ActivityTestRule
+
 import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
-import com.orgzly.android.espresso.EspressoUtils.clickClickableSpan
-import com.orgzly.android.espresso.EspressoUtils.onListItem
-import com.orgzly.android.ui.MainActivity
+import com.orgzly.android.ui.main.MainActivity
+
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.*
+import com.orgzly.android.espresso.EspressoUtils.*
+import org.junit.Ignore
+
+//@Ignore
 class InternalLinksTest : OrgzlyTest() {
     @get:Rule
-    var activityRule: ActivityTestRule<*> = ActivityTestRule(MainActivity::class.java, true, false)
+    var activityRule: ActivityTestRule<*> = EspressoActivityTestRule(MainActivity::class.java, true, false)
 
     @Before
     @Throws(Exception::class)
     override fun setUp() {
         super.setUp()
 
-        shelfTestUtils.setupBook(
+        testUtils.setupBook(
                 "book-a",
                 """
                     * Note [a-1]
@@ -43,7 +47,7 @@ class InternalLinksTest : OrgzlyTest() {
                 """.trimIndent()
         )
 
-        shelfTestUtils.setupBook(
+        testUtils.setupBook(
                 "book-b",
                 """
                     * Note [b-1]
@@ -65,43 +69,43 @@ class InternalLinksTest : OrgzlyTest() {
 
         activityRule.launchActivity(null)
 
-        onListItem(0).perform(click())
+        onBook(0).perform(click())
     }
 
     @Test
     fun testDifferentCaseUuidInternalLink() {
-        onListItem(0).onChildView(withId(R.id.item_head_content))
+        onNoteInBook(1, R.id.item_head_content)
                 .perform(clickClickableSpan("id:bdce923b-C3CD-41ED-B58E-8BDF8BABA54F"))
         onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-2]")))
     }
 
     @Test
     fun testDifferentCaseCustomIdInternalLink() {
-        onListItem(1).onChildView(withId(R.id.item_head_content))
+        onNoteInBook(2, R.id.item_head_content)
                 .perform(clickClickableSpan("#Different case custom id"))
         onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-1]")))
     }
 
     @Test
     fun testCustomIdLink() {
-        onListItem(2).onChildView(withId(R.id.item_head_content))
+        onNoteInBook(3, R.id.item_head_content)
                 .perform(clickClickableSpan("#Link to note in a different book"))
         onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-3]")))
     }
 
     @Test
     fun testBookLink() {
-        onListItem(3).onChildView(withId(R.id.item_head_content))
+        onNoteInBook(4, R.id.item_head_content)
                 .perform(clickClickableSpan("file:book-b.org"))
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()))
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note [b-1]")))
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note [b-1]")))
     }
 
     @Test
     fun testBookRelativeLink() {
-        onListItem(4).onChildView(withId(R.id.item_head_content))
+        onNoteInBook(5, R.id.item_head_content)
                 .perform(clickClickableSpan("file:./book-b.org"))
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()))
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note [b-1]")))
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note [b-1]")))
     }
 }

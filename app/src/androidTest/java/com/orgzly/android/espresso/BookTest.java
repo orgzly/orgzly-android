@@ -1,57 +1,61 @@
 package com.orgzly.android.espresso;
 
-import android.support.test.rule.ActivityTestRule;
 import android.widget.DatePicker;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.ui.MainActivity;
+import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static android.support.test.espresso.Espresso.onData;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.openContextualActionModeOverflowMenu;
-import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.longClick;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.DrawerActions.open;
-import static android.support.test.espresso.contrib.PickerActions.setDate;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.rule.ActivityTestRule;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.longClick;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.DrawerActions.open;
+import static androidx.test.espresso.contrib.PickerActions.setDate;
+import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.EspressoUtils.onNotesInBook;
 import static com.orgzly.android.espresso.EspressoUtils.openContextualToolbarOverflowMenu;
+import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.any;
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
 
+//@Ignore
 public class BookTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
         /* Create book with enough notes to get a scrollable list on every device. */
-        shelfTestUtils.setupBook("book-name",
+        testUtils.setupBook("book-name",
                 "Sample book used for tests\n" +
                 "* Note #1.\n" +
                 "* Note #2.\n" +
@@ -108,7 +112,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testNoteExists() {
-        onListItem(7).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #7."))));
+        onNoteInBook(7, R.id.item_head_title).check(matches(withText("Note #7.")));
     }
 
     @Test
@@ -117,76 +121,79 @@ public class BookTest extends OrgzlyTest {
     }
 
     @Test
-    public void testOpensBookDescription() {
-        onListItem(0).perform(click());
-        onView(withId(R.id.fragment_book_preface_container)).check(matches(isDisplayed()));
-    }
-
-    @Test
     public void testOpensNoteFromBook() {
-        onListItem(2).perform(click());
+        onNoteInBook(2).perform(click());
+        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
     }
 
     @Test
     public void testScheduledNoteTimeStaysTheSameAfterSetting() {
-        onListItem(9).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(withText(userDateTime("<2014-05-26 Mon>")), isDisplayed())));
+        onNoteInBook(9, R.id.item_head_scheduled_text).check(matches(allOf(withText(userDateTime("<2014-05-26 Mon>")), isDisplayed())));
 
-        onListItem(9).perform(longClick());
+        onNoteInBook(9).perform(click());
 
-        openContextualToolbarOverflowMenu();
-        onView(withText(R.string.schedule)).perform(click());
+        onView(withId(R.id.bottom_action_bar_schedule)).perform(click());
         onView(withText(R.string.set)).perform(click());
 
-        onListItem(9).onChildView(withId(R.id.item_head_scheduled_text)).check(matches(allOf(withText(userDateTime("<2014-05-26 Mon>")), isDisplayed())));
+        onNoteInBook(9, R.id.item_head_scheduled_text).check(matches(allOf(withText(userDateTime("<2014-05-26 Mon>")), isDisplayed())));
     }
 
     @Test
     public void testRemovingScheduledTimeFromMultipleNotes() {
-        onListItem(8).onChildView(withId(R.id.item_head_scheduled)).check(matches(not(isDisplayed())));
-        onListItem(9).onChildView(withId(R.id.item_head_scheduled)).check(matches(isDisplayed()));
+        onNoteInBook(8, R.id.item_head_scheduled).check(matches(not(isDisplayed())));
+        onNoteInBook(9, R.id.item_head_scheduled).check(matches(isDisplayed()));
 
-        onListItem(8).perform(longClick());
-        onListItem(9).perform(click());
+        onNoteInBook(8).perform(click());
+        onNoteInBook(9).perform(click());
 
-        openContextualToolbarOverflowMenu();
-        onView(withText(R.string.schedule)).perform(click());
+        onView(withId(R.id.bottom_action_bar_schedule)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
-        onListItem(8).onChildView(withId(R.id.item_head_scheduled)).check(matches(not(isDisplayed())));
-        onListItem(9).onChildView(withId(R.id.item_head_scheduled)).check(matches(not(isDisplayed())));
+        onNoteInBook(8, R.id.item_head_scheduled).check(matches(not(isDisplayed())));
+        onNoteInBook(9, R.id.item_head_scheduled).check(matches(not(isDisplayed())));
     }
 
     @Test
     public void testRemovingDoneState() {
-        onListItem(5).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("DONE"))));
-        onListItem(8).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("DONE"))));
+        onNoteInBook(5, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
+        onNoteInBook(8, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
 
-        onListItem(5).perform(longClick());
-        onListItem(8).perform(click());
+        onNoteInBook(5).perform(click());
+        onNoteInBook(8).perform(click());
 
-        openContextualToolbarOverflowMenu();
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.bottom_action_bar_state)).perform(click());
         onView(withText("TODO")).perform(click());
 
-        onListItem(5).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("TODO"))));
-        onListItem(8).onChildView(withId(R.id.item_head_title)).check(matches(withText(startsWith("TODO"))));
+        onNoteInBook(5, R.id.item_head_title).check(matches(withText(startsWith("TODO"))));
+        onNoteInBook(8, R.id.item_head_title).check(matches(withText(startsWith("TODO"))));
     }
 
     @Test
-    public void testUpdatingBookPreface() {
-        onListItem(0).perform(click());
-        onView(withId(R.id.fragment_book_preface_content)).perform(replaceText("New content"));
-        onView(withId(R.id.done)).perform(click());
-        onListItem(0).perform(click());
-        onView(withId(R.id.fragment_book_preface_content)).check(matches(withText("New content")));
+    public void testClearStateTitleUnchanged() {
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note #1.")));
+
+        onNoteInBook(1).perform(click());
+        onView(withId(R.id.bottom_action_bar_state)).perform(click());
+        onView(withText(R.string.clear)).perform(click());
+
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note #1.")));
     }
 
     @Test
     public void testScrollPositionKeptOnRotation() {
         toLandscape(activityRule);
-        onListItem(40).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note #40."))); // Scroll
+        onNoteInBook(40).check(matches(isDisplayed())); // Scroll to note
         toPortrait(activityRule);
+        onView(withText("Note #40.")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testScrollPositionKeptInBackStack() {
+        onNoteInBook(40).check(matches(isDisplayed())); // Scroll to note
+        onView(withText("Note #40.")).check(matches(isDisplayed()));
+        onView(withText("Note #40.")).perform(click());
+        pressBack();
         onView(withText("Note #40.")).check(matches(isDisplayed()));
     }
 
@@ -195,7 +202,7 @@ public class BookTest extends OrgzlyTest {
         // Create new empty notebook
         pressBack();
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.dialog_input)).perform(replaceText("book-created-from-scratch"));
+        onView(withId(R.id.dialog_input)).perform(replaceTextCloseKeyboard("book-created-from-scratch"));
         onView(withText(R.string.create)).perform(click());
 
         onView(allOf(withText("book-created-from-scratch"), isDisplayed())).perform(click());
@@ -209,7 +216,7 @@ public class BookTest extends OrgzlyTest {
         // Create new empty notebook
         pressBack();
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.dialog_input)).perform(replaceText("book-created-from-scratch"));
+        onView(withId(R.id.dialog_input)).perform(replaceTextCloseKeyboard("book-created-from-scratch"));
         onView(withText(R.string.create)).perform(click());
 
         onView(allOf(withText("book-created-from-scratch"), isDisplayed())).perform(click());
@@ -226,34 +233,35 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testCutThenOpenNoteAtThePosition() {
-        onListItem(2).perform(longClick());
+        onNoteInBook(2).perform(click());
 
         onView(withId(R.id.book_cab_cut)).perform(click());
 
         /* Open note at the same position as the cut one. */
-        onListItem(2).perform(click());
+        onNoteInBook(2).perform(click());
+        onView(withId(R.id.bottom_action_bar_open)).perform(click());
     }
 
     @Test
     public void testCabForMovingNotesDisplayed() {
-        onListItem(1).perform(longClick());
+        onNoteInBook(1).perform(click());
         onView(withId(R.id.book_cab_move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).check(matches(isDisplayed()));
     }
 
     @Test
     public void testOrderOfMovedNote() {
-        onListItem(3).perform(longClick());
+        onNoteInBook(3).perform(click());
 
         onView(withId(R.id.book_cab_move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).perform(click());
 
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #1."))));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #2."))));
-        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #4."))));
-        onListItem(4).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #5."))));
-        onListItem(5).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #6."))));
-        onListItem(6).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #3."))));
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #2."))));
+        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #4."))));
+        onNoteInBook(4, R.id.item_head_title).check(matches(withText(endsWith("Note #5."))));
+        onNoteInBook(5, R.id.item_head_title).check(matches(withText(endsWith("Note #6."))));
+        onNoteInBook(6, R.id.item_head_title).check(matches(withText(endsWith("Note #3."))));
     }
 
     @Test
@@ -262,7 +270,7 @@ public class BookTest extends OrgzlyTest {
 
         onView(withId(R.id.notes_action_move_down)).check(doesNotExist());
 
-        onListItem(2).perform(longClick());
+        onNoteInBook(2).perform(click());
 
         onView(withId(R.id.book_cab_move)).perform(click());
 
@@ -275,7 +283,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testPromoting() {
-        onListItem(2).perform(longClick());
+        onNoteInBook(2).perform(click());
 
         onView(withId(R.id.book_cab_move)).perform(click());
         onView(withId(R.id.notes_action_move_left)).perform(click());
@@ -283,113 +291,119 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testPasteAbove() {
-        onListItem(2).perform(longClick());
+        onNoteInBook(2).perform(click());
 
         onView(withId(R.id.book_cab_cut)).perform(click());
 
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #1."))));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #8."))));
-        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #9."))));
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #8."))));
+        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #9."))));
 
-        onListItem(1).perform(longClick());
+        onNoteInBook(1).perform(click());
         onView(withId(R.id.book_cab_paste)).perform(click());
         onView(withText(R.string.heads_action_menu_item_paste_above)).perform(click());
 
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #2."))));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #3."))));
-        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #4."))));
-        onListItem(4).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #5."))));
-        onListItem(5).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #6."))));
-        onListItem(6).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #7."))));
-        onListItem(7).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #1."))));
-        onListItem(8).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #8."))));
-        onListItem(9).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #9."))));
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #2."))));
+        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #3."))));
+        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #4."))));
+        onNoteInBook(4, R.id.item_head_title).check(matches(withText(endsWith("Note #5."))));
+        onNoteInBook(5, R.id.item_head_title).check(matches(withText(endsWith("Note #6."))));
+        onNoteInBook(6, R.id.item_head_title).check(matches(withText(endsWith("Note #7."))));
+        onNoteInBook(7, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(8, R.id.item_head_title).check(matches(withText(endsWith("Note #8."))));
+        onNoteInBook(9, R.id.item_head_title).check(matches(withText(endsWith("Note #9."))));
     }
 
     @Test
     public void testPasteUnder() {
-        onListItem(2).perform(longClick());
+        onNoteInBook(2).perform(click());
 
         onView(withId(R.id.book_cab_cut)).perform(click());
 
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #1."))));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #8."))));
-        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #9."))));
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #8."))));
+        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #9."))));
 
-        onListItem(2).perform(longClick());
+        onNoteInBook(2).perform(click());
         onView(withId(R.id.book_cab_paste)).perform(click());
         onView(withText(R.string.heads_action_menu_item_paste_under)).perform(click());
 
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #1."))));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #8."))));
-        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #9."))));
-        onListItem(4).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #10."))));
-        onListItem(35).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #2."))));
-        onListItem(36).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #3."))));
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #8."))));
+        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #9."))));
+        onNoteInBook(4, R.id.item_head_title).check(matches(withText(endsWith("Note #10."))));
+        onNoteInBook(35, R.id.item_head_title).check(matches(withText(endsWith("Note #2."))));
+        onNoteInBook(36, R.id.item_head_title).check(matches(withText(endsWith("Note #3."))));
     }
 
     @Test
     public void testFoldNotes() {
-        onListItem(2).onChildView(withId(R.id.item_head_fold_button)).perform(click());
+        onNoteInBook(2, R.id.item_head_fold_button).perform(click());
 
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #1."))));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #2."))));
-        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #8."))));
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #2."))));
+        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #8."))));
     }
 
     @Test
     public void testCreateNewNoteUnderFolded() {
         /* Fold. */
-        onListItem(2).onChildView(withId(R.id.item_head_fold_button)).perform(click());
+        onNoteInBook(2, R.id.item_head_fold_button).perform(click());
 
         /* Create new note under folded. */
-        onListItem(2).perform(longClick());
-        openContextualToolbarOverflowMenu();
-        onView(withText(R.string.new_note)).perform(click());
-        onView(withText(R.string.heads_action_menu_item_add_under)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceText("Created"));
+        onNoteInBook(2).perform(click());
+        onView(withId(R.id.bottom_action_bar_new)).perform(click());
+        onView(withText(R.string.new_under)).perform(click());
+        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("Created"));
         onView(withId(R.id.done)).perform(click());
 
         /* New note should not be visible. */
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #1."))));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #2."))));
-        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(withText(endsWith("Note #8."))));
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #2."))));
+        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #8."))));
     }
 
     @Test
     public void testNewNoteHasCreatedAtPropertyAfterSaving() {
         AppPreferences.createdAt(context, true);
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceText("Title"));
+        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("Title"));
         onView(withId(R.id.done)).perform(click());
-        onListItem(41).perform(click());
+        onNotesInBook().perform(RecyclerViewActions.actionOnItemAtPosition(41, click()));
+        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(allOf(withId(R.id.name), withText(R.string.created_property_name))).check(matches(isDisplayed()));
         onView(allOf(withId(R.id.name), withText(""))).check(matches(isDisplayed()));
     }
 
     @Test
     public void testReturnToNonExistentNoteByPressingBack() {
-        onListItem(1).perform(click());
+        // Enter note
+        onNoteInBook(1).perform(click());
+
+        // Open notebooks list
+        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.notebooks)).perform(click());
+
+        // Delete notebook
         onView(allOf(withText("book-name"), withId(R.id.item_book_title))).perform(longClick());
-        onData(hasToString(containsString(context.getString(R.string.delete)))).perform(click());
+        openContextualToolbarOverflowMenu();
         onView(withText(R.string.delete)).perform(click());
+        onView(withText(R.string.delete)).perform(click());
+
+        // Return to note
         pressBack();
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
         onView(withText(R.string.note_does_not_exist_anymore)).check(matches(isDisplayed()));
         onView(withId(R.id.done)).check(doesNotExist());
         onView(withId(R.id.close)).check(doesNotExist());
-        pressBack(); // Leave the note
-    }
 
-    @Test
-    public void testScrollPositionKeptInBackStack() {
-        onListItem(40).check(matches(isDisplayed())); // Scroll to note
-        onView(withText("Note #40.")).check(matches(isDisplayed())); // Check it's displayed
-        onView(withText("Note #40.")).perform(click());
+        // Rotate
+        toLandscape(activityRule);
+        toPortrait(activityRule);
+
+        // Leave the note
         pressBack();
-        onView(withText("Note #40.")).check(matches(isDisplayed())); // Check it's displayed
     }
 
     @Test
@@ -398,23 +412,58 @@ public class BookTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_deadline_button)).perform(closeSoftKeyboardWithDelay(), scrollTo(), click());
         onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
-        onView(withText(R.string.ok)).perform(click());
+        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
         onView(withText(R.string.set)).perform(click());
         onView(withId(R.id.fragment_note_deadline_button)).check(matches(withText(userDateTime("<2014-04-01 Tue>"))));
     }
 
     @Test
-    public void testDeleteBookPreface() {
-        // Preface exists
-        onListItem(0).perform(click());
-        onView(withId(R.id.fragment_book_preface_container)).check(matches(isDisplayed()));
+    public void testToggleState() {
+        onNoteInBook(1).perform(click());
+        onView(withId(R.id.bottom_action_bar_done)).perform(click());
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
 
-        // Enter and delete it
-        openContextualActionModeOverflowMenu();
-        onView(withText(R.string.delete)).perform(click());
+        onView(withId(R.id.bottom_action_bar_done)).perform(click());
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText(startsWith("TODO"))));
+    }
 
-        // First list item is now a note
-        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note #1.")));
+    @Test
+    public void testToggleStateForAllDone() {
+        onNoteInBook(5).perform(click());
+        onNoteInBook(8).perform(click());
+        onView(withId(R.id.bottom_action_bar_done)).perform(click());
+
+        onNoteInBook(5, R.id.item_head_title).check(matches(withText(startsWith("TODO"))));
+        onNoteInBook(8, R.id.item_head_title).check(matches(withText(startsWith("TODO"))));
+    }
+
+    @Test
+    public void testToggleStateForAllTodo() {
+        onNoteInBook(1).perform(click());
+        onNoteInBook(2).perform(click());
+        onView(withId(R.id.bottom_action_bar_done)).perform(click());
+
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
+        onNoteInBook(2, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
+    }
+
+    @Test
+    public void testToggleStateForMixed() {
+        onNoteInBook(1).perform(click());
+        onNoteInBook(5).perform(click());
+        onView(withId(R.id.bottom_action_bar_done)).perform(click());
+
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
+        onNoteInBook(5, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
+    }
+
+    @Ignore // TODO: Implement
+    @Test
+    public void testPreselectedStateOfSelectedNote() {
+        onNoteInBook(3).perform(click());
+
+        onView(withId(R.id.bottom_action_bar_state)).perform(click());
+
+        onView(withText("TODO")).check(matches(isChecked()));
     }
 }

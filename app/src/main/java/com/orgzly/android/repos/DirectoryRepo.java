@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DirectoryRepo implements Repo {
+public class DirectoryRepo implements SyncRepo {
     private static final String TAG = DirectoryRepo.class.getName();
 
     public static final String SCHEME = "file";
@@ -118,7 +118,7 @@ public class DirectoryRepo implements Repo {
         MiscUtils.copyFile(file, destinationFile);
 
         String rev = String.valueOf(destinationFile.lastModified());
-        long mtime = System.currentTimeMillis();
+        long mtime = destinationFile.lastModified();
 
         Uri uri = repoUri.buildUpon().appendPath(fileName).build();
 

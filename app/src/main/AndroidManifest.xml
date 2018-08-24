@@ -35,7 +35,7 @@
         android:fullBackupContent="@xml/backup_config">
 
         <activity
-            android:name="com.orgzly.android.ui.ShareActivity"
+            android:name="com.orgzly.android.ui.share.ShareActivity"
             android:windowSoftInputMode="stateUnchanged">
 
             <intent-filter>
@@ -52,7 +52,7 @@
         </activity>
 
         <activity
-            android:name="com.orgzly.android.ui.MainActivity"
+            android:name="com.orgzly.android.ui.main.MainActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
 
             <intent-filter>
@@ -74,22 +74,22 @@
         </activity>
 
         <activity
-            android:name=".android.ui.repos.DropboxRepoActivity"
+            android:name="com.orgzly.android.ui.repo.DropboxRepoActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
         <activity
-            android:name=".android.ui.repos.GitRepoActivity"
+            android:name="com.orgzly.android.ui.repo.GitRepoActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
         <activity
-            android:name=".android.ui.repos.DirectoryRepoActivity"
+            android:name="com.orgzly.android.ui.repo.DirectoryRepoActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
         <activity
-            android:name=".android.ui.repos.BrowserActivity"
+            android:name="com.orgzly.android.ui.repo.BrowserActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
@@ -119,7 +119,7 @@
         </activity>
 
         <activity
-            android:name="com.orgzly.android.widgets.FilterSelectDialogActivity"
+            android:name="com.orgzly.android.widgets.ListWidgetSelectionActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppCompat.Light.Dialog"
             android:excludeFromRecents="true"/>
@@ -141,7 +141,7 @@
             android:name=".android.reminders.ReminderService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
         <service
-            android:name=".android.ActionService"
+            android:name=".android.usecase.UseCaseService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <service
@@ -153,15 +153,8 @@
             </intent-filter>
         </service>
 
-        <!-- Not exported (not made available to other applications). -->
         <provider
-            android:name=".android.provider.Provider"
-            android:exported="false"
-            android:authorities="com.orgzly">
-        </provider>
-
-        <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

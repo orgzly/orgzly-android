@@ -6,7 +6,6 @@ import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Handler
 import android.util.Log
@@ -19,10 +18,7 @@ import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.MainActivity
-import com.orgzly.android.ui.fragments.BookFragment
-import com.orgzly.android.ui.fragments.BooksFragment
-import com.orgzly.android.ui.fragments.FiltersFragment
+import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.util.LogUtils
 
 object ActivityUtils {
@@ -56,23 +52,6 @@ object ActivityUtils {
                 Log.w(TAG, "Can't open keyboard because view " + view +
                         " failed to get focus in activity " + activity)
             }
-        }
-    }
-
-    class FragmentResources(context: Context, fragmentTag: String) {
-        val fabDrawable: Drawable?
-
-        init {
-            val fabAttr = when (fragmentTag) {
-                FiltersFragment.FRAGMENT_TAG -> R.attr.ic_add_24dp
-                BooksFragment.FRAGMENT_TAG   -> R.attr.ic_add_24dp
-                BookFragment.FRAGMENT_TAG    -> R.attr.ic_add_24dp
-                else -> 0
-            }
-
-            val typedArray = context.obtainStyledAttributes(intArrayOf(fabAttr))
-            fabDrawable = typedArray.getDrawable(0)
-            typedArray.recycle()
         }
     }
 

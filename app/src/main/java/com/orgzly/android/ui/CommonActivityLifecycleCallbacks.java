@@ -9,7 +9,7 @@ import com.orgzly.android.App;
 // Monitor the lifecycle of CommonActivity
 // This allows to access the activity in files like OrgFormatter
 // and enables permission and snackbar access
-public class CommonActivityLifecycleCallbacks  implements Application.ActivityLifecycleCallbacks {
+public class CommonActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
 
     private void registerActivity(Activity activity) {
         if (activity instanceof CommonActivity) {

@@ -1,50 +1,51 @@
 package com.orgzly.android.espresso;
 
 import android.os.Environment;
-import android.support.test.rule.ActivityTestRule;
+import androidx.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.ui.MainActivity;
+import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static android.support.test.espresso.Espresso.onData;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.longClick;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.DrawerActions.open;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
+import java.io.IOException;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.longClick;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.DrawerActions.open;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.EspressoUtils.onBook;
 import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
 import static com.orgzly.android.espresso.EspressoUtils.openContextualToolbarOverflowMenu;
+import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
 
+//@Ignore
 public class BooksTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
-        shelfTestUtils.setupBook("book-1",
+        testUtils.setupBook("book-1",
                 "First book used for testing\n" +
                 "* Note A.\n" +
                 "** Note B.\n" +
@@ -55,7 +56,7 @@ public class BooksTest extends OrgzlyTest {
                 ""
         );
 
-        shelfTestUtils.setupBook("book-2",
+        testUtils.setupBook("book-2",
                 "Sample book used for tests\n" +
                 "* Note #1.\n" +
                 "* Note #2.\n" +
@@ -72,23 +73,24 @@ public class BooksTest extends OrgzlyTest {
                 "** Note #10.\n" +
                 ""
         );
-
-        activityRule.launchActivity(null);
     }
 
     @Test
     public void testOpenSettings() {
+        activityRule.launchActivity(null);
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
         onView(withText(R.string.look_and_feel)).check(matches(isDisplayed()));
     }
 
     @Test
     public void testReturnToNonExistentBookByPressingBack() {
+        activityRule.launchActivity(null);
         onView(allOf(withText("book-1"), withId(R.id.item_book_title))).perform(click());
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.notebooks)).perform(click());
         onView(allOf(withText("book-1"), withId(R.id.item_book_title))).perform(longClick());
-        onData(hasToString(containsString(context.getString(R.string.delete)))).perform(click());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.delete)).perform(click());
         onView(withText(R.string.delete)).perform(click());
         pressBack();
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
@@ -102,13 +104,15 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testEnterPrefaceForNonExistentBook() {
+        activityRule.launchActivity(null);
         onView(allOf(withText("book-1"), withId(R.id.item_book_title))).perform(click());
 
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.notebooks)).perform(click());
 
         onView(allOf(withText("book-1"), withId(R.id.item_book_title))).perform(longClick());
-        onData(hasToString(containsString(context.getString(R.string.delete)))).perform(click());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.delete)).perform(click());
         onView(withText(R.string.delete)).perform(click());
         pressBack();
 
@@ -121,8 +125,10 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testExport() {
-        onView(allOf(withText("book-1"), isDisplayed())).perform(longClick());
-        onData(hasToString(containsString(context.getString(R.string.export)))).perform(click());
+        activityRule.launchActivity(null);
+        onBook(0).perform(longClick());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.export)).perform(click());
 
         /*
          * Depending on whether external storage is available or not,
@@ -137,8 +143,9 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testCreateNewBookWithoutExtension() {
+        activityRule.launchActivity(null);
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.dialog_input)).perform(replaceText("book-created-from-scratch"), closeSoftKeyboard());
+        onView(withId(R.id.dialog_input)).perform(replaceTextCloseKeyboard("book-created-from-scratch"));
         onView(withText(R.string.create)).perform(click());
         onView(allOf(withText("book-created-from-scratch"), isDisplayed())).perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
@@ -146,8 +153,9 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testCreateNewBookWithExtension() {
+        activityRule.launchActivity(null);
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.dialog_input)).perform(replaceText("book-created-from-scratch.org"));
+        onView(withId(R.id.dialog_input)).perform(replaceTextCloseKeyboard("book-created-from-scratch.org"));
         onView(withText(R.string.create)).perform(click());
         onView(allOf(withText("book-created-from-scratch.org"), isDisplayed())).perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
@@ -155,13 +163,15 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testCreateAndDeleteBook() {
+        activityRule.launchActivity(null);
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.dialog_input)).perform(replaceText("book-created-from-scratch"), closeSoftKeyboard());
+        onView(withId(R.id.dialog_input)).perform(replaceTextCloseKeyboard("book-created-from-scratch"));
         onView(withText(R.string.create)).perform(click());
 
         onView(allOf(withText("book-created-from-scratch"), isDisplayed())).check(matches(isDisplayed()));
 
-        onListItem(2).perform(longClick());
+        onBook(2).perform(longClick());
+        openContextualToolbarOverflowMenu();
         onView(withText(R.string.delete)).perform(click());
         onView(withText(R.string.delete)).perform(click());
 
@@ -170,66 +180,82 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testDifferentBookLoading() {
+        activityRule.launchActivity(null);
         onView(allOf(withText("book-1"), isDisplayed())).perform(click());
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note A.")));
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note A.")));
         pressBack();
         onView(allOf(withText("book-2"), isDisplayed())).perform(click());
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note #1.")));
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note #1.")));
     }
 
     @Test
     public void testLoadingBookOnlyIfFragmentHasViewCreated() {
+        activityRule.launchActivity(null);
         onView(allOf(withText("book-1"), isDisplayed())).perform(click());
 
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.notebooks)).perform(click());
 
-        onListItem(1).perform(longClick());
+        onBook(1).perform(longClick());
+        openContextualToolbarOverflowMenu();
         onView(withText(R.string.delete)).perform(click());
         onView(withText(R.string.delete)).perform(click());
     }
 
     @Test
     public void testCreateNewBookWithExistingName() {
+        activityRule.launchActivity(null);
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.dialog_input)).perform(replaceText("new-book"), closeSoftKeyboardWithDelay());
+        onView(withId(R.id.dialog_input)).perform(replaceTextCloseKeyboard("new-book"));
         onView(withText(R.string.create)).perform(click());
 
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.dialog_input)).perform(replaceText("new-book"), closeSoftKeyboardWithDelay());
+        onView(withId(R.id.dialog_input)).perform(replaceTextCloseKeyboard("new-book"));
         onView(withText(R.string.create)).perform(click());
 
-        onSnackbar().check(matches(withText("Can't insert notebook with the same name: new-book")));
+        onSnackbar().check(matches(withText("Notebook new-book already exists")));
     }
 
     @Test
     public void testCreateNewBookWithWhiteSpace() {
+        activityRule.launchActivity(null);
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.dialog_input)).perform(replaceText(" new-book  "), closeSoftKeyboardWithDelay());
+        onView(withId(R.id.dialog_input)).perform(replaceTextCloseKeyboard(" new-book  "));
         onView(withText(R.string.create)).perform(click());
-
-        onListItem(2).onChildView(withId(R.id.item_book_title)).check(matches(withText("new-book")));
+        onBook(2, R.id.item_book_title).check(matches(withText("new-book")));
     }
 
     @Test
     public void testRenameBookToExistingName() {
-        onListItem(0).perform(longClick());
-        onView(withText(R.string.books_context_menu_item_rename)).perform(click());
-        onView(withId(R.id.name)).perform(replaceText("book-2"), closeSoftKeyboardWithDelay());
+        activityRule.launchActivity(null);
+        onBook(0).perform(longClick());
+        openContextualToolbarOverflowMenu();
         onView(withText(R.string.rename)).perform(click());
-
-        onListItem(0).onChildView(withId(R.id.item_book_last_action))
-                .check(matches(withText(endsWith("Notebook with that name already exists"))));
+        onView(withId(R.id.name)).perform(replaceTextCloseKeyboard("book-2"));
+        onView(withText(R.string.rename)).perform(click());
+        onBook(0, R.id.item_book_last_action)
+                .check(matches(withText(endsWith("Notebook book-2 already exists"))));
     }
 
     @Test
-    public void testNoteCountDisplayed() {
-        shelfTestUtils.setupBook("book-3", "");
-        onListItem(0).onChildView(withId(R.id.item_book_note_count))
+    public void testRenameBookToSameName() {
+        activityRule.launchActivity(null);
+        onBook(0).perform(longClick());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.rename)).perform(click());
+        onView(withText(R.string.rename)).check(matches(not(isEnabled())));
+    }
+
+    @Test
+    public void testNoteCountDisplayed() throws IOException {
+        testUtils.setupBook("book-3", "");
+        activityRule.launchActivity(null);
+
+        onBook(0, R.id.item_book_note_count)
                 .check(matches(withText(context.getResources().getQuantityString(R.plurals.notes_count_nonzero, 5, 5))));
-        onListItem(1).onChildView(withId(R.id.item_book_note_count))
+        onBook(1, R.id.item_book_note_count)
                 .check(matches(withText(context.getResources().getQuantityString(R.plurals.notes_count_nonzero, 10, 10))));
-        onListItem(2).onChildView(withId(R.id.item_book_note_count))
+        onBook(2, R.id.item_book_note_count)
                 .check(matches(withText(R.string.notes_count_zero)));
     }
 }

@@ -1,40 +1,41 @@
 package com.orgzly.android.espresso;
 
-import android.support.test.espresso.matcher.PreferenceMatchers;
-import android.support.test.rule.ActivityTestRule;
-
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.ui.MainActivity;
+import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static android.support.test.espresso.Espresso.onData;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
+import androidx.test.rule.ActivityTestRule;
+
+import static androidx.test.espresso.Espresso.onData;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasSibling;
+import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.clickSetting;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasToString;
-import static org.hamcrest.Matchers.startsWith;
 
 
+//@Ignore
 @SuppressWarnings("unchecked")
 public class SettingsFragmentTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
 
     @Before
     public void setUp() throws Exception {
@@ -46,20 +47,21 @@ public class SettingsFragmentTest extends OrgzlyTest {
     @Test
     public void testImportingGettingStartedFromGettingStartedNotebook() {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withKey("prefs_screen_app")).perform(click());
-        onData(PreferenceMatchers.withKey("pref_key_reload_getting_started")).perform(click());
+        clickSetting("prefs_screen_app", R.string.app);
+        clickSetting("pref_key_reload_getting_started", R.string.reload_getting_started);
         pressBack();
         pressBack();
         onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
         onView(allOf(withText("Getting Started with Orgzly"), isDisplayed())).perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withKey("prefs_screen_app")).perform(click());
-        onData(PreferenceMatchers.withKey("pref_key_reload_getting_started")).perform(click());
+        clickSetting("prefs_screen_app", R.string.app);
+        clickSetting("pref_key_reload_getting_started", R.string.reload_getting_started);
         pressBack();
         pressBack();
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
-        onListItem(1).perform(click());
+        onNoteInBook(1).perform(click());
+        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.fragment_note_container)).check(matches(isDisplayed()));
     }
 
@@ -67,31 +69,31 @@ public class SettingsFragmentTest extends OrgzlyTest {
     public void testAddingNewTodoKeywordInSettingsAndChangingStateToItForNewNote() {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
 
-        onData(PreferenceMatchers.withKey("prefs_screen_notebooks")).perform(click());
-        onData(PreferenceMatchers.withKey("pref_key_states")).perform(click());
+        clickSetting("prefs_screen_notebooks", R.string.pref_title_notebooks);
+        clickSetting("pref_key_states", R.string.states);
 
-        onView(withId(R.id.todo_states)).perform(replaceText("TODO XXX YYY ZZZ"));
+        onView(withId(R.id.todo_states)).perform(replaceTextCloseKeyboard("TODO AAA BBB CCC"));
 
         onView(withText(R.string.ok)).perform(click());
         onView(withText(R.string.not_now)).perform(click());
 
-        onData(PreferenceMatchers.withKey("pref_key_new_note_state")).perform(click());
+        clickSetting("pref_key_new_note_state", R.string.state);
 
-        onData(hasToString(containsString("ZZZ"))).perform(click());
+        onData(hasToString(containsString("CCC"))).perform(click());
     }
 
     @Test
     public void testAddingNewTodoKeywordInSettingsNewNoteShouldHaveDefaultState() {
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
 
-        onData(PreferenceMatchers.withKey("prefs_screen_notebooks")).perform(click());
-        onData(PreferenceMatchers.withKey("pref_key_states")).perform(click());
+        clickSetting("prefs_screen_notebooks", R.string.pref_title_notebooks);
+        clickSetting("pref_key_states", R.string.states);
 
-        onView(withId(R.id.todo_states)).perform(replaceText("TODO ZZZ"), closeSoftKeyboardWithDelay());
+        onView(withId(R.id.todo_states)).perform(replaceTextCloseKeyboard("TODO CCC"));
         onView(withText(R.string.ok)).perform(click());
         onView(withText(R.string.not_now)).perform(click());
 
-        onData(PreferenceMatchers.withKey("pref_key_new_note_state")).perform(click());
+        clickSetting("pref_key_new_note_state", R.string.state);
 
         onData(hasToString(containsString("NOTE"))).perform(click());
     }
@@ -101,9 +103,9 @@ public class SettingsFragmentTest extends OrgzlyTest {
         AppPreferences.states(context, "|");
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
 
-        onData(PreferenceMatchers.withKey("prefs_screen_notebooks")).perform(click());
-        onData(PreferenceMatchers.withKey("pref_key_states")).perform(click());
-        onView(withId(R.id.todo_states)).perform(replaceText("TODO"));
+        clickSetting("prefs_screen_notebooks", R.string.pref_title_notebooks);
+        clickSetting("pref_key_states", R.string.states);
+        onView(withId(R.id.todo_states)).perform(replaceTextCloseKeyboard("TODO"));
         onView(withText(R.string.ok)).perform(click());
         onView(withText(R.string.not_now)).perform(click());
         onView(allOf(withText(R.string.states), hasSibling(withText("TODO |")))).check(matches(isDisplayed()));
@@ -111,26 +113,26 @@ public class SettingsFragmentTest extends OrgzlyTest {
 
     @Test
     public void testNewNoteDefaultStateIsInitiallyVisibleInSummary() {
-        AppPreferences.states(context, "XXX YYY ZZZ | DONE");
-        AppPreferences.newNoteState(context, "YYY");
+        AppPreferences.states(context, "AAA BBB CCC | DONE");
+        AppPreferences.newNoteState(context, "BBB");
 
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withKey("prefs_screen_notebooks")).perform(click());
-        onData(PreferenceMatchers.withKey("pref_key_new_note_state")).perform(click());
+        clickSetting("prefs_screen_notebooks", R.string.pref_title_notebooks);
+        clickSetting("pref_key_new_note_state", R.string.state);
 
-        onView(withText("YYY")).check(matches(isDisplayed()));
+        onView(withText("BBB")).check(matches(isDisplayed()));
     }
 
     @Test
     public void testNewNoteDefaultStateIsSetInitially() {
-        AppPreferences.states(context, "XXX YYY ZZZ | DONE");
-        AppPreferences.newNoteState(context, "YYY");
+        AppPreferences.states(context, "AAA BBB CCC | DONE");
+        AppPreferences.newNoteState(context, "BBB");
 
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withKey("prefs_screen_notebooks")).perform(click());
-        onData(PreferenceMatchers.withKey("pref_key_new_note_state")).perform(click());
+        clickSetting("prefs_screen_notebooks", R.string.pref_title_notebooks);
+        clickSetting("pref_key_new_note_state", R.string.state);
 
-        onData(hasToString(containsString("YYY"))).perform(click());
+        onData(hasToString(containsString("BBB"))).perform(click());
     }
 
     @Test
@@ -139,13 +141,12 @@ public class SettingsFragmentTest extends OrgzlyTest {
         AppPreferences.minPriority(context, "E");
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
 
-        onData(PreferenceMatchers.withKey("prefs_screen_notebooks")).perform(click());
-        onData(PreferenceMatchers.withKey("pref_key_min_priority")).perform(click());
+        clickSetting("prefs_screen_notebooks", R.string.pref_title_notebooks);
+        clickSetting("pref_key_min_priority", R.string.lowest_priority);
         onData(hasToString(containsString("B"))).perform(click());
 
-        onData(PreferenceMatchers.withKey("pref_key_default_priority"))
-                .onChildView(withText("B"))
-                .check(matches(isDisplayed()));
+        clickSetting("pref_key_default_priority", R.string.default_priority);
+        onData(hasToString("B")).check(matches(isChecked()));
     }
 
     @Test
@@ -154,12 +155,11 @@ public class SettingsFragmentTest extends OrgzlyTest {
         AppPreferences.minPriority(context, "E");
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
 
-        onData(PreferenceMatchers.withKey("prefs_screen_notebooks")).perform(click());
-        onData(PreferenceMatchers.withKey("pref_key_default_priority")).perform(click());
+        clickSetting("prefs_screen_notebooks", R.string.pref_title_notebooks);
+        clickSetting("pref_key_default_priority", R.string.default_priority);
         onData(hasToString(containsString("X"))).perform(click());
 
-        onData(PreferenceMatchers.withKey("pref_key_min_priority"))
-                .onChildView(withText("X"))
-                .check(matches(isDisplayed()));
+        clickSetting("pref_key_min_priority", R.string.lowest_priority);
+        onData(hasToString("X")).check(matches(isChecked()));
     }
 }

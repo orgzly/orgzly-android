@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -112,6 +112,6 @@
             app:layout_constraintStart_toEndOf="@+id/dialog_timestamp_tomorrow_shortcut"
             app:layout_constraintTop_toTopOf="@+id/dialog_timestamp_tomorrow_shortcut"/>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

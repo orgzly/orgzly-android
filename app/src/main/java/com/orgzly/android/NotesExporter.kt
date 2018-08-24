@@ -2,25 +2,22 @@ package com.orgzly.android
 
 import android.content.Context
 import com.orgzly.R
+import com.orgzly.android.data.DataRepository
+import com.orgzly.android.data.mappers.OrgMapper
+import com.orgzly.android.db.entity.Book
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.provider.clients.NotesClient
-import com.orgzly.org.datetime.OrgDateTime
 import com.orgzly.org.parser.OrgParserSettings
 import com.orgzly.org.parser.OrgParserWriter
-import java.io.*
+import java.io.File
+import java.io.IOException
+import java.io.PrintWriter
+import java.io.Writer
 import java.nio.charset.Charset
 
-
-class NotesExporter private constructor(
-        val context: Context, val format: BookName.Format = BookName.Format.ORG) {
-
-    companion object {
-        @JvmStatic
-        @JvmOverloads
-        fun getInstance(context: Context, format: BookName.Format = BookName.Format.ORG): NotesExporter {
-            return NotesExporter(context, format)
-        }
-    }
+class NotesExporter @JvmOverloads constructor(
+        val context: Context,
+        val dataRepository: DataRepository,
+        val format: BookFormat = BookFormat.ORG) {
 
     /**
      * Writes content of the book from database to a specified file.
@@ -46,17 +43,8 @@ class NotesExporter private constructor(
         writer.write(orgWriter.whiteSpacedFilePreface(book.preface))
 
         // Write each note
-        NotesClient.forEachBookNote(context, book.name) { note ->
-            // Update note properties with created-at property, if created-at time exists
-            if (useCreatedAtProperty && createdAtPropertyName != null && note.createdAt > 0) {
-                val time = OrgDateTime(note.createdAt, false)
-                note.head.addProperty(createdAtPropertyName, time.toString())
-            }
-
-            writer.write(orgWriter.whiteSpacedHead(
-                    note.head,
-                    note.position.level,
-                    book.orgFileSettings.isIndented))
+        OrgMapper(dataRepository).forEachOrgHead(book.name, createdAtPropertyName, useCreatedAtProperty) { head, level ->
+            writer.write(orgWriter.whiteSpacedHead(head, level, book.isIndented == true))
         }
     }
 

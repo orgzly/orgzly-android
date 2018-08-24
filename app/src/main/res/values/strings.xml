@@ -111,9 +111,6 @@
     <string name="move">Move</string>
     <string name="cut">Cut</string>
     <string name="paste">Paste</string>
-    <string name="heads_action_menu_item_add_above">New above</string>
-    <string name="heads_action_menu_item_add_under">New under</string>
-    <string name="heads_action_menu_item_add_below">New below</string>
     <string name="heads_action_menu_item_paste_above">Paste above</string>
     <string name="heads_action_menu_item_paste_under">Paste under</string>
     <string name="heads_action_menu_item_paste_below">Paste below</string>
@@ -128,7 +125,7 @@
 
     <string name="no_user_repos_configured_pref_summary">None configured yet</string>
     <string name="repos_options_menu_new_repo">New Repository</string>
-    <string name="book_name_already_exists">Notebook %s already exists.</string>
+    <string name="book_name_already_exists">Notebook %s already exists</string>
     <string name="filter_name_already_exists">Search with the same name already exists</string>
     <string name="failed_creating_directory">Failed creating directory %s</string>
     <string name="version">What\'s new</string>
@@ -141,6 +138,8 @@
     <string name="reload_getting_started">Import “Getting Started with Orgzly”</string>
     <string name="reload_getting_started_summary">Import the latest version of the notebook</string>
     <string name="notebook_imported">Notebook imported</string>
+
+    <string name="failed_importing_book">Failed exporting book: %s</string>
 
     <string name="book_does_not_exist_anymore">This notebook does not exist any more.</string>
     <string name="note_does_not_exist_anymore">This note does not exist any more.</string>
@@ -207,6 +206,7 @@
 
     <string name="repositories">Repositories</string>
     <string name="invalid_repo_url">Invalid repository URL “%s”</string>
+    <string name="repository_url_already_exists">Repository with this URL already exists</string>
     <string name="message_unsupported_repository_type">Unsupported repository type</string>
     <string name="fragment_left_drawer_list_view_content_description">Left Drawer</string>
     <string name="drawer_item">Drawer Item</string>
@@ -296,8 +296,6 @@
     <string name="color_scheme">Color scheme</string>
     <string name="monospaced_font">Monospaced font</string>
     <string name="monospaced_font_summary">Use monospaced font for note\'s content and book\'s preface</string>
-    <string name="reversed_note_click_action">Reversed note click action</string>
-    <string name="reversed_note_click_action_summary">Click to select note, long-click to open</string>
     <string name="look_and_feel">Look &amp; Feel</string>
     <string name="notes_list">List of notes</string>
     <string name="prefs_title_new_note">New note</string>
@@ -552,6 +550,10 @@
 
     <string name="scale_down_to_width">Scale down to width</string>
     <string name="scale_down_to_width_summary">Scale down image to specified width</string>
+
+    <string name="argument_used">%s used</string>
+    <string name="argument_detected">%s detected</string>
+    <string name="argument_selected">%s selected</string>
 
     <string name="fixed_width_value">Width (in pixels)</string>
 

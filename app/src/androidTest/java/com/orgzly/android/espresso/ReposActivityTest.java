@@ -1,38 +1,38 @@
 package com.orgzly.android.espresso;
 
-import android.support.test.rule.ActivityTestRule;
+import androidx.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.repos.ReposActivity;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.File;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
+import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
 
-/**
- *
- */
+//@Ignore
 public class ReposActivityTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new ActivityTestRule<>(ReposActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(ReposActivity.class, true, false);
 
     @Test
     public void testSavingWithBogusDirectoryUri() {
         activityRule.launchActivity(null);
         onView(withId(R.id.activity_repos_flipper)).check(matches(isDisplayed()));
         onView(withId(R.id.activity_repos_directory)).perform(click());
-        onView(withId(R.id.activity_repo_directory)).perform(replaceText("non-existent-directory"));
+        onView(withId(R.id.activity_repo_directory)).perform(replaceTextCloseKeyboard("non-existent-directory"));
         onView(withId(R.id.done)).perform(click());
     }
 
@@ -48,7 +48,7 @@ public class ReposActivityTest extends OrgzlyTest {
 
         onView(withId(R.id.activity_repos_flipper)).check(matches(isDisplayed()));
         onView(withId(R.id.activity_repos_directory)).perform(click());
-        onView(withId(R.id.activity_repo_directory)).perform(replaceText(repoUri));
+        onView(withId(R.id.activity_repo_directory)).perform(replaceTextCloseKeyboard(repoUri));
         onView(withId(R.id.done)).perform(click());
         onView(withId(R.id.activity_repos_flipper)).check(matches(isDisplayed()));
 
@@ -66,7 +66,7 @@ public class ReposActivityTest extends OrgzlyTest {
 
         onView(withId(R.id.activity_repos_flipper)).check(matches(isDisplayed()));
         onView(withId(R.id.activity_repos_dropbox)).perform(click());
-        onView(withId(R.id.activity_repo_dropbox_directory)).perform(replaceText(localDir));
+        onView(withId(R.id.activity_repo_dropbox_directory)).perform(replaceTextCloseKeyboard(localDir));
         onView(withId(R.id.done)).perform(click());
         onView(withId(R.id.activity_repos_flipper)).check(matches(isDisplayed()));
 
@@ -74,5 +74,23 @@ public class ReposActivityTest extends OrgzlyTest {
         onListItem(0).perform(click());
 
         onView(withId(R.id.activity_repo_dropbox_directory)).check(matches(withText(localDir)));
+    }
+
+    @Test
+    public void testCreateRepoWithExistingUrl() {
+        activityRule.launchActivity(null);
+
+        String url = "file:" + context.getExternalCacheDir().getAbsolutePath();
+
+        onView(withId(R.id.activity_repos_directory)).perform(click());
+        onView(withId(R.id.activity_repo_directory)).perform(replaceTextCloseKeyboard(url));
+        onView(withId(R.id.done)).perform(click());
+
+        onView(withId(R.id.repos_options_menu_item_new)).perform(click());
+        onView(withText(R.string.directory)).perform(click());
+        onView(withId(R.id.activity_repo_directory)).perform(replaceTextCloseKeyboard(url));
+        onView(withId(R.id.done)).perform(click());
+
+        onSnackbar().check(matches(withText(R.string.repository_url_already_exists)));
     }
 }

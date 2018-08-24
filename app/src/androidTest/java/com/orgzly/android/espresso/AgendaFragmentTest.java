@@ -1,45 +1,46 @@
 package com.orgzly.android.espresso;
 
 import android.content.pm.ActivityInfo;
-import android.support.test.espresso.contrib.PickerActions;
-import android.support.test.rule.ActivityTestRule;
 import android.widget.DatePicker;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.ui.MainActivity;
+import com.orgzly.android.ui.main.MainActivity;
 
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.longClick;
-import static android.support.test.espresso.action.ViewActions.swipeRight;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.DrawerActions.open;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.listViewItemCount;
-import static com.orgzly.android.espresso.EspressoUtils.onList;
-import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import androidx.test.espresso.contrib.PickerActions;
+import androidx.test.rule.ActivityTestRule;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.DrawerActions.open;
+import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.onItemInAgenda;
+import static com.orgzly.android.espresso.EspressoUtils.onNotesInAgenda;
+import static com.orgzly.android.espresso.EspressoUtils.recyclerViewItemCount;
 import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 
+//@Ignore
 public class AgendaFragmentTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
 
     private void defaultSetUp() {
-        shelfTestUtils.setupBook("book-one",
+        testUtils.setupBook("book-one",
                 "First book used for testing\n" +
 
                         "* Note A.\n" +
@@ -50,7 +51,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
                         "*** TODO Note C\n" +
                         "SCHEDULED: <2014-01-02 ++1d>\n");
 
-        shelfTestUtils.setupBook("book-two",
+        testUtils.setupBook("book-two",
                 "Sample book used for tests\n" +
 
                         "*** DONE Note 1\n" +
@@ -75,64 +76,64 @@ public class AgendaFragmentTest extends OrgzlyTest {
     public void testWithNoBook() {
         emptySetup();
         searchForText(".it.done (s.7d or d.7d) ad.7");
-        onList().check(matches(listViewItemCount(7)));
+        onNotesInAgenda().check(matches(recyclerViewItemCount(7)));
         searchForText(".it.done (s.7d or d.7d) ad.3");
-        onList().check(matches(listViewItemCount(3)));
+        onNotesInAgenda().check(matches(recyclerViewItemCount(3)));
     }
 
     @Test
     public void testDayAgenda() {
         defaultSetUp();
         searchForText(".it.done (s.7d or d.7d) ad.1");
-        onList().check(matches(listViewItemCount(4)));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(endsWith("Note B")), isDisplayed())));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(endsWith("Note C")), isDisplayed())));
-        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(endsWith("Note 2")), isDisplayed())));
+        onNotesInAgenda().check(matches(recyclerViewItemCount(4)));
+        onItemInAgenda(1, R.id.item_head_title).check(matches(allOf(withText(endsWith("Note B")), isDisplayed())));
+        onItemInAgenda(2, R.id.item_head_title).check(matches(allOf(withText(endsWith("Note C")), isDisplayed())));
+        onItemInAgenda(3, R.id.item_head_title).check(matches(allOf(withText(endsWith("Note 2")), isDisplayed())));
     }
 
     @Test
     public void testWeekAgenda() {
         defaultSetUp();
         openAgenda();
-        // 7 date headers, 1 Note B, 7 x Note C, 7 x Note 2
-        onList().check(matches(listViewItemCount(22)));
+        // 7 date headers + 1 x Note B + 7 x Note C + 7 x Note 2
+        onView(withId(R.id.fragment_query_agenda_recycler_view)).check(matches(recyclerViewItemCount(22)));
     }
 
     @Test
     public void testOneTimeTaskMarkedDone() {
         defaultSetUp();
         openAgenda();
-        onListItem(1).perform(swipeRight());
-        onListItem(1).onChildView(withId(R.id.item_menu_done_state_btn)).perform(click());
-        onList().check(matches(listViewItemCount(21)));
+        EspressoUtils.onItemInAgenda(1).perform(click());
+        onView(withId(R.id.bottom_action_bar_done)).perform(click());
+        onNotesInAgenda().check(matches(recyclerViewItemCount(21)));
     }
 
     @Test
     public void testRepeaterTaskMarkedDone() {
         defaultSetUp();
         openAgenda();
-        onListItem(2).perform(swipeRight());
-        onListItem(2).onChildView(withId(R.id.item_menu_done_state_btn)).perform(click());
-        onList().check(matches(listViewItemCount(21)));
+        EspressoUtils.onItemInAgenda(2).perform(click());
+        onView(withId(R.id.bottom_action_bar_done)).perform(click());
+        onNotesInAgenda().check(matches(recyclerViewItemCount(21)));
     }
 
     @Test
     public void testRangeTaskMarkedDone() {
         defaultSetUp();
         openAgenda();
-        onListItem(3).perform(swipeRight());
-        onListItem(3).onChildView(withId(R.id.item_menu_done_state_btn)).perform(click());
-        onList().check(matches(listViewItemCount(15)));
+        EspressoUtils.onItemInAgenda(3).perform(click());
+        onView(withId(R.id.bottom_action_bar_done)).perform(click());
+        onNotesInAgenda().check(matches(recyclerViewItemCount(15)));
     }
 
     @Test
-    public void testShiftRepeaterTaskToTomorrow() {
+    public void testMoveTaskWithRepeaterToTomorrow() {
         DateTime tomorrow = DateTime.now().withTimeAtStartOfDay().plusDays(1);
 
         defaultSetUp();
         openAgenda();
-        onListItem(2).perform(swipeRight());
-        onListItem(2).onChildView(withId(R.id.item_menu_schedule_btn)).perform(click());
+        EspressoUtils.onItemInAgenda(2).perform(click());
+        onView(withId(R.id.bottom_action_bar_schedule)).perform(click());
         onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName())))
                 .perform(PickerActions.setDate(
@@ -141,47 +142,21 @@ public class AgendaFragmentTest extends OrgzlyTest {
                         tomorrow.getDayOfMonth()));
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
         onView(withText(R.string.set)).perform(click());
-        onList().check(matches(listViewItemCount(21)));
+        onNotesInAgenda().check(matches(recyclerViewItemCount(21)));
     }
 
     @Test
     public void testPersistedSpinnerSelection() {
         defaultSetUp();
         openAgenda();
-        onList().check(matches(listViewItemCount(22)));
+        onNotesInAgenda().check(matches(recyclerViewItemCount(22)));
         activityRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        onList().check(matches(listViewItemCount(22)));
-    }
-
-    @Test
-    public void testClickAndChangeStateWithReverseNoteClick() {
-        shelfTestUtils.setupBook("book-1","* DONE Note A");
-        shelfTestUtils.setupBook("book-2","* TODO Note B\nSCHEDULED: <2014-01-01>\n* TODO Note C\nSCHEDULED: <2014-01-02>\n");
-        AppPreferences.isReverseNoteClickAction(context, true);
-        activityRule.launchActivity(null);
-
-        openAgenda();
-        onListItem(2).perform(click());
-        onView(withId(R.id.query_cab_edit)).perform(click());
-        onView(withText(R.string.state)).perform(click());
-        onView(withText("NEXT")).perform(click());
-    }
-
-    @Test
-    public void testOpenNoteWithReverseNoteClick() {
-        shelfTestUtils.setupBook("book-1","* DONE Note A");
-        shelfTestUtils.setupBook("book-2","* TODO Note B\nSCHEDULED: <2014-01-01>\n* TODO Note C\nSCHEDULED: <2014-01-02>\n");
-        AppPreferences.isReverseNoteClickAction(context, true);
-        activityRule.launchActivity(null);
-
-        openAgenda();
-        onListItem(2).perform(longClick());
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note C")));
+        onNotesInAgenda().check(matches(recyclerViewItemCount(22)));
     }
 
     @Test
     public void testDeSelectRemovedNoteInAgenda() {
-        shelfTestUtils.setupBook(
+        testUtils.setupBook(
                 "notebook",
                 "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>\n"
                 + "* TODO Note B\nSCHEDULED: <2018-01-01 .+1d>\n");
@@ -190,17 +165,31 @@ public class AgendaFragmentTest extends OrgzlyTest {
 
         searchForText("i.todo ad.3");
 
-        onListItem(1).perform(longClick());
+        EspressoUtils.onItemInAgenda(1).perform(click());
 
-        onList().check(matches(listViewItemCount(9)));
+        onNotesInAgenda().check(matches(recyclerViewItemCount(9)));
         onView(withId(R.id.action_bar_title)).check(matches(withText("1")));
 
         // Remove state from selected note
-        onView(withId(R.id.query_cab_edit)).perform(click());
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.bottom_action_bar_state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
-        onList().check(matches(listViewItemCount(6)));
+        onNotesInAgenda().check(matches(recyclerViewItemCount(6)));
         onView(withId(R.id.action_bar_title)).check(doesNotExist());
+    }
+
+    @Ignore // TODO: Implement
+    @Test
+    public void testPreselectedStateOfSelectedNote() {
+        testUtils.setupBook("notebook", "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>");
+        activityRule.launchActivity(null);
+
+        searchForText("ad.3");
+
+        EspressoUtils.onItemInAgenda(1).perform(click());
+
+        onView(withId(R.id.bottom_action_bar_state)).perform(click());
+
+        onView(withText("TODO")).check(matches(isChecked()));
     }
 }

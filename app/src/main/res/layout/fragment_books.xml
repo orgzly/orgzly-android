@@ -6,18 +6,15 @@
     android:layout_height="match_parent"
     android:background="?attr/fragment_books_bg_color">
 
-    <ListView
-        android:id="@android:id/list"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_books_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/ListView"
-        android:divider="@null"
-        android:dividerHeight="8dp"
         android:paddingLeft="@dimen/screen_edge_minus_2dp"
         android:paddingRight="@dimen/screen_edge_minus_2dp"
         android:paddingTop="@dimen/screen_edge_minus_2dp"
         android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
-        android:clipToPadding="false"/>
+        android:clipToPadding="false" />
 
     <!-- Made visible programmatically if there are no notes. -->
     <!-- TODO: Use flipper instead? Be consistent in any case. -->
@@ -28,6 +25,6 @@
         android:layout_centerHorizontal="true"
         android:text="@string/no_notebooks"
         android:visibility="gone"
-        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"/>
+        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
 
 </RelativeLayout>

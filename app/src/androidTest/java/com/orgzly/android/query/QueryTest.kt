@@ -1,18 +1,19 @@
 package com.orgzly.android.query
 
-import android.support.test.espresso.matcher.ViewMatchers.assertThat
+import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import com.orgzly.android.OrgzlyTest
-import com.orgzly.android.provider.views.DbNoteView
 import com.orgzly.android.query.sql.SqliteQueryBuilder
 import com.orgzly.android.query.user.DottedQueryBuilder
 import com.orgzly.android.query.user.DottedQueryParser
 import org.hamcrest.Matchers.`is`
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import java.util.*
 
+//@Ignore
 @RunWith(value = Parameterized::class)
 class QueryTest(private val param: Parameter) : OrgzlyTest() {
 
@@ -212,7 +213,7 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             expectedQueryString = "o.state",
                             expectedSqlSelection = "",
                             expectedSelectionArgs = listOf(),
-                            expectedSqlOrder = "CASE state WHEN 'TODO' THEN 0 WHEN 'NEXT' THEN 1 WHEN 'DONE' THEN 2 ELSE 3 END, is_visible",
+                            expectedSqlOrder = "CASE state WHEN 'TODO' THEN 0 WHEN 'NEXT' THEN 1 WHEN 'DONE' THEN 2 ELSE 3 END, lft",
                             expectedQuerySortOrders = listOf(SortOrder.State()),
                             expectedQueryOptions = Options()
                     ),
@@ -258,7 +259,7 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                     Parameter(
                             queryString = "s.ge.3d",
                             expectedQueryString = "s.ge.3d",
-                            expectedSqlSelection = "((${DbNoteView.SCHEDULED_TIME_TIMESTAMP} != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3)} <= ${DbNoteView.SCHEDULED_TIME_TIMESTAMP}))"
+                            expectedSqlSelection = "((scheduled_time_timestamp != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3)} <= scheduled_time_timestamp))"
                     ),
                     Parameter(
                             queryString = "((i.todo s.no) or i.later) o.state",

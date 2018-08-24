@@ -7,31 +7,34 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.preference.PreferenceManager
-import android.support.annotation.StringRes
-import android.support.design.widget.Snackbar
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.MotionEvent
 import android.view.View
+import androidx.annotation.StringRes
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.FileProvider
+import androidx.core.view.GravityCompat
+import androidx.preference.PreferenceManager
+import com.google.android.material.snackbar.Snackbar
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
+import com.orgzly.android.data.DataRepository
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.sync.AutoSync
 import com.orgzly.android.ui.dialogs.WhatsNewDialog
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
+import dagger.android.support.DaggerAppCompatActivity
+import java.io.File
 import java.util.*
+import javax.inject.Inject
 
 
 /**
  * Inherited by every activity in the app.
  */
-abstract class CommonActivity : AppCompatActivity() {
+abstract class CommonActivity : DaggerAppCompatActivity() {
 
     private var snackbar: Snackbar? = null
 
@@ -45,6 +48,12 @@ abstract class CommonActivity : AppCompatActivity() {
     /* Actions. */
     private var restartActivity = false
     @JvmField protected var clearFragmentBackstack = false
+
+    @Inject
+    lateinit var dataRepository: DataRepository
+
+    @Inject
+    lateinit var autoSync: AutoSync
 
     private val actionReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -67,7 +76,6 @@ abstract class CommonActivity : AppCompatActivity() {
                     showSnackbar(R.string.notebook_imported)
 
                 AppIntent.ACTION_DB_CLEARED -> {
-                    showSnackbar(R.string.clear_database_performed)
                     clearFragmentBackstack = true
                 }
 
@@ -127,9 +135,9 @@ abstract class CommonActivity : AppCompatActivity() {
         dismissSnackbar()
 
         /* Close drawer before displaying snackbar. */
-        val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
+        val drawerLayout = findViewById<androidx.drawerlayout.widget.DrawerLayout>(R.id.drawer_layout)
         if (drawerLayout != null) {
-            (drawerLayout as DrawerLayout).closeDrawer(GravityCompat.START)
+            (drawerLayout as androidx.drawerlayout.widget.DrawerLayout).closeDrawer(GravityCompat.START)
         }
 
         /* Set background color from attribute. */
@@ -202,7 +210,7 @@ abstract class CommonActivity : AppCompatActivity() {
         intentFilter.addAction(AppIntent.ACTION_UPDATING_NOTES_STARTED)
         intentFilter.addAction(AppIntent.ACTION_UPDATING_NOTES_ENDED)
         intentFilter.addAction(AppIntent.ACTION_SHOW_SNACKBAR)
-        LocalBroadcastManager.getInstance(this).registerReceiver(actionReceiver, intentFilter)
+        androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(this).registerReceiver(actionReceiver, intentFilter)
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(settingsChangeListener)
@@ -212,9 +220,8 @@ abstract class CommonActivity : AppCompatActivity() {
         super.onResume()
 
         if (restartActivity) {
-            Loaders.destroyAll(supportLoaderManager)
+            Handler().post(::recreate)
 
-            Handler().post(this@CommonActivity::recreate)
             restartActivity = false
         }
     }
@@ -253,7 +260,7 @@ abstract class CommonActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(actionReceiver)
+        androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(this).unregisterReceiver(actionReceiver)
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(settingsChangeListener)
@@ -347,6 +354,45 @@ abstract class CommonActivity : AppCompatActivity() {
         return builder
     }
 
+    // TODO: Move these to to main activity
+    fun openFileIfExists(file: File) {
+        if (file.exists()) {
+            runWithPermission(
+                    AppPermissions.Usage.EXTERNAL_FILES_ACCESS,
+                    Runnable {
+                        try {
+                            openFile(file)
+                        } catch (e: Exception) {
+                            showSnackbar(getString(
+                                    R.string.failed_to_open_linked_file_with_reason,
+                                    e.localizedMessage))
+                        }
+                    })
+        } else {
+            showSnackbar(getString(
+                    R.string.file_does_not_exist, file.canonicalFile))
+        }
+    }
+
+    private fun openFile(file: File) {
+        val contentUri = FileProvider.getUriForFile(
+                this, BuildConfig.APPLICATION_ID + ".fileprovider", file)
+
+        val intent = Intent(Intent.ACTION_VIEW, contentUri)
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        // Added for support on API 16
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+        // Try to start an activity for opening the file
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            showSnackbar(R.string.external_file_no_app_found)
+        }
+    }
+
     companion object {
         private val TAG = CommonActivity::class.java.name
 
@@ -368,7 +414,7 @@ abstract class CommonActivity : AppCompatActivity() {
             if (context != null) {
                 val intent = Intent(AppIntent.ACTION_SHOW_SNACKBAR)
                 intent.putExtra(AppIntent.EXTRA_MESSAGE, msg)
-                LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
+                androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
             }
         }
     }

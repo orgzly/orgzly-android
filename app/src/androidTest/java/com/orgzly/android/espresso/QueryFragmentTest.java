@@ -1,39 +1,43 @@
 package com.orgzly.android.espresso;
 
-import android.support.test.rule.ActivityTestRule;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.ui.MainActivity;
+import com.orgzly.android.ui.main.MainActivity;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.longClick;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.DrawerActions.open;
-import static android.support.test.espresso.contrib.PickerActions.setDate;
-import static android.support.test.espresso.contrib.PickerActions.setTime;
-import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
-import static com.orgzly.android.espresso.EspressoUtils.listViewItemCount;
-import static com.orgzly.android.espresso.EspressoUtils.onList;
-import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import androidx.test.rule.ActivityTestRule;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.longClick;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.DrawerActions.open;
+import static androidx.test.espresso.contrib.PickerActions.setDate;
+import static androidx.test.espresso.contrib.PickerActions.setTime;
+import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.onBook;
+import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.EspressoUtils.onNoteInSearch;
+import static com.orgzly.android.espresso.EspressoUtils.onNotesInSearch;
+import static com.orgzly.android.espresso.EspressoUtils.openContextualToolbarOverflowMenu;
+import static com.orgzly.android.espresso.EspressoUtils.recyclerViewItemCount;
+import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
 import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
@@ -42,16 +46,14 @@ import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.startsWith;
 
-/**
- *
- */
+//@Ignore
 @SuppressWarnings("unchecked")
 public class QueryFragmentTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
 
     private void defaultSetUp() {
-        shelfTestUtils.setupBook("book-one",
+        testUtils.setupBook("book-one",
                 "First book used for testing\n" +
                 "* Note A.\n" +
                 "** [#A] Note B.\n" +
@@ -63,7 +65,7 @@ public class QueryFragmentTest extends OrgzlyTest {
                 "*** Another note.\n" +
                 "");
 
-        shelfTestUtils.setupBook("book-two",
+        testUtils.setupBook("book-two",
                 "Sample book used for tests\n" +
                 "* Note #1.\n" +
                 "* Note #2.\n" +
@@ -110,8 +112,8 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
         searchForText("b.book-one another note");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(1)));
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Another note."), isDisplayed())));
+        onNotesInSearch().check(matches(recyclerViewItemCount(1)));
+        onNoteInSearch(0, R.id.item_head_title).check(matches(allOf(withText("Another note."), isDisplayed())));
     }
 
     @Test
@@ -121,7 +123,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
         searchForText("b.book-one note");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(7)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(7)));
     }
 
     @Test
@@ -130,10 +132,10 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         searchForText("different");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(2)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)));
         searchForText("another");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(1)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(1)));
     }
 
     @Test
@@ -142,7 +144,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         searchForText("i.todo");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(3)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(3)));
     }
 
     @Test
@@ -151,7 +153,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         searchForText("s.today");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(2)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)));
     }
 
     @Test
@@ -161,11 +163,11 @@ public class QueryFragmentTest extends OrgzlyTest {
         searchForText("p.a");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
 
-        onList().check(matches(listViewItemCount(3)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(3)));
 
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("#A  Note B."), isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("#A  Note #15."), isDisplayed())));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("#A  Note #16."), isDisplayed())));
+        onNoteInSearch(0, R.id.item_head_title).check(matches(allOf(withText("#A  Note B."), isDisplayed())));
+        onNoteInSearch(1, R.id.item_head_title).check(matches(allOf(withText("#A  Note #15."), isDisplayed())));
+        onNoteInSearch(2, R.id.item_head_title).check(matches(allOf(withText("#A  Note #16."), isDisplayed())));
     }
 
     @Test
@@ -175,12 +177,12 @@ public class QueryFragmentTest extends OrgzlyTest {
         searchForText(".p.b");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
 
-        onList().check(matches(listViewItemCount(4)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(4)));
 
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("#A  Note B."), isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("#A  Note #15."), isDisplayed())));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("#A  Note #16."), isDisplayed())));
-        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("#C  Note #18."), isDisplayed())));
+        onNoteInSearch(0, R.id.item_head_title).check(matches(allOf(withText("#A  Note B."), isDisplayed())));
+        onNoteInSearch(1, R.id.item_head_title).check(matches(allOf(withText("#A  Note #15."), isDisplayed())));
+        onNoteInSearch(2, R.id.item_head_title).check(matches(allOf(withText("#A  Note #16."), isDisplayed())));
+        onNoteInSearch(3, R.id.item_head_title).check(matches(allOf(withText("#C  Note #18."), isDisplayed())));
     }
 
 
@@ -190,7 +192,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         searchForText("b.book-one note");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(7)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(7)));
     }
 
     /**
@@ -202,12 +204,22 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText("To Do")).perform(click());
-        onList().check(matches(listViewItemCount(3)));
-        onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(longClick());
-        onView(withId(R.id.query_cab_edit)).perform(click());
-        onView(withText(R.string.state)).perform(click());
+        onNotesInSearch().check(matches(recyclerViewItemCount(3)));
+        onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(click());
+        onView(withId(R.id.bottom_action_bar_state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
-        onList().check(matches(listViewItemCount(2)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)));
+    }
+
+    @Test
+    public void testToggleState() {
+        testUtils.setupBook("book-one", "* Note");
+        activityRule.launchActivity(null);
+
+        searchForText("Note");
+        onNoteInSearch(0).perform(click());
+        onView(withId(R.id.bottom_action_bar_done)).perform(click());
+        onNoteInSearch(0, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
     }
 
     /**
@@ -220,8 +232,9 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("book-two"), isDisplayed())).perform(click());
         searchForText("b.book-two Note");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(29)));
-        onListItem(27).perform(click());
+        onNotesInSearch().check(matches(recyclerViewItemCount(29)));
+        onNoteInSearch(27).perform(click());
+        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
         onView(withText("Note #28.")).check(matches(isDisplayed()));
     }
@@ -232,12 +245,10 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText("Scheduled")).perform(click());
-        onList().check(matches(listViewItemCount(2)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)));
 
-        onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(longClick());
-        onView(withId(R.id.query_cab_edit)).perform(click());
-        onView(withText(R.string.schedule)).perform(click());
-
+        onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(click());
+        onView(withId(R.id.bottom_action_bar_schedule)).perform(click());
         onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
@@ -246,38 +257,38 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
         onView(withText(R.string.set)).perform(click());
 
-        onList().check(matches(listViewItemCount(2)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)));
         onView(withText(userDateTime("<2014-04-01 Tue 09:15>"))).check(matches(isDisplayed()));
     }
 
     @Test
     public void testSearchExpressionsDefaultPriority() {
-        shelfTestUtils.setupBook("book-one",
+        testUtils.setupBook("book-one",
                 "* Note A.\n" +
                 "** [#A] Note B.\n" +
                 "* TODO [#B] Note C.\n" +
                 "SCHEDULED: <2014-01-01>\n" +
                 "** [#C] Note D.\n" +
                 "*** TODO Note E.");
-        shelfTestUtils.setupBook("book-two", "* Note #1.\n");
+        testUtils.setupBook("book-two", "* Note #1.\n");
         activityRule.launchActivity(null);
 
         searchForText("p.b");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
 
-        onList().check(matches(listViewItemCount(4)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(4)));
     }
 
     @Test
     public void testMultipleNotState() {
-        shelfTestUtils.setupBook("notebook-1",
+        testUtils.setupBook("notebook-1",
                 "* Note A.\n" +
                 "** [#A] Note B.\n" +
                 "* TODO Note C.\n" +
                 "SCHEDULED: <2014-01-01>\n" +
                 "** Note D.\n" +
                 "");
-        shelfTestUtils.setupBook("notebook-2",
+        testUtils.setupBook("notebook-2",
                 "* Note #1.\n" +
                 "** TODO Note #3.\n" +
                 "** Note #4.\n" +
@@ -288,7 +299,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         searchForText(".i.todo .i.done");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(5)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(5)));
     }
 
     /**
@@ -297,28 +308,28 @@ public class QueryFragmentTest extends OrgzlyTest {
      */
     @Test
     public void testNotesWithSameScheduledTimeString() throws IOException {
-        shelfTestUtils.setupBook("notebook-1", "* Note A\nSCHEDULED: <2014-01-01>");
-        shelfTestUtils.setupBook("notebook-2", "* Note B\nSCHEDULED: <2014-01-01>");
+        testUtils.setupBook("notebook-1", "* Note A\nSCHEDULED: <2014-01-01>");
+        testUtils.setupBook("notebook-2", "* Note B\nSCHEDULED: <2014-01-01>");
         activityRule.launchActivity(null);
 
         searchForText("s.today");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(2)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)));
     }
     @Test
     public void testNotesWithSameDeadlineTimeString() throws IOException {
-        shelfTestUtils.setupBook("notebook-1", "* Note A\nDEADLINE: <2014-01-01>");
-        shelfTestUtils.setupBook("notebook-2", "* Note B\nDEADLINE: <2014-01-01>");
+        testUtils.setupBook("notebook-1", "* Note A\nDEADLINE: <2014-01-01>");
+        testUtils.setupBook("notebook-2", "* Note B\nDEADLINE: <2014-01-01>");
         activityRule.launchActivity(null);
 
         searchForText("d.today");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(2)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)));
     }
 
     @Test
     public void testInheritedTagSearchWhenMultipleAncestorsMatch() {
-        shelfTestUtils.setupBook("notebook-1",
+        testUtils.setupBook("notebook-1",
                 "* Note A :tagtag:\n" +
                 "** Note B :tag:\n" +
                 "*** Note C\n" +
@@ -329,12 +340,12 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
         searchForText("t.tag");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(4)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(4)));
     }
 
     @Test
     public void testInheritedAndOwnTag() {
-        shelfTestUtils.setupBook("notebook-1",
+        testUtils.setupBook("notebook-1",
                 "* Note A :tag1:\n" +
                 "** Note B :tag2:\n" +
                 "*** Note C\n" +
@@ -345,15 +356,15 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
         searchForText("t.tag1 t.tag2");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(3)));
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note B")), isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note C")), isDisplayed())));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note D")), isDisplayed())));
+        onNotesInSearch().check(matches(recyclerViewItemCount(3)));
+        onNoteInSearch(0, R.id.item_head_title).check(matches(allOf(withText(startsWith("Note B")), isDisplayed())));
+        onNoteInSearch(1, R.id.item_head_title).check(matches(allOf(withText(startsWith("Note C")), isDisplayed())));
+        onNoteInSearch(2, R.id.item_head_title).check(matches(allOf(withText(startsWith("Note D")), isDisplayed())));
     }
 
     @Test
     public void testInheritedTagsAfterMovingNote() {
-        shelfTestUtils.setupBook("notebook-1",
+        testUtils.setupBook("notebook-1",
                 "* Note A :tag1:\n" +
                 "** Note B :tag2:\n" +
                 "*** Note C :tag3:\n" +
@@ -364,23 +375,23 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
 
         /* Move Note C down. */
-        onListItem(2).perform(longClick());
+        onNoteInBook(3).perform(click());
         onView(withId(R.id.book_cab_move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).perform(click());
         pressBack();
 
         searchForText("t.tag3");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(2)));
-        onListItem(0).onChildView(withId(R.id.item_head_title))
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)));
+        onNoteInSearch(0, R.id.item_head_title)
                 .check(matches(allOf(withText("Note D  tag3 • tag2 tag1"), isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_title))
+        onNoteInSearch(1, R.id.item_head_title)
                 .check(matches(allOf(withText("Note C  tag3 • tag2 tag1"), isDisplayed())));
     }
 
     @Test
     public void testInheritedTagsAfterDemotingSubtree() {
-        shelfTestUtils.setupBook("notebook-1",
+        testUtils.setupBook("notebook-1",
                 "* Note A :tag1:\n" +
                 "* Note B :tag2:\n" +
                 "** Note C :tag3:\n" +
@@ -391,23 +402,23 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
 
         /* Demote Note B. */
-        onListItem(1).perform(longClick());
+        onNoteInBook(2).perform(click());
         onView(withId(R.id.book_cab_move)).perform(click());
         onView(withId(R.id.notes_action_move_right)).perform(click());
         pressBack();
 
         searchForText("t.tag3");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(2)));
-        onListItem(0).onChildView(withId(R.id.item_head_title))
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)));
+        onNoteInSearch(0, R.id.item_head_title)
                 .check(matches(allOf(withText("Note C  tag3 • tag1 tag2"), isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_title))
+        onNoteInSearch(1, R.id.item_head_title)
                 .check(matches(allOf(withText("Note D  tag3 • tag1 tag2"), isDisplayed())));
     }
 
     @Test
     public void testInheritedTagsAfterCutAndPasting() {
-        shelfTestUtils.setupBook("notebook-1",
+        testUtils.setupBook("notebook-1",
                 "* Note A :tag1:\n" +
                 "* Note B :tag2:\n" +
                 "** Note C :tag3:\n" +
@@ -418,26 +429,26 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
 
         /* Cut Note B. */
-        onListItem(1).perform(longClick());
+        onNoteInBook(2).perform(click());
         onView(withId(R.id.book_cab_cut)).perform(click());
 
         /* Paste under Note A. */
-        onListItem(0).perform(longClick());
+        onNoteInBook(1).perform(click());
         onView(withId(R.id.book_cab_paste)).perform(click());
         onView(withText(R.string.heads_action_menu_item_paste_under)).perform(click());
 
         searchForText("t.tag3");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(2)));
-        onListItem(0).onChildView(withId(R.id.item_head_title))
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)));
+        onNoteInSearch(0, R.id.item_head_title)
                 .check(matches(allOf(withText("Note C  tag3 • tag1 tag2"), isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_title))
+        onNoteInSearch(1, R.id.item_head_title)
                 .check(matches(allOf(withText("Note D  tag3 • tag1 tag2"), isDisplayed())));
     }
 
     @Test
     public void testSearchOrderScheduled() {
-        shelfTestUtils.setupBook("notebook-1",
+        testUtils.setupBook("notebook-1",
                 "* Note A\n" +
                 "SCHEDULED: <2014-02-01>\n" +
                 "** Note B\n" +
@@ -450,13 +461,13 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
         searchForText("note o.scheduled");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note B")));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note A")));
+        onNoteInSearch(0, R.id.item_head_title).check(matches(withText("Note B")));
+        onNoteInSearch(1, R.id.item_head_title).check(matches(withText("Note A")));
     }
 
     @Test
     public void testOrderScheduledWithAndWithoutTimePart() {
-        shelfTestUtils.setupBook("notebook-1",
+        testUtils.setupBook("notebook-1",
                 "* Note A\n" +
                 "SCHEDULED: <2014-01-01>\n" +
                 "** Note B\n" +
@@ -471,14 +482,14 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
         searchForText("s.today .i.done o.s");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note A")));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note C")));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note B")));
+        onNoteInSearch(0, R.id.item_head_title).check(matches(withText("Note A")));
+        onNoteInSearch(1, R.id.item_head_title).check(matches(withText("Note C")));
+        onNoteInSearch(2, R.id.item_head_title).check(matches(withText("Note B")));
     }
 
     @Test
     public void testOrderDeadlineWithAndWithoutTimePartDesc() {
-        shelfTestUtils.setupBook("notebook-1",
+        testUtils.setupBook("notebook-1",
                 "* Note A\n" +
                 "DEADLINE: <2014-01-01>\n" +
                 "** Note B\n" +
@@ -493,42 +504,44 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
         searchForText("d.today .i.done .o.d");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note B")));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note C")));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(withText("Note A")));
+        onNoteInSearch(0, R.id.item_head_title).check(matches(withText("Note B")));
+        onNoteInSearch(1, R.id.item_head_title).check(matches(withText("Note C")));
+        onNoteInSearch(2, R.id.item_head_title).check(matches(withText("Note A")));
     }
 
     @Test
-    public void testNotebookNameInListAfterRename() {
+    public void testOrderOfBooksAfterRenaming() {
         defaultSetUp();
 
         searchForText("note");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onListItem(0).onChildView(withId(R.id.item_head_book_name_text)).check(matches(withText("book-one")));
+        onNoteInSearch(0, R.id.item_head_book_name_text).check(matches(withText("book-one")));
 
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.notebooks)).perform(click());
 
-        onListItem(0).perform(longClick());
-        onView(withText(R.string.books_context_menu_item_rename)).perform(click());
-        onView(withId(R.id.name)).perform(replaceText("renamed book-one"), closeSoftKeyboardWithDelay());
+        onBook(0).perform(longClick());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.rename)).perform(click());
+        onView(withId(R.id.name)).perform(replaceTextCloseKeyboard("renamed book-one"));
         onView(withText(R.string.rename)).perform(click());
 
         /* The other book is now first. Rename it too to keep the order of notes the same. */
-        onListItem(0).perform(longClick());
-        onView(withText(R.string.books_context_menu_item_rename)).perform(click());
-        onView(withId(R.id.name)).perform(replaceText("renamed book-two"), closeSoftKeyboardWithDelay());
+        onBook(0).perform(longClick());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.rename)).perform(click());
+        onView(withId(R.id.name)).perform(replaceTextCloseKeyboard("renamed book-two"));
         onView(withText(R.string.rename)).perform(click());
 
         pressBack();
 
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onListItem(0).onChildView(withId(R.id.item_head_book_name_text)).check(matches(withText("renamed book-one")));
+        onNoteInSearch(0, R.id.item_head_book_name_text).check(matches(withText("renamed book-one")));
     }
 
     @Test
     public void testSearchForNonExistentTagShouldReturnAllNotes() {
-        shelfTestUtils.setupBook("notebook",
+        testUtils.setupBook("notebook",
                 "* Note A :a:\n" +
                 "** Note B :b:\n" +
                 "*** Note C\n" +
@@ -538,12 +551,12 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText(".t.c");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(4)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(4)));
     }
 
     @Test
     public void testNotTagShouldReturnSomeNotes() {
-        shelfTestUtils.setupBook("notebook",
+        testUtils.setupBook("notebook",
                 "* Note A :a:\n" +
                 "** Note B :b:\n" +
                 "*** Note C\n" +
@@ -553,14 +566,14 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText(".t.b");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(2)));
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Note A  a"), isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText("Note D"), isDisplayed())));
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)));
+        onNoteInSearch(0, R.id.item_head_title).check(matches(allOf(withText("Note A  a"), isDisplayed())));
+        onNoteInSearch(1, R.id.item_head_title).check(matches(allOf(withText("Note D"), isDisplayed())));
     }
 
     @Test
     public void testSearchForTagOrTag() {
-        shelfTestUtils.setupBook("notebook",
+        testUtils.setupBook("notebook",
                 "* Note A :a:\n" +
                 "** Note B :b:\n" +
                 "*** Note C\n" +
@@ -570,14 +583,14 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText("tn.a or tn.b");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(2)));
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note A")), isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(startsWith("Note B")), isDisplayed())));
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)));
+        onNoteInSearch(0, R.id.item_head_title).check(matches(allOf(withText(startsWith("Note A")), isDisplayed())));
+        onNoteInSearch(1, R.id.item_head_title).check(matches(allOf(withText(startsWith("Note B")), isDisplayed())));
     }
 
     @Test
     public void testSortByPriority() {
-        shelfTestUtils.setupBook("notebook",
+        testUtils.setupBook("notebook",
                 "* [#B] Note A :a:\n" +
                 "** [#A] Note B :b:\n" +
                 "*** [#C] Note C\n" +
@@ -587,15 +600,15 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText("o.p");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note A")), isDisplayed())));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note D")), isDisplayed())));
-        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note C")), isDisplayed())));
+        onNoteInSearch(0, R.id.item_head_title).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
+        onNoteInSearch(1, R.id.item_head_title).check(matches(allOf(withText(containsString("Note A")), isDisplayed())));
+        onNoteInSearch(2, R.id.item_head_title).check(matches(allOf(withText(containsString("Note D")), isDisplayed())));
+        onNoteInSearch(3, R.id.item_head_title).check(matches(allOf(withText(containsString("Note C")), isDisplayed())));
     }
 
     @Test
     public void testSortByPriorityDesc() {
-        shelfTestUtils.setupBook("notebook",
+        testUtils.setupBook("notebook",
                 "* [#B] Note A :a:\n" +
                 "** [#A] Note B :b:\n" +
                 "*** [#C] Note C\n" +
@@ -605,16 +618,16 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText(".o.p");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note C")), isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note D")), isDisplayed())));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note A")), isDisplayed())));
-        onListItem(3).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
+        onNoteInSearch(0, R.id.item_head_title).check(matches(allOf(withText(containsString("Note C")), isDisplayed())));
+        onNoteInSearch(1, R.id.item_head_title).check(matches(allOf(withText(containsString("Note D")), isDisplayed())));
+        onNoteInSearch(2, R.id.item_head_title).check(matches(allOf(withText(containsString("Note A")), isDisplayed())));
+        onNoteInSearch(3, R.id.item_head_title).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
     }
 
     @Test
     public void testSearchNoteStateType() {
         AppPreferences.states(context, "TODO NEXT | DONE");
-        shelfTestUtils.setupBook("notebook",
+        testUtils.setupBook("notebook",
                 "* TODO Note A :a:\n" +
                 "** NEXT Note B :b:\n" +
                 "* DONE Note C\n" +
@@ -624,15 +637,15 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText(".it.todo");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(2)));
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note C")), isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note D")), isDisplayed())));
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)));
+        onNoteInSearch(0, R.id.item_head_title).check(matches(allOf(withText(containsString("Note C")), isDisplayed())));
+        onNoteInSearch(1, R.id.item_head_title).check(matches(allOf(withText(containsString("Note D")), isDisplayed())));
     }
 
     @Test
     public void testSearchStateType() {
         AppPreferences.states(context, "TODO NEXT | DONE");
-        shelfTestUtils.setupBook("notebook",
+        testUtils.setupBook("notebook",
                 "* TODO Note A :a:\n" +
                 "** NEXT Note B :b:\n" +
                 "* DONE Note C\n" +
@@ -642,15 +655,15 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText("it.todo");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(2)));
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note A")), isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)));
+        onNoteInSearch(0, R.id.item_head_title).check(matches(allOf(withText(containsString("Note A")), isDisplayed())));
+        onNoteInSearch(1, R.id.item_head_title).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
     }
 
     @Test
     public void testSearchNoState() {
         AppPreferences.states(context, "TODO NEXT | DONE");
-        shelfTestUtils.setupBook("notebook",
+        testUtils.setupBook("notebook",
                 "* TODO Note A :a:\n" +
                 "** NEXT Note B :b:\n" +
                 "* DONE Note C\n" +
@@ -660,14 +673,14 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText("it.none");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(1)));
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note D")), isDisplayed())));
+        onNotesInSearch().check(matches(recyclerViewItemCount(1)));
+        onNoteInSearch(0, R.id.item_head_title).check(matches(allOf(withText(containsString("Note D")), isDisplayed())));
     }
 
     @Test
     public void testSearchWithState() {
         AppPreferences.states(context, "TODO NEXT | DONE");
-        shelfTestUtils.setupBook("notebook",
+        testUtils.setupBook("notebook",
                 "* TODO Note A :a:\n" +
                 "** NEXT Note B :b:\n" +
                 "* DONE Note C\n" +
@@ -677,16 +690,16 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
         searchForText(".it.none");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(3)));
-        onListItem(0).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note A")), isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
-        onListItem(2).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note C")), isDisplayed())));
+        onNotesInSearch().check(matches(recyclerViewItemCount(3)));
+        onNoteInSearch(0, R.id.item_head_title).check(matches(allOf(withText(containsString("Note A")), isDisplayed())));
+        onNoteInSearch(1, R.id.item_head_title).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
+        onNoteInSearch(2, R.id.item_head_title).check(matches(allOf(withText(containsString("Note C")), isDisplayed())));
     }
 
     @Test
     public void testContentOfFoldedNoteDisplayed() {
         AppPreferences.isNotesContentDisplayedInSearch(context, true);
-        shelfTestUtils.setupBook("notebook",
+        testUtils.setupBook("notebook",
                 "* Note A\n" +
                 "** Note B\n" +
                 "Content for Note B\n" +
@@ -694,32 +707,53 @@ public class QueryFragmentTest extends OrgzlyTest {
         activityRule.launchActivity(null);
 
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
-        onListItem(1).onChildView(withId(R.id.item_head_fold_button)).perform(click());
+        onNoteInBook(1, R.id.item_head_fold_button).perform(click());
         searchForText("note");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
-        onList().check(matches(listViewItemCount(3)));
-        onListItem(1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
-        onListItem(1).onChildView(withId(R.id.item_head_content)).check(matches(allOf(withText(containsString("Content for Note B")), isDisplayed())));
+        onNotesInSearch().check(matches(recyclerViewItemCount(3)));
+        onNoteInSearch(1, R.id.item_head_title).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
+        onNoteInSearch(1, R.id.item_head_content).check(matches(allOf(withText(containsString("Content for Note B")), isDisplayed())));
     }
 
     @Test
     public void testDeSelectRemovedNoteInSearch() {
-        shelfTestUtils.setupBook("notebook", "* TODO Note A\n* TODO Note B");
+        testUtils.setupBook("notebook", "* TODO Note A\n* TODO Note B");
         activityRule.launchActivity(null);
 
         searchForText("i.todo");
 
-        onListItem(0).perform(longClick());
+        onNoteInSearch(0).perform(click());
 
-        onList().check(matches(listViewItemCount(2)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)));
         onView(withId(R.id.action_bar_title)).check(matches(withText("1")));
 
         // Remove state from selected note
-        onView(withId(R.id.query_cab_edit)).perform(click());
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.bottom_action_bar_state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
-        onList().check(matches(listViewItemCount(1)));
+        onNotesInSearch().check(matches(recyclerViewItemCount(1)));
         onView(withId(R.id.action_bar_title)).check(doesNotExist());
+    }
+
+    @Test
+    public void testNoNotesFoundMessageIsDisplayedInSearch() {
+        activityRule.launchActivity(null);
+        searchForText("Note");
+        onView(withText(R.string.no_notes_found_after_search)).check(matches(isDisplayed()));
+    }
+
+    @Ignore // TODO: Implement
+    @Test
+    public void testPreselectedStateOfSelectedNote() {
+        testUtils.setupBook("notebook", "* TODO Note A\n* TODO Note B");
+        activityRule.launchActivity(null);
+
+        searchForText("i.todo");
+
+        onNoteInSearch(1).perform(click());
+
+        onView(withId(R.id.bottom_action_bar_state)).perform(click());
+
+        onView(withText("TODO")).check(matches(isChecked()));
     }
 }

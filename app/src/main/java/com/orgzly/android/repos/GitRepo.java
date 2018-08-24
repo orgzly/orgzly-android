@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-import com.orgzly.android.App;
 import com.orgzly.android.BookName;
 import com.orgzly.android.git.GitFileSynchronizer;
 import com.orgzly.android.git.GitPreferences;
@@ -12,7 +11,6 @@ import com.orgzly.android.git.GitPreferencesFromRepoPrefs;
 import com.orgzly.android.git.GitSSHKeyTransportSetter;
 import com.orgzly.android.git.GitTransportSetter;
 import com.orgzly.android.prefs.RepoPreferences;
-import com.orgzly.android.provider.clients.CurrentRooksClient;
 
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
@@ -39,7 +37,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GitRepo implements Repo, TwoWaySyncRepo {
+public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     public final static String SCHEME = "git";
 
     public static GitTransportSetter getTransportSetter(GitPreferences preferences) {
@@ -53,7 +51,7 @@ public class GitRepo implements Repo, TwoWaySyncRepo {
         return build(prefs, false);
     }
 
-    public static GitRepo build(GitPreferences prefs, boolean clone) throws IOException {
+    private static GitRepo build(GitPreferences prefs, boolean clone) throws IOException {
         Git git = ensureRepositoryExists(prefs, clone, null);
 
         StoredConfig config = git.getRepository().getConfig();
@@ -127,9 +125,12 @@ public class GitRepo implements Repo, TwoWaySyncRepo {
     }
 
     public VersionedRook storeBook(File file, String fileName) throws IOException {
-        VersionedRook current = CurrentRooksClient.get(
-                // TODO: get rid of "/" prefix needed here
-                App.getAppContext(), getUri().toString(), "/" + fileName);
+        // FIXME: Removed current_versioned_rooks table, just get the list from remote
+//        VersionedRook current = CurrentRooksClient.get(
+//                // TODO: get rid of "/" prefix needed here
+//                App.getAppContext(), getUri().toString(), "/" + fileName);
+        VersionedRook current = null;
+
         RevCommit commit = getCommitFromRevisionString(current.getRevision());
         synchronizer.updateAndCommitFileFromRevision(
                 file, fileName, synchronizer.getFileRevision(fileName, commit));
@@ -152,8 +153,10 @@ public class GitRepo implements Repo, TwoWaySyncRepo {
         // FIXME: Interface changed, this will not work
         Uri sourceUri = Uri.parse(fileName);
 
-        VersionedRook current = CurrentRooksClient.get(
-                App.getAppContext(), getUri().toString(), sourceUri.toString());
+        // FIXME: Removed current_versioned_rooks table, just get the list from remote
+        // VersionedRook current = CurrentRooksClient.get(App.getAppContext(), getUri().toString(), sourceUri.toString());
+        VersionedRook current = null;
+
         RevCommit currentCommit = null;
         if (current != null) {
             currentCommit = getCommitFromRevisionString(current.getRevision());
@@ -235,7 +238,7 @@ public class GitRepo implements Repo, TwoWaySyncRepo {
     }
 
     public void delete(Uri deleteUri) throws IOException {
-        // XXX: finish me
+        // FIXME: finish me
         throw new IOException("Don't do that");
     }
 
@@ -264,7 +267,7 @@ public class GitRepo implements Repo, TwoWaySyncRepo {
             syncBackNeeded = !synchronizer.fileMatchesInRevisions(
                     fileName, rookCommit, synchronizer.currentHead());
         } else {
-            // XXX/TODO: Prompt user for confirmation?
+            // TODO: Prompt user for confirmation?
             Log.w("Git", "Unable to find previous commit, loading from repository.");
             syncBackNeeded = true;
         }

@@ -1,23 +1,18 @@
 package com.orgzly.android.misc
 
-import android.support.test.rule.ActivityTestRule
-import com.orgzly.android.Book
 import com.orgzly.android.NotesExporter
 import com.orgzly.android.OrgzlyTest
+import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.MainActivity
 import com.orgzly.org.datetime.OrgDateTime
-import org.hamcrest.Matchers.`is`
-import org.junit.Assert.assertThat
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import java.io.StringWriter
+import java.util.*
 
 class StateChangeTest : OrgzlyTest() {
-    @get:Rule
-    var activityRule: ActivityTestRule<*> = ActivityTestRule(MainActivity::class.java, true, false)
-
     @Before
     override fun setUp() {
         super.setUp()
@@ -26,7 +21,7 @@ class StateChangeTest : OrgzlyTest() {
     }
 
     /**
-     * Tests:
+     * Checks for:
      * - Updated scheduled time
      * - Updated LAST_REPEAT
      * - Kept order of properties
@@ -34,7 +29,7 @@ class StateChangeTest : OrgzlyTest() {
      */
     @Test
     fun testRecordedStateChangeOnTimeShift() {
-        val book = shelfTestUtils.setupBook(
+        val book = testUtils.setupBook(
                 "book-a",
                 "* NEXT Task\n" +
                 "SCHEDULED: <2018-04-12 Thu +4d/5d>\n" +
@@ -49,9 +44,11 @@ class StateChangeTest : OrgzlyTest() {
                 "\n" +
                 "Content")
 
-        val note = shelf.getNote("Task")
+        val note = dataRepository.getNote("Task")
 
-        shelf.setStateToFirstDone(note.id)
+        assertNotNull(note)
+
+        dataRepository.toggleNotesState(Collections.singleton(note!!.id))
 
         val exportedBook = exportBook(book)
 
@@ -70,19 +67,21 @@ class StateChangeTest : OrgzlyTest() {
                            "\n" +
                            "Content\n\n"
 
-        assertThat(exportedBook, `is`(expectedBook))
+        assertEquals(expectedBook, exportedBook)
     }
 
     @Test
     fun testNoContent() {
-        val book = shelfTestUtils.setupBook(
+        val book = testUtils.setupBook(
                 "book-a",
                 "* NEXT Task\n" +
                 "SCHEDULED: <2018-04-12 Thu +4d/5d>")
 
-        val note = shelf.getNote("Task")
+        val note = dataRepository.getNote("Task")
 
-        shelf.setStateToFirstDone(note.id)
+        assertNotNull(note)
+
+        dataRepository.toggleNotesState(Collections.singleton(note!!.id))
 
         val exportedBook = exportBook(book)
 
@@ -97,7 +96,7 @@ class StateChangeTest : OrgzlyTest() {
                            ":END:\n" +
                            "\n"
 
-        assertThat(exportedBook, `is`(expectedBook))
+        assertEquals(expectedBook, exportedBook)
     }
 
     @Test
@@ -105,27 +104,27 @@ class StateChangeTest : OrgzlyTest() {
         AppPreferences.setLastRepeatOnTimeShift(context, false)
         AppPreferences.logOnTimeShift(context, false)
 
-        val book = shelfTestUtils.setupBook(
+        val book = testUtils.setupBook(
                 "book-a",
                 "* TODO Task\n" +
                 "  DEADLINE: <2013-08-10 Sat +1w> SCHEDULED: <2013-08-08 Thu>")
 
-        val note = shelf.getNote("Task")
+        val note = dataRepository.getNote("Task")
 
-        shelf.setStateToFirstDone(note.id)
+        dataRepository.toggleNotesState(Collections.singleton(note!!.id))
 
         val exportedBook = exportBook(book)
 
         val expectedBook = "* TODO Task\n" +
                            "  DEADLINE: <2013-08-17 Sat +1w>\n\n"
 
-        assertThat(exportedBook, `is`(expectedBook))
+        assertEquals(expectedBook, exportedBook)
     }
 
-    private fun exportBook(book: Book): String {
+    private fun exportBook(book: BookView): String {
         val sw = StringWriter()
 
-        NotesExporter.getInstance(context).exportBook(book, sw)
+        NotesExporter(context, dataRepository).exportBook(book.book, sw)
 
         return sw.toString()
     }

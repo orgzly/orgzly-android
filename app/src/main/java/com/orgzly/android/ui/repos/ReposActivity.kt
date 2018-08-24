@@ -1,44 +1,37 @@
 package com.orgzly.android.ui.repos
 
-import android.annotation.SuppressLint
-import android.database.Cursor
-import android.os.AsyncTask
 import android.os.Bundle
-import android.support.v4.app.LoaderManager
-import android.support.v4.content.CursorLoader
-import android.support.v4.widget.SimpleCursorAdapter
 import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.orgzly.BuildConfig
-
 import com.orgzly.R
-import com.orgzly.android.Shelf
-import com.orgzly.android.provider.ProviderContract
-import com.orgzly.android.provider.clients.ReposClient
-import com.orgzly.android.repos.ContentRepo
-import com.orgzly.android.repos.DirectoryRepo
-import com.orgzly.android.repos.DropboxRepo
-import com.orgzly.android.repos.GitRepo
-import com.orgzly.android.repos.MockRepo
-import com.orgzly.android.repos.RepoFactory
-import com.orgzly.android.ui.Loaders
-import com.orgzly.android.util.LogUtils
+import com.orgzly.android.db.entity.Repo
+import com.orgzly.android.repos.*
+import com.orgzly.android.ui.CommonActivity
+import com.orgzly.android.ui.repo.DirectoryRepoActivity
+import com.orgzly.android.ui.repo.DropboxRepoActivity
+import com.orgzly.android.ui.repo.GitRepoActivity
+import com.orgzly.android.usecase.RepoDelete
 import kotlinx.android.synthetic.main.activity_repos.*
+import javax.inject.Inject
 
 /**
- * Configuring repositories.
+ * List of user-configured repositories.
  */
-class ReposActivity :
-        RepoActivity(),
-        AdapterView.OnItemClickListener,
-        LoaderManager.LoaderCallbacks<Cursor> {
+class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener {
 
-    private lateinit var listAdapter: SimpleCursorAdapter
+    @Inject
+    lateinit var repoFactory: RepoFactory
 
-    private lateinit var mShelf: Shelf
+    private lateinit var listAdapter: ArrayAdapter<Repo>
+
+    lateinit var viewModel: ReposViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,81 +40,72 @@ class ReposActivity :
 
         setupActionBar(R.string.repositories)
 
-        mShelf = Shelf(applicationContext)
-
         setupNoReposButtons()
 
-        list.onItemClickListener = this
+        listAdapter = object : ArrayAdapter<Repo>(this, R.layout.item_repo, R.id.item_repo_url) {
+            override fun getItemId(position: Int): Long {
+                return getItem(position).id
+            }
+        }
 
-        listAdapter = setupAdapter()
+        val factory = ReposViewModelFactory.getInstance(dataRepository)
+        viewModel = ViewModelProviders.of(this, factory).get(ReposViewModel::class.java)
+
+        viewModel.repos.observe(this, Observer { repos ->
+            listAdapter.clear()
+            listAdapter.addAll(repos)
+            listAdapter.notifyDataSetChanged() // FIXME
+
+            activity_repos_flipper.displayedChild =
+                    if (repos != null && repos.isNotEmpty()) 0 else 1
+
+            invalidateOptionsMenu()
+        })
+
+        viewModel.openRepoRequestEvent.observeSingle(this, Observer { repo ->
+            if (repo != null) {
+                openRepo(repo)
+            }
+        })
+
+        viewModel.errorEvent.observeSingle(this, Observer { error ->
+            if (error != null) {
+                showSnackbar((error.cause ?: error).localizedMessage)
+            }
+        })
+
+        list.onItemClickListener = this
         list.adapter = listAdapter
         registerForContextMenu(list)
-
-        supportLoaderManager?.initLoader(Loaders.REPOS_FRAGMENT, null, this)
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        onRepoEditRequest(id)
-    }
-
-    private fun setupAdapter(): SimpleCursorAdapter {
-        /* Column field names to be bound. */
-        val columns = arrayOf(ProviderContract.Repos.Param.REPO_URL)
-
-        /* Views which the data will be bound to. */
-        val to = intArrayOf(R.id.item_repo_url)
-
-        /* Create adapter using Cursor. */
-        val adapter = SimpleCursorAdapter(
-                this,
-                R.layout.item_repo, null,
-                columns,
-                to,
-                0)
-
-        adapter.setViewBinder { view, cursor, columnIndex ->
-            val textView: TextView
-
-            when (view.id) {
-                R.id.item_repo_url -> {
-                    if (!cursor.isNull(columnIndex)) {
-                        textView = view as TextView
-                        textView.text = cursor.getString(columnIndex)
-                    }
-                    true
-                }
-
-                else ->
-                    false
-            }
-        }
-
-        return adapter
+        viewModel.openRepo(id)
     }
 
     private fun setupNoReposButtons() {
-        activity_repos_dropbox.let {
+        activity_repos_dropbox.let { button ->
             if (BuildConfig.IS_DROPBOX_ENABLED) {
-                it.setOnClickListener {
+                button.setOnClickListener {
                     startRepoActivity(R.id.repos_options_menu_item_new_dropbox)
                 }
             } else {
-                it.visibility = View.GONE
+                button.visibility = View.GONE
             }
         }
 
-        activity_repos_git.let {
+        activity_repos_git.let { button ->
             if (BuildConfig.IS_GIT_ENABLED) {
-                it.setOnClickListener {
+                button.setOnClickListener {
                     startRepoActivity(R.id.repos_options_menu_item_new_git)
                 }
             } else {
-                it.visibility = View.GONE
+                button.visibility = View.GONE
             }
         }
 
         activity_repos_directory.setOnClickListener {
-            startRepoActivity(R.id.repos_options_menu_item_new_external_storage_directory)
+            startRepoActivity(R.id.repos_options_menu_item_new_directory)
         }
     }
 
@@ -140,6 +124,10 @@ class ReposActivity :
 
             else -> super.onContextItemSelected(item)
         }
+    }
+
+    private fun deleteRepo(id: Long) {
+        viewModel.deleteRepo(id)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -173,7 +161,7 @@ class ReposActivity :
                 return true
             }
 
-            R.id.repos_options_menu_item_new_external_storage_directory -> {
+            R.id.repos_options_menu_item_new_directory -> {
                 startRepoActivity(item.itemId)
                 return true
             }
@@ -199,7 +187,7 @@ class ReposActivity :
                 return
             }
 
-            R.id.repos_options_menu_item_new_external_storage_directory -> {
+            R.id.repos_options_menu_item_new_directory -> {
                 DirectoryRepoActivity.start(this)
                 return
             }
@@ -208,62 +196,21 @@ class ReposActivity :
         }
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private fun deleteRepo(id: Long) {
-        object : AsyncTask<Void, Void, Void>() {
-            override fun doInBackground(vararg params: Void): Void? {
-                mShelf.deleteRepo(id)
-                return null
-            }
-        }.execute()
-    }
+    private fun openRepo(repoEntity: Repo) {
+        val repo = repoFactory.getFromUri(this, repoEntity.url)
 
-    private fun onRepoEditRequest(id: Long) {
-        val url = ReposClient.getUrl(this, id)
-
-        val repo = RepoFactory.getFromUri(this, url)
-
-        if (repo is DropboxRepo || repo is MockRepo) {  // TODO: Remove Mock from here
-            DropboxRepoActivity.start(this, id)
+        if (repo is DropboxRepo || repo is MockRepo) { // TODO: Remove Mock from here
+            DropboxRepoActivity.start(this, repoEntity.id)
 
         } else if (repo is DirectoryRepo || repo is ContentRepo) {
-            DirectoryRepoActivity.start(this, id)
+            DirectoryRepoActivity.start(this, repoEntity.id)
 
         } else if (repo is GitRepo) {
-            GitRepoActivity.start(this, id)
+            GitRepoActivity.start(this, repoEntity.id)
 
         } else {
             showSnackbar(R.string.message_unsupported_repository_type)
         }
-    }
-
-
-    override fun onCreateLoader(id: Int, args: Bundle?): android.support.v4.content.Loader<Cursor> {
-        return CursorLoader(
-                this,
-                ProviderContract.Repos.ContentUri.repos(),
-                null,
-                null,
-                null,
-                ProviderContract.Repos.Param.REPO_URL)
-    }
-
-    override fun onLoadFinished(loader: android.support.v4.content.Loader<Cursor>, data: Cursor?) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader)
-
-        listAdapter.swapCursor(data)
-
-        if (listAdapter.count > 0) {
-            activity_repos_flipper.displayedChild = 0
-        } else {
-            activity_repos_flipper.displayedChild = 1
-        }
-
-        invalidateOptionsMenu()
-    }
-
-    override fun onLoaderReset(loader: android.support.v4.content.Loader<Cursor>) {
-        listAdapter.changeCursor(null)
     }
 
     companion object {

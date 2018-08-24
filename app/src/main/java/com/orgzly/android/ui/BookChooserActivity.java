@@ -2,30 +2,35 @@ package com.orgzly.android.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.pm.ShortcutInfoCompat;
-import android.support.v4.content.pm.ShortcutManagerCompat;
-import android.support.v4.graphics.drawable.IconCompat;
-import android.support.v7.widget.Toolbar;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
 import android.widget.Toast;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
-import com.orgzly.android.Book;
+import com.orgzly.android.data.DataRepository;
+import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.BookUtils;
-import com.orgzly.android.Shelf;
-import com.orgzly.android.ui.fragments.BooksFragment;
+import com.orgzly.android.ui.books.BooksFragment;
+import com.orgzly.android.ui.main.MainActivity;
 import com.orgzly.android.util.LogUtils;
+
+import javax.inject.Inject;
 
 /**
  * Activity for creating a notebook shortcut.
  */
 public class BookChooserActivity extends CommonActivity
-        implements BooksFragment.BooksFragmentListener {
+        implements BooksFragment.Listener {
 
     public static final String TAG = BookChooserActivity.class.getName();
 
     private String action;
+
+    @Inject
+    DataRepository dataRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,21 +49,21 @@ public class BookChooserActivity extends CommonActivity
 
     private void setupFragments(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            BooksFragment mBooksFragment = BooksFragment.getInstance(false, false);
+            BooksFragment mBooksFragment = BooksFragment.Companion.getInstance(false, false);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.activity_bookchooser_main, mBooksFragment, BooksFragment.FRAGMENT_TAG)
+                    .replace(R.id.activity_bookchooser_main, mBooksFragment, BooksFragment.Companion.getFRAGMENT_TAG())
                     .commit();
         }
     }
 
     @Override
     public void onBookClicked(long bookId) {
-        if (action != null && action.equals(Intent.ACTION_CREATE_SHORTCUT)) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookId, action);
 
+        if (action != null && action.equals(Intent.ACTION_CREATE_SHORTCUT)) {
             // Get Book by its ID
-            Shelf shelf = new Shelf(this);
-            Book book = shelf.getBook(bookId);
+            Book book = dataRepository.getBook(bookId);
 
             if (book == null) {
                 Toast.makeText(this, R.string.book_does_not_exist_anymore, Toast.LENGTH_SHORT).show();
@@ -106,19 +111,7 @@ public class BookChooserActivity extends CommonActivity
     }
 
     @Override
-    public void announceChanges(String fragmentTag, CharSequence title, CharSequence subTitle, int selectionCount) {
-    }
-
-    @Override
     public void onBookCreateRequest() {
-    }
-
-    @Override
-    public void onBookDeleteRequest(long bookId) {
-    }
-
-    @Override
-    public void onBookRenameRequest(long bookId) {
     }
 
     @Override

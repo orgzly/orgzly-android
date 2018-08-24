@@ -2,7 +2,7 @@ package com.orgzly.android.util;
 
 
 import android.net.Uri;
-import android.support.design.widget.TextInputLayout;
+import com.google.android.material.textfield.TextInputLayout;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
@@ -23,15 +23,9 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.security.MessageDigest;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Map;
 
 public class MiscUtils {
-    public static final int SNACKBAR_WITH_ACTION_DURATION = 8000;
-
     /**
      * Counts lines in a given string. Empty string counts as one line.
      *
@@ -68,11 +62,8 @@ public class MiscUtils {
     }
 
     public static void writeStringToFile(String str, File file) throws FileNotFoundException {
-        PrintWriter out = new PrintWriter(file);
-        try {
+        try (PrintWriter out = new PrintWriter(file)) {
             out.write(str);
-        } finally {
-            out.close();
         }
     }
 
@@ -281,7 +272,7 @@ public class MiscUtils {
         return result;
     }
 
-    public static ArrayList<String> toArrayList(LinkedHashMap<String, String> map) {
+    public static ArrayList<String> toArrayList(Map<String, String> map) {
         ArrayList<String> list = new ArrayList<>();
 
         for (String key: map.keySet()) {
@@ -292,9 +283,5 @@ public class MiscUtils {
         }
 
         return list;
-    }
-
-    public static Set<Long> set(Long noteId) {
-        return Collections.singleton(noteId);
     }
 }

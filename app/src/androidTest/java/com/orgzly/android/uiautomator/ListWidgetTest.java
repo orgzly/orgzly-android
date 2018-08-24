@@ -1,12 +1,13 @@
 package com.orgzly.android.uiautomator;
 
 import android.os.SystemClock;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.uiautomator.By;
-import android.support.test.uiautomator.BySelector;
-import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.UiObject2;
-import android.support.test.uiautomator.Until;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.uiautomator.By;
+import androidx.test.uiautomator.BySelector;
+import androidx.test.uiautomator.UiDevice;
+import androidx.test.uiautomator.UiObject2;
+import androidx.test.uiautomator.Until;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 
 /**
  * Tests the ListWidget with the UI-Automator framework.
@@ -25,7 +27,7 @@ import static org.hamcrest.Matchers.notNullValue;
  *
  * See https://developer.android.com/training/testing/ui-testing/uiautomator-testing.html
  */
-@Ignore
+@Ignore("Requires widget on the Homescreen and only Getting Started notebook in the app")
 public class ListWidgetTest {
 
     private static final String HEADER_FILTER = "com.orgzly:id/list_widget_header_filter";
@@ -34,10 +36,12 @@ public class ListWidgetTest {
     private static final String ITEM_DONE = "com.orgzly:id/item_list_widget_done";
     private static final String ITEM_TITLE = "com.orgzly:id/item_list_widget_title";
     private static final String ORGZLY_SEARCH = "com.orgzly:id/activity_action_search";
+    private static final String NOTE_TITLE = "com.orgzly:id/fragment_note_title";
+
     private UiDevice device;
 
     @Before
-    public void addWidget() throws Exception {
+    public void addWidget() {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
         device.pressHome();
@@ -45,7 +49,7 @@ public class ListWidgetTest {
     }
 
     @Test
-    public void testSelectFilterAndMarkDone() throws Exception{
+    public void testSelectFilterAndMarkDone() {
         findObject(By.res(HEADER_FILTER)).click();
         findObject(By.text("i.todo")).click();
 
@@ -54,25 +58,28 @@ public class ListWidgetTest {
         List<UiObject2> doneButtons = findObjects(By.res(ITEM_DONE));
         doneButtons.get(0).click();
         SystemClock.sleep(100);
-        assertThat(findObjects(By.res(ITEM_DONE)).size(), is(doneButtons.size() - 1));
+        assertThat(findObjects(By.res(ITEM_DONE)), nullValue());
     }
 
     @Test
-    public void testAddButton() throws Exception{
+    public void testAddButton() {
         findObject(By.res(HEADER_ADD)).click();
 
         assertThat(findObject(By.text("New note")), notNullValue());
     }
 
     @Test
-    public void openNote() throws Exception {
+    public void openNote() {
+        findObject(By.res(HEADER_FILTER)).click();
+        findObject(By.text("Scheduled")).click();
+
         findObject(By.res(ITEM_TITLE)).click();
 
-        assertThat(findObject(By.text("Getting Started with Orgzly")), notNullValue());
+        assertThat(findObjects(By.res(NOTE_TITLE)), notNullValue());
     }
 
     @Test
-    public void openOrgzly() throws Exception {
+    public void openOrgzly() {
         findObject(By.res(HEADER_ICON)).click();
 
         assertThat(findObject(By.res(ORGZLY_SEARCH)), notNullValue());

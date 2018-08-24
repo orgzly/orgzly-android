@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.design.widget.NavigationView
+<com.google.android.material.navigation.NavigationView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_navigation_view"
@@ -23,4 +23,4 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"/>
 
-</android.support.design.widget.NavigationView>
+</com.google.android.material.navigation.NavigationView>

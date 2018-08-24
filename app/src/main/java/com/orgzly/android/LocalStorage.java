@@ -26,17 +26,15 @@ public class LocalStorage {
     }
 
     /**
-     * Get file to which {@link Book} will be exported.
-     * @param format book's format
+     * Get file to which book with specified name will be exported to.
      * @throws IOException if external directory is not available
      */
-    public File getExportFile(Book book, BookName.Format format) throws IOException {
-        return new File(downloadsDirectory(), BookName.fileName(book.getName(), format));
+    public File getExportFile(String name, BookFormat format) throws IOException {
+        return new File(downloadsDirectory(), BookName.fileName(name, format));
     }
 
     /**
-     * Get temporary {@code File} for storing {@link Book}'s content.
-     * @throws IOException
+     * Get temporary {@code File} for storing book's content.
      */
     public File getTempBookFile() throws IOException {
         File baseDir;

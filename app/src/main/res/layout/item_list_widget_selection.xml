@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_list_widget_selection_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/ListViewItem"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/item_list_widget_selection_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="@string/saved_search_name_sample"/>
+
+    <TextView
+        android:id="@+id/item_list_widget_selection_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        tools:text="@string/saved_search_query_sample_long"/>
+
+</LinearLayout>

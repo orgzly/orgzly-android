@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen
+<androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/auto_sync_experimental">
 
@@ -41,4 +41,4 @@
         android:title="@string/pref_title_repo_update_sync"
         android:summary="@string/pref_summary_repo_update_sync"
         android:defaultValue="@bool/pref_default_auto_sync_on_repo_change"/>
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

@@ -4,20 +4,19 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 
-import com.orgzly.R;
-import com.orgzly.android.provider.clients.ReposClient;
+import com.orgzly.android.data.DataRepository;
 
 public class RepoPreferences {
     private Context context;
     private long repoId;
 
-    public static RepoPreferences fromString(Context c, String string) {
-        long rid = ReposClient.getId(c, string);
-        return new RepoPreferences(c, rid);
-    }
-
     public static RepoPreferences fromUri(Context c, Uri uri) {
         return fromString(c, uri.toString());
+    }
+
+    private static RepoPreferences fromString(Context c, String string) {
+        long rid = 0; // TODO: dataRepository.getRepoByUrl(string).getId();
+        return new RepoPreferences(c, rid);
     }
 
     public RepoPreferences(Context c, long rid) {

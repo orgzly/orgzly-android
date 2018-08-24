@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
 
 android {
     dexOptions {
@@ -17,7 +19,9 @@ android {
         applicationId "com.orgzly"
         versionCode 117
         versionName "1.6.12"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        testInstrumentationRunner "com.orgzly.android.OrgzlyTestRunner"
+        // testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
 
@@ -25,7 +29,18 @@ android {
         resValue "string", "dropbox_app_key_schema", gradle.ext.appProperties.getProperty("dropbox.app_key_schema", '')
 
         buildConfigField "boolean", "IS_GIT_ENABLED", gradle.ext.appProperties.getProperty("git.enabled", 'false')
+
+        // Used by Room, to test migrations
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ "room.schemaLocation": "$projectDir/schemas".toString() ]
+            }
+        }
     }
+
+//    testOptions {
+//        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+//    }
 
     buildTypes {
         release {
@@ -109,10 +124,6 @@ dependencies {
 
     implementation "com.googlecode.juniversalchardet:juniversalchardet:$juniversalchardet_version"
 
-    implementation("com.github.machinarius:preferencefragment:$preference_fragment_version") {
-        exclude module: 'support-v4'
-    }
-
     implementation "com.evernote:android-job:$evernote_android_job_version"
 
     implementation "joda-time:joda-time:$joda_time_version"
@@ -122,29 +133,47 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide_version"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "org.jetbrains:annotations:$jetbrains_annotations"
+    implementation "org.jetbrains:annotations:$jetbrains_annotations_version"
 
-    implementation "com.android.support:multidex:$android_support_multidex_version"
+    implementation "androidx.multidex:multidex:$android_support_multidex_version"
 
-    implementation "com.android.support:support-v4:$android_support_version"
-    implementation "com.android.support:appcompat-v7:$android_support_version"
-    implementation "com.android.support:cardview-v7:$android_support_version"
-    implementation "com.android.support:recyclerview-v7:$android_support_version"
-    implementation "com.android.support:design:$android_support_version"
+    implementation "androidx.legacy:legacy-support-v4:$android_support_version"
+    implementation "androidx.cardview:cardview:$android_support_version"
+    implementation "androidx.recyclerview:recyclerview:$android_support_version"
+    implementation "androidx.preference:preference:$android_support_version"
+    implementation "com.google.android.material:material:$android_support_version"
+    androidTestImplementation "androidx.annotation:annotation:$android_support_version"
 
-    implementation "com.android.support.constraint:constraint-layout:$android_constraint_layout"
+    implementation "androidx.constraintlayout:constraintlayout:$android_constraint_layout_version"
 
-    androidTestImplementation "com.android.support:support-annotations:$android_support_version"
+    implementation "androidx.room:room-runtime:$android_room_version"
+    testImplementation "androidx.room:room-testing:$android_room_version"
+    kapt "androidx.room:room-compiler:$android_room_version"
+
+    implementation "androidx.lifecycle:lifecycle-extensions:$android_lifecycle_version"
+
 
     testImplementation "junit:junit:$junit_version"
 
-    androidTestImplementation "com.android.support.test:runner:$android_test_version"
-    androidTestImplementation "com.android.support.test:rules:$android_test_version"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$android_test_espresso_version"
-    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$android_test_espresso_version"
-    androidTestImplementation "com.android.support.test.uiautomator:uiautomator-v18:$android_test_uiautomator_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$android_test_espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$android_test_espresso_version"
+    androidTestImplementation "androidx.test:runner:$android_test_version"
+
+    // For ANDROIDX_TEST_ORCHESTRATOR
+    androidTestUtil "androidx.test:orchestrator:$android_test_version"
+
+    androidTestImplementation "androidx.test:rules:$android_test_version"
+
+    androidTestImplementation "androidx.test.uiautomator:uiautomator:$android_test_uiautomator_version"
 
     androidTestImplementation "de.sven-jacobs:loremipsum:$loremipsum_version"
+
+    // Dagger
+    implementation "com.google.dagger:dagger:$dagger_version"
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }
 
 repositories {

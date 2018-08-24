@@ -1,44 +1,42 @@
 package com.orgzly.android.espresso;
 
-import android.support.test.espresso.matcher.PreferenceMatchers;
-import android.support.test.rule.ActivityTestRule;
-
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.ui.MainActivity;
+import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static android.support.test.espresso.Espresso.onData;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.longClick;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.DrawerActions.open;
-import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import androidx.test.rule.ActivityTestRule;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.DrawerActions.open;
+import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.EspressoUtils.onNoteInSearch;
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
+//@Ignore
 public class ActionModeTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
-        shelfTestUtils.setupBook("book-one",
+        testUtils.setupBook("book-one",
                 "First book used for testing\n" +
                 "* Note A.\n" +
                 "** Note B.\n" +
@@ -48,7 +46,7 @@ public class ActionModeTest extends OrgzlyTest {
                 "*** TODO Note E.\n" +
                 "");
 
-        shelfTestUtils.setupBook("book-two",
+        testUtils.setupBook("book-two",
                 "Sample book used for tests\n" +
                 "* Note #1.\n" +
                 "* Note #2.\n" +
@@ -77,22 +75,22 @@ public class ActionModeTest extends OrgzlyTest {
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(allOf(withText("Scheduled"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
 
-        onListItem(1).perform(longClick());
+        onNoteInSearch(1).perform(click());
 
-        onView(withId(R.id.query_cab_edit)).check(matches(isDisplayed()));
+        onView(withId(R.id.bottom_action_bar_open)).check(matches(isDisplayed()));
     }
 
     @Test
     public void testCabStaysOpenOnRotation() {
         toPortrait(activityRule);
 
-        onListItem(3).perform(longClick());
+        onNoteInBook(3).perform(click());
 
         toLandscape(activityRule);
 
         onView(withId(R.id.book_cab_move)).check(matches(isDisplayed()));
 
-        // TODO: Check *the expected* note is selected.
+        // TODO: Check *the same* note is selected.
     }
 
     @Test
@@ -102,34 +100,15 @@ public class ActionModeTest extends OrgzlyTest {
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText("Scheduled")).perform(click());
 
-        onListItem(1).perform(longClick());
+        onNoteInSearch(1).perform(click());
 
         toLandscape(activityRule);
 
-        // TODO: Check *the expected* note is selected.
+        // TODO: Check *the same* note is selected.
 
         toPortrait(activityRule);
 
-        onView(withId(R.id.query_cab_edit)).check(matches(isDisplayed()));
-    }
-
-    /* This is for when note click action is reversed - notes can be selected and
-     * while selected a note can be opened.
-     */
-    @Test
-    public void testSelectingNoteThenOpeningNoteAndGoingBack() {
-        onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withKey("prefs_screen_look_and_feel")).perform(click());
-        onData(PreferenceMatchers.withKey("pref_key_is_reverse_click_action")).perform(click());
-        pressBack();
-        pressBack();
-        onListItem(3).perform(click()); // Select note
-        onListItem(3).perform(longClick()); // Open note
-        onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
-        onView(withId(R.id.book_cab_move)).check(doesNotExist());
-        pressBack();
-        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
-        onView(withId(R.id.book_cab_move)).check(doesNotExist());
+        onView(withId(R.id.bottom_action_bar_open)).check(matches(isDisplayed()));
     }
 
     @Test

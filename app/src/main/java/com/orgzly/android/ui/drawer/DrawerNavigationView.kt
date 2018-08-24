@@ -3,37 +3,34 @@ package com.orgzly.android.ui.drawer
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Resources
-import android.database.Cursor
-import android.os.Bundle
-import android.support.annotation.ColorInt
-import android.support.design.widget.NavigationView
-import android.support.v4.content.Loader
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.view.Menu
+import androidx.annotation.ColorInt
+import androidx.lifecycle.Observer
+import com.google.android.material.navigation.NavigationView
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
-import com.orgzly.android.Book
-import com.orgzly.android.BookAction
-import com.orgzly.android.BookUtils
-import com.orgzly.android.provider.GenericDatabaseUtils
-import com.orgzly.android.provider.ProviderContract
-import com.orgzly.android.provider.clients.BooksClient
-import com.orgzly.android.provider.clients.FiltersClient
-import com.orgzly.android.ui.Loaders
-import com.orgzly.android.ui.MainActivity
-import com.orgzly.android.ui.fragments.BookFragment
-import com.orgzly.android.ui.fragments.BooksFragment
-import com.orgzly.android.ui.fragments.FiltersFragment
-import com.orgzly.android.ui.fragments.QueryFragment
+import com.orgzly.android.db.entity.Book
+import com.orgzly.android.db.entity.BookAction
+import com.orgzly.android.db.entity.BookView
+import com.orgzly.android.db.entity.SavedSearch
+import com.orgzly.android.ui.books.BooksFragment
+import com.orgzly.android.ui.main.MainActivity
+import com.orgzly.android.ui.main.MainActivityViewModel
+import com.orgzly.android.ui.notes.book.BookFragment
+import com.orgzly.android.ui.notes.query.QueryFragment
+import com.orgzly.android.ui.savedsearches.SavedSearchesFragment
 import com.orgzly.android.util.LogUtils
 import java.util.*
 
 
-internal class DrawerNavigationView(private val activity: MainActivity, navView: NavigationView) :
-        android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor> {
+internal class DrawerNavigationView(
+        private val activity: MainActivity,
+        viewModel: MainActivityViewModel,
+        navView: NavigationView) {
 
     private val menu: Menu = navView.menu
 
@@ -43,16 +40,21 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
 
     init {
         // Add mapping for groups
-        menuItemIdMap[BooksFragment.getDrawerItemId()] = R.id.books
-        menuItemIdMap[FiltersFragment.getDrawerItemId()] = R.id.searches
+        menuItemIdMap[BooksFragment.drawerItemId] = R.id.books
+        menuItemIdMap[SavedSearchesFragment.getDrawerItemId()] = R.id.searches
 
         // Setup intents
-        menu.findItem(R.id.searches).intent = Intent(AppIntent.ACTION_OPEN_QUERIES)
+        menu.findItem(R.id.searches).intent = Intent(AppIntent.ACTION_OPEN_SAVED_SEARCHES)
         menu.findItem(R.id.books).intent = Intent(AppIntent.ACTION_OPEN_BOOKS)
         menu.findItem(R.id.settings).intent = Intent(AppIntent.ACTION_OPEN_SETTINGS)
 
-        activity.supportLoaderManager.initLoader(Loaders.DRAWER_BOOKS, null, this)
-        activity.supportLoaderManager.initLoader(Loaders.DRAWER_FILTERS, null, this)
+        viewModel.books().observe(activity, Observer { books ->
+            refreshFromBooks(books)
+        })
+
+        viewModel.squeries().observe(activity, Observer { squeries ->
+            refreshFromSqueries(squeries)
+        })
     }
 
     fun updateActiveFragment(fragmentTag: String) {
@@ -62,9 +64,16 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
     }
 
     private fun setActiveItem(fragmentTag: String) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, fragmentTag)
+
         this.activeFragmentTag = fragmentTag
 
         val fragment = activity.supportFragmentManager.findFragmentByTag(activeFragmentTag)
+
+        // Uncheck all
+        for (i in 0 until menu.size()) {
+            menu.getItem(i).isChecked = false
+        }
 
         if (fragment != null && fragment is DrawerItem) {
             val fragmentMenuItemId = fragment.getCurrentDrawerItemId()
@@ -77,20 +86,22 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
         }
     }
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-        return when (id) {
-            Loaders.DRAWER_FILTERS -> FiltersClient.getCursorLoader(activity)
-            Loaders.DRAWER_BOOKS -> BooksClient.getCursorLoader(activity)
-            else -> throw IllegalStateException("Loader $id is unknown")
-        }
-    }
+    private fun refreshFromSqueries(savedSearches: List<SavedSearch>) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedSearches.size)
 
-    override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, loader)
+        removeItemsWithOrder(1)
 
-        when (loader.id) {
-            Loaders.DRAWER_FILTERS -> updateQueriesFromCursor(cursor)
-            Loaders.DRAWER_BOOKS -> updateBooksFromCursor(cursor)
+        savedSearches.forEach { savedSearch ->
+            val intent = Intent(AppIntent.ACTION_OPEN_QUERY)
+            intent.putExtra(AppIntent.EXTRA_QUERY_STRING, savedSearch.query)
+
+            val id = generateRandomUniqueId()
+            val item = menu.add(R.id.drawer_group, id, 1, savedSearch.name)
+
+            menuItemIdMap[QueryFragment.getDrawerItemId(savedSearch.query)] = id
+
+            item.intent = intent
+            item.isCheckable = true
         }
 
         activeFragmentTag?.let {
@@ -98,61 +109,42 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
         }
     }
 
-    private fun updateQueriesFromCursor(cursor: Cursor) {
-        removeItemsWithOrder(1)
+    private fun refreshFromBooks(books: List<BookView>) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, books.size)
 
-        GenericDatabaseUtils.forEachRow(cursor) {
-            val name = cursor.getString(cursor.getColumnIndex(ProviderContract.Filters.Param.NAME))
-            val query = cursor.getString(cursor.getColumnIndex(ProviderContract.Filters.Param.QUERY))
-
-            val intent = Intent(AppIntent.ACTION_OPEN_QUERY)
-            intent.putExtra(AppIntent.EXTRA_QUERY_STRING, query)
-
-            val id = generateRandomUniqueId()
-            val item = menu.add(R.id.drawer_group, id, 1, name)
-
-            menuItemIdMap[QueryFragment.getDrawerItemId(query)] = id
-
-            item.intent = intent
-            item.isCheckable = true
-
-        }
-    }
-
-    private fun updateBooksFromCursor(cursor: Cursor) {
         removeItemsWithOrder(3)
 
         val attrs = getAttributes()
 
-        GenericDatabaseUtils.forEachRow(cursor) {
-            val book = BooksClient.fromCursor(cursor)
-
+        books.forEach { book ->
             val intent = Intent(AppIntent.ACTION_OPEN_BOOK)
-            intent.putExtra(AppIntent.EXTRA_BOOK_ID, book.id)
+            intent.putExtra(AppIntent.EXTRA_BOOK_ID, book.book.id)
 
             val id = generateRandomUniqueId()
-            val item = menu.add(R.id.drawer_group, id, 3, getBookText(book, attrs))
+            val item = menu.add(R.id.drawer_group, id, 3, getBookText(book.book, attrs))
 
             item.intent = intent
             item.isCheckable = true
 
-            if (book.lastAction?.type == BookAction.Type.ERROR) {
+            if (book.book.lastAction?.type == BookAction.Type.ERROR) {
                 item.setActionView(R.layout.drawer_item_sync_failed)
 
-            } else if (book.isModifiedAfterLastSync) {
+            } else if (book.isOutOfSync()) {
                 item.setActionView(R.layout.drawer_item_sync_needed)
             }
 
-            menuItemIdMap[BookFragment.getDrawerItemId(book.id)] = id
+            menuItemIdMap[BookFragment.getDrawerItemId(book.book.id)] = id
+        }
+
+        activeFragmentTag?.let {
+            setActiveItem(it)
         }
     }
 
     private data class Attributes(@ColorInt val mutedTextColor: Int)
 
     private fun getBookText(book: Book, attr: Attributes): CharSequence {
-        val name = BookUtils.getFragmentTitleForBook(book)
-
-        val sb = SpannableString(name)
+        val sb = SpannableString(book.title ?: book.name)
 
         if (book.isDummy) {
             sb.setSpan(ForegroundColorSpan(attr.mutedTextColor), 0, sb.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
@@ -205,9 +197,6 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
         for (id in itemIdsToRemove) {
             menu.removeItem(id)
         }
-    }
-
-    override fun onLoaderReset(loader: Loader<Cursor>) {
     }
 
     companion object {

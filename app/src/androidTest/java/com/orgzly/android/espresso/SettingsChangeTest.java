@@ -1,44 +1,45 @@
 package com.orgzly.android.espresso;
 
-import android.support.test.espresso.matcher.PreferenceMatchers;
-import android.support.test.rule.ActivityTestRule;
+import androidx.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.ui.MainActivity;
+import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static android.support.test.espresso.Espresso.onData;
-import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.Espresso.onData;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.clickSetting;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.EspressoUtils.onBook;
+import static com.orgzly.android.espresso.EspressoUtils.onItemInAgenda;
+import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.EspressoUtils.onNoteInSearch;
 import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.not;
 
-/**
- *
- */
+//@Ignore
 @SuppressWarnings("unchecked")
 public class SettingsChangeTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
-        shelfTestUtils.setupBook(
+        testUtils.setupBook(
                 "book-a",
                 "* [#B] Note [a-1]\n" +
                 "SCHEDULED: <2018-01-01>\n" +
@@ -53,41 +54,59 @@ public class SettingsChangeTest extends OrgzlyTest {
     @Test
     public void testChangeDefaultPrioritySearchResultsShouldBeReordered() {
         searchForText("o.p");
-        testChangeDefaultPriorityResultsShouldBeReordered(0);
+
+        onNoteInSearch(0, R.id.item_head_title)
+                .check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
+        onNoteInSearch(1, R.id.item_head_title)
+                .check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
+
+        setDefaultPriority("A");
+
+        onNoteInSearch(0, R.id.item_head_title)
+                .check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
+        onNoteInSearch(1, R.id.item_head_title)
+                .check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
     }
 
     @Test
     public void testChangeDefaultPriorityAgendaResultsShouldBeReordered() {
         searchForText("o.p ad.2");
-        testChangeDefaultPriorityResultsShouldBeReordered(1);
-    }
 
-    private void testChangeDefaultPriorityResultsShouldBeReordered(int index) {
-        onListItem(index).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
-        onListItem(index + 1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
+        onItemInAgenda(1, R.id.item_head_title)
+                .check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
+        onItemInAgenda(2, R.id.item_head_title)
+                .check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
 
-        onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withKey("prefs_screen_notebooks")).perform(click());
-        onData(PreferenceMatchers.withKey("pref_key_default_priority")).perform(click());
-        onData(hasToString(containsString("A"))).perform(click());
-        pressBack();
-        pressBack();
+        setDefaultPriority("A");
 
-        onListItem(index).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
-        onListItem(index + 1).onChildView(withId(R.id.item_head_title)).check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
+        onItemInAgenda(1, R.id.item_head_title)
+                .check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
+        onItemInAgenda(2, R.id.item_head_title)
+                .check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
     }
 
     @Test
     public void testDisplayedContentInBook() {
-        onListItem(0).perform(click());
-        onListItem(0).onChildView(withId(R.id.item_head_content)).check(matches(allOf(withText(containsString("Content for [a-1]")), isDisplayed())));
+        onBook(0).perform(click());
+
+        onNoteInBook(1, R.id.item_head_content)
+                .check(matches(allOf(withText(containsString("Content for [a-1]")), isDisplayed())));
 
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        onData(PreferenceMatchers.withKey("prefs_screen_notebooks")).perform(click());
-        onData(PreferenceMatchers.withKey("pref_key_is_notes_content_displayed_in_list")).perform(click());
+        clickSetting("prefs_screen_notebooks", R.string.pref_title_notebooks);
+        clickSetting("pref_key_is_notes_content_displayed_in_list", R.string.display_content);
         pressBack();
         pressBack();
 
-        onListItem(0).onChildView(withId(R.id.item_head_content)).check(matches(not(isDisplayed())));
+        onNoteInBook(1, R.id.item_head_content).check(matches(not(isDisplayed())));
+    }
+
+    private void setDefaultPriority(String priority) {
+        onActionItemClick(R.id.activity_action_settings, R.string.settings);
+        clickSetting("prefs_screen_notebooks", R.string.pref_title_notebooks);
+        clickSetting("pref_key_default_priority", R.string.default_priority);
+        onData(hasToString(containsString(priority))).perform(click());
+        pressBack();
+        pressBack();
     }
 }

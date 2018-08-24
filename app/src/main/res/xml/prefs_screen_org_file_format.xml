@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen
+<androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/org_file_format">
 
@@ -17,9 +17,9 @@
         android:summary="@string/separate_header_and_content_with_new_line_summary"
         android:defaultValue="@bool/pref_default_separate_header_and_content_with_new_line"/>
 
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:key="prefs_screen_org_mode_tags_indent"
         android:title="@string/tags_indent"
         android:summary="@string/tags_indent_summary"/>
 
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

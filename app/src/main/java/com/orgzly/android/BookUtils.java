@@ -7,12 +7,12 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 
 import com.orgzly.R;
-import com.orgzly.android.prefs.AppPreferences;
-
-import java.io.IOException;
-import java.util.List;
+import com.orgzly.android.db.entity.Book;
+import com.orgzly.android.db.entity.BookAction;
 
 public class BookUtils {
+    public static final String TAG = BookUtils.class.getName();
+
     /**
      * Returns either notebook's #+TITLE or file name.
      */
@@ -20,8 +20,8 @@ public class BookUtils {
         String str = null;
 
         if (book != null) {
-            if (book.getOrgFileSettings().getTitle() != null) {
-                str = book.getOrgFileSettings().getTitle();
+            if (book.getTitle() != null) {
+                str = book.getTitle();
             } else {
                 str = book.getName();
             }
@@ -38,7 +38,7 @@ public class BookUtils {
         CharSequence str = null;
 
         if (book != null) {
-            if (book.getOrgFileSettings().getTitle() != null) {
+            if (book.getTitle() != null) {
                 str = book.getName();
             }
 
@@ -67,26 +67,5 @@ public class BookUtils {
         }
 
         return str;
-    }
-
-    /**
-     * Returns default book if it exists, or first one found.
-     * If there are no books, default book will be created.
-     */
-    public static Book getTargetBook(Context context) throws IOException {
-        Shelf shelf = new Shelf(context);
-        List<Book> books = shelf.getBooks();
-        String defaultBookName = AppPreferences.shareNotebook(context);
-
-        if (books.size() == 0) {
-            return shelf.createBook(defaultBookName);
-        } else {
-            for (Book book : books) {
-                if (defaultBookName.equals(book.getName())) {
-                    return book;
-                }
-            }
-            return books.get(0);
-        }
     }
 }

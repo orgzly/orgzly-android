@@ -1,9 +1,10 @@
 package com.orgzly.android.sync;
 
 import android.content.Context;
+import android.net.Uri;
 
-import com.orgzly.android.Book;
 import com.orgzly.android.BookName;
+import com.orgzly.android.db.entity.BookView;
 import com.orgzly.android.repos.VersionedRook;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class BookNamesake {
     private String name;
 
     /** Local book. */
-    private Book book;
+    private BookView book;
 
     /** Remote versioned books. */
     private List<VersionedRook> versionedRooks = new ArrayList<>();
@@ -35,13 +36,13 @@ public class BookNamesake {
     /**
      * Create links between each local book and each remote book with the same name.
      */
-    public static Map<String, BookNamesake> getAll(Context context, List<Book> books, List<VersionedRook> versionedRooks) {
+    public static Map<String, BookNamesake> getAll(Context context, List<BookView> books, List<VersionedRook> versionedRooks) {
         Map<String, BookNamesake> namesakes = new HashMap<>();
 
         /* Create links from all local books first. */
-        for (Book book: books) {
-            BookNamesake pair = new BookNamesake(book.getName());
-            namesakes.put(book.getName(), pair);
+        for (BookView book: books) {
+            BookNamesake pair = new BookNamesake(book.getBook().getName());
+            namesakes.put(book.getBook().getName(), pair);
             pair.setBook(book);
         }
 
@@ -68,11 +69,11 @@ public class BookNamesake {
         return name;
     }
 
-    public Book getBook() {
+    public BookView getBook() {
         return book;
     }
 
-    public void setBook(Book book) {
+    public void setBook(BookView book) {
         this.book = book;
     }
 
@@ -136,7 +137,7 @@ public class BookNamesake {
         } else if (versionedRooks.isEmpty()) {
             /* Local book only */
 
-            if (book.isDummy()) { /* Only dummy exists. */
+            if (book.getBook().isDummy()) { /* Only dummy exists. */
                 status = BookSyncStatus.ONLY_DUMMY;
 
             } else {
@@ -172,34 +173,33 @@ public class BookNamesake {
             setLatestLinkedRook(latestLinkedRook);
 
 
-            if (book.isDummy()) {
+            if (book.getBook().isDummy()) {
                 status = BookSyncStatus.DUMMY_WITH_LINK;
                 return;
             }
 
-            if (book.getLastSyncedToRook() == null) {
+            if (book.getSyncedTo() == null) {
                 status = BookSyncStatus.CONFLICT_BOOK_WITH_LINK_AND_ROOK_BUT_NEVER_SYNCED_BEFORE;
                 return;
             }
 
-            if (! book.getLastSyncedToRook().getUri().equals(latestLinkedRook.getUri())) {
+            if (! book.getSyncedTo().getUri().equals(latestLinkedRook.getUri())) {
                 status = BookSyncStatus.CONFLICT_LAST_SYNCED_ROOK_AND_LATEST_ROOK_ARE_DIFFERENT;
                 return;
             }
 
             /* Same revision, there was no remote change. */
-            // TODO: We get difference even if the file content is identical - if mtimes (revisions) are different - do compare content too in that case. Size first for speed.
-            if (book.getLastSyncedToRook().getRevision().equals(latestLinkedRook.getRevision())) {
+            if (book.getSyncedTo().getRevision().equals(latestLinkedRook.getRevision())) {
                 /* Revision did not change. */
 
-                if (book.isModifiedAfterLastSync()) { // Local change.
+                if (book.isOutOfSync()) { // Local change.
                     status = BookSyncStatus.BOOK_WITH_LINK_LOCAL_MODIFIED;
                 } else {
                     status = BookSyncStatus.NO_CHANGE;
                 }
 
             } else { /* Remote book has been modified. */
-                if (book.isModifiedAfterLastSync()) {
+                if (book.isOutOfSync()) {
                     /* Uh oh. Both local and remote modified. */
                     status = BookSyncStatus.CONFLICT_BOTH_BOOK_AND_ROOK_MODIFIED;
                 } else {
@@ -209,7 +209,7 @@ public class BookNamesake {
 
         } else { /* Local book without link. */
 
-            if (! book.isDummy()) {
+            if (! book.getBook().isDummy()) {
                 status = BookSyncStatus.BOOK_WITHOUT_LINK_AND_ONE_OR_MORE_ROOKS_EXIST;
 
             } else {
@@ -223,9 +223,9 @@ public class BookNamesake {
     }
 
     /** Find latest (current) remote book that local one links to. */
-    private VersionedRook getLatestLinkedRookVersion(Book book, List<VersionedRook> vrooks) {
+    private VersionedRook getLatestLinkedRookVersion(BookView bookView, List<VersionedRook> vrooks) {
         for (VersionedRook vrook : vrooks) {
-            if (book.getLinkRepo().equals(vrook.getRepoUri())) {
+            if (Uri.parse(bookView.getLinkedTo()).equals(vrook.getRepoUri())) {
                 return vrook;
             }
         }

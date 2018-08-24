@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen
+<androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/sync">
 
@@ -14,11 +14,11 @@
             android:targetClass="com.orgzly.android.ui.repos.ReposActivity"/>
     </Preference>
 
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:key="prefs_screen_auto_sync"
         android:title="@string/auto_sync_experimental"
         android:summary="@string/auto_sync_experimental_summary">
-    </PreferenceScreen>
+    </androidx.preference.PreferenceScreen>
 
     <PreferenceCategory android:title="@string/notebook_files">
         <SwitchPreference
@@ -35,10 +35,10 @@
             android:inputType="text"
             android:defaultValue="@string/pref_default_created_at_property"/>
 
-        <PreferenceScreen
+        <androidx.preference.PreferenceScreen
             android:key="prefs_screen_org_file_format"
             android:title="@string/org_file_format"
             android:summary="@string/org_file_format_summary">
-        </PreferenceScreen>
+        </androidx.preference.PreferenceScreen>
     </PreferenceCategory>
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

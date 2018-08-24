@@ -18,22 +18,20 @@ public class AppIntent {
     public static final String ACTION_UPDATE_LIST_WIDGET = "com.orgzly.intent.action.UPDATE_LIST_WIDGET";
     public static final String ACTION_UPDATE_LAYOUT_LIST_WIDGET = "com.orgzly.intent.action.UPDATE_LAYOUT_LIST_WIDGET";
     public static final String ACTION_CLICK_LIST_WIDGET = "com.orgzly.intent.action.CLICK_LIST_WIDGET";
-    public static final String ACTION_SET_FILTER_LIST_WIDGET = "com.orgzly.intent.action.SET_FILTER_LIST_WIDGET";
+    public static final String ACTION_SET_LIST_WIDGET_SELECTION = "com.orgzly.intent.action.SET_LIST_WIDGET_SELECTION";
 
     public static final String ACTION_IMPORT_GETTING_STARTED_NOTEBOOK = "com.orgzly.intent.action.IMPORT_GETTING_STARTED_NOTEBOOK";
     public static final String ACTION_REPARSE_NOTES = "com.orgzly.intent.action.REPARSE_NOTES";
     public static final String ACTION_SYNC_CREATED_AT_WITH_PROPERTY = "com.orgzly.intent.action.SYNC_CREATED_AT_WITH_PROPERTY";
-    public static final String ACTION_CLEAR_DATABASE = "com.orgzly.intent.action.CLEAR_DATABASE";
 
     public static final String ACTION_OPEN_NOTE = "com.orgzly.intent.action.OPEN_NOTE";
-    public static final String ACTION_OPEN_QUERIES = "com.orgzly.intent.action.OPEN_QUERIES";
+    public static final String ACTION_OPEN_NOTE_WITH_PROPERTY = "com.orgzly.intent.action.OPEN_NOTE_WITH_PROPERTY";
+    public static final String ACTION_OPEN_FILE_LINK = "com.orgzly.intent.action.OPEN_FILE_LINK";
+    public static final String ACTION_OPEN_SAVED_SEARCHES = "com.orgzly.intent.action.OPEN_SAVED_SEARCHES";
     public static final String ACTION_OPEN_QUERY = "com.orgzly.intent.action.OPEN_QUERY";
     public static final String ACTION_OPEN_BOOKS = "com.orgzly.intent.action.OPEN_BOOKS";
     public static final String ACTION_OPEN_BOOK = "com.orgzly.intent.action.OPEN_BOOK";
     public static final String ACTION_OPEN_SETTINGS = "com.orgzly.intent.action.OPEN_SETTINGS";
-
-    public static final String ACTION_UPDATE_BOOK = "com.orgzly.intent.action.UPDATE_BOOK";
-    public static final String ACTION_UPDATE_NOTE = "com.orgzly.intent.action.UPDATE_NOTE";
 
     public static final String ACTION_SHOW_SNACKBAR = "com.orgzly.intent.action.SHOW_SNACKBAR";
 
@@ -45,6 +43,7 @@ public class AppIntent {
     public static final String EXTRA_QUERY_STRING = "com.orgzly.intent.extra.QUERY_STRING";
     public static final String EXTRA_PROPERTY_NAME  = "com.orgzly.intent.extra.PROPERTY_NAME";
     public static final String EXTRA_PROPERTY_VALUE  = "com.orgzly.intent.extra.PROPERTY_VALUE";
+    public static final String EXTRA_PATH  = "com.orgzly.intent.extra.PATH";
     public static final String EXTRA_NOTIFICATION_TAG = "com.orgzly.intent.extra.NOTIFICATION_TAG";
     public static final String EXTRA_NOTIFICATION_ID = "com.orgzly.intent.extra.NOTIFICATION_ID";
     public static final String EXTRA_NOTE_TIME_TYPE = "com.orgzly.intent.extra.NOTE_TIME_TYPE";
@@ -52,5 +51,4 @@ public class AppIntent {
     public static final String EXTRA_CLICK_TYPE = "com.orgzly.intent.extra.CLICK_TYPE";
     public static final String EXTRA_SAVED_SEARCH_ID = "com.orgzly.intent.extra.SAVED_SEARCH_ID";
     public static final String EXTRA_IS_AUTOMATIC = "com.orgzly.intent.extra.IS_AUTOMATIC";
-    public static final String EXTRA_FILTER = "com.orgzly.intent.extra.FILTER";
 }

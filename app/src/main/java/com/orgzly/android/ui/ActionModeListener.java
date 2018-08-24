@@ -1,9 +1,10 @@
 package com.orgzly.android.ui;
 
-import android.support.v7.view.ActionMode;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.view.ActionMode;
 
 public interface ActionModeListener {
-    void updateActionModeForSelection(int selectedCount, ActionMode.Callback actionMode);
+    void updateActionModeForSelection(int selectedCount, Fragment fragment);
 
     ActionMode getActionMode();
 

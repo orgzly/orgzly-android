@@ -1,0 +1,16 @@
+package com.orgzly.android.usecase
+
+import com.orgzly.android.data.DataRepository
+import com.orgzly.android.ui.NotePlace
+import com.orgzly.android.ui.note.NotePayload
+
+class NoteCreate(val notePayload: NotePayload, val notePlace: NotePlace) : UseCase() {
+    override fun run(dataRepository: DataRepository): UseCaseResult {
+        val createdNote = dataRepository.createNote(notePayload, notePlace)
+
+        return UseCaseResult(
+                modifiesLocalData = true,
+                triggersSync = SYNC_NOTE_CREATED,
+                userData = createdNote)
+    }
+}

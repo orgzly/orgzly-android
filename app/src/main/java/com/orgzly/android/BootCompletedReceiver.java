@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import com.orgzly.BuildConfig;
 import com.orgzly.android.prefs.AppPreferences;
+import com.orgzly.android.ui.notifications.Notifications;
 import com.orgzly.android.util.LogUtils;
 
 public class BootCompletedReceiver extends BroadcastReceiver {

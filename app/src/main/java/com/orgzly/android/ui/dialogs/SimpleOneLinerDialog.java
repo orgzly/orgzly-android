@@ -1,14 +1,13 @@
 package com.orgzly.android.ui.dialogs;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
-import android.support.v4.app.DialogFragment;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -31,7 +30,7 @@ public class SimpleOneLinerDialog extends DialogFragment {
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = SimpleOneLinerDialog.class.getName();
 
-    private SimpleOneLinerDialogListener mListener;
+    private Listener mListener;
 
     private int mId;
     private int mTitle;
@@ -82,15 +81,13 @@ public class SimpleOneLinerDialog extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        Activity activity = getActivity();
-
         /* This makes sure that the container activity has implemented
          * the callback interface. If not, it throws an exception
          */
         try {
-            mListener = (SimpleOneLinerDialogListener) activity;
+            mListener = (Listener) getActivity();
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement " + SimpleOneLinerDialogListener.class);
+            throw new ClassCastException(getActivity().toString() + " must implement " + Listener.class);
         }
 
 
@@ -160,7 +157,7 @@ public class SimpleOneLinerDialog extends DialogFragment {
         return dialog;
     }
 
-    public interface SimpleOneLinerDialogListener {
+    public interface Listener {
         void onSimpleOneLinerDialogValue(int id, String value, Bundle bundle);
     }
 }

@@ -7,11 +7,15 @@ import com.orgzly.android.ui.views.style.IdLinkSpan
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.assertThat
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import java.io.File
+import java.io.IOException
 
+
+//@Ignore
 @RunWith(value = Parameterized::class)
 class OrgFormatterLinkTest(private val param: Parameter) : OrgFormatterTest() {
 
@@ -29,16 +33,20 @@ class OrgFormatterLinkTest(private val param: Parameter) : OrgFormatterTest() {
         super.setUp()
 
         File(Environment.getExternalStorageDirectory(), "orgzly-tests").let { dir ->
-            dir.mkdirs()
+            if (!dir.exists() && !dir.mkdirs()) {
+                throw IOException("Failed to create $dir")
+            }
 
             MiscUtils.writeStringToFile("Lorem ipsum", File(dir, "document.txt"))
 
-            javaClass.classLoader.getResourceAsStream("assets/images/logo.png").use { stream ->
+            val classLoader  = javaClass.classLoader
+                    ?: throw IOException("Failed to get a class loader for $javaClass")
+
+            classLoader.getResourceAsStream("assets/images/logo.png").use { stream ->
                 MiscUtils.writeStreamToFile(stream, File(dir, "logo.png"))
             }
         }
     }
-
 
     companion object {
         @JvmStatic @Parameterized.Parameters(name = "{index}: {0}")

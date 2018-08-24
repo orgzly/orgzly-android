@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/widget">
 
@@ -39,4 +40,4 @@
         android:title="@string/display_notebook_name"
         android:defaultValue="@bool/pref_default_widget_display_book_name"/>
 
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

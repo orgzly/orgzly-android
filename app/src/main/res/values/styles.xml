@@ -61,6 +61,8 @@
 
         <item name="app_bar_bg_color">@color/grey_300</item>
 
+        <item name="bottom_action_bar_bg_color">@color/light_theme_background</item>
+
         <!-- Make buttons lighter. -->
         <item name="android:colorButtonNormal" tools:targetApi="21">@color/grey_100</item>
 
@@ -109,6 +111,8 @@
         <item name="ic_done_24dp">@drawable/ic_done_black_24dp</item>
         <item name="ic_edit_24dp">@drawable/ic_edit_black_24dp</item>
         <item name="ic_event_24dp">@drawable/ic_event_black_24dp</item>
+        <item name="ic_file_download_24dp">@drawable/ic_file_download_black_24dp</item>
+        <item name="ic_file_upload_24dp">@drawable/ic_file_upload_black_24dp</item>
         <item name="ic_flag_24dp">@drawable/ic_flag_black_24dp</item>
         <item name="ic_folder_open_18dp">@drawable/ic_folder_open_black_18dp</item>
         <item name="ic_folder_open_24dp">@drawable/ic_folder_open_black_24dp</item>
@@ -206,6 +210,8 @@
 
         <item name="app_bar_bg_color">@color/dark_theme_app_bar</item>
 
+        <item name="bottom_action_bar_bg_color">@color/dark_theme_background</item>
+
         <item name="item_bg">@drawable/item_selector_dark</item>
 
         <item name="item_selected_bg_color">@color/dark_theme_item_selected_bg_color</item>
@@ -250,6 +256,8 @@
         <item name="ic_done_24dp">@drawable/ic_done_white_24dp</item>
         <item name="ic_edit_24dp">@drawable/ic_edit_white_24dp</item>
         <item name="ic_event_24dp">@drawable/ic_event_white_24dp</item>
+        <item name="ic_file_download_24dp">@drawable/ic_file_download_white_24dp</item>
+        <item name="ic_file_upload_24dp">@drawable/ic_file_upload_white_24dp</item>
         <item name="ic_flag_24dp">@drawable/ic_flag_white_24dp</item>
         <item name="ic_folder_open_18dp">@drawable/ic_folder_open_white_18dp</item>
         <item name="ic_folder_open_24dp">@drawable/ic_folder_open_white_24dp</item>
@@ -318,6 +326,8 @@
         <item name="android:statusBarColor" tools:targetApi="21">#000000</item>
 
         <item name="app_bar_bg_color">@color/dark_theme_status_bar</item>
+
+        <item name="bottom_action_bar_bg_color">@color/dark_theme_status_bar</item>
 
         <item name="item_bg">@drawable/item_selector_black</item>
 
@@ -484,7 +494,6 @@
         <item name="android:layout_marginStart" tools:targetApi="17">2dp</item>
         <item name="android:layout_marginRight">8dp</item>
         <item name="android:layout_marginEnd" tools:targetApi="17">8dp</item>
-
     </style>
 
     <style name="HeadItemInfoIcon">
@@ -503,16 +512,23 @@
         <item name="android:layout_marginLeft">4dp</item>
     </style>
 
-    <style name="ListView">
-        <item name="android:clipToPadding">false</item>
-        <item name="android:choiceMode">multipleChoice</item>
-        <item name="android:fadeScrollbars">false</item>
-        <item name="android:fastScrollEnabled">true</item>
-        <item name="android:scrollbarStyle">outsideOverlay</item>
-        <item name="android:paddingTop">0dp</item>
-        <item name="android:paddingBottom">0dp</item>
+    <style name="RecyclerViewNoteList">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
         <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingRight">0dp</item>
+
+        <!-- Crash on API 16 - what's the minimum version? -->
+        <!--
+        <item name="fastScrollEnabled">true</item>
+        <item name="fastScrollHorizontalThumbDrawable">@drawable/thumb_drawable</item>
+        <item name="fastScrollHorizontalTrackDrawable">@drawable/line_drawable</item>
+        <item name="fastScrollVerticalThumbDrawable">@drawable/thumb_drawable</item>
+        <item name="fastScrollVerticalTrackDrawable">@drawable/line_drawable</item>
+        -->
     </style>
 
     <style name="ListViewItem">
@@ -536,9 +552,12 @@
         <item name="android:textSize">?attr/font_large</item>
     </style>
 
-    <style name="ItemQuickMenuButton" parent="android:style/Widget.Holo.Button.Borderless">
+    <style name="BottomActionBarButton" parent="android:style/Widget.Holo.Button.Borderless">
+        <!--<item name="android:layout_width">wrap_content</item>-->
+
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
+
         <item name="android:layout_height">wrap_content</item>
     </style>
 
@@ -558,27 +577,30 @@
         <!--<item name="android:layout_marginLeft">8dp</item>-->
     </style>
 
-
-    <style name="QueryListView" parent="ListView">
-        <item name="android:id">@android:id/list</item>
-
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-
-        <!--<item name="android:divider">@null</item>-->
-        <!--<item name="android:dividerHeight">0dp</item>-->
-
-        <item name="android:paddingTop">4dp</item>
-        <item name="android:paddingBottom">4dp</item>
-
-        <item name="menu_container">@+id/item_head_menu_container</item>
-        <item name="menu_for_fling_right">0</item>
-        <item name="menu_for_fling_left">2</item>
-    </style>
-
     <style name="NavigationViewForDrawer">
         <item name="android:listDivider">@null</item>
         <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="BottomActionBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+
+        <!--<item name="android:visibility">invisible</item>-->
+        <!--<item name="android:translationY">?attr/actionBarSize</item>-->
+        <!--<item name="android:alpha">0.0</item>-->
+
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:background">?attr/bottom_action_bar_bg_color</item>
+        <item name="android:elevation" tools:targetApi="lollipop">4dp</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="android:popupTheme" tools:targetApi="lollipop">@style/ThemeOverlay.AppCompat.ActionBar</item>
+
+        <!--<item name="android:contentInsetLeft" tools:targetApi="lollipop">0dp</item>-->
+        <!--<item name="android:contentInsetStart" tools:targetApi="lollipop">0dp</item>-->
+        <!--<item name="android:contentInsetRight" tools:targetApi="lollipop">0dp</item>-->
+        <!--<item name="android:contentInsetEnd" tools:targetApi="lollipop">0dp</item>-->
+
     </style>
 
 </resources>

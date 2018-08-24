@@ -1,0 +1,78 @@
+package com.orgzly.android.ui.notes
+
+import android.content.Context
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.DiffUtil
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.orgzly.BuildConfig
+import com.orgzly.R
+import com.orgzly.android.db.entity.NoteView
+import com.orgzly.android.ui.OnViewHolderClickListener
+import com.orgzly.android.ui.SelectableItemAdapter
+import com.orgzly.android.ui.Selection
+import com.orgzly.android.util.LogUtils
+
+class SearchAdapter(
+        private val context: Context,
+        private val clickListener: OnViewHolderClickListener<NoteView>
+) : ListAdapter<NoteView, androidx.recyclerview.widget.RecyclerView.ViewHolder>(DIFF_CALLBACK), SelectableItemAdapter {
+
+    private val adapterSelection: Selection = Selection()
+
+    private val noteItemViewBinder: NoteItemViewBinder = NoteItemViewBinder(context, inBook = false)
+
+    private val viewHolderListener = object: NoteItemViewHolder.ClickListener {
+        override fun onClick(view: View, position: Int) {
+            clickListener.onClick(view, position, getItem(position))
+        }
+        override fun onLongClick(view: View, position: Int) {
+            clickListener.onLongClick(view, position, getItem(position))
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+
+        val layout = LayoutInflater.from(context)
+                .inflate(R.layout.item_head, parent, false)
+
+        return NoteItemViewHolder(layout, viewHolderListener)
+    }
+
+    override fun onBindViewHolder(h: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
+        val holder = h as NoteItemViewHolder
+
+        val noteView = getItem(position)
+
+        val note = noteView.note
+
+        noteItemViewBinder.bind(holder, noteView)
+
+        getSelection().setIsSelectedBackground(holder.itemView, note.id)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return getItem(position).note.id
+    }
+
+    override fun getSelection(): Selection {
+        return adapterSelection
+    }
+
+    companion object {
+        private val TAG = SearchAdapter::class.java.name
+
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<NoteView> =
+                object : DiffUtil.ItemCallback<NoteView>() {
+                    override fun areItemsTheSame(oldItem: NoteView, newItem: NoteView): Boolean {
+                        return oldItem.note.id == newItem.note.id
+                    }
+
+                    override fun areContentsTheSame(oldItem: NoteView, newItem: NoteView): Boolean {
+                        return oldItem == newItem // TODO: Compare content
+                    }
+                }
+    }
+}

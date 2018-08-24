@@ -9,40 +9,60 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.annotation.Nullable;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import android.util.Log;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.App;
 import com.orgzly.android.AppIntent;
-import com.orgzly.android.BookAction;
-import com.orgzly.android.Notifications;
-import com.orgzly.android.Shelf;
+import com.orgzly.android.BookFormat;
+import com.orgzly.android.BookName;
+import com.orgzly.android.data.DataRepository;
+import com.orgzly.android.NotesExporter;
+import com.orgzly.android.reminders.ReminderService;
+import com.orgzly.android.ui.notifications.Notifications;
+import com.orgzly.android.db.entity.BookAction;
+import com.orgzly.android.db.entity.BookView;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.repos.DirectoryRepo;
-import com.orgzly.android.repos.Repo;
 import com.orgzly.android.repos.RepoUtils;
+import com.orgzly.android.repos.SyncRepo;
+import com.orgzly.android.repos.TwoWaySyncRepo;
+import com.orgzly.android.repos.TwoWaySyncResult;
+import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
+import com.orgzly.android.widgets.ListWidgetProvider;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
-public class SyncService extends Service {
+import javax.inject.Inject;
+
+import dagger.android.DaggerService;
+
+public class SyncService extends DaggerService {
     public static final String TAG = SyncService.class.getName();
 
     private SyncStatus status = new SyncStatus();
-
-    private Shelf shelf;
 
     private SyncTask syncTask;
 
     private final IBinder binder = new LocalBinder();
 
+    @Inject
+    DataRepository dataRepository;
 
     public static void start(Context context, Intent intent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -55,12 +75,11 @@ public class SyncService extends Service {
     @Override
     public void onCreate() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+        super.onCreate();
 
         startForeground(
-                Notifications.SYNC_IN_PROGRESS,
+                Notifications.SYNC_IN_PROGRESS_ID,
                 Notifications.createSyncInProgressNotification(getApplicationContext()));
-
-        shelf = new Shelf(this);
 
         status.loadFromPreferences(this);
     }
@@ -120,8 +139,8 @@ public class SyncService extends Service {
         syncTask.cancel(false);
     }
 
-    private boolean reposRequireStoragePermission(Collection<Repo> repos) {
-        for (Repo repo: repos) {
+    private boolean reposRequireStoragePermission(Collection<SyncRepo> repos) {
+        for (SyncRepo repo: repos) {
             if (DirectoryRepo.SCHEME.equals(repo.getUri().getScheme())) {
                 return true;
             }
@@ -211,7 +230,7 @@ public class SyncService extends Service {
 
             Context context = SyncService.this;
 
-            Map<String, Repo> repos = shelf.getAllRepos();
+            Map<String, SyncRepo> repos = dataRepository.getRepos();
 
             /* Do nothing if it's auto-sync and there are no repos or they require connection. */
             if (isTriggeredAutomatically) {
@@ -256,7 +275,7 @@ public class SyncService extends Service {
              */
             Map<String, BookNamesake> namesakes;
             try {
-                namesakes = shelf.groupAllNotebooksByName();
+                namesakes = groupAllNotebooksByName(dataRepository);
             } catch (Exception e) {
                 e.printStackTrace();
                 String msg = (e.getMessage() != null ? e.getMessage() : e.toString());
@@ -291,7 +310,8 @@ public class SyncService extends Service {
              * Update books' statuses, before starting to sync them.
              */
             for (BookNamesake namesake : namesakes.values()) {
-                shelf.setBookStatus(namesake.getBook(), null, new BookAction(BookAction.Type.PROGRESS, getString(R.string.syncing_in_progress)));
+                dataRepository.setBookLastActionAndSyncStatus(namesake.getBook().getBook().getId(), BookAction.forNow(
+                        BookAction.Type.PROGRESS, getString(R.string.syncing_in_progress)));
             }
 
             /*
@@ -301,20 +321,30 @@ public class SyncService extends Service {
             for (BookNamesake namesake : namesakes.values()) {
                 /* If task has been canceled, just mark the remaining books as such. */
                 if (isCancelled()) {
-                    shelf.setBookStatus(namesake.getBook(), null,
-                            new BookAction(BookAction.Type.INFO, getString(R.string.canceled)));
+                    dataRepository.setBookLastActionAndSyncStatus(
+                            namesake.getBook().getBook().getId(),
+                            BookAction.forNow(BookAction.Type.INFO, getString(R.string.canceled)));
 
                 } else {
                     status.set(SyncStatus.Type.BOOK_STARTED, namesake.getName(), curr, namesakes.size());
                     announceActiveSyncStatus();
 
                     try {
-                        BookAction action = shelf.syncNamesake(namesake);
-                        shelf.setBookStatus(namesake.getBook(), namesake.getStatus().toString(), action);
+                        BookAction action = syncNamesake(dataRepository, namesake);
+                        dataRepository.setBookLastActionAndSyncStatus(
+                                namesake.getBook().getBook().getId(),
+                                action,
+                                namesake.getStatus().toString());
                     } catch (Exception e) {
                         e.printStackTrace();
-                        shelf.setBookStatus(namesake.getBook(), null, new BookAction(BookAction.Type.ERROR, e.getMessage()));
+                        dataRepository.setBookLastActionAndSyncStatus(
+                                namesake.getBook().getBook().getId(),
+                                BookAction.forNow(BookAction.Type.ERROR, e.getMessage()));
                     }
+
+                    // TODO: Call only if book was loaded, move to usecase
+                    ReminderService.notifyDataChanged(App.getAppContext());
+                    ListWidgetProvider.notifyDataChanged(App.getAppContext());
 
                     status.set(SyncStatus.Type.BOOK_ENDED, namesake.getName(), curr + 1, namesakes.size());
                     announceActiveSyncStatus();
@@ -347,6 +377,183 @@ public class SyncService extends Service {
             syncTask = null;
             stopSelf();
         }
+    }
+
+
+    /**
+     * Compares every local book with every remote one and calculates the status for each link.
+     *
+     * @return number of links (unique book names)
+     * @throws IOException
+     */
+    public static Map<String, BookNamesake> groupAllNotebooksByName(DataRepository dataRepository) throws IOException {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Collecting all local and remote books ...");
+
+        Map<String, SyncRepo> repos = dataRepository.getRepos();
+
+        List<BookView> localBooks = dataRepository.getBooks();
+        List<VersionedRook> versionedRooks = getBooksFromAllRepos(dataRepository, repos);
+
+        /* Group local and remote books by name. */
+        Map<String, BookNamesake> namesakes = BookNamesake.getAll(
+                App.getAppContext(), localBooks, versionedRooks);
+
+        /* If there is no local book, create empty "dummy" one. */
+        for (BookNamesake namesake : namesakes.values()) {
+            if (namesake.getBook() == null) {
+                namesake.setBook(dataRepository.createDummyBook(namesake.getName()));
+            }
+
+            namesake.updateStatus(repos.size());
+        }
+
+        return namesakes;
+    }
+
+
+    /**
+     * Goes through each repository and collects all books from each one.
+     */
+    public static List<VersionedRook> getBooksFromAllRepos(DataRepository dataRepository, Map<String, SyncRepo> repos) throws IOException {
+        List<VersionedRook> result = new ArrayList<>();
+
+        if (repos == null) {
+            repos = dataRepository.getRepos();
+        }
+
+        for (SyncRepo repo: repos.values()) { /* Each repository. */
+            List<VersionedRook> libBooks = repo.getBooks();
+
+            /* Each book in repository. */
+            result.addAll(libBooks);
+        }
+
+        return result;
+    }
+
+    /**
+     * Passed {@link com.orgzly.android.sync.BookNamesake} is NOT updated after load or save.
+     *
+     * FIXME: Hardcoded BookName.Format.ORG below
+     */
+    public static BookAction syncNamesake(DataRepository dataRepository, final BookNamesake namesake) throws IOException {
+        String repoUrl;
+        String fileName;
+        BookAction bookAction = null;
+
+        // FIXME: This is a pretty nasty hack that completely circumvents the existing code path
+        if (!namesake.getRooks().isEmpty()) {
+            VersionedRook rook = namesake.getRooks().get(0);
+            if (rook != null && namesake.getStatus() != BookSyncStatus.NO_CHANGE) {
+                Uri repoUri = rook.getRepoUri();
+                SyncRepo repo = dataRepository.getRepo(repoUri);
+                if (repo instanceof TwoWaySyncRepo) {
+                    handleTwoWaySync(dataRepository, (TwoWaySyncRepo) repo, namesake);
+                    return BookAction.forNow(
+                            BookAction.Type.INFO,
+                            namesake.getStatus().msg(repo.getUri().toString()));
+                }
+            }
+        }
+
+        switch (namesake.getStatus()) {
+            case NO_CHANGE:
+                bookAction = BookAction.forNow(BookAction.Type.INFO, namesake.getStatus().msg());
+                break;
+
+            case BOOK_WITHOUT_LINK_AND_ONE_OR_MORE_ROOKS_EXIST:
+            case DUMMY_WITHOUT_LINK_AND_MULTIPLE_ROOKS:
+            case NO_BOOK_MULTIPLE_ROOKS:
+            case ONLY_BOOK_WITHOUT_LINK_AND_MULTIPLE_REPOS:
+            case BOOK_WITH_LINK_AND_ROOK_EXISTS_BUT_LINK_POINTING_TO_DIFFERENT_ROOK:
+            case CONFLICT_BOTH_BOOK_AND_ROOK_MODIFIED:
+
+            case CONFLICT_BOOK_WITH_LINK_AND_ROOK_BUT_NEVER_SYNCED_BEFORE:
+            case CONFLICT_LAST_SYNCED_ROOK_AND_LATEST_ROOK_ARE_DIFFERENT:
+            case ONLY_DUMMY:
+                bookAction = BookAction.forNow(BookAction.Type.ERROR, namesake.getStatus().msg());
+                break;
+
+            /* Load remote book. */
+
+            case NO_BOOK_ONE_ROOK:
+            case DUMMY_WITHOUT_LINK_AND_ONE_ROOK:
+                dataRepository.loadBookFromRepo(namesake.getRooks().get(0));
+                bookAction = BookAction.forNow(
+                        BookAction.Type.INFO,
+                        namesake.getStatus().msg(namesake.getRooks().get(0).getUri()));
+                break;
+
+            case BOOK_WITH_LINK_AND_ROOK_MODIFIED:
+                dataRepository.loadBookFromRepo(namesake.getLatestLinkedRook());
+                bookAction = BookAction.forNow(
+                        BookAction.Type.INFO,
+                        namesake.getStatus().msg(namesake.getLatestLinkedRook().getUri()));
+                break;
+
+            case DUMMY_WITH_LINK:
+                dataRepository.loadBookFromRepo(namesake.getLatestLinkedRook());
+                bookAction = BookAction.forNow(
+                        BookAction.Type.INFO,
+                        namesake.getStatus().msg(namesake.getLatestLinkedRook().getUri()));
+                break;
+
+            /* Save local book to repository. */
+
+            case ONLY_BOOK_WITHOUT_LINK_AND_ONE_REPO:
+                /* Save local book to the one and only repository. */
+                repoUrl = dataRepository.getRepos().entrySet().iterator().next().getValue().getUri().toString();
+                fileName = BookName.fileName(namesake.getBook().getBook().getName(), BookFormat.ORG);
+                dataRepository.saveBookToRepo(repoUrl, fileName, namesake.getBook(), BookFormat.ORG);
+                bookAction = BookAction.forNow(BookAction.Type.INFO, namesake.getStatus().msg(repoUrl));
+                break;
+
+            case BOOK_WITH_LINK_LOCAL_MODIFIED:
+                repoUrl = namesake.getBook().getSyncedTo().getRepoUri().toString();
+                fileName = BookName.getFileName(App.getAppContext(), namesake.getBook().getSyncedTo().getUri());
+                dataRepository.saveBookToRepo(repoUrl, fileName, namesake.getBook(), BookFormat.ORG);
+                bookAction = BookAction.forNow(BookAction.Type.INFO, namesake.getStatus().msg(repoUrl));
+                break;
+
+            case ONLY_BOOK_WITH_LINK:
+                repoUrl = namesake.getBook().getLinkedTo();
+                fileName = BookName.fileName(namesake.getBook().getBook().getName(), BookFormat.ORG);
+                dataRepository.saveBookToRepo(repoUrl, fileName, namesake.getBook(), BookFormat.ORG);
+                bookAction = BookAction.forNow(BookAction.Type.INFO, namesake.getStatus().msg(repoUrl));
+                break;
+        }
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Syncing " + namesake + ": " + bookAction);
+        return bookAction;
+    }
+
+    private static void handleTwoWaySync(DataRepository dataRepository, TwoWaySyncRepo repo, BookNamesake namesake) throws IOException {
+        BookView bookView = namesake.getBook();
+        VersionedRook currentRook = bookView.getSyncedTo();
+        VersionedRook someRook = currentRook == null ? namesake.getRooks().get(0) : currentRook;
+        VersionedRook newRook = currentRook;
+        File dbFile = dataRepository.getTempBookFile();
+        try {
+            new NotesExporter(App.getAppContext(), dataRepository).exportBook(bookView.getBook(), dbFile);
+            TwoWaySyncResult result = repo.syncBook(someRook.getUri(), currentRook, dbFile);
+            newRook = result.getNewRook();
+            String fileName = BookName.getFileName(App.getAppContext(), newRook.getUri());
+            BookName bookName = BookName.fromFileName(fileName);
+            Log.i("Git", String.format("Loading from file %s", result.getLoadFile().toString()));
+            BookView loadedBook = dataRepository.loadBookFromFile(
+                    bookName.getName(),
+                    bookName.getFormat(),
+                    result.getLoadFile(),
+                    newRook);
+            // TODO: db.book().updateIsModified(bookView.book.id, false)
+            // Instead of:
+            // dataRepository.updateBookMtime(loadedBook.getBook().getId(), 0);
+        } finally {
+            /* Delete temporary files. */
+            dbFile.delete();
+        }
+
+        dataRepository.updateBookLinkAndSync(bookView.getBook().getId(), newRook);
     }
 
     public class LocalBinder extends Binder {

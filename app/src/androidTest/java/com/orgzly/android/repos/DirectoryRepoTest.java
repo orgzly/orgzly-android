@@ -2,10 +2,10 @@ package com.orgzly.android.repos;
 
 import android.os.Environment;
 
-import com.orgzly.android.Book;
 import com.orgzly.android.BookName;
 import com.orgzly.android.LocalStorage;
 import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.db.entity.BookView;
 import com.orgzly.android.util.MiscUtils;
 
 import org.junit.After;
@@ -45,9 +45,9 @@ public class DirectoryRepoTest extends OrgzlyTest {
 
     @Test
     public void testStoringFile() throws IOException {
-        Repo repo = RepoFactory.getFromUri(context, repoUriString);
+        SyncRepo repo = repoFactory.getFromUri(context, repoUriString);
 
-        File tmpFile = shelf.getTempBookFile();
+        File tmpFile = dataRepository.getTempBookFile();
         try {
             MiscUtils.writeStringToFile("...", tmpFile);
             repo.storeBook(tmpFile, "booky.org");
@@ -93,24 +93,24 @@ public class DirectoryRepoTest extends OrgzlyTest {
     // TODO: Do the same for dropbox repo
     @Test
     public void testRenameBook() throws IOException {
-        Book book;
+        BookView bookView;
 
-        shelfTestUtils.setupRepo(repoUriString);
-        shelfTestUtils.setupBook("booky", "");
+        testUtils.setupRepo(repoUriString);
+        testUtils.setupBook("booky", "");
 
-        shelf.sync();
-        book = shelf.getBook("booky");
+        testUtils.sync();
+        bookView = dataRepository.getBookView("booky");
 
-        assertEquals(repoUriString, book.getLinkRepo().toString());
-        assertEquals(repoUriString, book.getLastSyncedToRook().getRepoUri().toString());
-        assertEquals(repoUriString + "/booky.org", book.getLastSyncedToRook().getUri().toString());
+        assertEquals(repoUriString, bookView.getLinkedTo());
+        assertEquals(repoUriString, bookView.getSyncedTo().getRepoUri().toString());
+        assertEquals(repoUriString + "/booky.org", bookView.getSyncedTo().getUri().toString());
 
-        shelf.renameBook(book, "booky-renamed");
-        book = shelf.getBook("booky-renamed");
+        dataRepository.renameBook(bookView, "booky-renamed");
+        bookView = dataRepository.getBookView("booky-renamed");
 
-        assertEquals(repoUriString, book.getLinkRepo().toString());
-        assertEquals(repoUriString, book.getLastSyncedToRook().getRepoUri().toString());
-        assertEquals(repoUriString + "/booky-renamed.org", book.getLastSyncedToRook().getUri().toString());
+        assertEquals(repoUriString, bookView.getLinkedTo());
+        assertEquals(repoUriString, bookView.getSyncedTo().getRepoUri().toString());
+        assertEquals(repoUriString + "/booky-renamed.org", bookView.getSyncedTo().getUri().toString());
     }
 
 
@@ -123,13 +123,13 @@ public class DirectoryRepoTest extends OrgzlyTest {
 
         MiscUtils.writeStringToFile("Notebook content 1", new File(localDir, "notebook.org"));
 
-        DirectoryRepo repo = (DirectoryRepo) shelfTestUtils.setupRepo("file:" + localDirEnc);
+        DirectoryRepo repo = (DirectoryRepo) testUtils.setupRepo("file:" + localDirEnc);
 
-        shelf.sync();
+        testUtils.sync();
 
         assertEquals("file:" + localDirEnc, repo.getUri().toString());
         assertEquals(localDir, repo.getDirectory().toString());
-        assertEquals(1, shelf.getBooks().size());
+        assertEquals(1, dataRepository.getBooks().size());
     }
 
     // TODO: Test saving and loading

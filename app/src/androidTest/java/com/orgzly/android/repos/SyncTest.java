@@ -1,27 +1,21 @@
 package com.orgzly.android.repos;
 
 import android.net.Uri;
-import android.support.test.runner.AndroidJUnit4;
 
 import com.orgzly.BuildConfig;
-import com.orgzly.android.Book;
 import com.orgzly.android.BookName;
-import com.orgzly.android.Note;
 import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.db.entity.Book;
+import com.orgzly.android.db.entity.BookView;
+import com.orgzly.android.db.entity.NoteView;
 import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.provider.clients.BooksClient;
-import com.orgzly.android.provider.clients.CurrentRooksClient;
-import com.orgzly.android.provider.clients.LocalDbRepoClient;
-import com.orgzly.android.provider.clients.ReposClient;
 import com.orgzly.android.sync.BookNamesake;
 import com.orgzly.android.sync.BookSyncStatus;
 import com.orgzly.android.util.EncodingDetect;
 import com.orgzly.android.util.MiscUtils;
-import com.orgzly.org.datetime.OrgRange;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,13 +30,12 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(AndroidJUnit4.class)
 public class SyncTest extends OrgzlyTest {
     private static final String TAG = SyncTest.class.getName();
 
-    private Repo randomDirectoryRepo() {
+    private SyncRepo randomDirectoryRepo() {
         String uuid = UUID.randomUUID().toString();
-        return RepoFactory.getFromUri(context, "file:" + context.getCacheDir() + "/" + uuid);
+        return repoFactory.getFromUri(context, "file:" + context.getCacheDir() + "/" + uuid);
     }
 
     @Before
@@ -54,165 +47,159 @@ public class SyncTest extends OrgzlyTest {
 
     @Test
     public void testOrgRange() {
-        shelfTestUtils.setupRepo("mock://repo-a");
-        shelfTestUtils.setupRook(
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRook(
                 "mock://repo-a",
                 "mock://repo-a/remote-book-1.org",
                 "* Note\nSCHEDULED: <2015-01-13 уто 13:00-14:14>--<2015-01-14 сре 14:10-15:20>",
                 "0abcdef",
                 1400067156);
 
-        shelf.sync();
+        testUtils.sync();
 
-        Note note = shelf.getNote("Note");
-        OrgRange range = note.getHead().getScheduled();
-        assertEquals("<2015-01-13 уто 13:00-14:14>--<2015-01-14 сре 14:10-15:20>", range.toString());
+        NoteView noteView = dataRepository.getNoteView("Note");
+        assertEquals(
+                "<2015-01-13 уто 13:00-14:14>--<2015-01-14 сре 14:10-15:20>",
+                noteView.getScheduledRangeString());
     }
 
     @Test
     public void testSync1() {
-        shelfTestUtils.setupRepo("mock://repo-a");
-        shelfTestUtils.setupBook("todo", "hum hum");
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupBook("todo", "hum hum");
 
-        assertEquals(1, ReposClient.getAll(context).size());
-        assertEquals(1, shelf.getBooks().size());
-        assertEquals(0, CurrentRooksClient.getAll(context).size());
-        assertNull(shelf.getBooks().get(0).getLastSyncedToRook());
+        assertEquals(1, dataRepository.getReposList().size());
+        assertEquals(1, dataRepository.getBooks().size());
+        assertNull(dataRepository.getBooks().get(0).getSyncedTo());
 
-        shelf.sync();
+        testUtils.sync();
 
-        assertEquals(1, ReposClient.getAll(context).size());
-        assertEquals(1, shelf.getBooks().size());
-        assertEquals(1, CurrentRooksClient.getAll(context).size());
-        assertNotNull(shelf.getBooks().get(0).getLastSyncedToRook());
-        assertEquals("mock://repo-a/todo.org", shelf.getBooks().get(0).getLastSyncedToRook().getUri().toString());
+        assertEquals(1, dataRepository.getReposList().size());
+        assertEquals(1, dataRepository.getBooks().size());
+        assertNotNull(dataRepository.getBooks().get(0).getSyncedTo());
+        assertEquals("mock://repo-a/todo.org", dataRepository.getBooks().get(0).getSyncedTo().getUri().toString());
     }
 
     @Test
     public void testSync2() {
         /* Add remote books. */
-        shelfTestUtils.setupRepo("mock://repo-a");
-        shelfTestUtils.setupRook("mock://repo-a", "mock://repo-a/remote-book-1.org", "", "1abcdef", 1400067156);
-        shelfTestUtils.setupRook("mock://repo-a", "mock://repo-a/remote-book-2.org", "", "2abcdef", 1400067156);
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRook("mock://repo-a", "mock://repo-a/remote-book-1.org", "", "1abcdef", 1400067156);
+        testUtils.setupRook("mock://repo-a", "mock://repo-a/remote-book-2.org", "", "2abcdef", 1400067156);
 
-        assertEquals(1, ReposClient.getAll(context).size());
-        assertEquals(2, LocalDbRepoClient.getAll(context, Uri.parse("mock://repo-a")).size());
-        assertEquals("mock://repo-a", LocalDbRepoClient.getAll(context, Uri.parse("mock://repo-a")).get(0).getRepoUri().toString());
-        assertEquals(0, CurrentRooksClient.getAll(context).size());
-        assertEquals(0, shelf.getBooks().size());
+        assertEquals(1, dataRepository.getReposList().size());
+        assertEquals(2, dbRepoBookRepository.getDbRepoBooks(Uri.parse("mock://repo-a")).size());
+        assertEquals("mock://repo-a", dbRepoBookRepository.getDbRepoBooks(Uri.parse("mock://repo-a")).get(0).getRepoUri().toString());
+        assertEquals(0, dataRepository.getBooks().size());
 
         /* Sync. */
-        Map<String, BookNamesake> g1 = shelf.sync();
+        Map<String, BookNamesake> g1 = testUtils.sync();
         assertEquals(BookSyncStatus.DUMMY_WITHOUT_LINK_AND_ONE_ROOK, g1.get("remote-book-1").getStatus());
         assertEquals(BookSyncStatus.DUMMY_WITHOUT_LINK_AND_ONE_ROOK, g1.get("remote-book-2").getStatus());
 
-        assertEquals(1, ReposClient.getAll(context).size());
-        assertEquals(2, LocalDbRepoClient.getAll(context, Uri.parse("mock://repo-a")).size());
-        assertEquals("mock://repo-a", LocalDbRepoClient.getAll(context, Uri.parse("mock://repo-a")).get(0).getRepoUri().toString());
-        assertEquals(2, CurrentRooksClient.getAll(context).size());
-        assertEquals(2, shelf.getBooks().size());
+        assertEquals(1, dataRepository.getReposList().size());
+        assertEquals(2, dbRepoBookRepository.getDbRepoBooks(Uri.parse("mock://repo-a")).size());
+        assertEquals("mock://repo-a", dbRepoBookRepository.getDbRepoBooks(Uri.parse("mock://repo-a")).get(0).getRepoUri().toString());
+        assertEquals(2, dataRepository.getBooks().size());
 
         /* Sync. */
-        Map<String, BookNamesake> g2 = shelf.sync();
+        Map<String, BookNamesake> g2 = testUtils.sync();
         assertEquals(BookSyncStatus.NO_CHANGE, g2.get("remote-book-1").getStatus());
         assertEquals(BookSyncStatus.NO_CHANGE, g2.get("remote-book-2").getStatus());
 
-        assertEquals(1, ReposClient.getAll(context).size());
-        assertEquals(2, LocalDbRepoClient.getAll(context, Uri.parse("mock://repo-a")).size());
-        assertEquals("mock://repo-a", LocalDbRepoClient.getAll(context, Uri.parse("mock://repo-a")).get(0).getRepoUri().toString());
-        assertEquals(2, CurrentRooksClient.getAll(context).size());
-        assertEquals(2, shelf.getBooks().size());
+        assertEquals(1, dataRepository.getReposList().size());
+        assertEquals(2, dbRepoBookRepository.getDbRepoBooks(Uri.parse("mock://repo-a")).size());
+        assertEquals("mock://repo-a", dbRepoBookRepository.getDbRepoBooks(Uri.parse("mock://repo-a")).get(0).getRepoUri().toString());
+        assertEquals(2, dataRepository.getBooks().size());
     }
 
     @Test
     public void testRenameUsedRepo() {
-        shelfTestUtils.setupRepo("mock://repo-a");
-        shelfTestUtils.setupRook("mock://repo-a", "mock://repo-a/book.org", "Content A", "1abcde", 1400067156000L);
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRook("mock://repo-a", "mock://repo-a/book.org", "Content A", "1abcde", 1400067156000L);
 
-        Book book;
+        BookView book;
 
-        shelf.sync();
+        testUtils.sync();
 
-        shelfTestUtils.renameRepo("mock://repo-a", "mock://repo-b");
+        testUtils.renameRepo("mock://repo-a", "mock://repo-b");
 
-        book = shelf.getBook("book");
-        assertNull(book.getLinkRepo());
-        assertEquals("mock://repo-a/book.org", book.getLastSyncedToRook().getUri().toString());
-        assertEquals("mock://repo-a", book.getLastSyncedToRook().getRepoUri().toString());
+        book = dataRepository.getBookView("book");
+        assertNull(book.getLinkedTo());
+        assertNull(book.getSyncedTo());
 
-        shelf.sync();
+        testUtils.sync();
 
-        book = shelf.getBook("book");
-        assertEquals(BookSyncStatus.ONLY_BOOK_WITHOUT_LINK_AND_ONE_REPO, book.getSyncStatus());
-        assertEquals("mock://repo-b", book.getLinkRepo().toString());
-        assertEquals("mock://repo-b", book.getLastSyncedToRook().getRepoUri().toString());
-        assertEquals("mock://repo-b/book.org", book.getLastSyncedToRook().getUri().toString());
+        book = dataRepository.getBookView("book");
+        assertEquals(BookSyncStatus.ONLY_BOOK_WITHOUT_LINK_AND_ONE_REPO.toString(), book.getBook().getSyncStatus());
+        assertEquals("mock://repo-b", book.getLinkedTo());
+        assertEquals("mock://repo-b", book.getSyncedTo().getRepoUri().toString());
+        assertEquals("mock://repo-b/book.org", book.getSyncedTo().getUri().toString());
 
-        shelfTestUtils.renameRepo("mock://repo-b", "mock://repo-a");
-        shelf.sync();
+        testUtils.renameRepo("mock://repo-b", "mock://repo-a");
+        testUtils.sync();
 
-        book = shelf.getBook("book");
-        assertEquals(BookSyncStatus.BOOK_WITHOUT_LINK_AND_ONE_OR_MORE_ROOKS_EXIST, book.getSyncStatus());
-        assertNull(book.getLinkRepo());
-        assertEquals("mock://repo-b/book.org", book.getLastSyncedToRook().getUri().toString());
-        assertEquals("mock://repo-b", book.getLastSyncedToRook().getRepoUri().toString());
+        book = dataRepository.getBookView("book");
+        assertEquals(BookSyncStatus.BOOK_WITHOUT_LINK_AND_ONE_OR_MORE_ROOKS_EXIST.toString(), book.getBook().getSyncStatus());
+        assertNull(book.getLinkedTo());
+        assertNull("mock://repo-b/book.org", book.getSyncedTo());
     }
 
     @Test
     public void testDeletingUsedRepo() {
-        Book book;
+        BookView book;
 
-        shelfTestUtils.setupRepo("mock://repo-a");
-        shelfTestUtils.setupRook("mock://repo-a", "mock://repo-a/book.org", "Content A", "1abcde", 1400067156000L);
-        shelf.sync();
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRook("mock://repo-a", "mock://repo-a/book.org", "Content A", "1abcde", 1400067156000L);
+        testUtils.sync();
 
-        shelfTestUtils.deleteRepo("mock://repo-a");
-        shelfTestUtils.setupRepo("mock://repo-b");
-        shelf.sync();
+        testUtils.deleteRepo("mock://repo-a");
+        testUtils.setupRepo("mock://repo-b");
+        testUtils.sync();
 
-        book = shelf.getBook("book");
-        assertEquals(BookSyncStatus.ONLY_BOOK_WITHOUT_LINK_AND_ONE_REPO, book.getSyncStatus());
-        assertEquals("mock://repo-b", book.getLinkRepo().toString());
-        assertEquals("mock://repo-b", book.getLastSyncedToRook().getRepoUri().toString());
-        assertEquals("mock://repo-b/book.org", book.getLastSyncedToRook().getUri().toString());
+        book = dataRepository.getBookView("book");
+        assertEquals(BookSyncStatus.ONLY_BOOK_WITHOUT_LINK_AND_ONE_REPO.toString(), book.getBook().getSyncStatus());
+        assertEquals("mock://repo-b", book.getLinkedTo());
+        assertEquals("mock://repo-b", book.getSyncedTo().getRepoUri().toString());
+        assertEquals("mock://repo-b/book.org", book.getSyncedTo().getUri().toString());
 
-        shelfTestUtils.deleteRepo("mock://repo-b");
-        shelfTestUtils.setupRepo("mock://repo-a");
-        shelf.sync();
+        testUtils.deleteRepo("mock://repo-b");
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.sync();
 
-        book = shelf.getBook("book");
-        assertEquals(BookSyncStatus.BOOK_WITHOUT_LINK_AND_ONE_OR_MORE_ROOKS_EXIST, book.getSyncStatus());
-        assertNull(book.getLinkRepo());
-        assertEquals("mock://repo-b/book.org", book.getLastSyncedToRook().getUri().toString());
+        book = dataRepository.getBookView("book");
+        assertEquals(BookSyncStatus.BOOK_WITHOUT_LINK_AND_ONE_OR_MORE_ROOKS_EXIST.toString(), book.getBook().getSyncStatus());
+        assertNull(book.getLinkedTo());
+        assertNull("mock://repo-b/book.org", book.getSyncedTo());
     }
 
     @Test
     public void testEncodingStaysTheSameAfterSecondSync() {
-        Book book;
+        BookView book;
 
-        shelfTestUtils.setupRepo("mock://repo-a");
-        shelfTestUtils.setupRook("mock://repo-a", "mock://repo-a/book.org", "Content A", "1abcde", 1400067156000L);
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRook("mock://repo-a", "mock://repo-a/book.org", "Content A", "1abcde", 1400067156000L);
 
-        shelf.sync();
+        testUtils.sync();
 
-        book = shelf.getBooks().get(0);
-        assertEquals(BookSyncStatus.DUMMY_WITHOUT_LINK_AND_ONE_ROOK, book.getSyncStatus());
+        book = dataRepository.getBooks().get(0);
+        assertEquals(BookSyncStatus.DUMMY_WITHOUT_LINK_AND_ONE_ROOK.toString(), book.getBook().getSyncStatus());
 
         switch (EncodingDetect.USED_METHOD) {
 //            case JCHARDET:
 //                assertEquals("ASCII", versionedRook.getDetectedEncoding());
 //                assertEquals("ASCII", versionedRook.getUsedEncoding());
             case JUNIVERSALCHARDET:
-                assertNull(book.getDetectedEncoding());
-                assertEquals("UTF-8", book.getUsedEncoding());
+                assertNull(book.getBook().getDetectedEncoding());
+                assertEquals("UTF-8", book.getBook().getUsedEncoding());
                 break;
         }
-        assertNull(book.getSelectedEncoding());
+        assertNull(book.getBook().getSelectedEncoding());
 
-        shelf.sync();
+        testUtils.sync();
 
-        book = shelf.getBooks().get(0);
-        assertEquals(BookSyncStatus.NO_CHANGE, book.getSyncStatus());
+        book = dataRepository.getBooks().get(0);
+        assertEquals(BookSyncStatus.NO_CHANGE.toString(), book.getBook().getSyncStatus());
 
         switch (EncodingDetect.USED_METHOD) {
 //            case JCHARDET:
@@ -220,123 +207,125 @@ public class SyncTest extends OrgzlyTest {
 //                assertEquals("ASCII", versionedRook.getUsedEncoding());
 //                break;
             case JUNIVERSALCHARDET:
-                assertNull(book.getDetectedEncoding());
-                assertEquals("UTF-8", book.getUsedEncoding());
+                assertNull(book.getBook().getDetectedEncoding());
+                assertEquals("UTF-8", book.getBook().getUsedEncoding());
                 break;
         }
-        assertNull(book.getSelectedEncoding());
+        assertNull(book.getBook().getSelectedEncoding());
     }
 
     @Test
     public void testOnlyBookWithLink() {
-        shelfTestUtils.setupRepo("mock://repo-a");
+        testUtils.setupRepo("mock://repo-a");
 
-        Book book = shelfTestUtils.setupBook("book-1", "Content");
-        shelfTestUtils.setBookLink(book.getId(), "mock://repo-a");
+        BookView book = testUtils.setupBook("book-1", "Content");
+        dataRepository.setLink(book.getBook().getId(), "mock://repo-a");
 
-        shelf.sync();
+        testUtils.sync();
 
-        book = shelf.getBooks().get(0);
-        assertEquals(BookSyncStatus.ONLY_BOOK_WITH_LINK, book.getSyncStatus());
+        book = dataRepository.getBooks().get(0);
+        assertEquals(BookSyncStatus.ONLY_BOOK_WITH_LINK.toString(), book.getBook().getSyncStatus());
     }
 
     @Test
     public void testMultipleRooks() {
-        shelfTestUtils.setupRepo("mock://repo-a");
-        shelfTestUtils.setupRook("mock://repo-a", "mock://repo-a/book.org", "Content A", "revA", 1234567890000L);
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRook("mock://repo-a", "mock://repo-a/book.org", "Content A", "revA", 1234567890000L);
 
-        shelfTestUtils.setupRepo("mock://repo-b");
-        shelfTestUtils.setupRook("mock://repo-b", "mock://repo-b/book.org", "Content B", "revB", 1234567890000L);
+        testUtils.setupRepo("mock://repo-b");
+        testUtils.setupRook("mock://repo-b", "mock://repo-b/book.org", "Content B", "revB", 1234567890000L);
 
-        shelf.sync();
+        testUtils.sync();
 
-        Book book = shelf.getBooks().get(0);
+        BookView book = dataRepository.getBooks().get(0);
 
-        assertEquals(BookSyncStatus.DUMMY_WITHOUT_LINK_AND_MULTIPLE_ROOKS, book.getSyncStatus());
-        assertTrue(book.isDummy());
+        assertEquals(BookSyncStatus.DUMMY_WITHOUT_LINK_AND_MULTIPLE_ROOKS.toString(), book.getBook().getSyncStatus());
+        assertTrue(book.getBook().isDummy());
 
-        shelfTestUtils.setBookLink(book.getId(), "mock://repo-a");
+        dataRepository.setLink(book.getBook().getId(), "mock://repo-a");
 
-        shelf.sync();
 
-        book = shelf.getBooks().get(0);
+        testUtils.sync();
 
-        assertEquals(BookSyncStatus.DUMMY_WITH_LINK, book.getSyncStatus());
-        assertTrue(!book.isDummy());
-        assertEquals("mock://repo-a/book.org", book.getLastSyncedToRook().getUri().toString());
+        book = dataRepository.getBooks().get(0);
+
+        assertEquals(BookSyncStatus.DUMMY_WITH_LINK.toString(), book.getBook().getSyncStatus());
+        assertTrue(!book.getBook().isDummy());
+        assertEquals("mock://repo-a/book.org", book.getSyncedTo().getUri().toString());
     }
 
     @Test
     public void testMtimeOfLoadedBook() {
-        shelfTestUtils.setupRepo("mock://repo-a");
-        shelfTestUtils.setupRook("mock://repo-a", "mock://repo-a/book.org", "Content", "rev", 1234567890000L);
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRook("mock://repo-a", "mock://repo-a/book.org", "Content", "rev", 1234567890000L);
 
-        shelf.sync();
+        testUtils.sync();
 
-        Book book = shelf.getBooks().get(0);
+        BookView book = dataRepository.getBooks().get(0);
 
-        assertEquals(BookSyncStatus.DUMMY_WITHOUT_LINK_AND_ONE_ROOK, book.getSyncStatus());
-        assertEquals(1234567890000L, book.getMtime());
+        assertEquals(BookSyncStatus.DUMMY_WITHOUT_LINK_AND_ONE_ROOK.toString(), book.getBook().getSyncStatus());
+        assertEquals(1234567890000L, book.getBook().getMtime().longValue());
     }
 
     @Test
     public void testDummyShouldNotBeSavedWhenHavingOneRepo() {
-        shelfTestUtils.setupRepo("mock://repo-a");
-        shelfTestUtils.setupRepo("mock://repo-b");
-        shelfTestUtils.setupRook("mock://repo-a", "mock://repo-a/booky.org", "", "1abcdef", 1400067155);
-        shelfTestUtils.setupRook("mock://repo-b", "mock://repo-b/booky.org", "", "2abcdef", 1400067156);
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRepo("mock://repo-b");
+        testUtils.setupRook("mock://repo-a", "mock://repo-a/booky.org", "", "1abcdef", 1400067155);
+        testUtils.setupRook("mock://repo-b", "mock://repo-b/booky.org", "", "2abcdef", 1400067156);
 
         Book book;
         Map<String, BookNamesake> namesakes;
 
-        namesakes = shelf.sync();
-        book = shelf.getBook("booky");
+        namesakes = testUtils.sync();
+        book = dataRepository.getBook("booky");
 
         assertEquals(BookSyncStatus.DUMMY_WITHOUT_LINK_AND_MULTIPLE_ROOKS, namesakes.get("booky").getStatus());
         assertTrue(book.isDummy());
 
-        shelfTestUtils.deleteRepo("mock://repo-a");
-        shelfTestUtils.deleteRepo("mock://repo-b");
-        shelfTestUtils.setupRepo("mock://repo-c");
+        testUtils.deleteRepo("mock://repo-a");
+        testUtils.deleteRepo("mock://repo-b");
+        testUtils.setupRepo("mock://repo-c");
 
-        namesakes = shelf.sync();
-        book = shelf.getBook("booky");
+        namesakes = testUtils.sync();
+        book = dataRepository.getBook("booky");
 
-        assertEquals(BookSyncStatus.ONLY_DUMMY, namesakes.get("booky").getStatus()); // TODO: We should delete it, no point of having a dummy and no remote book
+        assertEquals(BookSyncStatus.ONLY_DUMMY, namesakes.get("booky").getStatus());
+        // TODO: We should delete it, no point of having a dummy and no remote book
+
         assertTrue(book.isDummy());
-
     }
 
     @Test
     public void testDeletedRepoShouldStayAsBookLink() {
-        shelfTestUtils.setupRepo("mock://repo-a");
-        shelfTestUtils.setupRepo("mock://repo-b");
-        shelfTestUtils.setupRook("mock://repo-a", "mock://repo-a/booky.org", "", "1abcdef", 1400067155);
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRepo("mock://repo-b");
+        testUtils.setupRook("mock://repo-a", "mock://repo-a/booky.org", "", "1abcdef", 1400067155);
 
-        Book book;
+        BookView book;
         Map<String, BookNamesake> namesakes;
 
-        namesakes = shelf.sync();
-        book = shelf.getBook("booky");
+        namesakes = testUtils.sync();
+        book = dataRepository.getBookView("booky");
 
         assertEquals(BookSyncStatus.DUMMY_WITHOUT_LINK_AND_ONE_ROOK, namesakes.get("booky").getStatus());
 
-        assertFalse(book.isDummy());
-        assertEquals("mock://repo-a", book.getLinkRepo().toString());
-        assertEquals("mock://repo-a", book.getLastSyncedToRook().getRepoUri().toString());
+        assertFalse(book.getBook().isDummy());
+        assertEquals("mock://repo-a", book.getLinkedTo());
+        assertEquals("mock://repo-a", book.getSyncedTo().getRepoUri().toString());
 
-        shelfTestUtils.deleteRepo("mock://repo-a");
-        shelfTestUtils.deleteRepo("mock://repo-b");
-        shelfTestUtils.setupRepo("mock://repo-c");
+        testUtils.deleteRepo("mock://repo-a");
+        testUtils.deleteRepo("mock://repo-b");
+        testUtils.setupRepo("mock://repo-c");
 
-        namesakes = shelf.sync(); // TODO: Don't use namesakes, be consistent and use book.status like in some methods
-        book = shelf.getBook("booky");
+        namesakes = testUtils.sync(); // TODO: Don't use namesakes, be consistent and use book.status like in some methods
+        book = dataRepository.getBookView("booky");
 
         assertEquals(BookSyncStatus.ONLY_BOOK_WITHOUT_LINK_AND_ONE_REPO, namesakes.get("booky").getStatus());
 
-        assertFalse(book.isDummy());
-        assertEquals("mock://repo-c", book.getLinkRepo().toString());
-        assertEquals("mock://repo-c", book.getLastSyncedToRook().getRepoUri().toString());
+        assertFalse(book.getBook().isDummy());
+        assertEquals("mock://repo-c", book.getLinkedTo());
+        assertEquals("mock://repo-c", book.getSyncedTo().getRepoUri().toString());
     }
 
 //    public void testEncodingOnSyncSavingStaysTheSame() {
@@ -353,25 +342,25 @@ public class SyncTest extends OrgzlyTest {
 
     @Test
     public void testSyncingOrgTxt() {
-        shelfTestUtils.setupRepo("mock://repo-a");
-        shelfTestUtils.setupRook("mock://repo-a", "mock://repo-a/booky.org.txt", "", "1abcdef", 1400067155);
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRook("mock://repo-a", "mock://repo-a/booky.org.txt", "", "1abcdef", 1400067155);
 
-        shelf.sync();
+        testUtils.sync();
 
-        Book book = shelf.getBook("booky");
-        assertEquals("mock://repo-a", book.getLinkRepo().toString());
-        assertEquals("mock://repo-a", book.getLastSyncedToRook().getRepoUri().toString());
-        assertEquals("mock://repo-a/booky.org.txt", book.getLastSyncedToRook().getUri().toString());
+        BookView book = dataRepository.getBookView("booky");
+        assertEquals("mock://repo-a", book.getLinkedTo());
+        assertEquals("mock://repo-a", book.getSyncedTo().getRepoUri().toString());
+        assertEquals("mock://repo-a/booky.org.txt", book.getSyncedTo().getUri().toString());
     }
 
     @Test
     public void testMockFileRename() throws IOException {
         List<VersionedRook> vrooks;
 
-        Repo repo = shelfTestUtils.setupRepo("mock://repo-a");
-        Book book = shelfTestUtils.setupBook("Booky", "1 2 3");
+        SyncRepo repo = testUtils.setupRepo("mock://repo-a");
+        BookView book = testUtils.setupBook("Booky", "1 2 3");
 
-        shelf.sync();
+        testUtils.sync();
 
         vrooks = repo.getBooks();
 
@@ -382,7 +371,7 @@ public class SyncTest extends OrgzlyTest {
         String rev = vrooks.get(0).getRevision();
 
         // Rename local notebook
-        shelf.renameBook(book, "BookyRenamed");
+        dataRepository.renameBook(book, "BookyRenamed");
 
         // Rename rook
         repo.renameBook(Uri.parse("mock://repo-a/Booky.org"), "BookyRenamed");
@@ -398,7 +387,7 @@ public class SyncTest extends OrgzlyTest {
 
     @Test
     public void testDirectoryFileRename() throws IOException {
-        Repo repo = randomDirectoryRepo();
+        SyncRepo repo = randomDirectoryRepo();
 
         assertNotNull(repo);
         assertEquals(0, repo.getBooks().size());
@@ -418,56 +407,56 @@ public class SyncTest extends OrgzlyTest {
     }
 
     @Test
-    public void testRenameSyncedBook() throws IOException {
-        shelfTestUtils.setupRepo("mock://repo-a");
-        shelfTestUtils.setupBook("Booky", "1 2 3");
+    public void testRenameSyncedBook() {
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupBook("Booky", "1 2 3");
 
-        shelf.sync();
+        testUtils.sync();
 
-        Book book = BooksClient.get(context, "Booky");
+        BookView book = dataRepository.getBookView("Booky");
 
-        assertEquals("mock://repo-a/Booky.org", book.getLastSyncedToRook().getUri().toString());
+        assertEquals("mock://repo-a/Booky.org", book.getSyncedTo().getUri().toString());
 
-        shelf.renameBook(book, "BookyRenamed");
+        dataRepository.renameBook(book, "BookyRenamed");
 
-        Book renamedBook = BooksClient.get(context, "BookyRenamed");
+        BookView renamedBook = dataRepository.getBookView("BookyRenamed");
 
         assertNotNull(renamedBook);
-        assertEquals("mock://repo-a", renamedBook.getLinkRepo().toString());
-        assertEquals("mock://repo-a", renamedBook.getLastSyncedToRook().getRepoUri().toString());
-        assertEquals("mock://repo-a/BookyRenamed.org", renamedBook.getLastSyncedToRook().getUri().toString());
+        assertEquals("mock://repo-a", renamedBook.getLinkedTo());
+        assertEquals("mock://repo-a", renamedBook.getSyncedTo().getRepoUri().toString());
+        assertEquals("mock://repo-a/BookyRenamed.org", renamedBook.getSyncedTo().getUri().toString());
     }
 
     @Test
     public void testRenameSyncedBookWithDifferentLink() throws IOException {
-        Book book;
+        BookView book;
 
-        Repo repoA = shelfTestUtils.setupRepo("mock://repo-a");
-        Repo repoB = shelfTestUtils.setupRepo("mock://repo-b");
-        book = shelfTestUtils.setupBook("Booky", "1 2 3");
-        shelf.setLink(book, "mock://repo-a");
+        SyncRepo repoA = testUtils.setupRepo("mock://repo-a");
+        SyncRepo repoB = testUtils.setupRepo("mock://repo-b");
+        book = testUtils.setupBook("Booky", "1 2 3");
+        dataRepository.setLink(book.getBook().getId(), "mock://repo-a");
 
-        shelf.sync();
+        testUtils.sync();
 
-        book = BooksClient.getAll(context).get(0);
+        book = dataRepository.getBooks().get(0);
 
         assertEquals(1, repoA.getBooks().size());
         assertEquals(0, repoB.getBooks().size());
-        assertEquals("mock://repo-a", book.getLinkRepo().toString());
-        assertEquals("mock://repo-a", book.getLastSyncedToRook().getRepoUri().toString());
-        assertEquals("mock://repo-a/Booky.org", book.getLastSyncedToRook().getUri().toString());
+        assertEquals("mock://repo-a", book.getLinkedTo());
+        assertEquals("mock://repo-a", book.getSyncedTo().getRepoUri().toString());
+        assertEquals("mock://repo-a/Booky.org", book.getSyncedTo().getUri().toString());
 
-        shelf.setLink(book, "mock://repo-b");
+        dataRepository.setLink(book.getBook().getId(), "mock://repo-b");
 
-        book = BooksClient.getAll(context).get(0);
+        book = dataRepository.getBooks().get(0);
 
-        shelf.renameBook(book, "BookyRenamed");
+        dataRepository.renameBook(book, "BookyRenamed");
 
-        book = BooksClient.getAll(context).get(0);
+        book = dataRepository.getBooks().get(0);
 
-        assertEquals("Booky", book.getName());
-        assertEquals(BookSyncStatus.ROOK_AND_VROOK_HAVE_DIFFERENT_REPOS, book.getSyncStatus());
-        assertEquals("mock://repo-b", book.getLinkRepo().toString());
-        assertEquals("mock://repo-a/Booky.org", book.getLastSyncedToRook().getUri().toString());
+        assertEquals("Booky", book.getBook().getName());
+        assertEquals(BookSyncStatus.ROOK_AND_VROOK_HAVE_DIFFERENT_REPOS.toString(), book.getBook().getSyncStatus());
+        assertEquals("mock://repo-b", book.getLinkedTo());
+        assertEquals("mock://repo-a/Booky.org", book.getSyncedTo().getUri().toString());
     }
 }

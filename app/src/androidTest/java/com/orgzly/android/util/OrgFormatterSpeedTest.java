@@ -13,7 +13,7 @@ import java.util.LongSummaryStatistics;
 /**
  * Simple benchmark for {@link OrgFormatter}, written as a failing test (to display the results).
  */
-@Ignore
+@Ignore("Not a test")
 public class OrgFormatterSpeedTest {
     private static String markup;
     private static String links;

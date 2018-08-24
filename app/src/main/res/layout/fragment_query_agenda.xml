@@ -6,6 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.orgzly.android.ui.views.GesturedListView style="@style/QueryListView"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_query_agenda_recycler_view"
+        style="@style/RecyclerViewNoteList"
+        android:paddingBottom="?attr/actionBarSize"
+        android:clipToPadding="false" />
 
 </RelativeLayout>

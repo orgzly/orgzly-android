@@ -2,8 +2,10 @@ package com.orgzly.android.misc
 
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.ui.note.NoteBuilder
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Ignore
 import org.junit.Test
 import java.io.IOException
 
@@ -14,49 +16,51 @@ class SettingsTest : OrgzlyTest() {
     @Test
     @Throws(IOException::class)
     fun testStateChangeAndNotesReparse() {
-        shelfTestUtils.setupBook("booky", "* TODO [#A] Title")
+        testUtils.setupBook("booky", "* TODO [#A] Title")
 
         AppPreferences.states(context, "TODO|DONE")
-        shelf.reParseNotesStateAndTitles()
+        assertEquals(0, dataRepository.reParseNotesStateAndTitles())
 
-        shelf.getNote("Title").let { note ->
-            assertEquals("TODO", note.head.state)
-            assertEquals("A", note.head.priority)
+        dataRepository.getNote("Title").let {
+            assertEquals("TODO", it?.state)
+            assertEquals("A", it?.priority)
         }
 
         AppPreferences.states(context, "")
-        shelf.reParseNotesStateAndTitles()
+        assertEquals(1, dataRepository.reParseNotesStateAndTitles())
 
-        shelf.getNote("TODO [#A] Title").let { note ->
-            assertNull(note.head.state)
-            assertNull(note.head.priority)
+        dataRepository.getNote("TODO [#A] Title").let {
+            assertNull(it?.state)
+            assertNull(it?.priority)
         }
 
         AppPreferences.states(context, "TODO|DONE")
-        shelf.reParseNotesStateAndTitles()
+        assertEquals(1, dataRepository.reParseNotesStateAndTitles())
 
-        shelf.getNote("Title").let { note ->
-            assertEquals("TODO", note.head.state)
-            assertEquals("A", note.head.priority)
+        dataRepository.getNote("Title").let {
+            assertEquals("TODO", it?.state)
+            assertEquals("A", it?.priority)
         }
     }
 
     @Test
     @Throws(IOException::class)
     fun testStarInContent() {
-        shelfTestUtils.setupBook("booky", "* TODO [#A] Title")
+        testUtils.setupBook("booky", "* TODO [#A] Title")
 
-        shelf.getNote("Title").let { note ->
-            note.head.content = "Content\n* with star\nin the middle"
-            shelf.updateNote(note)
+        dataRepository.getNoteView("Title")?.let { noteView ->
+            val payload = NoteBuilder.newPayload(noteView, emptyList())
+                    .copy(content = "Content\n* with star\nin the middle")
+
+            dataRepository.updateNote(noteView.note.id, payload)
         }
 
-        shelf.reParseNotesStateAndTitles()
+        assertEquals(0, dataRepository.reParseNotesStateAndTitles())
 
-        shelf.getNote("Title").let {
-            assertEquals("TODO", it.head.state)
-            assertEquals("A", it.head.priority)
-            assertEquals("Title", it.head.title)
+        dataRepository.getNoteView("Title")?.let {
+            assertEquals("TODO", it.note.state)
+            assertEquals("A", it.note.priority)
+            assertEquals("Title", it.note.title)
         }
     }
 }

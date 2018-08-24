@@ -1,10 +1,11 @@
 package com.orgzly.android.repos;
 
-import com.orgzly.android.Book;
+import com.orgzly.android.BookFormat;
 import com.orgzly.android.BookName;
 import com.orgzly.android.NotesExporter;
 import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.Shelf;
+import com.orgzly.android.db.entity.Book;
+import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.util.MiscUtils;
 
 import org.junit.Before;
@@ -22,15 +23,15 @@ public class LocalDbRepoTest extends OrgzlyTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        shelfTestUtils.setupBook("local-book-1", "Content\n\n* Note");
+        testUtils.setupBook("local-book-1", "Content\n\n* Note");
     }
 
     @Test
     public void testGetBooksFromAllRepos() throws IOException {
-        shelfTestUtils.setupRepo("mock://repo-a");
-        shelfTestUtils.setupRook("mock://repo-a", "mock://repo-a/mock-book.org", "book content\n\n* First note\n** Second note", "rev1", 1234567890000L);
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRook("mock://repo-a", "mock://repo-a/mock-book.org", "book content\n\n* First note\n** Second note", "rev1", 1234567890000L);
 
-        List<VersionedRook> books = new Shelf(context).getBooksFromAllRepos(null);
+        List<VersionedRook> books = SyncService.getBooksFromAllRepos(dataRepository, null);
 
         assertEquals(1, books.size());
 
@@ -45,18 +46,18 @@ public class LocalDbRepoTest extends OrgzlyTest {
 
     @Test
     public void testStoringBook() throws IOException {
-        Repo repo;
+        SyncRepo repo;
 
         long now = System.currentTimeMillis();
 
         /* Write local book's content to a temporary file. */
-        Book book = shelf.getBook("local-book-1");
-        File tmpFile = shelf.getTempBookFile();
+        Book book = dataRepository.getBook("local-book-1");
+        File tmpFile = dataRepository.getTempBookFile();
 
         try {
-            NotesExporter.getInstance(context).exportBook(book, tmpFile);
-            repo = RepoFactory.getFromUri(context, "mock://repo-a");
-            repo.storeBook(tmpFile, BookName.fileName(book.getName(), BookName.Format.ORG));
+            new NotesExporter(context, dataRepository).exportBook(book, tmpFile);
+            repo = repoFactory.getFromUri(context, "mock://repo-a");
+            repo.storeBook(tmpFile, BookName.fileName(book.getName(), BookFormat.ORG));
         } finally {
             tmpFile.delete();
         }
@@ -72,13 +73,13 @@ public class LocalDbRepoTest extends OrgzlyTest {
 
     @Test
     public void testRetrievingBook() throws IOException {
-        shelfTestUtils.setupRepo("mock://repo-a");
-        shelfTestUtils.setupRook("mock://repo-a", "mock://repo-a/mock-book.org", "book content\n\n* First note\n** Second note", "rev1", 1234567890000L);
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRook("mock://repo-a", "mock://repo-a/mock-book.org", "book content\n\n* First note\n** Second note", "rev1", 1234567890000L);
 
-        Repo repo = RepoFactory.getFromUri(context, "mock://repo-a");
-        VersionedRook vrook = shelf.getBooksFromAllRepos(null).get(0);
+        SyncRepo repo = repoFactory.getFromUri(context, "mock://repo-a");
+        VersionedRook vrook = SyncService.getBooksFromAllRepos(dataRepository, null).get(0);
 
-        File tmpFile = shelf.getTempBookFile();
+        File tmpFile = dataRepository.getTempBookFile();
         try {
             repo.retrieveBook("mock-book.org", tmpFile);
             String content = MiscUtils.readStringFromFile(tmpFile);

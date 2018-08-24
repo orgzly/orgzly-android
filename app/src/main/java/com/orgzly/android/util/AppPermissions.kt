@@ -4,9 +4,9 @@ package com.orgzly.android.util
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.support.design.widget.Snackbar
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import android.view.View
 import com.orgzly.R
 import com.orgzly.android.ui.CommonActivity
@@ -23,7 +23,7 @@ object AppPermissions {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
                 val view = activity.findViewById(R.id.main_content) as View
 
-                activity.showSnackbar(Snackbar.make(view, rationale, MiscUtils.SNACKBAR_WITH_ACTION_DURATION)
+                activity.showSnackbar(Snackbar.make(view, rationale, Snackbar.LENGTH_LONG)
                         .setAction(R.string.settings) { ActivityUtils.openAppInfoSettings(activity) })
 
             } else {
@@ -50,7 +50,7 @@ object AppPermissions {
             Usage.LOCAL_REPO -> Manifest.permission.WRITE_EXTERNAL_STORAGE
             Usage.BOOK_EXPORT -> Manifest.permission.WRITE_EXTERNAL_STORAGE
             Usage.SYNC_START -> Manifest.permission.WRITE_EXTERNAL_STORAGE
-            Usage.FILTERS_EXPORT_IMPORT -> Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Usage.SAVED_SEARCHES_EXPORT_IMPORT -> Manifest.permission.WRITE_EXTERNAL_STORAGE
             Usage.EXTERNAL_FILES_ACCESS -> Manifest.permission.READ_EXTERNAL_STORAGE
         }
     }
@@ -61,7 +61,7 @@ object AppPermissions {
             Usage.LOCAL_REPO -> R.string.permissions_rationale_for_local_repo
             Usage.BOOK_EXPORT -> R.string.permissions_rationale_for_book_export
             Usage.SYNC_START -> R.string.permissions_rationale_for_sync_start
-            Usage.FILTERS_EXPORT_IMPORT -> R.string.storage_permissions_missing
+            Usage.SAVED_SEARCHES_EXPORT_IMPORT -> R.string.storage_permissions_missing
             Usage.EXTERNAL_FILES_ACCESS -> R.string.permissions_rationale_for_external_files_access
         }
     }
@@ -70,7 +70,7 @@ object AppPermissions {
         LOCAL_REPO,
         BOOK_EXPORT,
         SYNC_START,
-        FILTERS_EXPORT_IMPORT,
+        SAVED_SEARCHES_EXPORT_IMPORT,
         EXTERNAL_FILES_ACCESS
     }
 }

@@ -1,9 +1,8 @@
 package com.orgzly.android.util;
 
-import android.content.Context;
 import android.net.Uri;
-import android.support.v4.provider.DocumentFile;
 
+import com.orgzly.android.BookFormat;
 import com.orgzly.android.BookName;
 
 import java.util.List;
@@ -49,7 +48,7 @@ public class UriUtils {
      */
     public static Uri getUriForNewName(Uri uri, String name) {
         BookName bookName = BookName.fromFileName(uri.getLastPathSegment());
-        BookName.Format format = bookName.getFormat();
+        BookFormat format = bookName.getFormat();
 
         String newFilename = BookName.fileName(name, format);
 
