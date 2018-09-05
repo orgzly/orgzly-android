@@ -4,7 +4,6 @@ package com.orgzly.android;
 import android.content.Context;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDexApplication;
-import android.content.Context;
 
 import com.evernote.android.job.JobConfig;
 import com.evernote.android.job.JobManager;

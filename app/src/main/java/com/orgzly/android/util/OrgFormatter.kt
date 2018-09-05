@@ -1,13 +1,16 @@
 package com.orgzly.android.util
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Typeface
+import android.net.Uri
+import android.support.v4.content.ContextCompat.startActivity
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.*
 import android.view.View
-import com.orgzly.BuildConfig
+import com.orgzly.android.App
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.views.TextViewWithMarkup
 import com.orgzly.android.ui.views.style.CheckboxSpan
@@ -65,6 +68,8 @@ object OrgFormatter {
 
     private val CHECKBOXES_PATTERN = Pattern.compile("""^\s*-\s+(\[[ X]])""", Pattern.MULTILINE)
 
+    private val FILELINKS_PATTERN = Pattern.compile("file:([^\\s]+)")
+
     private const val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 
     private data class SpanRegion(
@@ -111,6 +116,8 @@ object OrgFormatter {
         ssb = parseOrgLinks(ssb, BRACKET_LINK, config.linkify)
 
         parsePlainLinks(ssb, PLAIN_LINK, config.linkify)
+
+        parseFilelinks(ssb)
 
         ssb = parseMarkup(ssb, config)
 
@@ -329,6 +336,38 @@ object OrgFormatter {
             ssb.setSpan(CheckboxSpan(content, start, end), start, end, FLAGS)
             ssb.setSpan(TypefaceSpan("monospace"), start, end, FLAGS)
             ssb.setSpan(StyleSpan(Typeface.BOLD), start, end, FLAGS)
+        }
+    }
+
+    /**
+     * Parse file paths
+     */
+    private fun parseFilelinks(ssb: SpannableStringBuilder) {
+        val m = FILELINKS_PATTERN.matcher(ssb)
+
+        // Try to find a matching file path
+        while (m.find()) {
+            val content = m.group()
+            val start = m.start()
+            val end = m.end()
+
+            // Split the "file:path" expression
+            val s = content.split(":")
+
+            // Ensure we have a path component
+            if(s.size == 2)
+            {
+                // Create a ClickableSpan that allows to open the file
+                val clickableSpan = object : ClickableSpan() {
+                    override fun onClick(widget: View?) {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("content://com.orgzly.fileprovider/sdcard/" + s.get(1) ))
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        startActivity(App.getAppContext(), intent, null)
+                    }
+                }
+
+                ssb.setSpan(clickableSpan, start, end, FLAGS)
+            }
         }
     }
 
