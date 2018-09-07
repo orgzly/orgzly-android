@@ -1,21 +1,29 @@
 package com.orgzly.android.util
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
+import android.os.Environment
 import android.support.v4.content.ContextCompat.startActivity
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.*
 import android.view.View
+import android.widget.Toast
 import com.orgzly.android.App
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.views.TextViewWithMarkup
 import com.orgzly.android.ui.views.style.CheckboxSpan
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import android.support.v4.content.FileProvider
+import com.orgzly.BuildConfig
+import java.io.File
+
+
 
 /**
  *
@@ -360,9 +368,31 @@ object OrgFormatter {
                 // Create a ClickableSpan that allows to open the file
                 val clickableSpan = object : ClickableSpan() {
                     override fun onClick(widget: View?) {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("content://com.orgzly.fileprovider/sdcard/" + s.get(1) ))
-                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        startActivity(App.getAppContext(), intent, null)
+                        val context = App.getAppContext()
+
+                        // Get the file
+                        val file = File(Environment.getExternalStorageDirectory().getPath() + "/" + s.get(1))
+
+                        // Check file existence, before trying to process it
+                        if(file.exists()) {
+                            val contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", file)
+
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(contentUri.toString()))
+                            // Added for support on API 16
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+                            // Try to start an activity for opening the file
+                            try {
+                                startActivity(context, intent, null)
+                            } catch (e: ActivityNotFoundException) {
+                                Toast.makeText(context, "No application found to open this file format", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        else
+                        {
+                            Toast.makeText(context, "File " + file.absolutePath + " does not exist", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
 
