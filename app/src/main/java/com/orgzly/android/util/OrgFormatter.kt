@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
-import android.net.Uri
 import android.os.Environment
 import android.support.v4.content.ContextCompat.startActivity
 import android.text.SpannableString
@@ -21,6 +20,7 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import android.support.v4.content.FileProvider
 import com.orgzly.BuildConfig
+import com.orgzly.R
 import java.io.File
 
 
@@ -370,28 +370,37 @@ object OrgFormatter {
                     override fun onClick(widget: View?) {
                         val context = App.getAppContext()
 
-                        // Get the file
-                        val file = File(Environment.getExternalStorageDirectory().getPath() + "/" + s.get(1))
+                        // Check that we have the permission to read external files
+                        val isGranted = AppPermissions.isGranted(context, AppPermissions.Usage.EXTERNAL_FILES_ACCESS)
 
-                        // Check file existence, before trying to process it
-                        if(file.exists()) {
-                            val contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", file)
+                        if (isGranted) {
+                            // Get the file
+                            val file = File(Environment.getExternalStorageDirectory(), s[1])
 
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(contentUri.toString()))
-                            // Added for support on API 16
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            // Check file existence, before trying to process it
+                            if(file.exists()) {
+                                val contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", file)
 
-                            // Try to start an activity for opening the file
-                            try {
-                                startActivity(context, intent, null)
-                            } catch (e: ActivityNotFoundException) {
-                                Toast.makeText(context, "No application found to open this file format", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(Intent.ACTION_VIEW, contentUri)
+                                // Added for support on API 16
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+                                // Try to start an activity for opening the file
+                                try {
+                                    startActivity(context, intent, null)
+                                } catch (e: ActivityNotFoundException) {
+                                    Toast.makeText(context, R.string.external_file_no_app_found, Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            else
+                            {
+                                Toast.makeText(context, String.format(context.getString(R.string.external_file_not_found), file.absolutePath), Toast.LENGTH_SHORT).show()
                             }
                         }
                         else
                         {
-                            Toast.makeText(context, "File " + file.absolutePath + " does not exist", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, R.string.permissions_rationale_for_external_files_access, Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

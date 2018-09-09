@@ -238,6 +238,7 @@
     <string name="permissions_rationale_for_local_repo">Syncing with a local directory requires storage permission</string>
     <string name="permissions_rationale_for_book_export">Exporting notebook requires storage permission</string>
     <string name="permissions_rationale_for_sync_start">Syncing with local repositories requires storage permission</string>
+    <string name="permissions_rationale_for_external_files_access">Accessing external files requires storage permission</string>
 
     <string name="cycle_visibility">Fold/Unfold All</string>
     <string name="running_database_update">Upgrading database…</string>
@@ -533,5 +534,8 @@
     <string name="always_show_set">Always show set</string>
     <string name="show_selected">Show selected</string>
     <string name="hide_all">Hide all</string>
+
+    <string name="external_file_no_app_found">No application found to open this file format</string>
+    <string name="external_file_not_found">File %1$s does not exist</string>
 
 </resources>

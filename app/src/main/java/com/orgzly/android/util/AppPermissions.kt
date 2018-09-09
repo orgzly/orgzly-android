@@ -51,6 +51,7 @@ object AppPermissions {
             Usage.BOOK_EXPORT -> Manifest.permission.WRITE_EXTERNAL_STORAGE
             Usage.SYNC_START -> Manifest.permission.WRITE_EXTERNAL_STORAGE
             Usage.FILTERS_EXPORT_IMPORT -> Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Usage.EXTERNAL_FILES_ACCESS -> Manifest.permission.READ_EXTERNAL_STORAGE
         }
     }
 
@@ -61,6 +62,7 @@ object AppPermissions {
             Usage.BOOK_EXPORT -> R.string.permissions_rationale_for_book_export
             Usage.SYNC_START -> R.string.permissions_rationale_for_sync_start
             Usage.FILTERS_EXPORT_IMPORT -> R.string.storage_permissions_missing
+            Usage.EXTERNAL_FILES_ACCESS -> R.string.permissions_rationale_for_external_files_access
         }
     }
 
@@ -68,6 +70,7 @@ object AppPermissions {
         LOCAL_REPO,
         BOOK_EXPORT,
         SYNC_START,
-        FILTERS_EXPORT_IMPORT
+        FILTERS_EXPORT_IMPORT,
+        EXTERNAL_FILES_ACCESS
     }
 }
