@@ -370,37 +370,36 @@ object OrgFormatter {
                     override fun onClick(widget: View?) {
                         val context = App.getAppContext()
 
-                        // Check that we have the permission to read external files
-                        val isGranted = AppPermissions.isGranted(context, AppPermissions.Usage.EXTERNAL_FILES_ACCESS)
+                        // Get the current activity is available
+                        val currentActivity = App.getCurrentActivity()
+                        if(currentActivity != null) {
+                            // Check that we have the permission to read external files
+                            // or ask for it
+                            val isGranted = AppPermissions.isGrantedOrRequest(currentActivity, AppPermissions.Usage.EXTERNAL_FILES_ACCESS)
 
-                        if (isGranted) {
-                            // Get the file
-                            val file = File(Environment.getExternalStorageDirectory(), s[1])
+                            if (isGranted) {
+                                // Get the file
+                                val file = File(Environment.getExternalStorageDirectory(), s[1])
 
-                            // Check file existence, before trying to process it
-                            if(file.exists()) {
-                                val contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", file)
+                                // Check file existence, before trying to process it
+                                if (file.exists()) {
+                                    val contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", file)
 
-                                val intent = Intent(Intent.ACTION_VIEW, contentUri)
-                                // Added for support on API 16
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                    val intent = Intent(Intent.ACTION_VIEW, contentUri)
+                                    // Added for support on API 16
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
-                                // Try to start an activity for opening the file
-                                try {
-                                    startActivity(context, intent, null)
-                                } catch (e: ActivityNotFoundException) {
-                                    Toast.makeText(context, R.string.external_file_no_app_found, Toast.LENGTH_SHORT).show()
+                                    // Try to start an activity for opening the file
+                                    try {
+                                        startActivity(context, intent, null)
+                                    } catch (e: ActivityNotFoundException) {
+                                        currentActivity.showSnackbar(R.string.external_file_no_app_found)
+                                    }
+                                } else {
+                                    currentActivity.showSnackbar(String.format(context.getString(R.string.external_file_not_found), file.absolutePath))
                                 }
                             }
-                            else
-                            {
-                                Toast.makeText(context, String.format(context.getString(R.string.external_file_not_found), file.absolutePath), Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                        else
-                        {
-                            Toast.makeText(context, R.string.permissions_rationale_for_external_files_access, Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
