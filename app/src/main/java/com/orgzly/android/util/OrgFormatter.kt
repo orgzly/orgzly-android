@@ -372,12 +372,12 @@ object OrgFormatter {
 
                         // Get the current activity is available
                         val currentActivity = App.getCurrentActivity()
-                        if(currentActivity != null) {
-                            // Check that we have the permission to read external files
-                            // or ask for it
-                            val isGranted = AppPermissions.isGrantedOrRequest(currentActivity, AppPermissions.Usage.EXTERNAL_FILES_ACCESS)
 
-                            if (isGranted) {
+                        // Check that we have the permission to read external files
+                        // or ask for it and run the associated code
+                        currentActivity?.runWithPermission(
+                            AppPermissions.Usage.EXTERNAL_FILES_ACCESS,
+                            Runnable {
                                 // Get the file
                                 val file = File(Environment.getExternalStorageDirectory(), s[1])
 
@@ -397,10 +397,10 @@ object OrgFormatter {
                                         currentActivity.showSnackbar(R.string.external_file_no_app_found)
                                     }
                                 } else {
-                                    currentActivity.showSnackbar(String.format(context.getString(R.string.external_file_not_found), file.absolutePath))
+                                    currentActivity.showSnackbar(context.getString(R.string.external_file_not_found, file.absolutePath))
                                 }
                             }
-                        }
+                        );
                     }
                 }
 

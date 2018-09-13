@@ -22,12 +22,12 @@ public class CommonActivityLifecycleCallbacks  implements Application.ActivityLi
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        registerActivity(activity);
+        registerActivity(null);
     }
 
     @Override
     public void onActivityStarted(Activity activity) {
-        registerActivity(activity);
+        registerActivity(null);
     }
 
     @Override
