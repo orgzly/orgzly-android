@@ -4,10 +4,11 @@ package com.orgzly.android;
 import android.content.Context;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDexApplication;
-import android.content.Context;
 
 import com.evernote.android.job.JobConfig;
 import com.evernote.android.job.JobManager;
+import com.orgzly.android.ui.CommonActivity;
+import com.orgzly.android.ui.CommonActivityLifecycleCallbacks;
 import com.orgzly.android.ui.settings.SettingsFragment;
 
 /**
@@ -25,9 +26,14 @@ public class App extends MultiDexApplication {
     public static final AppExecutors EXECUTORS = new AppExecutors();
 
     private static Context context;
+    private static CommonActivity currentActivity;
 
     @Override
     public void onCreate() {
+        // Register CommonActivity life cycle within the App
+        // to be able to access the activity in classes like OrgFormatter
+        registerActivityLifecycleCallbacks(new CommonActivityLifecycleCallbacks());
+
         super.onCreate();
 
         App.setDefaultPreferences(this, false);
@@ -49,5 +55,14 @@ public class App extends MultiDexApplication {
 
     public static Context getAppContext() {
         return App.context;
+    }
+
+    // Getter/setter for the current activity
+    public static void setCurrentActivity(CommonActivity currentCommonActivity) {
+        currentActivity = currentCommonActivity;
+    }
+
+    public static CommonActivity getCurrentActivity() {
+        return currentActivity;
     }
 }

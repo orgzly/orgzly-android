@@ -1,18 +1,29 @@
 package com.orgzly.android.util
 
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.graphics.Typeface
+import android.os.Environment
+import android.support.v4.content.ContextCompat.startActivity
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.*
 import android.view.View
-import com.orgzly.BuildConfig
+import android.widget.Toast
+import com.orgzly.android.App
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.views.TextViewWithMarkup
 import com.orgzly.android.ui.views.style.CheckboxSpan
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import android.support.v4.content.FileProvider
+import com.orgzly.BuildConfig
+import com.orgzly.R
+import java.io.File
+
+
 
 /**
  *
@@ -65,6 +76,8 @@ object OrgFormatter {
 
     private val CHECKBOXES_PATTERN = Pattern.compile("""^\s*-\s+(\[[ X]])""", Pattern.MULTILINE)
 
+    private val FILELINKS_PATTERN = Pattern.compile("file:([^\\s]+)")
+
     private const val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 
     private data class SpanRegion(
@@ -111,6 +124,8 @@ object OrgFormatter {
         ssb = parseOrgLinks(ssb, BRACKET_LINK, config.linkify)
 
         parsePlainLinks(ssb, PLAIN_LINK, config.linkify)
+
+        parseFilelinks(ssb)
 
         ssb = parseMarkup(ssb, config)
 
@@ -329,6 +344,68 @@ object OrgFormatter {
             ssb.setSpan(CheckboxSpan(content, start, end), start, end, FLAGS)
             ssb.setSpan(TypefaceSpan("monospace"), start, end, FLAGS)
             ssb.setSpan(StyleSpan(Typeface.BOLD), start, end, FLAGS)
+        }
+    }
+
+    /**
+     * Parse file paths
+     */
+    private fun parseFilelinks(ssb: SpannableStringBuilder) {
+        val m = FILELINKS_PATTERN.matcher(ssb)
+
+        // Try to find a matching file path
+        while (m.find()) {
+            val content = m.group()
+            val start = m.start()
+            val end = m.end()
+
+            // Split the "file:path" expression
+            val s = content.split(":")
+
+            // Ensure we have a path component
+            if(s.size == 2)
+            {
+                // Create a ClickableSpan that allows to open the file
+                val clickableSpan = object : ClickableSpan() {
+                    override fun onClick(widget: View?) {
+                        val context = App.getAppContext()
+
+                        // Get the current activity is available
+                        val currentActivity = App.getCurrentActivity()
+
+                        // Check that we have the permission to read external files
+                        // or ask for it and run the associated code
+                        currentActivity?.runWithPermission(
+                            AppPermissions.Usage.EXTERNAL_FILES_ACCESS,
+                            Runnable {
+                                // Get the file
+                                val file = File(Environment.getExternalStorageDirectory(), s[1])
+
+                                // Check file existence, before trying to process it
+                                if (file.exists()) {
+                                    val contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", file)
+
+                                    val intent = Intent(Intent.ACTION_VIEW, contentUri)
+                                    // Added for support on API 16
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+                                    // Try to start an activity for opening the file
+                                    try {
+                                        startActivity(context, intent, null)
+                                    } catch (e: ActivityNotFoundException) {
+                                        currentActivity.showSnackbar(R.string.external_file_no_app_found)
+                                    }
+                                } else {
+                                    currentActivity.showSnackbar(context.getString(R.string.external_file_not_found, file.absolutePath))
+                                }
+                            }
+                        );
+                    }
+                }
+
+                ssb.setSpan(clickableSpan, start, end, FLAGS)
+            }
         }
     }
 

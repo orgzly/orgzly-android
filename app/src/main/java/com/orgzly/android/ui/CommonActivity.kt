@@ -148,8 +148,12 @@ abstract class CommonActivity : AppCompatActivity() {
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         val consumed = super.dispatchTouchEvent(ev)
 
-        if (ev.action == MotionEvent.ACTION_UP) {
-            dismissSnackbar()
+        if (ev.action == MotionEvent.ACTION_DOWN) {
+            snackbar?.let {
+            if (it.isShown()) {
+                    dismissSnackbar()
+                }
+            }
         }
 
         return consumed
