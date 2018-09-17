@@ -397,7 +397,7 @@ object OrgFormatter {
                                         currentActivity.showSnackbar(R.string.external_file_no_app_found)
                                     }
                                 } else {
-                                    currentActivity.showSnackbar(context.getString(R.string.external_file_not_found, file.absolutePath))
+                                    currentActivity.showSnackbar(context.getString(R.string.file_does_not_exist, file.absolutePath))
                                 }
                             }
                         );

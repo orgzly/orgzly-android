@@ -535,7 +535,6 @@
     <string name="show_selected">Show selected</string>
     <string name="hide_all">Hide all</string>
 
-    <string name="external_file_no_app_found">No application found to open this file format</string>
-    <string name="external_file_not_found">File %1$s does not exist</string>
+    <string name="external_file_no_app_found">No application found to open this file</string>
 
 </resources>
