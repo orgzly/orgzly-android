@@ -51,4 +51,6 @@
     <dimen name="widget_header_text_size_16">17sp</dimen>
 
     <dimen name="widget_padding">2dp</dimen>
+
+    <dimen name="bullet_margin">4dp</dimen>
 </resources>

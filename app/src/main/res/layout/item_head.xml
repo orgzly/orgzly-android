@@ -231,8 +231,8 @@
                 android:layout_alignTop="@+id/item_head_payload"
                 android:layout_toEndOf="@+id/item_head_indent_container"
                 android:layout_toRightOf="@+id/item_head_indent_container"
-                android:layout_marginRight="4dp"
-                android:layout_marginEnd="4dp">
+                android:layout_marginRight="@dimen/bullet_margin"
+                android:layout_marginEnd="@dimen/bullet_margin">
 
                 <!-- Dummy text for aligning bullet. TODO: Rewrite this whole layout -->
                 <TextView
