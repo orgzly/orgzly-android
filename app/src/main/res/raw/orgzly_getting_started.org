@@ -37,6 +37,10 @@ SCHEDULED: <2015-02-16 Mon .+1d>
 ** You can also set a deadline time
 DEADLINE: <2015-02-20 Fri>
 
+** Reminders for scheduled and deadline times are supported
+
+They are disabled by default and need to be enabled in Settings.
+
 ** Note can use links
 
 Dial a phone number (tel:555-2368) or [[sms:555-2368][send SMS]].
