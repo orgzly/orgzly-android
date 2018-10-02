@@ -7,6 +7,7 @@ package com.orgzly.android.ui;
 public enum Place {
     ABOVE,
     UNDER,
+    UNDER_AS_FIRST,
     BELOW,
     UNSPECIFIED
 }

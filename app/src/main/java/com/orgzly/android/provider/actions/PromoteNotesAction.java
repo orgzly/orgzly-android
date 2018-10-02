@@ -68,11 +68,18 @@ public class PromoteNotesAction implements Action {
         values.put(DbNote.IS_CUT, batchId);
         db.update(DbNote.TABLE, values, DatabaseUtils.whereDescendantsAndNote(bookId, note.getLft(), note.getRgt()), null);
 
-        /* Paste below parent. */
         values = new ContentValues();
         values.put(ProviderContract.Paste.Param.BATCH_ID, batchId);
         values.put(ProviderContract.Paste.Param.NOTE_ID, note.getParentId());
-        values.put(ProviderContract.Paste.Param.SPOT, Place.BELOW.toString());
+
+        // Paste just under parent if note's level is too high, below otherwise
+        NotePosition parentPosition = DbNote.getPosition(db, note.getParentId());
+        if (parentPosition.getLevel() + 1 < note.getLevel()) {
+            values.put(ProviderContract.Paste.Param.SPOT, Place.UNDER_AS_FIRST.toString());
+        } else {
+            values.put(ProviderContract.Paste.Param.SPOT, Place.BELOW.toString());
+        }
+
         new PasteNotesAction(values).run(db);
 
         DatabaseUtils.updateBookMtime(db, bookId);

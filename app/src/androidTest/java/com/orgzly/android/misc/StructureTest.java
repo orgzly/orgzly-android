@@ -507,6 +507,84 @@ public class StructureTest extends OrgzlyTest {
     }
 
     @Test
+    public void testPromoteFirst2LevelOrphan() throws IOException {
+        Book book = shelfTestUtils.setupBook(
+                "notebook",
+                "** Note 1\n" +
+                "* Note 2\n");
+
+        /* Promote first note. */
+        shelf.promote(book.getId(), shelf.getNote("Note 1").getId());
+
+        NotePosition n1 = shelf.getNote("Note 1").getPosition();
+        NotePosition n2 = shelf.getNote("Note 2").getPosition();
+
+        assertEquals(1, n1.getLevel());
+        assertEquals(1, n2.getLevel());
+
+        assertTrue(n1.getLft() + " < " + n1.getRgt(), n1.getLft() < n1.getRgt());
+        assertTrue(n1.getRgt() + " < " + n2.getLft(), n1.getRgt() < n2.getLft());
+        assertTrue(n2.getLft() + " < " + n2.getRgt(), n2.getLft() < n2.getRgt());
+
+        assertEquals(
+                "* Note 1\n" +
+                "* Note 2\n",
+                shelf.getBookContent("notebook", BookName.Format.ORG));
+    }
+
+    @Test
+    public void testPromote3LevelOrphan() throws IOException {
+        Book book = shelfTestUtils.setupBook(
+                "notebook",
+                "* Note 1\n" +
+                "*** Note 2\n");
+
+        /* Promote first note. */
+        shelf.promote(book.getId(), shelf.getNote("Note 2").getId());
+
+        NotePosition n1 = shelf.getNote("Note 1").getPosition();
+        NotePosition n2 = shelf.getNote("Note 2").getPosition();
+
+        assertEquals(1, n1.getLevel());
+        assertEquals(2, n2.getLevel());
+
+        assertTrue(n1.getLft() + " < " + n2.getLft(), n1.getLft() < n2.getLft());
+        assertTrue(n2.getLft() + " < " + n2.getRgt(), n2.getLft() < n2.getRgt());
+        assertTrue(n2.getRgt() + " < " + n1.getRgt(), n2.getRgt() < n1.getRgt());
+
+        assertEquals(
+                "* Note 1\n" +
+                "** Note 2\n",
+                shelf.getBookContent("notebook", BookName.Format.ORG));
+    }
+
+    @Test
+    public void testPromote4LevelOrphan() throws IOException {
+        Book book = shelfTestUtils.setupBook(
+                "notebook",
+                "* Note 1\n" +
+                "**** Note 2\n");
+
+        /* Promote first note. */
+        shelf.promote(book.getId(), shelf.getNote("Note 2").getId());
+
+        NotePosition n1 = shelf.getNote("Note 1").getPosition();
+        NotePosition n2 = shelf.getNote("Note 2").getPosition();
+
+        assertEquals(1, n1.getLevel());
+        assertEquals(2, n2.getLevel());
+
+        assertTrue(n1.getLft() + " < " + n2.getLft(), n1.getLft() < n2.getLft());
+        assertTrue(n2.getLft() + " < " + n2.getRgt(), n2.getLft() < n2.getRgt());
+        assertTrue(n2.getRgt() + " < " + n1.getRgt(), n2.getRgt() < n1.getRgt());
+
+        assertEquals(
+                "* Note 1\n" +
+                "** Note 2\n",
+                shelf.getBookContent("notebook", BookName.Format.ORG));
+    }
+
+    @Test
     public void testDemote() throws IOException {
         Book book = shelfTestUtils.setupBook("notebook", "" +
                                                          "description\n" +
@@ -942,20 +1020,20 @@ public class StructureTest extends OrgzlyTest {
         Book book = shelfTestUtils.setupBook(
                 "test_book",
                 "* TODO First\n" +
-                        "SCHEDULED: <2018-04-24 Tue>\n" +
-                        "\n" +
-                        "content\n" +
-                        "\n" +
-                        "** 1.1\n" +
-                        "** 1.2\n" +
-                        "\n" +
-                        "* TODO Second\n" +
-                        "SCHEDULED: <2018-04-23 Mon>\n" +
-                        "\n" +
-                        "** 2.1\n" +
-                        "** 2.2\n" +
-                        "\n" +
-                        "* TODO Third\n"
+                "SCHEDULED: <2018-04-24 Tue>\n" +
+                "\n" +
+                "content\n" +
+                "\n" +
+                "** 1.1\n" +
+                "** 1.2\n" +
+                "\n" +
+                "* TODO Second\n" +
+                "SCHEDULED: <2018-04-23 Mon>\n" +
+                "\n" +
+                "** 2.1\n" +
+                "** 2.2\n" +
+                "\n" +
+                "* TODO Third\n"
 
         );
 
@@ -966,18 +1044,18 @@ public class StructureTest extends OrgzlyTest {
         String actual = shelf.getBookContent("test_book", BookName.Format.ORG);
 
         String expectedBook = "* TODO Second\n" +
-                "SCHEDULED: <2018-04-23 Mon>\n" +
-                "\n" +
-                "** 2.1\n" +
-                "** 2.2\n" +
-                "* TODO First\n" +
-                "SCHEDULED: <2018-04-24 Tue>\n" +
-                "\n" +
-                "content\n" +
-                "\n" +
-                "** 1.1\n" +
-                "** 1.2\n" +
-                "* TODO Third\n";
+                              "SCHEDULED: <2018-04-23 Mon>\n" +
+                              "\n" +
+                              "** 2.1\n" +
+                              "** 2.2\n" +
+                              "* TODO First\n" +
+                              "SCHEDULED: <2018-04-24 Tue>\n" +
+                              "\n" +
+                              "content\n" +
+                              "\n" +
+                              "** 1.1\n" +
+                              "** 1.2\n" +
+                              "* TODO Third\n";
 
         assertEquals(expectedBook, actual);
     }
@@ -987,27 +1065,27 @@ public class StructureTest extends OrgzlyTest {
         Book book = shelfTestUtils.setupBook(
                 "Source",
                 "* TODO First\n" +
-                        "SCHEDULED: <2018-04-24 Tue>\n" +
-                        "\n" +
-                        "content\n" +
-                        "\n" +
-                        "** 1.1\n" +
-                        "** 1.2\n" +
-                        "\n" +
-                        "* TODO RefileMe\n" +
-                        "SCHEDULED: <2018-04-23 Mon>\n" +
-                        "\n" +
-                        "** 2.1\n" +
-                        "** 2.2\n" +
-                        "\n" +
-                        "* TODO Third\n"
+                "SCHEDULED: <2018-04-24 Tue>\n" +
+                "\n" +
+                "content\n" +
+                "\n" +
+                "** 1.1\n" +
+                "** 1.2\n" +
+                "\n" +
+                "* TODO RefileMe\n" +
+                "SCHEDULED: <2018-04-23 Mon>\n" +
+                "\n" +
+                "** 2.1\n" +
+                "** 2.2\n" +
+                "\n" +
+                "* TODO Third\n"
 
         );
 
         Book targetBook = shelfTestUtils.setupBook(
                 "REFILE",
                 "* TODO RefiledPreviously\n"
-                );
+        );
 
         Note refileNote = shelf.getNote("RefileMe");
 
@@ -1016,11 +1094,11 @@ public class StructureTest extends OrgzlyTest {
         String actual = shelf.getBookContent("REFILE", BookName.Format.ORG);
 
         String expectedBook = "* TODO RefiledPreviously\n" +
-                "* TODO RefileMe\n" +
-                "SCHEDULED: <2018-04-23 Mon>\n" +
-                "\n" +
-                "** 2.1\n" +
-                "** 2.2\n";
+                              "* TODO RefileMe\n" +
+                              "SCHEDULED: <2018-04-23 Mon>\n" +
+                              "\n" +
+                              "** 2.1\n" +
+                              "** 2.2\n";
 
         assertEquals(expectedBook, actual);
     }

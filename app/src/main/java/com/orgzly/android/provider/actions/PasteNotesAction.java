@@ -73,15 +73,27 @@ public class PasteNotesAction implements Action {
                 NotePosition lastHighestLevelDescendant = getLastHighestLevelDescendant(db, targetNotePosition);
 
                 if (lastHighestLevelDescendant != null) {
-                    /* Insert batch after last descendant with highest level. */
+                    // After target's last descendant with highest level
                     pastedLft = lastHighestLevelDescendant.getRgt() + 1;
                     pastedLevel = lastHighestLevelDescendant.getLevel();
 
                 } else {
-                    /* Insert batch just under the target note. */
+                    // Just under the target note (target has no descendants)
                     pastedLft = targetNotePosition.getLft() + 1;
                     pastedLevel = targetNotePosition.getLevel() + 1;
                 }
+
+                if (targetNotePosition.isFolded()) {
+                    foldedUnder = targetNoteId;
+                }
+
+                pastedParentId = targetNoteId;
+
+                break;
+
+            case UNDER_AS_FIRST:
+                pastedLft = targetNotePosition.getLft() + 1;
+                pastedLevel = targetNotePosition.getLevel() + 1;
 
                 if (targetNotePosition.isFolded()) {
                     foldedUnder = targetNoteId;
