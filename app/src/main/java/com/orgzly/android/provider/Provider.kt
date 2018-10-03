@@ -457,6 +457,10 @@ class Provider : ContentProvider() {
                 }
             }
 
+            Place.UNDER_AS_FIRST -> {
+                TODO("Insert UNDER_AS_FIRST not implemented")
+            }
+
             Place.BELOW -> {
                 notePos.level = refNotePos!!.level
                 notePos.lft = refNotePos.rgt + 1
@@ -477,7 +481,7 @@ class Provider : ContentProvider() {
         }
 
         when (place) {
-            Place.ABOVE, Place.UNDER, Place.BELOW -> {
+            Place.ABOVE, Place.UNDER, Place.UNDER_AS_FIRST, Place.BELOW -> {
                 /* Make space for new note - increment notes' LFT and RGT. */
                 DatabaseUtils.makeSpaceForNewNotes(db, 1, refNotePos!!, place)
 
