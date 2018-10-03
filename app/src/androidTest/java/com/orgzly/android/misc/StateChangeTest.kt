@@ -100,6 +100,28 @@ class StateChangeTest : OrgzlyTest() {
         assertThat(exportedBook, `is`(expectedBook))
     }
 
+    @Test
+    fun testRemoveScheduledTimeAfterShiftingDeadline() {
+        AppPreferences.setLastRepeatOnTimeShift(context, false)
+        AppPreferences.logOnTimeShift(context, false)
+
+        val book = shelfTestUtils.setupBook(
+                "book-a",
+                "* TODO Task\n" +
+                "  DEADLINE: <2013-08-10 Sat +1w> SCHEDULED: <2013-08-08 Thu>")
+
+        val note = shelf.getNote("Task")
+
+        shelf.setStateToFirstDone(note.id)
+
+        val exportedBook = exportBook(book)
+
+        val expectedBook = "* TODO Task\n" +
+                           "  DEADLINE: <2013-08-17 Sat +1w>\n\n"
+
+        assertThat(exportedBook, `is`(expectedBook))
+    }
+
     private fun exportBook(book: Book): String {
         val sw = StringWriter()
 

@@ -536,6 +536,11 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_set_last_repeat_on_time_shift));
     }
 
+    public static void setLastRepeatOnTimeShift(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_set_last_repeat_on_time_shift);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
+
     /*
      * Note's metadata visibility
      */
