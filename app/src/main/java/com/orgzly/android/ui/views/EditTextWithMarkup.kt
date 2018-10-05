@@ -1,15 +1,15 @@
 package com.orgzly.android.ui.views
 
 import android.content.Context
+import android.support.v7.widget.AppCompatEditText
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.widget.EditText
 import com.orgzly.BuildConfig
 import com.orgzly.android.util.LogUtils
 import java.util.regex.Pattern
 
-class EditTextWithMarkup : EditText {
+class EditTextWithMarkup : AppCompatEditText {
     constructor(context: Context) : super(context) {
         addTextChangedListener(textWatcher)
     }
