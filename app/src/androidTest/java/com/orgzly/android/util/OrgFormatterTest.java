@@ -10,9 +10,9 @@ import java.util.Arrays;
 public class OrgFormatterTest extends OrgzlyTest {
 
     protected class SpanItem {
+        Object span;
         int start;
         int end;
-        String className;
         String url;
     }
 
@@ -34,12 +34,12 @@ public class OrgFormatterTest extends OrgzlyTest {
                 Object span = allSpans[i];
                 SpanItem spanItem = new SpanItem();
 
+                spanItem.span = span;
                 spanItem.start = ssb.getSpanStart(span);
                 spanItem.end = ssb.getSpanEnd(span);
-                spanItem.className = span.getClass().getSimpleName();
 
                 if (span instanceof URLSpan) {
-                    spanItem.url = ((URLSpan)span).getURL();
+                    spanItem.url = ((URLSpan) span).getURL();
                 }
 
                 spans[i] = spanItem;

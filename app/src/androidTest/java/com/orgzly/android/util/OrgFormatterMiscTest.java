@@ -1,8 +1,11 @@
 package com.orgzly.android.util;
 
+import android.text.style.URLSpan;
+
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertThat;
 
 public class OrgFormatterMiscTest extends OrgFormatterTest {
@@ -18,12 +21,12 @@ public class OrgFormatterMiscTest extends OrgFormatterTest {
 
         assertThat(spannable.spans[0].start, is(0));
         assertThat(spannable.spans[0].end, is(21));
-        assertThat(spannable.spans[0].className, is("URLSpan"));
+        assertThat(spannable.spans[0].span, instanceOf(URLSpan.class));
         assertThat(spannable.spans[0].url, is("http://www.orgzly.com"));
 
         assertThat(spannable.spans[1].start, is(22));
         assertThat(spannable.spans[1].end, is(43));
-        assertThat(spannable.spans[1].className, is("URLSpan"));
+        assertThat(spannable.spans[0].span, instanceOf(URLSpan.class));
         assertThat(spannable.spans[1].url, is("http://www.orgzly.com"));
     }
 
@@ -38,7 +41,7 @@ public class OrgFormatterMiscTest extends OrgFormatterTest {
 
         assertThat(spannable.spans[0].start, is(0));
         assertThat(spannable.spans[0].end, is(6));
-        assertThat(spannable.spans[0].className, is("URLSpan"));
+        assertThat(spannable.spans[0].span, instanceOf(URLSpan.class));
         assertThat(spannable.spans[0].url, is("http://www.orgzly.com"));
     }
 
@@ -53,17 +56,17 @@ public class OrgFormatterMiscTest extends OrgFormatterTest {
 
         assertThat(spannable.spans[0].start, is(4));
         assertThat(spannable.spans[0].end, is(20));
-        assertThat(spannable.spans[0].className, is("URLSpan"));
+        assertThat(spannable.spans[0].span, instanceOf(URLSpan.class));
         assertThat(spannable.spans[0].url, is("http://www.x.com"));
 
         assertThat(spannable.spans[1].start, is(25));
         assertThat(spannable.spans[1].end, is(41));
-        assertThat(spannable.spans[1].className, is("URLSpan"));
+        assertThat(spannable.spans[0].span, instanceOf(URLSpan.class));
         assertThat(spannable.spans[1].url, is("http://www.y.com"));
 
         assertThat(spannable.spans[2].start, is(45));
         assertThat(spannable.spans[2].end, is(46));
-        assertThat(spannable.spans[2].className, is("URLSpan"));
+        assertThat(spannable.spans[0].span, instanceOf(URLSpan.class));
         assertThat(spannable.spans[2].url, is("http://www.z.com"));
     }
 
@@ -78,17 +81,17 @@ public class OrgFormatterMiscTest extends OrgFormatterTest {
 
         assertThat(spannable.spans[0].start, is(4));
         assertThat(spannable.spans[0].end, is(18));
-        assertThat(spannable.spans[0].className, is("URLSpan"));
+        assertThat(spannable.spans[0].span, instanceOf(URLSpan.class));
         assertThat(spannable.spans[0].url, is("mailto:x@x.com"));
 
         assertThat(spannable.spans[1].start, is(23));
         assertThat(spannable.spans[1].end, is(37));
-        assertThat(spannable.spans[1].className, is("URLSpan"));
+        assertThat(spannable.spans[0].span, instanceOf(URLSpan.class));
         assertThat(spannable.spans[1].url, is("mailto:y@y.com"));
 
         assertThat(spannable.spans[2].start, is(41));
         assertThat(spannable.spans[2].end, is(42));
-        assertThat(spannable.spans[2].className, is("URLSpan"));
+        assertThat(spannable.spans[0].span, instanceOf(URLSpan.class));
         assertThat(spannable.spans[2].url, is("mailto:z@z.com"));
     }
 
