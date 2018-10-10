@@ -21,6 +21,7 @@ import java.util.regex.Pattern
 import android.support.v4.content.FileProvider
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.ui.CommonActivity
 import java.io.File
 
 
@@ -394,10 +395,10 @@ object OrgFormatter {
                                     try {
                                         startActivity(context, intent, null)
                                     } catch (e: ActivityNotFoundException) {
-                                        currentActivity.showSnackbar(R.string.external_file_no_app_found)
+                                        CommonActivity.showSnackbar(context, R.string.external_file_no_app_found)
                                     }
                                 } else {
-                                    currentActivity.showSnackbar(context.getString(R.string.file_does_not_exist, file.absolutePath))
+                                    CommonActivity.showSnackbar(context, context.getString(R.string.file_does_not_exist, file.absolutePath))
                                 }
                             }
                         );

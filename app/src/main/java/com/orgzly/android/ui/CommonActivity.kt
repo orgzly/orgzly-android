@@ -7,6 +7,7 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.GravityCompat
@@ -148,12 +149,8 @@ abstract class CommonActivity : AppCompatActivity() {
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         val consumed = super.dispatchTouchEvent(ev)
 
-        if (ev.action == MotionEvent.ACTION_DOWN) {
-            snackbar?.let {
-            if (it.isShown()) {
-                    dismissSnackbar()
-                }
-            }
+        if (ev.action == MotionEvent.ACTION_UP) {
+            dismissSnackbar()
         }
 
         return consumed
@@ -359,6 +356,13 @@ abstract class CommonActivity : AppCompatActivity() {
                 R.string.pref_key_color_scheme,
                 R.string.pref_key_ignore_system_locale
         )
+
+        @JvmStatic
+        fun showSnackbar(context: Context?, @StringRes id: Int) {
+            if (context != null) {
+                showSnackbar(context, context.getString(id))
+            }
+        }
 
         @JvmStatic
         fun showSnackbar(context: Context?, msg: String) {
