@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.support.test.InstrumentationRegistry;
 
 import com.orgzly.R;
@@ -58,12 +59,8 @@ public class OrgzlyTest {
 
     @After
     public void tearDown() throws Exception {
-//        new Handler(InstrumentationRegistry.getTargetContext().getMainLooper()).post(new Runnable() {
-//            @Override
-//            public void run() {
+        // new Handler(InstrumentationRegistry.getTargetContext().getMainLooper()).post(() -> restorePreferences());
         restorePreferences();
-//            }
-//        });
     }
 
     private void setupPreferences() {
@@ -120,9 +117,9 @@ public class OrgzlyTest {
     protected String defaultDialogUserDate() {
         OrgDateTime time = new OrgDateTime(true);
 
-       /* Default time is now + 1h.
-        * TODO: We shouldn't be able to do this - make OrgDateTime immutable.
-        */
+        /* Default time is now + 1h.
+         * TODO: We shouldn't be able to do this - make OrgDateTime immutable.
+         */
         Calendar cal = time.getCalendar();
         cal.add(Calendar.HOUR_OF_DAY, 1);
 
