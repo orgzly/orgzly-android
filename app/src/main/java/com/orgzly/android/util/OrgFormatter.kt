@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Environment
+import android.os.Handler
 import android.support.v4.content.ContextCompat.startActivity
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -364,44 +365,46 @@ object OrgFormatter {
             val s = content.split(":")
 
             // Ensure we have a path component
-            if(s.size == 2)
-            {
+            if (s.size == 2) {
                 // Create a ClickableSpan that allows to open the file
                 val clickableSpan = object : ClickableSpan() {
+
                     override fun onClick(widget: View?) {
-                        val context = App.getAppContext()
+                        Handler().post {
+                            val context = App.getAppContext()
 
-                        // Get the current activity is available
-                        val currentActivity = App.getCurrentActivity()
+                            // Get the current activity is available
+                            val currentActivity = App.getCurrentActivity()
 
-                        // Check that we have the permission to read external files
-                        // or ask for it and run the associated code
-                        currentActivity?.runWithPermission(
-                            AppPermissions.Usage.EXTERNAL_FILES_ACCESS,
-                            Runnable {
-                                // Get the file
-                                val file = File(Environment.getExternalStorageDirectory(), s[1])
+                            // Check that we have the permission to read external files
+                            // or ask for it and run the associated code
+                            currentActivity?.runWithPermission(
+                                    AppPermissions.Usage.EXTERNAL_FILES_ACCESS,
+                                    Runnable {
+                                        // Get the file
+                                        val file = File(Environment.getExternalStorageDirectory(), s[1])
 
-                                // Check file existence, before trying to process it
-                                if (file.exists()) {
-                                    val contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", file)
+                                        // Check file existence, before trying to process it
+                                        if (file.exists()) {
+                                            val contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", file)
 
-                                    val intent = Intent(Intent.ACTION_VIEW, contentUri)
-                                    // Added for support on API 16
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                            val intent = Intent(Intent.ACTION_VIEW, contentUri)
+                                            // Added for support on API 16
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
-                                    // Try to start an activity for opening the file
-                                    try {
-                                        startActivity(context, intent, null)
-                                    } catch (e: ActivityNotFoundException) {
-                                        CommonActivity.showSnackbar(context, R.string.external_file_no_app_found)
+                                            // Try to start an activity for opening the file
+                                            try {
+                                                startActivity(context, intent, null)
+                                            } catch (e: ActivityNotFoundException) {
+                                                currentActivity.showSnackbar(R.string.external_file_no_app_found)
+                                            }
+                                        } else {
+                                            currentActivity.showSnackbar(context.getString(R.string.file_does_not_exist, file.absolutePath))
+                                        }
                                     }
-                                } else {
-                                    CommonActivity.showSnackbar(context, context.getString(R.string.file_does_not_exist, file.absolutePath))
-                                }
-                            }
-                        );
+                            )
+                        }
                     }
                 }
 
