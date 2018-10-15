@@ -129,8 +129,37 @@ public class MainActivity extends CommonActivity
 
         setupDisplay(savedInstanceState);
 
+
         if (AppPreferences.newNoteNotification(this)) {
             Notifications.createNewNoteNotification(this);
+        }
+
+        Intent intent = getIntent();
+        if (intent.getAction().equalsIgnoreCase("android.intent.action.VIEW")) {
+            handleOrgProtocol(intent);
+        }
+    }
+
+    private void handleOrgProtocol(Intent intent) {
+        Uri data = intent.getData();
+        if (data == null) return;
+        String scheme = data.getScheme();
+        String host = data.getHost(); // expect org-id-goto
+        if (scheme.equalsIgnoreCase("org-protocol") &&
+                host.equalsIgnoreCase("org-id-goto")) {
+            String orgId = data.getQueryParameter("id");
+            if (orgId  == null) {
+                // This probably won't match but the error will make the bad link visible to the user.
+                orgId = intent.getDataString();
+            }
+            Intent newIntent = new Intent(AppIntent.ACTION_OPEN_NOTE);
+            newIntent.putExtra(AppIntent.EXTRA_PROPERTY_NAME, "ID");
+            newIntent.putExtra(AppIntent.EXTRA_PROPERTY_VALUE, orgId);
+            ActionService.enqueueWork(this, newIntent);
+        } else {
+            String msg = getString(R.string.no_such_link_target, "url", data.toString());
+            showSnackbar(msg);
+
         }
     }
 

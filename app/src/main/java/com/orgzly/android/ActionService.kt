@@ -130,6 +130,7 @@ class ActionService : JobIntentService() {
             enqueueWork(context, intent)
         }
 
+        @JvmStatic
         fun enqueueWork(context: Context, intent: Intent) {
             JobIntentService.enqueueWork(
                     context,
