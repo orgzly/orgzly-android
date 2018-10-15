@@ -42,6 +42,10 @@
                 <action android:name="com.google.android.gm.action.AUTO_SEND"/>
                 <data android:mimeType="text/plain"/>
             </intent-filter>
+
+            <meta-data
+                android:name="android.service.chooser.chooser_target_service"
+                android:value=".android.ChooserShareTargetService" />
         </activity>
 
         <activity
@@ -136,6 +140,15 @@
         <service
             android:name=".android.ActionService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
+
+        <service
+            android:name=".android.ChooserShareTargetService"
+            android:label="@string/share_target_service"
+            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.chooser.ChooserTargetService" />
+            </intent-filter>
+        </service>
 
         <!-- Not exported (not made available to other applications). -->
         <provider

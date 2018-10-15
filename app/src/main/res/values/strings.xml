@@ -536,5 +536,6 @@
     <string name="hide_all">Hide all</string>
 
     <string name="external_file_no_app_found">No application found to open this file</string>
+    <string name="share_target_service">Share to Orgzly book</string>
 
 </resources>
