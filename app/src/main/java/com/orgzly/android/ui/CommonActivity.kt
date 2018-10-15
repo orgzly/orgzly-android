@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.preference.PreferenceManager
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
@@ -213,10 +214,8 @@ abstract class CommonActivity : AppCompatActivity() {
         if (restartActivity) {
             Loaders.destroyAll(supportLoaderManager)
 
-            recreate()
-            // Handler().post(this@CommonActivity::recreate)
+            Handler().post(this@CommonActivity::recreate)
             restartActivity = false
-
         }
     }
 
