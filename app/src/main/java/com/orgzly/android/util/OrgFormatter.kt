@@ -1,55 +1,32 @@
 package com.orgzly.android.util
 
-import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
 import android.graphics.Typeface
-import android.os.Environment
-import android.os.Handler
-import android.support.v4.content.ContextCompat.startActivity
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.*
-import android.view.View
-import android.widget.Toast
-import com.orgzly.android.App
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.views.TextViewWithMarkup
-import com.orgzly.android.ui.views.style.CheckboxSpan
+import com.orgzly.android.ui.views.style.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-import android.support.v4.content.FileProvider
-import com.orgzly.BuildConfig
-import com.orgzly.R
-import com.orgzly.android.ui.CommonActivity
-import java.io.File
-
 
 
 /**
  *
  */
 object OrgFormatter {
-    private const val LINK_SCHEMES = "https?|mailto|tel|voicemail|geo|sms|smsto|mms|mmsto|id"
 
-    // tel:1234567
-    private const val PLAIN_LINK = "(($LINK_SCHEMES):\\S+)"
+    private const val SYSTEM_LINK_SCHEMES = "https?|mailto|tel|voicemail|geo|sms|smsto|mms|mmsto"
 
-    /* Same as the above, but ] ends the link too. Used for bracket links. */
-    private const val BRACKET_LINK = "(($LINK_SCHEMES):[^]\\s]+)"
+    private const val CUSTOM_LINK_SCHEMES = "id|file"
 
-    // #custom id
-    private const val CUSTOM_ID_LINK = "(#([^]]+))"
+    // Supported link schemas for plain links
+    private const val LINK_SCHEMES = "(?:$SYSTEM_LINK_SCHEMES|$CUSTOM_LINK_SCHEMES)"
 
-    // id:CABA8098-5969-429E-A780-94C8E0A9D206
-    private const val HD = "[0-9a-fA-F]"
-    private const val ID_LINK = "(id:($HD{8}-(?:$HD{4}-){3}$HD{12}))"
-
-    /* Allows anything as a link. Probably needs some constraints.
-     * See http://orgmode.org/manual/External-links.html and org-any-link-re
-     */
-    private const val BRACKET_ANY_LINK = "(([^]]+))"
+    private val LINK_REGEX =
+            """($LINK_SCHEMES:\S+)|(\[\[([^]]+)]\[([^]]+)]])|(\[\[([^]]+)]])""".toRegex()
 
     private const val PRE = "- \t('\"{"
     private const val POST = "- \\t.,:!?;'\")}\\["
@@ -71,14 +48,10 @@ object OrgFormatter {
             Pattern.CASE_INSENSITIVE or Pattern.MULTILINE or Pattern.DOTALL)
 
     private val ANY_DRAWER_PATTERN = drawerPattern("[-a-zA-Z_0-9]+")
+
     private val LOGBOOK_DRAWER_PATTERN = drawerPattern(LOGBOOK_DRAWER_NAME)
 
-    private fun namelessBracketLinkPattern(str: String) = Pattern.compile("\\[\\[$str]]")
-    private fun namedBracketLinkPattern(str: String) = Pattern.compile("\\[\\[$str]\\[([^]]+)]]")
-
     private val CHECKBOXES_PATTERN = Pattern.compile("""^\s*-\s+(\[[ X]])""", Pattern.MULTILINE)
-
-    private val FILELINKS_PATTERN = Pattern.compile("file:([^\\s]+)")
 
     private const val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 
@@ -117,17 +90,7 @@ object OrgFormatter {
             parseCheckboxes(ssb)
         }
 
-        ssb = parsePropertyLinks(ssb, CUSTOM_ID_LINK, "CUSTOM_ID", config.linkify)
-        ssb = parsePropertyLinks(ssb, ID_LINK, "ID", config.linkify)
-
-        ssb = parseOrgLinksWithName(ssb, BRACKET_LINK, config.linkify)
-        ssb = parseOrgLinksWithName(ssb, BRACKET_ANY_LINK, false)
-
-        ssb = parseOrgLinks(ssb, BRACKET_LINK, config.linkify)
-
-        parsePlainLinks(ssb, PLAIN_LINK, config.linkify)
-
-        parseFilelinks(ssb)
+        ssb = parseLinks(config, ssb)
 
         ssb = parseMarkup(ssb, config)
 
@@ -136,110 +99,70 @@ object OrgFormatter {
         return ssb
     }
 
-//    private fun logSpans(ssb: SpannableStringBuilder) {
-//        val spans = ssb.getSpans(0, ssb.length - 1, Any::class.java)
-//        LogUtils.d(TAG, "--- Spans ---", spans.size)
-//        spans.forEach {
-//            LogUtils.d(TAG, "Span", it, it.javaClass.simpleName, ssb.getSpanStart(it), ssb.getSpanEnd(it))
-//        }
-//    }
-
-    /**
-     * [[ http://link.com ][ name ]]
-     */
-    private fun parseOrgLinksWithName(ssb: SpannableStringBuilder, linkRegex: String, linkify: Boolean): SpannableStringBuilder {
-        val p = namedBracketLinkPattern(linkRegex)
-        val m = p.matcher(ssb)
-
+    private fun parseLinks(config: Config, ssb: SpannableStringBuilder): SpannableStringBuilder {
         return collectRegions(ssb) { spanRegions ->
-            while (m.find()) {
-                val link = m.group(1)
-                val name = m.group(3)
+            LINK_REGEX.findAll(ssb).forEach { match ->
+                val groups = match.groups
 
-                val span = if (linkify) URLSpan(link) else null
+                when {
+                    groups[1] != null -> // http://link.com
+                        parseLink(config, spanRegions, groups[1]!!, groups[1]!!, groups[1]!!)
 
-                spanRegions.add(SpanRegion(m.start(), m.end(), name, listOf(span)))
-            }
-        }
-    }
+                    groups[2] != null -> // [[http://link.com][name]]
+                        parseLink(config, spanRegions, groups[2]!!, groups[3]!!, groups[4]!!)
 
-    /**
-     * [[ http://link.com ]]
-     */
-    private fun parseOrgLinks(ssb: SpannableStringBuilder, linkRegex: String, linkify: Boolean): SpannableStringBuilder {
-        val p = namelessBracketLinkPattern(linkRegex)
-        val m = p.matcher(ssb)
-
-        return collectRegions(ssb) { spanRegions ->
-            while (m.find()) {
-                val link = m.group(1)
-
-                val span = if (linkify) URLSpan(link) else null
-
-                spanRegions.add(SpanRegion(m.start(), m.end(), link, listOf(span)))
-            }
-        }
-    }
-
-    /**
-     * [[ #custom id ]] and [[ #custom id ][ link ]]
-     * [[ id:id ]] and [[ id:id ][ link ]]
-     */
-    private fun parsePropertyLinks(ssb: SpannableStringBuilder, linkRegex: String, propName: String, linkify: Boolean): SpannableStringBuilder {
-        val builder = parsePropertyLinkType(ssb, linkify, propName, namedBracketLinkPattern(linkRegex), 2, 3)
-        return parsePropertyLinkType(builder, linkify, propName, namelessBracketLinkPattern(linkRegex), 2, 1)
-    }
-
-    private fun parsePropertyLinkType(
-            ssb: SpannableStringBuilder,
-            linkify: Boolean,
-            propName: String,
-            pattern: Pattern,
-            propValueGroup: Int,
-            linkGroup: Int): SpannableStringBuilder {
-
-        val m = pattern.matcher(ssb)
-
-        return collectRegions(ssb) { spanRegions ->
-            while (m.find()) {
-                val link = m.group(linkGroup)
-                val propValue = m.group(propValueGroup)
-
-                val span = if (linkify) {
-                    object : ClickableSpan() {
-                        override fun onClick(widget: View) {
-                            if (widget is TextViewWithMarkup) {
-                                widget.openNoteWithProperty(propName, propValue)
-                            }
-                        }
-                    }
-
-                } else {
-                    null
-                }
-
-                spanRegions.add(SpanRegion(m.start(), m.end(), link, listOf(span)))
-            }
-        }
-    }
-
-    /**
-     * http://link.com
-     */
-    private fun parsePlainLinks(ssb: SpannableStringBuilder, linkRegex: String, linkify: Boolean) {
-        if (linkify) {
-            val p = Pattern.compile(linkRegex)
-            val m = p.matcher(ssb)
-
-            while (m.find()) {
-                val link = m.group(1)
-
-                // Make sure first character is not clickable already
-                if (ssb.getSpans(m.start(), m.start() + 1, ClickableSpan::class.java).isEmpty()) {
-                    ssb.setSpan(URLSpan(link), m.start(), m.end(), FLAGS)
+                    groups[5] != null -> // [[http://link.com]]
+                        parseLink(config, spanRegions, groups[5]!!, groups[6]!!, groups[6]!!)
                 }
             }
         }
+    }
+
+    private fun parseLink(
+            config: Config,
+            spanRegions: MutableList<OrgFormatter.SpanRegion>,
+            match: MatchGroup,
+            link: MatchGroup,
+            name: MatchGroup) {
+
+        val span = if (config.linkify) getLinkSpan(link) else null
+
+        val spanRegion = SpanRegion(
+                match.range.start,
+                match.range.last + 1,
+                name.value,
+                listOf(span))
+
+        spanRegions.add(spanRegion)
+    }
+
+    private fun getLinkSpan(match: MatchGroup): Any? {
+        val link = match.value
+
+        return when {
+            link.startsWith("file:") ->
+                FileLinkSpan(link.substring(5))
+
+            link.startsWith("id:") ->
+                IdLinkSpan(link.substring(3))
+
+            link.startsWith("#") ->
+                CustomIdLinkSpan(link.substring(1))
+
+            link.matches("^(?:$SYSTEM_LINK_SCHEMES):.+".toRegex()) ->
+                URLSpan(link)
+
+            isFile(link) ->
+                FileLinkSpan(link)
+
+            else ->
+                SearchLinkSpan(link)
+        }
+    }
+
+    // TODO: Check for existence if not too slow
+    private fun isFile(str: String): Boolean {
+        return true
     }
 
     enum class SpanType {
@@ -346,70 +269,6 @@ object OrgFormatter {
             ssb.setSpan(CheckboxSpan(content, start, end), start, end, FLAGS)
             ssb.setSpan(TypefaceSpan("monospace"), start, end, FLAGS)
             ssb.setSpan(StyleSpan(Typeface.BOLD), start, end, FLAGS)
-        }
-    }
-
-    /**
-     * Parse file paths
-     */
-    private fun parseFilelinks(ssb: SpannableStringBuilder) {
-        val m = FILELINKS_PATTERN.matcher(ssb)
-
-        // Try to find a matching file path
-        while (m.find()) {
-            val content = m.group()
-            val start = m.start()
-            val end = m.end()
-
-            // Split the "file:path" expression
-            val s = content.split(":")
-
-            // Ensure we have a path component
-            if (s.size == 2) {
-                // Create a ClickableSpan that allows to open the file
-                val clickableSpan = object : ClickableSpan() {
-
-                    override fun onClick(widget: View?) {
-                        Handler().post {
-                            val context = App.getAppContext()
-
-                            // Get the current activity is available
-                            val currentActivity = App.getCurrentActivity()
-
-                            // Check that we have the permission to read external files
-                            // or ask for it and run the associated code
-                            currentActivity?.runWithPermission(
-                                    AppPermissions.Usage.EXTERNAL_FILES_ACCESS,
-                                    Runnable {
-                                        // Get the file
-                                        val file = File(Environment.getExternalStorageDirectory(), s[1])
-
-                                        // Check file existence, before trying to process it
-                                        if (file.exists()) {
-                                            val contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", file)
-
-                                            val intent = Intent(Intent.ACTION_VIEW, contentUri)
-                                            // Added for support on API 16
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-
-                                            // Try to start an activity for opening the file
-                                            try {
-                                                startActivity(context, intent, null)
-                                            } catch (e: ActivityNotFoundException) {
-                                                currentActivity.showSnackbar(R.string.external_file_no_app_found)
-                                            }
-                                        } else {
-                                            currentActivity.showSnackbar(context.getString(R.string.file_does_not_exist, file.absolutePath))
-                                        }
-                                    }
-                            )
-                        }
-                    }
-                }
-
-                ssb.setSpan(clickableSpan, start, end, FLAGS)
-            }
         }
     }
 
