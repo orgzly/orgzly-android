@@ -29,7 +29,11 @@ class FileLinkSpan(val path: String) : ClickableSpan() {
 
         val activity = App.getCurrentActivity()
 
-        val file = File(Environment.getExternalStorageDirectory(), path)
+        val file = if (path.startsWith('/')) {
+            File(path)
+        } else {
+            File(Environment.getExternalStorageDirectory(), path)
+        }
 
         if (file.exists()) {
             activity?.runWithPermission(
