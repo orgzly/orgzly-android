@@ -59,7 +59,7 @@ class SettingsActivity : CommonActivity(), SettingsFragmentListener {
     }
 
     override fun onTitleChange(title: CharSequence?) {
-        setTitle(title ?: getText(R.string.settings))
+        supportActionBar?.title = title ?: getText(R.string.settings)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
