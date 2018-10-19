@@ -21,6 +21,9 @@
     <!-- For reminders -->
     <uses-permission android:name="android.permission.VIBRATE"/>
 
+    <!-- For sync -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
     <application
         android:name=".android.App"
         android:allowBackup="true"
