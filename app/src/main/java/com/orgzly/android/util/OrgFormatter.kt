@@ -31,7 +31,7 @@ import java.io.File
  *
  */
 object OrgFormatter {
-    private const val LINK_SCHEMES = "https?|mailto|tel|voicemail|geo|sms|smsto|mms|mmsto"
+    private const val LINK_SCHEMES = "https?|mailto|tel|voicemail|geo|sms|smsto|mms|mmsto|id"
 
     // tel:1234567
     private const val PLAIN_LINK = "(($LINK_SCHEMES):\\S+)"
@@ -234,8 +234,8 @@ object OrgFormatter {
             while (m.find()) {
                 val link = m.group(1)
 
-                // Make sure first character has no URLSpan already
-                if (ssb.getSpans(m.start(), m.start() + 1, URLSpan::class.java).isEmpty()) {
+                // Make sure first character is not clickable already
+                if (ssb.getSpans(m.start(), m.start() + 1, ClickableSpan::class.java).isEmpty()) {
                     ssb.setSpan(URLSpan(link), m.start(), m.end(), FLAGS)
                 }
             }
