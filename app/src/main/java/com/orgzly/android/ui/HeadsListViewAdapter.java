@@ -155,6 +155,7 @@ public class HeadsListViewAdapter extends SimpleCursorAdapter {
                 view.setVisibility(View.VISIBLE);
             } else {
                 view.setVisibility(View.GONE);
+                return;
             }
         }
 

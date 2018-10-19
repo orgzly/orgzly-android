@@ -40,13 +40,13 @@ object GenericDatabaseUtils {
         val cursor = context.contentResolver.query(
                 uri, arrayOf("COUNT(*) AS count"), selection, null, null)
 
-        cursor.use {
-            return if (cursor.moveToFirst()) {
-                cursor.getInt(0)
-            } else {
-                0
+        cursor?.use {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0)
             }
         }
+
+        return 0
     }
 
     @JvmStatic

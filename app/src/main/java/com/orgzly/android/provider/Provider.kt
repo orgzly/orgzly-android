@@ -44,7 +44,7 @@ class Provider : ContentProvider() {
     private val inBatch = ThreadLocal<Boolean>()
 
     private val isInBatch: Boolean
-        get() = inBatch.get() != null && inBatch.get()
+        get() = inBatch.get() != null && inBatch.get() == true
 
     override fun onCreate(): Boolean {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
