@@ -7,11 +7,15 @@ import android.os.Environment
 import android.os.Handler
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v4.content.FileProvider
+import android.support.v4.content.LocalBroadcastManager
 import android.text.style.ClickableSpan
 import android.view.View
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
+import com.orgzly.android.AppIntent
+import com.orgzly.android.BookName
+import com.orgzly.android.provider.clients.BooksClient
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.util.AppPermissions
 import java.io.File
@@ -29,12 +33,49 @@ class FileLinkSpan(val path: String) : ClickableSpan() {
 
         val activity = App.getCurrentActivity()
 
-        val file = if (path.startsWith('/')) {
-            File(path)
+        if (path.startsWith('/')) {
+            openFileIfExists(context, activity, File(path))
+
         } else {
-            File(Environment.getExternalStorageDirectory(), path)
+            isMaybeBook(path)?.let { name ->
+                if (openBookIfExists(context, name)) {
+                    return
+                }
+            }
+
+            openFileIfExists(
+                    context, activity, File(Environment.getExternalStorageDirectory(), path))
+        }
+    }
+
+    private fun isMaybeBook(path: String): BookName? {
+        val file = File(path)
+
+        return if (!hasParent(file) && BookName.isSupportedFormatFileName(file.name)) {
+            BookName.fromFileName(file.name)
+        } else {
+            null
+        }
+    }
+
+    private fun hasParent(file: File): Boolean {
+        return file.parentFile != null && file.parentFile.name != "."
+    }
+
+    private fun openBookIfExists(context: Context, bookName: BookName): Boolean {
+        val book = BooksClient.get(context, bookName.name)
+
+        if (book != null) {
+            val intent = Intent(AppIntent.ACTION_OPEN_BOOK)
+            intent.putExtra(AppIntent.EXTRA_BOOK_ID, book.id)
+            LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
         }
 
+        return book != null
+    }
+
+
+    private fun openFileIfExists(context: Context, activity: CommonActivity?, file: File) {
         if (file.exists()) {
             activity?.runWithPermission(
                     AppPermissions.Usage.EXTERNAL_FILES_ACCESS,
@@ -46,7 +87,7 @@ class FileLinkSpan(val path: String) : ClickableSpan() {
         }
     }
 
-    private fun openFile(context: Context, activity: CommonActivity, file: File) {
+    private fun openFile(context: Context, activity: CommonActivity?, file: File) {
         val contentUri = FileProvider.getUriForFile(
                 context, BuildConfig.APPLICATION_ID + ".fileprovider", file)
 
@@ -61,7 +102,7 @@ class FileLinkSpan(val path: String) : ClickableSpan() {
         try {
             startActivity(context, intent, null)
         } catch (e: ActivityNotFoundException) {
-            activity.showSnackbar(R.string.external_file_no_app_found)
+            activity?.showSnackbar(R.string.external_file_no_app_found)
         }
     }
 }

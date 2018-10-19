@@ -4,7 +4,6 @@ import android.os.Environment
 import android.text.style.URLSpan
 import com.orgzly.android.ui.views.style.FileLinkSpan
 import com.orgzly.android.ui.views.style.IdLinkSpan
-import com.orgzly.android.ui.views.style.SearchLinkSpan
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.assertThat
 import org.junit.Before
