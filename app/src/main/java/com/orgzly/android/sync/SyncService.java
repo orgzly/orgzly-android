@@ -1,10 +1,13 @@
 package com.orgzly.android.sync;
 
 
+import android.annotation.TargetApi;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Binder;
@@ -132,14 +135,36 @@ public class SyncService extends Service {
     private boolean haveNetworkConnection() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        if (cm != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                return haveNetworkConnection(cm);
+
+            } else {
+                return haveNetworkConnectionPreM(cm);
+            }
+        }
+
+        return false;
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private boolean haveNetworkConnection(ConnectivityManager cm) {
+        Network network = cm.getActiveNetwork();
+
+        NetworkCapabilities capabilities = cm.getNetworkCapabilities(network);
+
+        return capabilities != null
+               && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
+    }
+
+    @SuppressWarnings("deprecation")
+    private boolean haveNetworkConnectionPreM(ConnectivityManager cm) {
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
 
         if (networkInfo != null) {
             int type = networkInfo.getType();
 
-            if (type == ConnectivityManager.TYPE_WIFI || type == ConnectivityManager.TYPE_MOBILE) {
-                return true;
-            }
+            return type == ConnectivityManager.TYPE_WIFI || type == ConnectivityManager.TYPE_MOBILE;
         }
 
         return false;
