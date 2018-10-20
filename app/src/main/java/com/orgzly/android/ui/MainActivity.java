@@ -134,10 +134,6 @@ public class MainActivity extends CommonActivity
             Notifications.createNewNoteNotification(this);
         }
 
-        Intent intent = getIntent();
-        if (intent.getAction().equalsIgnoreCase("android.intent.action.VIEW")) {
-            handleOrgProtocol(intent);
-        }
     }
 
     private void handleOrgProtocol(Intent intent) {
@@ -159,7 +155,6 @@ public class MainActivity extends CommonActivity
         } else {
             String msg = getString(R.string.no_such_link_target, "url", data.toString());
             showSnackbar(msg);
-
         }
     }
 
@@ -186,6 +181,11 @@ public class MainActivity extends CommonActivity
                 }
             } else if (queryString != null) {
                 DisplayManager.displayQuery(getSupportFragmentManager(), queryString);
+            }
+
+            Intent intent = getIntent();
+            if (intent.getAction().equalsIgnoreCase("android.intent.action.VIEW")) {
+                handleOrgProtocol(intent);
             }
         }
     }
