@@ -73,6 +73,7 @@ import com.orgzly.org.datetime.OrgDateTime;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -96,6 +97,10 @@ public class MainActivity extends CommonActivity
 
     private static final int DIALOG_NEW_BOOK = 1;
     private static final int DIALOG_IMPORT_BOOK = 2;
+    public static final String ORG_ID_GOTO = "org-id-goto";
+    public static final String ORGZLY_SEARCH = "orgzly-search";
+    public static final String ORG_SEARCH = "org-search";
+    public static final String ORG_PROTOCOL = "org-protocol";
 
     public SyncFragment mSyncFragment;
 
@@ -140,22 +145,57 @@ public class MainActivity extends CommonActivity
         Uri data = intent.getData();
         if (data == null) return;
         String scheme = data.getScheme();
-        String host = data.getHost(); // expect org-id-goto
-        if (scheme.equalsIgnoreCase("org-protocol") &&
-                host.equalsIgnoreCase("org-id-goto")) {
-            String orgId = data.getQueryParameter("id");
-            if (orgId  == null) {
-                // This probably won't match but the error will make the bad link visible to the user.
-                orgId = intent.getDataString();
+        String host = data.getHost();
+        if (scheme.equalsIgnoreCase(ORG_PROTOCOL)) {
+            Intent newIntent;
+            switch (host.toLowerCase()) {
+                case ORG_ID_GOTO:
+                    String orgId = data.getQueryParameter("id");
+                    if (orgId == null)
+                        break;
+                    newIntent = new Intent(AppIntent.ACTION_OPEN_NOTE);
+                    newIntent.putExtra(AppIntent.EXTRA_PROPERTY_NAME, "ID");
+                    newIntent.putExtra(AppIntent.EXTRA_PROPERTY_VALUE, orgId);
+                    ActionService.enqueueWork(this, newIntent);
+                    return;
+                case ORGZLY_SEARCH:
+                    String query = data.getQueryParameter("q");
+                    if (query == null)
+                        break;
+                    newIntent = new Intent(AppIntent.ACTION_OPEN_QUERY);
+                    newIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, query);
+                    receiver.onReceive(this, newIntent);
+                    return;
+                case ORG_SEARCH:
+                    ArrayList<Condition> conditions = new ArrayList<Condition>();
+                    DottedQueryBuilder builder = new DottedQueryBuilder();
+                    for (String param : data.getQueryParameterNames()) {
+                        String value = data.getQueryParameter(param);
+                        switch(param) {
+                            case "tag":
+                                conditions.add(new Condition.HasTag(value, false));
+                                break;
+                            case "text":
+                                conditions.add(new Condition.HasText(value, false));
+                                break;
+                            case "state":
+                                conditions.add(new Condition.HasState(value,false));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    String newQuery = builder.build(new Query(new Condition.And(conditions)));
+                    newIntent = new Intent(AppIntent.ACTION_OPEN_QUERY);
+                    newIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, newQuery);
+                    receiver.onReceive(this, newIntent);
+                    return;
+                default:
+                    break;
             }
-            Intent newIntent = new Intent(AppIntent.ACTION_OPEN_NOTE);
-            newIntent.putExtra(AppIntent.EXTRA_PROPERTY_NAME, "ID");
-            newIntent.putExtra(AppIntent.EXTRA_PROPERTY_VALUE, orgId);
-            ActionService.enqueueWork(this, newIntent);
-        } else {
-            String msg = getString(R.string.no_such_link_target, "url", data.toString());
-            showSnackbar(msg);
         }
+        String msg = getString(R.string.no_such_link_target, "url", data.toString());
+        showSnackbar(msg);
     }
 
     /**
