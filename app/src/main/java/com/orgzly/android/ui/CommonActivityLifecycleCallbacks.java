@@ -11,12 +11,9 @@ import com.orgzly.android.App;
 // and enables permission and snackbar access
 public class CommonActivityLifecycleCallbacks  implements Application.ActivityLifecycleCallbacks {
 
-    public void registerActivity(Activity activity)
-    {
+    private void registerActivity(Activity activity) {
         if (activity instanceof CommonActivity) {
             App.setCurrentActivity((CommonActivity) activity);
-        } else {
-            App.setCurrentActivity(null);
         }
     }
 
