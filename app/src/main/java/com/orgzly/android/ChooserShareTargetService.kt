@@ -12,6 +12,9 @@ import kotlinx.android.synthetic.main.activity_bookchooser.view.*
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import com.orgzly.R
+import com.orgzly.android.query.Condition
+import com.orgzly.android.query.Query
+import com.orgzly.android.query.user.DottedQueryBuilder
 
 private const val DIRECT_SHARE = "ORGZLY_DIRECT_SHARE";
 
@@ -29,7 +32,8 @@ class ChooserShareTargetService : ChooserTargetService() {
                 continue;
             val bundle : Bundle = Bundle();
             val score : Float = 1.0F; // Can we guess a score based on recent use or content?
-            bundle.putString(AppIntent.EXTRA_FILTER, "b.\"" + book.name + "\"");
+            val query = DottedQueryBuilder().build(Query(Condition.InBook(book.name)));
+            bundle.putString(AppIntent.EXTRA_FILTER, query)
             targets.add(ChooserTarget(book.name, icon, score, componentName, bundle ));
         }
         return targets;
