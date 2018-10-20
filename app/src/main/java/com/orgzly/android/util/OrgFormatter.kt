@@ -125,21 +125,21 @@ object OrgFormatter {
             link: MatchGroup,
             name: MatchGroup) {
 
-        val span = if (config.linkify) getLinkSpan(link) else null
+        val spans = if (config.linkify) {
+            getSpansForLink(link)
+        } else {
+            emptyList()
+        }
 
-        val spanRegion = SpanRegion(
-                match.range.start,
-                match.range.last + 1,
-                name.value,
-                listOf(span))
+        val spanRegion = SpanRegion(match.range.start, match.range.last + 1, name.value, spans)
 
         spanRegions.add(spanRegion)
     }
 
-    private fun getLinkSpan(match: MatchGroup): Any? {
+    private fun getSpansForLink(match: MatchGroup): List<Any?> {
         val link = match.value
 
-        return when {
+        val span = when {
             link.startsWith("file:") ->
                 FileLinkSpan(link.substring(5))
 
@@ -158,6 +158,8 @@ object OrgFormatter {
             else ->
                 SearchLinkSpan(link)
         }
+
+        return listOf(span)
     }
 
     // TODO: Check for existence if not too slow
