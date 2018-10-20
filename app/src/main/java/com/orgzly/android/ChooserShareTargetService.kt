@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import com.orgzly.R
 
+private const val DIRECT_SHARE = "ORGZLY_DIRECT_SHARE";
 
 @RequiresApi(Build.VERSION_CODES.M)
 class ChooserShareTargetService : ChooserTargetService() {
@@ -23,6 +24,9 @@ class ChooserShareTargetService : ChooserTargetService() {
 
         val icon = Icon.createWithResource(this, R.drawable.ic_logo_for_widget);
         for (book in shelf.books) {
+            val direct = book.orgFileSettings.getLastKeywordValue(DIRECT_SHARE);
+            if (direct.isNullOrBlank())
+                continue;
             val bundle : Bundle = Bundle();
             val score : Float = 1.0F; // Can we guess a score based on recent use or content?
             bundle.putString(AppIntent.EXTRA_FILTER, "b.\"" + book.name + "\"");
