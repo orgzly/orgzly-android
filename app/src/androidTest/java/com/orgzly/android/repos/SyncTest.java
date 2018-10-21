@@ -276,7 +276,7 @@ public class SyncTest extends OrgzlyTest {
         Book book = shelf.getBooks().get(0);
 
         assertEquals(BookSyncStatus.DUMMY_WITHOUT_LINK_AND_ONE_ROOK, book.getSyncStatus());
-        assertEquals(0, book.getMtime());
+        assertEquals(1234567890000L, book.getMtime());
     }
 
     @Test

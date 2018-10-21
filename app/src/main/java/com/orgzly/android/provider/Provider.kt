@@ -579,11 +579,18 @@ class Provider : ContentProvider() {
         updateOrInsertBookLink(db, bookId, repoUrl, rookUrl)
         updateOrInsertBookSync(db, bookId, repoUrl, rookUrl, rookRevision, rookMtime)
 
+        // Set book's modification time to remote book's
+        ContentValues().let {
+            it.put(DbBook.MTIME, rookMtime)
+            db.update(DbBook.TABLE, it, DbBook._ID + "=" + bookId, null)
+        }
+
         db.rawQuery(DELETE_CURRENT_VERSIONED_ROOKS_FOR_ROOK_ID, arrayOf(rookId.toString()))
 
-        val v = ContentValues()
-        v.put(DbCurrentVersionedRook.VERSIONED_ROOK_ID, versionedRookId)
-        db.insert(DbCurrentVersionedRook.TABLE, null, v)
+        ContentValues().let {
+            it.put(DbCurrentVersionedRook.VERSIONED_ROOK_ID, versionedRookId)
+            db.insert(DbCurrentVersionedRook.TABLE, null, it)
+        }
 
         return ContentUris.withAppendedId(ProviderContract.Books.ContentUri.books(), bookId)
     }
@@ -701,7 +708,7 @@ class Provider : ContentProvider() {
                 return DbRepo.delete(db, selection, selectionArgs)
             }
 
-        /* Delete repo by just marking it as such. */
+            /* Delete repo by just marking it as such. */
             ProviderUris.REPOS_ID -> {
                 selection = DbRepo._ID + " = " + uri.lastPathSegment
                 selectionArgs = null
@@ -1462,14 +1469,19 @@ class Provider : ContentProvider() {
             LogUtils.d(TAG, bookName + ": Parsing done in " +
                             (System.currentTimeMillis() - startedAt) + " ms")
 
+        val values = ContentValues()
+
         if (repoUrl != null && rookUrl != null && rookRevision != null) {
             updateOrInsertBookLink(db, bookId, repoUrl, rookUrl)
             updateOrInsertBookSync(db, bookId, repoUrl, rookUrl, rookRevision, rookMtime)
+
+            // Set book's modification time to remote book's
+            values.put(DbBook.MTIME, rookMtime)
         }
 
-        /* Mark book as complete. */
-        val values = ContentValues()
+        // Mark book as complete
         values.put(DbBook.IS_DUMMY, 0)
+
         db.update(DbBook.TABLE, values, DbBook._ID + "=" + bookId, null)
 
         return uri

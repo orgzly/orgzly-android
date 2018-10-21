@@ -468,7 +468,7 @@
     <string name="pref_title_repo_update_sync">Repositories modified (not implemented yet)</string>
     <string name="pref_summary_repo_update_sync">Sync whenever an update in repositories is detected</string>
 
-    <string name="book_never_modified_locally">Never modified locally</string>
+    <string name="not_modified">Not modified</string>
 
     <string name="notes_count_zero">Contains no notes</string>
     <plurals name="notes_count_nonzero">

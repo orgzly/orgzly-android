@@ -510,7 +510,7 @@ public class BooksFragment extends ListFragment
                             /* Format time. */
                             viewContent = timeString(cursor.getLong(columnIndex));
                         } else {
-                            viewContent = getString(R.string.book_never_modified_locally);
+                            viewContent = getString(R.string.not_modified);
                         }
                         break;
 

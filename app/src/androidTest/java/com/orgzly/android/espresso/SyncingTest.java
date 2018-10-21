@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.support.test.espresso.matcher.PreferenceMatchers;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
@@ -14,6 +15,7 @@ import com.orgzly.android.ui.MainActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.io.IOException;
 
@@ -37,6 +39,7 @@ import static com.orgzly.android.espresso.EspressoUtils.listViewItemCount;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onList;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.EspressoUtils.openContextualToolbarOverflowMenu;
 import static com.orgzly.android.espresso.EspressoUtils.settingsSetTodoKeywords;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
@@ -167,6 +170,39 @@ public class SyncingTest extends OrgzlyTest {
         onView(withText(R.string.books_context_menu_item_force_load)).perform(click());
         onView(withText(R.string.overwrite)).perform(click());
         onView(withText(containsString(context.getString(R.string.force_loaded_from_uri, "mock://repo-a/book-one.org")))).check(matches(isDisplayed()));
+    }
+
+    /*
+     * Book is left with out-of-sync icon when it's modified, then force-loaded.
+     * This is because book's mtime was not updated and was still greater then remote book's mtime.
+     */
+    @Test
+    public void testForceLoadingAfterModification() {
+        shelfTestUtils.setupBook("book-one", "* Note");
+        shelfTestUtils.setupRepo("mock://repo-a");
+        activityRule.launchActivity(null);
+
+        // Force save
+        onView(allOf(withText("book-one"), isDisplayed())).perform(longClick());
+        onView(withText(R.string.books_context_menu_item_force_save)).perform(click());
+        onView(withText(R.string.overwrite)).perform(click());
+
+        // Modify book
+        onView(allOf(withText("book-one"), isDisplayed())).perform(click());
+        onListItem(0).perform(longClick());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.state)).perform(click());
+        onView(withText("TODO")).perform(click());
+        pressBack();
+        pressBack();
+
+        // Force load
+        onView(allOf(withText("book-one"), isDisplayed())).perform(longClick());
+        onView(withText(R.string.books_context_menu_item_force_load)).perform(click());
+        onView(withText(R.string.overwrite)).perform(click());
+
+        // Check sync icon
+        onView(allOf(withId(R.id.item_book_sync_needed_icon))).check(matches(not(isDisplayed())));
     }
 
     @Test
