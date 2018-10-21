@@ -115,7 +115,7 @@ public class SyncingTest extends OrgzlyTest {
         onView(allOf(withText(R.string.notebooks), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
         onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
         onView(allOf(withText("booky"), withId(R.id.item_book_title))).check(matches(isDisplayed()));
-        onView(allOf(withId(R.id.item_book_modified_after_sync_icon))).check(matches(not(isDisplayed())));
+        onView(allOf(withId(R.id.item_book_sync_needed_icon))).check(matches(not(isDisplayed())));
     }
 
     @Test

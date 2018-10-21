@@ -133,6 +133,7 @@
         <item name="ic_swap_vert_24dp">@drawable/ic_swap_vert_black_24dp</item>
         <item name="ic_sync_18dp">@drawable/ic_sync_black_18dp</item>
         <item name="ic_sync_24dp">@drawable/ic_sync_black_24dp</item>
+        <item name="ic_sync_problem_18dp">@drawable/ic_sync_problem_black_18dp</item>
         <item name="ic_today_18dp">@drawable/ic_today_black_18dp</item>
         <item name="ic_today_24dp">@drawable/ic_today_black_24dp</item>
         <item name="ic_star_border_24dp">@drawable/ic_star_border_black_24dp</item>
@@ -273,6 +274,7 @@
         <item name="ic_swap_vert_24dp">@drawable/ic_swap_vert_white_24dp</item>
         <item name="ic_sync_18dp">@drawable/ic_sync_white_18dp</item>
         <item name="ic_sync_24dp">@drawable/ic_sync_white_24dp</item>
+        <item name="ic_sync_problem_18dp">@drawable/ic_sync_problem_white_18dp</item>
         <item name="ic_today_18dp">@drawable/ic_today_white_18dp</item>
         <item name="ic_today_24dp">@drawable/ic_today_white_24dp</item>
         <item name="ic_star_border_24dp">@drawable/ic_star_border_white_24dp</item>

@@ -16,6 +16,7 @@ import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
 import com.orgzly.android.Book
+import com.orgzly.android.BookAction
 import com.orgzly.android.BookUtils
 import com.orgzly.android.provider.GenericDatabaseUtils
 import com.orgzly.android.provider.ProviderContract
@@ -135,8 +136,11 @@ internal class DrawerNavigationView(private val activity: MainActivity, navView:
             item.intent = intent
             item.isCheckable = true
 
-            if (book.isModifiedAfterLastSync) {
-                item.setActionView(R.layout.drawer_item_action)
+            if (book.lastAction?.type == BookAction.Type.ERROR) {
+                item.setActionView(R.layout.drawer_item_sync_failed)
+
+            } else if (book.isModifiedAfterLastSync) {
+                item.setActionView(R.layout.drawer_item_sync_needed)
             }
 
             menuItemIdMap[BookFragment.getDrawerItemId(book.id)] = id

@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/item_book_modified_after_sync_icon"
+                        android:id="@+id/item_book_sync_needed_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -43,15 +43,26 @@
                         android:layout_centerVertical="true"
                         android:src="?attr/ic_sync_18dp"
                         android:layout_gravity="center"
-                        android:contentDescription="@string/drawer_item"/>
+                        android:contentDescription="@string/sync"/>
+
+                    <ImageView
+                        android:id="@+id/item_book_sync_failed_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="?attr/ic_sync_problem_18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/sync"/>
 
                     <TextView
                         android:id="@+id/item_book_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toStartOf="@id/item_book_modified_after_sync_icon"
-                        android:layout_toLeftOf="@id/item_book_modified_after_sync_icon"
-                        android:layout_alignBaseline="@id/item_book_modified_after_sync_icon"
+                        android:layout_toStartOf="@id/item_book_sync_needed_icon"
+                        android:layout_toLeftOf="@id/item_book_sync_needed_icon"
+                        android:layout_alignBaseline="@id/item_book_sync_needed_icon"
                         android:layout_marginRight="@dimen/item_book_padding"
                         android:layout_marginEnd="@dimen/item_book_padding"
                         android:layout_alignParentStart="true"

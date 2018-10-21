@@ -252,7 +252,9 @@ public class BooksFragment extends ListFragment
         adapter = new SimpleCursorAdapter(getActivity(), R.layout.item_book, null, columns, to, 0) {
             class ViewHolder {
                 TextView title;
+
                 View modifiedAfterSyncIcon;
+                View failedSyncIcon;
 
                 View bookDetailsPadding;
                 View mtimeContainer;
@@ -280,7 +282,8 @@ public class BooksFragment extends ListFragment
                 if (holder == null) {
                     holder = new ViewHolder();
                     holder.title = view.findViewById(R.id.item_book_title);
-                    holder.modifiedAfterSyncIcon = view.findViewById(R.id.item_book_modified_after_sync_icon);
+                    holder.modifiedAfterSyncIcon = view.findViewById(R.id.item_book_sync_needed_icon);
+                    holder.failedSyncIcon = view.findViewById(R.id.item_book_sync_failed_icon);
                     holder.bookDetailsPadding = view.findViewById(R.id.item_book_details_padding);
                     holder.subTitle = view.findViewById(R.id.item_book_subtitle);
                     holder.mtimeContainer = view.findViewById(R.id.item_book_mtime_container);
@@ -315,10 +318,17 @@ public class BooksFragment extends ListFragment
                     holder.subTitle.setVisibility(View.GONE);
                 }
 
-                if (book.isModifiedAfterLastSync()) {
-                    holder.modifiedAfterSyncIcon.setVisibility(View.VISIBLE);
-                } else {
+                if (book.getLastAction() != null && book.getLastAction().getType() == BookAction.Type.ERROR) {
+                    holder.failedSyncIcon.setVisibility(View.VISIBLE);
                     holder.modifiedAfterSyncIcon.setVisibility(View.INVISIBLE);
+
+                } else {
+                    holder.failedSyncIcon.setVisibility(View.INVISIBLE);
+                    if (book.isModifiedAfterLastSync()) {
+                        holder.modifiedAfterSyncIcon.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.modifiedAfterSyncIcon.setVisibility(View.INVISIBLE);
+                    }
                 }
 
                 /*
@@ -528,10 +538,10 @@ public class BooksFragment extends ListFragment
 
     private String timeString(long ts) {
         int flags = DateUtils.FORMAT_SHOW_DATE |
-                DateUtils.FORMAT_SHOW_TIME |
-                DateUtils.FORMAT_ABBREV_MONTH |
-                DateUtils.FORMAT_SHOW_WEEKDAY |
-                DateUtils.FORMAT_ABBREV_WEEKDAY;
+                    DateUtils.FORMAT_SHOW_TIME |
+                    DateUtils.FORMAT_ABBREV_MONTH |
+                    DateUtils.FORMAT_SHOW_WEEKDAY |
+                    DateUtils.FORMAT_ABBREV_WEEKDAY;
 
         return DateUtils.formatDateTime(getContext(), ts, flags);
     }
