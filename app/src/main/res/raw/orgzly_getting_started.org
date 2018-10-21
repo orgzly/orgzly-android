@@ -32,7 +32,7 @@ CLOSED: [2018-01-24 Wed 17:00]
 SCHEDULED: <2015-02-20 Fri 15:15>
 
 *** Times can have a repeater
-SCHEDULED: <2015-02-16 Mon .+1d>
+SCHEDULED: <2015-02-16 Mon .+2d>
 
 ** You can also set a deadline time
 DEADLINE: <2015-02-20 Fri>
@@ -40,6 +40,10 @@ DEADLINE: <2015-02-20 Fri>
 ** Reminders for scheduled and deadline times are supported
 
 They are disabled by default and need to be enabled in Settings.
+
+** [#A] Note can have a priority
+
+You can change the number of priorities in Settings. You can also change default priority - assumed priority for notes without one set.
 
 ** Note can use links
 
