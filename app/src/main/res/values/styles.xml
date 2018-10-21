@@ -486,9 +486,10 @@
     </style>
 
     <style name="HeadItemInfoIcon">
-        <item name="android:layout_width">?attr/item_head_info_icon_size</item>
-        <item name="android:layout_height">?attr/item_head_info_icon_size</item>
-        <!--<item name="android:paddingTop">1dp</item>-->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginBottom">1dp</item>
     </style>
 
     <style name="ListView">
