@@ -35,6 +35,7 @@ import com.orgzly.android.Shelf;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.FragmentListener;
+import com.orgzly.android.ui.ImageLoader;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.NotePriorities;
 import com.orgzly.android.ui.NoteStates;
@@ -350,6 +351,8 @@ public class NoteFragment extends Fragment
                 bodyEdit.setVisibility(View.GONE);
 
                 bodyView.setRawText(bodyEdit.getText());
+                ImageLoader.loadImages(bodyView);
+
                 bodyView.setVisibility(View.VISIBLE);
 
                 ActivityUtils.closeSoftKeyboard(getActivity());
@@ -494,8 +497,11 @@ public class NoteFragment extends Fragment
         addPropertyToList(null, null);
 
         /* Content. */
+
         bodyEdit.setText(head.getContent());
+
         bodyView.setRawText(head.getContent());
+        ImageLoader.loadImages(bodyView);
     }
 
     private void addPropertyToList(String propName, String propValue) {

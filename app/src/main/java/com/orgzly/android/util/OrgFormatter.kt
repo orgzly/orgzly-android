@@ -80,11 +80,11 @@ object OrgFormatter {
 
     @JvmStatic
     @JvmOverloads
-    fun parse(str: String, context: Context? = null, linkify: Boolean = true, parseCheckboxes: Boolean = true): SpannableStringBuilder {
+    fun parse(str: CharSequence, context: Context? = null, linkify: Boolean = true, parseCheckboxes: Boolean = true): SpannableStringBuilder {
         return this.parse(str, Config(context, linkify, parseCheckboxes))
     }
 
-    private fun parse(str: String, config: Config): SpannableStringBuilder {
+    private fun parse(str: CharSequence, config: Config): SpannableStringBuilder {
         var ssb = SpannableStringBuilder(str)
 
         /* Must be first, since checkboxes need to know their position in str. */

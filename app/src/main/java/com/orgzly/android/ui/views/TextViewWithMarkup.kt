@@ -35,7 +35,8 @@ class TextViewWithMarkup : TextViewFixed {
 
     fun setRawText(text: CharSequence) {
         rawText = text
-        setText(OrgFormatter.parse(text.toString(), context))
+
+        setText(OrgFormatter.parse(text, context), BufferType.SPANNABLE)
     }
 
     fun getRawText() : CharSequence? {
