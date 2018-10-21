@@ -100,14 +100,9 @@
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/schedule"/>
                     <TextView
+                        style="@style/HeadItemInfo"
                         android:id="@+id/item_head_book_name_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="@string/book_name_sample"
-                        android:textSize="?attr/item_head_sub_title_text"
-                        android:textColor="?attr/text_secondary_color"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginLeft="4dp"/>
+                        tools:text="@string/book_name_sample"/>
                 </LinearLayout>
 
                 <!-- Scheduled time -->
@@ -125,14 +120,9 @@
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/schedule"/>
                     <TextView
+                        style="@style/HeadItemInfo"
                         android:id="@+id/item_head_scheduled_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="@string/note_scheduled_sample"
-                        android:textSize="?attr/item_head_sub_title_text"
-                        android:textColor="?attr/text_secondary_color"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginLeft="4dp"/>
+                        tools:text="@string/note_scheduled_sample"/>
                 </LinearLayout>
 
                 <!-- Deadline time -->
@@ -150,14 +140,9 @@
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/deadline"/>
                     <TextView
+                        style="@style/HeadItemInfo"
                         android:id="@+id/item_head_deadline_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="@string/note_deadline_sample"
-                        android:textSize="?attr/item_head_sub_title_text"
-                        android:textColor="?attr/text_secondary_color"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginLeft="4dp"/>
+                        tools:text="@string/note_deadline_sample"/>
 
                 </LinearLayout>
 
@@ -178,14 +163,9 @@
                         android:contentDescription="@string/closed"/>
 
                     <TextView
+                        style="@style/HeadItemInfo"
                         android:id="@+id/item_head_closed_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="@string/note_closed_sample"
-                        android:textSize="?attr/item_head_sub_title_text"
-                        android:textColor="?attr/text_secondary_color"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginLeft="4dp"/>
+                        tools:text="@string/note_closed_sample"/>
                 </LinearLayout>
 
                 <!-- Content -->
