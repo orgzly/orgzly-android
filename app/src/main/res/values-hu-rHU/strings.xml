@@ -385,7 +385,6 @@
   <string name="pref_summary_on_resume_sync">Szinkronizálás valahányszor az app előtérbe kerül</string>
   <string name="pref_title_repo_update_sync">Módosított tárolók (még nincs implementálva)</string>
   <string name="pref_summary_repo_update_sync">Szinkronizálás valahányszor észrevesz változást a tárolókban</string>
-  <string name="book_never_modified_locally">Soha helyileg nem módosul</string>
   <string name="notes_count_zero">Nem tartalmaz bejegyzést</string>
   <plurals name="notes_count_nonzero">
     <item quantity="one">Tartalmaz <b>%d</b> bejegyzést</item>

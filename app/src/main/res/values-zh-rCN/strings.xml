@@ -382,7 +382,6 @@
   <string name="pref_summary_on_resume_sync">当应用程序进入前台时同步</string>
   <string name="pref_title_repo_update_sync">存储库已修改（尚未实现）</string>
   <string name="pref_summary_repo_update_sync">当检测到存储库内有更新时同步</string>
-  <string name="book_never_modified_locally">从未在本地修改</string>
   <string name="notes_count_zero">未包含笔记</string>
   <plurals name="notes_count_nonzero">
     <item quantity="other">包含 <b>%d</b> 笔记</item>

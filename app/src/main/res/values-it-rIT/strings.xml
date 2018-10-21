@@ -385,7 +385,6 @@
   <string name="pref_summary_on_resume_sync">Sincronizza qualsiasi app passi in primo piano</string>
   <string name="pref_title_repo_update_sync">Deposito modificato (non ancora implementato)</string>
   <string name="pref_summary_repo_update_sync">Sincronizza in qualsiasi momento quanto è rilevato un aggiornamento nel deposito</string>
-  <string name="book_never_modified_locally">Mai modificato localmente</string>
   <string name="notes_count_zero">Non contiene note</string>
   <plurals name="notes_count_nonzero">
     <item quantity="one">Contiene <b>%d</b> nota</item>

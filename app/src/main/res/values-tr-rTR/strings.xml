@@ -385,7 +385,6 @@
   <string name="pref_summary_on_resume_sync">Uygulama açıldığında eşitle</string>
   <string name="pref_title_repo_update_sync">Depolar değiştirildi (henüz değil)</string>
   <string name="pref_summary_repo_update_sync">Depolarda bir güncelleme oluştuğunda eşitle</string>
-  <string name="book_never_modified_locally">Daha önce yerel olarak değiştirilmemiş</string>
   <string name="notes_count_zero">Not içermiyor</string>
   <plurals name="notes_count_nonzero">
     <item quantity="one">Not <b>%d</b> içerir</item>
