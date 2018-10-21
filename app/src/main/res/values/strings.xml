@@ -180,6 +180,7 @@
     <string name="multiple_repos">Multiple repositories exist</string>
 
     <string name="book_encoding">Notebook\'s encoding</string>
+    <string name="collecting_notebooks_in_progress">Collecting notebooks…</string>
     <string name="syncing_in_progress">Syncing…</string>
     <string name="syncing_book">Syncing %s…</string>
     <string name="sync_with_argument">Sync: %s</string>

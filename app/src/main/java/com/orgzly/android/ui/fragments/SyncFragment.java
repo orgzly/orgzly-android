@@ -796,7 +796,7 @@ public class SyncFragment extends Fragment {
 
                     setAnimation(true);
 
-                    buttonText.setText(R.string.syncing_in_progress);
+                    buttonText.setText(R.string.collecting_notebooks_in_progress);
 
                     break;
 
