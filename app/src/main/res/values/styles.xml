@@ -227,7 +227,7 @@
 
         <item name="indent_line_color">#0cffffff</item>
 
-        <item name="snackbar_bg_color">@color/dark_theme_background</item>
+        <item name="snackbar_bg_color">@color/dark_theme_app_bar</item>
 
         <!-- / Color scheme -->
 
