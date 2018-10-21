@@ -308,10 +308,6 @@ public class NotesClient {
         return result[0].count;
     }
 
-    public static Note create(Context context, Note note) {
-        return create(context, note, null, note.getCreatedAt());
-    }
-
     /**
      * Insert as last note if position is not specified.
      */

@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -59,12 +58,9 @@ import com.orgzly.org.utils.StateChangeLogic;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Note editor.
@@ -611,10 +607,7 @@ public class NoteFragment extends Fragment
         }
 
         if (mIsNew) { /* Creating new note. */
-            note = new Note();
-            note.getPosition().setBookId(mBookId);
-
-            updateNewNoteValues();
+            note = Shelf.buildNewNote(getContext(), mBookId, mInitialTitle, mInitialContent);
 
             mViewFlipper.setDisplayedChild(0);
 
@@ -868,56 +861,6 @@ public class NoteFragment extends Fragment
                     closedTimeContainer.setVisibility(View.GONE);
                 }
                 break;
-        }
-    }
-
-    /**
-     * Set new Note's initial values.
-     */
-    private void updateNewNoteValues() {
-        OrgHead head = note.getHead();
-
-        /* Set scheduled time for a new note. */
-        if (AppPreferences.isNewNoteScheduled(getContext())) {
-            Calendar cal = Calendar.getInstance();
-
-            OrgDateTime timestamp = new OrgDateTime.Builder()
-                    .setIsActive(true)
-                    .setYear(cal.get(Calendar.YEAR))
-                    .setMonth(cal.get(Calendar.MONTH))
-                    .setDay(cal.get(Calendar.DAY_OF_MONTH))
-                    .build();
-
-            OrgRange time = new OrgRange(timestamp);
-
-            head.setScheduled(time);
-        }
-
-        /* Set state for a new note. */
-        String stateKeyword = AppPreferences.newNoteState(getContext());
-        if (NoteStates.isKeyword(stateKeyword)) {
-            head.setState(stateKeyword);
-        } else {
-            head.setState(null);
-        }
-
-        /* Initial title. */
-        if (mInitialTitle != null) {
-            head.setTitle(mInitialTitle);
-        }
-
-        StringBuilder content = new StringBuilder();
-
-        /* Initial content. */
-        if (mInitialContent != null) {
-            if (content.length() > 0) {
-                content.append("\n\n");
-            }
-            content.append(mInitialContent);
-        }
-
-        if (content.length() > 0) {
-            head.setContent(content.toString());
         }
     }
 

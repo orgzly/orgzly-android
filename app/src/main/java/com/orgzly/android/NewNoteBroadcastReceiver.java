@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.RemoteInput;
 
-import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.provider.clients.NotesClient;
-import com.orgzly.org.OrgHead;
+import com.orgzly.android.ui.NotePlace;
 
 import java.io.IOException;
 
@@ -18,26 +16,23 @@ public class NewNoteBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String title = getNoteTitle(intent);
+
         if (title != null) {
             try {
-                Book targetBook = BookUtils.getTargetBook(context);
-                NotesClient.create(context, makeNote(AppPreferences.newNoteState(context), title, targetBook));
+                Shelf shelf = new Shelf(context);
+
+                Book book = BookUtils.getTargetBook(context);
+
+                Note note = Shelf.buildNewNote(context, book.getId(), title, "");
+
+                shelf.createNote(note, null);
+
                 Notifications.createNewNoteNotification(context);
+
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
-    }
-
-    private Note makeNote(String state, String title, Book targetBook) {
-        OrgHead head = new OrgHead();
-        head.setTitle(title);
-        head.setState(state);
-        Note note = new Note();
-        note.setCreatedAt(System.currentTimeMillis());
-        note.getPosition().setBookId(targetBook.getId());
-        note.setHead(head);
-        return note;
     }
 
     private String getNoteTitle(Intent intent) {

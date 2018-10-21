@@ -38,6 +38,7 @@ import com.orgzly.android.sync.BookSyncStatus;
 import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.NotePlace;
+import com.orgzly.android.ui.NoteStates;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.util.CircularArrayList;
 import com.orgzly.android.util.LogUtils;
@@ -46,6 +47,7 @@ import com.orgzly.android.widgets.ListWidgetProvider;
 import com.orgzly.org.OrgHead;
 import com.orgzly.org.OrgProperties;
 import com.orgzly.org.datetime.OrgDateTime;
+import com.orgzly.org.datetime.OrgRange;
 import com.orgzly.org.parser.OrgParsedFile;
 import com.orgzly.org.parser.OrgParser;
 import com.orgzly.org.parser.OrgParserWriter;
@@ -54,6 +56,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -273,6 +276,62 @@ public class Shelf {
         notifyDataChanged(mContext);
         syncOnNoteUpdate();
         return result;
+    }
+
+    /**
+     * Build new {@link Note}.
+     */
+    public static Note buildNewNote(Context context, long bookId, String title, String content) {
+        Note note = new Note();
+
+        note.getPosition().setBookId(bookId);
+
+        OrgHead head = note.getHead();
+
+        /* Set scheduled time for a new note. */
+        if (AppPreferences.isNewNoteScheduled(context)) {
+            Calendar cal = Calendar.getInstance();
+
+            OrgDateTime timestamp = new OrgDateTime.Builder()
+                    .setIsActive(true)
+                    .setYear(cal.get(Calendar.YEAR))
+                    .setMonth(cal.get(Calendar.MONTH))
+                    .setDay(cal.get(Calendar.DAY_OF_MONTH))
+                    .build();
+
+            OrgRange time = new OrgRange(timestamp);
+
+            head.setScheduled(time);
+        }
+
+        /* Set state for a new note. */
+        String stateKeyword = AppPreferences.newNoteState(context);
+        if (NoteStates.isKeyword(stateKeyword)) {
+            head.setState(stateKeyword);
+        } else {
+            head.setState(null);
+        }
+
+        /* Initial title. */
+        if (title != null) {
+            head.setTitle(title);
+        }
+
+        StringBuilder str = new StringBuilder();
+
+        /* Initial content. */
+        if (content != null) {
+            if (str.length() > 0) {
+                str.append("\n\n");
+            }
+            str.append(content);
+        }
+
+        if (str.length() > 0) {
+            head.setContent(str.toString());
+        }
+
+        return note;
     }
 
     public Note createNote(Note note, NotePlace target) {
