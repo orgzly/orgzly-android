@@ -271,6 +271,10 @@ public class SyncService extends Service {
                 return null;
             }
 
+            if (isCancelled()) {
+                return null;
+            }
+
             status.set(SyncStatus.Type.BOOKS_COLLECTED, null, 0, namesakes.size());
             announceActiveSyncStatus();
 
