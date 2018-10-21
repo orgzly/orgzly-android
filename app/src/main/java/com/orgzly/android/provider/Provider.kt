@@ -585,7 +585,7 @@ class Provider : ContentProvider() {
             db.update(DbBook.TABLE, it, DbBook._ID + "=" + bookId, null)
         }
 
-        db.rawQuery(DELETE_CURRENT_VERSIONED_ROOKS_FOR_ROOK_ID, arrayOf(rookId.toString()))
+        db.execSQL(DELETE_CURRENT_VERSIONED_ROOKS_FOR_ROOK_ID, arrayOf(rookId.toString()))
 
         ContentValues().let {
             it.put(DbCurrentVersionedRook.VERSIONED_ROOK_ID, versionedRookId)
