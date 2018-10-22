@@ -542,6 +542,37 @@ public class AppPreferences {
     }
 
     /*
+     * Allow inlining images
+     */
+    public static boolean displayInlineImages(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_display_inline_images),
+                context.getResources().getBoolean(R.bool.pref_default_display_inline_images));
+    }
+
+    public static void displayInlineImages(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_display_inline_images);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
+
+    public static boolean enableImageScaling(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_enable_image_scaling),
+                context.getResources().getBoolean(R.bool.pref_default_enable_image_scaling));
+    }
+
+    public static void enableImageScaling(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_enable_image_scaling);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
+
+    public static int setImageFixedWidth(Context context) {
+        return Integer.valueOf(getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_set_image_fixed_width),
+                context.getResources().getString(R.string.pref_default_set_image_fixed_width)));
+    }
+
+    /*
      * Note's metadata visibility
      */
 
