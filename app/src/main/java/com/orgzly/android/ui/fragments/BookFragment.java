@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ViewFlipper;
@@ -99,6 +100,8 @@ public class BookFragment extends NoteListFragment
     private SimpleCursorAdapter mListAdapter;
 
     private String mActionModeTag;
+
+    private static boolean keepScreenOn = false;
 
     /** Used to switch to book-does-not-exist view, if the book has been deleted. */
     private ViewFlipper mViewFlipper;
@@ -413,6 +416,29 @@ public class BookFragment extends NoteListFragment
 
             case R.id.books_options_menu_book_preface:
                 listener.onBookPrefaceEditRequest(mBook);
+                return true;
+
+            case R.id.books_options_keep_screen_on:
+                if (!keepScreenOn) {
+                    String title = "Keep screen on";
+                    String message = "Your screen will not turn off until you disable this option or leave this page";
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle(title);
+                    builder.setMessage(message);
+                    builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                        keepScreenOn = true;
+                        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                        item.setChecked(keepScreenOn);
+                        dialog.dismiss();
+                    });
+                    builder.setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.dismiss());
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    keepScreenOn = false;
+                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    item.setChecked(keepScreenOn);
+                }
                 return true;
 
 //            case R.id.books_options_menu_item_paste:

@@ -12,6 +12,13 @@
         android:id="@+id/books_options_menu_book_preface"
         app:showAsAction="never"
         android:title="@string/edit_book_preface"/>
+    <group android:checkableBehavior="all">
+        <item
+            android:id="@+id/books_options_keep_screen_on"
+            app:showAsAction="never"
+            android:title="@string/keep_screen_on"/>
+    </group>
+
 
     <!--<item-->
     <!--android:id="@+id/books_options_menu_item_paste"-->
