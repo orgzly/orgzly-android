@@ -119,7 +119,7 @@
   <string name="heads_moving_action_menu_item_up">Вверх</string>
   <string name="heads_moving_action_menu_item_demote">Понизить</string>
   <string name="new_note">Новая заметка</string>
-  <string name="quick_note">Quick note</string>
+  <string name="quick_note">Быстрая заметка</string>
   <string name="tap_to_create_new_note">Нажмите, чтобы создать новую заметку</string>
   <string name="options_menu_item_search">Поиск</string>
   <string name="no_user_repos_configured_pref_summary">Все еще не настроено</string>
@@ -167,6 +167,7 @@
   <string name="no_repos">Нет настроенных хранилищ</string>
   <string name="multiple_repos">Существует несколько хранилищ</string>
   <string name="book_encoding">Кодировка блокнота</string>
+  <string name="collecting_notebooks_in_progress">Collecting notebooks…</string>
   <string name="syncing_in_progress">Синхронизация…</string>
   <string name="syncing_book">Синхронизация %s…</string>
   <string name="sync_with_argument">Синхронизировано: %s</string>
@@ -176,12 +177,12 @@
   <string name="directory">Каталог</string>
   <string name="fragment_repo_dropbox_directory_desc">Каталог внутри Dropbox (например, «/Documents/Orgzly»)</string>
   <string name="directory_uri">Каталог URI</string>
-  <string name="git_url_hint">Remote address (e.g. git@github.com:orgzly/orgzly-android.git)</string>
-  <string name="git_directory_hint">Directory location (e.g. “file:/sdcard/orgzly”)</string>
-  <string name="git_ssh_key_hint">SSH key location (e.g. “file:/sdcard/id_rsa”)</string>
-  <string name="git_author_hint">Author (e.g. John Doe)</string>
-  <string name="git_email_hint">Email (e.g. john@email.com)</string>
-  <string name="git_branch_hint">Branch (e.g. master)</string>
+  <string name="git_url_hint">Удаленный адрес (например git@github.com:orgzly/orgzly-android.git)</string>
+  <string name="git_directory_hint">Путь к каталогу (например “file:/sdcard/orgzly”)</string>
+  <string name="git_ssh_key_hint">Путь SSH ключа (например, «file:/sdcard/id_rsa»)</string>
+  <string name="git_author_hint">Автор (например John Doe)</string>
+  <string name="git_email_hint">Email (например, john@email.com)</string>
+  <string name="git_branch_hint">Ветвь (например master)</string>
   <!-- Share button - error messages (set as title). -->
   <string name="share_action_not_set">Действие «Поделиться» не задано</string>
   <string name="share_action_not_supported">Действие «Поделиться» %s не поддерживается</string>
@@ -214,6 +215,7 @@
   <string name="permissions_rationale_for_local_repo">Для синхронизации с локальным каталогом требуется разрешение на хранение</string>
   <string name="permissions_rationale_for_book_export">Для экспорта блокнота требуется разрешение на хранение</string>
   <string name="permissions_rationale_for_sync_start">Для синхронизации с локальными хранилищами требуется разрешение на хранение</string>
+  <string name="permissions_rationale_for_external_files_access">Для доступа к внешним файлам требуется разрешение \"Память\"</string>
   <string name="cycle_visibility">Сложить/Развернуть все</string>
   <string name="running_database_update">Обновление базы данных…</string>
   <string name="note_has_been_modified">Заметка изменена</string>
@@ -236,7 +238,7 @@
   <string name="use_created_at_property">Использовать свойство для созданного во время</string>
   <string name="use_created_at_property_summary">Синхронизировать время создания используемого свойства</string>
   <string name="created_at_property">Создано в свойстве</string>
-  <string name="properties">Properties</string>
+  <string name="properties">Свойства</string>
   <string name="property_name">Имя свойства</string>
   <string name="property_value">Значения свойства</string>
   <string name="reminder_for_scheduled">Запланировано: %s</string>
@@ -338,7 +340,7 @@
   <string name="duplicate_keywords_not_allowed">Ключевое слово %s уже используется</string>
   <string name="no_states_defined">Состояния не определены</string>
   <string name="book_name_in_search">Название блокнота в результатах поиска</string>
-  <string name="display_notebook_name">Display notebook name</string>
+  <string name="display_notebook_name">Показывать имя записной книжки</string>
   <string name="display_inherited_tags_in_search_results">Унаследованные теги в поиске</string>
   <string name="display_inherited_tags_in_search_results_summary">Отображать теги в результатах поиска</string>
   <string name="new_note_notification">Создать заметку и синхронизировать</string>
@@ -391,6 +393,7 @@
   <string name="pref_summary_on_resume_sync">Синхронизация после запуска или возобновления приложения</string>
   <string name="pref_title_repo_update_sync">Хранилища изменены (еще не реализовано)</string>
   <string name="pref_summary_repo_update_sync">Синхронизация при обнаружении обновления в хранилищах</string>
+  <string name="not_modified">Not modified</string>
   <string name="notes_count_zero">Не содержит заметок</string>
   <plurals name="notes_count_nonzero">
     <item quantity="one">Содержит заметку <b>%d</b></item>
@@ -440,15 +443,16 @@
   <string name="drawers_folded_by_default_summary">Сворачивать меню по умолчанию</string>
   <string name="log_on_time_shift">Логировать время завершения</string>
   <string name="log_on_time_shift_summary">Логировать время завершения повторяющихся заметок</string>
-  <string name="set_last_repeat_on_time_shift">Set property on time shift</string>
-  <string name="set_last_repeat_on_time_shift_summary">Set time when note with repeater is marked as done</string>
+  <string name="set_last_repeat_on_time_shift">Устанавливать свойство при сдвиге времени</string>
+  <string name="set_last_repeat_on_time_shift_summary">Устанавливать время, когда заметка с повторением отмечена выполненной</string>
   <string name="background_opacity">Прозрачность фона</string>
   <string name="update_frequency">Частота обновления</string>
   <string name="git">Git</string>
-  <string name="metadata">Metadata</string>
-  <string name="selected_metadata_summary">Metadata you can choose to always display in note</string>
-  <string name="show_all">Show all</string>
-  <string name="always_show_set">Always show set</string>
-  <string name="show_selected">Show selected</string>
-  <string name="hide_all">Hide all</string>
+  <string name="metadata">Метаданные</string>
+  <string name="selected_metadata_summary">Метаданные, которые вы можете выбрать, чтобы всегда отображать в заметке</string>
+  <string name="show_all">Показать все</string>
+  <string name="always_show_set">Всегда показывать набор</string>
+  <string name="show_selected">Показать выбранные</string>
+  <string name="hide_all">Скрыть все</string>
+  <string name="external_file_no_app_found">Нет приложений для открытия этого файла</string>
 </resources>

@@ -158,6 +158,7 @@
   <string name="no_repos">Tidak ada repositori yang dikonfigurasi</string>
   <string name="multiple_repos">Beberapa repositori ada</string>
   <string name="book_encoding">Pengkodean notebook</string>
+  <string name="collecting_notebooks_in_progress">Collecting notebooks…</string>
   <string name="syncing_in_progress">Sinkronisasi…</string>
   <string name="syncing_book">Menyinkronkan %s…</string>
   <string name="sync_with_argument">Sinkronisasi: %s</string>
@@ -205,6 +206,7 @@
   <string name="permissions_rationale_for_local_repo">Menyinkronkan dengan direktori lokal memerlukan izin penyimpanan</string>
   <string name="permissions_rationale_for_book_export">Mengekspor notebook memerlukan izin penyimpanan</string>
   <string name="permissions_rationale_for_sync_start">Menyinkronkan dengan repositori lokal memerlukan izin penyimpanan</string>
+  <string name="permissions_rationale_for_external_files_access">Accessing external files requires storage permission</string>
   <string name="cycle_visibility">Lipat/Buka lipat semua</string>
   <string name="running_database_update">Memperbarui database…</string>
   <string name="note_has_been_modified">Catatan yang dimodifikasi</string>
@@ -382,6 +384,7 @@
   <string name="pref_summary_on_resume_sync">Sinkronkan setiap kali aplikasi masuk kelatar belakang depan</string>
   <string name="pref_title_repo_update_sync">Repositori yang dimodifikasi (belum diimplementasikan)</string>
   <string name="pref_summary_repo_update_sync">Sinkronkan kapan pun pembaruan di repositori terdeteksi</string>
+  <string name="not_modified">Not modified</string>
   <string name="notes_count_zero">Tidak mengandung catatan</string>
   <plurals name="notes_count_nonzero">
     <item quantity="other">Berisi catatan <b>%d</b></item>
@@ -433,4 +436,5 @@
   <string name="always_show_set">Always show set</string>
   <string name="show_selected">Show selected</string>
   <string name="hide_all">Hide all</string>
+  <string name="external_file_no_app_found">No application found to open this file</string>
 </resources>

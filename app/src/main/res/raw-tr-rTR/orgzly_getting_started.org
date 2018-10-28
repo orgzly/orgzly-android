@@ -32,10 +32,18 @@ Not belirlenmiş bir zaman içerebilir
 SCHEDULED: <2015-02-20 Cuma 15:15>
 
 Zamanlar bir tekrarlayıcı olabilir
-SCHEDULED: <2015-02-16 Pzt. .+1d>
+SCHEDULED: <2015-02-16 Mon .+2d>
 
 Ayrıca zaman sınırı olarak bir tarih ayarlayabilirsiniz
 DEADLINE: <2015-02-20 Cuma>
+
+** Reminders for scheduled and deadline times are supported
+
+They are disabled by default and need to be enabled in Settings.
+
+** [#A] Note can have a priority
+
+You can change the number of priorities in Settings. You can also change default priority - assumed priority for notes without one set.
 
 Not bağlantıları kullanabilir
 
