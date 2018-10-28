@@ -380,6 +380,8 @@ public class BookFragment extends NoteListFragment
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
 
         inflater.inflate(R.menu.book_actions, menu);
+        boolean keepScreenOnEnabled = (getActivity().getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
+        menu.getItem(3).setChecked(keepScreenOnEnabled);
     }
 
     @Override
