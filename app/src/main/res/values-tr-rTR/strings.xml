@@ -161,6 +161,7 @@
   <string name="no_repos">Depolamalar yapılandırılmadı</string>
   <string name="multiple_repos">Birden fazla depo var</string>
   <string name="book_encoding">NotDefter\'leri kodlamaları</string>
+  <string name="collecting_notebooks_in_progress">Collecting notebooks…</string>
   <string name="syncing_in_progress">Senkronize ediliyor…</string>
   <string name="syncing_book">Senkronize ediliyor %s…</string>
   <string name="sync_with_argument">Senkronize: %s</string>
@@ -208,6 +209,7 @@
   <string name="permissions_rationale_for_local_repo">Yerel bir dizine senkronize etmek için depolama izniniz gerekiyor</string>
   <string name="permissions_rationale_for_book_export">Not defteri dışa aktarmak için depolama izni gerekiyor</string>
   <string name="permissions_rationale_for_sync_start">Yerel depolarla senkronize etmek depolama iznini gerektirir</string>
+  <string name="permissions_rationale_for_external_files_access">Accessing external files requires storage permission</string>
   <string name="cycle_visibility">Hepsini Katla/Aç</string>
   <string name="running_database_update">Veritabanı yükseltiliyor…</string>
   <string name="note_has_been_modified">Not değiştirildi</string>
@@ -385,6 +387,7 @@
   <string name="pref_summary_on_resume_sync">Uygulama açıldığında eşitle</string>
   <string name="pref_title_repo_update_sync">Depolar değiştirildi (henüz değil)</string>
   <string name="pref_summary_repo_update_sync">Depolarda bir güncelleme oluştuğunda eşitle</string>
+  <string name="not_modified">Not modified</string>
   <string name="notes_count_zero">Not içermiyor</string>
   <plurals name="notes_count_nonzero">
     <item quantity="one">Not <b>%d</b> içerir</item>
@@ -439,4 +442,5 @@
   <string name="always_show_set">Always show set</string>
   <string name="show_selected">Show selected</string>
   <string name="hide_all">Hide all</string>
+  <string name="external_file_no_app_found">No application found to open this file</string>
 </resources>

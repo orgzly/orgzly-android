@@ -161,6 +161,7 @@
   <string name="no_repos">Nessun deposito è configurato</string>
   <string name="multiple_repos">Esistono depositi multipli</string>
   <string name="book_encoding">Codifica del taccuino</string>
+  <string name="collecting_notebooks_in_progress">Collecting notebooks…</string>
   <string name="syncing_in_progress">Sincronizzazione…</string>
   <string name="syncing_book">Sincronizzazione di %s…</string>
   <string name="sync_with_argument">Sincronizza: %s</string>
@@ -208,6 +209,7 @@
   <string name="permissions_rationale_for_local_repo">La sincronizzazione con una directory locale richiede il permesso di scrittura</string>
   <string name="permissions_rationale_for_book_export">L\'esportazione del taccuino richiede i permessi di scrittura</string>
   <string name="permissions_rationale_for_sync_start">La sincronizzazione con un deposito locale richiede il permesso di scrittura</string>
+  <string name="permissions_rationale_for_external_files_access">L\'accesso a file esterni richiede il permesso di archiviazione</string>
   <string name="cycle_visibility">Apri/Chiudi tutto</string>
   <string name="running_database_update">Aggiornamento database in corso…</string>
   <string name="note_has_been_modified">Nota modificata</string>
@@ -385,6 +387,7 @@
   <string name="pref_summary_on_resume_sync">Sincronizza qualsiasi app passi in primo piano</string>
   <string name="pref_title_repo_update_sync">Deposito modificato (non ancora implementato)</string>
   <string name="pref_summary_repo_update_sync">Sincronizza in qualsiasi momento quanto è rilevato un aggiornamento nel deposito</string>
+  <string name="not_modified">Not modified</string>
   <string name="notes_count_zero">Non contiene note</string>
   <plurals name="notes_count_nonzero">
     <item quantity="one">Contiene <b>%d</b> nota</item>
@@ -439,4 +442,5 @@
   <string name="always_show_set">Mostra sempre il gruppo</string>
   <string name="show_selected">Mostra selezionati</string>
   <string name="hide_all">Nascondi tutto</string>
+  <string name="external_file_no_app_found">Non è stata trovata alcuna applicazione per aprire questo file</string>
 </resources>

@@ -32,10 +32,18 @@ CLOSED: [2018-01-24 Wed 17:00]
 SCHEDULED: <2015-02-20 Fri 15:15>
 
 *** 时间可以设定一个重复器
-SCHEDULED: <2015-02-16 Mon .+1d>
+SCHEDULED: <2015-02-16 Mon .+2d>
 
 ** 也可以设定一个截止时间
 DEADLINE: <2015-02-20 Fri>
+
+** 支持计划时间和截至时间的提醒
+
+默认为关闭，需要在设置中启用。
+
+** [#A] 笔记可以具有优先级
+
+可在设置中更改优先级数量 You can also change default priority - assumed priority for notes without one set.
 
 ** 笔记可以使用链接
 
