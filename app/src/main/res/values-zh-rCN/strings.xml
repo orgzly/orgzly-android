@@ -134,7 +134,7 @@
   <string name="repo_dropbox_button_not_linked">连接到Dropbox</string>
   <string name="repo_dropbox_button_linked">从Dropbox断开连接</string>
   <string name="fragment_settings_title">设置</string>
-  <string name="notes_update_needed_dialog_title">首选项影响笔记</string>
+  <string name="notes_update_needed_dialog_title">偏好影响笔记</string>
   <string name="notes_update_needed_dialog_message">更新笔记以显示更改？</string>
   <string name="updating_notes">正在更新笔记…</string>
   <string name="failure">呃哦</string>
@@ -158,6 +158,7 @@
   <string name="no_repos">无已配置的存储库</string>
   <string name="multiple_repos">存在多个存储库</string>
   <string name="book_encoding">笔记本编码</string>
+  <string name="collecting_notebooks_in_progress">收藏笔记本...</string>
   <string name="syncing_in_progress">正在同步…</string>
   <string name="syncing_book">正在同步 %s…</string>
   <string name="sync_with_argument">同步：%s</string>
@@ -205,6 +206,7 @@
   <string name="permissions_rationale_for_local_repo">与本地目录同步需要存储权限</string>
   <string name="permissions_rationale_for_book_export">导出笔记本需要存储权限</string>
   <string name="permissions_rationale_for_sync_start">与本地存储库同步需要存储权限</string>
+  <string name="permissions_rationale_for_external_files_access">访问外部文件需要存储权限</string>
   <string name="cycle_visibility">收起/展开全部</string>
   <string name="running_database_update">正在升级数据库…</string>
   <string name="note_has_been_modified">笔记已修改</string>
@@ -250,7 +252,7 @@
   <string name="font_size">字体大小</string>
   <string name="color_scheme">颜色主题</string>
   <string name="monospaced_font">等宽字体</string>
-  <string name="monospaced_font_summary">为笔记内容和笔记本前言使用等宽字体</string>
+  <string name="monospaced_font_summary">为笔记内容和笔记本序言使用等宽字体</string>
   <string name="reversed_note_click_action">反转笔记点击操作</string>
   <string name="reversed_note_click_action_summary">点击选择笔记，长按打开</string>
   <string name="look_and_feel">外观 &amp; 感觉</string>
@@ -349,16 +351,16 @@
   <string name="primary_storage">主存储</string>
   <string name="book_exported">笔记本导出到 %s</string>
   <string name="failed_exporting_book">导出笔记本失败：%s</string>
-  <string name="edit_book_preface">编辑前言</string>
+  <string name="edit_book_preface">编辑序言</string>
   <string name="book_preface_hint">在第一条笔记前显示的文本</string>
   <string name="layout_direction">布局方向</string>
   <string name="layout_direction_locale">默认</string>
   <string name="layout_direction_ltr">从左到右</string>
   <string name="layout_direction_rtl">从右到左</string>
-  <string name="preface_in_book">笔记本前言</string>
+  <string name="preface_in_book">笔记本序言</string>
   <string name="preface_in_book_full">显示</string>
   <string name="preface_in_book_hide">隐藏</string>
-  <string name="preface_in_book_few_lines">显示几行</string>
+  <string name="preface_in_book_few_lines">显示数行</string>
   <string name="created_property_name">创建</string>
   <string name="separate_notes_with_new_line_always">总是</string>
   <string name="separate_notes_with_new_line_multi_line_notes_only">仅多行笔记</string>
@@ -382,7 +384,7 @@
   <string name="pref_summary_on_resume_sync">当应用程序进入前台时同步</string>
   <string name="pref_title_repo_update_sync">存储库已修改（尚未实现）</string>
   <string name="pref_summary_repo_update_sync">当检测到存储库内有更新时同步</string>
-  <string name="book_never_modified_locally">从未在本地修改</string>
+  <string name="not_modified">未修改</string>
   <string name="notes_count_zero">未包含笔记</string>
   <plurals name="notes_count_nonzero">
     <item quantity="other">包含 <b>%d</b> 笔记</item>
@@ -434,4 +436,5 @@
   <string name="always_show_set">始终显示设定</string>
   <string name="show_selected">显示已选择</string>
   <string name="hide_all">隐藏全部</string>
+  <string name="external_file_no_app_found">找不到可打开此文件的应用程序</string>
 </resources>

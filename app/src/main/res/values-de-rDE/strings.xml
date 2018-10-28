@@ -161,6 +161,7 @@
   <string name="no_repos">Keine Ablageorte eingerichtet</string>
   <string name="multiple_repos">Es existieren mehrere Ablageorte</string>
   <string name="book_encoding">Zeichensatz für das Notizbuch</string>
+  <string name="collecting_notebooks_in_progress">Collecting notebooks…</string>
   <string name="syncing_in_progress">Synchronisieren …</string>
   <string name="syncing_book">Synchronisiere %s ...</string>
   <string name="sync_with_argument">Synchronisiere: %s</string>
@@ -208,6 +209,7 @@
   <string name="permissions_rationale_for_local_repo">Synchronisierung mit einem lokalen Verzeichnis erfordert Speicherzugriffsrechte</string>
   <string name="permissions_rationale_for_book_export">Exportieren eines Notizbuchs erfordert Speicherberechtigung</string>
   <string name="permissions_rationale_for_sync_start">Synchronisierung mit lokalem Ablageort erfordert Speicherzugriffsrechte</string>
+  <string name="permissions_rationale_for_external_files_access">Der Zugriff auf externe Dateien erfordert eine Zugriffsberechtigung</string>
   <string name="cycle_visibility">Alle ein-/ausklappen</string>
   <string name="running_database_update">Datenbank aktualisieren…</string>
   <string name="note_has_been_modified">Notiz bearbeitet</string>
@@ -385,7 +387,7 @@
   <string name="pref_summary_on_resume_sync">Synchronisieren wenn die App in den Vordergrund geholt wird</string>
   <string name="pref_title_repo_update_sync">Ablageort geändert (noch nicht implementiert)</string>
   <string name="pref_summary_repo_update_sync">Synchronisieren wenn eine Änderung am Ablageort erkannt wird</string>
-  <string name="book_never_modified_locally">Keine lokale Modifikation</string>
+  <string name="not_modified">Not modified</string>
   <string name="notes_count_zero">Enthält keine Notizen</string>
   <plurals name="notes_count_nonzero">
     <item quantity="one">Enthält <b>%d</b> Notiz</item>
@@ -440,4 +442,5 @@
   <string name="always_show_set">Set immer anzeigen</string>
   <string name="show_selected">Auswahl anzeigen</string>
   <string name="hide_all">Alle ausblenden</string>
+  <string name="external_file_no_app_found">Es wurde keine App zum Öffnen der Datei gefunden</string>
 </resources>

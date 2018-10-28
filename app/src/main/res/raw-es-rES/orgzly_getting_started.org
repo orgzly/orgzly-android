@@ -10,14 +10,14 @@ Se pueden seleccionar múltiples notas.
 
 Arrastre a la izquierda para abrir un menú diferente.
 
-** Plegar una nota que contiene subnotas haciendo clic en el icono
-*** No hay límite en el número de niveles que puede tener
+** Plegar una nota que contiene subnotas haciendo clic en el icono a su lado
+*** No hay límite en el número de niveles que se pueden tener
 **** Utilice esto para organizar mejor sus notas
 
-** Una nota puede tener etiquetas: etiq1:etiq2:
+** Una nota puede tener etiquetas :tag1:tag2:
 *** Las subnotas heredan las etiquetas :tag3:
 
-Si usted busca notas con la etiqueta "etiq1", esta nota también se devolverá.
+Si usted busca notas con la etiqueta "tag1", esta nota también se devolverá.
 
 ** TODO Una nota puede tener un estado
 
@@ -28,14 +28,22 @@ Puede configurar cualquier número de estados a utilizar: TODO, NEXT, DONE, etc.
 *** DONE Esta es una nota con el tipo de estado /done/
 CLOSED: [2018-01-24 Wed 17:00]
 
-** Una nota puede tener una programación
+** Una nota puede tener un momento de inicio programado
 SCHEDULED: <2015-02-20 Fri 15:15>
 
 *** La fecha puede ser una repetición
-SCHEDULED: <2015-02-16 Mon .+1d>
+SCHEDULED: <2015-02-16 Mon .+2d>
 
-** También puede establecer un tiempo límite
+** También se puede establecer un tiempo límite
 DEADLINE: <2015-02-20 Fri>
+
+** Se soportan los recordatorios para horas programadas y de tiempo límite
+
+Estan inhabilitadas por defecto y necesitan estar habilitadas en Configuración.
+
+** [#A] Una nota puede tener una prioridad
+
+Puedes cambiar el número de prioridades en Configuración. También puedes cambiar la prioridad por defecto - la prioridad asumida para notas sin una puesta.
 
 ** Una nota puede tener enlaces
 
@@ -45,9 +53,9 @@ Enviar email a [[mailto:support@orgzly.com][support@orgzly.com]], visitar http:/
 
 ** Están soportados formatos tipográficos básicos
 
-Puede escribir palabras en *negrita*, /italica/, _subrarradas_, =literal=, ~código~ y +tachadas+.
+Puede escribir palabras en *negrita*, /italica/, _subrayadas_, = cita literal=, ~código~ y +tachadas+.
 
-** Hay disponible lista de verificación
+** Se pueden crear listas de verificación
 
 - [X] Tarea 1
 - [ ] Tarea 2
@@ -58,7 +66,7 @@ Pulsa la caja de verificación para alternar su estado. Pulsa el botón de nueva
 * Buscar
 ** Existen muchos operadores de búsqueda soportados
 
-Puede buscar notas por estado, etiqueta, programación, plazo tiempo, etc.
+Puede buscar notas por estado, etiqueta, fecha de inicio, fecha límite, etc.
 
 Visite http://www.orgzly.com/help#search para aprender más.
 
@@ -66,13 +74,13 @@ Visite http://www.orgzly.com/help#search para aprender más.
 
 Pruebe los ejemplos de búsqueda del cajón de navegación y observe las consultas que utilizan.
 
-Puede crear sus propias búsquedas guardadas haciendo clic en "Búsquedas" en el cajón de navegación.
+Puede crear sus propias búsquedas y guardarlas haciendo clic en "Búsquedas" en el cajón de navegación.
 
 * Sincronizando
 
 ** Los cuadernos pueden guardarse como archivos de texto plano
 
-Los archivos se guardan en formato "Org mode".
+Los archivos se guardan en el formato de "Org mode".
 
 ** Tipo de ubicación (repositorio)
 

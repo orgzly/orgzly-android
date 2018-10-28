@@ -113,7 +113,7 @@
   <string name="heads_moving_action_menu_item_up">Monter</string>
   <string name="heads_moving_action_menu_item_demote">Rétrograder</string>
   <string name="new_note">Nouvelle note</string>
-  <string name="quick_note">Quick note</string>
+  <string name="quick_note">Note rapide</string>
   <string name="tap_to_create_new_note">Touchez pour créer une nouvelle note</string>
   <string name="options_menu_item_search">Rechercher</string>
   <string name="no_user_repos_configured_pref_summary">Rien n\'est encore configuré</string>
@@ -161,6 +161,7 @@
   <string name="no_repos">Aucun dépôt configuré</string>
   <string name="multiple_repos">Il existe plusieurs dépôts</string>
   <string name="book_encoding">Encodage du bloc-notes</string>
+  <string name="collecting_notebooks_in_progress">Collecting notebooks…</string>
   <string name="syncing_in_progress">Synchronisation en cours…</string>
   <string name="syncing_book">Synchronisation de %s en cours…</string>
   <string name="sync_with_argument">Synchroniser %s</string>
@@ -208,6 +209,7 @@
   <string name="permissions_rationale_for_local_repo">La synchronisation avec un dossier local nécessite l\'autorisation d\'accès au stockage</string>
   <string name="permissions_rationale_for_book_export">L\'export d\'un bloc-notes nécessite l\'autorisation d\'accès au stockage des fichiers</string>
   <string name="permissions_rationale_for_sync_start">La synchronisation avec un dépôt local nécessite l\'autorisation d\'accès au stockage</string>
+  <string name="permissions_rationale_for_external_files_access">Accéder à des fichiers externes requiert l’autorisation de stockage</string>
   <string name="cycle_visibility">Tout Déplier/Replier</string>
   <string name="running_database_update">Mise à jour de la base de données…</string>
   <string name="note_has_been_modified">Note modifiée</string>
@@ -230,7 +232,7 @@
   <string name="use_created_at_property">Utilise la propriété pour l\'heure du crée-pour</string>
   <string name="use_created_at_property_summary">Synchronise l\'heure du créé-pour en utilisant une propriété</string>
   <string name="created_at_property">Propriété du créé-pour</string>
-  <string name="properties">Properties</string>
+  <string name="properties">Propriétés</string>
   <string name="property_name">Nom de la propriété</string>
   <string name="property_value">Valeur de la propriété</string>
   <string name="reminder_for_scheduled">Planifiée : %s</string>
@@ -332,7 +334,7 @@
   <string name="duplicate_keywords_not_allowed">Le mot clé %s est déjà utilisé</string>
   <string name="no_states_defined">Aucun état défini</string>
   <string name="book_name_in_search">Nom des bloc-notes dans les résultats de recherche</string>
-  <string name="display_notebook_name">Display notebook name</string>
+  <string name="display_notebook_name">Afficher le nom du bloc-note</string>
   <string name="display_inherited_tags_in_search_results">Tags hérités dans les résultats de recherche</string>
   <string name="display_inherited_tags_in_search_results_summary">Afficher les tags hérités dans les résultats de recherche</string>
   <string name="new_note_notification">Créer une note et synchroniser</string>
@@ -385,7 +387,7 @@
   <string name="pref_summary_on_resume_sync">Synchroniser chaque fois que l’application passe au premier plan</string>
   <string name="pref_title_repo_update_sync">Dépôts modifiés (pas encore implémenté)</string>
   <string name="pref_summary_repo_update_sync">Synchroniser chaque fois qu’une mise à jour dans les dépôts est détectée</string>
-  <string name="book_never_modified_locally">Jamais modifié localement</string>
+  <string name="not_modified">Aucune modification</string>
   <string name="notes_count_zero">Ne contient aucune note</string>
   <plurals name="notes_count_nonzero">
     <item quantity="one">Contient une note</item>
@@ -429,15 +431,16 @@
   <string name="drawers_folded_by_default_summary">Replier les panneaux par défaut</string>
   <string name="log_on_time_shift">Ajouter une entrée au panneau lors d\'un changement de temps</string>
   <string name="log_on_time_shift_summary">Journaliser l\'heure lorsqu\'une note avec une répétition est marquée comme terminée</string>
-  <string name="set_last_repeat_on_time_shift">Set property on time shift</string>
-  <string name="set_last_repeat_on_time_shift_summary">Set time when note with repeater is marked as done</string>
+  <string name="set_last_repeat_on_time_shift">Définir une propriété lors d\'un décalage de date</string>
+  <string name="set_last_repeat_on_time_shift_summary">Définir la date quand une note répétée est marquée comme faite</string>
   <string name="background_opacity">Opacité de l\'arrière-plan</string>
   <string name="update_frequency">Fréquence de mise à jour</string>
   <string name="git">Git</string>
-  <string name="metadata">Metadata</string>
-  <string name="selected_metadata_summary">Metadata you can choose to always display in note</string>
-  <string name="show_all">Show all</string>
-  <string name="always_show_set">Always show set</string>
-  <string name="show_selected">Show selected</string>
-  <string name="hide_all">Hide all</string>
+  <string name="metadata">Métadonnée</string>
+  <string name="selected_metadata_summary">Métadonnées que vous pouvez choisir de toujours afficher dans les notes</string>
+  <string name="show_all">Afficher tout</string>
+  <string name="always_show_set">Définir sur \"Toujours afficher\"</string>
+  <string name="show_selected">Afficher la sélection</string>
+  <string name="hide_all">Masquer tous</string>
+  <string name="external_file_no_app_found">Aucune application disponible pour ouvrir ce fichier</string>
 </resources>

@@ -32,10 +32,18 @@ CLOSED: [2018-01-24 Mer 17:00]
 SCHEDULED: <2015-02-20 Ven 15:15>
 
 *** Gli orari possono avere una ripetizione
-SCHEDULED: <2015-02-16 Lun .+1d>
+SCHEDULED: <2015-02-16 Mon .+2d>
 
 ** Puoi anche stabilire una scadenza
 DEADLINE: <2015-02-20 Ven>
+
+** Reminders for scheduled and deadline times are supported
+
+Sono disabilitati di default e devono essere abilitati nelle impostazioni.
+
+** [#A] Note can have a priority
+
+È possibile modificare il numero di priorità nelle impostazioni. You can also change default priority - assumed priority for notes without one set.
 
 ** Le note possono usare collegamenti
 

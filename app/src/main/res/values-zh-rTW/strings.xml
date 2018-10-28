@@ -158,6 +158,7 @@
   <string name="no_repos">未配置資料庫</string>
   <string name="multiple_repos">存在多個資料庫</string>
   <string name="book_encoding">筆記本的編碼</string>
+  <string name="collecting_notebooks_in_progress">正在收集筆記..</string>
   <string name="syncing_in_progress">正在同步...</string>
   <string name="syncing_book">正在同步%s...</string>
   <string name="sync_with_argument">同步: %s</string>
@@ -205,6 +206,7 @@
   <string name="permissions_rationale_for_local_repo">與本地資料夾同步需要存儲許可權</string>
   <string name="permissions_rationale_for_book_export">匯出筆記本需要存儲許可權</string>
   <string name="permissions_rationale_for_sync_start">與本地資料庫同步需要存儲許可權</string>
+  <string name="permissions_rationale_for_external_files_access">訪問外部檔案需要允許存儲授權</string>
   <string name="cycle_visibility">折疊/展開所有</string>
   <string name="running_database_update">正在更新資料庫..</string>
   <string name="note_has_been_modified">筆記修改</string>
@@ -382,7 +384,7 @@
   <string name="pref_summary_on_resume_sync">開啓應用程式到前台時進行同步</string>
   <string name="pref_title_repo_update_sync">修改資料庫(尚未實現)</string>
   <string name="pref_summary_repo_update_sync">檢測到資料庫中的更新時進行同步</string>
-  <string name="book_never_modified_locally">從未在本地修改</string>
+  <string name="not_modified">未進行修改</string>
   <string name="notes_count_zero">沒有筆記</string>
   <plurals name="notes_count_nonzero">
     <item quantity="other">包含 <b>%d</b> 筆記</item>
@@ -434,4 +436,5 @@
   <string name="always_show_set">總是顯示選單</string>
   <string name="show_selected">顯示已選取的項目</string>
   <string name="hide_all">隱藏全部</string>
+  <string name="external_file_no_app_found">沒有關聯可開啟此檔案的程式。</string>
 </resources>

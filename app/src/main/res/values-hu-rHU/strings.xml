@@ -113,7 +113,7 @@
   <string name="heads_moving_action_menu_item_up">Fel</string>
   <string name="heads_moving_action_menu_item_demote">Lefokozás</string>
   <string name="new_note">Új bejegyzés</string>
-  <string name="quick_note">Quick note</string>
+  <string name="quick_note">Gyorsjegyzet</string>
   <string name="tap_to_create_new_note">Koppints egy új bejegyzés létrehozásához</string>
   <string name="options_menu_item_search">Keresés</string>
   <string name="no_user_repos_configured_pref_summary">Egy sincs még beállítva</string>
@@ -161,6 +161,7 @@
   <string name="no_repos">Nincs beállítva tárolóhely</string>
   <string name="multiple_repos">Több tárolóhely is létezik</string>
   <string name="book_encoding">Jegyzettömb kódolása</string>
+  <string name="collecting_notebooks_in_progress">Collecting notebooks…</string>
   <string name="syncing_in_progress">Szinkronizálás…</string>
   <string name="syncing_book">%s szinkronizálása…</string>
   <string name="sync_with_argument">%s szinkronizálása</string>
@@ -170,12 +171,12 @@
   <string name="directory">Könyvtár</string>
   <string name="fragment_repo_dropbox_directory_desc">Könyvtár a Dropbox-ban (pl. “/Documents/Orgzly”)</string>
   <string name="directory_uri">Könyvtár URI</string>
-  <string name="git_url_hint">Remote address (e.g. git@github.com:orgzly/orgzly-android.git)</string>
-  <string name="git_directory_hint">Directory location (e.g. “file:/sdcard/orgzly”)</string>
-  <string name="git_ssh_key_hint">SSH key location (e.g. “file:/sdcard/id_rsa”)</string>
-  <string name="git_author_hint">Author (e.g. John Doe)</string>
-  <string name="git_email_hint">Email (e.g. john@email.com)</string>
-  <string name="git_branch_hint">Branch (e.g. master)</string>
+  <string name="git_url_hint">Távoli cím (pl. git@github.com:orgzly/orgzly-android.git)</string>
+  <string name="git_directory_hint">Könyvtár helye (pl. “file:/sdcard/orgzly”)</string>
+  <string name="git_ssh_key_hint">SSH kulcs helye (pl. “file:/sdcard/id_rsa”)</string>
+  <string name="git_author_hint">Szerző (pl. Kovács Jenő)</string>
+  <string name="git_email_hint">Email (pl. john@email.com)</string>
+  <string name="git_branch_hint">Ág (pl. master)</string>
   <!-- Share button - error messages (set as title). -->
   <string name="share_action_not_set">Megosztási művelet nincs beállítva</string>
   <string name="share_action_not_supported">%s megosztási művelet nem támogatott</string>
@@ -208,6 +209,7 @@
   <string name="permissions_rationale_for_local_repo">Helyi tárolóval csak memóriához kapott engedéllyel lehet szinkronizálni</string>
   <string name="permissions_rationale_for_book_export">Jegyzettömb mentéséhez memória engedély kell</string>
   <string name="permissions_rationale_for_sync_start">Helyi tárolóval csak memóriához kapott engedéllyel lehet szinkronizálni</string>
+  <string name="permissions_rationale_for_external_files_access">A külső fájlok eléréséhez tárhely engedély szükséges</string>
   <string name="cycle_visibility">Mind behajtása/kibontása</string>
   <string name="running_database_update">Adatbázis frissítése…</string>
   <string name="note_has_been_modified">Bejegyzés módosítva</string>
@@ -230,7 +232,7 @@
   <string name="use_created_at_property">\"Létrehozás időpontja\" tulajdonság neve</string>
   <string name="use_created_at_property_summary">Tulajdonság felhasználása a létrehozás időpontjának szinkronizálásához</string>
   <string name="created_at_property">Létrehozás időpontja tulajdonság</string>
-  <string name="properties">Properties</string>
+  <string name="properties">Tulajdonságok</string>
   <string name="property_name">Tulajdonság neve</string>
   <string name="property_value">Tulajdonság értéke</string>
   <string name="reminder_for_scheduled">Ütemezett: %s</string>
@@ -332,7 +334,7 @@
   <string name="duplicate_keywords_not_allowed">%s kulcsszó már használt</string>
   <string name="no_states_defined">Nincs állapot definiálva</string>
   <string name="book_name_in_search">Jegyzettömb neve a keresés eredményében</string>
-  <string name="display_notebook_name">Display notebook name</string>
+  <string name="display_notebook_name">Jegyzetfüzet nevének megjelenítése</string>
   <string name="display_inherited_tags_in_search_results">Örökölt címkék a keresési eredményekben</string>
   <string name="display_inherited_tags_in_search_results_summary">Örökölt címkék megmutatása a keresési eredményekben</string>
   <string name="new_note_notification">Bejegyzés létrehozása és szinkronizálás</string>
@@ -385,7 +387,7 @@
   <string name="pref_summary_on_resume_sync">Szinkronizálás valahányszor az app előtérbe kerül</string>
   <string name="pref_title_repo_update_sync">Módosított tárolók (még nincs implementálva)</string>
   <string name="pref_summary_repo_update_sync">Szinkronizálás valahányszor észrevesz változást a tárolókban</string>
-  <string name="book_never_modified_locally">Soha helyileg nem módosul</string>
+  <string name="not_modified">Not modified</string>
   <string name="notes_count_zero">Nem tartalmaz bejegyzést</string>
   <plurals name="notes_count_nonzero">
     <item quantity="one">Tartalmaz <b>%d</b> bejegyzést</item>
@@ -429,15 +431,16 @@
   <string name="drawers_folded_by_default_summary">Alapból behajtott bejegyzések</string>
   <string name="log_on_time_shift">Időeltoláskor bejegyzést ír</string>
   <string name="log_on_time_shift_summary">Jegyezze fel az időt amikor időismétléses bejegyzést készre jelölök</string>
-  <string name="set_last_repeat_on_time_shift">Set property on time shift</string>
-  <string name="set_last_repeat_on_time_shift_summary">Set time when note with repeater is marked as done</string>
+  <string name="set_last_repeat_on_time_shift">Időeltoláskor állítsa át a tulajdonságot</string>
+  <string name="set_last_repeat_on_time_shift_summary">Állítsd át az időt amikor egy időismétleses bejegyzést késznek jelölök</string>
   <string name="background_opacity">Háttér áttetszősége</string>
   <string name="update_frequency">Frissítés gyakorisága</string>
   <string name="git">Git</string>
-  <string name="metadata">Metadata</string>
-  <string name="selected_metadata_summary">Metadata you can choose to always display in note</string>
-  <string name="show_all">Show all</string>
-  <string name="always_show_set">Always show set</string>
-  <string name="show_selected">Show selected</string>
-  <string name="hide_all">Hide all</string>
+  <string name="metadata">Metaadat</string>
+  <string name="selected_metadata_summary">Metaadatok, amiből választhatsz, hogy mindig látszódjon egy bejegyzésben</string>
+  <string name="show_all">Összes megjelenítése</string>
+  <string name="always_show_set">Mindig mutassa a készletet</string>
+  <string name="show_selected">Kiválasztottak megjelenítése</string>
+  <string name="hide_all">Összes elrejtése</string>
+  <string name="external_file_no_app_found">A fájl megnyitásához nem találtam alkalmazást</string>
 </resources>

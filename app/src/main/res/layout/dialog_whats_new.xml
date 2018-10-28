@@ -24,6 +24,32 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.6.10"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Follow links to files in storage directory" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Follow links to other notebooks within the app" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Remove scheduled time after marking repeated deadline as done" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix unresponsive UI after returning from Settings" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Various bug fixes and improvements" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.6.9"
             tools:ignore="HardcodedText" />
 

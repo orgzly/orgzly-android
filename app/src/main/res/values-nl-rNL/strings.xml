@@ -161,6 +161,7 @@
   <string name="no_repos">Geen opslagruimtes ingesteld</string>
   <string name="multiple_repos">Er bestaan meerdere opslagruimtes</string>
   <string name="book_encoding">Encodering van notitieboekje</string>
+  <string name="collecting_notebooks_in_progress">Collecting notebooks…</string>
   <string name="syncing_in_progress">Synchroniseren…</string>
   <string name="syncing_book">Synchroniseert %s…</string>
   <string name="sync_with_argument">Synchroniseer: %s</string>
@@ -208,6 +209,7 @@
   <string name="permissions_rationale_for_local_repo">Synchroniseren met een lokale map vereist opslagtoestemming</string>
   <string name="permissions_rationale_for_book_export">Notitieboekje exporteren vereist opslagtoestemming</string>
   <string name="permissions_rationale_for_sync_start">Synchroniseren met lokale opslagruimte vereist opslagtoestemming</string>
+  <string name="permissions_rationale_for_external_files_access">Accessing external files requires storage permission</string>
   <string name="cycle_visibility">Vouw/Ontvouw alles</string>
   <string name="running_database_update">Database bijwerken…</string>
   <string name="note_has_been_modified">Notitie bewerkt</string>
@@ -385,7 +387,7 @@
   <string name="pref_summary_on_resume_sync">Synchroniseer wanneer app naar de voorgrond komt</string>
   <string name="pref_title_repo_update_sync">Opslagruimtes bewerkt (nog niet geïmplementeerd)</string>
   <string name="pref_summary_repo_update_sync">Synchroniseer wanneer er een update in de opslagruimte is gedetecteerd</string>
-  <string name="book_never_modified_locally">Nooit lokaal aangepast</string>
+  <string name="not_modified">Not modified</string>
   <string name="notes_count_zero">Bevat geen notities</string>
   <plurals name="notes_count_nonzero">
     <item quantity="one">Bevat <b>%d</b> notitie</item>
@@ -440,4 +442,5 @@
   <string name="always_show_set">Always show set</string>
   <string name="show_selected">Show selected</string>
   <string name="hide_all">Hide all</string>
+  <string name="external_file_no_app_found">No application found to open this file</string>
 </resources>
