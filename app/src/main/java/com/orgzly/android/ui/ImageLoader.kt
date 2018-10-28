@@ -1,8 +1,10 @@
 package com.orgzly.android.ui
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Environment
 import android.support.v4.content.FileProvider
 import android.text.Spannable
@@ -53,23 +55,30 @@ object ImageLoader {
                 // Get the Uri
                 val contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", file)
 
+                // Get image sizes to reduce their memory footprint by rescaling
+                val options = BitmapFactory.Options()
+                options.inJustDecodeBounds = true
+                BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().toString() + "/" + path, options)
+
+                val size = fitDrawable(textWithMarkup, options.outWidth, options.outHeight)
+
                 // Setup a placeholder
                 val drawable = ColorDrawable(Color.TRANSPARENT)
-                drawable.setBounds(0, 0, AppPreferences.setImageFixedWidth(context), AppPreferences.setImageFixedWidth(context))
+                drawable.setBounds(0, 0, size.first, size.second)
 
                 Glide.with(context)
-                    .asDrawable()
+                    .asBitmap()
                     // Use a placeholder
                     .apply(RequestOptions().placeholder(drawable))
-                    // And scaled thumbnails for faster display
-                    .thumbnail(Glide.with(context)
-                            .applyDefaultRequestOptions(RequestOptions().override(AppPreferences.setImageFixedWidth(context)))
-                            .load(contentUri))
+                    // Override the bitmap size, mainly used for big images
+                    // as it's useless to display more pixel that the pixel density allows
+                    .apply(RequestOptions().override(size.first, size.second))
                     .load(contentUri)
-                    .into(object : SimpleTarget<Drawable>() {
-                        override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                            fitDrawable(textWithMarkup, resource)
-                            text.setSpan(ImageSpan(resource), text.getSpanStart(span), text.getSpanEnd(span), text.getSpanFlags(span))
+                    .into(object : SimpleTarget<Bitmap>() {
+                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                            val bd = BitmapDrawable(App.getAppContext().resources, resource)
+                            fitDrawable(textWithMarkup, bd)
+                            text.setSpan(ImageSpan(bd), text.getSpanStart(span), text.getSpanEnd(span), text.getSpanFlags(span))
                         }
                     })
             }
@@ -106,14 +115,12 @@ object ImageLoader {
         return ret
     }
 
-    fun fitDrawable(view: View, drawable: Drawable) {
+    fun fitDrawable(view: View, width: Int, height: Int): Pair<Int, Int> {
+        var newWidth = width
+        var newHeight = height
+
         // Get the display metrics to be able to rescale the image if needed
         val metrics = view.context.resources.displayMetrics
-
-        // Gather drawable information
-        // Scale the height by the scaledDensity to get original image size
-        val drawableHeight = drawable.intrinsicHeight.toFloat() * metrics.scaledDensity
-        val drawableWidth = drawable.intrinsicWidth.toFloat() * metrics.scaledDensity
 
         // Use either a fixed size or a scaled size according to user preferences
         var fixedSize = -1
@@ -121,22 +128,38 @@ object ImageLoader {
             fixedSize = AppPreferences.setImageFixedWidth(view.context)
         }
 
+        // Before image loading view.width might not be initialized
+        // So we take a default maximum value that will be reduced
+        var maxWidth = view.width
+        if(maxWidth == 0)
+        {
+            maxWidth = metrics.widthPixels
+        }
+
+        // If we are using a fixedSize
         if (fixedSize > 0) {
             // Keep aspect ratio when using fixed size
-            val ratio = drawableHeight / drawableWidth
-            drawable.setBounds(0, 0, fixedSize, (fixedSize * ratio).toInt())
-        } else {
-            // Rescale the drawable if it is larger that the current view width
-            if (drawableWidth > view.width) {
-                //Compute image ratio
-                val ratio = drawableHeight / drawableWidth
-                // Ensure that the images have a minimum size
-                val width = Math.max(view.width, 256).toFloat()
+            val ratio = height.toFloat() / width.toFloat()
+            newWidth = fixedSize
+            newHeight = (fixedSize * ratio).toInt()
+        // Otherwise if we are using rescaling and the image is wider that the max width
+        } else if (width > maxWidth) {
+            //Compute image ratio
+            val ratio = height.toFloat() / width.toFloat()
+            // Ensure that the images have a minimum size
+            val width = Math.max(maxWidth, 256).toFloat()
 
-                drawable.setBounds(0, 0, width.toInt(), (width * ratio).toInt())
-            } else {
-                drawable.setBounds(0, 0, drawableWidth.toInt(), drawableHeight.toInt())
-            }
+            newWidth = width.toInt()
+            newHeight = (width * ratio).toInt()
         }
+
+        return Pair(newWidth, newHeight)
+    }
+
+    fun fitDrawable(view: View, drawable: BitmapDrawable) {
+        // Compute the new size of the drawable
+        val newSize = fitDrawable(view, drawable.bitmap.width, drawable.bitmap.height)
+        // Set the bounds to match the new size
+        drawable.setBounds(0, 0, newSize.first, newSize.second)
     }
 }
