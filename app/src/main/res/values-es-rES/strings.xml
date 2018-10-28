@@ -385,7 +385,6 @@
   <string name="pref_summary_on_resume_sync">Sincronizar cada vez que la aplicación viene al primer plano</string>
   <string name="pref_title_repo_update_sync">Repositorios modificadas (aun no implementado)</string>
   <string name="pref_summary_repo_update_sync">Sincroniza siempre que se detecte una actualización de repositorios</string>
-  <string name="book_never_modified_locally">Nunca modificado localmente</string>
   <string name="notes_count_zero">No contiene notas</string>
   <plurals name="notes_count_nonzero">
     <item quantity="one">Contiene <b>%d</b> notas</item>

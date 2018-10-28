@@ -382,7 +382,6 @@
   <string name="pref_summary_on_resume_sync">開啓應用程式到前台時進行同步</string>
   <string name="pref_title_repo_update_sync">修改資料庫(尚未實現)</string>
   <string name="pref_summary_repo_update_sync">檢測到資料庫中的更新時進行同步</string>
-  <string name="book_never_modified_locally">從未在本地修改</string>
   <string name="notes_count_zero">沒有筆記</string>
   <plurals name="notes_count_nonzero">
     <item quantity="other">包含 <b>%d</b> 筆記</item>

@@ -385,7 +385,6 @@
   <string name="pref_summary_on_resume_sync">Synchroniseer wanneer app naar de voorgrond komt</string>
   <string name="pref_title_repo_update_sync">Opslagruimtes bewerkt (nog niet geïmplementeerd)</string>
   <string name="pref_summary_repo_update_sync">Synchroniseer wanneer er een update in de opslagruimte is gedetecteerd</string>
-  <string name="book_never_modified_locally">Nooit lokaal aangepast</string>
   <string name="notes_count_zero">Bevat geen notities</string>
   <plurals name="notes_count_nonzero">
     <item quantity="one">Bevat <b>%d</b> notitie</item>

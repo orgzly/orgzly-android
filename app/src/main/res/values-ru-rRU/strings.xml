@@ -391,7 +391,6 @@
   <string name="pref_summary_on_resume_sync">Синхронизация после запуска или возобновления приложения</string>
   <string name="pref_title_repo_update_sync">Хранилища изменены (еще не реализовано)</string>
   <string name="pref_summary_repo_update_sync">Синхронизация при обнаружении обновления в хранилищах</string>
-  <string name="book_never_modified_locally">Никогда не изменялся локально</string>
   <string name="notes_count_zero">Не содержит заметок</string>
   <plurals name="notes_count_nonzero">
     <item quantity="one">Содержит заметку <b>%d</b></item>

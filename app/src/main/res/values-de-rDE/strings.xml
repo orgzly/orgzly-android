@@ -385,7 +385,6 @@
   <string name="pref_summary_on_resume_sync">Synchronisieren wenn die App in den Vordergrund geholt wird</string>
   <string name="pref_title_repo_update_sync">Ablageort geändert (noch nicht implementiert)</string>
   <string name="pref_summary_repo_update_sync">Synchronisieren wenn eine Änderung am Ablageort erkannt wird</string>
-  <string name="book_never_modified_locally">Keine lokale Modifikation</string>
   <string name="notes_count_zero">Enthält keine Notizen</string>
   <plurals name="notes_count_nonzero">
     <item quantity="one">Enthält <b>%d</b> Notiz</item>

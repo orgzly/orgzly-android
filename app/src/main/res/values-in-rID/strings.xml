@@ -382,7 +382,6 @@
   <string name="pref_summary_on_resume_sync">Sinkronkan setiap kali aplikasi masuk kelatar belakang depan</string>
   <string name="pref_title_repo_update_sync">Repositori yang dimodifikasi (belum diimplementasikan)</string>
   <string name="pref_summary_repo_update_sync">Sinkronkan kapan pun pembaruan di repositori terdeteksi</string>
-  <string name="book_never_modified_locally">Tidak pernah dimodifikasi secara lokal</string>
   <string name="notes_count_zero">Tidak mengandung catatan</string>
   <plurals name="notes_count_nonzero">
     <item quantity="other">Berisi catatan <b>%d</b></item>
