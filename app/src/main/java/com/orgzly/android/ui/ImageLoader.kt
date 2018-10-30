@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Environment
 import android.support.v4.content.FileProvider
 import android.text.Spannable
@@ -77,6 +78,20 @@ object ImageLoader {
                         .apply(RequestOptions().override(size.first, size.second))
                         .load(contentUri)
                         .into(object : SimpleTarget<Bitmap>() {
+
+                            val start = text.getSpanStart(span)
+                            val end = text.getSpanEnd(span)
+                            val flags = text.getSpanFlags(span)
+
+                            var placeholderSpan: ImageSpan? = null
+
+                            override fun onLoadStarted(placeholder: Drawable?) {
+                                if (placeholder != null) {
+                                    placeholderSpan = ImageSpan(placeholder)
+                                    text.setSpan(placeholderSpan, start, end, flags)
+                                }
+                            }
+
                             override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
                                 val bitmapDrawable = BitmapDrawable(
                                         textWithMarkup.context.resources, bitmap)
@@ -89,11 +104,11 @@ object ImageLoader {
 
                                 bitmapDrawable.setBounds(0, 0, newSize.first, newSize.second)
 
-                                text.setSpan(
-                                        ImageSpan(bitmapDrawable),
-                                        text.getSpanStart(span),
-                                        text.getSpanEnd(span),
-                                        text.getSpanFlags(span))
+                                placeholderSpan?.let {
+                                    text.removeSpan(it)
+                                }
+
+                                text.setSpan(ImageSpan(bitmapDrawable), start, end, flags)
                             }
                         })
             }
