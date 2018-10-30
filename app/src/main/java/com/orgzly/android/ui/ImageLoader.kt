@@ -60,7 +60,7 @@ object ImageLoader {
                 options.inJustDecodeBounds = true
                 BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().toString() + "/" + path, options)
 
-                val size = fitDrawable(textWithMarkup, options.outWidth, options.outHeight)
+                val size = calculateImageDisplaySize(textWithMarkup, options.outWidth, options.outHeight)
 
                 // Setup a placeholder
                 val drawable = ColorDrawable(Color.TRANSPARENT)
@@ -115,18 +115,13 @@ object ImageLoader {
         return ret
     }
 
-    private fun fitDrawable(view: View, width: Int, height: Int): Pair<Int, Int> {
+    private fun calculateImageDisplaySize(view: View, width: Int, height: Int): Pair<Int, Int> {
+        val ratio = height.toFloat() / width.toFloat()
+
         var newWidth = width
-        var newHeight = height
 
         // Get the display metrics to be able to rescale the image if needed
         val metrics = view.context.resources.displayMetrics
-
-        // Use either a fixed size or a scaled size according to user preferences
-        var fixedSize = -1
-        if (AppPreferences.imagesScaleDownToWidth(view.context)) {
-            fixedSize = AppPreferences.imagesScaleDownToWidthValue(view.context)
-        }
 
         // Before image loading view.width might not be initialized
         // So we take a default maximum value that will be reduced
@@ -135,28 +130,28 @@ object ImageLoader {
             maxWidth = metrics.widthPixels
         }
 
-        val ratio = height.toFloat() / width.toFloat()
-
-        if (fixedSize > 0) {
-            newWidth = fixedSize
-            newHeight = (fixedSize * ratio).toInt()
-
-        } else if (width > maxWidth) {
-            // Otherwise if we are using rescaling and the image is wider that the max width
-
-            // Ensure that the images have a minimum size
-            val width = Math.max(maxWidth, 256).toFloat()
-
-            newWidth = width.toInt()
-            newHeight = (width * ratio).toInt()
+        // Within limits
+        if (newWidth > maxWidth) {
+            newWidth = maxWidth
         }
+
+        // Scale down to width
+        if (AppPreferences.imagesScaleDownToWidth(view.context)) {
+            val downToWidth = AppPreferences.imagesScaleDownToWidthValue(view.context)
+
+            if (newWidth > downToWidth) {
+                newWidth = downToWidth
+            }
+        }
+
+        val newHeight = (newWidth * ratio).toInt()
 
         return Pair(newWidth, newHeight)
     }
 
     fun fitDrawable(view: View, drawable: BitmapDrawable) {
         // Compute the new size of the drawable
-        val newSize = fitDrawable(view, drawable.bitmap.width, drawable.bitmap.height)
+        val newSize = calculateImageDisplaySize(view, drawable.bitmap.width, drawable.bitmap.height)
         // Set the bounds to match the new size
         drawable.setBounds(0, 0, newSize.first, newSize.second)
     }
