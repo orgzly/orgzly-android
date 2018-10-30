@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.request.RequestOptions
+import com.orgzly.android.util.LogUtils
 
 
 object ImageLoader {
@@ -60,7 +61,8 @@ object ImageLoader {
                 options.inJustDecodeBounds = true
                 BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().toString() + "/" + path, options)
 
-                val size = calculateImageDisplaySize(textWithMarkup, options.outWidth, options.outHeight)
+                val size = calculateImageDisplaySize(
+                        file.name, "pre-load", textWithMarkup, options.outWidth, options.outHeight)
 
                 // Setup a placeholder
                 val drawable = ColorDrawable(Color.TRANSPARENT)
@@ -75,10 +77,23 @@ object ImageLoader {
                         .apply(RequestOptions().override(size.first, size.second))
                         .load(contentUri)
                         .into(object : SimpleTarget<Bitmap>() {
-                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                val bd = BitmapDrawable(App.getAppContext().resources, resource)
-                                fitDrawable(textWithMarkup, bd)
-                                text.setSpan(ImageSpan(bd), text.getSpanStart(span), text.getSpanEnd(span), text.getSpanFlags(span))
+                            override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
+                                val bitmapDrawable = BitmapDrawable(
+                                        textWithMarkup.context.resources, bitmap)
+
+                                val newSize = calculateImageDisplaySize(
+                                        file.name, "on-load",
+                                        textWithMarkup,
+                                        bitmapDrawable.bitmap.width,
+                                        bitmapDrawable.bitmap.height)
+
+                                bitmapDrawable.setBounds(0, 0, newSize.first, newSize.second)
+
+                                text.setSpan(
+                                        ImageSpan(bitmapDrawable),
+                                        text.getSpanStart(span),
+                                        text.getSpanEnd(span),
+                                        text.getSpanFlags(span))
                             }
                         })
             }
@@ -115,7 +130,9 @@ object ImageLoader {
         return ret
     }
 
-    private fun calculateImageDisplaySize(view: View, width: Int, height: Int): Pair<Int, Int> {
+    private fun calculateImageDisplaySize(
+            file: String, stage: String, view: View, width: Int, height: Int): Pair<Int, Int> {
+
         val ratio = height.toFloat() / width.toFloat()
 
         var newWidth = width
@@ -146,13 +163,12 @@ object ImageLoader {
 
         val newHeight = (newWidth * ratio).toInt()
 
+        if (BuildConfig.LOG_DEBUG)
+            LogUtils.d(TAG, file, String.format("%-8s  View: %-4d  Metrics: %-4d  Input: %-4dx%-4d  Ratio: %.5f  Output: %-4dx%-4d",
+                    stage, view.width, metrics.widthPixels, width, height, ratio, newWidth, newHeight))
+
         return Pair(newWidth, newHeight)
     }
 
-    fun fitDrawable(view: View, drawable: BitmapDrawable) {
-        // Compute the new size of the drawable
-        val newSize = calculateImageDisplaySize(view, drawable.bitmap.width, drawable.bitmap.height)
-        // Set the bounds to match the new size
-        drawable.setBounds(0, 0, newSize.first, newSize.second)
-    }
+    private val TAG = ImageLoader::class.java.name
 }
