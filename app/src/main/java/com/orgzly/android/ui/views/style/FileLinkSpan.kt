@@ -19,10 +19,11 @@ import com.orgzly.android.provider.clients.BooksClient
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.util.AppPermissions
 import java.io.File
+import java.lang.Exception
 
 class FileLinkSpan(val path: String) : ClickableSpan() {
     override fun onClick(widget: View) {
-        // Run after onClick to prevent snackbar from closing immediately
+        // Run after onClick to prevent Snackbar from closing immediately
         Handler().post {
             handleClick(widget)
         }
@@ -33,8 +34,8 @@ class FileLinkSpan(val path: String) : ClickableSpan() {
 
         val activity = App.getCurrentActivity()
 
-        if (path.startsWith('/')) {
-            openFileIfExists(context, activity, File(path))
+        val file = if (isAbsolute(path)) {
+            File(path)
 
         } else {
             isMaybeBook(path)?.let { name ->
@@ -43,9 +44,14 @@ class FileLinkSpan(val path: String) : ClickableSpan() {
                 }
             }
 
-            openFileIfExists(
-                    context, activity, File(Environment.getExternalStorageDirectory(), path))
+            File(Environment.getExternalStorageDirectory(), path)
         }
+
+        openFileIfExists(context, activity, file)
+    }
+
+    private fun isAbsolute(path: String): Boolean {
+        return path.startsWith('/')
     }
 
     private fun isMaybeBook(path: String): BookName? {
@@ -77,9 +83,17 @@ class FileLinkSpan(val path: String) : ClickableSpan() {
 
     private fun openFileIfExists(context: Context, activity: CommonActivity?, file: File) {
         if (file.exists()) {
-            activity?.runWithPermission(
-                    AppPermissions.Usage.EXTERNAL_FILES_ACCESS,
-                    Runnable { openFile(context, activity, file) })
+            try {
+                activity?.runWithPermission(
+                        AppPermissions.Usage.EXTERNAL_FILES_ACCESS,
+                        Runnable { openFile(context, activity, file) })
+
+            } catch (e: Exception) {
+                activity?.let {
+                    it.showSnackbar(it.getString(R.string.failed_to_open_linked_file_with_reason, e.localizedMessage))
+                }
+            }
+
         } else {
             activity?.let {
                 it.showSnackbar(it.getString(R.string.file_does_not_exist, file.path))
