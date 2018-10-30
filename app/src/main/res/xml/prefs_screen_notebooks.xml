@@ -148,28 +148,6 @@
             android:title="@string/set_last_repeat_on_time_shift"
             android:summary="@string/set_last_repeat_on_time_shift_summary"
             android:defaultValue="@bool/pref_default_set_last_repeat_on_time_shift"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_display_inline_images"
-            android:title="@string/display_inline_images"
-            android:summary="@string/display_inline_images_summary"
-            android:defaultValue="@bool/pref_default_display_inline_images"/>
-
-        <SwitchPreference
-            android:key="@string/pref_key_enable_image_scaling"
-            android:title="@string/enable_image_scaling"
-            android:summary="@string/enable_image_scaling_summary"
-            android:defaultValue="@bool/pref_default_enable_image_scaling"
-            android:dependency="@string/pref_key_display_inline_images"
-            android:disableDependentsState="true"/>
-
-        <com.orgzly.android.prefs.IntegerPreference
-            android:key="@string/pref_key_set_image_fixed_width"
-            android:title="@string/pref_title_set_image_fixed_width"
-            android:inputType="number"
-            android:defaultValue="@string/pref_default_set_image_fixed_width"
-            app:min="1"
-            android:dependency="@string/pref_key_enable_image_scaling"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefs_title_new_note">
@@ -183,5 +161,28 @@
             android:title="@string/scheduled"
             android:summary="@string/scheduled_new_notes_for_today"
             android:defaultValue="@bool/pref_default_is_new_note_scheduled"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/images">
+        <SwitchPreference
+            android:key="@string/pref_key_images_enabled"
+            android:title="@string/display_inline_images"
+            android:summary="@string/display_inline_images_summary"
+            android:defaultValue="@bool/pref_default_images_enabled"/>
+
+        <SwitchPreference
+            android:key="@string/pref_key_images_scale_down_to_width"
+            android:title="@string/scale_down_to_width"
+            android:summary="@string/scale_down_to_width_summary"
+            android:defaultValue="@bool/pref_default_images_scale_down_to_width"
+            android:dependency="@string/pref_key_images_enabled"/>
+
+        <com.orgzly.android.prefs.IntegerPreference
+            android:key="@string/pref_key_images_scale_down_to_width_value"
+            android:title="@string/fixed_width_value"
+            android:inputType="number"
+            android:defaultValue="@string/pref_default_images_scale_down_to_width_value"
+            app:min="1"
+            android:dependency="@string/pref_key_images_scale_down_to_width"/>
     </PreferenceCategory>
 </PreferenceScreen>

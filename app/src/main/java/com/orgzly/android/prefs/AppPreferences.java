@@ -544,32 +544,22 @@ public class AppPreferences {
     /*
      * Allow inlining images
      */
-    public static boolean displayInlineImages(Context context) {
+    public static boolean imagesEnabled(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
-                context.getResources().getString(R.string.pref_key_display_inline_images),
-                context.getResources().getBoolean(R.bool.pref_default_display_inline_images));
+                context.getResources().getString(R.string.pref_key_images_enabled),
+                context.getResources().getBoolean(R.bool.pref_default_images_enabled));
     }
 
-    public static void displayInlineImages(Context context, boolean value) {
-        String key = context.getResources().getString(R.string.pref_key_display_inline_images);
-        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
-    }
-
-    public static boolean enableImageScaling(Context context) {
+    public static boolean imagesScaleDownToWidth(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
-                context.getResources().getString(R.string.pref_key_enable_image_scaling),
-                context.getResources().getBoolean(R.bool.pref_default_enable_image_scaling));
+                context.getResources().getString(R.string.pref_key_images_scale_down_to_width),
+                context.getResources().getBoolean(R.bool.pref_default_images_scale_down_to_width));
     }
 
-    public static void enableImageScaling(Context context, boolean value) {
-        String key = context.getResources().getString(R.string.pref_key_enable_image_scaling);
-        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
-    }
-
-    public static int setImageFixedWidth(Context context) {
+    public static int imagesScaleDownToWidthValue(Context context) {
         return Integer.valueOf(getDefaultSharedPreferences(context).getString(
-                context.getResources().getString(R.string.pref_key_set_image_fixed_width),
-                context.getResources().getString(R.string.pref_default_set_image_fixed_width)));
+                context.getResources().getString(R.string.pref_key_images_scale_down_to_width_value),
+                context.getResources().getString(R.string.pref_default_images_scale_down_to_width_value)));
     }
 
     /*

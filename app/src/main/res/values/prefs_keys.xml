@@ -354,14 +354,14 @@
     <string name="pref_key_set_last_repeat_on_time_shift" translatable="false">pref_key_set_last_repeat_on_time_shift</string>
     <bool name="pref_default_set_last_repeat_on_time_shift" translatable="false">true</bool>
 
-    <string name="pref_key_display_inline_images" translatable="false">pref_key_display_inline_images</string>
-    <bool name="pref_default_display_inline_images" translatable="false">true</bool>
+    <string name="pref_key_images_enabled" translatable="false">pref_key_images_enabled</string>
+    <bool name="pref_default_images_enabled" translatable="false">false</bool>
 
-    <string name="pref_key_enable_image_scaling" translatable="false">pref_key_enable_image_scaling</string>
-    <bool name="pref_default_enable_image_scaling" translatable="false">true</bool>
+    <string name="pref_key_images_scale_down_to_width" translatable="false">pref_key_images_fixed_width</string>
+    <bool name="pref_default_images_scale_down_to_width" translatable="false">false</bool>
 
-    <string name="pref_key_set_image_fixed_width" translatable="false">pref_key_set_image_fixed_width</string>
-    <string name="pref_default_set_image_fixed_width" translatable="false">128</string>
+    <string name="pref_key_images_scale_down_to_width_value" translatable="false">pref_key_set_images_fixed_width_value</string>
+    <string name="pref_default_images_scale_down_to_width_value" translatable="false">256</string>
 
     <!-- Separate notes with an empty line -->
     <string name="pref_key_separate_notes_with_new_line" translatable="false">pref_key_separate_notes_with_new_line</string>

@@ -30,7 +30,7 @@ object ImageLoader {
 
         // Only if AppPreferences.displayImages(context) is true
         // Setup image visualization inside the note
-        if ( AppPreferences.displayInlineImages(context)
+        if (AppPreferences.imagesEnabled(context)
                 // Storage permission has been granted
                 && AppPermissions.isGranted(context, AppPermissions.Usage.EXTERNAL_FILES_ACCESS)) {
             // Load the associated image for each FileLinkSpan
@@ -51,7 +51,7 @@ object ImageLoader {
             // Get the file
             val file = File(Environment.getExternalStorageDirectory(), path)
 
-            if(file.exists()) {
+            if (file.exists()) {
                 // Get the Uri
                 val contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", file)
 
@@ -67,20 +67,20 @@ object ImageLoader {
                 drawable.setBounds(0, 0, size.first, size.second)
 
                 Glide.with(context)
-                    .asBitmap()
-                    // Use a placeholder
-                    .apply(RequestOptions().placeholder(drawable))
-                    // Override the bitmap size, mainly used for big images
-                    // as it's useless to display more pixel that the pixel density allows
-                    .apply(RequestOptions().override(size.first, size.second))
-                    .load(contentUri)
-                    .into(object : SimpleTarget<Bitmap>() {
-                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                            val bd = BitmapDrawable(App.getAppContext().resources, resource)
-                            fitDrawable(textWithMarkup, bd)
-                            text.setSpan(ImageSpan(bd), text.getSpanStart(span), text.getSpanEnd(span), text.getSpanFlags(span))
-                        }
-                    })
+                        .asBitmap()
+                        // Use a placeholder
+                        .apply(RequestOptions().placeholder(drawable))
+                        // Override the bitmap size, mainly used for big images
+                        // as it's useless to display more pixel that the pixel density allows
+                        .apply(RequestOptions().override(size.first, size.second))
+                        .load(contentUri)
+                        .into(object : SimpleTarget<Bitmap>() {
+                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                val bd = BitmapDrawable(App.getAppContext().resources, resource)
+                                fitDrawable(textWithMarkup, bd)
+                                text.setSpan(ImageSpan(bd), text.getSpanStart(span), text.getSpanEnd(span), text.getSpanFlags(span))
+                            }
+                        })
             }
         }
     }
@@ -115,7 +115,7 @@ object ImageLoader {
         return ret
     }
 
-    fun fitDrawable(view: View, width: Int, height: Int): Pair<Int, Int> {
+    private fun fitDrawable(view: View, width: Int, height: Int): Pair<Int, Int> {
         var newWidth = width
         var newHeight = height
 
@@ -124,28 +124,26 @@ object ImageLoader {
 
         // Use either a fixed size or a scaled size according to user preferences
         var fixedSize = -1
-        if (!AppPreferences.enableImageScaling(view.context)) {
-            fixedSize = AppPreferences.setImageFixedWidth(view.context)
+        if (AppPreferences.imagesScaleDownToWidth(view.context)) {
+            fixedSize = AppPreferences.imagesScaleDownToWidthValue(view.context)
         }
 
         // Before image loading view.width might not be initialized
         // So we take a default maximum value that will be reduced
         var maxWidth = view.width
-        if(maxWidth == 0)
-        {
+        if (maxWidth == 0) {
             maxWidth = metrics.widthPixels
         }
 
-        // If we are using a fixedSize
+        val ratio = height.toFloat() / width.toFloat()
+
         if (fixedSize > 0) {
-            // Keep aspect ratio when using fixed size
-            val ratio = height.toFloat() / width.toFloat()
             newWidth = fixedSize
             newHeight = (fixedSize * ratio).toInt()
-        // Otherwise if we are using rescaling and the image is wider that the max width
+
         } else if (width > maxWidth) {
-            //Compute image ratio
-            val ratio = height.toFloat() / width.toFloat()
+            // Otherwise if we are using rescaling and the image is wider that the max width
+
             // Ensure that the images have a minimum size
             val width = Math.max(maxWidth, 256).toFloat()
 

@@ -539,11 +539,13 @@
     <string name="external_file_no_app_found">No application found to open this file</string>
     <string name="failed_to_open_linked_file_with_reason">Failed to open file: %s</string>
 
-    <string name="display_inline_images">Display inline images</string>
-    <string name="display_inline_images_summary">Display inline images in notes</string>
+    <string name="images">Images</string>
 
-    <string name="enable_image_scaling">Enable image scaling</string>
-    <string name="enable_image_scaling_summary">Use predefined sizes or enable image scaling</string>
+    <string name="display_inline_images">Enable images</string>
+    <string name="display_inline_images_summary">Display images in notes</string>
 
-    <string name="pref_title_set_image_fixed_width">Set inlined image fixed width (in pixels)</string>
+    <string name="scale_down_to_width">Scale down to width</string>
+    <string name="scale_down_to_width_summary">Scale down image to specified width</string>
+
+    <string name="fixed_width_value">Width (in pixels)</string>
 </resources>
