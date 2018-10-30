@@ -2,6 +2,7 @@
 
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/pref_title_notebooks">
 
     <PreferenceCategory android:title="@string/notebooks">
@@ -148,6 +149,27 @@
             android:summary="@string/set_last_repeat_on_time_shift_summary"
             android:defaultValue="@bool/pref_default_set_last_repeat_on_time_shift"/>
 
+        <SwitchPreference
+            android:key="@string/pref_key_display_inline_images"
+            android:title="@string/display_inline_images"
+            android:summary="@string/display_inline_images_summary"
+            android:defaultValue="@bool/pref_default_display_inline_images"/>
+
+        <SwitchPreference
+            android:key="@string/pref_key_enable_image_scaling"
+            android:title="@string/enable_image_scaling"
+            android:summary="@string/enable_image_scaling_summary"
+            android:defaultValue="@bool/pref_default_enable_image_scaling"
+            android:dependency="@string/pref_key_display_inline_images"
+            android:disableDependentsState="true"/>
+
+        <com.orgzly.android.prefs.IntegerPreference
+            android:key="@string/pref_key_set_image_fixed_width"
+            android:title="@string/pref_title_set_image_fixed_width"
+            android:inputType="number"
+            android:defaultValue="@string/pref_default_set_image_fixed_width"
+            app:min="1"
+            android:dependency="@string/pref_key_enable_image_scaling"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefs_title_new_note">

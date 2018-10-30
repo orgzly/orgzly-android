@@ -161,3 +161,10 @@ def orgJavaLocation() {
         return "com.orgzly:org-java:$org_java_version"
     }
 }
+
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    kapt 'com.github.bumptech.glide:compiler:4.8.0'
+}
