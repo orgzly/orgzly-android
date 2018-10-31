@@ -381,7 +381,7 @@ public class BookFragment extends NoteListFragment
 
         inflater.inflate(R.menu.book_actions, menu);
         boolean keepScreenOnEnabled = (getActivity().getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
-        menu.getItem(3).setChecked(keepScreenOnEnabled);
+        menu.findItem(R.id.books_options_keep_screen_on).setChecked(keepScreenOnEnabled);
     }
 
     @Override
@@ -421,11 +421,9 @@ public class BookFragment extends NoteListFragment
             case R.id.books_options_keep_screen_on:
                 boolean keepScreenOnEnabled = (getActivity().getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
                 if (!keepScreenOnEnabled) {
-                    String title = "Keep screen on";
-                    String message = "Your screen will not turn off until you disable this option or leave this page";
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle(title);
-                    builder.setMessage(message);
+                    builder.setTitle(R.string.keep_screen_on);
+                    builder.setMessage(R.string.keep_screen_on_desc);
                     builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
                         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                         item.setChecked(true);
