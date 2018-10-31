@@ -23,10 +23,6 @@ import com.orgzly.android.ui.FragmentListener;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
-
 /**
  * Book's preface and settings.
  */
@@ -194,33 +190,7 @@ public class BookPrefaceFragment extends Fragment {
     private void save(String preface) {
         book.setPreface(preface);
 
-        parsePrefaceForInBufferSettings(book, preface);
-
         listener.onBookPrefaceEditSaveRequest(book);
-    }
-
-    private void parsePrefaceForInBufferSettings(Book book, String preface) {
-        /* Set default values for settings that could be overwritten. */
-        book.getOrgFileSettings().setTitle(null);
-
-        BufferedReader reader = new BufferedReader(new StringReader(preface));
-
-        try {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                book.getOrgFileSettings().parseLine(line);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-
-        } finally {
-            try {
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public interface EditorListener extends FragmentListener {
