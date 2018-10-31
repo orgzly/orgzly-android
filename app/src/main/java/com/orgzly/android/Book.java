@@ -56,6 +56,7 @@ public class Book {
         this.preface = preface;
         this.modificationTime = modificationTime;
         this.isDummy = isDummy;
+        orgFileSettings = OrgFileSettings.fromPreface(preface);
     }
 
     public void setId(long id) {
@@ -72,6 +73,7 @@ public class Book {
 
     public void setPreface(String preface) {
         this.preface = preface;
+        orgFileSettings = OrgFileSettings.fromPreface(preface);
     }
 
     public String getName() {

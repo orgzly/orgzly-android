@@ -548,4 +548,6 @@
     <string name="scale_down_to_width_summary">Scale down image to specified width</string>
 
     <string name="fixed_width_value">Width (in pixels)</string>
+
+    <string name="share_target_service">Share to Orgzly notebook</string>
 </resources>
