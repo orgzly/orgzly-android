@@ -16,11 +16,12 @@ import com.orgzly.android.query.user.DottedQueryBuilder
 @RequiresApi(Build.VERSION_CODES.M)
 class ChooserShareTargetService : ChooserTargetService() {
     override fun onGetChooserTargets(componentName: ComponentName?, intentFilter: IntentFilter?): MutableList<ChooserTarget> {
-        val shelf = Shelf(this)
-
         val targets = arrayListOf<ChooserTarget>()
 
-        val icon = Icon.createWithResource(this, R.drawable.ic_logo_for_widget)
+        val shelf = Shelf(this)
+
+        val icon = Icon.createWithResource(this, R.mipmap.cic_shortcut_notebook)
+
         for (book in shelf.books) {
             val direct = book.orgFileSettings.getLastKeywordValue(DIRECT_SHARE)
             if (direct.isNullOrBlank()) {
@@ -32,6 +33,7 @@ class ChooserShareTargetService : ChooserTargetService() {
             bundle.putString(AppIntent.EXTRA_FILTER, query)
             targets.add(ChooserTarget(book.name, icon, score, componentName, bundle))
         }
+
         return targets
     }
 
