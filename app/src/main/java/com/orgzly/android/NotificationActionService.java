@@ -33,7 +33,7 @@ public class NotificationActionService extends JobIntentService {
             if (noteId > 0) {
                 Shelf shelf = new Shelf(this);
                 shelf.setStateToFirstDone(noteId);
-                shelf.syncOnNoteCreate();
+                shelf.syncOnNoteUpdate();
             } else {
                 throw new IllegalArgumentException("Missing note ID");
             }
