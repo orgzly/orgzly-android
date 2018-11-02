@@ -96,7 +96,7 @@ class FileLinkSpan(val path: String) : ClickableSpan() {
 
         } else {
             activity?.let {
-                it.showSnackbar(it.getString(R.string.file_does_not_exist, file.path))
+                it.showSnackbar(it.getString(R.string.file_does_not_exist, file.canonicalFile))
             }
         }
     }

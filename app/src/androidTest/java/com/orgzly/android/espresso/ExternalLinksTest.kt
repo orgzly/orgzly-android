@@ -1,69 +1,84 @@
 package com.orgzly.android.espresso
 
 import android.os.Environment
-import android.support.test.espresso.action.ViewActions.click
+import android.support.test.espresso.action.ViewActions
+import android.support.test.espresso.assertion.ViewAssertions
 import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers.withId
+import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.rule.ActivityTestRule
 import com.orgzly.R
+import com.orgzly.android.App
 import com.orgzly.android.OrgzlyTest
-import com.orgzly.android.espresso.EspressoUtils.*
+import com.orgzly.android.espresso.EspressoUtils.onSnackbar
 import com.orgzly.android.ui.MainActivity
+import com.orgzly.android.util.MiscUtils
 import org.hamcrest.Matchers.startsWith
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
+import java.io.File
 
-class ExternalLinksTest : OrgzlyTest() {
+@RunWith(value = Parameterized::class)
+class ExternalLinksTest(private val param: Parameter) : OrgzlyTest() {
+
+    data class Parameter(val link: String, val check: () -> Any)
+
     @get:Rule
     var activityRule: ActivityTestRule<*> = ActivityTestRule(MainActivity::class.java, true, false)
 
-    private lateinit var outsideConfiguredRootLink: String
+    companion object {
+        @JvmStatic
+        @Parameterized.Parameters(name = "{index}: {0}")
+        fun data(): Collection<Parameter> {
+            val cacheDir = App.getAppContext().cacheDir
+            val storageDir = Environment.getExternalStorageDirectory()
+            val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
 
-    private lateinit var directoryLink: String
+            File(storageDir, "orgzly-tests").let { dir ->
+                dir.mkdirs()
 
-    @Before
-    @Throws(Exception::class)
-    override fun setUp() {
-        super.setUp()
+                MiscUtils.writeStringToFile("Lorem ipsum", File(dir, "document.txt"))
 
-        outsideConfiguredRootLink = "file:${context.cacheDir.absolutePath}"
+                javaClass.classLoader.getResourceAsStream("assets/images/logo.png").use { stream ->
+                    MiscUtils.writeStreamToFile(stream, File(dir, "logo.png"))
+                }
+            }
 
-        directoryLink = "file:${Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOWNLOADS).absolutePath}"
+            return listOf(
+                    Parameter("file:./non-existing-file") {
+                        onSnackbar().check(ViewAssertions.matches(
+                                withText("File $storageDir/non-existing-file does not exist")))
+                    },
 
-        shelfTestUtils.setupBook(
-                "book-a",
-                """
-                    * Note [a-1]
-                    $outsideConfiguredRootLink
+                    Parameter("file:$cacheDir") {
+                        onSnackbar().check(matches(withText(startsWith(
+                                "Failed to open file: Failed to find configured root"))))
+                    },
 
-                    * Note [a-2]
-                    $directoryLink
-                """.trimIndent()
-        )
+                    Parameter("file:${downloadsDir.absolutePath}") {
+                        onSnackbar().check(matches(withText(startsWith(
+                                "No application found to open this file"))))
+                    }
+            )
+        }
+    }
+
+    @Test
+    fun testLink() {
+        shelfTestUtils.setupBook("book", "* Note\n${param.link}")
 
         activityRule.launchActivity(null)
 
         // Open book
-        onListItem(0).perform(click())
+        EspressoUtils.onListItem(0).perform(ViewActions.click())
+
+        // Click on link
+        EspressoUtils.onListItem(0).onChildView(ViewMatchers.withId(R.id.item_head_content))
+                .perform(EspressoUtils.clickClickableSpan(param.link))
+
+        param.check()
     }
 
-    @Test
-    fun testOutsideConfiguredRoot() {
-        onListItem(0).onChildView(withId(R.id.item_head_content))
-                .perform(clickClickableSpan(outsideConfiguredRootLink))
-
-        onSnackbar().check(matches(withText(startsWith(
-                "Failed to open file: Failed to find configured root"))))
-    }
-
-    @Test
-    fun testDirectory() {
-        onListItem(1).onChildView(withId(R.id.item_head_content))
-                .perform(clickClickableSpan(directoryLink))
-
-        onSnackbar().check(matches(withText("No application found to open this file")))
-    }
 }
