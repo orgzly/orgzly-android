@@ -421,22 +421,23 @@ public class BookFragment extends NoteListFragment
             case R.id.books_options_keep_screen_on:
                 boolean keepScreenOnEnabled = (getActivity().getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
                 if (!keepScreenOnEnabled) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle(R.string.keep_screen_on);
-                    builder.setMessage(R.string.keep_screen_on_desc);
-                    builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                        item.setChecked(true);
-                        dialog.dismiss();
-                    });
-                    builder.setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.dismiss());
-                    AlertDialog dialog = builder.create();
+                    dialog = new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.keep_screen_on)
+                            .setMessage(R.string.keep_screen_on_desc)
+                            .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                                getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                                item.setChecked(true);
+                                dialog.dismiss();
+                            })
+                            .setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.dismiss())
+                            .create();
                     dialog.show();
                 } else {
                     getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                     item.setChecked(false);
                 }
                 return true;
+
 
 //            case R.id.books_options_menu_item_paste:
 //                mListener.onNotesPasteRequest(mBookId, 0, null);
