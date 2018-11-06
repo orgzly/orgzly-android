@@ -1,13 +1,17 @@
 package com.orgzly.android.ui.fragments;
 
+import android.app.AlertDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.support.v7.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.ViewFlipper;
 
@@ -40,6 +44,14 @@ public class SearchFragment extends QueryFragment {
         fragment.setArguments(args);
 
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -107,6 +119,50 @@ public class SearchFragment extends QueryFragment {
     public void onListItemClick(ListView listView, View view, int position, long id) {
         mListener.onNoteClick(this, view, position, id, id);
     }
+
+    /*
+     * Options menu.
+     */
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
+
+        inflater.inflate(R.menu.search_actions, menu);
+        boolean keepScreenOnEnabled = (getActivity().getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
+        menu.findItem(R.id.search_options_keep_screen_on).setChecked(keepScreenOnEnabled);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, item);
+
+        switch (item.getItemId()) {
+            case R.id.search_options_keep_screen_on:
+                boolean keepScreenOnEnabled = (getActivity().getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
+                if (!keepScreenOnEnabled) {
+                    dialog = new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.keep_screen_on)
+                            .setMessage(R.string.keep_screen_on_desc)
+                            .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                                getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                                item.setChecked(true);
+                                dialog.dismiss();
+                            })
+                            .setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.dismiss())
+                            .create();
+                    dialog.show();
+                } else {
+                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    item.setChecked(false);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     @Override
     public ActionMode.Callback getNewActionMode() {
