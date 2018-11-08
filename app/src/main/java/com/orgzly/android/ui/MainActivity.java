@@ -351,7 +351,6 @@ public class MainActivity extends CommonActivity
             dialog.dismiss();
             dialog = null;
         }
-        this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
