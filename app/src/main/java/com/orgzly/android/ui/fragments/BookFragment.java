@@ -23,7 +23,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ViewFlipper;
@@ -48,6 +47,7 @@ import com.orgzly.android.ui.Selection;
 import com.orgzly.android.ui.SelectionUtils;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.drawer.DrawerItem;
+import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.ui.views.GesturedListView;
 import com.orgzly.android.ui.views.TextViewWithMarkup;
 import com.orgzly.android.util.LogUtils;
@@ -380,8 +380,11 @@ public class BookFragment extends NoteListFragment
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
 
         inflater.inflate(R.menu.book_actions, menu);
-        boolean keepScreenOnEnabled = (getActivity().getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
-        menu.findItem(R.id.books_options_keep_screen_on).setChecked(keepScreenOnEnabled);
+
+        ActivityUtils.keepScreenOnUpdateMenuItem(
+                getActivity(),
+                menu,
+                menu.findItem(R.id.books_options_keep_screen_on));
     }
 
     @Override
@@ -419,29 +422,8 @@ public class BookFragment extends NoteListFragment
                 return true;
 
             case R.id.books_options_keep_screen_on:
-                boolean keepScreenOnEnabled = (getActivity().getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
-                if (!keepScreenOnEnabled) {
-                    dialog = new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.keep_screen_on)
-                            .setMessage(R.string.keep_screen_on_desc)
-                            .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                                getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                                item.setChecked(true);
-                                dialog.dismiss();
-                            })
-                            .setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.dismiss())
-                            .create();
-                    dialog.show();
-                } else {
-                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                    item.setChecked(false);
-                }
+                dialog = ActivityUtils.keepScreenOnToggle(getActivity(), item);
                 return true;
-
-
-//            case R.id.books_options_menu_item_paste:
-//                mListener.onNotesPasteRequest(mBookId, 0, null);
-//                return true;
 
             default:
                 return super.onOptionsItemSelected(item);

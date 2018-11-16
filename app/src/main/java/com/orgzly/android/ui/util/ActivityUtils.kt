@@ -1,6 +1,7 @@
 package com.orgzly.android.ui.util
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
@@ -9,7 +10,10 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Handler
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -49,7 +53,7 @@ object ActivityUtils {
 
             } else {
                 Log.w(TAG, "Can't open keyboard because view " + view +
-                           " failed to get focus in activity " + activity)
+                        " failed to get focus in activity " + activity)
             }
         }
     }
@@ -96,5 +100,51 @@ object ActivityUtils {
                 noteId.toInt(),
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
+    @JvmStatic
+    fun keepScreenOnToggle(activity: Activity?, item: MenuItem): AlertDialog? {
+        activity ?: return null
+
+        val flags = activity.window.attributes.flags
+        val keepScreenOnEnabled = flags and WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON != 0
+
+        if (!keepScreenOnEnabled) {
+            return AlertDialog.Builder(activity)
+                    .setTitle(R.string.keep_screen_on)
+                    .setMessage(R.string.keep_screen_on_desc)
+                    .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                        activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                        item.isChecked = true
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+        } else {
+            activity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            item.isChecked = false
+            return null
+        }
+    }
+
+    @JvmStatic
+    fun keepScreenOnUpdateMenuItem(activity: Activity?, menu: Menu, item: MenuItem?) {
+        if (activity != null && item != null) {
+            if (true) {
+                val flags = activity.window.attributes.flags
+                val keepScreenOnEnabled = flags and WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON != 0
+                item.isChecked = keepScreenOnEnabled
+
+            } else {
+                menu.removeItem(item.itemId)
+            }
+        }
+    }
+
+    @JvmStatic
+    fun keepScreenOnClear(activity: Activity?) {
+        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 }

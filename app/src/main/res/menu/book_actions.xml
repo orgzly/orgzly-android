@@ -12,6 +12,7 @@
         android:id="@+id/books_options_menu_book_preface"
         app:showAsAction="never"
         android:title="@string/edit_book_preface"/>
+
     <item
         android:id="@+id/books_options_keep_screen_on"
         app:showAsAction="never"

@@ -23,6 +23,7 @@ import com.orgzly.android.ui.Place;
 import com.orgzly.android.ui.Selection;
 import com.orgzly.android.ui.dialogs.NoteStateDialog;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
+import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.ui.views.GesturedListView;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
@@ -68,7 +69,7 @@ public abstract class NoteListFragment extends ListFragment
             dialog = null;
         }
 
-        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        ActivityUtils.keepScreenOnClear(getActivity());
     }
 
     @Override

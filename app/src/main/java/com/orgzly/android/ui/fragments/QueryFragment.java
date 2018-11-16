@@ -1,6 +1,5 @@
 package com.orgzly.android.ui.fragments;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.support.v7.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.WindowManager;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -20,6 +18,7 @@ import com.orgzly.android.provider.clients.NotesClient;
 import com.orgzly.android.ui.ActionModeListener;
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment;
 import com.orgzly.android.ui.drawer.DrawerItem;
+import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 
 /**
@@ -161,9 +160,11 @@ abstract public class QueryFragment extends NoteListFragment
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
 
         inflater.inflate(R.menu.query_actions, menu);
-        boolean keepScreenOnEnabled = (getActivity().getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
-        menu.findItem(R.id.query_options_keep_screen_on).setChecked(keepScreenOnEnabled);
-        super.onCreateOptionsMenu(menu, inflater);
+
+        ActivityUtils.keepScreenOnUpdateMenuItem(
+                getActivity(),
+                menu,
+                menu.findItem(R.id.query_options_keep_screen_on));
     }
 
     @Override
@@ -172,24 +173,9 @@ abstract public class QueryFragment extends NoteListFragment
 
         switch (item.getItemId()) {
             case R.id.query_options_keep_screen_on:
-                boolean keepScreenOnEnabled = (getActivity().getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
-                if (!keepScreenOnEnabled) {
-                    dialog = new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.keep_screen_on)
-                            .setMessage(R.string.keep_screen_on_desc)
-                            .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                                getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                                item.setChecked(true);
-                                dialog.dismiss();
-                            })
-                            .setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.dismiss())
-                            .create();
-                    dialog.show();
-                } else {
-                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                    item.setChecked(false);
-                }
+                dialog = ActivityUtils.keepScreenOnToggle(getActivity(), item);
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
