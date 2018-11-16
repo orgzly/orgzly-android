@@ -425,6 +425,9 @@
     <string name="edit_book_preface">Edit preface</string>
     <string name="book_preface_hint">Text displayed before the first note</string>
 
+    <string name="keep_screen_on_title">Enable option to keep the screen on</string>
+    <string name="keep_screen_on_summary">Display menu item for toggling the option</string>
+
     <string name="keep_screen_on">Keep screen on</string>
     <string name="keep_screen_on_desc">Your screen will not turn off until you leave it or disable this option</string>
 

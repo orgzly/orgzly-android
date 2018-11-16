@@ -44,8 +44,15 @@
         android:defaultValue="@bool/pref_default_styled_text_with_marks"/>
 
     <SwitchPreference
+        android:key="@string/pref_key_keep_screen_on_menu_item"
+        android:title="@string/keep_screen_on_title"
+        android:summary="@string/keep_screen_on_summary"
+        android:defaultValue="@bool/pref_default_keep_screen_on_menu_item"/>
+
+    <SwitchPreference
         android:key="@string/pref_key_ignore_system_locale"
         android:title="Use English language"
         android:summary="Ignore default locale"
         android:defaultValue="@bool/pref_default_ignore_system_locale"/>
+
 </PreferenceScreen>

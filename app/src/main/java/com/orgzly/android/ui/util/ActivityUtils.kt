@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
+import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.MainActivity
 import com.orgzly.android.ui.fragments.BookFragment
 import com.orgzly.android.ui.fragments.BooksFragment
@@ -132,7 +133,7 @@ object ActivityUtils {
     @JvmStatic
     fun keepScreenOnUpdateMenuItem(activity: Activity?, menu: Menu, item: MenuItem?) {
         if (activity != null && item != null) {
-            if (true) {
+            if (AppPreferences.keepScreenOnMenuItem(activity)) {
                 val flags = activity.window.attributes.flags
                 val keepScreenOnEnabled = flags and WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON != 0
                 item.isChecked = keepScreenOnEnabled

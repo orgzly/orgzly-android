@@ -595,6 +595,16 @@ public class AppPreferences {
     }
 
     /*
+     * Keep screen on menu item
+     */
+
+    public static boolean keepScreenOnMenuItem(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_keep_screen_on_menu_item),
+                context.getResources().getBoolean(R.bool.pref_default_keep_screen_on_menu_item));
+    }
+
+    /*
      * Widget
      */
 

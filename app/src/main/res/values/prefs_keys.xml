@@ -255,6 +255,9 @@
     <string name="pref_key_always_show_set_note_metadata" translatable="false">pref_key_always_show_set_note_metadata</string>
     <bool name="pref_default_always_show_set_note_metadata" translatable="false">true</bool>
 
+    <string name="pref_key_keep_screen_on_menu_item" translatable="false">pref_key_keep_screen_on_menu_item</string>
+    <bool name="pref_default_keep_screen_on_menu_item" translatable="false">false</bool>
+
     <string name="pref_key_selected_note_metadata" translatable="false">pref_key_selected_note_metadata</string>
     <string-array name="note_metadata">
         <item>@string/tags</item>
