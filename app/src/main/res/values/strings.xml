@@ -425,6 +425,9 @@
     <string name="edit_book_preface">Edit preface</string>
     <string name="book_preface_hint">Text displayed before the first note</string>
 
+    <string name="keep_screen_on">Keep screen on</string>
+    <string name="keep_screen_on_desc">Your screen will not turn off until you disable this option or leave this page</string>
+
     <string name="layout_direction">Layout direction</string>
     <string name="layout_direction_locale">Default</string>
     <string name="layout_direction_ltr">Left to Right</string>

@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ViewFlipper;
@@ -379,6 +380,8 @@ public class BookFragment extends NoteListFragment
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
 
         inflater.inflate(R.menu.book_actions, menu);
+        boolean keepScreenOnEnabled = (getActivity().getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
+        menu.findItem(R.id.books_options_keep_screen_on).setChecked(keepScreenOnEnabled);
     }
 
     @Override
@@ -414,6 +417,27 @@ public class BookFragment extends NoteListFragment
             case R.id.books_options_menu_book_preface:
                 listener.onBookPrefaceEditRequest(mBook);
                 return true;
+
+            case R.id.books_options_keep_screen_on:
+                boolean keepScreenOnEnabled = (getActivity().getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
+                if (!keepScreenOnEnabled) {
+                    dialog = new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.keep_screen_on)
+                            .setMessage(R.string.keep_screen_on_desc)
+                            .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                                getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                                item.setChecked(true);
+                                dialog.dismiss();
+                            })
+                            .setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.dismiss())
+                            .create();
+                    dialog.show();
+                } else {
+                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    item.setChecked(false);
+                }
+                return true;
+
 
 //            case R.id.books_options_menu_item_paste:
 //                mListener.onNotesPasteRequest(mBookId, 0, null);

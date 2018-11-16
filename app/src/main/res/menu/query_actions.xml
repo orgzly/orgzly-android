@@ -1,0 +1,10 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/query_options_keep_screen_on"
+        app:showAsAction="never"
+        android:checkable="true"
+        android:title="@string/keep_screen_on"/>
+</menu>

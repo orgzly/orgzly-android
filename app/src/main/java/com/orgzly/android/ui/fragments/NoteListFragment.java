@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.support.v7.view.ActionMode;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -66,6 +67,8 @@ public abstract class NoteListFragment extends ListFragment
             dialog.dismiss();
             dialog = null;
         }
+
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
