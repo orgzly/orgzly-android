@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Environment
 import android.support.v4.content.FileProvider
+import android.support.v4.content.res.ResourcesCompat
 import android.text.Spannable
 import android.text.style.ImageSpan
 import android.view.View
@@ -22,6 +23,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.request.RequestOptions
+import com.orgzly.R
 import com.orgzly.android.util.LogUtils
 
 
@@ -66,7 +68,9 @@ object ImageLoader {
                         file.name, "pre-load", textWithMarkup, options.outWidth, options.outHeight)
 
                 // Setup a placeholder
-                val drawable = ColorDrawable(Color.TRANSPARENT)
+                val drawable = ResourcesCompat.getDrawable(
+                        context.resources, R.drawable.image_placeholder, context.applicationContext.theme)
+                        ?: ColorDrawable(Color.TRANSPARENT)
                 drawable.setBounds(0, 0, size.first, size.second)
 
                 Glide.with(context)
