@@ -13,6 +13,7 @@ import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.EspressoUtils.onSnackbar
 import com.orgzly.android.ui.MainActivity
 import com.orgzly.android.util.MiscUtils
+import junit.framework.Assert.fail
 import org.hamcrest.Matchers.startsWith
 import org.junit.Rule
 import org.junit.Test
@@ -37,7 +38,11 @@ class ExternalLinksTest(private val param: Parameter) : OrgzlyTest() {
             val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
 
             File(storageDir, "orgzly-tests").let { dir ->
-                dir.mkdirs()
+                if (!dir.exists()) {
+                    if (!dir.mkdirs()) {
+                        fail("Failed to create $dir")
+                    }
+                }
 
                 MiscUtils.writeStringToFile("Lorem ipsum", File(dir, "document.txt"))
 

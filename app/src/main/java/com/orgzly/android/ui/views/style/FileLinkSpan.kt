@@ -83,16 +83,17 @@ class FileLinkSpan(val path: String) : ClickableSpan() {
 
     private fun openFileIfExists(context: Context, activity: CommonActivity?, file: File) {
         if (file.exists()) {
-            try {
-                activity?.runWithPermission(
-                        AppPermissions.Usage.EXTERNAL_FILES_ACCESS,
-                        Runnable { openFile(context, activity, file) })
-
-            } catch (e: Exception) {
-                activity?.let {
-                    it.showSnackbar(it.getString(R.string.failed_to_open_linked_file_with_reason, e.localizedMessage))
-                }
-            }
+            activity?.runWithPermission(
+                    AppPermissions.Usage.EXTERNAL_FILES_ACCESS,
+                    Runnable {
+                        try {
+                            openFile(context, activity, file)
+                        } catch (e: Exception) {
+                            activity.showSnackbar(activity.getString(
+                                    R.string.failed_to_open_linked_file_with_reason,
+                                    e.localizedMessage))
+                        }
+                    })
 
         } else {
             activity?.let {

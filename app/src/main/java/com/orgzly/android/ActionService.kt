@@ -15,8 +15,8 @@ import com.orgzly.android.util.LogUtils
  */
 
 class ActionService : JobIntentService() {
-    private val shelf = Shelf(this)
-    private val localBroadcastManager = LocalBroadcastManager.getInstance(this)
+    private val shelf by lazy { Shelf(this) }
+    private val localBroadcastManager by lazy { LocalBroadcastManager.getInstance(this) }
 
     override fun onHandleWork(intent: Intent) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent)
