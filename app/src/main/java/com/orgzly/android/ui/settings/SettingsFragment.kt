@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.preference.Preference
 import android.preference.PreferenceManager
 import android.preference.PreferenceScreen
@@ -20,8 +21,10 @@ import com.orgzly.android.Notifications
 import com.orgzly.android.Shelf
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.NoteStates
 import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.widgets.ListWidgetProvider
 import java.util.*
@@ -163,8 +166,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, sharedPreferences, key)
 
-        val activity = activity ?: return
-
+        val activity = activity as? CommonActivity ?: return
 
         when (key) {
             // State keywords
@@ -244,6 +246,16 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
             // Reminders for deadlines - reset last run time
             getString(R.string.pref_key_use_reminders_for_deadline_times) ->
                 AppPreferences.reminderLastRunForDeadline(context, 0L)
+
+            // Display images inline enabled - request permission
+            getString(R.string.pref_key_images_enabled) -> {
+                if (AppPreferences.imagesEnabled(context)) {
+                    Handler().post {
+                        AppPermissions.isGrantedOrRequest(
+                                activity, AppPermissions.Usage.EXTERNAL_FILES_ACCESS)
+                    }
+                }
+            }
         }
 
         updateRemindersScreen()
@@ -263,7 +275,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
         if (scheduled != null && deadline != null) {
             val remindersEnabled = (scheduled as TwoStatePreference).isChecked
-                                   || (deadline as TwoStatePreference).isChecked
+                    || (deadline as TwoStatePreference).isChecked
 
             /* These do not exist on Oreo and later */
             findPreference(getString(R.string.pref_key_reminders_sound))?.isEnabled = remindersEnabled
