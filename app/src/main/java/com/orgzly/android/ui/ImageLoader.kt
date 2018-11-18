@@ -71,11 +71,7 @@ object ImageLoader {
 
                 Glide.with(context)
                         .asBitmap()
-                        // Use a placeholder
                         .apply(RequestOptions().placeholder(drawable))
-                        // Override the bitmap size, mainly used for big images
-                        // as it's useless to display more pixel that the pixel density allows
-                        .apply(RequestOptions().override(size.first, size.second))
                         .load(contentUri)
                         .into(object : SimpleTarget<Bitmap>() {
 
