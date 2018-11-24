@@ -45,11 +45,13 @@ They are disabled by default and need to be enabled in Settings.
 
 You can change the number of priorities in Settings. You can also change default priority - assumed priority for notes without one set.
 
-** Note can use links
+** Note can include links
 
-Dial a phone number (tel:555-2368) or [[sms:555-2368][send SMS]].
+Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[http://www.orgzly.com][Orgzly.com]]).
 
-Send email to [[mailto:support@orgzly.com][support@orgzly.com]], visit http://www.orgzly.com or read [[http://www.orgzly.com/help][documentation]].
+You can also link to another note or notebook within the app.
+
+See http://www.orgzly.com/help#links for more information.
 
 ** Basic typographical emphasis is supported
 
