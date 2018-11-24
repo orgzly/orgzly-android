@@ -41,9 +41,9 @@ DEADLINE: <2015-02-20 Ven>
 
 Sono disabilitati di default e devono essere abilitati nelle impostazioni.
 
-** [#A] Note can have a priority
+** [#A] Le note possono avere una priorità
 
-È possibile modificare il numero di priorità nelle impostazioni. You can also change default priority - assumed priority for notes without one set.
+È possibile modificare il numero di priorità nelle impostazioni. Puoi anche cambiare la priorità predefinita - la proprietà impostata per le note in cui non viene specificata.
 
 ** Le note possono usare collegamenti
 

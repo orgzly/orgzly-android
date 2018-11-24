@@ -43,7 +43,7 @@ DEADLINE: <2015-02-20 Fri>
 
 ** [#A] 笔记可以具有优先级
 
-可在设置中更改优先级数量 You can also change default priority - assumed priority for notes without one set.
+可在设置中更改优先级数量 也可以更改默认优先级 - 假如笔记的优先级没有设定。
 
 ** 笔记可以使用链接
 
