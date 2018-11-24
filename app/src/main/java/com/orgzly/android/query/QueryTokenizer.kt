@@ -16,7 +16,7 @@ class QueryTokenizer(val str: String, private val groupOpen: String, private val
     companion object {
         val TAG: String = QueryTokenizer::class.java.name
 
-        private const val char = """[^")( ]"""
+        private const val char = """[^")(\s]"""
         private const val doubleQuoted = """"[^"\\]*(?:\\.[^"\\]*)*""""
         private const val doubleQuotedWithPrefix = """$char*$doubleQuoted"""
         private const val groupOpener = """\("""

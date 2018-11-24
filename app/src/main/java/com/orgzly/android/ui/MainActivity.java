@@ -1282,6 +1282,12 @@ public class MainActivity extends CommonActivity
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, fragmentTag, title, subTitle, selectionCount);
 
         getSupportActionBar().setTitle(title);
+
+        // Clean up whitespace for multi-line query
+        if (subTitle != null) {
+            subTitle = subTitle.toString().replaceAll("\\s{2,}", " ");
+        }
+
         getSupportActionBar().setSubtitle(subTitle);
 
         drawerNavigationView.updateActiveFragment(fragmentTag);

@@ -35,7 +35,7 @@
                 android:id="@+id/fragment_filter_query"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="textMultiLine"
                 android:hint="@string/query"/>
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
