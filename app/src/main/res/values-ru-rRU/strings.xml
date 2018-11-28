@@ -362,6 +362,10 @@
     <string name="failed_exporting_book">Не удалось экспортировать блокнот: %s</string>
     <string name="edit_book_preface">Изменить предисловие</string>
     <string name="book_preface_hint">Текст, отображаемый перед первой заметкой</string>
+    <string name="keep_screen_on_title">Поддержка опции не выключать экран</string>
+    <string name="keep_screen_on_summary">Показывать выключатель в меню</string>
+    <string name="keep_screen_on">Не выключать экран</string>
+    <string name="keep_screen_on_desc">Экран не погаснет, до тех пор, пока  включен этот выключатель</string>
     <string name="layout_direction">Направление макета</string>
     <string name="layout_direction_locale">По умолчанию</string>
     <string name="layout_direction_ltr">Слева направо</string>
@@ -455,4 +459,12 @@
     <string name="show_selected">Показать выбранные</string>
     <string name="hide_all">Скрыть все</string>
     <string name="external_file_no_app_found">Нет приложений для открытия этого файла</string>
+    <string name="failed_to_open_linked_file_with_reason">Не удалось открыть файл %s</string>
+    <string name="images">Изображения</string>
+    <string name="display_inline_images">Поддержка изображений</string>
+    <string name="display_inline_images_summary">Показывать изображения в заметках</string>
+    <string name="scale_down_to_width">Уменьшить по ширине</string>
+    <string name="scale_down_to_width_summary">Уменьшать изображения до указанной ширины</string>
+    <string name="fixed_width_value">Ширина (в пикселях)</string>
+    <string name="share_target_service">Отправить в блокнот Orgzly</string>
 </resources>

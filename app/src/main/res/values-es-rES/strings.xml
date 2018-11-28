@@ -356,6 +356,10 @@
     <string name="failed_exporting_book">Error al exportar libro %s</string>
     <string name="edit_book_preface">Editar parrafo</string>
     <string name="book_preface_hint">Texto mostrado antes de la primera nota</string>
+    <string name="keep_screen_on_title">Habilitar la opción para mantener la pantalla encendida</string>
+    <string name="keep_screen_on_summary">Mostrar item de menú para poner / quitar la opción</string>
+    <string name="keep_screen_on">Mantener pantalla encendida</string>
+    <string name="keep_screen_on_desc">La pantalla no se apagará hasta que lo permita o deshabilite esta opción</string>
     <string name="layout_direction">Dirección de diseño</string>
     <string name="layout_direction_locale">Por defecto</string>
     <string name="layout_direction_ltr">De izquierda a derecha</string>
@@ -443,4 +447,12 @@
     <string name="show_selected">Mostrar seleccionados</string>
     <string name="hide_all">Ocultar todos</string>
     <string name="external_file_no_app_found">Ninguna aplicación encontrada para abrir el archivo</string>
+    <string name="failed_to_open_linked_file_with_reason">Error al abrir fichero: %s</string>
+    <string name="images">Imágenes</string>
+    <string name="display_inline_images">Habilitar imágenes</string>
+    <string name="display_inline_images_summary">Mostrar imágenes en notas</string>
+    <string name="scale_down_to_width">Ajustar al ancho</string>
+    <string name="scale_down_to_width_summary">Ajustar imagen al ancho especificado</string>
+    <string name="fixed_width_value">Ancho (en pixeles)</string>
+    <string name="share_target_service">Compartir a Orgzly bloc de notas</string>
 </resources>

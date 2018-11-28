@@ -45,11 +45,13 @@ Sono disabilitati di default e devono essere abilitati nelle impostazioni.
 
 È possibile modificare il numero di priorità nelle impostazioni. Puoi anche cambiare la priorità predefinita - la proprietà impostata per le note in cui non viene specificata.
 
-** Le note possono usare collegamenti
+** Note can include links
 
-Chiama un numero di telefono (tel:555-2368) o [[sms:555-2368][send SMS]].
+Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[http://www.orgzly.com][Orgzly.com]]).
 
-Invia un'e-mail a [[mailto:support@orgzly.com][support@orgzly.com]], Visita http://www.orgzly.com o leggi [[http://www.orgzly.com/help][documentation]].
+You can also link to another note or notebook within the app.
+
+See http://www.orgzly.com/help#links for more information.
 
 ** Sono supportati i livelli di formattazione base
 

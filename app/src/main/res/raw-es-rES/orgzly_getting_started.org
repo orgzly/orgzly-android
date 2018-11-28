@@ -45,11 +45,13 @@ Estan inhabilitadas por defecto y necesitan estar habilitadas en Configuración.
 
 Puedes cambiar el número de prioridades en Configuración. También puedes cambiar la prioridad por defecto - la prioridad asumida para notas sin una puesta.
 
-** Una nota puede tener enlaces
+** Una nota puede incluir enlaces
 
-Marcar un número de teléfono (tel:555-2368) o [[sms:555-2368][enviar SMS]].
+Marcar un número de teléfono (tel:555-0199), enviar SMS (sms:555-0199), componer un correo electrónico (mailto:support@orgzly.com) o visitar una página web ([[http://www.orgzly.com][Orgzly.com]]).
 
-Enviar email a [[mailto:support@orgzly.com][support@orgzly.com]], visitar http://www.orgzly.com o leer [[http://www.orgzly.com/help][documentation]].
+También puede enlazar a otra nota o bloc de notas dentro de la aplicación.
+
+Consulte http://www.orgzly.com/help#links para obtener más información.
 
 ** Están soportados formatos tipográficos básicos
 

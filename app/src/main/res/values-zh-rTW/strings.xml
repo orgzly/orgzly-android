@@ -353,6 +353,10 @@
     <string name="failed_exporting_book">匯出筆記到%s失敗</string>
     <string name="edit_book_preface">編輯前言</string>
     <string name="book_preface_hint">在第一個筆記前顯示文本</string>
+    <string name="keep_screen_on_title">啟用選項以保持螢幕開啓</string>
+    <string name="keep_screen_on_summary">顯示用於切換選項的功能表項目</string>
+    <string name="keep_screen_on">保持螢幕開啟</string>
+    <string name="keep_screen_on_desc">在您離開螢幕或禁用此選項之前, 螢幕不會關閉</string>
     <string name="layout_direction">佈局方向</string>
     <string name="layout_direction_locale">預設</string>
     <string name="layout_direction_ltr">左至右</string>
@@ -437,4 +441,12 @@
     <string name="show_selected">顯示已選取的項目</string>
     <string name="hide_all">隱藏全部</string>
     <string name="external_file_no_app_found">沒有關聯可開啟此檔案的程式。</string>
+    <string name="failed_to_open_linked_file_with_reason">開啟檔案失敗: %s</string>
+    <string name="images">圖像</string>
+    <string name="display_inline_images">啟用圖像</string>
+    <string name="display_inline_images_summary">在筆記中顯示圖像</string>
+    <string name="scale_down_to_width">縮放至與寬度相符</string>
+    <string name="scale_down_to_width_summary">將圖像縮小到指定的寬度</string>
+    <string name="fixed_width_value">寬度 (像素)</string>
+    <string name="share_target_service">分享到 Orgzly 筆記本</string>
 </resources>

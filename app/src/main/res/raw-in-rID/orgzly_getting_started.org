@@ -23,9 +23,9 @@ Jika Anda mencari catatan dengan tag "tag1", catatan ini akan dikembalikan juga.
 
 Anda dapat mengkonfigurasi sejumlah bagian negara untuk menggunakan: TODO, NEXT, DONE, dll.
 
-*** There are two /types/ of states: to-do and done
+*** Ada dua /tipe/ status: to-do dan selesai
 
-*** DONE This is a note with /done/ type of state
+*** DONE Ini adalah catatan dengan tipe status /selesai/
 CLOSED: [2018-01-24 Wed 17:00]
 
 ** Catatan harus memiliki jadwal waktu
@@ -37,7 +37,7 @@ SCHEDULED: <2015-02-16 Mon .+2d>
 ** Anda juga bisa menetapkan tanggal waktu
 DEADLINE: <2015-02-20 Fri>
 
-** Reminders for scheduled and deadline times are supported
+** Pengingat jadwal dan deadline juga didukung
 
 They are disabled by default and need to be enabled in Settings.
 
@@ -45,15 +45,17 @@ They are disabled by default and need to be enabled in Settings.
 
 You can change the number of priorities in Settings. You can also change default priority - assumed priority for notes without one set.
 
-** Catatan bisa menggunakan tautan
+** Note can include links
 
-Dial a phone number (tel:555-2368) or [[sms:555-2368][send SMS]].
+Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[http://www.orgzly.com][Orgzly.com]]).
 
-Send email to [[mailto:support@orgzly.com][support@orgzly.com]], visit http://www.orgzly.com or read [[http://www.orgzly.com/help][documentation]].
+You can also link to another note or notebook within the app.
+
+See http://www.orgzly.com/help#links for more information.
 
 ** Dasar tekanan typografi di dukung
 
-You can make words *bold*, /italic/, _underlined_, =verbatim=, ~code~ and +strike-through+.
+Kamu bisa membuat kata *tebal*, /miring/, _bergaris bawah_, =verbatim=, ~kode~ dan +dicoret+.
 
 ** Checkbox list is available
 
@@ -78,7 +80,7 @@ Anda dapat membuat pencarian tersimpan Anda sendiri dengan menekan "Searches" di
 
 * Sinkronisasi
 
-** Notebooks can be saved as plain-text files
+** Notebook dapat disimpan sebagai file teks biasa
 
 File dalam format yang digunakan oleh"Org mode".
 

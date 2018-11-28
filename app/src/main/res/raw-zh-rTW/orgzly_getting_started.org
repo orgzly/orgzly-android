@@ -45,11 +45,13 @@ DEADLINE: <2018-02-20 Sat>
 
 您可以在 "設置" 中更改優先順序的數量。 您還可以更改預設優先順序，假使沒有筆記的優先順序。
 
-** 筆記可以使用連結
+** 筆記可以包含連結
 
-撥通一個電話號碼使用 (tel:555-2368) 或是 [[sms:555-2368][send SMS]]
+撥打電話號碼 (tel:555-0199), 傳送簡訊 (sms:555-0199), 撰寫電子郵件 (mailto:support@orgzly.com) 或訪問網頁 ([[http://www.orgzly.com][Orgzly.com]])。
 
-寄郵件 [[mailto:support@orgzly.com][support@orgzly.com]], 請參考 http://www.orgzly.com 或讀取 [[http://www.orgzly.com/help][documentation]]
+你還可以連結到其他筆記或筆記本。
+
+有關詳細資訊, 請參閱 http://www.orgzly.com/help#links。
 
 ** 筆記支持基本的標記重點
 

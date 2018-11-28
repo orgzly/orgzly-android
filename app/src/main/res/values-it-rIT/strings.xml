@@ -356,6 +356,10 @@
     <string name="failed_exporting_book">Esportazione del libro %s non riuscita</string>
     <string name="edit_book_preface">Modifica prefazione</string>
     <string name="book_preface_hint">Testo mostrato prima della prima nota</string>
+    <string name="keep_screen_on_title">Enable option to keep the screen on</string>
+    <string name="keep_screen_on_summary">Display menu item for toggling the option</string>
+    <string name="keep_screen_on">Keep screen on</string>
+    <string name="keep_screen_on_desc">Your screen will not turn off until you leave it or disable this option</string>
     <string name="layout_direction">Direzione della vista</string>
     <string name="layout_direction_locale">Predefinito</string>
     <string name="layout_direction_ltr">Da sinistra a destra</string>
@@ -443,4 +447,12 @@
     <string name="show_selected">Mostra selezionati</string>
     <string name="hide_all">Nascondi tutto</string>
     <string name="external_file_no_app_found">Non è stata trovata alcuna applicazione per aprire questo file</string>
+    <string name="failed_to_open_linked_file_with_reason">Failed to open file: %s</string>
+    <string name="images">Images</string>
+    <string name="display_inline_images">Enable images</string>
+    <string name="display_inline_images_summary">Display images in notes</string>
+    <string name="scale_down_to_width">Scale down to width</string>
+    <string name="scale_down_to_width_summary">Scale down image to specified width</string>
+    <string name="fixed_width_value">Width (in pixels)</string>
+    <string name="share_target_service">Share to Orgzly notebook</string>
 </resources>

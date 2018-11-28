@@ -353,6 +353,10 @@
     <string name="failed_exporting_book">导出笔记本失败：%s</string>
     <string name="edit_book_preface">编辑序言</string>
     <string name="book_preface_hint">在第一条笔记前显示的文本</string>
+    <string name="keep_screen_on_title">启用选项使屏幕保持常亮</string>
+    <string name="keep_screen_on_summary">显示用于切换选项的菜单项</string>
+    <string name="keep_screen_on">保持屏幕常亮</string>
+    <string name="keep_screen_on_desc">退出应用或禁用此选项前屏幕不会关闭</string>
     <string name="layout_direction">布局方向</string>
     <string name="layout_direction_locale">默认</string>
     <string name="layout_direction_ltr">从左到右</string>
@@ -437,4 +441,12 @@
     <string name="show_selected">显示已选择</string>
     <string name="hide_all">隐藏全部</string>
     <string name="external_file_no_app_found">找不到可打开此文件的应用程序</string>
+    <string name="failed_to_open_linked_file_with_reason">打开文件失败：%s</string>
+    <string name="images">图片</string>
+    <string name="display_inline_images">启用图片</string>
+    <string name="display_inline_images_summary">在笔记中显示图片</string>
+    <string name="scale_down_to_width">按比例缩小到一定宽度</string>
+    <string name="scale_down_to_width_summary">按比例缩小图片到指定宽度</string>
+    <string name="fixed_width_value">宽度（以像素为单位）</string>
+    <string name="share_target_service">分享到Orgzly笔记本</string>
 </resources>
