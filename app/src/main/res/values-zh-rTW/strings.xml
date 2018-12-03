@@ -17,7 +17,7 @@
     <string name="add">增加</string>
     <string name="not_now">現在不要</string>
     <string name="save">儲存</string>
-    <string name="discard">取消</string>
+    <string name="discard">放棄儲存</string>
     <string name="remove_notebook_link">移除連結</string>
     <string name="browse">瀏覽</string>
     <string name="dropbox">Dropbox</string>
