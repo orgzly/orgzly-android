@@ -116,33 +116,7 @@ object ImageLoader {
     }
 
     fun hasSupportedExtension(path: String): Boolean {
-        var ret = false
-        var index: Int
-        var s = ""
-
-        // Find the last slash in the path
-        // to avoid case of a point in the path and a file without extension
-        index = path.lastIndexOf("/")
-
-        // If we found the last slash, extract the file name
-        if (index != -1) {
-            s = path.substring(index + 1)
-        }
-
-        // Extract the extension
-        index = s.lastIndexOf(".")
-
-        // If we found an extension, extract it and test it
-        if (index != -1) {
-            s = s.substring(index + 1).toLowerCase()
-
-            if (s == "jpg" || s == "jpeg" || s == "gif"
-                    || s == "png" || s == "bmp" || s == "webp") {
-                ret = true
-            }
-        }
-
-        return ret
+        return path.matches(Regex(""".+\.(?:jpg|jpeg|gif|png|bmp|webp)""", RegexOption.IGNORE_CASE))
     }
 
     private fun calculateImageDisplaySize(
