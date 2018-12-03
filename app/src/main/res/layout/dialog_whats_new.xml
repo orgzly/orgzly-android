@@ -24,6 +24,33 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.6.11"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Display linked images" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Option to keep the screen turned on and bright" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support sharing to specific notebook directly" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Handle links to files outside storage directory" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix aligning tags when fullwidth characters are used" />
+
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.6.10"
             tools:ignore="HardcodedText" />
 

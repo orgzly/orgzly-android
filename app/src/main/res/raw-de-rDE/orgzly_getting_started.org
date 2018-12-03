@@ -8,14 +8,14 @@ Willkommen bei Orgzly!
 
 ** Wischen Sie über der Notiz nach rechts, um das Schnell-Menü anzuzeigen
 
-Nach Links wischen, um ein anderes Menü zu öffnen.
+Nach links wischen öffnet ein weiteres Menü.
 
 ** Unterpunkte können Sie über das Symbole links und rechts daneben ein- und ausklappen
 *** Es gibt keine Begrenzung in der Anzahl der Ebenen
 **** Dies hilft dabei Ihre Notizen besser zu organisieren
 
-** Notiz kann Tags enthalten :tag1:tag2:
-*** tags werden an Unterpunkte vererbt :tag3:
+** Eine Notiz kann Tags enthalten :tag1:tag2:
+*** Tags werden an Unterpunkte vererbt :tag3:
 
 Wenn Sie nach Notizen mit dem Tag "tag1" suchen, wird diese Notiz ebenfalls zurückgegeben.
 
@@ -37,40 +37,42 @@ SCHEDULED: <2015-02-16 Mon .+2d>
 ** Sie können auch eine Frist festlegen
 DEADLINE: <2015-02-20 Fri>
 
-** Reminders for scheduled and deadline times are supported
+** Erinnerungen für Termine und Fristen
 
-They are disabled by default and need to be enabled in Settings.
+Erinnerungen für Termine und Fristen sind standardmäßig deaktiviert und können in den Einstellungen aktiviert werden.
 
-** [#A] Note can have a priority
+** [#A] Notizen können priorisiert werden
 
-You can change the number of priorities in Settings. You can also change default priority - assumed priority for notes without one set.
+Die verschiedenen Prioritätsstufen können in den Einstellungen verändert werden. Ebenso kann die Priorität angepasst werden, die Notizen ohne explizite Priorisierung zugeordnet wird.
 
-** Notiz unterstützt Verknüpfung (Hyperlinks)
+** Note can include links
 
-Wählen Sie eine Telefonnummer (tel:555-2368) oder [[sms:555-2368][send SMS]].
+Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[http://www.orgzly.com][Orgzly.com]]).
 
-Senden Sie eine E-Mail an [[mailto:support@orgzly.com][support@orgzly.com]], besuchen Sie http://www.orgzly.com oder lesen Sie [[http://www.orgzly.com/help][documentation]].
+You can also link to another note or notebook within the app.
+
+See http://www.orgzly.com/help#links for more information.
 
 ** Grundlegende typografische Hervorhebungen werden unterstützt
 
 Sie können Wörter *fett*, /kursiv/, _unterstrichen_, =verbatim=, ~als Code~ und +durchgestrichen+ darstellen.
 
-** Kontrollkästchenliste ist verfügbar
+** Verwenden von Kontrollkästchen
 
 - [X] Aufgabe 1
 - [ ] Aufgabe 2
 - [ ] Aufgabe 3
 
-Klicken Sie auf das Kontrollkästchen, um es zu wechseln. Drücken Sie neue Zeile am Ende der Zeile, um ein neues Element zu erstellen.
+Klicken Sie auf das Kontrollkästchen, um es zu wechseln. Wenn Sie aus einer Zeile mit Kontrollkästchen eine neue Zeile erstellen, wird diese Zeile ebenfalls ein Kontrollkästchen beinhalten.
 
 * Suchen
 ** Es werden viele Suchoperatoren unterstützt
 
-Sie können Notizen nach Status (state), Auszeichner (tag), Termin (scheduled) oder Frist (deadline) usw. durchsuchen
+Sie können Notizen nach Status (state), Tag (tag), Termin (scheduled) oder Frist (deadline) usw. durchsuchen
 
 Besuchen Sie http://www.orgzly.com/help#search um mehr darüber zu erfahren.
 
-** Suchabfragen können für einen Schnellzugriff gespeichert werden
+** Suchabfragen können für den Schnellzugriff gespeichert werden
 
 Probieren Sie die Beispielabfragen in der Navigationsleiste aus und schauen Sie sich an, wie diese Abfragen aufgebaut sind.
 
@@ -84,4 +86,4 @@ Diese Dateien haben das "Org mode"-Format.
 
 ** Speicherort (Repository)
 
-Sie können Notizbücher synchronisiert mit einem Verzeichnis auf Ihrem mobilen Gerät, SD-Karte oder Dropbox halten.
+Notizbücher können in einem Verzeichnis auf Ihrem mobilen Gerät, der SD-Karte oder Ihrer Dropbox gespeichert und so synchronisiert werden.
