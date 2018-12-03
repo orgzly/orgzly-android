@@ -24,6 +24,20 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.6.12"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support multi-line search queries" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix recognition of images in base directory" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.6.11"
             tools:ignore="HardcodedText" />
 
@@ -46,7 +60,6 @@
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
             app:text="Fix aligning tags when fullwidth characters are used" />
-
 
 
         <TextView

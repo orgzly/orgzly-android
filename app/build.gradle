@@ -15,8 +15,8 @@ android {
         minSdkVersion 16 // Jelly Bean (4.1)
         targetSdkVersion 28 // Android Pie (9)
         applicationId "com.orgzly"
-        versionCode 116
-        versionName "1.6.11"
+        versionCode 117
+        versionName "1.6.12"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
