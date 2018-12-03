@@ -9,7 +9,7 @@ import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.MainActivity
 import com.orgzly.org.datetime.OrgDateTime
-import junit.framework.Assert.*
+import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import java.io.File

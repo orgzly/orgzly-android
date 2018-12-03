@@ -13,8 +13,8 @@ import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.EspressoUtils.onSnackbar
 import com.orgzly.android.ui.MainActivity
 import com.orgzly.android.util.MiscUtils
-import junit.framework.Assert.fail
 import org.hamcrest.Matchers.startsWith
+import org.junit.Assert.fail
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
