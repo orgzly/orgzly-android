@@ -55,4 +55,10 @@
         android:summary="Ignore default locale"
         android:defaultValue="@bool/pref_default_ignore_system_locale"/>
 
+    <SwitchPreference
+        android:defaultValue="@bool/pref_default_starting_week_day"
+        android:key="@string/pref_key_starting_week_day"
+        android:summary="Ignore default locale"
+        android:title="Set monday as first day of the week" />
+
 </PreferenceScreen>

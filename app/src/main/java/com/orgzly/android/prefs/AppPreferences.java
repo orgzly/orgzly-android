@@ -605,6 +605,15 @@ public class AppPreferences {
     }
 
     /*
+     * Stating weed day set to monday
+     */
+    public static boolean startingWeekDay(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_starting_week_day),
+                context.getResources().getBoolean(R.bool.pref_default_starting_week_day));
+    }
+
+    /*
      * Widget
      */
 

@@ -16,6 +16,7 @@ import android.widget.CompoundButton;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 import com.orgzly.android.util.UserTimeFormatter;
@@ -391,7 +392,13 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
             case R.id.dialog_timestamp_next_week_shortcut:
                 cal = Calendar.getInstance();
                 cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
-                cal.add(Calendar.DATE, 7);
+                if (AppPreferences.startingWeekDay(mContext)) {
+                    cal.add(Calendar.DATE, 8);
+                } else {
+                    cal.add(Calendar.DATE, 7);
+                }
+
+
 
                 mCurrentYear = cal.get(Calendar.YEAR);
                 mCurrentMonth = cal.get(Calendar.MONTH);
