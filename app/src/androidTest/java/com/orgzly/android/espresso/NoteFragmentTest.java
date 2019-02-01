@@ -18,6 +18,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -44,6 +45,7 @@ import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.not;
@@ -437,5 +439,14 @@ public class NoteFragmentTest extends OrgzlyTest {
 
         onView(allOf(withId(R.id.name), withText("prop-name-1"))).check(matches(isDisplayed()));
         onView(allOf(withId(R.id.value), withText("prop-value-1"))).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testContentLineCountUpdatedOnNoteUpdate() {
+        onNoteInBook(1).perform(longClick());
+        onView(withId(R.id.body_edit)).perform(replaceTextCloseKeyboard("a\nb\nc"));
+        onView(withId(R.id.done)).perform(click());
+        onNoteInBook(1, R.id.item_head_fold_button).perform(click());
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("3"))));
     }
 }

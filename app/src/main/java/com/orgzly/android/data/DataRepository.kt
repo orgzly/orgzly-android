@@ -1217,6 +1217,7 @@ class DataRepository @Inject constructor(
             val newNote = note.copy(
                     title = notePayload.title,
                     content = notePayload.content,
+                    contentLineCount = MiscUtils.lineCount(notePayload.content),
                     state = notePayload.state,
                     priority = notePayload.priority,
                     scheduledRangeId = getOrgRangeId(notePayload.scheduled),
