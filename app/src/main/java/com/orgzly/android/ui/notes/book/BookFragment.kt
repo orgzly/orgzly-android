@@ -498,12 +498,15 @@ class BookFragment :
     override fun onCreateBottomActionMode(toolbar: Toolbar) {
         toolbar.inflateMenu(R.menu.bottom_action_bar_book)
 
+        // Hide buttons that can't be used when multiple notes are selected
         listOf(
                 R.id.bottom_action_bar_new,
                 R.id.bottom_action_bar_open).forEach { id ->
 
             toolbar.menu.findItem(id)?.isVisible = viewAdapter.getSelection().count <= 1
         }
+
+        ActivityUtils.distributeToolbarItems(activity, toolbar)
     }
 
     override fun onBottomActionItemClicked(id: Int) {

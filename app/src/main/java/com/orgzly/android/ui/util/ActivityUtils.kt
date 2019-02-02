@@ -8,12 +8,12 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Handler
+import android.util.DisplayMetrics
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.view.menu.ActionMenuItemView
+import androidx.appcompat.widget.Toolbar
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
@@ -126,5 +126,35 @@ object ActivityUtils {
     @JvmStatic
     fun keepScreenOnClear(activity: Activity?) {
         activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    fun distributeToolbarItems(activity: Activity?, toolbar: Toolbar) {
+        if (activity != null) {
+            val display = activity.windowManager.defaultDisplay
+
+            val metrics = DisplayMetrics().also {
+                display.getMetrics(it)
+            }
+
+            val screenWidth = metrics.widthPixels
+
+            for (i in 0 until toolbar.childCount) {
+                val childView = toolbar.getChildAt(i)
+
+                if (childView is ViewGroup) {
+                    val innerChildCount = childView.childCount
+
+                    val itemWidth = screenWidth / innerChildCount
+
+                    for (j in 0 until innerChildCount) {
+                        val grandChild = childView.getChildAt(j)
+
+                        if (grandChild is ActionMenuItemView) {
+                            grandChild.layoutParams.width = itemWidth
+                        }
+                    }
+                }
+            }
+        }
     }
 }

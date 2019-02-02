@@ -14,6 +14,7 @@ import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.notes.query.QueryFragment
 import com.orgzly.android.ui.notes.query.QueryViewModel
 import com.orgzly.android.ui.notes.query.QueryViewModelFactory
+import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
 
 /**
@@ -159,6 +160,8 @@ class AgendaFragment :
 
             toolbar.menu.findItem(id)?.isVisible = viewAdapter.getSelection().count <= 1
         }
+
+        ActivityUtils.distributeToolbarItems(activity, toolbar)
     }
 
     override fun announceChangesToActivity() {
