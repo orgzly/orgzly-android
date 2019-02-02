@@ -606,15 +606,17 @@ class DataRepository @Inject constructor(
     }
 
     fun deleteNotes(bookId: Long, ids: Set<Long>): Int {
-        db.noteAncestor().deleteForNoteAndDescendants(bookId, ids)
+        return db.runInTransaction(Callable {
+            db.noteAncestor().deleteForNoteAndDescendants(bookId, ids)
 
-        val deleted = db.note().deleteById(ids)
+            val deleted = db.note().deleteById(ids)
 
-        db.note().updateDescendantsCountForAncestors(ids)
+            db.note().updateDescendantsCountForAncestors(ids)
 
-        updateBookIsModified(bookId, true)
+            updateBookIsModified(bookId, true)
 
-        return deleted
+            deleted
+        })
     }
 
     fun paste(bookId: Long, noteId: Long, place: Place): Int {
