@@ -23,7 +23,6 @@ import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.notes.NotesFragment
 import com.orgzly.android.ui.util.ActivityUtils
-import com.orgzly.android.ui.views.TextViewWithMarkup
 import com.orgzly.android.util.LogUtils
 
 /**
@@ -39,11 +38,11 @@ class BookFragment :
         BottomActionBar.Callback,
         BookAdapter.OnClickListener {
 
-    var listener: Listener? = null
+    private var listener: Listener? = null
 
-    lateinit var viewAdapter: BookAdapter
+    private lateinit var viewAdapter: BookAdapter
 
-    lateinit var layoutManager: androidx.recyclerview.widget.LinearLayoutManager
+    private lateinit var layoutManager: androidx.recyclerview.widget.LinearLayoutManager
 
     private lateinit var sharedMainActivityViewModel: SharedMainActivityViewModel
 
@@ -61,14 +60,10 @@ class BookFragment :
 
     private var mBookId: Long = 0
 
-    private val mHeader: View? = null
-    private var mPrefaceText: TextViewWithMarkup? = null
-    private var mNoNotesText: View? = null
-
     private var mActionModeTag: String? = null
 
-    /** Used to switch to book-does-not-exist view, if the book has been deleted.  */
-    private var mViewFlipper: ViewFlipper? = null
+    /** Used for different states after loading the notebook and notes. */
+    private var viewFlipper: ViewFlipper? = null
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -102,6 +97,9 @@ class BookFragment :
 
         parseArguments()
 
+        val factory = BookViewModelFactory.forBook(dataRepository, mBookId)
+        viewModel = ViewModelProviders.of(this, factory).get(BookViewModel::class.java)
+
         if (savedInstanceState != null && savedInstanceState.getBoolean("actionModeMove", false)) {
             mActionModeTag = "M"
         }
@@ -112,10 +110,7 @@ class BookFragment :
 
         val view = inflater.inflate(R.layout.fragment_notes_book, container, false)
 
-        mViewFlipper = view.findViewById<View>(R.id.fragment_book_view_flipper) as ViewFlipper
-
-        /* Big new note button when there are no notes. */
-        mNoNotesText = view.findViewById(R.id.fragment_book_no_notes)
+        viewFlipper = view.findViewById<View>(R.id.fragment_book_view_flipper) as ViewFlipper
 
         setupRecyclerView(view)
 
@@ -145,43 +140,34 @@ class BookFragment :
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
         super.onActivityCreated(savedInstanceState)
 
-        val factory = BookViewModelFactory.forBook(dataRepository, mBookId)
-        viewModel = ViewModelProviders.of(this, factory).get(BookViewModel::class.java)
+        viewModel.dataLoadState.observe(viewLifecycleOwner, Observer { state ->
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed load state: $state")
+
+            viewFlipper?.apply {
+                displayedChild = when (state) {
+                    BookViewModel.LoadState.IN_PROGRESS -> 0
+                    BookViewModel.LoadState.DONE -> 1
+                    BookViewModel.LoadState.NO_NOTES -> 2
+                    BookViewModel.LoadState.BOOK_DOES_NOT_EXIST -> 3
+                    else -> 1
+                }
+            }
+        })
 
         viewModel.data.observe(viewLifecycleOwner, Observer { data ->
+            if (BuildConfig.LOG_DEBUG)
+                LogUtils.d(TAG, "Observed data: book ${data.book} and ${data.notes?.size} notes")
 
             val book = data.book
             val notes = data.notes
 
-
-            if (BuildConfig.LOG_DEBUG)
-                LogUtils.d(TAG, "Received book for id $mBookId: $book")
-
-
-            mLastBookId = mBookId
-
-            /* Set the current book.
-         * Book can be null. That can happen when this fragment is in back stack and its book
-         * gets deleted. When fragment is popped from the back stack it will try to fetch the
-         * non-existent book id.
-         */
             this.currentBook = book
-
-            if (book != null) {
-                mViewFlipper?.displayedChild = 0
-            } else {
-                mViewFlipper?.displayedChild = 1
-            }
 
             announceChangesToActivity()
 
             viewAdapter.setPreface(book)
 
-
             if (notes != null) {
-                if (BuildConfig.LOG_DEBUG)
-                    LogUtils.d(TAG, "Received notes from book:id $mBookId: ${notes.size}")
-
                 viewAdapter.submitList(notes)
 
                 // Restore scrolling position
@@ -209,17 +195,27 @@ class BookFragment :
                 scrollToNoteIfSet()
             }
 
-            setHasNoNotesText()
-
+            updateLoadState(notes)
         })
     }
 
-    /** Display "Notebook has no notes" message, unless notes or preface are displayed. */
-    private fun setHasNoNotesText() {
-        if (viewAdapter.isPrefaceDisplayed() || viewAdapter.getDataItemCount() > 0) {
-            mNoNotesText?.visibility = View.GONE
-        } else {
-            mNoNotesText?.visibility = View.VISIBLE
+    private fun updateLoadState(notes: List<NoteView>?) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+
+        viewFlipper?.apply {
+            if (currentBook == null) {
+                viewModel.setLoadState(BookViewModel.LoadState.BOOK_DOES_NOT_EXIST)
+
+            } else if (notes == null) {
+                viewModel.setLoadState(BookViewModel.LoadState.IN_PROGRESS)
+
+            } else if (viewAdapter.isPrefaceDisplayed() || !notes.isNullOrEmpty()) {
+                viewModel.setLoadState(BookViewModel.LoadState.DONE)
+
+            } else {
+                viewModel.setLoadState(BookViewModel.LoadState.NO_NOTES)
+            }
+
         }
     }
 
@@ -251,7 +247,7 @@ class BookFragment :
             mBookId = it.getLong(ARG_BOOK_ID)
 
             if (mBookId <= 0) {
-                throw IllegalArgumentException("Passed book id ${mBookId} is not valid")
+                throw IllegalArgumentException("Passed book id $mBookId is not valid")
             }
         } ?: throw IllegalArgumentException("No arguments passed")
     }
@@ -640,8 +636,6 @@ class BookFragment :
                 R.id.book_cab_cut,
                 R.id.book_cab_paste,
                 R.id.book_cab_move)
-
-        private var mLastBookId: Long = 0
 
         /**
          * @param bookId Book ID

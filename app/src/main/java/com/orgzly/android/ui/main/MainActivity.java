@@ -296,7 +296,7 @@ public class MainActivity extends CommonActivity
         });
 
         sharedMainActivityViewModel.getFragmentState().observe(this, state -> {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, state);
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed fragment state: " + state);
 
             if (state != null) {
                 getSupportActionBar().setTitle(state.getTitle());

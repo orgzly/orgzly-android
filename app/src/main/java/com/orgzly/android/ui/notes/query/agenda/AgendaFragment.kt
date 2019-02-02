@@ -67,8 +67,7 @@ class AgendaFragment :
         viewModel = ViewModelProviders.of(this, factory).get(QueryViewModel::class.java)
 
         viewModel.notes().observe(viewLifecycleOwner, Observer { notes ->
-            if (BuildConfig.LOG_DEBUG)
-                LogUtils.d(TAG, "Generating agenda items for ${notes.size} notes")
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed notes: ${notes.size}")
 
             val items = AgendaItems.getList(notes, currentQuery, item2databaseIds)
 

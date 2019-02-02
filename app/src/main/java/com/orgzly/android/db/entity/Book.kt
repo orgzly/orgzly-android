@@ -51,6 +51,10 @@ data class Book constructor(
         val isModified: Boolean = false
 ) {
 
+    override fun toString(): String {
+        return "$name#$id"
+    }
+
     companion object {
         @JvmStatic
         fun forName(name: String): Book {

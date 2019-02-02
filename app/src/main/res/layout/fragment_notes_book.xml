@@ -6,31 +6,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <TextView
+        style="@style/BigCenteredText"
+        android:text="@string/loading"
+        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_notes_book_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_notes_book_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="8dp"
-            android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
-            android:clipToPadding="false" />
-
-        <!-- Made visible programmatically if there are no notes. -->
-        <TextView
-            android:id="@+id/fragment_book_no_notes"
-            style="@style/BigCenteredText"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:text="@string/no_notes"
-            android:visibility="gone"
-            android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"/>
-    </RelativeLayout>
+        android:layout_height="match_parent"
+        android:paddingTop="8dp"
+        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
+        android:clipToPadding="false" />
 
     <TextView
         style="@style/BigCenteredText"
-        android:text="@string/book_does_not_exist_anymore"/>
+        android:text="@string/no_notes"
+        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"/>
+
+    <TextView
+        style="@style/BigCenteredText"
+        android:text="@string/book_does_not_exist_anymore"
+        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
 
 </ViewFlipper>

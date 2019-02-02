@@ -74,8 +74,7 @@ class SearchFragment :
         val model = ViewModelProviders.of(this, factory).get(QueryViewModel::class.java)
 
         model.notes().observe(viewLifecycleOwner, Observer { notes ->
-            if (BuildConfig.LOG_DEBUG)
-                LogUtils.d(TAG, "Replacing data with ${notes.size} notes")
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed notes: ${notes.size}")
 
             viewAdapter.submitList(notes)
 
