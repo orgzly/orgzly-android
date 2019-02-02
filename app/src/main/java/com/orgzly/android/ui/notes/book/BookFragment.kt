@@ -499,7 +499,6 @@ class BookFragment :
         toolbar.inflateMenu(R.menu.bottom_action_bar_book)
 
         listOf(
-                R.id.bottom_action_bar_refile,
                 R.id.bottom_action_bar_new,
                 R.id.bottom_action_bar_open).forEach { id ->
 
@@ -561,7 +560,7 @@ class BookFragment :
                 actionMode?.finish()
             }
 
-            R.id.bottom_action_bar_refile ->
+            R.id.book_cab_refile ->
                 listener?.let {
                     openNoteRefileDialog(it, mBookId, selection.getIds())
                 }
@@ -635,7 +634,8 @@ class BookFragment :
         private val ITEMS_HIDDEN_ON_MULTIPLE_SELECTED_NOTES = intArrayOf(
                 R.id.book_cab_cut,
                 R.id.book_cab_paste,
-                R.id.book_cab_move)
+                R.id.book_cab_move,
+                R.id.book_cab_refile)
 
         /**
          * @param bookId Book ID

@@ -41,6 +41,12 @@
     </item>
 
     <item
+        android:id="@+id/book_cab_refile"
+        app:showAsAction="never"
+        android:title="@string/refile"
+        android:icon="?attr/ic_open_in_browser_24dp"/>
+
+    <item
         android:id="@+id/book_cab_delete_note"
         app:showAsAction="never"
         android:title="@string/delete"/>
