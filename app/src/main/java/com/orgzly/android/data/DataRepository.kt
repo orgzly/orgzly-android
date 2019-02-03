@@ -1928,9 +1928,11 @@ class DataRepository @Inject constructor(
      * Clear all data from tables.
      */
     fun clearDatabase() {
-        db.clearAllTables()
+        db.runInTransaction {
+            db.clearAllTables()
 
-        OrgzlyDatabase.insertDefaultSearches(db.openHelper.writableDatabase)
+            OrgzlyDatabase.insertDefaultSearches(db.openHelper.writableDatabase)
+        }
 
         /* Clear last sync time. */
         AppPreferences.lastSuccessfulSyncTime(context, 0L)
