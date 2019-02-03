@@ -111,20 +111,24 @@ public class StatesPreferenceFragment extends PreferenceDialogFragmentCompat {
 
         Set<String> keywords = new HashSet<>();
 
-        for (String k: new ArrayListSpaceSeparated(todoStates.getText().toString())) {
-            if (keywords.contains(k)) {
-                todoLayout.setError(getContext().getString(R.string.duplicate_keywords_not_allowed, k));
-                return false;
-            }
-            keywords.add(k);
-        }
+        return isUnique(keywords, todoStates.getText().toString(), todoLayout) &&
+               isUnique(keywords, doneStates.getText().toString(), doneLayout);
+    }
 
-        for (String k: new ArrayListSpaceSeparated(doneStates.getText().toString())) {
-            if (keywords.contains(k)) {
-                doneLayout.setError(getContext().getString(R.string.duplicate_keywords_not_allowed, k));
+    private boolean isUnique(Set<String> seenKeywords, String keywords, TextInputLayout layout) {
+        Context context = getContext();
+
+        for (String keyword : new ArrayListSpaceSeparated(keywords)) {
+            keyword = keyword.toUpperCase();
+
+            if (seenKeywords.contains(keyword)) {
+                if (context != null) {
+                    layout.setError(context.getString(R.string.duplicate_keywords_not_allowed, keyword));
+                }
                 return false;
             }
-            keywords.add(k);
+
+            seenKeywords.add(keyword);
         }
 
         return true;

@@ -112,6 +112,19 @@ public class SettingsFragmentTest extends OrgzlyTest {
     }
 
     @Test
+    public void testStatesDuplicateDetectedIgnoringCase() {
+        onActionItemClick(R.id.activity_action_settings, R.string.settings);
+
+        clickSetting("prefs_screen_notebooks", R.string.pref_title_notebooks);
+        clickSetting("pref_key_states", R.string.states);
+
+        onView(withId(R.id.todo_states)).perform(replaceTextCloseKeyboard("TODO NEXT next"));
+
+        onView(withText(context.getString(R.string.duplicate_keywords_not_allowed, "NEXT")))
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
     public void testNewNoteDefaultStateIsInitiallyVisibleInSummary() {
         AppPreferences.states(context, "AAA BBB CCC | DONE");
         AppPreferences.newNoteState(context, "BBB");
