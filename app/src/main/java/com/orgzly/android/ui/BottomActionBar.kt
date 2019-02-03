@@ -9,8 +9,7 @@ object BottomActionBar {
     @JvmStatic
     fun showBottomBar(view: Toolbar, clickListener: Callback) {
         view.menu.clear()
-
-        clickListener.onCreateBottomActionMode(view)
+        clickListener.onInflateBottomActionMode(view)
 
         view.setOnMenuItemClickListener { menuItem ->
             clickListener.onBottomActionItemClicked(menuItem.itemId)
@@ -31,7 +30,7 @@ object BottomActionBar {
 
     @JvmStatic
     fun hideBottomBar(view: Toolbar) {
-        if (view.visibility == View.INVISIBLE) {
+        if (view.visibility == View.GONE) {
             return
         }
 
@@ -42,14 +41,15 @@ object BottomActionBar {
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
                         super.onAnimationEnd(animation)
-                        view.visibility = View.INVISIBLE
+                        view.visibility = View.GONE
                     }
                 })
     }
 
 
     interface Callback {
-        fun onCreateBottomActionMode(toolbar: Toolbar)
+        fun onInflateBottomActionMode(toolbar: Toolbar)
+
         fun onBottomActionItemClicked(id: Int)
     }
 }

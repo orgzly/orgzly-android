@@ -106,7 +106,7 @@ class BookFragment :
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, inflater, container, savedInstanceState)
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         val view = inflater.inflate(R.layout.fragment_notes_book, container, false)
 
@@ -421,6 +421,8 @@ class BookFragment :
     }
 
     override fun onPrefaceClick() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+
         currentBook?.let {
             listener?.onBookPrefaceEditRequest(it)
         }
@@ -495,7 +497,9 @@ class BookFragment :
         sharedMainActivityViewModel.unlockDrawer()
     }
 
-    override fun onCreateBottomActionMode(toolbar: Toolbar) {
+    override fun onInflateBottomActionMode(toolbar: Toolbar) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+
         toolbar.inflateMenu(R.menu.bottom_action_bar_book)
 
         // Hide buttons that can't be used when multiple notes are selected
@@ -510,6 +514,8 @@ class BookFragment :
     }
 
     override fun onBottomActionItemClicked(id: Int) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id)
+
         handleActionItemClick(id, actionModeListener?.actionMode, viewAdapter.getSelection())
     }
 

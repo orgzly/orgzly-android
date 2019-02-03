@@ -150,7 +150,7 @@ class AgendaFragment :
         sharedMainActivityViewModel.unlockDrawer()
     }
 
-    override fun onCreateBottomActionMode(toolbar: Toolbar) {
+    override fun onInflateBottomActionMode(toolbar: Toolbar) {
         toolbar.inflateMenu(R.menu.bottom_action_bar_query)
 
         // Hide buttons that can't be used when multiple notes are selected
