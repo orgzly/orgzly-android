@@ -6,7 +6,6 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -174,5 +173,21 @@ public class SettingsFragmentTest extends OrgzlyTest {
 
         clickSetting("pref_key_min_priority", R.string.lowest_priority);
         onData(hasToString("X")).check(matches(isChecked()));
+    }
+
+    @Test
+    public void testLowercaseStateConvertedToUppercase() {
+        onActionItemClick(R.id.activity_action_settings, R.string.settings);
+
+        clickSetting("prefs_screen_notebooks", R.string.pref_title_notebooks);
+        clickSetting("pref_key_states", R.string.states);
+
+        onView(withId(R.id.todo_states)).perform(replaceTextCloseKeyboard("TODO NEXT wait"));
+
+        onView(withText(R.string.ok)).perform(click());
+        onView(withText(R.string.not_now)).perform(click());
+
+        onView(allOf(withText(R.string.states), hasSibling(withText("TODO NEXT WAIT | DONE"))))
+                .check(matches(isDisplayed()));
     }
 }
