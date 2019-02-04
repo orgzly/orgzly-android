@@ -487,6 +487,8 @@ class BookFragment :
     }
 
     override fun onDestroyActionMode(actionMode: ActionMode) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+
         viewAdapter.getSelection().clear()
         viewAdapter.notifyDataSetChanged() // FIXME
 

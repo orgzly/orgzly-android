@@ -56,6 +56,7 @@ import java.util.*
 import java.util.concurrent.Callable
 import javax.inject.Inject
 
+// TODO: Split
 class DataRepository @Inject constructor(
         private val context: Context,
         private val db: OrgzlyDatabase,
@@ -1909,9 +1910,11 @@ class DataRepository @Inject constructor(
     }
 
     fun importGettingStartedBook() {
+        val name = resources.getString(R.string.getting_started_notebook_name)
+
         db.runInTransaction {
             val book = loadBookFromResource(
-                    GETTING_STARTED_NOTEBOOK_NAME,
+                    name,
                     BookFormat.ORG,
                     resources,
                     GETTING_STARTED_NOTEBOOK_RESOURCE_ID)
@@ -1919,7 +1922,7 @@ class DataRepository @Inject constructor(
             if (book != null) {
                 setBookLastActionAndSyncStatus(book.book.id, BookAction.forNow(
                         BookAction.Type.INFO,
-                        resources.getString(R.string.loaded_from_resource, GETTING_STARTED_NOTEBOOK_NAME)))
+                        resources.getString(R.string.loaded_from_resource, name)))
             }
         }
     }
@@ -1944,7 +1947,6 @@ class DataRepository @Inject constructor(
     companion object {
         private val TAG = DataRepository::class.java.name
 
-        const val GETTING_STARTED_NOTEBOOK_NAME = "Getting Started with Orgzly"
         const val GETTING_STARTED_NOTEBOOK_RESOURCE_ID = R.raw.orgzly_getting_started
     }
 }

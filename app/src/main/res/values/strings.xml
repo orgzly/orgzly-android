@@ -136,6 +136,7 @@
     <string name="clear_database_summary">Clear local database</string>
     <string name="clear_database_performed">Database cleared</string>
 
+    <string name="getting_started_notebook_name">Getting Started with Orgzly</string>
     <string name="reload_getting_started">Import “Getting Started with Orgzly”</string>
     <string name="reload_getting_started_summary">Import the latest version of the notebook</string>
     <string name="notebook_imported">Notebook imported</string>

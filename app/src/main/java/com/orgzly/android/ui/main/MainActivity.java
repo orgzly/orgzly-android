@@ -106,6 +106,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -546,6 +549,14 @@ public class MainActivity extends CommonActivity
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, fragment);
 
         super.onAttachFragment(fragment);
+
+//        if (BuildConfig.LOG_DEBUG) {
+//            fragment.getLifecycle().addObserver((LifecycleEventObserver) this::logLifecycleEvent);
+//        }
+    }
+
+    private void logLifecycleEvent(LifecycleOwner source, Lifecycle.Event event) {
+        LogUtils.d(TAG, source.getClass().getSimpleName(), event);
     }
 
     @Override
@@ -779,6 +790,8 @@ public class MainActivity extends CommonActivity
 
     @Override /* BookFragment */
     public void onBookPrefaceEditRequest(Book book) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+
         finishActionMode();
 
         DisplayManager.displayEditor(getSupportFragmentManager(), book);
@@ -1016,10 +1029,6 @@ public class MainActivity extends CommonActivity
 
                 if (selectedCount == 0) {
                     BottomActionBar.hideBottomBar(bottomToolBar);
-
-                } else if (selectedCount == 1) {
-                    BottomActionBar.showBottomBar(bottomToolBar, callback);
-
                 } else {
                     BottomActionBar.showBottomBar(bottomToolBar, callback);
                 }
