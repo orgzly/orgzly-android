@@ -182,10 +182,16 @@
             </intent-filter>
         </receiver>
 
-        <receiver
-            android:name=".android.NotificationBroadcastReceiver"/>
+        <receiver android:name=".android.NotificationBroadcastReceiver"/>
 
         <receiver android:name=".android.NewNoteBroadcastReceiver"/>
+
+        <receiver android:name=".android.TimeChangeBroadcastReceiver">
+            <intent-filter>
+                <!--<action android:name="android.intent.action.TIME_SET"/>-->
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+            </intent-filter>
+        </receiver>
 
         <receiver
             android:name=".android.ActionReceiver"

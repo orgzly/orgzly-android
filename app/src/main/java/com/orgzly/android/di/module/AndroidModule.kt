@@ -1,6 +1,7 @@
 package com.orgzly.android.di.module
 
 import com.orgzly.android.NewNoteBroadcastReceiver
+import com.orgzly.android.TimeChangeBroadcastReceiver
 import com.orgzly.android.usecase.UseCaseService
 import com.orgzly.android.reminders.ReminderService
 import com.orgzly.android.sync.SyncService
@@ -59,6 +60,9 @@ internal abstract class AndroidModule {
 
     @ContributesAndroidInjector
     internal abstract fun contributeNewNoteBroadcastReceiver(): NewNoteBroadcastReceiver
+
+    @ContributesAndroidInjector
+    internal abstract fun contributeTimeChangeBroadcastReceiver(): TimeChangeBroadcastReceiver
 
     // Activity
 

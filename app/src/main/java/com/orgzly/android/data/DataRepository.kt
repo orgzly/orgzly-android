@@ -1944,6 +1944,16 @@ class DataRepository @Inject constructor(
         androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
     }
 
+    /**
+     * Recalculate timestamps after time zone change.
+     */
+    fun updateTimestamps() {
+        db.orgTimestamp().getAll().forEach {
+            val timestamp = OrgDateTime.doParse(it.string).calendar.timeInMillis
+            db.orgTimestamp().update(it.copy(timestamp = timestamp))
+        }
+    }
+
     companion object {
         private val TAG = DataRepository::class.java.name
 
