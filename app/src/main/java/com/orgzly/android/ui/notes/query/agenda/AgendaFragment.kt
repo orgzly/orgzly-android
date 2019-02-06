@@ -2,6 +2,7 @@ package com.orgzly.android.ui.notes.query.agenda
 
 import android.os.Bundle
 import android.view.*
+import android.widget.ViewFlipper
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
@@ -27,6 +28,8 @@ class AgendaFragment :
 
     private val item2databaseIds = hashMapOf<Long, Long>()
 
+    private lateinit var viewFlipper: ViewFlipper
+
     lateinit var viewAdapter: AgendaAdapter
 
 
@@ -38,6 +41,8 @@ class AgendaFragment :
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, inflater, container, savedInstanceState)
 
         val view = inflater.inflate(R.layout.fragment_query_agenda, container, false)
+
+        viewFlipper = view.findViewById(R.id.fragment_query_agenda_view_flipper)
 
         setupRecyclerView(view)
 
@@ -67,6 +72,18 @@ class AgendaFragment :
 
         viewModel = ViewModelProviders.of(this, factory).get(QueryViewModel::class.java)
 
+        viewModel.dataLoadState.observe(viewLifecycleOwner, Observer { state ->
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed load state: $state")
+
+            viewFlipper.apply {
+                displayedChild = when (state) {
+                    QueryViewModel.LoadState.IN_PROGRESS -> 0
+                    QueryViewModel.LoadState.DONE -> 1
+                    else -> 1
+                }
+            }
+        })
+
         viewModel.notes().observe(viewLifecycleOwner, Observer { notes ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed notes: ${notes.size}")
 
@@ -87,6 +104,8 @@ class AgendaFragment :
 
             actionModeListener?.updateActionModeForSelection(
                     viewAdapter.getSelection().count, this)
+
+            viewModel.setLoadState(QueryViewModel.LoadState.DONE)
         })
 
         viewModel.refresh(currentQuery, AppPreferences.defaultPriority(context))

@@ -11,6 +11,19 @@ import com.orgzly.android.util.LogUtils
 
 
 class QueryViewModel(private val dataRepository: DataRepository) : CommonViewModel() {
+
+    enum class LoadState {
+        IN_PROGRESS,
+        DONE,
+        NO_RESULTS
+    }
+
+    val dataLoadState = MutableLiveData<LoadState>(LoadState.IN_PROGRESS)
+
+    fun setLoadState(state: LoadState) {
+        dataLoadState.value = state
+    }
+
     data class Params(val query: String?, val defaultPriority: String)
 
     private val notesParams = MutableLiveData<Params>()

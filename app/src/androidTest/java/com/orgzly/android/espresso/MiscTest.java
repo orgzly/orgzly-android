@@ -12,14 +12,12 @@ import com.orgzly.android.ui.main.MainActivity;
 import com.orgzly.android.ui.repos.ReposActivity;
 
 import org.hamcrest.Matcher;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -480,7 +478,7 @@ public class MiscTest extends OrgzlyTest {
 
         // Agenda
         searchForText("t.tag3 ad.3");
-        fragmentTest(activityRule, true, withId(R.id.fragment_query_agenda_container));
+        fragmentTest(activityRule, true, withId(R.id.fragment_query_agenda_view_flipper));
     }
 
     @Test

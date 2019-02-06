@@ -3,10 +3,9 @@ package com.orgzly.android.ui.notes.query
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
+import android.view.*
+import android.widget.ViewFlipper
 import androidx.appcompat.view.ActionMode
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.ui.*
@@ -28,7 +27,6 @@ abstract class QueryFragment :
 
     /** Currently active query.  */
     var currentQuery: String? = null
-
 
     protected var listener: Listener? = null
 

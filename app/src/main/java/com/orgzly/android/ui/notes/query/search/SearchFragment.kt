@@ -15,6 +15,7 @@ import com.orgzly.android.ui.BottomActionBar
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.notes.SearchAdapter
+import com.orgzly.android.ui.notes.book.BookViewModel
 import com.orgzly.android.ui.notes.query.QueryFragment
 import com.orgzly.android.ui.notes.query.QueryViewModel
 import com.orgzly.android.ui.notes.query.QueryViewModelFactory
@@ -30,12 +31,19 @@ class SearchFragment :
         ActionMode.Callback,
         BottomActionBar.Callback {
 
-    private var viewFlipper: ViewFlipper? = null
+    private lateinit var viewFlipper: ViewFlipper
 
-    lateinit var viewAdapter: SearchAdapter
+    private lateinit var viewAdapter: SearchAdapter
 
     override fun getAdapter(): SelectableItemAdapter {
         return viewAdapter
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val factory = QueryViewModelFactory.forQuery(dataRepository)
+        viewModel = ViewModelProviders.of(this, factory).get(QueryViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -70,11 +78,20 @@ class SearchFragment :
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
         super.onActivityCreated(savedInstanceState)
 
-        val factory = QueryViewModelFactory.forQuery(dataRepository)
+        viewModel.dataLoadState.observe(viewLifecycleOwner, Observer { state ->
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed load state: $state")
 
-        val model = ViewModelProviders.of(this, factory).get(QueryViewModel::class.java)
+            viewFlipper.apply {
+                displayedChild = when (state) {
+                    QueryViewModel.LoadState.IN_PROGRESS -> 0
+                    QueryViewModel.LoadState.DONE -> 1
+                    QueryViewModel.LoadState.NO_RESULTS -> 2
+                    else -> 1
+                }
+            }
+        })
 
-        model.notes().observe(viewLifecycleOwner, Observer { notes ->
+        viewModel.notes().observe(viewLifecycleOwner, Observer { notes ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed notes: ${notes.size}")
 
             viewAdapter.submitList(notes)
@@ -88,10 +105,18 @@ class SearchFragment :
             actionModeListener?.updateActionModeForSelection(
                     viewAdapter.getSelection().count, this)
 
-            viewFlipper?.displayedChild = if (notes.count() > 0) 0 else 1
+            updateLoadState(notes)
         })
 
-        model.refresh(currentQuery, AppPreferences.defaultPriority(context))
+        viewModel.refresh(currentQuery, AppPreferences.defaultPriority(context))
+    }
+
+    private fun updateLoadState(notes: List<NoteView>) {
+        if (notes.count() > 0) {
+            viewModel.setLoadState(QueryViewModel.LoadState.DONE)
+        } else {
+            viewModel.setLoadState(QueryViewModel.LoadState.NO_RESULTS)
+        }
     }
 
     override fun onClick(view: View, position: Int, item: NoteView) {

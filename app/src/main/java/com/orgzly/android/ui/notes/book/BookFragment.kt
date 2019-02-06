@@ -63,7 +63,7 @@ class BookFragment :
     private var mActionModeTag: String? = null
 
     /** Used for different states after loading the notebook and notes. */
-    private var viewFlipper: ViewFlipper? = null
+    private lateinit var viewFlipper: ViewFlipper
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -143,7 +143,7 @@ class BookFragment :
         viewModel.dataLoadState.observe(viewLifecycleOwner, Observer { state ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed load state: $state")
 
-            viewFlipper?.apply {
+            viewFlipper.apply {
                 displayedChild = when (state) {
                     BookViewModel.LoadState.IN_PROGRESS -> 0
                     BookViewModel.LoadState.DONE -> 1
@@ -202,20 +202,17 @@ class BookFragment :
     private fun updateLoadState(notes: List<NoteView>?) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        viewFlipper?.apply {
-            if (currentBook == null) {
-                viewModel.setLoadState(BookViewModel.LoadState.BOOK_DOES_NOT_EXIST)
+        if (currentBook == null) {
+            viewModel.setLoadState(BookViewModel.LoadState.BOOK_DOES_NOT_EXIST)
 
-            } else if (notes == null) {
-                viewModel.setLoadState(BookViewModel.LoadState.IN_PROGRESS)
+        } else if (notes == null) {
+            viewModel.setLoadState(BookViewModel.LoadState.IN_PROGRESS)
 
-            } else if (viewAdapter.isPrefaceDisplayed() || !notes.isNullOrEmpty()) {
-                viewModel.setLoadState(BookViewModel.LoadState.DONE)
+        } else if (viewAdapter.isPrefaceDisplayed() || !notes.isNullOrEmpty()) {
+            viewModel.setLoadState(BookViewModel.LoadState.DONE)
 
-            } else {
-                viewModel.setLoadState(BookViewModel.LoadState.NO_NOTES)
-            }
-
+        } else {
+            viewModel.setLoadState(BookViewModel.LoadState.NO_NOTES)
         }
     }
 
