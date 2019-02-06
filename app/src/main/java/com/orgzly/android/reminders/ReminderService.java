@@ -7,11 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.core.app.JobIntentService;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
-
 import android.os.Build;
 import android.util.Log;
 
@@ -21,12 +16,12 @@ import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.App;
 import com.orgzly.android.AppIntent;
-import com.orgzly.android.data.DataRepository;
 import com.orgzly.android.NotificationBroadcastReceiver;
 import com.orgzly.android.NotificationChannels;
-import com.orgzly.android.ui.notifications.Notifications;
+import com.orgzly.android.data.DataRepository;
 import com.orgzly.android.db.dao.ReminderTimeDao;
 import com.orgzly.android.prefs.AppPreferences;
+import com.orgzly.android.ui.notifications.Notifications;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.OrgFormatter;
@@ -36,15 +31,19 @@ import com.orgzly.org.datetime.OrgInterval;
 
 import org.joda.time.DateTime;
 import org.joda.time.ReadableInstant;
-import org.joda.time.format.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import dagger.android.AndroidInjection;
 
 /**
@@ -212,9 +211,11 @@ public class ReminderService extends JobIntentService {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, " Last: " + lastRun);
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "  Now: " + now);
 
+        ReminderJob.cancelAll();
+
         switch (event) {
             case EVENT_DATA_CHANGED:
-                onDataChanged(now, lastRun);
+                // Only schedule next job below
                 break;
 
             case EVENT_JOB_TRIGGERED:
@@ -234,6 +235,8 @@ public class ReminderService extends JobIntentService {
                 Log.e(TAG, "Unknown event received, ignoring it");
                 return;
         }
+
+        scheduleNextJob(now, lastRun);
 
         writeLastRun(now);
     }
@@ -267,19 +270,8 @@ public class ReminderService extends JobIntentService {
         }
     }
 
-    /**
-     * Schedule the next job for times after last run.
-     */
-    private void onDataChanged(DateTime now, LastRun lastRun) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, lastRun);
-
-        ReminderJob.cancelAll();
-
-        scheduleNextJob(now, lastRun);
-    }
-
     private void scheduleNextJob(DateTime now, LastRun lastRun) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, lastRun);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         List<NoteReminder> notes = ReminderService.getNoteReminders(
                 this, dataRepository, now, lastRun, TIME_FROM_NOW);
@@ -298,7 +290,13 @@ public class ReminderService extends JobIntentService {
 
             int jobId = ReminderJob.scheduleJob(exactMs);
 
-            log = "#" + jobId + " @ " + jobRunTimeString(jobId) + " for “" + firstNote.getPayload().title + "”";
+            log = String.format(
+                    Locale.getDefault(),
+                    "#%d in %d at %s for %s",
+                    jobId,
+                    exactMs / 1000,
+                    jobRunTimeString(jobId),
+                    firstNote.getPayload().title);
 
         } else {
             log = "No notes found";
@@ -309,8 +307,7 @@ public class ReminderService extends JobIntentService {
 
     private String jobRunTimeString(int jobId) {
         long jobTime = getJobRunTime(jobId);
-        DateTime dateTime = new DateTime(jobTime);
-        return DateTimeFormat.mediumDateTime().print(dateTime);
+        return new DateTime(jobTime).toString();
     }
 
     /**
@@ -318,9 +315,7 @@ public class ReminderService extends JobIntentService {
      * last run and now. Then schedule the next job for times after now.
      */
     private void onJobTriggered(DateTime now, LastRun lastRun) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, now, lastRun);
-
-        ReminderJob.cancelAll();
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         String msg;
 
@@ -340,9 +335,6 @@ public class ReminderService extends JobIntentService {
         }
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, msg);
-
-        /* Schedule from now. */
-        scheduleNextJob(now, lastRun);
     }
 
     private void onSnoozeTriggered(final Context context, final long noteId,
