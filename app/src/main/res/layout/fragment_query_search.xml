@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView style="@style/LoadingText" />
+    <ProgressBar style="@style/LoadingProgressBar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_query_search_recycler_view"
