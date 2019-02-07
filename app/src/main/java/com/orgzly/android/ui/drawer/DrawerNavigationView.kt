@@ -48,12 +48,12 @@ internal class DrawerNavigationView(
         menu.findItem(R.id.books).intent = Intent(AppIntent.ACTION_OPEN_BOOKS)
         menu.findItem(R.id.settings).intent = Intent(AppIntent.ACTION_OPEN_SETTINGS)
 
-        viewModel.books().observe(activity, Observer { books ->
-            refreshFromBooks(books)
+        viewModel.books().observe(activity, Observer {
+            refreshFromBooks(it)
         })
 
-        viewModel.squeries().observe(activity, Observer { squeries ->
-            refreshFromSqueries(squeries)
+        viewModel.savedSearches().observe(activity, Observer {
+            refreshFromSavedSearches(it)
         })
     }
 
@@ -86,7 +86,7 @@ internal class DrawerNavigationView(
         }
     }
 
-    private fun refreshFromSqueries(savedSearches: List<SavedSearch>) {
+    private fun refreshFromSavedSearches(savedSearches: List<SavedSearch>) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedSearches.size)
 
         removeItemsWithOrder(1)

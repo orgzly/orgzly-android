@@ -16,6 +16,6 @@
     <TextView
         style="@style/BigCenteredText"
         android:text="@string/no_filters"
-        android:paddingBottom="@dimen/screen_edge" />
+        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
 
 </ViewFlipper>

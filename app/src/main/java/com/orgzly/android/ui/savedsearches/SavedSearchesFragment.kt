@@ -174,10 +174,10 @@ class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderCli
         val factory = SavedSearchesViewModelFactory.getInstance(dataRepository)
         val model = ViewModelProviders.of(this, factory).get(SavedSearchesViewModel::class.java)
 
-        model.savedSearches.observe(viewLifecycleOwner, Observer { squeries ->
-            viewAdapter.submitList(squeries)
+        model.savedSearches.observe(viewLifecycleOwner, Observer { savedSearches ->
+            viewAdapter.submitList(savedSearches)
 
-            val ids = squeries.mapTo(hashSetOf()) { it.id }
+            val ids = savedSearches.mapTo(hashSetOf()) { it.id }
 
             viewAdapter.getSelection().removeNonExistent(ids)
 

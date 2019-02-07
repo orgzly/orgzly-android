@@ -95,7 +95,7 @@ public class SavedSearchFragment extends DaggerFragment implements DrawerItem {
 
     @Override
     public View onCreateView(LayoutInflater  inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_saved_search, container, false);
 
         mViewFlipper = (ViewFlipper) view.findViewById(R.id.fragment_saved_search_flipper);
         nameInputLayout = (TextInputLayout) view.findViewById(R.id.fragment_saved_search_name_input_layout);

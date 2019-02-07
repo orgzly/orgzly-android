@@ -20,7 +20,7 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
 
     private val booksSubject: LiveData<List<BookView>>
 
-    private val squeries: LiveData<List<SavedSearch>> by lazy {
+    private val savedSearches: LiveData<List<SavedSearch>> by lazy {
         dataRepository.getSavedSearchesLiveData()
     }
 
@@ -52,8 +52,8 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
         return booksSubject
     }
 
-    fun squeries(): LiveData<List<SavedSearch>> {
-        return squeries
+    fun savedSearches(): LiveData<List<SavedSearch>> {
+        return savedSearches
     }
 
     fun openFileLink(path: String) {
