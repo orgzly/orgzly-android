@@ -8,7 +8,6 @@ import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -97,7 +96,7 @@ public class BooksTest extends OrgzlyTest {
         onView(withText(R.string.book_does_not_exist_anymore)).check(matches(isDisplayed()));
         onView(withId(R.id.fab)).check(matches(not(isDisplayed())));
         pressBack();
-        onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_books_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withText("book-2"), withId(R.id.item_book_title))).perform(click());
         onView(allOf(withText(R.string.book_does_not_exist_anymore), isDisplayed())).check(doesNotExist());
     }

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_books_container"
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_books_view_flipper"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/fragment_books_bg_color">
+
+    <ProgressBar style="@style/LoadingProgressBar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_books_recycler_view"
@@ -16,15 +18,9 @@
         android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
         android:clipToPadding="false" />
 
-    <!-- Made visible programmatically if there are no notes. -->
-    <!-- TODO: Use flipper instead? Be consistent in any case. -->
     <TextView
-        android:id="@+id/fragment_books_no_notebooks"
         style="@style/BigCenteredText"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:text="@string/no_notebooks"
-        android:visibility="gone"
         android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
 
-</RelativeLayout>
+</ViewFlipper>

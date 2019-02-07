@@ -12,6 +12,7 @@ import android.view.*
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.Observer
@@ -53,7 +54,7 @@ class BooksFragment :
 
     private var listener: Listener? = null
 
-    private lateinit var noNotebooksText: TextView
+    private lateinit var viewFlipper: ViewFlipper
 
     private var mAddOptions = true
     private var mShowContextMenu = true
@@ -100,7 +101,7 @@ class BooksFragment :
         if (BuildConfig.LOG_DEBUG) LogUtils.d(drawerItemId, inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_books, container, false)
 
-        noNotebooksText = view.findViewById(R.id.fragment_books_no_notebooks)
+        viewFlipper = view.findViewById(R.id.fragment_books_view_flipper)
 
         viewAdapter = BooksAdapter(this)
         viewAdapter.setHasStableIds(true)
@@ -353,18 +354,23 @@ class BooksFragment :
         val factory = BooksViewModelFactory.getInstance(dataRepository)
         viewModel = ViewModelProviders.of(this, factory).get(BooksViewModel::class.java)
 
-        viewModel.books().observe(viewLifecycleOwner, Observer { books ->
+        viewModel.viewState.observe(viewLifecycleOwner, Observer {
+            viewFlipper.displayedChild = when (it) {
+                BooksViewModel.ViewState.LOADING -> 0
+                BooksViewModel.ViewState.LOADED -> 1
+                BooksViewModel.ViewState.EMPTY -> 2
+                else -> 1
+            }
+        })
+
+        viewModel.books.observe(viewLifecycleOwner, Observer { books ->
             viewAdapter.submitList(books)
 
             val ids = books.mapTo(hashSetOf()) { it.book.id }
 
             viewAdapter.getSelection().removeNonExistent(ids)
 
-            noNotebooksText.visibility =
-                    if (books.isNotEmpty()) View.GONE else View.VISIBLE
-
             actionMode?.invalidate()
-
         })
 
         viewModel.bookDeleteRequestEvent.observeSingle(viewLifecycleOwner, Observer { bookView ->

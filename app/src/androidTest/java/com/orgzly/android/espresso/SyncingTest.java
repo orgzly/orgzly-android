@@ -10,7 +10,6 @@ import com.orgzly.android.sync.BookSyncStatus;
 import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.main.MainActivity;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -119,7 +118,7 @@ public class SyncingTest extends OrgzlyTest {
         // Check it is synced
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(allOf(withText(R.string.notebooks), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
-        onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_books_view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withText("booky"), withId(R.id.item_book_title))).check(matches(isDisplayed()));
         onView(allOf(withId(R.id.item_book_sync_needed_icon))).check(matches(not(isDisplayed())));
     }
@@ -336,8 +335,9 @@ public class SyncingTest extends OrgzlyTest {
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.delete)).perform(click());
         onView(withText(R.string.delete)).perform(click());
-        onView(withId(R.id.item_book_card_view)).check(doesNotExist());
+        onView(withId(R.id.item_book_card_view)).check(matches(not(isDisplayed())));
         sync();
+        onView(withId(R.id.item_book_card_view)).check(matches(isDisplayed()));
         onView(allOf(withText("booky"), isDisplayed())).check(matches(isDisplayed()));
         onBook(0).perform(click());
         onNoteInBook(2).perform(click());
@@ -416,7 +416,7 @@ public class SyncingTest extends OrgzlyTest {
 
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(allOf(withText(R.string.notebooks), isDisplayed())).perform(click());
-        onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_books_view_flipper)).check(matches(isDisplayed()));
 
         /* Delete book */
         onBook(0).perform(longClick());

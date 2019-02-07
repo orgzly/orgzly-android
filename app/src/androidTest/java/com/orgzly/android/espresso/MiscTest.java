@@ -100,7 +100,7 @@ public class MiscTest extends OrgzlyTest {
 
         activityRule.launchActivity(null);
 
-        onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_books_view_flipper)).check(matches(isDisplayed()));
 
         onBook(0).perform(click());
         onView(withText("Note B.")).perform(click());
@@ -116,8 +116,8 @@ public class MiscTest extends OrgzlyTest {
         pressBack();
         pressBack();
 
-        onView(withId(R.id.fragment_books_container)).check(matches(isDisplayed()));
-        onView(withId(R.id.fragment_books_no_notebooks)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_books_view_flipper)).check(matches(isDisplayed()));
+        onView(withText(R.string.no_notebooks)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -442,7 +442,7 @@ public class MiscTest extends OrgzlyTest {
         activityRule.launchActivity(null);
 
         // Books
-        fragmentTest(activityRule, true, withId(R.id.fragment_books_container));
+        fragmentTest(activityRule, true, withId(R.id.fragment_books_view_flipper));
 
         // Book
         onBook(0).perform(click());

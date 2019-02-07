@@ -19,30 +19,35 @@ import com.orgzly.android.util.LogUtils
 class BooksViewModel(private val dataRepository: DataRepository) : CommonViewModel() {
     private val booksParams = MutableLiveData<String>()
 
-    private val booksSubject: LiveData<List<BookView>>
-
     val bookDeleteRequestEvent: SingleLiveEvent<BookView> = SingleLiveEvent()
 
     val bookDeletedEvent: SingleLiveEvent<UseCaseResult> = SingleLiveEvent()
 
     val bookRenameRequestEvent: SingleLiveEvent<BookView> = SingleLiveEvent()
 
-    init {
-        // Observe parameters, run query when they change
-        booksSubject = Transformations.switchMap(booksParams) {
-            dataRepository.getBooksLiveData()
-        }
+    enum class ViewState {
+        LOADING,
+        LOADED,
+        EMPTY
+    }
 
+    val viewState = MutableLiveData<ViewState>(ViewState.LOADING)
+
+    val books = Transformations.switchMap(booksParams) {
+        Transformations.map(dataRepository.getBooksLiveData()) { books ->
+            viewState.value = if (books.isNotEmpty()) {
+                ViewState.LOADED
+            } else {
+                ViewState.EMPTY
+            }
+            books
+        }
     }
 
     /* Triggers querying only if parameters changed. */
     fun refresh(sortOrder: String) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, sortOrder)
         booksParams.value = sortOrder
-    }
-
-    fun books(): LiveData<List<BookView>> {
-        return booksSubject
     }
 
     fun deleteBookRequest(bookId: Long) {
