@@ -6,10 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        style="@style/BigCenteredText"
-        android:text="@string/loading"
-        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
+    <TextView style="@style/LoadingText" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_query_search_recycler_view"

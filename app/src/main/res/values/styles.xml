@@ -552,6 +552,12 @@
         <item name="android:textSize">?attr/font_large</item>
     </style>
 
+    <style name="LoadingText" parent="BigCenteredText">
+        <item name="android:layout_gravity">top|center_horizontal</item>
+        <item name="android:paddingTop">@dimen/list_view_with_fab_bottom_padding</item>
+        <item name="android:text">@string/loading</item>
+    </style>
+
     <style name="BottomActionBarButton" parent="android:style/Widget.Holo.Button.Borderless">
         <!--<item name="android:layout_width">wrap_content</item>-->
 
