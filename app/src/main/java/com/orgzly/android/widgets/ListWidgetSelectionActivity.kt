@@ -5,6 +5,8 @@ import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ViewFlipper
+import android.widget.ViewSwitcher
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.orgzly.BuildConfig
@@ -34,6 +36,8 @@ class ListWidgetSelectionActivity : DaggerAppCompatActivity(), OnViewHolderClick
 
         setContentView(R.layout.activity_list_widget_selection)
 
+        val viewFlipper = findViewById<ViewFlipper>(R.id.activity_list_widget_selection_view_flipper)
+
         val viewAdapter = ListWidgetSelectionAdapter(this)
         viewAdapter.setHasStableIds(true)
 
@@ -44,6 +48,13 @@ class ListWidgetSelectionActivity : DaggerAppCompatActivity(), OnViewHolderClick
 
         val factory = SavedSearchesViewModelFactory.getInstance(dataRepository)
         val model = ViewModelProviders.of(this, factory).get(SavedSearchesViewModel::class.java)
+
+        model.viewState.observe(this, Observer {
+            viewFlipper.displayedChild = when (it) {
+                SavedSearchesViewModel.ViewState.EMPTY -> 1
+                else -> 0
+            }
+        })
 
         model.savedSearches.observe(this, Observer { savedSearches ->
             viewAdapter.submitList(savedSearches)
