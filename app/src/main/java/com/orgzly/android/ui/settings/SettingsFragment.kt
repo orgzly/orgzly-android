@@ -13,18 +13,15 @@ import androidx.preference.*
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
-import com.orgzly.android.ui.notifications.Notifications
-import com.orgzly.android.usecase.UseCase
-import com.orgzly.android.usecase.NoteReparseStateAndTitles
-import com.orgzly.android.usecase.NoteSyncCreatedAtTimeWithProperty
-import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
-import com.orgzly.android.prefs.StatesPreference
-import com.orgzly.android.prefs.StatesPreferenceFragment
+import com.orgzly.android.prefs.*
 import com.orgzly.android.reminders.ReminderService
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.NoteStates
+import com.orgzly.android.ui.notifications.Notifications
 import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.usecase.NoteReparseStateAndTitles
+import com.orgzly.android.usecase.NoteSyncCreatedAtTimeWithProperty
+import com.orgzly.android.usecase.UseCase
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.widgets.ListWidgetProvider
@@ -140,15 +137,28 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     override fun onDisplayPreferenceDialog(preference: Preference?) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, preference)
 
-        if (preference is StatesPreference) {
-            fragmentManager?.let {
-                val fragment = StatesPreferenceFragment.getInstance(preference)
-                fragment.setTargetFragment(this, 0)
-                fragment.show(it, StatesPreferenceFragment.FRAGMENT_TAG)
-            }
+        when (preference) {
+            is StatesPreference ->
+                displayCustomPreferenceDialogFragment(
+                        StatesPreferenceFragment.getInstance(preference),
+                        StatesPreferenceFragment.FRAGMENT_TAG)
 
-        } else {
-            super.onDisplayPreferenceDialog(preference)
+            is IntegerPreference ->
+                displayCustomPreferenceDialogFragment(
+                        IntegerPreferenceFragment.getInstance(preference),
+                        IntegerPreferenceFragment.FRAGMENT_TAG)
+
+            else -> super.onDisplayPreferenceDialog(preference)
+        }
+    }
+
+    private fun displayCustomPreferenceDialogFragment(
+            fragment: PreferenceDialogFragmentCompat,
+            tag: String
+    ) {
+        fragmentManager?.let {
+            fragment.setTargetFragment(this, 0)
+            fragment.show(it, tag)
         }
     }
 
@@ -295,7 +305,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
         if (scheduled != null && deadline != null) {
             val remindersEnabled = (scheduled as TwoStatePreference).isChecked
-                                   || (deadline as TwoStatePreference).isChecked
+                    || (deadline as TwoStatePreference).isChecked
 
             /* These do not exist on Oreo and later */
             findPreference(getString(R.string.pref_key_reminders_sound))?.isEnabled = remindersEnabled
