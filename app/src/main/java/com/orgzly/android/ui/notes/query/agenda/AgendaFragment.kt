@@ -72,15 +72,13 @@ class AgendaFragment :
 
         viewModel = ViewModelProviders.of(this, factory).get(QueryViewModel::class.java)
 
-        viewModel.dataLoadState.observe(viewLifecycleOwner, Observer { state ->
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { state ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed load state: $state")
 
-            viewFlipper.apply {
-                displayedChild = when (state) {
-                    QueryViewModel.LoadState.IN_PROGRESS -> 0
-                    QueryViewModel.LoadState.DONE -> 1
-                    else -> 1
-                }
+            viewFlipper.displayedChild = when (state) {
+                QueryViewModel.ViewState.LOADING -> 0
+                QueryViewModel.ViewState.LOADED -> 1
+                else -> 1
             }
         })
 
@@ -104,8 +102,6 @@ class AgendaFragment :
 
             actionModeListener?.updateActionModeForSelection(
                     viewAdapter.getSelection().count, this)
-
-            viewModel.setLoadState(QueryViewModel.LoadState.DONE)
         })
 
         viewModel.refresh(currentQuery, AppPreferences.defaultPriority(context))

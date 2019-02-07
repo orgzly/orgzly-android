@@ -10,17 +10,17 @@ import com.orgzly.android.ui.CommonViewModel
 class BookViewModel(private val dataRepository: DataRepository, val bookId: Long) : CommonViewModel() {
     data class Data(val book: Book?, val notes: List<NoteView>?)
 
-    enum class LoadState {
-        IN_PROGRESS,
-        DONE,
-        NO_NOTES,
-        BOOK_DOES_NOT_EXIST
+    enum class ViewState {
+        LOADING,
+        LOADED,
+        EMPTY,
+        DOES_NOT_EXIST
     }
 
-    val dataLoadState = MutableLiveData<LoadState>(LoadState.IN_PROGRESS)
+    val viewState = MutableLiveData<ViewState>(ViewState.LOADING)
 
-    fun setLoadState(state: LoadState) {
-        dataLoadState.value = state
+    fun setViewState(state: ViewState) {
+        viewState.value = state
     }
 
     val data = MediatorLiveData<Data>().apply {

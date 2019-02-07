@@ -140,15 +140,15 @@ class BookFragment :
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.dataLoadState.observe(viewLifecycleOwner, Observer { state ->
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { state ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed load state: $state")
 
             viewFlipper.apply {
                 displayedChild = when (state) {
-                    BookViewModel.LoadState.IN_PROGRESS -> 0
-                    BookViewModel.LoadState.DONE -> 1
-                    BookViewModel.LoadState.NO_NOTES -> 2
-                    BookViewModel.LoadState.BOOK_DOES_NOT_EXIST -> 3
+                    BookViewModel.ViewState.LOADING -> 0
+                    BookViewModel.ViewState.LOADED -> 1
+                    BookViewModel.ViewState.EMPTY -> 2
+                    BookViewModel.ViewState.DOES_NOT_EXIST -> 3
                     else -> 1
                 }
             }
@@ -195,24 +195,24 @@ class BookFragment :
                 scrollToNoteIfSet()
             }
 
-            updateLoadState(notes)
+            updateViewState(notes)
         })
     }
 
-    private fun updateLoadState(notes: List<NoteView>?) {
+    private fun updateViewState(notes: List<NoteView>?) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         if (currentBook == null) {
-            viewModel.setLoadState(BookViewModel.LoadState.BOOK_DOES_NOT_EXIST)
+            viewModel.setViewState(BookViewModel.ViewState.DOES_NOT_EXIST)
 
         } else if (notes == null) {
-            viewModel.setLoadState(BookViewModel.LoadState.IN_PROGRESS)
+            viewModel.setViewState(BookViewModel.ViewState.LOADING)
 
         } else if (viewAdapter.isPrefaceDisplayed() || !notes.isNullOrEmpty()) {
-            viewModel.setLoadState(BookViewModel.LoadState.DONE)
+            viewModel.setViewState(BookViewModel.ViewState.LOADED)
 
         } else {
-            viewModel.setLoadState(BookViewModel.LoadState.NO_NOTES)
+            viewModel.setViewState(BookViewModel.ViewState.EMPTY)
         }
     }
 

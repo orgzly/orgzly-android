@@ -12,31 +12,31 @@ import com.orgzly.android.util.LogUtils
 
 class QueryViewModel(private val dataRepository: DataRepository) : CommonViewModel() {
 
-    enum class LoadState {
-        IN_PROGRESS,
-        DONE,
-        NO_RESULTS
+    enum class ViewState {
+        LOADING,
+        LOADED,
+        EMPTY
     }
 
-    val dataLoadState = MutableLiveData<LoadState>(LoadState.IN_PROGRESS)
-
-    fun setLoadState(state: LoadState) {
-        dataLoadState.value = state
-    }
+    val viewState = MutableLiveData<ViewState>(ViewState.LOADING)
 
     data class Params(val query: String?, val defaultPriority: String)
 
     private val notesParams = MutableLiveData<Params>()
 
-    private val notesLiveData: LiveData<List<NoteView>>
+    private val notesLiveData = Transformations.switchMap(notesParams) { params ->
+        if (params.query != null) {
+            Transformations.map(dataRepository.selectNotesFromQueryLiveData(params.query)) {
+                viewState.value = if (it.isNotEmpty()) {
+                    ViewState.LOADED
+                } else {
+                    ViewState.EMPTY
+                }
 
-    init {
-        notesLiveData = Transformations.switchMap(notesParams) { params ->
-            if (params.query != null) {
-                dataRepository.selectNotesFromQueryLiveData(params.query)
-            } else {
-                MutableLiveData<List<NoteView>>()
+                it
             }
+        } else {
+            MutableLiveData<List<NoteView>>()
         }
     }
 
@@ -50,10 +50,6 @@ class QueryViewModel(private val dataRepository: DataRepository) : CommonViewMod
 
     fun notes(): LiveData<List<NoteView>> {
         return notesLiveData
-    }
-
-    override fun onCleared() {
-        super.onCleared()
     }
 
     companion object {

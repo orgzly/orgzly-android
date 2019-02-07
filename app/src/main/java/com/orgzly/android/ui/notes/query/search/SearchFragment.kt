@@ -15,7 +15,6 @@ import com.orgzly.android.ui.BottomActionBar
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.notes.SearchAdapter
-import com.orgzly.android.ui.notes.book.BookViewModel
 import com.orgzly.android.ui.notes.query.QueryFragment
 import com.orgzly.android.ui.notes.query.QueryViewModel
 import com.orgzly.android.ui.notes.query.QueryViewModelFactory
@@ -78,14 +77,14 @@ class SearchFragment :
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.dataLoadState.observe(viewLifecycleOwner, Observer { state ->
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { state ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed load state: $state")
 
             viewFlipper.apply {
                 displayedChild = when (state) {
-                    QueryViewModel.LoadState.IN_PROGRESS -> 0
-                    QueryViewModel.LoadState.DONE -> 1
-                    QueryViewModel.LoadState.NO_RESULTS -> 2
+                    QueryViewModel.ViewState.LOADING -> 0
+                    QueryViewModel.ViewState.LOADED -> 1
+                    QueryViewModel.ViewState.EMPTY -> 2
                     else -> 1
                 }
             }
@@ -104,19 +103,9 @@ class SearchFragment :
 
             actionModeListener?.updateActionModeForSelection(
                     viewAdapter.getSelection().count, this)
-
-            updateLoadState(notes)
         })
 
         viewModel.refresh(currentQuery, AppPreferences.defaultPriority(context))
-    }
-
-    private fun updateLoadState(notes: List<NoteView>) {
-        if (notes.count() > 0) {
-            viewModel.setLoadState(QueryViewModel.LoadState.DONE)
-        } else {
-            viewModel.setLoadState(QueryViewModel.LoadState.NO_RESULTS)
-        }
     }
 
     override fun onClick(view: View, position: Int, item: NoteView) {

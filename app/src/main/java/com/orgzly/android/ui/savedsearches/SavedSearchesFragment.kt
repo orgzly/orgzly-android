@@ -30,7 +30,7 @@ import javax.inject.Inject
 class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderClickListener<SavedSearch> {
     private var listener: Listener? = null
 
-    private var mViewFlipper: ViewFlipper? = null
+    private lateinit var viewFlipper: ViewFlipper
 
     private var actionMode: ActionMode? = null
     private val actionModeCallback = ActionModeCallback()
@@ -41,6 +41,8 @@ class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderCli
 
     @Inject
     lateinit var dataRepository: DataRepository
+
+    private lateinit var viewModel: SavedSearchesViewModel
 
     private lateinit var sharedMainActivityViewModel: SharedMainActivityViewModel
 
@@ -55,6 +57,9 @@ class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderCli
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val factory = SavedSearchesViewModelFactory.getInstance(dataRepository)
+        viewModel = ViewModelProviders.of(this, factory).get(SavedSearchesViewModel::class.java)
+
         sharedMainActivityViewModel = activity?.let {
             ViewModelProviders.of(it).get(SharedMainActivityViewModel::class.java)
         } ?: throw IllegalStateException("No Activity")
@@ -65,7 +70,7 @@ class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderCli
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_saved_searches, container, false)
 
-        mViewFlipper = view.findViewById(R.id.fragment_saved_searches_flipper) as ViewFlipper
+        viewFlipper = view.findViewById(R.id.fragment_saved_searches_flipper) as ViewFlipper
 
         viewAdapter = SavedSearchesAdapter(this)
         viewAdapter.setHasStableIds(true)
@@ -171,20 +176,28 @@ class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderCli
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val factory = SavedSearchesViewModelFactory.getInstance(dataRepository)
-        val model = ViewModelProviders.of(this, factory).get(SavedSearchesViewModel::class.java)
+        viewModel.viewState.observe(viewLifecycleOwner, Observer {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed view state: $it")
 
-        model.savedSearches.observe(viewLifecycleOwner, Observer { savedSearches ->
+            viewFlipper.displayedChild = when (it) {
+                SavedSearchesViewModel.ViewState.LOADING -> 0
+                SavedSearchesViewModel.ViewState.LOADED -> 1
+                SavedSearchesViewModel.ViewState.EMPTY -> 2
+                else -> 1
+            }
+        })
+
+        viewModel.savedSearches.observe(viewLifecycleOwner, Observer { savedSearches ->
+            if (BuildConfig.LOG_DEBUG)
+                LogUtils.d(TAG, "Observed saved searches: ${savedSearches.count()}")
+
             viewAdapter.submitList(savedSearches)
 
             val ids = savedSearches.mapTo(hashSetOf()) { it.id }
 
             viewAdapter.getSelection().removeNonExistent(ids)
 
-            mViewFlipper?.displayedChild = if (viewAdapter.itemCount > 0) 0 else 1
-
             actionMode?.invalidate()
-
         })
     }
 
