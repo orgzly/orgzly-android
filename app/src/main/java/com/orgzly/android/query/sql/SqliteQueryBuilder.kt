@@ -248,7 +248,7 @@ class SqliteQueryBuilder(val context: Context) {
         val (field, value) = getFieldAndValueFromInterval(interval)
 
         val timeFromNow = TimeUtils.timeFromNow(field, value)
-        val timeFromNowPlusOne = TimeUtils.timeFromNow(field, value + 1)
+        val timeFromNowPlusOne = TimeUtils.timeFromNow(field, value, true)
 
 
         val cond = when (relation) {
