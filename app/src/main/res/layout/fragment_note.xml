@@ -21,8 +21,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/screen_edge"
             android:paddingBottom="@dimen/screen_edge"
-            android:orientation="vertical"
-            android:animateLayoutChanges="true">
+            android:orientation="vertical">
 
             <!-- Title -->
             <EditText
