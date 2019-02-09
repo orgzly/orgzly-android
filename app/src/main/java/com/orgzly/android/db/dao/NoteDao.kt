@@ -62,6 +62,20 @@ abstract class NoteDao : BaseDao<Note> {
     abstract fun getAncestors(ids: List<Long>): List<Long>
 
     @Query("""
+            SELECT a.*
+            FROM notes n, notes a
+            WHERE n.id = (:id)
+            AND n.book_id = a.book_id
+            AND a.is_cut = 0
+            AND a.level > 0
+            AND a.lft < n.lft
+            AND n.rgt < a.rgt
+            ORDER BY a.lft DESC
+
+    """)
+    abstract fun getAncestors(id: Long): List<Note>
+
+    @Query("""
         SELECT count(*)
         FROM notes
         WHERE book_id = :bookId AND $WHERE_EXISTING_NOTES AND (is_folded IS NULL OR is_folded = 0)

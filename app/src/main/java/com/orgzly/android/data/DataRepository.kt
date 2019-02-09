@@ -1011,6 +1011,10 @@ class DataRepository @Inject constructor(
         return db.note().get(noteId)
     }
 
+    fun getNoteAncestors(noteId: Long): List<Note> {
+        return db.note().getAncestors(noteId)
+    }
+
     fun getNoteProperties(noteId: Long): List<NoteProperty> {
         return db.noteProperty().get(noteId)
     }
