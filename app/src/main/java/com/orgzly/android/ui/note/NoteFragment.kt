@@ -34,6 +34,7 @@ import com.orgzly.org.datetime.OrgDateTime
 import com.orgzly.org.datetime.OrgRange
 import com.orgzly.org.parser.OrgParserWriter
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.fragment_note.*
 import java.util.*
 import javax.inject.Inject
 
@@ -200,6 +201,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             locationButtonView.visibility = View.GONE
         }
 
+
         tagsContainer = top.findViewById(R.id.fragment_note_tags_container)
 
         tagsView = top.findViewById(R.id.fragment_note_tags)
@@ -301,6 +303,31 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         return top
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, view, savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
+
+        /*
+         * Metadata folding
+         */
+
+        fragment_note_metadata_header.setOnClickListener {
+            val isFolded = fragment_note_metadata.visibility != View.VISIBLE
+            setMetadataFoldState(!isFolded)
+            AppPreferences.noteMetadataFolded(context, !isFolded)
+        }
+
+        setMetadataFoldState(AppPreferences.noteMetadataFolded(context))
+    }
+
+    private fun setMetadataFoldState(isFolded: Boolean) {
+        fragment_note_metadata.visibility = visibleOrGone(!isFolded)
+        fragment_note_metadata_header_up_icon.visibility = visibleOrGone(!isFolded)
+        fragment_note_metadata_header_down_icon.visibility = visibleOrGone(isFolded)
+    }
+
+    private fun visibleOrGone(visible: Boolean) = if (visible) View.VISIBLE else View.GONE
 
     private fun setupObservers() {
         viewModel.noteDeletedEvent.observeSingle(viewLifecycleOwner, Observer { count ->
@@ -468,11 +495,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                     properties = properties
             )
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, view, savedInstanceState)
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -841,16 +863,13 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         if (notePayload == null) { // Displaying non-existent note.
             menu.removeItem(R.id.close)
             menu.removeItem(R.id.done)
-            menu.removeItem(R.id.hide_metadata)
+            menu.removeItem(R.id.metadata)
             menu.removeItem(R.id.delete)
 
         } else {
-            val metadataVisibility = AppPreferences.noteMetadataVisibility(context)
-
-            when (metadataVisibility) {
-                "all" -> menu.findItem(R.id.metadata_show_all).isChecked = true
-                "none" -> menu.findItem(R.id.metadata_show_none).isChecked = true
-                else -> menu.findItem(R.id.metadata_show_selected).isChecked = true
+            when (AppPreferences.noteMetadataVisibility(context)) {
+                "selected" -> menu.findItem(R.id.metadata_show_selected).isChecked = true
+                else -> menu.findItem(R.id.metadata_show_all).isChecked = true
             }
 
             menu.findItem(R.id.metadata_always_show_set).isChecked =
@@ -887,13 +906,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             R.id.metadata_show_selected -> {
                 item.isChecked = true
                 AppPreferences.noteMetadataVisibility(context, "selected")
-                setMetadataVisibility()
-                return true
-            }
-
-            R.id.metadata_show_none -> {
-                item.isChecked = true
-                AppPreferences.noteMetadataVisibility(context, "none")
                 setMetadataVisibility()
                 return true
             }
@@ -944,11 +956,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 "properties",
                 propertiesContainer,
                 propertiesContainer.childCount > 1)
-
-        setMetadataVisibility(
-                null,
-                lastProperty(),
-                false)
     }
 
     private fun setMetadataVisibility(name: String?, container: View, isSet: Boolean) {
@@ -956,12 +963,13 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         if (context != null) {
             val visibility = AppPreferences.noteMetadataVisibility(context)
-            val selected = AppPreferences.selectedNoteMetadata(context)
-            val showSet = AppPreferences.alwaysShowSetNoteMetadata(context)
+            val selectedMetadata = AppPreferences.selectedNoteMetadata(context)
+            val alwaysShowSet = AppPreferences.alwaysShowSetNoteMetadata(context)
 
             val isVisible = ("all" == visibility
-                    || "selected" == visibility && name != null && selected.contains(name)
-                    || showSet && isSet)
+                    || "none" == visibility // Not used anymore
+                    || "selected" == visibility && name != null && selectedMetadata.contains(name)
+                    || alwaysShowSet && isSet)
 
             container.visibility = if (isVisible) View.VISIBLE else View.GONE
         }

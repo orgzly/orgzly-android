@@ -49,5 +49,4 @@
         android:layout_height="48dp"
         android:src="?attr/ic_close_24dp"
         android:alpha="?attr/oic_item_alpha"/>
-
 </LinearLayout>

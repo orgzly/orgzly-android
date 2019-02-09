@@ -52,6 +52,10 @@
                     android:id="@+id/fragment_note_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="2dp"
+                    android:paddingStart="2dp"
+                    android:paddingRight="2dp"
+                    android:paddingEnd="2dp"
                     android:layout_marginLeft="@dimen/content_left_margin_from_icon"
                     android:layout_marginStart="@dimen/content_left_margin_from_icon"
                     android:textColor="?attr/text_primary_color"
@@ -64,12 +68,59 @@
 
             </LinearLayout>
 
+            <!-- Metadata header -->
+            <LinearLayout
+                android:id="@+id/fragment_note_metadata_header"
+                style="@style/NoteFragmentMetadataHeader">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/screen_edge"
+                    android:layout_marginStart="@dimen/screen_edge"
+                    android:src="?attr/ic_info_outline_24dp"
+                    android:alpha="?attr/oic_item_alpha" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="2dp"
+                    android:paddingStart="2dp"
+                    android:paddingRight="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginLeft="@dimen/content_left_margin_from_icon"
+                    android:layout_marginStart="@dimen/content_left_margin_from_icon"
+                    android:text="@string/metadata"/>
+
+                <ImageView
+                    android:id="@+id/fragment_note_metadata_header_up_icon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="12dp"
+                    android:src="?attr/ic_keyboard_arrow_up_24dp"
+                    android:alpha="?attr/oic_item_alpha"/>
+
+                <ImageView
+                    android:id="@+id/fragment_note_metadata_header_down_icon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="12dp"
+                    android:src="?attr/ic_keyboard_arrow_down_24dp"
+                    android:alpha="?attr/oic_item_alpha"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
             <!-- Metadata -->
             <LinearLayout
+                android:id="@+id/fragment_note_metadata"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:animateLayoutChanges="true">
+                android:layout_marginRight="48dp"
+                android:layout_marginEnd="48dp">
 
                 <!-- Tags. -->
                 <LinearLayout
@@ -201,14 +252,14 @@
                 <ToggleButton
                     android:id="@+id/edit_content_toggle"
                     style="@style/BorderlessButton"
-                    android:paddingLeft="4dp"
-                    android:paddingStart="4dp"
-                    android:paddingRight="4dp"
-                    android:paddingEnd="4dp"
+                    android:paddingLeft="2dp"
+                    android:paddingStart="2dp"
+                    android:paddingRight="2dp"
+                    android:paddingEnd="2dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
-                    android:layout_marginStart="@dimen/padded_content_left_margin_from_icon"
+                    android:layout_marginLeft="@dimen/content_left_margin_from_icon"
+                    android:layout_marginStart="@dimen/content_left_margin_from_icon"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textOn="@string/note_content_finish_editing"
                     android:textOff="@string/note_content_start_editing"/>

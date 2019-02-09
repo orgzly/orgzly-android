@@ -249,11 +249,17 @@
     <string name="pref_key_show_sync_notifications" translatable="false">pref_key_show_sync_notifications</string>
     <bool name="pref_default_show_sync_notifications" translatable="false">false</bool>
 
+
+    <string name="pref_key_note_metadata_folded" translatable="false">pref_key_note_metadata_folded</string>
+    <bool name="pref_default_note_metadata_folded" translatable="false">false</bool>
+
     <string name="pref_key_note_metadata_visibility" translatable="false">pref_key_note_metadata_visibility</string>
     <string name="pref_default_note_metadata_visibility" translatable="false">all</string>
 
     <string name="pref_key_always_show_set_note_metadata" translatable="false">pref_key_always_show_set_note_metadata</string>
     <bool name="pref_default_always_show_set_note_metadata" translatable="false">true</bool>
+
+
 
     <string name="pref_key_keep_screen_on_menu_item" translatable="false">pref_key_keep_screen_on_menu_item</string>
     <bool name="pref_default_keep_screen_on_menu_item" translatable="false">false</bool>

@@ -551,6 +551,17 @@ public class AppPreferences {
      * Note's metadata visibility
      */
 
+    public static boolean noteMetadataFolded(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_note_metadata_folded),
+                context.getResources().getBoolean(R.bool.pref_default_note_metadata_folded));
+    }
+
+    public static void noteMetadataFolded(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_note_metadata_folded);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
+
     public static String noteMetadataVisibility(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_note_metadata_visibility),

@@ -17,7 +17,7 @@
         android:title="@string/done" />
 
     <item
-        android:id="@+id/hide_metadata"
+        android:id="@+id/metadata"
         android:icon="?attr/ic_unfold_more_24dp"
         app:showAsAction="never"
         android:title="@string/metadata">
@@ -29,9 +29,6 @@
                 <item
                     android:id="@+id/metadata_show_selected"
                     android:title="@string/show_selected" />
-                <item
-                    android:id="@+id/metadata_show_none"
-                    android:title="@string/hide_all" />
             </group>
 
             <item
