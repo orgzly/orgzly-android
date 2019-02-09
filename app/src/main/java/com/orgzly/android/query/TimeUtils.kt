@@ -1,6 +1,5 @@
 package com.orgzly.android.query
 
-import android.util.Log
 import java.util.*
 
 object TimeUtils {
@@ -25,23 +24,19 @@ object TimeUtils {
     )
 
     fun timeFromNow(field: Int, amount: Int, addOneMore: Boolean = false): Long {
-        Log.i("WIP", "timeFromNow: " + field + " " + amount)
-        val before = GregorianCalendar()
-        Log.i("WIP", "timeFromNow: " + before.time)
-        before.add(field, amount)
+        val time = GregorianCalendar().apply {
+            add(field, amount)
+        }
 
         if (addOneMore) {
             ADD_ONE_MORE[field]?.let {
-                before.add(it, 1)
+                time.add(it, 1)
             }
         }
 
-        Log.i("WIP", "timeFromNow: " + before.time)
+        truncate(time, field)
 
-        truncate(before, field)
-
-        Log.i("WIP", "timeFromNow: " + before.time)
-        return before.timeInMillis
+        return time.timeInMillis
     }
 
     /** Truncate all fields after the specified one. */
