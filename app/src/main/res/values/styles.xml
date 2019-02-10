@@ -129,6 +129,7 @@
         <item name="ic_link_18dp">@drawable/ic_link_black_18dp</item>
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_black_24dp</item>
         <item name="ic_open_in_browser_24dp">@drawable/ic_open_in_browser_black_24dp</item>
+        <item name="ic_remove_red_eye_24dp">@drawable/ic_remove_red_eye_black_24dp</item>
         <item name="ic_repeat_24dp">@drawable/ic_repeat_black_24dp</item>
         <item name="ic_rotate_left_24dp">@drawable/ic_rotate_left_black_24dp</item>
         <item name="ic_rotate_right_24dp">@drawable/ic_rotate_right_black_24dp</item>
@@ -275,6 +276,7 @@
         <item name="ic_link_18dp">@drawable/ic_link_white_18dp</item>
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_white_24dp</item>
         <item name="ic_open_in_browser_24dp">@drawable/ic_open_in_browser_white_24dp</item>
+        <item name="ic_remove_red_eye_24dp">@drawable/ic_remove_red_eye_white_24dp</item>
         <item name="ic_repeat_24dp">@drawable/ic_repeat_white_24dp</item>
         <item name="ic_rotate_left_24dp">@drawable/ic_rotate_left_white_24dp</item>
         <item name="ic_rotate_right_24dp">@drawable/ic_rotate_right_white_24dp</item>

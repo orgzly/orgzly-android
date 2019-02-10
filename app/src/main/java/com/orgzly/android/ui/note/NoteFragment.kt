@@ -268,24 +268,11 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         editSwitch = top.findViewById(R.id.edit_content_toggle)
 
-        editSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, buttonView, isChecked)
-
+        editSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                bodyView.visibility = View.GONE
-
-                bodyEdit.visibility = View.VISIBLE
-
+                toEditMode()
             } else {
-                bodyEdit.visibility = View.GONE
-
-                bodyView.setRawText(bodyEdit.text)
-
-                ImageLoader.loadImages(bodyView)
-
-                bodyView.visibility = View.VISIBLE
-
-                ActivityUtils.closeSoftKeyboard(activity)
+                toViewMode()
             }
         }
 
@@ -302,6 +289,23 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         setupObservers()
 
         return top
+    }
+
+    private fun toEditMode() {
+        bodyView.visibility = View.GONE
+        bodyEdit.visibility = View.VISIBLE
+    }
+
+    private fun toViewMode() {
+        bodyEdit.visibility = View.GONE
+
+        bodyView.setRawText(bodyEdit.text)
+
+        ImageLoader.loadImages(bodyView)
+
+        bodyView.visibility = View.VISIBLE
+
+        ActivityUtils.closeSoftKeyboard(activity)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
