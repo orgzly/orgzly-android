@@ -9,6 +9,8 @@ import android.widget.ViewFlipper
 import android.widget.ViewSwitcher
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
@@ -41,9 +43,9 @@ class ListWidgetSelectionActivity : DaggerAppCompatActivity(), OnViewHolderClick
         val viewAdapter = ListWidgetSelectionAdapter(this)
         viewAdapter.setHasStableIds(true)
 
-        findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.activity_list_widget_selection_recycler_view).apply {
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-            adapter = viewAdapter
+        findViewById<RecyclerView>(R.id.activity_list_widget_selection_recycler_view).let {
+            it.layoutManager = LinearLayoutManager(this)
+            it.adapter = viewAdapter
         }
 
         val factory = SavedSearchesViewModelFactory.getInstance(dataRepository)

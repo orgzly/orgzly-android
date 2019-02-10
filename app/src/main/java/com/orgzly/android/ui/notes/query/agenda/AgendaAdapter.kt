@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.ui.OnViewHolderClickListener
@@ -20,7 +21,7 @@ import com.orgzly.android.util.UserTimeFormatter
 class AgendaAdapter(
         private val context: Context,
         private val clickListener: OnViewHolderClickListener<AgendaItem>
- ) : ListAdapter<AgendaItem, androidx.recyclerview.widget.RecyclerView.ViewHolder>(DIFF_CALLBACK), SelectableItemAdapter {
+ ) : ListAdapter<AgendaItem, RecyclerView.ViewHolder>(DIFF_CALLBACK), SelectableItemAdapter {
 
     private val adapterSelection: Selection = Selection()
 
@@ -37,7 +38,7 @@ class AgendaAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         return when (viewType) {
@@ -56,7 +57,7 @@ class AgendaAdapter(
         }
     }
 
-    override fun onBindViewHolder(h: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(h: RecyclerView.ViewHolder, position: Int) {
         if (h.itemViewType == DIVIDER_ITEM_TYPE) {
             val holder = h as DividerViewHolder
             val item = getItem(position) as AgendaItem.Divider
@@ -82,7 +83,7 @@ class AgendaAdapter(
                 holder.view.paddingLeft, margins.first, holder.view.paddingRight, margins.first)
     }
 
-    inner class DividerViewHolder(val view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
+    inner class DividerViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val time: TextView = view.findViewById(R.id.item_agenda_time_text)
     }
 

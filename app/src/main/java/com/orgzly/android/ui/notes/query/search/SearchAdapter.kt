@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.db.entity.NoteView
@@ -17,7 +18,7 @@ import com.orgzly.android.util.LogUtils
 class SearchAdapter(
         private val context: Context,
         private val clickListener: OnViewHolderClickListener<NoteView>
-) : ListAdapter<NoteView, androidx.recyclerview.widget.RecyclerView.ViewHolder>(DIFF_CALLBACK), SelectableItemAdapter {
+) : ListAdapter<NoteView, RecyclerView.ViewHolder>(DIFF_CALLBACK), SelectableItemAdapter {
 
     private val adapterSelection: Selection = Selection()
 
@@ -32,7 +33,7 @@ class SearchAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         val layout = LayoutInflater.from(context)
@@ -41,7 +42,7 @@ class SearchAdapter(
         return NoteItemViewHolder(layout, viewHolderListener)
     }
 
-    override fun onBindViewHolder(h: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(h: RecyclerView.ViewHolder, position: Int) {
         val holder = h as NoteItemViewHolder
 
         val noteView = getItem(position)

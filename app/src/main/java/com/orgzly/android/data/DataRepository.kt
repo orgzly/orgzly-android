@@ -10,6 +10,7 @@ import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.sqlite.db.SupportSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQueryBuilder
 import com.orgzly.BuildConfig
@@ -1541,7 +1542,7 @@ class DataRepository @Inject constructor(
             val intent = Intent(AppIntent.ACTION_OPEN_BOOK)
             intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId)
             intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId)
-            androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent)
+            LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent)
         }
     }
 
@@ -1945,7 +1946,7 @@ class DataRepository @Inject constructor(
         AppPreferences.lastSuccessfulSyncTime(context, 0L)
 
         val intent = Intent(AppIntent.ACTION_DB_CLEARED)
-        androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
     }
 
     /**

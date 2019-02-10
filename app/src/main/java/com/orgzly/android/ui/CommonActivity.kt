@@ -13,6 +13,8 @@ import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import com.orgzly.BuildConfig
@@ -135,10 +137,7 @@ abstract class CommonActivity : DaggerAppCompatActivity() {
         dismissSnackbar()
 
         /* Close drawer before displaying snackbar. */
-        val drawerLayout = findViewById<androidx.drawerlayout.widget.DrawerLayout>(R.id.drawer_layout)
-        if (drawerLayout != null) {
-            (drawerLayout as androidx.drawerlayout.widget.DrawerLayout).closeDrawer(GravityCompat.START)
-        }
+        findViewById<DrawerLayout>(R.id.drawer_layout)?.closeDrawer(GravityCompat.START)
 
         /* Set background color from attribute. */
         val bgColor = snackbarBackgroundColor
@@ -210,7 +209,7 @@ abstract class CommonActivity : DaggerAppCompatActivity() {
         intentFilter.addAction(AppIntent.ACTION_UPDATING_NOTES_STARTED)
         intentFilter.addAction(AppIntent.ACTION_UPDATING_NOTES_ENDED)
         intentFilter.addAction(AppIntent.ACTION_SHOW_SNACKBAR)
-        androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(this).registerReceiver(actionReceiver, intentFilter)
+        LocalBroadcastManager.getInstance(this).registerReceiver(actionReceiver, intentFilter)
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(settingsChangeListener)
@@ -260,7 +259,7 @@ abstract class CommonActivity : DaggerAppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(this).unregisterReceiver(actionReceiver)
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(actionReceiver)
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(settingsChangeListener)
@@ -414,7 +413,7 @@ abstract class CommonActivity : DaggerAppCompatActivity() {
             if (context != null) {
                 val intent = Intent(AppIntent.ACTION_SHOW_SNACKBAR)
                 intent.putExtra(AppIntent.EXTRA_MESSAGE, msg)
-                androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
             }
         }
     }

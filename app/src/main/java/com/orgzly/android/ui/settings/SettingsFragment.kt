@@ -348,7 +348,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
     }
 
-    override fun onPreferenceTreeClick(preference: androidx.preference.Preference?): Boolean {
+    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         if (preference != null && preference is PreferenceScreen) {
             preference.key?.let { key ->
                 if (key in PREFS_RESOURCES) {

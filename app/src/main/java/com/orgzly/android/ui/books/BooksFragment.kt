@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -106,9 +108,9 @@ class BooksFragment :
         viewAdapter = BooksAdapter(this)
         viewAdapter.setHasStableIds(true)
 
-        view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.fragment_books_recycler_view).apply {
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-            adapter = viewAdapter
+        view.findViewById<RecyclerView>(R.id.fragment_books_recycler_view).let {
+            it.layoutManager = LinearLayoutManager(context)
+            it.adapter = viewAdapter
         }
 
         return view
@@ -154,7 +156,7 @@ class BooksFragment :
 
     }
 
-    private inner class ActionModeCallback : androidx.appcompat.view.ActionMode.Callback {
+    private inner class ActionModeCallback : ActionMode.Callback {
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, mode, item)
 

@@ -33,7 +33,7 @@ class BooksAdapter(
     private val adapterSelection: Selection = Selection()
 
     inner class ViewHolder(view: View) :
-            androidx.recyclerview.widget.RecyclerView.ViewHolder(view),
+            RecyclerView.ViewHolder(view),
             View.OnClickListener,
             View.OnLongClickListener {
 

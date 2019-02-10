@@ -9,6 +9,7 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.*
 import android.widget.*
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.orgzly.BuildConfig
@@ -699,7 +700,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     override fun onClick(view: View) {
-        var f: androidx.fragment.app.DialogFragment? = null
+        var f: DialogFragment? = null
 
         when (view.id) {
             R.id.fragment_note_location_button -> {

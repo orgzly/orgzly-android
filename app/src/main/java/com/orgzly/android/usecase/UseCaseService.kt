@@ -3,6 +3,7 @@ package com.orgzly.android.usecase
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.orgzly.BuildConfig
 import com.orgzly.android.App
 import com.orgzly.android.AppIntent
@@ -43,7 +44,7 @@ class UseCaseService : JobIntentService() {
     }
 
     private fun notesUpdateBroadcast(action: () -> Unit) {
-        androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(this).let {
+        LocalBroadcastManager.getInstance(this).let {
             it.sendBroadcast(Intent(AppIntent.ACTION_UPDATING_NOTES_STARTED))
             action()
             it.sendBroadcast(Intent(AppIntent.ACTION_UPDATING_NOTES_ENDED))
@@ -58,7 +59,7 @@ class UseCaseService : JobIntentService() {
          */
         if (AppPreferences.isGettingStartedNotebookLoaded(this)) {
             val intent = Intent(AppIntent.ACTION_BOOK_IMPORTED)
-            androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
 
         } else {
             AppPreferences.isGettingStartedNotebookLoaded(this, true)

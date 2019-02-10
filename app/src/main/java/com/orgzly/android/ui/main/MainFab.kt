@@ -2,6 +2,7 @@ package com.orgzly.android.ui.main
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import androidx.fragment.app.FragmentActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.orgzly.R
 import com.orgzly.android.ui.Fab
@@ -15,7 +16,7 @@ object MainFab {
      * Update floating action button's look and action
      */
     @JvmStatic
-    fun updateFab(activity: androidx.fragment.app.FragmentActivity, fragmentTag: String, selectionCount: Int) {
+    fun updateFab(activity: FragmentActivity, fragmentTag: String, selectionCount: Int) {
         val fab = activity.findViewById(R.id.fab) as FloatingActionButton
 
         val fragment = activity.supportFragmentManager.findFragmentByTag(fragmentTag)

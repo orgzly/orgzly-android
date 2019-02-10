@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.data.DataRepository
@@ -75,14 +78,14 @@ class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderCli
         viewAdapter = SavedSearchesAdapter(this)
         viewAdapter.setHasStableIds(true)
 
-        val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+        val layoutManager = LinearLayoutManager(context)
 
-        val dividerItemDecoration = androidx.recyclerview.widget.DividerItemDecoration(context, layoutManager.orientation)
+        val dividerItemDecoration = DividerItemDecoration(context, layoutManager.orientation)
 
-        view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.fragment_saved_searches_recycler_view).let { recyclerView ->
-            recyclerView.layoutManager = layoutManager
-            recyclerView.adapter = viewAdapter
-            recyclerView.addItemDecoration(dividerItemDecoration)
+        view.findViewById<RecyclerView>(R.id.fragment_saved_searches_recycler_view).let {
+            it.layoutManager = layoutManager
+            it.adapter = viewAdapter
+            it.addItemDecoration(dividerItemDecoration)
         }
 
         return view
@@ -222,7 +225,7 @@ class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderCli
                 viewAdapter.getSelection().count)
     }
 
-    private inner class ActionModeCallback : androidx.appcompat.view.ActionMode.Callback {
+    private inner class ActionModeCallback : ActionMode.Callback {
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
             actionMode = mode
 

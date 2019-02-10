@@ -12,6 +12,8 @@ import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.BookUtils
@@ -42,7 +44,7 @@ class BookFragment :
 
     private lateinit var viewAdapter: BookAdapter
 
-    private lateinit var layoutManager: androidx.recyclerview.widget.LinearLayoutManager
+    private lateinit var layoutManager: LinearLayoutManager
 
     private lateinit var sharedMainActivityViewModel: SharedMainActivityViewModel
 
@@ -121,19 +123,19 @@ class BookFragment :
         viewAdapter = BookAdapter(view.context, this, inBook = true)
         viewAdapter.setHasStableIds(true)
 
-        layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+        layoutManager = LinearLayoutManager(context)
 
-        val recyclerView = view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.fragment_notes_book_recycler_view)
+        view.findViewById<RecyclerView>(R.id.fragment_notes_book_recycler_view).let {
+            it.layoutManager = layoutManager
+            it.adapter = viewAdapter
 
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = viewAdapter
-
-        /*
-         * Disable item animator (DefaultItemAnimator).
-         * Animation is too slow.  And if animations are off in developer options, items flicker.
-         * TODO: Do for query too?
-         */
-        recyclerView.itemAnimator = null
+            /*
+             * Disable item animator (DefaultItemAnimator).
+             * Animation is too slow.  And if animations are off in developer options, items flicker.
+             * TODO: Do for query too?
+             */
+            it.itemAnimator = null
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

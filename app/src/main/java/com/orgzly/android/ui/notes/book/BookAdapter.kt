@@ -6,6 +6,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.db.entity.Book
@@ -24,7 +25,7 @@ class BookAdapter(
         private val clickListener: OnClickListener,
         private val inBook: Boolean
 ) :
-        ListAdapterWithHeaders<NoteView, androidx.recyclerview.widget.RecyclerView.ViewHolder>(DIFF_CALLBACK, 1),
+        ListAdapterWithHeaders<NoteView, RecyclerView.ViewHolder>(DIFF_CALLBACK, 1),
         SelectableItemAdapter {
 
     private var currentPreface: String? = null
@@ -42,12 +43,9 @@ class BookAdapter(
         }
     }
 
-    inner class FoldedViewHolder(view: View) :
-            androidx.recyclerview.widget.RecyclerView.ViewHolder(view)
+    inner class FoldedViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
-    inner class PrefaceViewHolder(view: View) :
-            androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
-
+    inner class PrefaceViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val preface: TextViewWithMarkup = view.findViewById(R.id.fragment_book_header_text)
 
         init {
@@ -69,7 +67,7 @@ class BookAdapter(
         return !inBook || note.position.foldedUnderId == 0L
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         return when (viewType) {
@@ -93,7 +91,7 @@ class BookAdapter(
         }
     }
 
-    override fun onBindViewHolder(h: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(h: RecyclerView.ViewHolder, position: Int) {
         when {
             position == 0 -> {
                 val holder = h as PrefaceViewHolder

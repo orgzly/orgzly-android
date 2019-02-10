@@ -1,16 +1,13 @@
 package com.orgzly.android.ui.notes.book
 
-import androidx.recyclerview.widget.AsyncDifferConfig
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListUpdateCallback
+import androidx.recyclerview.widget.*
 import com.orgzly.BuildConfig
 import com.orgzly.android.util.LogUtils
 
-abstract class ListAdapterWithHeaders<T, VH : androidx.recyclerview.widget.RecyclerView.ViewHolder>(
+abstract class ListAdapterWithHeaders<T, VH : RecyclerView.ViewHolder>(
         private val diffCallback: DiffUtil.ItemCallback<T>,
         private val headers: Int = 1
-) : androidx.recyclerview.widget.RecyclerView.Adapter<VH>() {
+) : RecyclerView.Adapter<VH>() {
 
     private val differ by lazy {
         AsyncListDiffer<T>(
@@ -35,7 +32,7 @@ abstract class ListAdapterWithHeaders<T, VH : androidx.recyclerview.widget.Recyc
     }
 
     inner class ListUpdateWithHeadersCallback(
-            private val adapter: androidx.recyclerview.widget.RecyclerView.Adapter<*>
+            private val adapter: RecyclerView.Adapter<*>
     ) : ListUpdateCallback {
 
         override fun onInserted(position: Int, count: Int) {

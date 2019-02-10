@@ -10,7 +10,7 @@ import com.orgzly.R
 import com.orgzly.android.ui.views.TextViewWithMarkup
 
 class NoteItemViewHolder(view: View, private val clickListener: ClickListener) :
-        androidx.recyclerview.widget.RecyclerView.ViewHolder(view),
+        RecyclerView.ViewHolder(view),
         View.OnClickListener,
         View.OnLongClickListener {
 
