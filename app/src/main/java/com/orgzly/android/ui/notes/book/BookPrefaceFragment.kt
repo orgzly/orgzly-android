@@ -69,7 +69,7 @@ class BookPrefaceFragment : DaggerFragment() {
 
         // Open keyboard
         if (activity != null) {
-            ActivityUtils.openSoftKeyboard(activity, contentView)
+            ActivityUtils.openSoftKeyboardWithDelay(activity, contentView)
         }
 
         /* Parse arguments - set content. */

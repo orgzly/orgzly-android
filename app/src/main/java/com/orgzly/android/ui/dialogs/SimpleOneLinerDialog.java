@@ -152,7 +152,7 @@ public class SimpleOneLinerDialog extends DialogFragment {
             }
         });
 
-        dialog.setOnShowListener(d -> ActivityUtils.openSoftKeyboard(getActivity(), input, 0));
+        dialog.setOnShowListener(d -> ActivityUtils.openSoftKeyboard(getActivity(), input));
 
         return dialog;
     }

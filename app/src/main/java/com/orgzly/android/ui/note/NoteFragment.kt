@@ -284,7 +284,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, editSwitch.isChecked)
 
             if (editSwitch.isChecked) { // Clicked to edit content
-                ActivityUtils.openSoftKeyboard(activity, bodyEdit, 0, scrollView)
+                ActivityUtils.openSoftKeyboard(activity, bodyEdit, scrollView)
             }
         }
 
@@ -528,7 +528,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                  * some initial values (for example from ShareActivity).
                  */
                 if (TextUtils.isEmpty(mInitialTitle) && TextUtils.isEmpty(mInitialContent)) {
-                    ActivityUtils.openSoftKeyboard(activity, title)
+                    ActivityUtils.openSoftKeyboardWithDelay(activity, title)
                 }
 
             } else { /* Get existing note from database. */

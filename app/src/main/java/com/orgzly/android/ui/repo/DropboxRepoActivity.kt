@@ -95,10 +95,7 @@ class DropboxRepoActivity : CommonActivity() {
                 activity_repo_dropbox_directory,
                 activity_repo_dropbox_directory_input_layout)
 
-        // Open keyboard after activity has been fully displayed
-        Handler().postDelayed({
-            ActivityUtils.openSoftKeyboard(this, activity_repo_dropbox_directory)
-        }, 150)
+        ActivityUtils.openSoftKeyboardWithDelay(this, activity_repo_dropbox_directory)
 
         client = DropboxClient(applicationContext)
     }

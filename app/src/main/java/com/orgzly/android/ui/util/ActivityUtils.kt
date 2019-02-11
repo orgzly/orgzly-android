@@ -40,7 +40,14 @@ object ActivityUtils {
 
     @JvmStatic
     @JvmOverloads
-    fun openSoftKeyboard(activity: Activity?, view: View, delay: Long = 200, scrollView: ScrollView? = null) {
+    fun openSoftKeyboard(activity: Activity?, view: View, scrollView: ScrollView? = null) {
+        openSoftKeyboardWithDelay(activity, view, 0, scrollView)
+    }
+
+    // TODO: Remove, open immediately when ready
+    @JvmStatic
+    @JvmOverloads
+    fun openSoftKeyboardWithDelay(activity: Activity?, view: View, delay: Long = 200, scrollView: ScrollView? = null) {
         if (activity != null) {
             if (view.requestFocus()) {
                 if (BuildConfig.LOG_DEBUG)

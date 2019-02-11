@@ -1,6 +1,8 @@
 package com.orgzly.android.ui.savedsearch;
 
 import androidx.lifecycle.ViewModelProviders;
+
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import com.google.android.material.textfield.TextInputLayout;
@@ -136,8 +138,9 @@ public class SavedSearchFragment extends DaggerFragment implements DrawerItem {
          * Open a soft keyboard.
          * For new filters focus on name, for existing focus on query.
          */
-        if (viewToFocus != null && getActivity() != null) {
-            ActivityUtils.openSoftKeyboard(getActivity(), viewToFocus);
+        Activity activity = getActivity();
+        if (viewToFocus != null && activity != null) {
+            ActivityUtils.openSoftKeyboardWithDelay(activity, viewToFocus);
         }
     }
 
