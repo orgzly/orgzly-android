@@ -12,6 +12,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.ScrollView
 import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.Toolbar
 import com.orgzly.BuildConfig
@@ -38,20 +39,43 @@ object ActivityUtils {
     }
 
     @JvmStatic
-    fun openSoftKeyboard(activity: Activity?, view: View) {
+    @JvmOverloads
+    fun openSoftKeyboard(activity: Activity?, view: View, delay: Long = 200, scrollView: ScrollView? = null) {
         if (activity != null) {
             if (view.requestFocus()) {
-                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Showing keyboard for view $view in activity $activity")
+                if (BuildConfig.LOG_DEBUG)
+                    LogUtils.d(TAG, "Showing keyboard for view $view in activity $activity")
 
-                Handler().postDelayed({
-                    val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-                }, 200)
+                doOpenSoftKeyboard(activity, view, delay, scrollView)
 
             } else {
                 Log.w(TAG, "Can't open keyboard because view " + view +
                         " failed to get focus in activity " + activity)
             }
+        }
+    }
+
+    private fun doOpenSoftKeyboard(activity: Activity, view: View, delay: Long, scrollView: ScrollView?) {
+        val listener = if (scrollView != null) {
+            // Keep scrolling the view as the keyboard opens
+            ViewTreeObserver.OnGlobalLayoutListener {
+                scrollView.scrollTo(0, view.top)
+            }
+        } else {
+            null
+        }
+
+        scrollView?.viewTreeObserver?.addOnGlobalLayoutListener(listener)
+
+        Handler().postDelayed({
+            val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+        }, delay)
+
+        if (scrollView != null) {
+            Handler().postDelayed({
+                scrollView.viewTreeObserver?.removeOnGlobalLayoutListener(listener)
+            }, delay + 500)
         }
     }
 

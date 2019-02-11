@@ -69,6 +69,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
     private var book: BookView? = null
 
+    private lateinit var scrollView: ScrollView
+
     private lateinit var title: EditText
 
     private lateinit var locationView: TextView
@@ -174,6 +176,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         val top = inflater.inflate(R.layout.fragment_note, container, false)
 
+        scrollView = top.findViewById(R.id.fragment_note_container)
 
         title = top.findViewById(R.id.fragment_note_title)
 
@@ -281,7 +284,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, editSwitch.isChecked)
 
             if (editSwitch.isChecked) { // Clicked to edit content
-                ActivityUtils.openSoftKeyboard(activity, bodyEdit)
+                ActivityUtils.openSoftKeyboard(activity, bodyEdit, 0, scrollView)
             }
         }
 
