@@ -15,4 +15,5 @@
     app:contentInsetRight="0dp"
     app:contentInsetEnd="0dp"
     tools:targetApi="lollipop"
-    android:visibility="gone" />
+    android:visibility="gone"
+    android:translationY="?attr/actionBarSize"/>

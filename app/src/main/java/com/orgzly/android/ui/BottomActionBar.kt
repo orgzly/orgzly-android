@@ -6,6 +6,8 @@ import android.view.View
 import androidx.appcompat.widget.Toolbar
 
 object BottomActionBar {
+    private const val ANIMATION_DURATION = 200L
+
     @JvmStatic
     fun showBottomBar(view: Toolbar, clickListener: Callback) {
         view.menu.clear()
@@ -16,14 +18,16 @@ object BottomActionBar {
             true
         }
 
+        view.visibility = View.VISIBLE
+
         view.animate()
                 .translationY(0f)
-                .alpha(1.0f)
-                .setDuration(200)
+                .setDuration(ANIMATION_DURATION)
                 .setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationCancel(animation: Animator?) {
+                    }
+
                     override fun onAnimationEnd(animation: Animator) {
-                        super.onAnimationEnd(animation)
-                        view.visibility = View.VISIBLE
                     }
                 })
     }
@@ -36,16 +40,21 @@ object BottomActionBar {
 
         view.animate()
                 .translationY(view.height.toFloat())
-                .alpha(0.0f)
-                .setDuration(200)
+                .setDuration(ANIMATION_DURATION)
                 .setListener(object : AnimatorListenerAdapter() {
+                    var isCanceled = false
+
+                    override fun onAnimationCancel(animation: Animator?) {
+                        isCanceled = true
+                    }
+
                     override fun onAnimationEnd(animation: Animator) {
-                        super.onAnimationEnd(animation)
-                        view.visibility = View.GONE
+                        if (!isCanceled) {
+                            view.visibility = View.GONE
+                        }
                     }
                 })
     }
-
 
     interface Callback {
         fun onInflateBottomActionMode(toolbar: Toolbar)
