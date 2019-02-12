@@ -15,8 +15,10 @@ import com.orgzly.R
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.BottomActionBar
+import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
+import com.orgzly.android.ui.notes.NoteItemTouchHelper
 import com.orgzly.android.ui.notes.SearchAdapter
 import com.orgzly.android.ui.notes.query.QueryFragment
 import com.orgzly.android.ui.notes.query.QueryViewModel
@@ -68,11 +70,19 @@ class SearchFragment :
 
         val dividerItemDecoration = DividerItemDecoration(context, layoutManager.orientation)
 
-        view.findViewById<RecyclerView>(R.id.fragment_query_search_recycler_view).let {
+        val recyclerView = view.findViewById<RecyclerView>(R.id.fragment_query_search_recycler_view).also {
             it.layoutManager = layoutManager
             it.adapter = viewAdapter
             it.addItemDecoration(dividerItemDecoration)
         }
+
+        val itemTouchHelper = NoteItemTouchHelper(object : NoteItemTouchHelper.Listener {
+            override fun onSwipeLeft(id: Long) {
+                listener?.onNoteOpen(id)
+            }
+        })
+
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
 
@@ -122,9 +132,7 @@ class SearchFragment :
     }
 
     override fun onLongClick(view: View, position: Int, item: NoteView) {
-        val noteId = item.note.id
-
-        listener?.onNoteOpen(noteId)
+        // listener?.onNoteOpen(item.note.id)
     }
 
     override fun onBottomActionItemClicked(id: Int) {

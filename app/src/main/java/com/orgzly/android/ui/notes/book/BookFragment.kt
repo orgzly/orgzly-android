@@ -23,9 +23,11 @@ import com.orgzly.android.ui.*
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
+import com.orgzly.android.ui.notes.NoteItemTouchHelper
 import com.orgzly.android.ui.notes.NotesFragment
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
+
 
 /**
  * Displays all notes from the notebook.
@@ -125,7 +127,7 @@ class BookFragment :
 
         layoutManager = LinearLayoutManager(context)
 
-        view.findViewById<RecyclerView>(R.id.fragment_notes_book_recycler_view).let {
+        val recyclerView = view.findViewById<RecyclerView>(R.id.fragment_notes_book_recycler_view).also {
             it.layoutManager = layoutManager
             it.adapter = viewAdapter
 
@@ -136,6 +138,14 @@ class BookFragment :
              */
             it.itemAnimator = null
         }
+
+        val itemTouchHelper = NoteItemTouchHelper(object : NoteItemTouchHelper.Listener {
+            override fun onSwipeLeft(id: Long) {
+                listener?.onNoteOpen(id)
+            }
+        })
+
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -414,9 +424,7 @@ class BookFragment :
     }
 
     override fun onNoteLongClick(view: View, position: Int, noteView: NoteView) {
-        val noteId = noteView.note.id
-
-        listener?.onNoteOpen(noteId)
+        // listener?.onNoteOpen(noteView.note.id)
     }
 
     override fun onPrefaceClick() {
