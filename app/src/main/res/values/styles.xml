@@ -35,7 +35,8 @@
         <item name="item_head_sub_title_content_text">14sp</item>
 
         <item name="item_repo_text_size">14sp</item>
-        <item name="fragment_note_time_buttons_text_size">14sp</item>
+
+        <item name="fragment_note_content_text_size">16sp</item>
 
         <!-- Icon sizes -->
         <item name="item_book_info_icon_size">14dp</item>
@@ -187,7 +188,8 @@
         <item name="item_head_sub_title_content_text">14sp</item>
 
         <item name="item_repo_text_size">14sp</item>
-        <item name="fragment_note_time_buttons_text_size">14sp</item>
+
+        <item name="fragment_note_content_text_size">16sp</item>
 
         <!-- Icon sizes -->
         <item name="item_book_info_icon_size">14dp</item>
@@ -372,7 +374,8 @@
         <item name="item_head_sub_title_content_text">12sp</item>
 
         <item name="item_repo_text_size">14sp</item>
-        <item name="fragment_note_time_buttons_text_size">14sp</item>
+
+        <item name="fragment_note_content_text_size">16sp</item>
 
         <!-- Icon sizes -->
         <item name="item_book_info_icon_size">14dp</item>
@@ -401,7 +404,7 @@
 
         <item name="item_repo_text_size">20sp</item>
 
-        <item name="fragment_note_time_buttons_text_size">18sp</item>
+        <item name="fragment_note_content_text_size">18sp</item>
 
         <item name="android:textSize">20sp</item>
 

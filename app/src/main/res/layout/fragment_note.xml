@@ -276,7 +276,8 @@
                 android:hint="@string/fragment_note_content_hint"
                 android:gravity="start|top"
                 android:freezesText="true"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:textSize="?attr/fragment_note_content_text_size" />
 
             <com.orgzly.android.ui.views.TextViewWithMarkup
                 android:id="@+id/body_view"
@@ -289,7 +290,8 @@
                 android:freezesText="true"
                 android:gravity="start|top"
                 android:textIsSelectable="true"
-                tools:text="Note content"/>
+                android:textSize="?attr/fragment_note_content_text_size"
+                tools:text="Note content" />
         </LinearLayout>
     </ScrollView>
 

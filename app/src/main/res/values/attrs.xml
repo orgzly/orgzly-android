@@ -32,7 +32,8 @@
         <attr name="item_head_sub_title_text" format="dimension"/>
         <attr name="item_head_sub_title_content_text" format="dimension"/>
         <attr name="item_repo_text_size" format="dimension"/>
-        <attr name="fragment_note_time_buttons_text_size" format="dimension"/>
+
+        <attr name="fragment_note_content_text_size" format="dimension"/>
 
         <!-- Icons sizes, but depend on set font size. -->
         <attr name="item_book_info_icon_size" format="dimension"/>
