@@ -309,6 +309,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         bodyView.visibility = View.VISIBLE
 
+        bodyView.requestFocus()
+
         ActivityUtils.closeSoftKeyboard(activity)
     }
 
