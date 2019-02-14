@@ -70,7 +70,7 @@ class AgendaFragment :
 
         val itemTouchHelper = NoteItemTouchHelper(object : NoteItemTouchHelper.Listener {
             override fun onSwipeLeft(id: Long) {
-                listener?.onNoteOpen(id)
+                listener?.onNoteFocusInBookRequest(id)
             }
         })
 
