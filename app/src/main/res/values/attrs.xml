@@ -113,6 +113,7 @@
         <attr name="ic_rotate_left_24dp" format="reference"/>
         <attr name="ic_rotate_right_24dp" format="reference"/>
         <attr name="ic_search_24dp" format="reference"/>
+        <attr name="ic_send_24dp" format="reference"/>
         <attr name="ic_settings_24dp" format="reference"/>
         <attr name="ic_storage_24dp" format="reference"/>
         <attr name="ic_swap_vert_24dp" format="reference"/>

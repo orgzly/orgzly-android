@@ -135,6 +135,7 @@
         <item name="ic_rotate_left_24dp">@drawable/ic_rotate_left_black_24dp</item>
         <item name="ic_rotate_right_24dp">@drawable/ic_rotate_right_black_24dp</item>
         <item name="ic_search_24dp">@drawable/ic_search_black_24dp</item>
+        <item name="ic_send_24dp">@drawable/ic_send_black_24dp</item>
         <item name="ic_settings_24dp">@drawable/ic_settings_black_24dp</item>
         <item name="ic_storage_24dp">@drawable/ic_storage_black_24dp</item>
         <item name="ic_swap_vert_24dp">@drawable/ic_swap_vert_black_24dp</item>
@@ -283,6 +284,7 @@
         <item name="ic_rotate_left_24dp">@drawable/ic_rotate_left_white_24dp</item>
         <item name="ic_rotate_right_24dp">@drawable/ic_rotate_right_white_24dp</item>
         <item name="ic_search_24dp">@drawable/ic_search_white_24dp</item>
+        <item name="ic_send_24dp">@drawable/ic_send_white_24dp</item>
         <item name="ic_settings_24dp">@drawable/ic_settings_white_24dp</item>
         <item name="ic_storage_24dp">@drawable/ic_storage_white_24dp</item>
         <item name="ic_swap_vert_24dp">@drawable/ic_swap_vert_white_24dp</item>

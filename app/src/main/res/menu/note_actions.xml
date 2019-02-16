@@ -12,7 +12,7 @@
 
     <item
         android:id="@+id/done"
-        android:icon="?attr/ic_done_24dp"
+        android:icon="?attr/ic_send_24dp"
         app:showAsAction="always"
         android:title="@string/done" />
 
