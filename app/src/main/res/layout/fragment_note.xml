@@ -291,7 +291,7 @@
                 android:gravity="start|top"
                 android:textIsSelectable="true"
                 android:textSize="?attr/fragment_note_content_text_size"
-                tools:text="Note content" />
+                android:hint="@string/fragment_note_content_hint" />
         </LinearLayout>
     </ScrollView>
 
