@@ -16,7 +16,7 @@
         android:title="@string/heads_moving_action_menu_item_down"/>
     <item
         android:id="@+id/notes_action_move_up"
-        android:icon="?attr/ic_arrow_upward_black_24dp"
+        android:icon="?attr/ic_arrow_upward_24dp"
         app:showAsAction="always"
         android:title="@string/heads_moving_action_menu_item_up"/>
     <item
