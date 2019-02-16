@@ -103,6 +103,7 @@
         <item name="ic_arrow_downward_24dp">@drawable/ic_arrow_downward_black_24dp</item>
         <item name="ic_arrow_forward_24dp">@drawable/ic_arrow_forward_black_24dp</item>
         <item name="ic_arrow_upward_24dp">@drawable/ic_arrow_upward_black_24dp</item>
+        <item name="ic_cancel_24dp">@drawable/ic_cancel_black_24dp</item>
         <item name="ic_center_focus_strong_24dp">@drawable/ic_center_focus_strong_black_24dp</item>
         <item name="ic_close_24dp">@drawable/ic_close_black_24dp</item>
         <item name="ic_content_cut_24dp">@drawable/ic_content_cut_black_24dp</item>
@@ -252,6 +253,7 @@
         <item name="ic_arrow_downward_24dp">@drawable/ic_arrow_downward_white_24dp</item>
         <item name="ic_arrow_forward_24dp">@drawable/ic_arrow_forward_white_24dp</item>
         <item name="ic_arrow_upward_24dp">@drawable/ic_arrow_upward_white_24dp</item>
+        <item name="ic_cancel_24dp">@drawable/ic_cancel_white_24dp</item>
         <item name="ic_center_focus_strong_24dp">@drawable/ic_center_focus_strong_white_24dp</item>
         <item name="ic_close_24dp">@drawable/ic_close_white_24dp</item>
         <item name="ic_content_cut_24dp">@drawable/ic_content_cut_white_24dp</item>

@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/close"
-        android:icon="?attr/ic_close_24dp"
+        android:icon="?attr/ic_cancel_24dp"
         app:showAsAction="always"
         android:title="@string/close" />
 

@@ -81,6 +81,7 @@
         <attr name="ic_arrow_downward_24dp" format="reference"/>
         <attr name="ic_arrow_forward_24dp" format="reference"/>
         <attr name="ic_arrow_upward_24dp" format="reference"/>
+        <attr name="ic_cancel_24dp" format="reference"/>
         <attr name="ic_center_focus_strong_24dp" format="reference"/>
         <attr name="ic_close_24dp" format="reference"/>
         <attr name="ic_content_cut_24dp" format="reference"/>
