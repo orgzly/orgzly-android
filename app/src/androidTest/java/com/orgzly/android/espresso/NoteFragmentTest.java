@@ -443,7 +443,8 @@ public class NoteFragmentTest extends OrgzlyTest {
 
     @Test
     public void testContentLineCountUpdatedOnNoteUpdate() {
-        onNoteInBook(1).perform(longClick());
+        onNoteInBook(1).perform(click());
+        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.body_edit)).perform(replaceTextCloseKeyboard("a\nb\nc"));
         onView(withId(R.id.done)).perform(click());
         onNoteInBook(1, R.id.item_head_fold_button).perform(click());
