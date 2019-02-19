@@ -21,13 +21,17 @@ object TypeConverters {
 
     @TypeConverter
     @JvmStatic
-    fun fromUriToString(uri: Uri): String {
-        return uri.toString()
+    fun fromUriToString(uri: Uri?): String? {
+        return uri?.toString()
     }
 
     @TypeConverter
     @JvmStatic
-    fun fromStringToUri(uri: String): Uri {
-        return Uri.parse(uri)
+    fun fromStringToUri(uri: String?): Uri? {
+        return if (uri == null) {
+            null
+        } else {
+            Uri.parse(uri)
+        }
     }
 }
