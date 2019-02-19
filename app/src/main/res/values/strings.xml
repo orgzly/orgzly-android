@@ -140,8 +140,6 @@
     <string name="reload_getting_started_summary">Import the latest version of the notebook</string>
     <string name="notebook_imported">Notebook imported</string>
 
-    <string name="failed_importing_book">Failed exporting book: %s</string>
-
     <string name="book_does_not_exist_anymore">This notebook does not exist any more.</string>
     <string name="note_does_not_exist_anymore">This note does not exist any more.</string>
     <string name="search_does_not_exist_anymore">This search does not exist any more.</string>
@@ -296,7 +294,7 @@
     <string name="font_size">Font size</string>
     <string name="color_scheme">Color scheme</string>
     <string name="monospaced_font">Monospaced font</string>
-    <string name="monospaced_font_summary">Use monospaced font for note\'s content and book\'s preface</string>
+    <string name="monospaced_font_summary">Use monospaced font for note\'s content and notebook\'s preface</string>
     <string name="look_and_feel">Look &amp; Feel</string>
     <string name="notes_list">List of notes</string>
     <string name="prefs_title_new_note">New note</string>
@@ -419,7 +417,9 @@
     <string name="primary_storage">Main storage</string>
 
     <string name="book_exported">Notebook exported to %s</string>
-    <string name="failed_exporting_book">Failed exporting book: %s</string>
+
+    <string name="failed_exporting_book">Failed exporting notebook: %s</string>
+    <string name="failed_importing_book">Failed importing notebook: %s</string>
 
     <string name="edit_book_preface">Edit preface</string>
     <string name="book_preface_hint">Text displayed before the first note</string>
