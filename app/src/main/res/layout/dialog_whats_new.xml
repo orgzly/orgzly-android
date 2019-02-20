@@ -24,6 +24,16 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.7-beta.3"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Handle duplicate property positions in migration" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.7-beta.2"
             tools:ignore="HardcodedText" />
 
