@@ -198,9 +198,12 @@ abstract class OrgzlyDatabase : RoomDatabase() {
 
 
                 db.execSQL("CREATE TABLE IF NOT EXISTS `note_properties_new` (`note_id` INTEGER NOT NULL, `position` INTEGER NOT NULL, `name` TEXT NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY(`note_id`, `position`), FOREIGN KEY(`note_id`) REFERENCES `notes`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                db.execSQL("CREATE UNIQUE INDEX `index_note_properties_note_id_name` ON `note_properties_new` (`note_id`, `name`)")
+                db.execSQL("CREATE  INDEX `index_note_properties_position` ON `note_properties_new` (`position`)")
+                db.execSQL("CREATE  INDEX `index_note_properties_name` ON `note_properties_new` (`name`)")
+                db.execSQL("CREATE  INDEX `index_note_properties_value` ON `note_properties_new` (`value`)")
 
-                db.execSQL("""
-                    INSERT INTO note_properties_new (note_id, position, name, value)
+                db.query("""
                     SELECT
                         note_properties.note_id,
                         note_properties.position,
@@ -210,7 +213,25 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                     LEFT JOIN properties ON (properties._id = note_properties.property_id)
                     LEFT JOIN property_names ON (property_names._id = properties.name_id)
                     LEFT JOIN property_values ON (property_values._id = properties.value_id)
-                """)
+                    ORDER BY note_properties.note_id, note_properties.position
+                """).use {
+                    var id = 0L
+                    var position = 1
+                    while (it.moveToNext()) {
+                        if (id != it.getLong(0)) { // First new note ID
+                            id = it.getLong(0)
+                            position = 1
+                        }
+
+                        val values = ContentValues()
+                        values.put("note_id", id)
+                        values.put("position", position++)
+                        values.put("name", it.getString(2))
+                        values.put("value", it.getString(3))
+
+                        db.insert("note_properties_new", SQLiteDatabase.CONFLICT_REPLACE, values)
+                    }
+                }
 
                 db.execSQL("DROP TABLE note_properties")
                 db.execSQL("DROP TABLE properties")
@@ -218,11 +239,6 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                 db.execSQL("DROP TABLE property_values")
 
                 db.execSQL("ALTER TABLE note_properties_new RENAME TO note_properties")
-
-                db.execSQL("CREATE UNIQUE INDEX `index_note_properties_note_id_name` ON `note_properties` (`note_id`, `name`)")
-                db.execSQL("CREATE  INDEX `index_note_properties_position` ON `note_properties` (`position`)")
-                db.execSQL("CREATE  INDEX `index_note_properties_name` ON `note_properties` (`name`)")
-                db.execSQL("CREATE  INDEX `index_note_properties_value` ON `note_properties` (`value`)")
 
 
                 db.execSQL("CREATE TABLE IF NOT EXISTS `org_ranges_new` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `string` TEXT NOT NULL, `start_timestamp_id` INTEGER NOT NULL, `end_timestamp_id` INTEGER, `difference` INTEGER, FOREIGN KEY(`start_timestamp_id`) REFERENCES `org_timestamps`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`end_timestamp_id`) REFERENCES `org_timestamps`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
