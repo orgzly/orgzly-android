@@ -202,6 +202,15 @@ public class AgendaFragmentTest extends OrgzlyTest {
         onItemInAgenda(0).perform(swipeLeft());
     }
 
+    @Test
+    public void testOpenBookFromAgendaBySwiping() {
+        testUtils.setupBook("notebook", "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>");
+        activityRule.launchActivity(null);
+        searchForText("ad.3");
+        onItemInAgenda(1).perform(swipeLeft());
+        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
+    }
+
     /* Tests correct mapping of agenda ID to note's DB ID. */
     @Test
     public void testOpenCorrectNote() {

@@ -1,12 +1,12 @@
 package com.orgzly.android.ui.notes.query.agenda
 
 import android.content.Context
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -101,6 +101,10 @@ class AgendaAdapter(
         } else {
             DIVIDER_ITEM_TYPE
         }
+    }
+
+    override fun getItemId(position: Int): Long {
+        return getItem(position).id
     }
 
     override fun getSelection(): Selection {

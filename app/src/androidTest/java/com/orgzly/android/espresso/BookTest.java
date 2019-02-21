@@ -20,6 +20,7 @@ import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerActions.open;
@@ -124,6 +125,12 @@ public class BookTest extends OrgzlyTest {
     public void testOpensNoteFromBook() {
         onNoteInBook(2).perform(click());
         onView(withId(R.id.bottom_action_bar_open)).perform(click());
+        onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testOpensNoteFromBookBySwiping() {
+        onNoteInBook(2).perform(swipeLeft());
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
     }
 
