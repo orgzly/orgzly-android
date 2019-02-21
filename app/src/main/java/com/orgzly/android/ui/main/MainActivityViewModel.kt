@@ -75,7 +75,9 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
 
     fun openNote(noteId: Long) {
         App.EXECUTORS.diskIO().execute {
-            openNoteRequestEvent.postValue(dataRepository.getNote(noteId))
+            dataRepository.getNote(noteId)?.let { note ->
+                openNoteRequestEvent.postValue(note)
+            }
         }
     }
 
