@@ -201,4 +201,19 @@ public class AgendaFragmentTest extends OrgzlyTest {
         searchForText("ad.3");
         onItemInAgenda(0).perform(swipeLeft());
     }
+
+    /* Tests correct mapping of agenda ID to note's DB ID. */
+    @Test
+    public void testOpenCorrectNote() {
+        testUtils.setupBook("notebook", "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>");
+        activityRule.launchActivity(null);
+
+        searchForText("ad.3");
+
+        onItemInAgenda(1).perform(click());
+        onView(withId(R.id.bottom_action_bar_open)).perform(click());
+
+        onView(withId(R.id.fragment_note_container)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note A")));
+    }
 }
