@@ -146,7 +146,7 @@ class DirectoryRepoActivity : CommonActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
 
-        menuInflater.inflate(R.menu.close_done, menu)
+        menuInflater.inflate(R.menu.done, menu)
 
         return true
     }
@@ -158,7 +158,7 @@ class DirectoryRepoActivity : CommonActivity() {
                 true
             }
 
-            R.id.close, android.R.id.home -> {
+            android.R.id.home -> {
                 finish()
                 true
             }
