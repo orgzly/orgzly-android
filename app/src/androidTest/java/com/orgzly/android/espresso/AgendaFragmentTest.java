@@ -17,6 +17,7 @@ import androidx.test.rule.ActivityTestRule;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerActions.open;
@@ -191,5 +192,13 @@ public class AgendaFragmentTest extends OrgzlyTest {
         onView(withId(R.id.bottom_action_bar_state)).perform(click());
 
         onView(withText("TODO")).check(matches(isChecked()));
+    }
+
+    @Test
+    public void testSwipeDivider() {
+        testUtils.setupBook("notebook", "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>");
+        activityRule.launchActivity(null);
+        searchForText("ad.3");
+        onItemInAgenda(0).perform(swipeLeft());
     }
 }

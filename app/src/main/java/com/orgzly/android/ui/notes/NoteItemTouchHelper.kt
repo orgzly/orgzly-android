@@ -48,7 +48,7 @@ class NoteItemTouchHelper(val listener: Listener) : ItemTouchHelper(Callback(lis
         override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
             val itemView = viewHolder.itemView
 
-            val noteItemViewHolder = (viewHolder as NoteItemViewHolder)
+            val noteItemViewHolder = viewHolder as? NoteItemViewHolder ?: return
 
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, itemView.left, itemView.right, dX, dY, actionState, isCurrentlyActive)
 
