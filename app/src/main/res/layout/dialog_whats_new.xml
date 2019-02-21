@@ -21,6 +21,27 @@
             android:layout_marginBottom="@dimen/space_between_content_areas"
             android:text="@string/whats_new_intro"/>
 
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.7-beta.4"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Update Getting Started notebook" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Handle trying to open non-existent note" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix using invalid note ID from agenda for some actions" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix left swipe from agenda" />
+
 
         <TextView
             style="@style/WhatsNewVersion"
