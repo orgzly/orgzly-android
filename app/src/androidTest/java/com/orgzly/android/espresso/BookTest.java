@@ -21,6 +21,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
+import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerActions.open;
@@ -39,7 +40,6 @@ import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
@@ -378,6 +378,7 @@ public class BookTest extends OrgzlyTest {
         onView(withId(R.id.done)).perform(click());
         onNotesInBook().perform(RecyclerViewActions.actionOnItemAtPosition(41, click()));
         onView(withId(R.id.bottom_action_bar_open)).perform(click());
+        onView(withId(R.id.fragment_note_container)).perform(swipeUp()); // For small screens
         onView(allOf(withId(R.id.name), withText(R.string.created_property_name))).check(matches(isDisplayed()));
         onView(allOf(withId(R.id.name), withText(""))).check(matches(isDisplayed()));
     }

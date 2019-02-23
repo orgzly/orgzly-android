@@ -21,6 +21,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.PickerActions.setDate;
 import static androidx.test.espresso.contrib.PickerActions.setTime;
@@ -400,6 +401,8 @@ public class NoteFragmentTest extends OrgzlyTest {
         onNoteInBook(1).perform(click());
         onView(withId(R.id.bottom_action_bar_open)).perform(click());
 
+        onView(withId(R.id.fragment_note_container)).perform(swipeUp()); // For small screens
+
         onView(withId(R.id.name))
                 .perform(replaceText("prop-name-1"));
         onView(allOf(withId(R.id.value), hasSibling(withText("prop-name-1"))))
@@ -412,6 +415,8 @@ public class NoteFragmentTest extends OrgzlyTest {
 
         toLandscape(activityRule);
         toPortrait(activityRule);
+
+        onView(withId(R.id.fragment_note_container)).perform(swipeUp()); // For small screens
 
         onView(allOf(withId(R.id.name), withText("prop-name-1"))).check(matches(isDisplayed()));
         onView(allOf(withId(R.id.value), withText("prop-value-1"))).check(matches(isDisplayed()));
@@ -445,6 +450,7 @@ public class NoteFragmentTest extends OrgzlyTest {
     public void testContentLineCountUpdatedOnNoteUpdate() {
         onNoteInBook(1).perform(click());
         onView(withId(R.id.bottom_action_bar_open)).perform(click());
+        onView(withId(R.id.body_edit)).perform(scrollTo()); // For smaller screens
         onView(withId(R.id.body_edit)).perform(replaceTextCloseKeyboard("a\nb\nc"));
         onView(withId(R.id.done)).perform(click());
         onNoteInBook(1, R.id.item_head_fold_button).perform(click());
