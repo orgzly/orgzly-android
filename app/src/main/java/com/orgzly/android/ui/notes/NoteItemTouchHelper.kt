@@ -2,6 +2,9 @@ package com.orgzly.android.ui.notes
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import androidx.annotation.ColorInt
@@ -72,6 +75,22 @@ class NoteItemTouchHelper(val listener: Listener) : ItemTouchHelper(Callback(lis
                     setBounds(itemView.left, itemView.top, (itemView.right + dX).toInt(), itemView.bottom)
                     draw(c)
                 }
+
+                // Border
+
+                val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                    color = attrs.labelBg
+                    style = Paint.Style.STROKE
+                }
+
+                val backgroundRectangle = RectF(
+                        itemView.left.toFloat() - 1,
+                        itemView.top.toFloat(),
+                        itemView.right.toFloat() + 1,
+                        itemView.bottom.toFloat())
+
+                c.drawRect(backgroundRectangle, backgroundPaint)
+
 
             } else if (dX == 0f) { // Original position
                 noteItemViewHolder.indentContainer.visibility = View.VISIBLE
