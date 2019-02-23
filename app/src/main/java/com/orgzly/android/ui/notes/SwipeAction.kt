@@ -36,7 +36,6 @@ open class SwipeAction(val context: Context, @StringRes val res: Int) {
         labelTextPaint = Paint().also { paint ->
             paint.color = attrs.labelColor
             paint.textSize = attrs.labelSize.toFloat()
-            paint.textAlign = Paint.Align.CENTER
             paint.style = Paint.Style.FILL
             paint.isAntiAlias = true
             paint.typeface = Typeface.DEFAULT_BOLD
@@ -69,7 +68,7 @@ open class SwipeAction(val context: Context, @StringRes val res: Int) {
                 labelBgPaint)
 
 
-        val x = itemView.right - labelTextRect.width() / 2f - margin
+        val x = itemView.right - labelTextRect.width() - margin
         val y = (itemView.top + itemView.bottom) / 2f - (labelTextPaint.descent() + labelTextPaint.ascent()) / 2
         c.drawText(labelText, x, y, labelTextPaint)
 
@@ -77,6 +76,33 @@ open class SwipeAction(val context: Context, @StringRes val res: Int) {
                 itemView.left.toFloat(),
                 itemView.top.toFloat(),
                 itemView.right + dX,
+                itemView.bottom.toFloat(),
+                itemBgPaint)
+
+        c.drawRect(
+                itemView.left.toFloat() - 1,
+                itemView.top.toFloat(),
+                itemView.right.toFloat() + 1,
+                itemView.bottom.toFloat(),
+                borderPaint)
+    }
+
+    fun drawForRightSwipe(c: Canvas, itemView: View, dX: Float) {
+        c.drawRect(
+                itemView.left.toFloat(),
+                itemView.top.toFloat(),
+                itemView.right.toFloat() - dX,
+                itemView.bottom.toFloat(),
+                labelBgPaint)
+
+        val x = itemView.left + margin
+        val y = (itemView.top + itemView.bottom) / 2f - (labelTextPaint.descent() + labelTextPaint.ascent()) / 2
+        c.drawText(labelText, x, y, labelTextPaint)
+
+        c.drawRect(
+                itemView.left.toFloat() + dX,
+                itemView.top.toFloat(),
+                itemView.right.toFloat() ,
                 itemView.bottom.toFloat(),
                 itemBgPaint)
 

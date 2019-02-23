@@ -16,6 +16,7 @@ class NoteItemTouchHelper(val listener: Listener) : ItemTouchHelper(Callback(lis
     class Callback(val listener: Listener) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.START) {
 
         private var leftSwipeAction: SwipeAction? = null
+        private var rightSwipeAction: SwipeAction? = null
 
         override fun isLongPressDragEnabled(): Boolean {
             return false
@@ -50,6 +51,14 @@ class NoteItemTouchHelper(val listener: Listener) : ItemTouchHelper(Callback(lis
                 }
 
                 dX > 0 -> { // Swipe right
+                    // Hide indent
+                    noteItemViewHolder.indentContainer.visibility = View.INVISIBLE
+
+                    if (rightSwipeAction == null) {
+                        rightSwipeAction = SwipeAction.OpenNote(recyclerView.context)
+                    }
+
+                    rightSwipeAction?.drawForRightSwipe(canvas, itemView, dX)
                 }
 
                 dX == 0f -> { // Original position
@@ -57,6 +66,7 @@ class NoteItemTouchHelper(val listener: Listener) : ItemTouchHelper(Callback(lis
 
                     // Reset so it can be re-initialized if settings changed
                     leftSwipeAction = null
+                    rightSwipeAction = null
                 }
             }
 
