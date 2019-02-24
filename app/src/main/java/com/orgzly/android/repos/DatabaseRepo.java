@@ -35,14 +35,14 @@ public class DatabaseRepo implements SyncRepo {
     }
 
     @Override
-    public List<VersionedRook> getBooks() throws IOException {
-        return dbRepo.getDbRepoBooks(repoUri);
+    public List<VersionedRook> getBooks() {
+        return dbRepo.getBooks(repoUri);
     }
 
     @Override
-    public VersionedRook retrieveBook(String fileName, File file) throws IOException {
+    public VersionedRook retrieveBook(String fileName, File file) {
         Uri uri = repoUri.buildUpon().appendPath(fileName).build();
-        return dbRepo.retrieveDbRepoBook(repoUri, uri, file);
+        return dbRepo.retrieveBook(repoUri, uri, file);
     }
 
     @Override
@@ -56,18 +56,18 @@ public class DatabaseRepo implements SyncRepo {
 
         VersionedRook vrook = new VersionedRook(repoUri, uri, rev, mtime);
 
-        return dbRepo.createDbRepoBook(vrook, content);
+        return dbRepo.createBook(vrook, content);
     }
 
     @Override
-    public VersionedRook renameBook(Uri fromUri, String name) throws IOException {
+    public VersionedRook renameBook(Uri fromUri, String name) {
         Uri toUri = UriUtils.getUriForNewName(fromUri, name);
-        return dbRepo.renameDbRepoBook(fromUri, toUri);
+        return dbRepo.renameBook(fromUri, toUri);
     }
 
     @Override
     public void delete(Uri uri) throws IOException {
-
+        dbRepo.deleteBook(uri);
     }
 
     @Override

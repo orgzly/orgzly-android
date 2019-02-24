@@ -1,6 +1,5 @@
 package com.orgzly.android.ui.books
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.orgzly.BuildConfig
@@ -58,8 +57,10 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
 
     fun deleteBook(bookId: Long, deleteLinked: Boolean) {
         App.EXECUTORS.diskIO().execute {
-            val action = BookDelete(bookId, deleteLinked)
-            bookDeletedEvent.postValue(UseCaseRunner.run(action))
+            catchAndPostError {
+                val result = UseCaseRunner.run(BookDelete(bookId, deleteLinked))
+                bookDeletedEvent.postValue(result)
+            }
         }
     }
 
@@ -71,8 +72,9 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
 
     fun renameBook(book: BookView, name: String) {
         App.EXECUTORS.diskIO().execute {
-            val action = BookRename(book, name)
-            UseCaseRunner.run(action)
+            catchAndPostError {
+                UseCaseRunner.run(BookRename(book, name))
+            }
         }
     }
 

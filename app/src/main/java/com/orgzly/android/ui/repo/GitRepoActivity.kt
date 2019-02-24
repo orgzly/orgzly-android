@@ -173,14 +173,14 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private fun save() {
         val remoteUriString = remoteUri().toString()
 
-        val action = if (repoId != 0L) {
+        val useCase = if (repoId != 0L) {
             RepoUpdate(repoId, remoteUriString)
         } else {
             RepoCreate(remoteUriString)
         }
 
         App.EXECUTORS.diskIO().execute {
-            UseCaseRunner.run(action)
+            UseCaseRunner.run(useCase)
 
             App.EXECUTORS.mainThread().execute {
                 saveToPreferences(repoId)

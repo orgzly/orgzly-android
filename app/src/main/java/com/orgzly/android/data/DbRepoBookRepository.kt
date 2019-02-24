@@ -13,13 +13,13 @@ class DbRepoBookRepository @Inject constructor(db: OrgzlyDatabase) {
 
     private val dbRepoBook = db.dbRepoBook()
 
-    fun getDbRepoBooks(repoUri: Uri): List<VersionedRook> {
+    fun getBooks(repoUri: Uri): List<VersionedRook> {
         return dbRepoBook.getAllByRepo(repoUri.toString()).map {
             VersionedRook(Uri.parse(it.repoUrl), Uri.parse(it.url), it.revision, it.mtime)
         }
     }
 
-    fun retrieveDbRepoBook(repoUri: Uri, uri: Uri, file: File): VersionedRook {
+    fun retrieveBook(repoUri: Uri, uri: Uri, file: File): VersionedRook {
         val book = dbRepoBook.getByUrl(uri.toString()) ?: throw IOException()
 
         MiscUtils.writeStringToFile(book.content, file)
@@ -27,7 +27,7 @@ class DbRepoBookRepository @Inject constructor(db: OrgzlyDatabase) {
         return VersionedRook(repoUri, uri, book.revision, book.mtime)
     }
 
-    fun createDbRepoBook(vrook: VersionedRook, content: String): VersionedRook {
+    fun createBook(vrook: VersionedRook, content: String): VersionedRook {
         val book = DbRepoBook(
                 0,
                 vrook.repoUri.toString(),
@@ -47,7 +47,7 @@ class DbRepoBookRepository @Inject constructor(db: OrgzlyDatabase) {
                 book.mtime)
     }
 
-    fun renameDbRepoBook(from: Uri, to: Uri): VersionedRook {
+    fun renameBook(from: Uri, to: Uri): VersionedRook {
         val book = dbRepoBook.getByUrl(from.toString())
                 ?: throw IOException("Failed moving notebook from $from to $to")
 
@@ -63,5 +63,15 @@ class DbRepoBookRepository @Inject constructor(db: OrgzlyDatabase) {
                 Uri.parse(renamedBook.url),
                 renamedBook.revision,
                 renamedBook.mtime)
+    }
+
+    @Throws(IOException::class)
+    fun deleteBook(uri: Uri): Int {
+        val uriString = uri.toString()
+        if (dbRepoBook.getByUrl(uriString) == null) {
+            throw IOException("Book $uri does not exist")
+        } else {
+            return dbRepoBook.deleteByUrl(uriString)
+        }
     }
 }

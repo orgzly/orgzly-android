@@ -58,18 +58,22 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
 
     fun openFileLink(path: String) {
         App.EXECUTORS.diskIO().execute {
-            val action = LinkFindTarget(path)
-            val result = UseCaseRunner.run(action)
-            openFileLinkRequestEvent.postValue(result)
+            catchAndPostError {
+                val result = UseCaseRunner.run(LinkFindTarget(path))
+                openFileLinkRequestEvent.postValue(result)
+            }
         }
     }
 
 
     fun requestNoteWithProperty(name: String, value: String) {
         App.EXECUTORS.diskIO().execute {
-            val action = NoteFindWithProperty(name, value)
-            val result = UseCaseRunner.run(action)
-            openNoteWithPropertyRequestEvent.postValue(Pair(action, result))
+            val useCase = NoteFindWithProperty(name, value)
+
+            catchAndPostError {
+                val result = UseCaseRunner.run(useCase)
+                openNoteWithPropertyRequestEvent.postValue(Pair(useCase, result))
+            }
         }
     }
 
