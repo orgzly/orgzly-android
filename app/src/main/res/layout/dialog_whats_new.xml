@@ -23,6 +23,20 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.7-beta.5"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Add label to swipe action" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Handle some user action failures" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.7-beta.4"
             tools:ignore="HardcodedText" />
 
