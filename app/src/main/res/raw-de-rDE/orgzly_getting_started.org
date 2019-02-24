@@ -1,14 +1,9 @@
 Willkommen bei Orgzly!
 
 * Notizen
-** Klicken Sie auf die Notiz, um sie zu öffnen
-** Klicken und halten Sie die Notiz, um sie auszuwählen
+** Click on the note to select it
 
 Sie können mehrere Notizen auswählen.
-
-** Wischen Sie über der Notiz nach rechts, um das Schnell-Menü anzuzeigen
-
-Nach links wischen öffnet ein weiteres Menü.
 
 ** Unterpunkte können Sie über das Symbole links und rechts daneben ein- und ausklappen
 *** Es gibt keine Begrenzung in der Anzahl der Ebenen

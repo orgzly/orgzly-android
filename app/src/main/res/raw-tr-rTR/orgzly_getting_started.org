@@ -1,14 +1,9 @@
 Orgzly'e Hoşgeldiniz!
 
 * Notlar
-** Açmak için nota tıklayın
-** Notu seçmek için tıklayın ve basılı tutun
+** Click on the note to select it
 
 Birden fazla not seçebilirsiniz.
-
-** Hızlı menüyü açmak için notu sağa kaydırın
-
-Farklı bir menüye ulaşmak için notu sola kaydırın.
 
 ** Bir notun alt notlarını yanındaki simgeye tıklayarak gizleyebilirsiniz
 *** Sahip olabileceğiniz seviyelerin sınırı yoktur

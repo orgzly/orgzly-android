@@ -1,14 +1,9 @@
 ¡Bienvenido a Orgzly!
 
 * Notas
-** Haga clic en la nota para abrirla
-** Haga clic y mantenga la nota para seleccionarla
+** Click on the note to select it
 
 Se pueden seleccionar múltiples notas.
-
-** Arrastre la nota a la derecha para abrir el menú rápido
-
-Arrastre a la izquierda para abrir un menú diferente.
 
 ** Plegar una nota que contiene subnotas haciendo clic en el icono a su lado
 *** No hay límite en el número de niveles que se pueden tener

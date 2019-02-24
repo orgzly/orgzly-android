@@ -1,14 +1,9 @@
 Selamat datang di Orgzly!
 
 * Catatan
-** Tekan di catatan untuk membuka ini
-** Tekan dan tahan catatan untuk memilih nya
+** Click on the note to select it
 
 Anda dapat membuat beberapa catatan.
-
-Fling note kanan untuk membuka menu cepatnya
-
-Fling itu dibiarkan membuka menu yang berbeda.
 
 ** Lipat catatan yang berisi sub-catatan dengan mengklik ikon di sebelahnya
 *** Tidak ada batas jumlah level yang bisa anda miliki

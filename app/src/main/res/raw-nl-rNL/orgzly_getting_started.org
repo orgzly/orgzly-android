@@ -1,14 +1,9 @@
 Welkom bij Orgzly!
 
 * Notities
-** Klik op de notitie om haar te openen
-** Klik en houd ingedrukt om de notitie te selecteren
+** Click on the note to select it
 
 Je kunt meerdere notities selecteren.
-
-** Veeg de notitie naar rechts om haar snelmenu te openen
-
-Veeg naar links om een ander menu te openen.
 
 ** Vouw een notitie met subnotities door op het icoon ernaast te klikken
 *** Er is geen limiet op het aantal niveaus dat je kunt hebben
