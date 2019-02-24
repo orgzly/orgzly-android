@@ -105,6 +105,17 @@
         </activity>
 
         <activity
+            android:name="com.orgzly.android.ui.CaptureChooserActivity"
+            android:label="@string/capture_shortcut_label"
+            android:icon="@mipmap/cic_shortcut_new_note">
+
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name="com.dropbox.core.android.AuthActivity"
             android:configChanges="orientation|keyboard"
             android:launchMode="singleTask">

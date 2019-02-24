@@ -149,6 +149,10 @@ public class ShareActivity extends CommonActivity
                     }
                 }
 
+                if (intent.hasExtra(AppIntent.EXTRA_BOOK_ID)) {
+                    data.bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0L);
+                }
+
             } else {
                 mError = getString(R.string.share_type_not_supported, type);
             }
@@ -219,10 +223,7 @@ public class ShareActivity extends CommonActivity
     }
 
     public static PendingIntent createNewNoteIntent(Context context, SavedSearch savedSearch) {
-        Intent resultIntent = new Intent(context, ShareActivity.class);
-        resultIntent.setAction(Intent.ACTION_SEND);
-        resultIntent.setType("text/plain");
-        resultIntent.putExtra(Intent.EXTRA_TEXT, "");
+        Intent resultIntent = createNewNoteInNotebookIntent(context, null);
 
         if (savedSearch != null && savedSearch.getQuery() != null) {
             resultIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, savedSearch.getQuery());
@@ -240,6 +241,20 @@ public class ShareActivity extends CommonActivity
 
 //        return PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    /**
+     * @param bookId null means default
+     */
+    public static Intent createNewNoteInNotebookIntent(Context context, Long bookId) {
+           Intent intent = new Intent(context, ShareActivity.class);
+           intent.setAction(Intent.ACTION_SEND);
+           intent.setType("text/plain");
+           intent.putExtra(Intent.EXTRA_TEXT, "");
+           if (bookId != null) {
+               intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
+           }
+           return intent;
     }
 
     @Override

@@ -231,6 +231,7 @@
     <string name="no_filters">You have no saved searches</string>
 
     <string name="book_shortcut_label">Orgzly notebook</string>
+    <string name="capture_shortcut_label">Orgzly capture</string>
     <string name="pick_a_notebook">Pick a notebook</string>
 
     <string name="down">Down</string>

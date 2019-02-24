@@ -27,7 +27,7 @@ public class BookChooserActivity extends CommonActivity
 
     public static final String TAG = BookChooserActivity.class.getName();
 
-    private String action;
+    protected String action;
 
     @Inject
     DataRepository dataRepository;
