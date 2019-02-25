@@ -6,8 +6,6 @@ class SavedSearchMoveDown(val id: Long) : UseCase() {
     override fun run(dataRepository: DataRepository): UseCaseResult {
         dataRepository.moveSavedSearchDown(id)
 
-        return UseCaseResult(
-                modifiesListWidget = true
-        )
+        return UseCaseResult()
     }
 }
