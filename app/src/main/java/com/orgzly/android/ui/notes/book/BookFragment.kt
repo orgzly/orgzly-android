@@ -139,7 +139,7 @@ class BookFragment :
             it.itemAnimator = null
         }
 
-        val itemTouchHelper = NoteItemTouchHelper(object : NoteItemTouchHelper.Listener {
+        val itemTouchHelper = NoteItemTouchHelper(true, object : NoteItemTouchHelper.Listener {
             override fun onSwipeLeft(id: Long) {
                 listener?.onNoteOpen(id)
             }

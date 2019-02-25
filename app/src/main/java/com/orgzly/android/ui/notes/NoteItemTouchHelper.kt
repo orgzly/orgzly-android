@@ -1,5 +1,6 @@
 package com.orgzly.android.ui.notes
 
+import android.content.Context
 import android.graphics.Canvas
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -7,13 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.android.util.LogUtils
 
-class NoteItemTouchHelper(val listener: Listener) : ItemTouchHelper(Callback(listener)) {
+class NoteItemTouchHelper(inBook: Boolean, listener: Listener) :
+        ItemTouchHelper(Callback(inBook, listener)) {
 
     interface Listener {
         fun onSwipeLeft(id: Long)
     }
 
-    class Callback(val listener: Listener) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.START) {
+    class Callback(private val inBook: Boolean, private val listener: Listener) :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.START) {
 
         private var leftSwipeAction: SwipeAction? = null
         private var rightSwipeAction: SwipeAction? = null
@@ -44,7 +47,7 @@ class NoteItemTouchHelper(val listener: Listener) : ItemTouchHelper(Callback(lis
                     noteItemViewHolder.indentContainer.visibility = View.INVISIBLE
 
                     if (leftSwipeAction == null) {
-                        leftSwipeAction = SwipeAction.OpenNote(recyclerView.context)
+                        leftSwipeAction = getLeftSwipeAction(inBook, recyclerView.context)
                     }
 
                     leftSwipeAction?.drawForLeftSwipe(canvas, itemView, dX)
@@ -55,7 +58,7 @@ class NoteItemTouchHelper(val listener: Listener) : ItemTouchHelper(Callback(lis
                     noteItemViewHolder.indentContainer.visibility = View.INVISIBLE
 
                     if (rightSwipeAction == null) {
-                        rightSwipeAction = SwipeAction.OpenNote(recyclerView.context)
+                        rightSwipeAction = getLeftSwipeAction(inBook, recyclerView.context)
                     }
 
                     rightSwipeAction?.drawForRightSwipe(canvas, itemView, dX)
@@ -71,6 +74,14 @@ class NoteItemTouchHelper(val listener: Listener) : ItemTouchHelper(Callback(lis
             }
 
             super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        }
+
+        private fun getLeftSwipeAction(inBook: Boolean, context: Context): SwipeAction {
+            return if (inBook) {
+                SwipeAction.OpenNote(context)
+            } else {
+                SwipeAction.FocusNote(context)
+            }
         }
 
         override fun onMove(

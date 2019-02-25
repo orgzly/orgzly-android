@@ -14,7 +14,7 @@ import com.orgzly.R
 open class SwipeAction(val context: Context, @StringRes val res: Int) {
     private val attrs = SwipeActionAttributes.getInstance(context)
 
-    private val labelText = context.getString(R.string.open).toUpperCase()
+    private val labelText = context.getString(res).toUpperCase()
 
     private val margin = context.resources.getDimension(R.dimen.screen_edge)
 
@@ -115,4 +115,5 @@ open class SwipeAction(val context: Context, @StringRes val res: Int) {
     }
 
     class OpenNote(context: Context) : SwipeAction(context, R.string.open)
+    class FocusNote(context: Context) : SwipeAction(context, R.string.focus)
 }

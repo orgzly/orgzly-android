@@ -68,7 +68,7 @@ class AgendaFragment :
             it.addItemDecoration(dividerItemDecoration)
         }
 
-        val itemTouchHelper = NoteItemTouchHelper(object : NoteItemTouchHelper.Listener {
+        val itemTouchHelper = NoteItemTouchHelper(false, object : NoteItemTouchHelper.Listener {
             override fun onSwipeLeft(id: Long) {
                 val dbId = item2databaseIds[id]
                 if (dbId != null) {
