@@ -59,8 +59,8 @@ class DirectoryRepoActivity : CommonActivity() {
         viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
 
         if (repoId != 0L) { // Editing existing
-            viewModel.repo.observe(this, Observer {
-                activity_repo_directory.setText(it.url)
+            viewModel.repo.observe(this, Observer { repo ->
+                activity_repo_directory.setText(repo?.url)
             })
         }
 
