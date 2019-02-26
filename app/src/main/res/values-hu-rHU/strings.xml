@@ -114,7 +114,7 @@
     <string name="tap_to_create_new_note">Koppints egy új bejegyzés létrehozásához</string>
     <string name="options_menu_item_search">Keresés</string>
     <string name="no_user_repos_configured_pref_summary">Egy sincs még beállítva</string>
-    <string name="repos_options_menu_new_repo">Új adattár</string>
+    <string name="repos_options_menu_new_repo">Új tároló</string>
     <string name="book_name_already_exists">%s jegyzetfüzet már létezik.</string>
     <string name="filter_name_already_exists">Ugyenezzel a névvel már van keresés</string>
     <string name="failed_creating_directory">Nem sikerült létrehozni e könyvtárat: %s</string>
@@ -124,7 +124,7 @@
     <string name="clear_database_dialog_message">Helyi adatbázis kiürítése?</string>
     <string name="clear_database_summary">Helyi adatbázis kiürítése</string>
     <string name="clear_database_performed">Adatbázis kiürítve</string>
-    <string name="getting_started_notebook_name">Getting Started with Orgzly</string>
+    <string name="getting_started_notebook_name">Kezdő lépések az Orgzly-val</string>
     <string name="reload_getting_started">\"Orgzly kezdő lépések\" betöltése</string>
     <string name="reload_getting_started_summary">A jegyzetfüzet legutolsó változatának betöltése</string>
     <string name="notebook_imported">Jegyzetfüzet betöltve</string>
@@ -182,7 +182,7 @@
     <string name="share_type_not_supported">%s megosztás típus nem támogatott</string>
     <string name="repositories">Tárolók</string>
     <string name="invalid_repo_url">Érvénytelen tároló URL \"%s\"</string>
-    <string name="repository_url_already_exists">Repository with this URL already exists</string>
+    <string name="repository_url_already_exists">Ilyen tároló URL más létezik</string>
     <string name="message_unsupported_repository_type">Nem támogatott tároló típus</string>
     <string name="fragment_left_drawer_list_view_content_description">Bal fiók</string>
     <string name="drawer_item">Fiók elem</string>
@@ -351,7 +351,7 @@
     <string name="primary_storage">Fő tároló</string>
     <string name="book_exported">Jegyzetfüzet elmentve: %s</string>
     <string name="failed_exporting_book">Sikertelen mentés: %s</string>
-    <string name="failed_importing_book">Failed importing notebook: %s</string>
+    <string name="failed_importing_book">%s jegyzetfüzet importálása sikertelen volt</string>
     <string name="edit_book_preface">Előszó szerkesztése</string>
     <string name="book_preface_hint">Az első bejegyzés előtti szöveg</string>
     <string name="keep_screen_on_title">Tartsa bekapcsolva a képernyőt beállítás engedélyezése</string>
@@ -451,9 +451,9 @@
     <string name="display_inline_images_summary">Képek megjelenítése a bejegyzésekben</string>
     <string name="scale_down_to_width">Lekicsinyítés a szélességhez igazítva</string>
     <string name="scale_down_to_width_summary">Lekicsinyítés megadott szélességhez igazítva</string>
-    <string name="argument_used">%s used</string>
-    <string name="argument_detected">%s detected</string>
-    <string name="argument_selected">%s selected</string>
+    <string name="argument_used">%s felhasználva</string>
+    <string name="argument_detected">%s észlelve</string>
+    <string name="argument_selected">%s kiválasztva</string>
     <string name="fixed_width_value">Szélesség (képpontokban)</string>
     <string name="share_target_service">Orgzly jegyzetfüzet megosztása</string>
 </resources>
