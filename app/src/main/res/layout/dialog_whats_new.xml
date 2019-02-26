@@ -21,6 +21,21 @@
             android:layout_marginBottom="@dimen/space_between_content_areas"
             android:text="@string/whats_new_intro"/>
 
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.7-beta.6"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Use FOCUS label for swipe from search results" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix few possible ANRs" />
+
+
         <TextView
             style="@style/WhatsNewVersion"
             android:text="v1.7-beta.5"
