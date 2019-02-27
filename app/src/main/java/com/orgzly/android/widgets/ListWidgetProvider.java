@@ -106,7 +106,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
                 // Logo - open query
                 Intent openIntent = Intent.makeRestartActivityTask(new ComponentName(context, MainActivity.class));
                 openIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, savedSearch.getQuery());
-                serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+                openIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
                 remoteViews.setOnClickPendingIntent(R.id.list_widget_header_icon, PendingIntent.getActivity(context, 0, openIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
                 Intent selectionIntent = new Intent(context, ListWidgetSelectionActivity.class);
