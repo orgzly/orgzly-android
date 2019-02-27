@@ -105,8 +105,8 @@
         </activity>
 
         <activity
-            android:name="com.orgzly.android.ui.CaptureChooserActivity"
-            android:label="@string/capture_shortcut_label"
+            android:name="com.orgzly.android.ui.TemplateChooserActivity"
+            android:label="@string/new_note_shortcut_label"
             android:icon="@mipmap/cic_shortcut_new_note">
 
             <intent-filter>

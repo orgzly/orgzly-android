@@ -12,7 +12,7 @@ import com.orgzly.android.BookUtils;
 import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.ui.share.ShareActivity;
 
-public class CaptureChooserActivity extends BookChooserActivity {
+public class TemplateChooserActivity extends BookChooserActivity {
     @Override
     public void onBookClicked(long bookId) {
         if (action == null) {
@@ -30,7 +30,7 @@ public class CaptureChooserActivity extends BookChooserActivity {
                 return;
             }
 
-            String id = "capture-" + bookId;
+            String id = "template-" + bookId;
             String name = book.getName();
             String title = BookUtils.getFragmentTitleForBook(book);
             Intent launchIntent = ShareActivity.createNewNoteInNotebookIntent(this, bookId);

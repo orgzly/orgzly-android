@@ -6,7 +6,7 @@ import com.orgzly.android.usecase.UseCaseService
 import com.orgzly.android.reminders.ReminderService
 import com.orgzly.android.sync.SyncService
 import com.orgzly.android.ui.BookChooserActivity
-import com.orgzly.android.ui.CaptureChooserActivity
+import com.orgzly.android.ui.TemplateChooserActivity
 import com.orgzly.android.ui.books.BooksFragment
 import com.orgzly.android.ui.notes.book.BookPrefaceFragment
 import com.orgzly.android.ui.savedsearch.SavedSearchFragment
@@ -86,7 +86,7 @@ internal abstract class AndroidModule {
     internal abstract fun contributeBookChooserActivity(): BookChooserActivity
 
     @ContributesAndroidInjector
-    internal abstract fun contributeCaptureChooserActivity(): CaptureChooserActivity
+    internal abstract fun contributeTemplateChooserActivity(): TemplateChooserActivity
 
     @ContributesAndroidInjector
     internal abstract fun contributeListWidgetSelectionActivity(): ListWidgetSelectionActivity
