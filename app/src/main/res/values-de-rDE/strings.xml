@@ -55,6 +55,7 @@
     <string name="priority">Priorität</string>
     <string name="nothing">Nichts</string>
     <string name="open">Öffnen</string>
+    <string name="focus">Focus</string>
     <string name="widget">Widget</string>
     <plurals name="notes_deleted">
         <item quantity="one">Notiz gelöscht</item>

@@ -55,6 +55,7 @@
     <string name="priority">Prioritas</string>
     <string name="nothing">Tidak ada</string>
     <string name="open">Buka</string>
+    <string name="focus">Focus</string>
     <string name="widget">Widget</string>
     <plurals name="notes_deleted">
         <item quantity="other">Catatan <b>%d</b> dihapus</item>

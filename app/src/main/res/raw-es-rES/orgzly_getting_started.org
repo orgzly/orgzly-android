@@ -1,7 +1,7 @@
 ¡Bienvenido a Orgzly!
 
 * Notas
-** Click on the note to select it
+** Haga clic en la nota para seleccionarla
 
 Se pueden seleccionar múltiples notas.
 

@@ -55,6 +55,7 @@
     <string name="priority">Приоритет</string>
     <string name="nothing">Пусто</string>
     <string name="open">Открыть</string>
+    <string name="focus">Фокус</string>
     <string name="widget">Виджет</string>
     <plurals name="notes_deleted">
         <item quantity="one">Заметка удалена</item>

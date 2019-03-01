@@ -55,6 +55,7 @@
     <string name="priority">优先级</string>
     <string name="nothing">无</string>
     <string name="open">打开</string>
+    <string name="focus">专注</string>
     <string name="widget">桌面小部件</string>
     <plurals name="notes_deleted">
         <item quantity="other">已删除 <b>%d</b> 笔记</item>

@@ -55,6 +55,7 @@
     <string name="priority">Fontosság</string>
     <string name="nothing">Semmi</string>
     <string name="open">Megnyit</string>
+    <string name="focus">Fókusz</string>
     <string name="widget">Kisalkalmazás</string>
     <plurals name="notes_deleted">
         <item quantity="one">Bejegyzés törölve</item>

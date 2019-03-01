@@ -55,6 +55,7 @@
     <string name="priority">Prioridad</string>
     <string name="nothing">Nada</string>
     <string name="open">Abrir</string>
+    <string name="focus">Foco</string>
     <string name="widget">Control</string>
     <plurals name="notes_deleted">
         <item quantity="one">Nota eliminada</item>
@@ -124,7 +125,7 @@
     <string name="clear_database_dialog_message">¿Borrar base de datos local?</string>
     <string name="clear_database_summary">Borrar base de datos local</string>
     <string name="clear_database_performed">Base de datos limitada</string>
-    <string name="getting_started_notebook_name">Getting Started with Orgzly</string>
+    <string name="getting_started_notebook_name">Primeros pasos con Orgzly</string>
     <string name="reload_getting_started">Importación de \"Getting Started con Orgzly\"</string>
     <string name="reload_getting_started_summary">Importar la versión más reciente de la libreta</string>
     <string name="notebook_imported">Nota importada</string>
@@ -182,7 +183,7 @@
     <string name="share_type_not_supported">No se admite la participación tipo %s</string>
     <string name="repositories">Repositorios</string>
     <string name="invalid_repo_url">URL del repositorio no válido \"%s\"</string>
-    <string name="repository_url_already_exists">Repository with this URL already exists</string>
+    <string name="repository_url_already_exists">Repositorio con esta URL ya existe</string>
     <string name="message_unsupported_repository_type">Tipo de repositorio no permitido</string>
     <string name="fragment_left_drawer_list_view_content_description">Cajón izquierdo</string>
     <string name="drawer_item">Artículo de cajón</string>
@@ -351,7 +352,7 @@
     <string name="primary_storage">Almacenamiento principal</string>
     <string name="book_exported">Nota exportada a %s</string>
     <string name="failed_exporting_book">Error al exportar libro %s</string>
-    <string name="failed_importing_book">Failed importing notebook: %s</string>
+    <string name="failed_importing_book">Error al importar bloc de notas: %s</string>
     <string name="edit_book_preface">Editar parrafo</string>
     <string name="book_preface_hint">Texto mostrado antes de la primera nota</string>
     <string name="keep_screen_on_title">Habilitar la opción para mantener la pantalla encendida</string>
@@ -451,9 +452,9 @@
     <string name="display_inline_images_summary">Mostrar imágenes en notas</string>
     <string name="scale_down_to_width">Ajustar al ancho</string>
     <string name="scale_down_to_width_summary">Ajustar imagen al ancho especificado</string>
-    <string name="argument_used">%s used</string>
-    <string name="argument_detected">%s detected</string>
-    <string name="argument_selected">%s selected</string>
+    <string name="argument_used">%s usado</string>
+    <string name="argument_detected">%s detectado</string>
+    <string name="argument_selected">%s seleccionado</string>
     <string name="fixed_width_value">Ancho (en pixeles)</string>
     <string name="share_target_service">Compartir a Orgzly bloc de notas</string>
 </resources>
