@@ -24,6 +24,15 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.7-beta.7"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Open correct search results from a widget" />
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.7-beta.6"
             tools:ignore="HardcodedText" />
 
