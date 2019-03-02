@@ -41,7 +41,9 @@
             <!-- Location (notebook and specific path in the future) -->
             <LinearLayout
                 style="@style/NoteFragmentListItem"
-                android:layout_marginTop="@dimen/space_between_content_areas">
+                android:layout_marginTop="@dimen/space_between_content_areas"
+                android:layout_marginRight="@dimen/screen_edge"
+                android:layout_marginEnd="@dimen/screen_edge">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -59,12 +61,13 @@
                     android:layout_marginLeft="@dimen/content_left_margin_from_icon"
                     android:layout_marginStart="@dimen/content_left_margin_from_icon"
                     android:textColor="?attr/text_primary_color"
-                    tools:text="GTD"/>
+                    tools:text="GTD"
+                    android:visibility="gone"/>
                 <TextView
                     style="@style/NoteFragmentListItemSpinnerButton"
                     android:id="@+id/fragment_note_location_button"
                     tools:text="GTD"
-                    android:visibility="gone"/>
+                    android:visibility="visible"/>
 
             </LinearLayout>
 
