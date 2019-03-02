@@ -2,6 +2,7 @@ package com.orgzly.android.widgets
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
@@ -101,8 +102,13 @@ class ListWidgetService : RemoteViewsService() {
             return true
         }
 
-        override fun getViewAt(position: Int): RemoteViews {
+        override fun getViewAt(position: Int): RemoteViews? {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, position)
+
+            if (position >= dataList.size) {
+                Log.e(TAG, "List too small (${dataList.size}) for requested position $position")
+                return null
+            }
 
             val entry = dataList[position]
 
