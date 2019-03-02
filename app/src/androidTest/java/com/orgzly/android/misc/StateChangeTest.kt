@@ -1,6 +1,6 @@
 package com.orgzly.android.misc
 
-import com.orgzly.android.NotesExporter
+import com.orgzly.android.NotesOrgExporter
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.prefs.AppPreferences
@@ -124,7 +124,7 @@ class StateChangeTest : OrgzlyTest() {
     private fun exportBook(book: BookView): String {
         val sw = StringWriter()
 
-        NotesExporter(context, dataRepository).exportBook(book.book, sw)
+        NotesOrgExporter(context, dataRepository).exportBook(book.book, sw)
 
         return sw.toString()
     }

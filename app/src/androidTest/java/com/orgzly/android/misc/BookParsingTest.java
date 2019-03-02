@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.orgzly.android.BookFormat;
 import com.orgzly.android.LipsumBookGenerator;
-import com.orgzly.android.NotesExporter;
+import com.orgzly.android.NotesOrgExporter;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.util.MiscUtils;
@@ -383,7 +383,7 @@ public class BookParsingTest extends OrgzlyTest {
                 /* Write from db -> temp file. */
                 File file = dataRepository.getTempBookFile();
                 try {
-                    new NotesExporter(context, dataRepository).exportBook(book, file);
+                    new NotesOrgExporter(context, dataRepository).exportBook(book, file);
                     assertEquals("Notebook", expacted, MiscUtils.readStringFromFile(file));
                 } finally {
                     file.delete();

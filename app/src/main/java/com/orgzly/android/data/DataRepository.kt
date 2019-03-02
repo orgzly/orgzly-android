@@ -149,7 +149,7 @@ class DataRepository @Inject constructor(
         val tmpFile = getTempBookFile()
         try {
             /* Write to temporary file. */
-            NotesExporter(context, this, format).exportBook(bookView.book, tmpFile)
+            NotesOrgExporter(context, this).exportBook(bookView.book, tmpFile)
 
             /* Upload to repo. */
             uploadedBook = repo.storeBook(tmpFile, fileName)
@@ -261,7 +261,7 @@ class DataRepository @Inject constructor(
         if (book != null) {
             val file = getTempBookFile()
             try {
-                NotesExporter(context, this, format).exportBook(book, file)
+                NotesOrgExporter(context, this).exportBook(book, file)
                 return MiscUtils.readStringFromFile(file)
             } finally {
                 file.delete()
@@ -1579,7 +1579,7 @@ class DataRepository @Inject constructor(
         val file = localStorage.getExportFile(book.name, format)
 
         /* Write book. */
-        NotesExporter(context, this, format).exportBook(book, file)
+        NotesOrgExporter(context, this).exportBook(book, file)
 
         /* Make file immediately visible when using MTP.
          * See https://github.com/orgzly/orgzly-android/issues/44

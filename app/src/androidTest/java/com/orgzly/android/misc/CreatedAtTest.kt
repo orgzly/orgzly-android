@@ -3,7 +3,7 @@ package com.orgzly.android.misc
 import com.orgzly.R
 import com.orgzly.android.BookFormat
 import com.orgzly.android.LocalStorage
-import com.orgzly.android.NotesExporter
+import com.orgzly.android.NotesOrgExporter
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.note.NotePayload
@@ -47,7 +47,7 @@ class CreatedAtTest : OrgzlyTest() {
                         ":END:\n")
 
         withTempFile { file ->
-            NotesExporter(context, dataRepository).exportBook(book.book, file)
+            NotesOrgExporter(context, dataRepository).exportBook(book.book, file)
 
             dataRepository.loadBookFromFile("book-a", BookFormat.ORG, file)
 
@@ -74,7 +74,7 @@ class CreatedAtTest : OrgzlyTest() {
                 dataRepository.updateNote(it.id, NotePayload.getInstance(it.title, it.content))
             }
 
-            NotesExporter(context, dataRepository).exportBook(book.book, file)
+            NotesOrgExporter(context, dataRepository).exportBook(book.book, file)
 
             dataRepository.loadBookFromFile("book-a", BookFormat.ORG, file)
 

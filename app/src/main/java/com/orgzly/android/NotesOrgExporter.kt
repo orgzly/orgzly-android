@@ -15,10 +15,7 @@ import java.io.PrintWriter
 import java.io.Writer
 import java.nio.charset.Charset
 
-class NotesExporter @JvmOverloads constructor(
-        val context: Context,
-        val dataRepository: DataRepository,
-        val format: BookFormat = BookFormat.ORG) {
+class NotesOrgExporter(val context: Context, val dataRepository: DataRepository) {
 
     /**
      * Writes content of the book from database to a specified file.
@@ -34,7 +31,7 @@ class NotesExporter @JvmOverloads constructor(
 
     @Throws(IOException::class)
     fun exportBook(book: Book, writer: Writer) {
-        val parserSettings = getOrgParserSettingsFromPreferences()
+        val parserSettings = getOrgParserSettingsFromPreferences(context)
         val orgWriter = OrgParserWriter(parserSettings)
 
         // Write preface
@@ -58,29 +55,31 @@ class NotesExporter @JvmOverloads constructor(
         }
     }
 
-    private fun getOrgParserSettingsFromPreferences(): OrgParserSettings {
-        val parserSettings = OrgParserSettings.getBasic()
+    companion object {
+        private fun getOrgParserSettingsFromPreferences(context: Context): OrgParserSettings {
+            val parserSettings = OrgParserSettings.getBasic()
 
-        when (AppPreferences.separateNotesWithNewLine(context)) {
-            context.getString(R.string.pref_value_separate_notes_with_new_line_always) ->
-                parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.ALWAYS
+            when (AppPreferences.separateNotesWithNewLine(context)) {
+                context.getString(R.string.pref_value_separate_notes_with_new_line_always) ->
+                    parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.ALWAYS
 
-            context.getString(R.string.pref_value_separate_notes_with_new_line_multi_line_notes_only) ->
-                parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.MULTI_LINE_NOTES_ONLY
+                context.getString(R.string.pref_value_separate_notes_with_new_line_multi_line_notes_only) ->
+                    parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.MULTI_LINE_NOTES_ONLY
 
-            context.getString(R.string.pref_value_separate_notes_with_new_line_never) ->
-                parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.NEVER
+                context.getString(R.string.pref_value_separate_notes_with_new_line_never) ->
+                    parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.NEVER
+            }
+
+            parserSettings.separateHeaderAndContentWithNewLine =
+                    AppPreferences.separateHeaderAndContentWithNewLine(context)
+
+            parserSettings.tagsColumn = AppPreferences.tagsColumn(context)
+
+            parserSettings.orgIndentMode = AppPreferences.orgIndentMode(context)
+
+            parserSettings.orgIndentIndentationPerLevel = AppPreferences.orgIndentIndentationPerLevel(context)
+
+            return parserSettings
         }
-
-        parserSettings.separateHeaderAndContentWithNewLine =
-                AppPreferences.separateHeaderAndContentWithNewLine(context)
-
-        parserSettings.tagsColumn = AppPreferences.tagsColumn(context)
-
-        parserSettings.orgIndentMode = AppPreferences.orgIndentMode(context)
-
-        parserSettings.orgIndentIndentationPerLevel = AppPreferences.orgIndentIndentationPerLevel(context)
-
-        return parserSettings
     }
 }
