@@ -6,6 +6,7 @@ import com.orgzly.android.LocalStorage
 import com.orgzly.android.NotesExporter
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.ui.note.NotePayload
 import com.orgzly.org.datetime.OrgDateTime
 import org.junit.Assert.*
 import org.junit.Test
@@ -56,6 +57,33 @@ class CreatedAtTest : OrgzlyTest() {
         }
     }
 
+    @Test
+    fun testRemovePropertyFromNote() {
+        AppPreferences.createdAt(context, true)
+
+        val book = testUtils.setupBook(
+                "book-a",
+                "* Note [a-1]\n" +
+                        ":PROPERTIES:\n" +
+                        ":CREATED: [2018-01-01 12:00]\n" +
+                        ":END:\n")
+
+        withTempFile { file ->
+            // Remove property
+            dataRepository.getNote("Note [a-1]")?.let {
+                dataRepository.updateNote(it.id, NotePayload.getInstance(it.title, it.content))
+            }
+
+            NotesExporter(context, dataRepository).exportBook(book.book, file)
+
+            dataRepository.loadBookFromFile("book-a", BookFormat.ORG, file)
+
+            val note = dataRepository.getNote("Note [a-1]")
+            val properties = dataRepository.getNoteProperties(note!!.id)
+
+            assertEquals(0, properties.size)
+        }
+    }
 
     @Test
     fun testBookOutOfSyncAfterDifferentCreatedAtPropertyName() {

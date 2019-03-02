@@ -33,9 +33,6 @@ class NotesExporter @JvmOverloads constructor(
 
     @Throws(IOException::class)
     fun exportBook(book: Book, writer: Writer) {
-        val createdAtPropertyName = AppPreferences.createdAtProperty(context)
-        val useCreatedAtProperty = AppPreferences.createdAt(context)
-
         val parserSettings = getOrgParserSettingsFromPreferences()
         val orgWriter = OrgParserWriter(parserSettings)
 
@@ -43,7 +40,7 @@ class NotesExporter @JvmOverloads constructor(
         writer.write(orgWriter.whiteSpacedFilePreface(book.preface))
 
         // Write each note
-        OrgMapper(dataRepository).forEachOrgHead(book.name, createdAtPropertyName, useCreatedAtProperty) { head, level ->
+        OrgMapper(dataRepository).forEachOrgHead(book.name) { head, level ->
             writer.write(orgWriter.whiteSpacedHead(head, level, book.isIndented == true))
         }
     }

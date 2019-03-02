@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -61,6 +62,7 @@ public class ShareActivityTest extends OrgzlyTest {
         onView(allOf(withId(R.id.fragment_note_location_button), isDisplayed()))
                 .check(matches(withText(context.getString(R.string.default_share_notebook))));
         toLandscape(activityRule);
+        onView(withId(R.id.fragment_note_location_button)).perform(scrollTo());
         onView(allOf(withId(R.id.fragment_note_location_button), isDisplayed()))
                 .check(matches(withText(context.getString(R.string.default_share_notebook))));
     }

@@ -7,14 +7,11 @@ import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.ui.note.NotePayload
 import com.orgzly.org.OrgHead
 import com.orgzly.org.OrgProperties
-import com.orgzly.org.datetime.OrgDateTime
 import com.orgzly.org.datetime.OrgRange
 
 class OrgMapper(val dataRepository: DataRepository) {
     fun forEachOrgHead(
             bookName: String,
-            createdAtPropertyName: String,
-            useCreatedAtProperty: Boolean,
             action: (head: OrgHead, level: Int) -> Any) {
 
         dataRepository.getNotes(bookName).forEach { noteView ->
@@ -22,12 +19,6 @@ class OrgMapper(val dataRepository: DataRepository) {
 
             val head = toOrgHead(noteView).apply {
                 properties = toOrgProperties(dataRepository.getNoteProperties(note.id))
-
-                // Update note properties with created-at property, if created-at time exists
-                if (useCreatedAtProperty && note.createdAt != null && note.createdAt > 0) {
-                    val time = OrgDateTime(note.createdAt, false)
-                    addProperty(createdAtPropertyName, time.toString())
-                }
             }
 
             action(head, note.position.level)
