@@ -6,6 +6,7 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.data.mappers.OrgMapper
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.org.OrgHead
 import com.orgzly.org.parser.OrgParserSettings
 import com.orgzly.org.parser.OrgParserWriter
 import java.io.File
@@ -40,8 +41,20 @@ class NotesExporter @JvmOverloads constructor(
         writer.write(orgWriter.whiteSpacedFilePreface(book.preface))
 
         // Write each note
-        OrgMapper(dataRepository).forEachOrgHead(book.name) { head, level ->
+        forEachOrgHead(book.name) { head, level ->
             writer.write(orgWriter.whiteSpacedHead(head, level, book.isIndented == true))
+        }
+    }
+
+    private fun forEachOrgHead(bookName: String, action: (head: OrgHead, level: Int) -> Any) {
+        dataRepository.getNotes(bookName).forEach { noteView ->
+            val note = noteView.note
+
+            val head = OrgMapper.toOrgHead(noteView).apply {
+                properties = OrgMapper.toOrgProperties(dataRepository.getNoteProperties(note.id))
+            }
+
+            action(head, note.position.level)
         }
     }
 
