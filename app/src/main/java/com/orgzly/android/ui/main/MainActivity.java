@@ -22,6 +22,7 @@ import com.orgzly.android.App;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.BookFormat;
 import com.orgzly.android.BookName;
+import com.orgzly.android.NotesClipboard;
 import com.orgzly.android.db.dao.NoteDao;
 import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.db.entity.Note;
@@ -61,6 +62,8 @@ import com.orgzly.android.usecase.BookImportGettingStarted;
 import com.orgzly.android.usecase.BookLinkUpdate;
 import com.orgzly.android.usecase.BookSparseTreeForNote;
 import com.orgzly.android.usecase.BookUpdatePreface;
+import com.orgzly.android.usecase.NoteClipboardCut;
+import com.orgzly.android.usecase.NoteClipboardPaste;
 import com.orgzly.android.usecase.SavedSearchCreate;
 import com.orgzly.android.usecase.SavedSearchDelete;
 import com.orgzly.android.usecase.SavedSearchExport;
@@ -813,6 +816,11 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
+    public void onNotesPasteRequest(long bookId, long noteId, Place place) {
+        mSyncFragment.run(new NotePaste(bookId, noteId, place));
+    }
+
+    @Override
     public void onBookLinkSetRequest(final long bookId) {
         viewModel.setBookLink(bookId);
     }
@@ -900,11 +908,6 @@ public class MainActivity extends CommonActivity
                         startActivity(intent);
                     }));
         }
-    }
-
-    @Override
-    public void onNotesPasteRequest(long bookId, long noteId, Place place) {
-        mSyncFragment.run(new NotePaste(bookId, noteId, place));
     }
 
     @Override
@@ -1164,7 +1167,24 @@ public class MainActivity extends CommonActivity
 
             showSnackbar(message);
 
-        } else if (action instanceof NotePaste) {
+        } else if (action instanceof NoteClipboardCut) {
+            NotesClipboard clipboard = (NotesClipboard) result.getUserData();
+
+            if (clipboard != null) {
+                int count = clipboard.getCount();
+
+                String message;
+
+                if (count == 0) {
+                    message = getResources().getString(R.string.no_notes_cut);
+                } else {
+                    message = getResources().getQuantityString(R.plurals.notes_cut, count, count);
+                }
+
+                showSnackbar(message);
+            }
+
+        } else if (action instanceof NotePaste || action instanceof NoteClipboardPaste) {
             int count = (int) result.getUserData();
 
             String message;

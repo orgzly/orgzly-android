@@ -6,7 +6,6 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.data.mappers.OrgMapper
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.org.OrgHead
 import com.orgzly.org.parser.OrgParserSettings
 import com.orgzly.org.parser.OrgParserWriter
 import java.io.File
@@ -31,28 +30,53 @@ class NotesOrgExporter(val context: Context, val dataRepository: DataRepository)
 
     @Throws(IOException::class)
     fun exportBook(book: Book, writer: Writer) {
-        val parserSettings = getOrgParserSettingsFromPreferences(context)
-        val orgWriter = OrgParserWriter(parserSettings)
+        val orgParserSettings = getOrgParserSettingsFromPreferences(context)
+        val orgWriter = OrgParserWriter(orgParserSettings)
 
         // Write preface
         writer.write(orgWriter.whiteSpacedFilePreface(book.preface))
 
         // Write each note
-        forEachOrgHead(book.name) { head, level ->
-            writer.write(orgWriter.whiteSpacedHead(head, level, book.isIndented == true))
-        }
-    }
-
-    private fun forEachOrgHead(bookName: String, action: (head: OrgHead, level: Int) -> Any) {
-        dataRepository.getNotes(bookName).forEach { noteView ->
+        dataRepository.getNotes(book.name).forEach { noteView ->
             val note = noteView.note
 
             val head = OrgMapper.toOrgHead(noteView).apply {
                 properties = OrgMapper.toOrgProperties(dataRepository.getNoteProperties(note.id))
             }
 
-            action(head, note.position.level)
+            writer.write(orgWriter.whiteSpacedHead(head, note.position.level, book.isIndented == true))
         }
+    }
+
+    fun exportSubtreesAligned(ids: Set<Long>, writer: Writer): Int {
+        val orgParserSettings = getOrgParserSettingsFromPreferences(context)
+        val orgWriter = OrgParserWriter(orgParserSettings)
+
+        var noteCount = 0
+        var subtreeRgt = 0L
+        var levelOffset = 0
+
+        dataRepository.getSubtrees(ids).forEach { noteView ->
+            val note = noteView.note
+
+            // First note or next subtree
+            if (subtreeRgt == 0L || note.position.rgt > subtreeRgt) {
+                levelOffset = note.position.level - 1
+                subtreeRgt = note.position.rgt
+            }
+
+            val level = note.position.level - levelOffset
+
+            val head = OrgMapper.toOrgHead(noteView).apply {
+                properties = OrgMapper.toOrgProperties(dataRepository.getNoteProperties(note.id))
+            }
+
+            writer.write(orgWriter.whiteSpacedHead(head, level, false))
+
+            noteCount++
+        }
+
+        return noteCount
     }
 
     companion object {

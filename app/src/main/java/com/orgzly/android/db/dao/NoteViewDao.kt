@@ -31,6 +31,17 @@ abstract class NoteViewDao {
     @Query("$QUERY WHERE notes.id = :id GROUP BY notes.id")
     abstract fun get(id: Long): NoteView?
 
+    @Query("""
+        $QUERY
+        WHERE notes.id IN (
+        SELECT DISTINCT d.id
+        FROM notes n, notes d
+        WHERE n.id IN (:ids) AND n.level > 0 AND d.book_id = n.book_id AND d.is_cut = 0 AND n.is_cut = 0 AND n.lft <= d.lft AND d.rgt <= n.rgt
+        )
+        GROUP BY notes.id ORDER BY notes.lft
+    """)
+    abstract fun getSubtrees(ids: Set<Long>): List<NoteView>
+
     @Query("$QUERY WHERE notes.title = :title GROUP BY notes.id")
     abstract fun get(title: String): NoteView?
 

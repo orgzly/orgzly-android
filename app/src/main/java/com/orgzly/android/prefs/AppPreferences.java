@@ -813,6 +813,7 @@ public class AppPreferences {
     /*
      * Auto Sync
      */
+
     public static boolean autoSync(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_auto_sync),
@@ -835,5 +836,19 @@ public class AppPreferences {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_auto_sync_on_resume),
                 context.getResources().getBoolean(R.bool.pref_default_auto_sync_on_resume));
+    }
+
+    /*
+     * Clipboard
+     */
+
+    public static String notesOrgClipboard(Context context) {
+        String key = context.getResources().getString(R.string.pref_key_notes_org_clipboard);
+        return getStateSharedPreferences(context).getString(key, null);
+    }
+
+    public static void notesOrgClipboard(Context context, String value) {
+        String key = context.getResources().getString(R.string.pref_key_notes_org_clipboard);
+        getStateSharedPreferences(context).edit().putString(key, value).apply();
     }
 }

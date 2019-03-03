@@ -48,10 +48,7 @@ import com.orgzly.org.OrgFileSettings
 import com.orgzly.org.OrgActiveTimestamps
 import com.orgzly.org.datetime.OrgDateTime
 import com.orgzly.org.datetime.OrgRange
-import com.orgzly.org.parser.OrgNestedSetParserListener
-import com.orgzly.org.parser.OrgNodeInSet
-import com.orgzly.org.parser.OrgParser
-import com.orgzly.org.parser.OrgParserWriter
+import com.orgzly.org.parser.*
 import com.orgzly.org.utils.StateChangeLogic
 import java.io.*
 import java.util.*
@@ -724,6 +721,19 @@ class DataRepository @Inject constructor(
         return db.note().getLatestBatchId() ?: 0
     }
 
+
+    fun paste(clipboard: NotesClipboard, noteId: Long, place: Place): Int {
+        return db.runInTransaction(Callable {
+            pasteNotes(clipboard, place, noteId)
+        })
+    }
+
+    fun pasteNotes(clipboard: NotesClipboard, place: Place, targetNoteId: Long): Int {
+        val reader = StringReader(clipboard.toOrg())
+
+        return 0
+    }
+
     fun pasteNotes(batchId: Long, place: Place, targetNoteId: Long): Int {
         var foldedUnder: Long = 0
 
@@ -1009,6 +1019,10 @@ class DataRepository @Inject constructor(
 
     fun getNoteView(title: String): NoteView? {
         return db.noteView().get(title)
+    }
+
+    fun getSubtrees(ids: Set<Long>): List<NoteView> {
+        return db.noteView().getSubtrees(ids)
     }
 
     fun getNote(title: String): Note? {
