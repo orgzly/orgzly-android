@@ -1,7 +1,7 @@
 Willkommen bei Orgzly!
 
 * Notizen
-** Click on the note to select it
+** Klicken sie auf die Notiz um sie auszuwählen
 
 Sie können mehrere Notizen auswählen.
 
