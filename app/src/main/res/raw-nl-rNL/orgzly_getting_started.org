@@ -1,7 +1,7 @@
 Welkom bij Orgzly!
 
 * Notities
-** Click on the note to select it
+** Klik op de notitie om haar te openen
 
 Je kunt meerdere notities selecteren.
 
