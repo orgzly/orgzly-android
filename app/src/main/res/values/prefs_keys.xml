@@ -238,10 +238,10 @@
     </string-array>
 
     <string name="pref_key_use_reminders_for_scheduled_times" translatable="false">pref_key_use_reminders_for_scheduled_times</string>
-    <bool name="pref_default_use_reminders_for_scheduled_times" translatable="false">false</bool>
+    <bool name="pref_default_use_reminders_for_scheduled_times" translatable="false">true</bool>
 
     <string name="pref_key_use_reminders_for_deadline_times" translatable="false">pref_key_use_reminders_for_deadline_times</string>
-    <bool name="pref_default_use_reminders_for_deadline_times" translatable="false">false</bool>
+    <bool name="pref_default_use_reminders_for_deadline_times" translatable="false">true</bool>
 
     <string name="pref_key_reminders_channel_notification_settings" translatable="false">pref_key_reminders_channel_notification_settings</string>
     <string name="pref_key_reminders_notification_settings" translatable="false">pref_key_reminders_notification_settings</string>
