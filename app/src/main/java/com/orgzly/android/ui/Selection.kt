@@ -17,11 +17,11 @@ class Selection {
     }
 
     fun getFirstId(): Long {
-        return idSet.first()
+        return getIds().first()
     }
 
     fun getLastId(): Long {
-        return idSet.last()
+        return getIds().last()
     }
 
     val count: Int

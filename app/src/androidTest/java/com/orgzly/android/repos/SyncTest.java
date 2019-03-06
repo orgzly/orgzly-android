@@ -88,8 +88,8 @@ public class SyncTest extends OrgzlyTest {
         testUtils.setupRook("mock://repo-a", "mock://repo-a/remote-book-2.org", "", "2abcdef", 1400067156);
 
         assertEquals(1, dataRepository.getReposList().size());
-        assertEquals(2, dbRepoBookRepository.getDbRepoBooks(Uri.parse("mock://repo-a")).size());
-        assertEquals("mock://repo-a", dbRepoBookRepository.getDbRepoBooks(Uri.parse("mock://repo-a")).get(0).getRepoUri().toString());
+        assertEquals(2, dbRepoBookRepository.getBooks(Uri.parse("mock://repo-a")).size());
+        assertEquals("mock://repo-a", dbRepoBookRepository.getBooks(Uri.parse("mock://repo-a")).get(0).getRepoUri().toString());
         assertEquals(0, dataRepository.getBooks().size());
 
         /* Sync. */
@@ -98,8 +98,8 @@ public class SyncTest extends OrgzlyTest {
         assertEquals(BookSyncStatus.DUMMY_WITHOUT_LINK_AND_ONE_ROOK, g1.get("remote-book-2").getStatus());
 
         assertEquals(1, dataRepository.getReposList().size());
-        assertEquals(2, dbRepoBookRepository.getDbRepoBooks(Uri.parse("mock://repo-a")).size());
-        assertEquals("mock://repo-a", dbRepoBookRepository.getDbRepoBooks(Uri.parse("mock://repo-a")).get(0).getRepoUri().toString());
+        assertEquals(2, dbRepoBookRepository.getBooks(Uri.parse("mock://repo-a")).size());
+        assertEquals("mock://repo-a", dbRepoBookRepository.getBooks(Uri.parse("mock://repo-a")).get(0).getRepoUri().toString());
         assertEquals(2, dataRepository.getBooks().size());
 
         /* Sync. */
@@ -108,8 +108,8 @@ public class SyncTest extends OrgzlyTest {
         assertEquals(BookSyncStatus.NO_CHANGE, g2.get("remote-book-2").getStatus());
 
         assertEquals(1, dataRepository.getReposList().size());
-        assertEquals(2, dbRepoBookRepository.getDbRepoBooks(Uri.parse("mock://repo-a")).size());
-        assertEquals("mock://repo-a", dbRepoBookRepository.getDbRepoBooks(Uri.parse("mock://repo-a")).get(0).getRepoUri().toString());
+        assertEquals(2, dbRepoBookRepository.getBooks(Uri.parse("mock://repo-a")).size());
+        assertEquals("mock://repo-a", dbRepoBookRepository.getBooks(Uri.parse("mock://repo-a")).get(0).getRepoUri().toString());
         assertEquals(2, dataRepository.getBooks().size());
     }
 

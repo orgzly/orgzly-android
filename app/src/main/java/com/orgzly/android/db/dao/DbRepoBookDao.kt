@@ -11,4 +11,7 @@ interface DbRepoBookDao : BaseDao<DbRepoBook> {
 
     @Query("SELECT * FROM db_repo_books WHERE repo_url = :repoUrl")
     fun getAllByRepo(repoUrl: String): List<DbRepoBook>
+
+    @Query("DELETE FROM db_repo_books WHERE url = :url")
+    fun deleteByUrl(url: String): Int
 }

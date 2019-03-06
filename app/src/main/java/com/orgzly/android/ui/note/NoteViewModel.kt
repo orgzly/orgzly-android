@@ -38,9 +38,11 @@ class NoteViewModel(
 
     fun deleteNote(bookId: Long, noteId: Long) {
         App.EXECUTORS.diskIO().execute {
-            val action = NoteDelete(bookId, setOf(noteId))
-            val result = UseCaseRunner.run(action)
-            noteDeletedEvent.postValue(result.userData as Int)
+            val useCase = NoteDelete(bookId, setOf(noteId))
+            catchAndPostError {
+                val result = UseCaseRunner.run(useCase)
+                noteDeletedEvent.postValue(result.userData as Int)
+            }
         }
     }
 

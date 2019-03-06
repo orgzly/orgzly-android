@@ -76,7 +76,7 @@ class SearchFragment :
             it.addItemDecoration(dividerItemDecoration)
         }
 
-        val itemTouchHelper = NoteItemTouchHelper(object : NoteItemTouchHelper.Listener {
+        val itemTouchHelper = NoteItemTouchHelper(false, object : NoteItemTouchHelper.Listener {
             override fun onSwipeLeft(id: Long) {
                 listener?.onNoteFocusInBookRequest(id)
             }

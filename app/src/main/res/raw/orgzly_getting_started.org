@@ -1,14 +1,9 @@
 Welcome to Orgzly!
 
 * Notes
-** Click on the note to open it
-** Click and hold the note to select it
+** Click on the note to select it
 
 You can select multiple notes.
-
-** Fling note right to open its quick-menu
-
-Fling it left to open a different menu.
 
 ** Fold a note which contains sub-notes by clicking the icon next to it
 *** There is no limit in number of levels you can have

@@ -16,6 +16,7 @@ import com.orgzly.android.ui.notes.book.BookFragment
 import com.orgzly.android.ui.notes.query.agenda.AgendaFragment
 import com.orgzly.android.ui.notes.query.search.SearchFragment
 import com.orgzly.android.ui.notifications.SyncStatusBroadcastReceiver
+import com.orgzly.android.ui.repo.BrowserActivity
 import com.orgzly.android.ui.repos.ReposActivity
 import com.orgzly.android.ui.repo.DirectoryRepoActivity
 import com.orgzly.android.ui.repo.DropboxRepoActivity
@@ -80,6 +81,9 @@ internal abstract class AndroidModule {
 
     @ContributesAndroidInjector
     internal abstract fun contributeDirectoryRepoActivity(): DirectoryRepoActivity
+
+    @ContributesAndroidInjector
+    internal abstract fun contributeBrowserActivity(): BrowserActivity
 
     @ContributesAndroidInjector
     internal abstract fun contributeBookChooserActivity(): BookChooserActivity

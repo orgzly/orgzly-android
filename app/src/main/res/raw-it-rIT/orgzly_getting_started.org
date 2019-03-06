@@ -1,14 +1,9 @@
 Benvenuto su Orgzly!
 
 * Note
-** Clicca sulla nota per aprirla
-** Tieni premuta la nota per selezionarla
+** Click on the note to select it
 
 Puoi selezionare più note.
-
-** Tieni premuto e muovi velocemente a destra per aprire il suo menu rapido
-
-Tieni premuto muovendo velocemente a sinistra per aprire un menu diverso.
 
 ** Apri una nota che contiene sotto-note premendo sull'icona vicina ad essa
 ** Non ci sono limiti al numero di livelli che puoi avere
@@ -45,7 +40,7 @@ Sono disabilitati di default e devono essere abilitati nelle impostazioni.
 
 È possibile modificare il numero di priorità nelle impostazioni. Puoi anche cambiare la priorità predefinita - la proprietà impostata per le note in cui non viene specificata.
 
-** Note can include links
+** Le note possono includere link
 
 Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[http://www.orgzly.com][Orgzly.com]]).
 
@@ -57,7 +52,7 @@ See http://www.orgzly.com/help#links for more information.
 
 Puoi usare parole in *grassetto*, /corsivo/, _sottolineato_, =scandito=, ~tipo codice~ e +barrato+.
 
-* * E' disponile l'elenco con caselle da spuntare
+** E' disponile l'elenco con caselle da spuntare
 
 - [X] Attività 1
 - [ ] Attività 2

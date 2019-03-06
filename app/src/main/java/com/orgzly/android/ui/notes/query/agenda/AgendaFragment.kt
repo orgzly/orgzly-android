@@ -1,6 +1,7 @@
 package com.orgzly.android.ui.notes.query.agenda
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.ViewFlipper
 import androidx.appcompat.view.ActionMode
@@ -13,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.notes.NoteItemTouchHelper
@@ -56,7 +56,7 @@ class AgendaFragment :
 
     private fun setupRecyclerView(view: View) {
         viewAdapter = AgendaAdapter(view.context, this)
-        // TODO: viewAdapter.setHasStableIds(true)
+        viewAdapter.setHasStableIds(true)
 
         val layoutManager = LinearLayoutManager(context)
 
@@ -68,9 +68,14 @@ class AgendaFragment :
             it.addItemDecoration(dividerItemDecoration)
         }
 
-        val itemTouchHelper = NoteItemTouchHelper(object : NoteItemTouchHelper.Listener {
+        val itemTouchHelper = NoteItemTouchHelper(false, object : NoteItemTouchHelper.Listener {
             override fun onSwipeLeft(id: Long) {
-                listener?.onNoteFocusInBookRequest(id)
+                val dbId = item2databaseIds[id]
+                if (dbId != null) {
+                    listener?.onNoteFocusInBookRequest(dbId)
+                } else {
+                    // Divider
+                }
             }
         })
 
