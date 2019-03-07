@@ -483,6 +483,7 @@ public class ReminderService extends JobIntentService {
             if (notes.size() > 0) {
                 NotificationCompat.Builder builder =
                         new NotificationCompat.Builder(context, NotificationChannels.REMINDERS)
+                                .setAutoCancel(true)
                                 .setSmallIcon(R.drawable.ic_logo_for_notification)
                                 .setGroup(Notifications.REMINDERS_GROUP)
                                 .setGroupSummary(true);

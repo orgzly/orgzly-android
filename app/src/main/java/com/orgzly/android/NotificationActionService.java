@@ -3,14 +3,18 @@ package com.orgzly.android;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import androidx.core.app.JobIntentService;
+import android.os.Build;
+import android.service.notification.StatusBarNotification;
 
 import com.orgzly.BuildConfig;
-import com.orgzly.android.usecase.UseCaseRunner;
-import com.orgzly.android.usecase.NoteUpdateStateDone;
 import com.orgzly.android.reminders.SnoozeJob;
+import com.orgzly.android.ui.notifications.Notifications;
+import com.orgzly.android.usecase.NoteUpdateStateDone;
+import com.orgzly.android.usecase.UseCaseRunner;
 import com.orgzly.android.util.LogUtils;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
 
 public class NotificationActionService extends JobIntentService {
     public static final String TAG = NotificationActionService.class.getName();
@@ -65,6 +69,26 @@ public class NotificationActionService extends JobIntentService {
                     (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
             notificationManager.cancel(tag, id);
+
+            cancelRemindersSummary(notificationManager);
+        }
+    }
+
+    private void cancelRemindersSummary(NotificationManager notificationManager) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            StatusBarNotification[] notifications = notificationManager.getActiveNotifications();
+
+            int reminders = 0;
+
+            for (StatusBarNotification notification: notifications) {
+                if (notification.getId() == Notifications.REMINDER_ID) {
+                    reminders++;
+                }
+            }
+
+            if (reminders == 0) {
+                notificationManager.cancel(Notifications.REMINDERS_SUMMARY_ID);
+            }
         }
     }
 }
