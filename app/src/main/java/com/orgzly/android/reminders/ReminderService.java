@@ -41,6 +41,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.core.app.JobIntentService;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
@@ -62,7 +63,7 @@ public class ReminderService extends JobIntentService {
     static final int TIME_BEFORE_NOW = 1;
     static final int TIME_FROM_NOW = 2;
 
-    public static final long[] SCHEDULED_NOTE_VIBRATE_PATTERN = {500, 50, 50, 300};
+    public static final long[] VIBRATION_PATTERN = {500, 50, 50, 300};
 
     @Inject
     DataRepository dataRepository;
@@ -120,14 +121,15 @@ public class ReminderService extends JobIntentService {
     }
 
     private static boolean isRelevantNoteTime(Context context, ReminderTimeDao.NoteTime noteTime) {
-        /* Not done-type state. */
         Set<String> doneStateKeywords = AppPreferences.doneKeywordsSet(context);
-        boolean state = !doneStateKeywords.contains(noteTime.getState());
+        boolean isNotDone = !doneStateKeywords.contains(noteTime.getState());
 
-        boolean scheduled = AppPreferences.remindersForScheduledEnabled(context) && noteTime.getTimeType() == ReminderTimeDao.SCHEDULED_TIME;
-        boolean deadline = AppPreferences.remindersForDeadlineEnabled(context) && noteTime.getTimeType() == ReminderTimeDao.DEADLINE_TIME;
+        boolean isEnabled =
+                AppPreferences.remindersForScheduledEnabled(context) && noteTime.getTimeType() == ReminderTimeDao.SCHEDULED_TIME
+                        || AppPreferences.remindersForDeadlineEnabled(context) && noteTime.getTimeType() == ReminderTimeDao.DEADLINE_TIME
+                        || AppPreferences.remindersForEventsEnabled(context) && noteTime.getTimeType() == ReminderTimeDao.EVENT_TIME;
 
-        return state && (scheduled || deadline);
+        return isNotDone && isEnabled;
     }
 
     /**
@@ -167,7 +169,15 @@ public class ReminderService extends JobIntentService {
 
         switch (beforeOrAfter) {
             case TIME_BEFORE_NOW: // Before now, starting from lastRun, depending on timeType
-                res[0] = timeType == ReminderTimeDao.SCHEDULED_TIME ? lastRun.scheduled : lastRun.deadline;
+
+                if (timeType == ReminderTimeDao.SCHEDULED_TIME) {
+                    res[0] = lastRun.scheduled;
+                } else if (timeType == ReminderTimeDao.DEADLINE_TIME) {
+                    res[0] = lastRun.deadline;
+                } else {
+                    res[0] = lastRun.event;
+                }
+
                 if (res[0] == null) {
                     res[0] = now;
                 }
@@ -196,7 +206,9 @@ public class ReminderService extends JobIntentService {
     protected void onHandleWork(@NonNull Intent intent) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
-        if (!AppPreferences.remindersForScheduledEnabled(this) && !AppPreferences.remindersForDeadlineEnabled(this)) {
+        if (!AppPreferences.remindersForScheduledEnabled(this)
+                && !AppPreferences.remindersForDeadlineEnabled(this)
+                && !AppPreferences.remindersForEventsEnabled(this)) {
             showScheduledAtNotification("Reminders are disabled");
             return;
         }
@@ -255,6 +267,11 @@ public class ReminderService extends JobIntentService {
             lastRun.deadline = new DateTime(ms);
         }
 
+        ms = AppPreferences.reminderLastRunForEvents(this);
+        if (ms > 0) {
+            lastRun.event = new DateTime(ms);
+        }
+
         return lastRun;
     }
 
@@ -267,6 +284,10 @@ public class ReminderService extends JobIntentService {
 
         if (AppPreferences.remindersForDeadlineEnabled(context)) {
             AppPreferences.reminderLastRunForDeadline(context, now.getMillis());
+        }
+
+        if (AppPreferences.remindersForEventsEnabled(context)) {
+            AppPreferences.reminderLastRunForEvents(context, now.getMillis());
         }
     }
 
@@ -386,9 +407,17 @@ public class ReminderService extends JobIntentService {
             String notificationTag = String.valueOf(noteReminder.getPayload().noteId);
             int notificationId = Notifications.REMINDER_ID;
 
+            @StringRes int contentResId;
+            if (noteReminder.getPayload().timeType == ReminderTimeDao.SCHEDULED_TIME) {
+                contentResId = R.string.reminder_for_scheduled;
+            } else if (noteReminder.getPayload().timeType == ReminderTimeDao.DEADLINE_TIME) {
+                contentResId = R.string.reminder_for_deadline;
+            } else {
+                contentResId = R.string.reminder_for_event;
+            }
+
             String line = context.getString(
-                    noteReminder.getPayload().timeType == ReminderTimeDao.SCHEDULED_TIME ? R.string.reminder_for_scheduled : R.string.reminder_for_deadline,
-                    noteReminder.getPayload().orgDateTime.toStringWithoutBrackets());
+                    contentResId, noteReminder.getPayload().orgDateTime.toStringWithoutBrackets());
 
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(context, NotificationChannels.REMINDERS)
@@ -406,7 +435,7 @@ public class ReminderService extends JobIntentService {
 
             /* Set vibration. */
             if (AppPreferences.remindersVibrate(context)) {
-                builder.setVibrate(SCHEDULED_NOTE_VIBRATE_PATTERN);
+                builder.setVibrate(VIBRATION_PATTERN);
             }
 
             /* Set notification sound. */
@@ -478,7 +507,7 @@ public class ReminderService extends JobIntentService {
             notificationManager.notify(notificationTag, notificationId, builder.build());
         }
 
-        // Create a group summary notification, but only if notificationscan be grouped
+        // Create a group summary notification, but only if notifications can be grouped
         if (groupReminders()) {
             if (notes.size() > 0) {
                 NotificationCompat.Builder builder =
@@ -537,12 +566,14 @@ public class ReminderService extends JobIntentService {
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private PendingIntent reminderSnoozePendingIntent(Context context,
-                                                      long noteId,
-                                                      int noteTimeType, // scheduled vs deadline
-                                                      long timestamp,
-                                                      String notificationTag,
-                                                      int notificationId) {
+    private PendingIntent reminderSnoozePendingIntent(
+            Context context,
+            long noteId,
+            int noteTimeType,
+            long timestamp,
+            String notificationTag,
+            int notificationId) {
+
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
         Intent intent = new Intent(context, NotificationBroadcastReceiver.class);
 
@@ -564,10 +595,11 @@ public class ReminderService extends JobIntentService {
     static class LastRun {
         DateTime scheduled;
         DateTime deadline;
+        DateTime event;
 
         @Override
         public String toString() {
-            return "Scheduled: " + scheduled + "  Deadline: " + deadline;
+            return "Scheduled: " + scheduled + "  Deadline: " + deadline + "  Event: " + event;
         }
     }
 }

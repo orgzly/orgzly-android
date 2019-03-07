@@ -17,6 +17,12 @@
         android:summary="@string/pref_title_summary_reminders_for_deadline_times"
         android:defaultValue="@bool/pref_default_use_reminders_for_deadline_times" />
 
+    <SwitchPreference
+        android:key="@string/pref_key_use_reminders_for_event_times"
+        android:title="@string/pref_title_reminders_for_event_times"
+        android:summary="@string/pref_title_summary_reminders_for_event_times"
+        android:defaultValue="@bool/pref_default_use_reminders_for_event_times" />
+
     <!-- Open system settings to configure reminders' notification channel -->
     <androidx.preference.PreferenceScreen
         android:key="@string/pref_key_reminders_channel_notification_settings"

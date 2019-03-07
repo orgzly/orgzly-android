@@ -44,7 +44,7 @@ object NotificationChannels {
         channel.enableLights(true)
         channel.lightColor = Color.BLUE
 
-        channel.vibrationPattern = ReminderService.SCHEDULED_NOTE_VIBRATE_PATTERN
+        channel.vibrationPattern = ReminderService.VIBRATION_PATTERN
 
         channel.setShowBadge(false)
 
