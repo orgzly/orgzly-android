@@ -91,6 +91,67 @@ abstract class NoteViewDao {
             LEFT JOIN books t_books ON t_books.id = notes.book_id
             LEFT JOIN note_ancestors t_note_ancestors ON t_note_ancestors.note_id = notes.id
             LEFT JOIN notes t_notes_with_inherited_tags ON t_notes_with_inherited_tags.id = t_note_ancestors.ancestor_note_id
-    """
+        """
+
+        @Language("RoomSql")
+        const val QUERY_WITH_NOTE_EVENTS = """
+            SELECT
+
+            notes.*,
+
+            group_concat(t_notes_with_inherited_tags.tags, ' ') AS inherited_tags,
+
+            t_scheduled_range.string AS scheduled_range_string,
+            t_scheduled_timestamps_start.string AS scheduled_time_string,
+            t_scheduled_timestamps_end.string AS scheduled_time_end_string,
+            t_scheduled_timestamps_start.timestamp AS scheduled_time_timestamp,
+            datetime(t_scheduled_timestamps_start.timestamp/1000, 'unixepoch', 'localtime', 'start of day') AS scheduled_time_start_of_day,
+            t_scheduled_timestamps_start.hour AS scheduled_time_hour,
+
+            t_deadline_range.string AS deadline_range_string,
+            t_deadline_timestamps_start.string AS deadline_time_string,
+            t_deadline_timestamps_end.string AS deadline_time_end_string,
+            t_deadline_timestamps_start.timestamp AS deadline_time_timestamp,
+            datetime(t_deadline_timestamps_start.timestamp/1000, 'unixepoch', 'localtime', 'start of day') AS deadline_time_start_of_day,
+            t_deadline_timestamps_start.hour AS deadline_time_hour,
+
+            t_closed_range.string AS closed_range_string,
+            t_closed_timestamps_start.string AS closed_time_string,
+            t_closed_timestamps_end.string AS closed_time_end_string,
+            t_closed_timestamps_start.string AS closed_time_timestamp,
+            datetime(t_closed_timestamps_start.timestamp/1000, 'unixepoch', 'localtime', 'start of day') AS closed_time_start_of_day,
+            t_closed_timestamps_start.hour AS closed_time_hour,
+
+            t_clock_range.string AS clock_range_string,
+            t_clock_timestamps_start.string AS clock_time_string,
+            t_clock_timestamps_end.string AS clock_time_end_string,
+
+            t_note_events_start.string AS event_string,
+            t_note_events_start.timestamp AS event_timestamp,
+
+            t_books.name AS book_name
+
+            FROM notes
+
+            LEFT JOIN org_ranges t_scheduled_range ON t_scheduled_range.id = notes.scheduled_range_id
+            LEFT JOIN org_timestamps t_scheduled_timestamps_start ON t_scheduled_timestamps_start.id = t_scheduled_range.start_timestamp_id
+            LEFT JOIN org_timestamps t_scheduled_timestamps_end ON t_scheduled_timestamps_end.id = t_scheduled_range.end_timestamp_id
+            LEFT JOIN org_ranges t_deadline_range ON t_deadline_range.id = notes.deadline_range_id
+            LEFT JOIN org_timestamps t_deadline_timestamps_start ON t_deadline_timestamps_start.id = t_deadline_range.start_timestamp_id
+            LEFT JOIN org_timestamps t_deadline_timestamps_end ON t_deadline_timestamps_end.id = t_deadline_range.end_timestamp_id
+            LEFT JOIN org_ranges t_closed_range ON t_closed_range.id = notes.closed_range_id
+            LEFT JOIN org_timestamps t_closed_timestamps_start ON t_closed_timestamps_start.id = t_closed_range.start_timestamp_id
+            LEFT JOIN org_timestamps t_closed_timestamps_end ON t_closed_timestamps_end.id = t_closed_range.end_timestamp_id
+            LEFT JOIN org_ranges t_clock_range ON t_clock_range.id = notes.clock_range_id
+            LEFT JOIN org_timestamps t_clock_timestamps_start ON t_clock_timestamps_start.id = t_clock_range.start_timestamp_id
+            LEFT JOIN org_timestamps t_clock_timestamps_end ON t_clock_timestamps_end.id = t_clock_range.end_timestamp_id
+            LEFT JOIN books t_books ON t_books.id = notes.book_id
+            LEFT JOIN note_ancestors t_note_ancestors ON t_note_ancestors.note_id = notes.id
+            LEFT JOIN notes t_notes_with_inherited_tags ON t_notes_with_inherited_tags.id = t_note_ancestors.ancestor_note_id
+
+            LEFT JOIN note_events t_note_events ON t_note_events.note_id = notes.id
+            LEFT JOIN org_ranges t_note_events_range ON t_note_events_range.id = t_note_events.org_range_id
+            LEFT JOIN org_timestamps t_note_events_start ON t_note_events_start.id = t_note_events_range.start_timestamp_id
+        """
     }
 }

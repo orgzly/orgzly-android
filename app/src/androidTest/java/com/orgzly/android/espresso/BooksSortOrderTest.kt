@@ -6,7 +6,6 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.rule.ActivityTestRule
 import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.EspressoUtils.*
@@ -23,7 +22,7 @@ import org.junit.Test
 //@Ignore
 class BooksSortOrderTest : OrgzlyTest() {
     @get:Rule
-    var activityRule: ActivityTestRule<*> = EspressoActivityTestRule(MainActivity::class.java, true, false)
+    var activityRule = EspressoActivityTestRule(MainActivity::class.java, true, false)
 
     @Before
     @Throws(Exception::class)

@@ -1,5 +1,6 @@
 package com.orgzly.android.util;
 
+import com.orgzly.android.ui.notes.query.agenda.AgendaItems;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgDateTimeUtils;
 import com.orgzly.org.datetime.OrgRange;
@@ -19,13 +20,15 @@ public class AgendaUtils {
      * This method returns only one {@link DateTime} per day
      * to avoid displaying the same note multiple times.
      */
-    public static Set<DateTime> expandOrgDateTime(String[] rangeStrings, DateTime now, int days) {
+    public static Set<DateTime> expandOrgDateTime(
+            AgendaItems.ExpandableOrgRange[] rangeStrings, DateTime now, int days) {
+
         Set<DateTime> set = new TreeSet<>();
 
-        for (String rangeString : rangeStrings) {
-            OrgRange range = OrgRange.parseOrNull(rangeString);
+        for (AgendaItems.ExpandableOrgRange expandableRange : rangeStrings) {
+            OrgRange range = OrgRange.parseOrNull(expandableRange.getRange());
             if (range != null) {
-                set.addAll(expandOrgDateTime(range, now, days));
+                set.addAll(expandOrgDateTime(range, expandableRange.getOverdueToday(), now, days));
             }
         }
 
@@ -38,22 +41,29 @@ public class AgendaUtils {
         return result;
     }
 
-    public static List<DateTime> expandOrgDateTime(String rangeStr, Calendar now, int days) {
+    /** Used by tests. */
+    static List<DateTime> expandOrgDateTime(String rangeStr, Calendar now, int days) {
+
         OrgRange range = OrgRange.parseOrNull(rangeStr);
         if (range == null) {
             return new ArrayList<>();
         }
-        return expandOrgDateTime(range, new DateTime(now), days);
+
+        return expandOrgDateTime(range, true, new DateTime(now), days);
     }
 
-    private static List<DateTime> expandOrgDateTime(OrgRange range, DateTime now, int days) {
+    private static List<DateTime> expandOrgDateTime(
+            OrgRange range, boolean overdueToday, DateTime now, int days) {
+
         List<DateTime> result = new ArrayList<>();
         OrgDateTime rangeStart = range.getStartTime();
         OrgDateTime rangeEnd = range.getEndTime();
 
         // Add today if task is overdue
-        if (rangeStart.getCalendar().before(now.toGregorianCalendar())) {
-            result.add(now.withTimeAtStartOfDay());
+        if (overdueToday) {
+            if (rangeStart.getCalendar().before(now.toGregorianCalendar())) {
+                result.add(now.withTimeAtStartOfDay());
+            }
         }
 
         DateTime to = now.plusDays(days).withTimeAtStartOfDay();

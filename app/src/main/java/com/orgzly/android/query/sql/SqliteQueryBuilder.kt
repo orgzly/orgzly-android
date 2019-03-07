@@ -209,6 +209,10 @@ class SqliteQueryBuilder(val context: Context) {
                 "tags LIKE ?"
             }
 
+            is Condition.Event -> {
+                toInterval("event_timestamp", expr.interval, expr.relation)
+            }
+
             is Condition.Scheduled -> {
                 hasScheduledCondition = true
                 toInterval("scheduled_time_timestamp", expr.interval, expr.relation)

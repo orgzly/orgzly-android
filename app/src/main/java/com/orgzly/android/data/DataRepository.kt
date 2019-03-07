@@ -45,6 +45,7 @@ import com.orgzly.android.util.MiscUtils
 import com.orgzly.android.util.OrgFormatter
 import com.orgzly.org.OrgFile
 import com.orgzly.org.OrgFileSettings
+import com.orgzly.org.OrgActiveTimestamps
 import com.orgzly.org.datetime.OrgDateTime
 import com.orgzly.org.datetime.OrgRange
 import com.orgzly.org.parser.OrgNestedSetParserListener
@@ -936,7 +937,7 @@ class DataRepository @Inject constructor(
         return db.noteView().runQuery(sqlQuery)
     }
 
-    private fun buildSqlQuery(query: Query): SupportSQLiteQuery {
+    private fun buildSqlQuery(query: Query, groupByEvent: Boolean = false): SupportSQLiteQuery {
         val queryBuilder = SqliteQueryBuilder(context)
 
         val (selection, selectionArgs, orderBy) = queryBuilder.build(query)
@@ -948,7 +949,7 @@ class DataRepository @Inject constructor(
         }
 
         if (query.options.agendaDays > 0) {
-            s.add("(scheduled_range_id IS NOT NULL OR deadline_range_id IS NOT NULL)")
+            s.add("(scheduled_range_id IS NOT NULL OR deadline_range_id IS NOT NULL OR event_timestamp IS NOT NULL)")
         }
 
         if (!s.isEmpty() || !query.sortOrders.isEmpty()) {
@@ -957,9 +958,15 @@ class DataRepository @Inject constructor(
 
         val selection2 = if (s.isEmpty()) "0" else TextUtils.join(" AND ", s)
 
+        // For agenda, group by event timestamp too
+        val groupBy = if (query.isAgenda()) {
+            "notes.id, event_timestamp"
+        } else {
+            "notes.id"
+        }
 
         val supportQuery = SupportSQLiteQueryBuilder
-                .builder("(${NoteViewDao.QUERY} GROUP BY notes.id)")
+                .builder("(${NoteViewDao.QUERY_WITH_NOTE_EVENTS} GROUP BY $groupBy)")
                 .selection(selection2, selectionArgs.toTypedArray())
                 .orderBy(orderBy)
                 .create()
@@ -1178,6 +1185,8 @@ class DataRepository @Inject constructor(
 
         replaceNoteProperties(noteId, notePayload.properties)
 
+        replaceNoteEvents(noteId, notePayload.title, notePayload.content)
+
         db.noteAncestor().insertAncestorsForNote(noteId)
 
         updateBookIsModified(target.bookId, true, time)
@@ -1222,6 +1231,8 @@ class DataRepository @Inject constructor(
 
             replaceNoteProperties(noteId, notePayload.properties)
 
+            replaceNoteEvents(noteId, notePayload.title, notePayload.content)
+
             val newNote = note.copy(
                     title = notePayload.title,
                     content = notePayload.content,
@@ -1237,6 +1248,30 @@ class DataRepository @Inject constructor(
             val count = db.note().update(newNote)
 
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Updated $count note: $newNote")
+        }
+    }
+
+    private fun replaceNoteEvents(noteId: Long, title: String, content: String?) {
+        db.noteEvent().deleteForNote(noteId)
+
+        insertNoteEvents(noteId, title, content)
+    }
+
+    private fun insertNoteEvents(noteId: Long, title: String, content: String?) {
+        if (title.isNotEmpty()) {
+            parseAndInsertEvents(noteId, title)
+        }
+
+        if (! content.isNullOrEmpty()) {
+            parseAndInsertEvents(noteId, content)
+        }
+    }
+
+    private fun parseAndInsertEvents(noteId: Long, str: String) {
+        OrgActiveTimestamps.parse(str).forEach { range ->
+            getOrgRangeId(range)?.let { orgRangeId ->
+                db.noteEvent().replace(NoteEvent(noteId, orgRangeId))
+            }
         }
     }
 
@@ -1429,6 +1464,8 @@ class DataRepository @Inject constructor(
                             val noteId = db.note().insert(note)
 
                             insertNoteProperties(noteId, node.head.properties)
+
+                            insertNoteEvents(noteId, note.title, note.content)
 
                             /*
                              * Update notes' parent IDs and insert ancestors.

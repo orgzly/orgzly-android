@@ -766,4 +766,12 @@ public class QueryFragmentTest extends OrgzlyTest {
         onNoteInSearch(1).perform(swipeLeft());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
     }
+
+    @Test
+    public void testSearchAndClickOnNoteWithTwoDifferentEvents() {
+        testUtils.setupBook("notebook", "* Note\n<2000-01-01>\n<2000-01-02>");
+        activityRule.launchActivity(null);
+        searchForText("e.lt.now");
+        onNoteInSearch(0).perform(click());
+    }
 }

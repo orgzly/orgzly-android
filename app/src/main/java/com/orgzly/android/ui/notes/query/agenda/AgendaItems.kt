@@ -7,6 +7,8 @@ import com.orgzly.android.util.AgendaUtils
 import org.joda.time.DateTime
 
 object AgendaItems {
+    data class ExpandableOrgRange(val range: String?, val overdueToday: Boolean)
+
     fun getList(
             notes: List<NoteView>, queryString: String?, idMap: MutableMap<Long, Long>
     ): List<AgendaItem> {
@@ -50,9 +52,15 @@ object AgendaItems {
                         { mutableListOf<AgendaItem>(AgendaItem.Divider(index++, it)) })
 
         notes.forEach { note ->
+
+            val times = arrayOf(
+                    ExpandableOrgRange(note.scheduledRangeString, overdueToday = true),
+                    ExpandableOrgRange(note.deadlineRangeString, overdueToday = true),
+                    ExpandableOrgRange(note.eventString, overdueToday = false)
+            )
+
             // Expand each note if it has a repeater or is a range
-            val days = AgendaUtils.expandOrgDateTime(
-                    arrayOf(note.scheduledRangeString, note.deadlineRangeString), now, agendaDays)
+            val days = AgendaUtils.expandOrgDateTime(times, now, agendaDays)
 
             // Add each note instance to its day bucket
             days.forEach { day ->

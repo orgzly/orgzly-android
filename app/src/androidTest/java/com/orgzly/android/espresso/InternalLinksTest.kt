@@ -20,7 +20,7 @@ import org.junit.Ignore
 //@Ignore
 class InternalLinksTest : OrgzlyTest() {
     @get:Rule
-    var activityRule: ActivityTestRule<*> = EspressoActivityTestRule(MainActivity::class.java, true, false)
+    var activityRule = EspressoActivityTestRule(MainActivity::class.java, true, false)
 
     @Before
     @Throws(Exception::class)
