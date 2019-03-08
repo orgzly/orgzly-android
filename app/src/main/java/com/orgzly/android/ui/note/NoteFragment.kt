@@ -280,6 +280,9 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             }
         }
 
+        // Start in edit mode
+        editSwitch.isChecked = true
+
         editSwitch.setOnClickListener {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, editSwitch.isChecked)
 
@@ -524,8 +527,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
                 mViewFlipper.displayedChild = 0
 
-                editSwitch.isChecked = true
-
                 /* Open keyboard for new notes, unless fragment was given
                  * some initial values (for example from ShareActivity).
                  */
@@ -537,13 +538,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 notePayload = dataRepository.getNotePayload(noteId)
 
                 if (notePayload != null) {
-                    // If there is no content, start in edit mode
-                    if (notePayload?.content == null) {
-                        editSwitch.isChecked = true
-                    }
-
                     mViewFlipper.displayedChild = 0
-
                 } else {
                     mViewFlipper.displayedChild = 1
                 }
