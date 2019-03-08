@@ -92,6 +92,10 @@
 
         <item name="snackbar_bg_color">#323232</item> <!-- Default color -->
 
+        <item name="swipe_label_text_color">@color/dark_text_primary_color</item>
+        <item name="swipe_label_bg_color">@color/grey_100</item>
+        <item name="swipe_label_border_color">@color/grey_200</item>
+
         <!-- / Color scheme -->
 
         <item name="ic_access_time_18dp">@drawable/ic_access_time_black_18dp</item>
@@ -243,6 +247,10 @@
 
         <item name="snackbar_bg_color">@color/dark_theme_app_bar</item>
 
+        <item name="swipe_label_text_color">@color/white_text_primary_color</item>
+        <item name="swipe_label_bg_color">@color/grey_900</item>
+        <item name="swipe_label_border_color">@color/grey_700</item>
+
         <!-- / Color scheme -->
 
         <item name="ic_access_time_18dp">@drawable/ic_access_time_white_18dp</item>
@@ -354,6 +362,9 @@
         <item name="indent_line_color">#1cffffff</item>
 
         <item name="snackbar_bg_color">@color/dark_theme_status_bar</item>
+
+        <item name="swipe_label_bg_color">#1cffffff</item>
+        <item name="swipe_label_border_color">#33FFFFFF</item>
 
         <item name="bullet_default">@drawable/bullet_state_default_dark</item>
         <item name="bullet_folded">@drawable/bullet_state_folded_black</item>

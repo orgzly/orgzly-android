@@ -24,17 +24,17 @@ open class SwipeAction(val context: Context, @StringRes val res: Int) {
 
     private val labelTextRect: Rect
 
-    private val borderPaint: Paint
+    private val labelBorderPaint: Paint
 
-    private val itemBgPaint: Paint
+    private val viewBgPaint: Paint
 
     init {
         labelBgPaint = Paint().also { paint ->
-            paint.color = attrs.labelBg
+            paint.color = attrs.labelBgColor
         }
 
         labelTextPaint = Paint().also { paint ->
-            paint.color = attrs.labelColor
+            paint.color = attrs.labelTextColor
             paint.textSize = attrs.labelSize.toFloat()
             paint.style = Paint.Style.FILL
             paint.isAntiAlias = true
@@ -49,13 +49,13 @@ open class SwipeAction(val context: Context, @StringRes val res: Int) {
             }
         }
 
-        borderPaint = Paint().also { paint ->
-            paint.color = attrs.labelBg
+        labelBorderPaint = Paint().also { paint ->
+            paint.color = attrs.labelBorderColor
             paint.style = Paint.Style.STROKE
         }
 
-        itemBgPaint = Paint().also { paint ->
-            paint.color = attrs.itemBg
+        viewBgPaint = Paint().also { paint ->
+            paint.color = attrs.viewBg
         }
     }
 
@@ -77,14 +77,14 @@ open class SwipeAction(val context: Context, @StringRes val res: Int) {
                 itemView.top.toFloat(),
                 itemView.right + dX,
                 itemView.bottom.toFloat(),
-                itemBgPaint)
+                viewBgPaint)
 
         c.drawRect(
                 itemView.left.toFloat() - 1,
                 itemView.top.toFloat(),
                 itemView.right.toFloat() + 1,
                 itemView.bottom.toFloat(),
-                borderPaint)
+                labelBorderPaint)
     }
 
     fun drawForRightSwipe(c: Canvas, itemView: View, dX: Float) {
@@ -104,14 +104,14 @@ open class SwipeAction(val context: Context, @StringRes val res: Int) {
                 itemView.top.toFloat(),
                 itemView.right.toFloat() ,
                 itemView.bottom.toFloat(),
-                itemBgPaint)
+                viewBgPaint)
 
         c.drawRect(
                 itemView.left.toFloat() - 1,
                 itemView.top.toFloat(),
                 itemView.right.toFloat() + 1,
                 itemView.bottom.toFloat(),
-                borderPaint)
+                labelBorderPaint)
     }
 
     class OpenNote(context: Context) : SwipeAction(context, R.string.open)
