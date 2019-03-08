@@ -74,7 +74,7 @@
             <!-- Metadata header -->
             <LinearLayout
                 android:id="@+id/fragment_note_metadata_header"
-                style="@style/NoteFragmentMetadataHeader">
+                style="@style/NoteFragmentFullWidthButton">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -246,26 +246,30 @@
 
             </LinearLayout>
 
-            <LinearLayout style="@style/NoteFragmentListItem">
+            <LinearLayout
+                android:id="@+id/fragment_note_mode_toggle_button"
+                style="@style/NoteFragmentFullWidthButton">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/screen_edge"
+                    android:layout_marginStart="@dimen/screen_edge"
                     android:src="?attr/ic_edit_24dp"
                     android:alpha="?attr/oic_item_alpha"/>
-                <ToggleButton
-                    android:id="@+id/edit_content_toggle"
-                    style="@style/BorderlessButton"
+
+                <TextView
+                    android:id="@+id/fragment_note_mode_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:paddingLeft="2dp"
                     android:paddingStart="2dp"
                     android:paddingRight="2dp"
                     android:paddingEnd="2dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/content_left_margin_from_icon"
                     android:layout_marginStart="@dimen/content_left_margin_from_icon"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textOn="@string/note_content_finish_editing"
-                    android:textOff="@string/note_content_start_editing"/>
+                    android:text="@string/note_content_finish_editing" />
             </LinearLayout>
 
             <com.orgzly.android.ui.views.EditTextWithMarkup
@@ -279,8 +283,8 @@
                 android:hint="@string/fragment_note_content_hint"
                 android:gravity="start|top"
                 android:freezesText="true"
-                android:visibility="gone"
-                android:textSize="?attr/fragment_note_content_text_size" />
+                android:textSize="?attr/fragment_note_content_text_size"
+                android:visibility="visible"  />
 
             <com.orgzly.android.ui.views.TextViewWithMarkup
                 android:id="@+id/body_view"
@@ -294,7 +298,8 @@
                 android:gravity="start|top"
                 android:textIsSelectable="true"
                 android:textSize="?attr/fragment_note_content_text_size"
-                android:hint="@string/fragment_note_content_hint" />
+                android:hint="@string/fragment_note_content_hint"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 

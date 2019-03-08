@@ -488,7 +488,7 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
-    <style name="NoteFragmentMetadataHeader" parent="Base.Widget.AppCompat.Button.Borderless">
+    <style name="NoteFragmentFullWidthButton" parent="Base.Widget.AppCompat.Button.Borderless">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minWidth">0dp</item>

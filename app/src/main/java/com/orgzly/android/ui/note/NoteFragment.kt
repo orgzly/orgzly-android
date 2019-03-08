@@ -96,7 +96,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
     private lateinit var propertiesContainer: LinearLayout
 
-    private lateinit var editSwitch: ToggleButton
     private lateinit var bodyEdit: EditText
     private lateinit var bodyView: TextViewWithMarkup
 
@@ -270,27 +269,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             bodyView.typeface = Typeface.MONOSPACE
         }
 
-        editSwitch = top.findViewById(R.id.edit_content_toggle)
-
-        editSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                toEditMode()
-            } else {
-                toViewMode()
-            }
-        }
-
-        // Start in edit mode
-        editSwitch.isChecked = true
-
-        editSwitch.setOnClickListener {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, editSwitch.isChecked)
-
-            if (editSwitch.isChecked) { // Clicked to edit content
-                ActivityUtils.openSoftKeyboard(activity, bodyEdit, scrollView)
-            }
-        }
-
         mViewFlipper = top.findViewById(R.id.fragment_note_view_flipper)
 
         setupObservers()
@@ -299,11 +277,15 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     private fun toEditMode() {
+        fragment_note_mode_text.setText(R.string.note_content_finish_editing)
+
         bodyView.visibility = View.GONE
         bodyEdit.visibility = View.VISIBLE
     }
 
     private fun toViewMode() {
+        fragment_note_mode_text.setText(R.string.note_content_start_editing)
+
         bodyEdit.visibility = View.GONE
 
         bodyView.setRawText(bodyEdit.text)
@@ -332,6 +314,10 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         }
 
         setMetadataFoldState(AppPreferences.noteMetadataFolded(context))
+
+        fragment_note_mode_toggle_button.setOnClickListener {
+            viewModel.toggleViewEditMode()
+        }
     }
 
     private fun setMetadataFoldState(isFolded: Boolean) {
@@ -356,6 +342,23 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->
             if (error != null) {
                 CommonActivity.showSnackbar(context, (error.cause ?: error).localizedMessage)
+            }
+        })
+
+        viewModel.viewEditMode.observe(viewLifecycleOwner, Observer { viewEditMode ->
+            when (viewEditMode) {
+                NoteViewModel.ViewEditMode.VIEW ->
+                    toViewMode()
+
+                NoteViewModel.ViewEditMode.EDIT ->
+                    toEditMode()
+
+                NoteViewModel.ViewEditMode.EDIT_WITH_KEYBOARD -> {
+                    toEditMode()
+                    ActivityUtils.openSoftKeyboard(activity, bodyEdit, scrollView)
+                }
+
+                null -> { }
             }
         })
     }
