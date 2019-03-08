@@ -105,6 +105,10 @@ class NoteItemTouchHelper(inBook: Boolean, listener: Listener) :
             super.onSelectedChanged(viewHolder, actionState)
         }
 
+        override fun getAnimationDuration(recyclerView: RecyclerView, animationType: Int, animateDx: Float, animateDy: Float): Long {
+            return 0
+        }
+
         override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         }
     }
