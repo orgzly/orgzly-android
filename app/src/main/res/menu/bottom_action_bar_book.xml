@@ -25,7 +25,7 @@
         android:id="@+id/bottom_action_bar_done"
         app:showAsAction="always"
         android:title="@string/done"
-        android:icon="?attr/ic_done_24dp"/>
+        android:icon="?attr/ic_outline_check_circle_24dp"/>
 
     <item
         android:id="@+id/bottom_action_bar_new"

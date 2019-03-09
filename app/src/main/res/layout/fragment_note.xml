@@ -226,7 +226,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="?attr/ic_done_24dp"
+                        android:src="?attr/ic_outline_check_circle_24dp"
                         android:alpha="?attr/oic_item_alpha"/>
                     <TextView
                         android:id="@+id/fragment_note_closed_edit_text"
