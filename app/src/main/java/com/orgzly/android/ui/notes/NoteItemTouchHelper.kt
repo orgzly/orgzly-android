@@ -112,9 +112,6 @@ class NoteItemTouchHelper(inBook: Boolean, listener: Listener) :
         override fun getAnimationDuration(recyclerView: RecyclerView, animationType: Int, animateDx: Float, animateDy: Float): Long {
             return 0
         }
-
-        override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
-        }
     }
 
     companion object {
