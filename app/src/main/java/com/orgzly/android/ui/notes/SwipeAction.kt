@@ -91,7 +91,7 @@ open class SwipeAction(val context: Context, @StringRes val res: Int) {
         c.drawRect(
                 itemView.left.toFloat(),
                 itemView.top.toFloat(),
-                itemView.right.toFloat() - dX,
+                itemView.left.toFloat() + dX,
                 itemView.bottom.toFloat(),
                 labelBgPaint)
 
