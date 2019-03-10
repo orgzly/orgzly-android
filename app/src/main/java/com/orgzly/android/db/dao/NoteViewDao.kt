@@ -72,6 +72,9 @@ abstract class NoteViewDao {
             t_clock_timestamps_start.string AS clock_time_string,
             t_clock_timestamps_end.string AS clock_time_end_string,
 
+            NULL AS event_string,
+            NULL AS event_timestamp,
+
             t_books.name AS book_name
 
             FROM notes
