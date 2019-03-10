@@ -82,34 +82,27 @@ class QuickBarAnimator(val context: Context) {
     }
 
     fun setFlipperAnimation(flipperView: ViewFlipper, direction: Int) {
-        /*
-         * TODO: If container is closed, we don't want flipper animation.
-         * Appearance of the container itself will be animated.
-         */
-        if (false) { // isContainerViewGone()
-            flipperView.inAnimation = null
-            flipperView.outAnimation = null
+        when (direction) {
+            -1 -> {
+                flipperView.setOutAnimation(context, R.anim.slide_out_to_left)
+                flipperView.setInAnimation(context, R.anim.slide_in_from_right)
+            }
 
-        } else {
-            when (direction) {
-                -1 -> {
-                    flipperView.setOutAnimation(context, R.anim.slide_out_to_left)
-                    flipperView.setInAnimation(context, R.anim.slide_in_from_right)
+            1 -> {
+                flipperView.setOutAnimation(context, R.anim.slide_out_to_right)
+                flipperView.setInAnimation(context, R.anim.slide_in_from_left)
+            }
 
-                }
-
-                1 -> {
-                    flipperView.setOutAnimation(context, R.anim.slide_out_to_right)
-                    flipperView.setInAnimation(context, R.anim.slide_in_from_left)
-
-                }
-
-                else -> {
-                    flipperView.inAnimation = null
-                    flipperView.outAnimation = null
-                }
+            else -> {
+                flipperView.inAnimation = null
+                flipperView.outAnimation = null
             }
         }
+    }
+
+    fun removeFlipperAnimation(flipperView: ViewFlipper) {
+        flipperView.inAnimation = null
+        flipperView.outAnimation = null
     }
 
     fun close(actionBar: ViewGroup, animate: Boolean) {

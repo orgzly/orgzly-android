@@ -31,8 +31,14 @@ class QuickBars(val context: Context, val inBook: Boolean) {
 
         if (bar != null) {
             // Fling existing
-            if (bar.onFling(holder, direction, listener)) {
+            val newId = bar.onFling(holder, direction, listener)
+
+            if (newId == null) {
                 bars.remove(holder.itemId)
+            } else if (newId != holder.itemId) {
+                bars.remove(holder.itemId)?.let {
+                    bars[newId] = it
+                }
             }
 
         } else {

@@ -36,6 +36,8 @@ class QuickBar(val context: Context, val inBook: Boolean) {
             holder.actionBar.visibility = View.VISIBLE
 
             state.direction?.let {
+                animator.removeFlipperAnimation(holder.actionBar)
+
                 flipForDirection(holder.actionBar, it)
             }
 
@@ -47,43 +49,39 @@ class QuickBar(val context: Context, val inBook: Boolean) {
         }
     }
 
-    fun onFling(holder: NoteItemViewHolder, direction: Int, listener: QuickBarListener): Boolean {
+    fun onFling(holder: NoteItemViewHolder, direction: Int, listener: QuickBarListener): Long? {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "$state -> direction:$direction id:${holder.itemId}")
 
         if (state.id == holder.itemId) { // Same note
             if (state.direction == direction) { // Same direction
                 close()
-                return true
+                return null
 
             } else { // Different direction
                 change(holder, direction, listener)
+                return state.id
             }
 
         } else { // Different note
             close()
-            open(holder, direction, listener)
+            return holder.itemId
         }
-
-        return false
     }
 
     fun open(holder: NoteItemViewHolder, direction: Int, listener: QuickBarListener) {
         inflate(holder, listener, direction)
+
+        animator.removeFlipperAnimation(holder.actionBar)
 
         animator.open(holder.actionBar)
 
         state = State(direction, holder.itemId, holder.actionBar, listener)
     }
 
-    // TODO: Do it with one animation
     private fun change(holder: NoteItemViewHolder, direction: Int, listener: QuickBarListener) {
-        // inflate(holder, direction, listener)
-
         animator.setFlipperAnimation(holder.actionBar, direction)
 
         flipForDirection(holder.actionBar, direction)
-
-        // animator.open(holder.actionBar)
 
         state = State(direction, holder.itemId, holder.actionBar, listener)
     }
@@ -116,6 +114,8 @@ class QuickBar(val context: Context, val inBook: Boolean) {
             doInflate(holder.actionBarRight, it.rightSwipeInBook)
         }
 
+        animator.removeFlipperAnimation(holder.actionBar)
+
         flipForDirection(holder.actionBar, direction)
 
         typedArray.recycle()
@@ -134,7 +134,7 @@ class QuickBar(val context: Context, val inBook: Boolean) {
         val id = state.id
 
         if (layout != null && id != null) {
-            animator.close(layout, true) // XXX: isIdVisible(itemId)
+            animator.close(layout, true)
         }
 
         state = State()
