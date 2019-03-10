@@ -15,12 +15,14 @@ import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.Selection
 import com.orgzly.android.ui.notes.NoteItemViewBinder
 import com.orgzly.android.ui.notes.NoteItemViewHolder
+import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.UserTimeFormatter
 
 class AgendaAdapter(
         private val context: Context,
-        private val clickListener: OnViewHolderClickListener<AgendaItem>
+        private val clickListener: OnViewHolderClickListener<AgendaItem>,
+        private val quickBar: QuickBars
  ) : ListAdapter<AgendaItem, RecyclerView.ViewHolder>(DIFF_CALLBACK), SelectableItemAdapter {
 
     private val adapterSelection: Selection = Selection()
@@ -69,6 +71,8 @@ class AgendaAdapter(
             val item = getItem(position) as AgendaItem.Note
 
             noteViewBinder.bind(holder, item.note)
+
+            quickBar.bind(holder)
 
             getSelection().setIsSelectedBackground(holder.itemView, item.id)
         }

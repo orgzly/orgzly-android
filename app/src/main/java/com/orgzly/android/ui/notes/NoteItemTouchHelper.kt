@@ -12,11 +12,11 @@ class NoteItemTouchHelper(inBook: Boolean, listener: Listener) :
         ItemTouchHelper(Callback(inBook, listener)) {
 
     interface Listener {
-        fun onSwipeLeft(id: Long)
+        fun onSwiped(viewHolder: NoteItemViewHolder, direction: Int)
     }
 
     class Callback(private val inBook: Boolean, private val listener: Listener) :
-            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.START) {
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.START or ItemTouchHelper.END) {
 
         private var leftSwipeAction: SwipeAction? = null
         private var rightSwipeAction: SwipeAction? = null
@@ -93,9 +93,10 @@ class NoteItemTouchHelper(inBook: Boolean, listener: Listener) :
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            if (direction == ItemTouchHelper.START) {
-                listener.onSwipeLeft(viewHolder.itemId)
-            }
+            if (BuildConfig.LOG_DEBUG)
+                LogUtils.d(TAG, direction, viewHolder.itemId, viewHolder.adapterPosition, viewHolder.layoutPosition)
+
+            listener.onSwiped(viewHolder as NoteItemViewHolder, direction)
         }
 
         override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {

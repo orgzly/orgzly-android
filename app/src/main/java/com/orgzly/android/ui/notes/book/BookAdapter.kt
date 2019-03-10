@@ -1,11 +1,11 @@
 package com.orgzly.android.ui.notes.book
 
 import android.content.Context
-import androidx.recyclerview.widget.DiffUtil
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -17,12 +17,14 @@ import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.Selection
 import com.orgzly.android.ui.notes.NoteItemViewBinder
 import com.orgzly.android.ui.notes.NoteItemViewHolder
+import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.ui.views.TextViewWithMarkup
 import com.orgzly.android.util.LogUtils
 
 class BookAdapter(
         private val context: Context,
         private val clickListener: OnClickListener,
+        private val quickBar: QuickBars,
         private val inBook: Boolean
 ) :
         ListAdapterWithHeaders<NoteView, RecyclerView.ViewHolder>(DIFF_CALLBACK, 1),
@@ -30,9 +32,9 @@ class BookAdapter(
 
     private var currentPreface: String? = null
 
-    private val adapterSelection: Selection = Selection()
+    private val adapterSelection = Selection()
 
-    private val noteItemViewBinder: NoteItemViewBinder = NoteItemViewBinder(context, inBook)
+    private val noteItemViewBinder = NoteItemViewBinder(context, inBook)
 
     private val noteViewHolderListener = object: NoteItemViewHolder.ClickListener {
         override fun onClick(view: View, position: Int) {
@@ -134,6 +136,8 @@ class BookAdapter(
 
                 noteItemViewBinder.bind(holder, noteView)
 
+                quickBar.bind(holder)
+
                 getSelection().setIsSelectedBackground(holder.itemView, note.id)
             }
         }
@@ -163,7 +167,6 @@ class BookAdapter(
 
         return !TextUtils.isEmpty(currentPreface) && !hidden
     }
-
 
     interface OnClickListener {
         fun onPrefaceClick()

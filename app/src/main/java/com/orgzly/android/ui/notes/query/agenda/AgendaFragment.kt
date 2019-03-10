@@ -1,7 +1,6 @@
 package com.orgzly.android.ui.notes.query.agenda
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.ViewFlipper
 import androidx.appcompat.view.ActionMode
@@ -17,12 +16,16 @@ import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
-import com.orgzly.android.ui.notes.NoteItemTouchHelper
+import com.orgzly.android.ui.notes.NoteItemViewHolder
 import com.orgzly.android.ui.notes.query.QueryFragment
 import com.orgzly.android.ui.notes.query.QueryViewModel
 import com.orgzly.android.ui.notes.query.QueryViewModelFactory
+import com.orgzly.android.ui.notes.quickbar.ItemGestureDetector
+import com.orgzly.android.ui.notes.quickbar.QuickBarListener
+import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
+import java.util.*
 
 /**
  * Displays agenda results.
@@ -30,7 +33,8 @@ import com.orgzly.android.util.LogUtils
 class AgendaFragment :
         QueryFragment(),
         OnViewHolderClickListener<AgendaItem>,
-        ActionMode.Callback {
+        ActionMode.Callback,
+        QuickBarListener {
 
     private val item2databaseIds = hashMapOf<Long, Long>()
 
@@ -56,31 +60,51 @@ class AgendaFragment :
     }
 
     private fun setupRecyclerView(view: View) {
-        viewAdapter = AgendaAdapter(view.context, this)
+        val quickBars = QuickBars(view.context, false)
+
+        viewAdapter = AgendaAdapter(view.context, this, quickBars)
         viewAdapter.setHasStableIds(true)
 
         val layoutManager = LinearLayoutManager(context)
 
         val dividerItemDecoration = DividerItemDecoration(context, layoutManager.orientation)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.fragment_query_agenda_recycler_view).also {
-            it.layoutManager = layoutManager
-            it.adapter = viewAdapter
-            it.addItemDecoration(dividerItemDecoration)
-        }
+        view.findViewById<RecyclerView>(R.id.fragment_query_agenda_recycler_view).let { rv ->
+            rv.layoutManager = layoutManager
+            rv.adapter = viewAdapter
+            rv.addItemDecoration(dividerItemDecoration)
 
-        val itemTouchHelper = NoteItemTouchHelper(false, object : NoteItemTouchHelper.Listener {
-            override fun onSwipeLeft(id: Long) {
-                val dbId = item2databaseIds[id]
-                if (dbId != null) {
-                    listener?.onNoteFocusInBookRequest(dbId)
-                } else {
-                    // Divider
+            rv.addOnItemTouchListener(ItemGestureDetector(rv.context, object: ItemGestureDetector.Listener {
+                override fun onFling(direction: Int, x: Float, y: Float) {
+                    rv.findChildViewUnder(x, y)?.let { itemView ->
+                        rv.findContainingViewHolder(itemView)?.let { vh ->
+                            (vh as? NoteItemViewHolder)?.let {
+                                quickBars.onFling(it, direction, this@AgendaFragment)
+                            }
+                        }
+                    }
                 }
-            }
-        })
+            }))
 
-        itemTouchHelper.attachToRecyclerView(recyclerView)
+//            val itemTouchHelper = NoteItemTouchHelper(false, object : NoteItemTouchHelper.Listener {
+//                override fun onSwiped(viewHolder: NoteItemViewHolder, direction: Int) {
+//                    val dbId = item2databaseIds[viewHolder.itemId]
+//                    if (dbId != null) {
+//                        listener?.onNoteFocusInBookRequest(dbId)
+//                    } else {
+//                        // Divider
+//                    }
+//                }
+//            })
+//
+//            itemTouchHelper.attachToRecyclerView(rv)
+        }
+    }
+
+    override fun onQuickBarButtonClick(buttonId: Int, itemId: Long) {
+        item2databaseIds[itemId]?.let {
+            handleActionItemClick(buttonId, actionModeListener?.actionMode, Collections.singleton(it))
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -167,11 +191,11 @@ class AgendaFragment :
     }
 
     override fun onBottomActionItemClicked(id: Int) {
-        handleActionItemClick(id, actionModeListener?.actionMode, viewAdapter.getSelection())
+        handleActionItemClick(id, actionModeListener?.actionMode, viewAdapter.getSelection().getIds())
     }
 
     override fun onActionItemClicked(actionMode: ActionMode, menuItem: MenuItem): Boolean {
-        handleActionItemClick(menuItem.itemId, actionMode, viewAdapter.getSelection())
+        handleActionItemClick(menuItem.itemId, actionMode, viewAdapter.getSelection().getIds())
 
         return true
     }

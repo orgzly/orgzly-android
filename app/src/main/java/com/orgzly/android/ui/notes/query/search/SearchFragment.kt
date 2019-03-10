@@ -17,13 +17,17 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.BottomActionBar
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
-import com.orgzly.android.ui.notes.NoteItemTouchHelper
+import com.orgzly.android.ui.notes.NoteItemViewHolder
 import com.orgzly.android.ui.notes.SearchAdapter
 import com.orgzly.android.ui.notes.query.QueryFragment
 import com.orgzly.android.ui.notes.query.QueryViewModel
 import com.orgzly.android.ui.notes.query.QueryViewModelFactory
+import com.orgzly.android.ui.notes.quickbar.ItemGestureDetector
+import com.orgzly.android.ui.notes.quickbar.QuickBarListener
+import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
+import java.util.*
 
 /**
  * Displays search results.
@@ -32,7 +36,8 @@ class SearchFragment :
         QueryFragment(),
         OnViewHolderClickListener<NoteView>,
         ActionMode.Callback,
-        BottomActionBar.Callback {
+        BottomActionBar.Callback,
+        QuickBarListener {
 
     private lateinit var viewFlipper: ViewFlipper
 
@@ -62,28 +67,45 @@ class SearchFragment :
     }
 
     private fun setupRecyclerView(view: View) {
-        viewAdapter = SearchAdapter(view.context, this)
+        val quickBars = QuickBars(view.context, false)
+
+        viewAdapter = SearchAdapter(view.context, this, quickBars)
         viewAdapter.setHasStableIds(true)
 
         val layoutManager = LinearLayoutManager(context)
 
         val dividerItemDecoration = DividerItemDecoration(context, layoutManager.orientation)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.fragment_query_search_recycler_view).also {
-            it.layoutManager = layoutManager
-            it.adapter = viewAdapter
-            it.addItemDecoration(dividerItemDecoration)
+        view.findViewById<RecyclerView>(R.id.fragment_query_search_recycler_view).let { rv ->
+            rv.layoutManager = layoutManager
+            rv.adapter = viewAdapter
+            rv.addItemDecoration(dividerItemDecoration)
+
+            rv.addOnItemTouchListener(ItemGestureDetector(rv.context, object: ItemGestureDetector.Listener {
+                override fun onFling(direction: Int, x: Float, y: Float) {
+                    rv.findChildViewUnder(x, y)?.let { itemView ->
+                        rv.findContainingViewHolder(itemView)?.let { vh ->
+                            (vh as? NoteItemViewHolder)?.let {
+                                quickBars.onFling(it, direction, this@SearchFragment)
+                            }
+                        }
+                    }
+                }
+            }))
+
+//            val itemTouchHelper = NoteItemTouchHelper(false, object : NoteItemTouchHelper.Listener {
+//                override fun onSwiped(viewHolder: NoteItemViewHolder, direction: Int) {
+//                    listener?.onNoteFocusInBookRequest(viewHolder.itemId)
+//                }
+//            })
+//
+//            itemTouchHelper.attachToRecyclerView(rv)
         }
-
-        val itemTouchHelper = NoteItemTouchHelper(false, object : NoteItemTouchHelper.Listener {
-            override fun onSwipeLeft(id: Long) {
-                listener?.onNoteFocusInBookRequest(id)
-            }
-        })
-
-        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
+    override fun onQuickBarButtonClick(buttonId: Int, itemId: Long) {
+        handleActionItemClick(buttonId, actionModeListener?.actionMode, Collections.singleton(itemId))
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
@@ -156,11 +178,11 @@ class SearchFragment :
     }
 
     override fun onBottomActionItemClicked(id: Int) {
-        handleActionItemClick(id, actionModeListener?.actionMode, viewAdapter.getSelection())
+        handleActionItemClick(id, actionModeListener?.actionMode, viewAdapter.getSelection().getIds())
     }
 
     override fun onActionItemClicked(actionMode: ActionMode, menuItem: MenuItem): Boolean {
-        handleActionItemClick(menuItem.itemId, actionMode, viewAdapter.getSelection())
+        handleActionItemClick(menuItem.itemId, actionMode, viewAdapter.getSelection().getIds())
 
         return true
     }

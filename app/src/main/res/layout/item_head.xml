@@ -258,7 +258,6 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <!-- Quick menu. -->
-    <!--<include layout="@layout/item_head_quick_menu"/>-->
+    <include layout="@layout/quick_bar"/>
 
 </LinearLayout>

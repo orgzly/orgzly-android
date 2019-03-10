@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.ViewFlipper
 import com.orgzly.R
 import com.orgzly.android.ui.views.TextViewWithMarkup
 
@@ -43,6 +44,9 @@ class NoteItemViewHolder(view: View, private val clickListener: ClickListener) :
     val foldButton: View = itemView.findViewById(R.id.item_head_fold_button)
     val foldButtonText: TextView = itemView.findViewById(R.id.item_head_fold_button_text)
 
+    val actionBar: ViewFlipper = itemView.findViewById(R.id.quick_bar_flipper)
+    val actionBarLeft: ViewGroup = itemView.findViewById(R.id.quick_bar_left)
+    val actionBarRight: ViewGroup = itemView.findViewById(R.id.quick_bar_right)
 
     init {
         view.setOnClickListener(this)
