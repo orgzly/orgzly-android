@@ -204,6 +204,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         onItemInAgenda(0).perform(swipeLeft());
     }
 
+    @Ignore
     @Test
     public void testOpenBookFromAgendaBySwiping() {
         testUtils.setupBook("notebook", "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>");

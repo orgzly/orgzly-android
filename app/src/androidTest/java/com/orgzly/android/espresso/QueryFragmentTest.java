@@ -758,6 +758,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withText("TODO")).check(matches(isChecked()));
     }
 
+    @Ignore
     @Test
     public void testOpensBookFromSearchBySwiping() {
         testUtils.setupBook("notebook", "* TODO Note A\n* TODO Note B");

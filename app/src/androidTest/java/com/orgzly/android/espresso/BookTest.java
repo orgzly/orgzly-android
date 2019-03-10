@@ -128,6 +128,7 @@ public class BookTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
     }
 
+    @Ignore
     @Test
     public void testOpensNoteFromBookBySwiping() {
         onNoteInBook(2).perform(swipeLeft());
