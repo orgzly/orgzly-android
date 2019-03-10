@@ -23,6 +23,27 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.7.1-beta.1"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Events (plain timestamps) support (&lt;tt&gt;e&lt;/tt&gt; search operator, agenda and reminders)" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Swipe menus added back" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Preference for click/long-click action added back" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Smaller bug fixes and improvements" />
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.7"
             tools:ignore="HardcodedText" />
 
