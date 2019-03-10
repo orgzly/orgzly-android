@@ -15,7 +15,6 @@ import com.orgzly.R
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.BottomActionBar
-import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.notes.NoteItemTouchHelper
@@ -122,6 +121,30 @@ class SearchFragment :
     }
 
     override fun onClick(view: View, position: Int, item: NoteView) {
+        if (!AppPreferences.isReverseNoteClickAction(context)) {
+            if (viewAdapter.getSelection().count > 0) {
+                toggleNoteSelection(view, position, item)
+            } else {
+                openNote(item.note.id)
+            }
+        } else {
+            toggleNoteSelection(view, position, item)
+        }
+    }
+
+    override fun onLongClick(view: View, position: Int, item: NoteView) {
+        if (!AppPreferences.isReverseNoteClickAction(context)) {
+            toggleNoteSelection(view, position, item)
+        } else {
+            openNote(item.note.id)
+        }
+    }
+
+    private fun openNote(id: Long) {
+        listener?.onNoteOpen(id)
+    }
+
+    private fun toggleNoteSelection(view: View, position: Int, item: NoteView) {
         val noteId = item.note.id
 
         viewAdapter.getSelection().toggle(noteId)
@@ -129,10 +152,7 @@ class SearchFragment :
 
         actionModeListener?.updateActionModeForSelection(
                 viewAdapter.getSelection().count, this)
-    }
 
-    override fun onLongClick(view: View, position: Int, item: NoteView) {
-        // listener?.onNoteOpen(item.note.id)
     }
 
     override fun onBottomActionItemClicked(id: Int) {

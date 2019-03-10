@@ -297,6 +297,8 @@
     <string name="color_scheme">Color scheme</string>
     <string name="monospaced_font">Monospaced font</string>
     <string name="monospaced_font_summary">Use monospaced font for note\'s content and notebook\'s preface</string>
+    <string name="reversed_note_click_action">Reversed note click action</string>
+    <string name="reversed_note_click_action_summary">Click to select note, long-click to open</string>
     <string name="look_and_feel">Look &amp; Feel</string>
     <string name="notes_list">List of notes</string>
     <string name="prefs_title_new_note">New note</string>

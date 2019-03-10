@@ -374,6 +374,21 @@ public class AppPreferences {
     }
 
     /*
+     * Click action.
+     */
+
+    public static boolean isReverseNoteClickAction(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_is_reverse_click_action),
+                context.getResources().getBoolean(R.bool.pref_default_is_reverse_click_action));
+    }
+
+    public static void isReverseNoteClickAction(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_is_reverse_click_action);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
+
+    /*
      * Schedule new note.
      */
 

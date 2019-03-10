@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
@@ -126,6 +127,34 @@ class AgendaFragment :
     }
 
     override fun onClick(view: View, position: Int, item: AgendaItem) {
+        if (!AppPreferences.isReverseNoteClickAction(context)) {
+            if (viewAdapter.getSelection().count > 0) {
+                toggleNoteSelection(view, position, item)
+            } else {
+                openNote(item)
+            }
+        } else {
+            toggleNoteSelection(view, position, item)
+        }
+    }
+
+    override fun onLongClick(view: View, position: Int, item: AgendaItem) {
+        if (!AppPreferences.isReverseNoteClickAction(context)) {
+            toggleNoteSelection(view, position, item)
+        } else {
+            openNote(item)
+        }
+    }
+
+    private fun openNote(item: AgendaItem) {
+        if (item is AgendaItem.Note) {
+            val noteId = item.note.note.id
+
+            listener?.onNoteOpen(noteId)
+        }
+    }
+
+    private fun toggleNoteSelection(view: View, position: Int, item: AgendaItem) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         if (item is AgendaItem.Note) {
@@ -135,14 +164,6 @@ class AgendaFragment :
             actionModeListener?.updateActionModeForSelection(
                     viewAdapter.getSelection().count, this)
         }
-    }
-
-    override fun onLongClick(view: View, position: Int, item: AgendaItem) {
-//        if (item is AgendaItem.Note) {
-//            val noteId = item.note.note.id
-//
-//            listener?.onNoteOpen(noteId)
-//        }
     }
 
     override fun onBottomActionItemClicked(id: Int) {

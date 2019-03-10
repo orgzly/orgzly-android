@@ -5,6 +5,7 @@ import android.widget.DatePicker;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.main.MainActivity;
 
 import org.joda.time.DateTime;
@@ -17,6 +18,7 @@ import androidx.test.rule.ActivityTestRule;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -224,5 +226,18 @@ public class AgendaFragmentTest extends OrgzlyTest {
 
         onView(withId(R.id.fragment_note_container)).check(matches(isDisplayed()));
         onView(withId(R.id.fragment_note_title)).check(matches(withText("Note A")));
+    }
+
+    @Test
+    public void testChangeStateWithReverseNoteClick() {
+        testUtils.setupBook("book-1","* DONE Note A");
+        testUtils.setupBook("book-2","* TODO Note B\nSCHEDULED: <2014-01-01>\n* TODO Note C\nSCHEDULED: <2014-01-02>\n");
+        AppPreferences.isReverseNoteClickAction(context, false);
+        activityRule.launchActivity(null);
+
+        openAgenda();
+        onItemInAgenda(1).perform(longClick());
+        onView(withId(R.id.bottom_action_bar_state)).perform(click());
+        onView(withText("NEXT")).perform(click());
     }
 }

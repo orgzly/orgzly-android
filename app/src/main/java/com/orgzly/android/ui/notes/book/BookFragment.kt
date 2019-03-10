@@ -19,6 +19,7 @@ import com.orgzly.R
 import com.orgzly.android.BookUtils
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.NoteView
+import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.*
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
@@ -411,6 +412,30 @@ class BookFragment :
     }
 
     override fun onNoteClick(view: View, position: Int, noteView: NoteView) {
+        if (!AppPreferences.isReverseNoteClickAction(context)) {
+            if (viewAdapter.getSelection().count > 0) {
+                toggleNoteSelection(view, position, noteView)
+            } else {
+                openNote(noteView.note.id)
+            }
+        } else {
+            toggleNoteSelection(view, position, noteView)
+        }
+    }
+
+    override fun onNoteLongClick(view: View, position: Int, noteView: NoteView) {
+        if (!AppPreferences.isReverseNoteClickAction(context)) {
+            toggleNoteSelection(view, position, noteView)
+        } else {
+            openNote(noteView.note.id)
+        }
+    }
+
+    private fun openNote(id: Long) {
+        listener?.onNoteOpen(id)
+    }
+
+    private fun toggleNoteSelection(view: View, position: Int, noteView: NoteView) {
         val noteId = noteView.note.id
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, listener, noteView)
@@ -420,11 +445,6 @@ class BookFragment :
 
         actionModeListener?.updateActionModeForSelection(
                 viewAdapter.getSelection().count, this)
-
-    }
-
-    override fun onNoteLongClick(view: View, position: Int, noteView: NoteView) {
-        // listener?.onNoteOpen(noteView.note.id)
     }
 
     override fun onPrefaceClick() {
@@ -533,7 +553,7 @@ class BookFragment :
 
         when (actionItemId) {
             R.id.bottom_action_bar_open -> {
-                listener?.onNoteOpen(selection.getFirstId())
+                openNote(selection.getFirstId())
             }
 
             R.id.bottom_action_bar_new_above -> {
