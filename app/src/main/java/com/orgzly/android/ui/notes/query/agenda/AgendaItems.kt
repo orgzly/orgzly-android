@@ -51,6 +51,8 @@ object AgendaItems {
                         { it.millis },
                         { mutableListOf<AgendaItem>(AgendaItem.Divider(index++, it)) })
 
+        val dedup = HashSet<Pair<Long, Long>>()
+
         notes.forEach { note ->
 
             val times = arrayOf(
@@ -64,10 +66,19 @@ object AgendaItems {
 
             // Add each note instance to its day bucket
             days.forEach { day ->
-                dayBuckets[day.millis]?.let {
-                    it.add(AgendaItem.Note(index, note))
-                    item2databaseIds[index] = note.note.id
-                    index++
+
+                val bucketKey = day.millis
+
+                val dedupKey = Pair(bucketKey, note.note.id)
+
+                if (!dedup.contains(dedupKey)) {
+                    dayBuckets[bucketKey]?.let {
+                        it.add(AgendaItem.Note(index, note))
+                        item2databaseIds[index] = note.note.id
+                        index++
+                    }
+
+                    dedup.add(dedupKey)
                 }
             }
         }

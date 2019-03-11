@@ -271,7 +271,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        AndroidInjection.inject(this, context);
+        AndroidInjection.inject(this, App.getAppContext());
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 

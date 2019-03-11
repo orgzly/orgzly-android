@@ -36,6 +36,13 @@ class NoteTimestampTest : OrgzlyTest() {
                 .build()
                 .toString()
 
+    private val yesterday: String
+        get() = OrgDateTime.Builder()
+                .setDay(System.currentTimeMillis() - 86400000L)
+                .setIsActive(true)
+                .build()
+                .toString()
+
     private val fewDaysAgo: String
         get() = OrgDateTime.Builder()
                 .setDay(System.currentTimeMillis() - 86400000L * 3)
@@ -116,5 +123,13 @@ class NoteTimestampTest : OrgzlyTest() {
         activityRule.launchActivity(null)
         searchForText("ad.2")
         onNotesInAgenda().check(matches(recyclerViewItemCount(2)))
+    }
+
+    @Test
+    fun agendaSearch_TwoWithScheduledTime() {
+        testUtils.setupBook("book-a", "* $yesterday $fewDaysAgo\nSCHEDULED: $tomorrow")
+        activityRule.launchActivity(null)
+        searchForText("e.lt.now ad.3")
+        onNotesInAgenda().check(matches(recyclerViewItemCount(4)))
     }
 }
