@@ -234,6 +234,7 @@
     <string name="property_value">Property value</string>
     <string name="reminder_for_scheduled">Dijadwalkan: %s</string>
     <string name="reminder_for_deadline">Tenggat waktu: %s</string>
+    <string name="reminder_for_event">Event: %s</string>
     <string name="scheduled_new_notes_for_today">Jadwal baru catatan untuk hari ini</string>
     <string name="fold_content">Lipat konten</string>
     <string name="allow_folding_of_content">Memungkinkan melipat konten</string>
@@ -253,6 +254,8 @@
     <string name="color_scheme">Skema warna</string>
     <string name="monospaced_font">Huruf monospace</string>
     <string name="monospaced_font_summary">Gunakan huruf monospace untuk konten catatan dan kata pengantar buku</string>
+    <string name="reversed_note_click_action">Reversed note click action</string>
+    <string name="reversed_note_click_action_summary">Click to select note, long-click to open</string>
     <string name="look_and_feel">Tampilan &amp; Nuansa</string>
     <string name="notes_list">Daftar catatan</string>
     <string name="prefs_title_new_note">Catatan baru</string>
@@ -341,6 +344,8 @@
     <string name="pref_title_summary_reminders_for_scheduled_times">Tampilkan pemberitahuan untuk catatan dengan waktu terjadwal</string>
     <string name="pref_title_reminders_for_deadline_times">Tenggat waktu</string>
     <string name="pref_title_summary_reminders_for_deadline_times">Tampilkan pemberitahuan untuk catatan dengan batas waktu</string>
+    <string name="pref_title_reminders_for_event_times">Events</string>
+    <string name="pref_title_summary_reminders_for_event_times">Display notification for notes with event time</string>
     <string name="pref_title_reminders_sound">Suara</string>
     <string name="pref_title_reminders_vibrate">Getaran</string>
     <string name="pref_title_reminders_led">Terang</string>
