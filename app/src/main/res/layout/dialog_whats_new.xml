@@ -40,7 +40,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Smaller bug fixes and improvements" />
+            app:text="Smaller improvements" />
 
         <TextView
             style="@style/WhatsNewVersion"
