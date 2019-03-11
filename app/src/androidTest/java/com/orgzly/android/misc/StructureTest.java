@@ -161,6 +161,14 @@ public class StructureTest extends OrgzlyTest {
     }
 
     @Test
+    public void testDescendantCountAfterDelete() {
+        BookView book = testUtils.setupBook("notebook", "* Note 1\n** Note 1.1\n");
+        assertEquals(1, dataRepository.getNote("Note 1").getPosition().getDescendantsCount());
+        dataRepository.deleteNotes(book.getBook().getId(), Collections.singleton(dataRepository.getNote("Note 1.1").getId()));
+        assertEquals(0, dataRepository.getNote("Note 1").getPosition().getDescendantsCount());
+    }
+
+    @Test
     public void testPasteUnder() throws IOException {
         BookView book = testUtils.setupBook("notebook", "" +
                 "description\n" +
