@@ -62,6 +62,7 @@ import com.orgzly.android.usecase.BookImportGettingStarted;
 import com.orgzly.android.usecase.BookLinkUpdate;
 import com.orgzly.android.usecase.BookSparseTreeForNote;
 import com.orgzly.android.usecase.BookUpdatePreface;
+import com.orgzly.android.usecase.NoteCopy;
 import com.orgzly.android.usecase.SavedSearchCreate;
 import com.orgzly.android.usecase.SavedSearchDelete;
 import com.orgzly.android.usecase.SavedSearchExport;
@@ -813,6 +814,11 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
+    public void onNotesCopyRequest(long bookId, Set<Long> noteIds) {
+        mSyncFragment.run(new NoteCopy(bookId, noteIds));
+    }
+
+    @Override
     public void onNotesPasteRequest(long bookId, long noteId, Place place) {
         mSyncFragment.run(new NotePaste(bookId, noteId, place));
     }
@@ -1166,6 +1172,18 @@ public class MainActivity extends CommonActivity
                 }
 
                 showSnackbar(message);
+            }
+
+        } else if (action instanceof NoteCopy) {
+            NotesClipboard clipboard = (NotesClipboard) result.getUserData();
+
+            if (clipboard != null) {
+                int count = clipboard.getNoteCount();
+
+                if (count > 0) {
+                    String message = getResources().getQuantityString(R.plurals.notes_copied, count, count);
+                    showSnackbar(message);
+                }
             }
 
         } else if (action instanceof NotePaste) {

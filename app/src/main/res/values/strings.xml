@@ -68,6 +68,11 @@
 
     <string name="no_notes_cut">No notes cut</string>
 
+    <plurals name="notes_copied">
+        <item quantity="one">Note copied</item>
+        <item quantity="other">Copied <b>%d</b> notes</item>
+    </plurals>
+
     <plurals name="notes_pasted">
         <item quantity="one">Note pasted</item>
         <item quantity="other">Pasted <b>%d</b> notes</item>
@@ -110,8 +115,11 @@
     <string name="books_context_menu_item_force_load">Force Load</string>
 
     <string name="move">Move</string>
+
     <string name="cut">Cut</string>
+    <string name="copy">Copy</string>
     <string name="paste">Paste</string>
+
     <string name="heads_action_menu_item_paste_above">Paste above</string>
     <string name="heads_action_menu_item_paste_under">Paste under</string>
     <string name="heads_action_menu_item_paste_below">Paste below</string>

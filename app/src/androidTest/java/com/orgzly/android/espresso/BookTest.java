@@ -345,6 +345,21 @@ public class BookTest extends OrgzlyTest {
     }
 
     @Test
+    public void testCopyBelow() {
+        onNoteInBook(1).perform(click());
+
+        onView(withId(R.id.book_cab_copy)).perform(click());
+
+        onNoteInBook(1).perform(click());
+        onView(withId(R.id.book_cab_paste)).perform(click());
+        onView(withText(R.string.heads_action_menu_item_paste_below)).perform(click());
+
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #2."))));
+    }
+
+    @Test
     public void testFoldNotes() {
         onNoteInBook(2, R.id.item_head_fold_button).perform(click());
 

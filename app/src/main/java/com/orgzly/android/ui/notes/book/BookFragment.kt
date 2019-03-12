@@ -617,6 +617,12 @@ class BookFragment :
                 actionMode?.finish()
             }
 
+            R.id.book_cab_copy -> {
+                listener?.onNotesCopyRequest(mBookId, ids)
+
+                actionMode?.finish()
+            }
+
             R.id.book_cab_paste_above -> {
                 pasteNotes(Place.ABOVE, ids.first())
                 actionMode?.finish()
@@ -673,6 +679,7 @@ class BookFragment :
 
         fun onNotesDeleteRequest(bookId: Long, noteIds: Set<Long>)
         fun onNotesCutRequest(bookId: Long, noteIds: Set<Long>)
+        fun onNotesCopyRequest(bookId: Long, noteIds: Set<Long>)
         fun onNotesPasteRequest(bookId: Long, noteId: Long, place: Place)
         fun onNotesPromoteRequest(bookId: Long, noteIds: Set<Long>)
         fun onNotesDemoteRequest(bookId: Long, noteIds: Set<Long>)
@@ -699,6 +706,7 @@ class BookFragment :
         // https://github.com/orgzly/orgzly-android/issues/67
         private val ITEMS_HIDDEN_ON_MULTIPLE_SELECTED_NOTES = intArrayOf(
                 R.id.book_cab_cut,
+                R.id.book_cab_copy,
                 R.id.book_cab_paste,
                 R.id.book_cab_move,
                 R.id.book_cab_refile)
