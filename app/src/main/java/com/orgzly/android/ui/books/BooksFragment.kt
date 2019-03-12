@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import android.widget.CheckBox
 import android.widget.EditText
@@ -58,8 +59,8 @@ class BooksFragment :
 
     private lateinit var viewFlipper: ViewFlipper
 
-    private var mAddOptions = true
-    private var mShowContextMenu = true
+    private var withOptionsMenu = true
+    private var withActionBar = true
 
     @Inject
     lateinit var dataRepository: DataRepository
@@ -81,8 +82,8 @@ class BooksFragment :
             throw IllegalArgumentException("No arguments found to " + BooksFragment::class.java.simpleName)
         }
 
-        mAddOptions = arguments?.getBoolean(ARG_ADD_OPTIONS) ?: true
-        mShowContextMenu = arguments?.getBoolean(ARG_SHOW_CONTEXT_MENU) ?: true
+        withOptionsMenu = arguments?.getBoolean(ARG_WITH_OPTIONS_MENU) ?: true
+        withActionBar = arguments?.getBoolean(ARG_WITH_ACTION_BAR) ?: true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,7 +97,7 @@ class BooksFragment :
         /* Would like to add items to the Options Menu.
          * Required (for fragments only) to receive onCreateOptionsMenu() call.
          */
-        setHasOptionsMenu(mAddOptions)
+        setHasOptionsMenu(withOptionsMenu)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -121,8 +122,8 @@ class BooksFragment :
             listener?.onBookClicked(item.book.id)
 
         } else {
-            viewAdapter.getSelection().toggle(item.book.id)
-            viewAdapter.notifyItemChanged(position)
+            viewAdapter.getSelection().toggleSingleSelect(item.book.id)
+            viewAdapter.notifyDataSetChanged() // FIXME
 
             if (viewAdapter.getSelection().count == 0) {
                 actionMode?.finish()
@@ -133,13 +134,13 @@ class BooksFragment :
     }
 
     override fun onLongClick(view: View, position: Int, item: BookView) {
-        if (!mShowContextMenu) {
+        if (!withActionBar) {
             listener?.onBookClicked(item.book.id)
             return
         }
 
-        viewAdapter.getSelection().toggle(item.book.id)
-        viewAdapter.notifyItemChanged(position)
+        viewAdapter.getSelection().toggleSingleSelect(item.book.id)
+        viewAdapter.notifyDataSetChanged() // FIXME
 
         if (viewAdapter.getSelection().count > 0) {
             if (actionMode == null) {
@@ -157,48 +158,50 @@ class BooksFragment :
     }
 
     private inner class ActionModeCallback : ActionMode.Callback {
-        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+        override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, mode, item)
 
-            val bookId = viewAdapter.getSelection().getFirstId()
+            val ids = viewAdapter.getSelection().getIds()
 
-            val res = when (item?.itemId) {
-                R.id.books_context_menu_rename -> {
-                    viewModel.renameBookRequest(bookId)
-                    true
+            if (ids.isEmpty()) {
+                Log.e(TAG, "Cannot handle action when there are no items selected")
+
+            } else {
+                val bookId = ids.first()
+
+                when (item.itemId) {
+                    R.id.books_context_menu_rename -> {
+                        viewModel.renameBookRequest(bookId)
+                    }
+
+                    R.id.books_context_menu_set_link -> {
+                        listener?.onBookLinkSetRequest(bookId)
+                    }
+
+                    R.id.books_context_menu_force_save -> {
+                        listener?.onForceSaveRequest(bookId)
+                    }
+
+                    R.id.books_context_menu_force_load -> {
+                        listener?.onForceLoadRequest(bookId)
+                    }
+
+                    R.id.books_context_menu_export -> {
+                        listener?.onBookExportRequest(bookId)
+                    }
+
+                    R.id.books_context_menu_delete -> {
+                        viewModel.deleteBookRequest(bookId)
+                    }
+
+                    else -> {
+                    }
                 }
-
-                R.id.books_context_menu_set_link -> {
-                    listener?.onBookLinkSetRequest(bookId)
-                    true
-                }
-
-                R.id.books_context_menu_force_save -> {
-                    listener?.onForceSaveRequest(bookId)
-                    true
-                }
-
-                R.id.books_context_menu_force_load -> {
-                    listener?.onForceLoadRequest(bookId)
-                    true
-                }
-
-                R.id.books_context_menu_export -> {
-                    listener?.onBookExportRequest(bookId)
-                    true
-                }
-
-                R.id.books_context_menu_delete -> {
-                    viewModel.deleteBookRequest(bookId)
-                    true
-                }
-
-                else -> false
             }
 
             actionMode?.finish()
 
-            return res
+            return true
         }
 
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
@@ -514,18 +517,18 @@ class BooksFragment :
          */
         val FRAGMENT_TAG: String = BooksFragment::class.java.name
 
-        private const val ARG_ADD_OPTIONS = "add_options"
-        private const val ARG_SHOW_CONTEXT_MENU = "show_context_menu"
+        private const val ARG_WITH_OPTIONS_MENU = "with_options_menu"
+        private const val ARG_WITH_ACTION_BAR = "with_action_bar"
 
         val instance: BooksFragment
             get() = getInstance(true, true)
 
-        fun getInstance(addOptions: Boolean, showContextMenu: Boolean): BooksFragment {
+        fun getInstance(withOptionsMenu: Boolean, withActionBar: Boolean): BooksFragment {
             val fragment = BooksFragment()
             val args = Bundle()
 
-            args.putBoolean(ARG_ADD_OPTIONS, addOptions)
-            args.putBoolean(ARG_SHOW_CONTEXT_MENU, showContextMenu)
+            args.putBoolean(ARG_WITH_OPTIONS_MENU, withOptionsMenu)
+            args.putBoolean(ARG_WITH_ACTION_BAR, withActionBar)
 
             fragment.arguments = args
             return fragment

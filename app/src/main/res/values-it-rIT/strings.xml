@@ -237,6 +237,7 @@
     <string name="property_value">Valore della proprietà</string>
     <string name="reminder_for_scheduled">In programma: %s</string>
     <string name="reminder_for_deadline">Scadenza: %s</string>
+    <string name="reminder_for_event">Event: %s</string>
     <string name="scheduled_new_notes_for_today">Pianifica nuove note per oggi</string>
     <string name="fold_content">Contenuto della cartella</string>
     <string name="allow_folding_of_content">Consenti la chiusura del contenuto</string>
@@ -256,6 +257,8 @@
     <string name="color_scheme">Combinazioni di colori</string>
     <string name="monospaced_font">Carattere a spaziatura fissa</string>
     <string name="monospaced_font_summary">Utilizza un carattere a spaziatura fissa per il contenuto della nota e la prefazione del libro</string>
+    <string name="reversed_note_click_action">Reversed note click action</string>
+    <string name="reversed_note_click_action_summary">Click to select note, long-click to open</string>
     <string name="look_and_feel">Aspetto &amp; Impressione</string>
     <string name="notes_list">Lista delle note</string>
     <string name="prefs_title_new_note">Nuova nota</string>
@@ -344,6 +347,8 @@
     <string name="pref_title_summary_reminders_for_scheduled_times">Mostra notifiche per le note con orario programmato</string>
     <string name="pref_title_reminders_for_deadline_times">Scadenze</string>
     <string name="pref_title_summary_reminders_for_deadline_times">Mostra notifiche per le note con orario ın scadenza</string>
+    <string name="pref_title_reminders_for_event_times">Events</string>
+    <string name="pref_title_summary_reminders_for_event_times">Display notification for notes with event time</string>
     <string name="pref_title_reminders_sound">Suono</string>
     <string name="pref_title_reminders_vibrate">Vibrazione</string>
     <string name="pref_title_reminders_led">Illuminazione</string>

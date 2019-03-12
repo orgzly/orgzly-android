@@ -1,13 +1,17 @@
 package com.orgzly.android.ui.notes.query
 
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.appcompat.view.ActionMode
+import androidx.lifecycle.ViewModelProviders
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.ui.*
+import com.orgzly.android.ui.ActionModeListener
+import com.orgzly.android.ui.BottomActionBar
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
@@ -102,6 +106,12 @@ abstract class QueryFragment :
     }
 
     protected fun handleActionItemClick(actionId: Int, actionMode: ActionMode?, ids: Set<Long>) {
+        if (ids.isEmpty()) {
+            Log.e(TAG, "Cannot handle action when there are no items selected")
+            actionMode?.finish()
+            return
+        }
+
         when (actionId) {
             R.id.quick_bar_schedule,
             R.id.bottom_action_bar_schedule ->

@@ -71,9 +71,9 @@
     <string name="no_notes_pasted">无可粘贴内容</string>
     <string name="fragment_note_title_hint">标题</string>
     <string name="fragment_note_tags_hint" tools:ignore="typos">标签 标签</string>
-    <string name="import_org_file">导入Org文件</string>
+    <string name="import_org_file">导入 Org 文件</string>
     <string name="message_dropbox_unlinked">已从Dropbox断开连接</string>
-    <string name="message_dropbox_linked">已成功连接到Dropbox</string>
+    <string name="message_dropbox_linked">已成功连接到 Dropbox</string>
     <!-- Preferences (Settings). -->
     <string name="repos_preference_title">存储库</string>
     <string name="repos_preference_summary">用于同步笔记本的位置</string>
@@ -122,16 +122,16 @@
     <string name="clear_database_dialog_message">清除本地数据库？</string>
     <string name="clear_database_summary">清除本地数据库</string>
     <string name="clear_database_performed">数据库已清除</string>
-    <string name="getting_started_notebook_name">开始使用Orgzly</string>
-    <string name="reload_getting_started">导入“开始使用Orgzly”</string>
+    <string name="getting_started_notebook_name">开始使用 Orgzly</string>
+    <string name="reload_getting_started">导入“开始使用 Orgzly”</string>
     <string name="reload_getting_started_summary">导入笔记本的最新版本</string>
     <string name="notebook_imported">笔记本已导入</string>
     <string name="book_does_not_exist_anymore">此笔记本不再存在。</string>
     <string name="note_does_not_exist_anymore">此笔记不再存在。</string>
     <string name="search_does_not_exist_anymore">此搜索不再存在。</string>
     <string name="fragment_query_title">搜索</string>
-    <string name="repo_dropbox_button_not_linked">连接到Dropbox</string>
-    <string name="repo_dropbox_button_linked">从Dropbox断开连接</string>
+    <string name="repo_dropbox_button_not_linked">连接到 Dropbox</string>
+    <string name="repo_dropbox_button_linked">从 Dropbox 断开连接</string>
     <string name="fragment_settings_title">设置</string>
     <string name="notes_update_needed_dialog_title">偏好影响笔记</string>
     <string name="notes_update_needed_dialog_message">更新笔记以显示更改？</string>
@@ -165,11 +165,11 @@
     <string name="canceled">已取消</string>
     <string name="canceling">正在取消…</string>
     <string name="directory">目录</string>
-    <string name="fragment_repo_dropbox_directory_desc">Dropbox中的目录(例如“/Documents/Orgzly”)</string>
-    <string name="directory_uri">目录URI</string>
+    <string name="fragment_repo_dropbox_directory_desc">Dropbox中的目录 (例如 “/Documents/Orgzly”)</string>
+    <string name="directory_uri">目录 URI</string>
     <string name="git_url_hint">远程地址（例如 git@github.com:orgzly/orgzly-android.git）</string>
     <string name="git_directory_hint">目录位置（例如 “file:/sdcard/orgzly”）</string>
-    <string name="git_ssh_key_hint">SSH密钥位置（例如 “file:/sdcard/id_rsa”）</string>
+    <string name="git_ssh_key_hint">SSH 密钥位置（例如 “file:/sdcard/id_rsa”）</string>
     <string name="git_author_hint">作者（例如 John Doe）</string>
     <string name="git_email_hint">电子邮件（例如 john@email.com）</string>
     <string name="git_branch_hint">分支（例如 master）</string>
@@ -179,8 +179,8 @@
     <string name="share_type_not_set">分享类型未设定</string>
     <string name="share_type_not_supported">分享类型 %s 不受支持</string>
     <string name="repositories">存储库</string>
-    <string name="invalid_repo_url">无效的存储库网址 \"%s\"</string>
-    <string name="repository_url_already_exists">此URL的存储库已存在</string>
+    <string name="invalid_repo_url">无效的仓库地址 %s</string>
+    <string name="repository_url_already_exists">此地址仓库已存在</string>
     <string name="message_unsupported_repository_type">不支持的存储库类型</string>
     <string name="fragment_left_drawer_list_view_content_description">左侧抽屉</string>
     <string name="drawer_item">抽屉条目</string>
@@ -189,8 +189,8 @@
     <string name="new_above">在上面新建</string>
     <string name="new_under">在底下新建</string>
     <string name="new_below">在下面新建</string>
-    <string name="confirm_unlinking_from_dropbox_title">从Dropbox断开连接?</string>
-    <string name="confirm_unlinking_from_dropbox_message">再次连接到Dropbox前将无法同步到Dropbox。</string>
+    <string name="confirm_unlinking_from_dropbox_title">与 Dropbox 断开连接?</string>
+    <string name="confirm_unlinking_from_dropbox_message">直到再次连接之前都无法同步到 Dropbox.</string>
     <string name="note_book_not_set">笔记本未设定</string>
     <string name="title_can_not_be_empty">标题不能为空</string>
     <string name="can_not_be_empty">不能为空</string>
@@ -234,6 +234,7 @@
     <string name="property_value">属性值</string>
     <string name="reminder_for_scheduled">计划：%s</string>
     <string name="reminder_for_deadline">截止期限：%s</string>
+    <string name="reminder_for_event">事件：%s</string>
     <string name="scheduled_new_notes_for_today">将新建笔记的计划时间设为今天</string>
     <string name="fold_content">收起内容</string>
     <string name="allow_folding_of_content">允许收起内容</string>
@@ -253,6 +254,8 @@
     <string name="color_scheme">颜色主题</string>
     <string name="monospaced_font">等宽字体</string>
     <string name="monospaced_font_summary">为笔记内容和笔记本序言使用等宽字体</string>
+    <string name="reversed_note_click_action">反转笔记点击动作</string>
+    <string name="reversed_note_click_action_summary">点击选择笔记，长按打开笔记</string>
     <string name="look_and_feel">外观 &amp; 感觉</string>
     <string name="notes_list">笔记列表</string>
     <string name="prefs_title_new_note">新建笔记</string>
@@ -341,6 +344,8 @@
     <string name="pref_title_summary_reminders_for_scheduled_times">为有计划时间的笔记显示通知</string>
     <string name="pref_title_reminders_for_deadline_times">截止期限</string>
     <string name="pref_title_summary_reminders_for_deadline_times">为有截止时间的笔记显示通知</string>
+    <string name="pref_title_reminders_for_event_times">事件</string>
+    <string name="pref_title_summary_reminders_for_event_times">为有事件时间的笔记显示通知</string>
     <string name="pref_title_reminders_sound">声音</string>
     <string name="pref_title_reminders_vibrate">振动</string>
     <string name="pref_title_reminders_led">呼吸灯</string>
@@ -370,7 +375,7 @@
     <string name="separate_notes_with_new_line_never">从不</string>
     <string name="default_notebook">默认笔记本</string>
     <string name="default_notebook_desc">分享到Orgzly或从固定通知新建笔记时使用的笔记本</string>
-    <string name="force_utf8">强制UTF-8编码</string>
+    <string name="force_utf8">强制 UTF-8 编码</string>
     <string name="force_utf8_summary">不要尝试检测编码，总是使用UTF-8</string>
     <string name="list_widget_name">Orgzly笔记</string>
     <string name="list_widget_select_search">选择搜索</string>
@@ -450,5 +455,5 @@
     <string name="argument_detected">检测到 %s</string>
     <string name="argument_selected">已选择 %s</string>
     <string name="fixed_width_value">宽度（以像素为单位）</string>
-    <string name="share_target_service">分享到Orgzly笔记本</string>
+    <string name="share_target_service">分享到 Orgzly 笔记本</string>
 </resources>

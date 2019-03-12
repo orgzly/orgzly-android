@@ -608,15 +608,20 @@ class DataRepository @Inject constructor(
 
     fun deleteNotes(bookId: Long, ids: Set<Long>): Int {
         return db.runInTransaction(Callable {
+            val batchId = System.currentTimeMillis()
+
             db.noteAncestor().deleteForNoteAndDescendants(bookId, ids)
 
-            val deleted = db.note().deleteById(ids)
+            val count = db.note().markAsCut(bookId, ids, batchId)
 
             db.note().updateDescendantsCountForAncestors(ids)
 
+            // Same as cut but delete cut after
+            db.note().deleteCut()
+
             updateBookIsModified(bookId, true)
 
-            deleted
+            count
         })
     }
 
