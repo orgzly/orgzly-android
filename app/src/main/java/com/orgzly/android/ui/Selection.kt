@@ -36,6 +36,16 @@ class Selection {
         }
     }
 
+    // TODO: Choose mode when creating selection
+    fun toggleSingleSelect(id: Long) {
+        if (contains(id)) {
+            idSet.clear()
+        } else {
+            idSet.clear()
+            idSet.add(id)
+        }
+    }
+
     fun clear() {
         idSet.clear()
     }

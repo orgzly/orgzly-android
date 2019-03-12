@@ -31,7 +31,6 @@ import com.orgzly.android.ui.Fab
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
-import com.orgzly.android.ui.notes.query.QueryFragment
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.usecase.BookDelete
 import com.orgzly.android.util.LogUtils
@@ -60,8 +59,8 @@ class BooksFragment :
 
     private lateinit var viewFlipper: ViewFlipper
 
-    private var mAddOptions = true
-    private var mShowContextMenu = true
+    private var withOptionsMenu = true
+    private var withActionBar = true
 
     @Inject
     lateinit var dataRepository: DataRepository
@@ -83,8 +82,8 @@ class BooksFragment :
             throw IllegalArgumentException("No arguments found to " + BooksFragment::class.java.simpleName)
         }
 
-        mAddOptions = arguments?.getBoolean(ARG_ADD_OPTIONS) ?: true
-        mShowContextMenu = arguments?.getBoolean(ARG_SHOW_CONTEXT_MENU) ?: true
+        withOptionsMenu = arguments?.getBoolean(ARG_WITH_OPTIONS_MENU) ?: true
+        withActionBar = arguments?.getBoolean(ARG_WITH_ACTION_BAR) ?: true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,7 +97,7 @@ class BooksFragment :
         /* Would like to add items to the Options Menu.
          * Required (for fragments only) to receive onCreateOptionsMenu() call.
          */
-        setHasOptionsMenu(mAddOptions)
+        setHasOptionsMenu(withOptionsMenu)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -123,8 +122,8 @@ class BooksFragment :
             listener?.onBookClicked(item.book.id)
 
         } else {
-            viewAdapter.getSelection().toggle(item.book.id)
-            viewAdapter.notifyItemChanged(position)
+            viewAdapter.getSelection().toggleSingleSelect(item.book.id)
+            viewAdapter.notifyDataSetChanged() // FIXME
 
             if (viewAdapter.getSelection().count == 0) {
                 actionMode?.finish()
@@ -135,13 +134,13 @@ class BooksFragment :
     }
 
     override fun onLongClick(view: View, position: Int, item: BookView) {
-        if (!mShowContextMenu) {
+        if (!withActionBar) {
             listener?.onBookClicked(item.book.id)
             return
         }
 
-        viewAdapter.getSelection().toggle(item.book.id)
-        viewAdapter.notifyItemChanged(position)
+        viewAdapter.getSelection().toggleSingleSelect(item.book.id)
+        viewAdapter.notifyDataSetChanged() // FIXME
 
         if (viewAdapter.getSelection().count > 0) {
             if (actionMode == null) {
@@ -518,18 +517,18 @@ class BooksFragment :
          */
         val FRAGMENT_TAG: String = BooksFragment::class.java.name
 
-        private const val ARG_ADD_OPTIONS = "add_options"
-        private const val ARG_SHOW_CONTEXT_MENU = "show_context_menu"
+        private const val ARG_WITH_OPTIONS_MENU = "with_options_menu"
+        private const val ARG_WITH_ACTION_BAR = "with_action_bar"
 
         val instance: BooksFragment
             get() = getInstance(true, true)
 
-        fun getInstance(addOptions: Boolean, showContextMenu: Boolean): BooksFragment {
+        fun getInstance(withOptionsMenu: Boolean, withActionBar: Boolean): BooksFragment {
             val fragment = BooksFragment()
             val args = Bundle()
 
-            args.putBoolean(ARG_ADD_OPTIONS, addOptions)
-            args.putBoolean(ARG_SHOW_CONTEXT_MENU, showContextMenu)
+            args.putBoolean(ARG_WITH_OPTIONS_MENU, withOptionsMenu)
+            args.putBoolean(ARG_WITH_ACTION_BAR, withActionBar)
 
             fragment.arguments = args
             return fragment
