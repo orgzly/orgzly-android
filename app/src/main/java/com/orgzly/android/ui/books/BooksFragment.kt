@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import android.widget.CheckBox
 import android.widget.EditText
@@ -30,6 +31,7 @@ import com.orgzly.android.ui.Fab
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
+import com.orgzly.android.ui.notes.query.QueryFragment
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.usecase.BookDelete
 import com.orgzly.android.util.LogUtils
@@ -157,48 +159,50 @@ class BooksFragment :
     }
 
     private inner class ActionModeCallback : ActionMode.Callback {
-        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+        override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, mode, item)
 
-            val bookId = viewAdapter.getSelection().getFirstId()
+            val ids = viewAdapter.getSelection().getIds()
 
-            val res = when (item?.itemId) {
-                R.id.books_context_menu_rename -> {
-                    viewModel.renameBookRequest(bookId)
-                    true
+            if (ids.isEmpty()) {
+                Log.e(TAG, "Cannot handle action when there are no items selected")
+
+            } else {
+                val bookId = ids.first()
+
+                when (item.itemId) {
+                    R.id.books_context_menu_rename -> {
+                        viewModel.renameBookRequest(bookId)
+                    }
+
+                    R.id.books_context_menu_set_link -> {
+                        listener?.onBookLinkSetRequest(bookId)
+                    }
+
+                    R.id.books_context_menu_force_save -> {
+                        listener?.onForceSaveRequest(bookId)
+                    }
+
+                    R.id.books_context_menu_force_load -> {
+                        listener?.onForceLoadRequest(bookId)
+                    }
+
+                    R.id.books_context_menu_export -> {
+                        listener?.onBookExportRequest(bookId)
+                    }
+
+                    R.id.books_context_menu_delete -> {
+                        viewModel.deleteBookRequest(bookId)
+                    }
+
+                    else -> {
+                    }
                 }
-
-                R.id.books_context_menu_set_link -> {
-                    listener?.onBookLinkSetRequest(bookId)
-                    true
-                }
-
-                R.id.books_context_menu_force_save -> {
-                    listener?.onForceSaveRequest(bookId)
-                    true
-                }
-
-                R.id.books_context_menu_force_load -> {
-                    listener?.onForceLoadRequest(bookId)
-                    true
-                }
-
-                R.id.books_context_menu_export -> {
-                    listener?.onBookExportRequest(bookId)
-                    true
-                }
-
-                R.id.books_context_menu_delete -> {
-                    viewModel.deleteBookRequest(bookId)
-                    true
-                }
-
-                else -> false
             }
 
             actionMode?.finish()
 
-            return res
+            return true
         }
 
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {

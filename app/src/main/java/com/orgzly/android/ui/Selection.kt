@@ -20,10 +20,6 @@ class Selection {
         return getIds().first()
     }
 
-    fun getLastId(): Long {
-        return getIds().last()
-    }
-
     val count: Int
         get() = idSet.size
 
@@ -32,23 +28,11 @@ class Selection {
         return idSet.contains(id)
     }
 
-    fun select(id: Long) {
-        idSet.add(id)
-    }
-
-    fun select(ids: Collection<Long>) {
-        this.idSet.addAll(ids)
-    }
-
-    private fun deselect(id: Long) {
-        idSet.remove(id)
-    }
-
     fun toggle(id: Long) {
         if (contains(id)) {
-            deselect(id)
+            idSet.remove(id)
         } else {
-            select(id)
+            idSet.add(id)
         }
     }
 

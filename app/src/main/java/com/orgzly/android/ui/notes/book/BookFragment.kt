@@ -570,6 +570,12 @@ class BookFragment :
     private fun handleActionItemClick(actionId: Int, actionMode: ActionMode?, ids: Set<Long>) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, actionId, ids)
 
+        if (ids.isEmpty()) {
+            Log.e(TAG, "Cannot handle action when there are no items selected")
+            actionMode?.finish()
+            return
+        }
+
         when (actionId) {
             R.id.quick_bar_open,
             R.id.bottom_action_bar_open -> {
