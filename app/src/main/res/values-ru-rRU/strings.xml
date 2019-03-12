@@ -263,8 +263,8 @@
     <string name="color_scheme">Цветовая схема</string>
     <string name="monospaced_font">Моноширинный шрифт</string>
     <string name="monospaced_font_summary">Использовать моноширинный шрифт для содержания заметки и предисловия к книге</string>
-    <string name="reversed_note_click_action">Reversed note click action</string>
-    <string name="reversed_note_click_action_summary">Click to select note, long-click to open</string>
+    <string name="reversed_note_click_action">Обратное действие по клику на заметку</string>
+    <string name="reversed_note_click_action_summary">Короткое нажатие для выделения, длинное для открытия</string>
     <string name="look_and_feel">Внешний вид</string>
     <string name="notes_list">Список заметок</string>
     <string name="prefs_title_new_note">Новая заметка</string>
@@ -354,7 +354,7 @@
     <string name="pref_title_reminders_for_deadline_times">Сроки</string>
     <string name="pref_title_summary_reminders_for_deadline_times">Отображать уведомление для заметок со временем окончания</string>
     <string name="pref_title_reminders_for_event_times">События</string>
-    <string name="pref_title_summary_reminders_for_event_times">Display notification for notes with event time</string>
+    <string name="pref_title_summary_reminders_for_event_times">Отображать уведомление для заметок со временем</string>
     <string name="pref_title_reminders_sound">Звук</string>
     <string name="pref_title_reminders_vibrate">Вибрация</string>
     <string name="pref_title_reminders_led">Светлый</string>
