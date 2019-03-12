@@ -463,5 +463,5 @@
     <string name="pref_key_reminder_service_last_run_for_scheduled" translatable="false">pref_key_reminder_service_last_run_for_scheduled</string>
     <string name="pref_key_reminder_service_last_run_for_deadline" translatable="false">pref_key_reminder_service_last_run_for_deadline</string>
     <string name="pref_key_reminder_service_last_run_for_event" translatable="false">pref_key_reminder_service_last_run_for_event</string>
-    <string name="pref_key_notes_org_clipboard" translatable="false">pref_key_notes_org_clipboard</string>
+    <string name="pref_key_notes_clipboard" translatable="false">pref_key_notes_clipboard</string>
 </resources>

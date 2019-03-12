@@ -19,7 +19,7 @@ abstract class NoteDao : BaseDao<Note> {
     @Query("SELECT * FROM notes WHERE id = :id")
     abstract fun get(id: Long): Note?
 
-    @Query("SELECT * FROM notes WHERE title = :title")
+    @Query("SELECT * FROM notes WHERE title = :title ORDER BY lft DESC LIMIT 1")
     abstract fun get(title: String): Note?
 
     @Query("SELECT * FROM notes WHERE id IN (:ids)")
@@ -233,13 +233,10 @@ abstract class NoteDao : BaseDao<Note> {
     @Query("UPDATE notes SET lft = lft + :inc WHERE (book_id = :bookId AND $WHERE_EXISTING_NOTES) AND lft > :value")
     abstract fun incrementLftForLftGt(bookId: Long, value: Long, inc: Int)
 
-    @Query("UPDATE notes SET rgt = rgt + :inc WHERE (book_id = :bookId AND $WHERE_EXISTING_NOTES) AND rgt > :value")
-    abstract fun incrementRgtForRgtGt(bookId: Long, value: Long, inc: Int)
+    @Query("UPDATE notes SET rgt = rgt + :inc WHERE book_id = :bookId AND is_cut = 0 AND rgt > :value")
+    abstract fun incrementRgtForRgtGtOrRoot(bookId: Long, value: Long, inc: Int)
 
-    @Query("UPDATE notes SET rgt = rgt + :inc WHERE (book_id = :bookId AND $WHERE_EXISTING_NOTES) AND rgt >= :value")
-    abstract fun incrementRgtForRgtGe(bookId: Long, value: Long, inc: Int)
-
-    @Query("UPDATE notes SET rgt = rgt + :inc WHERE ((book_id = :bookId AND $WHERE_EXISTING_NOTES) AND rgt >= :value) OR level = 0")
+    @Query("UPDATE notes SET rgt = rgt + :inc WHERE book_id = :bookId AND is_cut = 0 AND rgt >= :value")
     abstract fun incrementRgtForRgtGeOrRoot(bookId: Long, value: Long, inc: Int)
 
     @Query("UPDATE notes SET folded_under_id = 0 WHERE is_cut = :batchId AND folded_under_id NOT IN (SELECT id FROM notes WHERE is_cut = :batchId)")

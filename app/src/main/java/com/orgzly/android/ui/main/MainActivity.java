@@ -62,8 +62,6 @@ import com.orgzly.android.usecase.BookImportGettingStarted;
 import com.orgzly.android.usecase.BookLinkUpdate;
 import com.orgzly.android.usecase.BookSparseTreeForNote;
 import com.orgzly.android.usecase.BookUpdatePreface;
-import com.orgzly.android.usecase.NoteClipboardCut;
-import com.orgzly.android.usecase.NoteClipboardPaste;
 import com.orgzly.android.usecase.SavedSearchCreate;
 import com.orgzly.android.usecase.SavedSearchDelete;
 import com.orgzly.android.usecase.SavedSearchExport;
@@ -110,7 +108,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -1155,23 +1152,10 @@ public class MainActivity extends CommonActivity
             }
 
         } else if (action instanceof NoteCut) {
-            int count = (int) result.getUserData();
-
-            String message;
-
-            if (count == 0) {
-                message = getResources().getString(R.string.no_notes_cut);
-            } else {
-                message = getResources().getQuantityString(R.plurals.notes_cut, count, count);
-            }
-
-            showSnackbar(message);
-
-        } else if (action instanceof NoteClipboardCut) {
             NotesClipboard clipboard = (NotesClipboard) result.getUserData();
 
             if (clipboard != null) {
-                int count = clipboard.getCount();
+                int count = clipboard.getNoteCount();
 
                 String message;
 
@@ -1184,7 +1168,7 @@ public class MainActivity extends CommonActivity
                 showSnackbar(message);
             }
 
-        } else if (action instanceof NotePaste || action instanceof NoteClipboardPaste) {
+        } else if (action instanceof NotePaste) {
             int count = (int) result.getUserData();
 
             String message;

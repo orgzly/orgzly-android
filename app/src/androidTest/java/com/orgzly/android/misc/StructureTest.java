@@ -1,6 +1,7 @@
 package com.orgzly.android.misc;
 
 import com.orgzly.android.BookFormat;
+import com.orgzly.android.NotesClipboard;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.db.entity.BookView;
 import com.orgzly.android.db.entity.Note;
@@ -12,13 +13,17 @@ import com.orgzly.android.ui.note.NotePayload;
 import com.orgzly.android.usecase.BookCycleVisibility;
 import com.orgzly.android.usecase.NoteCreate;
 import com.orgzly.android.usecase.NoteCut;
+import com.orgzly.android.usecase.NoteDelete;
 import com.orgzly.android.usecase.NotePaste;
 import com.orgzly.android.usecase.NoteToggleFolding;
+import com.orgzly.android.usecase.UseCaseResult;
 import com.orgzly.android.usecase.UseCaseRunner;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -27,7 +32,6 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 public class StructureTest extends OrgzlyTest {
@@ -123,14 +127,16 @@ public class StructureTest extends OrgzlyTest {
 
     @Test
     public void testPasteToDifferentBook() throws IOException {
-        testUtils.setupBook("notebook-1", "" +
+        testUtils.setupBook(
+                "notebook-1", "" +
                 "description\n" +
                 "\n" +
                 "* Note 1\n" +
                 "** Note 1.1\n" +
                 "*** Note 1.1.1\n");
 
-        BookView book2 = testUtils.setupBook("notebook-2", "" +
+        BookView book2 = testUtils.setupBook(
+                "notebook-2", "" +
                 "description\n" +
                 "\n" +
                 "* Note A\n" +
@@ -165,6 +171,17 @@ public class StructureTest extends OrgzlyTest {
         BookView book = testUtils.setupBook("notebook", "* Note 1\n** Note 1.1\n");
         assertEquals(1, dataRepository.getNote("Note 1").getPosition().getDescendantsCount());
         UseCaseRunner.run(new NoteCut(
+                book.getBook().getId(),
+                Collections.singleton(dataRepository.getNote("Note 1.1").getId())));
+        assertEquals(0, dataRepository.getNote("Note 1").getPosition().getDescendantsCount());
+    }
+
+    @Test
+
+    public void testDescendantCountAfterDelete() {
+        BookView book = testUtils.setupBook("notebook", "* Note 1\n** Note 1.1\n");
+        assertEquals(1, dataRepository.getNote("Note 1").getPosition().getDescendantsCount());
+        UseCaseRunner.run(new NoteDelete(
                 book.getBook().getId(),
                 Collections.singleton(dataRepository.getNote("Note 1.1").getId())));
         assertEquals(0, dataRepository.getNote("Note 1").getPosition().getDescendantsCount());
@@ -686,8 +703,9 @@ public class StructureTest extends OrgzlyTest {
         assertEquals(dataRepository.getRootNode(book.getBook().getId()).getId(), n2.getParentId());
     }
 
+    @Ignore
     @Test
-    public void testPasteFolded() throws IOException {
+    public void testPasteFolded() {
         BookView book = testUtils.setupBook("notebook", "" +
                 "description\n" +
                 "\n" +
@@ -696,15 +714,25 @@ public class StructureTest extends OrgzlyTest {
                 "* Note 2\n");
 
         UseCaseRunner.run(new NoteToggleFolding(dataRepository.getNote("Note 1").getId()));
+
+        assertTrue(dataRepository.getNote("Note 1").getPosition().isFolded());
+        assertEquals(
+                dataRepository.getNote("Note 1").getId(),
+                dataRepository.getNote("Note 1.1").getPosition().getFoldedUnderId());
+
         UseCaseRunner.run(new NoteCut(
                 book.getBook().getId(),
                 Collections.singleton(dataRepository.getNote("Note 1").getId())));
+
         Note n = dataRepository.getNote("Note 2");
         UseCaseRunner.run(new NotePaste(n.getPosition().getBookId(), n.getId(), Place.ABOVE));
 
         /* Remains folded. */
         assertTrue(dataRepository.getNote("Note 1").getPosition().isFolded());
-        assertNotSame(0, dataRepository.getNote("Note 1.1").getPosition().getFoldedUnderId());
+        assertEquals(
+                dataRepository.getNote("Note 1").getId(),
+                dataRepository.getNote("Note 1.1").getPosition().getFoldedUnderId());
+
     }
 
     @Test
@@ -1003,11 +1031,12 @@ public class StructureTest extends OrgzlyTest {
 
     @Test
     public void testInheritedTagsAfterCutAndPaste() throws IOException {
-        BookView book = testUtils.setupBook("notebook",
+        BookView book = testUtils.setupBook(
+                "notebook",
                 "* A :a:\n" +
-                        "** B :b:\n" +
-                        "*** C :c:\n" +
-                        "* D :d:\n");
+                "** B :b:\n" +
+                "*** C :c:\n" +
+                "* D :d:\n");
 
         UseCaseRunner.run(new NoteCut(
                 book.getBook().getId(),
@@ -1016,7 +1045,8 @@ public class StructureTest extends OrgzlyTest {
         UseCaseRunner.run(new NotePaste(
                 book.getBook().getId(), dataRepository.getNote("D").getId(), Place.UNDER));
 
-        String expectedBook = "* A :a:\n" +
+        String expectedBook =
+                "* A :a:\n" +
                 "* D :d:\n" +
                 "** B :b:\n" +
                 "*** C :c:\n" +
@@ -1150,5 +1180,90 @@ public class StructureTest extends OrgzlyTest {
                 "** 2.2\n";
 
         assertEquals(expectedBook, actual);
+    }
+
+    @Test
+    public void testMultipleNotesCut() {
+        BookView book = testUtils.setupBook(
+                "Book A",
+                "* Note A-01\n" +
+                "* Note A-02\n" +
+                "** Note A-03\n" +
+                "** Note A-04\n" +
+                "*** Note A-05\n");
+
+        UseCaseResult result = UseCaseRunner.run(new NoteCut(
+                book.getBook().getId(),
+                new HashSet<>(Arrays.asList(
+                        dataRepository.getNote("Note A-01").getId(),
+                        dataRepository.getNote("Note A-02").getId()
+                ))));
+
+        String expectedBook =
+                "* Note A-01\n" +
+                "* Note A-02\n" +
+                "** Note A-03\n" +
+                "** Note A-04\n" +
+                "*** Note A-05\n" +
+                "";
+
+        NotesClipboard clipboard = (NotesClipboard) result.getUserData();
+
+        assertEquals(expectedBook, clipboard.toOrg());
+    }
+
+    @Test
+    public void testPasteMultipleTimesBelow() throws IOException {
+        Note note;
+
+        BookView book = testUtils.setupBook(
+                "Book A",
+                "* Note A-01\n" +
+                "* Note A-02\n");
+
+        UseCaseRunner.run(new NoteCut(
+                book.getBook().getId(),
+                Collections.singleton(dataRepository.getNote("Note A-02").getId())));
+
+        assertEquals(
+                "* Note A-01\n",
+                dataRepository.getBookContent("Book A", BookFormat.ORG));
+
+        note = dataRepository.getNote("Note A-01");
+        UseCaseRunner.run(new NotePaste(note.getPosition().getBookId(), note.getId(), Place.BELOW));
+
+        assertEquals(
+                "* Note A-01\n" +
+                "* Note A-02\n",
+                dataRepository.getBookContent("Book A", BookFormat.ORG));
+
+        assertTrue(
+                dataRepository.getNote("Note A-01").getPosition().getRgt()
+                        < dataRepository.getNote("Note A-02").getPosition().getLft());
+
+
+        note = dataRepository.getNote("Note A-02");
+        UseCaseRunner.run(new NotePaste(note.getPosition().getBookId(), note.getId(), Place.BELOW));
+
+        assertEquals(
+                "* Note A-01\n" +
+                "* Note A-02\n" +
+                "* Note A-02\n",
+                dataRepository.getBookContent("Book A", BookFormat.ORG));
+
+        note = dataRepository.getNote("Note A-02");
+        UseCaseRunner.run(new NotePaste(note.getPosition().getBookId(), note.getId(), Place.BELOW));
+
+        assertEquals(
+                "* Note A-01\n" +
+                "* Note A-02\n" +
+                "* Note A-02\n" +
+                "* Note A-02\n",
+                dataRepository.getBookContent("Book A", BookFormat.ORG));
+
+        assertTrue(
+                dataRepository.getNote("Note A-02").getPosition().getRgt()
+                        < dataRepository.getRootNode(book.getBook().getId()).getPosition().getRgt());
+
     }
 }

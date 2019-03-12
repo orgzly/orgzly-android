@@ -8,6 +8,7 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.text.TextUtils
 import android.util.Log
+import androidx.collection.LongSparseArray
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -728,13 +729,240 @@ class DataRepository @Inject constructor(
         })
     }
 
-    fun pasteNotes(clipboard: NotesClipboard, place: Place, targetNoteId: Long): Int {
-        val reader = StringReader(clipboard.toOrg())
+    private fun pasteNotes(clipboard: NotesClipboard, place: Place, targetNoteId: Long): Int {
+        var foldedUnder: Long = 0
 
-        return 0
+        val targetNote = db.note().get(targetNoteId) ?: return 0
+
+        val bookId = targetNote.position.bookId
+
+        val pastedLft: Long
+        val pastedLevel: Int
+        val pastedParentId: Long
+
+        /* If target note is hidden, hide pasted under the same note. */
+        if (targetNote.position.foldedUnderId != 0L) {
+            foldedUnder = targetNote.position.foldedUnderId
+        }
+
+        when (place) {
+            Place.ABOVE -> {
+                pastedLft = targetNote.position.lft
+                pastedLevel = targetNote.position.level
+                pastedParentId = targetNote.position.parentId
+            }
+
+            Place.UNDER -> {
+                val lastDescendant = db.note().getLastHighestLevelDescendant(
+                        targetNote.position.bookId, targetNote.position.lft, targetNote.position.rgt)
+
+                if (BuildConfig.LOG_DEBUG)
+                    LogUtils.d(TAG, "lastDescendant: $lastDescendant")
+
+
+                if (lastDescendant != null) {
+                    /* Insert batch after last descendant with highest level. */
+                    pastedLft = lastDescendant.position.rgt + 1
+                    pastedLevel = lastDescendant.position.level
+
+                } else {
+                    /* Insert batch just under the target note. */
+                    pastedLft = targetNote.position.lft + 1
+                    pastedLevel = targetNote.position.level + 1
+                }
+
+                if (targetNote.position.isFolded) {
+                    foldedUnder = targetNote.id
+                }
+
+                pastedParentId = targetNote.id
+            }
+
+            Place.UNDER_AS_FIRST -> {
+                pastedLft = targetNote.position.lft + 1
+                pastedLevel = targetNote.position.level + 1
+
+                if (targetNote.position.isFolded) {
+                    foldedUnder = targetNote.id
+                }
+
+                pastedParentId = targetNote.id
+            }
+
+            Place.BELOW -> {
+                pastedLft = targetNote.position.rgt + 1
+                pastedLevel = targetNote.position.level
+                pastedParentId = targetNote.position.parentId
+            }
+
+            else -> throw IllegalArgumentException("Unsupported place for paste: $place")
+        }
+
+        val levelOffset = pastedLevel - 1
+
+        if (BuildConfig.LOG_DEBUG)
+            LogUtils.d(TAG, """
+                Pasting ${clipboard.noteCount} notes $place ${targetNote.title}
+
+                targetLft: ${targetNote.position.lft}
+                targetRgt: ${targetNote.position.rgt}
+                targetLevel: ${targetNote.position.level}
+
+                pastedLft: $pastedLft
+                pastedLevel: $pastedLevel
+                pastedParentId: $pastedParentId
+
+                levelOffset: $levelOffset
+                """.trimIndent())
+
+        makeSpaceForNewNotes(clipboard.noteCount, targetNote, place)
+
+        val lftToNoteIds = LongSparseArray<Long>()
+
+        val notesWithParentSet = HashSet<Long>()
+
+        var count = 0
+
+        val batchId = System.currentTimeMillis()
+
+        val org = clipboard.toOrg()
+
+        val useCreatedAtProperty = AppPreferences.createdAt(context)
+        val createdAtProperty = AppPreferences.createdAtProperty(context)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Parsing clipboard:\n$org")
+
+        OrgParser.Builder()
+                .setInput(org)
+                .setTodoKeywords(AppPreferences.todoKeywordsSet(context))
+                .setDoneKeywords(AppPreferences.doneKeywordsSet(context))
+                .setListener(object : OrgNestedSetParserListener {
+                    @Throws(IOException::class)
+                    override fun onNode(node: OrgNodeInSet) {
+
+                        // Skip root node
+                        if (node.level == 0) {
+                            return
+                        }
+
+                        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Parsed $node")
+
+                        val lft = pastedLft + node.lft - 2
+                        val rgt = pastedLft + node.rgt - 2
+
+                        val position = NotePosition(
+                                bookId = bookId,
+                                lft = lft,
+                                rgt = rgt,
+                                level = node.level + levelOffset,
+                                parentId = if (node.level == 1) pastedParentId else 0,
+                                foldedUnderId = 0,
+                                isFolded = false,
+                                descendantsCount = node.descendantsCount)
+
+                        val scheduledRangeId = getOrgRangeId(node.head.scheduled)
+                        val deadlineRangeId = getOrgRangeId(node.head.deadline)
+                        val closedRangeId = getOrgRangeId(node.head.closed)
+                        val clockRangeId = getOrgRangeId(node.head.clock)
+
+                        var content: String? = null
+                        var contentLineCount = 0
+
+                        if (node.head.hasContent()) {
+                            content = node.head.content
+                            contentLineCount = MiscUtils.lineCount(node.head.content)
+                        }
+
+                        val note = Note(
+                                0,
+                                title = node.head.title,
+                                priority = node.head.priority,
+                                state = node.head.state,
+                                scheduledRangeId = scheduledRangeId,
+                                deadlineRangeId = deadlineRangeId,
+                                closedRangeId = closedRangeId,
+                                clockRangeId = clockRangeId,
+                                tags = if (node.head.hasTags()) Note.dbSerializeTags(node.head.tags) else null,
+                                createdAt = getCreatedAtFromProperty(node, useCreatedAtProperty, createdAtProperty),
+                                content = content,
+                                contentLineCount = contentLineCount,
+                                position = position,
+                                isCut = batchId)
+
+                        val noteId = db.note().insert(note)
+
+                        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Inserted $noteId $note")
+
+                        lftToNoteIds.put(lft, noteId)
+
+                        insertNoteProperties(noteId, node.head.properties)
+                        insertNoteEvents(noteId, note.title, note.content)
+
+                        /*
+                         * Update notes' parent IDs and insert ancestors.
+                         * Go through all note's descendants - notes between lft and rgt.
+                         */
+                        for (num in lft + 1 until rgt) {
+                            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "$lft <- $num -> $rgt")
+
+                            lftToNoteIds.get(num)?.let { descendantNoteId ->
+                                // Update parent ID
+                                if (!notesWithParentSet.contains(descendantNoteId)) {
+                                    if (BuildConfig.LOG_DEBUG)
+                                        LogUtils.d(TAG, "Updating parent for $descendantNoteId to $noteId")
+
+                                    db.note().updateParentForNote(descendantNoteId, noteId)
+
+                                    notesWithParentSet.add(descendantNoteId)
+                                }
+
+                                if (BuildConfig.LOG_DEBUG)
+                                    LogUtils.d(TAG, "Inserting $noteId as ancestor of $descendantNoteId")
+
+                                // Insert ancestor
+//                                db.noteAncestor().insert(NoteAncestor(
+//                                        noteId = descendantNoteId,
+//                                        bookId = bookId,
+//                                        ancestorNoteId = noteId))
+                            }
+                        }
+
+                        count++
+                    }
+
+                    override fun onFile(file: OrgFile?) {
+                    }
+                }).build().parse()
+
+
+//        db.note().incrementLftForLftGe(targetNote.position.bookId, pastedLft, positionsRequired)
+//        db.note().incrementRgtForRgtGeOrRoot(targetNote.position.bookId, pastedLft, positionsRequired)
+//
+        db.note().unfoldNotBelongingToBatch(batchId)
+//
+        if (foldedUnder != 0L) {
+            db.note().markBatchAsFolded(batchId, foldedUnder)
+        }
+//
+//
+//        db.note().moveBatch(batchId, targetNote.position.bookId, positionOffset, levelOffset)
+//
+        db.noteAncestor().insertAncestorsForBatch(batchId)
+//
+        db.note().makeBatchVisible(batchId)
+//
+        // Update descendants count for the note and its ancestors
+        db.note().updateDescendantsCountForNoteAndAncestors(listOf(targetNote.id))
+//
+//        // Delete other batches
+//        db.note().deleteCut()
+//
+        updateBookIsModified(targetNote.position.bookId, true)
+
+        return count
     }
 
-    fun pasteNotes(batchId: Long, place: Place, targetNoteId: Long): Int {
+    private fun pasteNotes(batchId: Long, place: Place, targetNoteId: Long): Int {
         var foldedUnder: Long = 0
 
         val batchData = db.note().getBatchData(batchId) ?: return 0
@@ -1166,7 +1394,7 @@ class DataRepository @Inject constructor(
         }
 
         // Make space for new note
-        if ( target.place != Place.UNSPECIFIED) {
+        if (target.place != Place.UNSPECIFIED) {
             makeSpaceForNewNotes(1, targetNote!!, target.place)
 
             val count = db.note().incrementDescendantsCountForAncestors(
@@ -1198,7 +1426,6 @@ class DataRepository @Inject constructor(
         val noteId = db.note().insert(noteEntity)
 
         replaceNoteProperties(noteId, notePayload.properties)
-
         replaceNoteEvents(noteId, notePayload.title, notePayload.content)
 
         db.noteAncestor().insertAncestorsForNote(noteId)
@@ -1219,17 +1446,17 @@ class DataRepository @Inject constructor(
         when (place) {
             Place.ABOVE -> {
                 db.note().incrementLftForLftGe(bookId, targetNote.position.lft, spaceRequired)
-                db.note().incrementRgtForRgtGt(bookId, targetNote.position.lft, spaceRequired)
+                db.note().incrementRgtForRgtGtOrRoot(bookId, targetNote.position.lft, spaceRequired)
             }
 
             Place.UNDER -> {
                 db.note().incrementLftForLftGt(bookId, targetNote.position.rgt, spaceRequired)
-                db.note().incrementRgtForRgtGe(bookId, targetNote.position.rgt, spaceRequired)
+                db.note().incrementRgtForRgtGeOrRoot(bookId, targetNote.position.rgt, spaceRequired)
             }
 
             Place.BELOW -> {
                 db.note().incrementLftForLftGt(bookId, targetNote.position.rgt, spaceRequired)
-                db.note().incrementRgtForRgtGt(bookId, targetNote.position.rgt, spaceRequired)
+                db.note().incrementRgtForRgtGtOrRoot(bookId, targetNote.position.rgt, spaceRequired)
             }
 
             else -> throw IllegalArgumentException("Unsupported paste relative position $place")
@@ -1244,7 +1471,6 @@ class DataRepository @Inject constructor(
             updateBookIsModified(note.position.bookId, true)
 
             replaceNoteProperties(noteId, notePayload.properties)
-
             replaceNoteEvents(noteId, notePayload.title, notePayload.content)
 
             val newNote = note.copy(
@@ -1478,7 +1704,6 @@ class DataRepository @Inject constructor(
                             val noteId = db.note().insert(note)
 
                             insertNoteProperties(noteId, node.head.properties)
-
                             insertNoteEvents(noteId, note.title, note.content)
 
                             /*

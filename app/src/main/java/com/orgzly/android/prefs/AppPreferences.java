@@ -839,16 +839,16 @@ public class AppPreferences {
     }
 
     /*
-     * Clipboard
+     * Notes clipboard
      */
 
-    public static String notesOrgClipboard(Context context) {
-        String key = context.getResources().getString(R.string.pref_key_notes_org_clipboard);
+    public static String notesClipboard(Context context) {
+        String key = context.getResources().getString(R.string.pref_key_notes_clipboard);
         return getStateSharedPreferences(context).getString(key, null);
     }
 
-    public static void notesOrgClipboard(Context context, String value) {
-        String key = context.getResources().getString(R.string.pref_key_notes_org_clipboard);
+    public static void notesClipboard(Context context, String value) {
+        String key = context.getResources().getString(R.string.pref_key_notes_clipboard);
         getStateSharedPreferences(context).edit().putString(key, value).apply();
     }
 }
