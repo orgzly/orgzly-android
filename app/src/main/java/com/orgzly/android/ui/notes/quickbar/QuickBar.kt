@@ -177,8 +177,7 @@ class QuickBar(val context: Context, val inBook: Boolean) {
             )
 
             private val LEFT_IN_QUERY = listOf(
-                    Button(R.id.quick_bar_focus, R.styleable.Icons_ic_center_focus_strong_24dp),
-                    Button(R.id.quick_bar_open, R.styleable.Icons_ic_open_in_new_24dp)
+                    Button(R.id.quick_bar_focus, R.styleable.Icons_ic_center_focus_strong_24dp)
             )
 
             fun fromPreferences(context: Context): Buttons {
