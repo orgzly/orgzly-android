@@ -145,7 +145,7 @@ class DropboxRepoActivity : CommonActivity() {
 
         val uri = UriUtils.uriFromPath(DropboxRepo.SCHEME, directory)
 
-        val repo = repoFactory.getFromUri(this, uri)
+        val repo = repoFactory.getFromUri(this, uri, null)
 
         if (repo == null) {
             activity_repo_dropbox_directory_input_layout.error = getString(R.string.invalid_repo_url, uri)

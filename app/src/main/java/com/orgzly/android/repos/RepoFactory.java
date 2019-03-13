@@ -17,12 +17,12 @@ public class RepoFactory {
         this.dbRepoBookRepository = dbRepoBookRepository;
     }
 
-    public SyncRepo getFromUri(Context context, Uri uri) {
-        return getFromUri(context, uri.toString());
+    public SyncRepo getFromUri(Context context, Uri uri, Long repoId) {
+        return getFromUri(context, uri.toString(), repoId);
     }
 
     // TODO: Better throw exception, not return null?
-    public SyncRepo getFromUri(Context context, String uriString) {
+    public SyncRepo getFromUri(Context context, String uriString, Long repoId) {
         Uri uri = Uri.parse(uriString);
 
         if (uri != null && uri.getScheme() != null) { // Make sure uri is valid and has a scheme
@@ -40,7 +40,7 @@ public class RepoFactory {
 
                     case GitRepo.SCHEME:
                         if (BuildConfig.IS_GIT_ENABLED) {
-                            return GitRepo.buildFromUri(context, uri);
+                            return GitRepo.buildFromIdAndUri(context, repoId, uri);
                         }
 
                     case DirectoryRepo.SCHEME:
@@ -50,7 +50,7 @@ public class RepoFactory {
                         return new MockRepo(dbRepoBookRepository, uriString);
 
                     default:
-                        return GitRepo.buildFromUri(context, uri);
+                        return GitRepo.buildFromIdAndUri(context, repoId, uri);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

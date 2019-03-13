@@ -197,7 +197,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener {
     }
 
     private fun openRepo(repoEntity: Repo) {
-        val repo = repoFactory.getFromUri(this, repoEntity.url)
+        val repo = repoFactory.getFromUri(this, repoEntity.url, repoEntity.id)
 
         if (repo is DropboxRepo || repo is MockRepo) { // TODO: Remove Mock from here
             DropboxRepoActivity.start(this, repoEntity.id)

@@ -4,28 +4,19 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 
-import com.orgzly.android.data.DataRepository;
-
 public class RepoPreferences {
     private Context context;
     private long repoId;
+    private Uri repoUri;
 
-    public static RepoPreferences fromUri(Context c, Uri uri) {
-        return fromString(c, uri.toString());
-    }
-
-    private static RepoPreferences fromString(Context c, String string) {
-        long rid = 0; // TODO: dataRepository.getRepoByUrl(string).getId();
-        return new RepoPreferences(c, rid);
-    }
-
-    public RepoPreferences(Context c, long rid) {
+    public RepoPreferences(Context c, long rid, Uri uri) {
         repoId = rid;
         context = c;
+        repoUri = uri;
     }
 
     private String getRepoPreferencesFilename() {
-        return String.format("repo.%d.xml", repoId);
+        return String.format("repo.%d", repoId);
     }
 
     public SharedPreferences getRepoPreferences() {
@@ -63,4 +54,6 @@ public class RepoPreferences {
     public Context getContext() {
         return context;
     }
+
+    public Uri getRepoUri() { return repoUri; }
 }

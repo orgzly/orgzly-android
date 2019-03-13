@@ -53,8 +53,6 @@ public class GitPreferencesFromRepoPrefs implements GitPreferences {
 
     @Override
     public Uri remoteUri() {
-        String url = ""; // TODO: dataRepository.selectRepo(repoPreferences.getRepoId()).getRepoUrl();
-
-        return Uri.parse(url);
+        return repoPreferences.getRepoUri();
     }
 }
