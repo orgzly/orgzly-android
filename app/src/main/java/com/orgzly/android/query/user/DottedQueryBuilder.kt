@@ -100,6 +100,7 @@ open class DottedQueryBuilder {
                     is SortOrder.Book -> dot(order) + "o.b"
                     is SortOrder.Scheduled -> dot(order) + "o.s"
                     is SortOrder.Deadline -> dot(order) + "o.d"
+                    is SortOrder.Event -> dot(order) + "o.e"
                     is SortOrder.Closed -> dot(order) + "o.c"
                     is SortOrder.Priority -> dot(order) + "o.p"
                     is SortOrder.State -> dot(order) + "o.state"

@@ -85,6 +85,8 @@ abstract class NoteViewDao {
 
             NULL AS event_string,
             NULL AS event_timestamp,
+            NULL AS event_start_of_day,
+            NULL AS event_hour,
 
             t_books.name AS book_name
 
@@ -142,6 +144,8 @@ abstract class NoteViewDao {
 
             t_note_events_start.string AS event_string,
             t_note_events_start.timestamp AS event_timestamp,
+            datetime(t_note_events_start.timestamp/1000, 'unixepoch', 'localtime', 'start of day') AS event_start_of_day,
+            t_note_events_start.hour AS event_hour,
 
             t_books.name AS book_name
 

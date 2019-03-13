@@ -94,6 +94,21 @@ class SqliteQueryBuilder(val context: Context) {
                         }
                     }
 
+                    is SortOrder.Event -> {
+                        o.add("event_timestamp IS NULL")
+
+                        if (order.desc) {
+                            o.add("event_start_of_day DESC")
+                            o.add("event_hour IS NOT NULL")
+                            o.add("event_timestamp DESC")
+
+                        } else {
+                            o.add("event_start_of_day")
+                            o.add("event_hour IS NULL")
+                            o.add("event_timestamp")
+                        }
+                    }
+
                     is SortOrder.Created -> {
                         o.add("created_at IS NULL")
 

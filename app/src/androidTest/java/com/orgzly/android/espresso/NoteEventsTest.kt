@@ -1,14 +1,18 @@
 package com.orgzly.android.espresso
 
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.org.datetime.OrgDateTime
+import org.hamcrest.Matchers.startsWith
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
-class NoteTimestampTest : OrgzlyTest() {
+class NoteEventsTest : OrgzlyTest() {
     @get:Rule
     var activityRule = EspressoActivityTestRule(MainActivity::class.java, true, false)
 
@@ -131,5 +135,41 @@ class NoteTimestampTest : OrgzlyTest() {
         activityRule.launchActivity(null)
         searchForText("e.lt.now ad.3")
         onNotesInAgenda().check(matches(recyclerViewItemCount(4)))
+    }
+
+    @Ignore("Timestamp used when ordering is not defined due to grouping by note ID only")
+    @Test
+    fun search_MultiplePerNote_OrderBy() {
+        testUtils.setupBook(
+                "Book A",
+                """
+                * Note A-01
+                  <2000-01-10> <2000-01-15> <2000-01-20>
+                * Note A-02
+                  <2000-01-12>
+                """.trimIndent())
+        activityRule.launchActivity(null)
+        searchForText("e.lt.now o.e")
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)))
+        onNoteInSearch(0, R.id.item_head_title).check(matches(withText(startsWith("Note A-01"))))
+        onNoteInSearch(1, R.id.item_head_title).check(matches(withText(startsWith("Note A-02"))))
+    }
+
+    @Ignore("Timestamp used when ordering is not defined due to grouping by note ID only")
+    @Test
+    fun search_MultiplePerNote_OrderByDesc() {
+        testUtils.setupBook(
+                "Book A",
+                """
+                * Note A-01
+                  <2000-01-10> <2000-01-15> <2000-01-20>
+                * Note A-02
+                  <2000-01-12>
+                """.trimIndent())
+        activityRule.launchActivity(null)
+        searchForText("e.lt.now .o.e")
+        onNotesInSearch().check(matches(recyclerViewItemCount(2)))
+        onNoteInSearch(0, R.id.item_head_title).check(matches(withText(startsWith("Note A-01"))))
+        onNoteInSearch(1, R.id.item_head_title).check(matches(withText(startsWith("Note A-02"))))
     }
 }

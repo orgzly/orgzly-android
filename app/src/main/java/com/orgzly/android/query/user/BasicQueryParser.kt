@@ -76,6 +76,9 @@ open class BasicQueryParser : QueryParser() {
             SortOrderMatch("""^(-)?sort-order:(?:deadline|dead)$""") { match ->
                 SortOrder.Deadline(match.groupValues[1].isNotEmpty())
             },
+            SortOrderMatch("""^(-)?sort-order:(?:event)$""") { match ->
+                SortOrder.Event(match.groupValues[1].isNotEmpty())
+            },
             SortOrderMatch("""^(-)?sort-order:(?:closed|close)$""") { match ->
                 SortOrder.Closed(match.groupValues[1].isNotEmpty())
             },

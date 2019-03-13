@@ -83,6 +83,9 @@ open class DottedQueryParser : QueryParser() {
             SortOrderMatch("""^(\.)?o\.(?:deadline|dead|d)$""") { match ->
                 SortOrder.Deadline(match.groupValues[1].isNotEmpty())
             },
+            SortOrderMatch("""^(\.)?o\.(?:event|e)$""") { match ->
+                SortOrder.Event(match.groupValues[1].isNotEmpty())
+            },
             SortOrderMatch("""^(\.)?o\.(?:closed|close|c)$""") { match ->
                 SortOrder.Closed(match.groupValues[1].isNotEmpty())
             },
