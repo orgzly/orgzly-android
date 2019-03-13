@@ -377,7 +377,8 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         /* Move Note C down. */
         onNoteInBook(3).perform(click());
-        onView(withId(R.id.book_cab_move)).perform(click());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).perform(click());
         pressBack();
 
@@ -404,7 +405,8 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         /* Demote Note B. */
         onNoteInBook(2).perform(click());
-        onView(withId(R.id.book_cab_move)).perform(click());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_right)).perform(click());
         pressBack();
 

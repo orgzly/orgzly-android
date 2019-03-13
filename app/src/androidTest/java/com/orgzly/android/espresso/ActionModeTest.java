@@ -88,7 +88,7 @@ public class ActionModeTest extends OrgzlyTest {
 
         toLandscape(activityRule);
 
-        onView(withId(R.id.book_cab_move)).check(matches(isDisplayed()));
+        onView(withId(R.id.book_cab_cut)).check(matches(isDisplayed()));
 
         // TODO: Check *the same* note is selected.
     }

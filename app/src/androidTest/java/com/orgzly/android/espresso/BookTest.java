@@ -253,7 +253,8 @@ public class BookTest extends OrgzlyTest {
     @Test
     public void testCabForMovingNotesDisplayed() {
         onNoteInBook(1).perform(click());
-        onView(withId(R.id.book_cab_move)).perform(click());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).check(matches(isDisplayed()));
     }
 
@@ -261,7 +262,8 @@ public class BookTest extends OrgzlyTest {
     public void testOrderOfMovedNote() {
         onNoteInBook(3).perform(click());
 
-        onView(withId(R.id.book_cab_move)).perform(click());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).perform(click());
 
         onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
@@ -280,8 +282,8 @@ public class BookTest extends OrgzlyTest {
 
         onNoteInBook(2).perform(click());
 
-        onView(withId(R.id.book_cab_move)).perform(click());
-
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).check(matches(isDisplayed()));
 
         toLandscape(activityRule);
@@ -293,7 +295,8 @@ public class BookTest extends OrgzlyTest {
     public void testPromoting() {
         onNoteInBook(2).perform(click());
 
-        onView(withId(R.id.book_cab_move)).perform(click());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_left)).perform(click());
     }
 

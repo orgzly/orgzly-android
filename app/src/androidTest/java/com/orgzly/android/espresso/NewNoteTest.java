@@ -19,6 +19,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.onBook;
 import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.EspressoUtils.openContextualToolbarOverflowMenu;
 import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
@@ -138,7 +139,8 @@ public class NewNoteTest extends OrgzlyTest {
         /* Move A B and C under Parent 1. */
         for (int i = 0; i < 3; i++) {
             onNoteInBook(1).perform(click());
-            onView(withId(R.id.book_cab_move)).perform(click());
+            openContextualToolbarOverflowMenu();
+            onView(withText(R.string.move)).perform(click());
             onView(withId(R.id.notes_action_move_down)).perform(click());
             onView(withId(R.id.notes_action_move_down)).perform(click());
             onView(withId(R.id.notes_action_move_down)).perform(click());
