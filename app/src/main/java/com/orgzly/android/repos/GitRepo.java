@@ -33,7 +33,6 @@ import org.eclipse.jgit.util.FileUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,10 +43,10 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
         return new GitSSHKeyTransportSetter(Uri.parse(preferences.sshKeyPathString()).getPath());
     }
 
-    public static GitRepo buildFromUri(Context context, Uri uri)
-            throws IOException, URISyntaxException {
+    public static GitRepo buildFromIdAndUri(Context context, Long rid, Uri uri)
+            throws IOException {
         GitPreferencesFromRepoPrefs prefs = new GitPreferencesFromRepoPrefs(
-                RepoPreferences.fromUri(context, uri));
+                new RepoPreferences(context, rid, uri));
         return build(prefs, false);
     }
 
@@ -78,7 +77,7 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
             boolean clone, ProgressMonitor pm)
             throws IOException {
         FileRepositoryBuilder frb = new FileRepositoryBuilder();
-        if (!directoryFile.exists()) {
+        if (!directoryFile.exists() || directoryFile.list().length == 0) { // An existing, empty directory is OK
             if (clone) {
                 try {
                     CloneCommand cloneCommand = Git.cloneRepository().
@@ -125,17 +124,9 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     }
 
     public VersionedRook storeBook(File file, String fileName) throws IOException {
-        // FIXME: Removed current_versioned_rooks table, just get the list from remote
-//        VersionedRook current = CurrentRooksClient.get(
-//                // TODO: get rid of "/" prefix needed here
-//                App.getAppContext(), getUri().toString(), "/" + fileName);
-        VersionedRook current = null;
-
-        RevCommit commit = getCommitFromRevisionString(current.getRevision());
-        synchronizer.updateAndCommitFileFromRevision(
-                file, fileName, synchronizer.getFileRevision(fileName, commit));
-        synchronizer.tryPushIfUpdated(commit);
-        return currentVersionedRook(Uri.EMPTY.buildUpon().appendPath(fileName).build());
+        synchronizer.addAndCommitNewFile(file, fileName);
+        Uri uri = Uri.parse("/" + fileName);
+        return currentVersionedRook(uri);
     }
 
     private RevWalk walk() {
@@ -172,9 +163,18 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
         return currentVersionedRook(sourceUri);
     }
 
-    private VersionedRook currentVersionedRook(Uri uri) throws IOException {
-        RevCommit newCommit = synchronizer.currentHead();
-        return new VersionedRook(getUri(), uri, newCommit.name(), newCommit.getCommitTime()*1000);
+    private VersionedRook currentVersionedRook(Uri uri) {
+        RevCommit commit = null;
+        if (uri.toString().contains("%")) {
+            uri = Uri.parse(Uri.decode(uri.toString()));
+        }
+        try {
+            commit = synchronizer.getLatestCommitOfFile(uri);
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+        }
+        long mtime = (long)commit.getCommitTime()*1000;
+        return new VersionedRook(getUri(), uri, commit.name(), mtime);
     }
 
     private IgnoreNode getIgnores() throws IOException {
@@ -238,8 +238,7 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     }
 
     public void delete(Uri deleteUri) throws IOException {
-        // FIXME: finish me
-        throw new IOException("Don't do that");
+        synchronizer.deleteFileAndCommit(deleteUri);
     }
 
     public VersionedRook renameBook(Uri from, String name) throws IOException {
@@ -272,9 +271,7 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
             syncBackNeeded = true;
         }
         Log.i("Git", String.format("Sync back needed was %s", syncBackNeeded));
-        if (syncBackNeeded) {
-            writeBack = synchronizer.repoDirectoryFile(fileName);
-        }
+        writeBack = synchronizer.repoDirectoryFile(fileName);
         return new TwoWaySyncResult(
                 currentVersionedRook(Uri.EMPTY.buildUpon().appendPath(fileName).build()),
                 writeBack);
