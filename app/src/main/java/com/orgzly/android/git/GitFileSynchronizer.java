@@ -1,6 +1,7 @@
 package com.orgzly.android.git;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import com.orgzly.android.App;
@@ -96,14 +97,14 @@ public class GitFileSynchronizer {
     }
 
     public boolean updateAndCommitFileFromRevisionAndMerge(
-            File sourceFile, String repositoryPath,
+            File sourceFile, String fileName,
             ObjectId fileRevision, RevCommit revision)
             throws IOException {
         ensureReposIsClean();
-        if (updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision)) return true;
+        if (updateAndCommitFileFromRevision(sourceFile, fileName, fileRevision)) return true;
 
         String originalBranch = git.getRepository().getFullBranch();
-        String mergeBranch = String.format("merge%s%s", repositoryPath, fileRevision.getName());
+        String mergeBranch = String.format("merge%s%s", fileName, fileRevision.getName());
         try {
             git.branchDelete().setBranchNames(mergeBranch).call();
         } catch (GitAPIException e) {}
@@ -115,12 +116,12 @@ public class GitFileSynchronizer {
                     setStartPoint(revision).setName(mergeBranch).call();
             if (!currentHead().equals(revision))
                 throw new IOException("Unable to set revision to " + revision.toString());
-            if (!updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision))
+            if (!updateAndCommitFileFromRevision(sourceFile, fileName, fileRevision))
                 throw new IOException(
                         String.format(
                                 "The provided file revision %s for %s is " +
                                         "not the same as the one found in the provided commit %s.",
-                                fileRevision.toString(), repositoryPath, revision.toString()));
+                                fileRevision.toString(), fileName, revision.toString()));
             mergeSucceeded = doMerge(mergeTarget);
             if (mergeSucceeded) {
                 RevCommit merged = currentHead();
@@ -179,11 +180,11 @@ public class GitFileSynchronizer {
     }
 
     public boolean updateAndCommitFileFromRevision(
-            File sourceFile, String repositoryPath, ObjectId revision) throws IOException {
+            File sourceFile, String fileName, ObjectId revision) throws IOException {
         ensureReposIsClean();
-        ObjectId repositoryRevision = getFileRevision(repositoryPath, currentHead());
+        ObjectId repositoryRevision = getFileRevision(fileName, currentHead());
         if (repositoryRevision.equals(revision)) {
-            updateAndCommitFile(sourceFile, repositoryPath);
+            updateAndCommitFile(sourceFile, fileName);
             return true;
         }
         return false;
@@ -209,13 +210,13 @@ public class GitFileSynchronizer {
     }
 
     private RevCommit updateAndCommitFile(
-            File sourceFile, String repositoryPath) throws IOException {
-        File destinationFile = repoDirectoryFile(repositoryPath);
+            File sourceFile, String fileName) throws IOException {
+        File destinationFile = repoDirectoryFile(fileName);
         MiscUtils.copyFile(sourceFile, destinationFile);
         try {
-            git.add().addFilepattern(repositoryPath).call();
+            git.add().addFilepattern(fileName).call();
             if (!gitRepoIsClean())
-                commit(String.format("Orgzly update: %s", repositoryPath));
+                commit(String.format("Orgzly update: %s", fileName));
         } catch (GitAPIException e) {
             throw new IOException("Failed to commit changes.");
         }
@@ -273,4 +274,34 @@ public class GitFileSynchronizer {
             throws IOException {
         return getFileRevision(pathString, start).equals(getFileRevision(pathString, end));
     }
+
+    public RevCommit getLatestCommitOfFile(Uri uri) throws GitAPIException {
+        String fileName = uri.toString();
+        if (fileName.startsWith("/"))
+            fileName = fileName.replaceFirst("/", "");
+        Iterable<RevCommit> log = git.log().setMaxCount(1).addPath(fileName).call();
+        return log.iterator().next();
+    }
+
+    public void addAndCommitNewFile(
+            File sourceFile, String fileName) throws IOException {
+        updateAndCommitFile(sourceFile, fileName);
+        if (gitRepoIsClean())
+            tryPush();
+    }
+
+    public void deleteFileAndCommit(Uri uri) throws IOException {
+        String fileName = uri.toString();
+        if (fileName.startsWith("/"))
+            fileName = fileName.replaceFirst("/", "");
+        try {
+            git.rm().addFilepattern(fileName).call();
+            if (!gitRepoIsClean())
+                commit(String.format("Orgzly delete: %s", fileName));
+                tryPush();
+        } catch (GitAPIException e) {
+            throw new IOException("Failed to delete notebook from repository.");
+        }
+    }
+
 }
