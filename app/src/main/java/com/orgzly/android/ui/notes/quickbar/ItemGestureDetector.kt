@@ -55,9 +55,11 @@ class ItemGestureDetector(context: Context, private val listener: Listener) :
     private fun isHorizontalFling(velocityX: Float, velocityY: Float): Int {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, velocityX, velocityY, minFlingVelocity, maxFlingVelocity)
 
-        val isHorizontalFLing =
-                Math.abs(velocityX) > Math.abs(velocityY) /* More horizontal then vertical*/ &&
-                Math.abs(velocityX) >= minFlingVelocity && Math.abs(velocityX) <= maxFlingVelocity
+        val x = Math.abs(velocityX)
+        val y = Math.abs(velocityY)
+
+        // Large enough horizontal velocity and greater then vertical
+        val isHorizontalFLing = x >= minFlingVelocity && x <= maxFlingVelocity && x > 3 * y
 
         return if (isHorizontalFLing) {
             if (velocityX > 0) 1 else -1
