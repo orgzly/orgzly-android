@@ -14,6 +14,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
 import com.google.android.material.textfield.TextInputLayout
 import com.orgzly.R
 import com.orgzly.android.App
@@ -21,6 +23,7 @@ import com.orgzly.android.git.GitPreferences
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.prefs.RepoPreferences
 import com.orgzly.android.repos.GitRepo
+import com.orgzly.android.repos.RepoFactory
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.usecase.RepoCreate
 import com.orgzly.android.usecase.RepoUpdate
@@ -30,11 +33,17 @@ import com.orgzly.android.util.MiscUtils
 import kotlinx.android.synthetic.main.activity_repo_git.*
 import org.eclipse.jgit.lib.ProgressMonitor
 import java.io.IOException
+import javax.inject.Inject
 
 class GitRepoActivity : CommonActivity(), GitPreferences {
     private lateinit var fields: Array<Field>
 
+    @Inject
+    lateinit var repoFactory: RepoFactory
+
     private var repoId: Long = 0
+
+    private lateinit var viewModel: RepoViewModel
 
     data class Field(var editText: EditText, var layout: TextInputLayout, var preference: Int)
 
@@ -84,17 +93,35 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
         repoId = intent.getLongExtra(ARG_REPO_ID, 0)
 
+        val factory = RepoViewModelFactory.getInstance(dataRepository, repoId)
+
+        viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
+
         /* Set directory value for existing repository being edited. */
         if (repoId != 0L) {
-            dataRepository.getRepo(repoId)?.let { repo ->
-                activity_repo_git_url.setText(repo.url)
+            viewModel.repo.observe(this, Observer { repo ->
+                activity_repo_git_url.setText(repo?.url)
                 setFromPreferences()
-            }
+           })
         }
+
+        viewModel.finishEvent.observeSingle(this, Observer {
+            finish()
+        })
+
+        viewModel.alreadyExistsEvent.observeSingle(this, Observer {
+            showSnackbar(R.string.repository_url_already_exists)
+        })
+
+        viewModel.errorEvent.observeSingle(this, Observer { error ->
+            if (error != null) {
+                showSnackbar((error.cause ?: error).localizedMessage)
+            }
+        })
     }
 
     private fun setFromPreferences() {
-        val prefs = RepoPreferences(this, repoId)
+        val prefs = RepoPreferences(this, repoId, remoteUri())
         for (field in fields) {
             setTextFromPrefKey(prefs, field.editText, field.preference)
         }
@@ -121,7 +148,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         return when (item.itemId) {
             R.id.done -> {
                 saveAndFinish()
-                return true
+                true
             }
 
             android.R.id.home -> {
@@ -155,7 +182,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     }
 
     private fun saveToPreferences(id: Long): Boolean {
-        val editor: SharedPreferences.Editor = RepoPreferences(this, id).repoPreferences.edit()
+        val editor: SharedPreferences.Editor = RepoPreferences(this, id, remoteUri()).repoPreferences.edit()
 
         for (field in fields) {
             val settingName = getSettingName(field.preference)
@@ -180,7 +207,10 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         }
 
         App.EXECUTORS.diskIO().execute {
-            UseCaseRunner.run(useCase)
+            val createdRepoId = UseCaseRunner.run(useCase).userData
+            if (createdRepoId is Long) {
+                repoId = createdRepoId
+            }
 
             App.EXECUTORS.mainThread().execute {
                 saveToPreferences(repoId)
@@ -279,12 +309,20 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION ->
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val uri = data.data
-                    activity_repo_git_directory.setText(uri.toString())
+                    // Ugly hack to remove the irritating "file:" prefix
+                    var uriString = uri.toString()
+                    if (uriString.startsWith("file:"))
+                        uriString = uri.toString().replaceFirst("file:", "")
+                    activity_repo_git_directory.setText(uriString)
                 }
             ACTIVITY_REQUEST_CODE_FOR_SSH_KEY_SELECTION ->
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val uri = data.data
-                    activity_repo_git_ssh_key.setText(uri.toString())
+                    // Ugly hack to remove the irritating "file:" prefix
+                    var uriString = uri.toString()
+                    if (uriString.startsWith("file:"))
+                        uriString = uri.toString().replaceFirst("file:", "")
+                    activity_repo_git_ssh_key.setText(uriString)
                 }
         }
     }
@@ -328,7 +366,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             progressDialog.dismiss()
         }
 
-        override fun onPostExecute(e: IOException) {
+        override fun onPostExecute(e: IOException?) {
             progressDialog.dismiss()
             fragment.repoCheckComplete(e)
         }
