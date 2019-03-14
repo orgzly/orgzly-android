@@ -215,7 +215,7 @@
   <string name="permissions_rationale_for_local_repo">Для синхронізації з локальним каталогом потрібен дозвіл на зберігання</string>
   <string name="permissions_rationale_for_book_export">Щоб експортувати блокнот потрібен дозвіл на зберігання</string>
   <string name="permissions_rationale_for_sync_start">Для синхронізації з локальними сховищами потрібен дозвіл на зберігання</string>
-  <string name="permissions_rationale_for_external_files_access">Для доступу до зовнішніх файлів потрібен дозвіл \"Пам'ять\"</string>
+  <string name="permissions_rationale_for_external_files_access">Для доступу до зовнішніх файлів потрібен дозвіл \"Пам\'ять\"</string>
   <string name="cycle_visibility">Згорнути/Розгорнути все</string>
   <string name="running_database_update">Оновлення бази даних…</string>
   <string name="note_has_been_modified">Нотатку змінено</string>
@@ -229,7 +229,7 @@
   <string name="message_deleting_book_failed">Не вдалося видалити блокнот: %s</string>
   <string name="message_book_deleted">Блокнот видалено</string>
   <string name="priority_with_argument">Приорітет %s</string>
-  <string name="default_priority">Приорітет за замовчуванням</string>
+  <string name="default_priority">Стандартний приорітет</string>
   <string name="lowest_priority">Нижчий приорітет</string>
   <string name="todo_states">Ключові слова для активних (todo) задач</string>
   <string name="done_states">Ключові слова для виконаних (done) задач</string>
@@ -322,7 +322,7 @@
   <string name="color_scheme_dark">Темна</string>
   <string name="color_scheme_black">Чорна</string>
   <string name="font_size_small">Дрібний</string>
-  <string name="font_size_default">За замовчанням</string>
+  <string name="font_size_default">Стандартний</string>
   <string name="font_size_large">Крупний</string>
   <string name="book_name_in_search_hide">Сховати</string>
   <string name="book_name_in_search_before_note">Попереду нотатки</string>
@@ -371,7 +371,7 @@
   <string name="keep_screen_on">Не вимикати екран</string>
   <string name="keep_screen_on_desc">Екран не погасне допоки увімкнено цей вимикач</string>
   <string name="layout_direction">Напрям макету</string>
-  <string name="layout_direction_locale">За замовчанням</string>
+  <string name="layout_direction_locale">Стандартно</string>
   <string name="layout_direction_ltr">Зліва направо</string>
   <string name="layout_direction_rtl">Справа наліво</string>
   <string name="preface_in_book">Предмова блокноту</string>
@@ -382,7 +382,7 @@
   <string name="separate_notes_with_new_line_always">Завжди</string>
   <string name="separate_notes_with_new_line_multi_line_notes_only">Тільки багаторядкові</string>
   <string name="separate_notes_with_new_line_never">Ніколи</string>
-  <string name="default_notebook">Блокнот за замовченням</string>
+  <string name="default_notebook">Стандартний блокнот</string>
   <string name="default_notebook_desc">Блокнот, зо використовується при спільному використанні Orgzly або створенні нової нотатки з поточного сповіщення</string>
   <string name="force_utf8">Примусове кодування UTF-8</string>
   <string name="force_utf8_summary">Не визначати кодування, завжди використовуввати UTF-8</string>
