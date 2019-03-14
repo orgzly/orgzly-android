@@ -93,8 +93,8 @@
   <string name="drawer_close">Закрити меню</string>
   <string name="drawer_open">Відкрити меню</string>
   <string name="schedule">Графік</string>
-  <string name="refile">Перемістити</string>
-  <string name="refile_to">Перемістити в</string>
+  <string name="refile">Перемістити до блокноту…</string>
+  <string name="refile_to">Перемістити до</string>
   <string name="deadline">Завершення</string>
   <string name="closed">Закрито</string>
   <!-- TODO: Not hints, rename -->
