@@ -1,13 +1,9 @@
 package com.orgzly.android.usecase
 
-import android.content.Context
 import android.content.Intent
-import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
 
 abstract class UseCase {
-    val context: Context = App.getAppContext()
-
     abstract fun run(dataRepository: DataRepository): UseCaseResult
 
     open fun toIntent(): Intent {

@@ -1,6 +1,7 @@
 package com.orgzly.android.espresso;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.SystemClock;
 
 import com.orgzly.R;
@@ -746,5 +747,23 @@ public class SyncingTest extends OrgzlyTest {
 
         onNotesInBook().check(matches(recyclerViewItemCount(2)));
         onView(withId(R.id.action_bar_title)).check(doesNotExist());
+    }
+
+    @Test
+    public void testDeleteNonExistentRemoteFile() throws IOException {
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupBook("booky", "Sample book used for tests");
+        activityRule.launchActivity(null);
+
+        sync();
+
+        dbRepoBookRepository.deleteBook(Uri.parse("mock://repo-a/booky.org"));
+
+        onView(allOf(withText("booky"), isDisplayed())).check(matches(isDisplayed()));
+        onBook(0).perform(longClick());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.delete)).perform(click());
+        onView(withId(R.id.dialog_book_delete_checkbox)).perform(click());
+        onView(withText(R.string.delete)).perform(click());
     }
 }

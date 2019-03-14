@@ -45,6 +45,12 @@ open class DottedQueryBuilder {
             is Condition.HasTag -> "${dot(expr.not)}t.${expr.tag}"
             is Condition.HasOwnTag -> "tn.${expr.tag}"
 
+            is Condition.Event -> {
+                val rel = expr.relation.toString().toLowerCase()
+                val relString = if (rel == "eq") "" else ".$rel"
+                "e$relString.${expr.interval}"
+            }
+
             is Condition.Scheduled -> {
                 val rel = expr.relation.toString().toLowerCase()
                 val relString = if (rel == "le") "" else ".$rel"

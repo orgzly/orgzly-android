@@ -1,12 +1,12 @@
 package com.orgzly.android.ui.notes.query.agenda
 
 import android.content.Context
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -15,12 +15,14 @@ import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.Selection
 import com.orgzly.android.ui.notes.NoteItemViewBinder
 import com.orgzly.android.ui.notes.NoteItemViewHolder
+import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.UserTimeFormatter
 
 class AgendaAdapter(
         private val context: Context,
-        private val clickListener: OnViewHolderClickListener<AgendaItem>
+        private val clickListener: OnViewHolderClickListener<AgendaItem>,
+        private val quickBar: QuickBars
  ) : ListAdapter<AgendaItem, RecyclerView.ViewHolder>(DIFF_CALLBACK), SelectableItemAdapter {
 
     private val adapterSelection: Selection = Selection()
@@ -70,6 +72,8 @@ class AgendaAdapter(
 
             noteViewBinder.bind(holder, item.note)
 
+            quickBar.bind(holder)
+
             getSelection().setIsSelectedBackground(holder.itemView, item.id)
         }
     }
@@ -101,6 +105,10 @@ class AgendaAdapter(
         } else {
             DIVIDER_ITEM_TYPE
         }
+    }
+
+    override fun getItemId(position: Int): Long {
+        return getItem(position).id
     }
 
     override fun getSelection(): Selection {

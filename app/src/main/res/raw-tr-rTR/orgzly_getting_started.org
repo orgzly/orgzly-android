@@ -1,49 +1,44 @@
 Orgzly'e Hoşgeldiniz!
 
-Notlar
-Açmak için nota tıklayın
-Notu seçmek için tıklayın ve basılı tutun
+* Notlar
+** Click on the note to select it
 
 Birden fazla not seçebilirsiniz.
 
-Hızlı menü nota sağ tıklanırsa açılır
-
-Nota sol tıklanırsa farklı bir menü açılır.
-
-Yanındaki simgeler tıklandığında alt notları içeren notlar kapanır
-Sahip olabileceğiniz seviyelerin sınırı yoktur
+** Bir notun alt notlarını yanındaki simgeye tıklayarak gizleyebilirsiniz
+*** Sahip olabileceğiniz seviyelerin sınırı yoktur
 Notlarınızı daha iyi düzenlemek için bunu kullanın
 
-Not etiketleri olabilir :etiket1:tag2:
+** Not etiketleri olabilir :etiket1:tag2:
 Alt not etiketleri devralır :tag3:
 
 Eğer "Tag1" etiketi içeren notları ararsanız, bu not da döndürülür.
 
-TODO Not bir durumu belirtebilir
+** TODO Notlar bir durum belirtebilir
 
-Kullanılacak herhangi bir sınıfta durumu yapılandırabilirsiniz: TODO, NEXT, DONE, vb.
+Ayarlardan TODO, NEXT, DONE gibi istediğiniz kadar durum yapılandırabilirsiniz.
 
-İki tür sınıf vardır: to-do ve done
+*** İki tür durum vardır: to-do ve done
 
-DONE Bu notta bir sınıf türüdür
+*** DONE bu /done/ durumda bir nottur
 CLOSED: [2018-01-24 Çarş. 17:00]
 
-Not belirlenmiş bir zaman içerebilir
+** Notların yapılması için bir zaman belirlenebilir
 SCHEDULED: <2015-02-20 Cuma 15:15>
 
-Zamanlar bir tekrarlayıcı olabilir
+Belirlenen zamanlara tekrarlayıcı ekleyebilirsiniz
 SCHEDULED: <2015-02-16 Mon .+2d>
 
-Ayrıca zaman sınırı olarak bir tarih ayarlayabilirsiniz
+** Notlara son teslim tarihi de ekleyebilirsiniz
 DEADLINE: <2015-02-20 Cuma>
 
-** Reminders for scheduled and deadline times are supported
+** Belirlenen zamanlar ve son teslim tarihleri için hatırlatıcılar desteklenmektedir
 
-They are disabled by default and need to be enabled in Settings.
+Hatırlatıcılar başlangıçta devredışı olacak şekilde tanımlandılar ve ayarlardan etkinleştirilebilinirler.
 
-** [#A] Note can have a priority
+** [#A] Notların öncelikleri olabilir
 
-You can change the number of priorities in Settings. You can also change default priority - assumed priority for notes without one set.
+Önceliklerin numarasını ayarlardan değiştirebilirsiniz. You can also change default priority - assumed priority for notes without one set.
 
 ** Note can include links
 
@@ -53,7 +48,7 @@ You can also link to another note or notebook within the app.
 
 See http://www.orgzly.com/help#links for more information.
 
-Temel yazı karakteri önemi desteklenmektedir
+** Temel yazı karakteri önemi desteklenmektedir
 
 Kelimeleri * kalın *, / italik /, _altıçizili_, = kelimesi kelimesine =, ~ kod ~ ve + doğrudan vurgulama + yapabilirsiniz.
 
@@ -65,25 +60,25 @@ Kelimeleri * kalın *, / italik /, _altıçizili_, = kelimesi kelimesine =, ~ ko
 
 Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
 
-Arama
-Birçok arama operatörü desteklenmektedir
+* Arama
+** Birçok arama operatörü desteklenmektedir
 
 Notları sınıfına, etiketine, zamanlanmış veya son teslim zamanı vb. Göre arayabilirsiniz.
 
 Daha fazlası için http://www.orgzly.com/help#search siteyi görün.
 
-Arama sorguları hızlı sorgu için kaydedilebilir
+** Arama sorguları hızlı sorgu için kaydedilebilir
 
 Gezinme penceresinden örnek aramaları deneyin ve kullandıkları soruları not edin.
 
 Gezinme penceresinde bulunan "Aramalar" ı tıklayarak kendi kaydedilmiş aramalarınızı oluşturabilirsiniz.
 
-Senkronizasyon
+* Senkronizasyon
 
-Dizüstü bilgisayarlar düz metin dosyaları olarak kaydedilebilir
+** Dizüstü bilgisayarlar düz metin dosyaları olarak kaydedilebilir
 
 Dosyalar "Org mode" tarafından kullanılmış formatları içerir.
 
-Konum (depo) türü
+** Konum (depo) türü
 
 Dizüstü bilgisayarlarınızı mobil cihazınızdaki, SD kartınızdaki veya Dropbox'taki bir dizinde senkronize şekilde tutabilirsiniz.

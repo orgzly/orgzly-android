@@ -107,11 +107,15 @@ public class OrgzlyTest {
         /* Manual notebook already loaded. */
         AppPreferences.isGettingStartedNotebookLoaded(context, true);
 
+        /* Click to select note. */
+        AppPreferences.isReverseNoteClickAction(context, true);
+
         /* Default states. */
         AppPreferences.states(context, "TODO NEXT | DONE");
 
         /* Display *all* notebook info. */
-        AppPreferences.displayedBookDetails(context,
+        AppPreferences.displayedBookDetails(
+                context,
                 Arrays.asList(context.getResources().getStringArray(R.array.displayed_book_details_values)));
 
         /* Display first few lines of preface. */

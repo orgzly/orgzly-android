@@ -9,7 +9,6 @@ import com.orgzly.R
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.ui.ActionModeListener
 import com.orgzly.android.ui.NotePlace
-import com.orgzly.android.ui.Place
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.dialogs.NoteStateDialog
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
@@ -158,26 +157,12 @@ abstract class NotesFragment :
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id)
     }
 
-    /**
-     * Get target note id.
-     * If location is above the selected notes, use the first selected note.
-     * Otherwise, use the last selected note.
-     */
-    protected fun getTargetNoteIdFromSelection(place: Place): Long {
-        val selection = getAdapter().getSelection()
-
-        return if (place == Place.ABOVE)
-            selection.getFirstId()
-        else
-            selection.getLastId()
-    }
-
     fun scheduledTimeButtonIds(): Set<Int> {
-        return setOf(R.id.bottom_action_bar_schedule)
+        return setOf(R.id.bottom_action_bar_schedule, R.id.quick_bar_schedule)
     }
 
     fun deadlineTimeButtonIds(): Set<Int> {
-        return setOf(R.id.bottom_action_bar_deadline)
+        return setOf(R.id.bottom_action_bar_deadline, R.id.quick_bar_deadline)
     }
 
     interface Listener {

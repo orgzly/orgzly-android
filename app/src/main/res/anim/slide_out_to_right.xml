@@ -4,13 +4,13 @@
     android:interpolator="@android:anim/decelerate_interpolator">
 
     <translate
-        android:duration="@integer/item_menu_animation_duration"
+        android:duration="@integer/quick_bar_animation_duration"
         android:fromXDelta="0"
         android:toXDelta="100%">
     </translate>
 
     <alpha
-        android:duration="@integer/item_menu_animation_duration"
+        android:duration="@integer/quick_bar_animation_duration"
         android:fromAlpha="1.0"
         android:toAlpha="0"/>
 </set>

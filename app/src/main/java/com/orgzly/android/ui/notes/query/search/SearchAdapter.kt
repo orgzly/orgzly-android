@@ -13,12 +13,14 @@ import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.Selection
+import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.util.LogUtils
 
 class SearchAdapter(
         private val context: Context,
-        private val clickListener: OnViewHolderClickListener<NoteView>
-) : ListAdapter<NoteView, RecyclerView.ViewHolder>(DIFF_CALLBACK), SelectableItemAdapter {
+        private val clickListener: OnViewHolderClickListener<NoteView>,
+        private val quickBar: QuickBars
+) :ListAdapter<NoteView, RecyclerView.ViewHolder>(DIFF_CALLBACK), SelectableItemAdapter {
 
     private val adapterSelection: Selection = Selection()
 
@@ -50,6 +52,8 @@ class SearchAdapter(
         val note = noteView.note
 
         noteItemViewBinder.bind(holder, noteView)
+
+        quickBar.bind(holder)
 
         getSelection().setIsSelectedBackground(holder.itemView, note.id)
     }

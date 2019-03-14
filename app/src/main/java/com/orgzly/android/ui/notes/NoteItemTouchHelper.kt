@@ -2,92 +2,101 @@ package com.orgzly.android.ui.notes
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.drawable.ColorDrawable
 import android.view.View
-import androidx.annotation.ColorInt
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
-import com.orgzly.R
 import com.orgzly.android.util.LogUtils
 
-
-class NoteItemTouchHelper(val listener: Listener) : ItemTouchHelper(Callback(listener)) {
-//    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-//        super.onDraw(c, parent, state)
-//    }
+class NoteItemTouchHelper(inBook: Boolean, listener: Listener) :
+        ItemTouchHelper(Callback(inBook, listener)) {
 
     interface Listener {
-        fun onSwipeLeft(id: Long)
+        fun onSwiped(viewHolder: NoteItemViewHolder, direction: Int)
     }
 
-    class Callback(val listener: Listener) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.START) {
-        data class Attrs(@ColorInt val itemBg: Int, @ColorInt val labelBg: Int) {
-            companion object {
-                @SuppressWarnings("ResourceType")
-                fun getInstance(context: Context): Attrs {
-                    val typedArray = context.obtainStyledAttributes(intArrayOf(
-                            android.R.attr.windowBackground,
-                            R.attr.app_bar_bg_color))
+    class Callback(private val inBook: Boolean, private val listener: Listener) :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.START or ItemTouchHelper.END) {
 
-                    val attrs = Attrs(typedArray.getColor(0, 0), typedArray.getColor(1, 0))
-
-                    typedArray.recycle()
-
-                    return attrs
-                }
-            }
-        }
-
-        lateinit var attrs: Attrs
+        private var leftSwipeAction: SwipeAction? = null
+        private var rightSwipeAction: SwipeAction? = null
 
         override fun isLongPressDragEnabled(): Boolean {
             return false
         }
 
-        override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+        override fun onChildDraw(
+                canvas: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean) {
+
             val itemView = viewHolder.itemView
 
-            val noteItemViewHolder = (viewHolder as NoteItemViewHolder)
+            val noteItemViewHolder = viewHolder as? NoteItemViewHolder ?: return
 
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, itemView.left, itemView.right, dX, dY, actionState, isCurrentlyActive)
+            if (BuildConfig.LOG_DEBUG)
+                LogUtils.d(TAG, itemView.left, itemView.right, dX, dY, actionState, isCurrentlyActive)
 
-            if (dX < 0) { // Swiping left
+            when {
+                dX < 0 -> { // Swipe left
+                    // Hide indent
+                    noteItemViewHolder.indentContainer.visibility = View.INVISIBLE
 
-                // Hide indent
-                noteItemViewHolder.indentContainer.visibility = View.INVISIBLE
+                    if (leftSwipeAction == null) {
+                        leftSwipeAction = getLeftSwipeAction(inBook, recyclerView.context)
+                    }
 
-                if (!::attrs.isInitialized) {
-                    attrs = Attrs.getInstance(recyclerView.context)
+                    leftSwipeAction?.drawForLeftSwipe(canvas, itemView, dX)
                 }
 
-                // Label background
-                ColorDrawable(attrs.labelBg).apply {
-                    setBounds((itemView.right + dX).toInt(), itemView.top, itemView.right, itemView.bottom)
-                    draw(c)
+                dX > 0 -> { // Swipe right
+                    // Hide indent
+                    noteItemViewHolder.indentContainer.visibility = View.INVISIBLE
+
+                    if (rightSwipeAction == null) {
+                        rightSwipeAction = getLeftSwipeAction(inBook, recyclerView.context)
+                    }
+
+                    rightSwipeAction?.drawForRightSwipe(canvas, itemView, dX)
                 }
 
-                // Item background
-                ColorDrawable(attrs.itemBg).apply {
-                    setBounds(itemView.left, itemView.top, (itemView.right + dX).toInt(), itemView.bottom)
-                    draw(c)
-                }
+                dX == 0f -> { // Original position
+                    noteItemViewHolder.indentContainer.visibility = View.VISIBLE
 
-            } else if (dX == 0f) { // Original position
-                noteItemViewHolder.indentContainer.visibility = View.VISIBLE
+                    // Reset so it can be re-initialized if settings changed
+                    leftSwipeAction = null
+                    rightSwipeAction = null
+                }
             }
 
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
         }
 
-        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+        private fun getLeftSwipeAction(inBook: Boolean, context: Context): SwipeAction {
+            return if (inBook) {
+                SwipeAction.OpenNote(context)
+            } else {
+                SwipeAction.FocusNote(context)
+            }
+        }
+
+        override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder): Boolean {
+
             return true
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            if (direction == ItemTouchHelper.START) {
-                listener.onSwipeLeft(viewHolder.itemId)
-            }
+            if (BuildConfig.LOG_DEBUG)
+                LogUtils.d(TAG, direction, viewHolder.itemId, viewHolder.adapterPosition, viewHolder.layoutPosition)
+
+            listener.onSwiped(viewHolder as NoteItemViewHolder, direction)
         }
 
         override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
@@ -97,11 +106,17 @@ class NoteItemTouchHelper(val listener: Listener) : ItemTouchHelper(Callback(lis
             super.onSelectedChanged(viewHolder, actionState)
         }
 
-        override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+        override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
+            return .33f
+        }
+
+        override fun getAnimationDuration(recyclerView: RecyclerView, animationType: Int, animateDx: Float, animateDy: Float): Long {
+            return 0
         }
     }
 
     companion object {
         private val TAG = NoteItemTouchHelper::class.java.name
     }
+
 }

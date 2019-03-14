@@ -1,14 +1,17 @@
 package com.orgzly.android.ui.notes.query
 
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import android.view.*
-import android.widget.ViewFlipper
+import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.appcompat.view.ActionMode
+import androidx.lifecycle.ViewModelProviders
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.ui.*
+import com.orgzly.android.ui.ActionModeListener
+import com.orgzly.android.ui.BottomActionBar
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
@@ -102,29 +105,39 @@ abstract class QueryFragment :
         }
     }
 
-    protected fun handleActionItemClick(
-            actionItemId: Int, actionMode: ActionMode?, selection: Selection) {
+    protected fun handleActionItemClick(actionId: Int, actionMode: ActionMode?, ids: Set<Long>) {
+        if (ids.isEmpty()) {
+            Log.e(TAG, "Cannot handle action when there are no items selected")
+            actionMode?.finish()
+            return
+        }
 
-        when (actionItemId) {
+        when (actionId) {
+            R.id.quick_bar_schedule,
             R.id.bottom_action_bar_schedule ->
-                displayTimestampDialog(R.id.bottom_action_bar_schedule, selection.getIds())
+                displayTimestampDialog(R.id.bottom_action_bar_schedule, ids)
 
+            R.id.quick_bar_deadline,
             R.id.bottom_action_bar_deadline ->
-                displayTimestampDialog(R.id.bottom_action_bar_deadline, selection.getIds())
+                displayTimestampDialog(R.id.bottom_action_bar_deadline, ids)
 
+            R.id.quick_bar_state,
             R.id.bottom_action_bar_state ->
                 listener?.let {
-                    openNoteStateDialog(it, selection.getIds(), null)
+                    openNoteStateDialog(it, ids, null)
                 }
 
+            R.id.quick_bar_focus,
             R.id.bottom_action_bar_focus ->
-                listener?.onNoteFocusInBookRequest(selection.getFirstId())
+                listener?.onNoteFocusInBookRequest(ids.first())
 
+            R.id.quick_bar_open,
             R.id.bottom_action_bar_open ->
-                listener?.onNoteOpen(selection.getFirstId())
+                listener?.onNoteOpen(ids.first())
 
+            R.id.quick_bar_done,
             R.id.bottom_action_bar_done -> {
-                listener?.onStateToggleRequest(selection.getIds())
+                listener?.onStateToggleRequest(ids)
             }
         }
     }

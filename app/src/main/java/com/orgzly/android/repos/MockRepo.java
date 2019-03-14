@@ -23,6 +23,7 @@ public class MockRepo implements SyncRepo {
     private static final long SLEEP_FOR_GET_BOOKS = 100;
     private static final long SLEEP_FOR_RETRIEVE_BOOK = 200;
     private static final long SLEEP_FOR_STORE_BOOK = 200;
+    private static final long SLEEP_FOR_DELETE_BOOK = 100;
 
     private DatabaseRepo databaseRepo;
 
@@ -66,5 +67,7 @@ public class MockRepo implements SyncRepo {
 
     @Override
     public void delete(Uri uri) throws IOException {
+        SystemClock.sleep(SLEEP_FOR_DELETE_BOOK);
+        databaseRepo.delete(uri);
     }
 }

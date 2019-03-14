@@ -19,14 +19,19 @@ import com.orgzly.R
 import com.orgzly.android.BookUtils
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.NoteView
+import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.*
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
-import com.orgzly.android.ui.notes.NoteItemTouchHelper
+import com.orgzly.android.ui.notes.NoteItemViewHolder
 import com.orgzly.android.ui.notes.NotesFragment
+import com.orgzly.android.ui.notes.quickbar.ItemGestureDetector
+import com.orgzly.android.ui.notes.quickbar.QuickBarListener
+import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
+import java.util.*
 
 
 /**
@@ -40,7 +45,8 @@ class BookFragment :
         DrawerItem,
         ActionMode.Callback,
         BottomActionBar.Callback,
-        BookAdapter.OnClickListener {
+        BookAdapter.OnClickListener,
+        QuickBarListener {
 
     private var listener: Listener? = null
 
@@ -122,30 +128,48 @@ class BookFragment :
     }
 
     private fun setupRecyclerView(view: View) {
-        viewAdapter = BookAdapter(view.context, this, inBook = true)
+        val quickBars = QuickBars(view.context, true)
+
+        viewAdapter = BookAdapter(view.context, this, quickBars, inBook = true)
         viewAdapter.setHasStableIds(true)
 
         layoutManager = LinearLayoutManager(context)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.fragment_notes_book_recycler_view).also {
-            it.layoutManager = layoutManager
-            it.adapter = viewAdapter
+        view.findViewById<RecyclerView>(R.id.fragment_notes_book_recycler_view).let { rv ->
+            rv.layoutManager = layoutManager
+            rv.adapter = viewAdapter
 
             /*
              * Disable item animator (DefaultItemAnimator).
              * Animation is too slow.  And if animations are off in developer options, items flicker.
              * TODO: Do for query too?
              */
-            it.itemAnimator = null
+            rv.itemAnimator = null
+
+            rv.addOnItemTouchListener(ItemGestureDetector(rv.context, object: ItemGestureDetector.Listener {
+                override fun onFling(direction: Int, x: Float, y: Float) {
+                    rv.findChildViewUnder(x, y)?.let { itemView ->
+                        rv.findContainingViewHolder(itemView)?.let { vh ->
+                            (vh as? NoteItemViewHolder)?.let {
+                                quickBars.onFling(it, direction, this@BookFragment)
+                            }
+                        }
+                    }
+                }
+            }))
+
+//            val itemTouchHelper = NoteItemTouchHelper(true, object : NoteItemTouchHelper.Listener {
+//                override fun onSwiped(viewHolder: NoteItemViewHolder, direction: Int) {
+//                    listener?.onNoteOpen(viewHolder.itemId)
+//                }
+//            })
+//
+//            itemTouchHelper.attachToRecyclerView(rv)
         }
+    }
 
-        val itemTouchHelper = NoteItemTouchHelper(object : NoteItemTouchHelper.Listener {
-            override fun onSwipeLeft(id: Long) {
-                listener?.onNoteOpen(id)
-            }
-        })
-
-        itemTouchHelper.attachToRecyclerView(recyclerView)
+    override fun onQuickBarButtonClick(buttonId: Int, itemId: Long) {
+        handleActionItemClick(buttonId, actionModeListener?.actionMode, Collections.singleton(itemId))
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -317,9 +341,8 @@ class BookFragment :
      * Actions
      */
 
-    private fun newNoteRelativeToSelection(place: Place) {
-        val targetNoteId = getTargetNoteIdFromSelection(place)
-        listener?.onNoteNewRequest(NotePlace(mBookId, targetNoteId, place))
+    private fun newNoteRelativeToSelection(place: Place, noteId: Long) {
+        listener?.onNoteNewRequest(NotePlace(mBookId, noteId, place))
     }
 
     private fun moveNotes(offset: Int) {
@@ -336,10 +359,7 @@ class BookFragment :
      * Paste notes.
      * @param place [Place]
      */
-    private fun pasteNotes(place: Place) {
-        val noteId = getTargetNoteIdFromSelection(place)
-
-        /* Remove selection. */
+    private fun pasteNotes(place: Place, noteId: Long) {
         viewAdapter.getSelection().clear()
         viewAdapter.notifyDataSetChanged() // FIXME
 
@@ -411,6 +431,30 @@ class BookFragment :
     }
 
     override fun onNoteClick(view: View, position: Int, noteView: NoteView) {
+        if (!AppPreferences.isReverseNoteClickAction(context)) {
+            if (viewAdapter.getSelection().count > 0) {
+                toggleNoteSelection(view, position, noteView)
+            } else {
+                openNote(noteView.note.id)
+            }
+        } else {
+            toggleNoteSelection(view, position, noteView)
+        }
+    }
+
+    override fun onNoteLongClick(view: View, position: Int, noteView: NoteView) {
+        if (!AppPreferences.isReverseNoteClickAction(context)) {
+            toggleNoteSelection(view, position, noteView)
+        } else {
+            openNote(noteView.note.id)
+        }
+    }
+
+    private fun openNote(id: Long) {
+        listener?.onNoteOpen(id)
+    }
+
+    private fun toggleNoteSelection(view: View, position: Int, noteView: NoteView) {
         val noteId = noteView.note.id
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, listener, noteView)
@@ -420,11 +464,6 @@ class BookFragment :
 
         actionModeListener?.updateActionModeForSelection(
                 viewAdapter.getSelection().count, this)
-
-    }
-
-    override fun onNoteLongClick(view: View, position: Int, noteView: NoteView) {
-        // listener?.onNoteOpen(noteView.note.id)
     }
 
     override fun onPrefaceClick() {
@@ -488,7 +527,7 @@ class BookFragment :
     override fun onActionItemClicked(actionMode: ActionMode, menuItem: MenuItem): Boolean {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, actionMode, menuItem)
 
-        handleActionItemClick(menuItem.itemId, actionMode, viewAdapter.getSelection())
+        handleActionItemClick(menuItem.itemId, actionMode, viewAdapter.getSelection().getIds())
 
         return true
     }
@@ -525,29 +564,39 @@ class BookFragment :
     override fun onBottomActionItemClicked(id: Int) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id)
 
-        handleActionItemClick(id, actionModeListener?.actionMode, viewAdapter.getSelection())
+        handleActionItemClick(id, actionModeListener?.actionMode, viewAdapter.getSelection().getIds())
     }
 
-    private fun handleActionItemClick(actionItemId: Int, actionMode: ActionMode?, selection: Selection) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, actionItemId, selection)
+    private fun handleActionItemClick(actionId: Int, actionMode: ActionMode?, ids: Set<Long>) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, actionId, ids)
 
-        when (actionItemId) {
+        if (ids.isEmpty()) {
+            Log.e(TAG, "Cannot handle action when there are no items selected")
+            actionMode?.finish()
+            return
+        }
+
+        when (actionId) {
+            R.id.quick_bar_open,
             R.id.bottom_action_bar_open -> {
-                listener?.onNoteOpen(selection.getFirstId())
+                openNote(ids.first())
             }
 
+            R.id.quick_bar_new_above,
             R.id.bottom_action_bar_new_above -> {
-                newNoteRelativeToSelection(Place.ABOVE)
+                newNoteRelativeToSelection(Place.ABOVE, ids.first())
                 actionMode?.finish()
             }
 
+            R.id.quick_bar_new_under,
             R.id.bottom_action_bar_new_under -> {
-                newNoteRelativeToSelection(Place.UNDER)
+                newNoteRelativeToSelection(Place.UNDER, ids.first())
                 actionMode?.finish()
             }
 
+            R.id.quick_bar_new_below,
             R.id.bottom_action_bar_new_below -> {
-                newNoteRelativeToSelection(Place.BELOW)
+                newNoteRelativeToSelection(Place.BELOW, ids.first())
                 actionMode?.finish()
             }
 
@@ -558,38 +607,46 @@ class BookFragment :
 
             in scheduledTimeButtonIds(),
             in deadlineTimeButtonIds() ->
-                displayTimestampDialog(actionItemId, selection.getIds())
+                displayTimestampDialog(actionId, ids)
 
+            R.id.quick_bar_delete,
             R.id.book_cab_delete_note -> {
-                delete(selection.getIds())
+                delete(ids)
 
                 // TODO: Wait for user confirmation (dialog close) before doing this
                 actionMode?.finish()
             }
 
             R.id.book_cab_cut -> {
-                listener?.onNotesCutRequest(mBookId, selection.getIds())
+                listener?.onNotesCutRequest(mBookId, ids)
+
+                actionMode?.finish()
+            }
+
+            R.id.book_cab_copy -> {
+                listener?.onNotesCopyRequest(mBookId, ids)
 
                 actionMode?.finish()
             }
 
             R.id.book_cab_paste_above -> {
-                pasteNotes(Place.ABOVE)
+                pasteNotes(Place.ABOVE, ids.first())
                 actionMode?.finish()
             }
 
+            R.id.quick_bar_refile,
             R.id.book_cab_refile ->
                 listener?.let {
-                    openNoteRefileDialog(it, mBookId, selection.getIds())
+                    openNoteRefileDialog(it, mBookId, ids)
                 }
 
             R.id.book_cab_paste_under -> {
-                pasteNotes(Place.UNDER)
+                pasteNotes(Place.UNDER, ids.first())
                 actionMode?.finish()
             }
 
             R.id.book_cab_paste_below -> {
-                pasteNotes(Place.BELOW)
+                pasteNotes(Place.BELOW, ids.first())
                 actionMode?.finish()
             }
 
@@ -600,22 +657,25 @@ class BookFragment :
                 moveNotes(1)
 
             R.id.notes_action_move_left ->
-                listener?.onNotesPromoteRequest(mBookId, selection.getIds())
+                listener?.onNotesPromoteRequest(mBookId, ids)
 
             R.id.notes_action_move_right ->
-                listener?.onNotesDemoteRequest(mBookId, selection.getIds())
+                listener?.onNotesDemoteRequest(mBookId, ids)
 
+            R.id.quick_bar_state,
             R.id.bottom_action_bar_state ->
                 listener?.let {
-                    openNoteStateDialog(it, selection.getIds(), null)
+                    openNoteStateDialog(it, ids, null)
                 }
 
+            R.id.quick_bar_done,
             R.id.bottom_action_bar_done -> {
-                listener?.onStateToggleRequest(selection.getIds())
+                listener?.onStateToggleRequest(ids)
             }
 
+            R.id.quick_bar_focus,
             R.id.bottom_action_bar_focus ->
-                listener?.onNoteFocusInBookRequest(selection.getFirstId())
+                listener?.onNoteFocusInBookRequest(ids.first())
         }
     }
 
@@ -625,6 +685,7 @@ class BookFragment :
 
         fun onNotesDeleteRequest(bookId: Long, noteIds: Set<Long>)
         fun onNotesCutRequest(bookId: Long, noteIds: Set<Long>)
+        fun onNotesCopyRequest(bookId: Long, noteIds: Set<Long>)
         fun onNotesPasteRequest(bookId: Long, noteId: Long, place: Place)
         fun onNotesPromoteRequest(bookId: Long, noteIds: Set<Long>)
         fun onNotesDemoteRequest(bookId: Long, noteIds: Set<Long>)
@@ -651,6 +712,7 @@ class BookFragment :
         // https://github.com/orgzly/orgzly-android/issues/67
         private val ITEMS_HIDDEN_ON_MULTIPLE_SELECTED_NOTES = intArrayOf(
                 R.id.book_cab_cut,
+                R.id.book_cab_copy,
                 R.id.book_cab_paste,
                 R.id.book_cab_move,
                 R.id.book_cab_refile)

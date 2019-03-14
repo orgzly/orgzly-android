@@ -1,19 +1,23 @@
 package com.orgzly.android.db
 
-import androidx.sqlite.db.SupportSQLiteDatabase
+import android.content.ContentValues
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
-import android.content.ContentValues
-import android.content.Context
-import android.database.sqlite.SQLiteDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.sqlite.db.SupportSQLiteQueryBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.android.db.dao.*
 import com.orgzly.android.db.entity.*
-import com.orgzly.android.db.entity.DbRepoBook
+import com.orgzly.android.db.mappers.OrgTimestampMapper
 import com.orgzly.android.util.LogUtils
+import com.orgzly.org.OrgActiveTimestamps
+import com.orgzly.org.datetime.OrgDateTime
+import java.util.*
 
 @Database(
         entities = [
@@ -24,6 +28,7 @@ import com.orgzly.android.util.LogUtils
             Note::class,
             NoteAncestor::class,
             NoteProperty::class,
+            NoteEvent::class,
             OrgRange::class,
             OrgTimestamp::class,
             Repo::class,
@@ -33,7 +38,7 @@ import com.orgzly.android.util.LogUtils
             VersionedRook::class
         ],
 
-        version = 150
+        version = 151
 )
 @TypeConverters(com.orgzly.android.db.TypeConverters::class)
 abstract class OrgzlyDatabase : RoomDatabase() {
@@ -46,6 +51,7 @@ abstract class OrgzlyDatabase : RoomDatabase() {
     abstract fun note(): NoteDao
     abstract fun noteView(): NoteViewDao
     abstract fun noteProperty(): NotePropertyDao
+    abstract fun noteEvent(): NoteEventDao
     abstract fun orgRange(): OrgRangeDao
     abstract fun reminderTime(): ReminderTimeDao
     abstract fun orgTimestamp(): OrgTimestampDao
@@ -96,7 +102,8 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                             PreRoomMigration.MIGRATION_147_148,
                             PreRoomMigration.MIGRATION_148_149,
 
-                            MIGRATION_149_150 // Switch to Room
+                            MIGRATION_149_150, // Switch to Room
+                            MIGRATION_150_151
                     )
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
@@ -198,9 +205,12 @@ abstract class OrgzlyDatabase : RoomDatabase() {
 
 
                 db.execSQL("CREATE TABLE IF NOT EXISTS `note_properties_new` (`note_id` INTEGER NOT NULL, `position` INTEGER NOT NULL, `name` TEXT NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY(`note_id`, `position`), FOREIGN KEY(`note_id`) REFERENCES `notes`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                db.execSQL("CREATE UNIQUE INDEX `index_note_properties_note_id_name` ON `note_properties_new` (`note_id`, `name`)")
+                db.execSQL("CREATE  INDEX `index_note_properties_position` ON `note_properties_new` (`position`)")
+                db.execSQL("CREATE  INDEX `index_note_properties_name` ON `note_properties_new` (`name`)")
+                db.execSQL("CREATE  INDEX `index_note_properties_value` ON `note_properties_new` (`value`)")
 
-                db.execSQL("""
-                    INSERT INTO note_properties_new (note_id, position, name, value)
+                db.query("""
                     SELECT
                         note_properties.note_id,
                         note_properties.position,
@@ -210,7 +220,25 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                     LEFT JOIN properties ON (properties._id = note_properties.property_id)
                     LEFT JOIN property_names ON (property_names._id = properties.name_id)
                     LEFT JOIN property_values ON (property_values._id = properties.value_id)
-                """)
+                    ORDER BY note_properties.note_id, note_properties.position
+                """).use {
+                    var id = 0L
+                    var position = 1
+                    while (it.moveToNext()) {
+                        if (id != it.getLong(0)) { // First new note ID
+                            id = it.getLong(0)
+                            position = 1
+                        }
+
+                        val values = ContentValues()
+                        values.put("note_id", id)
+                        values.put("position", position++)
+                        values.put("name", it.getString(2))
+                        values.put("value", it.getString(3))
+
+                        db.insert("note_properties_new", SQLiteDatabase.CONFLICT_REPLACE, values)
+                    }
+                }
 
                 db.execSQL("DROP TABLE note_properties")
                 db.execSQL("DROP TABLE properties")
@@ -218,11 +246,6 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                 db.execSQL("DROP TABLE property_values")
 
                 db.execSQL("ALTER TABLE note_properties_new RENAME TO note_properties")
-
-                db.execSQL("CREATE UNIQUE INDEX `index_note_properties_note_id_name` ON `note_properties` (`note_id`, `name`)")
-                db.execSQL("CREATE  INDEX `index_note_properties_position` ON `note_properties` (`position`)")
-                db.execSQL("CREATE  INDEX `index_note_properties_name` ON `note_properties` (`name`)")
-                db.execSQL("CREATE  INDEX `index_note_properties_value` ON `note_properties` (`value`)")
 
 
                 db.execSQL("CREATE TABLE IF NOT EXISTS `org_ranges_new` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `string` TEXT NOT NULL, `start_timestamp_id` INTEGER NOT NULL, `end_timestamp_id` INTEGER, `difference` INTEGER, FOREIGN KEY(`start_timestamp_id`) REFERENCES `org_timestamps`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`end_timestamp_id`) REFERENCES `org_timestamps`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
@@ -277,7 +300,7 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                         values.put("query", it.getString(2))
                         values.put("position", i)
 
-                        db.insert("searches_new", SQLiteDatabase.CONFLICT_ABORT, values)
+                        db.insert("searches_new", SQLiteDatabase.CONFLICT_ROLLBACK, values)
                     }
                 }
 
@@ -296,6 +319,136 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                 db.execSQL("DROP VIEW IF EXISTS notes_view")
                 db.execSQL("DROP VIEW IF EXISTS books_view")
                 db.execSQL("DROP VIEW IF EXISTS times_view")
+            }
+        }
+
+        private val MIGRATION_150_151 = object : Migration(150, 151) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("CREATE TABLE IF NOT EXISTS `note_events` (`note_id` INTEGER NOT NULL, `org_range_id` INTEGER NOT NULL, PRIMARY KEY(`note_id`, `org_range_id`), FOREIGN KEY(`note_id`) REFERENCES `notes`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`org_range_id`) REFERENCES `org_ranges`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                db.execSQL("CREATE  INDEX `index_note_events_note_id` ON `note_events` (`note_id`)")
+                db.execSQL("CREATE  INDEX `index_note_events_org_range_id` ON `note_events` (`org_range_id`)")
+
+                val query = SupportSQLiteQueryBuilder
+                        .builder("notes")
+                        .columns(arrayOf("id", "title", "content"))
+                        .selection("(content IS NOT NULL AND content GLOB '*<[0-9][0-9][0-9][0-9]*') OR (title IS NOT NULL AND title GLOB '*<[0-9][0-9][0-9][0-9]*')", null)
+                        .create()
+
+                db.query(query).use { cursor ->
+                    if (cursor.moveToFirst()) {
+                        while (!cursor.isAfterLast) {
+                            val noteId = cursor.getLong(0)
+                            val title = cursor.getString(1)
+                            val content = cursor.getString(2)
+
+                            OrgActiveTimestamps.parse(title).forEach { range ->
+                                insertNoteTime(db, noteId, range)
+                            }
+
+                            OrgActiveTimestamps.parse(content).forEach { range ->
+                                insertNoteTime(db, noteId, range)
+                            }
+
+                            cursor.moveToNext()
+                        }
+                    }
+                }
+            }
+
+            private fun insertNoteTime(db: SupportSQLiteDatabase, noteId: Long, range: com.orgzly.org.datetime.OrgRange) {
+                val orgRangeId = getOrInsertOrgRange(db, range)
+
+                val values = ContentValues().apply {
+                    put("note_id", noteId)
+                    put("org_range_id", orgRangeId)
+                }
+
+                db.insert("note_events", SQLiteDatabase.CONFLICT_REPLACE, values)
+            }
+
+            private fun getOrInsertOrgRange(db: SupportSQLiteDatabase, range: com.orgzly.org.datetime.OrgRange): Long {
+                val rangeStr = range.toString()
+
+                val query = SupportSQLiteQueryBuilder
+                        .builder("org_ranges")
+                        .columns(arrayOf("id"))
+                        .selection("string = ?", arrayOf(rangeStr))
+                        .create()
+
+                db.query(query).use { cursor ->
+                    if (cursor.moveToFirst()) {
+                        return cursor.getLong(0)
+                    }
+                }
+
+                val startTimeId = getOrInsertOrgTime(db, range.startTime)
+                val endTimeId = getOrInsertOrgTime(db, range.startTime)
+
+                val values = ContentValues().apply {
+                    put("string", rangeStr)
+                    put("start_timestamp_id", startTimeId)
+                    put("end_timestamp_id", endTimeId)
+                }
+
+                return db.insert("org_ranges", SQLiteDatabase.CONFLICT_ROLLBACK, values)
+            }
+
+            private fun getOrInsertOrgTime(db: SupportSQLiteDatabase, time: OrgDateTime): Long {
+                val query = SupportSQLiteQueryBuilder
+                        .builder("org_timestamps")
+                        .columns(arrayOf("id"))
+                        .selection("string = ?", arrayOf(time.toString()))
+                        .create()
+
+                db.query(query).use { cursor ->
+                    if (cursor.moveToFirst()) {
+                        return cursor.getLong(0)
+                    }
+                }
+
+                val values = ContentValues().apply {
+                    put("string", time.toString())
+
+                    put("is_active", time.isActive)
+
+                    put("year", time.calendar.get(Calendar.YEAR))
+                    put("month", time.calendar.get(Calendar.MONTH) + 1)
+                    put("day", time.calendar.get(Calendar.DAY_OF_MONTH))
+
+                    if (time.hasTime()) {
+                        put("hour", time.calendar.get(Calendar.HOUR_OF_DAY))
+                        put("minute", time.calendar.get(Calendar.MINUTE))
+                        put("second", time.calendar.get(Calendar.SECOND))
+                    }
+
+                    put("timestamp", time.calendar.timeInMillis)
+
+                    if (time.hasEndTime()) {
+                        put("end_hour", time.endCalendar.get(Calendar.HOUR_OF_DAY))
+                        put("end_minute", time.endCalendar.get(Calendar.MINUTE))
+                        put("end_second", time.endCalendar.get(Calendar.SECOND))
+                        put("end_timestamp", time.endCalendar.timeInMillis)
+                    }
+
+                    if (time.hasRepeater()) {
+                        put("repeater_type", OrgTimestampMapper.repeaterType(time.repeater.type))
+                        put("repeater_value", time.repeater.value)
+                        put("repeater_unit", OrgTimestampMapper.timeUnit(time.repeater.unit))
+
+                        if (time.repeater.hasHabitDeadline()) {
+                            put("habit_deadline_value", time.repeater.habitDeadline.value)
+                            put("habit_deadline_unit", OrgTimestampMapper.timeUnit(time.repeater.habitDeadline.unit))
+                        }
+                    }
+
+                    if (time.hasDelay()) {
+                        put("delay_type", OrgTimestampMapper.delayType(time.delay.type))
+                        put("delay_value", time.delay.value)
+                        put("delay_unit", OrgTimestampMapper.timeUnit(time.delay.unit))
+                    }
+                }
+
+                return db.insert("org_timestamps", SQLiteDatabase.CONFLICT_ROLLBACK, values)
             }
         }
     }

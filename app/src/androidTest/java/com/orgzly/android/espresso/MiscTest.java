@@ -44,6 +44,7 @@ import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
 import static com.orgzly.android.espresso.EspressoUtils.onPreface;
 import static com.orgzly.android.espresso.EspressoUtils.onSavedSearch;
+import static com.orgzly.android.espresso.EspressoUtils.openContextualToolbarOverflowMenu;
 import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
 import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static com.orgzly.android.espresso.EspressoUtils.settingsSetDoneKeywords;
@@ -625,10 +626,11 @@ public class MiscTest extends OrgzlyTest {
 
         onBook(0).perform(click());
         onNoteInBook(3).perform(click());
-        onView(withId(R.id.book_cab_move)).check(matches(isDisplayed()));
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(allOf(withText("booky"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
-        onView(withId(R.id.book_cab_move)).check(matches(isDisplayed()));
+        onView(withId(R.id.book_cab_cut)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -651,13 +653,13 @@ public class MiscTest extends OrgzlyTest {
         onBook(0).perform(click());
         onNoteInBook(1).perform(click());
 
-        onView(withId(R.id.book_cab_move)).check(matches(isDisplayed()));
+        onView(withId(R.id.book_cab_cut)).check(matches(isDisplayed()));
 
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(allOf(withText("booky-two"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.book_cab_move)).check(doesNotExist());
+        onView(withId(R.id.book_cab_cut)).check(doesNotExist());
     }
 
     @Test

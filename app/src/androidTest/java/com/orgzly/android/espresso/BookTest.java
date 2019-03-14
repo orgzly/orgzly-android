@@ -20,6 +20,8 @@ import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.action.ViewActions.swipeLeft;
+import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerActions.open;
@@ -38,7 +40,6 @@ import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard
 import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
 import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
@@ -124,6 +125,13 @@ public class BookTest extends OrgzlyTest {
     public void testOpensNoteFromBook() {
         onNoteInBook(2).perform(click());
         onView(withId(R.id.bottom_action_bar_open)).perform(click());
+        onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
+    }
+
+    @Ignore
+    @Test
+    public void testOpensNoteFromBookBySwiping() {
+        onNoteInBook(2).perform(swipeLeft());
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
     }
 
@@ -245,7 +253,8 @@ public class BookTest extends OrgzlyTest {
     @Test
     public void testCabForMovingNotesDisplayed() {
         onNoteInBook(1).perform(click());
-        onView(withId(R.id.book_cab_move)).perform(click());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).check(matches(isDisplayed()));
     }
 
@@ -253,7 +262,8 @@ public class BookTest extends OrgzlyTest {
     public void testOrderOfMovedNote() {
         onNoteInBook(3).perform(click());
 
-        onView(withId(R.id.book_cab_move)).perform(click());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).perform(click());
 
         onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
@@ -272,8 +282,8 @@ public class BookTest extends OrgzlyTest {
 
         onNoteInBook(2).perform(click());
 
-        onView(withId(R.id.book_cab_move)).perform(click());
-
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).check(matches(isDisplayed()));
 
         toLandscape(activityRule);
@@ -285,7 +295,8 @@ public class BookTest extends OrgzlyTest {
     public void testPromoting() {
         onNoteInBook(2).perform(click());
 
-        onView(withId(R.id.book_cab_move)).perform(click());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_left)).perform(click());
     }
 
@@ -337,6 +348,21 @@ public class BookTest extends OrgzlyTest {
     }
 
     @Test
+    public void testCopyBelow() {
+        onNoteInBook(1).perform(click());
+
+        onView(withId(R.id.book_cab_copy)).perform(click());
+
+        onNoteInBook(1).perform(click());
+        onView(withId(R.id.book_cab_paste)).perform(click());
+        onView(withText(R.string.heads_action_menu_item_paste_below)).perform(click());
+
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #2."))));
+    }
+
+    @Test
     public void testFoldNotes() {
         onNoteInBook(2, R.id.item_head_fold_button).perform(click());
 
@@ -371,6 +397,7 @@ public class BookTest extends OrgzlyTest {
         onView(withId(R.id.done)).perform(click());
         onNotesInBook().perform(RecyclerViewActions.actionOnItemAtPosition(41, click()));
         onView(withId(R.id.bottom_action_bar_open)).perform(click());
+        onView(withId(R.id.fragment_note_container)).perform(swipeUp()); // For small screens
         onView(allOf(withId(R.id.name), withText(R.string.created_property_name))).check(matches(isDisplayed()));
         onView(allOf(withId(R.id.name), withText(""))).check(matches(isDisplayed()));
     }

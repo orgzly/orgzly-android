@@ -1,14 +1,9 @@
-Willkommen bei Orgzly!
+Wilkommen in Orgzly!
 
 * Notizen
-** Klicken Sie auf die Notiz, um sie zu öffnen
-** Klicken und halten Sie die Notiz, um sie auszuwählen
+** Klicken sie auf die Notiz um sie auszuwählen
 
-** Sie können mehrere Notizen auswählen.
-
-** Wischen Sie über der Notiz nach rechts, um das Schnell-Menü anzuzeigen
-
-Nach links wischen öffnet ein weiteres Menü.
+Sie können mehrere Notizen auswählen.
 
 ** Unterpunkte können Sie über das Symbole links und rechts daneben ein- und ausklappen
 *** Es gibt keine Begrenzung in der Anzahl der Ebenen
@@ -45,13 +40,13 @@ Erinnerungen für Termine und Fristen sind standardmäßig deaktiviert und könn
 
 Die verschiedenen Prioritätsstufen können in den Einstellungen verändert werden. Ebenso kann die Priorität angepasst werden, die Notizen ohne explizite Priorisierung zugeordnet wird.
 
-** Note can include links
+** Notizen können Links enthalten
 
-Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[http://www.orgzly.com][Orgzly.com]]).
+Wähle eine Telefonnummer (tel:555-0199), sende eine SMS (sms:555-0199), verfasse eine Email (mailto:support@orgzly.com), oder besuche eine Webseite ([[http://www.orgzly.com][Orgzly.com]]).
 
-You can also link to another note or notebook within the app.
+Sie können auch auf eine andere Notiz oder ein anderes Notizbuch innerhalb der App verweisen.
 
-See http://www.orgzly.com/help#links for more information.
+Siehe http://www.orgzly.com/help#links für weitere Informationen.
 
 ** Grundlegende typografische Hervorhebungen werden unterstützt
 
@@ -78,7 +73,7 @@ Probieren Sie die Beispielabfragen in der Navigationsleiste aus und schauen Sie 
 
 Sie können Ihre eigenen gespeicherten Suchen erstellen, indem Sie in der Navigationsleiste auf "Suchen" klicken.
 
-Synchronisiere
+* Synchronisiere
 
 ** Notizbücher können als Nur-Text-Dateien gespeichert werden
 

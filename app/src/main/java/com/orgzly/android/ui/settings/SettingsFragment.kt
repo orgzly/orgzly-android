@@ -276,6 +276,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             getString(R.string.pref_key_use_reminders_for_deadline_times) ->
                 AppPreferences.reminderLastRunForDeadline(context, 0L)
 
+            // Reminders for events - reset last run time
+            getString(R.string.pref_key_use_reminders_for_event_times) ->
+                AppPreferences.reminderLastRunForEvents(context, 0L)
+
             // Display images inline enabled - request permission
             getString(R.string.pref_key_images_enabled) -> {
                 if (AppPreferences.imagesEnabled(context)) {
@@ -302,10 +306,13 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     private fun updateRemindersScreen() {
         val scheduled = findPreference(getString(R.string.pref_key_use_reminders_for_scheduled_times))
         val deadline = findPreference(getString(R.string.pref_key_use_reminders_for_deadline_times))
+        val event = findPreference(getString(R.string.pref_key_use_reminders_for_event_times))
 
-        if (scheduled != null && deadline != null) {
-            val remindersEnabled = (scheduled as TwoStatePreference).isChecked
-                    || (deadline as TwoStatePreference).isChecked
+        if (scheduled != null && deadline != null && event != null) {
+            val remindersEnabled =
+                    (scheduled as TwoStatePreference).isChecked
+                            || (deadline as TwoStatePreference).isChecked
+                            || (event as TwoStatePreference).isChecked
 
             /* These do not exist on Oreo and later */
             findPreference(getString(R.string.pref_key_reminders_sound))?.isEnabled = remindersEnabled

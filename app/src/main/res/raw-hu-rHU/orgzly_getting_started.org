@@ -1,14 +1,9 @@
 Üdv az Orgzly jegyzetelőben!
 
 * Jegyzetek
-** Koppintson a bejegyzés megnyitásához
-** Tartsa lenyomva a bejegyzés kijelöléséhez
+** Koppints a bejegyzésre, hogy kijelöld
 
-Kiválaszthatsz több bejegyzést is.
-
-** Jobbra simítva megnyílik a gyorsmenü
-
-Balra simítva egy másik menü nyílik meg.
+Kijelölhetsz több bejegyzést is.
 
 ** Ha egy bejegyzés tartalmaz aljegyzeteket is, be lehet hajtogatni azokat, ha az ikonra koppintasz mellette
 *** Nincs korlátozva, hogy hány szinten lehet aljegyzet
@@ -37,21 +32,21 @@ SCHEDULED: <2015-02-16 Mon .+2d>
 ** Határidőt is be lehet állítani
 DEADLINE: <2015-02-20 Fri>
 
-** Reminders for scheduled and deadline times are supported
+** Az ütemezett és a határidőkhöz emlékeztetőt is lehet beállítani
 
-They are disabled by default and need to be enabled in Settings.
+Alaphelyzetben ez le van tiltva, engedélyezni kell a Beállításokban.
 
-** [#A] Note can have a priority
+** [#A] Egy jegyzetnek lehet prioritása
 
-You can change the number of priorities in Settings. You can also change default priority - assumed priority for notes without one set.
+A prioritások számát megadhatod a Beállításokban. Az alap prioritást is át lehet állítani - bármely bejegyzésnek ez lesz a prioritása ha nincs külön beállítva.
 
-** Note can include links
+** Linket is tartalmazhat egy bejegyzés
 
-Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[http://www.orgzly.com][Orgzly.com]]).
+Hívj fel egy számot (tel:555-0199), küldj SMS-t (sms:555-0199), írj emailt (mailto:support@orgzly.com) vagy látogass meg egy weboldalt ([[http://www.orgzly.com][Orgzly.com]]).
 
-You can also link to another note or notebook within the app.
+Lehet más bejegyzéshez vagy az appon belül másik jegyzetfüzethez is linket megadni.
 
-See http://www.orgzly.com/help#links for more information.
+További információ a http://www.orgzly.com/help#links címen.
 
 ** Az alapvető tipográfiai kiemeléseket támogatja a program
 

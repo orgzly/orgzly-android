@@ -22,6 +22,7 @@ import com.orgzly.android.App;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.BookFormat;
 import com.orgzly.android.BookName;
+import com.orgzly.android.NotesClipboard;
 import com.orgzly.android.db.dao.NoteDao;
 import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.db.entity.Note;
@@ -61,6 +62,7 @@ import com.orgzly.android.usecase.BookImportGettingStarted;
 import com.orgzly.android.usecase.BookLinkUpdate;
 import com.orgzly.android.usecase.BookSparseTreeForNote;
 import com.orgzly.android.usecase.BookUpdatePreface;
+import com.orgzly.android.usecase.NoteCopy;
 import com.orgzly.android.usecase.SavedSearchCreate;
 import com.orgzly.android.usecase.SavedSearchDelete;
 import com.orgzly.android.usecase.SavedSearchExport;
@@ -107,7 +109,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -813,6 +814,16 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
+    public void onNotesCopyRequest(long bookId, Set<Long> noteIds) {
+        mSyncFragment.run(new NoteCopy(bookId, noteIds));
+    }
+
+    @Override
+    public void onNotesPasteRequest(long bookId, long noteId, Place place) {
+        mSyncFragment.run(new NotePaste(bookId, noteId, place));
+    }
+
+    @Override
     public void onBookLinkSetRequest(final long bookId) {
         viewModel.setBookLink(bookId);
     }
@@ -900,11 +911,6 @@ public class MainActivity extends CommonActivity
                         startActivity(intent);
                     }));
         }
-    }
-
-    @Override
-    public void onNotesPasteRequest(long bookId, long noteId, Place place) {
-        mSyncFragment.run(new NotePaste(bookId, noteId, place));
     }
 
     @Override
@@ -1152,17 +1158,33 @@ public class MainActivity extends CommonActivity
             }
 
         } else if (action instanceof NoteCut) {
-            int count = (int) result.getUserData();
+            NotesClipboard clipboard = (NotesClipboard) result.getUserData();
 
-            String message;
+            if (clipboard != null) {
+                int count = clipboard.getNoteCount();
 
-            if (count == 0) {
-                message = getResources().getString(R.string.no_notes_cut);
-            } else {
-                message = getResources().getQuantityString(R.plurals.notes_cut, count, count);
+                String message;
+
+                if (count == 0) {
+                    message = getResources().getString(R.string.no_notes_cut);
+                } else {
+                    message = getResources().getQuantityString(R.plurals.notes_cut, count, count);
+                }
+
+                showSnackbar(message);
             }
 
-            showSnackbar(message);
+        } else if (action instanceof NoteCopy) {
+            NotesClipboard clipboard = (NotesClipboard) result.getUserData();
+
+            if (clipboard != null) {
+                int count = clipboard.getNoteCount();
+
+                if (count > 0) {
+                    String message = getResources().getQuantityString(R.plurals.notes_copied, count, count);
+                    showSnackbar(message);
+                }
+            }
 
         } else if (action instanceof NotePaste) {
             int count = (int) result.getUserData();

@@ -4,7 +4,6 @@ import android.os.Environment
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.rule.ActivityTestRule
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.OrgzlyTest
@@ -27,7 +26,7 @@ class ExternalLinksTest(private val param: Parameter) : OrgzlyTest() {
     data class Parameter(val link: String, val check: () -> Any)
 
     @get:Rule
-    var activityRule: ActivityTestRule<*> = EspressoActivityTestRule(MainActivity::class.java, true, false)
+    var activityRule = EspressoActivityTestRule(MainActivity::class.java, true, false)
 
     companion object {
         @JvmStatic

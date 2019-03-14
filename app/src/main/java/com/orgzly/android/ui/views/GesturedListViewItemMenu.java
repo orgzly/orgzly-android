@@ -48,8 +48,8 @@ class GesturedListViewItemMenu {
     private int flipperDisplayedChild;
 
     public GesturedListViewItemMenu(long itemId, GesturedListView listView, ViewGroup container, ViewFlipper flipper, HashMap<GesturedListView.Gesture, Integer> gestureMenuMap) {
-        this.animationDuration = listView.getResources().getInteger(R.integer.item_menu_animation_duration);
-        this.containerHeight = listView.getResources().getDimension(R.dimen.item_menu_height);
+        this.animationDuration = listView.getResources().getInteger(R.integer.quick_bar_animation_duration);
+        this.containerHeight = listView.getResources().getDimension(R.dimen.quick_bar_height);
 
         this.itemId = itemId;
         this.gesturedListView = listView;

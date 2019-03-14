@@ -7,6 +7,8 @@ import com.orgzly.android.util.AgendaUtils
 import org.joda.time.DateTime
 
 object AgendaItems {
+    data class ExpandableOrgRange(val range: String?, val overdueToday: Boolean)
+
     fun getList(
             notes: List<NoteView>, queryString: String?, idMap: MutableMap<Long, Long>
     ): List<AgendaItem> {
@@ -49,17 +51,34 @@ object AgendaItems {
                         { it.millis },
                         { mutableListOf<AgendaItem>(AgendaItem.Divider(index++, it)) })
 
+        val dedup = HashSet<Pair<Long, Long>>()
+
         notes.forEach { note ->
+
+            val times = arrayOf(
+                    ExpandableOrgRange(note.scheduledRangeString, overdueToday = true),
+                    ExpandableOrgRange(note.deadlineRangeString, overdueToday = true),
+                    ExpandableOrgRange(note.eventString, overdueToday = false)
+            )
+
             // Expand each note if it has a repeater or is a range
-            val days = AgendaUtils.expandOrgDateTime(
-                    arrayOf(note.scheduledRangeString, note.deadlineRangeString), now, agendaDays)
+            val days = AgendaUtils.expandOrgDateTime(times, now, agendaDays)
 
             // Add each note instance to its day bucket
             days.forEach { day ->
-                dayBuckets[day.millis]?.let {
-                    it.add(AgendaItem.Note(index, note))
-                    item2databaseIds[index] = note.note.id
-                    index++
+
+                val bucketKey = day.millis
+
+                val dedupKey = Pair(bucketKey, note.note.id)
+
+                if (!dedup.contains(dedupKey)) {
+                    dayBuckets[bucketKey]?.let {
+                        it.add(AgendaItem.Note(index, note))
+                        item2databaseIds[index] = note.note.id
+                        index++
+                    }
+
+                    dedup.add(dedupKey)
                 }
             }
         }

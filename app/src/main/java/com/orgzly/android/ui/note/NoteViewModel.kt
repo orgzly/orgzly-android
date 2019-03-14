@@ -1,6 +1,7 @@
 package com.orgzly.android.ui.note
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.BookView
@@ -38,15 +39,36 @@ class NoteViewModel(
 
     fun deleteNote(bookId: Long, noteId: Long) {
         App.EXECUTORS.diskIO().execute {
-            val action = NoteDelete(bookId, setOf(noteId))
-            val result = UseCaseRunner.run(action)
-            noteDeletedEvent.postValue(result.userData as Int)
+            val useCase = NoteDelete(bookId, setOf(noteId))
+            catchAndPostError {
+                val result = UseCaseRunner.run(useCase)
+                noteDeletedEvent.postValue(result.userData as Int)
+            }
         }
     }
 
     fun requestNoteBookChange() {
         App.EXECUTORS.diskIO().execute {
             bookChangeRequestEvent.postValue(dataRepository.getBooks())
+        }
+    }
+
+    enum class ViewEditMode {
+        VIEW,
+        EDIT,
+        EDIT_WITH_KEYBOARD
+    }
+
+    // Start in edit mode
+    val viewEditMode = MutableLiveData<ViewEditMode>(ViewEditMode.EDIT)
+
+    // Change view/edit mode
+    fun toggleViewEditMode() {
+        viewEditMode.value = when (viewEditMode.value) {
+            ViewEditMode.VIEW -> ViewEditMode.EDIT_WITH_KEYBOARD
+            ViewEditMode.EDIT -> ViewEditMode.VIEW
+            ViewEditMode.EDIT_WITH_KEYBOARD -> ViewEditMode.VIEW
+            null -> ViewEditMode.EDIT
         }
     }
 }

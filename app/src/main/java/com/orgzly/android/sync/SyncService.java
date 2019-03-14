@@ -25,7 +25,7 @@ import com.orgzly.android.AppIntent;
 import com.orgzly.android.BookFormat;
 import com.orgzly.android.BookName;
 import com.orgzly.android.data.DataRepository;
-import com.orgzly.android.NotesExporter;
+import com.orgzly.android.NotesOrgExporter;
 import com.orgzly.android.reminders.ReminderService;
 import com.orgzly.android.ui.notifications.Notifications;
 import com.orgzly.android.db.entity.BookAction;
@@ -534,7 +534,7 @@ public class SyncService extends DaggerService {
         VersionedRook newRook = currentRook;
         File dbFile = dataRepository.getTempBookFile();
         try {
-            new NotesExporter(App.getAppContext(), dataRepository).exportBook(bookView.getBook(), dbFile);
+            new NotesOrgExporter(App.getAppContext(), dataRepository).exportBook(bookView.getBook(), dbFile);
             TwoWaySyncResult result = repo.syncBook(someRook.getUri(), currentRook, dbFile);
             newRook = result.getNewRook();
             String fileName = BookName.getFileName(App.getAppContext(), newRook.getUri());

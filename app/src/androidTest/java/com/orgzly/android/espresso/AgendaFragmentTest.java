@@ -5,6 +5,7 @@ import android.widget.DatePicker;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.main.MainActivity;
 
 import org.joda.time.DateTime;
@@ -17,6 +18,8 @@ import androidx.test.rule.ActivityTestRule;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.longClick;
+import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerActions.open;
@@ -191,5 +194,51 @@ public class AgendaFragmentTest extends OrgzlyTest {
         onView(withId(R.id.bottom_action_bar_state)).perform(click());
 
         onView(withText("TODO")).check(matches(isChecked()));
+    }
+
+    @Test
+    public void testSwipeDivider() {
+        testUtils.setupBook("notebook", "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>");
+        activityRule.launchActivity(null);
+        searchForText("ad.3");
+        onItemInAgenda(0).perform(swipeLeft());
+    }
+
+    @Ignore
+    @Test
+    public void testOpenBookFromAgendaBySwiping() {
+        testUtils.setupBook("notebook", "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>");
+        activityRule.launchActivity(null);
+        searchForText("ad.3");
+        onItemInAgenda(1).perform(swipeLeft());
+        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
+    }
+
+    /* Tests correct mapping of agenda ID to note's DB ID. */
+    @Test
+    public void testOpenCorrectNote() {
+        testUtils.setupBook("notebook", "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>");
+        activityRule.launchActivity(null);
+
+        searchForText("ad.3");
+
+        onItemInAgenda(1).perform(click());
+        onView(withId(R.id.bottom_action_bar_open)).perform(click());
+
+        onView(withId(R.id.fragment_note_container)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note A")));
+    }
+
+    @Test
+    public void testChangeStateWithReverseNoteClick() {
+        testUtils.setupBook("book-1","* DONE Note A");
+        testUtils.setupBook("book-2","* TODO Note B\nSCHEDULED: <2014-01-01>\n* TODO Note C\nSCHEDULED: <2014-01-02>\n");
+        AppPreferences.isReverseNoteClickAction(context, false);
+        activityRule.launchActivity(null);
+
+        openAgenda();
+        onItemInAgenda(1).perform(longClick());
+        onView(withId(R.id.bottom_action_bar_state)).perform(click());
+        onView(withText("NEXT")).perform(click());
     }
 }

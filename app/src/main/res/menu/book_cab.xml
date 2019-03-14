@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/book_cab_move"
-        app:showAsAction="always"
-        android:icon="?attr/ic_swap_vert_24dp"
-        android:title="@string/move">
-    </item>
-
-    <item
         android:id="@+id/book_cab_cut"
         android:icon="?attr/ic_content_cut_24dp"
         app:showAsAction="always"
         android:title="@string/cut">
+    </item>
+
+    <item
+        android:id="@+id/book_cab_copy"
+        android:icon="?attr/ic_content_copy_24dp"
+        app:showAsAction="always"
+        android:title="@string/copy">
     </item>
 
     <item
@@ -38,6 +38,13 @@
                 android:icon="?attr/oic_new_below_24dp"
                 android:title="@string/heads_action_menu_item_paste_below"/>
         </menu>
+    </item>
+
+    <item
+        android:id="@+id/book_cab_move"
+        app:showAsAction="never"
+        android:icon="?attr/ic_swap_vert_24dp"
+        android:title="@string/move">
     </item>
 
     <item

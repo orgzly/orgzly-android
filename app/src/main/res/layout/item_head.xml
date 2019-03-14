@@ -174,7 +174,7 @@
 
                     <ImageView
                         style="@style/HeadItemInfoIcon"
-                        android:src="?attr/ic_done_18dp"
+                        android:src="?attr/ic_outline_check_circle_18dp"
                         android:alpha="?attr/oic_item_alpha"
                         android:contentDescription="@string/closed"/>
 
@@ -258,7 +258,6 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <!-- Quick menu. -->
-    <!--<include layout="@layout/item_head_quick_menu"/>-->
+    <include layout="@layout/quick_bar"/>
 
 </LinearLayout>

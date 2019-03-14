@@ -94,7 +94,7 @@ public class TestUtils {
      */
     public void setupRook(String repoUrl, String url, String content, String rev, long mtime) {
         VersionedRook vrook = new VersionedRook(Uri.parse(repoUrl), Uri.parse(url), rev, mtime);
-        dbRepoBookRepository.createDbRepoBook(vrook, content);
+        dbRepoBookRepository.createBook(vrook, content);
 
         // RemoteBookRevision remoteBookRevision = new RemoteBookRevision(repoUrl, url, rev, mtime);
         // RemoteBooksHelper.updateOrInsert(testContext, remoteBookRevision);

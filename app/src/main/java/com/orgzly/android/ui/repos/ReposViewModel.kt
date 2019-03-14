@@ -24,9 +24,10 @@ class ReposViewModel(private val dataRepository: DataRepository) : CommonViewMod
 
     fun deleteRepo(id: Long) {
         App.EXECUTORS.diskIO().execute {
-            UseCaseRunner.run(RepoDelete(id))
+            catchAndPostError {
+                UseCaseRunner.run(RepoDelete(id))
+            }
         }
-
     }
 
 //    fun create(url: String): Completable {

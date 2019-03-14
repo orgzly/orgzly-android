@@ -5,7 +5,7 @@
     android:interpolator="@android:interpolator/decelerate_quad">
 
     <alpha
-        android:duration="@integer/item_menu_animation_duration"
+        android:duration="@integer/quick_bar_animation_duration"
         android:fromAlpha="0"
         android:toAlpha="1.0"/>
 </set>

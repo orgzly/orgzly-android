@@ -71,51 +71,56 @@ public class ListWidgetProvider extends AppWidgetProvider {
     private void updateAppWidgetLayout(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
-        SavedSearch savedSearch = getSavedSearch(context, appWidgetId);
+        App.EXECUTORS.diskIO().execute(() -> {
+            SavedSearch savedSearch = getSavedSearch(context, appWidgetId);
 
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.list_widget);
+            App.EXECUTORS.mainThread().execute(() -> {
 
-        WidgetStyle.updateWidget(remoteViews, context);
+                RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.list_widget);
 
-        Intent serviceIntent = new Intent(context, ListWidgetService.class);
-        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        serviceIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, savedSearch.getQuery());
-        serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+                WidgetStyle.updateWidget(remoteViews, context);
 
-        // Tell ListView where to get the data from
-        remoteViews.setRemoteAdapter(R.id.list_widget_list_view, serviceIntent);
+                Intent serviceIntent = new Intent(context, ListWidgetService.class);
+                serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                serviceIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, savedSearch.getQuery());
+                serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
-        remoteViews.setEmptyView(R.id.list_widget_list_view, R.id.list_widget_empty_view);
-        remoteViews.setTextViewText(R.id.list_widget_empty_view, context.getString(R.string.no_notes_found_after_search));
+                // Tell ListView where to get the data from
+                remoteViews.setRemoteAdapter(R.id.list_widget_list_view, serviceIntent);
 
-        // Rows - open note
-        final Intent onClickIntent = new Intent(context, ListWidgetProvider.class);
-        onClickIntent.setAction(AppIntent.ACTION_CLICK_LIST_WIDGET);
-        onClickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        onClickIntent.setData(Uri.parse(onClickIntent.toUri(Intent.URI_INTENT_SCHEME)));
-        final PendingIntent onClickPendingIntent = PendingIntent.getBroadcast(context, 0,
-                onClickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        remoteViews.setPendingIntentTemplate(R.id.list_widget_list_view, onClickPendingIntent);
+                remoteViews.setEmptyView(R.id.list_widget_list_view, R.id.list_widget_empty_view);
+                remoteViews.setTextViewText(R.id.list_widget_empty_view, context.getString(R.string.no_notes_found_after_search));
 
-        // Plus icon - new note
-        remoteViews.setOnClickPendingIntent(R.id.list_widget_header_add, ShareActivity.createNewNoteIntent(context, savedSearch));
+                // Rows - open note
+                final Intent onClickIntent = new Intent(context, ListWidgetProvider.class);
+                onClickIntent.setAction(AppIntent.ACTION_CLICK_LIST_WIDGET);
+                onClickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                onClickIntent.setData(Uri.parse(onClickIntent.toUri(Intent.URI_INTENT_SCHEME)));
+                final PendingIntent onClickPendingIntent = PendingIntent.getBroadcast(context, 0,
+                        onClickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                remoteViews.setPendingIntentTemplate(R.id.list_widget_list_view, onClickPendingIntent);
 
-        // Logo - open query
-        Intent openIntent = Intent.makeRestartActivityTask(new ComponentName(context, MainActivity.class));
-        openIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, savedSearch.getQuery());
-        serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
-        remoteViews.setOnClickPendingIntent(R.id.list_widget_header_icon, PendingIntent.getActivity(context, 0, openIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+                // Plus icon - new note
+                remoteViews.setOnClickPendingIntent(R.id.list_widget_header_add, ShareActivity.createNewNoteIntent(context, savedSearch));
 
-        Intent selectionIntent = new Intent(context, ListWidgetSelectionActivity.class);
-        selectionIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        selectionIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
-        remoteViews.setOnClickPendingIntent(R.id.list_widget_header_bar, PendingIntent.getActivity(context, 0, selectionIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+                // Logo - open query
+                Intent openIntent = Intent.makeRestartActivityTask(new ComponentName(context, MainActivity.class));
+                openIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, savedSearch.getQuery());
+                openIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+                remoteViews.setOnClickPendingIntent(R.id.list_widget_header_icon, PendingIntent.getActivity(context, 0, openIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
-        remoteViews.setTextViewText(
-                R.id.list_widget_header_selection,
-                savedSearch.getName());
+                Intent selectionIntent = new Intent(context, ListWidgetSelectionActivity.class);
+                selectionIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                selectionIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+                remoteViews.setOnClickPendingIntent(R.id.list_widget_header_bar, PendingIntent.getActivity(context, 0, selectionIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
-        appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+                remoteViews.setTextViewText(
+                        R.id.list_widget_header_selection,
+                        savedSearch.getName());
+
+                appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+            });
+        });
     }
 
     private void updateAppWidgetLayouts(Context context) {
@@ -220,9 +225,8 @@ public class ListWidgetProvider extends AppWidgetProvider {
     }
 
     private SavedSearch getSavedSearch(Context context, int appWidgetId) {
-        long filterId = context.getSharedPreferences(
-                PREFERENCES_ID, Context.MODE_PRIVATE).getLong(
-                        getFilterPreferenceKey(appWidgetId), -1);
+        long filterId = context.getSharedPreferences(PREFERENCES_ID, Context.MODE_PRIVATE)
+                .getLong(getFilterPreferenceKey(appWidgetId), -1);
 
         SavedSearch savedSearch = null;
         if (filterId != -1) {
@@ -232,6 +236,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
         if (savedSearch == null) {
             savedSearch = new SavedSearch(0, context.getString(R.string.list_widget_select_search), "", 0);
         }
+
         return savedSearch;
     }
 
@@ -266,7 +271,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        AndroidInjection.inject(this, context);
+        AndroidInjection.inject(this, App.getAppContext());
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 

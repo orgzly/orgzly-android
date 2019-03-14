@@ -92,6 +92,10 @@
 
         <item name="snackbar_bg_color">#323232</item> <!-- Default color -->
 
+        <item name="swipe_label_text_color">@color/dark_text_primary_color</item>
+        <item name="swipe_label_bg_color">@color/grey_100</item>
+        <item name="swipe_label_border_color">@color/grey_200</item>
+
         <!-- / Color scheme -->
 
         <item name="ic_access_time_18dp">@drawable/ic_access_time_black_18dp</item>
@@ -106,6 +110,7 @@
         <item name="ic_cancel_24dp">@drawable/ic_cancel_black_24dp</item>
         <item name="ic_center_focus_strong_24dp">@drawable/ic_center_focus_strong_black_24dp</item>
         <item name="ic_close_24dp">@drawable/ic_close_black_24dp</item>
+        <item name="ic_content_copy_24dp">@drawable/ic_content_copy_black_24dp</item>
         <item name="ic_content_cut_24dp">@drawable/ic_content_cut_black_24dp</item>
         <item name="ic_content_paste_24dp">@drawable/ic_content_paste_black_24dp</item>
         <item name="ic_delete_24dp">@drawable/ic_delete_black_24dp</item>
@@ -132,6 +137,8 @@
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_black_24dp</item>
         <item name="ic_open_in_browser_24dp">@drawable/ic_open_in_browser_black_24dp</item>
         <item name="ic_open_in_new_24dp">@drawable/ic_open_in_new_black_24dp</item>
+        <item name="ic_outline_check_circle_18dp">@drawable/outline_check_circle_black_18</item>
+        <item name="ic_outline_check_circle_24dp">@drawable/outline_check_circle_black_24</item>
         <item name="ic_remove_red_eye_24dp">@drawable/ic_remove_red_eye_black_24dp</item>
         <item name="ic_repeat_24dp">@drawable/ic_repeat_black_24dp</item>
         <item name="ic_rotate_left_24dp">@drawable/ic_rotate_left_black_24dp</item>
@@ -243,6 +250,10 @@
 
         <item name="snackbar_bg_color">@color/dark_theme_app_bar</item>
 
+        <item name="swipe_label_text_color">@color/white_text_primary_color</item>
+        <item name="swipe_label_bg_color">@color/grey_900</item>
+        <item name="swipe_label_border_color">@color/grey_700</item>
+
         <!-- / Color scheme -->
 
         <item name="ic_access_time_18dp">@drawable/ic_access_time_white_18dp</item>
@@ -257,6 +268,7 @@
         <item name="ic_cancel_24dp">@drawable/ic_cancel_white_24dp</item>
         <item name="ic_center_focus_strong_24dp">@drawable/ic_center_focus_strong_white_24dp</item>
         <item name="ic_close_24dp">@drawable/ic_close_white_24dp</item>
+        <item name="ic_content_copy_24dp">@drawable/ic_content_copy_white_24dp</item>
         <item name="ic_content_cut_24dp">@drawable/ic_content_cut_white_24dp</item>
         <item name="ic_content_paste_24dp">@drawable/ic_content_paste_white_24dp</item>
         <item name="ic_delete_24dp">@drawable/ic_delete_white_24dp</item>
@@ -283,6 +295,8 @@
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_white_24dp</item>
         <item name="ic_open_in_browser_24dp">@drawable/ic_open_in_browser_white_24dp</item>
         <item name="ic_open_in_new_24dp">@drawable/ic_open_in_new_white_24dp</item>
+        <item name="ic_outline_check_circle_18dp">@drawable/outline_check_circle_white_18</item>
+        <item name="ic_outline_check_circle_24dp">@drawable/outline_check_circle_white_24</item>
         <item name="ic_remove_red_eye_24dp">@drawable/ic_remove_red_eye_white_24dp</item>
         <item name="ic_repeat_24dp">@drawable/ic_repeat_white_24dp</item>
         <item name="ic_rotate_left_24dp">@drawable/ic_rotate_left_white_24dp</item>
@@ -354,6 +368,9 @@
         <item name="indent_line_color">#1cffffff</item>
 
         <item name="snackbar_bg_color">@color/dark_theme_status_bar</item>
+
+        <item name="swipe_label_bg_color">#1cffffff</item>
+        <item name="swipe_label_border_color">#33FFFFFF</item>
 
         <item name="bullet_default">@drawable/bullet_state_default_dark</item>
         <item name="bullet_folded">@drawable/bullet_state_folded_black</item>
@@ -482,17 +499,20 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">@dimen/screen_edge</item>
+        <item name="android:layout_marginStart">@dimen/screen_edge</item>
         <item name="android:minHeight">48dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:orientation">horizontal</item>
     </style>
 
-    <style name="NoteFragmentMetadataHeader" parent="Base.Widget.AppCompat.Button.Borderless">
+    <style name="NoteFragmentFullWidthButton" parent="Base.Widget.AppCompat.Button.Borderless">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">48dp</item>
         <item name="android:padding">0dp</item>
+        <item name="android:paddingRight">@dimen/screen_edge</item>
+        <item name="android:paddingEnd">@dimen/screen_edge</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:clickable">true</item>
@@ -635,4 +655,9 @@
 
     </style>
 
+    <style name="QuickBarButton" parent="Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>

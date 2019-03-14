@@ -275,7 +275,7 @@ public class GesturedListView extends ListView implements GestureDetector.OnGest
                     if (menuFound && itemPosition == getCount() - 1) {
                         new Handler().postDelayed(() ->
                                         smoothScrollToPosition(itemPosition),
-                                getResources().getInteger(R.integer.item_menu_animation_duration));
+                                getResources().getInteger(R.integer.quick_bar_animation_duration));
                     }
                 }
 

@@ -24,6 +24,66 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.7.1"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Events (plain timestamps) support (&lt;tt&gt;e&lt;/tt&gt; search operator, agenda and reminders)" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Swipe menus added back" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Preference for click/long-click action added back" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Smaller improvements" />
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.7"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support quick folding of note's metadata" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Replace swipe menus with bottom action bar" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Swipe left to open or focus on the note" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Force upper case state keywords in Settings" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Use larger font size for content in note view" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Start using Android Architecture Components" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix issue when using week in search queries" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix potential issues after time zone change" />
+
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.6.12"
             tools:ignore="HardcodedText" />
 
