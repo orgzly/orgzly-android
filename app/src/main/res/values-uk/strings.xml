@@ -463,4 +463,15 @@
   <string name="show_selected">Показати вибрані</string>
   <string name="hide_all">Сховати все</string>
   <string name="external_file_no_app_found">Не знайдено додатків для відкриття цього файлу</string>
+  <string name="failed_to_open_linked_file_with_reason">Не можу відкрити файл: %s</string>
+  <string name="images">Малюнки</string>
+  <string name="display_inline_images">Увімкнути малюнки</string>
+  <string name="display_inline_images_summary">Показувати малюнки в нотатках</string>
+  <string name="scale_down_to_width">Масштабувати по ширині</string>
+  <string name="scale_down_to_width_summary">Масштабувати малюнок до вказаної ширини</string>
+  <string name="argument_used">%s використано</string>
+  <string name="argument_detected">%s знайдено</string>
+  <string name="argument_selected">%s вибрано</string>
+  <string name="fixed_width_value">Ширина (в пікселях)</string>
+  <string name="share_target_service">Передати в блокнот Orgzly</string>
 </resources>
