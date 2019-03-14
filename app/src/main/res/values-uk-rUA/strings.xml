@@ -84,7 +84,7 @@
   <string name="message_dropbox_unlinked">Відв\'язано від Drobpox</string>
   <string name="message_dropbox_linked">Успішно прив\'язано до Dropbox</string>
   <!-- Preferences (Settings). -->
-  <string name="repos_preference_title">Місця зберігання</string>
+  <string name="repos_preference_title">Сховища</string>
   <string name="repos_preference_summary">Розміщення для синхронізації ваших блокнотів з</string>
   <string name="message_book_has_no_link">Посилання відсутнє</string>
   <string name="message_note_created">Нотатку створено</string>
@@ -121,7 +121,7 @@
   <string name="tap_to_create_new_note">Натисніть, щоб створити нову нотатку</string>
   <string name="options_menu_item_search">Пошук</string>
   <string name="no_user_repos_configured_pref_summary">Все ще не налаштовано</string>
-  <string name="repos_options_menu_new_repo">Нове місце зберігання</string>
+  <string name="repos_options_menu_new_repo">Нове сховище</string>
   <string name="book_name_already_exists">Блокнот %s вже існує</string>
   <string name="filter_name_already_exists">Пошук з такою назвою вже існує</string>
   <string name="failed_creating_directory">Не вдалося створити каталог %s</string>
@@ -163,8 +163,8 @@
   <string name="search">Пошук</string>
   <string name="new_search">Новий пошук</string>
   <string name="active">Активно</string>
-  <string name="no_repos">Не налаштовано місце зберігання</string>
-  <string name="multiple_repos">Існує декілька місць зберігання</string>
+  <string name="no_repos">Не налаштовано сховище</string>
+  <string name="multiple_repos">Існує декілька сховищ</string>
   <string name="book_encoding">Кодування блокнота</string>
   <string name="collecting_notebooks_in_progress">Collecting notebooks…</string>
   <string name="syncing_in_progress">Синхронізація…</string>
@@ -190,7 +190,7 @@
   <string name="repositories">Сховища</string>
   <string name="invalid_repo_url">Неприпустимий URL сховища «%s»</string>
   <string name="repository_url_already_exists">Сховище з таким URL вже існує</string>
-  <string name="message_unsupported_repository_type">Цей тип місця не підтримується</string>
+  <string name="message_unsupported_repository_type">Цей тип сховища не підтримується</string>
   <string name="fragment_left_drawer_list_view_content_description">Ліве меню</string>
   <string name="drawer_item">Елемент меню</string>
   <string name="prev_state">Попередній стан</string>
