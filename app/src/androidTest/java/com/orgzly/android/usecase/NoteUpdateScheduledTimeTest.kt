@@ -4,7 +4,6 @@ import com.orgzly.android.OrgzlyTest
 import com.orgzly.org.datetime.OrgDateTime
 import org.junit.Assert.*
 import org.junit.Test
-import java.util.*
 
 class NoteUpdateScheduledTimeTest : OrgzlyTest() {
     @Test
@@ -17,7 +16,7 @@ class NoteUpdateScheduledTimeTest : OrgzlyTest() {
         assertNull(dataRepository.getBook("book")!!.mtime)
 
         UseCaseRunner.run(NoteUpdateScheduledTime(
-                Collections.singleton(dataRepository.getNote("Note")!!.id),
+                setOf(dataRepository.getNote("Note")!!.id),
                 OrgDateTime(true)))
 
         assertTrue(dataRepository.getBook("book")!!.isModified)

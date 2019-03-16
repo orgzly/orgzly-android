@@ -103,7 +103,7 @@ class AgendaFragment :
 
     override fun onQuickBarButtonClick(buttonId: Int, itemId: Long) {
         item2databaseIds[itemId]?.let {
-            handleActionItemClick(buttonId, actionModeListener?.actionMode, Collections.singleton(it))
+            handleActionItemClick(buttonId, actionModeListener?.actionMode, setOf(it))
         }
     }
 

@@ -48,7 +48,7 @@ class StateChangeTest : OrgzlyTest() {
 
         assertNotNull(note)
 
-        dataRepository.toggleNotesState(Collections.singleton(note!!.id))
+        dataRepository.toggleNotesState(setOf(note!!.id))
 
         val exportedBook = exportBook(book)
 
@@ -81,7 +81,7 @@ class StateChangeTest : OrgzlyTest() {
 
         assertNotNull(note)
 
-        dataRepository.toggleNotesState(Collections.singleton(note!!.id))
+        dataRepository.toggleNotesState(setOf(note!!.id))
 
         val exportedBook = exportBook(book)
 
@@ -111,7 +111,7 @@ class StateChangeTest : OrgzlyTest() {
 
         val note = dataRepository.getNote("Task")
 
-        dataRepository.toggleNotesState(Collections.singleton(note!!.id))
+        dataRepository.toggleNotesState(setOf(note!!.id))
 
         val exportedBook = exportBook(book)
 

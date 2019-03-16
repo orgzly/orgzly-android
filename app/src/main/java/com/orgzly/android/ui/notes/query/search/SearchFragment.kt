@@ -104,7 +104,7 @@ class SearchFragment :
     }
 
     override fun onQuickBarButtonClick(buttonId: Int, itemId: Long) {
-        handleActionItemClick(buttonId, actionModeListener?.actionMode, Collections.singleton(itemId))
+        handleActionItemClick(buttonId, actionModeListener?.actionMode, setOf(itemId))
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

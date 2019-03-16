@@ -545,9 +545,9 @@ class DataRepository @Inject constructor(
             // Paste just under parent if note's level is too high, below otherwise
             val parent = db.note().get(note.position.parentId) ?: return@Callable 0
             val pasted = if (parent.position.level + 1 < note.position.level) {
-                pasteNotes(batchId, Place.UNDER_AS_FIRST, note.position.parentId)
+                pasteNotesBatch(batchId, Place.UNDER_AS_FIRST, note.position.parentId)
             } else {
-                pasteNotes(batchId, Place.BELOW, note.position.parentId)
+                pasteNotesBatch(batchId, Place.BELOW, note.position.parentId)
             }
 
             updateBookIsModified(bookId, true)
@@ -578,65 +578,12 @@ class DataRepository @Inject constructor(
             db.note().markAsCut(bookId, ids, batchId)
 
             /* Paste under previous sibling. */
-            val pasted = pasteNotes(batchId, Place.UNDER, previousSibling.id)
+            val pasted = pasteNotesBatch(batchId, Place.UNDER, previousSibling.id)
 
             updateBookIsModified(bookId, true)
 
             return@Callable pasted
         })
-    }
-
-    fun cutNotes(bookId: Long, noteId: Long): Int {
-        return cutNotes(bookId, Collections.singleton(noteId))
-    }
-
-    fun cutNotes(bookId: Long, ids: Set<Long>): Int {
-        return db.runInTransaction(Callable {
-            val batchId = System.currentTimeMillis()
-
-            db.noteAncestor().deleteForNoteAndDescendants(bookId, ids)
-
-            val count = db.note().markAsCut(bookId, ids, batchId)
-
-            db.note().updateDescendantsCountForAncestors(ids)
-
-            updateBookIsModified(bookId, true)
-
-            count
-        })
-    }
-
-    fun deleteNotes(bookId: Long, ids: Set<Long>): Int {
-        return db.runInTransaction(Callable {
-            val batchId = System.currentTimeMillis()
-
-            db.noteAncestor().deleteForNoteAndDescendants(bookId, ids)
-
-            val count = db.note().markAsCut(bookId, ids, batchId)
-
-            db.note().updateDescendantsCountForAncestors(ids)
-
-            // Same as cut but delete cut after
-            db.note().deleteCut()
-
-            updateBookIsModified(bookId, true)
-
-            count
-        })
-    }
-
-    fun paste(bookId: Long, noteId: Long, place: Place): Int {
-        var pastedNotesCount = 0
-        val batchId = getLatestBatchId()
-        if (batchId != 0L) {
-            pastedNotesCount = db.runInTransaction(Callable {
-                pasteNotes(batchId, place, noteId)
-            })
-        } else {
-            Log.e(TAG, "Can't paste: batch not found")
-        }
-        return pastedNotesCount
-
     }
 
     fun moveNote(bookId: Long, noteId: Long, direction: Int): Int {
@@ -666,7 +613,7 @@ class DataRepository @Inject constructor(
                 db.note().markAsCut(bookId, setOf(note.id), batchId)
 
                 /* Paste. */
-                pasteNotes(batchId, place.place, place.noteId)
+                pasteNotesBatch(batchId, place.place, place.noteId)
 
                 updateBookIsModified(bookId, true)
             }
@@ -681,60 +628,49 @@ class DataRepository @Inject constructor(
         return db.runInTransaction(Callable {
             val cutCount = cutNotes(bookId, noteIds)
 
-            paste(targetBookId, root.id, Place.UNDER)
+            pasteLastNotesBatch(Place.UNDER, root.id)
 
             cutCount
         })
     }
 
-    fun setNotesScheduledTime(noteIds: Set<Long>, time: OrgDateTime?) {
-        val timeId = if (time != null) getOrgRangeId(OrgRange(time)) else null
-
-        db.note().updateScheduledTime(noteIds, timeId)
-
-        db.note().get(noteIds).map { it.position.bookId }.let {
-            updateBookIsModified(it, true)
-        }
-    }
-
-    fun setNotesDeadlineTime(noteIds: Set<Long>, time: OrgDateTime?) {
-        val timeId = if (time != null) getOrgRangeId(OrgRange(time)) else null
-
-        db.note().updateDeadlineTime(noteIds, timeId)
-
-        db.note().get(noteIds).map { it.position.bookId }.let {
-            updateBookIsModified(it, true)
-        }
-    }
-
-    fun toggleNoteFoldedState(noteId: Long): Int {
+    private fun cutNotes(bookId: Long, ids: Set<Long>): Int {
         return db.runInTransaction(Callable {
-            val note = db.note().get(noteId) ?: return@Callable 0
+            val batchId = System.currentTimeMillis()
 
-            val toggled = db.note().updateIsFolded(note.id, !note.position.isFolded)
+            db.noteAncestor().deleteForNoteAndDescendants(bookId, ids)
 
-            if (note.position.isFolded) {
-                db.note().unfoldDescendantsUnderId(note.position.bookId, note.id, note.position.lft, note.position.rgt)
-            } else {
-                db.note().foldDescendantsUnderId(note.position.bookId, note.id, note.position.lft, note.position.rgt)
-            }
+            val count = db.note().markAsCut(bookId, ids, batchId)
 
-            return@Callable toggled
+            db.note().updateDescendantsCountForAncestors(ids)
+
+            updateBookIsModified(bookId, true)
+
+            count
         })
     }
 
-    private fun getLatestBatchId(): Long {
-        return db.note().getLatestBatchId() ?: 0
+    private fun pasteLastNotesBatch(place: Place, noteId: Long): Int {
+        var pastedNotesCount = 0
+        val batchId = db.note().getLatestBatchId() ?: 0
+        if (batchId != 0L) {
+            pastedNotesCount = db.runInTransaction(Callable {
+                pasteNotesBatch(batchId, place, noteId)
+            })
+        } else {
+            Log.e(TAG, "Can't paste: batch not found")
+        }
+        return pastedNotesCount
+
     }
 
-
-    fun paste(clipboard: NotesClipboard, noteId: Long, place: Place): Int {
+    fun pasteNotes(clipboard: NotesClipboard, noteId: Long, place: Place): Int {
         return db.runInTransaction(Callable {
-            pasteNotes(clipboard, place, noteId)
+            pasteNotesClipboard(clipboard, place, noteId)
         })
     }
 
-    private fun pasteNotes(clipboard: NotesClipboard, place: Place, targetNoteId: Long): Int {
+    private fun pasteNotesClipboard(clipboard: NotesClipboard, place: Place, targetNoteId: Long): Int {
         var foldedUnder: Long = 0
 
         val targetNote = db.note().get(targetNoteId) ?: return 0
@@ -967,7 +903,7 @@ class DataRepository @Inject constructor(
         return count
     }
 
-    private fun pasteNotes(batchId: Long, place: Place, targetNoteId: Long): Int {
+    private fun pasteNotesBatch(batchId: Long, place: Place, targetNoteId: Long): Int {
         var foldedUnder: Long = 0
 
         val batchData = db.note().getBatchData(batchId) ?: return 0
@@ -1079,10 +1015,46 @@ class DataRepository @Inject constructor(
         return count
     }
 
+    fun setNotesScheduledTime(noteIds: Set<Long>, time: OrgDateTime?) {
+        val timeId = if (time != null) getOrgRangeId(OrgRange(time)) else null
+
+        db.note().updateScheduledTime(noteIds, timeId)
+
+        db.note().get(noteIds).map { it.position.bookId }.let {
+            updateBookIsModified(it, true)
+        }
+    }
+
+    fun setNotesDeadlineTime(noteIds: Set<Long>, time: OrgDateTime?) {
+        val timeId = if (time != null) getOrgRangeId(OrgRange(time)) else null
+
+        db.note().updateDeadlineTime(noteIds, timeId)
+
+        db.note().get(noteIds).map { it.position.bookId }.let {
+            updateBookIsModified(it, true)
+        }
+    }
+
+    fun toggleNoteFoldedState(noteId: Long): Int {
+        return db.runInTransaction(Callable {
+            val note = db.note().get(noteId) ?: return@Callable 0
+
+            val toggled = db.note().updateIsFolded(note.id, !note.position.isFolded)
+
+            if (note.position.isFolded) {
+                db.note().unfoldDescendantsUnderId(note.position.bookId, note.id, note.position.lft, note.position.rgt)
+            } else {
+                db.note().foldDescendantsUnderId(note.position.bookId, note.id, note.position.lft, note.position.rgt)
+            }
+
+            return@Callable toggled
+        })
+    }
+
     fun setNoteStateToDone(noteId: Long): Int {
         val firstDone = AppPreferences.getFirstDoneState(context) ?: return 0
 
-        return setNotesState(Collections.singleton(noteId), firstDone)
+        return setNotesState(setOf(noteId), firstDone)
     }
 
     fun toggleNotesState(noteIds: Set<Long>): Int {
@@ -1494,6 +1466,25 @@ class DataRepository @Inject constructor(
 
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Updated $count note: $newNote")
         }
+    }
+
+    fun deleteNotes(bookId: Long, ids: Set<Long>): Int {
+        return db.runInTransaction(Callable {
+            val batchId = System.currentTimeMillis()
+
+            db.noteAncestor().deleteForNoteAndDescendants(bookId, ids)
+
+            val count = db.note().markAsCut(bookId, ids, batchId)
+
+            db.note().updateDescendantsCountForAncestors(ids)
+
+            // Same as cut but delete cut after
+            db.note().deleteCut()
+
+            updateBookIsModified(bookId, true)
+
+            count
+        })
     }
 
     private fun replaceNoteEvents(noteId: Long, title: String, content: String?) {
