@@ -271,7 +271,9 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
             syncBackNeeded = true;
         }
         Log.i("Git", String.format("Sync back needed was %s", syncBackNeeded));
-        writeBack = synchronizer.repoDirectoryFile(fileName);
+        if (syncBackNeeded) {
+            writeBack = synchronizer.repoDirectoryFile(fileName);
+        }
         return new TwoWaySyncResult(
                 currentVersionedRook(Uri.EMPTY.buildUpon().appendPath(fileName).build()),
                 writeBack);
