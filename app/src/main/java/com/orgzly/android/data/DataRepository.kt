@@ -1917,6 +1917,13 @@ class DataRepository @Inject constructor(
         }
     }
 
+    private fun swapSavedSearchPositions(savedSearch: SavedSearch, other: SavedSearch) {
+        db.runInTransaction {
+            db.savedSearch().update(savedSearch.copy(position = other.position))
+            db.savedSearch().update(other.copy(position = savedSearch.position))
+        }
+    }
+
     fun exportSavedSearches() {
         FileSavedSearchStore(context, this).exportSearches()
     }
@@ -1925,10 +1932,6 @@ class DataRepository @Inject constructor(
         FileSavedSearchStore(context, this).importSearches(uri)
     }
 
-    private fun swapSavedSearchPositions(savedSearch: SavedSearch, other: SavedSearch) {
-        db.savedSearch().update(savedSearch.copy(position = other.position))
-        db.savedSearch().update(other.copy(position = savedSearch.position))
-    }
 
     fun replaceSavedSearches(savedSearches: List<SavedSearch>): Int {
         db.savedSearch().deleteAll()
