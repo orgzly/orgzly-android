@@ -263,10 +263,14 @@ class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderCli
 
             when (item.itemId) {
                 R.id.saved_searches_cab_move_up ->
-                    listener?.onSavedSearchMoveUpRequest(selection.getFirstId())
+                    selection.getOnly()?.let { id ->
+                        listener?.onSavedSearchMoveUpRequest(id)
+                    }
 
                 R.id.saved_searches_cab_move_down ->
-                    listener?.onSavedSearchMoveDownRequest(selection.getFirstId())
+                    selection.getOnly()?.let { id ->
+                        listener?.onSavedSearchMoveDownRequest(id)
+                    }
 
                 R.id.saved_searches_cab_delete -> {
                     listener?.onSavedSearchDeleteRequest(selection.getIds())

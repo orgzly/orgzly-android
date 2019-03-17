@@ -25,6 +25,12 @@ abstract class NoteDao : BaseDao<Note> {
     @Query("SELECT * FROM notes WHERE id IN (:ids)")
     abstract fun get(ids: Set<Long>): List<Note>
 
+    @Query("SELECT * FROM notes WHERE id IN (:ids) ORDER BY lft LIMIT 1")
+    abstract fun getFirst(ids: Set<Long>): Note?
+
+    @Query("SELECT * FROM notes WHERE id IN (:ids) ORDER BY lft DESC LIMIT 1")
+    abstract fun getLast(ids: Set<Long>): Note?
+
     @Query("SELECT DISTINCT tags FROM notes WHERE tags IS NOT NULL AND tags != ''")
     abstract fun getDistinctTagsLiveData(): LiveData<List<String>>
 

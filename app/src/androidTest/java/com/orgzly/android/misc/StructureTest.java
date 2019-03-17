@@ -14,6 +14,7 @@ import com.orgzly.android.usecase.BookCycleVisibility;
 import com.orgzly.android.usecase.NoteCreate;
 import com.orgzly.android.usecase.NoteCut;
 import com.orgzly.android.usecase.NoteDelete;
+import com.orgzly.android.usecase.NoteDemote;
 import com.orgzly.android.usecase.NotePaste;
 import com.orgzly.android.usecase.NoteToggleFolding;
 import com.orgzly.android.usecase.UseCaseResult;
@@ -38,20 +39,20 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testNewNote() throws IOException {
         BookView book = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "\n" +
-                "* Note 1\n" +
-                "** Note 1.1\n");
+                                                        "description\n" +
+                                                        "\n" +
+                                                        "* Note 1\n" +
+                                                        "** Note 1.1\n");
 
         UseCaseRunner.run(new NoteCreate(
                 new NotePayload("Note 2"),
                 new NotePlace(book.getBook().getId())));
 
         assertEquals("description\n" +
-                        "\n" +
-                        "* Note 1\n" +
-                        "** Note 1.1\n" +
-                        "* Note 2\n",
+                     "\n" +
+                     "* Note 1\n" +
+                     "** Note 1.1\n" +
+                     "* Note 2\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
 
         assertEquals(
@@ -63,18 +64,18 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testBookSetupLevels() {
         BookView bookView = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "* Note #1.\n" +
-                "* Note #2.\n" +
-                "** Note #3.\n" +
-                "** Note #4.\n" +
-                "*** Note #5.\n" +
-                "**** Note #6.\n" +
-                "** Note #7.\n" +
-                "* Note #8.\n" +
-                "**** Note #9.\n" +
-                "** Note #10.\n" +
-                "");
+                                                            "description\n" +
+                                                            "* Note #1.\n" +
+                                                            "* Note #2.\n" +
+                                                            "** Note #3.\n" +
+                                                            "** Note #4.\n" +
+                                                            "*** Note #5.\n" +
+                                                            "**** Note #6.\n" +
+                                                            "** Note #7.\n" +
+                                                            "* Note #8.\n" +
+                                                            "**** Note #9.\n" +
+                                                            "** Note #10.\n" +
+                                                            "");
 
         assertEquals(0, dataRepository.getRootNode(bookView.getBook().getId()).getPosition().getLevel());
         assertEquals(1, dataRepository.getNote("Note #1.").getPosition().getLevel());
@@ -92,18 +93,18 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testCut() {
         BookView book = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "* Note #1.\n" +
-                "* Note #2.\n" +
-                "** Note #3.\n" +
-                "** Note #4.\n" +
-                "*** Note #5.\n" +
-                "**** Note #6.\n" +
-                "** Note #7.\n" +
-                "* Note #8.\n" +
-                "**** Note #9.\n" +
-                "** Note #10.\n" +
-                "");
+                                                        "description\n" +
+                                                        "* Note #1.\n" +
+                                                        "* Note #2.\n" +
+                                                        "** Note #3.\n" +
+                                                        "** Note #4.\n" +
+                                                        "*** Note #5.\n" +
+                                                        "**** Note #6.\n" +
+                                                        "** Note #7.\n" +
+                                                        "* Note #8.\n" +
+                                                        "**** Note #9.\n" +
+                                                        "** Note #10.\n" +
+                                                        "");
 
         Set<Long> ids = new HashSet<>();
         ids.add(dataRepository.getNote("Note #1.").getId());
@@ -129,19 +130,19 @@ public class StructureTest extends OrgzlyTest {
     public void testPasteToDifferentBook() throws IOException {
         testUtils.setupBook(
                 "notebook-1", "" +
-                "description\n" +
-                "\n" +
-                "* Note 1\n" +
-                "** Note 1.1\n" +
-                "*** Note 1.1.1\n");
+                              "description\n" +
+                              "\n" +
+                              "* Note 1\n" +
+                              "** Note 1.1\n" +
+                              "*** Note 1.1.1\n");
 
         BookView book2 = testUtils.setupBook(
                 "notebook-2", "" +
-                "description\n" +
-                "\n" +
-                "* Note A\n" +
-                "** Note A.A\n" +
-                "*** Note A.A.A\n");
+                              "description\n" +
+                              "\n" +
+                              "* Note A\n" +
+                              "** Note A.A\n" +
+                              "*** Note A.A.A\n");
 
 
         UseCaseRunner.run(new NoteCut(
@@ -152,17 +153,17 @@ public class StructureTest extends OrgzlyTest {
         UseCaseRunner.run(new NotePaste(n.getPosition().getBookId(), n.getId(), Place.UNDER));
 
         assertEquals("description\n" +
-                        "\n" +
-                        "* Note 1\n" +
-                        "** Note 1.1\n" +
-                        "*** Note 1.1.1\n" +
-                        "**** Note A.A\n" +
-                        "***** Note A.A.A\n",
+                     "\n" +
+                     "* Note 1\n" +
+                     "** Note 1.1\n" +
+                     "*** Note 1.1.1\n" +
+                     "**** Note A.A\n" +
+                     "***** Note A.A.A\n",
                 dataRepository.getBookContent("notebook-1", BookFormat.ORG));
 
         assertEquals("description\n" +
-                        "\n" +
-                        "* Note A\n",
+                     "\n" +
+                     "* Note A\n",
                 dataRepository.getBookContent("notebook-2", BookFormat.ORG));
     }
 
@@ -190,15 +191,15 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testPasteUnder() throws IOException {
         BookView book = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "\n" +
-                "* Note 1\n" +
-                "** Note 1.1\n" +
-                "*** Note 1.1.1\n" +
-                "** Note 1.2\n" +
-                "*** Note 1.2.1\n" +
-                "*** Note 1.2.2\n" +
-                "* Note 2\n");
+                                                        "description\n" +
+                                                        "\n" +
+                                                        "* Note 1\n" +
+                                                        "** Note 1.1\n" +
+                                                        "*** Note 1.1.1\n" +
+                                                        "** Note 1.2\n" +
+                                                        "*** Note 1.2.1\n" +
+                                                        "*** Note 1.2.2\n" +
+                                                        "* Note 2\n");
 
         /* Cut 1.1 and paste it under 1.2. */
         UseCaseRunner.run(new NoteCut(
@@ -208,14 +209,14 @@ public class StructureTest extends OrgzlyTest {
         UseCaseRunner.run(new NotePaste(n.getPosition().getBookId(), n.getId(), Place.UNDER));
 
         assertEquals("description\n" +
-                        "\n" +
-                        "* Note 1\n" +
-                        "** Note 1.2\n" +
-                        "*** Note 1.2.1\n" +
-                        "*** Note 1.2.2\n" +
-                        "*** Note 1.1\n" +
-                        "**** Note 1.1.1\n" +
-                        "* Note 2\n",
+                     "\n" +
+                     "* Note 1\n" +
+                     "** Note 1.2\n" +
+                     "*** Note 1.2.1\n" +
+                     "*** Note 1.2.2\n" +
+                     "*** Note 1.1\n" +
+                     "**** Note 1.1.1\n" +
+                     "* Note 2\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
 
         NotePosition n1 = dataRepository.getNote("Note 1").getPosition();
@@ -262,14 +263,14 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testPasteUnderFolded() throws IOException {
         BookView book = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "\n" +
-                "* Note 1\n" +
-                "** Note 1.1\n" +
-                "*** Note 1.1.1\n" +
-                "*** Note 1.1.2\n" +
-                "** Note 1.2\n" +
-                "* Note 2\n");
+                                                        "description\n" +
+                                                        "\n" +
+                                                        "* Note 1\n" +
+                                                        "** Note 1.1\n" +
+                                                        "*** Note 1.1.1\n" +
+                                                        "*** Note 1.1.2\n" +
+                                                        "** Note 1.2\n" +
+                                                        "* Note 2\n");
 
         /* Cut & paste 2 under folded 1.1. */
         UseCaseRunner.run(new NoteCut(
@@ -280,13 +281,13 @@ public class StructureTest extends OrgzlyTest {
         UseCaseRunner.run(new NotePaste(n.getPosition().getBookId(), n.getId(), Place.UNDER));
 
         assertEquals("description\n" +
-                        "\n" +
-                        "* Note 1\n" +
-                        "** Note 1.1\n" +
-                        "*** Note 1.1.1\n" +
-                        "*** Note 1.1.2\n" +
-                        "*** Note 2\n" +
-                        "** Note 1.2\n"
+                     "\n" +
+                     "* Note 1\n" +
+                     "** Note 1.1\n" +
+                     "*** Note 1.1.1\n" +
+                     "*** Note 1.1.2\n" +
+                     "*** Note 2\n" +
+                     "** Note 1.2\n"
                 ,
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
 
@@ -338,11 +339,11 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testCutNoteUnderFoldedThenPaste() throws IOException {
         BookView book = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "\n" +
-                "* Note 1\n" +
-                "** Note 1.1\n" +
-                "*** Note 1.1.1\n");
+                                                        "description\n" +
+                                                        "\n" +
+                                                        "* Note 1\n" +
+                                                        "** Note 1.1\n" +
+                                                        "*** Note 1.1.1\n");
 
         /* Cut & paste hidden 1.1.1 */
         UseCaseRunner.run(new NoteToggleFolding(dataRepository.getNote("Note 1.1").getId()));
@@ -353,10 +354,10 @@ public class StructureTest extends OrgzlyTest {
         UseCaseRunner.run(new NotePaste(n.getPosition().getBookId(), n.getId(), Place.UNDER));
 
         assertEquals("description\n" +
-                        "\n" +
-                        "* Note 1\n" +
-                        "** Note 1.1\n" +
-                        "** Note 1.1.1\n"
+                     "\n" +
+                     "* Note 1\n" +
+                     "** Note 1.1\n" +
+                     "** Note 1.1.1\n"
                 ,
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
 
@@ -372,21 +373,21 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testPromote() throws IOException {
         BookView book = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "\n" +
-                "* Note 1\n" +
-                "** Note 1.1\n" +
-                "* Note 2\n");
+                                                        "description\n" +
+                                                        "\n" +
+                                                        "* Note 1\n" +
+                                                        "** Note 1.1\n" +
+                                                        "* Note 2\n");
 
         Note note = dataRepository.getNote("Note 1.1");
 
         assertEquals(1, dataRepository.promoteNote(book.getBook().getId(), note.getId()));
 
         assertEquals("description\n" +
-                        "\n" +
-                        "* Note 1\n" +
-                        "* Note 1.1\n" +
-                        "* Note 2\n",
+                     "\n" +
+                     "* Note 1\n" +
+                     "* Note 1.1\n" +
+                     "* Note 2\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
 
         NotePosition n1 = dataRepository.getNote("Note 1").getPosition();
@@ -420,13 +421,13 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testPromote2() throws IOException {
         BookView book = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "\n" +
-                "* Note 1\n" +
-                "** Note 1.1\n" +
-                "*** Note 1.1.1\n" +
-                "** Note 1.2\n" +
-                "* Note 2\n");
+                                                        "description\n" +
+                                                        "\n" +
+                                                        "* Note 1\n" +
+                                                        "** Note 1.1\n" +
+                                                        "*** Note 1.1.1\n" +
+                                                        "** Note 1.2\n" +
+                                                        "* Note 2\n");
 
         Note note = dataRepository.getNote("Note 1.1.1");
 
@@ -435,12 +436,12 @@ public class StructureTest extends OrgzlyTest {
         assertEquals(1, dataRepository.promoteNote(book.getBook().getId(), note.getId()));
 
         assertEquals("description\n" +
-                        "\n" +
-                        "* Note 1\n" +
-                        "** Note 1.1\n" +
-                        "** Note 1.2\n" +
-                        "* Note 1.1.1\n" +
-                        "* Note 2\n",
+                     "\n" +
+                     "* Note 1\n" +
+                     "** Note 1.1\n" +
+                     "** Note 1.2\n" +
+                     "* Note 1.1.1\n" +
+                     "* Note 2\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
 
         NotePosition n1 = dataRepository.getNote("Note 1").getPosition();
@@ -475,13 +476,13 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testPromoteFolded() throws IOException {
         BookView book = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "\n" +
-                "* Note 1\n" +
-                "** Note 1.1\n" +
-                "*** Note 1.1.1\n" +
-                "** Note 1.2\n" +
-                "* Note 2\n");
+                                                        "description\n" +
+                                                        "\n" +
+                                                        "* Note 1\n" +
+                                                        "** Note 1.1\n" +
+                                                        "*** Note 1.1.1\n" +
+                                                        "** Note 1.2\n" +
+                                                        "* Note 2\n");
 
         Note note = dataRepository.getNote("Note 1.1");
 
@@ -490,12 +491,12 @@ public class StructureTest extends OrgzlyTest {
         assertEquals(2, dataRepository.promoteNote(book.getBook().getId(), note.getId()));
 
         assertEquals("description\n" +
-                        "\n" +
-                        "* Note 1\n" +
-                        "** Note 1.2\n" +
-                        "* Note 1.1\n" +
-                        "** Note 1.1.1\n" +
-                        "* Note 2\n",
+                     "\n" +
+                     "* Note 1\n" +
+                     "** Note 1.2\n" +
+                     "* Note 1.1\n" +
+                     "** Note 1.1.1\n" +
+                     "* Note 2\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
 
         NotePosition n1 = dataRepository.getNote("Note 1").getPosition();
@@ -544,7 +545,7 @@ public class StructureTest extends OrgzlyTest {
         BookView book = testUtils.setupBook(
                 "notebook",
                 "** Note 1\n" +
-                        "* Note 2\n");
+                "* Note 2\n");
 
         /* Promote first note. */
         dataRepository.promoteNote(book.getBook().getId(), dataRepository.getNote("Note 1").getId());
@@ -561,7 +562,7 @@ public class StructureTest extends OrgzlyTest {
 
         assertEquals(
                 "* Note 1\n" +
-                        "* Note 2\n",
+                "* Note 2\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
     }
 
@@ -570,7 +571,7 @@ public class StructureTest extends OrgzlyTest {
         BookView book = testUtils.setupBook(
                 "notebook",
                 "* Note 1\n" +
-                        "*** Note 2\n");
+                "*** Note 2\n");
 
         /* Promote first note. */
         dataRepository.promoteNote(book.getBook().getId(), dataRepository.getNote("Note 2").getId());
@@ -587,7 +588,7 @@ public class StructureTest extends OrgzlyTest {
 
         assertEquals(
                 "* Note 1\n" +
-                        "** Note 2\n",
+                "** Note 2\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
     }
 
@@ -596,7 +597,7 @@ public class StructureTest extends OrgzlyTest {
         BookView book = testUtils.setupBook(
                 "notebook",
                 "* Note 1\n" +
-                        "**** Note 2\n");
+                "**** Note 2\n");
 
         /* Promote first note. */
         dataRepository.promoteNote(book.getBook().getId(), dataRepository.getNote("Note 2").getId());
@@ -613,7 +614,7 @@ public class StructureTest extends OrgzlyTest {
 
         assertEquals(
                 "* Note 1\n" +
-                        "** Note 2\n",
+                "** Note 2\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
     }
 
@@ -622,8 +623,8 @@ public class StructureTest extends OrgzlyTest {
         BookView book = testUtils.setupBook(
                 "notebook",
                 "* Note 1\n" +
-                        "** Note 1.1\n" +
-                        "*** Note 1.1.1\n");
+                "** Note 1.1\n" +
+                "*** Note 1.1.1\n");
 
         dataRepository.deleteNotes(
                 book.getBook().getId(),
@@ -635,20 +636,20 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testDemote() throws IOException {
         BookView book = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "\n" +
-                "* Note 1\n" +
-                "** Note 1.1\n" +
-                "* Note 2\n");
+                                                        "description\n" +
+                                                        "\n" +
+                                                        "* Note 1\n" +
+                                                        "** Note 1.1\n" +
+                                                        "* Note 2\n");
 
         /* Demote 2. */
         assertEquals(1, dataRepository.demoteNote(book.getBook().getId(), dataRepository.getNote("Note 2").getId()));
 
         assertEquals("description\n" +
-                        "\n" +
-                        "* Note 1\n" +
-                        "** Note 1.1\n" +
-                        "** Note 2\n",
+                     "\n" +
+                     "* Note 1\n" +
+                     "** Note 1.1\n" +
+                     "** Note 2\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
 
         NotePosition n1 = dataRepository.getNote("Note 1").getPosition();
@@ -673,20 +674,20 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testNewBelowFoldable() throws IOException {
         BookView book = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "\n" +
-                "* Note 1\n" +
-                "** Note 1.1\n");
+                                                        "description\n" +
+                                                        "\n" +
+                                                        "* Note 1\n" +
+                                                        "** Note 1.1\n");
 
         UseCaseRunner.run(new NoteCreate(
                 new NotePayload("Note 2"),
                 new NotePlace(book.getBook().getId(), dataRepository.getNote("Note 1").getId(), Place.BELOW)));
 
         assertEquals("description\n" +
-                        "\n" +
-                        "* Note 1\n" +
-                        "** Note 1.1\n" +
-                        "* Note 2\n",
+                     "\n" +
+                     "* Note 1\n" +
+                     "** Note 1.1\n" +
+                     "* Note 2\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
 
         NotePosition n1 = dataRepository.getNote("Note 1").getPosition();
@@ -707,11 +708,11 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testPasteFolded() {
         BookView book = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "\n" +
-                "* Note 1\n" +
-                "** Note 1.1\n" +
-                "* Note 2\n");
+                                                        "description\n" +
+                                                        "\n" +
+                                                        "* Note 1\n" +
+                                                        "** Note 1.1\n" +
+                                                        "* Note 2\n");
 
         UseCaseRunner.run(new NoteToggleFolding(dataRepository.getNote("Note 1").getId()));
 
@@ -738,11 +739,11 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testPasteUnderHidden() throws IOException {
         BookView book = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "\n" +
-                "* Note 1\n" +
-                "** Note 1.1\n" +
-                "* Note 2\n");
+                                                        "description\n" +
+                                                        "\n" +
+                                                        "* Note 1\n" +
+                                                        "** Note 1.1\n" +
+                                                        "* Note 2\n");
 
         UseCaseRunner.run(new NoteToggleFolding(dataRepository.getNote("Note 1").getId()));
         UseCaseRunner.run(new NoteCut(
@@ -752,10 +753,10 @@ public class StructureTest extends OrgzlyTest {
         UseCaseRunner.run(new NotePaste(n.getPosition().getBookId(), n.getId(), Place.UNDER));
 
         assertEquals("description\n" +
-                        "\n" +
-                        "* Note 1\n" +
-                        "** Note 1.1\n" +
-                        "*** Note 2\n",
+                     "\n" +
+                     "* Note 1\n" +
+                     "** Note 1.1\n" +
+                     "*** Note 2\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
 
         assertTrue(dataRepository.getNote("Note 1").getPosition().isFolded());
@@ -766,26 +767,26 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testDemoteNoChanges() throws IOException {
         BookView book = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "\n" +
-                "* Note 1\n" +
-                "** Note 1.1\n" +
-                "*** Note 1.1.1\n" +
-                "* Note 2\n" +
-                "** Note 2.1\n" +
-                "*** Note 2.1.1\n");
+                                                        "description\n" +
+                                                        "\n" +
+                                                        "* Note 1\n" +
+                                                        "** Note 1.1\n" +
+                                                        "*** Note 1.1.1\n" +
+                                                        "* Note 2\n" +
+                                                        "** Note 2.1\n" +
+                                                        "*** Note 2.1.1\n");
 
         /* Demote 2.1. */
         assertEquals(0, dataRepository.demoteNote(book.getBook().getId(), dataRepository.getNote("Note 2.1").getId()));
 
         assertEquals("description\n" +
-                        "\n" +
-                        "* Note 1\n" +
-                        "** Note 1.1\n" +
-                        "*** Note 1.1.1\n" +
-                        "* Note 2\n" +
-                        "** Note 2.1\n" +
-                        "*** Note 2.1.1\n",
+                     "\n" +
+                     "* Note 1\n" +
+                     "** Note 1.1\n" +
+                     "*** Note 1.1.1\n" +
+                     "* Note 2\n" +
+                     "** Note 2.1\n" +
+                     "*** Note 2.1.1\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
     }
 
@@ -793,10 +794,10 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testNewNoteUnder() throws IOException {
         BookView book = testUtils.setupBook("notebook", "description\n" +
-                "* Note 1\n" +
-                "** Note 1.1\n" +
-                "*** Note 1.1.1\n" +
-                "** Note 1.2\n");
+                                                        "* Note 1\n" +
+                                                        "** Note 1.1\n" +
+                                                        "*** Note 1.1.1\n" +
+                                                        "** Note 1.2\n");
 
         NotePosition note1, note11, note111, note12, note112;
 
@@ -850,11 +851,11 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testNewNoteAbove() throws IOException {
         BookView book = testUtils.setupBook("notebook", "description\n" +
-                "* Note 1\n" +
-                // ** Note 1.0
-                "** Note 1.1\n" +
-                "*** Note 1.1.1\n" +
-                "** Note 1.2\n");
+                                                        "* Note 1\n" +
+                                                        // ** Note 1.0
+                                                        "** Note 1.1\n" +
+                                                        "*** Note 1.1.1\n" +
+                                                        "** Note 1.2\n");
 
         NotePosition note1, note11, note111, note12, note10;
 
@@ -883,11 +884,11 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testCyclingFreshlyImportedNotebook() {
         BookView book = testUtils.setupBook("booky", "Notebook\n" +
-                "* Note 1\n" +
-                "** Note 2\n" +
-                "*** Note 3\n" +
-                "** Note 4\n" +
-                "* Note 5");
+                                                     "* Note 1\n" +
+                                                     "** Note 2\n" +
+                                                     "*** Note 3\n" +
+                                                     "** Note 4\n" +
+                                                     "* Note 5");
 
         /* Fold all. */
         UseCaseRunner.run(new BookCycleVisibility(book.getBook()));
@@ -911,13 +912,13 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testCyclingFoldedState() {
         BookView book = testUtils.setupBook("booky", "" +
-                "Notebook\n" +
-                "* Note 1\n" +
-                "** Note 2\n" +
-                "*** Note 3\n" +
-                "** Note 4\n" +
-                "* Note 5\n" +
-                "** Note 6");
+                                                     "Notebook\n" +
+                                                     "* Note 1\n" +
+                                                     "** Note 2\n" +
+                                                     "*** Note 3\n" +
+                                                     "** Note 4\n" +
+                                                     "* Note 5\n" +
+                                                     "** Note 6");
 
         /* Fold all. */
         UseCaseRunner.run(new BookCycleVisibility(book.getBook()));
@@ -950,11 +951,11 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testCutChildCutParentThenPaste() throws IOException {
         BookView book = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "\n" +
-                "* Note 1\n" +
-                "** Note 1.1\n" +
-                "* Note 2\n");
+                                                        "description\n" +
+                                                        "\n" +
+                                                        "* Note 1\n" +
+                                                        "** Note 1.1\n" +
+                                                        "* Note 2\n");
 
         long bookId = book.getBook().getId();
 
@@ -967,19 +968,19 @@ public class StructureTest extends OrgzlyTest {
         UseCaseRunner.run(new NotePaste(n.getPosition().getBookId(), n.getId(), Place.UNDER));
 
         assertEquals("description\n" +
-                        "\n" +
-                        "* Note 2\n" +
-                        "** Note 1\n",
+                     "\n" +
+                     "* Note 2\n" +
+                     "** Note 1\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
     }
 
     @Test
     public void testParentIds() throws IOException {
         BookView bookView = testUtils.setupBook("notebook", "description\n" +
-                "* Note 1\n" +
-                "** Note 1.1\n" +
-                "*** Note 1.1.1\n" +
-                "** Note 1.2\n");
+                                                            "* Note 1\n" +
+                                                            "** Note 1.1\n" +
+                                                            "*** Note 1.1.1\n" +
+                                                            "** Note 1.2\n");
 
         Note rootNode = dataRepository.getRootNode(bookView.getBook().getId());
 
@@ -994,9 +995,9 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testParentIdForCreatedNote() throws IOException {
         BookView book = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "\n" +
-                "* Note 1\n");
+                                                        "description\n" +
+                                                        "\n" +
+                                                        "* Note 1\n");
 
         UseCaseRunner.run(new NoteCreate(
                 new NotePayload("Note 1.1"),
@@ -1009,11 +1010,11 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testFoldingAllWhenContentOnlyIsFolded() {
         BookView book = testUtils.setupBook("notebook", "" +
-                "description\n" +
-                "* Note 1\n" +
-                "** Note 2\n" +
-                "* Note 3\n" +
-                "Content");
+                                                        "description\n" +
+                                                        "* Note 1\n" +
+                                                        "** Note 2\n" +
+                                                        "* Note 3\n" +
+                                                        "Content");
 
         /* Fold all. */
         UseCaseRunner.run(new BookCycleVisibility(book.getBook()));
@@ -1099,42 +1100,42 @@ public class StructureTest extends OrgzlyTest {
         BookView book = testUtils.setupBook(
                 "test_book",
                 "* TODO First\n" +
-                        "SCHEDULED: <2018-04-24 Tue>\n" +
-                        "\n" +
-                        "content\n" +
-                        "\n" +
-                        "** 1.1\n" +
-                        "** 1.2\n" +
-                        "\n" +
-                        "* TODO Second\n" +
-                        "SCHEDULED: <2018-04-23 Mon>\n" +
-                        "\n" +
-                        "** 2.1\n" +
-                        "** 2.2\n" +
-                        "\n" +
-                        "* TODO Third\n"
-
-        );
-
-        Note firstNote = dataRepository.getNote("First");
-
-        dataRepository.moveNote(book.getBook().getId(), firstNote.getId(), 1);
-
-        String actual = dataRepository.getBookContent("test_book", BookFormat.ORG);
-
-        String expectedBook = "* TODO Second\n" +
-                "SCHEDULED: <2018-04-23 Mon>\n" +
-                "\n" +
-                "** 2.1\n" +
-                "** 2.2\n" +
-                "* TODO First\n" +
                 "SCHEDULED: <2018-04-24 Tue>\n" +
                 "\n" +
                 "content\n" +
                 "\n" +
                 "** 1.1\n" +
                 "** 1.2\n" +
-                "* TODO Third\n";
+                "\n" +
+                "* TODO Second\n" +
+                "SCHEDULED: <2018-04-23 Mon>\n" +
+                "\n" +
+                "** 2.1\n" +
+                "** 2.2\n" +
+                "\n" +
+                "* TODO Third\n"
+
+        );
+
+        Note firstNote = dataRepository.getNote("First");
+
+        dataRepository.moveNote(book.getBook().getId(), Collections.singleton(firstNote.getId()), 1);
+
+        String actual = dataRepository.getBookContent("test_book", BookFormat.ORG);
+
+        String expectedBook = "* TODO Second\n" +
+                              "SCHEDULED: <2018-04-23 Mon>\n" +
+                              "\n" +
+                              "** 2.1\n" +
+                              "** 2.2\n" +
+                              "* TODO First\n" +
+                              "SCHEDULED: <2018-04-24 Tue>\n" +
+                              "\n" +
+                              "content\n" +
+                              "\n" +
+                              "** 1.1\n" +
+                              "** 1.2\n" +
+                              "* TODO Third\n";
 
         assertEquals(expectedBook, actual);
     }
@@ -1144,20 +1145,20 @@ public class StructureTest extends OrgzlyTest {
         BookView book = testUtils.setupBook(
                 "Source",
                 "* TODO First\n" +
-                        "SCHEDULED: <2018-04-24 Tue>\n" +
-                        "\n" +
-                        "content\n" +
-                        "\n" +
-                        "** 1.1\n" +
-                        "** 1.2\n" +
-                        "\n" +
-                        "* TODO RefileMe\n" +
-                        "SCHEDULED: <2018-04-23 Mon>\n" +
-                        "\n" +
-                        "** 2.1\n" +
-                        "** 2.2\n" +
-                        "\n" +
-                        "* TODO Third\n"
+                "SCHEDULED: <2018-04-24 Tue>\n" +
+                "\n" +
+                "content\n" +
+                "\n" +
+                "** 1.1\n" +
+                "** 1.2\n" +
+                "\n" +
+                "* TODO RefileMe\n" +
+                "SCHEDULED: <2018-04-23 Mon>\n" +
+                "\n" +
+                "** 2.1\n" +
+                "** 2.2\n" +
+                "\n" +
+                "* TODO Third\n"
 
         );
 
@@ -1173,11 +1174,11 @@ public class StructureTest extends OrgzlyTest {
         String actual = dataRepository.getBookContent("REFILE", BookFormat.ORG);
 
         String expectedBook = "* TODO RefiledPreviously\n" +
-                "* TODO RefileMe\n" +
-                "SCHEDULED: <2018-04-23 Mon>\n" +
-                "\n" +
-                "** 2.1\n" +
-                "** 2.2\n";
+                              "* TODO RefileMe\n" +
+                              "SCHEDULED: <2018-04-23 Mon>\n" +
+                              "\n" +
+                              "** 2.1\n" +
+                              "** 2.2\n";
 
         assertEquals(expectedBook, actual);
     }
@@ -1239,7 +1240,7 @@ public class StructureTest extends OrgzlyTest {
 
         assertTrue(
                 dataRepository.getNote("Note A-01").getPosition().getRgt()
-                        < dataRepository.getNote("Note A-02").getPosition().getLft());
+                < dataRepository.getNote("Note A-02").getPosition().getLft());
 
 
         note = dataRepository.getNote("Note A-02");
@@ -1263,7 +1264,33 @@ public class StructureTest extends OrgzlyTest {
 
         assertTrue(
                 dataRepository.getNote("Note A-02").getPosition().getRgt()
-                        < dataRepository.getRootNode(book.getBook().getId()).getPosition().getRgt());
+                < dataRepository.getRootNode(book.getBook().getId()).getPosition().getRgt());
 
+    }
+
+    @Test
+    public void demoteMultiple() throws IOException {
+        BookView book = testUtils.setupBook(
+                "Book A",
+                "* Note A-01\n" +
+                "* Note A-02\n" +
+                "* Note A-03\n" +
+                "** Note A-04\n" +
+                "*** Note A-05\n");
+
+        UseCaseRunner.run(new NoteDemote(
+                book.getBook().getId(),
+                new HashSet<>(Arrays.asList(
+                        dataRepository.getNote("Note A-02").getId(),
+                        dataRepository.getNote("Note A-04").getId()
+                ))));
+
+        assertEquals(
+                "* Note A-01\n" +
+                "** Note A-02\n" +
+                "** Note A-04\n" +
+                "*** Note A-05\n" +
+                "* Note A-03\n",
+                dataRepository.getBookContent("Book A", BookFormat.ORG));
     }
 }

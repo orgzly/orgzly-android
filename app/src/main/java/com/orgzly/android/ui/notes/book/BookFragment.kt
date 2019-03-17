@@ -169,7 +169,7 @@ class BookFragment :
     }
 
     override fun onQuickBarButtonClick(buttonId: Int, itemId: Long) {
-        handleActionItemClick(buttonId, actionModeListener?.actionMode, Collections.singleton(itemId))
+        handleActionItemClick(buttonId, actionModeListener?.actionMode, setOf(itemId))
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -352,7 +352,7 @@ class BookFragment :
             return
         }
 
-        listener?.onNotesMoveRequest(mBookId, viewAdapter.getSelection().getFirstId(), offset)
+        listener?.onNotesMoveRequest(mBookId, viewAdapter.getSelection().getIds(), offset)
     }
 
     /**
@@ -501,12 +501,7 @@ class BookFragment :
         menu.clear()
 
         if ("M" == actionMode.tag) { // Movement menu
-            if (viewAdapter.getSelection().count > 1) {
-                menu.clear()
-                actionMode.tag = null
-            } else {
-                inflater.inflate(R.menu.book_cab_moving, menu)
-            }
+            inflater.inflate(R.menu.book_cab_moving, menu)
         } else {
             inflater.inflate(R.menu.book_cab, menu)
         }
@@ -619,13 +614,11 @@ class BookFragment :
 
             R.id.book_cab_cut -> {
                 listener?.onNotesCutRequest(mBookId, ids)
-
                 actionMode?.finish()
             }
 
             R.id.book_cab_copy -> {
                 listener?.onNotesCopyRequest(mBookId, ids)
-
                 actionMode?.finish()
             }
 
@@ -689,7 +682,7 @@ class BookFragment :
         fun onNotesPasteRequest(bookId: Long, noteId: Long, place: Place)
         fun onNotesPromoteRequest(bookId: Long, noteIds: Set<Long>)
         fun onNotesDemoteRequest(bookId: Long, noteIds: Set<Long>)
-        fun onNotesMoveRequest(bookId: Long, noteId: Long, offset: Int)
+        fun onNotesMoveRequest(bookId: Long, noteIds: Set<Long>, offset: Int)
         override fun onNotesRefileRequest(sourceBookId: Long, noteIds: Set<Long>, targetBookId: Long)
 
         fun onCycleVisibilityRequest(book: Book?)
@@ -709,13 +702,8 @@ class BookFragment :
 
         private const val LAYOUT_STATE = "layout"
 
-        // https://github.com/orgzly/orgzly-android/issues/67
         private val ITEMS_HIDDEN_ON_MULTIPLE_SELECTED_NOTES = intArrayOf(
-                R.id.book_cab_cut,
-                R.id.book_cab_copy,
-                R.id.book_cab_paste,
-                R.id.book_cab_move,
-                R.id.book_cab_refile)
+                R.id.book_cab_paste)
 
         /**
          * @param bookId Book ID

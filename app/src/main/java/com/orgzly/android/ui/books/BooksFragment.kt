@@ -161,14 +161,12 @@ class BooksFragment :
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, mode, item)
 
-            val ids = viewAdapter.getSelection().getIds()
+            val bookId = viewAdapter.getSelection().getOnly()
 
-            if (ids.isEmpty()) {
+            if (bookId == null) {
                 Log.e(TAG, "Cannot handle action when there are no items selected")
 
             } else {
-                val bookId = ids.first()
-
                 when (item.itemId) {
                     R.id.books_context_menu_rename -> {
                         viewModel.renameBookRequest(bookId)

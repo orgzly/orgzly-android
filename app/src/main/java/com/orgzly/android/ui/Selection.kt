@@ -16,8 +16,12 @@ class Selection {
         return (idMap?.let { map -> idSet.mapNotNull { map[it] } } ?: idSet).toSet()
     }
 
-    fun getFirstId(): Long {
-        return getIds().first()
+    fun getOnly(): Long? {
+        return if (idSet.isNotEmpty()) {
+            getIds().first()
+        } else {
+            null
+        }
     }
 
     val count: Int

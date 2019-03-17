@@ -926,9 +926,9 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onNotesMoveRequest(long bookId, long noteId, int offset) {
+    public void onNotesMoveRequest(long bookId, Set<Long> noteIds, int offset) {
         mPromoteDemoteOrMoveRequested = true;
-        mSyncFragment.run(new NoteMove(bookId, noteId, offset));
+        mSyncFragment.run(new NoteMove(bookId, noteIds, offset));
     }
 
     @Override
