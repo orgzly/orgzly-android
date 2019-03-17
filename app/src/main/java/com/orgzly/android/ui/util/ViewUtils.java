@@ -41,4 +41,28 @@ public class ViewUtils {
 
         return result;
     }
+
+    public static String removeIndent(CharSequence text) {
+        int indentCount = Integer.MAX_VALUE;
+        String[] lines = text.toString().split("\n");
+        for (String line: lines) {
+            int indentCountCurrentLine = 0;
+            for (int i = 0; i < line.length(); i++) {
+                if (line.charAt(i) == ' ') {
+                    indentCountCurrentLine++;
+                } else {
+                    break;
+                }
+            }
+
+            indentCount = Math.min(indentCount, indentCountCurrentLine);
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String line: lines) {
+            stringBuilder.append(line.substring(indentCount));
+        }
+
+        return stringBuilder.toString();
+    }
 }

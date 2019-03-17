@@ -63,6 +63,9 @@
     <string name="pref_key_is_font_monospaced" translatable="false">pref_key_is_font_monospaced</string>
     <bool name="pref_default_is_font_monospaced" translatable="false">false</bool>
 
+    <string name="pref_key_remove_indent_from_body" translatable="false">pref_key_remove_indent_from_body</string>
+    <bool name="pref_default_remove_indent_from_body" translatable="false">true</bool>
+
     <string name="pref_key_style_text" translatable="false">pref_key_style_text</string>
     <bool name="pref_default_style_text" translatable="false">true</bool>
 

@@ -8,7 +8,9 @@ import android.util.AttributeSet
 import android.util.Log
 import android.widget.TextView
 import com.orgzly.BuildConfig
+import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.main.MainActivity
+import com.orgzly.android.ui.util.ViewUtils
 import com.orgzly.android.ui.views.style.CheckboxSpan
 import com.orgzly.android.ui.views.style.DrawerEndSpan
 import com.orgzly.android.ui.views.style.DrawerSpan
@@ -32,7 +34,10 @@ class TextViewWithMarkup : TextViewFixed {
     fun setRawText(text: CharSequence) {
         rawText = text
 
-        setText(OrgFormatter.parse(text, context), BufferType.SPANNABLE)
+        val formattedText = OrgFormatter.parse(text, context)
+        val textToDisplay = if (AppPreferences.removeIndentFromBody(context))
+            ViewUtils.removeIndent(formattedText) else formattedText
+        setText(textToDisplay, BufferType.SPANNABLE)
     }
 
     fun getRawText() : CharSequence? {
