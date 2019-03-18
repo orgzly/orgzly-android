@@ -140,6 +140,9 @@ object WidgetStyle {
         remoteViews.setImageViewResource(
                 R.id.item_list_widget_done,
                 WidgetStyle.doneIcon(context))
+
+        remoteViews.setInt(
+                R.id.item_list_widget_done, "setAlpha", WidgetStyle.doneIconAlpha(context))
     }
 
     @JvmStatic
@@ -268,16 +271,23 @@ object WidgetStyle {
     @DrawableRes
     private fun closedIcon(context: Context): Int {
         return when (AppPreferences.widgetColorScheme(context)) {
-            "dark", "black" -> R.drawable.ic_done_white_18dp
-            else -> R.drawable.ic_done_black_18dp
+            "dark", "black" -> R.drawable.outline_check_circle_white_18
+            else -> R.drawable.outline_check_circle_black_18
         }
     }
 
     @DrawableRes
     private fun doneIcon(context: Context): Int {
         return when (AppPreferences.widgetColorScheme(context)) {
-            "dark", "black" -> R.drawable.ic_done_white_24dp
-            else -> R.drawable.ic_done_black_24dp
+            "dark", "black" -> R.drawable.outline_check_circle_white_24
+            else -> R.drawable.outline_check_circle_black_24
+        }
+    }
+
+    private fun doneIconAlpha(context: Context): Int {
+        return when (AppPreferences.widgetColorScheme(context)) {
+            "dark", "black" -> 0xB3 // 70%
+            else -> 0x8C // 55%
         }
     }
 

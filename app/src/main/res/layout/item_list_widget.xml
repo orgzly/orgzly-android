@@ -140,7 +140,7 @@
                 android:layout_height="14dp"
                 android:layout_width="14dp"
                 android:alpha="0.55"
-                android:src="@drawable/ic_done_black_18dp"
+                android:src="@drawable/outline_check_circle_black_18"
                 android:contentDescription="@string/closed" />
 
             <TextView
@@ -161,7 +161,6 @@
     <ImageView
         android:id="@+id/item_list_widget_done"
         style="?android:attr/borderlessButtonStyle"
-        android:alpha="0.87"
         android:minHeight="0dp"
         android:minWidth="0dp"
         android:paddingTop="@dimen/widget_padding"
@@ -170,5 +169,5 @@
         android:paddingRight="4dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_done_black_24dp" />
+        android:src="@drawable/outline_check_circle_black_24" />
 </LinearLayout>
