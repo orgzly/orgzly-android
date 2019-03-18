@@ -1087,8 +1087,8 @@ class DataRepository @Inject constructor(
         return db.noteView().get(title)
     }
 
-    fun getSubtrees(ids: Set<Long>): List<NoteView> {
-        return db.noteView().getSubtrees(ids)
+    fun getSubtrees(ids: Set<Long>): List<Note> {
+        return db.note().getSubtrees(ids)
     }
 
     fun getNote(title: String): Note? {

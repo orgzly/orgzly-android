@@ -38,8 +38,7 @@ data class NotesClipboard(val noteCount: Int, val content: String) {
             var subtreeRgt = 0L
             var levelOffset = 0
 
-            val notes = dataRepository.getSubtrees(ids).map { noteView ->
-                val note = noteView.note
+            val notes = dataRepository.getSubtrees(ids).map { note ->
 
                 // First note or next subtree
                 if (subtreeRgt == 0L || note.position.rgt > subtreeRgt) {
