@@ -117,6 +117,8 @@
         <attr name="ic_open_in_new_24dp" format="reference"/>
         <attr name="ic_outline_check_circle_18dp" format="reference"/>
         <attr name="ic_outline_check_circle_24dp" format="reference"/>
+        <attr name="ic_outline_cloud_download_24dp" format="reference"/>
+        <attr name="ic_outline_cloud_upload_24dp" format="reference"/>
         <attr name="ic_remove_red_eye_24dp" format="reference"/>
         <attr name="ic_repeat_24dp" format="reference"/>
         <attr name="ic_rotate_left_24dp" format="reference"/>
