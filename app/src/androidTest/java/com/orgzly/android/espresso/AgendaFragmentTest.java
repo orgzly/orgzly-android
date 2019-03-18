@@ -106,7 +106,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
     public void testOneTimeTaskMarkedDone() {
         defaultSetUp();
         openAgenda();
-        EspressoUtils.onItemInAgenda(1).perform(click());
+        onItemInAgenda(1).perform(longClick());
         onView(withId(R.id.bottom_action_bar_done)).perform(click());
         onNotesInAgenda().check(matches(recyclerViewItemCount(21)));
     }
@@ -115,7 +115,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
     public void testRepeaterTaskMarkedDone() {
         defaultSetUp();
         openAgenda();
-        EspressoUtils.onItemInAgenda(2).perform(click());
+        onItemInAgenda(2).perform(longClick());
         onView(withId(R.id.bottom_action_bar_done)).perform(click());
         onNotesInAgenda().check(matches(recyclerViewItemCount(21)));
     }
@@ -124,7 +124,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
     public void testRangeTaskMarkedDone() {
         defaultSetUp();
         openAgenda();
-        EspressoUtils.onItemInAgenda(3).perform(click());
+        onItemInAgenda(3).perform(longClick());
         onView(withId(R.id.bottom_action_bar_done)).perform(click());
         onNotesInAgenda().check(matches(recyclerViewItemCount(15)));
     }
@@ -135,7 +135,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
 
         defaultSetUp();
         openAgenda();
-        EspressoUtils.onItemInAgenda(2).perform(click());
+        onItemInAgenda(2).perform(longClick());
         onView(withId(R.id.bottom_action_bar_schedule)).perform(click());
         onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName())))
@@ -168,12 +168,12 @@ public class AgendaFragmentTest extends OrgzlyTest {
 
         searchForText("i.todo ad.3");
 
-        EspressoUtils.onItemInAgenda(1).perform(click());
+        onItemInAgenda(1).perform(longClick());
 
         onNotesInAgenda().check(matches(recyclerViewItemCount(9)));
         onView(withId(R.id.action_bar_title)).check(matches(withText("1")));
 
-        // Remove state from selected note
+        // Remove state
         onView(withId(R.id.bottom_action_bar_state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
@@ -189,8 +189,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
 
         searchForText("ad.3");
 
-        EspressoUtils.onItemInAgenda(1).perform(click());
-
+        onItemInAgenda(1).perform(longClick());
         onView(withId(R.id.bottom_action_bar_state)).perform(click());
 
         onView(withText("TODO")).check(matches(isChecked()));
@@ -223,7 +222,6 @@ public class AgendaFragmentTest extends OrgzlyTest {
         searchForText("ad.3");
 
         onItemInAgenda(1).perform(click());
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
 
         onView(withId(R.id.fragment_note_container)).check(matches(isDisplayed()));
         onView(withId(R.id.fragment_note_title)).check(matches(withText("Note A")));

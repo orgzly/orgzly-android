@@ -14,6 +14,7 @@ import androidx.test.rule.ActivityTestRule;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerActions.open;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
@@ -75,16 +76,14 @@ public class ActionModeTest extends OrgzlyTest {
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(allOf(withText("Scheduled"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
 
-        onNoteInSearch(1).perform(click());
-
-        onView(withId(R.id.bottom_action_bar_open)).check(matches(isDisplayed()));
+        onNoteInSearch(1).perform(longClick());
     }
 
     @Test
     public void testCabStaysOpenOnRotation() {
         toPortrait(activityRule);
 
-        onNoteInBook(3).perform(click());
+        onNoteInBook(3).perform(longClick());
 
         toLandscape(activityRule);
 
@@ -100,7 +99,7 @@ public class ActionModeTest extends OrgzlyTest {
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText("Scheduled")).perform(click());
 
-        onNoteInSearch(1).perform(click());
+        onNoteInSearch(1).perform(longClick());
 
         toLandscape(activityRule);
 
@@ -108,7 +107,7 @@ public class ActionModeTest extends OrgzlyTest {
 
         toPortrait(activityRule);
 
-        onView(withId(R.id.bottom_action_bar_open)).check(matches(isDisplayed()));
+        onView(withId(R.id.bottom_action_bar_done)).check(matches(isDisplayed()));
     }
 
     @Test

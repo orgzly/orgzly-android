@@ -53,12 +53,4 @@
                 android:icon="?attr/oic_new_below_24dp"/>
         </menu>
     </item>
-
-    <item
-        android:id="@+id/bottom_action_bar_open"
-        app:showAsAction="always"
-        android:title="@string/open"
-        android:icon="?attr/ic_open_in_new_24dp"/>
-
-
 </menu>

@@ -124,7 +124,6 @@ public class BookTest extends OrgzlyTest {
     @Test
     public void testOpensNoteFromBook() {
         onNoteInBook(2).perform(click());
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
     }
 
@@ -139,8 +138,7 @@ public class BookTest extends OrgzlyTest {
     public void testScheduledNoteTimeStaysTheSameAfterSetting() {
         onNoteInBook(9, R.id.item_head_scheduled_text).check(matches(allOf(withText(userDateTime("<2014-05-26 Mon>")), isDisplayed())));
 
-        onNoteInBook(9).perform(click());
-
+        onNoteInBook(9).perform(longClick());
         onView(withId(R.id.bottom_action_bar_schedule)).perform(click());
         onView(withText(R.string.set)).perform(click());
 
@@ -152,7 +150,7 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(8, R.id.item_head_scheduled).check(matches(not(isDisplayed())));
         onNoteInBook(9, R.id.item_head_scheduled).check(matches(isDisplayed()));
 
-        onNoteInBook(8).perform(click());
+        onNoteInBook(8).perform(longClick());
         onNoteInBook(9).perform(click());
 
         onView(withId(R.id.bottom_action_bar_schedule)).perform(click());
@@ -167,7 +165,7 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(5, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
         onNoteInBook(8, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
 
-        onNoteInBook(5).perform(click());
+        onNoteInBook(5).perform(longClick());
         onNoteInBook(8).perform(click());
 
         onView(withId(R.id.bottom_action_bar_state)).perform(click());
@@ -181,7 +179,7 @@ public class BookTest extends OrgzlyTest {
     public void testClearStateTitleUnchanged() {
         onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note #1.")));
 
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
         onView(withId(R.id.bottom_action_bar_state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
@@ -241,18 +239,17 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testCutThenOpenNoteAtThePosition() {
-        onNoteInBook(2).perform(click());
+        onNoteInBook(2).perform(longClick());
 
         onView(withId(R.id.book_cab_cut)).perform(click());
 
         /* Open note at the same position as the cut one. */
         onNoteInBook(2).perform(click());
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
     }
 
     @Test
     public void testCabForMovingNotesDisplayed() {
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).check(matches(isDisplayed()));
@@ -260,7 +257,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testOrderOfMovedNote() {
-        onNoteInBook(3).perform(click());
+        onNoteInBook(3).perform(longClick());
 
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.move)).perform(click());
@@ -280,7 +277,7 @@ public class BookTest extends OrgzlyTest {
 
         onView(withId(R.id.notes_action_move_down)).check(doesNotExist());
 
-        onNoteInBook(2).perform(click());
+        onNoteInBook(2).perform(longClick());
 
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.move)).perform(click());
@@ -293,7 +290,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testPromoting() {
-        onNoteInBook(2).perform(click());
+        onNoteInBook(2).perform(longClick());
 
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.move)).perform(click());
@@ -302,7 +299,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testPasteAbove() {
-        onNoteInBook(2).perform(click());
+        onNoteInBook(2).perform(longClick());
 
         onView(withId(R.id.book_cab_cut)).perform(click());
 
@@ -310,7 +307,7 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #8."))));
         onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #9."))));
 
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
         onView(withId(R.id.book_cab_paste)).perform(click());
         onView(withText(R.string.heads_action_menu_item_paste_above)).perform(click());
 
@@ -327,7 +324,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testPasteUnder() {
-        onNoteInBook(2).perform(click());
+        onNoteInBook(2).perform(longClick());
 
         onView(withId(R.id.book_cab_cut)).perform(click());
 
@@ -335,7 +332,7 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #8."))));
         onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #9."))));
 
-        onNoteInBook(2).perform(click());
+        onNoteInBook(2).perform(longClick());
         onView(withId(R.id.book_cab_paste)).perform(click());
         onView(withText(R.string.heads_action_menu_item_paste_under)).perform(click());
 
@@ -349,11 +346,11 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testCopyBelow() {
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
 
         onView(withId(R.id.book_cab_copy)).perform(click());
 
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
         onView(withId(R.id.book_cab_paste)).perform(click());
         onView(withText(R.string.heads_action_menu_item_paste_below)).perform(click());
 
@@ -377,7 +374,7 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(2, R.id.item_head_fold_button).perform(click());
 
         /* Create new note under folded. */
-        onNoteInBook(2).perform(click());
+        onNoteInBook(2).perform(longClick());
         onView(withId(R.id.bottom_action_bar_new)).perform(click());
         onView(withText(R.string.new_under)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("Created"));
@@ -396,7 +393,6 @@ public class BookTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("Title"));
         onView(withId(R.id.done)).perform(click());
         onNotesInBook().perform(RecyclerViewActions.actionOnItemAtPosition(41, click()));
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.fragment_note_container)).perform(swipeUp()); // For small screens
         onView(allOf(withId(R.id.name), withText(R.string.created_property_name))).check(matches(isDisplayed()));
         onView(allOf(withId(R.id.name), withText(""))).check(matches(isDisplayed()));
@@ -408,7 +404,6 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(1).perform(click());
 
         // Open notebooks list
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.notebooks)).perform(click());
 
@@ -446,7 +441,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testToggleState() {
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
         onView(withId(R.id.bottom_action_bar_done)).perform(click());
         onNoteInBook(1, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
 
@@ -456,7 +451,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testToggleStateForAllDone() {
-        onNoteInBook(5).perform(click());
+        onNoteInBook(5).perform(longClick());
         onNoteInBook(8).perform(click());
         onView(withId(R.id.bottom_action_bar_done)).perform(click());
 
@@ -466,7 +461,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testToggleStateForAllTodo() {
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
         onNoteInBook(2).perform(click());
         onView(withId(R.id.bottom_action_bar_done)).perform(click());
 
@@ -476,7 +471,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testToggleStateForMixed() {
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
         onNoteInBook(5).perform(click());
         onView(withId(R.id.bottom_action_bar_done)).perform(click());
 
@@ -487,7 +482,7 @@ public class BookTest extends OrgzlyTest {
     @Ignore // TODO: Implement
     @Test
     public void testPreselectedStateOfSelectedNote() {
-        onNoteInBook(3).perform(click());
+        onNoteInBook(3).perform(longClick());
 
         onView(withId(R.id.bottom_action_bar_state)).perform(click());
 

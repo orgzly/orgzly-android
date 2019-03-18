@@ -107,9 +107,6 @@ public class OrgzlyTest {
         /* Manual notebook already loaded. */
         AppPreferences.isGettingStartedNotebookLoaded(context, true);
 
-        /* Click to select note. */
-        AppPreferences.isReverseNoteClickAction(context, true);
-
         /* Default states. */
         AppPreferences.states(context, "TODO NEXT | DONE");
 

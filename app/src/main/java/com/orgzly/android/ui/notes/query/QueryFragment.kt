@@ -131,8 +131,7 @@ abstract class QueryFragment :
             R.id.bottom_action_bar_focus ->
                 listener?.onNoteFocusInBookRequest(ids.first())
 
-            R.id.quick_bar_open,
-            R.id.bottom_action_bar_open ->
+            R.id.quick_bar_open ->
                 listener?.onNoteOpen(ids.first())
 
             R.id.quick_bar_done,

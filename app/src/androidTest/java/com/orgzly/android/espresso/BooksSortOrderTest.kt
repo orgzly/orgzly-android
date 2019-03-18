@@ -3,6 +3,7 @@ package com.orgzly.android.espresso
 import androidx.annotation.StringRes
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.longClick
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -58,7 +59,7 @@ class BooksSortOrderTest : OrgzlyTest() {
     private fun modifySecondBook() {
         // Modify book
         onBook(1).perform(click())
-        onNoteInBook(1).perform(click())
+        onNoteInBook(1).perform(longClick())
         onView(withId(R.id.bottom_action_bar_done)).perform(click())
         pressBack()
         pressBack()

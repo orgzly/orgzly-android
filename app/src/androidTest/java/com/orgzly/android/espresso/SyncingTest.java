@@ -153,7 +153,7 @@ public class SyncingTest extends OrgzlyTest {
 
         // Modify book
         onBook(0).perform(click());
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
         onView(withId(R.id.bottom_action_bar_done)).perform(click());
         pressBack();
         pressBack();
@@ -235,7 +235,7 @@ public class SyncingTest extends OrgzlyTest {
 
         // Modify book
         onBook(0).perform(click());
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
         onView(withId(R.id.bottom_action_bar_done)).perform(click());
         pressBack();
         pressBack();
@@ -342,7 +342,6 @@ public class SyncingTest extends OrgzlyTest {
         onView(allOf(withText("booky"), isDisplayed())).check(matches(isDisplayed()));
         onBook(0).perform(click());
         onNoteInBook(2).perform(click());
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.fragment_note_container)).check(matches(isDisplayed()));
     }
 
@@ -410,7 +409,6 @@ public class SyncingTest extends OrgzlyTest {
 
         /* Open note "ANTIVIVISECTIONISTS Note #10." and check title. */
         onNoteInBook(10).perform(click());
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.fragment_note_title)).check(matches(allOf(withText("ANTIVIVISECTIONISTS Note #10."), isDisplayed())));
 
         settingsSetTodoKeywords("ANTIVIVISECTIONISTS");
@@ -431,7 +429,6 @@ public class SyncingTest extends OrgzlyTest {
 
         /* Open note "ANTIVIVISECTIONISTS Note #10." and check title. */
         onNoteInBook(10).perform(click());
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.fragment_note_title)).check(matches(allOf(withText("Note #10."), isDisplayed())));
     }
 
@@ -692,7 +689,6 @@ public class SyncingTest extends OrgzlyTest {
 
         onBook(0).perform(click()); // Open notebook
         onNoteInBook(1).perform(click()); // Open note
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("New title"));
         onView(withId(R.id.done)).perform(click());
 
@@ -728,7 +724,7 @@ public class SyncingTest extends OrgzlyTest {
 
         onNotesInBook().check(matches(recyclerViewItemCount(3)));
 
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
 
         onView(withId(R.id.action_bar_title)).check(matches(withText("1")));
 

@@ -32,10 +32,4 @@
         app:showAsAction="always"
         android:title="@string/open"
         android:icon="?attr/ic_center_focus_strong_24dp"/>
-
-    <item
-        android:id="@+id/bottom_action_bar_open"
-        app:showAsAction="always"
-        android:title="@string/open"
-        android:icon="?attr/ic_open_in_new_24dp"/>
 </menu>

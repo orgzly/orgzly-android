@@ -546,10 +546,7 @@ class BookFragment :
         toolbar.inflateMenu(R.menu.bottom_action_bar_book)
 
         // Hide buttons that can't be used when multiple notes are selected
-        listOf(
-                R.id.bottom_action_bar_new,
-                R.id.bottom_action_bar_open).forEach { id ->
-
+        listOf(R.id.bottom_action_bar_new).forEach { id ->
             toolbar.menu.findItem(id)?.isVisible = viewAdapter.getSelection().count <= 1
         }
 
@@ -572,8 +569,7 @@ class BookFragment :
         }
 
         when (actionId) {
-            R.id.quick_bar_open,
-            R.id.bottom_action_bar_open -> {
+            R.id.quick_bar_open -> {
                 openNote(ids.first())
             }
 

@@ -206,7 +206,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText("To Do")).perform(click());
         onNotesInSearch().check(matches(recyclerViewItemCount(3)));
-        onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(click());
+        onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(longClick());
         onView(withId(R.id.bottom_action_bar_state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
         onNotesInSearch().check(matches(recyclerViewItemCount(2)));
@@ -218,7 +218,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         activityRule.launchActivity(null);
 
         searchForText("Note");
-        onNoteInSearch(0).perform(click());
+        onNoteInSearch(0).perform(longClick());
         onView(withId(R.id.bottom_action_bar_done)).perform(click());
         onNoteInSearch(0, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
     }
@@ -235,7 +235,6 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onNotesInSearch().check(matches(recyclerViewItemCount(29)));
         onNoteInSearch(27).perform(click());
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
         onView(withText("Note #28.")).check(matches(isDisplayed()));
     }
@@ -248,7 +247,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withText("Scheduled")).perform(click());
         onNotesInSearch().check(matches(recyclerViewItemCount(2)));
 
-        onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(click());
+        onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(longClick());
         onView(withId(R.id.bottom_action_bar_schedule)).perform(click());
         onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
@@ -376,7 +375,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
 
         /* Move Note C down. */
-        onNoteInBook(3).perform(click());
+        onNoteInBook(3).perform(longClick());
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).perform(click());
@@ -404,7 +403,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
 
         /* Demote Note B. */
-        onNoteInBook(2).perform(click());
+        onNoteInBook(2).perform(longClick());
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_right)).perform(click());
@@ -432,11 +431,11 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(allOf(withText("notebook-1"), isDisplayed())).perform(click());
 
         /* Cut Note B. */
-        onNoteInBook(2).perform(click());
+        onNoteInBook(2).perform(longClick());
         onView(withId(R.id.book_cab_cut)).perform(click());
 
         /* Paste under Note A. */
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
         onView(withId(R.id.book_cab_paste)).perform(click());
         onView(withText(R.string.heads_action_menu_item_paste_under)).perform(click());
 
@@ -725,7 +724,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         searchForText("i.todo");
 
-        onNoteInSearch(0).perform(click());
+        onNoteInSearch(0).perform(longClick());
 
         onNotesInSearch().check(matches(recyclerViewItemCount(2)));
         onView(withId(R.id.action_bar_title)).check(matches(withText("1")));
@@ -753,7 +752,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         searchForText("i.todo");
 
-        onNoteInSearch(1).perform(click());
+        onNoteInSearch(1).perform(longClick());
 
         onView(withId(R.id.bottom_action_bar_state)).perform(click());
 

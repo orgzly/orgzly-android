@@ -23,6 +23,7 @@ import androidx.test.rule.ActivityTestRule;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -105,11 +106,9 @@ public class MiscTest extends OrgzlyTest {
 
         onBook(0).perform(click());
         onView(withText("Note B.")).perform(click());
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(allOf(withText("book-two"), isDisplayed())).perform(click());
         onView(withText("Note #2.")).perform(click());
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
         clickSetting("prefs_screen_app", R.string.app);
         clickSetting("pref_key_clear_database", R.string.clear_database);
@@ -152,7 +151,7 @@ public class MiscTest extends OrgzlyTest {
         onNoteInBook(4, R.id.item_head_title).check(matches(allOf(withText("Note #4."), isDisplayed())));
         onNoteInBook(5, R.id.item_head_title).check(matches(allOf(withText("DONE  Note #5."), isDisplayed())));
 
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
         onNoteInBook(2).perform(click());
         onNoteInBook(3).perform(click());
         onView(withId(R.id.bottom_action_bar_state)).perform(click());
@@ -200,7 +199,7 @@ public class MiscTest extends OrgzlyTest {
         onNoteInBook(4, R.id.item_head_scheduled_text).check(matches(not(isDisplayed())));
         onNoteInBook(5, R.id.item_head_scheduled_text).check(matches(not(isDisplayed())));
 
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
         onNoteInBook(2).perform(click());
         onNoteInBook(3).perform(click());
         onView(withId(R.id.bottom_action_bar_schedule)).perform(click());
@@ -258,7 +257,7 @@ public class MiscTest extends OrgzlyTest {
         activityRule.launchActivity(null);
         onBook(0).perform(click());
         onView(withId(R.id.bottom_action_bar)).check(matches(toolbarItemCount(0)));
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
         onView(withId(R.id.bottom_action_bar)).check(matches(not(toolbarItemCount(0))));
         toLandscape(activityRule);
         toPortrait(activityRule);
@@ -291,7 +290,6 @@ public class MiscTest extends OrgzlyTest {
         onBook(0).perform(click());
 
         onNoteInBook(1).perform(click());
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
 
         Calendar cal = new GregorianCalendar(2015, 0, 18, 4, 5);
         String s = DateFormat.getTimeFormat(context).format(cal.getTime());
@@ -332,7 +330,7 @@ public class MiscTest extends OrgzlyTest {
 
         onBook(0).perform(click());
 
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
 
         /* TO DO -> DONE */
         onView(withId(R.id.bottom_action_bar_state)).perform(click());
@@ -378,7 +376,6 @@ public class MiscTest extends OrgzlyTest {
         onView(allOf(withText("book-name"), isDisplayed())).perform(click());
 
         onNoteInBook(1).perform(click());
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
 
         /* TO DO -> DONE */
         onView(withId(R.id.fragment_note_state_button)).perform(click());
@@ -419,7 +416,7 @@ public class MiscTest extends OrgzlyTest {
         onNoteInBook(4, R.id.item_head_title).check(matches(allOf(withText("Note 4"), isDisplayed())));
         onNoteInBook(5, R.id.item_head_title).check(matches(allOf(withText("TODO  Note 5"), isDisplayed())));
 
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
         onNoteInBook(2).perform(click());
         onNoteInBook(3).perform(click());
         onView(withId(R.id.bottom_action_bar_state)).perform(click());
@@ -451,7 +448,6 @@ public class MiscTest extends OrgzlyTest {
 
         // Note
         onView(withText("Note")).perform(click());
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         fragmentTest(activityRule, false, withId(R.id.fragment_note_container));
         pressBack();
 
@@ -608,14 +604,12 @@ public class MiscTest extends OrgzlyTest {
         onNoteInBook(8, R.id.item_head_title)
                 .check(matches(withText(startsWith("ANTIVIVISECTIONISTS "))))
                 .perform(click());
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.fragment_note_title)).check(matches(withText("ANTIVIVISECTIONISTS Note #8.")));
         settingsSetTodoKeywords("TODO ANTIVIVISECTIONISTS");
         /* Must go to books and back, or the click below will not work for some reason. */
         pressBack(); // Leave book
         onView(allOf(withText("book-name"), isDisplayed())).perform(click());
         onNoteInBook(8).perform(click());
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.fragment_note_title)).check(matches(withText("Note #8.")));
     }
 
@@ -625,7 +619,7 @@ public class MiscTest extends OrgzlyTest {
         activityRule.launchActivity(null);
 
         onBook(0).perform(click());
-        onNoteInBook(3).perform(click());
+        onNoteInBook(3).perform(longClick());
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.drawer_layout)).perform(open());
@@ -651,7 +645,7 @@ public class MiscTest extends OrgzlyTest {
         activityRule.launchActivity(null);
 
         onBook(0).perform(click());
-        onNoteInBook(1).perform(click());
+        onNoteInBook(1).perform(longClick());
 
         onView(withId(R.id.book_cab_cut)).check(matches(isDisplayed()));
 
@@ -671,7 +665,6 @@ public class MiscTest extends OrgzlyTest {
         onBook(0).perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
         onNoteInBook(1).perform(click());
-        onView(withId(R.id.bottom_action_bar_open)).perform(click());
         onView(withId(R.id.fragment_note_container)).check(matches(isDisplayed()));
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(allOf(withText("booky-one"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
