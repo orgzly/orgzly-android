@@ -1,6 +1,6 @@
 package com.orgzly.android.usecase
 
-import com.orgzly.android.NotesClipboard
+import com.orgzly.android.db.NotesClipboard
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.ui.Place
 

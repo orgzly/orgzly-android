@@ -1,7 +1,7 @@
 package com.orgzly.android.misc;
 
 import com.orgzly.android.BookFormat;
-import com.orgzly.android.NotesClipboard;
+import com.orgzly.android.db.NotesClipboard;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.db.entity.BookView;
 import com.orgzly.android.db.entity.Note;
@@ -494,7 +494,7 @@ public class StructureTest extends OrgzlyTest {
                      "\n" +
                      "* Note 1\n" +
                      "** Note 1.2\n" +
-                     "* Note 1.1\n" +
+                     "* Note 1.1\n" + // Folded
                      "** Note 1.1.1\n" +
                      "* Note 2\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
@@ -1181,36 +1181,6 @@ public class StructureTest extends OrgzlyTest {
                               "** 2.2\n";
 
         assertEquals(expectedBook, actual);
-    }
-
-    @Test
-    public void testMultipleNotesCut() {
-        BookView book = testUtils.setupBook(
-                "Book A",
-                "* Note A-01\n" +
-                "* Note A-02\n" +
-                "** Note A-03\n" +
-                "** Note A-04\n" +
-                "*** Note A-05\n");
-
-        UseCaseResult result = UseCaseRunner.run(new NoteCut(
-                book.getBook().getId(),
-                new HashSet<>(Arrays.asList(
-                        dataRepository.getNote("Note A-01").getId(),
-                        dataRepository.getNote("Note A-02").getId()
-                ))));
-
-        String expectedBook =
-                "* Note A-01\n" +
-                "* Note A-02\n" +
-                "** Note A-03\n" +
-                "** Note A-04\n" +
-                "*** Note A-05\n" +
-                "";
-
-        NotesClipboard clipboard = (NotesClipboard) result.getUserData();
-
-        assertEquals(expectedBook, clipboard.toOrg());
     }
 
     @Test

@@ -22,7 +22,7 @@ import com.orgzly.android.App;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.BookFormat;
 import com.orgzly.android.BookName;
-import com.orgzly.android.NotesClipboard;
+import com.orgzly.android.db.NotesClipboard;
 import com.orgzly.android.db.dao.NoteDao;
 import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.db.entity.Note;

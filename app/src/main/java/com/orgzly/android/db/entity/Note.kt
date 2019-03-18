@@ -2,6 +2,9 @@ package com.orgzly.android.db.entity
 
 import androidx.room.*
 import android.text.TextUtils
+import com.google.gson.Gson
+
+
 
 @Entity(
         tableName = "notes",
@@ -110,6 +113,12 @@ data class Note(
 
     fun getTagsList(): List<String> {
         return dbDeSerializeTags(tags)
+    }
+
+    fun toJson(): String {
+        val note = Note(0, position = NotePosition(0))
+        val gson = Gson()
+        return gson.toJson(note)
     }
 
     companion object {

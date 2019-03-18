@@ -630,7 +630,7 @@ public class MiscTest extends OrgzlyTest {
         onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(allOf(withText("booky"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
-        onView(withId(R.id.book_cab_cut)).check(matches(isDisplayed()));
+        onView(withId(R.id.notes_action_move_left)).check(matches(isDisplayed()));
     }
 
     @Test

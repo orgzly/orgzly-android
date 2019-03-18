@@ -353,6 +353,7 @@ public class SyncFragment extends Fragment {
                 App.EXECUTORS.mainThread().execute(() -> mListener.onSuccess(action, result));
 
             } catch (Throwable e) {
+                e.printStackTrace();
                 App.EXECUTORS.mainThread().execute(() -> mListener.onError(action, e));
             }
         });
