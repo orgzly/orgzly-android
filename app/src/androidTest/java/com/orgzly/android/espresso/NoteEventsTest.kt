@@ -137,6 +137,20 @@ class NoteEventsTest : OrgzlyTest() {
         onNotesInAgenda().check(matches(recyclerViewItemCount(4)))
     }
 
+    @Test
+    fun search_MultiplePerNote_Today() {
+        testUtils.setupBook(
+                "Book A",
+                """
+                * Note A-01
+                  $today $tomorrow
+                """.trimIndent())
+        activityRule.launchActivity(null)
+        searchForText("e.today")
+        onNotesInSearch().check(matches(recyclerViewItemCount(1)))
+        onNoteInSearch(0, R.id.item_head_title).check(matches(withText(startsWith("Note A-01"))))
+    }
+
     @Ignore("Timestamp used when ordering is not defined due to grouping by note ID only")
     @Test
     fun search_MultiplePerNote_OrderBy() {

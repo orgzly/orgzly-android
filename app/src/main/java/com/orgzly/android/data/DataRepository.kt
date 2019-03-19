@@ -1036,15 +1036,16 @@ class DataRepository @Inject constructor(
 
         // For agenda, group by event timestamp too
         val groupBy = if (query.isAgenda()) {
-            "notes.id, event_timestamp"
+            "id, event_timestamp"
         } else {
-            "notes.id"
+            "id"
         }
 
         val supportQuery = SupportSQLiteQueryBuilder
-                .builder("(${NoteViewDao.QUERY_WITH_NOTE_EVENTS} GROUP BY $groupBy)")
+                .builder("(${NoteViewDao.QUERY_WITH_NOTE_EVENTS})")
                 .selection(selection2, selectionArgs.toTypedArray())
                 .orderBy(orderBy)
+                .groupBy(groupBy)
                 .create()
 
         if (BuildConfig.LOG_DEBUG)

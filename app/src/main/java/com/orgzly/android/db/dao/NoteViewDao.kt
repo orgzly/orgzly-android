@@ -159,6 +159,8 @@ abstract class NoteViewDao {
             LEFT JOIN note_events t_note_events ON t_note_events.note_id = notes.id
             LEFT JOIN org_ranges t_note_events_range ON t_note_events_range.id = t_note_events.org_range_id
             LEFT JOIN org_timestamps t_note_events_start ON t_note_events_start.id = t_note_events_range.start_timestamp_id
+
+            GROUP BY notes.id, event_timestamp
         """
     }
 }
