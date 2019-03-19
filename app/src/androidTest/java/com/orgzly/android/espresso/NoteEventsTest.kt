@@ -1,6 +1,10 @@
 package com.orgzly.android.espresso
 
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.longClick
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
@@ -182,5 +186,28 @@ class NoteEventsTest : OrgzlyTest() {
         onNotesInSearch().check(matches(recyclerViewItemCount(2)))
         onNoteInSearch(0, R.id.item_head_title).check(matches(withText(startsWith("Note A-01"))))
         onNoteInSearch(1, R.id.item_head_title).check(matches(withText(startsWith("Note A-02"))))
+    }
+
+    @Test
+    fun shiftFromList() {
+        testUtils.setupBook("Book A", "* Note A-01 <2000-01-10 +1d>")
+        activityRule.launchActivity(null)
+        onBook(0).perform(click())
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note A-01 <2000-01-10 +1d>")))
+        onNoteInBook(1).perform(longClick())
+        onView(withId(R.id.bottom_action_bar_done)).perform(click())
+        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note A-01 <2000-01-11 Tue +1d>")))
+    }
+
+    @Test
+    fun shiftFromNote() {
+        testUtils.setupBook("Book A", "* Note A-01 <2000-01-10 +1d>")
+        activityRule.launchActivity(null)
+        onBook(0).perform(click())
+        onNoteInBook(1).perform(click())
+        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note A-01 <2000-01-10 +1d>")))
+        onView(withId(R.id.fragment_note_state_button)).perform(click())
+        onView(withText("DONE")).perform(click())
+        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note A-01 <2000-01-11 Tue +1d>")))
     }
 }

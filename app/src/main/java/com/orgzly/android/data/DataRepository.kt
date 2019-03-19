@@ -40,10 +40,7 @@ import com.orgzly.android.ui.note.NoteBuilder
 import com.orgzly.android.ui.note.NotePayload
 import com.orgzly.android.usecase.BookDelete
 import com.orgzly.android.usecase.RepoCreate
-import com.orgzly.android.util.Encoding
-import com.orgzly.android.util.LogUtils
-import com.orgzly.android.util.MiscUtils
-import com.orgzly.android.util.OrgFormatter
+import com.orgzly.android.util.*
 import com.orgzly.org.OrgFile
 import com.orgzly.org.OrgFileSettings
 import com.orgzly.org.OrgActiveTimestamps
@@ -948,36 +945,55 @@ class DataRepository @Inject constructor(
             return@Callable if (AppPreferences.isDoneKeyword(context, state)) {
                 var updated = 0
 
-                db.note().getStateUpdatedNotes(noteIds, state).forEach { note ->
+                val doneKeywords = AppPreferences.doneKeywordsSet(context)
 
-                    val stateSetOp = StateChangeLogic(AppPreferences.doneKeywordsSet(context))
+                db.note().getNoteForStateChange(noteIds, state).forEach { note ->
 
-                    stateSetOp.setState(
+                    var title = note.title
+                    var content = note.content
+
+                    val eventsInNote = EventsInNote(title, content)
+
+                    val scl = StateChangeLogic(doneKeywords)
+
+                    scl.setState(
                             state,
                             note.state,
                             OrgRange.parseOrNull(note.scheduled),
-                            OrgRange.parseOrNull(note.deadline))
+                            OrgRange.parseOrNull(note.deadline),
+                            eventsInNote.timestamps.map { OrgRange(it) })
 
-                    updated += db.note().update(
-                            note.noteId,
-                            stateSetOp.state,
-                            getOrgRangeId(stateSetOp.scheduled),
-                            getOrgRangeId(stateSetOp.deadline),
-                            getOrgRangeId(stateSetOp.closed))
+                    if (scl.isShifted) {
+                        eventsInNote.replaceEvents(scl.timestamps).apply {
+                            title = first
+                            content = second
+                        }
 
-                    if (stateSetOp.isShifted) {
                         val now = OrgDateTime(false).toString()
 
+                        // Add last-repeat time
                         if (AppPreferences.setLastRepeatOnTimeShift(context)) {
                             setNoteProperty(note.noteId, OrgFormatter.LAST_REPEAT_PROPERTY, now)
                         }
 
+                        // Log state change
                         if (AppPreferences.logOnTimeShift(context)) {
-                            val stateChangeLine = OrgFormatter.stateChangeLine(note.state, state, now)
-                            val noteContent = OrgFormatter.insertLogbookEntryLine(note.content, stateChangeLine)
-
-                            db.note().updateContent(note.noteId, noteContent)
+                            val logEntry = OrgFormatter.stateChangeLine(note.state, state, now)
+                            content = OrgFormatter.insertLogbookEntryLine(content, logEntry)
                         }
+                    }
+
+                    updated += db.note().update(
+                            note.noteId,
+                            title,
+                            content,
+                            scl.state,
+                            getOrgRangeId(scl.scheduled),
+                            getOrgRangeId(scl.deadline),
+                            getOrgRangeId(scl.closed))
+
+                    if (scl.isShifted) {
+                        replaceNoteEvents(note.noteId, title, content)
                     }
                 }
 

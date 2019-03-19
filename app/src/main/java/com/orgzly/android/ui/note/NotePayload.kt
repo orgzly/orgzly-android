@@ -2,7 +2,6 @@ package com.orgzly.android.ui.note
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.orgzly.android.util.MiscUtils
 
 data class NotePayload @JvmOverloads constructor(
         val title: String = "",

@@ -1099,7 +1099,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         updatePayloadFromViews()
 
         notePayload?.let { payload ->
-            notePayload = NoteBuilder.withState(context!!, payload, state).also {
+            notePayload = NoteBuilder.changeState(context!!, payload, state).also {
                 updateViewsFromPayload(it)
             }
         }

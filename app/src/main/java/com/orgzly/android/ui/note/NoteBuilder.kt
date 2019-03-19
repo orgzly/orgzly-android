@@ -5,56 +5,70 @@ import com.orgzly.android.db.entity.NoteProperty
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.NoteStates
+import com.orgzly.android.util.EventsInNote
 import com.orgzly.android.util.OrgFormatter
 import com.orgzly.org.datetime.OrgDateTime
 import com.orgzly.org.datetime.OrgRange
 import com.orgzly.org.utils.StateChangeLogic
 import java.util.*
 
+
 class NoteBuilder {
 
     companion object {
+
         @JvmStatic
-        fun withState(context: Context, notePayload: NotePayload, state: String?): NotePayload {
-            val originalState = notePayload.state
+        fun changeState(context: Context, notePayload: NotePayload, state: String?): NotePayload {
 
             val doneKeywords = AppPreferences.doneKeywordsSet(context)
 
-            val stateChangeLogic = StateChangeLogic(doneKeywords)
+            var title = notePayload.title
+            var content = notePayload.content
+            val properties = notePayload.properties.toMutableMap()
 
-            stateChangeLogic.setState(
+            val eventsInNote = EventsInNote(title, content)
+
+            val scl = StateChangeLogic(doneKeywords)
+
+            scl.setState(
                     state,
                     notePayload.state,
                     OrgRange.parseOrNull(notePayload.scheduled),
-                    OrgRange.parseOrNull(notePayload.deadline))
+                    OrgRange.parseOrNull(notePayload.deadline),
+                    eventsInNote.timestamps.map { OrgRange(it) })
 
-            val datetime = OrgDateTime(false).toString()
 
-            // Add last-repeat time
-            val properties = notePayload.properties.toMutableMap()
-            if (stateChangeLogic.isShifted && AppPreferences.setLastRepeatOnTimeShift(context)) {
-                properties[OrgFormatter.LAST_REPEAT_PROPERTY] = datetime
+            if (scl.isShifted) {
+                eventsInNote.replaceEvents(scl.timestamps).apply {
+                    title = first
+                    content = second
+                }
+
+                val now = OrgDateTime(false).toString()
+
+                // Add last-repeat time
+                if (AppPreferences.setLastRepeatOnTimeShift(context)) {
+                    properties[OrgFormatter.LAST_REPEAT_PROPERTY] = now
+                }
+
+                // Log state change
+                if (AppPreferences.logOnTimeShift(context)) {
+                    val logEntry = OrgFormatter.stateChangeLine(notePayload.state, state, now)
+                    content = OrgFormatter.insertLogbookEntryLine(content, logEntry)
+                }
             }
 
-            // Log state change
-            val content =
-                    if (stateChangeLogic.isShifted && AppPreferences.logOnTimeShift(context)) {
-                        val logEntry = OrgFormatter.stateChangeLine(originalState, state, datetime)
-                        OrgFormatter.insertLogbookEntryLine(notePayload.content, logEntry)
-                    } else {
-                        notePayload.content
-                    }
-
-
             return notePayload.copy(
-                    state = stateChangeLogic.state,
-                    scheduled = stateChangeLogic.scheduled?.toString(),
-                    deadline = stateChangeLogic.deadline?.toString(),
-                    closed = stateChangeLogic.closed?.toString(),
-                    properties = properties,
-                    content = content
+                    title = title,
+                    content = content,
+                    state = scl.state,
+                    scheduled = scl.scheduled?.toString(),
+                    deadline = scl.deadline?.toString(),
+                    closed = scl.closed?.toString(),
+                    properties = properties
             )
         }
+
 
 //        fun newRootNote(bookId: Long): Note {
 //            val note = Note()
@@ -126,5 +140,9 @@ class NoteBuilder {
                 }
             }
         }
+
+
+        private val TAG = NoteBuilder::class.java.name
     }
+
 }

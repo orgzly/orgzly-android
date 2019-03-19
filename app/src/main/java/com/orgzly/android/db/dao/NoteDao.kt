@@ -176,10 +176,10 @@ abstract class NoteDao : BaseDao<Note> {
 
     @Query("""
         UPDATE notes
-        SET state = :state, scheduled_range_id = :scheduled, deadline_range_id = :deadline, closed_range_id = :closed
+        SET title = :title, content = :content, state = :state, scheduled_range_id = :scheduled, deadline_range_id = :deadline, closed_range_id = :closed
         WHERE id = :id
     """)
-    abstract fun update(id: Long, state: String?, scheduled: Long?, deadline: Long?, closed: Long?): Int
+    abstract fun update(id: Long, title: String, content: String?, state: String?, scheduled: Long?, deadline: Long?, closed: Long?): Int
 
     @Query("UPDATE notes SET title = :title, state = :state, priority = :priority WHERE id = :id")
     abstract fun update(id: Long, title: String, state: String?, priority: String?): Int
@@ -300,7 +300,7 @@ abstract class NoteDao : BaseDao<Note> {
     abstract fun updateStateAndRemoveClosedTime(ids: Set<Long>, state: String?): Int
 
     @Query("""
-        SELECT notes.id as noteId, state, content, st.string as scheduled, dt.string as deadline
+        SELECT notes.id as noteId, state, title, content, st.string AS scheduled, dt.string AS deadline
 
         FROM notes
 
@@ -312,7 +312,7 @@ abstract class NoteDao : BaseDao<Note> {
 
         WHERE notes.id IN (:ids) AND COALESCE(state, "") != COALESCE(:state, "")
     """)
-    abstract fun getStateUpdatedNotes(ids: Set<Long>, state: String?): List<NoteForStateUpdate>
+    abstract fun getNoteForStateChange(ids: Set<Long>, state: String?): List<NoteForStateUpdate>
 
     @Query("""SELECT DISTINCT book_id FROM notes WHERE id IN (:ids) AND COALESCE(state, "") != COALESCE(:state, "")""")
     abstract fun getBookIdsForNotesNotMatchingState(ids: Set<Long>, state: String?): List<Long>
@@ -354,6 +354,7 @@ abstract class NoteDao : BaseDao<Note> {
     data class NoteForStateUpdate(
             val noteId: Long,
             val state: String?,
+            val title: String,
             val content: String?,
             val scheduled: String?,
             val deadline: String?)
