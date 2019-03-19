@@ -209,7 +209,7 @@ public class GitFileSynchronizer {
         }
     }
 
-    private RevCommit updateAndCommitFile(
+    public void updateAndCommitFile(
             File sourceFile, String fileName) throws IOException {
         File destinationFile = repoDirectoryFile(fileName);
         MiscUtils.copyFile(sourceFile, destinationFile);
@@ -220,7 +220,6 @@ public class GitFileSynchronizer {
         } catch (GitAPIException e) {
             throw new IOException("Failed to commit changes.");
         }
-        return currentHead();
     }
 
     private void commit(String message) throws GitAPIException {
@@ -275,22 +274,31 @@ public class GitFileSynchronizer {
         return getFileRevision(pathString, start).equals(getFileRevision(pathString, end));
     }
 
-    public RevCommit getLatestCommitOfFile(Uri uri) throws GitAPIException {
+    public boolean fileHasBeenCommitted(String fileName) {
+        Iterable<RevCommit> log;
+        try {
+            log = git.log().setMaxCount(1).addPath(fileName).call();
+        } catch (GitAPIException e) {
+            return false;
+        }
+        return log.iterator().hasNext();
+    }
+
+    public RevCommit getLatestCommitOfFile(Uri uri) throws IOException {
         String fileName = uri.toString();
+        Iterable<RevCommit> log;
         if (fileName.startsWith("/"))
             fileName = fileName.replaceFirst("/", "");
-        Iterable<RevCommit> log = git.log().setMaxCount(1).addPath(fileName).call();
+        try {
+            log = git.log().setMaxCount(1).addPath(fileName).call();
+        } catch (GitAPIException e) {
+            throw new IOException("Unable to find a commit containing the file", e.getCause());
+        }
         return log.iterator().next();
     }
 
-    public void addAndCommitNewFile(
-            File sourceFile, String fileName) throws IOException {
-        updateAndCommitFile(sourceFile, fileName);
-        if (gitRepoIsClean())
-            tryPush();
-    }
-
     public void deleteFileAndCommit(Uri uri) throws IOException {
+        ensureReposIsClean();
         String fileName = uri.toString();
         if (fileName.startsWith("/"))
             fileName = fileName.replaceFirst("/", "");

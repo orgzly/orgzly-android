@@ -124,9 +124,19 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     }
 
     public VersionedRook storeBook(File file, String fileName) throws IOException {
-        synchronizer.addAndCommitNewFile(file, fileName);
         Uri uri = Uri.parse("/" + fileName);
-        return currentVersionedRook(uri);
+        RevCommit currentHead = synchronizer.currentHead();
+
+        if (synchronizer.fileHasBeenCommitted(fileName)) {
+            synchronizer.updateAndCommitFileFromRevision(
+                    file, fileName, synchronizer.getFileRevision(fileName, currentHead));
+            synchronizer.tryPushIfUpdated(currentHead);
+            return currentVersionedRook(uri);
+        } else {
+            synchronizer.updateAndCommitFile(file, fileName);
+            synchronizer.tryPushIfUpdated(currentHead);
+            return currentVersionedRook(uri);
+        }
     }
 
     private RevWalk walk() {
@@ -163,16 +173,12 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
         return currentVersionedRook(sourceUri);
     }
 
-    private VersionedRook currentVersionedRook(Uri uri) {
-        RevCommit commit = null;
+    private VersionedRook currentVersionedRook(Uri uri) throws IOException {
+        RevCommit commit;
         if (uri.toString().contains("%")) {
             uri = Uri.parse(Uri.decode(uri.toString()));
         }
-        try {
-            commit = synchronizer.getLatestCommitOfFile(uri);
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-        }
+        commit = synchronizer.getLatestCommitOfFile(uri);
         long mtime = (long)commit.getCommitTime()*1000;
         return new VersionedRook(getUri(), uri, commit.name(), mtime);
     }
