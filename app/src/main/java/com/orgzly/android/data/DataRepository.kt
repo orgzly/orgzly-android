@@ -1016,7 +1016,7 @@ class DataRepository @Inject constructor(
     private fun buildSqlQuery(query: Query): SupportSQLiteQuery {
         val queryBuilder = SqliteQueryBuilder(context)
 
-        val (selection, selectionArgs, orderBy) = queryBuilder.build(query)
+        val (selection, selectionArgs, having, orderBy) = queryBuilder.build(query)
 
         val s = mutableListOf<String>()
 
@@ -1044,8 +1044,9 @@ class DataRepository @Inject constructor(
         val supportQuery = SupportSQLiteQueryBuilder
                 .builder("(${NoteViewDao.QUERY_WITH_NOTE_EVENTS})")
                 .selection(selection2, selectionArgs.toTypedArray())
-                .orderBy(orderBy)
                 .groupBy(groupBy)
+                .having(having)
+                .orderBy(orderBy)
                 .create()
 
         if (BuildConfig.LOG_DEBUG)

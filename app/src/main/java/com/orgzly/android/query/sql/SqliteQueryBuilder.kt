@@ -12,6 +12,8 @@ class SqliteQueryBuilder(val context: Context) {
     private var where: String = ""
     private val arguments: MutableList<String> = ArrayList()
 
+    private var having: String = ""
+
     private var order: String = ""
 
     private var hasScheduledCondition = false
@@ -27,7 +29,7 @@ class SqliteQueryBuilder(val context: Context) {
 
         order = buildOrderBy(query.sortOrders)
 
-        return SqlQuery(where, arguments, order)
+        return SqlQuery(where, arguments, having, order)
     }
 
     private fun buildOrderBy(sortOrders: List<SortOrder>): String {
@@ -101,11 +103,13 @@ class SqliteQueryBuilder(val context: Context) {
                             o.add("event_start_of_day DESC")
                             o.add("event_hour IS NOT NULL")
                             o.add("event_timestamp DESC")
+                            having = "MAX(event_timestamp)"
 
                         } else {
                             o.add("event_start_of_day")
                             o.add("event_hour IS NULL")
                             o.add("event_timestamp")
+                            having = "MIN(event_timestamp)"
                         }
                     }
 

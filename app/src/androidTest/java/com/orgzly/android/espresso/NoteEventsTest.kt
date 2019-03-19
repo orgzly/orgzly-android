@@ -8,7 +8,6 @@ import com.orgzly.android.espresso.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.org.datetime.OrgDateTime
 import org.hamcrest.Matchers.startsWith
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -151,7 +150,6 @@ class NoteEventsTest : OrgzlyTest() {
         onNoteInSearch(0, R.id.item_head_title).check(matches(withText(startsWith("Note A-01"))))
     }
 
-    @Ignore("Timestamp used when ordering is not defined due to grouping by note ID only")
     @Test
     fun search_MultiplePerNote_OrderBy() {
         testUtils.setupBook(
@@ -169,7 +167,6 @@ class NoteEventsTest : OrgzlyTest() {
         onNoteInSearch(1, R.id.item_head_title).check(matches(withText(startsWith("Note A-02"))))
     }
 
-    @Ignore("Timestamp used when ordering is not defined due to grouping by note ID only")
     @Test
     fun search_MultiplePerNote_OrderByDesc() {
         testUtils.setupBook(
