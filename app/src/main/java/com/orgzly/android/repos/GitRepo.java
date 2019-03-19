@@ -133,7 +133,7 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
             synchronizer.tryPushIfUpdated(currentHead);
             return currentVersionedRook(uri);
         } else {
-            synchronizer.updateAndCommitFile(file, fileName);
+            synchronizer.safelyUpdateAndCommitFile(file, fileName);
             synchronizer.tryPushIfUpdated(currentHead);
             return currentVersionedRook(uri);
         }
@@ -174,11 +174,10 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     }
 
     private VersionedRook currentVersionedRook(Uri uri) throws IOException {
-        RevCommit commit;
         if (uri.toString().contains("%")) {
             uri = Uri.parse(Uri.decode(uri.toString()));
         }
-        commit = synchronizer.getLatestCommitOfFile(uri);
+        RevCommit commit = synchronizer.getLatestCommitOfFile(uri);
         long mtime = (long)commit.getCommitTime()*1000;
         return new VersionedRook(getUri(), uri, commit.name(), mtime);
     }

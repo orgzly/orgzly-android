@@ -209,7 +209,7 @@ public class GitFileSynchronizer {
         }
     }
 
-    public void updateAndCommitFile(
+    private RevCommit updateAndCommitFile(
             File sourceFile, String fileName) throws IOException {
         File destinationFile = repoDirectoryFile(fileName);
         MiscUtils.copyFile(sourceFile, destinationFile);
@@ -220,6 +220,13 @@ public class GitFileSynchronizer {
         } catch (GitAPIException e) {
             throw new IOException("Failed to commit changes.");
         }
+        return currentHead();
+    }
+
+    public boolean safelyUpdateAndCommitFile(
+            File sourceFile, String fileName) throws IOException {
+        ensureReposIsClean();
+        return updateAndCommitFile(sourceFile, fileName) != null;
     }
 
     private void commit(String message) throws GitAPIException {
@@ -308,7 +315,7 @@ public class GitFileSynchronizer {
                 commit(String.format("Orgzly delete: %s", fileName));
                 tryPush();
         } catch (GitAPIException e) {
-            throw new IOException("Failed to delete notebook from repository.");
+            throw new IOException("Failed to delete notebook from repository.", e.getCause());
         }
     }
 
