@@ -24,7 +24,6 @@ public class GitSSHKeyTransportSetter implements GitTransportSetter {
             @Override
             protected void configure(OpenSshConfig.Host host, Session session ) {
                 session.setConfig("StrictHostKeyChecking", "no");
-                session.setPort(9002);
             }
 
             @Override
