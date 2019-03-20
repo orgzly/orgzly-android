@@ -594,9 +594,6 @@ class DataRepository @Inject constructor(
             target?.let {
                 val clipboard = NotesClipboard.create(this, noteIds)
 
-                if (BuildConfig.LOG_DEBUG)
-                    LogUtils.d(TAG, "Deleting $noteIds and moving ${clipboard.content}")
-
                 deleteNotes(bookId, noteIds)
 
                 return@Callable pasteNotesClipboard(clipboard, it.place, it.noteId).size
@@ -703,7 +700,7 @@ class DataRepository @Inject constructor(
 
         if (BuildConfig.LOG_DEBUG)
             LogUtils.d(TAG, """
-                Pasting ${clipboard.noteCount} notes $place ${targetNote.title}
+                Pasting ${clipboard.count} notes $place ${targetNote.title}
 
                 targetLft: ${targetNote.position.lft}
                 targetRgt: ${targetNote.position.rgt}
@@ -716,12 +713,9 @@ class DataRepository @Inject constructor(
                 levelOffset: $levelOffset
                 """.trimIndent())
 
-        makeSpaceForNewNotes(clipboard.noteCount, targetNote, place)
+        makeSpaceForNewNotes(clipboard.count, targetNote, place)
 
         val batchId = System.currentTimeMillis()
-
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Parsing clipboard:\n${clipboard.content}")
 
         var lastNoteId = 0L
         val parentIds = ArrayDeque<Long>().apply {
@@ -729,7 +723,7 @@ class DataRepository @Inject constructor(
         }
         val idsMap = mutableMapOf<Long, Long>()
 
-        for (clippedNote in clipboard.getNotes()) {
+        for (clippedNote in clipboard.notes) {
             val level = levelOffset + clippedNote.position.level
 
             val lft = pastedLft + clippedNote.position.lft - 1

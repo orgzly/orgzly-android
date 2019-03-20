@@ -8,38 +8,35 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.util.MiscUtils
 import java.io.File
 import java.io.StringWriter
-import java.io.Writer
 
-data class NotesClipboard(val noteCount: Int, val content: String) {
+data class NotesClipboard(val notes: List<Note>) {
+
+    val count: Int
+        get() = notes.count()
+
+
     fun save() {
         try {
+            val writer = StringWriter()
+            Gson().toJson(notes, writer)
+            val content = writer.toString()
+
             MiscUtils.writeStringToFile(content, dataFile())
-            AppPreferences.notesClipboard(App.getAppContext(), "$noteCount")
+
+            AppPreferences.notesClipboard(App.getAppContext(), "$count")
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    fun getNotes(): List<Note> {
-        return Gson().fromJson(content, Array<Note>::class.java).toMutableList()
-    }
 
     companion object {
         fun create(dataRepository: DataRepository, ids: Set<Long>): NotesClipboard {
-            val str = StringWriter()
-
-            val exportedCount = exportSubtreesAligned(dataRepository, ids, str)
-
-            return NotesClipboard(exportedCount, str.toString())
-        }
-
-        private fun exportSubtreesAligned(dataRepository: DataRepository, ids: Set<Long>, writer: Writer): Int {
             var offset = 0L
             var subtreeRgt = 0L
             var levelOffset = 0
 
             val notes = dataRepository.getSubtrees(ids).map { note ->
-
                 // First note or next subtree
                 if (subtreeRgt == 0L || note.position.rgt > subtreeRgt) {
                     offset += note.position.lft - subtreeRgt - 1
@@ -55,9 +52,7 @@ data class NotesClipboard(val noteCount: Int, val content: String) {
                         ))
             }
 
-            Gson().toJson(notes, writer)
-
-            return notes.size
+            return NotesClipboard(notes)
         }
 
         fun load(): NotesClipboard? {
@@ -65,9 +60,11 @@ data class NotesClipboard(val noteCount: Int, val content: String) {
 
             if (pref != null) {
                 try {
-                    val count = Integer.valueOf(pref)
                     val data = MiscUtils.readStringFromFile(dataFile())
-                    return NotesClipboard(count, data)
+
+                    val notes = Gson().fromJson(data, Array<Note>::class.java).toMutableList()
+
+                    return NotesClipboard(notes)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

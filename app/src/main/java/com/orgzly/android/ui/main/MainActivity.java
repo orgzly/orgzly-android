@@ -1161,7 +1161,7 @@ public class MainActivity extends CommonActivity
             NotesClipboard clipboard = (NotesClipboard) result.getUserData();
 
             if (clipboard != null) {
-                int count = clipboard.getNoteCount();
+                int count = clipboard.getCount();
 
                 String message;
 
@@ -1178,7 +1178,7 @@ public class MainActivity extends CommonActivity
             NotesClipboard clipboard = (NotesClipboard) result.getUserData();
 
             if (clipboard != null) {
-                int count = clipboard.getNoteCount();
+                int count = clipboard.getCount();
 
                 if (count > 0) {
                     String message = getResources().getQuantityString(R.plurals.notes_copied, count, count);
