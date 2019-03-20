@@ -64,8 +64,8 @@ abstract class NoteDao : BaseDao<Note> {
     """)
     abstract fun markAsCut(bookId: Long, ids: Set<Long>, batchId: Long): Int
 
-    @Query(SELECT_ANCESTORS_IDS)
-    abstract fun getAncestors(ids: List<Long>): List<Long>
+    @Query(SELECT_NOTE_AND_ANCESTORS_IDS)
+    abstract fun getNoteAndAncestorsIds(ids: List<Long>): List<Long>
 
     @Query("""
             SELECT a.*
@@ -339,8 +339,15 @@ abstract class NoteDao : BaseDao<Note> {
             """
 
         const val SELECT_NOTE_AND_ANCESTORS_IDS = """
-            SELECT DISTINCT a.id FROM notes n, notes a
-            WHERE n.id IN (:ids) AND n.book_id = a.book_id AND a.is_cut = 0 AND a.level > 0 AND a.lft <= n.lft AND n.rgt <= a.rgt """
+            SELECT DISTINCT a.id
+            FROM notes n, notes a
+            WHERE n.id IN (:ids)
+            AND n.book_id = a.book_id
+            AND a.is_cut = 0
+            AND a.level > 0
+            AND a.lft <= n.lft
+            AND n.rgt <= a.rgt
+            """
 
         fun rootNote(bookId: Long): Note {
             return Note(id = 0, position = NotePosition(bookId, lft = 1, rgt = 2, level = 0))

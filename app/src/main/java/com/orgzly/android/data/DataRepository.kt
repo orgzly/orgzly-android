@@ -511,11 +511,11 @@ class DataRepository @Inject constructor(
     }
 
     private fun unfoldForNote(noteId: Long) {
-        val ancestorsIds = db.note().getAncestors(listOf(noteId))
-
-        if (ancestorsIds.isNotEmpty()) {
-            db.note().unfoldNotes(ancestorsIds)
-            db.note().updateFoldedUnderForNoteFoldedUnderId(ancestorsIds)
+        db.note().getNoteAndAncestorsIds(listOf(noteId)).let { ids ->
+            if (ids.isNotEmpty()) {
+                db.note().unfoldNotes(ids)
+                db.note().updateFoldedUnderForNoteFoldedUnderId(ids)
+            }
         }
     }
 
