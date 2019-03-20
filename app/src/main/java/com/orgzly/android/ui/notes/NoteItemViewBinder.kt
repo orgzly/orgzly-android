@@ -141,6 +141,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
         setupPlanningTime(holder.scheduled, holder.scheduledText, noteView.scheduledRangeString)
         setupPlanningTime(holder.deadline, holder.deadlineText, noteView.deadlineRangeString)
+        setupPlanningTime(holder.event, holder.eventText, noteView.eventString)
         setupPlanningTime(holder.closed, holder.closedText, noteView.closedRangeString)
     }
 
@@ -280,6 +281,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         val params = arrayOf(
                 holder.scheduled.layoutParams as LinearLayout.LayoutParams,
                 holder.deadline.layoutParams as LinearLayout.LayoutParams,
+                holder.event.layoutParams as LinearLayout.LayoutParams,
                 holder.closed.layoutParams as LinearLayout.LayoutParams,
                 holder.content.layoutParams as LinearLayout.LayoutParams)
 

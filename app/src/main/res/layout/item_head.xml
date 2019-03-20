@@ -159,7 +159,31 @@
                         android:textColor="?attr/text_secondary_color"
                         android:layout_marginStart="4dp"
                         android:layout_marginLeft="4dp"/>
+                </LinearLayout>
 
+                <!-- Event time -->
+                <LinearLayout
+                    android:id="@+id/item_head_event"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/item_head_below_title_padding_cozy"
+                    android:gravity="center_vertical"
+                    android:visibility="gone">
+                    <ImageView
+                        style="@style/HeadItemInfoIcon"
+                        android:src="?attr/ic_access_time_18dp"
+                        android:alpha="?attr/oic_item_alpha"
+                        android:contentDescription="@string/time"/>
+                    <TextView
+                        android:id="@+id/item_head_event_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="@string/note_deadline_sample"
+                        android:textSize="?attr/item_head_sub_title_text"
+                        android:textColor="?attr/text_secondary_color"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginLeft="4dp"/>
                 </LinearLayout>
 
                 <!-- Closed time -->

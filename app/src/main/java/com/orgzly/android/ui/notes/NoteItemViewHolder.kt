@@ -36,6 +36,9 @@ class NoteItemViewHolder(view: View, private val clickListener: ClickListener) :
     val deadline: View = itemView.findViewById(R.id.item_head_deadline)
     val deadlineText: TextView = itemView.findViewById(R.id.item_head_deadline_text)
 
+    val event: View = itemView.findViewById(R.id.item_head_event)
+    val eventText: TextView = itemView.findViewById(R.id.item_head_event_text)
+
     val closed: View = itemView.findViewById(R.id.item_head_closed)
     val closedText: TextView = itemView.findViewById(R.id.item_head_closed_text)
 
