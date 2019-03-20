@@ -1715,8 +1715,10 @@ class DataRepository @Inject constructor(
     }
 
     private fun unfoldForNote(bookId: Long, noteId: Long) {
-        foldAllNotes(bookId)
-        unfoldForNote(noteId)
+        db.runInTransaction {
+            foldAllNotes(bookId)
+            unfoldForNote(noteId)
+        }
     }
 
     private fun getOrgDateTimeId(timestamp: OrgDateTime): Long {
