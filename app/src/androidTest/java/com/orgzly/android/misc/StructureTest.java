@@ -1,7 +1,6 @@
 package com.orgzly.android.misc;
 
 import com.orgzly.android.BookFormat;
-import com.orgzly.android.db.NotesClipboard;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.db.entity.BookView;
 import com.orgzly.android.db.entity.Note;
@@ -17,10 +16,8 @@ import com.orgzly.android.usecase.NoteDelete;
 import com.orgzly.android.usecase.NoteDemote;
 import com.orgzly.android.usecase.NotePaste;
 import com.orgzly.android.usecase.NoteToggleFolding;
-import com.orgzly.android.usecase.UseCaseResult;
 import com.orgzly.android.usecase.UseCaseRunner;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -219,45 +216,52 @@ public class StructureTest extends OrgzlyTest {
                      "* Note 2\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
 
-        NotePosition n1 = dataRepository.getNote("Note 1").getPosition();
-        NotePosition n12 = dataRepository.getNote("Note 1.2").getPosition();
-        NotePosition n121 = dataRepository.getNote("Note 1.2.1").getPosition();
-        NotePosition n122 = dataRepository.getNote("Note 1.2.2").getPosition();
-        NotePosition n11 = dataRepository.getNote("Note 1.1").getPosition();
-        NotePosition n111 = dataRepository.getNote("Note 1.1.1").getPosition();
-        NotePosition n2 = dataRepository.getNote("Note 2").getPosition();
+        Note n0 = dataRepository.getRootNode(book.getBook().getId());
+        Note n1 = dataRepository.getNote("Note 1");
+        Note n12 = dataRepository.getNote("Note 1.2");
+        Note n121 = dataRepository.getNote("Note 1.2.1");
+        Note n122 = dataRepository.getNote("Note 1.2.2");
+        Note n11 = dataRepository.getNote("Note 1.1");
+        Note n111 = dataRepository.getNote("Note 1.1.1");
+        Note n2 = dataRepository.getNote("Note 2");
 
-        assertEquals(dataRepository.getNote("Note 1.2").getId(), n11.getParentId());
+        assertEquals(1, n1.getPosition().getLevel());
+        assertEquals(2, n12.getPosition().getLevel());
+        assertEquals(3, n121.getPosition().getLevel());
+        assertEquals(3, n122.getPosition().getLevel());
+        assertEquals(3, n11.getPosition().getLevel());
+        assertEquals(4, n111.getPosition().getLevel());
+        assertEquals(1, n2.getPosition().getLevel());
 
-        assertEquals(1, n1.getLevel());
-        assertEquals(2, n12.getLevel());
-        assertEquals(3, n121.getLevel());
-        assertEquals(3, n122.getLevel());
-        assertEquals(3, n11.getLevel());
-        assertEquals(4, n111.getLevel());
-        assertEquals(1, n2.getLevel());
+        assertTrue(n1.getPosition().getLft() < n12.getPosition().getLft());
+        assertTrue(n12.getPosition().getLft() < n121.getPosition().getLft());
+        assertTrue(n121.getPosition().getLft() < n121.getPosition().getRgt());
+        assertTrue(n121.getPosition().getRgt() < n122.getPosition().getLft());
+        assertTrue(n122.getPosition().getLft() < n122.getPosition().getRgt());
+        assertTrue(n122.getPosition().getRgt() < n11.getPosition().getLft());
+        assertTrue(n11.getPosition().getLft() < n111.getPosition().getLft());
+        assertTrue(n111.getPosition().getLft() < n111.getPosition().getRgt());
+        assertTrue(n111.getPosition().getRgt() < n11.getPosition().getRgt());
+        assertTrue(n11.getPosition().getRgt() < n12.getPosition().getRgt());
+        assertTrue(n12.getPosition().getRgt() < n1.getPosition().getRgt());
+        assertTrue(n1.getPosition().getRgt() < n2.getPosition().getLft());
+        assertTrue(n2.getPosition().getLft() < n2.getPosition().getRgt());
 
-        assertTrue(n1.getLft() < n12.getLft());
-        assertTrue(n12.getLft() < n121.getLft());
-        assertTrue(n121.getLft() < n121.getRgt());
-        assertTrue(n121.getRgt() < n122.getLft());
-        assertTrue(n122.getLft() < n122.getRgt());
-        assertTrue(n122.getRgt() < n11.getLft());
-        assertTrue(n11.getLft() < n111.getLft());
-        assertTrue(n111.getLft() < n111.getRgt());
-        assertTrue(n111.getRgt() < n11.getRgt());
-        assertTrue(n11.getRgt() < n12.getRgt());
-        assertTrue(n12.getRgt() < n1.getRgt());
-        assertTrue(n1.getRgt() < n2.getLft());
-        assertTrue(n2.getLft() < n2.getRgt());
+        assertEquals(n0.getId(), n1.getPosition().getParentId());
+        assertEquals(n1.getId(), n12.getPosition().getParentId());
+        assertEquals(n12.getId(), n121.getPosition().getParentId());
+        assertEquals(n12.getId(), n122.getPosition().getParentId());
+        assertEquals(n12.getId(), n11.getPosition().getParentId());
+        assertEquals(n11.getId(), n111.getPosition().getParentId());
+        assertEquals(n0.getId(), n2.getPosition().getParentId());
 
-        assertEquals(5, n1.getDescendantsCount());
-        assertEquals(4, n12.getDescendantsCount());
-        assertEquals(0, n121.getDescendantsCount());
-        assertEquals(0, n122.getDescendantsCount());
-        assertEquals(1, n11.getDescendantsCount());
-        assertEquals(0, n111.getDescendantsCount());
-        assertEquals(0, n2.getDescendantsCount());
+        assertEquals(5, n1.getPosition().getDescendantsCount());
+        assertEquals(4, n12.getPosition().getDescendantsCount());
+        assertEquals(0, n121.getPosition().getDescendantsCount());
+        assertEquals(0, n122.getPosition().getDescendantsCount());
+        assertEquals(1, n11.getPosition().getDescendantsCount());
+        assertEquals(0, n111.getPosition().getDescendantsCount());
+        assertEquals(0, n2.getPosition().getDescendantsCount());
     }
 
     @Test
@@ -291,49 +295,54 @@ public class StructureTest extends OrgzlyTest {
                 ,
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
 
+        Note n0 = dataRepository.getRootNode(book.getBook().getId());
+        Note n1 = dataRepository.getNote("Note 1");
+        Note n11 = dataRepository.getNote("Note 1.1");
+        Note n111 = dataRepository.getNote("Note 1.1.1");
+        Note n112 = dataRepository.getNote("Note 1.1.2");
+        Note n2 = dataRepository.getNote("Note 2");
+        Note n12 = dataRepository.getNote("Note 1.2");
 
-        NotePosition n1 = dataRepository.getNote("Note 1").getPosition();
-        NotePosition n11 = dataRepository.getNote("Note 1.1").getPosition();
-        NotePosition n111 = dataRepository.getNote("Note 1.1.1").getPosition();
-        NotePosition n112 = dataRepository.getNote("Note 1.1.2").getPosition();
-        NotePosition n2 = dataRepository.getNote("Note 2").getPosition();
-        NotePosition n12 = dataRepository.getNote("Note 1.2").getPosition();
+        assertEquals(n0.getId(), n1.getPosition().getParentId());
+        assertEquals(n1.getId(), n11.getPosition().getParentId());
+        assertEquals(n11.getId(), n111.getPosition().getParentId());
+        assertEquals(n11.getId(), n112.getPosition().getParentId());
+        assertEquals(n11.getId(), n2.getPosition().getParentId());
+        assertEquals(n1.getId(), n12.getPosition().getParentId());
 
-        assertEquals(dataRepository.getNote("Note 1.1").getId(), n2.getParentId());
+        assertEquals(1, n1.getPosition().getLevel());
+        assertEquals(2, n11.getPosition().getLevel());
+        assertEquals(3, n111.getPosition().getLevel());
+        assertEquals(3, n112.getPosition().getLevel());
+        assertEquals(3, n2.getPosition().getLevel());
+        assertEquals(2, n12.getPosition().getLevel());
 
-        assertEquals(1, n1.getLevel());
-        assertEquals(2, n11.getLevel());
-        assertEquals(3, n111.getLevel());
-        assertEquals(3, n112.getLevel());
-        assertEquals(3, n2.getLevel());
-        assertEquals(2, n12.getLevel());
+        assertTrue(n1.getPosition().getLft() < n11.getPosition().getLft());
+        assertTrue(n11.getPosition().getLft() < n111.getPosition().getLft());
+        assertTrue(n111.getPosition().getLft() < n111.getPosition().getRgt());
+        assertTrue(n111.getPosition().getLft() < n111.getPosition().getRgt());
+        assertTrue(n111.getPosition().getRgt() < n112.getPosition().getLft());
+        assertTrue(n112.getPosition().getLft() < n112.getPosition().getRgt());
+        assertTrue(n112.getPosition().getRgt() < n2.getPosition().getLft());
+        assertTrue(n2.getPosition().getLft() < n2.getPosition().getRgt());
+        assertTrue(n2.getPosition().getRgt() < n11.getPosition().getRgt());
+        assertTrue(n11.getPosition().getRgt() < n12.getPosition().getLft());
+        assertTrue(n12.getPosition().getLft() < n12.getPosition().getRgt());
+        assertTrue(n12.getPosition().getRgt() < n1.getPosition().getRgt());
 
-        assertTrue(n1.getLft() < n11.getLft());
-        assertTrue(n11.getLft() < n111.getLft());
-        assertTrue(n111.getLft() < n111.getRgt());
-        assertTrue(n111.getLft() < n111.getRgt());
-        assertTrue(n111.getRgt() < n112.getLft());
-        assertTrue(n112.getLft() < n112.getRgt());
-        assertTrue(n112.getRgt() < n2.getLft());
-        assertTrue(n2.getLft() < n2.getRgt());
-        assertTrue(n2.getRgt() < n11.getRgt());
-        assertTrue(n11.getRgt() < n12.getLft());
-        assertTrue(n12.getLft() < n12.getRgt());
-        assertTrue(n12.getRgt() < n1.getRgt());
+        assertEquals(5, n1.getPosition().getDescendantsCount());
+        assertEquals(3, n11.getPosition().getDescendantsCount());
+        assertEquals(0, n111.getPosition().getDescendantsCount());
+        assertEquals(0, n112.getPosition().getDescendantsCount());
+        assertEquals(0, n2.getPosition().getDescendantsCount());
+        assertEquals(0, n12.getPosition().getDescendantsCount());
 
-        assertEquals(5, n1.getDescendantsCount());
-        assertEquals(3, n11.getDescendantsCount());
-        assertEquals(0, n111.getDescendantsCount());
-        assertEquals(0, n112.getDescendantsCount());
-        assertEquals(0, n2.getDescendantsCount());
-        assertEquals(0, n12.getDescendantsCount());
-
-        assertEquals(0, n1.getFoldedUnderId());
-        assertEquals(0, n11.getFoldedUnderId());
-        assertEquals(dataRepository.getNote("Note 1.1").getId(), n111.getFoldedUnderId());
-        assertEquals(dataRepository.getNote("Note 1.1").getId(), n112.getFoldedUnderId());
-        assertEquals(dataRepository.getNote("Note 1.1").getId(), n2.getFoldedUnderId());
-        assertEquals(0, n12.getFoldedUnderId());
+        assertEquals(0, n1.getPosition().getFoldedUnderId());
+        assertEquals(0, n11.getPosition().getFoldedUnderId());
+        assertEquals(n11.getId(), n111.getPosition().getFoldedUnderId());
+        assertEquals(n11.getId(), n112.getPosition().getFoldedUnderId());
+        assertEquals(n11.getId(), n2.getPosition().getFoldedUnderId());
+        assertEquals(0, n12.getPosition().getFoldedUnderId());
     }
 
     @Test
@@ -342,7 +351,7 @@ public class StructureTest extends OrgzlyTest {
                                                         "description\n" +
                                                         "\n" +
                                                         "* Note 1\n" +
-                                                        "** Note 1.1\n" +
+                                                        "** Note 1.1\n" + // Folded
                                                         "*** Note 1.1.1\n");
 
         /* Cut & paste hidden 1.1.1 */
@@ -567,29 +576,46 @@ public class StructureTest extends OrgzlyTest {
     }
 
     @Test
-    public void testPromote3LevelOrphan() throws IOException {
+    public void testPromoteNoteWithOrphan() throws IOException {
         BookView book = testUtils.setupBook(
                 "notebook",
                 "* Note 1\n" +
-                "*** Note 2\n");
+                "** Note 2\n" +
+                "**** Note 3\n" +
+                "**** Note 4\n");
 
-        /* Promote first note. */
         dataRepository.promoteNote(book.getBook().getId(), dataRepository.getNote("Note 2").getId());
-
-        NotePosition n1 = dataRepository.getNote("Note 1").getPosition();
-        NotePosition n2 = dataRepository.getNote("Note 2").getPosition();
-
-        assertEquals(1, n1.getLevel());
-        assertEquals(2, n2.getLevel());
-
-        assertTrue(n1.getLft() + " < " + n2.getLft(), n1.getLft() < n2.getLft());
-        assertTrue(n2.getLft() + " < " + n2.getRgt(), n2.getLft() < n2.getRgt());
-        assertTrue(n2.getRgt() + " < " + n1.getRgt(), n2.getRgt() < n1.getRgt());
 
         assertEquals(
                 "* Note 1\n" +
-                "** Note 2\n",
+                "* Note 2\n" +
+                "*** Note 3\n" +
+                "*** Note 4\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
+
+        Note n0 = dataRepository.getRootNode(book.getBook().getId());
+        Note n1 = dataRepository.getNote("Note 1");
+        Note n2 = dataRepository.getNote("Note 2");
+        Note n3 = dataRepository.getNote("Note 3");
+        Note n4 = dataRepository.getNote("Note 4");
+
+        assertEquals(1, n1.getPosition().getLevel());
+        assertEquals(1, n2.getPosition().getLevel());
+        assertEquals(3, n3.getPosition().getLevel());
+        assertEquals(3, n4.getPosition().getLevel());
+
+        assertEquals(n0.getId(), n1.getPosition().getParentId());
+        assertEquals(n0.getId(), n2.getPosition().getParentId());
+        assertEquals(n2.getId(), n3.getPosition().getParentId());
+        assertEquals(n2.getId(), n4.getPosition().getParentId());
+
+        assertTrue(n1.getPosition().getLft() < n1.getPosition().getRgt());
+        assertTrue(n1.getPosition().getRgt() < n2.getPosition().getLft());
+        assertTrue(n2.getPosition().getLft() < n3.getPosition().getLft());
+        assertTrue(n3.getPosition().getLft() < n3.getPosition().getRgt());
+        assertTrue(n3.getPosition().getRgt() < n4.getPosition().getLft());
+        assertTrue(n4.getPosition().getLft() < n4.getPosition().getRgt());
+        assertTrue(n4.getPosition().getRgt() < n2.getPosition().getRgt());
     }
 
     @Test
@@ -704,15 +730,13 @@ public class StructureTest extends OrgzlyTest {
         assertEquals(dataRepository.getRootNode(book.getBook().getId()).getId(), n2.getParentId());
     }
 
-    @Ignore
     @Test
-    public void testPasteFolded() {
-        BookView book = testUtils.setupBook("notebook", "" +
-                                                        "description\n" +
-                                                        "\n" +
-                                                        "* Note 1\n" +
-                                                        "** Note 1.1\n" +
-                                                        "* Note 2\n");
+    public void testPasteFoldedSubtree() throws IOException {
+        BookView book = testUtils.setupBook(
+                "notebook",
+                "* Note 1\n" +
+                "** Note 1.1\n" +
+                "* Note 2\n");
 
         UseCaseRunner.run(new NoteToggleFolding(dataRepository.getNote("Note 1").getId()));
 
@@ -728,7 +752,13 @@ public class StructureTest extends OrgzlyTest {
         Note n = dataRepository.getNote("Note 2");
         UseCaseRunner.run(new NotePaste(n.getPosition().getBookId(), n.getId(), Place.ABOVE));
 
-        /* Remains folded. */
+        assertEquals(
+                "* Note 1\n" +
+                "** Note 1.1\n" +
+                "* Note 2\n",
+                dataRepository.getBookContent("notebook", BookFormat.ORG));
+
+        // Remains folded
         assertTrue(dataRepository.getNote("Note 1").getPosition().isFolded());
         assertEquals(
                 dataRepository.getNote("Note 1").getId(),

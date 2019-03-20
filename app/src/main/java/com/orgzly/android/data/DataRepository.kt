@@ -624,7 +624,12 @@ class DataRepository @Inject constructor(
         })
     }
 
-    private fun pasteNotesClipboard(clipboard: NotesClipboard, place: Place, targetNoteId: Long, keepIds: Boolean = true): Set<Long> {
+    private fun pasteNotesClipboard(
+            clipboard: NotesClipboard,
+            place: Place,
+            targetNoteId: Long,
+            keepIds: Boolean = true): Set<Long> {
+
         val pastedNoteIds = HashSet<Long>()
 
         val targetNote = db.note().get(targetNoteId) ?: return pastedNoteIds
@@ -718,9 +723,28 @@ class DataRepository @Inject constructor(
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Parsing clipboard:\n${clipboard.content}")
 
+        var lastNoteId = 0L
+        val parentIds = ArrayDeque<Long>().apply {
+            add(pastedParentId)
+        }
+        val idsMap = mutableMapOf<Long, Long>()
+
         for (clippedNote in clipboard.getNotes()) {
+            val level = levelOffset + clippedNote.position.level
+
             val lft = pastedLft + clippedNote.position.lft - 1
             val rgt = pastedLft + clippedNote.position.rgt - 1
+
+            val foldedUnderId = idsMap[clippedNote.position.foldedUnderId]
+                    ?: if (foldedUnder != 0L) foldedUnder else 0
+
+            while (lastNoteId != 0L && clippedNote.position.level > parentIds.size) {
+                parentIds.addLast(lastNoteId)
+            }
+
+            while (parentIds.size > 0 && clippedNote.position.level < parentIds.size) {
+                parentIds.removeLast()
+            }
 
             val note = clippedNote.copy(
                     id = if (keepIds) clippedNote.id else 0,
@@ -728,32 +752,27 @@ class DataRepository @Inject constructor(
                             bookId = bookId,
                             lft = lft,
                             rgt = rgt,
-                            level = clippedNote.position.level + levelOffset,
-                            parentId = if (clippedNote.position.level == 1)
-                                pastedParentId
-                            else
-                                clippedNote.position.parentId
+                            level = level,
+                            parentId = parentIds.peekLast(),
+                            foldedUnderId = foldedUnderId
                     ),
                     isCut = batchId
             )
 
-            val noteId = db.note().insert(note)
+            lastNoteId = db.note().insert(note)
 
-            pastedNoteIds += noteId
+            idsMap[clippedNote.id] = lastNoteId
 
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Inserted $noteId $note")
+            pastedNoteIds += lastNoteId
+
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Inserted $lastNoteId $note")
         }
 
-        db.note().unfoldNotBelongingToBatch(batchId)
-
-        if (foldedUnder != 0L) {
-            db.note().markBatchAsFolded(batchId, foldedUnder)
-        }
         db.noteAncestor().insertAncestorsForBatch(batchId)
 
         db.note().makeBatchVisible(batchId)
 
-        // Update descendants count for the note and its ancestors
+        // Update descendants count for the target note and its ancestors
         db.note().updateDescendantsCountForNoteAndAncestors(listOf(targetNote.id))
 
         updateBookIsModified(targetNote.position.bookId, true)
