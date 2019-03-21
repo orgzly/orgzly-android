@@ -254,7 +254,7 @@
     <string name="color_scheme">Skema warna</string>
     <string name="monospaced_font">Huruf monospace</string>
     <string name="monospaced_font_summary">Gunakan huruf monospace untuk konten catatan dan kata pengantar buku</string>
-    <string name="reversed_note_click_action">Reversed note click action</string>
+    <string name="reversed_note_click_action">Swap note click and long-click actions</string>
     <string name="reversed_note_click_action_summary">Click to select note, long-click to open</string>
     <string name="look_and_feel">Tampilan &amp; Nuansa</string>
     <string name="notes_list">Daftar catatan</string>

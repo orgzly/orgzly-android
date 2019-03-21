@@ -257,7 +257,7 @@
     <string name="color_scheme">Jeu de couleurs</string>
     <string name="monospaced_font">Police à chasse fixe</string>
     <string name="monospaced_font_summary">Utiliser une police à chasse fixe pour le contenu des notes et la préface du bloc-notes</string>
-    <string name="reversed_note_click_action">Reversed note click action</string>
+    <string name="reversed_note_click_action">Swap note click and long-click actions</string>
     <string name="reversed_note_click_action_summary">Click to select note, long-click to open</string>
     <string name="look_and_feel">Apparence</string>
     <string name="notes_list">Liste des notes</string>

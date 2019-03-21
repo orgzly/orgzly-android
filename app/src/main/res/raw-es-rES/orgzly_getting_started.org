@@ -50,7 +50,7 @@ Consulte http://www.orgzly.com/help#links para obtener más información.
 
 ** Están soportados formatos tipográficos básicos
 
-Puede escribir palabras en *negrita*, /italica/, _subrayadas_, = cita literal=, ~código~ y +tachadas+.
+Puede escribir palabras en *negrita*, /itálica/, _subrayadas_, =cita literal=, ~código~ y +tachadas+.
 
 ** Se pueden crear listas de verificación
 

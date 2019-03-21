@@ -257,7 +257,7 @@
     <string name="color_scheme">Kleurenschema</string>
     <string name="monospaced_font">Monospaced-lettertype</string>
     <string name="monospaced_font_summary">Gebruik monospaced lettertype voor notitie-inhoud en notitieboekjevoorwoord</string>
-    <string name="reversed_note_click_action">Reversed note click action</string>
+    <string name="reversed_note_click_action">Swap note click and long-click actions</string>
     <string name="reversed_note_click_action_summary">Click to select note, long-click to open</string>
     <string name="look_and_feel">Weergave</string>
     <string name="notes_list">Lijst van notities</string>
