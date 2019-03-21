@@ -10,6 +10,7 @@ import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -42,20 +43,16 @@ public class AgendaUtils {
     }
 
     /** Used by tests. */
-    static List<DateTime> expandOrgDateTime(String rangeStr, Calendar now, int days) {
-
-        OrgRange range = OrgRange.parseOrNull(rangeStr);
-        if (range == null) {
-            return new ArrayList<>();
-        }
-
-        return expandOrgDateTime(range, true, new DateTime(now), days);
+    static List<DateTime> expandOrgDateTime(String rangeStr, Calendar now, int days, boolean overdueToday) {
+        return expandOrgDateTime(OrgRange.parse(rangeStr), overdueToday, new DateTime(now), days);
     }
 
     private static List<DateTime> expandOrgDateTime(
             OrgRange range, boolean overdueToday, DateTime now, int days) {
 
-        List<DateTime> result = new ArrayList<>();
+        // Only unique values
+        Set<DateTime> result = new LinkedHashSet<>();
+
         OrgDateTime rangeStart = range.getStartTime();
         OrgDateTime rangeEnd = range.getEndTime();
 
@@ -83,7 +80,7 @@ public class AgendaUtils {
             result.addAll(OrgDateTimeUtils.getTimesInInterval(rangeStart, now, to, true, 0));
         }
 
-        return result;
+        return new ArrayList<>(result);
     }
 
     private static OrgDateTime buildOrgDateTimeFromDate(DateTime date, OrgRepeater repeater) {
