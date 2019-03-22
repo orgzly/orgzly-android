@@ -78,7 +78,6 @@ import com.orgzly.android.usecase.NoteFindWithProperty;
 import com.orgzly.android.usecase.NoteMove;
 import com.orgzly.android.usecase.NotePaste;
 import com.orgzly.android.usecase.NotePromote;
-import com.orgzly.android.usecase.NoteRefile;
 import com.orgzly.android.usecase.NoteUpdate;
 import com.orgzly.android.usecase.NoteUpdateDeadlineTime;
 import com.orgzly.android.usecase.NoteUpdateScheduledTime;
@@ -928,11 +927,6 @@ public class MainActivity extends CommonActivity
     public void onNotesMoveRequest(long bookId, Set<Long> noteIds, int offset) {
         mPromoteDemoteOrMoveRequested = true;
         mSyncFragment.run(new NoteMove(bookId, noteIds, offset));
-    }
-
-    @Override
-    public void onNotesRefileRequest(Set<Long> noteIds, long targetBookId) {
-        mSyncFragment.run(new NoteRefile(noteIds, targetBookId));
     }
 
     @Override

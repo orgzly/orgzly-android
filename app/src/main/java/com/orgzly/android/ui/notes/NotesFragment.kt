@@ -12,6 +12,7 @@ import com.orgzly.android.ui.NotePlace
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.dialogs.NoteStateDialog
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
+import com.orgzly.android.ui.refile.RefileFragment
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
 import com.orgzly.org.datetime.OrgDateTime
@@ -75,20 +76,8 @@ abstract class NotesFragment :
         }
     }
 
-    protected fun openNoteRefileDialog(listener: Listener, noteIds: Set<Long>) {
-        val books = dataRepository.getBooks()
-        val bookNames = arrayOfNulls<String>(books.size)
-        for (i in books.indices) {
-            bookNames[i] = books[i].book.name
-        }
-
-        dialog = AlertDialog.Builder(context)
-                .setTitle(R.string.refile_to)
-                .setItems(bookNames) { _, which ->
-                    val (book) = books[which]
-                    listener.onNotesRefileRequest(noteIds, book.id)
-                }
-                .show()
+    protected fun openNoteRefileDialog(noteIds: Set<Long>) {
+         RefileFragment.getInstance(noteIds).show(fragmentManager, RefileFragment.FRAGMENT_TAG)
     }
 
     protected fun openNoteStateDialog(listener: Listener, noteIds: Set<Long>, currentState: String?) {
@@ -171,8 +160,6 @@ abstract class NotesFragment :
         fun onNoteFocusInBookRequest(noteId: Long)
 
         fun onNoteNewRequest(target: NotePlace)
-
-        fun onNotesRefileRequest(noteIds: Set<Long>, targetBookId: Long)
 
         fun onStateChangeRequest(noteIds: Set<Long>, state: String?)
 

@@ -9,6 +9,7 @@ open class CommonViewModel : ViewModel() {
         try {
             action()
         } catch (e: Exception) {
+            e.printStackTrace()
             errorEvent.postValue(e)
         }
     }

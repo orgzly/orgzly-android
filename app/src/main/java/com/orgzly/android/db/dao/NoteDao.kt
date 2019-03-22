@@ -32,6 +32,12 @@ abstract class NoteDao : BaseDao<Note> {
     @Query("SELECT * FROM notes WHERE id IN (:ids) ORDER BY lft DESC LIMIT 1")
     abstract fun getLast(ids: Set<Long>): Note?
 
+    @Query("SELECT * FROM notes WHERE book_id = :bookId AND level = 1 AND $WHERE_EXISTING_NOTES ORDER BY lft")
+    abstract fun getTopLevel(bookId: Long): List<Note>
+
+    @Query("SELECT * FROM notes WHERE parent_id = :id AND $WHERE_EXISTING_NOTES ORDER BY lft")
+    abstract fun getChildren(id: Long): List<Note>
+
     @Query("SELECT DISTINCT tags FROM notes WHERE tags IS NOT NULL AND tags != ''")
     abstract fun getDistinctTagsLiveData(): LiveData<List<String>>
 
@@ -236,7 +242,7 @@ abstract class NoteDao : BaseDao<Note> {
     """)
     abstract fun unfoldNotesFoldedUnderOthers(ids: Set<Long>)
 
-    @Query("UPDATE notes SET folded_under_id = :foldedUnder WHERE id = :ids AND folded_under_id = 0")
+    @Query("UPDATE notes SET folded_under_id = :foldedUnder WHERE id IN (:ids) AND folded_under_id = 0")
     abstract fun foldUnfolded(ids: Set<Long>, foldedUnder: Long)
 
     @Query("UPDATE notes SET parent_id = :parentId WHERE id = :noteId")

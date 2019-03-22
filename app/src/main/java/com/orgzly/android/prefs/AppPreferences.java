@@ -851,4 +851,18 @@ public class AppPreferences {
         String key = context.getResources().getString(R.string.pref_key_notes_clipboard);
         getStateSharedPreferences(context).edit().putString(key, value).apply();
     }
+
+    /*
+     * Refile history
+     */
+
+    public static String refileLastLocation(Context context) {
+        String key = context.getResources().getString(R.string.pref_key_refile_last_location);
+        return getStateSharedPreferences(context).getString(key, null);
+    }
+
+    public static void refileLastLocation(Context context, String value) {
+        String key = context.getResources().getString(R.string.pref_key_refile_last_location);
+        getStateSharedPreferences(context).edit().putString(key, value).apply();
+    }
 }

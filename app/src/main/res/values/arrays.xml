@@ -22,4 +22,10 @@
         <item>@string/repeater_description_restart</item>
     </string-array>
 
+    <string-array name="refile_places">
+        <item>@string/under</item>
+        <item>@string/above</item>
+        <item>@string/below</item>
+    </string-array>
+
 </resources>

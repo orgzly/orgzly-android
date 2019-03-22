@@ -118,6 +118,7 @@
         <item name="ic_done_24dp">@drawable/ic_done_black_24dp</item>
         <item name="ic_edit_24dp">@drawable/ic_edit_black_24dp</item>
         <item name="ic_event_24dp">@drawable/ic_event_black_24dp</item>
+        <item name="ic_history_24dp">@drawable/ic_history_black_24dp</item>
         <item name="ic_file_download_24dp">@drawable/ic_file_download_black_24dp</item>
         <item name="ic_file_upload_24dp">@drawable/ic_file_upload_black_24dp</item>
         <item name="ic_flag_24dp">@drawable/ic_flag_black_24dp</item>
@@ -134,8 +135,8 @@
         <item name="ic_language_18dp">@drawable/ic_language_black_18dp</item>
         <item name="ic_library_books_24dp">@drawable/ic_library_books_black_24dp</item>
         <item name="ic_link_18dp">@drawable/ic_link_black_18dp</item>
+        <item name="ic_move_to_inbox_24dp">@drawable/ic_move_to_inbox_black_24dp</item>
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_black_24dp</item>
-        <item name="ic_open_in_browser_24dp">@drawable/ic_open_in_browser_black_24dp</item>
         <item name="ic_open_in_new_24dp">@drawable/ic_open_in_new_black_24dp</item>
         <item name="ic_outline_check_circle_18dp">@drawable/outline_check_circle_black_18</item>
         <item name="ic_outline_check_circle_24dp">@drawable/outline_check_circle_black_24</item>
@@ -170,6 +171,7 @@
         <item name="oic_today_36dp">@drawable/cic_today_black_36dp</item>
         <item name="oic_tomorrow_36dp">@drawable/cic_tomorrow_black_36dp</item>
 
+        <item name="active_focused_icon_alpha">0.87</item>
         <item name="oic_item_alpha">0.54</item>
 
         <item name="bullet_default">@drawable/bullet_state_default</item>
@@ -278,6 +280,7 @@
         <item name="ic_done_24dp">@drawable/ic_done_white_24dp</item>
         <item name="ic_edit_24dp">@drawable/ic_edit_white_24dp</item>
         <item name="ic_event_24dp">@drawable/ic_event_white_24dp</item>
+        <item name="ic_history_24dp">@drawable/ic_history_white_24dp</item>
         <item name="ic_file_download_24dp">@drawable/ic_file_download_white_24dp</item>
         <item name="ic_file_upload_24dp">@drawable/ic_file_upload_white_24dp</item>
         <item name="ic_flag_24dp">@drawable/ic_flag_white_24dp</item>
@@ -294,8 +297,8 @@
         <item name="ic_language_18dp">@drawable/ic_language_white_18dp</item>
         <item name="ic_library_books_24dp">@drawable/ic_library_books_white_24dp</item>
         <item name="ic_link_18dp">@drawable/ic_link_white_18dp</item>
+        <item name="ic_move_to_inbox_24dp">@drawable/ic_move_to_inbox_white_24dp</item>
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_white_24dp</item>
-        <item name="ic_open_in_browser_24dp">@drawable/ic_open_in_browser_white_24dp</item>
         <item name="ic_open_in_new_24dp">@drawable/ic_open_in_new_white_24dp</item>
         <item name="ic_outline_check_circle_18dp">@drawable/outline_check_circle_white_18</item>
         <item name="ic_outline_check_circle_24dp">@drawable/outline_check_circle_white_24</item>
@@ -330,6 +333,7 @@
         <item name="oic_today_36dp">@drawable/cic_today_white_36dp</item>
         <item name="oic_tomorrow_36dp">@drawable/cic_tomorrow_white_36dp</item>
 
+        <item name="active_focused_icon_alpha">1</item>
         <item name="oic_item_alpha">0.70</item>
 
         <item name="bullet_default">@drawable/bullet_state_default_dark</item>

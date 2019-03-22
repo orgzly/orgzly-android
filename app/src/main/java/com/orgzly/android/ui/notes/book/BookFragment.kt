@@ -624,9 +624,7 @@ class BookFragment :
 
             R.id.quick_bar_refile,
             R.id.book_cab_refile ->
-                listener?.let {
-                    openNoteRefileDialog(it, ids)
-                }
+                openNoteRefileDialog(ids)
 
             R.id.book_cab_paste_under -> {
                 pasteNotes(Place.UNDER, ids.first())
@@ -682,8 +680,6 @@ class BookFragment :
         fun onNotesDemoteRequest(noteIds: Set<Long>)
 
         fun onNotesMoveRequest(bookId: Long, noteIds: Set<Long>, offset: Int)
-
-        override fun onNotesRefileRequest(noteIds: Set<Long>, targetBookId: Long)
     }
 
     companion object {

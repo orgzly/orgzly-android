@@ -53,6 +53,7 @@
     <string name="open">Open</string>
     <string name="focus">Focus</string>
     <string name="widget">Widget</string>
+    <string name="history">History</string>
 
     <plurals name="notes_deleted">
         <item quantity="one">Note deleted</item>
@@ -575,4 +576,11 @@
     <string name="fixed_width_value">Width (in pixels)</string>
 
     <string name="share_target_service">Share to Orgzly notebook</string>
+
+    <string name="under">Under</string>
+    <string name="above">Above</string>
+    <string name="below">Below</string>
+
+    <string name="loading">Loading…</string>
+    <string name="go_to">Go to</string>
 </resources>

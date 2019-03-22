@@ -17,6 +17,7 @@ import com.orgzly.android.ui.notes.book.BookFragment
 import com.orgzly.android.ui.notes.query.agenda.AgendaFragment
 import com.orgzly.android.ui.notes.query.search.SearchFragment
 import com.orgzly.android.ui.notifications.SyncStatusBroadcastReceiver
+import com.orgzly.android.ui.refile.RefileFragment
 import com.orgzly.android.ui.repo.BrowserActivity
 import com.orgzly.android.ui.repos.ReposActivity
 import com.orgzly.android.ui.repo.DirectoryRepoActivity
@@ -126,4 +127,7 @@ internal abstract class AndroidModule {
 
     @ContributesAndroidInjector
     internal abstract fun contributeSyncFragment(): SyncFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun contributeRefileDialogFragment(): RefileFragment
 }

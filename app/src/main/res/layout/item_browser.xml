@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:alpha="?attr/oic_item_alpha"
-        android:src="?attr/ic_folder_open_24dp"/>
+        android:src="?attr/ic_folder_open_24dp" />
 
     <TextView
         android:id="@+id/item_browser_name"
@@ -27,6 +27,6 @@
         android:paddingBottom="2dp"
         android:textSize="?attr/font_medium"
         android:textColor="?attr/text_primary_color"
-        tools:text="FileOrDirectory"/>
+        tools:text="FileOrDirectory" />
 
 </LinearLayout>

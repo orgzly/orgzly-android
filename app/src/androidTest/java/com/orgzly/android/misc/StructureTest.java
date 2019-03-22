@@ -186,7 +186,7 @@ public class StructureTest extends OrgzlyTest {
 
         UseCaseRunner.run(new NoteRefile(
                 Collections.singleton(dataRepository.getLastNote("Note A-02").getId()),
-                bookB.getBook().getId()
+                new NotePlace(bookB.getBook().getId())
         ));
 
         assertEquals(
@@ -1311,7 +1311,7 @@ public class StructureTest extends OrgzlyTest {
 
         UseCaseRunner.run(new NoteRefile(
                 Collections.singleton(refileNote.getId()),
-                targetBook.getBook().getId()));
+                new NotePlace(targetBook.getBook().getId())));
 
         String actual = dataRepository.getBookContent("REFILE", BookFormat.ORG);
 
@@ -1476,7 +1476,7 @@ public class StructureTest extends OrgzlyTest {
 
         UseCaseRunner.run(new NoteRefile(
                 Collections.singleton(dataRepository.getLastNote("Note A-02").getId()),
-                book.getBook().getId()));
+                new NotePlace(book.getBook().getId())));
 
         UseCaseRunner.run(new NoteCopy(
                 book.getBook().getId(),

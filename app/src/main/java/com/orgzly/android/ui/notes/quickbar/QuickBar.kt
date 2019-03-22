@@ -173,7 +173,7 @@ class QuickBar(val context: Context, val inBook: Boolean) {
                     Button(R.id.quick_bar_new_above, R.styleable.Icons_oic_new_above_24dp),
                     Button(R.id.quick_bar_new_under, R.styleable.Icons_oic_new_under_24dp),
                     Button(R.id.quick_bar_new_below, R.styleable.Icons_oic_new_below_24dp),
-                    Button(R.id.quick_bar_refile, R.styleable.Icons_ic_open_in_browser_24dp)
+                    Button(R.id.quick_bar_refile, R.styleable.Icons_ic_move_to_inbox_24dp)
             )
 
             private val LEFT_IN_QUERY = listOf(

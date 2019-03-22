@@ -284,7 +284,7 @@ class DataRepository @Inject constructor(
 
         db.note().insert(NoteDao.rootNote(bookId))
 
-        return BookView(Book(bookId, name, isDummy =  true), 0)
+        return BookView(Book(bookId, name, isDummy = true), 0)
     }
 
     /**
@@ -582,12 +582,21 @@ class DataRepository @Inject constructor(
         })
     }
 
-    fun refileNotes(noteIds: Set<Long>, targetBookId: Long): Int {
-        val root = getRootNode(targetBookId) ?: return 0
+    fun refileNotes(noteIds: Set<Long>, target: NotePlace) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Refiling ${noteIds.size} notes to $target")
 
-        return db.runInTransaction(Callable {
-            moveSubtrees(noteIds, Place.UNDER, root.id)
-        })
+        if (target.noteId == 0L) { // To book
+            val root = getRootNode(target.bookId) ?: return
+
+            db.runInTransaction(Callable {
+                moveSubtrees(noteIds, Place.UNDER, root.id)
+            })
+
+        } else {
+            db.runInTransaction(Callable {
+                moveSubtrees(noteIds, Place.UNDER, target.noteId)
+            })
+        }
     }
 
     fun pasteNotes(clipboard: NotesClipboard, noteId: Long, place: Place): Int {
@@ -1091,8 +1100,24 @@ class DataRepository @Inject constructor(
         return db.note().get(noteId)
     }
 
+    fun getFirstNote(noteIds: Set<Long>): Note? {
+        return db.note().getFirst(noteIds)
+    }
+
+    fun getTopLevelNotes(bookId: Long): List<Note> {
+        return db.note().getTopLevel(bookId)
+    }
+
     fun getNoteAncestors(noteId: Long): List<Note> {
         return db.note().getAncestors(noteId)
+    }
+
+    fun getNotesAndSubtrees(ids: Set<Long>): List<Note> {
+        return db.note().getNotesForSubtrees(ids)
+    }
+
+    fun getNoteChildren(id: Long): List<Note> {
+        return db.note().getChildren(id)
     }
 
     fun getNoteProperties(noteId: Long): List<NoteProperty> {
