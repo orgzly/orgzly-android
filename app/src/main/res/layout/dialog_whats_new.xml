@@ -21,6 +21,15 @@
             android:layout_marginBottom="@dimen/space_between_content_areas"
             android:text="@string/whats_new_intro"/>
 
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.7.2-beta.2"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix missing expanded time instances in some cases" />
+
 
         <TextView
             style="@style/WhatsNewVersion"
