@@ -71,6 +71,12 @@
         <item quantity="other">Вирізати <b>%d</b> нотаток</item>
     </plurals>
     <string name="no_notes_cut">Нотатки відсутні</string>
+    <plurals name="notes_copied">
+        <item quantity="one">Нотатку скопійовано</item>
+        <item quantity="few">Скопійовано <b>%d</b> нотаток</item>
+        <item quantity="many">Copied <b>%d</b> notes</item>
+        <item quantity="other">Скопійовано <b>%d</b> нотаток</item>
+    </plurals>
     <plurals name="notes_pasted">
         <item quantity="one">Нотатку вставлено</item>
         <item quantity="few">Вставлено <b>%d</b> нотаток</item>
@@ -108,6 +114,7 @@
     <string name="books_context_menu_item_force_load">Примусово завантажити</string>
     <string name="move">Перемістити</string>
     <string name="cut">Вирізати</string>
+    <string name="copy">Копіювати</string>
     <string name="paste">Вставити</string>
     <string name="heads_action_menu_item_paste_above">Вставити вище</string>
     <string name="heads_action_menu_item_paste_under">Вставити всередені</string>
@@ -169,8 +176,8 @@
     <string name="collecting_notebooks_in_progress">Оновлення блокнотів…</string>
     <string name="syncing_in_progress">Синхронізація…</string>
     <string name="syncing_book">Синхронізація %s…</string>
-    <string name="sync_with_argument">Синхронізовано: %s</string>
-    <string name="syncing_failed_title">Не вдалося синхронізувати</string>
+    <string name="sync_with_argument">Синхронізація: %s</string>
+    <string name="syncing_failed_title">Помилка синхронізації</string>
     <string name="canceled">Відмінено</string>
     <string name="canceling">Відміна…</string>
     <string name="directory">Каталог</string>

@@ -71,6 +71,12 @@
         <item quantity="other">Вырезать <b>%d</b> заметок</item>
     </plurals>
     <string name="no_notes_cut">Нет заметок</string>
+    <plurals name="notes_copied">
+        <item quantity="one">Note copied</item>
+        <item quantity="few">Copied <b>%d</b> notes</item>
+        <item quantity="many">Скопировано <b>%d</b> заметок</item>
+        <item quantity="other">Copied <b>%d</b> notes</item>
+    </plurals>
     <plurals name="notes_pasted">
         <item quantity="one">Заметка вставлена</item>
         <item quantity="few">Вставлено <b>%d</b> заметок</item>
@@ -108,6 +114,7 @@
     <string name="books_context_menu_item_force_load">Принудительно загрузить</string>
     <string name="move">Переместить</string>
     <string name="cut">Вырезать</string>
+    <string name="copy">Скопировать</string>
     <string name="paste">Вставить</string>
     <string name="heads_action_menu_item_paste_above">Вставить выше</string>
     <string name="heads_action_menu_item_paste_under">Вставить внутри</string>

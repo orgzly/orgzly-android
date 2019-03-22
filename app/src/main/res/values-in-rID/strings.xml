@@ -65,6 +65,9 @@
         <item quantity="other">Potong <b>%d</b> catatan</item>
     </plurals>
     <string name="no_notes_cut">Tidak ada catatan yang dipotong</string>
+    <plurals name="notes_copied">
+        <item quantity="other">Copied <b>%d</b> notes</item>
+    </plurals>
     <plurals name="notes_pasted">
         <item quantity="other">Tempelkan <b>%d</b> catatan</item>
     </plurals>
@@ -99,6 +102,7 @@
     <string name="books_context_menu_item_force_load">Muat Paksa</string>
     <string name="move">Pindah</string>
     <string name="cut">Potong</string>
+    <string name="copy">Copy</string>
     <string name="paste">Tempel</string>
     <string name="heads_action_menu_item_paste_above">Tempel di atas</string>
     <string name="heads_action_menu_item_paste_under">Tempel di bawah</string>

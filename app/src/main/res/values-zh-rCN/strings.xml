@@ -65,6 +65,9 @@
         <item quantity="other">已剪切 <b>%d</b> 条笔记</item>
     </plurals>
     <string name="no_notes_cut">没有剪切的笔记</string>
+    <plurals name="notes_copied">
+        <item quantity="other">已复制 <b>%d</b> 笔记</item>
+    </plurals>
     <plurals name="notes_pasted">
         <item quantity="other">已粘贴 <b>%d</b> 笔记</item>
     </plurals>
@@ -99,6 +102,7 @@
     <string name="books_context_menu_item_force_load">强制加载</string>
     <string name="move">移动</string>
     <string name="cut">剪切</string>
+    <string name="copy">复制</string>
     <string name="paste">粘贴</string>
     <string name="heads_action_menu_item_paste_above">粘贴到上面</string>
     <string name="heads_action_menu_item_paste_under">粘贴到底下</string>

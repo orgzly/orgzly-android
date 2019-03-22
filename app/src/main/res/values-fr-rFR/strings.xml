@@ -67,6 +67,10 @@
         <item quantity="other">Couper <b>%d</b> notes</item>
     </plurals>
     <string name="no_notes_cut">Aucune note coupée</string>
+    <plurals name="notes_copied">
+        <item quantity="one">Note copiée</item>
+        <item quantity="other"><b>%d</b> notes copiées</item>
+    </plurals>
     <plurals name="notes_pasted">
         <item quantity="one">Note collée</item>
         <item quantity="other">Collé <b>%d</b> notes</item>
@@ -102,6 +106,7 @@
     <string name="books_context_menu_item_force_load">Forcer le chargement</string>
     <string name="move">Déplacer</string>
     <string name="cut">Couper</string>
+    <string name="copy">Copier</string>
     <string name="paste">Coller</string>
     <string name="heads_action_menu_item_paste_above">Coller avant</string>
     <string name="heads_action_menu_item_paste_under">Coller en dessous</string>
@@ -125,7 +130,7 @@
     <string name="clear_database_dialog_message">Vider la base de données locale ?</string>
     <string name="clear_database_summary">Vider la base de données locale</string>
     <string name="clear_database_performed">Base de données vidée</string>
-    <string name="getting_started_notebook_name">Getting Started with Orgzly</string>
+    <string name="getting_started_notebook_name">Débuter avec Orgzly</string>
     <string name="reload_getting_started">Importer « Pour commencer avec Orgzly »</string>
     <string name="reload_getting_started_summary">Importer la dernière version du bloc-notes</string>
     <string name="notebook_imported">Bloc-notes importé</string>
@@ -160,7 +165,7 @@
     <string name="no_repos">Aucun dépôt configuré</string>
     <string name="multiple_repos">Il existe plusieurs dépôts</string>
     <string name="book_encoding">Encodage du bloc-notes</string>
-    <string name="collecting_notebooks_in_progress">Collecting notebooks…</string>
+    <string name="collecting_notebooks_in_progress">Récupération des blocs-notes…</string>
     <string name="syncing_in_progress">Synchronisation en cours…</string>
     <string name="syncing_book">Synchronisation de %s en cours…</string>
     <string name="sync_with_argument">Synchroniser %s</string>
@@ -183,7 +188,7 @@
     <string name="share_type_not_supported">Le type de partage %s n\'est pas supporté</string>
     <string name="repositories">Dépôts</string>
     <string name="invalid_repo_url">URL du dépôt invalide « %s »</string>
-    <string name="repository_url_already_exists">Repository with this URL already exists</string>
+    <string name="repository_url_already_exists">Un dépôt avec cette URL existe déjà</string>
     <string name="message_unsupported_repository_type">Type de dépôt non pris en charge</string>
     <string name="fragment_left_drawer_list_view_content_description">Panneau de gauche</string>
     <string name="drawer_item">Élément du panneau</string>
@@ -257,8 +262,8 @@
     <string name="color_scheme">Jeu de couleurs</string>
     <string name="monospaced_font">Police à chasse fixe</string>
     <string name="monospaced_font_summary">Utiliser une police à chasse fixe pour le contenu des notes et la préface du bloc-notes</string>
-    <string name="reversed_note_click_action">Swap note click and long-click actions</string>
-    <string name="reversed_note_click_action_summary">Click to select note, long-click to open</string>
+    <string name="reversed_note_click_action">Échanger les actions des clics court et long sur les notes</string>
+    <string name="reversed_note_click_action_summary">Cliquer pour sélectionner une note, appui long pour l\'ouvrir</string>
     <string name="look_and_feel">Apparence</string>
     <string name="notes_list">Liste des notes</string>
     <string name="prefs_title_new_note">Nouvelle note</string>
@@ -348,7 +353,7 @@
     <string name="pref_title_reminders_for_deadline_times">Échéances</string>
     <string name="pref_title_summary_reminders_for_deadline_times">Afficher une notification pour les notes avec échéance</string>
     <string name="pref_title_reminders_for_event_times">Évènements</string>
-    <string name="pref_title_summary_reminders_for_event_times">Display notification for notes with event time</string>
+    <string name="pref_title_summary_reminders_for_event_times">Afficher une notification pour les notes avec une date d\'évènement</string>
     <string name="pref_title_reminders_sound">Son</string>
     <string name="pref_title_reminders_vibrate">Vibration</string>
     <string name="pref_title_reminders_led">Lumière</string>
@@ -360,8 +365,8 @@
     <string name="failed_importing_book">Échec de l\'importation du bloc-note : %s</string>
     <string name="edit_book_preface">Modifier la préface</string>
     <string name="book_preface_hint">Texte affiché avant la première note</string>
-    <string name="keep_screen_on_title">Enable option to keep the screen on</string>
-    <string name="keep_screen_on_summary">Display menu item for toggling the option</string>
+    <string name="keep_screen_on_title">Activer l\'option pour garder l\'écran allumé</string>
+    <string name="keep_screen_on_summary">Afficher l\'élément du menu permettant de modifier cette option</string>
     <string name="keep_screen_on">Garder l\'écran allumé</string>
     <string name="keep_screen_on_desc">Votre écran ne s\'éteindra pas tant que vous ne quittez pas ou que vous ne désactivez pas cette option</string>
     <string name="layout_direction">Sens de lecture</string>
@@ -455,11 +460,11 @@
     <string name="images">Images</string>
     <string name="display_inline_images">Activer les images</string>
     <string name="display_inline_images_summary">Afficher les images dans les notes</string>
-    <string name="scale_down_to_width">Scale down to width</string>
-    <string name="scale_down_to_width_summary">Scale down image to specified width</string>
-    <string name="argument_used">%s used</string>
+    <string name="scale_down_to_width">Réduire à la largeur</string>
+    <string name="scale_down_to_width_summary">Réduire l\'image pour qu\'elle fasse la largeur spécifiée</string>
+    <string name="argument_used">%s utilisé</string>
     <string name="argument_detected">%s détecté</string>
     <string name="argument_selected">%s sélectionné</string>
     <string name="fixed_width_value">Largeur (en pixels)</string>
-    <string name="share_target_service">Share to Orgzly notebook</string>
+    <string name="share_target_service">Partager vers un bloc-note Orgzly</string>
 </resources>

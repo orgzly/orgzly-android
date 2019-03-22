@@ -1,9 +1,14 @@
 Benvenuto su Orgzly!
 
 * Note
-** Click on the note to select it
+** Click on the note to open it
+** Click and hold the note to select it
 
 Puoi selezionare più note.
+
+** Fling note right to open its quick-menu
+
+Fling it left to open a different menu.
 
 ** Apri una nota che contiene sotto-note premendo sull'icona vicina ad essa
 ** Non ci sono limiti al numero di livelli che puoi avere

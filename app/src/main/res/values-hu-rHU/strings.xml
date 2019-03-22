@@ -22,7 +22,7 @@
     <string name="browse">Tallózás</string>
     <string name="dropbox">Dropbox</string>
     <string name="edit">Szerkesztés</string>
-    <string name="edit_note">Jegyzet szerkesztése</string>
+    <string name="edit_note">Bejegyzés szerkesztése</string>
     <string name="delete">Törlés</string>
     <string name="delete_with_quoted_argument">\"%s\" törlése</string>
     <string name="name">Név</string>
@@ -67,6 +67,10 @@
         <item quantity="other"><b>%d</b> jegyzet kivágva</item>
     </plurals>
     <string name="no_notes_cut">Nem vágtam ki bejegyzést</string>
+    <plurals name="notes_copied">
+        <item quantity="one">Note copied</item>
+        <item quantity="other"><b>%d</b> bejegyzés átmásolva</item>
+    </plurals>
     <plurals name="notes_pasted">
         <item quantity="one">Bejegyzés beillesztve</item>
         <item quantity="other"><b>%d</b> bejegyzés beillesztve</item>
@@ -102,6 +106,7 @@
     <string name="books_context_menu_item_force_load">Betöltés kényszerítése</string>
     <string name="move">Átmozgatás</string>
     <string name="cut">Kivágás</string>
+    <string name="copy">Másolás</string>
     <string name="paste">Beillesztés</string>
     <string name="heads_action_menu_item_paste_above">Beillesztés fölé</string>
     <string name="heads_action_menu_item_paste_under">Beillesztés alá</string>
