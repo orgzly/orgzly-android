@@ -14,8 +14,12 @@ import com.orgzly.android.usecase.NoteCreate;
 import com.orgzly.android.usecase.NoteCut;
 import com.orgzly.android.usecase.NoteDelete;
 import com.orgzly.android.usecase.NoteDemote;
+import com.orgzly.android.usecase.NoteMove;
 import com.orgzly.android.usecase.NotePaste;
+import com.orgzly.android.usecase.NotePromote;
+import com.orgzly.android.usecase.NoteRefile;
 import com.orgzly.android.usecase.NoteToggleFolding;
+import com.orgzly.android.usecase.UseCaseResult;
 import com.orgzly.android.usecase.UseCaseRunner;
 
 import org.junit.Test;
@@ -390,7 +394,10 @@ public class StructureTest extends OrgzlyTest {
 
         Note note = dataRepository.getNote("Note 1.1");
 
-        assertEquals(1, dataRepository.promoteNote(book.getBook().getId(), note.getId()));
+        UseCaseResult result = UseCaseRunner.run(new NotePromote(
+                book.getBook().getId(), Collections.singleton(note.getId())));
+
+        assertEquals(1, (int) result.getUserData());
 
         assertEquals("description\n" +
                      "\n" +
@@ -424,7 +431,10 @@ public class StructureTest extends OrgzlyTest {
 
         Note note = dataRepository.getNote("Note 1");
 
-        assertEquals(0, dataRepository.promoteNote(book.getBook().getId(), note.getId()));
+        UseCaseResult result = UseCaseRunner.run(new NotePromote(
+                book.getBook().getId(), Collections.singleton(note.getId())));
+
+        assertEquals(0, (int) result.getUserData());
     }
 
     @Test
@@ -441,8 +451,12 @@ public class StructureTest extends OrgzlyTest {
         Note note = dataRepository.getNote("Note 1.1.1");
 
         /* Promote 1.1.1 twice. */
-        assertEquals(1, dataRepository.promoteNote(book.getBook().getId(), note.getId()));
-        assertEquals(1, dataRepository.promoteNote(book.getBook().getId(), note.getId()));
+        UseCaseResult result1 = UseCaseRunner.run(new NotePromote(
+                book.getBook().getId(), Collections.singleton(note.getId())));
+        assertEquals(1, (int) result1.getUserData());
+        UseCaseResult result2 = UseCaseRunner.run(new NotePromote(
+                book.getBook().getId(), Collections.singleton(note.getId())));
+        assertEquals(1, (int) result2.getUserData());
 
         assertEquals("description\n" +
                      "\n" +
@@ -497,7 +511,10 @@ public class StructureTest extends OrgzlyTest {
 
         /* Promote folded 1.1 */
         UseCaseRunner.run(new NoteToggleFolding(note.getId()));
-        assertEquals(2, dataRepository.promoteNote(book.getBook().getId(), note.getId()));
+        UseCaseResult result = UseCaseRunner.run(new NotePromote(
+                book.getBook().getId(), Collections.singleton(note.getId())));
+        assertEquals(2, (int) result.getUserData());
+
 
         assertEquals("description\n" +
                      "\n" +
@@ -557,7 +574,9 @@ public class StructureTest extends OrgzlyTest {
                 "* Note 2\n");
 
         /* Promote first note. */
-        dataRepository.promoteNote(book.getBook().getId(), dataRepository.getNote("Note 1").getId());
+        UseCaseRunner.run(new NotePromote(
+                book.getBook().getId(),
+                Collections.singleton(dataRepository.getNote("Note 1").getId())));
 
         NotePosition n1 = dataRepository.getNote("Note 1").getPosition();
         NotePosition n2 = dataRepository.getNote("Note 2").getPosition();
@@ -584,7 +603,9 @@ public class StructureTest extends OrgzlyTest {
                 "**** Note 3\n" +
                 "**** Note 4\n");
 
-        dataRepository.promoteNote(book.getBook().getId(), dataRepository.getNote("Note 2").getId());
+        UseCaseRunner.run(new NotePromote(
+                book.getBook().getId(),
+                Collections.singleton(dataRepository.getNote("Note 2").getId())));
 
         assertEquals(
                 "* Note 1\n" +
@@ -626,7 +647,9 @@ public class StructureTest extends OrgzlyTest {
                 "**** Note 2\n");
 
         /* Promote first note. */
-        dataRepository.promoteNote(book.getBook().getId(), dataRepository.getNote("Note 2").getId());
+        UseCaseRunner.run(new NotePromote(
+                book.getBook().getId(),
+                Collections.singleton(dataRepository.getNote("Note 2").getId())));
 
         NotePosition n1 = dataRepository.getNote("Note 1").getPosition();
         NotePosition n2 = dataRepository.getNote("Note 2").getPosition();
@@ -652,9 +675,10 @@ public class StructureTest extends OrgzlyTest {
                 "** Note 1.1\n" +
                 "*** Note 1.1.1\n");
 
-        dataRepository.deleteNotes(
+
+        UseCaseRunner.run(new NoteDelete(
                 book.getBook().getId(),
-                Collections.singleton(dataRepository.getNote("Note 1.1").getId()));
+                Collections.singleton(dataRepository.getNote("Note 1.1").getId())));
 
         assertEquals("* Note 1\n", dataRepository.getBookContent("notebook", BookFormat.ORG));
     }
@@ -669,7 +693,10 @@ public class StructureTest extends OrgzlyTest {
                                                         "* Note 2\n");
 
         /* Demote 2. */
-        assertEquals(1, dataRepository.demoteNote(book.getBook().getId(), dataRepository.getNote("Note 2").getId()));
+        UseCaseResult result = UseCaseRunner.run(new NoteDemote(
+                book.getBook().getId(),
+                Collections.singleton(dataRepository.getNote("Note 2").getId())));
+        assertEquals(1, (int) result.getUserData());
 
         assertEquals("description\n" +
                      "\n" +
@@ -807,7 +834,10 @@ public class StructureTest extends OrgzlyTest {
                                                         "*** Note 2.1.1\n");
 
         /* Demote 2.1. */
-        assertEquals(0, dataRepository.demoteNote(book.getBook().getId(), dataRepository.getNote("Note 2.1").getId()));
+        UseCaseResult result = UseCaseRunner.run(new NoteDemote(
+                book.getBook().getId(),
+                Collections.singleton(dataRepository.getNote("Note 2.1").getId())));
+        assertEquals(0, (int) result.getUserData());
 
         assertEquals("description\n" +
                      "\n" +
@@ -1149,7 +1179,8 @@ public class StructureTest extends OrgzlyTest {
 
         Note firstNote = dataRepository.getNote("First");
 
-        dataRepository.moveNote(book.getBook().getId(), Collections.singleton(firstNote.getId()), 1);
+        UseCaseRunner.run(new NoteMove(
+                book.getBook().getId(), Collections.singleton(firstNote.getId()), 1));
 
         String actual = dataRepository.getBookContent("test_book", BookFormat.ORG);
 
@@ -1199,7 +1230,10 @@ public class StructureTest extends OrgzlyTest {
 
         Note refileNote = dataRepository.getNote("RefileMe");
 
-        dataRepository.refileNotes(book.getBook().getId(), Collections.singleton(refileNote.getId()), targetBook.getBook().getId());
+        UseCaseRunner.run(new NoteRefile(
+                book.getBook().getId(),
+                Collections.singleton(refileNote.getId()),
+                targetBook.getBook().getId()));
 
         String actual = dataRepository.getBookContent("REFILE", BookFormat.ORG);
 
