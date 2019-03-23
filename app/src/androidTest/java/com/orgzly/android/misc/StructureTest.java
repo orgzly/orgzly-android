@@ -683,42 +683,44 @@ public class StructureTest extends OrgzlyTest {
 
     @Test
     public void testDemote() throws IOException {
-        BookView book = testUtils.setupBook("notebook", "" +
-                                                        "description\n" +
-                                                        "\n" +
-                                                        "* Note 1\n" +
-                                                        "** Note 1.1\n" +
-                                                        "* Note 2\n");
+        testUtils.setupBook(
+                "notebook",
+                "\n" +
+                "* Note 1 :tag1:\n" +
+                "** Note 1.1\n" +
+                "* Note 2\n" +  // Demote
+                "** Note 3\n");
 
-        /* Demote 2. */
         UseCaseResult result = UseCaseRunner.run(new NoteDemote(
                 Collections.singleton(dataRepository.getLastNote("Note 2").getId())));
-        assertEquals(1, (int) result.getUserData());
+        assertEquals(2, (int) result.getUserData());
 
-        assertEquals("description\n" +
-                     "\n" +
-                     "* Note 1\n" +
-                     "** Note 1.1\n" +
-                     "** Note 2\n",
+        assertEquals(
+                "* Note 1 :tag1:\n" +
+                "** Note 1.1\n" +
+                "** Note 2\n" + // Demoted
+                "*** Note 3\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
 
-        NotePosition n1 = dataRepository.getLastNote("Note 1").getPosition();
-        NotePosition n11 = dataRepository.getLastNote("Note 1.1").getPosition();
-        NotePosition n2 = dataRepository.getLastNote("Note 2").getPosition();
+        Note n1 = dataRepository.getLastNote("Note 1");
+        Note n11 = dataRepository.getLastNote("Note 1.1");
+        Note n2 = dataRepository.getLastNote("Note 2");
 
-        assertEquals(2, n1.getDescendantsCount());
-        assertEquals(0, n11.getDescendantsCount());
-        assertEquals(0, n2.getDescendantsCount());
+        assertEquals(3, n1.getPosition().getDescendantsCount());
+        assertEquals(0, n11.getPosition().getDescendantsCount());
+        assertEquals(1, n2.getPosition().getDescendantsCount());
 
-        assertEquals(1, n1.getLevel());
-        assertEquals(2, n11.getLevel());
-        assertEquals(2, n2.getLevel());
+        assertEquals(1, n1.getPosition().getLevel());
+        assertEquals(2, n11.getPosition().getLevel());
+        assertEquals(2, n2.getPosition().getLevel());
 
-        assertTrue(n1.getLft() < n11.getLft());
-        assertTrue(n11.getLft() < n11.getRgt());
-        assertTrue(n11.getRgt() < n2.getLft());
-        assertTrue(n2.getLft() < n2.getRgt());
-        assertTrue(n2.getRgt() < n1.getRgt());
+        assertTrue(n1.getPosition().getLft() < n11.getPosition().getLft());
+        assertTrue(n11.getPosition().getLft() < n11.getPosition().getRgt());
+        assertTrue(n11.getPosition().getRgt() < n2.getPosition().getLft());
+        assertTrue(n2.getPosition().getLft() < n2.getPosition().getRgt());
+        assertTrue(n2.getPosition().getRgt() < n1.getPosition().getRgt());
+
+        assertEquals("tag1", dataRepository.getLastNoteView("Note 3").getInheritedTags());
     }
 
     @Test
@@ -1138,8 +1140,8 @@ public class StructureTest extends OrgzlyTest {
 
         assertEquals(expectedBook, dataRepository.getBookContent("notebook", BookFormat.ORG));
 
-        assertEquals(1, dataRepository.getNoteView("B").getInheritedTagsList().size());
-        assertEquals(2, dataRepository.getNoteView("C").getInheritedTagsList().size());
+        assertEquals(1, dataRepository.getLastNoteView("B").getInheritedTagsList().size());
+        assertEquals(2, dataRepository.getLastNoteView("C").getInheritedTagsList().size());
     }
 
     /* Test that root node's rgt is larger then notes' rgt. */

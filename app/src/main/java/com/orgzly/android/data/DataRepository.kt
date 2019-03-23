@@ -707,23 +707,24 @@ class DataRepository @Inject constructor(
         }
     }
 
-    private fun moveSubtrees(ids: Set<Long>, place: Place, targetNoteId: Long): Int {
-
+    private fun moveSubtrees(selectedIds: Set<Long>, place: Place, targetNoteId: Long): Int {
         val targetNote = db.note().get(targetNoteId) ?: return 0
 
         val targetPosition = TargetPosition.getInstance(db, targetNote, place)
 
-        val alignedNotes = getSubtreesAligned(ids)
+        val alignedNotes = getSubtreesAligned(selectedIds)
+
+        val ids = alignedNotes.map { it.id }.toSet()
 
         // Update descendant count for ancestors before move, not counting moved notes themselves
-        db.note().updateDescendantsCountForAncestors(ids, ids)
+        db.note().updateDescendantsCountForAncestors(selectedIds, selectedIds)
 
-        db.noteAncestor().deleteForSubtrees(ids)
+        db.noteAncestor().deleteForSubtrees(selectedIds)
 
         makeSpaceForNewNotes(alignedNotes.size, targetNote, place)
 
         // Update notes
-        alignedNotes.forEach { note ->
+        alignedNotes.map { note ->
             db.note().updateNote(
                     note.id,
                     targetNote.position.bookId,
@@ -741,7 +742,7 @@ class DataRepository @Inject constructor(
         // Update note ancestors table
         db.noteAncestor().insertAncestorsForNotes(ids)
 
-        db.note().updateDescendantsCountForAncestors(ids)
+        db.note().updateDescendantsCountForAncestors(selectedIds)
 
         db.note().unfoldNotesFoldedUnderOthers(ids)
         if (targetPosition.foldedUnder != 0L) {
@@ -1060,8 +1061,8 @@ class DataRepository @Inject constructor(
         return db.noteView().get(id)
     }
 
-    fun getNoteView(title: String): NoteView? {
-        return db.noteView().get(title)
+    fun getLastNoteView(title: String): NoteView? {
+        return db.noteView().getLast(title)
     }
 
     fun getLastNote(title: String): Note? {

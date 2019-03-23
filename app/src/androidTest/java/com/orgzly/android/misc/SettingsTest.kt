@@ -47,7 +47,7 @@ class SettingsTest : OrgzlyTest() {
     fun testStarInContent() {
         testUtils.setupBook("booky", "* TODO [#A] Title")
 
-        dataRepository.getNoteView("Title")?.let { noteView ->
+        dataRepository.getLastNoteView("Title")?.let { noteView ->
             val payload = NoteBuilder.newPayload(noteView, emptyList())
                     .copy(content = "Content\n* with star\nin the middle")
 
@@ -56,7 +56,7 @@ class SettingsTest : OrgzlyTest() {
 
         assertEquals(0, dataRepository.reParseNotesStateAndTitles())
 
-        dataRepository.getNoteView("Title")?.let {
+        dataRepository.getLastNoteView("Title")?.let {
             assertEquals("TODO", it.note.state)
             assertEquals("A", it.note.priority)
             assertEquals("Title", it.note.title)

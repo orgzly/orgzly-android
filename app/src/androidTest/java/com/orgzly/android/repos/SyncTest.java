@@ -57,7 +57,7 @@ public class SyncTest extends OrgzlyTest {
 
         testUtils.sync();
 
-        NoteView noteView = dataRepository.getNoteView("Note");
+        NoteView noteView = dataRepository.getLastNoteView("Note");
         assertEquals(
                 "<2015-01-13 уто 13:00-14:14>--<2015-01-14 сре 14:10-15:20>",
                 noteView.getScheduledRangeString());
