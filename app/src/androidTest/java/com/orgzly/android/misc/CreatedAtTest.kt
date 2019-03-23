@@ -26,7 +26,7 @@ class CreatedAtTest : OrgzlyTest() {
                         ":" + createdProperty + ": [2018-01-01 12:00]\n" +
                         ":END:\n")
 
-        val note = dataRepository.getNote("Note [a-1]")
+        val note = dataRepository.getLastNote("Note [a-1]")
 
         assertEquals(
                 OrgDateTime.parse("[2018-01-01 12:00]").calendar.timeInMillis,
@@ -51,7 +51,7 @@ class CreatedAtTest : OrgzlyTest() {
 
             dataRepository.loadBookFromFile("book-a", BookFormat.ORG, file)
 
-            val note = dataRepository.getNote("Note [a-1]")
+            val note = dataRepository.getLastNote("Note [a-1]")
 
             assertEquals(1, dataRepository.getNoteProperties(note!!.id).size)
         }
@@ -70,7 +70,7 @@ class CreatedAtTest : OrgzlyTest() {
 
         withTempFile { file ->
             // Remove property
-            dataRepository.getNote("Note [a-1]")?.let {
+            dataRepository.getLastNote("Note [a-1]")?.let {
                 dataRepository.updateNote(it.id, NotePayload.getInstance(it.title, it.content))
             }
 
@@ -78,7 +78,7 @@ class CreatedAtTest : OrgzlyTest() {
 
             dataRepository.loadBookFromFile("book-a", BookFormat.ORG, file)
 
-            val note = dataRepository.getNote("Note [a-1]")
+            val note = dataRepository.getLastNote("Note [a-1]")
             val properties = dataRepository.getNoteProperties(note!!.id)
 
             assertEquals(0, properties.size)

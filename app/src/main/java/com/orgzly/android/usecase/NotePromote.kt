@@ -2,9 +2,9 @@ package com.orgzly.android.usecase
 
 import com.orgzly.android.data.DataRepository
 
-class NotePromote(val bookId: Long, val noteIds: Set<Long>) : UseCase() {
+class NotePromote(val noteIds: Set<Long>) : UseCase() {
     override fun run(dataRepository: DataRepository): UseCaseResult {
-        val count = dataRepository.promoteNotes(bookId, noteIds)
+        val count = dataRepository.promoteNotes(noteIds)
 
         return UseCaseResult(
                 modifiesLocalData = true,

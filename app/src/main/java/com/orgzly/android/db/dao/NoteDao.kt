@@ -6,6 +6,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NotePosition
+import org.intellij.lang.annotations.Language
 
 
 @Dao
@@ -20,7 +21,7 @@ abstract class NoteDao : BaseDao<Note> {
     abstract fun get(id: Long): Note?
 
     @Query("SELECT * FROM notes WHERE title = :title ORDER BY lft DESC LIMIT 1")
-    abstract fun get(title: String): Note?
+    abstract fun getLast(title: String): Note?
 
     @Query("SELECT * FROM notes WHERE id IN (:ids)")
     abstract fun get(ids: Set<Long>): List<Note>
@@ -59,10 +60,10 @@ abstract class NoteDao : BaseDao<Note> {
         WHERE id IN (
         SELECT DISTINCT d.id
         FROM notes n, notes d
-        WHERE d.book_id = :bookId AND n.book_id = :bookId AND n.id IN (:ids) AND d.is_cut = 0 AND n.is_cut = 0 AND n.lft <= d.lft AND d.rgt <= n.rgt
+        WHERE d.book_id = n.book_id AND n.id IN (:ids) AND d.is_cut = 0 AND n.is_cut = 0 AND n.lft <= d.lft AND d.rgt <= n.rgt
         )
     """)
-    abstract fun markAsCut(bookId: Long, ids: Set<Long>, batchId: Long): Int
+    abstract fun markAsCut(ids: Set<Long>, batchId: Long): Int
 
     @Query(SELECT_NOTE_AND_ANCESTORS_IDS)
     abstract fun getNoteAndAncestorsIds(ids: List<Long>): List<Long>
@@ -88,7 +89,7 @@ abstract class NoteDao : BaseDao<Note> {
         WHERE n.id IN (:ids) AND n.level > 0 AND d.book_id = n.book_id AND d.is_cut = 0 AND n.is_cut = 0 AND n.lft <= d.lft AND d.rgt <= n.rgt
         GROUP BY d.id ORDER BY d.lft
     """)
-    abstract fun getSubtrees(ids: Set<Long>): List<Note>
+    abstract fun getNoteAndDescendants(ids: Set<Long>): List<Note>
 
     @Query("""
         SELECT count(*)
@@ -118,31 +119,10 @@ abstract class NoteDao : BaseDao<Note> {
         SELECT *
         FROM notes
         WHERE book_id = :bookId AND $WHERE_EXISTING_NOTES AND :lft < lft AND rgt < :rgt
-        ORDER BY lft DESC
-        LIMIT 1
-    """)
-    abstract fun getFirstDescendant(bookId: Long, lft: Long, rgt: Long): Note?
-
-    @Query("""
-        SELECT *
-        FROM notes
-        WHERE book_id = :bookId AND $WHERE_EXISTING_NOTES AND :lft < lft AND rgt < :rgt
         ORDER BY level, lft DESC
         LIMIT 1
     """)
     abstract fun getLastHighestLevelDescendant(bookId: Long, lft: Long, rgt: Long): Note?
-
-    @Query("""
-        UPDATE notes
-        SET descendants_count = (
-            SELECT count(*)
-            FROM notes d
-            WHERE (notes.book_id = d.book_id AND $WHERE_EXISTING_NOTES AND notes.lft < d.lft AND d.rgt < notes.rgt)
-        )
-        WHERE id IN ($SELECT_ANCESTORS_IDS)
-    """)
-    abstract fun updateDescendantsCountForAncestors(ids: Set<Long>)
-
 
     @Query("""
         UPDATE notes
@@ -170,6 +150,17 @@ abstract class NoteDao : BaseDao<Note> {
         WHERE id IN ($SELECT_NOTE_AND_ANCESTORS_IDS)
     """)
     abstract fun updateDescendantsCountForNoteAndAncestors(ids: List<Long>)
+
+    @Query("""
+        UPDATE notes
+        SET descendants_count = (
+            SELECT count(*)
+            FROM notes d
+            WHERE (notes.book_id = d.book_id AND $WHERE_EXISTING_NOTES AND notes.lft < d.lft AND d.rgt < notes.rgt AND d.id NOT IN (:ignoreIds))
+        )
+        WHERE id IN ($SELECT_ANCESTORS_IDS)
+    """)
+    abstract fun updateDescendantsCountForAncestors(ids: Set<Long>, ignoreIds: Set<Long> = emptySet())
 
     @Query("UPDATE notes SET content = :content WHERE id = :id")
     abstract fun updateContent(id: Long, content: String?)
@@ -254,24 +245,26 @@ abstract class NoteDao : BaseDao<Note> {
     @Query("UPDATE notes SET rgt = rgt + :inc WHERE book_id = :bookId AND is_cut = 0 AND rgt >= :value")
     abstract fun incrementRgtForRgtGeOrRoot(bookId: Long, value: Long, inc: Int)
 
-    @Query("UPDATE notes SET folded_under_id = 0 WHERE is_cut = :batchId AND folded_under_id NOT IN (SELECT id FROM notes WHERE is_cut = :batchId)")
-    abstract fun unfoldNotBelongingToBatch(batchId: Long)
+    @Query("""
+        UPDATE notes
+        SET folded_under_id = 0
+        WHERE id IN (:ids)
+        AND folded_under_id NOT IN (:ids)
+    """)
+    abstract fun unfoldNotesFoldedUnderOthers(ids: Set<Long>)
 
-    @Query("UPDATE notes SET folded_under_id = :foldedUnder WHERE is_cut = :batchId AND folded_under_id = 0")
-    abstract fun markBatchAsFolded(batchId: Long, foldedUnder: Long)
+    @Query("UPDATE notes SET folded_under_id = :foldedUnder WHERE id = :ids AND folded_under_id = 0")
+    abstract fun foldUnfolded(ids: Set<Long>, foldedUnder: Long)
 
     @Query("UPDATE notes SET parent_id = :parentId WHERE id = :noteId")
     abstract fun updateParentForNote(noteId: Long, parentId: Long)
 
-    @Query("UPDATE notes SET parent_id = :parentId WHERE is_cut = :batchId AND lft = :batchMinLft")
-    abstract fun updateParentOfBatchRoot(batchId: Long, batchMinLft: Long, parentId: Long)
-
     @Query("""
         UPDATE notes
-        SET lft = lft + :positionOffset, rgt = rgt + :positionOffset, level = level + :levelOffset, book_id = :bookId
-        WHERE is_cut = :batchId
+        SET book_id = :bookId, level = :level, lft = :lft, rgt = :rgt, parent_id = :parentId
+        WHERE id = :noteId
     """)
-    abstract fun moveBatch(batchId: Long, bookId: Long, positionOffset: Long, levelOffset: Int)
+    abstract fun updateNote(noteId: Long, bookId: Long, level: Int, lft: Long, rgt: Long, parentId: Long)
 
     @Query("UPDATE notes SET is_cut = 0 WHERE is_cut = :batchId")
     abstract fun makeBatchVisible(batchId: Long): Int
@@ -327,6 +320,7 @@ abstract class NoteDao : BaseDao<Note> {
         /* Every book has a root note with level 0. */
         const val WHERE_EXISTING_NOTES = "(is_cut = 0 AND level > 0)"
 
+        @Language("RoomSql")
         const val SELECT_ANCESTORS_IDS = """
             SELECT DISTINCT a.id
             FROM notes n, notes a
@@ -338,6 +332,7 @@ abstract class NoteDao : BaseDao<Note> {
             AND n.rgt < a.rgt
             """
 
+        @Language("RoomSql")
         const val SELECT_NOTE_AND_ANCESTORS_IDS = """
             SELECT DISTINCT a.id
             FROM notes n, notes a

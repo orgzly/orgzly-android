@@ -519,11 +519,7 @@ class DataRepository @Inject constructor(
         }
     }
 
-    fun promoteNote(bookId: Long, noteId: Long): Int {
-        return promoteNotes(bookId, setOf(noteId))
-    }
-
-    fun promoteNotes(bookId: Long, ids: Set<Long>): Int {
+    fun promoteNotes(ids: Set<Long>): Int {
         return db.runInTransaction(Callable {
             val note = db.note().getFirst(ids) ?: return@Callable 0
 
@@ -532,27 +528,19 @@ class DataRepository @Inject constructor(
                 return@Callable 0
             }
 
-            val clipboard = NotesClipboard.create(this, ids)
-
-            deleteNotes(bookId, ids)
-
             // Paste just under parent if note's level is too high, below otherwise
             val parent = db.note().get(note.position.parentId) ?: return@Callable 0
-            val pasted = if (parent.position.level + 1 < note.position.level) {
-                pasteNotesClipboard(clipboard, Place.UNDER_AS_FIRST, note.position.parentId)
+            val count = if (parent.position.level + 1 < note.position.level) {
+                moveSubtrees(ids, Place.UNDER_AS_FIRST, note.position.parentId)
             } else {
-                pasteNotesClipboard(clipboard, Place.BELOW, note.position.parentId)
+                moveSubtrees(ids, Place.BELOW, note.position.parentId)
             }
 
-            return@Callable pasted.size
+            return@Callable count
         })
     }
 
-    fun demoteNote(bookId: Long, noteId: Long): Int {
-        return demoteNotes(bookId, setOf(noteId))
-    }
-
-    fun demoteNotes(bookId: Long, ids: Set<Long>): Int {
+    fun demoteNotes(ids: Set<Long>): Int {
         return db.runInTransaction(Callable {
             val note = db.note().getFirst(ids) ?: return@Callable 0
 
@@ -562,13 +550,7 @@ class DataRepository @Inject constructor(
 
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Previous sibling ${previousSibling.title}")
 
-            val clipboard = NotesClipboard.create(this, ids)
-
-            deleteNotes(bookId, ids)
-
-            val pasted = pasteNotesClipboard(clipboard, Place.UNDER, previousSibling.id)
-
-            return@Callable pasted.size
+            return@Callable moveSubtrees(ids, Place.UNDER, previousSibling.id)
         })
     }
 
@@ -592,111 +574,39 @@ class DataRepository @Inject constructor(
                     }
 
             target?.let {
-                val clipboard = NotesClipboard.create(this, noteIds)
-
-                deleteNotes(bookId, noteIds)
-
-                return@Callable pasteNotesClipboard(clipboard, it.place, it.noteId).size
+                return@Callable moveSubtrees(noteIds, it.place, it.noteId)
             }
 
             return@Callable 0
         })
     }
 
-    fun refileNotes(bookId: Long, noteIds: Set<Long>, targetBookId: Long): Int {
+    fun refileNotes(noteIds: Set<Long>, targetBookId: Long): Int {
         val root = getRootNode(targetBookId) ?: return 0
 
         return db.runInTransaction(Callable {
-            val clipboard = NotesClipboard.create(this, noteIds)
-
-            deleteNotes(bookId, noteIds)
-
-            pasteNotesClipboard(clipboard, Place.UNDER, root.id).size
+            moveSubtrees(noteIds, Place.UNDER, root.id)
         })
     }
 
     fun pasteNotes(clipboard: NotesClipboard, noteId: Long, place: Place): Int {
         return db.runInTransaction(Callable {
-            pasteNotesClipboard(clipboard, place, noteId, false).size
+            pasteNotesClipboard(clipboard, place, noteId)
         })
     }
 
     private fun pasteNotesClipboard(
             clipboard: NotesClipboard,
             place: Place,
-            targetNoteId: Long,
-            keepIds: Boolean = true): Set<Long> {
+            targetNoteId: Long): Int {
 
-        val pastedNoteIds = HashSet<Long>()
+        var count = 0
 
-        val targetNote = db.note().get(targetNoteId) ?: return pastedNoteIds
+        val targetNote = db.note().get(targetNoteId) ?: return 0
 
-        val bookId = targetNote.position.bookId
+        val targetPosition = TargetPosition.getInstance(db, targetNote, place)
 
-        val pastedLft: Long
-        val pastedLevel: Int
-        val pastedParentId: Long
-
-        /* If target note is hidden, hide pasted under the same note. */
-        var foldedUnder: Long = 0
-        if (targetNote.position.foldedUnderId != 0L) {
-            foldedUnder = targetNote.position.foldedUnderId
-        }
-
-        when (place) {
-            Place.ABOVE -> {
-                pastedLft = targetNote.position.lft
-                pastedLevel = targetNote.position.level
-                pastedParentId = targetNote.position.parentId
-            }
-
-            Place.UNDER -> {
-                val lastDescendant = db.note().getLastHighestLevelDescendant(
-                        targetNote.position.bookId, targetNote.position.lft, targetNote.position.rgt)
-
-                if (BuildConfig.LOG_DEBUG)
-                    LogUtils.d(TAG, "lastDescendant: $lastDescendant")
-
-
-                if (lastDescendant != null) {
-                    /* Insert batch after last descendant with highest level. */
-                    pastedLft = lastDescendant.position.rgt + 1
-                    pastedLevel = lastDescendant.position.level
-
-                } else {
-                    /* Insert batch just under the target note. */
-                    pastedLft = targetNote.position.lft + 1
-                    pastedLevel = targetNote.position.level + 1
-                }
-
-                if (targetNote.position.isFolded) {
-                    foldedUnder = targetNote.id
-                }
-
-                pastedParentId = targetNote.id
-            }
-
-            Place.UNDER_AS_FIRST -> {
-                pastedLft = targetNote.position.lft + 1
-                pastedLevel = targetNote.position.level + 1
-
-                if (targetNote.position.isFolded) {
-                    foldedUnder = targetNote.id
-                }
-
-                pastedParentId = targetNote.id
-            }
-
-            Place.BELOW -> {
-                pastedLft = targetNote.position.rgt + 1
-                pastedLevel = targetNote.position.level
-                pastedParentId = targetNote.position.parentId
-            }
-
-            else -> throw IllegalArgumentException("Unsupported place for paste: $place")
-        }
-
-        val levelOffset = pastedLevel - 1
+        val levelOffset = targetPosition.level - 1
 
         if (BuildConfig.LOG_DEBUG)
             LogUtils.d(TAG, """
@@ -706,11 +616,11 @@ class DataRepository @Inject constructor(
                 targetRgt: ${targetNote.position.rgt}
                 targetLevel: ${targetNote.position.level}
 
-                pastedLft: $pastedLft
-                pastedLevel: $pastedLevel
-                pastedParentId: $pastedParentId
+                targetPosition: $targetPosition
 
                 levelOffset: $levelOffset
+
+                Clipboard entries: ${clipboard.entries}
                 """.trimIndent())
 
         makeSpaceForNewNotes(clipboard.count, targetNote, place)
@@ -719,31 +629,31 @@ class DataRepository @Inject constructor(
 
         var lastNoteId = 0L
         val parentIds = ArrayDeque<Long>().apply {
-            add(pastedParentId)
+            add(targetPosition.parentId)
         }
         val idsMap = mutableMapOf<Long, Long>()
 
-        for (clippedNote in clipboard.notes) {
-            val level = levelOffset + clippedNote.position.level
+        for (entry in clipboard.entries) {
+            val level = levelOffset + entry.note.position.level
 
-            val lft = pastedLft + clippedNote.position.lft - 1
-            val rgt = pastedLft + clippedNote.position.rgt - 1
+            val lft = targetPosition.lft + entry.note.position.lft - 1
+            val rgt = targetPosition.lft + entry.note.position.rgt - 1
 
-            val foldedUnderId = idsMap[clippedNote.position.foldedUnderId]
-                    ?: if (foldedUnder != 0L) foldedUnder else 0
+            val foldedUnderId = idsMap[entry.note.position.foldedUnderId]
+                    ?: if (targetPosition.foldedUnder != 0L) targetPosition.foldedUnder else 0
 
-            while (lastNoteId != 0L && clippedNote.position.level > parentIds.size) {
+            while (lastNoteId != 0L && entry.note.position.level > parentIds.size) {
                 parentIds.addLast(lastNoteId)
             }
 
-            while (parentIds.size > 0 && clippedNote.position.level < parentIds.size) {
+            while (parentIds.size > 0 && entry.note.position.level < parentIds.size) {
                 parentIds.removeLast()
             }
 
-            val note = clippedNote.copy(
-                    id = if (keepIds) clippedNote.id else 0,
-                    position = clippedNote.position.copy(
-                            bookId = bookId,
+            val note = entry.note.copy(
+                    id = 0,
+                    position = entry.note.position.copy(
+                            bookId = targetNote.position.bookId,
                             lft = lft,
                             rgt = rgt,
                             level = level,
@@ -755,9 +665,12 @@ class DataRepository @Inject constructor(
 
             lastNoteId = db.note().insert(note)
 
-            idsMap[clippedNote.id] = lastNoteId
+            insertNoteProperties(lastNoteId, entry.properties.map { Pair(it.name, it.value) }.toMap())
+            insertNoteEvents(lastNoteId, note.title, note.content)
 
-            pastedNoteIds += lastNoteId
+            idsMap[entry.note.id] = lastNoteId
+
+            count += 1
 
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Inserted $lastNoteId $note")
         }
@@ -771,119 +684,157 @@ class DataRepository @Inject constructor(
 
         updateBookIsModified(targetNote.position.bookId, true)
 
-        return pastedNoteIds
+        return count
     }
 
-    private fun pasteNotesBatch(batchId: Long, place: Place, targetNoteId: Long): Int {
-        var foldedUnder: Long = 0
+    fun getNoteAndDescendantsAligned(ids: Set<Long>): List<Note> {
+        var offset = 0L
+        var subtreeRgt = 0L
+        var levelOffset = 0
 
-        val batchData = db.note().getBatchData(batchId) ?: return 0
+        return getNoteAndDescendants(ids).map { note ->
+            // First note or next subtree
+            if (subtreeRgt == 0L || note.position.rgt > subtreeRgt) {
+                offset += note.position.lft - subtreeRgt - 1
+                levelOffset = note.position.level - 1
+                subtreeRgt = note.position.rgt
+            }
+
+            val level = note.position.level - levelOffset
+            val lft = note.position.lft - offset
+            val rgt = note.position.rgt - offset
+
+            note.copy(
+                    position = note.position.copy(
+                            level = level,
+                            lft = lft,
+                            rgt = rgt))
+        }
+    }
+
+    private fun moveSubtrees(ids: Set<Long>, place: Place, targetNoteId: Long): Int {
 
         val targetNote = db.note().get(targetNoteId) ?: return 0
 
-        if (BuildConfig.LOG_DEBUG)
-            LogUtils.d(TAG, batchId, "Pasting $place ${targetNote.title}")
+        val targetPosition = TargetPosition.getInstance(db, targetNote, place)
 
-        val pastedLft: Long
-        val pastedLevel: Int
-        val pastedParentId: Long
+        val alignedNotes = getNoteAndDescendantsAligned(ids)
 
-        /* If target note is hidden, hide pasted under the same note. */
-        if (targetNote.position.foldedUnderId != 0L) {
-            foldedUnder = targetNote.position.foldedUnderId
+        // Update descendant count for ancestors before move, not counting moved notes themselves
+        db.note().updateDescendantsCountForAncestors(ids, ids)
+
+        db.noteAncestor().deleteForNoteAndDescendants(ids)
+
+        makeSpaceForNewNotes(alignedNotes.size, targetNote, place)
+
+        // Update notes
+        alignedNotes.forEach { note ->
+            db.note().updateNote(
+                    note.id,
+                    targetNote.position.bookId,
+                    targetPosition.level + note.position.level - 1,
+                    targetPosition.lft + note.position.lft - 1,
+                    targetPosition.lft + note.position.rgt - 1,
+                    // Set parent ID for top-level notes
+                    if (note.position.level == 1) {
+                        targetPosition.parentId
+                    } else {
+                        (note.position.parentId)
+                    })
         }
 
-        when (place) {
-            Place.ABOVE -> {
-                pastedLft = targetNote.position.lft
-                pastedLevel = targetNote.position.level
-                pastedParentId = targetNote.position.parentId
-            }
+        // Update note ancestors table
+        db.noteAncestor().insertAncestorsForNotes(ids)
 
-            Place.UNDER -> {
-                val lastDescendant = db.note().getLastHighestLevelDescendant(
-                        targetNote.position.bookId, targetNote.position.lft, targetNote.position.rgt)
+        db.note().updateDescendantsCountForAncestors(ids)
 
-                if (BuildConfig.LOG_DEBUG)
-                    LogUtils.d(TAG, batchId, "lastDescendant: $lastDescendant")
-
-
-                if (lastDescendant != null) {
-                    /* Insert batch after last descendant with highest level. */
-                    pastedLft = lastDescendant.position.rgt + 1
-                    pastedLevel = lastDescendant.position.level
-
-                } else {
-                    /* Insert batch just under the target note. */
-                    pastedLft = targetNote.position.lft + 1
-                    pastedLevel = targetNote.position.level + 1
-                }
-
-                if (targetNote.position.isFolded) {
-                    foldedUnder = targetNote.id
-                }
-
-                pastedParentId = targetNote.id
-            }
-
-            Place.UNDER_AS_FIRST -> {
-                pastedLft = targetNote.position.lft + 1
-                pastedLevel = targetNote.position.level + 1
-
-                if (targetNote.position.isFolded) {
-                    foldedUnder = targetNote.id
-                }
-
-                pastedParentId = targetNote.id
-            }
-
-            Place.BELOW -> {
-                pastedLft = targetNote.position.rgt + 1
-                pastedLevel = targetNote.position.level
-                pastedParentId = targetNote.position.parentId
-            }
-
-            else -> throw IllegalArgumentException("Unsupported place for paste: $place")
+        db.note().unfoldNotesFoldedUnderOthers(ids)
+        if (targetPosition.foldedUnder != 0L) {
+            db.note().foldUnfolded(ids, targetPosition.foldedUnder)
         }
-
-        val positionsRequired = (batchData.maxRgt - batchData.minLft + 1).toInt()
-        val positionOffset = pastedLft - batchData.minLft
-        val levelOffset = pastedLevel - batchData.minLevel
-
-        if (BuildConfig.LOG_DEBUG)
-            LogUtils.d(TAG, batchId, "positionOffset: $positionOffset levelOffset: $levelOffset positionsRequired: $positionsRequired")
-
-        /*
-         * Make space for new notes incrementing lft and rgt.
-         * FIXME: This could be slow.
-         */
-
-        db.note().incrementLftForLftGe(targetNote.position.bookId, pastedLft, positionsRequired)
-        db.note().incrementRgtForRgtGeOrRoot(targetNote.position.bookId, pastedLft, positionsRequired)
-
-        db.note().unfoldNotBelongingToBatch(batchId)
-
-        if (foldedUnder != 0L) {
-            db.note().markBatchAsFolded(batchId, foldedUnder)
-        }
-
-        db.note().updateParentOfBatchRoot(batchId, batchData.minLft, pastedParentId)
-
-        db.note().moveBatch(batchId, targetNote.position.bookId, positionOffset, levelOffset)
-
-        db.noteAncestor().insertAncestorsForBatch(batchId)
-
-        val count = db.note().makeBatchVisible(batchId)
 
         // Update descendants count for the note and its ancestors
         db.note().updateDescendantsCountForNoteAndAncestors(listOf(targetNote.id))
 
-        // Delete other batches
-        db.note().deleteCut()
-
         updateBookIsModified(targetNote.position.bookId, true)
 
-        return count
+        return alignedNotes.size
+    }
+
+    data class TargetPosition(
+            val lft: Long = 0,
+            val level: Int = 0,
+            val parentId: Long = 0,
+            val foldedUnder: Long = 0) {
+
+        companion object {
+            fun getInstance(db: OrgzlyDatabase, targetNote: Note, place: Place): TargetPosition {
+                val lft: Long
+                val level: Int
+                val parentId: Long
+
+                /* If target note is hidden, hide under the same note. */
+                var foldedUnder: Long = 0
+                if (targetNote.position.foldedUnderId != 0L) {
+                    foldedUnder = targetNote.position.foldedUnderId
+                }
+
+                when (place) {
+                    Place.ABOVE -> {
+                        lft = targetNote.position.lft
+                        level = targetNote.position.level
+                        parentId = targetNote.position.parentId
+                    }
+
+                    Place.UNDER -> {
+                        val lastDescendant = db.note().getLastHighestLevelDescendant(
+                                targetNote.position.bookId, targetNote.position.lft, targetNote.position.rgt)
+
+                        if (BuildConfig.LOG_DEBUG)
+                            LogUtils.d(TAG, "lastDescendant: $lastDescendant")
+
+
+                        if (lastDescendant != null) {
+                            /* Insert batch after last descendant with highest level. */
+                            lft = lastDescendant.position.rgt + 1
+                            level = lastDescendant.position.level
+
+                        } else {
+                            /* Insert batch just under the target note. */
+                            lft = targetNote.position.lft + 1
+                            level = targetNote.position.level + 1
+                        }
+
+                        if (targetNote.position.isFolded) {
+                            foldedUnder = targetNote.id
+                        }
+
+                        parentId = targetNote.id
+                    }
+
+                    Place.UNDER_AS_FIRST -> {
+                        lft = targetNote.position.lft + 1
+                        level = targetNote.position.level + 1
+
+                        if (targetNote.position.isFolded) {
+                            foldedUnder = targetNote.id
+                        }
+
+                        parentId = targetNote.id
+                    }
+
+                    Place.BELOW -> {
+                        lft = targetNote.position.rgt + 1
+                        level = targetNote.position.level
+                        parentId = targetNote.position.parentId
+                    }
+
+                    else -> throw IllegalArgumentException("Unsupported place: $place")
+                }
+
+                return TargetPosition(lft, level, parentId, foldedUnder)
+            }
+        }
     }
 
     fun setNotesScheduledTime(noteIds: Set<Long>, time: OrgDateTime?) {
@@ -1118,12 +1069,12 @@ class DataRepository @Inject constructor(
         return db.noteView().get(title)
     }
 
-    fun getSubtrees(ids: Set<Long>): List<Note> {
-        return db.note().getSubtrees(ids)
+    fun getNoteAndDescendants(ids: Set<Long>): List<Note> {
+        return db.note().getNoteAndDescendants(ids)
     }
 
-    fun getNote(title: String): Note? {
-        return db.note().get(title)
+    fun getLastNote(title: String): Note? {
+        return db.note().getLast(title)
     }
 
     fun getNote(noteId: Long): Note? {
@@ -1138,7 +1089,7 @@ class DataRepository @Inject constructor(
         return db.noteProperty().get(noteId)
     }
 
-    fun setNoteProperty(noteId: Long, name: String, value: String) {
+    private fun setNoteProperty(noteId: Long, name: String, value: String) {
         db.noteProperty().upsert(noteId, name, value)
     }
 
@@ -1305,7 +1256,7 @@ class DataRepository @Inject constructor(
     }
 
     /**
-     * Increment note's lft and rgt to make space for new notes.
+     * Increment notes' lft and rgt to make space for new notes.
      */
     private fun makeSpaceForNewNotes(numberOfNotes: Int, targetNote: Note, place: Place) {
         val spaceRequired = numberOfNotes * 2
@@ -1369,9 +1320,9 @@ class DataRepository @Inject constructor(
         return db.runInTransaction(Callable {
             val batchId = System.currentTimeMillis()
 
-            db.noteAncestor().deleteForNoteAndDescendants(bookId, ids)
+            db.noteAncestor().deleteForNoteAndDescendants(ids)
 
-            val count = db.note().markAsCut(bookId, ids, batchId)
+            val count = db.note().markAsCut(ids, batchId)
 
             db.note().updateDescendantsCountForAncestors(ids)
 
@@ -1381,6 +1332,10 @@ class DataRepository @Inject constructor(
 
             count
         })
+    }
+
+    fun getNoteEvents(noteId: Long): List<NoteEvent> {
+        return db.noteEvent().get(noteId)
     }
 
     private fun replaceNoteEvents(noteId: Long, title: String, content: String?) {

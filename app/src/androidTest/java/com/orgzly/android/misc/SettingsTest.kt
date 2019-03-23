@@ -5,7 +5,6 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.note.NoteBuilder
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Ignore
 import org.junit.Test
 import java.io.IOException
 
@@ -21,7 +20,7 @@ class SettingsTest : OrgzlyTest() {
         AppPreferences.states(context, "TODO|DONE")
         assertEquals(0, dataRepository.reParseNotesStateAndTitles())
 
-        dataRepository.getNote("Title").let {
+        dataRepository.getLastNote("Title").let {
             assertEquals("TODO", it?.state)
             assertEquals("A", it?.priority)
         }
@@ -29,7 +28,7 @@ class SettingsTest : OrgzlyTest() {
         AppPreferences.states(context, "")
         assertEquals(1, dataRepository.reParseNotesStateAndTitles())
 
-        dataRepository.getNote("TODO [#A] Title").let {
+        dataRepository.getLastNote("TODO [#A] Title").let {
             assertNull(it?.state)
             assertNull(it?.priority)
         }
@@ -37,7 +36,7 @@ class SettingsTest : OrgzlyTest() {
         AppPreferences.states(context, "TODO|DONE")
         assertEquals(1, dataRepository.reParseNotesStateAndTitles())
 
-        dataRepository.getNote("Title").let {
+        dataRepository.getLastNote("Title").let {
             assertEquals("TODO", it?.state)
             assertEquals("A", it?.priority)
         }
