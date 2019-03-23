@@ -600,7 +600,7 @@ class DataRepository @Inject constructor(
             place: Place,
             targetNoteId: Long): Int {
 
-        var count = 0
+        var pastedNoteIds = mutableSetOf<Long>()
 
         val targetNote = db.note().get(targetNoteId) ?: return 0
 
@@ -624,8 +624,6 @@ class DataRepository @Inject constructor(
                 """.trimIndent())
 
         makeSpaceForNewNotes(clipboard.count, targetNote, place)
-
-        val batchId = System.currentTimeMillis()
 
         var lastNoteId = 0L
         val parentIds = ArrayDeque<Long>().apply {
@@ -659,8 +657,7 @@ class DataRepository @Inject constructor(
                             level = level,
                             parentId = parentIds.peekLast(),
                             foldedUnderId = foldedUnderId
-                    ),
-                    isCut = batchId
+                    )
             )
 
             lastNoteId = db.note().insert(note)
@@ -670,29 +667,27 @@ class DataRepository @Inject constructor(
 
             idsMap[entry.note.id] = lastNoteId
 
-            count += 1
+            pastedNoteIds.add(lastNoteId)
 
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Inserted $lastNoteId $note")
         }
 
-        db.noteAncestor().insertAncestorsForBatch(batchId)
-
-        db.note().makeBatchVisible(batchId)
+        db.noteAncestor().insertAncestorsForNotes(pastedNoteIds)
 
         // Update descendants count for the target note and its ancestors
         db.note().updateDescendantsCountForNoteAndAncestors(listOf(targetNote.id))
 
         updateBookIsModified(targetNote.position.bookId, true)
 
-        return count
+        return pastedNoteIds.size
     }
 
-    fun getNoteAndDescendantsAligned(ids: Set<Long>): List<Note> {
+    fun getSubtreesAligned(ids: Set<Long>): List<Note> {
         var offset = 0L
         var subtreeRgt = 0L
         var levelOffset = 0
 
-        return getNoteAndDescendants(ids).map { note ->
+        return db.note().getNotesForSubtrees(ids).map { note ->
             // First note or next subtree
             if (subtreeRgt == 0L || note.position.rgt > subtreeRgt) {
                 offset += note.position.lft - subtreeRgt - 1
@@ -718,12 +713,12 @@ class DataRepository @Inject constructor(
 
         val targetPosition = TargetPosition.getInstance(db, targetNote, place)
 
-        val alignedNotes = getNoteAndDescendantsAligned(ids)
+        val alignedNotes = getSubtreesAligned(ids)
 
         // Update descendant count for ancestors before move, not counting moved notes themselves
         db.note().updateDescendantsCountForAncestors(ids, ids)
 
-        db.noteAncestor().deleteForNoteAndDescendants(ids)
+        db.noteAncestor().deleteForSubtrees(ids)
 
         makeSpaceForNewNotes(alignedNotes.size, targetNote, place)
 
@@ -773,7 +768,7 @@ class DataRepository @Inject constructor(
                 val level: Int
                 val parentId: Long
 
-                /* If target note is hidden, hide under the same note. */
+                // If target note is hidden, hide under the same note
                 var foldedUnder: Long = 0
                 if (targetNote.position.foldedUnderId != 0L) {
                     foldedUnder = targetNote.position.foldedUnderId
@@ -795,12 +790,12 @@ class DataRepository @Inject constructor(
 
 
                         if (lastDescendant != null) {
-                            /* Insert batch after last descendant with highest level. */
+                            // Insert after last descendant with highest level
                             lft = lastDescendant.position.rgt + 1
                             level = lastDescendant.position.level
 
                         } else {
-                            /* Insert batch just under the target note. */
+                            // Insert just under the target note
                             lft = targetNote.position.lft + 1
                             level = targetNote.position.level + 1
                         }
@@ -1069,10 +1064,6 @@ class DataRepository @Inject constructor(
         return db.noteView().get(title)
     }
 
-    fun getNoteAndDescendants(ids: Set<Long>): List<Note> {
-        return db.note().getNoteAndDescendants(ids)
-    }
-
     fun getLastNote(title: String): Note? {
         return db.note().getLast(title)
     }
@@ -1318,15 +1309,11 @@ class DataRepository @Inject constructor(
 
     fun deleteNotes(bookId: Long, ids: Set<Long>): Int {
         return db.runInTransaction(Callable {
-            val batchId = System.currentTimeMillis()
+            db.noteAncestor().deleteForSubtrees(ids)
 
-            db.noteAncestor().deleteForNoteAndDescendants(ids)
+            db.note().updateDescendantsCountForAncestors(ids, ids)
 
-            val count = db.note().markAsCut(ids, batchId)
-
-            db.note().updateDescendantsCountForAncestors(ids)
-
-            db.note().deleteCut()
+            val count = db.note().deleteById(ids)
 
             updateBookIsModified(bookId, true)
 

@@ -38,7 +38,7 @@ data class NotesClipboard(val entries: List<Entry>) {
 
     companion object {
         fun create(dataRepository: DataRepository, ids: Set<Long>): NotesClipboard {
-            val alignedNotes = dataRepository.getNoteAndDescendantsAligned(ids).map { note ->
+            val alignedNotes = dataRepository.getSubtreesAligned(ids).map { note ->
                 Entry(note, dataRepository.getNoteProperties(note.id))
             }
 

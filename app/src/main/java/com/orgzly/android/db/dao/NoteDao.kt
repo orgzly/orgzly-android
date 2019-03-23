@@ -51,20 +51,6 @@ abstract class NoteDao : BaseDao<Note> {
     @Query("DELETE FROM notes WHERE book_id = :bookId")
     abstract fun deleteByBookId(bookId: Long)
 
-    /**
-     * Marks note and all its descendants as cut.
-     */
-    @Query("""
-        UPDATE notes
-        SET is_cut = :batchId
-        WHERE id IN (
-        SELECT DISTINCT d.id
-        FROM notes n, notes d
-        WHERE d.book_id = n.book_id AND n.id IN (:ids) AND d.is_cut = 0 AND n.is_cut = 0 AND n.lft <= d.lft AND d.rgt <= n.rgt
-        )
-    """)
-    abstract fun markAsCut(ids: Set<Long>, batchId: Long): Int
-
     @Query(SELECT_NOTE_AND_ANCESTORS_IDS)
     abstract fun getNoteAndAncestorsIds(ids: List<Long>): List<Long>
 
@@ -89,7 +75,7 @@ abstract class NoteDao : BaseDao<Note> {
         WHERE n.id IN (:ids) AND n.level > 0 AND d.book_id = n.book_id AND d.is_cut = 0 AND n.is_cut = 0 AND n.lft <= d.lft AND d.rgt <= n.rgt
         GROUP BY d.id ORDER BY d.lft
     """)
-    abstract fun getNoteAndDescendants(ids: Set<Long>): List<Note>
+    abstract fun getNotesForSubtrees(ids: Set<Long>): List<Note>
 
     @Query("""
         SELECT count(*)
@@ -230,9 +216,6 @@ abstract class NoteDao : BaseDao<Note> {
     """)
     abstract fun unfoldDescendantsUnderId(bookId: Long, noteId: Long, lft: Long, rgt: Long)
 
-    @Query("SELECT min(lft) as minLft, max(rgt) as maxRgt, min(level) as minLevel FROM notes WHERE is_cut = :batchId")
-    abstract fun getBatchData(batchId: Long): Batch?
-
     @Query("UPDATE notes SET lft = lft + :inc WHERE (book_id = :bookId AND $WHERE_EXISTING_NOTES) AND lft >= :value")
     abstract fun incrementLftForLftGe(bookId: Long, value: Long, inc: Int)
 
@@ -265,15 +248,6 @@ abstract class NoteDao : BaseDao<Note> {
         WHERE id = :noteId
     """)
     abstract fun updateNote(noteId: Long, bookId: Long, level: Int, lft: Long, rgt: Long, parentId: Long)
-
-    @Query("UPDATE notes SET is_cut = 0 WHERE is_cut = :batchId")
-    abstract fun makeBatchVisible(batchId: Long): Int
-
-    @Query("DELETE FROM notes WHERE is_cut != 0")
-    abstract fun deleteCut()
-
-    @Query("SELECT MAX(is_cut) AS batch_id FROM notes WHERE is_cut IS NOT NULL AND is_cut != 0")
-    abstract fun getLatestBatchId(): Long?
 
     @Query("""
         SELECT notes.id as noteId, notes.book_id as bookId
@@ -348,8 +322,6 @@ abstract class NoteDao : BaseDao<Note> {
             return Note(id = 0, position = NotePosition(bookId, lft = 1, rgt = 2, level = 0))
         }
     }
-
-    data class Batch(val minLft: Long, val maxRgt: Long, val minLevel: Int)
 
     data class NoteIdBookId(val noteId: Long, val bookId: Long)
 
