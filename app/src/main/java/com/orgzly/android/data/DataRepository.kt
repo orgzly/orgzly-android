@@ -9,6 +9,7 @@ import android.net.Uri
 import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.sqlite.db.SupportSQLiteQuery
@@ -1089,9 +1090,17 @@ class DataRepository @Inject constructor(
         return db.noteView().getBookNotes(bookName)
     }
 
-    fun getVisibleNotesLiveData(bookId: Long): LiveData<List<NoteView>> {
+    fun getVisibleNotesLiveData(bookId: Long, noteId: Long? = null): LiveData<List<NoteView>> {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookId)
-        return db.noteView().getVisibleLiveData(bookId)
+
+        return if (noteId != null) {
+            // Only return note's subtree
+            db.note().get(noteId)?.let { note ->
+                db.noteView().getVisibleLiveData(bookId, note.position.lft, note.position.rgt)
+            } ?: MutableLiveData<List<NoteView>>()
+        } else {
+            db.noteView().getVisibleLiveData(bookId)
+        }
     }
 
     fun getNoteCount(bookId: Long): Int {

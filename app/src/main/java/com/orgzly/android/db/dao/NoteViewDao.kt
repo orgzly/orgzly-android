@@ -16,11 +16,28 @@ abstract class NoteViewDao {
     abstract fun getAll(): List<NoteView>
 
     @Query("""
-        $QUERY WHERE notes.book_id = :bookId AND notes.level > 0 AND notes.is_cut = 0 AND notes.folded_under_id = 0
+        $QUERY
+        WHERE notes.book_id = :bookId
+        AND notes.level > 0
+        AND notes.is_cut = 0
+        AND notes.folded_under_id = 0
         GROUP BY notes.id
         ORDER BY notes.lft
     """)
     abstract fun getVisibleLiveData(bookId: Long): LiveData<List<NoteView>>
+
+    @Query("""
+        $QUERY
+        WHERE notes.book_id = :bookId
+        AND notes.level > 0
+        AND notes.is_cut = 0
+        AND notes.folded_under_id = 0
+        AND :lft <= notes.lft
+        AND notes.rgt <= :rgt
+        GROUP BY notes.id
+        ORDER BY notes.lft
+    """)
+    abstract fun getVisibleLiveData(bookId: Long, lft: Long, rgt: Long): LiveData<List<NoteView>>
 
     @RawQuery(observedEntities = [ Note::class, Book::class ])
     abstract fun runQueryLiveData(query: SupportSQLiteQuery): LiveData<List<NoteView>>
