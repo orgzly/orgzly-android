@@ -480,7 +480,11 @@ public class MainActivity extends CommonActivity
                 mDrawerLayout.openDrawer(GravityCompat.START);
             }
 
+            // Display what's new
             displayWhatsNewDialog();
+
+            // Clear clipboard (due to possible internal format changes across app versions)
+            NotesClipboard.clear();
         }
     }
 
@@ -909,15 +913,15 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onNotesPromoteRequest(long bookId, Set<Long> noteIds) {
+    public void onNotesPromoteRequest(Set<Long> noteIds) {
         mPromoteDemoteOrMoveRequested = true;
-        mSyncFragment.run(new NotePromote(bookId, noteIds));
+        mSyncFragment.run(new NotePromote(noteIds));
     }
 
     @Override
-    public void onNotesDemoteRequest(long bookId, Set<Long> noteIds) {
+    public void onNotesDemoteRequest(Set<Long> noteIds) {
         mPromoteDemoteOrMoveRequested = true;
-        mSyncFragment.run(new NoteDemote(bookId, noteIds));
+        mSyncFragment.run(new NoteDemote(noteIds));
     }
 
     @Override
@@ -927,8 +931,8 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onNotesRefileRequest(long bookId, Set<Long> noteIds, long targetBookId) {
-        mSyncFragment.run(new NoteRefile(bookId, noteIds, targetBookId));
+    public void onNotesRefileRequest(Set<Long> noteIds, long targetBookId) {
+        mSyncFragment.run(new NoteRefile(noteIds, targetBookId));
     }
 
     @Override

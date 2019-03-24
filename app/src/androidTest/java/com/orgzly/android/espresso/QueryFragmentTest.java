@@ -394,7 +394,7 @@ public class QueryFragmentTest extends OrgzlyTest {
     public void testInheritedTagsAfterDemotingSubtree() {
         testUtils.setupBook("notebook-1",
                 "* Note A :tag1:\n" +
-                "* Note B :tag2:\n" +
+                "* Note B :tag2:\n" + // Demote
                 "** Note C :tag3:\n" +
                 "** Note D :tag3:\n" +
                 "");

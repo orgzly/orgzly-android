@@ -31,7 +31,6 @@ import com.orgzly.android.ui.notes.quickbar.QuickBarListener
 import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
-import java.util.*
 
 
 /**
@@ -626,7 +625,7 @@ class BookFragment :
             R.id.quick_bar_refile,
             R.id.book_cab_refile ->
                 listener?.let {
-                    openNoteRefileDialog(it, mBookId, ids)
+                    openNoteRefileDialog(it, ids)
                 }
 
             R.id.book_cab_paste_under -> {
@@ -646,10 +645,10 @@ class BookFragment :
                 moveNotes(1)
 
             R.id.notes_action_move_left ->
-                listener?.onNotesPromoteRequest(mBookId, ids)
+                listener?.onNotesPromoteRequest(ids)
 
             R.id.notes_action_move_right ->
-                listener?.onNotesDemoteRequest(mBookId, ids)
+                listener?.onNotesDemoteRequest(ids)
 
             R.id.quick_bar_state,
             R.id.bottom_action_bar_state ->
@@ -670,16 +669,21 @@ class BookFragment :
 
     interface Listener : NotesFragment.Listener {
         fun onBookPrefaceEditRequest(book: Book)
+
         fun onBookPrefaceUpdate(bookId: Long, preface: String)
 
         fun onNotesDeleteRequest(bookId: Long, noteIds: Set<Long>)
+
         fun onNotesCutRequest(bookId: Long, noteIds: Set<Long>)
         fun onNotesCopyRequest(bookId: Long, noteIds: Set<Long>)
         fun onNotesPasteRequest(bookId: Long, noteId: Long, place: Place)
-        fun onNotesPromoteRequest(bookId: Long, noteIds: Set<Long>)
-        fun onNotesDemoteRequest(bookId: Long, noteIds: Set<Long>)
+
+        fun onNotesPromoteRequest(noteIds: Set<Long>)
+        fun onNotesDemoteRequest(noteIds: Set<Long>)
+
         fun onNotesMoveRequest(bookId: Long, noteIds: Set<Long>, offset: Int)
-        override fun onNotesRefileRequest(sourceBookId: Long, noteIds: Set<Long>, targetBookId: Long)
+
+        override fun onNotesRefileRequest(noteIds: Set<Long>, targetBookId: Long)
     }
 
     companion object {

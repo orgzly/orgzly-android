@@ -48,8 +48,8 @@ abstract class NoteViewDao {
     @Query("$QUERY WHERE notes.id = :id GROUP BY notes.id")
     abstract fun get(id: Long): NoteView?
 
-    @Query("$QUERY WHERE notes.title = :title GROUP BY notes.id")
-    abstract fun get(title: String): NoteView?
+    @Query("$QUERY WHERE notes.title = :title GROUP BY notes.id ORDER BY lft DESC LIMIT 1")
+    abstract fun getLast(title: String): NoteView?
 
     @Query("$QUERY WHERE book_name = :bookName AND notes.level > 0 AND notes.is_cut = 0 GROUP BY notes.id ORDER BY notes.lft")
     abstract fun getBookNotes(bookName: String): List<NoteView>

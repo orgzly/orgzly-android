@@ -10,7 +10,6 @@ import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import java.io.StringWriter
-import java.util.*
 
 class StateChangeTest : OrgzlyTest() {
     @Before
@@ -44,7 +43,7 @@ class StateChangeTest : OrgzlyTest() {
                 "\n" +
                 "Content")
 
-        val note = dataRepository.getNote("Task")
+        val note = dataRepository.getLastNote("Task")
 
         assertNotNull(note)
 
@@ -77,7 +76,7 @@ class StateChangeTest : OrgzlyTest() {
                 "* NEXT Task\n" +
                 "SCHEDULED: <2018-04-12 Thu +4d/5d>")
 
-        val note = dataRepository.getNote("Task")
+        val note = dataRepository.getLastNote("Task")
 
         assertNotNull(note)
 
@@ -109,7 +108,7 @@ class StateChangeTest : OrgzlyTest() {
                 "* TODO Task\n" +
                 "  DEADLINE: <2013-08-10 Sat +1w> SCHEDULED: <2013-08-08 Thu>")
 
-        val note = dataRepository.getNote("Task")
+        val note = dataRepository.getLastNote("Task")
 
         dataRepository.toggleNotesState(setOf(note!!.id))
 

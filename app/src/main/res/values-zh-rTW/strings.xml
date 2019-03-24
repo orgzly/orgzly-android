@@ -65,6 +65,9 @@
         <item quantity="other">剪下 <b>%d</b> 筆記</item>
     </plurals>
     <string name="no_notes_cut">沒有筆記被剪下</string>
+    <plurals name="notes_copied">
+        <item quantity="other">已複製 <b>%d</b> 筆記</item>
+    </plurals>
     <plurals name="notes_pasted">
         <item quantity="other">已貼上 <b>%d</b> 筆記</item>
     </plurals>
@@ -99,6 +102,7 @@
     <string name="books_context_menu_item_force_load">強制讀取</string>
     <string name="move">移動</string>
     <string name="cut">剪下</string>
+    <string name="copy">複製</string>
     <string name="paste">貼上</string>
     <string name="heads_action_menu_item_paste_above">在上方貼上</string>
     <string name="heads_action_menu_item_paste_under">做為子項目貼上</string>

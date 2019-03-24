@@ -1,9 +1,14 @@
 ¡Bienvenido a Orgzly!
 
 * Notas
-** Haga clic en la nota para seleccionarla
+** Haga clic en la nota para abrirla
+** Haga clic y mantenga la nota para seleccionarla
 
 Se pueden seleccionar múltiples notas.
+
+** Arrastre la nota a la derecha para abrir su menú rápido
+
+Arrastre a la izquierda para abrir un menú diferente.
 
 ** Plegar una nota que contiene subnotas haciendo clic en el icono a su lado
 *** No hay límite en el número de niveles que se pueden tener
@@ -50,7 +55,7 @@ Consulte http://www.orgzly.com/help#links para obtener más información.
 
 ** Están soportados formatos tipográficos básicos
 
-Puede escribir palabras en *negrita*, /italica/, _subrayadas_, = cita literal=, ~código~ y +tachadas+.
+Puede escribir palabras en *negrita*, /itálica/, _subrayadas_, =cita literal=, ~código~ y +tachadas+.
 
 ** Se pueden crear listas de verificación
 

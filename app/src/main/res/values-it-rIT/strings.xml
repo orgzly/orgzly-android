@@ -67,6 +67,10 @@
         <item quantity="other">Tagliate <b>%d</b> note</item>
     </plurals>
     <string name="no_notes_cut">Nessuna nota tagliata</string>
+    <plurals name="notes_copied">
+        <item quantity="one">Note copied</item>
+        <item quantity="other">Copied <b>%d</b> notes</item>
+    </plurals>
     <plurals name="notes_pasted">
         <item quantity="one">Nota incollata</item>
         <item quantity="other">Incollate <b>%d</b> note</item>
@@ -102,6 +106,7 @@
     <string name="books_context_menu_item_force_load">Forza caricamento</string>
     <string name="move">Sposta</string>
     <string name="cut">Taglia</string>
+    <string name="copy">Copy</string>
     <string name="paste">Incolla</string>
     <string name="heads_action_menu_item_paste_above">Incolla sopra</string>
     <string name="heads_action_menu_item_paste_under">Incolla indentato</string>
@@ -257,7 +262,7 @@
     <string name="color_scheme">Combinazioni di colori</string>
     <string name="monospaced_font">Carattere a spaziatura fissa</string>
     <string name="monospaced_font_summary">Utilizza un carattere a spaziatura fissa per il contenuto della nota e la prefazione del libro</string>
-    <string name="reversed_note_click_action">Reversed note click action</string>
+    <string name="reversed_note_click_action">Swap note click and long-click actions</string>
     <string name="reversed_note_click_action_summary">Click to select note, long-click to open</string>
     <string name="look_and_feel">Aspetto &amp; Impressione</string>
     <string name="notes_list">Lista delle note</string>

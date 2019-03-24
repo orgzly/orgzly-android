@@ -25,4 +25,8 @@ data class BookView(
     fun isOutOfSync(): Boolean {
         return syncedTo != null && book.isModified
     }
+
+    fun isModified(): Boolean {
+        return book.isModified
+    }
 }

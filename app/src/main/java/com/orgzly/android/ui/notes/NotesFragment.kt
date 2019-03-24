@@ -75,7 +75,7 @@ abstract class NotesFragment :
         }
     }
 
-    protected fun openNoteRefileDialog(listener: Listener, sourceBookId: Long, noteIds: Set<Long>) {
+    protected fun openNoteRefileDialog(listener: Listener, noteIds: Set<Long>) {
         val books = dataRepository.getBooks()
         val bookNames = arrayOfNulls<String>(books.size)
         for (i in books.indices) {
@@ -86,7 +86,7 @@ abstract class NotesFragment :
                 .setTitle(R.string.refile_to)
                 .setItems(bookNames) { _, which ->
                     val (book) = books[which]
-                    listener.onNotesRefileRequest(sourceBookId, noteIds, book.id)
+                    listener.onNotesRefileRequest(noteIds, book.id)
                 }
                 .show()
     }
@@ -172,7 +172,7 @@ abstract class NotesFragment :
 
         fun onNoteNewRequest(target: NotePlace)
 
-        fun onNotesRefileRequest(sourceBookId: Long, noteIds: Set<Long>, targetBookId: Long)
+        fun onNotesRefileRequest(noteIds: Set<Long>, targetBookId: Long)
 
         fun onStateChangeRequest(noteIds: Set<Long>, state: String?)
 

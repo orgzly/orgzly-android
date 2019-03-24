@@ -4,21 +4,27 @@ import com.google.gson.Gson
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Note
+import com.orgzly.android.db.entity.NoteProperty
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.util.MiscUtils
 import java.io.File
 import java.io.StringWriter
 
-data class NotesClipboard(val notes: List<Note>) {
+data class NotesClipboard(val entries: List<Entry>) {
+
+    data class Entry(
+            val note: Note,
+            val properties: List<NoteProperty>
+    )
 
     val count: Int
-        get() = notes.count()
+        get() = entries.count()
 
 
     fun save() {
         try {
             val writer = StringWriter()
-            Gson().toJson(notes, writer)
+            Gson().toJson(entries, writer)
             val content = writer.toString()
 
             MiscUtils.writeStringToFile(content, dataFile())
@@ -32,27 +38,11 @@ data class NotesClipboard(val notes: List<Note>) {
 
     companion object {
         fun create(dataRepository: DataRepository, ids: Set<Long>): NotesClipboard {
-            var offset = 0L
-            var subtreeRgt = 0L
-            var levelOffset = 0
-
-            val notes = dataRepository.getSubtrees(ids).map { note ->
-                // First note or next subtree
-                if (subtreeRgt == 0L || note.position.rgt > subtreeRgt) {
-                    offset += note.position.lft - subtreeRgt - 1
-                    levelOffset = note.position.level - 1
-                    subtreeRgt = note.position.rgt
-                }
-
-                note.copy(
-                        position = note.position.copy(
-                                level = note.position.level - levelOffset,
-                                lft = note.position.lft - offset,
-                                rgt = note.position.rgt - offset
-                        ))
+            val alignedNotes = dataRepository.getSubtreesAligned(ids).map { note ->
+                Entry(note, dataRepository.getNoteProperties(note.id))
             }
 
-            return NotesClipboard(notes)
+            return NotesClipboard(alignedNotes)
         }
 
         fun load(): NotesClipboard? {
@@ -62,7 +52,7 @@ data class NotesClipboard(val notes: List<Note>) {
                 try {
                     val data = MiscUtils.readStringFromFile(dataFile())
 
-                    val notes = Gson().fromJson(data, Array<Note>::class.java).toMutableList()
+                    val notes = Gson().fromJson(data, Array<Entry>::class.java).toMutableList()
 
                     return NotesClipboard(notes)
                 } catch (e: Exception) {
@@ -71,6 +61,13 @@ data class NotesClipboard(val notes: List<Note>) {
             }
 
             return null
+        }
+
+        @JvmStatic
+        fun clear() {
+            AppPreferences.notesClipboard(App.getAppContext(), null)
+
+            dataFile().delete()
         }
 
         private fun dataFile(): File {

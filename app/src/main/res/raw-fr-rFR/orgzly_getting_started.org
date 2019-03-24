@@ -1,9 +1,14 @@
 Bienvenue dans Orgzly!
 
 * Notes
-** Click on the note to select it
+** Cliquez sur une note pour l’ouvrir
+** Cliquez et restez appuyé·e sur une note pour la sélectionner
 
 Vous pouvez sélectionner plusieurs notes.
+
+** Appuyez et glissez rapidement une note vers la droite pour ouvrir son menu rapide
+
+** Appuyez et glissez rapidement vers la gauche pour ouvrir un menu différent.
 
 ** Ouvrez une note qui contient des sous-notes en cliquant sur l'icône voisine
 *** Il n’y a pas de limite au nombre de niveaux que vous pouvez avoir
@@ -40,15 +45,15 @@ Ils sont désactivés par défaut et doivent être activés dans les paramètres
 
 Vous pouvez modifier le nombre de priorités dans les paramètres. Vous pouvez également changer la priorité par défaut - la priorité assumée lorsqu'elle n'est pas définie.
 
-** Note can include links
+** Les notes peuvent inclure des liens
 
-Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[http://www.orgzly.com][Orgzly.com]]).
+Composer un numéro de téléphone (tel:555-0199), envoyer un SMS (sms:555-0199), écrire un courriel (mailto:support@orgzly.com) ou visiter une page web ([[http://www.orgzly.com][Orgzly.com]]).
 
-You can also link to another note or notebook within the app.
+Vous pouvez également lier une autre note ou un autre bloc-note de l'application.
 
-See http://www.orgzly.com/help#links for more information.
+Voir http://www.orgzly.com/help#links pour de plus amples informations (en anglais).
 
-** Un formatage de base est supporté
+** Le formatage de base est supporté
 
 Vous pouvez mettre les mots en *gras*, /italique/, _souligné_, =verbatim=, ~en code~ ou les +biffer+.
 

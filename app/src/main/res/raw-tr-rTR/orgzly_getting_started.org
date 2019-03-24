@@ -1,9 +1,14 @@
 Orgzly'e Hoşgeldiniz!
 
 * Notlar
-** Click on the note to select it
+** Click on the note to open it
+** Click and hold the note to select it
 
 Birden fazla not seçebilirsiniz.
+
+** Fling note right to open its quick-menu
+
+Fling it left to open a different menu.
 
 ** Bir notun alt notlarını yanındaki simgeye tıklayarak gizleyebilirsiniz
 *** Sahip olabileceğiniz seviyelerin sınırı yoktur

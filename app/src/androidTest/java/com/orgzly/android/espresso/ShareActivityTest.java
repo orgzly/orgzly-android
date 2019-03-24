@@ -9,7 +9,6 @@ import com.orgzly.android.db.entity.NotePosition;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.share.ShareActivity;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -149,9 +148,9 @@ public class ShareActivityTest extends OrgzlyTest {
 
         onView(withId(R.id.done)).perform(click());
 
-        NotePosition n1 = dataRepository.getNote("Note 1").getPosition();
-        NotePosition n2 = dataRepository.getNote("Note 2").getPosition();
-        NotePosition n3 = dataRepository.getNote("Note 3").getPosition();
+        NotePosition n1 = dataRepository.getLastNote("Note 1").getPosition();
+        NotePosition n2 = dataRepository.getLastNote("Note 2").getPosition();
+        NotePosition n3 = dataRepository.getLastNote("Note 3").getPosition();
 
         assertTrue(n1.getLft() < n2.getLft());
         assertTrue(n2.getLft() < n2.getRgt());

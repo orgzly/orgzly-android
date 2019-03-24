@@ -16,7 +16,7 @@ class NoteUpdateDeadlineTimeTest : OrgzlyTest() {
         assertNull(dataRepository.getBook("book")!!.mtime)
 
         UseCaseRunner.run(NoteUpdateDeadlineTime(
-                setOf(dataRepository.getNote("Note")!!.id),
+                setOf(dataRepository.getLastNote("Note")!!.id),
                 OrgDateTime(true)))
 
         assertTrue(dataRepository.getBook("book")!!.isModified)

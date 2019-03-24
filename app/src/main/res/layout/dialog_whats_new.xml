@@ -21,6 +21,64 @@
             android:layout_marginBottom="@dimen/space_between_content_areas"
             android:text="@string/whats_new_intro"/>
 
+        <TextView
+            style="@style/WhatsNewChange"
+            android:text="If you moved notes up, down, promoted, demoted or refiled them in v1.7.2-beta.1 or v1.7.2-beta.2, their properties might have been lost. Please double-check them."
+            android:textStyle="italic|bold"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.7.2-beta.3"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Keep properties and tracked events when moving notes (fix)" />
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.7.2-beta.2"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix missing expanded time instances in some cases" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.7.2-beta.1"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Sort search results by event time (&lt;tt&gt;o.e&lt;/tt&gt;)" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Copy selected notes" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Cut, Copy, Move and Refile multiple notes at once" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Shift recurring note's events on state change" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix search when multiple events per note are used" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Display used event time in search results" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Unfold note itself when focused on from search results" />
+
 
         <TextView
             style="@style/WhatsNewVersion"
