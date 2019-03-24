@@ -714,14 +714,16 @@ class DataRepository @Inject constructor(
 
         val alignedNotes = getSubtreesAligned(selectedIds)
 
-        val ids = alignedNotes.map { it.id }.toSet()
-
         // Update descendant count for ancestors before move, not counting moved notes themselves
         db.note().updateDescendantsCountForAncestors(selectedIds, selectedIds)
 
         db.noteAncestor().deleteForSubtrees(selectedIds)
 
         makeSpaceForNewNotes(alignedNotes.size, targetNote, place)
+
+
+        val ids = mutableSetOf<Long>()
+        val sourceBookIds = mutableListOf<Long>()
 
         // Update notes
         alignedNotes.map { note ->
@@ -737,6 +739,10 @@ class DataRepository @Inject constructor(
                     } else {
                         (note.position.parentId)
                     })
+
+            // Collect new note IDs and source book IDs
+            ids.add(note.id)
+            sourceBookIds.add(note.position.bookId)
         }
 
         // Update note ancestors table
@@ -752,7 +758,10 @@ class DataRepository @Inject constructor(
         // Update descendants count for the note and its ancestors
         db.note().updateDescendantsCountForNoteAndAncestors(listOf(targetNote.id))
 
-        updateBookIsModified(targetNote.position.bookId, true)
+        System.currentTimeMillis().let {
+            updateBookIsModified(sourceBookIds, true, it)
+            updateBookIsModified(targetNote.position.bookId, true, it)
+        }
 
         return alignedNotes.size
     }

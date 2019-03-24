@@ -170,6 +170,42 @@ public class StructureTest extends OrgzlyTest {
     }
 
     @Test
+    public void testRefileToDifferentBook() throws IOException {
+        BookView bookA = testUtils.setupBook(
+                "Book A",
+                "* Note A-01\n" +
+                "** Note A-02\n" +
+                "*** Note A-03\n");
+
+        BookView bookB = testUtils.setupBook(
+                "Book B",
+                "* Note B-01\n" +
+                "** Note B-02\n" +
+                "*** Note B-03\n");
+
+
+        UseCaseRunner.run(new NoteRefile(
+                Collections.singleton(dataRepository.getLastNote("Note A-02").getId()),
+                bookB.getBook().getId()
+        ));
+
+        assertEquals(
+                "* Note A-01\n",
+                dataRepository.getBookContent("Book A", BookFormat.ORG));
+
+        assertEquals(
+                "* Note B-01\n" +
+                "** Note B-02\n" +
+                "*** Note B-03\n" +
+                "* Note A-02\n" +
+                "** Note A-03\n",
+                dataRepository.getBookContent("Book B", BookFormat.ORG));
+
+        assertTrue(dataRepository.getBook("Book B").isModified());
+        assertTrue(dataRepository.getBook("Book A").isModified());
+    }
+
+    @Test
     public void testDescendantCountAfterCut() {
         BookView book = testUtils.setupBook("notebook", "* Note 1\n** Note 1.1\n");
         assertEquals(1, dataRepository.getLastNote("Note 1").getPosition().getDescendantsCount());
@@ -386,12 +422,12 @@ public class StructureTest extends OrgzlyTest {
 
     @Test
     public void testPromote() throws IOException {
-        BookView book = testUtils.setupBook("notebook", "" +
-                                                        "description\n" +
-                                                        "\n" +
-                                                        "* Note 1\n" +
-                                                        "** Note 1.1\n" +
-                                                        "* Note 2\n");
+        testUtils.setupBook("notebook", "" +
+                                        "description\n" +
+                                        "\n" +
+                                        "* Note 1\n" +
+                                        "** Note 1.1\n" +
+                                        "* Note 2\n");
 
         Note note = dataRepository.getLastNote("Note 1.1");
 
@@ -428,7 +464,7 @@ public class StructureTest extends OrgzlyTest {
 
     @Test
     public void testPromoteFirstLevelNote() {
-        BookView book = testUtils.setupBook("notebook", "* Note 1");
+        testUtils.setupBook("notebook", "* Note 1");
 
         Note note = dataRepository.getLastNote("Note 1");
 
@@ -440,14 +476,14 @@ public class StructureTest extends OrgzlyTest {
 
     @Test
     public void testPromote2() throws IOException {
-        BookView book = testUtils.setupBook("notebook", "" +
-                                                        "description\n" +
-                                                        "\n" +
-                                                        "* Note 1\n" +
-                                                        "** Note 1.1\n" +
-                                                        "*** Note 1.1.1\n" +
-                                                        "** Note 1.2\n" +
-                                                        "* Note 2\n");
+        testUtils.setupBook("notebook", "" +
+                                        "description\n" +
+                                        "\n" +
+                                        "* Note 1\n" +
+                                        "** Note 1.1\n" +
+                                        "*** Note 1.1.1\n" +
+                                        "** Note 1.2\n" +
+                                        "* Note 2\n");
 
         Note note = dataRepository.getLastNote("Note 1.1.1");
 
@@ -499,14 +535,14 @@ public class StructureTest extends OrgzlyTest {
 
     @Test
     public void testPromoteFolded() throws IOException {
-        BookView book = testUtils.setupBook("notebook", "" +
-                                                        "description\n" +
-                                                        "\n" +
-                                                        "* Note 1\n" +
-                                                        "** Note 1.1\n" +
-                                                        "*** Note 1.1.1\n" +
-                                                        "** Note 1.2\n" +
-                                                        "* Note 2\n");
+        testUtils.setupBook("notebook", "" +
+                                        "description\n" +
+                                        "\n" +
+                                        "* Note 1\n" +
+                                        "** Note 1.1\n" +
+                                        "*** Note 1.1.1\n" +
+                                        "** Note 1.2\n" +
+                                        "* Note 2\n");
 
         Note note = dataRepository.getLastNote("Note 1.1");
 
@@ -569,7 +605,7 @@ public class StructureTest extends OrgzlyTest {
 
     @Test
     public void testPromoteFirst2LevelOrphan() throws IOException {
-        BookView book = testUtils.setupBook(
+        testUtils.setupBook(
                 "notebook",
                 "** Note 1\n" +
                 "* Note 2\n");
