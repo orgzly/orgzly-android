@@ -2,10 +2,13 @@ package com.orgzly.android.ui.notes.book
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.ui.CommonViewModel
+import com.orgzly.android.usecase.BookCycleVisibility
+import com.orgzly.android.usecase.UseCaseRunner
 
 class BookViewModel(private val dataRepository: DataRepository, val bookId: Long) : CommonViewModel() {
     data class Data(val book: Book?, val notes: List<NoteView>?)
@@ -29,6 +32,16 @@ class BookViewModel(private val dataRepository: DataRepository, val bookId: Long
         }
         addSource(dataRepository.getVisibleNotesLiveData(bookId)) {
             value = Data(value?.book, it)
+        }
+    }
+
+    fun cycleVisibility() {
+        data.value?.book?.let { book ->
+            App.EXECUTORS.diskIO().execute {
+                catchAndPostError {
+                    UseCaseRunner.run(BookCycleVisibility(book))
+                }
+            }
         }
     }
 }

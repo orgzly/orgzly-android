@@ -784,11 +784,6 @@ public class MainActivity extends CommonActivity
         mSyncFragment.run(new NoteUpdateDeadlineTime(noteIds, time));
     }
 
-    @Override
-    public void onCycleVisibilityRequest(Book book) {
-        mSyncFragment.run(new BookCycleVisibility(book));
-    }
-
     @Override /* BookFragment */
     public void onBookPrefaceEditRequest(Book book) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);

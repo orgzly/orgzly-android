@@ -319,7 +319,7 @@ class BookFragment :
 
         when (item.itemId) {
             R.id.books_options_menu_item_cycle_visibility -> {
-                listener?.onCycleVisibilityRequest(currentBook)
+                viewModel.cycleVisibility()
                 return true
             }
 
@@ -680,8 +680,6 @@ class BookFragment :
         fun onNotesDemoteRequest(bookId: Long, noteIds: Set<Long>)
         fun onNotesMoveRequest(bookId: Long, noteIds: Set<Long>, offset: Int)
         override fun onNotesRefileRequest(sourceBookId: Long, noteIds: Set<Long>, targetBookId: Long)
-
-        fun onCycleVisibilityRequest(book: Book?)
     }
 
     companion object {

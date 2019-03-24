@@ -4,7 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.android.data.DataRepository
 
-class BookViewModelFactory(private val dataRepository: DataRepository, val bookId: Long) : ViewModelProvider.Factory {
+class BookViewModelFactory(
+        private val dataRepository: DataRepository,
+        val bookId: Long
+) : ViewModelProvider.Factory {
+
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return BookViewModel(dataRepository, bookId) as T
