@@ -2,6 +2,7 @@ package com.orgzly.android.ui.notes.book
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
@@ -11,7 +12,10 @@ import com.orgzly.android.usecase.BookCycleVisibility
 import com.orgzly.android.usecase.UseCaseRunner
 
 class BookViewModel(private val dataRepository: DataRepository, val bookId: Long) : CommonViewModel() {
-    data class Data(val book: Book?, val notes: List<NoteView>?)
+
+    private data class Params(val noteId: Long? = null)
+
+    private val params = MutableLiveData<Params>(Params())
 
     enum class ViewState {
         LOADING,
@@ -26,12 +30,16 @@ class BookViewModel(private val dataRepository: DataRepository, val bookId: Long
         viewState.value = state
     }
 
-    val data = MediatorLiveData<Data>().apply {
-        addSource(dataRepository.getBookLiveData(bookId)) {
-            value = Data(it, value?.notes)
-        }
-        addSource(dataRepository.getVisibleNotesLiveData(bookId)) {
-            value = Data(value?.book, it)
+    data class Data(val book: Book?, val notes: List<NoteView>?)
+
+    val data = Transformations.switchMap(params) { params ->
+        MediatorLiveData<Data>().apply {
+            addSource(dataRepository.getBookLiveData(bookId)) {
+                value = Data(it, value?.notes)
+            }
+            addSource(dataRepository.getVisibleNotesLiveData(bookId)) {
+                value = Data(value?.book, it)
+            }
         }
     }
 
