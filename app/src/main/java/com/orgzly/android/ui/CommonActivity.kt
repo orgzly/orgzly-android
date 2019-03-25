@@ -355,6 +355,8 @@ abstract class CommonActivity : DaggerAppCompatActivity() {
 
     // TODO: Move these to to main activity
     fun openFileIfExists(file: File) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, file)
+
         if (file.exists()) {
             runWithPermission(
                     AppPermissions.Usage.EXTERNAL_FILES_ACCESS,
@@ -368,8 +370,7 @@ abstract class CommonActivity : DaggerAppCompatActivity() {
                         }
                     })
         } else {
-            showSnackbar(getString(
-                    R.string.file_does_not_exist, file.canonicalFile))
+            showSnackbar(getString(R.string.file_does_not_exist, file.canonicalFile))
         }
     }
 

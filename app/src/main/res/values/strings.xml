@@ -519,7 +519,7 @@
     </plurals>
 
     <string name="storage_permissions_missing">No storage permission</string>
-    <string name="file_does_not_exist">File %s does not exist</string>
+    <string name="file_does_not_exist">File does not exist: %s</string>
 
     <string name="import_from">Import from “%1$s”?</string>
     <string name="export_to">Export to “%1$s”?</string>
