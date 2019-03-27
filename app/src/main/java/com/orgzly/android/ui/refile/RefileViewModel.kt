@@ -124,31 +124,16 @@ class RefileViewModel(val dataRepository: DataRepository, val noteIds: Set<Long>
     fun refile(notePlace: NotePlace) {
         App.EXECUTORS.diskIO().execute {
             catchAndPostError {
-                checkIfValidTarget(notePlace)
-
                 val useCase = NoteRefile(noteIds, notePlace)
 
                 val result = UseCaseRunner.run(useCase)
+
                 refiledEvent.postValue(result)
 
                 addToHistory()
             }
         }
     }
-
-    /**
-     * Make sure there is no overlap - notes can't be refiled under themselves
-     */
-    private fun checkIfValidTarget(notePlace: NotePlace) {
-        if (notePlace.noteId != 0L) {
-            val sourceNotes = dataRepository.getNotesAndSubtrees(noteIds)
-
-            if (sourceNotes.map { it.id }.contains(notePlace.noteId)) {
-                throw Exception("Cannot refile under notes being refiled")
-            }
-        }
-    }
-
 
     class History : LinkedHashSet<List<String>>() {
         /** Move existing element to be the last one. */

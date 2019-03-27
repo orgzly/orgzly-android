@@ -8,7 +8,7 @@ open class CommonViewModel : ViewModel() {
     fun catchAndPostError(action: () -> Unit) {
         try {
             action()
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             e.printStackTrace()
             errorEvent.postValue(e)
         }

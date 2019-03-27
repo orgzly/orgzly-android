@@ -4,7 +4,9 @@ import com.orgzly.android.data.DataRepository
 
 class BookDelete(val bookId: Long, val deleteLinked: Boolean) : UseCase() {
     override fun run(dataRepository: DataRepository): UseCaseResult {
-        dataRepository.deleteBook(bookId, deleteLinked)
+        val book = dataRepository.getBookView(bookId) ?: throw NotFound()
+
+        dataRepository.deleteBook(book, deleteLinked)
 
         return UseCaseResult(
                 modifiesLocalData = true,

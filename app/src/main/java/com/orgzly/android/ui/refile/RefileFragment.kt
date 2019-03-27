@@ -23,6 +23,7 @@ import com.orgzly.android.db.entity.Note
 import com.orgzly.android.ui.Breadcrumbs
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.usecase.BookSparseTreeForNote
+import com.orgzly.android.usecase.NoteRefile
 import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.LogUtils
 import dagger.android.support.DaggerDialogFragment
@@ -141,13 +142,11 @@ class RefileFragment : DaggerDialogFragment() {
         })
 
         viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->
-            //            dismiss()
-//
-//            if (error != null) {
-//                CommonActivity.showSnackbar(context, (error.cause ?: error).localizedMessage)
-//            }
-
-            toolbar.subtitle = (error.cause ?: error).localizedMessage
+            if (error is NoteRefile.TargetInNotesSubtree) {
+                toolbar.subtitle = getString(R.string.cannot_refile_to_the_same_subtree)
+            } else {
+                toolbar.subtitle = (error.cause ?: error).localizedMessage
+            }
         })
 
         viewModel.open(RefileViewModel.HOME)

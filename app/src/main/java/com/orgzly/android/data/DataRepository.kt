@@ -316,13 +316,7 @@ class DataRepository @Inject constructor(
         return BookView(book.copy(id = id), 0)
     }
 
-    fun deleteBook(bookId: Long, deleteLinked: Boolean) {
-        val book = getBookView(bookId) ?: throw BookDelete.NotFound()
-
-        deleteBook(book, deleteLinked)
-    }
-
-    private fun deleteBook(book: BookView, deleteLinked: Boolean) {
+    fun deleteBook(book: BookView, deleteLinked: Boolean) {
         if (deleteLinked) {
             val repo = repoFactory.getFromUri(context, book.syncedTo?.repoUri)
             repo?.delete(book.syncedTo?.uri)
