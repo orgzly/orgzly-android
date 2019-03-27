@@ -17,13 +17,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Relative place -->
-        <Spinner
-            android:id="@+id/dialog_refile_places"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:entries="@array/refile_places" />
+        <!--&lt;!&ndash; Relative place &ndash;&gt;-->
+        <!--<Spinner-->
+            <!--android:id="@+id/dialog_refile_places"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="end"-->
+            <!--android:entries="@array/refile_places" />-->
 
     </androidx.appcompat.widget.Toolbar>
 
