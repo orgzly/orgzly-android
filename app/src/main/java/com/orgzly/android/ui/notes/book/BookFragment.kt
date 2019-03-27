@@ -203,6 +203,7 @@ class BookFragment :
             viewAdapter.setPreface(book)
 
             if (notes != null) {
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Submitting list")
                 viewAdapter.submitList(notes)
 
                 // Restore scrolling position
@@ -227,7 +228,7 @@ class BookFragment :
                     }
                 }
 
-                scrollToNoteIfSet()
+                scrollToNoteIfSet(arguments?.getLong(ARG_NOTE_ID, 0) ?: 0)
             }
 
             updateViewState(notes)
@@ -365,10 +366,8 @@ class BookFragment :
         listener?.onNotesPasteRequest(mBookId, noteId, place)
     }
 
-    private fun scrollToNoteIfSet() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
-
-        val noteId = arguments?.getLong(ARG_NOTE_ID, 0) ?: 0
+    fun scrollToNoteIfSet(noteId: Long) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId)
 
         if (noteId > 0) {
             val startedAt = System.currentTimeMillis()
@@ -394,6 +393,7 @@ class BookFragment :
     }
 
     private fun scrollToPosition(position: Int) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, position)
         layoutManager.scrollToPositionWithOffset(position, 0)
     }
 

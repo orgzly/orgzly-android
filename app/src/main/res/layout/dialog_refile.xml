@@ -48,17 +48,18 @@
             <TextView
                 android:id="@+id/dialog_refile_breadcrumbs"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:linksClickable="true"
                 android:paddingStart="@dimen/screen_edge"
                 android:paddingLeft="@dimen/screen_edge"
                 android:paddingEnd="@dimen/screen_edge"
                 android:paddingRight="@dimen/screen_edge"
                 android:scrollHorizontally="true"
+                android:gravity="center_vertical"
+                android:linksClickable="true"
                 android:text="@string/loading"
                 android:textColor="?attr/text_primary_color"
-                tools:text="Item • Item • Item" />
+                tools:text="Item • Item • Item • Item • Item • Item • Item • Item • Item • Item" />
         </HorizontalScrollView>
 
         <!-- Refile *here* -->

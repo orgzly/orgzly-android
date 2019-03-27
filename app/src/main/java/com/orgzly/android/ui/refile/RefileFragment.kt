@@ -106,20 +106,20 @@ class RefileFragment : DaggerDialogFragment() {
 
         val breadcrumbsScrollView = v.findViewById<HorizontalScrollView>(R.id.dialog_refile_breadcrumbs_scroll_view)
 
-        viewModel.location.observe(viewLifecycleOwner, Observer { state ->
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed state: $state")
+        viewModel.location.observe(viewLifecycleOwner, Observer { location ->
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed location: $location")
 
-            adapter.submitList(state.list)
+            adapter.submitList(location.list)
 
             // Hide refile-here button in notebook list
-            if (state.breadcrumbs.size == 1) {
+            if (location.breadcrumbs.size == 1) {
                 refileHereButton.visibility = View.INVISIBLE
             } else {
                 refileHereButton.visibility = View.VISIBLE
             }
 
             // Update and scroll breadcrumbs to the end
-            breadcrumbsView.text = generateBreadcrumbs(state.breadcrumbs)
+            breadcrumbsView.text = generateBreadcrumbs(location.breadcrumbs)
             breadcrumbsScrollView.post { breadcrumbsScrollView.fullScroll(View.FOCUS_RIGHT) }
         })
 

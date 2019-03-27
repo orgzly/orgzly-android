@@ -118,7 +118,9 @@ public class DisplayManager {
      * Add fragment for book, unless the same book is already being displayed.
      */
     public static void displayBook(FragmentManager fragmentManager, long bookId, long noteId) {
-        if (getFragmentDisplayingBook(fragmentManager, bookId) == null) {
+        BookFragment existingFragment = getFragmentDisplayingBook(fragmentManager, bookId);
+
+        if (existingFragment == null) {
             /* Create fragment. */
             Fragment fragment = BookFragment.getInstance(bookId, noteId);
 
@@ -130,7 +132,12 @@ public class DisplayManager {
                     .replace(R.id.single_pane_container, fragment, BookFragment.FRAGMENT_TAG)
                     .commit();
         } else {
-            Log.w(TAG, "Fragment displaying book " + bookId + " already exists");
+            if (noteId > 0) {
+                Log.w(TAG, "Fragment displaying book " + bookId + " already exists, jumping to note");
+                existingFragment.scrollToNoteIfSet(noteId);
+            } else {
+                Log.w(TAG, "Fragment displaying book " + bookId + " already exists, ignoring");
+            }
         }
     }
 
