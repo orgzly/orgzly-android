@@ -22,33 +22,8 @@
             android:text="@string/whats_new_intro"/>
 
         <TextView
-            style="@style/WhatsNewChange"
-            android:text="If you moved notes up, down, promoted, demoted or refiled them in v1.7.2-beta.1 or v1.7.2-beta.2, their properties might have been lost. Please double-check them."
-            android:textStyle="italic|bold"
-            tools:ignore="HardcodedText" />
-
-        <TextView
             style="@style/WhatsNewVersion"
-            android:text="v1.7.2-beta.3"
-            tools:ignore="HardcodedText" />
-
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange"
-            app:text="Keep properties and tracked events when moving notes (fix)" />
-
-        <TextView
-            style="@style/WhatsNewVersion"
-            android:text="v1.7.2-beta.2"
-            tools:ignore="HardcodedText" />
-
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange"
-            app:text="Fix missing expanded time instances in some cases" />
-
-
-        <TextView
-            style="@style/WhatsNewVersion"
-            android:text="v1.7.2-beta.1"
+            android:text="v1.7.2"
             tools:ignore="HardcodedText" />
 
         <com.orgzly.android.ui.views.WhatsNewChange
