@@ -17,8 +17,8 @@ android {
         minSdkVersion 16 // Jelly Bean (4.1)
         targetSdkVersion 28 // Android Pie (9)
         applicationId "com.orgzly"
-        versionCode 132
-        versionName "1.7.2-beta.3"
+        versionCode 133
+        versionName "1.7.2"
 
         testInstrumentationRunner "com.orgzly.android.OrgzlyTestRunner"
         // testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
