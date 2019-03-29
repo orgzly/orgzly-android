@@ -1,5 +1,6 @@
 package com.orgzly.android.ui.refile
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
@@ -28,9 +29,6 @@ import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.LogUtils
 import dagger.android.support.DaggerDialogFragment
 import javax.inject.Inject
-
-
-
 
 class RefileFragment : DaggerDialogFragment() {
 
@@ -74,8 +72,12 @@ class RefileFragment : DaggerDialogFragment() {
         val v = inflater.inflate(R.layout.dialog_refile, container, false)
 
         val toolbar = v.findViewById(R.id.dialog_refile_toolbar) as Toolbar
+
         toolbar.setTitle(R.string.refile)
 
+        toolbar.setNavigationOnClickListener {
+            dismiss()
+        }
 
         val adapter = RefileAdapter(object: RefileAdapter.OnClickListener {
             override fun onItem(item: RefileViewModel.Item) {
