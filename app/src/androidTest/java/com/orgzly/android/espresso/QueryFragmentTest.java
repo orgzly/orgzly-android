@@ -316,6 +316,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onNotesInSearch().check(matches(recyclerViewItemCount(2)));
     }
+
     @Test
     public void testNotesWithSameDeadlineTimeString() throws IOException {
         testUtils.setupBook("notebook-1", "* Note A\nDEADLINE: <2014-01-01>");
@@ -325,6 +326,17 @@ public class QueryFragmentTest extends OrgzlyTest {
         searchForText("d.today");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onNotesInSearch().check(matches(recyclerViewItemCount(2)));
+    }
+
+    @Test
+    public void testClosedTimeSearch() {
+        testUtils.setupBook("notebook-1", "* Note A\nCLOSED: [2014-01-01]");
+        activityRule.launchActivity(null);
+
+        searchForText("c.ge.-2d");
+        onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
+        onView(withText(R.string.no_notes_found_after_search)).check(matches(isDisplayed()));
+        onNotesInSearch().check(matches(recyclerViewItemCount(0)));
     }
 
     @Test
