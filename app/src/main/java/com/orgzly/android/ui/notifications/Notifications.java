@@ -48,8 +48,10 @@ public class Notifications {
                 .setContentTitle(context.getString(R.string.new_note))
                 .setContentText(context.getString(R.string.tap_to_create_new_note))
                 .setColor(ContextCompat.getColor(context, R.color.notification))
-                .setContentIntent(resultPendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_MIN); // Don't show icon on status bar
+                .setContentIntent(resultPendingIntent);
+
+        // Try to display notification expanded to see the actions
+        builder.setPriority(NotificationCompat.PRIORITY_MAX);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             PendingIntent newNotePendingIntent = PendingIntent.getBroadcast(
