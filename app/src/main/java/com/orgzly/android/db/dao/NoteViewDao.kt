@@ -140,7 +140,7 @@ abstract class NoteViewDao {
             t_closed_range.string AS closed_range_string,
             t_closed_timestamps_start.string AS closed_time_string,
             t_closed_timestamps_end.string AS closed_time_end_string,
-            t_closed_timestamps_start.string AS closed_time_timestamp,
+            t_closed_timestamps_start.timestamp AS closed_time_timestamp,
             datetime(t_closed_timestamps_start.timestamp/1000, 'unixepoch', 'localtime', 'start of day') AS closed_time_start_of_day,
             t_closed_timestamps_start.hour AS closed_time_hour,
 
