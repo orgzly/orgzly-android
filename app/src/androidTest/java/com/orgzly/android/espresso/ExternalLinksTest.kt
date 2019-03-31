@@ -53,7 +53,7 @@ class ExternalLinksTest(private val param: Parameter) : OrgzlyTest() {
             return listOf(
                     Parameter("file:./non-existing-file") {
                         onSnackbar().check(matches(
-                                withText("File $storageDir/non-existing-file does not exist")))
+                                withText("File does not exist: $storageDir/non-existing-file")))
                     },
 
                     Parameter("file:$cacheDir") {
