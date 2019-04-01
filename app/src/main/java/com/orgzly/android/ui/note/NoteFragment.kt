@@ -31,6 +31,7 @@ import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.android.util.SpaceTokenizer
 import com.orgzly.android.util.UserTimeFormatter
+import com.orgzly.org.OrgProperties
 import com.orgzly.org.datetime.OrgDateTime
 import com.orgzly.org.datetime.OrgRange
 import com.orgzly.org.parser.OrgParserWriter
@@ -409,12 +410,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         /* Properties. */
         propertiesContainer.removeAllViews()
-        if (!payload.properties.isEmpty()) {
-            val properties = OrgMapper.toOrgProperties(payload.properties)
-            for (name in properties.keys) {
-                val value = properties[name]
-                addPropertyToList(name, value)
-            }
+        for (property in payload.properties.all) {
+            addPropertyToList(property.name, property.value)
         }
         addPropertyToList(null, null)
 
@@ -482,7 +479,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     private fun updatePayloadFromViews() {
-        val properties = LinkedHashMap<String, String>()
+        val properties = OrgProperties()
 
         for (i in 0 until propertiesContainer.childCount) {
             val property = propertiesContainer.getChildAt(i)
@@ -491,7 +488,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             val value = (property.findViewById<View>(R.id.value) as TextView).text
 
             if (!TextUtils.isEmpty(name)) { // Ignore property with no name
-                properties[name.toString()] = value.toString()
+                properties.put(name.toString(), value.toString())
             }
         }
 
@@ -994,7 +991,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 .show()
     }
 
-    fun cancelWithConfirmation() {
+    private fun cancelWithConfirmation() {
         if (!isAskingForConfirmationForModifiedNote()) {
             cancel()
         }

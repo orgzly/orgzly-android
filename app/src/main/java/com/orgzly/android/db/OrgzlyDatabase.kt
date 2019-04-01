@@ -38,7 +38,7 @@ import java.util.*
             VersionedRook::class
         ],
 
-        version = 151
+        version = 152
 )
 @TypeConverters(com.orgzly.android.db.TypeConverters::class)
 abstract class OrgzlyDatabase : RoomDatabase() {
@@ -103,7 +103,8 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                             PreRoomMigration.MIGRATION_148_149,
 
                             MIGRATION_149_150, // Switch to Room
-                            MIGRATION_150_151
+                            MIGRATION_150_151,
+                            MIGRATION_151_152
                     )
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
@@ -449,6 +450,13 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                 }
 
                 return db.insert("org_timestamps", SQLiteDatabase.CONFLICT_ROLLBACK, values)
+            }
+        }
+
+        private val MIGRATION_151_152 = object : Migration(151, 152) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("DROP INDEX index_note_properties_note_id_name")
+                db.execSQL("CREATE  INDEX `index_note_properties_note_id` ON `note_properties` (`note_id`)")
             }
         }
     }

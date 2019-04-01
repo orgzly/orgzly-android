@@ -14,18 +14,7 @@ object OrgMapper {
         val to = OrgProperties()
 
         from.forEach { property ->
-            to[property.name] = property.value
-        }
-
-        return to
-    }
-
-    @JvmStatic
-    fun toOrgProperties(from: Map<String, String>): OrgProperties {
-        val to = OrgProperties()
-
-        from.forEach { (name, value) ->
-            to[name] = value
+            to.put(property.name, property.value)
         }
 
         return to
@@ -69,7 +58,7 @@ object OrgMapper {
             deadline = notePayload.deadline?.let { OrgRange.parse(it) }
             closed = notePayload.closed?.let { OrgRange.parse(it) }
 
-            properties = toOrgProperties(notePayload.properties)
+            properties = notePayload.properties
 
             content = notePayload.content
         }

@@ -2,6 +2,7 @@ package com.orgzly.android.ui.note
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.orgzly.org.OrgProperties
 
 data class NotePayload @JvmOverloads constructor(
         val title: String = "",
@@ -12,7 +13,7 @@ data class NotePayload @JvmOverloads constructor(
         val deadline: String? = null,
         val closed: String? = null,
         val tags: List<String> = emptyList(),
-        val properties: Map<String, String> = LinkedHashMap()
+        val properties: OrgProperties = OrgProperties()
 ) : Parcelable {
 
     override fun describeContents(): Int {
@@ -32,10 +33,12 @@ data class NotePayload @JvmOverloads constructor(
 
         out.writeStringList(tags)
 
-        out.writeInt(properties.size)
-        for ((key, value) in properties) {
-            out.writeString(key)
-            out.writeString(value)
+        out.writeInt(properties.size())
+        properties.all.let {
+            for (property in it) {
+                out.writeString(property.name)
+                out.writeString(property.value)
+            }
         }
     }
 
@@ -59,11 +62,11 @@ data class NotePayload @JvmOverloads constructor(
             val tags = mutableListOf<String>()
             parcel.readStringList(tags)
 
-            val properties = LinkedHashMap<String, String>()
+            val properties = OrgProperties()
             repeat(parcel.readInt()) {
                 val name = parcel.readString()
                 val value = parcel.readString()
-                properties[name!!] = value!!
+                properties.put(name!!, value!!)
             }
 
             return NotePayload(

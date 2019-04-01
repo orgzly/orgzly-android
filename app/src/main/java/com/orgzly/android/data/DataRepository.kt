@@ -39,12 +39,9 @@ import com.orgzly.android.ui.NotePlace
 import com.orgzly.android.ui.Place
 import com.orgzly.android.ui.note.NoteBuilder
 import com.orgzly.android.ui.note.NotePayload
-import com.orgzly.android.usecase.BookDelete
 import com.orgzly.android.usecase.RepoCreate
 import com.orgzly.android.util.*
-import com.orgzly.org.OrgFile
-import com.orgzly.org.OrgFileSettings
-import com.orgzly.org.OrgActiveTimestamps
+import com.orgzly.org.*
 import com.orgzly.org.datetime.OrgDateTime
 import com.orgzly.org.datetime.OrgRange
 import com.orgzly.org.parser.*
@@ -604,7 +601,7 @@ class DataRepository @Inject constructor(
             place: Place,
             targetNoteId: Long): Int {
 
-        var pastedNoteIds = mutableSetOf<Long>()
+        val pastedNoteIds = mutableSetOf<Long>()
 
         val targetNote = db.note().get(targetNoteId) ?: return 0
 
@@ -666,7 +663,13 @@ class DataRepository @Inject constructor(
 
             lastNoteId = db.note().insert(note)
 
-            insertNoteProperties(lastNoteId, entry.properties.map { Pair(it.name, it.value) }.toMap())
+            val properties = OrgProperties().apply {
+                entry.properties.forEach {
+                    put(it.name, it.value)
+                }
+            }
+
+            insertNoteProperties(lastNoteId, properties)
             insertNoteEvents(lastNoteId, note.title, note.content)
 
             idsMap[entry.note.id] = lastNoteId
@@ -1122,18 +1125,19 @@ class DataRepository @Inject constructor(
         db.noteProperty().upsert(noteId, name, value)
     }
 
-    private fun replaceNoteProperties(noteId: Long, properties: Map<String, String>) {
+    private fun replaceNoteProperties(noteId: Long, properties: OrgProperties) {
         db.noteProperty().delete(noteId)
 
         insertNoteProperties(noteId, properties)
     }
 
-    fun insertNoteProperties(noteId: Long, properties: Map<String, String>) {
+    fun insertNoteProperties(noteId: Long, properties: OrgProperties) {
         var position = 1
 
-        properties.forEach { (name, value) ->
-            val property = NoteProperty(noteId, position++, name, value)
-            db.noteProperty().insert(property)
+        properties.all.forEach { property ->
+            NoteProperty(noteId, position++, property.name, property.value).let {
+                db.noteProperty().insert(it)
+            }
         }
     }
 
@@ -1157,10 +1161,15 @@ class DataRepository @Inject constructor(
 
         val payload = if (AppPreferences.createdAt(context)) {
             // Set created-at property
+
             val propName = AppPreferences.createdAtProperty(context)
             val propValue = OrgDateTime(createdAt, false).toString()
-            val property = Pair(propName, propValue)
-            notePayload.copy(properties = notePayload.properties + property)
+
+            val properties = notePayload.properties.apply {
+                put(propName, propValue)
+            }
+
+            notePayload.copy(properties = properties)
 
         } else {
             notePayload

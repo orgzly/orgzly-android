@@ -16,7 +16,7 @@ import androidx.room.*
         ],
 
         indices = [
-            Index("note_id", "name", unique = true),
+            Index("note_id"),
             Index("position"),
             Index("name"),
             Index("value")

@@ -7,6 +7,7 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.NoteStates
 import com.orgzly.android.util.EventsInNote
 import com.orgzly.android.util.OrgFormatter
+import com.orgzly.org.OrgProperties
 import com.orgzly.org.datetime.OrgDateTime
 import com.orgzly.org.datetime.OrgRange
 import com.orgzly.org.utils.StateChangeLogic
@@ -24,7 +25,7 @@ class NoteBuilder {
 
             var title = notePayload.title
             var content = notePayload.content
-            val properties = notePayload.properties.toMutableMap()
+            val properties = notePayload.properties
 
             val eventsInNote = EventsInNote(title, content)
 
@@ -48,7 +49,7 @@ class NoteBuilder {
 
                 // Add last-repeat time
                 if (AppPreferences.setLastRepeatOnTimeShift(context)) {
-                    properties[OrgFormatter.LAST_REPEAT_PROPERTY] = now
+                    properties.put(OrgFormatter.LAST_REPEAT_PROPERTY, now)
                 }
 
                 // Log state change
@@ -94,8 +95,7 @@ class NoteBuilder {
                     noteView.deadlineRangeString,
                     noteView.closedRangeString,
                     noteView.note.getTagsList(),
-                    linkedMapOf(*properties.map { Pair(it.name, it.value) }.toTypedArray())
-            )
+                    OrgProperties().apply { properties.forEach { put(it.name, it.value) } })
         }
 
         @JvmStatic
@@ -141,8 +141,6 @@ class NoteBuilder {
             }
         }
 
-
         private val TAG = NoteBuilder::class.java.name
     }
-
 }
