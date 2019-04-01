@@ -120,6 +120,21 @@ object WidgetStyle {
                 R.id.item_list_widget_deadline_text,
                 WidgetStyle.secondaryTextColor(context))
 
+        /* Event time */
+
+        remoteViews.setImageViewResource(
+                R.id.item_list_widget_event_icon,
+                WidgetStyle.eventIcon(context))
+
+        remoteViews.setTextViewTextSize(
+                R.id.item_list_widget_event_text,
+                TypedValue.COMPLEX_UNIT_PX,
+                WidgetStyle.postTitleTextSize(context))
+
+        remoteViews.setTextColor(
+                R.id.item_list_widget_event_text,
+                WidgetStyle.secondaryTextColor(context))
+
         /* Closed time */
 
         remoteViews.setImageViewResource(
@@ -265,6 +280,14 @@ object WidgetStyle {
         return when (AppPreferences.widgetColorScheme(context)) {
             "dark", "black" -> R.drawable.ic_alarm_white_18dp
             else -> R.drawable.ic_alarm_black_18dp
+        }
+    }
+
+    @DrawableRes
+    private fun eventIcon(context: Context): Int {
+        return when (AppPreferences.widgetColorScheme(context)) {
+            "dark", "black" -> R.drawable.ic_access_time_white_18dp
+            else -> R.drawable.ic_access_time_black_18dp
         }
     }
 

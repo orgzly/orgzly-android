@@ -54,6 +54,7 @@
     <string name="focus">Focus</string>
     <string name="widget">Widget</string>
     <string name="history">History</string>
+    <string name="event">Event</string>
 
     <plurals name="notes_deleted">
         <item quantity="one">Note deleted</item>

@@ -10,6 +10,7 @@ import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
 import com.orgzly.android.data.DataRepository
+import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.query.Query
 import com.orgzly.android.query.user.InternalQueryParser
@@ -38,7 +39,7 @@ class ListWidgetService : RemoteViewsService() {
     }
 
     private sealed class WidgetEntry(open val id: Long) {
-        data class WidgetNoteEntry(override val id: Long, val noteId: Long) : WidgetEntry(id)
+        data class WidgetNoteEntry(override val id: Long, val noteView: NoteView) : WidgetEntry(id)
 
         data class WidgetDividerEntry(override val id: Long, val day: DateTime) : WidgetEntry(id)
     }
@@ -86,14 +87,14 @@ class ListWidgetService : RemoteViewsService() {
 
                 dataList = agendaItems.map {
                     when (it) {
-                        is AgendaItem.Note -> WidgetEntry.WidgetNoteEntry(it.id, it.note.note.id)
+                        is AgendaItem.Note -> WidgetEntry.WidgetNoteEntry(it.id, it.note)
                         is AgendaItem.Divider -> WidgetEntry.WidgetDividerEntry(it.id, it.day)
                     }
                 }
 
             } else {
                 dataList = notes.map {
-                    WidgetEntry.WidgetNoteEntry(it.note.id, it.note.id)
+                    WidgetEntry.WidgetNoteEntry(it.note.id, it)
                 }
             }
         }
@@ -146,7 +147,7 @@ class ListWidgetService : RemoteViewsService() {
         }
 
         private fun setupRemoteViews(row: RemoteViews, entry: WidgetEntry.WidgetNoteEntry) {
-            val noteView = dataRepository.getNoteView(entry.noteId) ?: return
+            val noteView = entry.noteView
 
             val displayPlanningTimes = AppPreferences.displayPlanning(context)
             val displayBookName = AppPreferences.widgetDisplayBookName(context)
@@ -179,6 +180,15 @@ class ListWidgetService : RemoteViewsService() {
                 row.setViewVisibility(R.id.item_list_widget_deadline, View.VISIBLE)
             } else {
                 row.setViewVisibility(R.id.item_list_widget_deadline, View.GONE)
+            }
+
+            // Event time
+            if (displayPlanningTimes && noteView.eventString != null) {
+                val time = userTimeFormatter.formatAll(OrgRange.parse(noteView.eventString))
+                row.setTextViewText(R.id.item_list_widget_event_text, time)
+                row.setViewVisibility(R.id.item_list_widget_event, View.VISIBLE)
+            } else {
+                row.setViewVisibility(R.id.item_list_widget_event, View.GONE)
             }
 
             // Scheduled time
