@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import android.os.Parcelable
 import android.util.Log
 import android.view.*
 import android.widget.ViewFlipper
@@ -206,11 +205,6 @@ class BookFragment :
                 if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Submitting list")
                 viewAdapter.submitList(notes)
 
-                // Restore scrolling position
-                savedInstanceState?.getParcelable<Parcelable>(LAYOUT_STATE)?.let {
-                    layoutManager.onRestoreInstanceState(it)
-                }
-
                 val ids = notes.mapTo(hashSetOf()) { it.note.id }
 
                 viewAdapter.getSelection().removeNonExistent(ids)
@@ -250,13 +244,6 @@ class BookFragment :
         } else {
             viewModel.setViewState(BookViewModel.ViewState.EMPTY)
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
-        super.onSaveInstanceState(outState)
-
-        outState.putParcelable(LAYOUT_STATE, layoutManager.onSaveInstanceState())
     }
 
     override fun onDestroyView() {
@@ -693,8 +680,6 @@ class BookFragment :
         /* Arguments. */
         private const val ARG_BOOK_ID = "bookId"
         private const val ARG_NOTE_ID = "noteId"
-
-        private const val LAYOUT_STATE = "layout"
 
         private val ITEMS_HIDDEN_ON_MULTIPLE_SELECTED_NOTES = intArrayOf(
                 R.id.book_cab_paste)
