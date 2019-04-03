@@ -23,6 +23,7 @@ import com.orgzly.android.usecase.NoteToggleFolding;
 import com.orgzly.android.usecase.UseCaseResult;
 import com.orgzly.android.usecase.UseCaseRunner;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -1403,6 +1404,31 @@ public class StructureTest extends OrgzlyTest {
                 "** Note A-05\n" +
                 "* Note A-01\n" +
                 "* Note A-03\n",
+                dataRepository.getBookContent("Book A", BookFormat.ORG));
+    }
+
+    @Ignore
+    @Test
+    public void moveMultipleDownWithChildrenSelected() throws IOException {
+        BookView book = testUtils.setupBook(
+                "Book A",
+                "* Note A-01\n" +
+                "* Note A-02\n" +  // Move down
+                "** Note A-03\n" + // Move down
+                "* Note A-04\n");
+
+        UseCaseRunner.run(new NoteMove(
+                book.getBook().getId(),
+                new HashSet<>(Arrays.asList(
+                        dataRepository.getLastNote("Note A-02").getId(),
+                        dataRepository.getLastNote("Note A-03").getId())),
+                1));
+
+        assertEquals(
+                "* Note A-01\n" +
+                "* Note A-04\n" +
+                "* Note A-02\n" +
+                "** Note A-03\n",
                 dataRepository.getBookContent("Book A", BookFormat.ORG));
     }
 
