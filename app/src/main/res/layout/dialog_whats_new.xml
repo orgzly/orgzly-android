@@ -21,6 +21,21 @@
             android:layout_marginBottom="@dimen/space_between_content_areas"
             android:text="@string/whats_new_intro"/>
 
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.7.3"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix searching by closed time" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix demoting multiple notes under folded one" />
+
+
         <TextView
             style="@style/WhatsNewVersion"
             android:text="v1.7.2"
