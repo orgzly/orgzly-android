@@ -387,6 +387,30 @@ public class StructureTest extends OrgzlyTest {
     }
 
     @Test
+    public void testDemoteMultipleUnderFolded() throws IOException {
+        testUtils.setupBook(
+                "Book A",
+                "* Note A-01\n" + // Fold
+                "** Note A-02\n" +
+                "* Note A-03\n" + // Demote
+                "* Note A-04");   // Demote
+
+        UseCaseRunner.run(new NoteToggleFolding(dataRepository.getLastNote("Note A-01").getId()));
+
+        UseCaseRunner.run(new NoteDemote(
+                new HashSet<>(Arrays.asList(
+                        dataRepository.getLastNote("Note A-03").getId(),
+                        dataRepository.getLastNote("Note A-04").getId()))));
+
+        assertEquals(
+                "* Note A-01\n" +
+                "** Note A-02\n" +
+                "** Note A-03\n" +
+                "** Note A-04\n",
+                dataRepository.getBookContent("Book A", BookFormat.ORG));
+    }
+
+    @Test
     public void testCutNoteUnderFoldedThenPaste() throws IOException {
         BookView book = testUtils.setupBook("notebook", "" +
                                                         "description\n" +
