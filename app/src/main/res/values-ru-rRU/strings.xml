@@ -72,10 +72,10 @@
     </plurals>
     <string name="no_notes_cut">Нет заметок</string>
     <plurals name="notes_copied">
-        <item quantity="one">Note copied</item>
-        <item quantity="few">Copied <b>%d</b> notes</item>
+        <item quantity="one">Заметка скопирована</item>
+        <item quantity="few">Скопировано <b>%d</b> заметки</item>
         <item quantity="many">Скопировано <b>%d</b> заметок</item>
-        <item quantity="other">Copied <b>%d</b> notes</item>
+        <item quantity="other">Скопировано <b>%d</b> заметок</item>
     </plurals>
     <plurals name="notes_pasted">
         <item quantity="one">Заметка вставлена</item>
