@@ -154,11 +154,16 @@ abstract class CommonActivity : DaggerAppCompatActivity() {
         dismissSnackbar()
     }
 
+    var runOnTouchEvent: Runnable? = null
+
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         val consumed = super.dispatchTouchEvent(ev)
 
         if (ev.action == MotionEvent.ACTION_UP) {
             dismissSnackbar()
+
+        } else if (ev.action == MotionEvent.ACTION_DOWN) {
+            runOnTouchEvent?.run()
         }
 
         return consumed

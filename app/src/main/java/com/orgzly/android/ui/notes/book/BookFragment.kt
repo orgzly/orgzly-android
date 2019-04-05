@@ -1,5 +1,6 @@
 package com.orgzly.android.ui.notes.book
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
@@ -51,6 +52,8 @@ class BookFragment :
     private lateinit var viewAdapter: BookAdapter
 
     private lateinit var layoutManager: LinearLayoutManager
+
+    private lateinit var recyclerView: RecyclerView
 
     private lateinit var sharedMainActivityViewModel: SharedMainActivityViewModel
 
@@ -133,7 +136,7 @@ class BookFragment :
 
         layoutManager = LinearLayoutManager(context)
 
-        view.findViewById<RecyclerView>(R.id.fragment_notes_book_recycler_view).let { rv ->
+        recyclerView = view.findViewById<RecyclerView>(R.id.fragment_notes_book_recycler_view).also { rv ->
             rv.layoutManager = layoutManager
             rv.adapter = viewAdapter
 
@@ -365,6 +368,10 @@ class BookFragment :
                 if (id == noteId) {
                     scrollToPosition(i)
 
+                    recyclerView.post {
+                        spotlightScrolledToView(i)
+                    }
+
                     /* Make sure we don't scroll again (for example after configuration change). */
                     Handler().postDelayed({ arguments?.remove(ARG_NOTE_ID) }, 500)
 
@@ -375,6 +382,29 @@ class BookFragment :
             if (BuildConfig.LOG_DEBUG) {
                 val ms = System.currentTimeMillis() - startedAt
                 LogUtils.d(TAG, "Scrolling to note " + noteId + " took " + ms + "ms")
+            }
+        }
+    }
+
+    private fun spotlightScrolledToView(position: Int) {
+        layoutManager.findViewByPosition(position)?.let {
+            highlightScrolledToView(it)
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun highlightScrolledToView(view: View) {
+        val arr = view.context.obtainStyledAttributes(R.styleable.ColorScheme)
+        val selectionBgColor = arr.getColor(R.styleable.ColorScheme_item_spotlighted_bg_color, 0)
+        arr.recycle()
+
+        view.setBackgroundColor(selectionBgColor)
+
+        // Reset background color on touch
+        (activity as? CommonActivity)?.apply {
+            runOnTouchEvent = Runnable {
+                view.setBackgroundColor(0)
+                runOnTouchEvent = null
             }
         }
     }
