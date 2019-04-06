@@ -89,6 +89,7 @@
         android:paddingRight="8dp"
         android:paddingEnd="8dp"
         android:clipToPadding="false"
+        android:background="?attr/item_book_card_bg_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

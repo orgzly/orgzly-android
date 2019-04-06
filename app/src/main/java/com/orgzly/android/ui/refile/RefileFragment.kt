@@ -51,7 +51,16 @@ class RefileFragment : DaggerDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        val dialog = super.onCreateDialog(savedInstanceState)
+
+        val dialog = object: Dialog(context!!, theme) {
+            override fun onBackPressed() {
+                if (viewModel.location.value?.breadcrumbs?.size ?: 0 > 1) {
+                    viewModel.goUp()
+                } else {
+                    super.onBackPressed()
+                }
+            }
+        }
 
 //        val dialog = object: Dialog(context!!, theme) {
 //            override fun onBackPressed() {
