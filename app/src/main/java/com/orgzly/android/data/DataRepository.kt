@@ -1899,7 +1899,7 @@ class DataRepository @Inject constructor(
      */
     fun selectAllTagsLiveData(): LiveData<List<String>> {
         return Transformations.map(db.note().getDistinctTagsLiveData()) { tagsList ->
-            tagsList.flatMap { Note.dbDeSerializeTags(it) }.distinct()
+            tagsList.flatMap { Note.dbDeSerializeTags(it) }.distinct().sorted()
         }
     }
 
