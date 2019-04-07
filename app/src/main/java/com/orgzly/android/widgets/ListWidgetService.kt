@@ -151,7 +151,7 @@ class ListWidgetService : RemoteViewsService() {
 
             val displayPlanningTimes = AppPreferences.displayPlanning(context)
             val displayBookName = AppPreferences.widgetDisplayBookName(context)
-            val todoStates = AppPreferences.todoKeywordsSet(context)
+            val doneStates = AppPreferences.doneKeywordsSet(context)
 
             // Title
             row.setTextViewText(R.id.item_list_widget_title, titleGenerator.generateTitle(noteView))
@@ -201,10 +201,10 @@ class ListWidgetService : RemoteViewsService() {
             }
 
             // Check mark
-            if (todoStates.contains(noteView.note.state)) {
-                row.setViewVisibility(R.id.item_list_widget_done, View.VISIBLE)
-            } else {
+            if (doneStates.contains(noteView.note.state)) {
                 row.setViewVisibility(R.id.item_list_widget_done, View.GONE)
+            } else {
+                row.setViewVisibility(R.id.item_list_widget_done, View.VISIBLE)
             }
 
             // Intent for opening note
