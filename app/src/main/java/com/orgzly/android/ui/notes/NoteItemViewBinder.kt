@@ -261,8 +261,26 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
             holder.foldButton.visibility = View.VISIBLE
             holder.foldButtonText.visibility = View.VISIBLE
         } else {
-            holder.foldButton.visibility = View.INVISIBLE
-            holder.foldButtonText.visibility = View.INVISIBLE
+            if (inBook) { // Leave invisible for padding
+                holder.foldButton.visibility = View.INVISIBLE
+                holder.foldButtonText.visibility = View.INVISIBLE
+            } else {
+                holder.foldButton.visibility = View.GONE
+                holder.foldButtonText.visibility = View.GONE
+            }
+        }
+
+        // Add right margin in search results
+        if (!inBook) {
+            (holder.container.layoutParams as LinearLayout.LayoutParams).apply {
+                val right = if (holder.foldButton.visibility == View.GONE) {
+                    context.resources.getDimension(R.dimen.screen_edge).toInt()
+                } else {
+                    0
+                }
+
+                setMargins(leftMargin, topMargin, right, bottomMargin)
+            }
         }
 
         return isVisible
