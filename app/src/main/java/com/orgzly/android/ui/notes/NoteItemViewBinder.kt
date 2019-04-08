@@ -200,6 +200,8 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
                     container.getChildAt(i - 1).visibility = View.VISIBLE
                 }
         }
+
+        container.tag = level
     }
 
     /**

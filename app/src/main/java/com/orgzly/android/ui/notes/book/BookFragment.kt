@@ -3,10 +3,12 @@ package com.orgzly.android.ui.notes.book
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.*
+import android.widget.FrameLayout
 import android.widget.ViewFlipper
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.Toolbar
@@ -386,9 +388,14 @@ class BookFragment :
         }
     }
 
+    private fun scrollToPosition(position: Int) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, position)
+        layoutManager.scrollToPositionWithOffset(position, 0)
+    }
+
     private fun spotlightScrolledToView(position: Int) {
         layoutManager.findViewByPosition(position)?.let {
-            highlightScrolledToView(it)
+            highlightScrolledToIndent(it)
         }
     }
 
@@ -409,9 +416,43 @@ class BookFragment :
         }
     }
 
-    private fun scrollToPosition(position: Int) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, position)
-        layoutManager.scrollToPositionWithOffset(position, 0)
+    @SuppressLint("ClickableViewAccessibility")
+    private fun highlightScrolledToIndent(view: View) {
+        val arr = view.context.obtainStyledAttributes(R.styleable.ColorScheme)
+        val spotlightColor = arr.getColor(R.styleable.ColorScheme_text_disabled_color, 0)
+        arr.recycle()
+
+        val indent = getIndentView(view) ?: return
+
+//        val originalWidth = indent.layoutParams.width
+//        indent.layoutParams.width = (2 * view.context.resources.displayMetrics.density).toInt()
+//        indent.requestLayout()
+
+        val originalColor = (indent.background as? ColorDrawable)?.color ?: 0
+        indent.setBackgroundColor(spotlightColor)
+
+        // Reset background color on touch
+        (activity as? CommonActivity)?.apply {
+            runOnTouchEvent = Runnable {
+                indent.setBackgroundColor(originalColor)
+//                indent.layoutParams.width = originalWidth
+//                indent.requestLayout()
+                runOnTouchEvent = null
+            }
+        }
+    }
+
+    private fun getIndentView(view: View): View? {
+        view.findViewById<ViewGroup>(R.id.item_head_indent_container)?.let { indents ->
+            if (indents.tag is Int) { // Number of indents
+                (indents.tag as Int - 1).let { last ->
+                    if (last in 0 until indents.childCount) {
+                        return (indents.getChildAt(last) as FrameLayout).getChildAt(0)
+                    }
+                }
+            }
+        }
+        return null
     }
 
     private fun announceChangesToActivity() {
