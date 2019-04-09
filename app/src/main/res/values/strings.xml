@@ -239,7 +239,7 @@
 
     <string name="no_filters">You have no saved searches</string>
 
-    <string name="book_shortcut_label">Orgzly notebook</string>
+    <string name="book_shortcut_label">Notebook</string>
     <string name="new_note_shortcut_label">New note</string>
     <string name="pick_a_notebook">Pick a notebook</string>
 
@@ -470,7 +470,7 @@
     <string name="force_utf8">Force UTF-8 encoding</string>
     <string name="force_utf8_summary">Do not try to detect encoding, always use UTF-8</string>
 
-    <string name="list_widget_name">Orgzly notes</string>
+    <string name="list_widget_name">Saved search</string>
     <string name="list_widget_select_search">Select search</string>
     <string name="list_widget_nothing_selected">No search selected</string>
 
