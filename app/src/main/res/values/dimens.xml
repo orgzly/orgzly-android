@@ -59,4 +59,6 @@
 
     <!-- Height of the quick bar when fully opened -->
     <dimen name="quick_bar_height">48dp</dimen>
+
+    <dimen name="fold_button_width">48dp</dimen>
 </resources>
