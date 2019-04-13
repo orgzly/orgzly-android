@@ -46,7 +46,10 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
     /* Triggers querying only if parameters changed. */
     fun refresh(sortOrder: String) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, sortOrder)
-        booksParams.value = sortOrder
+
+        if (booksParams.value != sortOrder) {
+            booksParams.value = sortOrder
+        }
     }
 
     fun deleteBookRequest(bookId: Long) {
