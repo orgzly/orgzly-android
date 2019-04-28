@@ -142,7 +142,8 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$android_support_version"
     implementation "androidx.preference:preference:$android_support_version"
     implementation "com.google.android.material:material:$android_support_version"
-    androidTestImplementation "androidx.annotation:annotation:$android_support_version"
+
+    androidTestImplementation "androidx.annotation:annotation:$android_annotation_version"
 
     implementation "androidx.constraintlayout:constraintlayout:$android_constraint_layout_version"
 
