@@ -112,7 +112,7 @@
     <string name="books_context_menu_item_set_link">Задать ссылку</string>
     <string name="books_context_menu_item_force_save">Принудительно сохранить</string>
     <string name="books_context_menu_item_force_load">Принудительно загрузить</string>
-    <string name="move">Переместить</string>
+    <string name="move">Передвинуть</string>
     <string name="cut">Вырезать</string>
     <string name="copy">Скопировать</string>
     <string name="paste">Вставить</string>
