@@ -73,11 +73,9 @@ class RefileViewModel(val dataRepository: DataRepository, val noteIds: Set<Long>
                         Item(note, note.title)
                     }
 
-                    if (items.isNotEmpty()) {
-                        breadcrumbs.push(item)
+                    breadcrumbs.push(item)
 
-                        location.postValue(Location(breadcrumbs, items))
-                    }
+                    location.postValue(Location(breadcrumbs, items))
                 }
             }
 
