@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -39,6 +40,7 @@ import com.orgzly.android.ui.NotePlace
 import com.orgzly.android.ui.Place
 import com.orgzly.android.ui.note.NoteBuilder
 import com.orgzly.android.ui.note.NotePayload
+import com.orgzly.android.ui.notes.book.BookFragment
 import com.orgzly.android.usecase.RepoCreate
 import com.orgzly.android.util.*
 import com.orgzly.org.*
@@ -1679,12 +1681,7 @@ class DataRepository @Inject constructor(
         val startId = getOrgDateTimeId(range.startTime)
         val endId = if (range.endTime != null) getOrgDateTimeId(range.endTime) else null
 
-        return db.orgRange().insert(com.orgzly.android.db.entity.OrgRange(
-                0,
-                str,
-                startId,
-                endId
-        ))
+        return db.orgRange().insert(OrgRange(0, str, startId, endId))
     }
 
     fun openSparseTreeForNote(noteId: Long) {
@@ -1696,10 +1693,15 @@ class DataRepository @Inject constructor(
             unfoldForNote(bookId, noteId)
 
             // Open book
-            val intent = Intent(AppIntent.ACTION_OPEN_BOOK)
-            intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId)
-            intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId)
-            LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent)
+            // FIXME: Run with delay to be executed after the observer for unfoldForNote
+            App.EXECUTORS.mainThread().execute {
+                Handler().postDelayed({
+                    val intent = Intent(AppIntent.ACTION_OPEN_BOOK)
+                    intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId)
+                    intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId)
+                    LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent)
+                }, 100)
+            }
         }
     }
 

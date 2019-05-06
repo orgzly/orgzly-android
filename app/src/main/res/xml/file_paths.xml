@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
-    <external-path name="external-files" path="."/>
+    <external-path name="external-path-current" path="."/>
 
     <!-- Workaround to be able to access files on any storage
          https://issuetracker.google.com/issues/37125252#comment20 -->
-    <root-path name="external_files" path="/storage/" />
+    <root-path name="root-path-storage" path="/storage/" />
 </paths>
