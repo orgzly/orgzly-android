@@ -169,16 +169,14 @@ class RefileFragment : DaggerDialogFragment() {
         val breadcrumbs = Breadcrumbs()
 
         path.forEach { item ->
-            val payload = item.payload
-
-            when (payload) {
+            when (val payload = item.payload) {
                 is RefileViewModel.Home ->
                     breadcrumbs.add(getString(R.string.notebooks)) {
                         viewModel.onBreadcrumbClick(item)
                     }
 
                 is Book ->
-                    breadcrumbs.add(payload.name) {
+                    breadcrumbs.add(payload.title ?: payload.name) {
                         viewModel.onBreadcrumbClick(item)
                     }
 

@@ -69,11 +69,9 @@ class RefileAdapter(val listener: OnClickListener) :
 
         val item = getItem(position)
 
-        val payload = item.payload
-
-        when (payload) {
+        when (val payload = item.payload) {
             is Book -> {
-                holder.name.text = payload.name
+                holder.name.text = payload.title ?: payload.name
 
                 holder.button.visibility = View.VISIBLE
 
