@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.R
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.Note
+import com.orgzly.android.db.entity.NoteView
+import com.orgzly.android.ui.notes.NoteItemViewBinder
 
-class RefileAdapter(val listener: OnClickListener) :
+class RefileAdapter(val context: Context, val listener: OnClickListener) :
         ListAdapter<RefileViewModel.Item, RefileAdapter.RefileViewHolder>(DIFF_CALLBACK) {
 
     data class Icons(
@@ -25,6 +27,7 @@ class RefileAdapter(val listener: OnClickListener) :
 
     var icons: Icons? = null
 
+    private val noteItemViewBinder = NoteItemViewBinder(context, true)
 
     interface OnClickListener {
         fun onItem(item: RefileViewModel.Item)
@@ -82,13 +85,8 @@ class RefileAdapter(val listener: OnClickListener) :
             }
 
             is Note -> {
-                val name = if (payload.state != null) {
-                    "${payload.state} ${payload.title}"
-                } else {
-                    payload.title
-                }
-
-                holder.name.text = name
+                holder.name.text = noteItemViewBinder.generateTitle(
+                        NoteView(note = payload, bookName = ""))
 
                 holder.button.visibility = View.VISIBLE
 

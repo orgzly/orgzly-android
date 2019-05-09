@@ -94,6 +94,10 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         holder.title.text = titleGenerator.generateTitle(noteView)
     }
 
+    fun generateTitle(noteView: NoteView): CharSequence {
+        return titleGenerator.generateTitle(noteView)
+    }
+
     private fun setupContent(holder: NoteItemViewHolder, note: Note) {
         holder.content.text = note.content
 

@@ -88,7 +88,7 @@ class RefileFragment : DaggerDialogFragment() {
             dismiss()
         }
 
-        val adapter = RefileAdapter(object: RefileAdapter.OnClickListener {
+        val adapter = RefileAdapter(v.context, object: RefileAdapter.OnClickListener {
             override fun onItem(item: RefileViewModel.Item) {
                 viewModel.open(item)
             }
