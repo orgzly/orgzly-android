@@ -1,19 +1,26 @@
 package com.orgzly.android.ui.repo
 
 
+import android.Manifest
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
 import com.google.android.material.textfield.TextInputLayout
 import com.orgzly.R
 import com.orgzly.android.App
