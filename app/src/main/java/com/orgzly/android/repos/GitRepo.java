@@ -78,7 +78,11 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
             boolean clone, ProgressMonitor pm)
             throws IOException {
         FileRepositoryBuilder frb = new FileRepositoryBuilder();
-        if (!directoryFile.exists()) {
+
+        // Allow an empty directory so that the user can create one of their own
+        // Using list() can be resource intensive if there's many files, but since we just call it
+        // once we should be fine for now
+        if (!directoryFile.exists() || (directoryFile.exists() && directoryFile.list().length == 0)) {
             if (clone) {
                 try {
                     CloneCommand cloneCommand = Git.cloneRepository().
