@@ -99,6 +99,34 @@
 
             </LinearLayout>
 
+            <!-- SSH key generation -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/activity_repo_git_ssh_key_generate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/git_generate_key_pair" />
+
+                <Button
+                    android:id="@+id/activity_repo_git_ssh_key_copy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:visibility="invisible"
+                    android:text="@string/git_copy_public_key" />
+
+            </LinearLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/activity_repo_git_author_layout"
                 android:layout_width="match_parent"

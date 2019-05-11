@@ -4,24 +4,21 @@ package com.orgzly.android.ui.repo
 import android.Manifest
 import android.app.Activity
 import android.app.ProgressDialog
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.Observer
+import android.widget.Toast
 import com.google.android.material.textfield.TextInputLayout
+import com.jcraft.jsch.JSch
+import com.jcraft.jsch.KeyPair
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.git.GitPreferences
@@ -36,7 +33,9 @@ import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.MiscUtils
 import kotlinx.android.synthetic.main.activity_repo_git.*
 import org.eclipse.jgit.lib.ProgressMonitor
+import org.eclipse.jgit.util.FileUtils
 import java.io.IOException
+import java.nio.charset.Charset
 
 class GitRepoActivity : CommonActivity(), GitPreferences {
     private lateinit var fields: Array<Field>
@@ -87,6 +86,29 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
         activity_repo_git_ssh_key_browse.setOnClickListener {
             startLocalFileBrowser(activity_repo_git_ssh_key, ACTIVITY_REQUEST_CODE_FOR_SSH_KEY_SELECTION, true)
+        }
+
+        activity_repo_git_ssh_key_generate.setOnClickListener {
+            val hasSSHKey = !applicationContext.fileList().find { it == ".ssh_key" }.isNullOrEmpty()
+            if (hasSSHKey) {
+                Toast.makeText(this, "Using key generated earlier", Toast.LENGTH_LONG)
+                        .show()
+                // TODO: If we want to keep this the path should be kept relative in the settings we save somehow
+                activity_repo_git_ssh_key.setText(applicationContext.getFileStreamPath(".ssh_key").path)
+                activity_repo_git_ssh_key_copy.visibility = View.VISIBLE
+            } else {
+                SSHKeypairGenerationTask(this).execute()
+            }
+        }
+
+        activity_repo_git_ssh_key_copy.setOnClickListener {
+            val fileStream = applicationContext.openFileInput(".ssh_key.pub")
+            val pubKey = String(fileStream.readBytes(), Charset.defaultCharset())
+            val clipBoard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("pubkey", pubKey)
+            clipBoard.primaryClip = clip
+            Toast.makeText(this, "Public key copied to clipboard", Toast.LENGTH_SHORT)
+                    .show()
         }
 
         repoId = intent.getLongExtra(ARG_REPO_ID, 0)
@@ -160,6 +182,18 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             showSnackbar(e.toString())
         }
     }
+
+    // TODO: Finish this function
+//    private fun sshKeyGenerated(e: IOException?) {
+//        if (e == null) {
+//            // show the copy button and fill in the path to the file next to browse
+//            activity_repo_git_ssh_key_copy.visibility = View.VISIBLE
+//            activity_repo_git_ssh_key
+//        } else {
+//            e.printStackTrace()
+//            showSnackbar(e.toString())
+//        }
+//    }
 
     private fun saveToPreferences(id: Long): Boolean {
         val editor: SharedPreferences.Editor = RepoPreferences(this, id).repoPreferences.edit()
@@ -286,12 +320,12 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION ->
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val uri = data.data
-                    activity_repo_git_directory.setText(uri.toString())
+                    activity_repo_git_directory.setText(uri.path)
                 }
             ACTIVITY_REQUEST_CODE_FOR_SSH_KEY_SELECTION ->
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val uri = data.data
-                    activity_repo_git_ssh_key.setText(uri.toString())
+                    activity_repo_git_ssh_key.setText(uri.path)
                 }
         }
     }
@@ -355,6 +389,56 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
         override fun endTask() {
 
+        }
+    }
+
+    internal inner class SSHKeypairGenerationTask(var fragment: GitRepoActivity) : AsyncTask<Void, Void, IOException>(), ProgressMonitor {
+        private var progressDialog: ProgressDialog = ProgressDialog(this@GitRepoActivity)
+
+        override fun onPreExecute() {
+            progressDialog.setMessage("Generating SSH keypair with 4096 as keysize and no passphrase.")
+            progressDialog.isIndeterminate = true
+            progressDialog.show()
+        }
+
+        override fun doInBackground(vararg params: Void): IOException? {
+            // TODO: Ask the user for a passphrase and size of the key we generate
+            return try {
+                val jsch = JSch()
+                val keyPair = KeyPair.genKeyPair(jsch, KeyPair.RSA, 4096)
+
+                // TODO: Do we want constants for the file names?
+                val privKeyFile = fragment.applicationContext.openFileOutput(".ssh_key", Context.MODE_PRIVATE)
+                keyPair.writePrivateKey(privKeyFile)
+                val pubKeyFile = fragment.applicationContext.openFileOutput(".ssh_key.pub", Context.MODE_PRIVATE)
+                keyPair.writePublicKey(pubKeyFile, "Generated by Orgzly")
+
+                null
+            } catch (e: IOException) {
+                e
+            }
+        }
+
+        override fun onCancelled() {
+            progressDialog.dismiss()
+        }
+
+        override fun onPostExecute(e: IOException?) {
+            progressDialog.dismiss()
+//            fragment.sshKeyGenerated(e)
+        }
+
+
+        override fun start(totalTasks: Int) {
+        }
+
+        override fun beginTask(title: String, totalWork: Int) {
+        }
+
+        override fun update(completed: Int) {
+        }
+
+        override fun endTask() {
         }
     }
 

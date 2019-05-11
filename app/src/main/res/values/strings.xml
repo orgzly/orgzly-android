@@ -207,6 +207,8 @@
     <string name="git_author_hint">Author (e.g. John Doe)</string>
     <string name="git_email_hint">Email (e.g. john@email.com)</string>
     <string name="git_branch_hint">Branch (e.g. master)</string>
+    <string name="git_generate_key_pair">Generate keypair</string>
+    <string name="git_copy_public_key">Copy public key</string>
 
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Share action not set</string>
