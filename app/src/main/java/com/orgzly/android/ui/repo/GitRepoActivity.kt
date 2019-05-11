@@ -369,7 +369,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             progressDialog.dismiss()
         }
 
-        override fun onPostExecute(e: IOException) {
+        override fun onPostExecute(e: IOException?) {
             progressDialog.dismiss()
             fragment.repoCheckComplete(e)
         }
