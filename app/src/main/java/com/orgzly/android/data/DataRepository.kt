@@ -168,7 +168,7 @@ class DataRepository @Inject constructor(
 
     @Throws(IOException::class)
     fun getRepo(repoUrl: Uri): SyncRepo {
-        return repoFactory.getFromUri(context, repoUrl)
+        return repoFactory.getFromUri(context, repoUrl, this)
                 ?: throw IOException("Unsupported repository URL \"$repoUrl\"")
     }
 
@@ -317,7 +317,7 @@ class DataRepository @Inject constructor(
 
     fun deleteBook(book: BookView, deleteLinked: Boolean) {
         if (deleteLinked) {
-            val repo = repoFactory.getFromUri(context, book.syncedTo?.repoUri)
+            val repo = repoFactory.getFromUri(context, book.syncedTo?.repoUri, this)
             repo?.delete(book.syncedTo?.uri)
         }
 
@@ -370,7 +370,7 @@ class DataRepository @Inject constructor(
         /* Prefer link. */
         if (bookView.syncedTo != null) {
             val vrook = bookView.syncedTo
-            val repo = repoFactory.getFromUri(context, vrook.repoUri)
+            val repo = repoFactory.getFromUri(context, vrook.repoUri, this)
 
             val movedVrook = repo.renameBook(vrook.uri, name)
 
@@ -1419,7 +1419,7 @@ class DataRepository @Inject constructor(
     fun loadBookFromRepo(repoUri: Uri, fileName: String): BookView? {
         val book: BookView?
 
-        val repo = repoFactory.getFromUri(context, repoUri)
+        val repo = repoFactory.getFromUri(context, repoUri, this)
                 ?: throw IOException("Unsupported repository URL \"$repoUri\"")
 
         val tmpFile = getTempBookFile()
@@ -1846,7 +1846,7 @@ class DataRepository @Inject constructor(
         val result = java.util.HashMap<String, SyncRepo>()
 
         for ((_, url) in repos) {
-            val repo = repoFactory.getFromUri(context, url)
+            val repo = repoFactory.getFromUri(context, url, this)
 
             if (repo != null) {
                 result[url] = repo

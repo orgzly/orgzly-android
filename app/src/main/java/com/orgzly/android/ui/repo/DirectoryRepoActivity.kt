@@ -180,7 +180,7 @@ class DirectoryRepoActivity : CommonActivity() {
 
         val uri = Uri.parse(uriString)
 
-        val repo = repoFactory.getFromUri(this, uri)
+        val repo = repoFactory.getFromUri(this, uri, dataRepository)
 
         if (repo == null) {
             activity_repo_directory_input_layout.error = getString(R.string.invalid_repo_url, uri)

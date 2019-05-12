@@ -221,7 +221,10 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         }
 
         App.EXECUTORS.diskIO().execute {
-            UseCaseRunner.run(useCase)
+            val result = UseCaseRunner.run(useCase)
+            if (repoId == 0L) {
+                repoId = result.userData as Long
+            }
 
             App.EXECUTORS.mainThread().execute {
                 saveToPreferences(repoId)

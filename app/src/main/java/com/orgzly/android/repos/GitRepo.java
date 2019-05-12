@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.orgzly.android.BookName;
+import com.orgzly.android.data.DataRepository;
 import com.orgzly.android.git.GitFileSynchronizer;
 import com.orgzly.android.git.GitPreferences;
 import com.orgzly.android.git.GitPreferencesFromRepoPrefs;
@@ -44,10 +45,11 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
         return new GitSSHKeyTransportSetter(Uri.parse(preferences.sshKeyPathString()).getPath());
     }
 
-    public static GitRepo buildFromUri(Context context, Uri uri)
+    public static GitRepo buildFromUri(Context context, Uri uri, DataRepository repo)
             throws IOException, URISyntaxException {
+        Log.d("mylog", "Got uri " + uri.toString());
         GitPreferencesFromRepoPrefs prefs = new GitPreferencesFromRepoPrefs(
-                RepoPreferences.fromUri(context, uri));
+                RepoPreferences.fromUri(context, uri, repo));
         return build(prefs, false);
     }
 

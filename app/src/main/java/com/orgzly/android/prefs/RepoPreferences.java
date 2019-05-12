@@ -10,12 +10,12 @@ public class RepoPreferences {
     private Context context;
     private long repoId;
 
-    public static RepoPreferences fromUri(Context c, Uri uri) {
-        return fromString(c, uri.toString());
+    public static RepoPreferences fromUri(Context c, Uri uri, DataRepository repo) {
+        return fromString(c, uri.toString(), repo);
     }
 
-    private static RepoPreferences fromString(Context c, String string) {
-        long rid = 0; // TODO: dataRepository.getRepoByUrl(string).getId();
+    private static RepoPreferences fromString(Context c, String uri, DataRepository repo) {
+        long rid = repo.getRepo(uri).getId();
         return new RepoPreferences(c, rid);
     }
 
