@@ -49,7 +49,7 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
             throws IOException, URISyntaxException {
         Log.d("mylog", "Got uri " + uri.toString());
         GitPreferencesFromRepoPrefs prefs = new GitPreferencesFromRepoPrefs(
-                RepoPreferences.fromUri(context, uri, repo));
+                RepoPreferences.fromUri(context, uri, repo), repo);
         return build(prefs, false);
     }
 

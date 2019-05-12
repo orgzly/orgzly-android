@@ -1,16 +1,20 @@
 package com.orgzly.android.git;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.orgzly.R;
+import com.orgzly.android.data.DataRepository;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.prefs.RepoPreferences;
 
 public class GitPreferencesFromRepoPrefs implements GitPreferences {
     private RepoPreferences repoPreferences;
+    private DataRepository repo;
 
-    public GitPreferencesFromRepoPrefs(RepoPreferences prefs) {
+    public GitPreferencesFromRepoPrefs(RepoPreferences prefs, DataRepository repoIn) {
         repoPreferences = prefs;
+        repo = repoIn;
     }
 
     @Override
@@ -53,8 +57,8 @@ public class GitPreferencesFromRepoPrefs implements GitPreferences {
 
     @Override
     public Uri remoteUri() {
-        String url = ""; // TODO: dataRepository.selectRepo(repoPreferences.getRepoId()).getRepoUrl();
+        String uriString = repo.getRepo(repoPreferences.getRepoId()).getUrl();
+        return Uri.parse(uriString);
 
-        return Uri.parse(url);
     }
 }
