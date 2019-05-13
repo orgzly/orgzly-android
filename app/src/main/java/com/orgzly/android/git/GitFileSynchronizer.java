@@ -154,7 +154,7 @@ public class GitFileSynchronizer {
     }
 
     public void tryPushIfUpdated(RevCommit commit) throws IOException {
-        if (!commit.equals(currentHead())) {
+        if (commit == null || !commit.equals(currentHead())) {
             tryPush();
         }
     }
@@ -196,6 +196,9 @@ public class GitFileSynchronizer {
             // FIXME: maybe:
             // checkoutSelected();
             RevCommit current = currentHead();
+            if (current == null) {
+                return;
+            }
             RevCommit mergeTarget = getCommit(
                     String.format("%s/%s", preferences.remoteName(), preferences.branchName()));
             if (!doMerge(mergeTarget))
@@ -208,7 +211,7 @@ public class GitFileSynchronizer {
         }
     }
 
-    private RevCommit updateAndCommitFile(
+    public RevCommit updateAndCommitFile(
             File sourceFile, String repositoryPath) throws IOException {
         File destinationFile = repoDirectoryFile(repositoryPath);
         MiscUtils.copyFile(sourceFile, destinationFile);
@@ -237,8 +240,14 @@ public class GitFileSynchronizer {
     public RevCommit getCommit(String identifier) throws IOException {
         Log.i("test", git.getRepository().getWorkTree().toString());
         Log.i("test", identifier);
-        Ref target = git.getRepository().getRef(identifier);
-        return new RevWalk(git.getRepository()).parseCommit(target.getObjectId());
+        Ref target = git.getRepository().findRef(identifier);
+        Ref head = git.getRepository().findRef(Constants.HEAD);
+        // In the case of an empty repository (no commits) there is no object id for HEAD
+        if (head.getObjectId() == null) {
+            return null;
+        } else {
+            return new RevWalk(git.getRepository()).parseCommit(target.getObjectId());
+        }
     }
 
     public String repoPath() {

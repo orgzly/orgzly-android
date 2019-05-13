@@ -17,12 +17,15 @@ import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
+import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.ignore.IgnoreNode;
+import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.FileMode;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ProgressMonitor;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -135,11 +138,20 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
 //        VersionedRook current = CurrentRooksClient.get(
 //                // TODO: get rid of "/" prefix needed here
 //                App.getAppContext(), getUri().toString(), "/" + fileName);
-        VersionedRook current = null;
+        //VersionedRook current = null;
+        //RevCommit commit = getCommitFromRevisionString(current.getRevision());
 
-        RevCommit commit = getCommitFromRevisionString(current.getRevision());
-        synchronizer.updateAndCommitFileFromRevision(
-                file, fileName, synchronizer.getFileRevision(fileName, commit));
+        RevCommit commit = getCommitFromFileName(fileName);
+
+        // TODO: Move to a function isEmptyRepo() or smth, this is done in GitFileSynchronizer#getCommit as well
+        Ref head = git.getRepository().exactRef(Constants.HEAD);
+        if (head.getObjectId() == null) {
+            // TODO: Is this ok to do?
+            synchronizer.updateAndCommitFile(file, fileName);
+        } else {
+            synchronizer.updateAndCommitFileFromRevision(
+                    file, fileName, synchronizer.getFileRevision(fileName, commit));
+        }
         synchronizer.tryPushIfUpdated(commit);
         return currentVersionedRook(Uri.EMPTY.buildUpon().appendPath(fileName).build());
     }
@@ -150,6 +162,18 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
 
     RevCommit getCommitFromRevisionString(String revisionString) throws IOException {
         return walk().parseCommit(ObjectId.fromString(revisionString));
+    }
+
+    // TODO: Should this be in the synchronizer instead?
+    RevCommit getCommitFromFileName(String fileName) throws IOException {
+        try {
+            return git.log().addPath(fileName).setMaxCount(1).call().iterator().next();
+        } catch (NoHeadException e) {
+            return null;
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+            throw new IOException("Can't get latest commit for " + fileName);
+        }
     }
 
     @Override
@@ -200,6 +224,10 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     public List<VersionedRook> getBooks() throws IOException {
         synchronizer.setBranchAndGetLatest();
         List<VersionedRook> result = new ArrayList<>();
+        if (synchronizer.currentHead() == null) {
+            return result;
+        }
+
         TreeWalk walk = new TreeWalk(git.getRepository());
         walk.reset();
         walk.setRecursive(true);
