@@ -103,7 +103,8 @@ public class GitFileSynchronizer {
         if (updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision)) return true;
 
         String originalBranch = git.getRepository().getFullBranch();
-        String mergeBranch = String.format("merge%s%s", repositoryPath, fileRevision.getName());
+        // TODO: Why do we want to give the branch a magic name? Can we do the equivalent of git merge origin/master while we are on master?
+        String mergeBranch = String.format("merge%s%s", repositoryPath.replace(" ", ""), fileRevision.getName());
         try {
             git.branchDelete().setBranchNames(mergeBranch).call();
         } catch (GitAPIException e) {}
