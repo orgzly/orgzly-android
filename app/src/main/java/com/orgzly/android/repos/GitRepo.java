@@ -134,25 +134,16 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     }
 
     public VersionedRook storeBook(File file, String fileName) throws IOException {
-        // FIXME: Removed current_versioned_rooks table, just get the list from remote
-//        VersionedRook current = CurrentRooksClient.get(
-//                // TODO: get rid of "/" prefix needed here
-//                App.getAppContext(), getUri().toString(), "/" + fileName);
-        //VersionedRook current = null;
-        //RevCommit commit = getCommitFromRevisionString(current.getRevision());
-
-        RevCommit commit = getCommitFromFileName(fileName);
-
-        // TODO: Move to a function isEmptyRepo() or smth, this is done in GitFileSynchronizer#getCommit as well
-        Ref head = git.getRepository().exactRef(Constants.HEAD);
-        if (head.getObjectId() == null) {
+        RevCommit prevCommit = null;
+        if (synchronizer.isEmptyRepo()) {
             // TODO: Is this ok to do?
             synchronizer.updateAndCommitFile(file, fileName);
         } else {
+            prevCommit = synchronizer.currentHead();
             synchronizer.updateAndCommitFileFromRevision(
-                    file, fileName, synchronizer.getFileRevision(fileName, commit));
+                    file, fileName, synchronizer.getFileRevision(fileName, prevCommit));
         }
-        synchronizer.tryPushIfUpdated(commit);
+        synchronizer.tryPushIfUpdated(prevCommit);
         return currentVersionedRook(Uri.EMPTY.buildUpon().appendPath(fileName).build());
     }
 
@@ -162,18 +153,6 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
 
     RevCommit getCommitFromRevisionString(String revisionString) throws IOException {
         return walk().parseCommit(ObjectId.fromString(revisionString));
-    }
-
-    // TODO: Should this be in the synchronizer instead?
-    RevCommit getCommitFromFileName(String fileName) throws IOException {
-        try {
-            return git.log().addPath(fileName).setMaxCount(1).call().iterator().next();
-        } catch (NoHeadException e) {
-            return null;
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-            throw new IOException("Can't get latest commit for " + fileName);
-        }
     }
 
     @Override

@@ -239,16 +239,11 @@ public class GitFileSynchronizer {
     }
 
     public RevCommit getCommit(String identifier) throws IOException {
-        Log.i("test", git.getRepository().getWorkTree().toString());
-        Log.i("test", identifier);
-        Ref target = git.getRepository().findRef(identifier);
-        Ref head = git.getRepository().findRef(Constants.HEAD);
-        // In the case of an empty repository (no commits) there is no object id for HEAD
-        if (head.getObjectId() == null) {
+        if (isEmptyRepo()) {
             return null;
-        } else {
-            return new RevWalk(git.getRepository()).parseCommit(target.getObjectId());
         }
+        Ref target = git.getRepository().findRef(identifier);
+        return new RevWalk(git.getRepository()).parseCommit(target.getObjectId());
     }
 
     public String repoPath() {
@@ -271,6 +266,10 @@ public class GitFileSynchronizer {
 
     public File repoDirectoryFile(String filePath) {
         return new File(repoPath(), filePath);
+    }
+
+    public boolean isEmptyRepo() throws IOException{
+        return git.getRepository().exactRef(Constants.HEAD).getObjectId() == null;
     }
 
     public ObjectId getFileRevision(String pathString, RevCommit commit) throws IOException {
