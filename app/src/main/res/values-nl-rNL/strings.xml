@@ -438,7 +438,7 @@
     <string name="notification_channel_settings">Notificaties</string>
     <string name="notification_channel_settings_summary">Geluid, vibratie, notificatiestip</string>
     <string name="hide_note_metadata">Verberg metagegevens</string>
-    <string name="overwrite_local_notebook_question">Lokaal nitieboekje overschrijven?</string>
+    <string name="overwrite_local_notebook_question">Lokaal notitieboekje overschrijven?</string>
     <string name="overwrite_remote_notebook_question">Extern notitieboekje overschrijven?</string>
     <string name="drawers_folded_by_default">Laden gevouwen</string>
     <string name="drawers_folded_by_default_summary">Laden standaard vouwen</string>
