@@ -136,7 +136,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             try {
                 success = orgzlyGitPath.mkdirs()
             } catch(error: SecurityException) {}
-            if (success) {
+            if (success || orgzlyGitPath.list().size == 0) {
                 activity_repo_git_directory.setText(orgzlyGitPath.path)
             }
         }
