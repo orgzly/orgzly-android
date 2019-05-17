@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
+import android.os.Environment
 import android.text.TextUtils
 import android.view.ContextMenu
 import android.view.Menu
@@ -34,6 +35,7 @@ import com.orgzly.android.util.MiscUtils
 import kotlinx.android.synthetic.main.activity_repo_git.*
 import org.eclipse.jgit.lib.ProgressMonitor
 import org.eclipse.jgit.util.FileUtils
+import java.io.File
 import java.io.IOException
 import java.nio.charset.Charset
 
@@ -118,6 +120,24 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             dataRepository.getRepo(repoId)?.let { repo ->
                 activity_repo_git_url.setText(repo.url)
                 setFromPreferences()
+            }
+        } else {
+            createDefaultRepoFolder();
+        }
+    }
+
+    // TODO: Since we can create multiple syncs, this folder might be re-used, do we want to create
+    //       a new one if this directory is already used up?
+    private fun createDefaultRepoFolder() {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            val externalPath = Environment.getExternalStorageDirectory().path
+            val orgzlyGitPath = File("$externalPath/orgzly-git/")
+            var success = false
+            try {
+                success = orgzlyGitPath.mkdirs()
+            } catch(error: SecurityException) {}
+            if (success) {
+                activity_repo_git_directory.setText(orgzlyGitPath.path)
             }
         }
     }
