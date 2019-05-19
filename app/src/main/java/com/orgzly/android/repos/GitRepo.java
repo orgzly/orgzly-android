@@ -36,6 +36,7 @@ import org.eclipse.jgit.util.FileUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -43,6 +44,17 @@ import java.util.List;
 
 public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     public final static String SCHEME = "git";
+
+    /**
+     * Used as cause when we try to clone into a non-empty directory
+     */
+    public static class DirNotEmpty extends Exception {
+        public File dir;
+
+        DirNotEmpty(File dir) {
+            this.dir = dir;
+        }
+    }
 
     public static GitTransportSetter getTransportSetter(GitPreferences preferences) {
         return new GitSSHKeyTransportSetter(Uri.parse(preferences.sshKeyPathString()).getPath());
@@ -82,41 +94,73 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
             Uri repoUri, File directoryFile, GitTransportSetter transportSetter,
             boolean clone, ProgressMonitor pm)
             throws IOException {
-        FileRepositoryBuilder frb = new FileRepositoryBuilder();
+        if (clone) {
+            return cloneRepo(repoUri, directoryFile, transportSetter, pm);
+        } else {
+            return verifyExistingRepo(directoryFile);
+        }
+    }
 
-        // Allow an empty directory so that the user can create one of their own
-        // Using list() can be resource intensive if there's many files, but since we just call it
-        // once we should be fine for now
-        if (!directoryFile.exists() || (directoryFile.exists() && directoryFile.list().length == 0)) {
-            if (clone) {
-                try {
-                    CloneCommand cloneCommand = Git.cloneRepository().
-                            setURI(repoUri.toString()).
-                            setProgressMonitor(pm).
-                            setDirectory(directoryFile);
-                    transportSetter.setTransport(cloneCommand);
-                    return cloneCommand.call();
-                } catch (GitAPIException | JGitInternalException e) {
-                    try {
-                        FileUtils.delete(directoryFile, FileUtils.RECURSIVE);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                    e.printStackTrace();
-                    throw new IOException(
-                            String.format("Failed to clone repository %s, %s", repoUri.toString(),
-                                    e.getCause()));
-                }
-            } else {
-                throw new IOException(
-                        String.format("The file %s does not exist", directoryFile.toString()));
-            }
-        } else if (!isRepo(frb, directoryFile)) {
+    /**
+     * Check that the given path contains a valid git repository
+     * @param directoryFile the path to check
+     * @return A Git repo instance
+     * @throws IOException Thrown when either the directory doesnt exist or is not a git repository
+     */
+    private static Git verifyExistingRepo(File directoryFile) throws IOException {
+        if (!directoryFile.exists()) {
+            throw new IOException(String.format("The directory %s does not exist", directoryFile.toString()), new FileNotFoundException());
+        }
+
+        FileRepositoryBuilder frb = new FileRepositoryBuilder();
+        if (!isRepo(frb, directoryFile)) {
             throw new IOException(
                     String.format("Directory %s is not a git repository.",
                             directoryFile.getAbsolutePath()));
         }
         return new Git(frb.build());
+    }
+
+    /**
+     * Attempts to clone a git repository
+     * @param repoUri Remote location of git repository
+     * @param directoryFile Location to clone to
+     * @param transportSetter Transport information
+     * @param pm Progress reporting helper
+     * @return A Git repo instance
+     * @throws IOException Thrown when directoryFile doesn't exist or isn't empty. Also thrown
+     * when the clone fails
+     */
+    private static Git cloneRepo(Uri repoUri, File directoryFile, GitTransportSetter transportSetter,
+                      ProgressMonitor pm) throws IOException {
+        if (!directoryFile.exists()) {
+            throw new IOException(String.format("The directory %s does not exist", directoryFile.toString()), new FileNotFoundException());
+        }
+
+        // Using list() can be resource intensive if there's many files, but since we just call it
+        // at the time of cloning once we should be fine for now
+        if (directoryFile.list().length != 0) {
+            throw new IOException(String.format("The directory must be empty"), new DirNotEmpty(directoryFile));
+        }
+
+        try {
+            CloneCommand cloneCommand = Git.cloneRepository().
+                    setURI(repoUri.toString()).
+                    setProgressMonitor(pm).
+                    setDirectory(directoryFile);
+            transportSetter.setTransport(cloneCommand);
+            return cloneCommand.call();
+        } catch (GitAPIException | JGitInternalException e) {
+            try {
+                FileUtils.delete(directoryFile, FileUtils.RECURSIVE);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+            throw new IOException(
+                    String.format("Failed to clone repository %s, %s", repoUri.toString(),
+                            e.getCause().getMessage()), e.getCause());
+        }
     }
 
     private Git git;
