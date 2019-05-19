@@ -151,11 +151,6 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
             transportSetter.setTransport(cloneCommand);
             return cloneCommand.call();
         } catch (GitAPIException | JGitInternalException e) {
-            try {
-                FileUtils.delete(directoryFile, FileUtils.RECURSIVE);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
             e.printStackTrace();
             throw new IOException(
                     String.format("Failed to clone repository %s, %s", repoUri.toString(),
