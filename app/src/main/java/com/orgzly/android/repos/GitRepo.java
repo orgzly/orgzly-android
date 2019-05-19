@@ -35,6 +35,7 @@ import org.eclipse.jgit.treewalk.filter.TreeFilter;
 import org.eclipse.jgit.util.FileUtils;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -151,6 +152,13 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
             transportSetter.setTransport(cloneCommand);
             return cloneCommand.call();
         } catch (GitAPIException | JGitInternalException e) {
+            try {
+                FileUtils.delete(directoryFile, FileUtils.RECURSIVE);
+                // This is done to show sensible error messages when trying to create a new git sync
+                directoryFile.mkdirs();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
             throw new IOException(
                     String.format("Failed to clone repository %s, %s", repoUri.toString(),

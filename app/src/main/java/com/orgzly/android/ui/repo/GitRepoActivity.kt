@@ -33,9 +33,11 @@ import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.MiscUtils
 import kotlinx.android.synthetic.main.activity_repo_git.*
+import org.eclipse.jgit.errors.NoRemoteRepositoryException
+import org.eclipse.jgit.errors.NotSupportedException
 import org.eclipse.jgit.lib.ProgressMonitor
-import org.eclipse.jgit.util.FileUtils
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.IOException
 import java.nio.charset.Charset
 
@@ -129,16 +131,17 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     // TODO: Since we can create multiple syncs, this folder might be re-used, do we want to create
     //       a new one if this directory is already used up?
     private fun createDefaultRepoFolder() {
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            val externalPath = Environment.getExternalStorageDirectory().path
-            val orgzlyGitPath = File("$externalPath/orgzly-git/")
-            var success = false
-            try {
-                success = orgzlyGitPath.mkdirs()
-            } catch(error: SecurityException) {}
-            if (success || orgzlyGitPath.list().size == 0) {
-                activity_repo_git_directory.setText(orgzlyGitPath.path)
-            }
+        if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) {
+            return
+        }
+        val externalPath = Environment.getExternalStorageDirectory().path
+        val orgzlyGitPath = File("$externalPath/orgzly-git/")
+        var success = false
+        try {
+            success = orgzlyGitPath.mkdirs()
+        } catch(error: SecurityException) {}
+        if (success || (orgzlyGitPath.exists() && orgzlyGitPath.list().size == 0)) {
+            activity_repo_git_directory.setText(orgzlyGitPath.path)
         }
     }
 
@@ -196,10 +199,17 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private fun repoCheckComplete(e: IOException?) {
         if (e == null) {
             save()
-
         } else {
+            val errorId = when  {
+                e.cause is NoRemoteRepositoryException -> R.string.git_clone_error_invalid_repo
+                // TODO: This should be checked when the user enters a directory by hand
+                e.cause is FileNotFoundException -> R.string.git_clone_error_invalid_target_dir
+                e.cause is GitRepo.DirNotEmpty -> R.string.git_clone_error_target_not_empty
+                e.cause is NotSupportedException -> R.string.git_clone_error_uri_not_supported
+                else -> R.string.git_clone_error_unknown
+            }
+            showSnackbar(errorId)
             e.printStackTrace()
-            showSnackbar(e.toString())
         }
     }
 
