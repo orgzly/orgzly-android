@@ -24,7 +24,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="v1.7.4-beta.1"
+            android:text="v1.7.4"
             tools:ignore="HardcodedText" />
 
         <com.orgzly.android.ui.views.WhatsNewChange
