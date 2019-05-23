@@ -64,7 +64,7 @@
     <plurals name="notes_cut">
         <item quantity="other">메모 <b>%d</b> 잘라내기</item>
     </plurals>
-    <string name="no_notes_cut">잘라 낸 매모가 없습니다.</string>
+    <string name="no_notes_cut">잘라 낸 메모가 없습니다.</string>
     <plurals name="notes_copied">
         <item quantity="other">메모 <b>%d</b> 복사하기</item>
     </plurals>

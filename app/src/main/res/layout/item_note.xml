@@ -13,7 +13,6 @@
         android:id="@+id/item_head_bullet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/bullet_text"
         android:layout_centerHorizontal="true"
         android:src="?attr/bullet_folded"
         android:visibility="visible"
