@@ -30,6 +30,6 @@ class ArrayPagerAdapter : FragmentPagerAdapter {
     }
 
     companion object {
-        const val TAG = "AdaptableHeightAdapter"
+        private val TAG = ArrayPagerAdapter::class.java.name
     }
 }
