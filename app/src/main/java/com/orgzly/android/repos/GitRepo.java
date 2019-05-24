@@ -49,10 +49,10 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     /**
      * Used as cause when we try to clone into a non-empty directory
      */
-    public static class DirNotEmpty extends Exception {
+    public static class DirectoryNotEmpty extends Exception {
         public File dir;
 
-        DirNotEmpty(File dir) {
+        DirectoryNotEmpty(File dir) {
             this.dir = dir;
         }
     }
@@ -141,7 +141,7 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
         // Using list() can be resource intensive if there's many files, but since we just call it
         // at the time of cloning once we should be fine for now
         if (directoryFile.list().length != 0) {
-            throw new IOException(String.format("The directory must be empty"), new DirNotEmpty(directoryFile));
+            throw new IOException(String.format("The directory must be empty"), new DirectoryNotEmpty(directoryFile));
         }
 
         try {

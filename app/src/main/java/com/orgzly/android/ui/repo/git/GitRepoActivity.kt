@@ -222,7 +222,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
                 e.cause is NoRemoteRepositoryException -> R.string.git_clone_error_invalid_repo
                 // TODO: This should be checked when the user enters a directory by hand
                 e.cause is FileNotFoundException -> R.string.git_clone_error_invalid_target_dir
-                e.cause is GitRepo.DirNotEmpty -> R.string.git_clone_error_target_not_empty
+                e.cause is GitRepo.DirectoryNotEmpty -> R.string.git_clone_error_target_not_empty
                 e.cause is NotSupportedException -> R.string.git_clone_error_uri_not_supported
                 else -> R.string.git_clone_error_unknown
             }
