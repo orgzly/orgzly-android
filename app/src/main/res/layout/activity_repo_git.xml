@@ -67,7 +67,34 @@
 
             </LinearLayout>
 
-            <!-- SSH key -->
+            <!-- Authentication selection -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/git_auth_type_text"/>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/activity_repo_git_auth_tabs"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:text="@string/git_auth_type_https"/>
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:text="@string/git_auth_type_ssh"/>
+
+            </com.google.android.material.tabs.TabLayout>
+
+            <com.orgzly.android.ui.views.AdaptableHeightViewPager
+                android:id="@+id/activity_repo_git_auth_pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

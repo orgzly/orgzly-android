@@ -207,8 +207,13 @@
     <string name="git_author_hint">Author (e.g. John Doe)</string>
     <string name="git_email_hint">Email (e.g. john@email.com)</string>
     <string name="git_branch_hint">Branch (e.g. master)</string>
+    <string name="git_auth_https_username_hint">Username</string>
+    <string name="git_auth_https_password_hint">Password</string>
     <string name="git_generate_key_pair">Generate keypair</string>
     <string name="git_copy_public_key">Copy public key</string>
+    <string name="git_auth_type_text">Authentication type</string>
+    <string name="git_auth_type_ssh">SSH</string>
+    <string name="git_auth_type_https">HTTPS</string>
     <!-- Git sync repo errors -->
     <string name="git_clone_error_invalid_repo">The remote address is not a git repo</string>
     <string name="git_clone_error_unknown">Unknown error while cloning</string>

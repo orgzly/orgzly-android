@@ -22,7 +22,7 @@ import com.orgzly.android.ui.repo.BrowserActivity
 import com.orgzly.android.ui.repos.ReposActivity
 import com.orgzly.android.ui.repo.DirectoryRepoActivity
 import com.orgzly.android.ui.repo.DropboxRepoActivity
-import com.orgzly.android.ui.repo.GitRepoActivity
+import com.orgzly.android.ui.repo.git.GitRepoActivity
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.share.ShareActivity
 import com.orgzly.android.ui.savedsearches.SavedSearchesFragment

@@ -1,22 +1,19 @@
-package com.orgzly.android.ui.repo
+package com.orgzly.android.ui.repo.git
 
 
-import android.Manifest
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.*
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
 import android.text.TextUtils
-import android.view.ContextMenu
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.util.Log
+import android.view.*
 import android.widget.EditText
 import android.widget.Toast
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputLayout
 import com.jcraft.jsch.JSch
 import com.jcraft.jsch.KeyPair
@@ -27,6 +24,9 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.prefs.RepoPreferences
 import com.orgzly.android.repos.GitRepo
 import com.orgzly.android.ui.CommonActivity
+import com.orgzly.android.ui.repo.BrowserActivity
+import com.orgzly.android.ui.views.ArrayPagerAdapter
+import com.orgzly.android.ui.views.AdaptableHeightViewPager
 import com.orgzly.android.usecase.RepoCreate
 import com.orgzly.android.usecase.RepoUpdate
 import com.orgzly.android.usecase.UseCaseRunner
@@ -45,6 +45,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private lateinit var fields: Array<Field>
 
     private var repoId: Long = 0
+    private lateinit var authFragments: Array<AuthConfigFragment>
 
     data class Field(var editText: EditText, var layout: TextInputLayout, var preference: Int)
 
@@ -54,6 +55,8 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         setContentView(R.layout.activity_repo_git)
 
         setupActionBar(R.string.git)
+
+        setupAuthPager()
 
         fields = arrayOf(
                 Field(
@@ -119,6 +122,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
         /* Set directory value for existing repository being edited. */
         if (repoId != 0L) {
+            Log.d("mylog", "restoring from repoId: $repoId")
             dataRepository.getRepo(repoId)?.let { repo ->
                 activity_repo_git_url.setText(repo.url)
                 setFromPreferences()
@@ -126,6 +130,16 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         } else {
             createDefaultRepoFolder();
         }
+    }
+
+    private fun setupAuthPager() {
+        val authPager = findViewById<AdaptableHeightViewPager>(R.id.activity_repo_git_auth_pager)
+        val authTabs = findViewById<TabLayout>(R.id.activity_repo_git_auth_tabs)
+
+        val adapter = ArrayPagerAdapter(supportFragmentManager, arrayOf(SSHAuthConfigFragment(), HTTPSAuthConfigFragment()))
+        authPager.adapter = adapter
+        authPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(authTabs))
+        authTabs.addOnTabSelectedListener(AdaptableHeightViewPager.TabListener(authPager))
     }
 
     // TODO: Since we can create multiple syncs, this folder might be re-used, do we want to create
@@ -154,6 +168,8 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
     private fun setTextFromPrefKey(prefs: RepoPreferences, editText: EditText, prefKey: Int) {
         if (editText.length() < 1) {
+            val setting = prefs.getStringValue(prefKey, "")
+            Log.d("mylog", "setting field to $setting")
             editText.setText(prefs.getStringValue(prefKey, ""))
         }
     }
@@ -192,6 +208,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
     private fun saveAndFinish() {
         if (validateFields()) {
+            // TODO: If this fails we should notify the user in a nice way and mark the git repo field as bad
             RepoCloneTask(this).execute()
         }
     }
@@ -200,7 +217,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         if (e == null) {
             save()
         } else {
-            val errorId = when  {
+            val errorId = when {
                 e.cause is NoRemoteRepositoryException -> R.string.git_clone_error_invalid_repo
                 // TODO: This should be checked when the user enters a directory by hand
                 e.cause is FileNotFoundException -> R.string.git_clone_error_invalid_target_dir
@@ -228,10 +245,13 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private fun saveToPreferences(id: Long): Boolean {
         val editor: SharedPreferences.Editor = RepoPreferences(this, id).repoPreferences.edit()
 
+        Log.d("mylog", "saveToPreferences id: $id")
         for (field in fields) {
             val settingName = getSettingName(field.preference)
+            Log.d("mylog", "setting name: $settingName")
             val value = field.editText.text.toString()
             if (value.isNotEmpty()) {
+                Log.d("mylog", "saved $settingName")
                 editor.putString(settingName, value)
             } else {
                 editor.remove(settingName)
