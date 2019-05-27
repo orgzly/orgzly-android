@@ -32,6 +32,8 @@ public interface SyncRepo {
 
     /**
      * Uploads book storing it under given filename under repo's url.
+     * @param file The contents of this file should be stored at the remote location/repo
+     * @param fileName The contents ({@code file}) should be stored under this name
      */
     VersionedRook storeBook(File file, String fileName) throws IOException;
 

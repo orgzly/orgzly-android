@@ -180,16 +180,10 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     }
 
     public VersionedRook storeBook(File file, String fileName) throws IOException {
-        RevCommit prevCommit = null;
-        if (synchronizer.isEmptyRepo()) {
-            // TODO: Is this ok to do?
-            synchronizer.updateAndCommitFile(file, fileName);
-        } else {
-            prevCommit = synchronizer.currentHead();
-            synchronizer.updateAndCommitFileFromRevision(
-                    file, fileName, synchronizer.getFileRevision(fileName, prevCommit));
-        }
-        synchronizer.tryPushIfUpdated(prevCommit);
+        // Since GitRepo implements TwoWaySync this method is only called if fileName doesn't exist
+        // in the git repository, therefore we can just add the file and push the change.
+        synchronizer.addAndCommitNewFile(file, fileName);
+        synchronizer.tryPush();
         return currentVersionedRook(Uri.EMPTY.buildUpon().appendPath(fileName).build());
     }
 

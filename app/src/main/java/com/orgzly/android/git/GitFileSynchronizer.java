@@ -212,7 +212,21 @@ public class GitFileSynchronizer {
         }
     }
 
-    public RevCommit updateAndCommitFile(
+    /**
+     * Add a new file to the repository, while ensuring that it didn't already exist.
+     * @param sourceFile This will become the contents of the added file
+     * @param repositoryPath Path inside the repo where the file should be added
+     * @throws IOException If the file already exists
+     */
+    public void addAndCommitNewFile(File sourceFile, String repositoryPath) throws IOException {
+        File destinationFile = repoDirectoryFile(repositoryPath);
+        if (destinationFile.exists()) {
+            throw new IOException("Can't add new file " + repositoryPath + " that already exists.");
+        }
+        updateAndCommitFile(sourceFile, repositoryPath);
+    }
+
+    private RevCommit updateAndCommitFile(
             File sourceFile, String repositoryPath) throws IOException {
         File destinationFile = repoDirectoryFile(repositoryPath);
         MiscUtils.copyFile(sourceFile, destinationFile);
@@ -243,6 +257,7 @@ public class GitFileSynchronizer {
             return null;
         }
         Ref target = git.getRepository().findRef(identifier);
+        Log.d("mylog", "Targetid : " + target.getObjectId());
         return new RevWalk(git.getRepository()).parseCommit(target.getObjectId());
     }
 
