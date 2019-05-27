@@ -3,6 +3,8 @@ package com.orgzly.android.git;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.orgzly.android.App;
 import com.orgzly.android.repos.GitRepo;
 import com.orgzly.android.util.MiscUtils;
@@ -154,8 +156,8 @@ public class GitFileSynchronizer {
         return true;
     }
 
-    public void tryPushIfUpdated(RevCommit commit) throws IOException {
-        if (commit == null || !commit.equals(currentHead())) {
+    public void tryPushIfUpdated(@NonNull RevCommit commit) throws IOException {
+        if (!commit.equals(currentHead())) {
             tryPush();
         }
     }
