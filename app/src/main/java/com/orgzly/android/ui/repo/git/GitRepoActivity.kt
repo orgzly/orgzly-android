@@ -219,6 +219,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             save()
         } else {
             val errorId = when {
+                // TODO: Handle the private/public key being wrong or the username/password
                 e.cause is NoRemoteRepositoryException -> R.string.git_clone_error_invalid_repo
                 // TODO: This should be checked when the user enters a directory by hand
                 e.cause is FileNotFoundException -> R.string.git_clone_error_invalid_target_dir
