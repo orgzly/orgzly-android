@@ -101,7 +101,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
                 Toast.makeText(this, "Using key generated earlier", Toast.LENGTH_LONG)
                         .show()
                 // TODO: If we want to keep this the path should be kept relative in the settings we save somehow
-                activity_repo_git_ssh_key.setText(applicationContext.getFileStreamPath(".ssh_key").path)
+                activity_repo_git_ssh_key.setText(applicationContext.getFileStreamPath(SSH_PRIVATE_KEY_FILENAME).path)
                 activity_repo_git_ssh_key_copy.visibility = View.VISIBLE
             } else {
                 SSHKeypairGenerationTask(this).execute()
