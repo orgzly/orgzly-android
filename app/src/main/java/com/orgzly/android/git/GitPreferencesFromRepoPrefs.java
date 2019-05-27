@@ -10,11 +10,9 @@ import com.orgzly.android.prefs.RepoPreferences;
 
 public class GitPreferencesFromRepoPrefs implements GitPreferences {
     private RepoPreferences repoPreferences;
-    private DataRepository repo;
 
-    public GitPreferencesFromRepoPrefs(RepoPreferences prefs, DataRepository repoIn) {
+    public GitPreferencesFromRepoPrefs(RepoPreferences prefs) {
         repoPreferences = prefs;
-        repo = repoIn;
     }
 
     @Override
@@ -57,8 +55,6 @@ public class GitPreferencesFromRepoPrefs implements GitPreferences {
 
     @Override
     public Uri remoteUri() {
-        String uriString = repo.getRepo(repoPreferences.getRepoId()).getUrl();
-        return Uri.parse(uriString);
-
+        return repoPreferences.getRepoUri();
     }
 }

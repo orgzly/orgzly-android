@@ -62,9 +62,9 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     }
 
     public static GitRepo buildFromUri(Context context, Uri uri, DataRepository repo)
-            throws IOException, URISyntaxException {
+            throws IOException {
         GitPreferencesFromRepoPrefs prefs = new GitPreferencesFromRepoPrefs(
-                RepoPreferences.fromUri(context, uri, repo), repo);
+                RepoPreferences.fromUri(context, uri, repo));
         return build(prefs, false);
     }
 

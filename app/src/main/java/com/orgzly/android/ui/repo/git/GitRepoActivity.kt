@@ -161,7 +161,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     }
 
     private fun setFromPreferences() {
-        val prefs = RepoPreferences(this, repoId)
+        val prefs = RepoPreferences.fromId(this, repoId, dataRepository)
         for (field in fields) {
             setTextFromPrefKey(prefs, field.editText, field.preference)
         }
@@ -244,7 +244,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 //    }
 
     private fun saveToPreferences(id: Long): Boolean {
-        val editor: SharedPreferences.Editor = RepoPreferences(this, id).repoPreferences.edit()
+        val editor: SharedPreferences.Editor = RepoPreferences.fromId(this, id, dataRepository).repoPreferences.edit()
 
         Log.d("mylog", "saveToPreferences id: $id")
         for (field in fields) {
