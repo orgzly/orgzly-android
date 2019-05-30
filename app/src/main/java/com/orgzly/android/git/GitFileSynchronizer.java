@@ -223,9 +223,6 @@ public class GitFileSynchronizer {
             // FIXME: maybe:
             // checkoutSelected();
             RevCommit current = currentHead();
-            if (current == null) {
-                return;
-            }
             RevCommit mergeTarget = getCommit(
                     String.format("%s/%s", preferences.remoteName(), preferences.branchName()));
             if (!doMerge(mergeTarget))
