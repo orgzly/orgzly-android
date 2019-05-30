@@ -245,6 +245,7 @@ public class GitFileSynchronizer {
      * @throws IOException If the file already exists
      */
     public void addAndCommitNewFile(File sourceFile, String repositoryPath) throws IOException {
+        ensureRepoIsClean();
         File destinationFile = repoDirectoryFile(repositoryPath);
         if (destinationFile.exists()) {
             throw new IOException("Can't add new file " + repositoryPath + " that already exists.");
