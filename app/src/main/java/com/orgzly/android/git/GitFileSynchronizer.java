@@ -26,6 +26,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class GitFileSynchronizer {
+    private static String TAG = GitFileSynchronizer.class.getSimpleName();
+
     private Git git;
     private GitPreferences preferences;
 
@@ -67,7 +69,7 @@ public class GitFileSynchronizer {
     }
 
     public boolean mergeWithRemote() throws IOException {
-        ensureReposIsClean();
+        ensureRepoIsClean();
         try {
             fetch();
             RevCommit mergeTarget = getCommit(
@@ -91,7 +93,7 @@ public class GitFileSynchronizer {
     public void updateAndCommitFileFromRevision(
             File sourceFile, String repositoryPath,
             ObjectId fileRevision, RevCommit revision) throws IOException {
-        ensureReposIsClean();
+        ensureRepoIsClean();
         if (updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision))
             return;
 
@@ -101,7 +103,7 @@ public class GitFileSynchronizer {
             File sourceFile, String repositoryPath,
             ObjectId fileRevision, RevCommit revision)
             throws IOException {
-        ensureReposIsClean();
+        ensureRepoIsClean();
         if (updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision)) return true;
 
         String originalBranch = git.getRepository().getFullBranch();
@@ -183,7 +185,7 @@ public class GitFileSynchronizer {
 
     public boolean updateAndCommitFileFromRevision(
             File sourceFile, String repositoryPath, ObjectId revision) throws IOException {
-        ensureReposIsClean();
+        ensureRepoIsClean();
         ObjectId repositoryRevision = getFileRevision(repositoryPath, currentHead());
         if (repositoryRevision.equals(revision)) {
             updateAndCommitFile(sourceFile, repositoryPath);
@@ -193,7 +195,7 @@ public class GitFileSynchronizer {
     }
 
     public void setBranchAndGetLatest() throws IOException {
-        ensureReposIsClean();
+        ensureRepoIsClean();
         try {
             fetch();
             // FIXME: maybe:
@@ -276,7 +278,7 @@ public class GitFileSynchronizer {
         }
     }
 
-    private void ensureReposIsClean() throws IOException {
+    private void ensureRepoIsClean() throws IOException {
         if (!gitRepoIsClean())
             throw new IOException("Refusing to update because there are uncommitted changes.");
     }
