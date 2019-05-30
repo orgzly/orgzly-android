@@ -24,6 +24,9 @@ import org.eclipse.jgit.treewalk.TreeWalk;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class GitFileSynchronizer {
     private static String TAG = GitFileSynchronizer.class.getSimpleName();
@@ -96,7 +99,23 @@ public class GitFileSynchronizer {
         ensureRepoIsClean();
         if (updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision))
             return;
+    }
 
+    private String getShortHash(ObjectId hash) {
+        String shortHash = hash.getName();
+        try {
+            shortHash = git.getRepository().newObjectReader().abbreviate(hash).name();
+        } catch(IOException e) {
+            Log.e(TAG, "Error while abbreviating commit hash " + hash.getName() + ", falling back to full hash");
+        }
+        return shortHash;
+    }
+
+    private String createMergeBranchName(String repositoryPath, ObjectId commitHash) {
+        String shortCommitHash = getShortHash(commitHash);
+        repositoryPath = repositoryPath.replace(" ", "_");
+        String now = new SimpleDateFormat("yyyy-MM-dd_HHmmss").format(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTime());
+        return "merge-" + repositoryPath + "-" + shortCommitHash + "-" + now;
     }
 
     public boolean updateAndCommitFileFromRevisionAndMerge(
@@ -104,16 +123,17 @@ public class GitFileSynchronizer {
             ObjectId fileRevision, RevCommit revision)
             throws IOException {
         ensureRepoIsClean();
-        if (updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision)) return true;
+        if (updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision)) {
+            return true;
+        }
 
         String originalBranch = git.getRepository().getFullBranch();
-        // TODO: Why do we want to give the branch a magic name? Can we do the equivalent of git merge origin/master while we are on master?
-        String mergeBranch = String.format("merge%s%s", repositoryPath.replace(" ", ""), fileRevision.getName());
+        String mergeBranch = createMergeBranchName(repositoryPath, fileRevision);
         try {
             git.branchDelete().setBranchNames(mergeBranch).call();
         } catch (GitAPIException e) {}
         Boolean mergeSucceeded = true;
-        Boolean doCleanup = true;
+        Boolean doCleanup = false;
         try {
             RevCommit mergeTarget = currentHead();
             git.checkout().setCreateBranch(true).setForce(true).
@@ -131,14 +151,16 @@ public class GitFileSynchronizer {
                 RevCommit merged = currentHead();
                 git.checkout().setName(originalBranch).call();
                 MergeResult result = git.merge().include(merged).call();
-                if (!currentHead().equals(merged))
+                if (!result.getMergeStatus().isSuccessful()) {
                     throw new IOException("Unexpected failure to merge branch");
+                }
             }
         } catch (GitAPIException e) {
             doCleanup = true;
             e.printStackTrace();
             throw new IOException(
                     String.format("Failed to handle merge correctly: %s", e.getMessage()));
+            // TODO: want to catch CheckoutConflictException as well, that means that the actual merge produced conflicts
         } finally {
             if (mergeSucceeded || doCleanup) try {
                 git.checkout().setName(originalBranch).call();
