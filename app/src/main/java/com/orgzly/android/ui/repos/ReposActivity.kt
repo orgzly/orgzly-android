@@ -20,7 +20,7 @@ import com.orgzly.android.repos.*
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.DirectoryRepoActivity
 import com.orgzly.android.ui.repo.DropboxRepoActivity
-import com.orgzly.android.ui.repo.GitRepoActivity
+import com.orgzly.android.ui.repo.git.GitRepoActivity
 import kotlinx.android.synthetic.main.activity_repos.*
 import javax.inject.Inject
 

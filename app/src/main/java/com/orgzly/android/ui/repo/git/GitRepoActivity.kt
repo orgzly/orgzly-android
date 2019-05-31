@@ -13,7 +13,6 @@ import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.Toast
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputLayout
 import com.jcraft.jsch.JSch
 import com.jcraft.jsch.KeyPair
@@ -25,14 +24,13 @@ import com.orgzly.android.prefs.RepoPreferences
 import com.orgzly.android.repos.GitRepo
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.BrowserActivity
-import com.orgzly.android.ui.views.ArrayPagerAdapter
-import com.orgzly.android.ui.views.AdaptableHeightViewPager
 import com.orgzly.android.usecase.RepoCreate
 import com.orgzly.android.usecase.RepoUpdate
 import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.MiscUtils
 import kotlinx.android.synthetic.main.activity_repo_git.*
+import org.eclipse.jgit.api.errors.TransportException
 import org.eclipse.jgit.errors.NoRemoteRepositoryException
 import org.eclipse.jgit.errors.NotSupportedException
 import org.eclipse.jgit.lib.ProgressMonitor
@@ -45,7 +43,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private lateinit var fields: Array<Field>
 
     private var repoId: Long = 0
-    private lateinit var authFragments: Array<AuthConfigFragment>
 
     data class Field(var editText: EditText, var layout: TextInputLayout, var preference: Int)
 
@@ -55,8 +52,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         setContentView(R.layout.activity_repo_git)
 
         setupActionBar(R.string.git)
-
-        setupAuthPager()
 
         fields = arrayOf(
                 Field(
@@ -95,30 +90,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             startLocalFileBrowser(activity_repo_git_ssh_key, ACTIVITY_REQUEST_CODE_FOR_SSH_KEY_SELECTION, true)
         }
 
-        activity_repo_git_ssh_key_generate.setOnClickListener {
-            val hasSSHKey = !applicationContext.fileList().find { it == SSH_PUBLIC_KEY_FILENAME }.isNullOrEmpty()
-            if (hasSSHKey) {
-                Toast.makeText(this, "Using key generated earlier", Toast.LENGTH_LONG)
-                        .show()
-                // TODO: If we want to keep this the path should be kept relative in the settings we save somehow
-                activity_repo_git_ssh_key.setText(applicationContext.getFileStreamPath(SSH_PRIVATE_KEY_FILENAME).path)
-                activity_repo_git_ssh_key_copy.visibility = View.VISIBLE
-            } else {
-                SSHKeypairGenerationTask(this).execute()
-            }
-        }
-
-        activity_repo_git_ssh_key_copy.setOnClickListener {
-            val fileStream = applicationContext.openFileInput(SSH_PUBLIC_KEY_FILENAME)
-            val pubKey = String(fileStream.readBytes(), Charset.defaultCharset())
-            val clipBoard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("pubkey", pubKey)
-            clipBoard.primaryClip = clip
-            // TODO: Make this a string resource instead
-            Toast.makeText(this, "Public key copied to clipboard", Toast.LENGTH_SHORT)
-                    .show()
-        }
-
         repoId = intent.getLongExtra(ARG_REPO_ID, 0)
 
         /* Set directory value for existing repository being edited. */
@@ -131,16 +102,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         } else {
             createDefaultRepoFolder();
         }
-    }
-
-    private fun setupAuthPager() {
-        val authPager = findViewById<AdaptableHeightViewPager>(R.id.activity_repo_git_auth_pager)
-        val authTabs = findViewById<TabLayout>(R.id.activity_repo_git_auth_tabs)
-
-        val adapter = ArrayPagerAdapter(supportFragmentManager, arrayOf(SSHAuthConfigFragment(), HTTPSAuthConfigFragment()))
-        authPager.adapter = adapter
-        authPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(authTabs))
-        authTabs.addOnTabSelectedListener(AdaptableHeightViewPager.TabListener(authPager))
     }
 
     // TODO: Since we can create multiple syncs, this folder might be re-used, do we want to create
@@ -219,8 +180,9 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             save()
         } else {
             val errorId = when {
-                // TODO: Handle the private/public key being wrong or the username/password
+                // TODO: show error for invalid username/password when using HTTPS
                 e.cause is NoRemoteRepositoryException -> R.string.git_clone_error_invalid_repo
+                e.cause is TransportException -> R.string.git_clone_error_ssh_auth
                 // TODO: This should be checked when the user enters a directory by hand
                 e.cause is FileNotFoundException -> R.string.git_clone_error_invalid_target_dir
                 e.cause is GitRepo.DirectoryNotEmpty -> R.string.git_clone_error_target_not_empty
@@ -231,18 +193,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             e.printStackTrace()
         }
     }
-
-    // TODO: Finish this function
-//    private fun sshKeyGenerated(e: IOException?) {
-//        if (e == null) {
-//            // show the copy button and fill in the path to the file next to browse
-//            activity_repo_git_ssh_key_copy.visibility = View.VISIBLE
-//            activity_repo_git_ssh_key
-//        } else {
-//            e.printStackTrace()
-//            showSnackbar(e.toString())
-//        }
-//    }
 
     private fun saveToPreferences(id: Long): Boolean {
         val editor: SharedPreferences.Editor = RepoPreferences.fromId(this, id, dataRepository).repoPreferences.edit()
@@ -447,60 +397,8 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         }
     }
 
-    internal inner class SSHKeypairGenerationTask(var fragment: GitRepoActivity) : AsyncTask<Void, Void, IOException>(), ProgressMonitor {
-        private var progressDialog: ProgressDialog = ProgressDialog(this@GitRepoActivity)
-
-        override fun onPreExecute() {
-            progressDialog.setMessage("Generating SSH keypair with 4096 as keysize and no passphrase.")
-            progressDialog.isIndeterminate = true
-            progressDialog.show()
-        }
-
-        override fun doInBackground(vararg params: Void): IOException? {
-            // TODO: Ask the user for a passphrase and size of the key we generate
-            return try {
-                val jsch = JSch()
-                val keyPair = KeyPair.genKeyPair(jsch, KeyPair.RSA, 4096)
-
-                val privKeyFile = fragment.applicationContext.openFileOutput(SSH_PRIVATE_KEY_FILENAME, Context.MODE_PRIVATE)
-                keyPair.writePrivateKey(privKeyFile)
-                val pubKeyFile = fragment.applicationContext.openFileOutput(SSH_PUBLIC_KEY_FILENAME, Context.MODE_PRIVATE)
-                keyPair.writePublicKey(pubKeyFile, "Generated by Orgzly")
-
-                null
-            } catch (e: IOException) {
-                e
-            }
-        }
-
-        override fun onCancelled() {
-            progressDialog.dismiss()
-        }
-
-        override fun onPostExecute(e: IOException?) {
-            progressDialog.dismiss()
-//            fragment.sshKeyGenerated(e)
-        }
-
-
-        override fun start(totalTasks: Int) {
-        }
-
-        override fun beginTask(title: String, totalWork: Int) {
-        }
-
-        override fun update(completed: Int) {
-        }
-
-        override fun endTask() {
-        }
-    }
-
     companion object {
         private val TAG = GitRepoActivity::class.java.name
-
-        private const val SSH_PUBLIC_KEY_FILENAME = "id_rsa.pub"
-        private const val SSH_PRIVATE_KEY_FILENAME = "id_rsa"
 
         private const val ARG_REPO_ID = "repo_id"
 

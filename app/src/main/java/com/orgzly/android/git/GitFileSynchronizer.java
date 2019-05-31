@@ -281,7 +281,6 @@ public class GitFileSynchronizer {
             return null;
         }
         Ref target = git.getRepository().findRef(identifier);
-        Log.d("mylog", "Targetid : " + target.getObjectId());
         return new RevWalk(git.getRepository()).parseCommit(target.getObjectId());
     }
 
