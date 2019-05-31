@@ -1,10 +1,8 @@
 package com.orgzly.android.git;
 
 import android.net.Uri;
-import android.util.Log;
 
 import com.orgzly.R;
-import com.orgzly.android.data.DataRepository;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.prefs.RepoPreferences;
 

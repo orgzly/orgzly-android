@@ -3,19 +3,20 @@ package com.orgzly.android.ui.repo.git
 
 import android.app.Activity
 import android.app.ProgressDialog
-import android.content.*
+import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
 import android.text.TextUtils
 import android.util.Log
-import android.view.*
+import android.view.ContextMenu
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.EditText
-import android.widget.Toast
 import com.google.android.material.textfield.TextInputLayout
-import com.jcraft.jsch.JSch
-import com.jcraft.jsch.KeyPair
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.git.GitPreferences
@@ -37,7 +38,6 @@ import org.eclipse.jgit.lib.ProgressMonitor
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
-import java.nio.charset.Charset
 
 class GitRepoActivity : CommonActivity(), GitPreferences {
     private lateinit var fields: Array<Field>
@@ -94,7 +94,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
         /* Set directory value for existing repository being edited. */
         if (repoId != 0L) {
-            Log.d("mylog", "restoring from repoId: $repoId")
             dataRepository.getRepo(repoId)?.let { repo ->
                 activity_repo_git_url.setText(repo.url)
                 setFromPreferences()
@@ -131,7 +130,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private fun setTextFromPrefKey(prefs: RepoPreferences, editText: EditText, prefKey: Int) {
         if (editText.length() < 1) {
             val setting = prefs.getStringValue(prefKey, "")
-            Log.d("mylog", "setting field to $setting")
             editText.setText(prefs.getStringValue(prefKey, ""))
         }
     }
@@ -197,13 +195,10 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private fun saveToPreferences(id: Long): Boolean {
         val editor: SharedPreferences.Editor = RepoPreferences.fromId(this, id, dataRepository).repoPreferences.edit()
 
-        Log.d("mylog", "saveToPreferences id: $id")
         for (field in fields) {
             val settingName = getSettingName(field.preference)
-            Log.d("mylog", "setting name: $settingName")
             val value = field.editText.text.toString()
             if (value.isNotEmpty()) {
-                Log.d("mylog", "saved $settingName")
                 editor.putString(settingName, value)
             } else {
                 editor.remove(settingName)
