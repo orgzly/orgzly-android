@@ -470,6 +470,9 @@
     <string name="force_utf8">Force UTF-8 encoding</string>
     <string name="force_utf8_summary">Do not try to detect encoding, always use UTF-8</string>
 
+    <string name="notebooks_start_folded">Start folded</string>
+    <string name="notebooks_start_folded_summary">Fold all notes when notebook is loaded</string>
+
     <string name="list_widget_name">Saved search</string>
     <string name="list_widget_select_search">Select search</string>
     <string name="list_widget_nothing_selected">No search selected</string>

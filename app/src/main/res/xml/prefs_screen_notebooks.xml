@@ -40,6 +40,13 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/notes_list">
+
+        <SwitchPreference
+            android:key="@string/pref_key_notebooks_start_folded"
+            android:title="@string/notebooks_start_folded"
+            android:summary="@string/notebooks_start_folded_summary"
+            android:defaultValue="@bool/pref_default_notebooks_start_folded"/>
+
         <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
             android:key="@string/pref_key_notes_list_density"
             android:title="@string/density"

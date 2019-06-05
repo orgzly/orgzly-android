@@ -222,6 +222,12 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_force_utf8));
     }
 
+    public static boolean notebooksStartFolded(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_notebooks_start_folded),
+                context.getResources().getBoolean(R.bool.pref_default_notebooks_start_folded));
+    }
+
     public static boolean newNoteNotification(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_new_note_notification),

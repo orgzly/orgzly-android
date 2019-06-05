@@ -245,6 +245,9 @@ abstract class NoteDao : BaseDao<Note> {
     @Query("UPDATE notes SET folded_under_id = :foldedUnder WHERE id IN (:ids) AND folded_under_id = 0")
     abstract fun foldUnfolded(ids: Set<Long>, foldedUnder: Long)
 
+    @Query("UPDATE notes SET folded_under_id = :parentId WHERE id = :noteId")
+    abstract fun setFoldedUnder(noteId: Long, parentId: Long)
+
     @Query("UPDATE notes SET parent_id = :parentId WHERE id = :noteId")
     abstract fun updateParentForNote(noteId: Long, parentId: Long)
 

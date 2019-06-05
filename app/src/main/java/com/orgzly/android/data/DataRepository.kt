@@ -1531,6 +1531,7 @@ class DataRepository @Inject constructor(
 
         val useCreatedAtProperty = AppPreferences.createdAt(context)
         val createdAtProperty = AppPreferences.createdAtProperty(context)
+        val startFolded = AppPreferences.notebooksStartFolded(context)
 
         BufferedReader(inReader).use { reader ->
             /*
@@ -1559,14 +1560,14 @@ class DataRepository @Inject constructor(
                             }
 
                             val position = NotePosition(
-                                    bookId,
-                                    node.lft,
-                                    node.rgt,
-                                    node.level,
-                                    0,
-                                    0,
-                                    false,
-                                    node.descendantsCount)
+                                    bookId = bookId,
+                                    lft = node.lft,
+                                    rgt = node.rgt,
+                                    level = node.level,
+                                    parentId = 0,
+                                    foldedUnderId = 0,
+                                    isFolded = startFolded && node.level > 0,
+                                    descendantsCount = node.descendantsCount)
 
                             val note = Note(
                                     0,
@@ -1602,6 +1603,11 @@ class DataRepository @Inject constructor(
                                 if (descendantId != null) {
                                     if (!notesWithParentSet.contains(descendantId)) {
                                         db.note().updateParentForNote(descendantId, noteId)
+
+                                        if (startFolded && position.level > 0) {
+                                            db.note().setFoldedUnder(descendantId, noteId)
+                                        }
+
                                         notesWithParentSet.add(descendantId)
                                     }
 

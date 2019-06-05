@@ -193,6 +193,9 @@
     <string name="pref_key_force_utf8" translatable="false">pref_key_force_utf8</string>
     <bool name="pref_default_force_utf8" translatable="false">false</bool>
 
+    <string name="pref_key_notebooks_start_folded" translatable="false">pref_key_notebooks_start_folded</string>
+    <bool name="pref_default_notebooks_start_folded" translatable="false">false</bool>
+
     <string name="pref_key_new_note_notification" translatable="false">pref_key_new_note_notification</string>
     <bool name="pref_default_new_note_notification" translatable="false">false</bool>
 
