@@ -64,8 +64,9 @@
 
     <color name="notification">@color/blue_grey_700</color>
 
-    <color name="item_selected_bg_color">#3290A4AE</color>
-    <color name="item_spotlighted_bg_color">#3290A4AE</color>
+    <color name="item_selected_light_bg_color">#3278909C</color> <!-- 20% blue_grey_400 -->
+    <color name="item_selected_dark_bg_color">#3290A4AE</color>  <!-- 20% blue_grey_300 -->
+    <color name="item_selected_black_bg_color">#32B0BEC5</color> <!-- 20% blue_grey_200 -->
 
     <color name="widget_light_header_bg_color">@color/blue_grey_500</color>
     <color name="widget_light_header_text_color">@color/white_text_primary_color</color>

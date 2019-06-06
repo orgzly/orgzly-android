@@ -70,8 +70,8 @@
 
         <item name="item_bg">@drawable/item_selector</item>
 
-        <item name="item_selected_bg_color">@color/item_selected_bg_color</item>
-        <item name="item_spotlighted_bg_color">@color/item_spotlighted_bg_color</item>
+        <item name="item_selected_bg_color">@color/item_selected_light_bg_color</item>
+        <item name="item_spotlighted_bg_color">@color/item_selected_light_bg_color</item>
 
         <item name="fragment_books_bg_color">@color/light_theme_app_bar</item>
         <item name="item_book_card_bg_color">@color/light_theme_cards_and_dialogs</item>
@@ -233,8 +233,8 @@
 
         <item name="item_bg">@drawable/item_selector_dark</item>
 
-        <item name="item_selected_bg_color">@color/item_selected_bg_color</item>
-        <item name="item_spotlighted_bg_color">@color/item_spotlighted_bg_color</item>
+        <item name="item_selected_bg_color">@color/item_selected_dark_bg_color</item>
+        <item name="item_spotlighted_bg_color">@color/item_selected_dark_bg_color</item>
 
         <item name="fragment_books_bg_color">@color/dark_theme_background</item>
         <item name="item_book_card_bg_color">@color/dark_theme_cards_and_dialogs</item>
@@ -367,8 +367,8 @@
 
         <item name="item_bg">@drawable/item_selector_black</item>
 
-        <item name="item_selected_bg_color">@color/item_selected_bg_color</item>
-        <item name="item_spotlighted_bg_color">@color/item_spotlighted_bg_color</item>
+        <item name="item_selected_bg_color">@color/item_selected_black_bg_color</item>
+        <item name="item_spotlighted_bg_color">@color/item_selected_black_bg_color</item>
 
         <item name="fragment_books_bg_color">@color/dark_theme_status_bar</item>
         <item name="item_book_card_bg_color">@color/dark_theme_status_bar</item>
