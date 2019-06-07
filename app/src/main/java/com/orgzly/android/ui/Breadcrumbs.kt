@@ -10,15 +10,10 @@ import android.view.View
 class Breadcrumbs {
     private val ssb = SpannableStringBuilder()
 
-    // Track clickable span to remove the last one
-    private var lastClickableSpan: ClickableSpan? = null
-
-    fun add(name: String, onClick: () -> Any) {
-        if (!ssb.isEmpty()) {
+    fun add(name: String, linkify: Boolean = true, onClick: () -> Unit) {
+        if (ssb.isNotEmpty()) {
             ssb.append(" • ")
         }
-
-        // val isLast = index == path.size - 1
 
         val start = ssb.length
 
@@ -26,13 +21,15 @@ class Breadcrumbs {
 
         ssb.setSpan(StyleSpan(Typeface.BOLD), start, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-        lastClickableSpan = object : ClickableSpan() {
-            override fun onClick(widget: View) {
-                onClick()
+        if (linkify) {
+            val lastClickableSpan = object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    onClick()
+                }
             }
-        }
 
-        ssb.setSpan(lastClickableSpan, start, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            ssb.setSpan(lastClickableSpan, start, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
     }
 
     private fun truncateName(name: String): String {
@@ -44,8 +41,6 @@ class Breadcrumbs {
     }
 
     fun toCharSequence(): CharSequence {
-        ssb.removeSpan(lastClickableSpan)
-
         return ssb
     }
 

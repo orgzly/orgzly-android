@@ -168,20 +168,22 @@ class RefileFragment : DaggerDialogFragment() {
     private fun generateBreadcrumbs(path: List<RefileViewModel.Item>): CharSequence {
         val breadcrumbs = Breadcrumbs()
 
-        path.forEach { item ->
+        path.forEachIndexed { index, item ->
+            val linkify = index != path.size - 1 // Not last
+
             when (val payload = item.payload) {
                 is RefileViewModel.Home ->
-                    breadcrumbs.add(getString(R.string.notebooks)) {
+                    breadcrumbs.add(getString(R.string.notebooks), linkify) {
                         viewModel.onBreadcrumbClick(item)
                     }
 
                 is Book ->
-                    breadcrumbs.add(payload.title ?: payload.name) {
+                    breadcrumbs.add(payload.title ?: payload.name, linkify) {
                         viewModel.onBreadcrumbClick(item)
                     }
 
                 is Note ->
-                    breadcrumbs.add(payload.title) {
+                    breadcrumbs.add(payload.title, linkify) {
                         viewModel.onBreadcrumbClick(item)
                     }
             }
