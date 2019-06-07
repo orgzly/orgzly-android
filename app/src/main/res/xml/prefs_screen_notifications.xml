@@ -5,15 +5,15 @@
     android:title="@string/prefs_title_notifications">
 
     <SwitchPreference
-        android:key="@string/pref_key_new_note_notification"
-        android:title="@string/new_note_notification"
-        android:summary="@string/new_note_notification_summary"
-        android:defaultValue="@bool/pref_default_new_note_notification"/>
+        android:key="@string/pref_key_ongoing_notification"
+        android:title="@string/ongoing_notification"
+        android:summary="@string/ongoing_notification_summary"
+        android:defaultValue="@bool/pref_default_ongoing_notification"/>
 
     <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
         android:key="@string/pref_key_ongoing_notification_priority"
-        android:dependency="@string/pref_key_new_note_notification"
-        android:title="@string/priority"
+        android:dependency="@string/pref_key_ongoing_notification"
+        android:title="@string/ongoing_notification_priority"
         android:entries="@array/notification_priorities"
         android:entryValues="@array/notification_priority_values"
         android:defaultValue="@string/pref_default_ongoing_notification_priority" />

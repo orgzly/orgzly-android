@@ -230,8 +230,8 @@ public class AppPreferences {
 
     public static boolean newNoteNotification(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
-                context.getResources().getString(R.string.pref_key_new_note_notification),
-                context.getResources().getBoolean(R.bool.pref_default_new_note_notification));
+                context.getResources().getString(R.string.pref_key_ongoing_notification),
+                context.getResources().getBoolean(R.bool.pref_default_ongoing_notification));
     }
 
     public static String ongoingNotificationPriority(Context context) {

@@ -351,8 +351,8 @@
     <string name="display_notebook_name">Показувати назву блокнота</string>
     <string name="display_inherited_tags_in_search_results">Успадковані теги в результатах пошуку</string>
     <string name="display_inherited_tags_in_search_results_summary">Показувати теги в результатах пошуку</string>
-    <string name="new_note_notification">Створити нотатку і синхронізувати</string>
-    <string name="new_note_notification_summary">Швидко створити нову нотатку або синхронізувати блокноти з панелі сповіщень</string>
+    <string name="ongoing_notification">Створити нотатку і синхронізувати</string>
+    <string name="ongoing_notification_summary">Швидко створити нову нотатку або синхронізувати блокноти з панелі сповіщень</string>
     <string name="show_sync_notifications_title">Помилка синхронізації</string>
     <string name="show_sync_notifications_summary">Показувати сповіщення про помилку синхронізації</string>
     <string name="prefs_title_reminders">Нагадування</string>

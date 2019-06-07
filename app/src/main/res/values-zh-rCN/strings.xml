@@ -339,8 +339,8 @@
     <string name="display_notebook_name">显示笔记本名称</string>
     <string name="display_inherited_tags_in_search_results">搜索结果中的被继承标签</string>
     <string name="display_inherited_tags_in_search_results_summary">在搜索结果中显示被继承标签</string>
-    <string name="new_note_notification">新建笔记并同步</string>
-    <string name="new_note_notification_summary">从通知抽屉快速新建笔记或同步笔记本</string>
+    <string name="ongoing_notification">新建笔记并同步</string>
+    <string name="ongoing_notification_summary">从通知抽屉快速新建笔记或同步笔记本</string>
     <string name="show_sync_notifications_title">同步失败</string>
     <string name="show_sync_notifications_summary">显示同步失败的通知</string>
     <string name="prefs_title_reminders">提醒</string>

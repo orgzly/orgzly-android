@@ -339,8 +339,8 @@
     <string name="display_notebook_name">Display notebook name</string>
     <string name="display_inherited_tags_in_search_results">Mewarisi label dalam hasil pencarian</string>
     <string name="display_inherited_tags_in_search_results_summary">Tampilkan label yang diwariskan di hasil pencarian</string>
-    <string name="new_note_notification">Buat catatan dan sinkron</string>
-    <string name="new_note_notification_summary">Segera buat catatan baru atau sinkronkan notebook dari laci pemberitahuan</string>
+    <string name="ongoing_notification">Buat catatan dan sinkron</string>
+    <string name="ongoing_notification_summary">Segera buat catatan baru atau sinkronkan notebook dari laci pemberitahuan</string>
     <string name="show_sync_notifications_title">Sync failure</string>
     <string name="show_sync_notifications_summary">Display notification on sync failure</string>
     <string name="prefs_title_reminders">Pengingat</string>

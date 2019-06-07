@@ -339,8 +339,8 @@
     <string name="display_notebook_name">顯示筆記本名稱</string>
     <string name="display_inherited_tags_in_search_results">在搜尋結果中包含繼承標籤</string>
     <string name="display_inherited_tags_in_search_results_summary">在搜尋結果中顯示繼承標籤</string>
-    <string name="new_note_notification">創建筆記並同步</string>
-    <string name="new_note_notification_summary">從通知抽屜中快速建立新筆記或同步筆記本</string>
+    <string name="ongoing_notification">創建筆記並同步</string>
+    <string name="ongoing_notification_summary">從通知抽屜中快速建立新筆記或同步筆記本</string>
     <string name="show_sync_notifications_title">同步失敗！</string>
     <string name="show_sync_notifications_summary">顯示同步失敗的通知</string>
     <string name="prefs_title_reminders">提醒</string>

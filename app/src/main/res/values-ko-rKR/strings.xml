@@ -339,8 +339,8 @@
     <string name="display_notebook_name">메모장 이름 보여주기</string>
     <string name="display_inherited_tags_in_search_results">검색된 결과에 상속된 태그 포함</string>
     <string name="display_inherited_tags_in_search_results_summary">검색된 결과에 상속된 태그 보여주기</string>
-    <string name="new_note_notification">새 노트와 동기화</string>
-    <string name="new_note_notification_summary">알림창에서 새 메모를 빠르게 만들거나 메모장 동기화 하기</string>
+    <string name="ongoing_notification">새 노트와 동기화</string>
+    <string name="ongoing_notification_summary">알림창에서 새 메모를 빠르게 만들거나 메모장 동기화 하기</string>
     <string name="show_sync_notifications_title">동기화에 실패했습니다.</string>
     <string name="show_sync_notifications_summary">동기화 실패 알림 보여주기</string>
     <string name="prefs_title_reminders">알리미</string>

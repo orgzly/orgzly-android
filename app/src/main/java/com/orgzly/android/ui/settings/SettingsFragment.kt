@@ -216,7 +216,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             }
 
             // Cancel or create an new-note ongoing notification
-            getString(R.string.pref_key_new_note_notification),
+            getString(R.string.pref_key_ongoing_notification),
             getString(R.string.pref_key_ongoing_notification_priority) -> {
                 if (AppPreferences.newNoteNotification(context)) {
                     Notifications.createNewNoteNotification(context)

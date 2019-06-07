@@ -343,8 +343,8 @@
     <string name="display_notebook_name">Notizbuchname anzeigen</string>
     <string name="display_inherited_tags_in_search_results">Tags in Suchergebnissen einrücken</string>
     <string name="display_inherited_tags_in_search_results_summary">Zeigt eingerückte Tags in den Suchergebnissen an</string>
-    <string name="new_note_notification">Neue Notiz und Synchronisieren</string>
-    <string name="new_note_notification_summary">Über eine Benachrichtigung neue Notizen anlegen oder Notizbücher synchronisieren</string>
+    <string name="ongoing_notification">Neue Notiz und Synchronisieren</string>
+    <string name="ongoing_notification_summary">Über eine Benachrichtigung neue Notizen anlegen oder Notizbücher synchronisieren</string>
     <string name="show_sync_notifications_title">Synchronisationsfehler</string>
     <string name="show_sync_notifications_summary">Benachrichtigung bei Synchronisationsfehler</string>
     <string name="prefs_title_reminders">Alarme</string>

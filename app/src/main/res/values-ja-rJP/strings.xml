@@ -339,8 +339,8 @@
     <string name="display_notebook_name">メモ帳の名前を表示</string>
     <string name="display_inherited_tags_in_search_results">継承したタグを検索結果で表示</string>
     <string name="display_inherited_tags_in_search_results_summary">継承したタグを検索結果で表示</string>
-    <string name="new_note_notification">新規ノートと同期</string>
-    <string name="new_note_notification_summary">通知ドロワーから簡単に、新しいメモの作成やメモ帳同期をする</string>
+    <string name="ongoing_notification">新規ノートと同期</string>
+    <string name="ongoing_notification_summary">通知ドロワーから簡単に、新しいメモの作成やメモ帳同期をする</string>
     <string name="show_sync_notifications_title">同期の失敗</string>
     <string name="show_sync_notifications_summary">同期エラーの通知を表示する</string>
     <string name="prefs_title_reminders">リマインダ</string>

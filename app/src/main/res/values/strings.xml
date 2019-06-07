@@ -408,8 +408,9 @@
     <string name="display_inherited_tags_in_search_results">Inherited tags in search results</string>
     <string name="display_inherited_tags_in_search_results_summary">Display inherited tags in search results</string>
 
-    <string name="new_note_notification">New note and sync</string>
-    <string name="new_note_notification_summary">Quickly create new note or sync notebooks from notification drawer</string>
+    <string name="ongoing_notification">Ongoing</string>
+    <string name="ongoing_notification_summary">Quickly create new note or sync notebooks from notification drawer</string>
+    <string name="ongoing_notification_priority">Ongoing priority</string>
 
     <string name="show_sync_notifications_title">Sync failure</string>
     <string name="show_sync_notifications_summary">Display notification on sync failure</string>

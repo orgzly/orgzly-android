@@ -343,8 +343,8 @@
     <string name="display_notebook_name">Mostra il nome del taccuino</string>
     <string name="display_inherited_tags_in_search_results">Etichette ereditate nei risultati della ricerca</string>
     <string name="display_inherited_tags_in_search_results_summary">Mostra le etichette ereditate nei risultati della ricerca</string>
-    <string name="new_note_notification">Crea una nota e sincronizza</string>
-    <string name="new_note_notification_summary">Crea rapidamente una nuova nota o sincronizza i taccuini dal Menu</string>
+    <string name="ongoing_notification">Crea una nota e sincronizza</string>
+    <string name="ongoing_notification_summary">Crea rapidamente una nuova nota o sincronizza i taccuini dal Menu</string>
     <string name="show_sync_notifications_title">Sincronizzazione fallita</string>
     <string name="show_sync_notifications_summary">Mostra notifica se la sincronizzazione fallisce</string>
     <string name="prefs_title_reminders">Promemoria</string>

@@ -343,8 +343,8 @@
     <string name="display_notebook_name">Afficher le nom du bloc-note</string>
     <string name="display_inherited_tags_in_search_results">Tags hérités dans les résultats de recherche</string>
     <string name="display_inherited_tags_in_search_results_summary">Afficher les tags hérités dans les résultats de recherche</string>
-    <string name="new_note_notification">Créer une note et synchroniser</string>
-    <string name="new_note_notification_summary">Créer rapidement une note ou synchroniser depuis le volet de notification</string>
+    <string name="ongoing_notification">Créer une note et synchroniser</string>
+    <string name="ongoing_notification_summary">Créer rapidement une note ou synchroniser depuis le volet de notification</string>
     <string name="show_sync_notifications_title">Échec de synchronisation</string>
     <string name="show_sync_notifications_summary">Montre la notification si la synchronisation échoue</string>
     <string name="prefs_title_reminders">Rappels</string>

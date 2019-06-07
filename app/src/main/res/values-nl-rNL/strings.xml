@@ -343,8 +343,8 @@
     <string name="display_notebook_name">Toon notitieboek naam</string>
     <string name="display_inherited_tags_in_search_results">Georven tags in zoekresultaten</string>
     <string name="display_inherited_tags_in_search_results_summary">Georven tags weergeven in zoekresultaten</string>
-    <string name="new_note_notification">Maak notitie en synchroniseer</string>
-    <string name="new_note_notification_summary">Maak snel een nieuwe notitie of synchroniseer notitieboekjes vanaf de notificatiebalk</string>
+    <string name="ongoing_notification">Maak notitie en synchroniseer</string>
+    <string name="ongoing_notification_summary">Maak snel een nieuwe notitie of synchroniseer notitieboekjes vanaf de notificatiebalk</string>
     <string name="show_sync_notifications_title">Synchronisatiefout</string>
     <string name="show_sync_notifications_summary">Toon melding bij synchronisatiefout</string>
     <string name="prefs_title_reminders">Herinneringen</string>

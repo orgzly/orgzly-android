@@ -343,8 +343,8 @@
     <string name="display_notebook_name">Display notebook name</string>
     <string name="display_inherited_tags_in_search_results">Arama sonuçlarında devralınan etiketler</string>
     <string name="display_inherited_tags_in_search_results_summary">Devralınan etiketleri arama sonuçlarında göster</string>
-    <string name="new_note_notification">Not oluştur ve eşitle</string>
-    <string name="new_note_notification_summary">Bildirim sekmesinden hemen yeni not oluştur veya not defterini eşitle</string>
+    <string name="ongoing_notification">Not oluştur ve eşitle</string>
+    <string name="ongoing_notification_summary">Bildirim sekmesinden hemen yeni not oluştur veya not defterini eşitle</string>
     <string name="show_sync_notifications_title">Senkron başarısızlığı</string>
     <string name="show_sync_notifications_summary">Senkronun kesilmesi üzerine görüntü gösterimi bildirimi</string>
     <string name="prefs_title_reminders">Hatırlatıcılar</string>

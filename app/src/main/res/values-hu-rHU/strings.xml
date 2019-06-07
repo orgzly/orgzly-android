@@ -343,8 +343,8 @@
     <string name="display_notebook_name">Jegyzetfüzet nevének megjelenítése</string>
     <string name="display_inherited_tags_in_search_results">Örökölt címkék a keresési eredményekben</string>
     <string name="display_inherited_tags_in_search_results_summary">Örökölt címkék megmutatása a keresési eredményekben</string>
-    <string name="new_note_notification">Bejegyzés létrehozása és szinkronizálás</string>
-    <string name="new_note_notification_summary">Új bejegyzés létrehozása avgy jegyzetfüzetek szinkronizálása az üzenetekből</string>
+    <string name="ongoing_notification">Bejegyzés létrehozása és szinkronizálás</string>
+    <string name="ongoing_notification_summary">Új bejegyzés létrehozása avgy jegyzetfüzetek szinkronizálása az üzenetekből</string>
     <string name="show_sync_notifications_title">Szinkronizálási hiba</string>
     <string name="show_sync_notifications_summary">Értesítés szinkronizálási hiba esetén</string>
     <string name="prefs_title_reminders">Emlékeztetők</string>

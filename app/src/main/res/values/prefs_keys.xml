@@ -196,8 +196,8 @@
     <string name="pref_key_notebooks_start_folded" translatable="false">pref_key_notebooks_start_folded</string>
     <bool name="pref_default_notebooks_start_folded" translatable="false">false</bool>
 
-    <string name="pref_key_new_note_notification" translatable="false">pref_key_new_note_notification</string>
-    <bool name="pref_default_new_note_notification" translatable="false">false</bool>
+    <string name="pref_key_ongoing_notification" translatable="false">pref_key_new_note_notification</string>
+    <bool name="pref_default_ongoing_notification" translatable="false">false</bool>
 
     <string name="pref_key_ongoing_notification_priority" translatable="false">pref_key_ongoing_notification_priority</string>
 

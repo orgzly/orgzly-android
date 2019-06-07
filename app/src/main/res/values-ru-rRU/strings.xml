@@ -351,8 +351,8 @@
     <string name="display_notebook_name">Показывать имя записной книжки</string>
     <string name="display_inherited_tags_in_search_results">Унаследованные теги в поиске</string>
     <string name="display_inherited_tags_in_search_results_summary">Отображать теги в результатах поиска</string>
-    <string name="new_note_notification">Создать заметку и синхронизировать</string>
-    <string name="new_note_notification_summary">Быстро создавать новую заметку или синхронизировать блокноты из панели уведомлений</string>
+    <string name="ongoing_notification">Создать заметку и синхронизировать</string>
+    <string name="ongoing_notification_summary">Быстро создавать новую заметку или синхронизировать блокноты из панели уведомлений</string>
     <string name="show_sync_notifications_title">Ошибка синхронизации</string>
     <string name="show_sync_notifications_summary">Отображать уведомление о сбое синхронизации</string>
     <string name="prefs_title_reminders">Напоминания</string>
