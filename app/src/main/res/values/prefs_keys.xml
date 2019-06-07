@@ -199,6 +199,28 @@
     <string name="pref_key_new_note_notification" translatable="false">pref_key_new_note_notification</string>
     <bool name="pref_default_new_note_notification" translatable="false">false</bool>
 
+    <string name="pref_key_ongoing_notification_priority" translatable="false">pref_key_ongoing_notification_priority</string>
+
+    <!-- Try to display notification expanded to see the actions -->
+    <string name="pref_default_ongoing_notification_priority">max</string>
+
+    <string-array name="notification_priorities">
+        <item>@string/notification_maximum_priority</item>
+        <item>@string/notification_high_priority</item>
+        <item>@string/notification_default_priority</item>
+        <item>@string/notification_low_priority</item>
+        <item>@string/notification_minimum_priority</item>
+    </string-array>
+
+    <string-array name="notification_priority_values">
+        <item>max</item>
+        <item>high</item>
+        <item>default</item>
+        <item>low</item>
+        <item>min</item>
+    </string-array>
+
+
     <string name="pref_key_reminders_sound" translatable="false">pref_key_reminders_sound</string>
     <bool name="pref_default_reminders_sound" translatable="false">true</bool>
 

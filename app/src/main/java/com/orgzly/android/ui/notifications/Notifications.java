@@ -18,6 +18,7 @@ import com.orgzly.R;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.NewNoteBroadcastReceiver;
 import com.orgzly.android.NotificationChannels;
+import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.main.MainActivity;
 import com.orgzly.android.ui.share.ShareActivity;
@@ -50,8 +51,10 @@ public class Notifications {
                 .setColor(ContextCompat.getColor(context, R.color.notification))
                 .setContentIntent(resultPendingIntent);
 
-        // Try to display notification expanded to see the actions
-        builder.setPriority(NotificationCompat.PRIORITY_MAX);
+
+        builder.setPriority(
+                getNotificationPriority(
+                        AppPreferences.ongoingNotificationPriority(context)));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             PendingIntent newNotePendingIntent = PendingIntent.getBroadcast(
@@ -93,13 +96,29 @@ public class Notifications {
         notificationManager.notify(ONGOING_NEW_NOTE_ID, builder.build());
     }
 
+    private static int getNotificationPriority(String priority) {
+        if ("max".equals(priority)) {
+            return NotificationCompat.PRIORITY_MAX;
+
+        } else if ("high".equals(priority)) {
+            return NotificationCompat.PRIORITY_HIGH;
+
+        } else if ("low".equals(priority)) {
+            return NotificationCompat.PRIORITY_LOW;
+
+        } else if ("min".equals(priority)) {
+            return NotificationCompat.PRIORITY_MIN;
+        }
+
+        return NotificationCompat.PRIORITY_DEFAULT;
+    }
+
     public static void cancelNewNoteNotification(Context context) {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.cancel(ONGOING_NEW_NOTE_ID);
     }
-
 
     private static BroadcastReceiver syncServiceReceiver = new SyncStatusBroadcastReceiver();
 

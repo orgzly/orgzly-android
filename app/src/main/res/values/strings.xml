@@ -589,4 +589,10 @@
     <string name="go_to">Go to</string>
 
     <string name="cannot_refile_to_the_same_subtree">Cannot refile to the same subtree</string>
+
+    <string name="notification_maximum_priority">Maximum</string>
+    <string name="notification_high_priority">High</string>
+    <string name="notification_default_priority">Default</string>
+    <string name="notification_low_priority">Low</string>
+    <string name="notification_minimum_priority">Minimum</string>
 </resources>

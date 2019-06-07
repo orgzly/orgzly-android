@@ -234,6 +234,12 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_new_note_notification));
     }
 
+    public static String ongoingNotificationPriority(Context context) {
+        return getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_ongoing_notification_priority),
+                context.getResources().getString(R.string.pref_default_ongoing_notification_priority));
+    }
+
     public static boolean remindersForScheduledEnabled(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_use_reminders_for_scheduled_times),

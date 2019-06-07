@@ -10,6 +10,14 @@
         android:summary="@string/new_note_notification_summary"
         android:defaultValue="@bool/pref_default_new_note_notification"/>
 
+    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        android:key="@string/pref_key_ongoing_notification_priority"
+        android:dependency="@string/pref_key_new_note_notification"
+        android:title="@string/priority"
+        android:entries="@array/notification_priorities"
+        android:entryValues="@array/notification_priority_values"
+        android:defaultValue="@string/pref_default_ongoing_notification_priority" />
+
     <SwitchPreference
         android:key="@string/pref_key_show_sync_notifications"
         android:title="@string/show_sync_notifications_title"
