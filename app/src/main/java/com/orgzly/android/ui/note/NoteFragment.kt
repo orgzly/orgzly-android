@@ -528,7 +528,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
                 val breadcrumbs = Breadcrumbs()
 
-                breadcrumbs.add(bookTitle) {
+                breadcrumbs.add(bookTitle, 0) {
                     viewModel.onBreadcrumbsBook(data)
                 }
 

@@ -10,14 +10,14 @@ import android.view.View
 class Breadcrumbs {
     private val ssb = SpannableStringBuilder()
 
-    fun add(name: String, onClick: (() -> Unit)? = null) {
+    fun add(name: String, truncateLength: Int = MAX_NAME_LENGTH, onClick: (() -> Unit)? = null) {
         if (ssb.isNotEmpty()) {
             ssb.append(" • ")
         }
 
         val start = ssb.length
 
-        ssb.append(truncateName(name))
+        ssb.append(truncateName(name, truncateLength))
 
         ssb.setSpan(StyleSpan(Typeface.BOLD), start, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
@@ -32,9 +32,9 @@ class Breadcrumbs {
         }
     }
 
-    private fun truncateName(name: String): String {
-        return if (name.length - 3 > MAX_NAME_LENGTH) {
-            name.substring(0, MAX_NAME_LENGTH) + '…'
+    private fun truncateName(name: String, max: Int): String {
+        return if (max > 0 && name.length - 3 > max) {
+            name.substring(0, max) + '…'
         } else {
             name
         }
