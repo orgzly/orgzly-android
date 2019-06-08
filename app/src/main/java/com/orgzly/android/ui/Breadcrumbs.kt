@@ -10,7 +10,7 @@ import android.view.View
 class Breadcrumbs {
     private val ssb = SpannableStringBuilder()
 
-    fun add(name: String, linkify: Boolean = true, onClick: () -> Unit) {
+    fun add(name: String, onClick: (() -> Unit)? = null) {
         if (ssb.isNotEmpty()) {
             ssb.append(" • ")
         }
@@ -21,7 +21,7 @@ class Breadcrumbs {
 
         ssb.setSpan(StyleSpan(Typeface.BOLD), start, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-        if (linkify) {
+        if (onClick != null) {
             val lastClickableSpan = object : ClickableSpan() {
                 override fun onClick(widget: View) {
                     onClick()
