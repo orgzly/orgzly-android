@@ -69,8 +69,7 @@ abstract class NoteDao : BaseDao<Note> {
             AND a.level > 0
             AND a.lft < n.lft
             AND n.rgt < a.rgt
-            ORDER BY a.lft DESC
-
+            ORDER BY a.lft
     """)
     abstract fun getAncestors(id: Long): List<Note>
 

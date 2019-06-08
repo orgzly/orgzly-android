@@ -50,19 +50,32 @@
                     android:layout_height="wrap_content"
                     android:src="?attr/ic_library_books_24dp"
                     android:alpha="?attr/oic_item_alpha"/>
-                <TextView
-                    android:id="@+id/fragment_note_location"
+
+                <!-- Breadcrumbs -->
+                <HorizontalScrollView
+                    android:id="@+id/fragment_note_breadcrumbs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="2dp"
                     android:paddingStart="2dp"
-                    android:paddingRight="2dp"
-                    android:paddingEnd="2dp"
+                    android:paddingRight="4dp"
+                    android:paddingEnd="4dp"
+                    android:scrollbars="none"
                     android:layout_marginLeft="@dimen/content_left_margin_from_icon"
-                    android:layout_marginStart="@dimen/content_left_margin_from_icon"
-                    android:textColor="?attr/text_primary_color"
-                    tools:text="GTD"
-                    android:visibility="gone"/>
+                    android:layout_marginStart="@dimen/content_left_margin_from_icon">
+
+                    <TextView
+                        android:id="@+id/fragment_note_breadcrumbs_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:linksClickable="true"
+                        android:text="@string/loading"
+                        android:textColor="?attr/text_primary_color"
+                        tools:text="Item • Item • Item • Item • Item • Item • Item • Item • Item • Item" />
+                </HorizontalScrollView>
+
                 <TextView
                     style="@style/NoteFragmentListItemSpinnerButton"
                     android:id="@+id/fragment_note_location_button"

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.text.method.LinkMovementMethod
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.DialogFragment
@@ -74,7 +75,9 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
     private lateinit var title: EditText
 
-    private lateinit var locationView: TextView
+    private lateinit var breadcrumbs: ViewGroup
+    private lateinit var breadcrumbsText: TextView
+
     private lateinit var locationButtonView: TextView
 
     private lateinit var tagsContainer: View
@@ -193,15 +196,18 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             true
         }
 
-        locationView = top.findViewById(R.id.fragment_note_location)
+        breadcrumbs = top.findViewById(R.id.fragment_note_breadcrumbs)
+        breadcrumbsText = top.findViewById(R.id.fragment_note_breadcrumbs_text)
+        breadcrumbsText.movementMethod = LinkMovementMethod.getInstance()
+
         locationButtonView = top.findViewById(R.id.fragment_note_location_button)
 
         if (activity is ShareActivity) {
-            locationView.visibility = View.GONE
+            breadcrumbs.visibility = View.GONE
             locationButtonView.visibility = View.VISIBLE
             locationButtonView.setOnClickListener(this)
         } else {
-            locationView.visibility = View.VISIBLE
+            breadcrumbs.visibility = View.VISIBLE
             locationButtonView.visibility = View.GONE
         }
 
@@ -518,8 +524,23 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             book = data.book
 
             book?.let {
-                locationView.text = BookUtils.getFragmentTitleForBook(it.book)
-                locationButtonView.text = BookUtils.getFragmentTitleForBook(it.book)
+                val bookTitle = BookUtils.getFragmentTitleForBook(it.book)
+
+                val breadcrumbs = Breadcrumbs()
+
+                breadcrumbs.add(bookTitle) {
+                    viewModel.onBreadcrumbsBook(data)
+                }
+
+                data.ancestors.forEach { ancestor ->
+                    breadcrumbs.add(ancestor.title) {
+                        viewModel.onBreadcrumbsNote(ancestor)
+                    }
+                }
+
+                breadcrumbsText.text = breadcrumbs.toCharSequence()
+
+                locationButtonView.text = bookTitle
             }
 
             if (mIsNew) { /* Creating new note. */
@@ -1083,7 +1104,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         mBookId = newBook.book.id
 
         val title = BookUtils.getFragmentTitleForBook(book?.book)
-        locationView.text = title
+        breadcrumbsText.text = title
         locationButtonView.text = title
 
         arguments?.putLong(ARG_BOOK_ID, newBook.book.id)

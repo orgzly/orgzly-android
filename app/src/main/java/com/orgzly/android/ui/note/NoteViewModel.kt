@@ -5,9 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.BookView
+import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent
+import com.orgzly.android.usecase.BookSparseTreeForNote
 import com.orgzly.android.usecase.NoteDelete
 import com.orgzly.android.usecase.UseCaseRunner
 
@@ -20,7 +22,7 @@ class NoteViewModel(
         dataRepository.selectAllTagsLiveData()
     }
 
-    data class NoteDetailsData(val book: BookView?, val note: NoteView?)
+    data class NoteDetailsData(val book: BookView?, val note: NoteView?, val ancestors: List<Note>)
 
     val noteDetailsDataEvent: SingleLiveEvent<NoteDetailsData> = SingleLiveEvent()
 
@@ -32,8 +34,9 @@ class NoteViewModel(
         App.EXECUTORS.diskIO().execute {
             val book = dataRepository.getBookView(bookId)
             val note = dataRepository.getNoteView(noteId)
+            val ancestors = dataRepository.getNoteAncestors(noteId)
 
-            noteDetailsDataEvent.postValue(NoteDetailsData(book, note))
+            noteDetailsDataEvent.postValue(NoteDetailsData(book, note, ancestors))
         }
     }
 
@@ -50,6 +53,20 @@ class NoteViewModel(
     fun requestNoteBookChange() {
         App.EXECUTORS.diskIO().execute {
             bookChangeRequestEvent.postValue(dataRepository.getBooks())
+        }
+    }
+
+    fun onBreadcrumbsNote(ancestor: Note) {
+        App.EXECUTORS.diskIO().execute {
+            UseCaseRunner.run(BookSparseTreeForNote(ancestor.id))
+        }
+    }
+
+    fun onBreadcrumbsBook(data: NoteDetailsData) {
+        data.note?.note?.id?.let { noteId ->
+            App.EXECUTORS.diskIO().execute {
+                UseCaseRunner.run(BookSparseTreeForNote(noteId))
+            }
         }
     }
 
