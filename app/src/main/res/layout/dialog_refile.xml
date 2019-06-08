@@ -58,9 +58,8 @@
                 android:scrollHorizontally="true"
                 android:gravity="center_vertical"
                 android:linksClickable="true"
-                android:text="@string/loading"
                 android:textColor="?attr/text_primary_color"
-                tools:text="Item • Item • Item • Item • Item • Item • Item • Item • Item • Item" />
+                tools:text="@string/breadcrumbs_sample" />
         </HorizontalScrollView>
 
         <!-- Refile *here* -->

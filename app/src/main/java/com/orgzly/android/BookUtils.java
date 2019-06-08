@@ -48,6 +48,16 @@ public class BookUtils {
         return str;
     }
 
+    public static CharSequence getError(Context context, Book book) {
+        CharSequence str = null;
+
+        if (book != null) {
+            str = replaceWithLastActionError(context, book, str);
+        }
+
+        return str;
+    }
+
     private static CharSequence replaceWithLastActionError(Context context, Book book, CharSequence str) {
         BookAction action = book.getLastAction();
 

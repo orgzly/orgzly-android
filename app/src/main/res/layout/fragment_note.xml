@@ -23,6 +23,45 @@
             android:paddingBottom="@dimen/screen_edge"
             android:orientation="vertical">
 
+            <!-- Breadcrumbs or selectable notebook -->
+            <LinearLayout
+                style="@style/NoteFragmentListItem"
+                android:layout_marginRight="@dimen/screen_edge"
+                android:layout_marginEnd="@dimen/screen_edge">
+
+                <!-- Breadcrumbs -->
+                <HorizontalScrollView
+                    android:id="@+id/fragment_note_breadcrumbs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:paddingStart="4dp"
+                    android:paddingRight="4dp"
+                    android:paddingEnd="4dp"
+                    android:scrollbars="none"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/fragment_note_breadcrumbs_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:linksClickable="true"
+                        android:textColor="?attr/text_primary_color"
+                        tools:text="@string/breadcrumbs_sample" />
+                </HorizontalScrollView>
+
+                <TextView
+                    style="@style/NoteFragmentListItemSpinnerButton"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginStart="0dp"
+                    android:id="@+id/fragment_note_location_button"
+                    tools:text="GTD"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
             <!-- Title -->
             <EditText
                 android:id="@+id/fragment_note_title"
@@ -38,55 +77,10 @@
                 tools:text="@string/head_title_sample"
                 android:freezesText="true"/>
 
-            <!-- Location (notebook and specific path in the future) -->
-            <LinearLayout
-                style="@style/NoteFragmentListItem"
-                android:layout_marginTop="@dimen/space_between_content_areas"
-                android:layout_marginRight="@dimen/screen_edge"
-                android:layout_marginEnd="@dimen/screen_edge">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="?attr/ic_library_books_24dp"
-                    android:alpha="?attr/oic_item_alpha"/>
-
-                <!-- Breadcrumbs -->
-                <HorizontalScrollView
-                    android:id="@+id/fragment_note_breadcrumbs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="2dp"
-                    android:paddingStart="2dp"
-                    android:paddingRight="4dp"
-                    android:paddingEnd="4dp"
-                    android:scrollbars="none"
-                    android:layout_marginLeft="@dimen/content_left_margin_from_icon"
-                    android:layout_marginStart="@dimen/content_left_margin_from_icon">
-
-                    <TextView
-                        android:id="@+id/fragment_note_breadcrumbs_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center_vertical"
-                        android:linksClickable="true"
-                        android:text="@string/loading"
-                        android:textColor="?attr/text_primary_color"
-                        tools:text="Item • Item • Item • Item • Item • Item • Item • Item • Item • Item" />
-                </HorizontalScrollView>
-
-                <TextView
-                    style="@style/NoteFragmentListItemSpinnerButton"
-                    android:id="@+id/fragment_note_location_button"
-                    tools:text="GTD"
-                    android:visibility="visible"/>
-
-            </LinearLayout>
-
             <!-- Metadata header -->
             <LinearLayout
                 android:id="@+id/fragment_note_metadata_header"
+                android:layout_marginTop="@dimen/space_between_content_areas"
                 style="@style/NoteFragmentFullWidthButton">
 
                 <ImageView

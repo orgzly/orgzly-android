@@ -617,8 +617,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private fun announceChangesToActivity() {
         sharedMainActivityViewModel.setFragment(
                 FRAGMENT_TAG,
-                BookUtils.getFragmentTitleForBook(book?.book),
-                BookUtils.getFragmentSubtitleForBook(context, book?.book),
+                book?.book?.name,
+                BookUtils.getError(context, book?.book),
                 0)
     }
 
