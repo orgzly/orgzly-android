@@ -53,7 +53,6 @@ import com.orgzly.android.ui.settings.SettingsActivity;
 import com.orgzly.android.ui.savedsearches.SavedSearchesFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.usecase.BookCreate;
-import com.orgzly.android.usecase.BookCycleVisibility;
 import com.orgzly.android.usecase.BookExport;
 import com.orgzly.android.usecase.BookForceLoad;
 import com.orgzly.android.usecase.BookForceSave;
@@ -579,8 +578,8 @@ public class MainActivity extends CommonActivity
 
         LocalBroadcastManager bm = LocalBroadcastManager.getInstance(this);
         bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_NOTE));
-        bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_NOTE_WITH_PROPERTY));
-        bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_FILE_LINK));
+        bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_FOLLOW_LINK_TO_NOTE_WITH_PROPERTY));
+        bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_FOLLOW_LINK_TO_FILE));
         bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_SAVED_SEARCHES));
         bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_QUERY));
         bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_BOOKS));
@@ -1233,14 +1232,14 @@ public class MainActivity extends CommonActivity
         LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
     }
 
-    public static void openFileLink(String path) {
-        Intent intent = new Intent(AppIntent.ACTION_OPEN_FILE_LINK);
+    public static void followLinkToFile(String path) {
+        Intent intent = new Intent(AppIntent.ACTION_FOLLOW_LINK_TO_FILE);
         intent.putExtra(AppIntent.EXTRA_PATH, path);
         LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
     }
 
-    public static void openNoteWithProperty(String name, String value) {
-        Intent intent = new Intent(AppIntent.ACTION_OPEN_NOTE_WITH_PROPERTY);
+    public static void followLinkToNoteWithProperty(String name, String value) {
+        Intent intent = new Intent(AppIntent.ACTION_FOLLOW_LINK_TO_NOTE_WITH_PROPERTY);
         intent.putExtra(AppIntent.EXTRA_PROPERTY_NAME, name);
         intent.putExtra(AppIntent.EXTRA_PROPERTY_VALUE, value);
         LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
@@ -1293,16 +1292,16 @@ public class MainActivity extends CommonActivity
                     break;
                 }
 
-                case AppIntent.ACTION_OPEN_NOTE_WITH_PROPERTY: {
+                case AppIntent.ACTION_FOLLOW_LINK_TO_NOTE_WITH_PROPERTY: {
                     String name = intent.getStringExtra(AppIntent.EXTRA_PROPERTY_NAME);
                     String value = intent.getStringExtra(AppIntent.EXTRA_PROPERTY_VALUE);
-                    viewModel.requestNoteWithProperty(name, value);
+                    viewModel.followLinkToNoteWithProperty(name, value);
                     break;
                 }
 
-                case AppIntent.ACTION_OPEN_FILE_LINK: {
+                case AppIntent.ACTION_FOLLOW_LINK_TO_FILE: {
                     String path = intent.getStringExtra(AppIntent.EXTRA_PATH);
-                    viewModel.openFileLink(path);
+                    viewModel.followLinkToFile(path);
                     break;
                 }
             }

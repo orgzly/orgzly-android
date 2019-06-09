@@ -1694,13 +1694,18 @@ class DataRepository @Inject constructor(
         return db.orgRange().insert(OrgRange(0, str, startId, endId))
     }
 
-    fun openSparseTreeForNote(noteId: Long) {
+    fun openBookForNote(noteId: Long, sparseTree: Boolean) {
         val noteView = getNoteView(noteId)
 
         if (noteView != null) {
             val bookId = noteView.note.position.bookId
 
-            unfoldForNote(bookId, noteId)
+            db.runInTransaction {
+                if (sparseTree) {
+                    foldAllNotes(bookId)
+                }
+                unfoldForNote(noteId)
+            }
 
             // Open book
             // FIXME: Run with delay to be executed after the observer for unfoldForNote
@@ -1712,13 +1717,6 @@ class DataRepository @Inject constructor(
                     LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent)
                 }, 100)
             }
-        }
-    }
-
-    private fun unfoldForNote(bookId: Long, noteId: Long) {
-        db.runInTransaction {
-            foldAllNotes(bookId)
-            unfoldForNote(noteId)
         }
     }
 

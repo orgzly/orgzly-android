@@ -9,7 +9,7 @@ class FileLinkSpan(val path: String) : ClickableSpan() {
     override fun onClick(widget: View) {
         if (widget is TextViewWithMarkup) {
             Handler().post { // Run after onClick to prevent Snackbar from closing immediately
-                widget.openFileLink(path)
+                widget.followLinkToFile(path)
             }
         }
     }

@@ -565,6 +565,22 @@ public class AppPreferences {
     }
 
     /*
+     * Open note or book on link/breadcrumbs follow.
+     */
+
+    public static String breadcrumbsTarget(Context context) {
+        return getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_breadcrumbs_target),
+                context.getResources().getString(R.string.pref_default_breadcrumbs_target));
+    }
+
+    public static String linkTarget(Context context) {
+        return getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_link_target),
+                context.getResources().getString(R.string.pref_default_link_target));
+    }
+
+    /*
      * Allow inlining images
      */
     public static boolean imagesEnabled(Context context) {

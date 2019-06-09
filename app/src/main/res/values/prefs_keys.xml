@@ -388,6 +388,24 @@
     <string name="pref_key_set_last_repeat_on_time_shift" translatable="false">pref_key_set_last_repeat_on_time_shift</string>
     <bool name="pref_default_set_last_repeat_on_time_shift" translatable="false">true</bool>
 
+    <string name="pref_key_breadcrumbs_target" translatable="false">pref_key_breadcrumbs_target</string>
+    <string name="pref_default_breadcrumbs_target" translatable="false">note_details</string>
+
+    <string name="pref_key_link_target" translatable="false">pref_key_link_target</string>
+    <string name="pref_default_link_target" translatable="false">note_details</string>
+
+    <string-array name="open_targets">
+        <item>@string/note_details</item>
+        <item>@string/notebook_and_scroll_to_note</item>
+        <item>@string/notebook_and_focus_on_note</item>
+    </string-array>
+
+    <string-array name="open_targets_values">
+        <item>note_details</item>
+        <item>book_and_scroll</item>
+        <item>book_and_sparse_tree</item>
+    </string-array>
+
     <string name="pref_key_images_enabled" translatable="false">pref_key_images_enabled</string>
     <bool name="pref_default_images_enabled" translatable="false">false</bool>
 

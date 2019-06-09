@@ -6,10 +6,12 @@ import androidx.lifecycle.Transformations
 import com.orgzly.BuildConfig
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
+import com.orgzly.android.db.dao.NoteDao
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.SavedSearch
+import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent
 import com.orgzly.android.usecase.*
@@ -56,7 +58,7 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
         return savedSearches
     }
 
-    fun openFileLink(path: String) {
+    fun followLinkToFile(path: String) {
         App.EXECUTORS.diskIO().execute {
             catchAndPostError {
                 val result = UseCaseRunner.run(LinkFindTarget(path))
@@ -65,14 +67,25 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
         }
     }
 
-
-    fun requestNoteWithProperty(name: String, value: String) {
+    fun followLinkToNoteWithProperty(name: String, value: String) {
         App.EXECUTORS.diskIO().execute {
             val useCase = NoteFindWithProperty(name, value)
 
             catchAndPostError {
                 val result = UseCaseRunner.run(useCase)
-                openNoteWithPropertyRequestEvent.postValue(Pair(useCase, result))
+
+                val noteIdBookId = result.userData as NoteDao.NoteIdBookId
+
+                when (AppPreferences.linkTarget(App.getAppContext())) {
+                    "note_details" ->
+                        openNoteWithPropertyRequestEvent.postValue(Pair(useCase, result))
+
+                    "book_and_sparse_tree" ->
+                        UseCaseRunner.run(BookSparseTreeForNote(noteIdBookId.noteId))
+
+                    "book_and_scroll" ->
+                        UseCaseRunner.run(BookScrollToNote(noteIdBookId.noteId))
+                }
             }
         }
     }

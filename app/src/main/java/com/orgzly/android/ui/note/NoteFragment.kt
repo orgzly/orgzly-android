@@ -531,7 +531,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 data.ancestors.forEach { ancestor ->
                     breadcrumbs.add(ancestor.title) {
                         ActivityUtils.closeSoftKeyboard(activity)
-                        viewModel.onBreadcrumbsNote(ancestor)
+                        viewModel.onBreadcrumbsNote(it.book.id, ancestor)
                     }
                 }
 

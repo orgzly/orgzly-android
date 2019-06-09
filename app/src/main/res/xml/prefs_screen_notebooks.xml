@@ -155,6 +155,21 @@
             android:title="@string/set_last_repeat_on_time_shift"
             android:summary="@string/set_last_repeat_on_time_shift_summary"
             android:defaultValue="@bool/pref_default_set_last_repeat_on_time_shift"/>
+
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_breadcrumbs_target"
+            android:title="@string/breadcrumbs_target"
+            android:entries="@array/open_targets"
+            android:entryValues="@array/open_targets_values"
+            android:defaultValue="@string/pref_default_breadcrumbs_target"/>
+
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_link_target"
+            android:title="@string/link_target"
+            android:entries="@array/open_targets"
+            android:entryValues="@array/open_targets_values"
+            android:defaultValue="@string/pref_default_link_target"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefs_title_new_note">

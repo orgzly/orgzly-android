@@ -40,12 +40,12 @@ class TextViewWithMarkup : TextViewFixed {
     }
 
     // TODO: Consider getting MainActivity's *VieWModel* here instead
-    fun openNoteWithProperty(name: String, value: String) {
-        MainActivity.openNoteWithProperty(name, value)
+    fun followLinkToNoteWithProperty(name: String, value: String) {
+        MainActivity.followLinkToNoteWithProperty(name, value)
     }
 
-    fun openFileLink(path: String) {
-        MainActivity.openFileLink(path)
+    fun followLinkToFile(path: String) {
+        MainActivity.followLinkToFile(path)
     }
 
     fun toggleDrawer(drawerSpan: DrawerSpan) {

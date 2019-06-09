@@ -7,9 +7,12 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
+import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.Place
 import com.orgzly.android.ui.SingleLiveEvent
+import com.orgzly.android.ui.main.MainActivity
+import com.orgzly.android.usecase.BookScrollToNote
 import com.orgzly.android.usecase.BookSparseTreeForNote
 import com.orgzly.android.usecase.NoteDelete
 import com.orgzly.android.usecase.UseCaseRunner
@@ -63,17 +66,28 @@ class NoteViewModel(
         }
     }
 
-    fun onBreadcrumbsNote(ancestor: Note) {
-        App.EXECUTORS.diskIO().execute {
-            UseCaseRunner.run(BookSparseTreeForNote(ancestor.id))
-        }
-    }
-
     fun onBreadcrumbsBook(data: NoteDetailsData) {
         data.note?.note?.id?.let { noteId ->
             App.EXECUTORS.diskIO().execute {
                 UseCaseRunner.run(BookSparseTreeForNote(noteId))
             }
+        }
+    }
+
+    fun onBreadcrumbsNote(bookId: Long, note: Note) {
+        when (AppPreferences.breadcrumbsTarget(App.getAppContext())) {
+            "note_details" ->
+                MainActivity.openSpecificNote(bookId, note.id)
+
+            "book_and_sparse_tree" ->
+                App.EXECUTORS.diskIO().execute {
+                    UseCaseRunner.run(BookSparseTreeForNote(note.id))
+                }
+
+            "book_and_scroll" ->
+                App.EXECUTORS.diskIO().execute {
+                    UseCaseRunner.run(BookScrollToNote(note.id))
+                }
         }
     }
 
