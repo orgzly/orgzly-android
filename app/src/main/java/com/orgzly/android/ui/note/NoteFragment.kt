@@ -524,11 +524,13 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 val breadcrumbs = Breadcrumbs()
 
                 breadcrumbs.add(bookTitle, 0, if (noteId == 0L) null else fun() {
+                    ActivityUtils.closeSoftKeyboard(activity)
                     viewModel.onBreadcrumbsBook(data)
                 })
 
                 data.ancestors.forEach { ancestor ->
                     breadcrumbs.add(ancestor.title) {
+                        ActivityUtils.closeSoftKeyboard(activity)
                         viewModel.onBreadcrumbsNote(ancestor)
                     }
                 }
