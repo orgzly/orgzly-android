@@ -12,6 +12,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.data.DataRepository;
+import com.orgzly.android.ui.Place;
 import com.orgzly.android.usecase.UseCase;
 import com.orgzly.android.usecase.UseCaseResult;
 import com.orgzly.android.usecase.NoteCreate;
@@ -194,7 +195,8 @@ public class ShareActivity extends CommonActivity
                     bookId = data.bookId;
                 }
 
-                noteFragment = NoteFragment.forSharedNote(bookId, data.title, data.content);
+                noteFragment = NoteFragment.forNewNote(
+                        new NotePlace(bookId), data.title, data.content);
 
                 getSupportFragmentManager()
                         .beginTransaction()

@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.DialogFragment
@@ -46,26 +47,27 @@ import javax.inject.Inject
  */
 class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFragment.OnDateTimeSetListener, DrawerItem {
 
+    /** Note's book ID. */
+    private var bookId: Long = 0
+
+    /** Could be 0 if new note is being created. */
+    var noteId: Long = 0
+
+    /** Relative location, used for new notes. */
+    private var place: Place? = null
+
+    /** Initial title, used for when sharing. */
+    private var initialTitle: String? = null
+
+    /** Initial content, used for when sharing. */
+    private var initialContent: String? = null
+
     @Inject
     internal lateinit var dataRepository: DataRepository
 
     private var listener: Listener? = null
 
     private lateinit var viewModel: NoteViewModel
-
-    /* Arguments. */
-    private var mIsNew: Boolean = false
-
-    private var mBookId: Long = 0
-
-    /* Could be null if new note is being created. */
-    var noteId: Long = 0
-
-    private var place: Place? = null /* Relative location, used for new notes. */
-
-    // Initial title and content, used for when sharing to Orgzly
-    private var mInitialTitle: String? = null
-    private var mInitialContent: String? = null
 
     private var notePayload: NotePayload? = null
 
@@ -125,19 +127,12 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
     private fun parseArguments() {
         arguments?.apply {
-            mIsNew = getBoolean(ARG_IS_NEW)
-
             /* Book ID must exist. */
             if (!containsKey(ARG_BOOK_ID)) {
                 throw IllegalArgumentException(NoteFragment::class.java.simpleName + " requires " + ARG_BOOK_ID + " argument passed")
             }
 
-            mBookId = getLong(ARG_BOOK_ID)
-
-            //        /* Book ID must be valid. */
-            //        if (mBookId <= 0) {
-            //            throw new IllegalArgumentException("Passed argument book id is not valid (" + mBookId + ")");
-            //        }
+            bookId = getLong(ARG_BOOK_ID)
 
             /* Note ID might or might not be passed - it depends if note is being edited or created. */
             if (containsKey(ARG_NOTE_ID)) {
@@ -154,8 +149,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 Place.valueOf(it)
             }
 
-            mInitialTitle = getString(ARG_TITLE)
-            mInitialContent = getString(ARG_CONTENT)
+            initialTitle = getString(ARG_TITLE)
+            initialContent = getString(ARG_CONTENT)
         }
     }
 
@@ -167,7 +162,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             ViewModelProviders.of(it).get(SharedMainActivityViewModel::class.java)
         } ?: throw IllegalStateException("No Activity")
 
-        val factory = NoteViewModelFactory.getInstance(dataRepository, mBookId)
+        val factory = NoteViewModelFactory.getInstance(dataRepository, bookId)
 
         viewModel = ViewModelProviders.of(this, factory).get(NoteViewModel::class.java)
 
@@ -528,7 +523,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
                 val breadcrumbs = Breadcrumbs()
 
-                breadcrumbs.add(bookTitle, 0, if (mIsNew) null else fun() {
+                breadcrumbs.add(bookTitle, 0, if (noteId == 0L) null else fun() {
                     viewModel.onBreadcrumbsBook(data)
                 })
 
@@ -543,15 +538,15 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 locationButtonView.text = bookTitle
             }
 
-            if (mIsNew) { /* Creating new note. */
-                notePayload = NoteBuilder.newPayload(context!!, mInitialTitle ?: "", mInitialContent)
+            if (place != null) { /* Creating new note. */
+                notePayload = NoteBuilder.newPayload(context!!, initialTitle ?: "", initialContent)
 
                 mViewFlipper.displayedChild = 0
 
                 /* Open keyboard for new notes, unless fragment was given
                  * some initial values (for example from ShareActivity).
                  */
-                if (TextUtils.isEmpty(mInitialTitle) && TextUtils.isEmpty(mInitialContent)) {
+                if (TextUtils.isEmpty(initialTitle) && TextUtils.isEmpty(initialContent)) {
                     ActivityUtils.openSoftKeyboardWithDelay(activity, title)
                 }
 
@@ -590,7 +585,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             announceChangesToActivity()
         })
 
-        viewModel.loadData(mBookId, noteId)
+        viewModel.loadData(bookId, noteId, place)
 
     }
 
@@ -705,7 +700,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private fun handleNoteBookChangeRequest(books: List<BookView>) {
         val bookNames = books.map { it.book.name }.toTypedArray()
 
-        val selected = getSelectedBook(books, mBookId)
+        val selected = getSelectedBook(books, bookId)
 
         dialog = AlertDialog.Builder(context)
                 .setTitle(R.string.state)
@@ -803,12 +798,12 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         f?.show(childFragmentManager, TimestampDialogFragment.FRAGMENT_TAG)
     }
 
-    private fun getSelectedBook(books: List<BookView>, bookId: Long?): Int {
+    private fun getSelectedBook(books: List<BookView>, id: Long?): Int {
         var selected = -1
 
-        if (bookId != null) {
+        if (id != null) {
             for (i in books.indices) {
-                if (books[i].book.id == bookId) {
+                if (books[i].book.id == id) {
                     selected = i
                     break
                 }
@@ -903,7 +898,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         }
 
         /* Newly created note cannot be deleted. */
-        if (mIsNew) {
+        if (place != null) {
             menu.removeItem(R.id.delete)
         }
     }
@@ -1006,7 +1001,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 .setTitle(R.string.delete_note)
                 .setMessage(R.string.delete_note_and_all_subnotes)
                 .setPositiveButton(R.string.delete) { _, _ ->
-                    viewModel.deleteNote(mBookId, noteId)
+                    viewModel.deleteNote(bookId, noteId)
                 }
                 .setNegativeButton(R.string.cancel) { _, _ -> }
                 .show()
@@ -1047,7 +1042,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
     private fun save() {
         /* Make sure notebook is set. */
-        if (mBookId == 0L) {
+        if (bookId == 0L) {
             (activity as? CommonActivity)?.showSnackbar(R.string.note_book_not_set)
             return
         }
@@ -1057,11 +1052,11 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         if (isTitleValid()) {
             val payload = notePayload
 
-            if (mIsNew) { // New note
+            if (place != null) { // New note
                 val notePlace = if (place != Place.UNSPECIFIED)
-                    NotePlace(mBookId, noteId, place)
+                    NotePlace(bookId, noteId, place)
                 else
-                    NotePlace(mBookId)
+                    NotePlace(bookId)
 
                 if (payload != null) {
                     listener?.onNoteCreateRequest(payload, notePlace)
@@ -1101,7 +1096,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, book)
 
         book = newBook
-        mBookId = newBook.book.id
+        bookId = newBook.book.id
 
         val title = BookUtils.getFragmentTitleForBook(book?.book)
         breadcrumbsText.text = title
@@ -1139,7 +1134,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
      * Mark note's book in the drawer.
      */
     override fun getCurrentDrawerItemId(): String {
-        return BookFragment.getDrawerItemId(mBookId)
+        return BookFragment.getDrawerItemId(bookId)
     }
 
     interface Listener {
@@ -1158,7 +1153,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         private const val ARG_ORIGINAL_NOTE_HASH = "original_note_hash"
 
-        private const val ARG_IS_NEW = "is_new"
         private const val ARG_BOOK_ID = "book_id"
         private const val ARG_NOTE_ID = "note_id"
         private const val ARG_PLACE = "place"
@@ -1166,28 +1160,46 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         private const val ARG_CONTENT = "content"
 
         @JvmStatic
-        fun forSharedNote(bookId: Long, title: String?, content: String?): NoteFragment {
-            return getInstance(true, bookId, 0, Place.UNSPECIFIED, title, content)
+        @JvmOverloads
+        fun forNewNote(
+                notePlace: NotePlace,
+                initialTitle: String? = null,
+                initialContent: String? = null): NoteFragment? {
+
+            return if (notePlace.bookId > 0) {
+                getInstance(
+                        notePlace.bookId,
+                        notePlace.noteId,
+                        notePlace.place,
+                        initialTitle,
+                        initialContent)
+            } else {
+                Log.e(TAG, "Invalid book id ${notePlace.bookId}")
+                null
+            }
         }
 
         @JvmStatic
-        fun forBook(isNew: Boolean, bookId: Long, noteId: Long, place: Place): NoteFragment {
-            return getInstance(isNew, bookId, noteId, place, null, null)
+        fun forExistingNote(bookId: Long, noteId: Long): NoteFragment? {
+            return if (bookId > 0 && noteId > 0) {
+                getInstance(bookId, noteId)
+            } else {
+                Log.e(TAG, "Invalid book id $bookId or note id $noteId")
+                null
+            }
         }
 
+        @JvmStatic
         private fun getInstance(
-                isNew: Boolean,
                 bookId: Long,
                 noteId: Long,
-                place: Place,
-                initialTitle: String?,
-                initialContent: String?): NoteFragment {
+                place: Place? = null,
+                initialTitle: String? = null,
+                initialContent: String? = null): NoteFragment {
 
             val fragment = NoteFragment()
 
             val args = Bundle()
-
-            args.putBoolean(ARG_IS_NEW, isNew)
 
             args.putLong(ARG_BOOK_ID, bookId)
 
@@ -1195,7 +1207,9 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 args.putLong(ARG_NOTE_ID, noteId)
             }
 
-            args.putString(ARG_PLACE, place.toString())
+            if (place != null) {
+                args.putString(ARG_PLACE, place.toString())
+            }
 
             if (initialTitle != null) {
                 args.putString(ARG_TITLE, initialTitle)

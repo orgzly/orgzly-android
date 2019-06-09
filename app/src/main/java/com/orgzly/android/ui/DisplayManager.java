@@ -141,33 +141,31 @@ public class DisplayManager {
         }
     }
 
-    public static void displayNote(FragmentManager fragmentManager, long bookId, long noteId) {
+    public static void displayExistingNote(FragmentManager fragmentManager, long bookId, long noteId) {
         if (getFragmentDisplayingNote(fragmentManager, noteId) == null) {
-            displayNote(fragmentManager, false, bookId, noteId, Place.UNSPECIFIED);
+            Fragment fragment = NoteFragment.forExistingNote(bookId, noteId);
+
+            if (fragment != null) {
+                displayNoteFragment(fragmentManager, fragment);
+            }
         }
     }
 
     public static void displayNewNote(FragmentManager fragmentManager, NotePlace target) {
-        displayNote(fragmentManager, true, target.getBookId(), target.getNoteId(), target.getPlace());
+        Fragment fragment = NoteFragment.forNewNote(target);
+
+        if (fragment != null) {
+            displayNoteFragment(fragmentManager, fragment);
+        }
     }
 
-    private static void displayNote(FragmentManager fragmentManager, boolean isNew, long bookId, long noteId, Place place) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, bookId, noteId);
-
-        if (bookId > 0) {
-            /* Create fragment. */
-            Fragment fragment = NoteFragment.forBook(isNew, bookId, noteId, place);
-
-            /* Add fragment. */
-            fragmentManager
-                    .beginTransaction()
-                    .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
-                    .addToBackStack(null)
-                    .replace(R.id.single_pane_container, fragment, NoteFragment.FRAGMENT_TAG)
-                    .commit();
-        } else {
-            Log.e(TAG, "displayNote: Invalid book id " + bookId);
-        }
+    private static void displayNoteFragment(FragmentManager fragmentManager, Fragment fragment) {
+        fragmentManager
+                .beginTransaction()
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
+                .addToBackStack(null)
+                .replace(R.id.single_pane_container, fragment, NoteFragment.FRAGMENT_TAG)
+                .commit();
     }
 
     public static void displayQuery(FragmentManager fragmentManager, @NonNull String queryString) {

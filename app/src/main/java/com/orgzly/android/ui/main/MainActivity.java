@@ -203,7 +203,7 @@ public class MainActivity extends CommonActivity
             if (bookId > 0) {
                 DisplayManager.displayBook(getSupportFragmentManager(), bookId, noteId);
                 if (noteId > 0) {
-                    DisplayManager.displayNote(getSupportFragmentManager(), bookId, noteId);
+                    DisplayManager.displayExistingNote(getSupportFragmentManager(), bookId, noteId);
                 }
             } else if (queryString != null) {
                 DisplayManager.displayQuery(getSupportFragmentManager(), queryString);
@@ -329,7 +329,8 @@ public class MainActivity extends CommonActivity
 
                     if (result.getUserData() != null) {
                         NoteDao.NoteIdBookId note = (NoteDao.NoteIdBookId) result.getUserData();
-                        DisplayManager.displayNote(getSupportFragmentManager(), note.getBookId(), note.getNoteId());
+                        DisplayManager.displayExistingNote(
+                                getSupportFragmentManager(), note.getBookId(), note.getNoteId());
 
                     } else {
                         showSnackbar(getString(
@@ -1260,7 +1261,7 @@ public class MainActivity extends CommonActivity
                 case AppIntent.ACTION_OPEN_NOTE: {
                     long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0);
                     long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0);
-                    DisplayManager.displayNote(getSupportFragmentManager(), bookId, noteId);
+                    DisplayManager.displayExistingNote(getSupportFragmentManager(), bookId, noteId);
                     break;
                 }
 

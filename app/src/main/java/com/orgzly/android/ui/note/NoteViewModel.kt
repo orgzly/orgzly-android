@@ -8,6 +8,7 @@ import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.ui.CommonViewModel
+import com.orgzly.android.ui.Place
 import com.orgzly.android.ui.SingleLiveEvent
 import com.orgzly.android.usecase.BookSparseTreeForNote
 import com.orgzly.android.usecase.NoteDelete
@@ -30,11 +31,17 @@ class NoteViewModel(
 
     val bookChangeRequestEvent: SingleLiveEvent<List<BookView>> = SingleLiveEvent()
 
-    fun loadData(bookId: Long, noteId: Long) {
+    fun loadData(bookId: Long, noteId: Long, place: Place?) {
         App.EXECUTORS.diskIO().execute {
             val book = dataRepository.getBookView(bookId)
             val note = dataRepository.getNoteView(noteId)
-            val ancestors = dataRepository.getNoteAncestors(noteId)
+
+            // If creating a new note under specific one include that note too
+            val ancestors = if (place == Place.UNDER) {
+                dataRepository.getNoteAndAncestors(noteId)
+            } else {
+                dataRepository.getNoteAncestors(noteId)
+            }
 
             noteDetailsDataEvent.postValue(NoteDetailsData(book, note, ancestors))
         }
