@@ -24,6 +24,16 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.7.5"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix moving notes around causing invalid tree structure in some cases" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.7.4"
             tools:ignore="HardcodedText" />
 

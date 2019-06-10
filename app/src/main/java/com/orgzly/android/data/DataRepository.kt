@@ -19,8 +19,8 @@ import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.*
 import com.orgzly.android.data.mappers.OrgMapper
-import com.orgzly.android.db.OrgzlyDatabase
 import com.orgzly.android.db.NotesClipboard
+import com.orgzly.android.db.OrgzlyDatabase
 import com.orgzly.android.db.dao.NoteDao
 import com.orgzly.android.db.dao.NoteViewDao
 import com.orgzly.android.db.dao.ReminderTimeDao
@@ -40,13 +40,18 @@ import com.orgzly.android.ui.NotePlace
 import com.orgzly.android.ui.Place
 import com.orgzly.android.ui.note.NoteBuilder
 import com.orgzly.android.ui.note.NotePayload
-import com.orgzly.android.ui.notes.book.BookFragment
 import com.orgzly.android.usecase.RepoCreate
 import com.orgzly.android.util.*
-import com.orgzly.org.*
+import com.orgzly.org.OrgActiveTimestamps
+import com.orgzly.org.OrgFile
+import com.orgzly.org.OrgFileSettings
+import com.orgzly.org.OrgProperties
 import com.orgzly.org.datetime.OrgDateTime
 import com.orgzly.org.datetime.OrgRange
-import com.orgzly.org.parser.*
+import com.orgzly.org.parser.OrgNestedSetParserListener
+import com.orgzly.org.parser.OrgNodeInSet
+import com.orgzly.org.parser.OrgParser
+import com.orgzly.org.parser.OrgParserWriter
 import com.orgzly.org.utils.StateChangeLogic
 import java.io.*
 import java.util.*
@@ -691,29 +696,105 @@ class DataRepository @Inject constructor(
         return pastedNoteIds.size
     }
 
+    data class NoteWithPosition(val note: Note, val level: Int, val lft: Long, val rgt: Long)
+
     fun getSubtreesAligned(ids: Set<Long>): List<Note> {
-        var offset = 0L
         var subtreeRgt = 0L
         var levelOffset = 0
 
-        return db.note().getNotesForSubtrees(ids).map { note ->
+        var sequence = 0L
+        var prevLevel = 0
+
+        val stack = Stack<NoteWithPosition>()
+
+        val notesPerLft = TreeMap<Long, Note>()
+
+        fun output(note: Note, level: Int, lft: Long, rgt: Long) {
+            notesPerLft[lft] = note.copy(
+                    position = note.position.copy(level = level, lft = lft, rgt = rgt))
+        }
+
+        var notes = 0
+
+        db.note().getNotesForSubtrees(ids).forEach { note ->
+            notes++
+
             // First note or next subtree
             if (subtreeRgt == 0L || note.position.rgt > subtreeRgt) {
-                offset += note.position.lft - subtreeRgt - 1
-                levelOffset = note.position.level - 1
                 subtreeRgt = note.position.rgt
+                levelOffset = note.position.level - 1
+
+                while (! stack.empty()) {
+                    val popped = stack.pop()
+
+                    sequence++
+
+                    output(popped.note, popped.level, popped.lft, sequence)
+                }
+
+                prevLevel = 0
             }
 
             val level = note.position.level - levelOffset
-            val lft = note.position.lft - offset
-            val rgt = note.position.rgt - offset
 
-            note.copy(
-                    position = note.position.copy(
-                            level = level,
-                            lft = lft,
-                            rgt = rgt))
+            if (prevLevel < level) {
+                sequence++
+
+                val lft = sequence
+                val rgt = 0L // Unknown yet
+
+                stack.push(NoteWithPosition(note, level, lft, rgt))
+
+            } else if (prevLevel == level) {
+                sequence++
+
+                val popped = stack.pop()
+
+                output(popped.note, popped.level, popped.lft, sequence)
+
+                sequence++
+
+                val lft = sequence
+                val rgt = 0L // Unknown yet
+
+                stack.push(NoteWithPosition(note, level, lft, rgt))
+
+            } else {
+                while (!stack.empty()) {
+                    val popped = stack.peek()
+
+                    if (popped.level >= level) {
+                        stack.pop()
+
+                        sequence++
+
+                        output(popped.note, popped.level, popped.lft, sequence)
+
+                    } else {
+                        break
+                    }
+                }
+
+                sequence++
+
+                val lft = sequence
+                val rgt = 0L // Unknown yet
+
+                stack.push(NoteWithPosition(note, level, lft, rgt))
+            }
+
+            prevLevel = level
         }
+
+        while (! stack.empty()) {
+            val popped = stack.pop()
+
+            sequence++
+
+            output(popped.note, popped.level, popped.lft, sequence)
+        }
+
+        return notesPerLft.values.toList()
     }
 
     private fun moveSubtrees(selectedIds: Set<Long>, place: Place, targetNoteId: Long): Int {
