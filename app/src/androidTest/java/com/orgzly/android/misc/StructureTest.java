@@ -1262,23 +1262,14 @@ public class StructureTest extends OrgzlyTest {
     @Test
     public void testMoveNoteDown() throws IOException {
         BookView book = testUtils.setupBook(
-                "test_book",
-                "* TODO First\n" +
-                "SCHEDULED: <2018-04-24 Tue>\n" +
-                "\n" +
-                "content\n" +
-                "\n" +
+                "Book A",
+                "* First\n" + // Move down
                 "** 1.1\n" +
                 "** 1.2\n" +
-                "\n" +
-                "* TODO Second\n" +
-                "SCHEDULED: <2018-04-23 Mon>\n" +
-                "\n" +
+                "* Second\n" +
                 "** 2.1\n" +
                 "** 2.2\n" +
-                "\n" +
-                "* TODO Third\n"
-
+                "* Third\n"
         );
 
         Note firstNote = dataRepository.getLastNote("First");
@@ -1286,21 +1277,15 @@ public class StructureTest extends OrgzlyTest {
         UseCaseRunner.run(new NoteMove(
                 book.getBook().getId(), Collections.singleton(firstNote.getId()), 1));
 
-        String actual = dataRepository.getBookContent("test_book", BookFormat.ORG);
+        String actual = dataRepository.getBookContent("Book A", BookFormat.ORG);
 
-        String expectedBook = "* TODO Second\n" +
-                              "SCHEDULED: <2018-04-23 Mon>\n" +
-                              "\n" +
+        String expectedBook = "* Second\n" +
                               "** 2.1\n" +
                               "** 2.2\n" +
-                              "* TODO First\n" +
-                              "SCHEDULED: <2018-04-24 Tue>\n" +
-                              "\n" +
-                              "content\n" +
-                              "\n" +
+                              "* First\n" +
                               "** 1.1\n" +
                               "** 1.2\n" +
-                              "* TODO Third\n";
+                              "* Third\n";
 
         assertEquals(expectedBook, actual);
     }
@@ -1461,9 +1446,9 @@ public class StructureTest extends OrgzlyTest {
         BookView book = testUtils.setupBook(
                 "Book A",
                 "* Note A-01\n" +
-                "* Note A-02\n" +
+                "* Note A-02\n" + // (1) Demote
                 "* Note A-03\n" +
-                "** Note A-04\n" +
+                "** Note A-04\n" + // (1) Demote
                 "*** Note A-05\n");
 
         UseCaseRunner.run(new NoteDemote(
@@ -1562,5 +1547,57 @@ public class StructureTest extends OrgzlyTest {
 
         assertEquals(1, dataRepository.getNoteEvents(noteId).size());
         assertEquals(2, dataRepository.getNoteProperties(noteId).size());
+    }
+
+
+    @Test
+    public void testSubtreesAligned() throws IOException {
+        BookView book = testUtils.setupBook(
+                "Book A",
+                "* Note A-01\n" +
+                "* Note A-02\n" +  // (2) Refile under A-01
+                "** Note A-03\n" + // (1) Move up and down
+                "** Note A-04\n");
+
+        Note a01 = dataRepository.getLastNote("Note A-01");
+        Note a02 = dataRepository.getLastNote("Note A-02");
+        Note a03 = dataRepository.getLastNote("Note A-03");
+        Note a04 = dataRepository.getLastNote("Note A-04");
+
+        UseCaseRunner.run(new NoteMove(
+                book.getBook().getId(), Collections.singleton(a03.getId()), 1));
+        UseCaseRunner.run(new NoteMove(
+                book.getBook().getId(), Collections.singleton(a03.getId()), -1));
+        UseCaseRunner.run(new NoteMove(
+                book.getBook().getId(), Collections.singleton(a03.getId()), 1));
+        UseCaseRunner.run(new NoteMove(
+                book.getBook().getId(), Collections.singleton(a03.getId()), -1));
+
+        UseCaseRunner.run(new NoteRefile(
+                Collections.singleton(a02.getId()),
+                new NotePlace(book.getBook().getId(), a01.getId(), Place.UNDER)));
+
+        String actual = dataRepository.getBookContent("Book A", BookFormat.ORG);
+
+        String expectedBook =
+                "* Note A-01\n" +
+                "** Note A-02\n" +
+                "*** Note A-03\n" +
+                "*** Note A-04\n";
+
+        assertEquals(expectedBook, actual);
+
+        a01 = dataRepository.getLastNote("Note A-01");
+        a02 = dataRepository.getLastNote("Note A-02");
+        a03 = dataRepository.getLastNote("Note A-03");
+        a04 = dataRepository.getLastNote("Note A-04");
+
+        assertTrue(a01.getPosition().getLft() < a02.getPosition().getLft());
+        assertTrue(a02.getPosition().getLft() < a03.getPosition().getLft());
+        assertTrue(a03.getPosition().getLft() < a03.getPosition().getRgt());
+        assertTrue(a03.getPosition().getRgt() < a04.getPosition().getLft());
+        assertTrue(a04.getPosition().getLft() < a04.getPosition().getRgt());
+        assertTrue(a04.getPosition().getRgt() < a02.getPosition().getRgt());
+        assertTrue(a02.getPosition().getRgt() < a01.getPosition().getRgt());
     }
 }
