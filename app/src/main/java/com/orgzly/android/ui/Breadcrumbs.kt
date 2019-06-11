@@ -1,10 +1,9 @@
 package com.orgzly.android.ui
 
-import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableStringBuilder
+import android.text.TextPaint
 import android.text.style.ClickableSpan
-import android.text.style.StyleSpan
 import android.view.View
 
 class Breadcrumbs {
@@ -19,10 +18,14 @@ class Breadcrumbs {
 
         ssb.append(truncateName(name, truncateLength))
 
-        ssb.setSpan(StyleSpan(Typeface.BOLD), start, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        // ssb.setSpan(StyleSpan(Typeface.BOLD), start, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         if (onClick != null) {
             val lastClickableSpan = object : ClickableSpan() {
+                override fun updateDrawState(ds: TextPaint) {
+                    // Do not color, do not underline
+                }
+
                 override fun onClick(widget: View) {
                     onClick()
                 }
