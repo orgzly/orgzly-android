@@ -23,44 +23,46 @@
             android:paddingBottom="@dimen/screen_edge"
             android:orientation="vertical">
 
-            <!-- Breadcrumbs or selectable notebook -->
-            <LinearLayout
-                style="@style/NoteFragmentListItem"
+            <!-- Breadcrumbs -->
+            <FrameLayout
+                android:id="@+id/fragment_note_breadcrumbs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/screen_edge"
+                android:layout_marginStart="@dimen/screen_edge"
                 android:layout_marginRight="@dimen/screen_edge"
-                android:layout_marginEnd="@dimen/screen_edge">
-
-                <!-- Breadcrumbs -->
-                <HorizontalScrollView
-                    android:id="@+id/fragment_note_breadcrumbs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="4dp"
-                    android:paddingStart="4dp"
-                    android:paddingRight="4dp"
-                    android:paddingEnd="4dp"
-                    android:scrollbars="none"
-                    android:visibility="visible">
-
-                    <TextView
-                        android:id="@+id/fragment_note_breadcrumbs_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center_vertical"
-                        android:linksClickable="true"
-                        android:textColor="?attr/text_primary_color"
-                        tools:text="@string/breadcrumbs_sample" />
-                </HorizontalScrollView>
+                android:layout_marginEnd="@dimen/screen_edge"
+                android:paddingLeft="4dp"
+                android:paddingStart="4dp"
+                android:paddingRight="4dp"
+                android:paddingEnd="4dp"
+                android:scrollbars="none"
+                android:visibility="visible">
 
                 <TextView
-                    style="@style/NoteFragmentListItemSpinnerButton"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginStart="0dp"
-                    android:id="@+id/fragment_note_location_button"
-                    tools:text="GTD"
-                    android:visibility="gone"/>
+                    android:id="@+id/fragment_note_breadcrumbs_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:linksClickable="true"
+                    android:textColor="?attr/text_secondary_color"
+                    android:textColorLink="?attr/text_secondary_color"
 
-            </LinearLayout>
+                    android:lineSpacingMultiplier="1.2"
+                    tools:text="@string/breadcrumbs_sample" />
+            </FrameLayout>
+
+            <!-- Selectable notebook -->
+            <TextView
+                style="@style/NoteFragmentListItemSpinnerButton"
+                android:layout_marginLeft="@dimen/screen_edge"
+                android:layout_marginStart="@dimen/screen_edge"
+                android:layout_marginRight="@dimen/screen_edge"
+                android:layout_marginEnd="@dimen/screen_edge"
+                android:id="@+id/fragment_note_location_button"
+                tools:text="GTD"
+                android:visibility="gone"/>
 
             <!-- Title -->
             <EditText
@@ -71,6 +73,8 @@
                 android:layout_marginStart="@dimen/screen_edge"
                 android:layout_marginRight="@dimen/screen_edge"
                 android:layout_marginEnd="@dimen/screen_edge"
+                android:layout_marginTop="@dimen/space_between_content_areas"
+                android:layout_marginBottom="@dimen/space_between_content_areas"
                 android:inputType="text|textCapSentences"
                 android:imeOptions="actionDone"
                 android:hint="@string/fragment_note_title_hint"
@@ -80,7 +84,6 @@
             <!-- Metadata header -->
             <LinearLayout
                 android:id="@+id/fragment_note_metadata_header"
-                android:layout_marginTop="@dimen/space_between_content_areas"
                 style="@style/NoteFragmentFullWidthButton">
 
                 <ImageView

@@ -4,10 +4,10 @@ import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextUtils
-import android.text.TextWatcher
+import android.text.*
 import android.text.method.LinkMovementMethod
+import android.text.style.URLSpan
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.*
 import android.widget.*
@@ -529,7 +529,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 })
 
                 data.ancestors.forEach { ancestor ->
-                    breadcrumbs.add(ancestor.title) {
+                    breadcrumbs.add(ancestor.title, 0) {
                         ActivityUtils.closeSoftKeyboard(activity)
                         viewModel.onBreadcrumbsNote(it.book.id, ancestor)
                     }
