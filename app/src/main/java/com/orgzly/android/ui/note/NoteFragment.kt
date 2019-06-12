@@ -183,7 +183,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
          * We want imeOptions="actionDone", so we can't use textMultiLine.
          */
         title.setHorizontallyScrolling(false)
-        title.maxLines = 3
+        title.maxLines = Integer.MAX_VALUE
 
         /* Keyboard's action button pressed. */
         title.setOnEditorActionListener { _, _, _ ->
