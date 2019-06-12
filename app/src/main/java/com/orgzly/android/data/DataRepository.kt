@@ -543,13 +543,14 @@ class DataRepository @Inject constructor(
         return db.runInTransaction(Callable {
             val note = db.note().getFirst(ids) ?: return@Callable 0
 
-            val previousSibling =
-                    db.note().getPreviousSibling(note.position.bookId, note.position.lft, note.position.parentId)
-                            ?: return@Callable 0
+            val previousSibling = db.note().getPreviousSibling(
+                    note.position.bookId, note.position.lft, note.position.parentId)
 
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Previous sibling ${previousSibling.title}")
-
-            return@Callable moveSubtrees(ids, Place.UNDER, previousSibling.id)
+            if (previousSibling != null) {
+                return@Callable moveSubtrees(ids, Place.UNDER, previousSibling.id)
+            } else {
+                return@Callable 0
+            }
         })
     }
 
@@ -690,6 +691,8 @@ class DataRepository @Inject constructor(
 
         // Update descendants count for the target note and its ancestors
         db.note().updateDescendantsCountForNoteAndAncestors(listOf(targetNote.id))
+
+        unfoldTargetIfMovingUnder(place, targetNoteId)
 
         updateBookIsModified(targetNote.position.bookId, true)
 
@@ -848,12 +851,21 @@ class DataRepository @Inject constructor(
         // Update descendants count for the note and its ancestors
         db.note().updateDescendantsCountForNoteAndAncestors(listOf(targetNote.id))
 
+        unfoldTargetIfMovingUnder(place, targetNoteId)
+
         System.currentTimeMillis().let {
             updateBookIsModified(sourceBookIds, true, it)
             updateBookIsModified(targetNote.position.bookId, true, it)
         }
 
         return alignedNotes.size
+    }
+
+    /** Unfold target note and its ancestors if subtree is moved under it. */
+    private fun unfoldTargetIfMovingUnder(place: Place, targetNoteId: Long) {
+        if (place == Place.UNDER || place == Place.UNDER_AS_FIRST) {
+            unfoldForNote(targetNoteId)
+        }
     }
 
     data class TargetPosition(
