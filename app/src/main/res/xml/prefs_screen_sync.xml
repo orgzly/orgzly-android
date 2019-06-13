@@ -16,7 +16,7 @@
 
     <androidx.preference.PreferenceScreen
         android:key="prefs_screen_auto_sync"
-        android:title="@string/auto_sync_experimental"
+        android:title="@string/auto_sync"
         android:summary="@string/auto_sync_experimental_summary">
     </androidx.preference.PreferenceScreen>
 

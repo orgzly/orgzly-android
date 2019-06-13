@@ -385,7 +385,6 @@
     <string name="list_widget_select_search">検索を選択</string>
     <string name="list_widget_nothing_selected">検索が選択されていません</string>
     <string name="auto_sync">自動同期</string>
-    <string name="auto_sync_experimental">自動同期 (実験中)</string>
     <string name="auto_sync_experimental_summary">ローカルリポジトリのみに使用</string>
     <string name="auto_sync_warning">選択したオプションによっては、同期はしばしば発生します。メモ帳を変更した場合、コンテンツ全体がリポジトリに転送されます。同期中に、特定のアクションが遅れる可能性があります。</string>
     <string name="pref_title_sync_after_note_create">メモが作成されました</string>

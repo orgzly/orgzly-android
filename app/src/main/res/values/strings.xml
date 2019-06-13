@@ -479,7 +479,6 @@
     <string name="list_widget_nothing_selected">No search selected</string>
 
     <string name="auto_sync">Auto-sync</string>
-    <string name="auto_sync_experimental">Auto-sync (experimental)</string>
     <string name="auto_sync_experimental_summary">Used for local repositories only</string>
     <string name="auto_sync_warning">Depending on which options you choose, sync could be triggered often. If notebook is modified, its entire content is transferred to or from the repository. Certain actions might be delayed while syncing is in progress.</string>
 

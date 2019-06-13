@@ -389,7 +389,6 @@
     <string name="list_widget_select_search">Select search</string>
     <string name="list_widget_nothing_selected">No search selected</string>
     <string name="auto_sync">Otomatik eşitleme</string>
-    <string name="auto_sync_experimental">Otomatik eşitle (deneme)</string>
     <string name="auto_sync_experimental_summary">Sadece dahili depolar için kullanılır</string>
     <string name="auto_sync_warning">Eşitleme işlemi seçtiğiniz durumlara göre işleme konulabilir. Eğer defter değiştirilirse, tüm içerik depodan aktarılır. Eşitleme devam ederken bazı işlemler gecikebilir.</string>
     <string name="pref_title_sync_after_note_create">Not oluşturuldu</string>

@@ -100,7 +100,7 @@ public class SyncingTest extends OrgzlyTest {
         // Set preference
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
         clickSetting("prefs_screen_sync", R.string.sync);
-        clickSetting("prefs_screen_auto_sync", R.string.auto_sync_experimental);
+        clickSetting("prefs_screen_auto_sync", R.string.auto_sync);
         clickSetting("pref_key_auto_sync", R.string.auto_sync);
         clickSetting("pref_key_auto_sync_on_note_create", R.string.pref_title_sync_after_note_create);
         pressBack();

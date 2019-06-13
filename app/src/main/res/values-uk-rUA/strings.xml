@@ -397,7 +397,6 @@
     <string name="list_widget_select_search">Виберіть пошук</string>
     <string name="list_widget_nothing_selected">Пошук не вибрано</string>
     <string name="auto_sync">Автоматично синхронізувати</string>
-    <string name="auto_sync_experimental">Автоматична синхронізація (експериментальне)</string>
     <string name="auto_sync_experimental_summary">Використовується тільки для локальних сховищ</string>
     <string name="auto_sync_warning">В залежності від того, які параметри ви виберете, синхронізація може відбуватися часто. Якщо блокнот змінено, весь його вміст переноситься в сховище або з нього. Деякі дії можуть затриматися під час синхронизації.</string>
     <string name="pref_title_sync_after_note_create">Нотатку створено</string>

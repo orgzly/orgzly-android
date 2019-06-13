@@ -389,7 +389,6 @@
     <string name="list_widget_select_search">Keresés választása</string>
     <string name="list_widget_nothing_selected">Nincs kiválasztott keresés</string>
     <string name="auto_sync">Automatikus szinkronizálás</string>
-    <string name="auto_sync_experimental">Automatikus szinkronizálás (nem kiforrott)</string>
     <string name="auto_sync_experimental_summary">Csak helyi tárolók esetén</string>
     <string name="auto_sync_warning">Attól függően, hogy melyik lehetőséget választja, szinkronizálás gyakran indulhat. Ha a jegyzetfüzet módosul, annak teljes tartalmát menti vagy betölti. Bizonyos műveletek késhetnek, amíg szinkronizálás van folyamatban.</string>
     <string name="pref_title_sync_after_note_create">Bejegyzés létrehozva</string>

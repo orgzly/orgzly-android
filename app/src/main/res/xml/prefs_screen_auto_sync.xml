@@ -2,7 +2,7 @@
 
 <androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/auto_sync_experimental">
+    android:title="@string/auto_sync">
 
     <Preference
         android:selectable="false"

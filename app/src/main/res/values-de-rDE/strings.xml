@@ -389,7 +389,6 @@
     <string name="list_widget_select_search">Suche auswählen</string>
     <string name="list_widget_nothing_selected">Keine Suche ausgewählt</string>
     <string name="auto_sync">Auto-Synchronisation</string>
-    <string name="auto_sync_experimental">Automatisch synchronisieren (experimentell)</string>
     <string name="auto_sync_experimental_summary">Wird nur für lokale Ablageorte verwendet</string>
     <string name="auto_sync_warning">Je nach dem welche Optionen gewählt wurden, kann die Synchronisierung sehr oft durchgeführt werden. Nach dem Bearbeiten eines Notizbuches wird der gesamte Inhalt zum Ablageort übertragen. Einige Operationen werden verzögert ausgeführt, wenn gerade ein Synchronisierungs-Vorgang läuft.</string>
     <string name="pref_title_sync_after_note_create">Notiz erstellt</string>

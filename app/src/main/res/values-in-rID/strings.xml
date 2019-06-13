@@ -385,7 +385,6 @@
     <string name="list_widget_select_search">Select search</string>
     <string name="list_widget_nothing_selected">No search selected</string>
     <string name="auto_sync">Sinkron otomatis</string>
-    <string name="auto_sync_experimental">Singkron otomatis (eksperimental)</string>
     <string name="auto_sync_experimental_summary">Digunakan untuk repositori lokal saja</string>
     <string name="auto_sync_warning">Tergantung pada pilihan yang Anda pilih, sync bisa dipicu sering. Jika notebook dimodifikasi, isinya seluruh ditransfer ke atau dari repositori. Tindakan tertentu mungkin tertunda saat sinkronisasi berlangsung.</string>
     <string name="pref_title_sync_after_note_create">Membuat catatan</string>
