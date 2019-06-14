@@ -603,4 +603,9 @@
     <string name="notebook_and_scroll_to_note">Notebook (scroll to note)</string>
     <string name="notebook_and_focus_on_note">Notebook (focus on note)</string>
 
+    <plurals name="refile_notes">
+        <item quantity="one">Refile note</item>
+        <item quantity="other">Refile <b>%d</b> notes</item>
+    </plurals>
+
 </resources>

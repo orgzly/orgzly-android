@@ -1212,6 +1212,10 @@ class DataRepository @Inject constructor(
         return db.note().getNotesForSubtrees(ids)
     }
 
+    fun getNotesAndSubtreesCount(ids: Set<Long>): Int {
+        return db.note().getNotesForSubtreesCount(ids)
+    }
+
     fun getNoteChildren(id: Long): List<Note> {
         return db.note().getChildren(id)
     }

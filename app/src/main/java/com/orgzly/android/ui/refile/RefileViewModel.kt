@@ -14,7 +14,10 @@ import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.LogUtils
 import java.util.*
 
-class RefileViewModel(val dataRepository: DataRepository, val noteIds: Set<Long>) : CommonViewModel() {
+class RefileViewModel(
+        val dataRepository: DataRepository,
+        val noteIds: Set<Long>,
+        val count: Int) : CommonViewModel() {
 
     class Home
     class Up

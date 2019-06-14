@@ -42,8 +42,9 @@ class RefileFragment : DaggerDialogFragment() {
         super.onCreate(savedInstanceState)
 
         val noteIds = arguments?.getLongArray(ARG_NOTE_IDS)?.toSet() ?: emptySet()
+        val count = arguments?.getInt(ARG_COUNT) ?: 0
 
-        val factory = RefileViewModelFactory.forNotes(dataRepository, noteIds)
+        val factory = RefileViewModelFactory.forNotes(dataRepository, noteIds, count)
 
         viewModel = ViewModelProviders.of(this, factory).get(RefileViewModel::class.java)
     }
@@ -82,7 +83,8 @@ class RefileFragment : DaggerDialogFragment() {
 
         val toolbar = v.findViewById(R.id.dialog_refile_toolbar) as Toolbar
 
-        toolbar.setTitle(R.string.refile)
+        toolbar.setTitle(resources.getQuantityString(
+                R.plurals.refile_notes, viewModel.count, viewModel.count))
 
         toolbar.setNavigationOnClickListener {
             dismiss()
@@ -214,15 +216,17 @@ class RefileFragment : DaggerDialogFragment() {
     }
 
     companion object {
-        fun getInstance(noteIds: Set<Long>): RefileFragment {
+        fun getInstance(noteIds: Set<Long>, count: Int): RefileFragment {
             return RefileFragment().also { fragment ->
                 fragment.arguments = Bundle().apply {
                     putLongArray(ARG_NOTE_IDS, noteIds.toLongArray())
+                    putInt(ARG_COUNT, count)
                 }
             }
         }
 
         private const val ARG_NOTE_IDS = "note_ids"
+        private const val ARG_COUNT = "count"
 
         private val TAG = RefileFragment::class.java.name
 

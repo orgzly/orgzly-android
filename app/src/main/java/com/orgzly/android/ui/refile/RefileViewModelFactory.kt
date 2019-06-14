@@ -6,16 +6,21 @@ import com.orgzly.android.data.DataRepository
 
 class RefileViewModelFactory(
         private val dataRepository: DataRepository,
-        private val noteIds: Set<Long>) : ViewModelProvider.Factory {
+        private val noteIds: Set<Long>,
+        private val count: Int) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
-        return RefileViewModel(dataRepository, noteIds) as T
+        return RefileViewModel(dataRepository, noteIds, count) as T
     }
 
     companion object {
-        fun forNotes(dataRepository: DataRepository, noteIds: Set<Long>): ViewModelProvider.Factory {
-            return RefileViewModelFactory(dataRepository, noteIds)
+        fun forNotes(
+                dataRepository: DataRepository,
+                noteIds: Set<Long>,
+                count: Int): ViewModelProvider.Factory {
+
+            return RefileViewModelFactory(dataRepository, noteIds, count)
         }
     }
 }

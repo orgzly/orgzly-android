@@ -31,6 +31,7 @@ import com.orgzly.android.ui.notes.NotesFragment
 import com.orgzly.android.ui.notes.quickbar.ItemGestureDetector
 import com.orgzly.android.ui.notes.quickbar.QuickBarListener
 import com.orgzly.android.ui.notes.quickbar.QuickBars
+import com.orgzly.android.ui.refile.RefileFragment
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
 
@@ -231,6 +232,11 @@ class BookFragment :
             }
 
             updateViewState(notes)
+        })
+
+        viewModel.refileRequestEvent.observeSingle(viewLifecycleOwner, Observer {
+            RefileFragment.getInstance(it.selected, it.count)
+                    .show(fragmentManager, RefileFragment.FRAGMENT_TAG)
         })
     }
 
@@ -683,7 +689,7 @@ class BookFragment :
 
             R.id.quick_bar_refile,
             R.id.book_cab_refile ->
-                openNoteRefileDialog(ids)
+                viewModel.refile(ids)
 
             R.id.book_cab_paste_under -> {
                 pasteNotes(Place.UNDER, ids.first())

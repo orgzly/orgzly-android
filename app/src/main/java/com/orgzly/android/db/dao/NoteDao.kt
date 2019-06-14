@@ -86,13 +86,11 @@ abstract class NoteDao : BaseDao<Note> {
     """)
     abstract fun getNoteAndAncestors(id: Long): List<Note>
 
-    @Query("""
-        SELECT d.*
-        FROM notes n, notes d
-        WHERE n.id IN (:ids) AND n.level > 0 AND d.book_id = n.book_id AND d.is_cut = 0 AND n.is_cut = 0 AND n.lft <= d.lft AND d.rgt <= n.rgt
-        GROUP BY d.id ORDER BY d.lft
-    """)
+    @Query(NOTES_AND_DESCENDANTS)
     abstract fun getNotesForSubtrees(ids: Set<Long>): List<Note>
+
+    @Query("SELECT count(*) FROM ($NOTES_AND_DESCENDANTS)")
+    abstract fun getNotesForSubtreesCount(ids: Set<Long>): Int
 
     @Query("""
         SELECT count(*)
@@ -336,6 +334,15 @@ abstract class NoteDao : BaseDao<Note> {
             AND a.level > 0
             AND a.lft <= n.lft
             AND n.rgt <= a.rgt
+            """
+
+        @Language("RoomSql")
+        private const val NOTES_AND_DESCENDANTS = """
+            SELECT d.*
+            FROM notes n, notes d
+            WHERE n.id IN (:ids) AND n.level > 0 AND d.book_id = n.book_id AND d.is_cut = 0 AND n.is_cut = 0 AND n.lft <= d.lft AND d.rgt <= n.rgt
+            GROUP BY d.id
+            ORDER BY d.lft
             """
 
         fun rootNote(bookId: Long): Note {

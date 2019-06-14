@@ -12,7 +12,6 @@ import com.orgzly.android.ui.NotePlace
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.dialogs.NoteStateDialog
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
-import com.orgzly.android.ui.refile.RefileFragment
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
 import com.orgzly.org.datetime.OrgDateTime
@@ -74,10 +73,6 @@ abstract class NotesFragment :
         if (savedInstanceState != null) {
             getAdapter().getSelection().restoreIds(savedInstanceState)
         }
-    }
-
-    protected fun openNoteRefileDialog(noteIds: Set<Long>) {
-         RefileFragment.getInstance(noteIds).show(fragmentManager, RefileFragment.FRAGMENT_TAG)
     }
 
     protected fun openNoteStateDialog(listener: Listener, noteIds: Set<Long>, currentState: String?) {

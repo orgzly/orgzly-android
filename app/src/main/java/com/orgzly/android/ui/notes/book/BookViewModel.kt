@@ -8,6 +8,7 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.ui.CommonViewModel
+import com.orgzly.android.ui.SingleLiveEvent
 import com.orgzly.android.usecase.BookCycleVisibility
 import com.orgzly.android.usecase.UseCaseRunner
 
@@ -50,6 +51,17 @@ class BookViewModel(private val dataRepository: DataRepository, val bookId: Long
                     UseCaseRunner.run(BookCycleVisibility(book))
                 }
             }
+        }
+    }
+
+    data class NotesToRefile(val selected: Set<Long>, val count: Int)
+
+    val refileRequestEvent: SingleLiveEvent<NotesToRefile> = SingleLiveEvent()
+
+    fun refile(ids: Set<Long>) {
+        App.EXECUTORS.diskIO().execute {
+            val count = dataRepository.getNotesAndSubtreesCount(ids)
+            refileRequestEvent.postValue(NotesToRefile(ids, count))
         }
     }
 }
