@@ -705,7 +705,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         val selected = getSelectedBook(books, bookId)
 
         dialog = AlertDialog.Builder(context)
-                .setTitle(R.string.state)
+                .setTitle(R.string.notebook)
                 .setSingleChoiceItems(bookNames, selected) { dialog, which ->
                     val book = books[which]
 
