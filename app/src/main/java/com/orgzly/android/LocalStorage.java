@@ -38,7 +38,7 @@ public class LocalStorage {
      */
     public File getTempBookFile() throws IOException {
         File baseDir;
-        if (isExternalStorageWritable()) {
+        if (mContext.getExternalCacheDir() != null && isExternalStorageWritable()) {
             baseDir = externalCacheDir("tmp");
         } else {
             baseDir = internalCacheDir("tmp");
@@ -53,7 +53,7 @@ public class LocalStorage {
 
     public File getLocalRepoDirectory(String dir) throws IOException {
         File baseDir;
-        if (isExternalStorageWritable()) {
+        if (mContext.getExternalCacheDir() != null && isExternalStorageWritable()) {
             baseDir = externalCacheDir(dir);
         } else {
             baseDir = internalCacheDir(dir);
