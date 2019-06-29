@@ -381,9 +381,9 @@ public class StructureTest extends OrgzlyTest {
 
         assertEquals(0, n1.getPosition().getFoldedUnderId());
         assertEquals(0, n11.getPosition().getFoldedUnderId());
-        assertEquals(n11.getId(), n111.getPosition().getFoldedUnderId());
-        assertEquals(n11.getId(), n112.getPosition().getFoldedUnderId());
-        assertEquals(n11.getId(), n2.getPosition().getFoldedUnderId());
+        assertEquals(0, n111.getPosition().getFoldedUnderId());
+        assertEquals(0, n112.getPosition().getFoldedUnderId());
+        assertEquals(0, n2.getPosition().getFoldedUnderId());
         assertEquals(0, n12.getPosition().getFoldedUnderId());
     }
 
@@ -878,9 +878,11 @@ public class StructureTest extends OrgzlyTest {
                 "*** Note 2\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
 
-        assertTrue(dataRepository.getLastNote("Note 1").getPosition().isFolded());
-        assertEquals(dataRepository.getLastNote("Note 1").getId(), dataRepository.getLastNote("Note 1.1").getPosition().getFoldedUnderId());
-        assertEquals(dataRepository.getLastNote("Note 1").getId(), dataRepository.getLastNote("Note 2").getPosition().getFoldedUnderId());
+        Note note1 = dataRepository.getLastNote("Note 1");
+
+        assertFalse(note1.getPosition().isFolded());
+        assertEquals(0, dataRepository.getLastNote("Note 1.1").getPosition().getFoldedUnderId());
+        assertEquals(0, dataRepository.getLastNote("Note 2").getPosition().getFoldedUnderId());
     }
 
     @Test
@@ -903,9 +905,11 @@ public class StructureTest extends OrgzlyTest {
                 "** Note 2\n",
                 dataRepository.getBookContent("notebook", BookFormat.ORG));
 
-        assertTrue(dataRepository.getLastNote("Note 1").getPosition().isFolded());
-        assertEquals(dataRepository.getLastNote("Note 1").getId(), dataRepository.getLastNote("Note 1.1").getPosition().getFoldedUnderId());
-        assertEquals(dataRepository.getLastNote("Note 1").getId(), dataRepository.getLastNote("Note 2").getPosition().getFoldedUnderId());
+        Note note1 = dataRepository.getLastNote("Note 1");
+
+        assertFalse(note1.getPosition().isFolded());
+        assertEquals(0, dataRepository.getLastNote("Note 1.1").getPosition().getFoldedUnderId());
+        assertEquals(0, dataRepository.getLastNote("Note 2").getPosition().getFoldedUnderId());
     }
 
     @Test
