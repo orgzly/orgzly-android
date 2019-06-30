@@ -49,6 +49,7 @@ class NoteBuilder {
 
                 // Add last-repeat time
                 if (AppPreferences.setLastRepeatOnTimeShift(context)) {
+                    properties.remove(OrgFormatter.LAST_REPEAT_PROPERTY);
                     properties.put(OrgFormatter.LAST_REPEAT_PROPERTY, now)
                 }
 

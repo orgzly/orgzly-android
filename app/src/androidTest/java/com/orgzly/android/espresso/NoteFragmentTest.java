@@ -6,6 +6,7 @@ import android.widget.TimePicker;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.db.entity.Note;
 import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
@@ -175,6 +176,20 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_state_button)).perform(click());
         onView(withText("DONE")).perform(click());
         onView(withId(R.id.fragment_note_closed_edit_text)).check(matches(allOf(withText(startsWith(currentUserDate())), isDisplayed())));
+    }
+
+    @Test
+    public void testStateToDoneShouldOverwriteLastRepeat() {
+        onNoteInBook(4).perform(click());
+
+        onView(withId(R.id.fragment_note_state_button)).perform(click());
+        onView(withText("DONE")).perform(click());
+
+        onView(withId(R.id.fragment_note_state_button)).perform(click());
+        onView(withText("DONE")).perform(click());
+
+        // This will fail if there are two or more LAST_REPEAT properties
+        onView(allOf(withId(R.id.name), withText("LAST_REPEAT"))).check(matches(isDisplayed()));
     }
 
     @Test
