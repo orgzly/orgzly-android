@@ -17,7 +17,7 @@ Fling it left to open a different menu.
 ** Note can have tags :tag1:tag2:
 *** Sub-note inherits the tags :tag3:
 
-If you search for notes with tag “tag1”, this note will be returned as well.
+If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
 
 ** TODO Note can have a state
 
