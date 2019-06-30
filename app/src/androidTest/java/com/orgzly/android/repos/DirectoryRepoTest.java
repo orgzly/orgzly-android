@@ -117,8 +117,9 @@ public class DirectoryRepoTest extends OrgzlyTest {
     @Test
     public void testSyncWithDirectoryContainingPercent() throws FileNotFoundException {
         String localBaseDir = context.getExternalCacheDir().getAbsolutePath();
-        String localDir = localBaseDir + "/nextcloud/user@host%2Fdir/space separated";
-        String localDirEnc = localBaseDir + "/nextcloud/user%40host%252Fdir/space%20separated";
+        String nextcloudDir = localBaseDir + "/nextcloud";
+        String localDir = nextcloudDir + "/user@host%2Fdir/space separated";
+        String localDirEnc = nextcloudDir + "/user%40host%252Fdir/space%20separated";
         new File(localDir).mkdirs();
 
         MiscUtils.writeStringToFile("Notebook content 1", new File(localDir, "notebook.org"));
@@ -130,6 +131,8 @@ public class DirectoryRepoTest extends OrgzlyTest {
         assertEquals("file:" + localDirEnc, repo.getUri().toString());
         assertEquals(localDir, repo.getDirectory().toString());
         assertEquals(1, dataRepository.getBooks().size());
+
+        LocalStorage.deleteRecursive(new File(nextcloudDir));
     }
 
     // TODO: Test saving and loading

@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.android.BookName;
+import com.orgzly.android.LocalStorage;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.db.entity.BookView;
@@ -32,11 +33,6 @@ import static org.junit.Assert.assertTrue;
 
 public class SyncTest extends OrgzlyTest {
     private static final String TAG = SyncTest.class.getName();
-
-    private SyncRepo randomDirectoryRepo() {
-        String uuid = UUID.randomUUID().toString();
-        return repoFactory.getFromUri(context, "file:" + context.getCacheDir() + "/" + uuid);
-    }
 
     @Before
     public void setUp() throws Exception {
@@ -387,7 +383,11 @@ public class SyncTest extends OrgzlyTest {
 
     @Test
     public void testDirectoryFileRename() throws IOException {
-        SyncRepo repo = randomDirectoryRepo();
+        String uuid = UUID.randomUUID().toString();
+
+        String repoDir = context.getCacheDir() + "/" + uuid;
+
+        SyncRepo repo = repoFactory.getFromUri(context, "file:" + repoDir);
 
         assertNotNull(repo);
         assertEquals(0, repo.getBooks().size());
@@ -397,6 +397,8 @@ public class SyncTest extends OrgzlyTest {
 
         VersionedRook vrook = repo.storeBook(file, file.getName());
 
+        file.delete();
+
         assertEquals(1, repo.getBooks().size());
 
         repo.renameBook(vrook.getUri(), "notebook-renamed");
@@ -404,6 +406,8 @@ public class SyncTest extends OrgzlyTest {
         assertEquals(1, repo.getBooks().size());
         assertEquals(repo.getUri() + "/notebook-renamed.org", repo.getBooks().get(0).getUri().toString());
         assertEquals("notebook-renamed.org", BookName.getInstance(context, repo.getBooks().get(0)).getFileName());
+
+        LocalStorage.deleteRecursive(new File(repoDir));
     }
 
     @Test

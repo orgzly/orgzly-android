@@ -37,7 +37,7 @@ public class LocalStorage {
      * Get temporary {@code File} for storing book's content.
      */
     public File getTempBookFile() throws IOException {
-        File dir = getCacheDirectory("tmp");
+        File dir = getCacheDirectory("notebooks");
 
         try {
             return File.createTempFile("notebook.", ".tmp", dir);

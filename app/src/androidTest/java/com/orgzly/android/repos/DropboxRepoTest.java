@@ -80,6 +80,8 @@ public class DropboxRepoTest extends OrgzlyTest {
 
         VersionedRook vrook = repo.storeBook(file, file.getName());
 
+        file.delete();
+
         assertEquals(1, repo.getBooks().size());
 
         repo.renameBook(vrook.getUri(), "notebook-renamed");
