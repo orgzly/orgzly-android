@@ -30,7 +30,7 @@ public class DirectoryRepoTest extends OrgzlyTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        dirFile = new LocalStorage(context).getLocalRepoDirectory("orgzly-local-dir-repo-test");
+        dirFile = new LocalStorage(context).getCacheDirectory("orgzly-local-dir-repo-test");
         repoUriString = "file:" + dirFile.getAbsolutePath();
 
         LocalStorage.deleteRecursive(dirFile);
