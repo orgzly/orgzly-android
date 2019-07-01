@@ -1,14 +1,14 @@
 Welkom bij Orgzly!
 
 * Notities
-** Click on the note to open it
-** Click and hold the note to select it
+** Klik op de notitie om haar te openen
+** Klik en houd ingedrukt om de notitie te selecteren
 
 Je kunt meerdere notities selecteren.
 
-** Fling note right to open its quick-menu
+** Veeg de notitie naar rechts om haar snelmenu te openen
 
-Fling it left to open a different menu.
+Veeg het naar links om een ander menu te openen.
 
 ** Vouw een notitie met subnotities door op het icoon ernaast te klikken
 *** Er is geen limiet op het aantal niveaus dat je kunt hebben
@@ -37,33 +37,33 @@ SCHEDULED: <2015-02-16 Mon .+2d>
 ** Je kunt ook een deadlinetijd instellen
 DEADLINE: <2015-02-20 Fri>
 
-** Reminders for scheduled and deadline times are supported
+** Herinneringen aan geplande en deadline tijdstippen zijn ondersteund
 
-They are disabled by default and need to be enabled in Settings.
+Ze zijn standaard uitgeschakeld en moeten in Instellingen worden ingeschakeld.
 
-** [#A] Note can have a priority
+** [#A] Een notitie kan een prioriteit hebben
 
-You can change the number of priorities in Settings. You can also change default priority - assumed priority for notes without one set.
+U kunt het aantal prioriteiten in Instellingen wijzigen. U kunt ook de standaard prioriteit - aangenomen prioriteit wijzigen voor notities zonder één set.
 
-** Note can include links
+** Een notitie kan links gebruiken
 
-Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[http://www.orgzly.com][Orgzly.com]]).
+Bel een telefoonnummer (tel:555-0199), stuur een SMS (sms:555-0199), stel een e-mail op (mailto:support@orgzly.com) of bezoek een webpagina ([[http://www.orgzly.com][Orgzly.com]]).
 
-You can also link to another note or notebook within the app.
+U kunt ook naar een andere notitie of notebook binnen de app linken.
 
-See http://www.orgzly.com/help#links for more information.
+Zie http://www.orgzly.com/help#links voor meer informatie.
 
-** Basale typografische nadruk wordt ondersteund
+** Typografische basisaccentuering wordt ondersteund
 
 Je kunt worden *dikgedrukt*, /schuin/, _onderstreept_, =verbato=, ~code~ en +doorgestreept+ maken.
 
-** Checkbox list is available
+** Checkbox lijst is beschikbaar
 
-- [X] Task 1
-- [ ] Task 2
-- [ ] Task 3
+- [X] Taak 1
+- [ ] Taak 2
+- [ ] Taak 3
 
-Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
+Klik op de checkbox om het aan te vinken. Druk op de nieuwe-lijnknop aan het einde van de regel om een nieuw item aan te maken.
 
 * Zoeken
 ** Er worden veel zoekoperatoren ondersteund

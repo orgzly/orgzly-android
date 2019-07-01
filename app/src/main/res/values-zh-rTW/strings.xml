@@ -57,6 +57,8 @@
     <string name="open">打開</string>
     <string name="focus">焦點</string>
     <string name="widget">桌面小工具</string>
+    <string name="history">歷史記錄</string>
+    <string name="event">事件</string>
     <plurals name="notes_deleted">
         <item quantity="other">已刪除 <b>%d</b> 筆記</item>
     </plurals>
@@ -202,7 +204,8 @@
     <string name="no_notes">筆記本沒有筆記</string>
     <string name="create_new_repository_for_syncing">創建用於同步筆記本的新資料庫</string>
     <string name="no_filters">您沒有已保存的搜索</string>
-    <string name="book_shortcut_label">Orgzly 筆記本</string>
+    <string name="book_shortcut_label">筆記本</string>
+    <string name="new_note_shortcut_label">新增筆記</string>
     <string name="pick_a_notebook">選擇一個筆記本</string>
     <string name="down">下</string>
     <string name="up">上</string>
@@ -339,8 +342,9 @@
     <string name="display_notebook_name">顯示筆記本名稱</string>
     <string name="display_inherited_tags_in_search_results">在搜尋結果中包含繼承標籤</string>
     <string name="display_inherited_tags_in_search_results_summary">在搜尋結果中顯示繼承標籤</string>
-    <string name="ongoing_notification">創建筆記並同步</string>
-    <string name="ongoing_notification_summary">從通知抽屜中快速建立新筆記或同步筆記本</string>
+    <string name="ongoing_notification">進行中</string>
+    <string name="ongoing_notification_summary">在通知列中快速建立新筆記或同步筆記本</string>
+    <string name="ongoing_notification_priority">進行中優先權</string>
     <string name="show_sync_notifications_title">同步失敗！</string>
     <string name="show_sync_notifications_summary">顯示同步失敗的通知</string>
     <string name="prefs_title_reminders">提醒</string>
@@ -381,10 +385,13 @@
     <string name="default_notebook_desc">在通知中分享或創建新筆記到Orgzly</string>
     <string name="force_utf8">強制使用UTF-8編碼</string>
     <string name="force_utf8_summary">不要檢測編碼，總是使用UTF-8</string>
-    <string name="list_widget_name">Orgzly 筆記</string>
+    <string name="notebooks_start_folded">啟動時折疊</string>
+    <string name="notebooks_start_folded_summary">讀取筆記本時折疊所有筆記</string>
+    <string name="list_widget_name">已儲存的的搜尋</string>
     <string name="list_widget_select_search">選取搜尋</string>
     <string name="list_widget_nothing_selected">沒有選取搜尋</string>
     <string name="auto_sync">自動同步</string>
+    <string name="auto_sync_experimental">自動同步 (實驗性)</string>
     <string name="auto_sync_experimental_summary">只使用本地資料庫</string>
     <string name="auto_sync_warning">根據您選擇的選項，同步可能會經常觸發。如果筆記本被修改，則其整個內容被傳送到存儲庫或從存儲庫傳送。正在進行同步時，某些操作可能會延遲。</string>
     <string name="pref_title_sync_after_note_create">已創建筆記</string>
@@ -414,7 +421,7 @@
         <item quantity="other">匯出 <b>%d</b> 的搜尋</item>
     </plurals>
     <string name="storage_permissions_missing">沒有存儲許可權</string>
-    <string name="file_does_not_exist">檔案 %s 不存在</string>
+    <string name="file_does_not_exist">檔案不存在: %s</string>
     <string name="import_from">從 \"%1$s\" 匯入？</string>
     <string name="export_to">匯出到 \"%1$s\"？</string>
     <string name="primary_storage_not_available">沒有可用的主儲存媒體</string>
@@ -459,4 +466,15 @@
     <string name="argument_selected">已選取 %s</string>
     <string name="fixed_width_value">寬度 (像素)</string>
     <string name="share_target_service">分享到 Orgzly 筆記本</string>
+    <string name="under">在下</string>
+    <string name="above">以上</string>
+    <string name="below">以下</string>
+    <string name="loading">載入中…</string>
+    <string name="go_to">前往</string>
+    <string name="cannot_refile_to_the_same_subtree">無法轉移到相同的子目錄</string>
+    <string name="notification_maximum_priority">最大</string>
+    <string name="notification_high_priority">高</string>
+    <string name="notification_default_priority">預設</string>
+    <string name="notification_low_priority">低</string>
+    <string name="notification_minimum_priority">最小</string>
 </resources>

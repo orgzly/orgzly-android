@@ -57,6 +57,8 @@
     <string name="open">열기</string>
     <string name="focus">포커스</string>
     <string name="widget">위젯</string>
+    <string name="history">History</string>
+    <string name="event">Event</string>
     <plurals name="notes_deleted">
         <item quantity="other"><b>%d</b> 노트 삭제됨</item>
     </plurals>
@@ -202,7 +204,8 @@
     <string name="no_notes">메모장에 메모가 없습니다.</string>
     <string name="create_new_repository_for_syncing">메모장을 동기화할 새 저장소를 만드세요.</string>
     <string name="no_filters">저장된 검색 조건이 없습니다.</string>
-    <string name="book_shortcut_label">Orgzly 메모장</string>
+    <string name="book_shortcut_label">Notebook</string>
+    <string name="new_note_shortcut_label">New note</string>
     <string name="pick_a_notebook">메모장 선택</string>
     <string name="down">아래로</string>
     <string name="up">위로</string>
@@ -339,8 +342,9 @@
     <string name="display_notebook_name">메모장 이름 보여주기</string>
     <string name="display_inherited_tags_in_search_results">검색된 결과에 상속된 태그 포함</string>
     <string name="display_inherited_tags_in_search_results_summary">검색된 결과에 상속된 태그 보여주기</string>
-    <string name="ongoing_notification">새 노트와 동기화</string>
-    <string name="ongoing_notification_summary">알림창에서 새 메모를 빠르게 만들거나 메모장 동기화 하기</string>
+    <string name="ongoing_notification">Ongoing</string>
+    <string name="ongoing_notification_summary">Quickly create new note or sync notebooks from notification drawer</string>
+    <string name="ongoing_notification_priority">Ongoing priority</string>
     <string name="show_sync_notifications_title">동기화에 실패했습니다.</string>
     <string name="show_sync_notifications_summary">동기화 실패 알림 보여주기</string>
     <string name="prefs_title_reminders">알리미</string>
@@ -381,10 +385,13 @@
     <string name="default_notebook_desc">Orgzly와 공유하거나 알림 중에 새 메모를 만들 때 사용되는 메모장</string>
     <string name="force_utf8">강제로 UTF-8 인코딩</string>
     <string name="force_utf8_summary">인코딩을 감지하지 말고 항상 UTF-8을 사용하십시오.</string>
-    <string name="list_widget_name">Orgzly 메모</string>
+    <string name="notebooks_start_folded">Start folded</string>
+    <string name="notebooks_start_folded_summary">Fold all notes when notebook is loaded</string>
+    <string name="list_widget_name">Saved search</string>
     <string name="list_widget_select_search">검색 조건 선택</string>
     <string name="list_widget_nothing_selected">선택된 검색 없음</string>
     <string name="auto_sync">자동 동기화</string>
+    <string name="auto_sync_experimental">자동 동기화 (실험실)</string>
     <string name="auto_sync_experimental_summary">핸드폰 저장소만 사용</string>
     <string name="auto_sync_warning">선택한 옵션에 따라 자주 동기화가 될 수 있습니다. 메모장을 수정하면 관련 메모 전체가 저장소로 또는 저장소에서 전송됩니다.
 동기화 중에는 일부 작업이 지연될 수 있습니다.</string>
@@ -415,7 +422,7 @@
         <item quantity="other">내보낸 <b>%d</b> 검색</item>
     </plurals>
     <string name="storage_permissions_missing">저장소 권한 없음</string>
-    <string name="file_does_not_exist">%s 파일이 존재하지 않습니다.</string>
+    <string name="file_does_not_exist">File does not exist: %s</string>
     <string name="import_from">\"%1$s\"에서 가져오기?</string>
     <string name="export_to">\"%1$s\"으로 내보내기?</string>
     <string name="primary_storage_not_available">기본 저장소를 사용할 수 없습니다.</string>
@@ -460,4 +467,15 @@
     <string name="argument_selected">%s 선택됨</string>
     <string name="fixed_width_value">너비 (픽셀단위)</string>
     <string name="share_target_service">Orgzly 메모장 공유하기</string>
+    <string name="under">Under</string>
+    <string name="above">Above</string>
+    <string name="below">Below</string>
+    <string name="loading">Loading…</string>
+    <string name="go_to">Go to</string>
+    <string name="cannot_refile_to_the_same_subtree">Cannot refile to the same subtree</string>
+    <string name="notification_maximum_priority">Maximum</string>
+    <string name="notification_high_priority">High</string>
+    <string name="notification_default_priority">Default</string>
+    <string name="notification_low_priority">Low</string>
+    <string name="notification_minimum_priority">Minimum</string>
 </resources>

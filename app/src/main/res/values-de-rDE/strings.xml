@@ -57,6 +57,8 @@
     <string name="open">Öffnen</string>
     <string name="focus">Fokus</string>
     <string name="widget">Widget</string>
+    <string name="history">Verlauf</string>
+    <string name="event">Ereignis</string>
     <plurals name="notes_deleted">
         <item quantity="one">Notiz gelöscht</item>
         <item quantity="other"><b>%d</b> Notizen gelöscht</item>
@@ -206,7 +208,8 @@
     <string name="no_notes">Notizbuch hat keine Notizen</string>
     <string name="create_new_repository_for_syncing">Neuer Ablageort für die Synchronisierung der Notizbücher erstellen</string>
     <string name="no_filters">Keine gespeicherten Suchanfragen vorhanden</string>
-    <string name="book_shortcut_label">Orgzly Notizbuch</string>
+    <string name="book_shortcut_label">Notizbuch</string>
+    <string name="new_note_shortcut_label">Neue Notiz</string>
     <string name="pick_a_notebook">Notizbuch auswählen</string>
     <string name="down">Runter</string>
     <string name="up">Hoch</string>
@@ -343,8 +346,9 @@
     <string name="display_notebook_name">Notizbuchname anzeigen</string>
     <string name="display_inherited_tags_in_search_results">Tags in Suchergebnissen einrücken</string>
     <string name="display_inherited_tags_in_search_results_summary">Zeigt eingerückte Tags in den Suchergebnissen an</string>
-    <string name="ongoing_notification">Neue Notiz und Synchronisieren</string>
-    <string name="ongoing_notification_summary">Über eine Benachrichtigung neue Notizen anlegen oder Notizbücher synchronisieren</string>
+    <string name="ongoing_notification">Aktuell</string>
+    <string name="ongoing_notification_summary">Erstellen Sie schnell neue Notizen oder synchronisieren Sie Notizbücher aus der Benachrichtigungsleiste</string>
+    <string name="ongoing_notification_priority">Aktuelle Priorität</string>
     <string name="show_sync_notifications_title">Synchronisationsfehler</string>
     <string name="show_sync_notifications_summary">Benachrichtigung bei Synchronisationsfehler</string>
     <string name="prefs_title_reminders">Alarme</string>
@@ -385,10 +389,13 @@
     <string name="default_notebook_desc">Notizbuch, welches für das Teilen mit Orgzly oder beim Erstellen einer neuen Notiz über die Benachrichtigungen verwendet werden soll</string>
     <string name="force_utf8">UTF-8-Zeichensatz erzwingen</string>
     <string name="force_utf8_summary">Der Zeichensatz wird nicht automatisch erkannt, es wird immer UTF-8 angenommen</string>
-    <string name="list_widget_name">Orgzly Notizen</string>
+    <string name="notebooks_start_folded">Minimiert starten</string>
+    <string name="notebooks_start_folded_summary">Alle Notizen minimieren wenn das Notizbuch geladen wird</string>
+    <string name="list_widget_name">Gespeicherte Suche</string>
     <string name="list_widget_select_search">Suche auswählen</string>
     <string name="list_widget_nothing_selected">Keine Suche ausgewählt</string>
     <string name="auto_sync">Auto-Synchronisation</string>
+    <string name="auto_sync_experimental">Automatisch synchronisieren (experimentell)</string>
     <string name="auto_sync_experimental_summary">Wird nur für lokale Ablageorte verwendet</string>
     <string name="auto_sync_warning">Je nach dem welche Optionen gewählt wurden, kann die Synchronisierung sehr oft durchgeführt werden. Nach dem Bearbeiten eines Notizbuches wird der gesamte Inhalt zum Ablageort übertragen. Einige Operationen werden verzögert ausgeführt, wenn gerade ein Synchronisierungs-Vorgang läuft.</string>
     <string name="pref_title_sync_after_note_create">Notiz erstellt</string>
@@ -421,7 +428,7 @@
         <item quantity="other"><b>%d</b> Suchen exportiert</item>
     </plurals>
     <string name="storage_permissions_missing">Keine Zugriffsberechtigung auf den Speicher</string>
-    <string name="file_does_not_exist">Datei %s existiert nicht</string>
+    <string name="file_does_not_exist">Datei existiert nicht: %s</string>
     <string name="import_from">Von \"%1$s\" importieren?</string>
     <string name="export_to">Nach \"%1$s\" exportieren?</string>
     <string name="primary_storage_not_available">Haupt-Speicherort ist nicht verfügbar</string>
@@ -466,4 +473,15 @@
     <string name="argument_selected">%s ausgewählt</string>
     <string name="fixed_width_value">Breite (in Pixeln)</string>
     <string name="share_target_service">Mit Orgzly Notizbuch teilen</string>
+    <string name="under">Unter</string>
+    <string name="above">Oben</string>
+    <string name="below">Unten</string>
+    <string name="loading">Lade…</string>
+    <string name="go_to">Gehe zu</string>
+    <string name="cannot_refile_to_the_same_subtree">Kann nicht auf denselben Unterbaum zurückkehren</string>
+    <string name="notification_maximum_priority">Maximal</string>
+    <string name="notification_high_priority">Hoch</string>
+    <string name="notification_default_priority">Standard</string>
+    <string name="notification_low_priority">Niedrig</string>
+    <string name="notification_minimum_priority">Minimal</string>
 </resources>

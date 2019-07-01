@@ -57,6 +57,8 @@
     <string name="open">Відкрити</string>
     <string name="focus">Фокус</string>
     <string name="widget">Віджет</string>
+    <string name="history">Історія</string>
+    <string name="event">Подія</string>
     <plurals name="notes_deleted">
         <item quantity="one">Нотатку видалено</item>
         <item quantity="few">Видалено <b>%d</b> нотаток</item>
@@ -74,7 +76,7 @@
     <plurals name="notes_copied">
         <item quantity="one">Нотатку скопійовано</item>
         <item quantity="few">Скопійовано <b>%d</b> нотаток</item>
-        <item quantity="many">Copied <b>%d</b> notes</item>
+        <item quantity="many">Скопійовано <b>%d</b> нотаток</item>
         <item quantity="other">Скопійовано <b>%d</b> нотаток</item>
     </plurals>
     <plurals name="notes_pasted">
@@ -214,7 +216,8 @@
     <string name="no_notes">У блокноті відсутні нотатки</string>
     <string name="create_new_repository_for_syncing">Створити нове сховище для синхронізації блокнотів</string>
     <string name="no_filters">Відсутні збережені пошукові запити</string>
-    <string name="book_shortcut_label">Блокнот Orgzly</string>
+    <string name="book_shortcut_label">Блокнот</string>
+    <string name="new_note_shortcut_label">Нова нотатка</string>
     <string name="pick_a_notebook">Виберіть блокнот</string>
     <string name="down">Вниз</string>
     <string name="up">Вгору</string>
@@ -351,8 +354,9 @@
     <string name="display_notebook_name">Показувати назву блокнота</string>
     <string name="display_inherited_tags_in_search_results">Успадковані теги в результатах пошуку</string>
     <string name="display_inherited_tags_in_search_results_summary">Показувати теги в результатах пошуку</string>
-    <string name="ongoing_notification">Створити нотатку і синхронізувати</string>
+    <string name="ongoing_notification">Поточні</string>
     <string name="ongoing_notification_summary">Швидко створити нову нотатку або синхронізувати блокноти з панелі сповіщень</string>
+    <string name="ongoing_notification_priority">Пріоритет поточного</string>
     <string name="show_sync_notifications_title">Помилка синхронізації</string>
     <string name="show_sync_notifications_summary">Показувати сповіщення про помилку синхронізації</string>
     <string name="prefs_title_reminders">Нагадування</string>
@@ -393,10 +397,13 @@
     <string name="default_notebook_desc">Блокнот, зо використовується при спільному використанні Orgzly або створенні нової нотатки з поточного сповіщення</string>
     <string name="force_utf8">Примусове кодування UTF-8</string>
     <string name="force_utf8_summary">Не визначати кодування, завжди використовуввати UTF-8</string>
-    <string name="list_widget_name">Нотатки Orgzly</string>
+    <string name="notebooks_start_folded">Розпочати згорнутим</string>
+    <string name="notebooks_start_folded_summary">Згорнути усі нотатки, коли блокнот завантажено</string>
+    <string name="list_widget_name">Збережений пошуковий запит</string>
     <string name="list_widget_select_search">Виберіть пошук</string>
     <string name="list_widget_nothing_selected">Пошук не вибрано</string>
     <string name="auto_sync">Автоматично синхронізувати</string>
+    <string name="auto_sync_experimental">Автоматична синхронізація (експериментальне)</string>
     <string name="auto_sync_experimental_summary">Використовується тільки для локальних сховищ</string>
     <string name="auto_sync_warning">В залежності від того, які параметри ви виберете, синхронізація може відбуватися часто. Якщо блокнот змінено, весь його вміст переноситься в сховище або з нього. Деякі дії можуть затриматися під час синхронизації.</string>
     <string name="pref_title_sync_after_note_create">Нотатку створено</string>
@@ -435,7 +442,7 @@
         <item quantity="other">Експортовано <b>%d</b> запитів</item>
     </plurals>
     <string name="storage_permissions_missing">Нема дозволу на зберігання</string>
-    <string name="file_does_not_exist">Файл \"%s\" не існує</string>
+    <string name="file_does_not_exist">Файл %s не існує</string>
     <string name="import_from">Імпортувати з «%1$s»?</string>
     <string name="export_to">Експортувати в «%1$s»?</string>
     <string name="primary_storage_not_available">Основне сховище недосяжне</string>
@@ -480,4 +487,15 @@
     <string name="argument_selected">%s вибрано</string>
     <string name="fixed_width_value">Ширина (в пікселях)</string>
     <string name="share_target_service">Передати в блокнот Orgzly</string>
+    <string name="under">Нижче</string>
+    <string name="above">Вище</string>
+    <string name="below">Нижче</string>
+    <string name="loading">Завантаження…</string>
+    <string name="go_to">Перейти</string>
+    <string name="cannot_refile_to_the_same_subtree">Неможливо повторити на тій самій гілці</string>
+    <string name="notification_maximum_priority">Максимум</string>
+    <string name="notification_high_priority">Високий</string>
+    <string name="notification_default_priority">За замовчуванням</string>
+    <string name="notification_low_priority">Низький</string>
+    <string name="notification_minimum_priority">Мінімальний</string>
 </resources>

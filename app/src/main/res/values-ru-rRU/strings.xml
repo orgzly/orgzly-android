@@ -57,6 +57,8 @@
     <string name="open">Открыть</string>
     <string name="focus">Фокус</string>
     <string name="widget">Виджет</string>
+    <string name="history">История</string>
+    <string name="event">Событие</string>
     <plurals name="notes_deleted">
         <item quantity="one">Заметка удалена</item>
         <item quantity="few">Удалено <b>%d</b> заметок</item>
@@ -214,7 +216,8 @@
     <string name="no_notes">Блокнот не содержит заметок</string>
     <string name="create_new_repository_for_syncing">Создать новое хранилище для синхронизации блокнотов</string>
     <string name="no_filters">У вас нет сохраненных поисковых запросов</string>
-    <string name="book_shortcut_label">Блокнот Orgzly</string>
+    <string name="book_shortcut_label">Блокнот</string>
+    <string name="new_note_shortcut_label">Новая заметка</string>
     <string name="pick_a_notebook">Выбрать блокнот</string>
     <string name="down">Вниз</string>
     <string name="up">Вверх</string>
@@ -351,8 +354,9 @@
     <string name="display_notebook_name">Показывать имя записной книжки</string>
     <string name="display_inherited_tags_in_search_results">Унаследованные теги в поиске</string>
     <string name="display_inherited_tags_in_search_results_summary">Отображать теги в результатах поиска</string>
-    <string name="ongoing_notification">Создать заметку и синхронизировать</string>
+    <string name="ongoing_notification">Текущий</string>
     <string name="ongoing_notification_summary">Быстро создавать новую заметку или синхронизировать блокноты из панели уведомлений</string>
+    <string name="ongoing_notification_priority">Текущий приоритет</string>
     <string name="show_sync_notifications_title">Ошибка синхронизации</string>
     <string name="show_sync_notifications_summary">Отображать уведомление о сбое синхронизации</string>
     <string name="prefs_title_reminders">Напоминания</string>
@@ -393,10 +397,13 @@
     <string name="default_notebook_desc">Блокнот, используемый при совместном использовании Orgzly или создании новой заметки из текущего уведомления</string>
     <string name="force_utf8">Кодировка UTF-8 принудительно</string>
     <string name="force_utf8_summary">Не определять кодировку, всегда использовать UTF-8</string>
-    <string name="list_widget_name">Заметки Orgzly</string>
+    <string name="notebooks_start_folded">Открывать свернутым</string>
+    <string name="notebooks_start_folded_summary">Свернуть заметки при открытии блокнота</string>
+    <string name="list_widget_name">Сохраненный поиск</string>
     <string name="list_widget_select_search">Выберите поиск</string>
     <string name="list_widget_nothing_selected">Поиск не выбран</string>
     <string name="auto_sync">Автосинхронизация</string>
+    <string name="auto_sync_experimental">Автосинхронизация (экспериментальное)</string>
     <string name="auto_sync_experimental_summary">Используется только для локальных хранилищ</string>
     <string name="auto_sync_warning">В зависимости от того, какие параметры вы выберете, синхронизация может быть вызвана часто. Если блокнот изменен, все его содержимое переносится в хранилище или из него. Некоторые действия могут задерживаться во время синхронизации.</string>
     <string name="pref_title_sync_after_note_create">Заметка создана</string>
@@ -435,7 +442,7 @@
         <item quantity="other">Экспортировано <b>%d</b> запросов</item>
     </plurals>
     <string name="storage_permissions_missing">Нет разрешения на хранение</string>
-    <string name="file_does_not_exist">Файл \"%s\" не существует</string>
+    <string name="file_does_not_exist">Файл не существует: %s</string>
     <string name="import_from">Импортировать из «%1$s»?</string>
     <string name="export_to">Экспортировать в «%1$s»?</string>
     <string name="primary_storage_not_available">Основное хранилище недоступно</string>
@@ -480,4 +487,15 @@
     <string name="argument_selected">%s выбран</string>
     <string name="fixed_width_value">Ширина (в пикселях)</string>
     <string name="share_target_service">Отправить в блокнот Orgzly</string>
+    <string name="under">В</string>
+    <string name="above">Выше</string>
+    <string name="below">Ниже</string>
+    <string name="loading">Загрузка…</string>
+    <string name="go_to">Перейти к</string>
+    <string name="cannot_refile_to_the_same_subtree">Невозможно перенести в то же поддерево</string>
+    <string name="notification_maximum_priority">Максимальный</string>
+    <string name="notification_high_priority">Высокий</string>
+    <string name="notification_default_priority">По умолчанию</string>
+    <string name="notification_low_priority">Низкий</string>
+    <string name="notification_minimum_priority">Минимальный</string>
 </resources>

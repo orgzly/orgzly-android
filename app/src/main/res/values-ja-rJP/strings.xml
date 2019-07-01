@@ -57,6 +57,8 @@
     <string name="open">開く</string>
     <string name="focus">焦点</string>
     <string name="widget">ウィジェット</string>
+    <string name="history">履歴</string>
+    <string name="event">予定</string>
     <plurals name="notes_deleted">
         <item quantity="other"><b>%d</b> メモを削除しました</item>
     </plurals>
@@ -202,7 +204,8 @@
     <string name="no_notes">メモ帳にメモがありません</string>
     <string name="create_new_repository_for_syncing">メモ帳の同期用に新しいリポジトリを作成します。</string>
     <string name="no_filters">保存された検索がありません</string>
-    <string name="book_shortcut_label">Orgzlyメモ帳</string>
+    <string name="book_shortcut_label">メモ帳</string>
+    <string name="new_note_shortcut_label">新しいメモ</string>
     <string name="pick_a_notebook">メモ帳を選択する</string>
     <string name="down">下へ</string>
     <string name="up">上へ</string>
@@ -339,8 +342,9 @@
     <string name="display_notebook_name">メモ帳の名前を表示</string>
     <string name="display_inherited_tags_in_search_results">継承したタグを検索結果で表示</string>
     <string name="display_inherited_tags_in_search_results_summary">継承したタグを検索結果で表示</string>
-    <string name="ongoing_notification">新規ノートと同期</string>
-    <string name="ongoing_notification_summary">通知ドロワーから簡単に、新しいメモの作成やメモ帳同期をする</string>
+    <string name="ongoing_notification">Ongoing</string>
+    <string name="ongoing_notification_summary">Quickly create new note or sync notebooks from notification drawer</string>
+    <string name="ongoing_notification_priority">Ongoing priority</string>
     <string name="show_sync_notifications_title">同期の失敗</string>
     <string name="show_sync_notifications_summary">同期エラーの通知を表示する</string>
     <string name="prefs_title_reminders">リマインダ</string>
@@ -381,10 +385,13 @@
     <string name="default_notebook_desc">Orgzlyに送るときや、通知からの新規メモ作成時に使われるメモ帳</string>
     <string name="force_utf8">UTF-8エンコーディングを強制</string>
     <string name="force_utf8_summary">エンコーディングを検出せず、常にUTF-8を使用</string>
-    <string name="list_widget_name">Orgzly メモ</string>
+    <string name="notebooks_start_folded">Start folded</string>
+    <string name="notebooks_start_folded_summary">Fold all notes when notebook is loaded</string>
+    <string name="list_widget_name">Saved search</string>
     <string name="list_widget_select_search">検索を選択</string>
     <string name="list_widget_nothing_selected">検索が選択されていません</string>
     <string name="auto_sync">自動同期</string>
+    <string name="auto_sync_experimental">自動同期 (実験中)</string>
     <string name="auto_sync_experimental_summary">ローカルリポジトリのみに使用</string>
     <string name="auto_sync_warning">選択したオプションによっては、同期はしばしば発生します。メモ帳を変更した場合、コンテンツ全体がリポジトリに転送されます。同期中に、特定のアクションが遅れる可能性があります。</string>
     <string name="pref_title_sync_after_note_create">メモが作成されました</string>
@@ -414,7 +421,7 @@
         <item quantity="other"><b>%d</b>個の検索がエクスポートされました</item>
     </plurals>
     <string name="storage_permissions_missing">ストレージの権限がありません</string>
-    <string name="file_does_not_exist">ファイル %s が存在しません</string>
+    <string name="file_does_not_exist">ファイルが存在しません: %s</string>
     <string name="import_from">\"%1$s\"からインポートしますか？</string>
     <string name="export_to">\"%1$s\"にエクスポートしますか？</string>
     <string name="primary_storage_not_available">プライマリストレージは利用できません</string>
@@ -459,4 +466,15 @@
     <string name="argument_selected">%s を選択</string>
     <string name="fixed_width_value">幅(ピクセル)</string>
     <string name="share_target_service">Orgzlyメモ帳に送る</string>
+    <string name="under">Under</string>
+    <string name="above">Above</string>
+    <string name="below">Below</string>
+    <string name="loading">読み込み中…</string>
+    <string name="go_to">Go to</string>
+    <string name="cannot_refile_to_the_same_subtree">Cannot refile to the same subtree</string>
+    <string name="notification_maximum_priority">最大値</string>
+    <string name="notification_high_priority">高</string>
+    <string name="notification_default_priority">デフォルト</string>
+    <string name="notification_low_priority">低</string>
+    <string name="notification_minimum_priority">最小値</string>
 </resources>
