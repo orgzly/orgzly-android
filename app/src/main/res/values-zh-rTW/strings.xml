@@ -391,7 +391,6 @@
     <string name="list_widget_select_search">選取搜尋</string>
     <string name="list_widget_nothing_selected">沒有選取搜尋</string>
     <string name="auto_sync">自動同步</string>
-    <string name="auto_sync_experimental">自動同步 (實驗性)</string>
     <string name="auto_sync_experimental_summary">只使用本地資料庫</string>
     <string name="auto_sync_warning">根據您選擇的選項，同步可能會經常觸發。如果筆記本被修改，則其整個內容被傳送到存儲庫或從存儲庫傳送。正在進行同步時，某些操作可能會延遲。</string>
     <string name="pref_title_sync_after_note_create">已創建筆記</string>

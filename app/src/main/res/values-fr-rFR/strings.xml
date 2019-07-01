@@ -395,7 +395,6 @@
     <string name="list_widget_select_search">Sélectionnez Recherche</string>
     <string name="list_widget_nothing_selected">Pas de recherche sélectionnée</string>
     <string name="auto_sync">Synchronisation automatique</string>
-    <string name="auto_sync_experimental">Synchronisation automatique (expérimental)</string>
     <string name="auto_sync_experimental_summary">Utilisé pour les dépôts locaux uniquement</string>
     <string name="auto_sync_warning">Selon l\'option choisie, la synchronisation pourrait être déclenchée fréquemment. Si le bloc-notes est modifié, le contenu complet est transféré vers ou depuis le dépôt. Certaines actions pourraient être retardées lors de la synchronisation.</string>
     <string name="pref_title_sync_after_note_create">Note créée</string>

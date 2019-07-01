@@ -395,7 +395,6 @@
     <string name="list_widget_select_search">Selecionar búsqueda</string>
     <string name="list_widget_nothing_selected">Ninguna búsqueda seleccionada</string>
     <string name="auto_sync">Auto-sincronización</string>
-    <string name="auto_sync_experimental">Auto-sync (experimental)</string>
     <string name="auto_sync_experimental_summary">Utilizado solo para repositorios locales</string>
     <string name="auto_sync_warning">Dependiendo de que opción elijas, la sincronización podría activarse a menudo. Si la nota es modificada, todo su contenido es transferido a o desde el repositorio. Ciertas acciones podrian retrasare mientras que la sincronización esta en curso.</string>
     <string name="pref_title_sync_after_note_create">Nota creada</string>

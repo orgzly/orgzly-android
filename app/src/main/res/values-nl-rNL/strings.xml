@@ -395,7 +395,6 @@
     <string name="list_widget_select_search">Selecteer zoeken</string>
     <string name="list_widget_nothing_selected">Geen zoekopdracht geselecteerd</string>
     <string name="auto_sync">Auto-synchroniseer</string>
-    <string name="auto_sync_experimental">Auto-synchroniseren (experimenteel)</string>
     <string name="auto_sync_experimental_summary">Wordt alleen voor lokale opslagruimtes gebruikt</string>
     <string name="auto_sync_warning">Afhankelijk van welke opties je kiest, kan synchroniseren vaak getriggerd worden. Als het notitieboekje aangepast is, wordt de volledige inhoud van of naar de opslagruimte verstuurd. Bepaalde handelingen kunnen vertraagd worden terwijl het synchroniseren bezig is.</string>
     <string name="pref_title_sync_after_note_create">Notitie gemaakt</string>

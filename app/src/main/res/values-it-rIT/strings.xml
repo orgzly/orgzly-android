@@ -395,7 +395,6 @@
     <string name="list_widget_select_search">Selezionare il tipo di ricerca</string>
     <string name="list_widget_nothing_selected">Nessuna ricerca selezionata</string>
     <string name="auto_sync">Sincronizzazione automatica</string>
-    <string name="auto_sync_experimental">Sincronizzazione automatica (sperimentale)</string>
     <string name="auto_sync_experimental_summary">Usato solo per depositi locali</string>
     <string name="auto_sync_warning">A seconda dell\'opzioni che scegli, la sincronizzazione potrebbe essere fatta spesso. Se il taccuino è modificato, il suo intero contentuto è trasferito a o dal deposito. Alcune azioni possono ritardare la sincronizzazione mentre è in corso.</string>
     <string name="pref_title_sync_after_note_create">Nota creata</string>

@@ -391,7 +391,6 @@
     <string name="list_widget_select_search">选择搜索</string>
     <string name="list_widget_nothing_selected">未选择搜索</string>
     <string name="auto_sync">自动同步</string>
-    <string name="auto_sync_experimental">自动同步（实验功能）</string>
     <string name="auto_sync_experimental_summary">仅用于本地存储库</string>
     <string name="auto_sync_warning">根据所选选项，同步可能被经常触发。如果笔记本被修改，它的全部内容会与存储库保持双向同步。当同步正在进行时，某些操作可能会被延迟。</string>
     <string name="pref_title_sync_after_note_create">笔记已创建</string>

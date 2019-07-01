@@ -403,7 +403,6 @@
     <string name="list_widget_select_search">Выберите поиск</string>
     <string name="list_widget_nothing_selected">Поиск не выбран</string>
     <string name="auto_sync">Автосинхронизация</string>
-    <string name="auto_sync_experimental">Автосинхронизация (экспериментальное)</string>
     <string name="auto_sync_experimental_summary">Используется только для локальных хранилищ</string>
     <string name="auto_sync_warning">В зависимости от того, какие параметры вы выберете, синхронизация может быть вызвана часто. Если блокнот изменен, все его содержимое переносится в хранилище или из него. Некоторые действия могут задерживаться во время синхронизации.</string>
     <string name="pref_title_sync_after_note_create">Заметка создана</string>
