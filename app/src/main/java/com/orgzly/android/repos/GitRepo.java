@@ -223,8 +223,17 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     }
 
     private VersionedRook currentVersionedRook(Uri uri) throws IOException {
-        RevCommit newCommit = synchronizer.currentHead();
-        return new VersionedRook(getUri(), uri, newCommit.name(), newCommit.getCommitTime()*1000);
+        RevCommit commit = null;
+        if (uri.toString().contains("%")) {
+            uri = Uri.parse(Uri.decode(uri.toString()));
+        }
+        try {
+            commit = synchronizer.getLatestCommitOfFile(uri);
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+        }
+        long mtime = (long)commit.getCommitTime()*1000;
+        return new VersionedRook(getUri(), uri, commit.name(), mtime);
     }
 
     private IgnoreNode getIgnores() throws IOException {

@@ -1,6 +1,7 @@
 package com.orgzly.android.git;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -282,6 +283,15 @@ public class GitFileSynchronizer {
         }
         Ref target = git.getRepository().findRef(identifier);
         return new RevWalk(git.getRepository()).parseCommit(target.getObjectId());
+    }
+
+    public RevCommit getLatestCommitOfFile(Uri uri) throws GitAPIException {
+        String fileName = uri.toString();
+        if (fileName.startsWith("/")) {
+            fileName = fileName.replaceFirst("/", "");
+        }
+        Iterable<RevCommit> log = git.log().setMaxCount(1).addPath(fileName).call();
+        return log.iterator().next();
     }
 
     public String repoPath() {
