@@ -201,7 +201,7 @@ class ListWidgetService : RemoteViewsService() {
             }
 
             // Check mark
-            if (doneStates.contains(noteView.note.state)) {
+            if (!AppPreferences.widgetDisplayCheckmarks(context) || doneStates.contains(noteView.note.state)) {
                 row.setViewVisibility(R.id.item_list_widget_done, View.GONE)
             } else {
                 row.setViewVisibility(R.id.item_list_widget_done, View.VISIBLE)

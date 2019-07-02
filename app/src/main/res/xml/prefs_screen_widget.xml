@@ -28,6 +28,12 @@
         android:entryValues="@array/widget_font_sizes_values"
         android:defaultValue="@string/pref_default_widget_font_size" />
 
+    <SwitchPreference
+        android:key="@string/pref_key_widget_display_checkmarks"
+        android:title="@string/display_checkmarks"
+        android:summary="@string/display_checkmarks_summary"
+        android:defaultValue="@bool/pref_default_widget_display_checkmarks" />
+
     <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
         android:key="@string/pref_key_widget_update_frequency"
         android:title="@string/update_frequency"

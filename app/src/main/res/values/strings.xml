@@ -608,4 +608,7 @@
         <item quantity="other">Refile <b>%d</b> notes</item>
     </plurals>
 
+    <string name="display_checkmarks">Display checkmarks</string>
+    <string name="display_checkmarks_summary">Allows marking notes as done</string>
+
 </resources>
