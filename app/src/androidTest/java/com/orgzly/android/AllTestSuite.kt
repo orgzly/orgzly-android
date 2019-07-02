@@ -28,6 +28,7 @@ import org.junit.runners.Suite
         InternalLinksTest::class,
         MiscTest::class,
         NewNoteTest::class,
+        NoteEventsTest::class,
         NoteFragmentTest::class,
         QueryFragmentTest::class,
         ReposActivityTest::class,
