@@ -19,7 +19,8 @@ import com.orgzly.android.usecase.UseCaseRunner
 
 class NoteViewModel(
         private val dataRepository: DataRepository,
-        private val bookId: Long
+        private val bookId: Long,
+        private val isNew: Boolean
 ) : CommonViewModel() {
 
     val tags: LiveData<List<String>> by lazy {
@@ -97,16 +98,47 @@ class NoteViewModel(
         EDIT_WITH_KEYBOARD
     }
 
-    // Start in edit mode
-    val viewEditMode = MutableLiveData<ViewEditMode>(ViewEditMode.EDIT)
+    val viewEditMode = MutableLiveData<ViewEditMode>(startMode())
 
-    // Change view/edit mode
+    private fun startMode(): ViewEditMode {
+        // Always start new notes in edit mode
+        if (isNew) {
+            return ViewEditMode.EDIT_WITH_KEYBOARD
+        }
+
+        return when (AppPreferences.noteDetailsOpeningMode(App.getAppContext())) {
+            "last" ->
+                return when (AppPreferences.noteDetailsLastMode(App.getAppContext())) {
+                    "view" -> ViewEditMode.VIEW
+                    "edit" -> ViewEditMode.EDIT
+                    else -> ViewEditMode.EDIT
+                }
+            "view" -> ViewEditMode.VIEW
+            "edit" -> ViewEditMode.EDIT
+            else -> ViewEditMode.EDIT
+        }
+    }
+
+    /**
+     * Toggle view/edit mode.
+     */
     fun toggleViewEditMode() {
-        viewEditMode.value = when (viewEditMode.value) {
+        val context = App.getAppContext()
+
+        viewEditMode.value  = when (viewEditMode.value) {
             ViewEditMode.VIEW -> ViewEditMode.EDIT_WITH_KEYBOARD
             ViewEditMode.EDIT -> ViewEditMode.VIEW
             ViewEditMode.EDIT_WITH_KEYBOARD -> ViewEditMode.VIEW
             null -> ViewEditMode.EDIT
+        }
+
+        // Only remember last mode when opening existing notes
+        if (!isNew) {
+            if (viewEditMode.value == ViewEditMode.VIEW) {
+                AppPreferences.noteDetailsLastMode(context, "view")
+            } else {
+                AppPreferences.noteDetailsLastMode(context, "edit")
+            }
         }
     }
 }

@@ -154,6 +154,10 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         }
     }
 
+    private fun isNew(): Boolean {
+        return place != null
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
         super.onCreate(savedInstanceState)
@@ -162,7 +166,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             ViewModelProviders.of(it).get(SharedMainActivityViewModel::class.java)
         } ?: throw IllegalStateException("No Activity")
 
-        val factory = NoteViewModelFactory.getInstance(dataRepository, bookId)
+        val factory = NoteViewModelFactory.getInstance(dataRepository, bookId, isNew())
 
         viewModel = ViewModelProviders.of(this, factory).get(NoteViewModel::class.java)
 
@@ -540,7 +544,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 locationButtonView.text = bookTitle
             }
 
-            if (place != null) { /* Creating new note. */
+            if (isNew()) { // Create new note
                 notePayload = NoteBuilder.newPayload(context!!, initialTitle ?: "", initialContent)
 
                 mViewFlipper.displayedChild = 0
@@ -552,7 +556,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                     ActivityUtils.openSoftKeyboardWithDelay(activity, title)
                 }
 
-            } else { /* Get existing note from database. */
+            } else { // Open existing note
                 notePayload = dataRepository.getNotePayload(noteId)
 
                 if (notePayload != null) {
@@ -900,7 +904,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         }
 
         /* Newly created note cannot be deleted. */
-        if (place != null) {
+        if (isNew()) {
             menu.removeItem(R.id.delete)
         }
     }
@@ -1054,7 +1058,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         if (isTitleValid()) {
             val payload = notePayload
 
-            if (place != null) { // New note
+            if (isNew()) { // New note
                 val notePlace = if (place != Place.UNSPECIFIED)
                     NotePlace(bookId, noteId, place)
                 else

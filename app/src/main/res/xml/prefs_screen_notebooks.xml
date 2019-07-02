@@ -109,6 +109,13 @@
 
     <PreferenceCategory android:title="@string/note">
 
+        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+            android:key="@string/pref_key_note_details_opening_mode"
+            android:title="@string/note_details_opening_mode"
+            android:entries="@array/note_details_opening_mode"
+            android:entryValues="@array/note_details_opening_mode_values"
+            android:defaultValue="@string/pref_default_note_details_opening_mode"/>
+
         <com.orgzly.android.prefs.StatesPreference
             android:key="@string/pref_key_states"
             android:title="@string/states"

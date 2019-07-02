@@ -18,6 +18,7 @@
     <string name="remove_notebook_link">Remove link</string>
     <string name="browse">Browse</string>
     <string name="dropbox">Dropbox</string>
+    <string name="view">View</string>
     <string name="edit">Edit</string>
     <string name="edit_note">Edit note</string>
     <string name="delete">Delete</string>
@@ -611,4 +612,7 @@
     <string name="display_checkmarks">Display checkmarks</string>
     <string name="display_checkmarks_summary">Allows marking notes as done</string>
 
+    <string name="last_used">Last used</string>
+
+    <string name="note_details_opening_mode">Opening mode</string>
 </resources>
