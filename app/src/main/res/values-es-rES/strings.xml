@@ -483,4 +483,13 @@
     <string name="notification_default_priority">Por defecto</string>
     <string name="notification_low_priority">Bajo</string>
     <string name="notification_minimum_priority">Mínimo</string>
+    <string name="breadcrumbs_target">Objetivo de migas de pan</string>
+    <string name="link_target">Destino del enlace</string>
+    <string name="note_details">Detalles de la nota</string>
+    <string name="notebook_and_scroll_to_note">Bloc de notas (scroll a la nota)</string>
+    <string name="notebook_and_focus_on_note">Bloc de notas (foco en la nota)</string>
+    <plurals name="refile_notes">
+        <item quantity="one">Reubicar nota</item>
+        <item quantity="other">Refile <b>%d</b> notes</item>
+    </plurals>
 </resources>

@@ -476,4 +476,12 @@
     <string name="notification_default_priority">默认</string>
     <string name="notification_low_priority">低</string>
     <string name="notification_minimum_priority">最小</string>
+    <string name="breadcrumbs_target">琐碎目标</string>
+    <string name="link_target">链接目标</string>
+    <string name="note_details">笔记详情</string>
+    <string name="notebook_and_scroll_to_note">笔记本（滚动到笔记）</string>
+    <string name="notebook_and_focus_on_note">笔记本（聚焦到笔记）</string>
+    <plurals name="refile_notes">
+        <item quantity="other">替换 <b>%d</b> 笔记</item>
+    </plurals>
 </resources>

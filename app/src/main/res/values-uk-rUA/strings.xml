@@ -497,4 +497,15 @@
     <string name="notification_default_priority">За замовчуванням</string>
     <string name="notification_low_priority">Низький</string>
     <string name="notification_minimum_priority">Мінімальний</string>
+    <string name="breadcrumbs_target">Відстежувати ціль</string>
+    <string name="link_target">Link target</string>
+    <string name="note_details">Детальніше про нотатку</string>
+    <string name="notebook_and_scroll_to_note">Блокнот (прокрутити до нотатки)</string>
+    <string name="notebook_and_focus_on_note">Блокнот (фокусувати на нотатці)</string>
+    <plurals name="refile_notes">
+        <item quantity="one">Перемістити нотатку</item>
+        <item quantity="few">Перемістити <b>%d</b> нотаток</item>
+        <item quantity="many">Перемістити <b>%d</b> нотаток</item>
+        <item quantity="other">Перемістити <b>%d</b> нотаток</item>
+    </plurals>
 </resources>

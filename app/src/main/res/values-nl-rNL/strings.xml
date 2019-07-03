@@ -483,4 +483,13 @@
     <string name="notification_default_priority">Standaard</string>
     <string name="notification_low_priority">Laag</string>
     <string name="notification_minimum_priority">Minimum</string>
+    <string name="breadcrumbs_target">Broodkruimeldoel</string>
+    <string name="link_target">Linkdoel</string>
+    <string name="note_details">Notitie details</string>
+    <string name="notebook_and_scroll_to_note">Notitieboek (scrollen naar notitie)</string>
+    <string name="notebook_and_focus_on_note">Notitieboek (focus op notitie)</string>
+    <plurals name="refile_notes">
+        <item quantity="one">Refile notitie</item>
+        <item quantity="other">Refile <b>%d</b> notities</item>
+    </plurals>
 </resources>

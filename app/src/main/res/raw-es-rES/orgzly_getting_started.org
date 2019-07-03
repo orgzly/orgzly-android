@@ -17,7 +17,7 @@ Arrastre a la izquierda para abrir un menú diferente.
 ** Una nota puede tener etiquetas :tag1:tag2:
 *** Las subnotas heredan las etiquetas :tag3:
 
-Si usted busca notas con la etiqueta "tag1", esta nota también se devolverá.
+Si busca por notas con la etiqueta "etiqueta1" usando la búsqueda "t.etiqueta1", esta nota se incluirá en los resultados de búsqueda.
 
 ** TODO Una nota puede tener un estado
 

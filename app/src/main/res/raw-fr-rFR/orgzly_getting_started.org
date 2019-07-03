@@ -17,7 +17,7 @@ Vous pouvez sélectionner plusieurs notes.
 ** Les notes peuvent avoir des étiquettes :tag1:tag2:
 *** Les sous-notes héritent des étiquettes parentes :tag3:
 
-Si vous recherchez des notes avec l'étiquette « tag1 », cette note sera également retournée.
+If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
 
 ** TODO Les notes peuvent avoir un état
 

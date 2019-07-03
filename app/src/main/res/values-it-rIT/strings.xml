@@ -85,7 +85,7 @@
     <string name="message_dropbox_linked">Collegato a Dropbox con successo</string>
     <!-- Preferences (Settings). -->
     <string name="repos_preference_title">Depositi</string>
-    <string name="repos_preference_summary">Posizione per sincronizzare i tuoi taccuini con</string>
+    <string name="repos_preference_summary">Posizione con cui sincronizzare i tuoi taccuini</string>
     <string name="message_book_has_no_link">Nessun collegamento stabilito</string>
     <string name="message_note_created">Nota creata</string>
     <string name="message_failed_creating_note">Impossibile creare la nota</string>
@@ -483,4 +483,13 @@
     <string name="notification_default_priority">Predefinito</string>
     <string name="notification_low_priority">Bassa</string>
     <string name="notification_minimum_priority">Minima</string>
+    <string name="breadcrumbs_target">Breadcrumbs target</string>
+    <string name="link_target">Link target</string>
+    <string name="note_details">Note details</string>
+    <string name="notebook_and_scroll_to_note">Notebook (scroll to note)</string>
+    <string name="notebook_and_focus_on_note">Notebook (focus on note)</string>
+    <plurals name="refile_notes">
+        <item quantity="one">Refile note</item>
+        <item quantity="other">Refile <b>%d</b> notes</item>
+    </plurals>
 </resources>

@@ -17,7 +17,7 @@ Veeg het naar links om een ander menu te openen.
 ** Een notitie kan labels hebben :label1:label2:
 *** Subnotities erven deze labels :label3:
 
-Als je zoekt naar notities met label "label1", wordt deze notitie ook getoond.
+Als u notities zoekt met tag "tag1" met "t.tag1" zoekopdracht, zal deze notitie worden opgenomen in zoekresultaten.
 
 ** TODO Een notitie kan een status hebben
 

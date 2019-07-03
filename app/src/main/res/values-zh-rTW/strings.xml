@@ -476,4 +476,12 @@
     <string name="notification_default_priority">預設</string>
     <string name="notification_low_priority">低</string>
     <string name="notification_minimum_priority">最小</string>
+    <string name="breadcrumbs_target">麵包屑導航 目標</string>
+    <string name="link_target">連結目標</string>
+    <string name="note_details">筆記詳細資訊</string>
+    <string name="notebook_and_scroll_to_note">筆記本(滾動到筆記)</string>
+    <string name="notebook_and_focus_on_note">筆記本(對焦到筆記)</string>
+    <plurals name="refile_notes">
+        <item quantity="other">移動 <b>%d</b> 筆記</item>
+    </plurals>
 </resources>

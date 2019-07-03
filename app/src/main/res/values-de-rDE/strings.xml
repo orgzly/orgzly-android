@@ -483,4 +483,13 @@
     <string name="notification_default_priority">Standard</string>
     <string name="notification_low_priority">Niedrig</string>
     <string name="notification_minimum_priority">Minimal</string>
+    <string name="breadcrumbs_target">Brotkrumenziel</string>
+    <string name="link_target">Verknüpfungsziel</string>
+    <string name="note_details">Notizdetails</string>
+    <string name="notebook_and_scroll_to_note">Notizbuch (zu Notiz scrollen)</string>
+    <string name="notebook_and_focus_on_note">Notizbuch (Fokus auf Notiz)</string>
+    <plurals name="refile_notes">
+        <item quantity="one">Notiz aktualisieren</item>
+        <item quantity="other">Refile <b>%d</b> notes</item>
+    </plurals>
 </resources>

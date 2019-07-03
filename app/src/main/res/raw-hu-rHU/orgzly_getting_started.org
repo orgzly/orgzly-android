@@ -17,7 +17,7 @@ Balra simítva egy másik menü nyílik meg.
 ** Lehet címkéket is ragasztani bejegyzésekre :címke1:címke2:
 *** Az aljegyzet örökli a címkéket :címke3:
 
-Ha jegyzeteket keresel "címke1" címkével, ez a bejegyzés is benne lesz az eredményben.
+If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
 
 ** TODO Egy bejegyzésnek állapota is lehet
 
