@@ -57,6 +57,8 @@
     <string name="open">Buka</string>
     <string name="focus">Focus</string>
     <string name="widget">Widget</string>
+    <string name="history">History</string>
+    <string name="event">Event</string>
     <plurals name="notes_deleted">
         <item quantity="other">Catatan <b>%d</b> dihapus</item>
     </plurals>
@@ -202,7 +204,8 @@
     <string name="no_notes">Notebook tidak memiliki catatan</string>
     <string name="create_new_repository_for_syncing">Buat repositori baru untuk menyinkronkan notebook Anda</string>
     <string name="no_filters">Anda tidak memiliki pencarian tersimpan</string>
-    <string name="book_shortcut_label">Notebook Orgzly</string>
+    <string name="book_shortcut_label">Notebook</string>
+    <string name="new_note_shortcut_label">New note</string>
     <string name="pick_a_notebook">Pilih buku catatan</string>
     <string name="down">Bawah</string>
     <string name="up">Atas</string>
@@ -339,8 +342,9 @@
     <string name="display_notebook_name">Display notebook name</string>
     <string name="display_inherited_tags_in_search_results">Mewarisi label dalam hasil pencarian</string>
     <string name="display_inherited_tags_in_search_results_summary">Tampilkan label yang diwariskan di hasil pencarian</string>
-    <string name="ongoing_notification">Buat catatan dan sinkron</string>
-    <string name="ongoing_notification_summary">Segera buat catatan baru atau sinkronkan notebook dari laci pemberitahuan</string>
+    <string name="ongoing_notification">Ongoing</string>
+    <string name="ongoing_notification_summary">Quickly create new note or sync notebooks from notification drawer</string>
+    <string name="ongoing_notification_priority">Ongoing priority</string>
     <string name="show_sync_notifications_title">Sync failure</string>
     <string name="show_sync_notifications_summary">Display notification on sync failure</string>
     <string name="prefs_title_reminders">Pengingat</string>
@@ -381,7 +385,9 @@
     <string name="default_notebook_desc">Notebook digunakan saat berbagi ke Orgzly atau membuat catatan baru dari pemberitahuan yang sedang berlangsung</string>
     <string name="force_utf8">Memaksa pengkodean UTF-8</string>
     <string name="force_utf8_summary">Jangan mencoba mendeteksi pengkodean, selalu gunakan UTF-8</string>
-    <string name="list_widget_name">Orgzly notes</string>
+    <string name="notebooks_start_folded">Start folded</string>
+    <string name="notebooks_start_folded_summary">Fold all notes when notebook is loaded</string>
+    <string name="list_widget_name">Saved search</string>
     <string name="list_widget_select_search">Select search</string>
     <string name="list_widget_nothing_selected">No search selected</string>
     <string name="auto_sync">Sinkron otomatis</string>
@@ -414,7 +420,7 @@
         <item quantity="other">Exported <b>%d</b> searches</item>
     </plurals>
     <string name="storage_permissions_missing">Tidak ada izin penyimpanan</string>
-    <string name="file_does_not_exist">File %s tidak ada</string>
+    <string name="file_does_not_exist">File does not exist: %s</string>
     <string name="import_from">Impor dari \"%1$s\"?</string>
     <string name="export_to">Ekspor dari \"%1$s\"?</string>
     <string name="primary_storage_not_available">Penyimpanan utama tidak tersedia</string>
@@ -459,4 +465,23 @@
     <string name="argument_selected">%s selected</string>
     <string name="fixed_width_value">Width (in pixels)</string>
     <string name="share_target_service">Share to Orgzly notebook</string>
+    <string name="under">Under</string>
+    <string name="above">Above</string>
+    <string name="below">Below</string>
+    <string name="loading">Loading…</string>
+    <string name="go_to">Go to</string>
+    <string name="cannot_refile_to_the_same_subtree">Cannot refile to the same subtree</string>
+    <string name="notification_maximum_priority">Maximum</string>
+    <string name="notification_high_priority">High</string>
+    <string name="notification_default_priority">Default</string>
+    <string name="notification_low_priority">Low</string>
+    <string name="notification_minimum_priority">Minimum</string>
+    <string name="breadcrumbs_target">Breadcrumbs target</string>
+    <string name="link_target">Link target</string>
+    <string name="note_details">Note details</string>
+    <string name="notebook_and_scroll_to_note">Notebook (scroll to note)</string>
+    <string name="notebook_and_focus_on_note">Notebook (focus on note)</string>
+    <plurals name="refile_notes">
+        <item quantity="other">Refile <b>%d</b> notes</item>
+    </plurals>
 </resources>

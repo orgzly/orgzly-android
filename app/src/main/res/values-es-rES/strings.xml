@@ -57,6 +57,8 @@
     <string name="open">Abrir</string>
     <string name="focus">Foco</string>
     <string name="widget">Control</string>
+    <string name="history">Historia</string>
+    <string name="event">Evento</string>
     <plurals name="notes_deleted">
         <item quantity="one">Nota eliminada</item>
         <item quantity="other">Notas <b>%d</b> eliminadas</item>
@@ -206,7 +208,8 @@
     <string name="no_notes">El bloc no tiene notas</string>
     <string name="create_new_repository_for_syncing">Crear nuevo repositorio para sincronizar sus blocs de notas</string>
     <string name="no_filters">No tiene búsquedas guardadas</string>
-    <string name="book_shortcut_label">Blog de notas Orgzly</string>
+    <string name="book_shortcut_label">Bloc de Notas</string>
+    <string name="new_note_shortcut_label">Nueva nota</string>
     <string name="pick_a_notebook">Elige una nota</string>
     <string name="down">Bajar</string>
     <string name="up">Subir</string>
@@ -343,8 +346,9 @@
     <string name="display_notebook_name">Mostrar nombre de bloc de notas</string>
     <string name="display_inherited_tags_in_search_results">Tags heredadas en los resultados de búsqueda</string>
     <string name="display_inherited_tags_in_search_results_summary">Mostrar etiquetas heredadas en los resultados de la búsqueda</string>
-    <string name="ongoing_notification">Crear nota y sincronizar</string>
-    <string name="ongoing_notification_summary">Crear rápidamente una nueva nota o sincronizar desde el cajón de notificacion</string>
+    <string name="ongoing_notification">En curso</string>
+    <string name="ongoing_notification_summary">Crear rápidamente una nueva nota o sincronizar desde el cajetín de notificaciones</string>
+    <string name="ongoing_notification_priority">Prioridad en curso</string>
     <string name="show_sync_notifications_title">Fallo de sincronización</string>
     <string name="show_sync_notifications_summary">Mostrar notificación de falta de sincronización</string>
     <string name="prefs_title_reminders">Recordatorios</string>
@@ -385,7 +389,9 @@
     <string name="default_notebook_desc">Nota usada al compartir a Orgzly o crear una nueva nota desde la notificación actual</string>
     <string name="force_utf8">Codificacion UTF-8 de fuerza</string>
     <string name="force_utf8_summary">No intente detectar codificación, siempre use UTF-8</string>
-    <string name="list_widget_name">Blog de notas Orgzly</string>
+    <string name="notebooks_start_folded">Inicio plegado</string>
+    <string name="notebooks_start_folded_summary">Plegar todas las notas cuando un bloc de notas sea cargado</string>
+    <string name="list_widget_name">Búsqueda guardada</string>
     <string name="list_widget_select_search">Selecionar búsqueda</string>
     <string name="list_widget_nothing_selected">Ninguna búsqueda seleccionada</string>
     <string name="auto_sync">Auto-sincronización</string>
@@ -421,7 +427,7 @@
         <item quantity="other">Exportadas <b>%d</b> búsquedas</item>
     </plurals>
     <string name="storage_permissions_missing">Sin permiso de almacenamiento</string>
-    <string name="file_does_not_exist">El archivo %s no existe</string>
+    <string name="file_does_not_exist">Fichero no existe: %s</string>
     <string name="import_from">¿Importar desde \"%1$s\"?</string>
     <string name="export_to">¿Exportar a \"%1$s\"?</string>
     <string name="primary_storage_not_available">Almacenamiento primario no disponible</string>
@@ -466,4 +472,24 @@
     <string name="argument_selected">%s seleccionado</string>
     <string name="fixed_width_value">Ancho (en pixeles)</string>
     <string name="share_target_service">Compartir a Orgzly bloc de notas</string>
+    <string name="under">Debajo</string>
+    <string name="above">Encima</string>
+    <string name="below">Abajo</string>
+    <string name="loading">Cargando…</string>
+    <string name="go_to">Ir a</string>
+    <string name="cannot_refile_to_the_same_subtree">No se puede rellenar al mismo subárbol</string>
+    <string name="notification_maximum_priority">Máximo</string>
+    <string name="notification_high_priority">Alto</string>
+    <string name="notification_default_priority">Por defecto</string>
+    <string name="notification_low_priority">Bajo</string>
+    <string name="notification_minimum_priority">Mínimo</string>
+    <string name="breadcrumbs_target">Objetivo de migas de pan</string>
+    <string name="link_target">Destino del enlace</string>
+    <string name="note_details">Detalles de la nota</string>
+    <string name="notebook_and_scroll_to_note">Bloc de notas (scroll a la nota)</string>
+    <string name="notebook_and_focus_on_note">Bloc de notas (foco en la nota)</string>
+    <plurals name="refile_notes">
+        <item quantity="one">Reubicar nota</item>
+        <item quantity="other">Refile <b>%d</b> notes</item>
+    </plurals>
 </resources>

@@ -57,6 +57,8 @@
     <string name="open">打开</string>
     <string name="focus">专注</string>
     <string name="widget">桌面小部件</string>
+    <string name="history">历史</string>
+    <string name="event">事件</string>
     <plurals name="notes_deleted">
         <item quantity="other">已删除 <b>%d</b> 笔记</item>
     </plurals>
@@ -202,7 +204,8 @@
     <string name="no_notes">笔记本无笔记</string>
     <string name="create_new_repository_for_syncing">为同步笔记本新建存储库</string>
     <string name="no_filters">没有已保存的搜索</string>
-    <string name="book_shortcut_label">Orgzly笔记本</string>
+    <string name="book_shortcut_label">笔记本</string>
+    <string name="new_note_shortcut_label">新建笔记</string>
     <string name="pick_a_notebook">选择一个笔记本</string>
     <string name="down">向下</string>
     <string name="up">向上</string>
@@ -339,8 +342,9 @@
     <string name="display_notebook_name">显示笔记本名称</string>
     <string name="display_inherited_tags_in_search_results">搜索结果中的被继承标签</string>
     <string name="display_inherited_tags_in_search_results_summary">在搜索结果中显示被继承标签</string>
-    <string name="ongoing_notification">新建笔记并同步</string>
-    <string name="ongoing_notification_summary">从通知抽屉快速新建笔记或同步笔记本</string>
+    <string name="ongoing_notification">持续</string>
+    <string name="ongoing_notification_summary">从通知栏快速新建笔记或同步笔记本</string>
+    <string name="ongoing_notification_priority">持续优先级</string>
     <string name="show_sync_notifications_title">同步失败</string>
     <string name="show_sync_notifications_summary">显示同步失败的通知</string>
     <string name="prefs_title_reminders">提醒</string>
@@ -381,7 +385,9 @@
     <string name="default_notebook_desc">分享到Orgzly或从固定通知新建笔记时使用的笔记本</string>
     <string name="force_utf8">强制 UTF-8 编码</string>
     <string name="force_utf8_summary">不要尝试检测编码，总是使用UTF-8</string>
-    <string name="list_widget_name">Orgzly笔记</string>
+    <string name="notebooks_start_folded">展开已折叠</string>
+    <string name="notebooks_start_folded_summary">加载笔记本时折叠所有笔记</string>
+    <string name="list_widget_name">已保存的搜索</string>
     <string name="list_widget_select_search">选择搜索</string>
     <string name="list_widget_nothing_selected">未选择搜索</string>
     <string name="auto_sync">自动同步</string>
@@ -414,7 +420,7 @@
         <item quantity="other">已导出 <b>%d</b> 搜索</item>
     </plurals>
     <string name="storage_permissions_missing">无存储权限</string>
-    <string name="file_does_not_exist">文件 %s 不存在</string>
+    <string name="file_does_not_exist">文件不存在: %s</string>
     <string name="import_from">从“%1$s“导入？</string>
     <string name="export_to">导出到 \"%1$s\"？</string>
     <string name="primary_storage_not_available">主存储不可用</string>
@@ -459,4 +465,23 @@
     <string name="argument_selected">已选择 %s</string>
     <string name="fixed_width_value">宽度（以像素为单位）</string>
     <string name="share_target_service">分享到 Orgzly 笔记本</string>
+    <string name="under">底下</string>
+    <string name="above">上面</string>
+    <string name="below">下面</string>
+    <string name="loading">载入中...</string>
+    <string name="go_to">转至</string>
+    <string name="cannot_refile_to_the_same_subtree">无法重定向到同一个子段</string>
+    <string name="notification_maximum_priority">最大</string>
+    <string name="notification_high_priority">高</string>
+    <string name="notification_default_priority">默认</string>
+    <string name="notification_low_priority">低</string>
+    <string name="notification_minimum_priority">最小</string>
+    <string name="breadcrumbs_target">琐碎目标</string>
+    <string name="link_target">链接目标</string>
+    <string name="note_details">笔记详情</string>
+    <string name="notebook_and_scroll_to_note">笔记本（滚动到笔记）</string>
+    <string name="notebook_and_focus_on_note">笔记本（聚焦到笔记）</string>
+    <plurals name="refile_notes">
+        <item quantity="other">替换 <b>%d</b> 笔记</item>
+    </plurals>
 </resources>

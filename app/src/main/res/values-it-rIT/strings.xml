@@ -57,6 +57,8 @@
     <string name="open">Apri</string>
     <string name="focus">Focus</string>
     <string name="widget">Widget</string>
+    <string name="history">Cronologia</string>
+    <string name="event">Evento</string>
     <plurals name="notes_deleted">
         <item quantity="one">Nota cancellata</item>
         <item quantity="other">Cancellate <b>%d</b> note</item>
@@ -83,7 +85,7 @@
     <string name="message_dropbox_linked">Collegato a Dropbox con successo</string>
     <!-- Preferences (Settings). -->
     <string name="repos_preference_title">Depositi</string>
-    <string name="repos_preference_summary">Posizione per sincronizzare i tuoi taccuini con</string>
+    <string name="repos_preference_summary">Posizione con cui sincronizzare i tuoi taccuini</string>
     <string name="message_book_has_no_link">Nessun collegamento stabilito</string>
     <string name="message_note_created">Nota creata</string>
     <string name="message_failed_creating_note">Impossibile creare la nota</string>
@@ -206,7 +208,8 @@
     <string name="no_notes">Il taccuino non ha note</string>
     <string name="create_new_repository_for_syncing">Crea un nuovo deposito per sincronizzare i tuoi taccuini</string>
     <string name="no_filters">Non hai ricerche salvate</string>
-    <string name="book_shortcut_label">Taccuino Orgzly</string>
+    <string name="book_shortcut_label">Taccuino</string>
+    <string name="new_note_shortcut_label">Nuova nota</string>
     <string name="pick_a_notebook">Scegli un taccuino</string>
     <string name="down">Giù</string>
     <string name="up">Su</string>
@@ -343,8 +346,9 @@
     <string name="display_notebook_name">Mostra il nome del taccuino</string>
     <string name="display_inherited_tags_in_search_results">Etichette ereditate nei risultati della ricerca</string>
     <string name="display_inherited_tags_in_search_results_summary">Mostra le etichette ereditate nei risultati della ricerca</string>
-    <string name="ongoing_notification">Crea una nota e sincronizza</string>
-    <string name="ongoing_notification_summary">Crea rapidamente una nuova nota o sincronizza i taccuini dal Menu</string>
+    <string name="ongoing_notification">In corso</string>
+    <string name="ongoing_notification_summary">Crea rapidamente nuove note o sincronizza le note dal menu notifiche</string>
+    <string name="ongoing_notification_priority">Priorità in corso</string>
     <string name="show_sync_notifications_title">Sincronizzazione fallita</string>
     <string name="show_sync_notifications_summary">Mostra notifica se la sincronizzazione fallisce</string>
     <string name="prefs_title_reminders">Promemoria</string>
@@ -385,7 +389,9 @@
     <string name="default_notebook_desc">Il taccuino usato quando si condivide con Orgzly o si crea una nuova nota per le notifiche in corso</string>
     <string name="force_utf8">Forza codifica UTF-8</string>
     <string name="force_utf8_summary">Non provare a individuare la modalità di codifica, usa sempre l\'UTF-8</string>
-    <string name="list_widget_name">Le note Orgzly</string>
+    <string name="notebooks_start_folded">Start folded</string>
+    <string name="notebooks_start_folded_summary">Fold all notes when notebook is loaded</string>
+    <string name="list_widget_name">Ricerca salvata</string>
     <string name="list_widget_select_search">Selezionare il tipo di ricerca</string>
     <string name="list_widget_nothing_selected">Nessuna ricerca selezionata</string>
     <string name="auto_sync">Sincronizzazione automatica</string>
@@ -421,7 +427,7 @@
         <item quantity="other">Esportate <b>%d</b> ricerche</item>
     </plurals>
     <string name="storage_permissions_missing">Nessun permesso di memorizzazione</string>
-    <string name="file_does_not_exist">Il file %s non esiste</string>
+    <string name="file_does_not_exist">Il file non esiste: %s</string>
     <string name="import_from">Importare da “%1$s”?</string>
     <string name="export_to">Esportare da “%1$s”?</string>
     <string name="primary_storage_not_available">Memoria primaria non disponibile</string>
@@ -466,4 +472,24 @@
     <string name="argument_selected">%s selezionati</string>
     <string name="fixed_width_value">Larghezza ( in pixel)</string>
     <string name="share_target_service">Condividere con i taccuini Orgzily</string>
+    <string name="under">Sotto</string>
+    <string name="above">Sopra</string>
+    <string name="below">Sotto</string>
+    <string name="loading">Caricamento…</string>
+    <string name="go_to">Vai a</string>
+    <string name="cannot_refile_to_the_same_subtree">Cannot refile to the same subtree</string>
+    <string name="notification_maximum_priority">Massimo</string>
+    <string name="notification_high_priority">Alta</string>
+    <string name="notification_default_priority">Predefinito</string>
+    <string name="notification_low_priority">Bassa</string>
+    <string name="notification_minimum_priority">Minima</string>
+    <string name="breadcrumbs_target">Breadcrumbs target</string>
+    <string name="link_target">Link target</string>
+    <string name="note_details">Note details</string>
+    <string name="notebook_and_scroll_to_note">Notebook (scroll to note)</string>
+    <string name="notebook_and_focus_on_note">Notebook (focus on note)</string>
+    <plurals name="refile_notes">
+        <item quantity="one">Refile note</item>
+        <item quantity="other">Refile <b>%d</b> notes</item>
+    </plurals>
 </resources>

@@ -57,6 +57,8 @@
     <string name="open">Open</string>
     <string name="focus">Focus</string>
     <string name="widget">Widget</string>
+    <string name="history">History</string>
+    <string name="event">Event</string>
     <plurals name="notes_deleted">
         <item quantity="one">Not Silindi</item>
         <item quantity="other">Silindi <b>%d</b> notlar</item>
@@ -206,7 +208,8 @@
     <string name="no_notes">Not Defterinizde notlar yok</string>
     <string name="create_new_repository_for_syncing">Not defterlerinizi senkronize etmek için yeni depo oluşturun</string>
     <string name="no_filters">Kaydettiğiniz aramanız yok</string>
-    <string name="book_shortcut_label">Orgzly defteri</string>
+    <string name="book_shortcut_label">Notebook</string>
+    <string name="new_note_shortcut_label">New note</string>
     <string name="pick_a_notebook">Bir defter seç</string>
     <string name="down">Aşağı</string>
     <string name="up">Yukarı</string>
@@ -343,8 +346,9 @@
     <string name="display_notebook_name">Display notebook name</string>
     <string name="display_inherited_tags_in_search_results">Arama sonuçlarında devralınan etiketler</string>
     <string name="display_inherited_tags_in_search_results_summary">Devralınan etiketleri arama sonuçlarında göster</string>
-    <string name="ongoing_notification">Not oluştur ve eşitle</string>
-    <string name="ongoing_notification_summary">Bildirim sekmesinden hemen yeni not oluştur veya not defterini eşitle</string>
+    <string name="ongoing_notification">Ongoing</string>
+    <string name="ongoing_notification_summary">Quickly create new note or sync notebooks from notification drawer</string>
+    <string name="ongoing_notification_priority">Ongoing priority</string>
     <string name="show_sync_notifications_title">Senkron başarısızlığı</string>
     <string name="show_sync_notifications_summary">Senkronun kesilmesi üzerine görüntü gösterimi bildirimi</string>
     <string name="prefs_title_reminders">Hatırlatıcılar</string>
@@ -385,7 +389,9 @@
     <string name="default_notebook_desc">Orgzly kullanıcısı ile NotDefteri paylaşıldı veya devam eden bildirim yeni bir not oluştur</string>
     <string name="force_utf8">UTF-8\'i kodlamaya zorla</string>
     <string name="force_utf8_summary">Kodlamayı anlamaya çalışmayın, her zaman UTF-8 kullanın</string>
-    <string name="list_widget_name">Orgzly notes</string>
+    <string name="notebooks_start_folded">Start folded</string>
+    <string name="notebooks_start_folded_summary">Fold all notes when notebook is loaded</string>
+    <string name="list_widget_name">Saved search</string>
     <string name="list_widget_select_search">Select search</string>
     <string name="list_widget_nothing_selected">No search selected</string>
     <string name="auto_sync">Otomatik eşitleme</string>
@@ -421,7 +427,7 @@
         <item quantity="other">Exported <b>%d</b> searches</item>
     </plurals>
     <string name="storage_permissions_missing">Depolama izni yok</string>
-    <string name="file_does_not_exist">%s dosyası mevcut değil</string>
+    <string name="file_does_not_exist">File does not exist: %s</string>
     <string name="import_from">\"%1$s\" \' den içeri aktarılsın mı?</string>
     <string name="export_to">\"%1$s\" e aktarılsın mı?</string>
     <string name="primary_storage_not_available">Birincil depolama alanı mevcut değil</string>
@@ -466,4 +472,24 @@
     <string name="argument_selected">%s selected</string>
     <string name="fixed_width_value">Width (in pixels)</string>
     <string name="share_target_service">Share to Orgzly notebook</string>
+    <string name="under">Under</string>
+    <string name="above">Above</string>
+    <string name="below">Below</string>
+    <string name="loading">Loading…</string>
+    <string name="go_to">Go to</string>
+    <string name="cannot_refile_to_the_same_subtree">Cannot refile to the same subtree</string>
+    <string name="notification_maximum_priority">Maximum</string>
+    <string name="notification_high_priority">High</string>
+    <string name="notification_default_priority">Default</string>
+    <string name="notification_low_priority">Low</string>
+    <string name="notification_minimum_priority">Minimum</string>
+    <string name="breadcrumbs_target">Breadcrumbs target</string>
+    <string name="link_target">Link target</string>
+    <string name="note_details">Note details</string>
+    <string name="notebook_and_scroll_to_note">Notebook (scroll to note)</string>
+    <string name="notebook_and_focus_on_note">Notebook (focus on note)</string>
+    <plurals name="refile_notes">
+        <item quantity="one">Refile note</item>
+        <item quantity="other">Refile <b>%d</b> notes</item>
+    </plurals>
 </resources>

@@ -57,6 +57,8 @@
     <string name="open">Megnyit</string>
     <string name="focus">Fókusz</string>
     <string name="widget">Kisalkalmazás</string>
+    <string name="history">Előzmények</string>
+    <string name="event">Esemény</string>
     <plurals name="notes_deleted">
         <item quantity="one">Bejegyzés törölve</item>
         <item quantity="other"><b>%d</b> bejegyzés törölve</item>
@@ -68,7 +70,7 @@
     </plurals>
     <string name="no_notes_cut">Nem vágtam ki bejegyzést</string>
     <plurals name="notes_copied">
-        <item quantity="one">Note copied</item>
+        <item quantity="one"><b>%d</b> bejegyzés átmásolva</item>
         <item quantity="other"><b>%d</b> bejegyzés átmásolva</item>
     </plurals>
     <plurals name="notes_pasted">
@@ -206,7 +208,8 @@
     <string name="no_notes">Nincs bejegyzés a jegyzetfüzetben</string>
     <string name="create_new_repository_for_syncing">Új tároló létrehozása jegyzetfüzet szinkronizáláshoz</string>
     <string name="no_filters">Nincs elmentett keresés</string>
-    <string name="book_shortcut_label">Orgzly jegyzetfüzet</string>
+    <string name="book_shortcut_label">Jegyzetfüzet</string>
+    <string name="new_note_shortcut_label">Új bejegyzés</string>
     <string name="pick_a_notebook">Válassz jegyzetfüzetet</string>
     <string name="down">Le</string>
     <string name="up">Fel</string>
@@ -343,8 +346,9 @@
     <string name="display_notebook_name">Jegyzetfüzet nevének megjelenítése</string>
     <string name="display_inherited_tags_in_search_results">Örökölt címkék a keresési eredményekben</string>
     <string name="display_inherited_tags_in_search_results_summary">Örökölt címkék megmutatása a keresési eredményekben</string>
-    <string name="ongoing_notification">Bejegyzés létrehozása és szinkronizálás</string>
-    <string name="ongoing_notification_summary">Új bejegyzés létrehozása avgy jegyzetfüzetek szinkronizálása az üzenetekből</string>
+    <string name="ongoing_notification">Állandó</string>
+    <string name="ongoing_notification_summary">Új bejegyzés létrehozása vagy jegyzetfüzetek szinkronizálása az üzenetekből</string>
+    <string name="ongoing_notification_priority">Prioritás az állandó értesítőből</string>
     <string name="show_sync_notifications_title">Szinkronizálási hiba</string>
     <string name="show_sync_notifications_summary">Értesítés szinkronizálási hiba esetén</string>
     <string name="prefs_title_reminders">Emlékeztetők</string>
@@ -385,7 +389,9 @@
     <string name="default_notebook_desc">Ezt a jegyzetfüzetet használja Orgzly megosztáshoz vagy az állandó értesítőből létrehozott bejegyzéshez</string>
     <string name="force_utf8">UTF-8 kódolás kényszerítése</string>
     <string name="force_utf8_summary">Ne próbálja felismerni, mindig használjon UTF-8 kódolást</string>
-    <string name="list_widget_name">Orgzly jegyzetek</string>
+    <string name="notebooks_start_folded">Kezdés behajtva</string>
+    <string name="notebooks_start_folded_summary">Betöltéskor minden bejegyzést behajt</string>
+    <string name="list_widget_name">Mentett keresés</string>
     <string name="list_widget_select_search">Keresés választása</string>
     <string name="list_widget_nothing_selected">Nincs kiválasztott keresés</string>
     <string name="auto_sync">Automatikus szinkronizálás</string>
@@ -421,7 +427,7 @@
         <item quantity="other"><b>%d</b> keresés mentve</item>
     </plurals>
     <string name="storage_permissions_missing">Nincs engedély a memóriához</string>
-    <string name="file_does_not_exist">%s fájl nem létezik</string>
+    <string name="file_does_not_exist">A fájl nem létezik: %s</string>
     <string name="import_from">Betöltés innen? “%1$s”</string>
     <string name="export_to">Mentés ide? “%1$s”</string>
     <string name="primary_storage_not_available">Elsődleges tároló nem áll rendelkezésre</string>
@@ -466,4 +472,24 @@
     <string name="argument_selected">%s kiválasztva</string>
     <string name="fixed_width_value">Szélesség (képpontokban)</string>
     <string name="share_target_service">Orgzly jegyzetfüzet megosztása</string>
+    <string name="under">Alatt</string>
+    <string name="above">Felett</string>
+    <string name="below">Alatta</string>
+    <string name="loading">Betöltés…</string>
+    <string name="go_to">Ugrás</string>
+    <string name="cannot_refile_to_the_same_subtree">Nem lehet ugyabba a részfába újraírni</string>
+    <string name="notification_maximum_priority">Maximális</string>
+    <string name="notification_high_priority">Magas</string>
+    <string name="notification_default_priority">Alapértelmezett</string>
+    <string name="notification_low_priority">Alacsony</string>
+    <string name="notification_minimum_priority">Minimális</string>
+    <string name="breadcrumbs_target">Breadcrumbs target</string>
+    <string name="link_target">Link target</string>
+    <string name="note_details">Note details</string>
+    <string name="notebook_and_scroll_to_note">Notebook (scroll to note)</string>
+    <string name="notebook_and_focus_on_note">Notebook (focus on note)</string>
+    <plurals name="refile_notes">
+        <item quantity="one">Refile note</item>
+        <item quantity="other">Refile <b>%d</b> notes</item>
+    </plurals>
 </resources>

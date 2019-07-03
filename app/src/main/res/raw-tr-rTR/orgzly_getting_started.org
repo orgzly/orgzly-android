@@ -17,7 +17,7 @@ Notlarınızı daha iyi düzenlemek için bunu kullanın
 ** Not etiketleri olabilir :etiket1:tag2:
 Alt not etiketleri devralır :tag3:
 
-Eğer "Tag1" etiketi içeren notları ararsanız, bu not da döndürülür.
+If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
 
 ** TODO Notlar bir durum belirtebilir
 

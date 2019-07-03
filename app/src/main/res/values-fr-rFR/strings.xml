@@ -57,6 +57,8 @@
     <string name="open">Ouvrir</string>
     <string name="focus">Focus</string>
     <string name="widget">Widget</string>
+    <string name="history">History</string>
+    <string name="event">Event</string>
     <plurals name="notes_deleted">
         <item quantity="one">Note supprimée</item>
         <item quantity="other">Supprimé <b>%d</b> notes</item>
@@ -206,7 +208,8 @@
     <string name="no_notes">Ce bloc-notes ne contient pas de note</string>
     <string name="create_new_repository_for_syncing">Créer un nouveau dépôt où synchroniser vos bloc-notes</string>
     <string name="no_filters">Vous n’avez aucune recherche enregistrée</string>
-    <string name="book_shortcut_label">Bloc-notes Orgzly</string>
+    <string name="book_shortcut_label">Notebook</string>
+    <string name="new_note_shortcut_label">New note</string>
     <string name="pick_a_notebook">Choisir un bloc-notes</string>
     <string name="down">Descendre</string>
     <string name="up">Monter</string>
@@ -343,8 +346,9 @@
     <string name="display_notebook_name">Afficher le nom du bloc-note</string>
     <string name="display_inherited_tags_in_search_results">Tags hérités dans les résultats de recherche</string>
     <string name="display_inherited_tags_in_search_results_summary">Afficher les tags hérités dans les résultats de recherche</string>
-    <string name="ongoing_notification">Créer une note et synchroniser</string>
-    <string name="ongoing_notification_summary">Créer rapidement une note ou synchroniser depuis le volet de notification</string>
+    <string name="ongoing_notification">Ongoing</string>
+    <string name="ongoing_notification_summary">Quickly create new note or sync notebooks from notification drawer</string>
+    <string name="ongoing_notification_priority">Ongoing priority</string>
     <string name="show_sync_notifications_title">Échec de synchronisation</string>
     <string name="show_sync_notifications_summary">Montre la notification si la synchronisation échoue</string>
     <string name="prefs_title_reminders">Rappels</string>
@@ -385,7 +389,9 @@
     <string name="default_notebook_desc">Bloc-notes utilisé lors du partage vers Orgzly ou lors de la création d\'une note à partir de la notification</string>
     <string name="force_utf8">Forcer l’encodage UTF-8</string>
     <string name="force_utf8_summary">Ne pas tenter de détecter l\'encodage, toujours utiliser UTF-8</string>
-    <string name="list_widget_name">Les notes en Orgzly</string>
+    <string name="notebooks_start_folded">Start folded</string>
+    <string name="notebooks_start_folded_summary">Fold all notes when notebook is loaded</string>
+    <string name="list_widget_name">Saved search</string>
     <string name="list_widget_select_search">Sélectionnez Recherche</string>
     <string name="list_widget_nothing_selected">Pas de recherche sélectionnée</string>
     <string name="auto_sync">Synchronisation automatique</string>
@@ -421,7 +427,7 @@
         <item quantity="other"><b>%d</b> recherches exportées</item>
     </plurals>
     <string name="storage_permissions_missing">Autorisation d\'accès au stockage non accordée</string>
-    <string name="file_does_not_exist">Le fichier \"%s\" n\'existe pas</string>
+    <string name="file_does_not_exist">File does not exist: %s</string>
     <string name="import_from">Importer depuis « %1$s » ?</string>
     <string name="export_to">Exporter vers « %1$s » ?</string>
     <string name="primary_storage_not_available">Le stockage principal n’est pas disponible</string>
@@ -466,4 +472,24 @@
     <string name="argument_selected">%s sélectionné</string>
     <string name="fixed_width_value">Largeur (en pixels)</string>
     <string name="share_target_service">Partager vers un bloc-note Orgzly</string>
+    <string name="under">Under</string>
+    <string name="above">Above</string>
+    <string name="below">Below</string>
+    <string name="loading">Loading…</string>
+    <string name="go_to">Go to</string>
+    <string name="cannot_refile_to_the_same_subtree">Cannot refile to the same subtree</string>
+    <string name="notification_maximum_priority">Maximum</string>
+    <string name="notification_high_priority">High</string>
+    <string name="notification_default_priority">Default</string>
+    <string name="notification_low_priority">Low</string>
+    <string name="notification_minimum_priority">Minimum</string>
+    <string name="breadcrumbs_target">Breadcrumbs target</string>
+    <string name="link_target">Link target</string>
+    <string name="note_details">Note details</string>
+    <string name="notebook_and_scroll_to_note">Notebook (scroll to note)</string>
+    <string name="notebook_and_focus_on_note">Notebook (focus on note)</string>
+    <plurals name="refile_notes">
+        <item quantity="one">Refile note</item>
+        <item quantity="other">Refile <b>%d</b> notes</item>
+    </plurals>
 </resources>

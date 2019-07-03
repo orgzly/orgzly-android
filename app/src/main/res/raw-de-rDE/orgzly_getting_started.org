@@ -17,13 +17,13 @@ Nach links wischen öffnet ein weiteres Menü.
 ** Eine Notiz kann Tags enthalten :tag1:tag2:
 *** Tags werden an Unterpunkte vererbt :tag3:
 
-Wenn Sie nach Notizen mit dem Tag "tag1" suchen, wird diese Notiz ebenfalls zurückgegeben.
+Wenn Ihre Suche nach Notizen mit Tag “Tag1”verwendet “t.tag1” Abfrage, diese Notiz wird in den Suchergebnissen mit eingeschlossen.
 
 ** TODO Notizen können einen Status haben
 
 Sie können eine beliebige Anzahl von Status konfigurieren: TODO, NEXT, DONE usw.
 
-*** Es gibt zwei Arten von Status: to-do (zu erledigen), done (erledigt)
+*** Es gibt zwei Arten von Status: zu erledigen, erledigt
 
 *** DONE Dies ist eine Notiz mit dem Status /done/ (also erledigt)
 CLOSED: [2018-01-24 Wed 17:00]

@@ -17,7 +17,7 @@ Fling it left to open a different menu.
 ** Catatan harus ada tag :tag1:tag2:
 *** Sub-catatan mewarisi tag :tag3:
 
-Jika Anda mencari catatan dengan tag "tag1", catatan ini akan dikembalikan juga.
+If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
 
 ** Catatan TODO harus memiliki status
 

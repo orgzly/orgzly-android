@@ -1,12 +1,12 @@
 Benvenuto su Orgzly!
 
 * Note
-** Click on the note to open it
-** Click and hold the note to select it
+** Clicca sulla nota per aprirla
+** Tieni premuta la nota per selezionarla
 
 Puoi selezionare più note.
 
-** Fling note right to open its quick-menu
+** Tieni premuto e muovi velocemente a destra per aprire il suo menu rapido
 
 Fling it left to open a different menu.
 
@@ -17,7 +17,7 @@ Fling it left to open a different menu.
 *** Ora puoi avere anche le etichette :tag1:tag2:
 *** La sotto-nota eredita l'etichetta :tag3:
 
-Se cerchi delle note con l'etichetta "etichetta1", questa nota sarà egualmente restituita.
+If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
 
 ** DAFARE La nota può avere uno stato
 

@@ -24,6 +24,52 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.7.7"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Clickable notebook and ancestors in note view" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Preference for link and breadcrumbs target (notebook or note view)" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Preference for initial folding state of notebooks" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Preference for ongoing notification's priority" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Remove previous &lt;tt&gt;LAST_REPEAT&lt;/tt&gt; when marking note as done from note view" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Check for existence of external cache directory (fixing possible crash)" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix dialog title of notebook chooser" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Unfold note under which notes are moved" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Remove number of lines limit for title in note view" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Display the number of notes being refiled" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.7.6"
             tools:ignore="HardcodedText" />
 
