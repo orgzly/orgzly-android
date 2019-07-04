@@ -1,4 +1,4 @@
-package com.orgzly.android.ui.repo
+package com.orgzly.android.ui.repo.git
 
 
 import android.app.Activity
@@ -8,7 +8,9 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
+import android.os.Environment
 import android.text.TextUtils
+import android.util.Log
 import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
@@ -22,13 +24,19 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.prefs.RepoPreferences
 import com.orgzly.android.repos.GitRepo
 import com.orgzly.android.ui.CommonActivity
+import com.orgzly.android.ui.repo.BrowserActivity
 import com.orgzly.android.usecase.RepoCreate
 import com.orgzly.android.usecase.RepoUpdate
 import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.MiscUtils
 import kotlinx.android.synthetic.main.activity_repo_git.*
+import org.eclipse.jgit.api.errors.TransportException
+import org.eclipse.jgit.errors.NoRemoteRepositoryException
+import org.eclipse.jgit.errors.NotSupportedException
 import org.eclipse.jgit.lib.ProgressMonitor
+import java.io.File
+import java.io.FileNotFoundException
 import java.io.IOException
 
 class GitRepoActivity : CommonActivity(), GitPreferences {
@@ -90,11 +98,30 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
                 activity_repo_git_url.setText(repo.url)
                 setFromPreferences()
             }
+        } else {
+            createDefaultRepoFolder();
+        }
+    }
+
+    // TODO: Since we can create multiple syncs, this folder might be re-used, do we want to create
+    //       a new one if this directory is already used up?
+    private fun createDefaultRepoFolder() {
+        if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) {
+            return
+        }
+        val externalPath = Environment.getExternalStorageDirectory().path
+        val orgzlyGitPath = File("$externalPath/orgzly-git/")
+        var success = false
+        try {
+            success = orgzlyGitPath.mkdirs()
+        } catch(error: SecurityException) {}
+        if (success || (orgzlyGitPath.exists() && orgzlyGitPath.list().size == 0)) {
+            activity_repo_git_directory.setText(orgzlyGitPath.path)
         }
     }
 
     private fun setFromPreferences() {
-        val prefs = RepoPreferences(this, repoId)
+        val prefs = RepoPreferences.fromId(this, repoId, dataRepository)
         for (field in fields) {
             setTextFromPrefKey(prefs, field.editText, field.preference)
         }
@@ -102,6 +129,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
     private fun setTextFromPrefKey(prefs: RepoPreferences, editText: EditText, prefKey: Int) {
         if (editText.length() < 1) {
+            val setting = prefs.getStringValue(prefKey, "")
             editText.setText(prefs.getStringValue(prefKey, ""))
         }
     }
@@ -140,6 +168,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
     private fun saveAndFinish() {
         if (validateFields()) {
+            // TODO: If this fails we should notify the user in a nice way and mark the git repo field as bad
             RepoCloneTask(this).execute()
         }
     }
@@ -147,15 +176,24 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private fun repoCheckComplete(e: IOException?) {
         if (e == null) {
             save()
-
         } else {
+            val errorId = when {
+                // TODO: show error for invalid username/password when using HTTPS
+                e.cause is NoRemoteRepositoryException -> R.string.git_clone_error_invalid_repo
+                e.cause is TransportException -> R.string.git_clone_error_ssh_auth
+                // TODO: This should be checked when the user enters a directory by hand
+                e.cause is FileNotFoundException -> R.string.git_clone_error_invalid_target_dir
+                e.cause is GitRepo.DirectoryNotEmpty -> R.string.git_clone_error_target_not_empty
+                e.cause is NotSupportedException -> R.string.git_clone_error_uri_not_supported
+                else -> R.string.git_clone_error_unknown
+            }
+            showSnackbar(errorId)
             e.printStackTrace()
-            showSnackbar(e.toString())
         }
     }
 
     private fun saveToPreferences(id: Long): Boolean {
-        val editor: SharedPreferences.Editor = RepoPreferences(this, id).repoPreferences.edit()
+        val editor: SharedPreferences.Editor = RepoPreferences.fromId(this, id, dataRepository).repoPreferences.edit()
 
         for (field in fields) {
             val settingName = getSettingName(field.preference)
@@ -180,7 +218,10 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         }
 
         App.EXECUTORS.diskIO().execute {
-            UseCaseRunner.run(useCase)
+            val result = UseCaseRunner.run(useCase)
+            if (repoId == 0L) {
+                repoId = result.userData as Long
+            }
 
             App.EXECUTORS.mainThread().execute {
                 saveToPreferences(repoId)
@@ -279,12 +320,12 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION ->
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val uri = data.data
-                    activity_repo_git_directory.setText(uri.toString())
+                    activity_repo_git_directory.setText(uri.path)
                 }
             ACTIVITY_REQUEST_CODE_FOR_SSH_KEY_SELECTION ->
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val uri = data.data
-                    activity_repo_git_ssh_key.setText(uri.toString())
+                    activity_repo_git_ssh_key.setText(uri.path)
                 }
         }
     }
@@ -328,7 +369,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             progressDialog.dismiss()
         }
 
-        override fun onPostExecute(e: IOException) {
+        override fun onPostExecute(e: IOException?) {
             progressDialog.dismiss()
             fragment.repoCheckComplete(e)
         }

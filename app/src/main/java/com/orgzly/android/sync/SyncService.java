@@ -536,18 +536,21 @@ public class SyncService extends DaggerService {
         try {
             new NotesOrgExporter(App.getAppContext(), dataRepository).exportBook(bookView.getBook(), dbFile);
             TwoWaySyncResult result = repo.syncBook(someRook.getUri(), currentRook, dbFile);
-            newRook = result.getNewRook();
-            String fileName = BookName.getFileName(App.getAppContext(), newRook.getUri());
-            BookName bookName = BookName.fromFileName(fileName);
-            Log.i("Git", String.format("Loading from file %s", result.getLoadFile().toString()));
-            BookView loadedBook = dataRepository.loadBookFromFile(
-                    bookName.getName(),
-                    bookName.getFormat(),
-                    result.getLoadFile(),
-                    newRook);
-            // TODO: db.book().updateIsModified(bookView.book.id, false)
-            // Instead of:
-            // dataRepository.updateBookMtime(loadedBook.getBook().getId(), 0);
+            // We only need to write it if syncback is needed
+            if (result.getLoadFile() != null) {
+                newRook = result.getNewRook();
+                String fileName = BookName.getFileName(App.getAppContext(), newRook.getUri());
+                BookName bookName = BookName.fromFileName(fileName);
+                Log.i("Git", String.format("Loading from file %s", result.getLoadFile().toString()));
+                BookView loadedBook = dataRepository.loadBookFromFile(
+                        bookName.getName(),
+                        bookName.getFormat(),
+                        result.getLoadFile(),
+                        newRook);
+                // TODO: db.book().updateIsModified(bookView.book.id, false)
+                // Instead of:
+                // dataRepository.updateBookMtime(loadedBook.getBook().getId(), 0);
+            }
         } finally {
             /* Delete temporary files. */
             dbFile.delete();

@@ -6,22 +6,25 @@ import android.net.Uri;
 
 import com.orgzly.android.data.DataRepository;
 
+import java.io.IOException;
+
 public class RepoPreferences {
     private Context context;
     private long repoId;
+    private Uri repoUri;
 
-    public static RepoPreferences fromUri(Context c, Uri uri) {
-        return fromString(c, uri.toString());
+    public static RepoPreferences fromUri(Context c, Uri uri, DataRepository repo) throws IOException {
+        return new RepoPreferences(c, repo.getRepo(uri.toString()).getId(), uri);
     }
 
-    private static RepoPreferences fromString(Context c, String string) {
-        long rid = 0; // TODO: dataRepository.getRepoByUrl(string).getId();
-        return new RepoPreferences(c, rid);
+    public static RepoPreferences fromId(Context c, long repoId, DataRepository repo) {
+        return new RepoPreferences(c, repoId, Uri.parse(repo.getRepo(repoId).getUrl()));
     }
 
-    public RepoPreferences(Context c, long rid) {
+    public RepoPreferences(Context c, long rid, Uri uri) {
         repoId = rid;
         context = c;
+        repoUri = uri;
     }
 
     private String getRepoPreferencesFilename() {
@@ -55,6 +58,8 @@ public class RepoPreferences {
     public String getStringValueWithGlobalDefault(int selector, String def) {
         return getStringValueWithGlobalDefault(getSelector(selector), def);
     }
+
+    public Uri getRepoUri() { return repoUri; }
 
     public long getRepoId() {
         return repoId;

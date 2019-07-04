@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.orgzly.android.BookName;
+import com.orgzly.android.data.DataRepository;
 import com.orgzly.android.git.GitFileSynchronizer;
 import com.orgzly.android.git.GitPreferences;
 import com.orgzly.android.git.GitPreferencesFromRepoPrefs;
@@ -16,12 +17,16 @@ import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
+import org.eclipse.jgit.api.errors.NoHeadException;
+import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.ignore.IgnoreNode;
+import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.FileMode;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ProgressMonitor;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -31,7 +36,9 @@ import org.eclipse.jgit.treewalk.filter.TreeFilter;
 import org.eclipse.jgit.util.FileUtils;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -40,14 +47,25 @@ import java.util.List;
 public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     public final static String SCHEME = "git";
 
+    /**
+     * Used as cause when we try to clone into a non-empty directory
+     */
+    public static class DirectoryNotEmpty extends Exception {
+        public File dir;
+
+        DirectoryNotEmpty(File dir) {
+            this.dir = dir;
+        }
+    }
+
     public static GitTransportSetter getTransportSetter(GitPreferences preferences) {
         return new GitSSHKeyTransportSetter(Uri.parse(preferences.sshKeyPathString()).getPath());
     }
 
-    public static GitRepo buildFromUri(Context context, Uri uri)
-            throws IOException, URISyntaxException {
+    public static GitRepo buildFromUri(Context context, Uri uri, DataRepository repo)
+            throws IOException {
         GitPreferencesFromRepoPrefs prefs = new GitPreferencesFromRepoPrefs(
-                RepoPreferences.fromUri(context, uri));
+                RepoPreferences.fromUri(context, uri, repo));
         return build(prefs, false);
     }
 
@@ -77,37 +95,75 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
             Uri repoUri, File directoryFile, GitTransportSetter transportSetter,
             boolean clone, ProgressMonitor pm)
             throws IOException {
-        FileRepositoryBuilder frb = new FileRepositoryBuilder();
+        if (clone) {
+            return cloneRepo(repoUri, directoryFile, transportSetter, pm);
+        } else {
+            return verifyExistingRepo(directoryFile);
+        }
+    }
+
+    /**
+     * Check that the given path contains a valid git repository
+     * @param directoryFile the path to check
+     * @return A Git repo instance
+     * @throws IOException Thrown when either the directory doesnt exist or is not a git repository
+     */
+    private static Git verifyExistingRepo(File directoryFile) throws IOException {
         if (!directoryFile.exists()) {
-            if (clone) {
-                try {
-                    CloneCommand cloneCommand = Git.cloneRepository().
-                            setURI(repoUri.toString()).
-                            setProgressMonitor(pm).
-                            setDirectory(directoryFile);
-                    transportSetter.setTransport(cloneCommand);
-                    return cloneCommand.call();
-                } catch (GitAPIException | JGitInternalException e) {
-                    try {
-                        FileUtils.delete(directoryFile, FileUtils.RECURSIVE);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                    e.printStackTrace();
-                    throw new IOException(
-                            String.format("Failed to clone repository %s, %s", repoUri.toString(),
-                                    e.getCause()));
-                }
-            } else {
-                throw new IOException(
-                        String.format("The file %s does not exist", directoryFile.toString()));
-            }
-        } else if (!isRepo(frb, directoryFile)) {
+            throw new IOException(String.format("The directory %s does not exist", directoryFile.toString()), new FileNotFoundException());
+        }
+
+        FileRepositoryBuilder frb = new FileRepositoryBuilder();
+        if (!isRepo(frb, directoryFile)) {
             throw new IOException(
                     String.format("Directory %s is not a git repository.",
                             directoryFile.getAbsolutePath()));
         }
         return new Git(frb.build());
+    }
+
+    /**
+     * Attempts to clone a git repository
+     * @param repoUri Remote location of git repository
+     * @param directoryFile Location to clone to
+     * @param transportSetter Transport information
+     * @param pm Progress reporting helper
+     * @return A Git repo instance
+     * @throws IOException Thrown when directoryFile doesn't exist or isn't empty. Also thrown
+     * when the clone fails
+     */
+    private static Git cloneRepo(Uri repoUri, File directoryFile, GitTransportSetter transportSetter,
+                      ProgressMonitor pm) throws IOException {
+        if (!directoryFile.exists()) {
+            throw new IOException(String.format("The directory %s does not exist", directoryFile.toString()), new FileNotFoundException());
+        }
+
+        // Using list() can be resource intensive if there's many files, but since we just call it
+        // at the time of cloning once we should be fine for now
+        if (directoryFile.list().length != 0) {
+            throw new IOException(String.format("The directory must be empty"), new DirectoryNotEmpty(directoryFile));
+        }
+
+        try {
+            CloneCommand cloneCommand = Git.cloneRepository().
+                    setURI(repoUri.toString()).
+                    setProgressMonitor(pm).
+                    setDirectory(directoryFile);
+            transportSetter.setTransport(cloneCommand);
+            return cloneCommand.call();
+        } catch (GitAPIException | JGitInternalException e) {
+            try {
+                FileUtils.delete(directoryFile, FileUtils.RECURSIVE);
+                // This is done to show sensible error messages when trying to create a new git sync
+                directoryFile.mkdirs();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+            throw new IOException(
+                    String.format("Failed to clone repository %s, %s", repoUri.toString(),
+                            e.getCause().getMessage()), e.getCause());
+        }
     }
 
     private Git git;
@@ -125,16 +181,10 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     }
 
     public VersionedRook storeBook(File file, String fileName) throws IOException {
-        // FIXME: Removed current_versioned_rooks table, just get the list from remote
-//        VersionedRook current = CurrentRooksClient.get(
-//                // TODO: get rid of "/" prefix needed here
-//                App.getAppContext(), getUri().toString(), "/" + fileName);
-        VersionedRook current = null;
-
-        RevCommit commit = getCommitFromRevisionString(current.getRevision());
-        synchronizer.updateAndCommitFileFromRevision(
-                file, fileName, synchronizer.getFileRevision(fileName, commit));
-        synchronizer.tryPushIfUpdated(commit);
+        // Since GitRepo implements TwoWaySync this method is only called if fileName doesn't exist
+        // in the git repository, therefore we can just add the file and push the change.
+        synchronizer.addAndCommitNewFile(file, fileName);
+        synchronizer.tryPush();
         return currentVersionedRook(Uri.EMPTY.buildUpon().appendPath(fileName).build());
     }
 
@@ -173,8 +223,17 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     }
 
     private VersionedRook currentVersionedRook(Uri uri) throws IOException {
-        RevCommit newCommit = synchronizer.currentHead();
-        return new VersionedRook(getUri(), uri, newCommit.name(), newCommit.getCommitTime()*1000);
+        RevCommit commit = null;
+        if (uri.toString().contains("%")) {
+            uri = Uri.parse(Uri.decode(uri.toString()));
+        }
+        try {
+            commit = synchronizer.getLatestCommitOfFile(uri);
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+        }
+        long mtime = (long)commit.getCommitTime()*1000;
+        return new VersionedRook(getUri(), uri, commit.name(), mtime);
     }
 
     private IgnoreNode getIgnores() throws IOException {
@@ -194,6 +253,10 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     public List<VersionedRook> getBooks() throws IOException {
         synchronizer.setBranchAndGetLatest();
         List<VersionedRook> result = new ArrayList<>();
+        if (synchronizer.currentHead() == null) {
+            return result;
+        }
+
         TreeWalk walk = new TreeWalk(git.getRepository());
         walk.reset();
         walk.setRecursive(true);

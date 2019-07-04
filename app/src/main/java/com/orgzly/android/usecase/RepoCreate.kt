@@ -4,9 +4,9 @@ import com.orgzly.android.data.DataRepository
 
 class RepoCreate(val url: String) : UseCase() {
     override fun run(dataRepository: DataRepository): UseCaseResult {
-        dataRepository.createRepo(url)
+        val repoId = dataRepository.createRepo(url)
 
-        return UseCaseResult()
+        return UseCaseResult(repoId as Any)
     }
 
     class AlreadyExists: Throwable()

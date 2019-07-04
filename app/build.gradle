@@ -177,6 +177,7 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
     implementation "com.google.code.gson:gson:$gson_version"
+    implementation 'androidx.viewpager:viewpager:1.0.0'
 }
 
 repositories {

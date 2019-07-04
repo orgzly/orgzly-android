@@ -1,5 +1,7 @@
 package com.orgzly.android.ui.repos
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.ContextMenu
 import android.view.Menu
@@ -7,6 +9,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.orgzly.BuildConfig
@@ -16,15 +20,14 @@ import com.orgzly.android.repos.*
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.DirectoryRepoActivity
 import com.orgzly.android.ui.repo.DropboxRepoActivity
-import com.orgzly.android.ui.repo.GitRepoActivity
-import com.orgzly.android.usecase.RepoDelete
+import com.orgzly.android.ui.repo.git.GitRepoActivity
 import kotlinx.android.synthetic.main.activity_repos.*
 import javax.inject.Inject
 
 /**
  * List of user-configured repositories.
  */
-class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener {
+class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, ActivityCompat.OnRequestPermissionsResultCallback  {
 
     @Inject
     lateinit var repoFactory: RepoFactory
@@ -175,6 +178,19 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener {
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            ACTIVITY_REQUEST_CODE_FOR_READ_WRITE_EXTERNAL_STORAGE -> {
+                val granted = grantResults.zip(permissions)
+                        .find { (_, perm) -> perm == READ_WRITE_EXTERNAL_STORAGE }
+                        ?.let { (grantResult, _) -> grantResult == PackageManager.PERMISSION_GRANTED }
+                if (granted == true) {
+                    GitRepoActivity.start(this)
+                }
+            }
+        }
+    }
+
     private fun startRepoActivity(id: Int) {
         when (id) {
             R.id.repos_options_menu_item_new_dropbox -> {
@@ -183,7 +199,12 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener {
             }
 
             R.id.repos_options_menu_item_new_git -> {
-                GitRepoActivity.start(this)
+                if (ContextCompat.checkSelfPermission(this, READ_WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    GitRepoActivity.start(this)
+                } else {
+                    // TODO: Show explanation why possibly, if ActivityCompat.shouldShowRequestPermissionRationale() says so?
+                    ActivityCompat.requestPermissions(this, arrayOf(READ_WRITE_EXTERNAL_STORAGE), ACTIVITY_REQUEST_CODE_FOR_READ_WRITE_EXTERNAL_STORAGE)
+                }
                 return
             }
 
@@ -197,7 +218,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener {
     }
 
     private fun openRepo(repoEntity: Repo) {
-        val repo = repoFactory.getFromUri(this, repoEntity.url)
+        val repo = repoFactory.getFromUri(this, repoEntity.url, dataRepository)
 
         if (repo is DropboxRepo || repo is MockRepo) { // TODO: Remove Mock from here
             DropboxRepoActivity.start(this, repoEntity.id)
@@ -215,5 +236,8 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener {
 
     companion object {
         val TAG: String = ReposActivity::class.java.name
+
+        const val READ_WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        const val ACTIVITY_REQUEST_CODE_FOR_READ_WRITE_EXTERNAL_STORAGE = 0
     }
 }
