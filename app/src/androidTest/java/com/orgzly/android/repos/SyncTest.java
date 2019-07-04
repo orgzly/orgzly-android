@@ -387,7 +387,7 @@ public class SyncTest extends OrgzlyTest {
 
         String repoDir = context.getCacheDir() + "/" + uuid;
 
-        SyncRepo repo = repoFactory.getFromUri(context, "file:" + repoDir);
+        SyncRepo repo = repoFactory.getFromUri(context, "file:" + repoDir, dataRepository);
 
         assertNotNull(repo);
         assertEquals(0, repo.getBooks().size());

@@ -30,7 +30,9 @@ public class DropboxRepoTest extends OrgzlyTest {
 
     @Test
     public void testUrl() {
-        assertEquals("dropbox:/dir", repoFactory.getFromUri(context, "dropbox:/dir").getUri().toString());
+        assertEquals("dropbox:/dir", repoFactory
+                .getFromUri(context, "dropbox:/dir", dataRepository)
+                .getUri().toString());
     }
 
     @Test
@@ -42,13 +44,13 @@ public class DropboxRepoTest extends OrgzlyTest {
     /* Dropbox repo url should *not* have authority. */
     @Test
     public void testAuthority() {
-        assertNull(repoFactory.getFromUri(context, "dropbox://authority"));
+        assertNull(repoFactory.getFromUri(context, "dropbox://authority", dataRepository));
     }
 
     @Test
     public void testRenameBook() throws IOException {
         BookView bookView;
-        String repoUriString = repoFactory.getFromUri(context, randomUrl()).getUri().toString();
+        String repoUriString = repoFactory.getFromUri(context, randomUrl(), dataRepository).getUri().toString();
 
         testUtils.setupRepo(repoUriString);
         testUtils.setupBook("booky", "");
@@ -70,7 +72,7 @@ public class DropboxRepoTest extends OrgzlyTest {
 
     @Test
     public void testDropboxFileRename() throws IOException {
-        SyncRepo repo = repoFactory.getFromUri(context, randomUrl());
+        SyncRepo repo = repoFactory.getFromUri(context, randomUrl(), dataRepository);
 
         assertNotNull(repo);
         assertEquals(0, repo.getBooks().size());

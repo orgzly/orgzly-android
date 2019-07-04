@@ -56,7 +56,7 @@ public class LocalDbRepoTest extends OrgzlyTest {
 
         try {
             new NotesOrgExporter(context, dataRepository).exportBook(book, tmpFile);
-            repo = repoFactory.getFromUri(context, "mock://repo-a");
+            repo = repoFactory.getFromUri(context, "mock://repo-a", dataRepository);
             repo.storeBook(tmpFile, BookName.fileName(book.getName(), BookFormat.ORG));
         } finally {
             tmpFile.delete();
@@ -76,7 +76,7 @@ public class LocalDbRepoTest extends OrgzlyTest {
         testUtils.setupRepo("mock://repo-a");
         testUtils.setupRook("mock://repo-a", "mock://repo-a/mock-book.org", "book content\n\n* First note\n** Second note", "rev1", 1234567890000L);
 
-        SyncRepo repo = repoFactory.getFromUri(context, "mock://repo-a");
+        SyncRepo repo = repoFactory.getFromUri(context, "mock://repo-a", dataRepository);
         VersionedRook vrook = SyncService.getBooksFromAllRepos(dataRepository, null).get(0);
 
         File tmpFile = dataRepository.getTempBookFile();

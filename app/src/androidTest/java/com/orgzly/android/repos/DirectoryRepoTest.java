@@ -45,7 +45,7 @@ public class DirectoryRepoTest extends OrgzlyTest {
 
     @Test
     public void testStoringFile() throws IOException {
-        SyncRepo repo = repoFactory.getFromUri(context, repoUriString);
+        SyncRepo repo = repoFactory.getFromUri(context, repoUriString, dataRepository);
 
         File tmpFile = dataRepository.getTempBookFile();
         try {

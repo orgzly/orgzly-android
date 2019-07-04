@@ -47,7 +47,7 @@ public class TestUtils {
     public SyncRepo setupRepo(String url) {
         dataRepository.createRepo(url);
 
-        return repoFactory.getFromUri(context, url);
+        return repoFactory.getFromUri(context, url, dataRepository);
     }
 
     public void deleteRepo(String url) {
