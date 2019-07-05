@@ -24,6 +24,16 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.7.8"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix a possible crash when marking recurring note as done from note view" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.7.7"
             tools:ignore="HardcodedText" />
 
