@@ -47,10 +47,9 @@ class NoteBuilder {
 
                 val now = OrgDateTime(false).toString()
 
-                // Add last-repeat time
+                // Set last-repeat property
                 if (AppPreferences.setLastRepeatOnTimeShift(context)) {
-                    properties.remove(OrgFormatter.LAST_REPEAT_PROPERTY);
-                    properties.put(OrgFormatter.LAST_REPEAT_PROPERTY, now)
+                    properties.set(OrgFormatter.LAST_REPEAT_PROPERTY, now)
                 }
 
                 // Log state change
