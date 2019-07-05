@@ -11,21 +11,29 @@ abstract class NotePropertyDao : BaseDao<NoteProperty> {
     @Query("SELECT * FROM note_properties WHERE note_id = :noteId ORDER BY position")
     abstract fun get(noteId: Long): List<NoteProperty>
 
-    @Query("SELECT * FROM note_properties WHERE note_id = :noteId AND name = :name")
-    abstract fun get(noteId: Long, name: String): NoteProperty?
+    @Query("SELECT * FROM note_properties WHERE note_id = :noteId AND name = :name ORDER BY position")
+    abstract fun get(noteId: Long, name: String): List<NoteProperty>
 
     @Query("SELECT * FROM note_properties")
     abstract fun getAll(): List<NoteProperty>
 
     @Transaction
     open fun upsert(noteId: Long, name: String, value: String) {
-        val noteProperty = get(noteId, name)
+        val properties = get(noteId, name)
 
-        if (noteProperty == null) {
+        if (properties.isEmpty()) {
+            // Insert new
             val position = getNextAvailablePosition(noteId)
             insert(NoteProperty(noteId, position, name, value))
+
         } else {
-            update(noteProperty.copy(value = value))
+            // Update first
+            update(properties.first().copy(value = value))
+
+            // Delete others
+            for (i in 1 until properties.size) {
+                delete(properties[i])
+            }
         }
     }
 
