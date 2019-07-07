@@ -1,5 +1,6 @@
 package com.orgzly.android.ui.note
 
+import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.orgzly.android.App
@@ -16,6 +17,8 @@ import com.orgzly.android.usecase.BookScrollToNote
 import com.orgzly.android.usecase.BookSparseTreeForNote
 import com.orgzly.android.usecase.NoteDelete
 import com.orgzly.android.usecase.UseCaseRunner
+import com.orgzly.org.OrgProperties
+import com.orgzly.org.datetime.OrgRange
 
 class NoteViewModel(
         private val dataRepository: DataRepository,
@@ -140,5 +143,60 @@ class NoteViewModel(
                 AppPreferences.noteDetailsLastMode(context, "edit")
             }
         }
+    }
+
+    var notePayload: NotePayload? = null
+
+    fun savePayloadToBundle(outState: Bundle) {
+        notePayload?.let {
+            outState.putParcelable("payload", it)
+        }
+    }
+
+    fun restorePayloadFromBundle(savedInstanceState: Bundle) {
+        notePayload = savedInstanceState.getParcelable("payload") as? NotePayload
+    }
+
+    fun updatePayload(
+            title: String,
+            content: String,
+            state: String?,
+            priority: String?,
+            tags: List<String>,
+            properties: OrgProperties) {
+
+        notePayload = notePayload?.copy(
+                title = title,
+                content = content,
+                state = state,
+                priority = priority,
+                tags = tags,
+                properties = properties)
+    }
+
+    fun initPayloadForNewNote(title: String?, content: String?) {
+        notePayload = NoteBuilder.newPayload(App.getAppContext(), title ?: "", content)
+    }
+
+    fun initPayloadForExistingNote(noteId: Long) {
+        notePayload = dataRepository.getNotePayload(noteId)
+    }
+
+    fun updatePayloadState(state: String?) {
+        notePayload?.let {
+            notePayload = NoteBuilder.changeState(App.getAppContext(), it, state)
+        }
+    }
+
+    fun updatePayloadScheduledTime(range: OrgRange?) {
+        notePayload = notePayload?.copy(scheduled = range.toString())
+    }
+
+    fun updatePayloadDeadlineTime(range: OrgRange?) {
+        notePayload = notePayload?.copy(deadline = range.toString())
+    }
+
+    fun updatePayloadClosedTime(range: OrgRange?) {
+        notePayload = notePayload?.copy(closed = range.toString())
     }
 }

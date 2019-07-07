@@ -6,8 +6,6 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.text.*
 import android.text.method.LinkMovementMethod
-import android.text.style.URLSpan
-import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.*
 import android.widget.*
@@ -68,8 +66,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private var listener: Listener? = null
 
     private lateinit var viewModel: NoteViewModel
-
-    private var notePayload: NotePayload? = null
 
     private var book: BookView? = null
 
@@ -383,17 +379,9 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         }
     }
 
-    private fun savePayloadToBundle(outState: Bundle) {
-        notePayload?.let {
-            outState.putParcelable("payload", it)
-        }
-    }
+    private fun updateViewsFromPayload() {
+        val payload = viewModel.notePayload ?: return
 
-    private fun restorePayloadFromBundle(savedInstanceState: Bundle) {
-        notePayload = savedInstanceState.getParcelable("payload") as? NotePayload
-    }
-
-    private fun updateViewsFromPayload(payload: NotePayload) {
         setStateView(payload.state)
 
         setPriorityView(payload.priority)
@@ -497,22 +485,20 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             }
         }
 
-        notePayload?.let { payload ->
-            val tags = Arrays.asList(*tagsView.text.toString().split("\\s+".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
+        // Replace new lines with spaces, in case multi-line text has been pasted
+        val title = title.text.toString().replace("\n".toRegex(), " ").trim { it <= ' ' }
 
-            notePayload = payload.copy(
-                    // Replace new lines with spaces, in case multi-line text has been pasted
-                    title = title.text.toString().replace("\n".toRegex(), " ").trim { it <= ' ' },
-                    content = bodyEdit.text.toString(),
-                    state = if (TextUtils.isEmpty(state.text)) null else state.text.toString(),
-                    priority = if (TextUtils.isEmpty(priority.text)) null else priority.text.toString(),
-                    scheduled = payload.scheduled,
-                    deadline = payload.deadline,
-                    closed = payload.closed,
-                    tags = tags,
-                    properties = properties
-            )
-        }
+        val content = bodyEdit.text.toString()
+
+        val state = if (TextUtils.isEmpty(state.text)) null else state.text.toString()
+
+        val priority = if (TextUtils.isEmpty(priority.text)) null else priority.text.toString()
+
+        val tags = tagsView.text.toString().split("\\s+".toRegex()).dropLastWhile { it.isEmpty() }
+
+        viewModel.updatePayload(title, content, state, priority, tags, properties)
+
+        // Planning times are updated in onDateTimeSet
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -545,7 +531,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             }
 
             if (isNew()) { // Create new note
-                notePayload = NoteBuilder.newPayload(context!!, initialTitle ?: "", initialContent)
+                viewModel.initPayloadForNewNote(initialTitle ?: "", initialContent)
 
                 mViewFlipper.displayedChild = 0
 
@@ -557,9 +543,9 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 }
 
             } else { // Open existing note
-                notePayload = dataRepository.getNotePayload(noteId)
+                viewModel.initPayloadForExistingNote(noteId)
 
-                if (notePayload != null) {
+                if (viewModel.notePayload != null) {
                     mViewFlipper.displayedChild = 0
                 } else {
                     mViewFlipper.displayedChild = 1
@@ -568,18 +554,15 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
             /* Get current values from saved Bundle and populate all views. */
             if (savedInstanceState != null) {
-                restorePayloadFromBundle(savedInstanceState)
+                viewModel.restorePayloadFromBundle(savedInstanceState)
             }
 
-            /* Update views from note. */
-            notePayload?.let { payload ->
-                updateViewsFromPayload(payload)
-            }
+            updateViewsFromPayload()
 
             /* Store the hash value of original note. */
             arguments?.apply {
-                notePayload?.let { payload ->
-                    if (!containsKey(ARG_ORIGINAL_NOTE_HASH)) {
+                if (!containsKey(ARG_ORIGINAL_NOTE_HASH)) {
+                    viewModel.notePayload?.let { payload ->
                         putLong(ARG_ORIGINAL_NOTE_HASH, notePayloadHash(payload))
                     }
                 }
@@ -645,7 +628,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         updatePayloadFromViews()
 
-        savePayloadToBundle(outState)
+        viewModel.savePayloadToBundle(outState)
     }
 
     override fun onDetach() {
@@ -782,7 +765,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                         R.id.fragment_note_scheduled_button,
                         R.string.schedule,
                         0, // Unused
-                        OrgRange.parseOrNull(notePayload?.scheduled)?.startTime)
+                        OrgRange.parseOrNull(viewModel.notePayload?.scheduled)?.startTime)
 
             /* Setting deadline time. */
             R.id.fragment_note_deadline_button ->
@@ -790,7 +773,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                         R.id.fragment_note_deadline_button,
                         R.string.deadline,
                         0, // Unused
-                        OrgRange.parseOrNull(notePayload?.deadline)?.startTime)
+                        OrgRange.parseOrNull(viewModel.notePayload?.deadline)?.startTime)
 
             /* Setting closed time. */
             R.id.fragment_note_closed_edit_text ->
@@ -798,7 +781,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                         R.id.fragment_note_closed_edit_text,
                         R.string.closed,
                         0, // Unused
-                        OrgRange.parseOrNull(notePayload?.closed)?.startTime)
+                        OrgRange.parseOrNull(viewModel.notePayload?.closed)?.startTime)
         }
 
         f?.show(childFragmentManager, TimestampDialogFragment.FRAGMENT_TAG)
@@ -829,46 +812,49 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     override fun onDateTimeSet(id: Int, noteIds: TreeSet<Long>, time: OrgDateTime) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id, R.id.fragment_note_deadline_button, noteIds, time, notePayload)
+        if (BuildConfig.LOG_DEBUG)
+            LogUtils.d(
+                TAG, id, R.id.fragment_note_deadline_button, noteIds, time, viewModel.notePayload)
 
-        notePayload?.let { payload ->
+        viewModel.notePayload?.let { payload ->
             val range = OrgRange(time)
 
             when (id) {
                 R.id.fragment_note_scheduled_button -> {
                     updateTimestampView(TimeType.SCHEDULED, range)
-                    notePayload = payload.copy(scheduled = range.toString())
+                    viewModel.updatePayloadScheduledTime(range)
+
                 }
 
                 R.id.fragment_note_deadline_button -> {
                     updateTimestampView(TimeType.DEADLINE, range)
-                    notePayload = payload.copy(deadline = range.toString())
+                    viewModel.updatePayloadDeadlineTime(range)
                 }
 
                 R.id.fragment_note_closed_edit_text -> {
                     updateTimestampView(TimeType.CLOSED, range)
-                    notePayload = payload.copy(closed = range.toString())
+                    viewModel.updatePayloadClosedTime(range)
                 }
             }
         }
     }
 
     override fun onDateTimeCleared(id: Int, noteIds: TreeSet<Long>) {
-        notePayload?.let { payload ->
+        viewModel.notePayload?.let { payload ->
             when (id) {
                 R.id.fragment_note_scheduled_button -> {
                     updateTimestampView(TimeType.SCHEDULED, null)
-                    notePayload = payload.copy(scheduled = null)
+                    viewModel.updatePayloadScheduledTime(null)
                 }
 
                 R.id.fragment_note_deadline_button -> {
                     updateTimestampView(TimeType.DEADLINE, null)
-                    notePayload = payload.copy(deadline = null)
+                    viewModel.updatePayloadDeadlineTime(null)
                 }
 
                 R.id.fragment_note_closed_edit_text -> {
                     updateTimestampView(TimeType.CLOSED, null)
-                    notePayload = payload.copy(closed = null)
+                    viewModel.updatePayloadClosedTime(null)
                 }
             }
         }
@@ -887,7 +873,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         /* Remove search item. */
         menu.removeItem(R.id.activity_action_search)
 
-        if (notePayload == null) { // Displaying non-existent note.
+        if (viewModel.notePayload == null) { // Displaying non-existent note.
             menu.removeItem(R.id.close)
             menu.removeItem(R.id.done)
             menu.removeItem(R.id.metadata)
@@ -1025,7 +1011,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     fun isAskingForConfirmationForModifiedNote(): Boolean {
         updatePayloadFromViews()
 
-        val payload = notePayload
+        val payload = viewModel.notePayload
 
         return if (payload != null && isNoteModified(payload)) {
             dialog = AlertDialog.Builder(context)
@@ -1056,7 +1042,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         updatePayloadFromViews()
 
         if (isTitleValid()) {
-            val payload = notePayload
+            val payload = viewModel.notePayload
 
             if (isNew()) { // New note
                 val notePlace = if (place != Place.UNSPECIFIED)
@@ -1079,7 +1065,9 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     private fun isTitleValid(): Boolean {
-        return if (TextUtils.isEmpty(notePayload?.title)) {
+        val title = viewModel.notePayload?.title
+
+        return if (TextUtils.isEmpty(title)) {
             CommonActivity.showSnackbar(context, getString(R.string.title_can_not_be_empty))
             false
         } else {
@@ -1117,11 +1105,9 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private fun setState(state: String?) {
         updatePayloadFromViews()
 
-        notePayload?.let { payload ->
-            notePayload = NoteBuilder.changeState(context!!, payload, state).also {
-                updateViewsFromPayload(it)
-            }
-        }
+        viewModel.updatePayloadState(state)
+
+        updateViewsFromPayload()
     }
 
     private fun setStateView(state: String?) {
