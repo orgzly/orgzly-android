@@ -24,22 +24,26 @@ class EditTextWithMarkup : AppCompatEditText {
 
     private val textWatcher: TextWatcher = object: TextWatcher {
         private var nextCheckboxPosition = -1
+        private var nextCheckboxIndent: String = ""
 
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, s, "Start", start, "Count", count, "After", after)
 
             if (s.length == start || s[start] == '\n') { // End of string or line
-                var startOfLine = s.toString().lastIndexOf("\n", start - 1)
+                var startOfLine = s.lastIndexOf("\n", start - 1)
                 if (startOfLine < 0) {
                     startOfLine = 0
                 } else {
                     startOfLine++
                 }
-                val line = s.toString().substring(startOfLine, start)
-                val p = Pattern.compile("(^\\s*-\\s+\\[)[ X]\\]")
+
+                val line = s.substring(startOfLine, start)
+
+                val p = Pattern.compile("^(\\s*)-\\s+\\[[ X]]")
                 val m = p.matcher(line)
                 if (m.find()) {
                     nextCheckboxPosition = start + 1
+                    nextCheckboxIndent = m.group(1)
                 }
             }
         }
@@ -56,10 +60,10 @@ class EditTextWithMarkup : AppCompatEditText {
 
         override fun afterTextChanged(s: Editable) {
             if (nextCheckboxPosition != -1) {
-                s.replace(nextCheckboxPosition, nextCheckboxPosition, "- [ ] ")
+                s.replace(nextCheckboxPosition, nextCheckboxPosition, "$nextCheckboxIndent- [ ] ")
+                nextCheckboxPosition = -1
+                nextCheckboxIndent = ""
             }
-
-            nextCheckboxPosition = -1
         }
     }
 
