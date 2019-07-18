@@ -48,7 +48,7 @@ class WebdavRepo(private val uri: Uri, username: String?, password: String?) : S
         return sardine
                 .list(uri.toUrl())
                 .mapNotNull {
-                    if (it.isDirectory && !BookName.isSupportedFormatFileName(it.name)) {
+                    if (it.isDirectory || !BookName.isSupportedFormatFileName(it.name)) {
                         null
                     } else {
                         it.toVersionedRook()
