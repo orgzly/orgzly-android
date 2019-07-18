@@ -28,6 +28,10 @@
                 app:showAsAction="ifRoom"
                 android:title="@string/git"/>
             <item
+                android:id="@+id/repos_options_menu_item_new_webdav"
+                app:showAsAction="ifRoom"
+                android:title="@string/webdav"/>
+            <item
                 android:id="@+id/repos_options_menu_item_new_directory"
                 app:showAsAction="ifRoom"
                 android:title="@string/directory"/>

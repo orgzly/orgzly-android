@@ -56,6 +56,15 @@
                     android:text="@string/git" />
 
                 <Button
+                    android:id="@+id/activity_repos_webdav"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:drawableTop="?attr/ic_folder_open_48dp"
+                    android:text="@string/webdav" />
+
+                <Button
                     android:id="@+id/activity_repos_directory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

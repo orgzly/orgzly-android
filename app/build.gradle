@@ -130,6 +130,9 @@ dependencies {
 
     implementation "org.eclipse.jgit:org.eclipse.jgit:$jgit_version"
 
+    // webdav
+    implementation "com.thegrizzlylabs.sardine-android:sardine-android:$sardine_version"
+
     implementation "com.github.bumptech.glide:glide:$glide_version"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

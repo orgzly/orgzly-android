@@ -20,6 +20,7 @@ import com.orgzly.android.repos.*
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.DirectoryRepoActivity
 import com.orgzly.android.ui.repo.DropboxRepoActivity
+import com.orgzly.android.ui.repo.WebdavRepoActivity
 import com.orgzly.android.ui.repo.git.GitRepoActivity
 import kotlinx.android.synthetic.main.activity_repos.*
 import javax.inject.Inject
@@ -107,6 +108,10 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             }
         }
 
+        activity_repos_webdav.setOnClickListener {
+            startRepoActivity(R.id.repos_options_menu_item_new_webdav)
+        }
+
         activity_repos_directory.setOnClickListener {
             startRepoActivity(R.id.repos_options_menu_item_new_directory)
         }
@@ -164,6 +169,11 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
                 return true
             }
 
+            R.id.repos_options_menu_item_new_webdav -> {
+                startRepoActivity(item.itemId)
+                return true
+            }
+
             R.id.repos_options_menu_item_new_directory -> {
                 startRepoActivity(item.itemId)
                 return true
@@ -208,6 +218,11 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
                 return
             }
 
+            R.id.repos_options_menu_item_new_webdav -> {
+                WebdavRepoActivity.start(this)
+                return
+            }
+
             R.id.repos_options_menu_item_new_directory -> {
                 DirectoryRepoActivity.start(this)
                 return
@@ -228,7 +243,8 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
 
         } else if (repo is GitRepo) {
             GitRepoActivity.start(this, repoEntity.id)
-
+        } else if (repo is WebdavRepo) {
+            WebdavRepoActivity.start(this, repoEntity.id)
         } else {
             showSnackbar(R.string.message_unsupported_repository_type)
         }
