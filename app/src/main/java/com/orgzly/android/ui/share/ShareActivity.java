@@ -12,6 +12,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.data.DataRepository;
+import com.orgzly.android.db.entity.Note;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.usecase.UseCase;
 import com.orgzly.android.usecase.UseCaseResult;
@@ -260,16 +261,16 @@ public class ShareActivity extends CommonActivity
     }
 
     @Override
-    public void onNoteCreateRequest(NotePayload notePayload, NotePlace notePlace) {
-        mSyncFragment.run(new NoteCreate(notePayload, notePlace));
+    public void onNoteCreated(Note note) {
+        finish();
     }
 
     @Override
-    public void onNoteUpdateRequest(NotePayload notePayload, long noteId) {
+    public void onNoteUpdated(Note note) {
     }
 
     @Override
-    public void onNoteCancelRequest() {
+    public void onNoteCanceled() {
         finish();
     }
 
@@ -282,9 +283,6 @@ public class ShareActivity extends CommonActivity
      */
     @Override
     public void onSuccess(UseCase action, UseCaseResult result) {
-        if (action instanceof NoteCreate) {
-            finish();
-        }
     }
 
     /**

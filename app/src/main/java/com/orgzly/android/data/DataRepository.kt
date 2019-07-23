@@ -1430,10 +1430,10 @@ class DataRepository @Inject constructor(
     }
 
 
-    fun updateNote(noteId: Long, notePayload: NotePayload) {
-        val note = db.note().get(noteId) ?: return
+    fun updateNote(noteId: Long, notePayload: NotePayload): Note? {
+        val note = db.note().get(noteId) ?: return null
 
-        db.runInTransaction {
+        return db.runInTransaction(Callable {
             updateBookIsModified(note.position.bookId, true)
 
             replaceNoteProperties(noteId, notePayload.properties)
@@ -1454,7 +1454,9 @@ class DataRepository @Inject constructor(
             val count = db.note().update(newNote)
 
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Updated $count note: $newNote")
-        }
+
+            newNote
+        })
     }
 
     fun deleteNotes(bookId: Long, ids: Set<Long>): Int {

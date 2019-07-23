@@ -18,6 +18,7 @@ import com.orgzly.android.BookUtils
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.data.mappers.OrgMapper
 import com.orgzly.android.db.entity.BookView
+import com.orgzly.android.db.entity.Note
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.*
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
@@ -362,6 +363,14 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
                 null -> { }
             }
+        })
+
+        viewModel.noteCreatedEvent.observe(viewLifecycleOwner, Observer { note ->
+            listener?.onNoteCreated(note)
+        })
+
+        viewModel.noteUpdatedEvent.observe(viewLifecycleOwner, Observer { note ->
+            listener?.onNoteUpdated(note)
         })
     }
 
@@ -1029,7 +1038,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     private fun cancel() {
-        listener?.onNoteCancelRequest()
+        listener?.onNoteCanceled()
     }
 
     private fun save() {
@@ -1051,14 +1060,14 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                     NotePlace(bookId)
 
                 if (payload != null) {
-                    listener?.onNoteCreateRequest(payload, notePlace)
+                    viewModel.createNote(payload, notePlace)
                 }
 
             } else { // Existing note
                 if (payload != null && isNoteModified(payload)) {
-                    listener?.onNoteUpdateRequest(payload, noteId)
+                    viewModel.updateNote(payload, noteId)
                 } else {
-                    listener?.onNoteCancelRequest()
+                    listener?.onNoteCanceled()
                 }
             }
         }
@@ -1130,9 +1139,9 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     interface Listener {
-        fun onNoteCreateRequest(notePayload: NotePayload, notePlace: NotePlace)
-        fun onNoteUpdateRequest(notePayload: NotePayload, noteId: Long)
-        fun onNoteCancelRequest()
+        fun onNoteCreated(note: Note)
+        fun onNoteUpdated(note: Note)
+        fun onNoteCanceled()
     }
 
     companion object {

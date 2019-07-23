@@ -746,24 +746,34 @@ public class MainActivity extends CommonActivity
         DisplayManager.displayNewNote(getSupportFragmentManager(), target);
     }
 
-    /* Save note. */
     @Override
-    public void onNoteCreateRequest(@NotNull NotePayload notePayload, NotePlace notePlace) {
+    public void onNoteCreated(Note note) {
         finishActionMode();
-
         popBackStackAndCloseKeyboard();
 
-        mSyncFragment.run(new NoteCreate(notePayload, notePlace));
+        // Display Snackbar with an action (create new note below just created one)
+        View view = findViewById(R.id.main_content);
+        if (view != null) {
+            showSnackbar(Snackbar
+                    .make(view, R.string.message_note_created, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.new_below, v -> {
+                        NotePlace notePlace = new NotePlace(
+                                note.getPosition().getBookId(),
+                                note.getId(),
+                                Place.BELOW);
+
+                        DisplayManager.displayNewNote(getSupportFragmentManager(), notePlace);
+                    }));
+        }
     }
 
     @Override
-    public void onNoteUpdateRequest(@NotNull NotePayload notePayload, long noteId) {
+    public void onNoteUpdated(Note note) {
         popBackStackAndCloseKeyboard();
-        mSyncFragment.run(new NoteUpdate(noteId, notePayload));
     }
 
     @Override
-    public void onNoteCancelRequest() {
+    public void onNoteCanceled() {
         popBackStackAndCloseKeyboard();
     }
 
@@ -1130,26 +1140,6 @@ public class MainActivity extends CommonActivity
         if (action instanceof BookExport) {
             showSnackbar(getString(R.string.book_exported, (File) result.getUserData()));
 
-        } else if (action instanceof NoteCreate) {
-            Note note = (Note) result.getUserData();
-
-            /*
-             * Display Snackbar with an action - create new note below just created one.
-             */
-            View view = findViewById(R.id.main_content);
-            if (view != null) {
-                showSnackbar(Snackbar
-                        .make(view, R.string.message_note_created, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.new_below, v -> {
-                            NotePlace notePlace = new NotePlace(
-                                    note.getPosition().getBookId(),
-                                    note.getId(),
-                                    Place.BELOW);
-
-                            DisplayManager.displayNewNote(getSupportFragmentManager(), notePlace);
-                        }));
-            }
-
         } else if (action instanceof NoteCut) {
             NotesClipboard clipboard = (NotesClipboard) result.getUserData();
 
@@ -1201,12 +1191,6 @@ public class MainActivity extends CommonActivity
         if (action instanceof BookExport) {
             showSnackbar(getString(
                     R.string.failed_exporting_book, throwable.getLocalizedMessage()));
-
-        } else if (action instanceof NoteCreate) {
-            showSnackbar(R.string.message_failed_creating_note);
-
-        } else if (action instanceof NoteUpdate) {
-            showSnackbar(R.string.message_failed_updating_note);
 
         } else {
             if (throwable.getCause() != null) {
