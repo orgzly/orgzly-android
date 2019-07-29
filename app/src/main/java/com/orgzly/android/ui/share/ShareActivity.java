@@ -7,12 +7,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.core.app.TaskStackBuilder;
+import android.database.Cursor;
+import android.provider.MediaStore;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.data.DataRepository;
-import com.orgzly.android.ui.Place;
 import com.orgzly.android.usecase.UseCase;
 import com.orgzly.android.usecase.UseCaseResult;
 import com.orgzly.android.usecase.NoteCreate;
@@ -154,7 +155,10 @@ public class ShareActivity extends CommonActivity
                     data.bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0L);
                 }
 
-            } else {
+            } else if (type.startsWith("image/")) {
+		handleSendImage(intent, data); // Handle single image being sent
+
+	    } else {
                 mError = getString(R.string.share_type_not_supported, type);
             }
 
@@ -299,5 +303,37 @@ public class ShareActivity extends CommonActivity
         String title;
         String content;
         Long bookId = null;
+    }
+
+    /**
+     * Get file path from image shared with orgzly
+     * and put it as a file link in the note's content
+     */
+    private void handleSendImage(Intent intent, Data data) {
+	// Get file uri from intent which probably looks like this:
+	// content://media/external/images/...
+	Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+	String absoluteFilePath = getRealPathFromUri(this, uri);
+	// Put real file path prefixed by 'file:' in note's content
+	data.content = "file:" + absoluteFilePath;	
+    }
+
+    /**
+     * Get real file path from content:// link pointing to file
+     * ( https://stackoverflow.com/a/20059657 )
+     */
+    public static String getRealPathFromUri(Context context, Uri contentUri) {
+	Cursor cursor = null;
+	try {
+	    String[] proj = { MediaStore.Images.Media.DATA };
+	    cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+	    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+	    cursor.moveToFirst();
+	    return cursor.getString(column_index);
+	} finally {
+	    if (cursor != null) {
+		cursor.close();
+	    }
+	}
     }
 }
