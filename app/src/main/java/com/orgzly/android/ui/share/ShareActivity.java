@@ -330,7 +330,10 @@ public class ShareActivity extends CommonActivity
 	    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 	    cursor.moveToFirst();
 	    return cursor.getString(column_index);
-	} finally {
+	} catch (Exception e) {
+            e.printStackTrace();
+            return "Failed reading the content of " + contentUri.toString() + ": " + e.toString();
+        } finally {
 	    if (cursor != null) {
 		cursor.close();
 	    }
