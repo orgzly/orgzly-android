@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
+import com.orgzly.android.data.mappers.OrgMapper
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
@@ -15,14 +16,18 @@ import com.orgzly.android.ui.Place
 import com.orgzly.android.ui.SingleLiveEvent
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.usecase.*
+import com.orgzly.android.util.MiscUtils
 import com.orgzly.org.OrgProperties
 import com.orgzly.org.datetime.OrgRange
-import java.lang.Exception
+import com.orgzly.org.parser.OrgParserWriter
 
 class NoteViewModel(
         private val dataRepository: DataRepository,
-        private val bookId: Long,
-        private val isNew: Boolean
+        private var bookId: Long,
+        private val noteId: Long,
+        private val place: Place?,
+        private val title: String?,
+        private val content: String?
 ) : CommonViewModel() {
 
     val tags: LiveData<List<String>> by lazy {
@@ -37,7 +42,11 @@ class NoteViewModel(
 
     val bookChangeRequestEvent: SingleLiveEvent<List<BookView>> = SingleLiveEvent()
 
-    fun loadData(bookId: Long, noteId: Long, place: Place?) {
+    var notePayload: NotePayload? = null
+
+    private var originalHash: Long = 0L
+
+    fun loadData() {
         App.EXECUTORS.diskIO().execute {
             val book = dataRepository.getBookView(bookId)
             val note = dataRepository.getNoteView(noteId)
@@ -47,6 +56,21 @@ class NoteViewModel(
                 dataRepository.getNoteAndAncestors(noteId)
             } else {
                 dataRepository.getNoteAncestors(noteId)
+            }
+
+            notePayload = if (isNew()) {
+                NoteBuilder.newPayload(App.getAppContext(), title ?: "", content)
+            } else {
+                dataRepository.getNotePayload(noteId)
+            }
+
+            // Calculate payload's hash once for the original note
+            notePayload?.let { payload ->
+                App.EXECUTORS.mainThread().execute {
+                    if (originalHash == 0L) {
+                        originalHash = notePayloadHash(payload)
+                    }
+                }
             }
 
             noteDetailsDataEvent.postValue(NoteDetailsData(book, note, ancestors))
@@ -104,7 +128,7 @@ class NoteViewModel(
 
     private fun startMode(): ViewEditMode {
         // Always start new notes in edit mode
-        if (isNew) {
+        if (isNew()) {
             return ViewEditMode.EDIT_WITH_KEYBOARD
         }
 
@@ -135,7 +159,7 @@ class NoteViewModel(
         }
 
         // Only remember last mode when opening existing notes
-        if (!isNew) {
+        if (!isNew()) {
             if (viewEditMode.value == ViewEditMode.VIEW) {
                 AppPreferences.noteDetailsLastMode(context, "view")
             } else {
@@ -143,8 +167,6 @@ class NoteViewModel(
             }
         }
     }
-
-    var notePayload: NotePayload? = null
 
     fun savePayloadToBundle(outState: Bundle) {
         notePayload?.let {
@@ -173,14 +195,6 @@ class NoteViewModel(
                 properties = properties)
     }
 
-    fun initPayloadForNewNote(title: String?, content: String?) {
-        notePayload = NoteBuilder.newPayload(App.getAppContext(), title ?: "", content)
-    }
-
-    fun initPayloadForExistingNote(noteId: Long) {
-        notePayload = dataRepository.getNotePayload(noteId)
-    }
-
     fun updatePayloadState(state: String?) {
         notePayload?.let {
             notePayload = NoteBuilder.changeState(App.getAppContext(), it, state)
@@ -202,21 +216,56 @@ class NoteViewModel(
     val noteCreatedEvent: SingleLiveEvent<Note> = SingleLiveEvent()
     val noteUpdatedEvent: SingleLiveEvent<Note> = SingleLiveEvent()
 
-    fun createNote(payload: NotePayload, place: NotePlace) {
-        App.EXECUTORS.diskIO().execute {
-            catchAndPostError {
-                val result = UseCaseRunner.run(NoteCreate(payload, place))
-                noteCreatedEvent.postValue(result.userData as Note)
+    fun createNote(place: NotePlace) {
+        notePayload?.let { payload ->
+            App.EXECUTORS.diskIO().execute {
+                catchAndPostError {
+                    val result = UseCaseRunner.run(NoteCreate(payload, place))
+                    noteCreatedEvent.postValue(result.userData as Note)
+                }
             }
         }
     }
 
-    fun updateNote(payload: NotePayload, id: Long) {
-        App.EXECUTORS.diskIO().execute {
-            catchAndPostError {
-                val result = UseCaseRunner.run(NoteUpdate(id, payload))
-                noteUpdatedEvent.postValue(result.userData as Note)
+    fun updateNote(id: Long) {
+        notePayload?.let { payload ->
+            App.EXECUTORS.diskIO().execute {
+                catchAndPostError {
+                    val result = UseCaseRunner.run(NoteUpdate(id, payload))
+                    noteUpdatedEvent.postValue(result.userData as Note)
+                }
             }
         }
+    }
+
+    /**
+     * Hash used to detect note modifications.
+     * TODO: Avoid generating org
+     */
+    private fun notePayloadHash(payload: NotePayload): Long {
+        val head = OrgMapper.toOrgHead(payload)
+
+        val parserWriter = OrgParserWriter()
+        val str = parserWriter.whiteSpacedHead(head, 1, false)
+
+        return MiscUtils.sha1(str)
+    }
+
+    fun isNoteModified(): Boolean {
+        val payload = notePayload
+
+        return if (payload != null) {
+            notePayloadHash(payload) != originalHash
+        } else {
+            false
+        }
+    }
+
+    fun isNew(): Boolean {
+        return place != null
+    }
+
+    fun setBook(id: Long) {
+        bookId = id
     }
 }

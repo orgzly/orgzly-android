@@ -16,7 +16,6 @@ import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.BookUtils
 import com.orgzly.android.data.DataRepository
-import com.orgzly.android.data.mappers.OrgMapper
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.prefs.AppPreferences
@@ -29,13 +28,11 @@ import com.orgzly.android.ui.share.ShareActivity
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.views.TextViewWithMarkup
 import com.orgzly.android.util.LogUtils
-import com.orgzly.android.util.MiscUtils
 import com.orgzly.android.util.SpaceTokenizer
 import com.orgzly.android.util.UserTimeFormatter
 import com.orgzly.org.OrgProperties
 import com.orgzly.org.datetime.OrgDateTime
 import com.orgzly.org.datetime.OrgRange
-import com.orgzly.org.parser.OrgParserWriter
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_note.*
 import java.util.*
@@ -151,10 +148,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         }
     }
 
-    private fun isNew(): Boolean {
-        return place != null
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
         super.onCreate(savedInstanceState)
@@ -163,7 +156,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             ViewModelProviders.of(it).get(SharedMainActivityViewModel::class.java)
         } ?: throw IllegalStateException("No Activity")
 
-        val factory = NoteViewModelFactory.getInstance(dataRepository, bookId, isNew())
+        val factory = NoteViewModelFactory.getInstance(
+                dataRepository, bookId, noteId, place, initialTitle, initialContent)
 
         viewModel = ViewModelProviders.of(this, factory).get(NoteViewModel::class.java)
 
@@ -520,17 +514,19 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             book?.let {
                 val bookTitle = BookUtils.getFragmentTitleForBook(it.book)
 
-                val breadcrumbs = Breadcrumbs()
-
-                breadcrumbs.add(bookTitle, 0, if (noteId == 0L) null else fun() {
-                    ActivityUtils.closeSoftKeyboard(activity)
-                    viewModel.onBreadcrumbsBook(data)
-                })
-
-                data.ancestors.forEach { ancestor ->
-                    breadcrumbs.add(ancestor.title, 0) {
+                val breadcrumbs = Breadcrumbs().apply {
+                    // Notebook
+                    add(bookTitle, 0, if (noteId == 0L) null else fun() {
                         ActivityUtils.closeSoftKeyboard(activity)
-                        viewModel.onBreadcrumbsNote(it.book.id, ancestor)
+                        viewModel.onBreadcrumbsBook(data)
+                    })
+
+                    // Ancestors
+                    data.ancestors.forEach { ancestor ->
+                        add(ancestor.title, 0) {
+                            ActivityUtils.closeSoftKeyboard(activity)
+                            viewModel.onBreadcrumbsNote(it.book.id, ancestor)
+                        }
                     }
                 }
 
@@ -539,9 +535,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 locationButtonView.text = bookTitle
             }
 
-            if (isNew()) { // Create new note
-                viewModel.initPayloadForNewNote(initialTitle ?: "", initialContent)
-
+            if (viewModel.isNew()) { // Create new note
                 mViewFlipper.displayedChild = 0
 
                 /* Open keyboard for new notes, unless fragment was given
@@ -552,8 +546,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 }
 
             } else { // Open existing note
-                viewModel.initPayloadForExistingNote(noteId)
-
                 if (viewModel.notePayload != null) {
                     mViewFlipper.displayedChild = 0
                 } else {
@@ -561,21 +553,12 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 }
             }
 
-            /* Get current values from saved Bundle and populate all views. */
+            // Load payload from saved Bundle if available
             if (savedInstanceState != null) {
                 viewModel.restorePayloadFromBundle(savedInstanceState)
             }
 
             updateViewsFromPayload()
-
-            /* Store the hash value of original note. */
-            arguments?.apply {
-                if (!containsKey(ARG_ORIGINAL_NOTE_HASH)) {
-                    viewModel.notePayload?.let { payload ->
-                        putLong(ARG_ORIGINAL_NOTE_HASH, notePayloadHash(payload))
-                    }
-                }
-            }
 
             /* Refresh action bar items (hide or display, depending on if book is loaded. */
             activity?.invalidateOptionsMenu()
@@ -583,8 +566,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             announceChangesToActivity()
         })
 
-        viewModel.loadData(bookId, noteId, place)
-
+        viewModel.loadData()
     }
 
     /**
@@ -645,19 +627,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         super.onDetach()
 
         listener = null
-    }
-
-    /**
-     * Hash used to detect note modifications.
-     * TODO: Avoid generating org
-     */
-    private fun notePayloadHash(payload: NotePayload): Long {
-        val head = OrgMapper.toOrgHead(payload)
-
-        val parserWriter = OrgParserWriter()
-        val str = parserWriter.whiteSpacedHead(head, 1, false)
-
-        return MiscUtils.sha1(str)
     }
 
     private enum class TimeType {
@@ -899,7 +868,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         }
 
         /* Newly created note cannot be deleted. */
-        if (isNew()) {
+        if (viewModel.isNew()) {
             menu.removeItem(R.id.delete)
         }
     }
@@ -1020,9 +989,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     fun isAskingForConfirmationForModifiedNote(): Boolean {
         updatePayloadFromViews()
 
-        val payload = viewModel.notePayload
-
-        return if (payload != null && isNoteModified(payload)) {
+        return if (viewModel.isNoteModified()) {
             dialog = AlertDialog.Builder(context)
                     .setTitle(R.string.note_has_been_modified)
                     .setMessage(R.string.discard_or_save_changes)
@@ -1051,21 +1018,17 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         updatePayloadFromViews()
 
         if (isTitleValid()) {
-            val payload = viewModel.notePayload
-
-            if (isNew()) { // New note
+            if (viewModel.isNew()) { // New note
                 val notePlace = if (place != Place.UNSPECIFIED)
                     NotePlace(bookId, noteId, place)
                 else
                     NotePlace(bookId)
 
-                if (payload != null) {
-                    viewModel.createNote(payload, notePlace)
-                }
+                viewModel.createNote(notePlace)
 
             } else { // Existing note
-                if (payload != null && isNoteModified(payload)) {
-                    viewModel.updateNote(payload, noteId)
+                if (viewModel.isNoteModified()) {
+                    viewModel.updateNote(noteId)
                 } else {
                     listener?.onNoteCanceled()
                 }
@@ -1084,13 +1047,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         }
     }
 
-    private fun isNoteModified(payload: NotePayload): Boolean {
-        val currentHash = notePayloadHash(payload)
-        val originalHash = arguments?.getLong(ARG_ORIGINAL_NOTE_HASH)
-
-        return currentHash != originalHash
-    }
-
     /**
      * Updates current book for this note. Only makes sense for new notes.
      * TODO: Should be setPosition and allow filing under specific note
@@ -1106,6 +1062,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         locationButtonView.text = title
 
         arguments?.putLong(ARG_BOOK_ID, newBook.book.id)
+
+        viewModel.setBook(bookId)
     }
 
     /**
@@ -1151,8 +1109,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         /** Name used for [android.app.FragmentManager].  */
         @JvmField
         val FRAGMENT_TAG: String = NoteFragment::class.java.name
-
-        private const val ARG_ORIGINAL_NOTE_HASH = "original_note_hash"
 
         private const val ARG_BOOK_ID = "book_id"
         private const val ARG_NOTE_ID = "note_id"
