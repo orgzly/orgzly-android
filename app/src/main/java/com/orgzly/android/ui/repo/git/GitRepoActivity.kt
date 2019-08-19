@@ -16,6 +16,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import androidx.databinding.DataBindingUtil
 import com.google.android.material.textfield.TextInputLayout
 import com.orgzly.R
 import com.orgzly.android.App
@@ -30,7 +31,7 @@ import com.orgzly.android.usecase.RepoUpdate
 import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.MiscUtils
-import kotlinx.android.synthetic.main.activity_repo_git.*
+import com.orgzly.databinding.ActivityRepoGitBinding
 import org.eclipse.jgit.api.errors.TransportException
 import org.eclipse.jgit.errors.NoRemoteRepositoryException
 import org.eclipse.jgit.errors.NotSupportedException
@@ -40,6 +41,8 @@ import java.io.FileNotFoundException
 import java.io.IOException
 
 class GitRepoActivity : CommonActivity(), GitPreferences {
+    private lateinit var binding: ActivityRepoGitBinding
+
     private lateinit var fields: Array<Field>
 
     private var repoId: Long = 0
@@ -49,45 +52,45 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_repo_git)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_git)
 
         setupActionBar(R.string.git)
 
         fields = arrayOf(
                 Field(
-                        activity_repo_git_directory,
-                        activity_repo_git_directory_layout,
+                        binding.activityRepoGitDirectory,
+                        binding.activityRepoGitDirectoryLayout,
                         R.string.pref_key_git_repository_filepath),
                 Field(
-                        activity_repo_git_ssh_key,
-                        activity_repo_git_ssh_key_layout,
+                        binding.activityRepoGitSshKey,
+                        binding.activityRepoGitSshKeyLayout,
                         R.string.pref_key_git_ssh_key_path),
                 Field(
-                        activity_repo_git_author,
-                        activity_repo_git_author_layout,
+                        binding.activityRepoGitAuthor,
+                        binding.activityRepoGitAuthorLayout,
                         R.string.pref_key_git_author),
                 Field(
-                        activity_repo_git_email,
-                        activity_repo_git_email_layout,
+                        binding.activityRepoGitEmail,
+                        binding.activityRepoGitEmailLayout,
                         R.string.pref_key_git_email),
                 Field(
-                        activity_repo_git_branch,
-                        activity_repo_git_branch_layout,
+                        binding.activityRepoGitBranch,
+                        binding.activityRepoGitBranchLayout,
                         R.string.pref_key_git_branch_name))
 
 
         /* Clear error after field value has been modified. */
-        MiscUtils.clearErrorOnTextChange(activity_repo_git_url, activity_repo_git_url_layout)
+        MiscUtils.clearErrorOnTextChange(binding.activityRepoGitUrl, binding.activityRepoGitUrlLayout)
         fields.forEach {
             MiscUtils.clearErrorOnTextChange(it.editText, it.layout)
         }
 
-        activity_repo_git_directory_browse.setOnClickListener {
-            startLocalFileBrowser(activity_repo_git_directory, ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION)
+        binding.activityRepoGitDirectoryBrowse.setOnClickListener {
+            startLocalFileBrowser(binding.activityRepoGitDirectory, ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION)
         }
 
-        activity_repo_git_ssh_key_browse.setOnClickListener {
-            startLocalFileBrowser(activity_repo_git_ssh_key, ACTIVITY_REQUEST_CODE_FOR_SSH_KEY_SELECTION, true)
+        binding.activityRepoGitSshKeyBrowse.setOnClickListener {
+            startLocalFileBrowser(binding.activityRepoGitSshKey, ACTIVITY_REQUEST_CODE_FOR_SSH_KEY_SELECTION, true)
         }
 
         repoId = intent.getLongExtra(ARG_REPO_ID, 0)
@@ -95,7 +98,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         /* Set directory value for existing repository being edited. */
         if (repoId != 0L) {
             dataRepository.getRepo(repoId)?.let { repo ->
-                activity_repo_git_url.setText(repo.url)
+                binding.activityRepoGitUrl.setText(repo.url)
                 setFromPreferences()
             }
         } else {
@@ -116,7 +119,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             success = orgzlyGitPath.mkdirs()
         } catch(error: SecurityException) {}
         if (success || (orgzlyGitPath.exists() && orgzlyGitPath.list().size == 0)) {
-            activity_repo_git_directory.setText(orgzlyGitPath.path)
+            binding.activityRepoGitDirectory.setText(orgzlyGitPath.path)
         }
     }
 
@@ -233,7 +236,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private fun validateFields(): Boolean {
         var hasEmptyFields = false
 
-        if (errorIfEmpty(activity_repo_git_url, activity_repo_git_url_layout)) {
+        if (errorIfEmpty(binding.activityRepoGitUrl, binding.activityRepoGitUrlLayout)) {
             hasEmptyFields = true
         }
 
@@ -265,19 +268,19 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     }
 
     override fun sshKeyPathString(): String {
-        return withDefault(activity_repo_git_ssh_key.text.toString(), R.string.pref_key_git_ssh_key_path)
+        return withDefault(binding.activityRepoGitSshKey.text.toString(), R.string.pref_key_git_ssh_key_path)
     }
 
     override fun getAuthor(): String {
-        return withDefault(activity_repo_git_author.text.toString(), R.string.pref_key_git_author)
+        return withDefault(binding.activityRepoGitAuthor.text.toString(), R.string.pref_key_git_author)
     }
 
     override fun getEmail(): String {
-        return withDefault(activity_repo_git_email.text.toString(), R.string.pref_key_git_email)
+        return withDefault(binding.activityRepoGitEmail.text.toString(), R.string.pref_key_git_email)
     }
 
     override fun repositoryFilepath(): String {
-        val v = activity_repo_git_directory.text.toString()
+        val v = binding.activityRepoGitDirectory.text.toString()
         return if (v.isNotEmpty()) {
             v
         } else {
@@ -291,11 +294,11 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     }
 
     override fun branchName(): String {
-        return withDefault(activity_repo_git_branch.text.toString(), R.string.pref_key_git_branch_name)
+        return withDefault(binding.activityRepoGitBranch.text.toString(), R.string.pref_key_git_branch_name)
     }
 
     override fun remoteUri(): Uri {
-        val remoteUriString = activity_repo_git_url.text.toString()
+        val remoteUriString = binding.activityRepoGitUrl.text.toString()
         return Uri.parse(remoteUriString)
     }
 
@@ -320,12 +323,12 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION ->
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val uri = data.data
-                    activity_repo_git_directory.setText(uri.path)
+                    binding.activityRepoGitDirectory.setText(uri.path)
                 }
             ACTIVITY_REQUEST_CODE_FOR_SSH_KEY_SELECTION ->
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val uri = data.data
-                    activity_repo_git_ssh_key.setText(uri.path)
+                    binding.activityRepoGitSshKey.setText(uri.path)
                 }
         }
     }

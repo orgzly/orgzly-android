@@ -38,6 +38,10 @@ android {
         }
     }
 
+    dataBinding {
+        enabled = true
+    }
+
 //    testOptions {
 //        execution 'ANDROIDX_TEST_ORCHESTRATOR'
 //    }

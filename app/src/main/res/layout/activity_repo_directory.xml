@@ -1,72 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_content"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ScrollView
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/activity_repo_directory_container"
+        <ScrollView
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/screen_edge"
-            android:orientation="vertical"
-            tools:context=".android.ui.main.MainActivity">
+            android:layout_height="match_parent">
 
-            <!-- Browse button. -->
             <LinearLayout
+                android:id="@+id/activity_repo_directory_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginBottom="@dimen/space_between_content_areas"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:padding="@dimen/screen_edge"
+                android:orientation="vertical"
+                tools:context=".android.ui.main.MainActivity">
 
-                <ImageView
-                    android:id="@+id/activity_repo_directory_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="?attr/ic_folder_open_48dp"
-                    android:contentDescription="@string/browse" />
-
-                <Button
-                    android:id="@+id/activity_repo_directory_browse_button"
+                <!-- Browse button. -->
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/content_left_margin_from_icon"
-                    android:layout_marginLeft="@dimen/content_left_margin_from_icon"
-                    android:text="@string/browse" />
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:layout_marginBottom="@dimen/space_between_content_areas"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/activity_repo_directory_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="?attr/ic_folder_open_48dp"
+                        android:contentDescription="@string/browse" />
+
+                    <Button
+                        android:id="@+id/activity_repo_directory_browse_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/content_left_margin_from_icon"
+                        android:layout_marginLeft="@dimen/content_left_margin_from_icon"
+                        android:text="@string/browse" />
+
+                </LinearLayout>
+
+                <!-- Input. -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/activity_repo_directory_input_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_between_content_areas"
+                    app:errorEnabled="true">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_repo_directory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:imeOptions="actionDone"
+                        android:hint="@string/directory_uri" />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
-            <!-- Input. -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/activity_repo_directory_input_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_between_content_areas"
-                app:errorEnabled="true">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_repo_directory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:imeOptions="actionDone"
-                    android:hint="@string/directory_uri" />
-            </com.google.android.material.textfield.TextInputLayout>
+        </ScrollView>
 
-        </LinearLayout>
+        <include layout="@layout/app_bar" />
 
-    </ScrollView>
-
-    <include layout="@layout/app_bar" />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

@@ -6,9 +6,8 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.view.*
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ListView
+import android.widget.*
+import androidx.databinding.DataBindingUtil
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.repos.DirectoryRepo
@@ -17,8 +16,7 @@ import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.UriUtils
-import kotlinx.android.synthetic.main.activity_browser.*
-import kotlinx.android.synthetic.main.item_browser.view.*
+import com.orgzly.databinding.ActivityBrowserBinding
 import java.io.File
 import java.io.FilenameFilter
 import java.util.*
@@ -27,6 +25,8 @@ class BrowserActivity :
         CommonActivity(),
         AdapterView.OnItemClickListener,
         SimpleOneLinerDialog.Listener {
+
+    private lateinit var binding: ActivityBrowserBinding
 
     private lateinit var listView: ListView
 
@@ -40,7 +40,7 @@ class BrowserActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_browser)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_browser)
 
         setupActionBar()
 
@@ -78,14 +78,14 @@ class BrowserActivity :
     }
 
     private fun setupViews() {
-        listView = list
+        listView = binding.list
         listView.onItemClickListener = this
 
-        activity_browser_button_create.setOnClickListener {
+        binding.activityBrowserButtonCreate.setOnClickListener {
             create()
         }
 
-        activity_browser_button_use.setOnClickListener {
+        binding.activityBrowserButtonUse.setOnClickListener {
             useAndFinish(currentItem)
         }
     }
@@ -321,11 +321,11 @@ class BrowserActivity :
                 val view = convertView ?: LayoutInflater.from(context).inflate(
                         R.layout.item_browser, parent, false)
 
-                val textView = view.item_browser_name
-                textView.text = itemList[position].name
+                view.findViewById<TextView>(R.id.item_browser_name)
+                        .text = itemList[position].name
 
-                val imageView = view.item_browser_icon
-                imageView.setImageResource(itemList[position].icon)
+                view.findViewById<ImageView>(R.id.item_browser_icon)
+                        .setImageResource(itemList[position].icon)
 
                 return view
             }

@@ -1,75 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_content"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ViewFlipper
-        android:id="@+id/activity_repos_flipper"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
-            android:id="@android:id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <ScrollView
+        <ViewFlipper
+            android:id="@+id/activity_repos_flipper"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
+            <ListView
+                android:id="@+id/list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="top"
-                android:padding="@dimen/screen_edge">
+                android:layout_height="match_parent" />
 
-                <TextView
-                    style="@style/BigCenteredText"
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/space_between_content_areas"
-                    android:text="@string/create_new_repository_for_syncing"
-                    android:gravity="center" />
+                    android:orientation="vertical"
+                    android:layout_gravity="top"
+                    android:padding="@dimen/screen_edge">
 
-                <Button
-                    android:id="@+id/activity_repos_dropbox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:drawableTop="?attr/oic_dropbox_not_linked"
-                    android:text="@string/dropbox" />
+                    <TextView
+                        style="@style/BigCenteredText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/space_between_content_areas"
+                        android:text="@string/create_new_repository_for_syncing"
+                        android:gravity="center" />
 
-                <Button
-                    android:id="@+id/activity_repos_git"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:drawableTop="?attr/oic_git_48dp"
-                    android:text="@string/git" />
+                    <Button
+                        android:id="@+id/activity_repos_dropbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:drawableTop="?attr/oic_dropbox_not_linked"
+                        android:text="@string/dropbox" />
 
-                <Button
-                    android:id="@+id/activity_repos_directory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:drawableTop="?attr/ic_folder_open_48dp"
-                    android:text="@string/directory" />
+                    <Button
+                        android:id="@+id/activity_repos_git"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:drawableTop="?attr/oic_git_48dp"
+                        android:text="@string/git" />
 
-            </LinearLayout>
+                    <Button
+                        android:id="@+id/activity_repos_directory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:drawableTop="?attr/ic_folder_open_48dp"
+                        android:text="@string/directory" />
 
-        </ScrollView>
+                </LinearLayout>
 
-    </ViewFlipper>
+            </ScrollView>
 
-    <include layout="@layout/app_bar" />
+        </ViewFlipper>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <include layout="@layout/app_bar" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>
