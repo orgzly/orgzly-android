@@ -13,8 +13,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.R
 import com.orgzly.android.db.entity.Book
@@ -24,6 +22,7 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.Selection
+import com.orgzly.databinding.ItemBookBinding
 
 
 class BooksAdapter(
@@ -32,67 +31,27 @@ class BooksAdapter(
 
     private val adapterSelection: Selection = Selection()
 
-    inner class ViewHolder(view: View) :
-            RecyclerView.ViewHolder(view),
+    inner class ViewHolder(val binding: ItemBookBinding) :
+            RecyclerView.ViewHolder(binding.root),
             View.OnClickListener,
             View.OnLongClickListener {
 
-        val container: View = view.findViewById(R.id.item_book_container)
-
-        val title: TextView = view.findViewById(R.id.item_book_title)
-        val subTitle: TextView = view.findViewById(R.id.item_book_subtitle)
-
-        val syncNeeded: ImageView = view.findViewById(R.id.item_book_sync_needed_icon)
-        val syncFailed: ImageView = view.findViewById(R.id.item_book_sync_failed_icon)
-
-        val bookDetailsPadding: View = view.findViewById(R.id.item_book_details_padding)
-
-        val mtimeContainer: View = view.findViewById(R.id.item_book_mtime_container)
-        val mtime: TextView = view.findViewById(R.id.item_book_mtime)
-
-        val linkContainer: View = view.findViewById(R.id.item_book_link_container)
-        val link: TextView = view.findViewById(R.id.item_book_link_repo)
-
-        val syncedToUrlContainer: View = view.findViewById(R.id.item_book_synced_url_container)
-        val syncedToUrl: TextView = view.findViewById(R.id.item_book_synced_url)
-
-        val syncedToMtimeContainer: View = view.findViewById(R.id.item_book_synced_mtime_container)
-        val syncedToMtime: TextView = view.findViewById(R.id.item_book_synced_mtime)
-
-        val syncedToRevisionContainer: View = view.findViewById(R.id.item_book_synced_revision_container)
-        val syncedToRevision: TextView = view.findViewById(R.id.item_book_synced_revision)
-
-        val lastActionContainer: View = view.findViewById(R.id.item_book_last_action_container)
-        val lastAction: TextView = view.findViewById(R.id.item_book_last_action)
-
-        val usedEncodingContainer: View = view.findViewById(R.id.item_book_encoding_used_container)
-        val usedEncoding: TextView = view.findViewById(R.id.item_book_encoding_used)
-
-        val detectedEncodingContainer: View = view.findViewById(R.id.item_book_encoding_detected_container)
-        val detectedEncoding: TextView = view.findViewById(R.id.item_book_encoding_detected)
-
-        val selectedEncodingContainer: View = view.findViewById(R.id.item_book_encoding_selected_container)
-        val selectedEncoding: TextView = view.findViewById(R.id.item_book_encoding_selected)
-
-        val noteCountContainer: View = view.findViewById(R.id.item_book_note_count_container)
-        val noteCount: TextView = view.findViewById(R.id.item_book_note_count)
-
-        val containerToPreference = mapOf(
-                Pair(mtimeContainer, R.string.pref_value_book_details_mtime),
-                Pair(linkContainer, R.string.pref_value_book_details_link_url),
-                Pair(syncedToUrlContainer, R.string.pref_value_book_details_sync_url),
-                Pair(syncedToMtimeContainer, R.string.pref_value_book_details_sync_mtime),
-                Pair(syncedToRevisionContainer, R.string.pref_value_book_details_sync_revision),
-                Pair(selectedEncodingContainer, R.string.pref_value_book_details_encoding_selected),
-                Pair(detectedEncodingContainer, R.string.pref_value_book_details_encoding_detected),
-                Pair(usedEncodingContainer, R.string.pref_value_book_details_encoding_used),
-                Pair(lastActionContainer, R.string.pref_value_book_details_last_action),
-                Pair(noteCountContainer, R.string.pref_value_book_details_notes_count)
+        val containerToPreference = mapOf<View, Int>(
+                Pair(binding.itemBookMtimeContainer, R.string.pref_value_book_details_mtime),
+                Pair(binding.itemBookLinkContainer, R.string.pref_value_book_details_link_url),
+                Pair(binding.itemBookSyncedUrlContainer, R.string.pref_value_book_details_sync_url),
+                Pair(binding.itemBookSyncedMtimeContainer, R.string.pref_value_book_details_sync_mtime),
+                Pair(binding.itemBookSyncedRevisionContainer, R.string.pref_value_book_details_sync_revision),
+                Pair(binding.itemBookEncodingSelectedContainer, R.string.pref_value_book_details_encoding_selected),
+                Pair(binding.itemBookEncodingDetectedContainer, R.string.pref_value_book_details_encoding_detected),
+                Pair(binding.itemBookEncodingUsedContainer, R.string.pref_value_book_details_encoding_used),
+                Pair(binding.itemBookLastActionContainer, R.string.pref_value_book_details_last_action),
+                Pair(binding.itemBookNoteCountContainer, R.string.pref_value_book_details_notes_count)
         )
 
         init {
-            view.setOnClickListener(this)
-            view.setOnLongClickListener(this)
+            binding.root.setOnClickListener(this)
+            binding.root.setOnLongClickListener(this)
         }
 
         override fun onClick(v: View) {
@@ -119,10 +78,9 @@ class BooksAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layout = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_book, parent, false)
+        val binding = ItemBookBinding.inflate(LayoutInflater.from(parent.context))
 
-        return ViewHolder(layout)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -136,99 +94,99 @@ class BooksAdapter(
              * If title does no exist - use book's name hide the subtitle.
              */
             if (item.book.title != null) {
-                title.text = item.book.title
-                subTitle.text = item.book.name
-                subTitle.visibility = View.VISIBLE
+                binding.itemBookTitle.text = item.book.title
+                binding.itemBookSubtitle.text = item.book.name
+                binding.itemBookSubtitle.visibility = View.VISIBLE
             } else {
-                title.text = item.book.name
-                subTitle.visibility = View.GONE
+                binding.itemBookTitle.text = item.book.name
+                binding.itemBookSubtitle.visibility = View.GONE
             }
 
             /* Out-of-sync and failed-sync flags. */
             if (item.book.lastAction?.type == BookAction.Type.ERROR) {
-                syncFailed.visibility = View.VISIBLE
-                syncNeeded.visibility = View.GONE
+                binding.itemBookSyncFailedIcon.visibility = View.VISIBLE
+                binding.itemBookSyncNeededIcon.visibility = View.GONE
             } else {
                 if (item.isOutOfSync()) {
-                    syncNeeded.visibility = View.VISIBLE
+                    binding.itemBookSyncNeededIcon.visibility = View.VISIBLE
                 } else {
-                    syncNeeded.visibility = View.GONE
+                    binding.itemBookSyncNeededIcon.visibility = View.GONE
                 }
-                syncFailed.visibility = View.GONE
+                binding.itemBookSyncFailedIcon.visibility = View.GONE
             }
 
             val bookDetails = BookDetails(containerToPreference)
 
             /* Modification time. */
-            bookDetails.display(mtimeContainer, true, false) {
+            bookDetails.display(binding.itemBookMtimeContainer, true, false) {
                 if (item.book.mtime != null && item.book.mtime > 0) {
-                    mtime.text = timeString(context, item.book.mtime)
+                    binding.itemBookMtime.text = timeString(context, item.book.mtime)
                 } else {
-                    mtime.text = context.getString(R.string.not_modified)
+                    binding.itemBookMtime.text = context.getString(R.string.not_modified)
                 }
             }
 
-            bookDetails.display(linkContainer, item.hasLink(), false) {
-                link.text = item.linkedTo
+            bookDetails.display(binding.itemBookLinkContainer, item.hasLink(), false) {
+                binding.itemBookLinkRepo.text = item.linkedTo
             }
 
-            bookDetails.display(syncedToUrlContainer,item.hasSync(), false) {
-                syncedToUrl.text = item.syncedTo?.uri.toString()
+            bookDetails.display(binding.itemBookSyncedUrlContainer,item.hasSync(), false) {
+                binding.itemBookSyncedUrl.text = item.syncedTo?.uri.toString()
             }
 
-            bookDetails.display(syncedToMtimeContainer, false, item.hasSync()) {
-                syncedToMtime.text = timeString(itemView.context, item.syncedTo?.mtime) ?: "N/A"
+            bookDetails.display(binding.itemBookMtimeContainer, false, item.hasSync()) {
+                binding.itemBookSyncedMtime.text = timeString(itemView.context, item.syncedTo?.mtime) ?: "N/A"
             }
 
-            bookDetails.display(syncedToRevisionContainer, item.hasSync(), false) {
-                syncedToRevision.text = item.syncedTo?.revision ?: "N/A"
+            bookDetails.display(binding.itemBookSyncedRevisionContainer, item.hasSync(), false) {
+                binding.itemBookSyncedRevision.text = item.syncedTo?.revision ?: "N/A"
             }
 
-            bookDetails.display(selectedEncodingContainer, item.book.selectedEncoding != null, false) {
-                selectedEncoding.text = context.getString(
+            bookDetails.display(binding.itemBookEncodingSelectedContainer, item.book.selectedEncoding != null, false) {
+                binding.itemBookEncodingSelected.text = context.getString(
                         R.string.argument_selected,
                         item.book.selectedEncoding
                 )
             }
 
-            bookDetails.display(detectedEncodingContainer, item.book.detectedEncoding != null, false) {
-                detectedEncoding.text = context.getString(
+            bookDetails.display(binding.itemBookEncodingDetectedContainer, item.book.detectedEncoding != null, false) {
+                binding.itemBookEncodingDetected.text = context.getString(
                         R.string.argument_detected,
                         item.book.detectedEncoding
                 )
             }
 
-            bookDetails.display(usedEncodingContainer, item.book.usedEncoding != null, false) {
-                usedEncoding.text = context.getString(
+            bookDetails.display(binding.itemBookEncodingUsedContainer, item.book.usedEncoding != null, false) {
+                binding.itemBookEncodingUsed.text = context.getString(
                         R.string.argument_used,
                         item.book.usedEncoding
                 )
             }
 
             /* Always show actions which are not INFO. */
-            bookDetails.display(lastActionContainer, item.book.lastAction != null, !lastActionWasInfo(item.book)) {
-                lastAction.text = getLastActionText(context, item.book)
+            bookDetails.display(binding.itemBookLastActionContainer, item.book.lastAction != null, !lastActionWasInfo(item.book)) {
+                binding.itemBookLastAction.text = getLastActionText(context, item.book)
             }
 
-            bookDetails.display(noteCountContainer, true, false) {
+            bookDetails.display(binding.itemBookNoteCountContainer, true, false) {
                 if (item.noteCount > 0) {
-                    noteCount.text = context.resources.getQuantityString(
+                    binding.itemBookNoteCount.text = context.resources.getQuantityString(
                             R.plurals.notes_count_nonzero, item.noteCount, item.noteCount)
                 } else {
-                    noteCount.text = context.getString(R.string.notes_count_zero)
+                    binding.itemBookNoteCount.text = context.getString(R.string.notes_count_zero)
                 }
             }
 
             if (bookDetails.detailDisplayed) {
-                bookDetailsPadding.visibility = View.VISIBLE
+                binding.itemBookDetailsPadding.visibility = View.VISIBLE
             } else {
-                bookDetailsPadding.visibility = View.GONE
+                binding.itemBookDetailsPadding.visibility = View.GONE
             }
 
             /* If it's a dummy book - change opacity. */
             itemView.alpha = if (item.book.isDummy == true) 0.4f else 1f
 
-            getSelection().setIsSelectedBackground(container, item.book.id)
+            getSelection().setIsSelectedBackground(binding.itemBookContainer, item.book.id)
         }
     }
 

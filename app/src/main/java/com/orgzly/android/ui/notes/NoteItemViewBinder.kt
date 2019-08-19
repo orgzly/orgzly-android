@@ -65,33 +65,36 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
     private fun setupBookName(holder: NoteItemViewHolder, noteView: NoteView) {
         if (inBook) {
-            holder.bookNameUnderNote.visibility = View.GONE
-            holder.bookNameLeftFromNoteText.visibility = View.GONE
+            holder.binding.itemHeadBookName.visibility = View.GONE
+            holder.binding.itemHeadBookNameBeforeNoteText.visibility = View.GONE
 
         } else {
             when (Integer.valueOf(AppPreferences.bookNameInSearchResults(context))) {
-                0 -> {
-                    holder.bookNameLeftFromNoteText.visibility = View.GONE
-                    holder.bookNameUnderNote.visibility = View.GONE
+                0 -> { // Hide
+                    holder.binding.itemHeadBookName.visibility = View.GONE
+
+                    holder.binding.itemHeadBookNameBeforeNoteText.visibility = View.GONE
                 }
 
-                1 -> {
-                    holder.bookNameLeftFromNoteText.text = noteView.bookName
-                    holder.bookNameLeftFromNoteText.visibility = View.VISIBLE
-                    holder.bookNameUnderNote.visibility = View.GONE
+                1 -> { // Show before note
+                    holder.binding.itemHeadBookName.visibility = View.GONE
+
+                    holder.binding.itemHeadBookNameBeforeNoteText.text = noteView.bookName
+                    holder.binding.itemHeadBookNameBeforeNoteText.visibility = View.VISIBLE
                 }
 
-                2 -> {
-                    holder.bookNameUnderNoteText.text = noteView.bookName
-                    holder.bookNameLeftFromNoteText.visibility = View.GONE
-                    holder.bookNameUnderNote.visibility = View.VISIBLE
+                2 -> { // Show under note
+                    holder.binding.itemHeadBookNameText.text = noteView.bookName
+                    holder.binding.itemHeadBookName.visibility = View.VISIBLE
+
+                    holder.binding.itemHeadBookNameBeforeNoteText.visibility = View.GONE
                 }
             }
         }
     }
 
     private fun setupTitle(holder: NoteItemViewHolder, noteView: NoteView) {
-        holder.title.text = titleGenerator.generateTitle(noteView)
+        holder.binding.itemHeadTitle.text = titleGenerator.generateTitle(noteView)
     }
 
     fun generateTitle(noteView: NoteView): CharSequence {
@@ -99,22 +102,22 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     }
 
     private fun setupContent(holder: NoteItemViewHolder, note: Note) {
-        holder.content.text = note.content
+        holder.binding.itemHeadContent.text = note.content
 
         if (note.hasContent() && titleGenerator.shouldDisplayContent(note)) {
             if (AppPreferences.isFontMonospaced(context)) {
-                holder.content.typeface = Typeface.MONOSPACE
+                holder.binding.itemHeadContent.typeface = Typeface.MONOSPACE
             }
 
-            holder.content.setRawText(note.content as CharSequence)
+            holder.binding.itemHeadContent.setRawText(note.content as CharSequence)
 
             /* If content changes (for example by toggling the checkbox), update the note. */
-            holder.content.onUserTextChangeListener = Runnable {
-                if (holder.content.getRawText() != null) {
+            holder.binding.itemHeadContent.onUserTextChangeListener = Runnable {
+                if (holder.binding.itemHeadContent.getRawText() != null) {
                     val useCase = NoteUpdateContent(
                             note.position.bookId,
                             note.id,
-                            holder.content.getRawText()?.toString())
+                            holder.binding.itemHeadContent.getRawText()?.toString())
 
                     App.EXECUTORS.diskIO().execute {
                         UseCaseRunner.run(useCase)
@@ -122,16 +125,17 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
                 }
             }
 
-            ImageLoader.loadImages(holder.content)
+            ImageLoader.loadImages(holder.binding.itemHeadContent)
 
-            holder.content.visibility = View.VISIBLE
+            holder.binding.itemHeadContent.visibility = View.VISIBLE
 
         } else {
-            holder.content.visibility = View.GONE
+            holder.binding.itemHeadContent.visibility = View.GONE
         }
     }
 
     private fun setupPlanningTimes(holder: NoteItemViewHolder, noteView: NoteView) {
+
         fun setupPlanningTime(containerView: View, textView: TextView, value: String?) {
             if (value != null && AppPreferences.displayPlanning(context)) {
                 val range = com.orgzly.org.datetime.OrgRange.parse(value)
@@ -143,30 +147,42 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
             }
         }
 
-        setupPlanningTime(holder.scheduled, holder.scheduledText, noteView.scheduledRangeString)
-        setupPlanningTime(holder.deadline, holder.deadlineText, noteView.deadlineRangeString)
-        setupPlanningTime(holder.event, holder.eventText, noteView.eventString)
-        setupPlanningTime(holder.closed, holder.closedText, noteView.closedRangeString)
+        setupPlanningTime(
+                holder.binding.itemHeadScheduled,
+                holder.binding.itemHeadScheduledText,
+                noteView.scheduledRangeString)
+
+        setupPlanningTime(
+                holder.binding.itemHeadDeadline,
+                holder.binding.itemHeadDeadlineText,
+                noteView.deadlineRangeString)
+
+        setupPlanningTime(
+                holder.binding.itemHeadEvent,
+                holder.binding.itemHeadEventText,
+                noteView.eventString)
+
+        setupPlanningTime(
+                holder.binding.itemHeadClosed,
+                holder.binding.itemHeadClosedText,
+                noteView.closedRangeString)
     }
 
+    /** Set alpha for done items. */
     private fun setupAlpha(holder: NoteItemViewHolder, note: Note) {
-        /* Set alpha for done items. */
-        if (note.state != null && AppPreferences.doneKeywordsSet(context).contains(note.state)) {
-            holder.payload.alpha = 0.45f
-        } else {
-            holder.payload.alpha = 1.0f
-        }
+        holder.binding.itemHeadPayload.alpha =
+                if (note.state != null && AppPreferences.doneKeywordsSet(context).contains(note.state)) {
+                    0.45f
+                } else {
+                    1.0f
+                }
     }
-
-//    @SuppressWarnings("ResourceType")
-//    private fun readAttributes(context: Context) {
-//    }
 
     /**
      * Set indentation views, depending on note level.
      */
     private fun setupIndent(holder: NoteItemViewHolder, note: Note) {
-        val container = holder.indentContainer
+        val container = holder.binding.itemHeadIndentContainer
 
         val level = if (inBook) note.position.level - 1 else 0
 
@@ -213,30 +229,30 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
      */
     private fun setupBullet(holder: NoteItemViewHolder, note: Note) {
         if (inBook) {
-            holder.bulletContainer.visibility = View.VISIBLE
+            holder.binding.itemHeadBulletContainer.visibility = View.VISIBLE
 
             if (note.position.descendantsCount > 0) { // With descendants
                 if (note.position.isFolded) { // Folded
-                    holder.bullet.setImageDrawable(attrs.bulletFolded)
+                    holder.binding.itemHeadBullet.setImageDrawable(attrs.bulletFolded)
                 } else { // Not folded
-                    holder.bullet.setImageDrawable(attrs.bulletUnfolded)
+                    holder.binding.itemHeadBullet.setImageDrawable(attrs.bulletUnfolded)
                 }
             } else { // No descendants
-                holder.bullet.setImageDrawable(attrs.bulletDefault)
+                holder.binding.itemHeadBullet.setImageDrawable(attrs.bulletDefault)
             }
 
         } else {
-            holder.bulletContainer.visibility = View.GONE
+            holder.binding.itemHeadBulletContainer.visibility = View.GONE
         }
     }
 
     private fun setupFoldingButtons(holder: NoteItemViewHolder, note: Note) {
         if (updateFoldingButtons(context, note, holder)) {
-            holder.foldButton.setOnClickListener { toggleFoldedState(note.id) }
-            holder.bullet.setOnClickListener { toggleFoldedState(note.id) }
+            holder.binding.itemHeadFoldButton.setOnClickListener { toggleFoldedState(note.id) }
+            holder.binding.itemHeadBullet.setOnClickListener { toggleFoldedState(note.id) }
         } else {
-            holder.foldButton.setOnClickListener(null)
-            holder.bullet.setOnClickListener(null)
+            holder.binding.itemHeadFoldButton.setOnClickListener(null)
+            holder.binding.itemHeadBullet.setOnClickListener(null)
         }
     }
 
@@ -256,30 +272,30 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
                 /* Type of the fold button. */
                 if (note.position.isFolded) {
-                    holder.foldButtonText.setText(R.string.unfold_button_character)
+                    holder.binding.itemHeadFoldButtonText.setText(R.string.unfold_button_character)
                 } else {
-                    holder.foldButtonText.setText(R.string.fold_button_character)
+                    holder.binding.itemHeadFoldButtonText.setText(R.string.fold_button_character)
                 }
             }
         }
 
         if (isVisible) {
-            holder.foldButton.visibility = View.VISIBLE
-            holder.foldButtonText.visibility = View.VISIBLE
+            holder.binding.itemHeadFoldButton.visibility = View.VISIBLE
+            holder.binding.itemHeadFoldButtonText.visibility = View.VISIBLE
         } else {
             if (inBook) { // Leave invisible for padding
-                holder.foldButton.visibility = View.INVISIBLE
-                holder.foldButtonText.visibility = View.INVISIBLE
+                holder.binding.itemHeadFoldButton.visibility = View.INVISIBLE
+                holder.binding.itemHeadFoldButtonText.visibility = View.INVISIBLE
             } else {
-                holder.foldButton.visibility = View.GONE
-                holder.foldButtonText.visibility = View.GONE
+                holder.binding.itemHeadFoldButton.visibility = View.GONE
+                holder.binding.itemHeadFoldButtonText.visibility = View.GONE
             }
         }
 
         // Add right margin in search results
         if (!inBook) {
-            (holder.container.layoutParams as LinearLayout.LayoutParams).apply {
-                val right = if (holder.foldButton.visibility == View.GONE) {
+            (holder.binding.itemHeadContainer.layoutParams as LinearLayout.LayoutParams).apply {
+                val right = if (holder.binding.itemHeadFoldButton.visibility == View.GONE) {
                     context.resources.getDimension(R.dimen.screen_edge).toInt()
                 } else {
                     0
@@ -299,15 +315,15 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     private fun setupMargins(holder: NoteItemViewHolder) {
         val margins = getMarginsForListDensity(context)
 
-        val payloadParams = holder.payload.layoutParams as RelativeLayout.LayoutParams
+        val payloadParams = holder.binding.itemHeadPayload.layoutParams as RelativeLayout.LayoutParams
         payloadParams.setMargins(payloadParams.leftMargin, margins.first, payloadParams.rightMargin, 0)
 
         val params = arrayOf(
-                holder.scheduled.layoutParams as LinearLayout.LayoutParams,
-                holder.deadline.layoutParams as LinearLayout.LayoutParams,
-                holder.event.layoutParams as LinearLayout.LayoutParams,
-                holder.closed.layoutParams as LinearLayout.LayoutParams,
-                holder.content.layoutParams as LinearLayout.LayoutParams)
+                holder.binding.itemHeadScheduled.layoutParams as LinearLayout.LayoutParams,
+                holder.binding.itemHeadDeadline.layoutParams as LinearLayout.LayoutParams,
+                holder.binding.itemHeadEvent.layoutParams as LinearLayout.LayoutParams,
+                holder.binding.itemHeadClosed.layoutParams as LinearLayout.LayoutParams,
+                holder.binding.itemHeadContent.layoutParams as LinearLayout.LayoutParams)
 
         for (p in params) {
             p.setMargins(0, margins.second, 0, 0)

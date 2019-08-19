@@ -4,8 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -15,6 +13,7 @@ import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.ui.notes.NoteItemViewBinder
+import com.orgzly.databinding.ItemRefileBinding
 
 class RefileAdapter(val context: Context, val listener: OnClickListener) :
         ListAdapter<RefileViewModel.Item, RefileAdapter.RefileViewHolder>(DIFF_CALLBACK) {
@@ -34,27 +33,19 @@ class RefileAdapter(val context: Context, val listener: OnClickListener) :
         fun onButton(item: RefileViewModel.Item)
     }
 
-    class RefileViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val payload: ViewGroup = view.findViewById(R.id.item_refile_payload)
-        val icon: ImageView = view.findViewById(R.id.item_refile_icon)
-        val name: TextView = view.findViewById(R.id.item_refile_name)
-        val button: ImageView = view.findViewById(R.id.item_refile_button)
-    }
+    class RefileViewHolder(val binding: ItemRefileBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RefileViewHolder {
-        val layout = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_refile, parent, false)
+        val holder = RefileViewHolder(ItemRefileBinding.inflate(LayoutInflater.from(parent.context)))
 
-        val holder = RefileViewHolder(layout)
-
-        holder.payload.setOnClickListener {
+        holder.binding.itemRefilePayload.setOnClickListener {
             val position = holder.adapterPosition
             if (position != RecyclerView.NO_POSITION) {
                 listener.onItem(getItem(holder.adapterPosition))
             }
         }
 
-        holder.button.setOnClickListener {
+        holder.binding.itemRefileButton.setOnClickListener {
             val position = holder.adapterPosition
             if (position != RecyclerView.NO_POSITION) {
                 listener.onButton(getItem(holder.adapterPosition))
@@ -67,36 +58,36 @@ class RefileAdapter(val context: Context, val listener: OnClickListener) :
     override fun onBindViewHolder(holder: RefileViewHolder, position: Int) {
 
         if (icons == null) {
-            icons = getIcons(holder.view.context)
+            icons = getIcons(holder.binding.root.context)
         }
 
         val item = getItem(position)
 
         when (val payload = item.payload) {
             is Book -> {
-                holder.name.text = payload.title ?: payload.name
+                holder.binding.itemRefileName.text = payload.title ?: payload.name
 
-                holder.button.visibility = View.VISIBLE
+                holder.binding.itemRefileButton.visibility = View.VISIBLE
 
-                holder.icon.visibility = View.GONE
+                holder.binding.itemRefileIcon.visibility = View.GONE
 //                icons?.let {
 //                    holder.icon.setImageResource(it.book)
 //                }
             }
 
             is Note -> {
-                holder.name.text = noteItemViewBinder.generateTitle(
+                holder.binding.itemRefileName.text = noteItemViewBinder.generateTitle(
                         NoteView(note = payload, bookName = ""))
 
-                holder.button.visibility = View.VISIBLE
+                holder.binding.itemRefileButton.visibility = View.VISIBLE
 
                 icons?.let {
                     if (payload.position.descendantsCount > 0) {
-                        holder.icon.setImageResource(it.noteWithChildren)
+                        holder.binding.itemRefileIcon.setImageResource(it.noteWithChildren)
                     } else {
-                        holder.icon.setImageResource(it.noteWithoutChildren)
+                        holder.binding.itemRefileIcon.setImageResource(it.noteWithoutChildren)
                     }
-                    holder.icon.visibility = View.VISIBLE
+                    holder.binding.itemRefileIcon.visibility = View.VISIBLE
                 }
             }
         }

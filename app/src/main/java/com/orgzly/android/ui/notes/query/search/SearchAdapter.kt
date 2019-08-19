@@ -15,6 +15,7 @@ import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.Selection
 import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.util.LogUtils
+import com.orgzly.databinding.ItemHeadBinding
 
 class SearchAdapter(
         private val context: Context,
@@ -38,10 +39,9 @@ class SearchAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        val layout = LayoutInflater.from(context)
-                .inflate(R.layout.item_head, parent, false)
-
-        return NoteItemViewHolder(layout, viewHolderListener)
+        return NoteItemViewHolder(
+                ItemHeadBinding.inflate(LayoutInflater.from(context)),
+                viewHolderListener)
     }
 
     override fun onBindViewHolder(h: RecyclerView.ViewHolder, position: Int) {

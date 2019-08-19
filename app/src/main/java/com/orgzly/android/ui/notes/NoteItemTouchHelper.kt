@@ -44,7 +44,7 @@ class NoteItemTouchHelper(inBook: Boolean, listener: Listener) :
             when {
                 dX < 0 -> { // Swipe left
                     // Hide indent
-                    noteItemViewHolder.indentContainer.visibility = View.INVISIBLE
+                    noteItemViewHolder.binding.itemHeadIndentContainer.visibility = View.INVISIBLE
 
                     if (leftSwipeAction == null) {
                         leftSwipeAction = getLeftSwipeAction(inBook, recyclerView.context)
@@ -55,7 +55,7 @@ class NoteItemTouchHelper(inBook: Boolean, listener: Listener) :
 
                 dX > 0 -> { // Swipe right
                     // Hide indent
-                    noteItemViewHolder.indentContainer.visibility = View.INVISIBLE
+                    noteItemViewHolder.binding.itemHeadIndentContainer.visibility = View.INVISIBLE
 
                     if (rightSwipeAction == null) {
                         rightSwipeAction = getLeftSwipeAction(inBook, recyclerView.context)
@@ -65,7 +65,7 @@ class NoteItemTouchHelper(inBook: Boolean, listener: Listener) :
                 }
 
                 dX == 0f -> { // Original position
-                    noteItemViewHolder.indentContainer.visibility = View.VISIBLE
+                    noteItemViewHolder.binding.itemHeadIndentContainer.visibility = View.VISIBLE
 
                     // Reset so it can be re-initialized if settings changed
                     leftSwipeAction = null

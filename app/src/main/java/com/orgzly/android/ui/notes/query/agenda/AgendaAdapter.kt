@@ -4,12 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
-import com.orgzly.R
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.Selection
@@ -18,6 +16,8 @@ import com.orgzly.android.ui.notes.NoteItemViewHolder
 import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.UserTimeFormatter
+import com.orgzly.databinding.ItemAgendaDividerBinding
+import com.orgzly.databinding.ItemHeadBinding
 
 class AgendaAdapter(
         private val context: Context,
@@ -45,16 +45,13 @@ class AgendaAdapter(
 
         return when (viewType) {
             DIVIDER_ITEM_TYPE -> {
-                val layout = LayoutInflater.from(context)
-                        .inflate(R.layout.item_agenda_divider, parent, false)
-                DividerViewHolder(layout)
+                DividerViewHolder(ItemAgendaDividerBinding.inflate(LayoutInflater.from(context)))
             }
 
             else -> {
-                val layout = LayoutInflater.from(context)
-                        .inflate(R.layout.item_head, parent, false)
-
-                NoteItemViewHolder(layout, viewHolderListener)
+                NoteItemViewHolder(
+                        ItemHeadBinding.inflate(LayoutInflater.from(context)),
+                        viewHolderListener)
             }
         }
     }
@@ -81,21 +78,17 @@ class AgendaAdapter(
     private fun bindDividerView(holder: DividerViewHolder, item: AgendaItem.Divider) {
         val margins = NoteItemViewBinder.getMarginsForListDensity(context)
 
-        holder.time.text = userTimeFormatter.formatDate(item.day)
+        holder.binding.itemAgendaTimeText.text = userTimeFormatter.formatDate(item.day)
 
-        holder.view.setPadding(
-                holder.view.paddingLeft, margins.first, holder.view.paddingRight, margins.first)
+        holder.binding.root.setPadding(
+                holder.binding.root.paddingLeft,
+                margins.first,
+                holder.binding.root.paddingRight,
+                margins.first)
     }
 
-    inner class DividerViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val time: TextView = view.findViewById(R.id.item_agenda_time_text)
-    }
-
-//    inner class NoteViewHolder(view: View) : NotesAdapter.NoteViewHolder() {
-//        val title: TextView = view.findViewById(R.id.item_head_title)
-//        val scheduledTimeText: TextView = view.findViewById(R.id.item_head_scheduled_text)
-//    }
-
+    inner class DividerViewHolder(val binding: ItemAgendaDividerBinding) :
+            RecyclerView.ViewHolder(binding.root)
 
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
