@@ -43,9 +43,6 @@ import javax.inject.Inject
  */
 class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFragment.OnDateTimeSetListener, DrawerItem {
 
-    /** Note's book ID. */
-    private var bookId: Long = 0
-
     /** Could be 0 if new note is being created. */
     var noteId: Long = 0
 
@@ -64,8 +61,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private var listener: Listener? = null
 
     private lateinit var viewModel: NoteViewModel
-
-    private var book: BookView? = null
 
     private lateinit var scrollView: ScrollView
 
@@ -126,8 +121,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 throw IllegalArgumentException(NoteFragment::class.java.simpleName + " requires " + ARG_BOOK_ID + " argument passed")
             }
 
-            bookId = getLong(ARG_BOOK_ID)
-
             /* Note ID might or might not be passed - it depends if note is being edited or created. */
             if (containsKey(ARG_NOTE_ID)) {
                 noteId = getLong(ARG_NOTE_ID)
@@ -157,7 +150,12 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         } ?: throw IllegalStateException("No Activity")
 
         val factory = NoteViewModelFactory.getInstance(
-                dataRepository, bookId, noteId, place, initialTitle, initialContent)
+                dataRepository,
+                arguments?.getLong(ARG_BOOK_ID) ?: 0,
+                noteId,
+                place,
+                initialTitle,
+                initialContent)
 
         viewModel = ViewModelProviders.of(this, factory).get(NoteViewModel::class.java)
 
@@ -509,9 +507,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         super.onActivityCreated(savedInstanceState)
 
         viewModel.noteDetailsDataEvent.observeSingle(viewLifecycleOwner, Observer { data ->
-            book = data.book
-
-            book?.let {
+            data.book?.let {
                 val bookTitle = BookUtils.getFragmentTitleForBook(it.book)
 
                 val breadcrumbs = Breadcrumbs().apply {
@@ -592,8 +588,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private fun announceChangesToActivity() {
         sharedMainActivityViewModel.setFragment(
                 FRAGMENT_TAG,
-                book?.book?.name,
-                BookUtils.getError(context, book?.book),
+                viewModel.bookView.value?.book?.name,
+                BookUtils.getError(context, viewModel.bookView.value?.book),
                 0)
     }
 
@@ -667,7 +663,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private fun handleNoteBookChangeRequest(books: List<BookView>) {
         val bookNames = books.map { it.book.name }.toTypedArray()
 
-        val selected = getSelectedBook(books, bookId)
+        val selected = getSelectedBook(books, viewModel.bookId)
 
         dialog = AlertDialog.Builder(context)
                 .setTitle(R.string.notebook)
@@ -971,7 +967,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 .setTitle(R.string.delete_note)
                 .setMessage(R.string.delete_note_and_all_subnotes)
                 .setPositiveButton(R.string.delete) { _, _ ->
-                    viewModel.deleteNote(bookId, noteId)
+                    viewModel.deleteNote()
                 }
                 .setNegativeButton(R.string.cancel) { _, _ -> }
                 .show()
@@ -1010,7 +1006,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
     private fun save() {
         /* Make sure notebook is set. */
-        if (bookId == 0L) {
+        if (viewModel.bookId == 0L) {
             (activity as? CommonActivity)?.showSnackbar(R.string.note_book_not_set)
             return
         }
@@ -1019,12 +1015,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         if (isTitleValid()) {
             if (viewModel.isNew()) { // New note
-                val notePlace = if (place != Place.UNSPECIFIED)
-                    NotePlace(bookId, noteId, place)
-                else
-                    NotePlace(bookId)
-
-                viewModel.createNote(notePlace)
+                viewModel.createNote()
 
             } else { // Existing note
                 if (viewModel.isNoteModified()) {
@@ -1052,18 +1043,13 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
      * TODO: Should be setPosition and allow filing under specific note
      */
     private fun setBook(newBook: BookView) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, book)
+        viewModel.setBook(newBook)
 
-        book = newBook
-        bookId = newBook.book.id
-
-        val title = BookUtils.getFragmentTitleForBook(book?.book)
+        val title = BookUtils.getFragmentTitleForBook(viewModel.bookView.value?.book)
         breadcrumbsText.text = title
         locationButtonView.text = title
 
         arguments?.putLong(ARG_BOOK_ID, newBook.book.id)
-
-        viewModel.setBook(bookId)
     }
 
     /**
@@ -1093,7 +1079,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
      * Mark note's book in the drawer.
      */
     override fun getCurrentDrawerItemId(): String {
-        return BookFragment.getDrawerItemId(bookId)
+        return BookFragment.getDrawerItemId(viewModel.bookId)
     }
 
     interface Listener {

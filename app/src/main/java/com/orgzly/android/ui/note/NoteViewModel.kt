@@ -23,12 +23,15 @@ import com.orgzly.org.parser.OrgParserWriter
 
 class NoteViewModel(
         private val dataRepository: DataRepository,
-        private var bookId: Long,
+        var bookId: Long,
         private val noteId: Long,
         private val place: Place?,
         private val title: String?,
         private val content: String?
 ) : CommonViewModel() {
+
+    val bookView: MutableLiveData<BookView> = MutableLiveData()
+
 
     val tags: LiveData<List<String>> by lazy {
         dataRepository.selectAllTagsLiveData()
@@ -49,6 +52,7 @@ class NoteViewModel(
     fun loadData() {
         App.EXECUTORS.diskIO().execute {
             val book = dataRepository.getBookView(bookId)
+
             val note = dataRepository.getNoteView(noteId)
 
             // If creating a new note under specific one include that note too
@@ -73,11 +77,13 @@ class NoteViewModel(
                 }
             }
 
+            bookView.postValue(book)
+
             noteDetailsDataEvent.postValue(NoteDetailsData(book, note, ancestors))
         }
     }
 
-    fun deleteNote(bookId: Long, noteId: Long) {
+    fun deleteNote() {
         App.EXECUTORS.diskIO().execute {
             val useCase = NoteDelete(bookId, setOf(noteId))
             catchAndPostError {
@@ -216,11 +222,16 @@ class NoteViewModel(
     val noteCreatedEvent: SingleLiveEvent<Note> = SingleLiveEvent()
     val noteUpdatedEvent: SingleLiveEvent<Note> = SingleLiveEvent()
 
-    fun createNote(place: NotePlace) {
+    fun createNote() {
+        val notePlace = if (place != Place.UNSPECIFIED)
+            NotePlace(bookId, noteId, place)
+        else
+            NotePlace(bookId)
+
         notePayload?.let { payload ->
             App.EXECUTORS.diskIO().execute {
                 catchAndPostError {
-                    val result = UseCaseRunner.run(NoteCreate(payload, place))
+                    val result = UseCaseRunner.run(NoteCreate(payload, notePlace))
                     noteCreatedEvent.postValue(result.userData as Note)
                 }
             }
@@ -265,7 +276,8 @@ class NoteViewModel(
         return place != null
     }
 
-    fun setBook(id: Long) {
-        bookId = id
+    fun setBook(b: BookView) {
+        bookId = b.book.id
+        bookView.value = b
     }
 }
