@@ -45,12 +45,14 @@ class AgendaAdapter(
 
         return when (viewType) {
             DIVIDER_ITEM_TYPE -> {
-                DividerViewHolder(ItemAgendaDividerBinding.inflate(LayoutInflater.from(context)))
+                DividerViewHolder(
+                        ItemAgendaDividerBinding.inflate(
+                                LayoutInflater.from(context), parent, false))
             }
 
             else -> {
                 NoteItemViewHolder(
-                        ItemHeadBinding.inflate(LayoutInflater.from(context)),
+                        ItemHeadBinding.inflate(LayoutInflater.from(context), parent, false),
                         viewHolderListener)
             }
         }

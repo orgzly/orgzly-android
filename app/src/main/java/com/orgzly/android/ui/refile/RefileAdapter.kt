@@ -36,7 +36,8 @@ class RefileAdapter(val context: Context, val listener: OnClickListener) :
     class RefileViewHolder(val binding: ItemRefileBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RefileViewHolder {
-        val holder = RefileViewHolder(ItemRefileBinding.inflate(LayoutInflater.from(parent.context)))
+        val holder = RefileViewHolder(ItemRefileBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false))
 
         holder.binding.itemRefilePayload.setOnClickListener {
             val position = holder.adapterPosition

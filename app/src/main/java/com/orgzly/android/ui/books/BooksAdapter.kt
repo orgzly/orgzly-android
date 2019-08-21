@@ -78,7 +78,7 @@ class BooksAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemBookBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = ItemBookBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return ViewHolder(binding)
     }

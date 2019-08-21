@@ -40,7 +40,7 @@ class SearchAdapter(
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         return NoteItemViewHolder(
-                ItemHeadBinding.inflate(LayoutInflater.from(context)),
+                ItemHeadBinding.inflate(LayoutInflater.from(context), parent, false),
                 viewHolderListener)
     }
 

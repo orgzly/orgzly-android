@@ -75,7 +75,9 @@ class BookAdapter(
 
         return when (viewType) {
             R.layout.item_head_book_preface -> {
-                PrefaceViewHolder(ItemHeadBookPrefaceBinding.inflate(LayoutInflater.from(context)))
+                val binding = ItemHeadBookPrefaceBinding.inflate(
+                        LayoutInflater.from(context), parent, false)
+                PrefaceViewHolder(binding)
             }
 
             HIDDEN_ITEM_TYPE -> {
@@ -83,9 +85,8 @@ class BookAdapter(
             }
 
             else -> {
-                NoteItemViewHolder(
-                        ItemHeadBinding.inflate(LayoutInflater.from(context)),
-                        noteViewHolderListener)
+                val binding = ItemHeadBinding.inflate(LayoutInflater.from(context), parent, false)
+                NoteItemViewHolder(binding, noteViewHolderListener)
             }
         }
     }
