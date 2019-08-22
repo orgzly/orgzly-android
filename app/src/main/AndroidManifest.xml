@@ -36,7 +36,8 @@
 
         <activity
             android:name="com.orgzly.android.ui.share.ShareActivity"
-            android:windowSoftInputMode="stateUnchanged">
+            android:windowSoftInputMode="stateUnchanged"
+            android:launchMode="singleInstance">
 
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
