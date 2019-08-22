@@ -1,98 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/dialog_refile_toolbar"
-        android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/app_bar_bg_color"
-        android:elevation="8dp" tools:targetApi="lollipop"
-        app:navigationIcon="?attr/ic_close_24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <!--&lt;!&ndash; Relative place &ndash;&gt;-->
-        <!--<Spinner-->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/dialog_refile_toolbar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/app_bar_bg_color"
+            android:elevation="8dp" tools:targetApi="lollipop"
+            app:navigationIcon="?attr/ic_close_24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!--&lt;!&ndash; Relative place &ndash;&gt;-->
+            <!--<Spinner-->
             <!--android:id="@+id/dialog_refile_places"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
             <!--android:layout_gravity="end"-->
             <!--android:entries="@array/refile_places" />-->
 
-    </androidx.appcompat.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/dialog_refile_second_bar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="?attr/item_book_card_bg_color"
-        android:elevation="4dp" tools:targetApi="lollipop"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_refile_toolbar">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dialog_refile_second_bar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="?attr/item_book_card_bg_color"
+            android:elevation="4dp" tools:targetApi="lollipop"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_refile_toolbar">
 
-        <!-- Breadcrumbs -->
-        <HorizontalScrollView
-            android:id="@+id/dialog_refile_breadcrumbs_scroll_view"
+            <!-- Breadcrumbs -->
+            <HorizontalScrollView
+                android:id="@+id/dialog_refile_breadcrumbs_scroll_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/dialog_refile_refile_here"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/dialog_refile_breadcrumbs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:paddingStart="@dimen/screen_edge"
+                    android:paddingLeft="@dimen/screen_edge"
+                    android:paddingEnd="@dimen/screen_edge"
+                    android:paddingRight="@dimen/screen_edge"
+                    android:scrollHorizontally="true"
+                    android:gravity="center_vertical"
+                    android:linksClickable="true"
+                    android:textColor="?attr/text_primary_color"
+                    tools:text="@string/breadcrumbs_sample" />
+            </HorizontalScrollView>
+
+            <!-- Refile *here* -->
+            <ImageButton
+                android:id="@+id/dialog_refile_refile_here"
+                style="@style/BorderlessButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/refile"
+                android:src="?attr/ic_move_to_inbox_24dp"
+                android:alpha="?attr/active_focused_icon_alpha"
+                app:layout_constraintBottom_toBottomOf="@+id/dialog_refile_breadcrumbs_scroll_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/dialog_refile_breadcrumbs_scroll_view" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Main list with targets -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dialog_refile_targets"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:paddingTop="8dp"
+            android:paddingRight="8dp"
+            android:paddingEnd="8dp"
+            android:clipToPadding="false"
+            android:background="?attr/item_book_card_bg_color"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/dialog_refile_refile_here"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/dialog_refile_breadcrumbs"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:paddingStart="@dimen/screen_edge"
-                android:paddingLeft="@dimen/screen_edge"
-                android:paddingEnd="@dimen/screen_edge"
-                android:paddingRight="@dimen/screen_edge"
-                android:scrollHorizontally="true"
-                android:gravity="center_vertical"
-                android:linksClickable="true"
-                android:textColor="?attr/text_primary_color"
-                tools:text="@string/breadcrumbs_sample" />
-        </HorizontalScrollView>
-
-        <!-- Refile *here* -->
-        <ImageButton
-            android:id="@+id/dialog_refile_refile_here"
-            style="@style/BorderlessButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="@string/refile"
-            android:src="?attr/ic_move_to_inbox_24dp"
-            android:alpha="?attr/active_focused_icon_alpha"
-            app:layout_constraintBottom_toBottomOf="@+id/dialog_refile_breadcrumbs_scroll_view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/dialog_refile_breadcrumbs_scroll_view" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_refile_second_bar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Main list with targets -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/dialog_refile_targets"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:paddingTop="8dp"
-        android:paddingRight="8dp"
-        android:paddingEnd="8dp"
-        android:clipToPadding="false"
-        android:background="?attr/item_book_card_bg_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_refile_second_bar" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

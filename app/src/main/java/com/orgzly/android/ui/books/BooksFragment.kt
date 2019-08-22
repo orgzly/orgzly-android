@@ -13,13 +13,11 @@ import android.view.*
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -35,6 +33,7 @@ import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.usecase.BookDelete
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
+import com.orgzly.databinding.FragmentBooksBinding
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -48,6 +47,8 @@ class BooksFragment :
         DrawerItem,
         OnViewHolderClickListener<BookView> {
 
+    private lateinit var binding: FragmentBooksBinding
+
     private lateinit var viewAdapter: BooksAdapter
 
     private var actionMode: ActionMode? = null
@@ -56,8 +57,6 @@ class BooksFragment :
     private var dialog: AlertDialog? = null
 
     private var listener: Listener? = null
-
-    private lateinit var viewFlipper: ViewFlipper
 
     private var withOptionsMenu = true
     private var withActionBar = true
@@ -102,19 +101,18 @@ class BooksFragment :
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(drawerItemId, inflater, container, savedInstanceState)
-        val view = inflater.inflate(R.layout.fragment_books, container, false)
 
-        viewFlipper = view.findViewById(R.id.fragment_books_view_flipper)
+        binding = FragmentBooksBinding.inflate(inflater, container, false)
 
         viewAdapter = BooksAdapter(this)
         viewAdapter.setHasStableIds(true)
 
-        view.findViewById<RecyclerView>(R.id.fragment_books_recycler_view).let {
+        binding.fragmentBooksRecyclerView.let {
             it.layoutManager = LinearLayoutManager(context)
             it.adapter = viewAdapter
         }
 
-        return view
+        return binding.root
     }
 
     override fun onClick(view: View, position: Int, item: BookView) {
@@ -281,7 +279,6 @@ class BooksFragment :
     }
 
     private fun renameBookDialog(book: BookView) {
-
         val dialogView = View.inflate(context, R.layout.dialog_book_rename, null)
         val nameInputLayout = dialogView.findViewById<TextInputLayout>(R.id.name_input_layout)
         val nameView = dialogView.findViewById<EditText>(R.id.name)
@@ -358,7 +355,7 @@ class BooksFragment :
         viewModel = ViewModelProviders.of(this, factory).get(BooksViewModel::class.java)
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer {
-            viewFlipper.displayedChild = when (it) {
+            binding.fragmentBooksViewFlipper.displayedChild = when (it) {
                 BooksViewModel.ViewState.LOADING -> 0
                 BooksViewModel.ViewState.LOADED -> 1
                 BooksViewModel.ViewState.EMPTY -> 2

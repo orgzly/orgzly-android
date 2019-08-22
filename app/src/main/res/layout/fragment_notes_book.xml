@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ViewFlipper
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_book_view_flipper"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ProgressBar style="@style/LoadingProgressBar" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_notes_book_recycler_view"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <ViewFlipper
+        android:id="@+id/fragment_book_view_flipper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="8dp"
-        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
-        android:clipToPadding="false" />
+        android:layout_height="match_parent">
 
-    <TextView
-        style="@style/BigCenteredText"
-        android:text="@string/no_notes"
-        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"/>
+        <ProgressBar style="@style/LoadingProgressBar" />
 
-    <TextView
-        style="@style/BigCenteredText"
-        android:text="@string/book_does_not_exist_anymore"
-        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fragment_notes_book_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="8dp"
+            android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
+            android:clipToPadding="false" />
 
-</ViewFlipper>
+        <TextView
+            style="@style/BigCenteredText"
+            android:text="@string/no_notes"
+            android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"/>
+
+        <TextView
+            style="@style/BigCenteredText"
+            android:text="@string/book_does_not_exist_anymore"
+            android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
+
+    </ViewFlipper>
+</layout>

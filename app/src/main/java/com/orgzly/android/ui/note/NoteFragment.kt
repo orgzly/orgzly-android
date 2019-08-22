@@ -414,11 +414,13 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     private fun isOnlyProperty(view: View): Boolean {
-        return binding.fragmentNotePropertiesContainer.childCount == 1 && binding.fragmentNotePropertiesContainer.getChildAt(0) === view
+        return binding.fragmentNotePropertiesContainer.childCount == 1
+                && binding.fragmentNotePropertiesContainer.getChildAt(0) === view
     }
 
     private fun lastProperty(): ViewGroup {
-        return binding.fragmentNotePropertiesContainer.getChildAt(binding.fragmentNotePropertiesContainer.childCount - 1) as ViewGroup
+        return binding.fragmentNotePropertiesContainer
+                .getChildAt(binding.fragmentNotePropertiesContainer.childCount - 1) as ViewGroup
     }
 
     private fun updatePayloadFromViews() {

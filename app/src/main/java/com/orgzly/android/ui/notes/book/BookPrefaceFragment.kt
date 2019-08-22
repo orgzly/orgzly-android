@@ -1,11 +1,10 @@
 package com.orgzly.android.ui.notes.book
 
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.*
-import android.widget.EditText
+import androidx.lifecycle.ViewModelProviders
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.BookUtils
@@ -15,6 +14,7 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
+import com.orgzly.databinding.FragmentBookPrefaceBinding
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -23,11 +23,11 @@ import javax.inject.Inject
  */
 class BookPrefaceFragment : DaggerFragment() {
 
+    private lateinit var binding: FragmentBookPrefaceBinding
+
     private var bookId: Long = 0
 
     private var book: Book? = null
-
-    private lateinit var contentView: EditText
 
     private var listener: Listener? = null
 
@@ -57,19 +57,17 @@ class BookPrefaceFragment : DaggerFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, inflater, container, savedInstanceState)
 
-        val top = inflater.inflate(R.layout.fragment_book_preface, container, false)
-
-        contentView = top.findViewById<View>(R.id.fragment_book_preface_content) as EditText
+        binding = FragmentBookPrefaceBinding.inflate(inflater, container, false)
 
         val activity = activity
 
         if (activity != null && AppPreferences.isFontMonospaced(context)) {
-            contentView.typeface = Typeface.MONOSPACE
+            binding.fragmentBookPrefaceContent.typeface = Typeface.MONOSPACE
         }
 
         // Open keyboard
         if (activity != null) {
-            ActivityUtils.openSoftKeyboardWithDelay(activity, contentView)
+            ActivityUtils.openSoftKeyboardWithDelay(activity, binding.fragmentBookPrefaceContent)
         }
 
         /* Parse arguments - set content. */
@@ -84,12 +82,12 @@ class BookPrefaceFragment : DaggerFragment() {
 
             bookId = it.getLong(ARG_BOOK_ID)
 
-            contentView.setText(it.getString(ARG_BOOK_PREFACE))
+            binding.fragmentBookPrefaceContent.setText(it.getString(ARG_BOOK_PREFACE))
         } ?: throw IllegalArgumentException("No arguments passed")
 
         book = dataRepository.getBook(bookId)
 
-        return top
+        return binding.root
     }
 
     override fun onResume() {
@@ -136,7 +134,7 @@ class BookPrefaceFragment : DaggerFragment() {
             }
 
             R.id.done -> {
-                save(contentView.text.toString())
+                save(binding.fragmentBookPrefaceContent.text.toString())
                 return true
             }
 

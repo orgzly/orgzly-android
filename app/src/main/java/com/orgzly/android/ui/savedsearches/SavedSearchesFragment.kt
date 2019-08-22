@@ -4,14 +4,12 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.data.DataRepository
@@ -23,6 +21,7 @@ import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.util.LogUtils
+import com.orgzly.databinding.FragmentSavedSearchesBinding
 import dagger.android.support.DaggerFragment
 import java.io.IOException
 import javax.inject.Inject
@@ -31,9 +30,9 @@ import javax.inject.Inject
  * Displays and allows modifying saved searches.
  */
 class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderClickListener<SavedSearch> {
-    private var listener: Listener? = null
+    private lateinit var binding: FragmentSavedSearchesBinding
 
-    private lateinit var viewFlipper: ViewFlipper
+    private var listener: Listener? = null
 
     private var actionMode: ActionMode? = null
     private val actionModeCallback = ActionModeCallback()
@@ -71,9 +70,7 @@ class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderCli
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_saved_searches, container, false)
-
-        viewFlipper = view.findViewById(R.id.fragment_saved_searches_flipper) as ViewFlipper
+        binding = FragmentSavedSearchesBinding.inflate(inflater, container, false)
 
         viewAdapter = SavedSearchesAdapter(this)
         viewAdapter.setHasStableIds(true)
@@ -82,13 +79,13 @@ class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderCli
 
         val dividerItemDecoration = DividerItemDecoration(context, layoutManager.orientation)
 
-        view.findViewById<RecyclerView>(R.id.fragment_saved_searches_recycler_view).let {
+        binding.fragmentSavedSearchesRecyclerView.let {
             it.layoutManager = layoutManager
             it.adapter = viewAdapter
             it.addItemDecoration(dividerItemDecoration)
         }
 
-        return view
+        return binding.root
     }
 
     override fun onPause() {
@@ -182,7 +179,7 @@ class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderCli
         viewModel.viewState.observe(viewLifecycleOwner, Observer {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed view state: $it")
 
-            viewFlipper.displayedChild = when (it) {
+            binding.fragmentSavedSearchesFlipper.displayedChild = when (it) {
                 SavedSearchesViewModel.ViewState.LOADING -> 0
                 SavedSearchesViewModel.ViewState.LOADED -> 1
                 SavedSearchesViewModel.ViewState.EMPTY -> 2

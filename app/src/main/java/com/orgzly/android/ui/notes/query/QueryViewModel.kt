@@ -18,7 +18,7 @@ class QueryViewModel(private val dataRepository: DataRepository) : CommonViewMod
         EMPTY
     }
 
-    val viewState = MutableLiveData<ViewState>(ViewState.LOADING)
+    val viewState = MutableLiveData(ViewState.LOADING)
 
     data class Params(val query: String?, val defaultPriority: String)
 

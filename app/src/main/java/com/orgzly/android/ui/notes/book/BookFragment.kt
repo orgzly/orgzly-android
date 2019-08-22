@@ -3,13 +3,10 @@ package com.orgzly.android.ui.notes.book
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.*
-import android.widget.FrameLayout
-import android.widget.ViewFlipper
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
@@ -34,6 +31,7 @@ import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.ui.refile.RefileFragment
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
+import com.orgzly.databinding.FragmentNotesBookBinding
 
 
 /**
@@ -49,6 +47,8 @@ class BookFragment :
         BottomActionBar.Callback,
         BookAdapter.OnClickListener,
         QuickBarListener {
+
+    private lateinit var binding: FragmentNotesBookBinding
 
     private var listener: Listener? = null
 
@@ -75,9 +75,6 @@ class BookFragment :
     private var mBookId: Long = 0
 
     private var mActionModeTag: String? = null
-
-    /** Used for different states after loading the notebook and notes. */
-    private lateinit var viewFlipper: ViewFlipper
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -122,24 +119,22 @@ class BookFragment :
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        val view = inflater.inflate(R.layout.fragment_notes_book, container, false)
+        binding = FragmentNotesBookBinding.inflate(inflater, container, false)
 
-        viewFlipper = view.findViewById<View>(R.id.fragment_book_view_flipper) as ViewFlipper
+        setupRecyclerView()
 
-        setupRecyclerView(view)
-
-        return view
+        return binding.root
     }
 
-    private fun setupRecyclerView(view: View) {
-        val quickBars = QuickBars(view.context, true)
+    private fun setupRecyclerView() {
+        val quickBars = QuickBars(binding.root.context, true)
 
-        viewAdapter = BookAdapter(view.context, this, quickBars, inBook = true)
+        viewAdapter = BookAdapter(binding.root.context, this, quickBars, inBook = true)
         viewAdapter.setHasStableIds(true)
 
         layoutManager = LinearLayoutManager(context)
 
-        recyclerView = view.findViewById<RecyclerView>(R.id.fragment_notes_book_recycler_view).also { rv ->
+        binding.fragmentNotesBookRecyclerView.let { rv ->
             rv.layoutManager = layoutManager
             rv.adapter = viewAdapter
 
@@ -183,7 +178,7 @@ class BookFragment :
         viewModel.viewState.observe(viewLifecycleOwner, Observer { state ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed load state: $state")
 
-            viewFlipper.apply {
+            binding.fragmentBookViewFlipper.apply {
                 displayedChild = when (state) {
                     BookViewModel.ViewState.LOADING -> 0
                     BookViewModel.ViewState.LOADED -> 1
@@ -423,45 +418,6 @@ class BookFragment :
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private fun highlightScrolledToIndent(view: View) {
-        val arr = view.context.obtainStyledAttributes(R.styleable.ColorScheme)
-        val spotlightColor = arr.getColor(R.styleable.ColorScheme_text_disabled_color, 0)
-        arr.recycle()
-
-        val indent = getIndentView(view) ?: return
-
-//        val originalWidth = indent.layoutParams.width
-//        indent.layoutParams.width = (2 * view.context.resources.displayMetrics.density).toInt()
-//        indent.requestLayout()
-
-        val originalColor = (indent.background as? ColorDrawable)?.color ?: 0
-        indent.setBackgroundColor(spotlightColor)
-
-        // Reset background color on touch
-        (activity as? CommonActivity)?.apply {
-            runOnTouchEvent = Runnable {
-                indent.setBackgroundColor(originalColor)
-//                indent.layoutParams.width = originalWidth
-//                indent.requestLayout()
-                runOnTouchEvent = null
-            }
-        }
-    }
-
-    private fun getIndentView(view: View): View? {
-        view.findViewById<ViewGroup>(R.id.item_head_indent_container)?.let { indents ->
-            if (indents.tag is Int) { // Number of indents
-                (indents.tag as Int - 1).let { last ->
-                    if (last in 0 until indents.childCount) {
-                        return (indents.getChildAt(last) as FrameLayout).getChildAt(0)
-                    }
-                }
-            }
-        }
-        return null
-    }
-
     private fun announceChangesToActivity() {
         sharedMainActivityViewModel.setFragment(
                 FRAGMENT_TAG,
@@ -497,18 +453,18 @@ class BookFragment :
     override fun onNoteClick(view: View, position: Int, noteView: NoteView) {
         if (!AppPreferences.isReverseNoteClickAction(context)) {
             if (viewAdapter.getSelection().count > 0) {
-                toggleNoteSelection(view, position, noteView)
+                toggleNoteSelection(position, noteView)
             } else {
                 openNote(noteView.note.id)
             }
         } else {
-            toggleNoteSelection(view, position, noteView)
+            toggleNoteSelection(position, noteView)
         }
     }
 
     override fun onNoteLongClick(view: View, position: Int, noteView: NoteView) {
         if (!AppPreferences.isReverseNoteClickAction(context)) {
-            toggleNoteSelection(view, position, noteView)
+            toggleNoteSelection(position, noteView)
         } else {
             openNote(noteView.note.id)
         }
@@ -518,7 +474,7 @@ class BookFragment :
         listener?.onNoteOpen(id)
     }
 
-    private fun toggleNoteSelection(view: View, position: Int, noteView: NoteView) {
+    private fun toggleNoteSelection(position: Int, noteView: NoteView) {
         val noteId = noteView.note.id
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, listener, noteView)
