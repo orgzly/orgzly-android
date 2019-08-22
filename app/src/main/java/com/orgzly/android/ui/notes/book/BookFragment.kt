@@ -12,7 +12,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.BookUtils
@@ -55,8 +54,6 @@ class BookFragment :
     private lateinit var viewAdapter: BookAdapter
 
     private lateinit var layoutManager: LinearLayoutManager
-
-    private lateinit var recyclerView: RecyclerView
 
     private lateinit var sharedMainActivityViewModel: SharedMainActivityViewModel
 
@@ -371,7 +368,7 @@ class BookFragment :
                 if (id == noteId) {
                     scrollToPosition(i)
 
-                    recyclerView.post {
+                    binding.fragmentNotesBookRecyclerView.post {
                         spotlightScrolledToView(i)
                     }
 

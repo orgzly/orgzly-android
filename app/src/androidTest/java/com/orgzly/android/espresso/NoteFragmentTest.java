@@ -28,6 +28,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.clickClickableSpan;
 import static com.orgzly.android.espresso.EspressoUtils.clickSetting;
 import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
 import static com.orgzly.android.espresso.EspressoUtils.listViewItemCount;
@@ -441,5 +442,11 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withId(R.id.done)).perform(click());
         onNoteInBook(1, R.id.item_head_fold_button).perform(click());
         onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("3"))));
+    }
+
+    @Test
+    public void testBreadcrumbNotebook() {
+        onNoteInBook(1).perform(click());
+        onView(withId(R.id.fragment_note_breadcrumbs_text)).perform(click());
     }
 }
