@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dialog_book_rename_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/screen_edge"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/name_input_layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:errorEnabled="true">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/name"
+        android:layout_height="match_parent"
+        android:padding="@dimen/screen_edge"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/name_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/name"
-            android:inputType="text"
-            android:selectAllOnFocus="true"
-            tools:text="@string/book_name_sample"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            app:errorEnabled="true">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/name"
+                android:inputType="text"
+                android:selectAllOnFocus="true"
+                tools:text="@string/book_name_sample"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-</LinearLayout>
+    </LinearLayout>
+
+</layout>

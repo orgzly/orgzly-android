@@ -6,11 +6,9 @@ import android.widget.TimePicker;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.db.entity.Note;
 import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -19,7 +17,6 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
@@ -309,12 +306,12 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_deadline_button)).perform(click());
 
         /* Set date. */
-        onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
+        onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
 
         /* Set time. */
-        onView(withId(R.id.dialog_timestamp_time_picker)).perform(scrollTo(), click());
+        onView(withId(R.id.time_picker_button)).perform(scrollTo(), click());
         onView(withClassName(equalTo(TimePicker.class.getName()))).perform(setTime(15, 15));
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
 
@@ -335,18 +332,18 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_deadline_button)).perform(click());
 
         /* Set date. */
-        onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
+        onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
 
         /* Set time. */
-        onView(withId(R.id.dialog_timestamp_time_picker)).perform(scrollTo(), click());
+        onView(withId(R.id.time_picker_button)).perform(scrollTo(), click());
         onView(withClassName(equalTo(TimePicker.class.getName()))).perform(setTime(9, 15));
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
 
         /* Set repeater. */
-        onView(withId(R.id.dialog_timestamp_repeater_check)).perform(scrollTo(), click());
-        onView(withId(R.id.dialog_timestamp_repeater_picker)).perform(scrollTo(), click());
+        onView(withId(R.id.repeater_used_checkbox)).perform(scrollTo(), click());
+        onView(withId(R.id.repeater_picker_button)).perform(scrollTo(), click());
         onView(withId(R.id.dialog_timestamp_repeater_value)).perform(setNumber(3));
         onView(withText(R.string.ok)).perform(click());
 

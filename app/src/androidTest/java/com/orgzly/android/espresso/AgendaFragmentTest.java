@@ -137,7 +137,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         openAgenda();
         onItemInAgenda(2).perform(longClick());
         onView(withId(R.id.bottom_action_bar_schedule)).perform(click());
-        onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
+        onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName())))
                 .perform(PickerActions.setDate(
                         tomorrow.getYear(),
