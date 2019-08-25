@@ -110,64 +110,43 @@ android {
     }
 }
 
-// Warning:Conflict with dependency 'com.android.support:support-annotations'. Resolved versions for app (23.1.1) and test app (23.0.1) differ.
-// http://stackoverflow.com/questions/28999124/resolved-versions-for-app-22-0-0-and-test-app-21-0-3-differ
-configurations.all {
-    resolutionStrategy {
-        force "com.android.support:design:$android_support_version"
-    }
-
-    exclude module: 'httpclient'
-    exclude module: 'commons-logging'
-}
-
 dependencies {
     implementation orgJavaLocation()
 
-    implementation "com.dropbox.core:dropbox-core-sdk:$dropbox_core_sdk_version"
-
-    implementation "com.googlecode.juniversalchardet:juniversalchardet:$juniversalchardet_version"
-
-    implementation "com.evernote:android-job:$evernote_android_job_version"
-
-    implementation "joda-time:joda-time:$joda_time_version"
-
-    implementation "org.eclipse.jgit:org.eclipse.jgit:$jgit_version"
-
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
     implementation "org.jetbrains:annotations:$jetbrains_annotations_version"
 
-    implementation "androidx.multidex:multidex:$android_support_multidex_version"
+    implementation "androidx.multidex:multidex:$android_multidex_version"
 
-    implementation "androidx.legacy:legacy-support-v4:$android_support_version"
-    implementation "androidx.cardview:cardview:$android_support_version"
-    implementation "androidx.recyclerview:recyclerview:$android_support_version"
-    implementation "androidx.preference:preference:$android_support_version"
-    implementation "com.google.android.material:material:$android_support_version"
-
-    androidTestImplementation "androidx.annotation:annotation:$android_annotation_version"
-
+    // UI
+    implementation "androidx.cardview:cardview:$android_cardview_version"
+    implementation "androidx.recyclerview:recyclerview:$android_recyclerview_version"
+    implementation "androidx.viewpager:viewpager:$android_viewpager_version"
     implementation "androidx.constraintlayout:constraintlayout:$android_constraint_layout_version"
+    implementation "androidx.preference:preference:$android_preference_version"
+    implementation "com.google.android.material:material:$android_material_version"
 
+    // Room
     implementation "androidx.room:room-runtime:$android_room_version"
     testImplementation "androidx.room:room-testing:$android_room_version"
     kapt "androidx.room:room-compiler:$android_room_version"
 
+    // Lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:$android_lifecycle_version"
 
+    androidTestImplementation "androidx.annotation:annotation:$android_annotation_version"
 
     testImplementation "junit:junit:$junit_version"
 
+    // AndroidX Test
     androidTestImplementation "androidx.test.espresso:espresso-core:$android_test_espresso_version"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$android_test_espresso_version"
     androidTestImplementation "androidx.test:runner:$android_test_version"
+    androidTestImplementation "androidx.test:rules:$android_test_version"
 
     // For ANDROIDX_TEST_ORCHESTRATOR
-    androidTestUtil "androidx.test:orchestrator:$android_test_version"
-
-    androidTestImplementation "androidx.test:rules:$android_test_version"
+    // androidTestUtil "androidx.test:orchestrator:$android_test_version"
 
     androidTestImplementation "androidx.test.uiautomator:uiautomator:$android_test_uiautomator_version"
 
@@ -181,7 +160,18 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
     implementation "com.google.code.gson:gson:$gson_version"
-    implementation 'androidx.viewpager:viewpager:1.0.0'
+
+    implementation "com.dropbox.core:dropbox-core-sdk:$dropbox_core_sdk_version"
+
+    implementation "com.googlecode.juniversalchardet:juniversalchardet:$juniversalchardet_version"
+
+    implementation "com.evernote:android-job:$evernote_android_job_version"
+
+    implementation "joda-time:joda-time:$joda_time_version"
+
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+
+    implementation "org.eclipse.jgit:org.eclipse.jgit:$jgit_version"
 }
 
 repositories {
