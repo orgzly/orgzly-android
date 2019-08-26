@@ -4,11 +4,13 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.core.app.TaskStackBuilder;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -121,8 +123,8 @@ public class ShareActivity extends CommonActivity
                         /* Don't read large files. */
                         if (file.length() > MAX_TEXT_FILE_LENGTH_FOR_CONTENT) {
                             mError = "File has " + file.length() +
-                                     " bytes (refusing to read files larger then " +
-                                     MAX_TEXT_FILE_LENGTH_FOR_CONTENT + " bytes)";
+                                    " bytes (refusing to read files larger then " +
+                                    MAX_TEXT_FILE_LENGTH_FOR_CONTENT + " bytes)";
 
                         } else {
                             data.content = MiscUtils.readStringFromFile(file);
@@ -156,9 +158,9 @@ public class ShareActivity extends CommonActivity
                 }
 
             } else if (type.startsWith("image/")) {
-		handleSendImage(intent, data); // Handle single image being sent
+                handleSendImage(intent, data); // Handle single image being sent
 
-	    } else {
+            } else {
                 mError = getString(R.string.share_type_not_supported, type);
             }
 
@@ -253,14 +255,14 @@ public class ShareActivity extends CommonActivity
      * @param bookId null means default
      */
     public static Intent createNewNoteInNotebookIntent(Context context, Long bookId) {
-           Intent intent = new Intent(context, ShareActivity.class);
-           intent.setAction(Intent.ACTION_SEND);
-           intent.setType("text/plain");
-           intent.putExtra(Intent.EXTRA_TEXT, "");
-           if (bookId != null) {
-               intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
-           }
-           return intent;
+        Intent intent = new Intent(context, ShareActivity.class);
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, "");
+        if (bookId != null) {
+            intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
+        }
+        return intent;
     }
 
     @Override
@@ -306,37 +308,50 @@ public class ShareActivity extends CommonActivity
     }
 
     /**
-     * Get file path from image shared with orgzly
-     * and put it as a file link in the note's content
+     * Get file path from image shared with Orgzly
+     * and put it as a file link in the note's content.
      */
     private void handleSendImage(Intent intent, Data data) {
-	// Get file uri from intent which probably looks like this:
-	// content://media/external/images/...
-	Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-	String absoluteFilePath = getRealPathFromUri(this, uri);
-	// Put real file path prefixed by 'file:' in note's content
-	data.content = "file:" + absoluteFilePath;	
-    }
+        // Get file uri from intent which probably looks like this:
+        // content://media/external/images/...
+        Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
 
-    /**
-     * Get real file path from content:// link pointing to file
-     * ( https://stackoverflow.com/a/20059657 )
-     */
-    public static String getRealPathFromUri(Context context, Uri contentUri) {
-	Cursor cursor = null;
-	try {
-	    String[] proj = { MediaStore.Images.Media.DATA };
-	    cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-	    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-	    cursor.moveToFirst();
-	    return cursor.getString(column_index);
-	} catch (Exception e) {
-            e.printStackTrace();
-            return "Failed reading the content of " + contentUri.toString() + ": " + e.toString();
-        } finally {
-	    if (cursor != null) {
-		cursor.close();
-	    }
-	}
+        try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+            if (cursor != null) {
+                cursor.moveToFirst();
+
+                if (BuildConfig.LOG_DEBUG)
+                    LogUtils.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
+
+                /*
+                 * Get real file path from content:// link pointing to file
+                 * ( https://stackoverflow.com/a/20059657 )
+                 */
+                int dataColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+
+                if (dataColumnIndex != -1) {
+                    String mediaData = cursor.getString(dataColumnIndex);
+                    if (mediaData != null) {
+                        data.content = "file:" + mediaData;
+                    }
+                }
+
+                if (data.content == null) {
+                    data.content = uri.toString()
+                            + "\n\nCannot determine path to this image "
+                            + "and only linking to an image is currently supported.";
+
+                    Log.e(TAG, DatabaseUtils.dumpCursorToString(cursor));
+                }
+
+                int displayNameColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME);
+
+                if (displayNameColumnIndex != -1) {
+                    data.title = cursor.getString(displayNameColumnIndex);
+                } else {
+                    data.title = uri.toString();
+                }
+            }
+        }
     }
 }

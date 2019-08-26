@@ -3,11 +3,8 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:dist="http://schemas.android.com/apk/distribution"
     package="com.orgzly"
     android:installLocation="auto">
-
-    <dist:module dist:instant="true" />
 
     <!-- Initially added for Dropbox sync. -->
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -48,11 +45,12 @@
                 <action android:name="com.google.android.gm.action.AUTO_SEND"/>
                 <data android:mimeType="text/plain"/>
             </intent-filter>
-	    <intent-filter>
+
+            <intent-filter>
                 <action android:name="android.intent.action.SEND" />
-		<category android:name="android.intent.category.DEFAULT" />
-		<data android:mimeType="image/*" />
-	    </intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
 
             <meta-data
                 android:name="android.service.chooser.chooser_target_service"
