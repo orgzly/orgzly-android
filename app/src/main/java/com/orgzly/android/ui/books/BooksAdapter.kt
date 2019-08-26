@@ -134,7 +134,7 @@ class BooksAdapter(
                 binding.itemBookSyncedUrl.text = item.syncedTo?.uri.toString()
             }
 
-            bookDetails.display(binding.itemBookMtimeContainer, false, item.hasSync()) {
+            bookDetails.display(binding.itemBookSyncedMtimeContainer, false, item.hasSync()) {
                 binding.itemBookSyncedMtime.text = timeString(itemView.context, item.syncedTo?.mtime) ?: "N/A"
             }
 
