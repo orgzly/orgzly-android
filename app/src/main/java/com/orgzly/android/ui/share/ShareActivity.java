@@ -4,20 +4,21 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+
 import androidx.core.app.TaskStackBuilder;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.data.DataRepository;
-import com.orgzly.android.db.entity.Note;
-import com.orgzly.android.ui.Place;
-import com.orgzly.android.usecase.UseCase;
-import com.orgzly.android.usecase.UseCaseResult;
-import com.orgzly.android.usecase.NoteCreate;
 import com.orgzly.android.db.entity.Book;
+import com.orgzly.android.db.entity.Note;
 import com.orgzly.android.db.entity.SavedSearch;
 import com.orgzly.android.query.Query;
 import com.orgzly.android.query.QueryUtils;
@@ -25,9 +26,10 @@ import com.orgzly.android.query.user.DottedQueryParser;
 import com.orgzly.android.sync.AutoSync;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.NotePlace;
-import com.orgzly.android.ui.note.NoteFragment;
 import com.orgzly.android.ui.main.SyncFragment;
-import com.orgzly.android.ui.note.NotePayload;
+import com.orgzly.android.ui.note.NoteFragment;
+import com.orgzly.android.usecase.UseCase;
+import com.orgzly.android.usecase.UseCaseResult;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 
@@ -121,8 +123,8 @@ public class ShareActivity extends CommonActivity
                         /* Don't read large files. */
                         if (file.length() > MAX_TEXT_FILE_LENGTH_FOR_CONTENT) {
                             mError = "File has " + file.length() +
-                                     " bytes (refusing to read files larger then " +
-                                     MAX_TEXT_FILE_LENGTH_FOR_CONTENT + " bytes)";
+                                    " bytes (refusing to read files larger then " +
+                                    MAX_TEXT_FILE_LENGTH_FOR_CONTENT + " bytes)";
 
                         } else {
                             data.content = MiscUtils.readStringFromFile(file);
@@ -154,6 +156,9 @@ public class ShareActivity extends CommonActivity
                 if (intent.hasExtra(AppIntent.EXTRA_BOOK_ID)) {
                     data.bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0L);
                 }
+
+            } else if (type.startsWith("image/")) {
+                handleSendImage(intent, data); // Handle single image being sent
 
             } else {
                 mError = getString(R.string.share_type_not_supported, type);
@@ -242,7 +247,7 @@ public class ShareActivity extends CommonActivity
         // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);
 
-//        return PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // return PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -250,14 +255,14 @@ public class ShareActivity extends CommonActivity
      * @param bookId null means default
      */
     public static Intent createNewNoteInNotebookIntent(Context context, Long bookId) {
-           Intent intent = new Intent(context, ShareActivity.class);
-           intent.setAction(Intent.ACTION_SEND);
-           intent.setType("text/plain");
-           intent.putExtra(Intent.EXTRA_TEXT, "");
-           if (bookId != null) {
-               intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
-           }
-           return intent;
+        Intent intent = new Intent(context, ShareActivity.class);
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, "");
+        if (bookId != null) {
+            intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
+        }
+        return intent;
     }
 
     @Override
@@ -297,5 +302,53 @@ public class ShareActivity extends CommonActivity
         String title;
         String content;
         Long bookId = null;
+    }
+
+    /**
+     * Get file path from image shared with Orgzly
+     * and put it as a file link in the note's content.
+     */
+    private void handleSendImage(Intent intent, Data data) {
+        // Get file uri from intent which probably looks like this:
+        // content://media/external/images/...
+        Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+
+        try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+            if (cursor != null) {
+                cursor.moveToFirst();
+
+                if (BuildConfig.LOG_DEBUG)
+                    LogUtils.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
+
+                /*
+                 * Get real file path from content:// link pointing to file
+                 * ( https://stackoverflow.com/a/20059657 )
+                 */
+                int dataColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+
+                if (dataColumnIndex != -1) {
+                    String mediaData = cursor.getString(dataColumnIndex);
+                    if (mediaData != null) {
+                        data.content = "file:" + mediaData;
+                    }
+                }
+
+                if (data.content == null) {
+                    data.content = uri.toString()
+                            + "\n\nCannot determine path to this image "
+                            + "and only linking to an image is currently supported.";
+
+                    Log.e(TAG, DatabaseUtils.dumpCursorToString(cursor));
+                }
+
+                int displayNameColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME);
+
+                if (displayNameColumnIndex != -1) {
+                    data.title = cursor.getString(displayNameColumnIndex);
+                } else {
+                    data.title = uri.toString();
+                }
+            }
+        }
     }
 }
