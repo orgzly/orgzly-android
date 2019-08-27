@@ -17,7 +17,7 @@ import org.junit.Test
 
 class NoteEventsTest : OrgzlyTest() {
     @get:Rule
-    var activityRule = EspressoActivityTestRule(MainActivity::class.java, true, false)
+    val activityRule = EspressoActivityTestRule(MainActivity::class.java)
 
     private val now: String
             get() = OrgDateTime(true).toString()

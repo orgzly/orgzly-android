@@ -33,7 +33,7 @@ import static org.hamcrest.Matchers.allOf;
 //@Ignore
 public class SavedSearchesFragmentTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
 
     @Before
     public void setUp() throws Exception {

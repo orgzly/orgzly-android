@@ -56,7 +56,7 @@ import static org.hamcrest.Matchers.startsWith;
 @SuppressWarnings("unchecked")
 public class NoteFragmentTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
 
     @Before
     public void setUp() throws Exception {

@@ -49,7 +49,7 @@ import static org.hamcrest.Matchers.startsWith;
 //@Ignore
 public class BookTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
 
     @Before
     public void setUp() throws Exception {

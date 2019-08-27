@@ -51,7 +51,7 @@ import static org.hamcrest.Matchers.startsWith;
 @SuppressWarnings("unchecked")
 public class QueryFragmentTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
 
     private void defaultSetUp() {
         testUtils.setupBook("book-one",

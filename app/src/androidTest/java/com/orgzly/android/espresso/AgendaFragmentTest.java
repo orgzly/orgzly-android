@@ -40,7 +40,7 @@ import static org.hamcrest.Matchers.equalTo;
 //@Ignore
 public class AgendaFragmentTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
 
     private void defaultSetUp() {
         testUtils.setupBook("book-one",

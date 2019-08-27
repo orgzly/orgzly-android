@@ -66,7 +66,7 @@ import static org.junit.Assert.assertTrue;
 @SuppressWarnings("unchecked")
 public class MiscTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
 
     @Test
     public void testLftRgt() {
@@ -480,7 +480,7 @@ public class MiscTest extends OrgzlyTest {
 
     @Test
     public void testReposActivityFragments() {
-        ActivityTestRule rule = new EspressoActivityTestRule<>(ReposActivity.class, true, false);
+        ActivityTestRule rule = new EspressoActivityTestRule<>(ReposActivity.class);
 
         testUtils.setupRepo("file:/");
         testUtils.setupRepo("dropbox:/orgzly");

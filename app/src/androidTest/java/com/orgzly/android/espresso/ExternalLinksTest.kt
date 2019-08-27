@@ -26,7 +26,7 @@ class ExternalLinksTest(private val param: Parameter) : OrgzlyTest() {
     data class Parameter(val link: String, val check: () -> Any)
 
     @get:Rule
-    var activityRule = EspressoActivityTestRule(MainActivity::class.java, true, false)
+    val activityRule = EspressoActivityTestRule(MainActivity::class.java)
 
     companion object {
         @JvmStatic
