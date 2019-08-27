@@ -350,5 +350,10 @@ public class ShareActivity extends CommonActivity
                 }
             }
         }
+
+        if (data.title == null) {
+            data.title = uri.toString();
+            data.content = "Cannot find image using this URI.";
+        }
     }
 }

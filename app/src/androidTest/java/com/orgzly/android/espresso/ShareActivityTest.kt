@@ -1,6 +1,8 @@
 package com.orgzly.android.espresso
 
 import android.content.Intent
+import android.net.Uri
+import android.os.SystemClock
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
@@ -26,6 +28,7 @@ class ShareActivityTest : OrgzlyTest() {
             action: String? = null,
             type: String? = null,
             extraText: String? = null,
+            extraStreamUri: String? = null,
             queryString: String? = null) {
 
         val intent = Intent()
@@ -40,6 +43,10 @@ class ShareActivityTest : OrgzlyTest() {
 
         if (extraText != null) {
             intent.putExtra(Intent.EXTRA_TEXT, extraText)
+        }
+
+        if (extraStreamUri != null) {
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(extraStreamUri))
         }
 
         if (queryString != null) {
@@ -126,6 +133,19 @@ class ShareActivityTest : OrgzlyTest() {
     @Test
     fun testTextNull() {
         startActivityWithIntent(action = Intent.ACTION_SEND, type = "text/plain")
+        onView(withId(R.id.done)).perform(click())
+    }
+
+    @Test
+    fun testImage() {
+        startActivityWithIntent(
+                action = Intent.ACTION_SEND,
+                type = "image/png",
+                extraStreamUri = "content://uri")
+
+        onView(withId(R.id.fragment_note_title)).check(matches(withText("content://uri")))
+        onView(withId(R.id.body_edit)).check(matches(withText("Cannot find image using this URI.")))
+
         onView(withId(R.id.done)).perform(click())
     }
 
