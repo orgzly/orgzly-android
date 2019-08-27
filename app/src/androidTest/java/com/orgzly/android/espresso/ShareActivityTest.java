@@ -116,10 +116,10 @@ public class ShareActivityTest extends OrgzlyTest {
 
     @Test
     public void testNoMatchingType() {
-        startActivityWithIntent(Intent.ACTION_SEND, "image/png", null, null);
+        startActivityWithIntent(Intent.ACTION_SEND, "application/octet-stream", null, null);
 
         onView(withId(R.id.fragment_note_title)).check(matches(withText("")));
-        onSnackbar().check(matches(withText(context.getString(R.string.share_type_not_supported, "image/png"))));
+        onSnackbar().check(matches(withText(context.getString(R.string.share_type_not_supported, "application/octet-stream"))));
     }
 
     @Test
