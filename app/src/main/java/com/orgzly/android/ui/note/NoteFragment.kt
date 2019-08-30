@@ -13,6 +13,7 @@ import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -26,6 +27,7 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.*
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
+import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.notes.book.BookFragment
 import com.orgzly.android.ui.share.ShareActivity
@@ -148,7 +150,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
             // Keyboard's action button pressed
             setOnEditorActionListener { _, _, _ ->
-                save()
+                userSave()
                 true
             }
         }
@@ -273,19 +275,29 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private fun visibleOrGone(visible: Boolean) = if (visible) View.VISIBLE else View.GONE
 
     private fun setupObservers() {
+        viewModel.noteCreatedEvent.observe(viewLifecycleOwner, Observer { note ->
+            listener?.onNoteCreated(note)
+        })
+
+        viewModel.noteUpdatedEvent.observe(viewLifecycleOwner, Observer { note ->
+            listener?.onNoteUpdated(note)
+        })
+
         viewModel.noteDeletedEvent.observeSingle(viewLifecycleOwner, Observer { count ->
-            handleNoteDeleted(count ?: 0)
+            (activity as? MainActivity)?.popBackStackAndCloseKeyboard()
+
+            val message = if (count == 0) {
+                resources.getString(R.string.no_notes_deleted)
+            } else {
+                resources.getQuantityString(R.plurals.notes_deleted, count, count)
+            }
+
+            showSnackbar(message)
         })
 
         viewModel.bookChangeRequestEvent.observeSingle(viewLifecycleOwner, Observer { books ->
             if (books != null) {
                 handleNoteBookChangeRequest(books)
-            }
-        })
-
-        viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->
-            if (error != null) {
-                CommonActivity.showSnackbar(context, (error.cause ?: error).localizedMessage)
             }
         })
 
@@ -306,27 +318,13 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             }
         })
 
-        viewModel.noteCreatedEvent.observe(viewLifecycleOwner, Observer { note ->
-            listener?.onNoteCreated(note)
+        viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->
+            showSnackbar((error.cause ?: error).localizedMessage)
         })
 
-        viewModel.noteUpdatedEvent.observe(viewLifecycleOwner, Observer { note ->
-            listener?.onNoteUpdated(note)
+        viewModel.snackBarMessage.observeSingle(viewLifecycleOwner, Observer { resId ->
+            showSnackbar(resId)
         })
-    }
-
-    private fun handleNoteDeleted(count: Int) {
-        (activity as? CommonActivity)?.let {
-            it.popBackStackAndCloseKeyboard()
-
-            val message = if (count == 0) {
-                resources.getString(R.string.no_notes_deleted)
-            } else {
-                resources.getQuantityString(R.plurals.notes_deleted, count, count)
-            }
-
-            it.showSnackbar(message)
-        }
     }
 
     private fun updateViewsFromPayload() {
@@ -472,15 +470,13 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 val breadcrumbs = Breadcrumbs().apply {
                     // Notebook
                     add(bookTitle, 0, if (noteId == 0L) null else fun() {
-                        ActivityUtils.closeSoftKeyboard(activity)
-                        viewModel.onBreadcrumbsBook(data)
+                        userFollowBookBreadcrumb()
                     })
 
                     // Ancestors
                     data.ancestors.forEach { ancestor ->
                         add(ancestor.title, 0) {
-                            ActivityUtils.closeSoftKeyboard(activity)
-                            viewModel.onBreadcrumbsNote(it.book.id, ancestor)
+                            userFollowNoteBreadcrumb(ancestor)
                         }
                     }
                 }
@@ -833,12 +829,17 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         when (item.itemId) {
             R.id.done -> {
-                save()
+                userSave()
                 return true
             }
 
             R.id.close -> {
-                cancelWithConfirmation()
+                userCancel()
+                return true
+            }
+
+            R.id.delete -> {
+                userDelete()
                 return true
             }
 
@@ -860,11 +861,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 item.isChecked = !item.isChecked
                 AppPreferences.alwaysShowSetNoteMetadata(context, item.isChecked)
                 setMetadataVisibility()
-                return true
-            }
-
-            R.id.delete -> {
-                delete()
                 return true
             }
 
@@ -921,7 +917,44 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         }
     }
 
-    private fun delete() {
+    private fun userSave() {
+        ActivityUtils.closeSoftKeyboard(activity)
+
+        updatePayloadFromViews()
+
+        viewModel.saveNote()
+    }
+
+    fun userCancel(): Boolean {
+        ActivityUtils.closeSoftKeyboard(activity)
+
+        updatePayloadFromViews()
+
+        if (viewModel.isNew() || viewModel.isNoteModified()) {
+            dialog = AlertDialog.Builder(context)
+                    .setTitle(R.string.note_has_been_modified)
+                    .setMessage(R.string.discard_or_save_changes)
+                    .setPositiveButton(R.string.save) { _, _ ->
+                        viewModel.saveNote {
+                            listener?.onNoteCanceled()
+                        }
+                    }
+                    .setNegativeButton(R.string.discard) { _, _ ->
+                        listener?.onNoteCanceled()
+                    }
+                    .setNeutralButton(R.string.cancel, null)
+                    .show()
+
+            return true
+
+        } else {
+            listener?.onNoteCanceled()
+
+            return false
+        }
+    }
+
+    private fun userDelete() {
         dialog = AlertDialog.Builder(context)
                 .setTitle(R.string.delete_note)
                 .setMessage(R.string.delete_note_and_all_subnotes)
@@ -932,68 +965,51 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 .show()
     }
 
-    private fun cancelWithConfirmation() {
-        if (!isAskingForConfirmationForModifiedNote()) {
-            cancel()
-        }
-    }
+    private fun userFollowBookBreadcrumb() {
+        ActivityUtils.closeSoftKeyboard(activity)
 
-    /* It's possible that note does not exist
-     * if it has been deleted and the user went back to it.
-     */
-    fun isAskingForConfirmationForModifiedNote(): Boolean {
         updatePayloadFromViews()
 
-        return if (viewModel.isNoteModified()) {
+        if (viewModel.isNew() || viewModel.isNoteModified()) {
             dialog = AlertDialog.Builder(context)
                     .setTitle(R.string.note_has_been_modified)
                     .setMessage(R.string.discard_or_save_changes)
-                    .setPositiveButton(R.string.save) { _, _ -> save() }
-                    .setNegativeButton(R.string.discard) { _, _ -> cancel() }
+                    .setPositiveButton(R.string.save) { _, _ ->
+                        viewModel.saveNote {
+                            viewModel.followBookBreadcrumb()
+                        }
+                    }
+                    .setNegativeButton(R.string.discard) { _, _ ->
+                        viewModel.followBookBreadcrumb()
+                    }
                     .setNeutralButton(R.string.cancel, null)
                     .show()
-            true
-
         } else {
-            false
+            viewModel.followBookBreadcrumb()
         }
     }
 
-    private fun cancel() {
-        listener?.onNoteCanceled()
-    }
-
-    private fun save() {
-        /* Make sure notebook is set. */
-        if (viewModel.bookId == 0L) {
-            (activity as? CommonActivity)?.showSnackbar(R.string.note_book_not_set)
-            return
-        }
+    private fun userFollowNoteBreadcrumb(ancestor: Note) {
+        ActivityUtils.closeSoftKeyboard(activity)
 
         updatePayloadFromViews()
 
-        if (isTitleValid()) {
-            if (viewModel.isNew()) { // New note
-                viewModel.createNote()
-
-            } else { // Existing note
-                if (viewModel.isNoteModified()) {
-                    viewModel.updateNote(noteId)
-                } else {
-                    listener?.onNoteCanceled()
-                }
-            }
-        }
-    }
-
-    private fun isTitleValid(): Boolean {
-        val title = viewModel.notePayload?.title
-
-        return if (TextUtils.isEmpty(title)) {
-            CommonActivity.showSnackbar(context, getString(R.string.title_can_not_be_empty))
-            false
+        if (viewModel.isNew() || viewModel.isNoteModified()) {
+            dialog = AlertDialog.Builder(context)
+                    .setTitle(R.string.note_has_been_modified)
+                    .setMessage(R.string.discard_or_save_changes)
+                    .setPositiveButton(R.string.save) { _, _ ->
+                        viewModel.saveNote {
+                            viewModel.followNoteBreadcrumb(ancestor)
+                        }
+                    }
+                    .setNegativeButton(R.string.discard) { _, _ ->
+                        viewModel.followNoteBreadcrumb(ancestor)
+                    }
+                    .setNeutralButton(R.string.cancel, null)
+                    .show()
         } else {
-            true
+            viewModel.followNoteBreadcrumb(ancestor)
         }
     }
 
@@ -1041,6 +1057,14 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         return BookFragment.getDrawerItemId(viewModel.bookId)
     }
 
+    private fun showSnackbar(message: String) {
+        CommonActivity.showSnackbar(context, message)
+    }
+
+    private fun showSnackbar(@StringRes resId: Int) {
+        CommonActivity.showSnackbar(context, resId)
+    }
+
     interface Listener {
         fun onNoteCreated(note: Note)
         fun onNoteUpdated(note: Note)
@@ -1048,7 +1072,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     companion object {
-
         private val TAG = NoteFragment::class.java.name
 
         /** Name used for [android.app.FragmentManager].  */

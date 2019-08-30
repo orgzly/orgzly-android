@@ -1,8 +1,10 @@
 package com.orgzly.android.ui.note
 
 import android.os.Bundle
+import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.data.mappers.OrgMapper
@@ -24,7 +26,7 @@ import com.orgzly.org.parser.OrgParserWriter
 class NoteViewModel(
         private val dataRepository: DataRepository,
         var bookId: Long,
-        private val noteId: Long,
+        private var noteId: Long,
         private val place: Place?,
         private val title: String?,
         private val content: String?
@@ -41,6 +43,8 @@ class NoteViewModel(
 
     val noteDetailsDataEvent: SingleLiveEvent<NoteDetailsData> = SingleLiveEvent()
 
+    val noteCreatedEvent: SingleLiveEvent<Note> = SingleLiveEvent()
+    val noteUpdatedEvent: SingleLiveEvent<Note> = SingleLiveEvent()
     val noteDeletedEvent: SingleLiveEvent<Int> = SingleLiveEvent()
 
     val bookChangeRequestEvent: SingleLiveEvent<List<BookView>> = SingleLiveEvent()
@@ -96,31 +100,6 @@ class NoteViewModel(
     fun requestNoteBookChange() {
         App.EXECUTORS.diskIO().execute {
             bookChangeRequestEvent.postValue(dataRepository.getBooks())
-        }
-    }
-
-    fun onBreadcrumbsBook(data: NoteDetailsData) {
-        data.note?.note?.id?.let { noteId ->
-            App.EXECUTORS.diskIO().execute {
-                UseCaseRunner.run(BookSparseTreeForNote(noteId))
-            }
-        }
-    }
-
-    fun onBreadcrumbsNote(bookId: Long, note: Note) {
-        when (AppPreferences.breadcrumbsTarget(App.getAppContext())) {
-            "note_details" ->
-                MainActivity.openSpecificNote(bookId, note.id)
-
-            "book_and_sparse_tree" ->
-                App.EXECUTORS.diskIO().execute {
-                    UseCaseRunner.run(BookSparseTreeForNote(note.id))
-                }
-
-            "book_and_scroll" ->
-                App.EXECUTORS.diskIO().execute {
-                    UseCaseRunner.run(BookScrollToNote(note.id))
-                }
         }
     }
 
@@ -219,10 +198,7 @@ class NoteViewModel(
         notePayload = notePayload?.copy(closed = range.toString())
     }
 
-    val noteCreatedEvent: SingleLiveEvent<Note> = SingleLiveEvent()
-    val noteUpdatedEvent: SingleLiveEvent<Note> = SingleLiveEvent()
-
-    fun createNote() {
+    private fun createNote(postSave: ((note: Note) -> Unit)?) {
         val notePlace = if (place != Place.UNSPECIFIED)
             NotePlace(bookId, noteId, place)
         else
@@ -232,18 +208,33 @@ class NoteViewModel(
             App.EXECUTORS.diskIO().execute {
                 catchAndPostError {
                     val result = UseCaseRunner.run(NoteCreate(payload, notePlace))
-                    noteCreatedEvent.postValue(result.userData as Note)
+                    val note = result.userData as Note
+
+                    // Update note ID after creating note
+                    noteId = note.id
+
+                    if (postSave != null) {
+                        postSave(note)
+                    } else {
+                        noteCreatedEvent.postValue(note)
+                    }
                 }
             }
         }
     }
 
-    fun updateNote(id: Long) {
+    private fun updateNote(postSave: ((note: Note) -> Unit)?) {
         notePayload?.let { payload ->
             App.EXECUTORS.diskIO().execute {
                 catchAndPostError {
-                    val result = UseCaseRunner.run(NoteUpdate(id, payload))
-                    noteUpdatedEvent.postValue(result.userData as Note)
+                    val result = UseCaseRunner.run(NoteUpdate(noteId, payload))
+                    val note = result.userData as Note
+
+                    if (postSave != null) {
+                        postSave(note)
+                    } else {
+                        noteUpdatedEvent.postValue(note)
+                    }
                 }
             }
         }
@@ -280,4 +271,60 @@ class NoteViewModel(
         bookId = b.book.id
         bookView.value = b
     }
+
+    fun followBookBreadcrumb() {
+        App.EXECUTORS.diskIO().execute {
+            catchAndPostError {
+                UseCaseRunner.run(BookSparseTreeForNote(noteId))
+            }
+        }
+    }
+
+    fun followNoteBreadcrumb(ancestor: Note) {
+        when (AppPreferences.breadcrumbsTarget(App.getAppContext())) {
+            "note_details" ->
+                MainActivity.openSpecificNote(bookId, ancestor.id)
+
+            "book_and_sparse_tree" ->
+                App.EXECUTORS.diskIO().execute {
+                    UseCaseRunner.run(BookSparseTreeForNote(ancestor.id))
+                }
+
+            "book_and_scroll" ->
+                App.EXECUTORS.diskIO().execute {
+                    UseCaseRunner.run(BookScrollToNote(ancestor.id))
+                }
+
+        }
+
+    }
+
+    fun saveNote(postSave: ((note: Note) -> Unit)? = null) {
+        if (isBookSet() && isTitleValid()) {
+            if (isNew()) {
+                createNote(postSave)
+            } else {
+                updateNote(postSave)
+            }
+        }
+    }
+
+    private fun isTitleValid(): Boolean {
+        return if (TextUtils.isEmpty(notePayload?.title)) {
+            snackBarMessage.postValue(R.string.title_can_not_be_empty)
+            false
+        } else {
+            true
+        }
+    }
+
+    private fun isBookSet(): Boolean {
+        return if (bookId == 0L) {
+            snackBarMessage.postValue(R.string.note_book_not_set)
+            false
+        } else {
+            true
+        }
+    }
+
 }

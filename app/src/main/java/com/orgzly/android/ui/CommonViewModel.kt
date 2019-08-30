@@ -3,6 +3,8 @@ package com.orgzly.android.ui
 import androidx.lifecycle.ViewModel
 
 open class CommonViewModel : ViewModel() {
+    val snackBarMessage: SingleLiveEvent<Int> = SingleLiveEvent()
+
     val errorEvent: SingleLiveEvent<Throwable> = SingleLiveEvent()
 
     fun catchAndPostError(action: () -> Unit) {

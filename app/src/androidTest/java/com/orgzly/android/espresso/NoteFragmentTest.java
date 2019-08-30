@@ -1,6 +1,9 @@
 package com.orgzly.android.espresso;
 
+import androidx.test.espresso.ViewAction;
 import androidx.test.rule.ActivityTestRule;
+
+import android.os.SystemClock;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -17,6 +20,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
@@ -445,8 +449,38 @@ public class NoteFragmentTest extends OrgzlyTest {
     }
 
     @Test
-    public void testBreadcrumbNotebook() {
-        onNoteInBook(1).perform(click());
+    public void testBreadcrumbsFollowToBook() {
+        onNoteInBook(3).perform(click());
+
+        // onView(withId(R.id.fragment_note_breadcrumbs_text)).perform(clickClickableSpan("book-name"));
+        // SystemClock.sleep(5000);
+
         onView(withId(R.id.fragment_note_breadcrumbs_text)).perform(click());
+
+        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testBreadcrumbsFollowToNote() {
+        onNoteInBook(3).perform(click());
+        onView(withId(R.id.fragment_note_breadcrumbs_text)).perform(clickClickableSpan("Note #2."));
+        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note #2.")));
+    }
+
+    @Test
+    public void testBreadcrumbsPromptWhenCreatingNewNote() {
+        onNoteInBook(1).perform(longClick());
+        onView(withId(R.id.bottom_action_bar_new)).perform(click());
+        onView(withText(R.string.new_under)).perform(click());
+        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("1.1"));
+        onView(withId(R.id.fragment_note_breadcrumbs_text)).perform(clickClickableSpan("Note #1."));
+
+        // Dialog is displayed
+        onView(withText(R.string.discard_or_save_changes)).check(matches(isDisplayed()));
+
+        onView(withText(R.string.cancel)).perform(click());
+
+        // Title remains the same
+        onView(withId(R.id.fragment_note_title)).check(matches(withText("1.1")));
     }
 }

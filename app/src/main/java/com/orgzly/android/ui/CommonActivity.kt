@@ -338,12 +338,6 @@ abstract class CommonActivity : DaggerAppCompatActivity() {
         }
     }
 
-    fun popBackStackAndCloseKeyboard() {
-        supportFragmentManager.popBackStack()
-        ActivityUtils.closeSoftKeyboard(this)
-    }
-
-
     fun progressDialogBuilder(title: Int, message: String? = null): AlertDialog.Builder {
         val view = View.inflate(this, R.layout.dialog_progress_bar, null)
 

@@ -45,7 +45,6 @@ import com.orgzly.android.ui.notes.book.BookPrefaceFragment;
 import com.orgzly.android.ui.books.BooksFragment;
 import com.orgzly.android.ui.savedsearch.SavedSearchFragment;
 import com.orgzly.android.ui.note.NoteFragment;
-import com.orgzly.android.ui.note.NotePayload;
 import com.orgzly.android.ui.notes.book.BookFragment;
 import com.orgzly.android.ui.notifications.Notifications;
 import com.orgzly.android.ui.repos.ReposActivity;
@@ -69,7 +68,6 @@ import com.orgzly.android.usecase.SavedSearchImport;
 import com.orgzly.android.usecase.SavedSearchMoveDown;
 import com.orgzly.android.usecase.SavedSearchMoveUp;
 import com.orgzly.android.usecase.SavedSearchUpdate;
-import com.orgzly.android.usecase.NoteCreate;
 import com.orgzly.android.usecase.NoteCut;
 import com.orgzly.android.usecase.NoteDelete;
 import com.orgzly.android.usecase.NoteDemote;
@@ -77,7 +75,6 @@ import com.orgzly.android.usecase.NoteFindWithProperty;
 import com.orgzly.android.usecase.NoteMove;
 import com.orgzly.android.usecase.NotePaste;
 import com.orgzly.android.usecase.NotePromote;
-import com.orgzly.android.usecase.NoteUpdate;
 import com.orgzly.android.usecase.NoteUpdateDeadlineTime;
 import com.orgzly.android.usecase.NoteUpdateScheduledTime;
 import com.orgzly.android.usecase.NoteUpdateState;
@@ -536,13 +533,12 @@ public class MainActivity extends CommonActivity
             }
         }
 
-        /* Handle back press when editing note - check for changes */
+        // Handle back press when editing note in NoteFragment. TODO: Use OnBackPressedCallback
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(NoteFragment.FRAGMENT_TAG);
         if (fragment instanceof NoteFragment && fragment.isVisible()) {
             NoteFragment noteFragment = (NoteFragment) fragment;
-            if (noteFragment.isAskingForConfirmationForModifiedNote()) {
-                return;
-            }
+            noteFragment.userCancel();
+            return;
         }
 
         super.onBackPressed();
@@ -1130,6 +1126,11 @@ public class MainActivity extends CommonActivity
 
     private void openSettings() {
         startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+    }
+
+    public void popBackStackAndCloseKeyboard() {
+        getSupportFragmentManager().popBackStack();
+        ActivityUtils.closeSoftKeyboard(this);
     }
 
     /**
