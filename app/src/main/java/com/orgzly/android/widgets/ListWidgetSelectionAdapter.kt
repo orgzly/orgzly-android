@@ -84,7 +84,7 @@ class ListWidgetSelectionAdapter(
                     }
 
                     override fun areContentsTheSame(oldItem: SavedSearch, newItem: SavedSearch): Boolean {
-                        return oldItem == newItem // TODO: Compare content
+                        return oldItem == newItem
                     }
                 }
     }

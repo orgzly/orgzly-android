@@ -123,14 +123,19 @@ class AgendaAdapter(
                     }
 
                     override fun areContentsTheSame(oldItem: AgendaItem, newItem: AgendaItem): Boolean {
-                        if (oldItem is AgendaItem.Note && newItem is AgendaItem.Note) {
-                            return oldItem == newItem // TODO: Compare content
+                        return if (oldItem is AgendaItem.Note && newItem is AgendaItem.Note) {
+                            // Specifying type to remove the error when comparing below:
+                            // Suspicious equality check: equals() is not implemented in AgendaItem
+                            val old: AgendaItem.Note = oldItem
+                            val new: AgendaItem.Note = newItem
+
+                            old == new
 
                         } else if (oldItem is AgendaItem.Divider && newItem is AgendaItem.Divider) {
-                            return oldItem.day == newItem.day
+                            oldItem.day == newItem.day
 
                         } else {
-                            return false
+                            false
                         }
                     }
                 }

@@ -7,4 +7,5 @@ sealed class AgendaItem(open val id: Long) {
     data class Note(override val id: Long, val note: NoteView) : AgendaItem(id)
 
     data class Divider(override val id: Long, val day: DateTime) : AgendaItem(id)
+
 }

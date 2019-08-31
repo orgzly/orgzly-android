@@ -741,50 +741,42 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     override fun onDateTimeSet(id: Int, noteIds: TreeSet<Long>, time: OrgDateTime) {
-        if (BuildConfig.LOG_DEBUG)
-            LogUtils.d(
-                    TAG, id, R.id.fragment_note_deadline_button, noteIds, time, viewModel.notePayload)
+        val range = OrgRange(time)
 
-        viewModel.notePayload?.let { payload ->
-            val range = OrgRange(time)
+        when (id) {
+            R.id.fragment_note_scheduled_button -> {
+                updateTimestampView(TimeType.SCHEDULED, range)
+                viewModel.updatePayloadScheduledTime(range)
 
-            when (id) {
-                R.id.fragment_note_scheduled_button -> {
-                    updateTimestampView(TimeType.SCHEDULED, range)
-                    viewModel.updatePayloadScheduledTime(range)
+            }
 
-                }
+            R.id.fragment_note_deadline_button -> {
+                updateTimestampView(TimeType.DEADLINE, range)
+                viewModel.updatePayloadDeadlineTime(range)
+            }
 
-                R.id.fragment_note_deadline_button -> {
-                    updateTimestampView(TimeType.DEADLINE, range)
-                    viewModel.updatePayloadDeadlineTime(range)
-                }
-
-                R.id.fragment_note_closed_edit_text -> {
-                    updateTimestampView(TimeType.CLOSED, range)
-                    viewModel.updatePayloadClosedTime(range)
-                }
+            R.id.fragment_note_closed_edit_text -> {
+                updateTimestampView(TimeType.CLOSED, range)
+                viewModel.updatePayloadClosedTime(range)
             }
         }
     }
 
     override fun onDateTimeCleared(id: Int, noteIds: TreeSet<Long>) {
-        viewModel.notePayload?.let { payload ->
-            when (id) {
-                R.id.fragment_note_scheduled_button -> {
-                    updateTimestampView(TimeType.SCHEDULED, null)
-                    viewModel.updatePayloadScheduledTime(null)
-                }
+        when (id) {
+            R.id.fragment_note_scheduled_button -> {
+                updateTimestampView(TimeType.SCHEDULED, null)
+                viewModel.updatePayloadScheduledTime(null)
+            }
 
-                R.id.fragment_note_deadline_button -> {
-                    updateTimestampView(TimeType.DEADLINE, null)
-                    viewModel.updatePayloadDeadlineTime(null)
-                }
+            R.id.fragment_note_deadline_button -> {
+                updateTimestampView(TimeType.DEADLINE, null)
+                viewModel.updatePayloadDeadlineTime(null)
+            }
 
-                R.id.fragment_note_closed_edit_text -> {
-                    updateTimestampView(TimeType.CLOSED, null)
-                    viewModel.updatePayloadClosedTime(null)
-                }
+            R.id.fragment_note_closed_edit_text -> {
+                updateTimestampView(TimeType.CLOSED, null)
+                viewModel.updatePayloadClosedTime(null)
             }
         }
     }

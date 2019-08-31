@@ -10,15 +10,11 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.textfield.TextInputLayout
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.data.DataRepository
@@ -241,16 +237,16 @@ class BooksFragment :
         val dialogBinding = DialogBookDeleteBinding.inflate(LayoutInflater.from(context))
 
         dialogBinding.deleteLinkedCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            activity?.obtainStyledAttributes(
-                    intArrayOf(R.attr.text_primary_color, R.attr.text_disabled_color))?.let {
+            val typedArray = activity?.obtainStyledAttributes(R.styleable.ColorScheme)
 
+            if (typedArray != null) {
                 val color = if (isChecked) {
-                    it.getColor(0, 0)
+                    typedArray.getColor(R.styleable.ColorScheme_text_primary_color, 0)
                 } else {
-                    it.getColor(1, 0)
+                    typedArray.getColor(R.styleable.ColorScheme_text_disabled_color, 0)
                 }
 
-                it.recycle()
+                typedArray.recycle()
 
                 dialogBinding.deleteLinkedUrl.setTextColor(color)
             }

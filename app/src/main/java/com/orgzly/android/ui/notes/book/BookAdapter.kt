@@ -187,7 +187,7 @@ class BookAdapter(
                     }
 
                     override fun areContentsTheSame(oldItem: NoteView, newItem: NoteView): Boolean {
-                        return oldItem == newItem // TODO: Compare content
+                        return oldItem == newItem
                     }
                 }
     }
