@@ -27,7 +27,7 @@ import static org.junit.Assert.assertTrue;
 //@Ignore
 public class BookChooserActivityTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(BookChooserActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(BookChooserActivity.class);
 
     private void startActivityWithIntent(String action) {
         Intent intent = new Intent();

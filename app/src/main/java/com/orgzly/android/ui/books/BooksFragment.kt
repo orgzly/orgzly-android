@@ -13,13 +13,11 @@ import android.view.*
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -35,6 +33,9 @@ import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.usecase.BookDelete
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
+import com.orgzly.databinding.DialogBookDeleteBinding
+import com.orgzly.databinding.DialogBookRenameBinding
+import com.orgzly.databinding.FragmentBooksBinding
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -48,6 +49,8 @@ class BooksFragment :
         DrawerItem,
         OnViewHolderClickListener<BookView> {
 
+    private lateinit var binding: FragmentBooksBinding
+
     private lateinit var viewAdapter: BooksAdapter
 
     private var actionMode: ActionMode? = null
@@ -56,8 +59,6 @@ class BooksFragment :
     private var dialog: AlertDialog? = null
 
     private var listener: Listener? = null
-
-    private lateinit var viewFlipper: ViewFlipper
 
     private var withOptionsMenu = true
     private var withActionBar = true
@@ -102,19 +103,18 @@ class BooksFragment :
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(drawerItemId, inflater, container, savedInstanceState)
-        val view = inflater.inflate(R.layout.fragment_books, container, false)
 
-        viewFlipper = view.findViewById(R.id.fragment_books_view_flipper)
+        binding = FragmentBooksBinding.inflate(inflater, container, false)
 
         viewAdapter = BooksAdapter(this)
         viewAdapter.setHasStableIds(true)
 
-        view.findViewById<RecyclerView>(R.id.fragment_books_recycler_view).let {
+        binding.fragmentBooksRecyclerView.let {
             it.layoutManager = LinearLayoutManager(context)
             it.adapter = viewAdapter
         }
 
-        return view
+        return binding.root
     }
 
     override fun onClick(view: View, position: Int, item: BookView) {
@@ -238,11 +238,9 @@ class BooksFragment :
     }
 
     private fun deleteBookDialog(book: BookView) {
-        val view = View.inflate(context, R.layout.dialog_book_delete, null)
-        val checkBox = view.findViewById<CheckBox>(R.id.dialog_book_delete_checkbox)
-        val textView = view.findViewById<TextView>(R.id.dialog_book_delete_text)
+        val dialogBinding = DialogBookDeleteBinding.inflate(LayoutInflater.from(context))
 
-        checkBox.setOnCheckedChangeListener { _, isChecked ->
+        dialogBinding.deleteLinkedCheckbox.setOnCheckedChangeListener { _, isChecked ->
             activity?.obtainStyledAttributes(
                     intArrayOf(R.attr.text_primary_color, R.attr.text_disabled_color))?.let {
 
@@ -254,14 +252,14 @@ class BooksFragment :
 
                 it.recycle()
 
-                textView.setTextColor(color)
+                dialogBinding.deleteLinkedUrl.setTextColor(color)
             }
         }
 
         val dialogClickListener = DialogInterface.OnClickListener { _, which ->
             when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
-                    val deleteLinked = checkBox.isChecked
+                    val deleteLinked = dialogBinding.deleteLinkedCheckbox.isChecked
                     viewModel.deleteBook(book.book.id, deleteLinked)
                 }
             }
@@ -273,31 +271,28 @@ class BooksFragment :
                 .setNegativeButton(R.string.cancel, dialogClickListener)
 
         if (book.syncedTo != null) {
-            textView.text = book.syncedTo.uri.toString()
-            builder.setView(view)
+            dialogBinding.deleteLinkedUrl.text = book.syncedTo.uri.toString()
+            builder.setView(dialogBinding.root)
         }
 
         dialog = builder.show()
     }
 
     private fun renameBookDialog(book: BookView) {
-
-        val dialogView = View.inflate(context, R.layout.dialog_book_rename, null)
-        val nameInputLayout = dialogView.findViewById<TextInputLayout>(R.id.name_input_layout)
-        val nameView = dialogView.findViewById<EditText>(R.id.name)
+        val dialogBinding = DialogBookRenameBinding.inflate(LayoutInflater.from(context))
 
         val dialogClickListener = DialogInterface.OnClickListener { _, which ->
             when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
-                    val name = nameView.text.toString()
+                    val name = dialogBinding.name.text.toString()
 
                     if (!TextUtils.isEmpty(name)) {
-                        nameInputLayout.error = null
+                        dialogBinding.nameInputLayout.error = null
 
                         viewModel.renameBook(book, name)
 
                     } else {
-                        nameInputLayout.error = getString(R.string.can_not_be_empty)
+                        dialogBinding.nameInputLayout.error = getString(R.string.can_not_be_empty)
                     }
                 }
 
@@ -310,23 +305,23 @@ class BooksFragment :
                 .setTitle(getString(R.string.rename_book, MiscUtils.quotedString(book.book.name)))
                 .setPositiveButton(R.string.rename, dialogClickListener)
                 .setNegativeButton(R.string.cancel, dialogClickListener)
-                .setView(dialogView)
+                .setView(dialogBinding.root)
 
-        nameView.setText(book.book.name)
+        dialogBinding.name.setText(book.book.name)
 
         val d = dialogBuilder.create()
 
         /* Finish on keyboard action press. */
-        nameView.setOnEditorActionListener { _, _, _ ->
+        dialogBinding.name.setOnEditorActionListener { _, _, _ ->
             d.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
             true
         }
 
-        d.setOnShowListener { ActivityUtils.openSoftKeyboard(activity, nameView) }
+        d.setOnShowListener { ActivityUtils.openSoftKeyboard(activity, dialogBinding.name) }
         d.setOnDismissListener { ActivityUtils.closeSoftKeyboard(activity) }
 
         // Disable positive button if value is empty or same
-        nameView.addTextChangedListener(object : TextWatcher {
+        dialogBinding.name.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -358,7 +353,7 @@ class BooksFragment :
         viewModel = ViewModelProviders.of(this, factory).get(BooksViewModel::class.java)
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer {
-            viewFlipper.displayedChild = when (it) {
+            binding.fragmentBooksViewFlipper.displayedChild = when (it) {
                 BooksViewModel.ViewState.LOADING -> 0
                 BooksViewModel.ViewState.LOADED -> 1
                 BooksViewModel.ViewState.EMPTY -> 2

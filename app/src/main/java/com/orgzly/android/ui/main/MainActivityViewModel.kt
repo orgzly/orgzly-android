@@ -16,6 +16,7 @@ import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent
 import com.orgzly.android.usecase.*
 import com.orgzly.android.util.LogUtils
+import java.lang.IllegalStateException
 
 class MainActivityViewModel(private val dataRepository: DataRepository) : CommonViewModel() {
     private val booksParams = MutableLiveData<String>()
@@ -103,7 +104,7 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
             val bookView = dataRepository.getBookView(bookId)
 
             if (bookView == null) {
-                errorEvent.postValue(Exception("no book"))
+                errorEvent.postValue(IllegalStateException("Book not found"))
             } else {
                 val repos = dataRepository.getReposList()
 

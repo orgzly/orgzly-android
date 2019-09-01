@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <style name="FastScroll">
+        <item name="fastScrollEnabled">true</item>
+        <item name="fastScrollHorizontalThumbDrawable">@drawable/fast_scroll_thumb_drawable</item>
+        <item name="fastScrollHorizontalTrackDrawable">@drawable/fast_scroll_line_drawable</item>
+        <item name="fastScrollVerticalThumbDrawable">@drawable/fast_scroll_thumb_drawable</item>
+        <item name="fastScrollVerticalTrackDrawable">@drawable/fast_scroll_line_drawable</item>
+    </style>
+</resources>

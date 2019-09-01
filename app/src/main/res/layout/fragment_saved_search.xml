@@ -1,47 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ViewFlipper
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/fragment_saved_search_flipper"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <ViewFlipper
+        android:id="@+id/fragment_saved_search_flipper"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/screen_edge"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragment_saved_search_name_input_layout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:errorEnabled="true">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragment_saved_search_name"
+            android:padding="@dimen/screen_edge"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fragment_saved_search_name_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text|textCapSentences"
-                android:hint="@string/name"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                app:errorEnabled="true">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fragment_saved_search_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text|textCapSentences"
+                    android:hint="@string/name"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragment_saved_search_query_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:errorEnabled="true">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragment_saved_search_query"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fragment_saved_search_query_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:hint="@string/query"/>
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
+                app:errorEnabled="true">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fragment_saved_search_query"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:hint="@string/query"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
-    <TextView
-        style="@style/BigCenteredText"
-        android:text="@string/search_does_not_exist_anymore"/>
+        <TextView
+            style="@style/BigCenteredText"
+            android:text="@string/search_does_not_exist_anymore"/>
 
-</ViewFlipper>
+    </ViewFlipper>
+
+</layout>

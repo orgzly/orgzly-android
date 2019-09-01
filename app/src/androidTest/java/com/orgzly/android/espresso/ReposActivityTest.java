@@ -25,7 +25,7 @@ import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard
 //@Ignore
 public class ReposActivityTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(ReposActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(ReposActivity.class);
 
     @Test
     public void testSavingWithBogusDirectoryUri() {

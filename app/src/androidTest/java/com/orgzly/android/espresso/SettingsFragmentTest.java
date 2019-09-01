@@ -34,7 +34,7 @@ import static org.hamcrest.Matchers.hasToString;
 @SuppressWarnings("unchecked")
 public class SettingsFragmentTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
 
     @Before
     public void setUp() throws Exception {

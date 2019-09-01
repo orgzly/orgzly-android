@@ -1,19 +1,14 @@
 package com.orgzly.android.ui.refile
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.HorizontalScrollView
-import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -27,10 +22,13 @@ import com.orgzly.android.usecase.BookSparseTreeForNote
 import com.orgzly.android.usecase.NoteRefile
 import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.LogUtils
+import com.orgzly.databinding.DialogRefileBinding
 import dagger.android.support.DaggerDialogFragment
 import javax.inject.Inject
 
 class RefileFragment : DaggerDialogFragment() {
+
+    private lateinit var binding: DialogRefileBinding
 
     @Inject
     lateinit var dataRepository: DataRepository
@@ -79,18 +77,18 @@ class RefileFragment : DaggerDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        val v = inflater.inflate(R.layout.dialog_refile, container, false)
+        binding = DialogRefileBinding.inflate(inflater, container, false)
 
-        val toolbar = v.findViewById(R.id.dialog_refile_toolbar) as Toolbar
+        binding.dialogRefileToolbar.apply {
+            title = resources.getQuantityString(
+                    R.plurals.refile_notes, viewModel.count, viewModel.count)
 
-        toolbar.setTitle(resources.getQuantityString(
-                R.plurals.refile_notes, viewModel.count, viewModel.count))
-
-        toolbar.setNavigationOnClickListener {
-            dismiss()
+            setNavigationOnClickListener {
+                dismiss()
+            }
         }
 
-        val adapter = RefileAdapter(v.context, object: RefileAdapter.OnClickListener {
+        val adapter = RefileAdapter(binding.root.context, object: RefileAdapter.OnClickListener {
             override fun onItem(item: RefileViewModel.Item) {
                 viewModel.open(item)
             }
@@ -100,25 +98,18 @@ class RefileFragment : DaggerDialogFragment() {
             }
         })
 
-        v.findViewById<RecyclerView>(R.id.dialog_refile_targets).also {
+        binding.dialogRefileTargets.let {
             it.layoutManager = LinearLayoutManager(context)
             it.adapter = adapter
         }
 
-//        v.findViewById<View>(R.id.dialog_refile_history).setOnClickListener {
-//            viewModel.openHistory()
-//        }
-
-        val refileHereButton = v.findViewById<View>(R.id.dialog_refile_refile_here).apply {
+        val refileHereButton = binding.dialogRefileRefileHere.apply {
             setOnClickListener {
                 viewModel.refileHere()
             }
         }
 
-        val breadcrumbsView = v.findViewById<TextView>(R.id.dialog_refile_breadcrumbs)
-        breadcrumbsView.movementMethod = LinkMovementMethod.getInstance()
-
-        val breadcrumbsScrollView = v.findViewById<HorizontalScrollView>(R.id.dialog_refile_breadcrumbs_scroll_view)
+        binding.dialogRefileBreadcrumbs.movementMethod = LinkMovementMethod.getInstance()
 
         viewModel.location.observe(viewLifecycleOwner, Observer { location ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed location: $location")
@@ -133,8 +124,12 @@ class RefileFragment : DaggerDialogFragment() {
             }
 
             // Update and scroll breadcrumbs to the end
-            breadcrumbsView.text = generateBreadcrumbs(location.breadcrumbs)
-            breadcrumbsScrollView.post { breadcrumbsScrollView.fullScroll(View.FOCUS_RIGHT) }
+            binding.dialogRefileBreadcrumbs.text = generateBreadcrumbs(location.breadcrumbs)
+            binding.dialogRefileBreadcrumbsScrollView.apply {
+                post {
+                    fullScroll(View.FOCUS_RIGHT)
+                }
+            }
         })
 
         viewModel.refiledEvent.observeSingle(viewLifecycleOwner, Observer { result ->
@@ -155,16 +150,17 @@ class RefileFragment : DaggerDialogFragment() {
         })
 
         viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->
-            if (error is NoteRefile.TargetInNotesSubtree) {
-                toolbar.subtitle = getString(R.string.cannot_refile_to_the_same_subtree)
-            } else {
-                toolbar.subtitle = (error.cause ?: error).localizedMessage
-            }
+            binding.dialogRefileToolbar.subtitle =
+                    if (error is NoteRefile.TargetInNotesSubtree) {
+                        getString(R.string.cannot_refile_to_the_same_subtree)
+                    } else {
+                        (error.cause ?: error).localizedMessage
+                    }
         })
 
         viewModel.open(RefileViewModel.HOME)
 
-        return v
+        return binding.root
     }
 
     private fun generateBreadcrumbs(path: List<RefileViewModel.Item>): CharSequence {

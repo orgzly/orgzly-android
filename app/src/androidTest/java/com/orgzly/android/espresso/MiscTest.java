@@ -66,7 +66,7 @@ import static org.junit.Assert.assertTrue;
 @SuppressWarnings("unchecked")
 public class MiscTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
 
     @Test
     public void testLftRgt() {
@@ -203,10 +203,10 @@ public class MiscTest extends OrgzlyTest {
         onNoteInBook(2).perform(click());
         onNoteInBook(3).perform(click());
         onView(withId(R.id.bottom_action_bar_schedule)).perform(click());
-        onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
+        onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
-        onView(withId(R.id.dialog_timestamp_time_picker)).perform(scrollTo(), click());
+        onView(withId(R.id.time_picker_button)).perform(scrollTo(), click());
         onView(withClassName(equalTo(TimePicker.class.getName()))).perform(setTime(9, 15));
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
         onView(withText(R.string.set)).perform(click());
@@ -295,11 +295,11 @@ public class MiscTest extends OrgzlyTest {
         String s = DateFormat.getTimeFormat(context).format(cal.getTime());
 
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
-        onView(withId(R.id.dialog_timestamp_time_picker)).check(matches(withText(containsString(s))));
-        onView(withId(R.id.dialog_timestamp_time_check)).perform(scrollTo(), click());
-        onView(withId(R.id.dialog_timestamp_time_picker)).check(matches(withText(containsString(s))));
-        onView(withId(R.id.dialog_timestamp_time_check)).perform(click());
-        onView(withId(R.id.dialog_timestamp_time_picker)).check(matches(withText(containsString(s))));
+        onView(withId(R.id.time_picker_button)).check(matches(withText(containsString(s))));
+        onView(withId(R.id.time_used_checkbox)).perform(scrollTo(), click());
+        onView(withId(R.id.time_picker_button)).check(matches(withText(containsString(s))));
+        onView(withId(R.id.time_used_checkbox)).perform(click());
+        onView(withId(R.id.time_picker_button)).check(matches(withText(containsString(s))));
     }
 
     @Test
@@ -480,7 +480,7 @@ public class MiscTest extends OrgzlyTest {
 
     @Test
     public void testReposActivityFragments() {
-        ActivityTestRule rule = new EspressoActivityTestRule<>(ReposActivity.class, true, false);
+        ActivityTestRule rule = new EspressoActivityTestRule<>(ReposActivity.class);
 
         testUtils.setupRepo("file:/");
         testUtils.setupRepo("dropbox:/orgzly");

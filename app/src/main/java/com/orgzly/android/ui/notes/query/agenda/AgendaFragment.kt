@@ -2,17 +2,14 @@ package com.orgzly.android.ui.notes.query.agenda
 
 import android.os.Bundle
 import android.view.*
-import android.widget.ViewFlipper
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
@@ -25,7 +22,7 @@ import com.orgzly.android.ui.notes.quickbar.QuickBarListener
 import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
-import java.util.*
+import com.orgzly.databinding.FragmentQueryAgendaBinding
 
 /**
  * Displays agenda results.
@@ -36,9 +33,9 @@ class AgendaFragment :
         ActionMode.Callback,
         QuickBarListener {
 
-    private val item2databaseIds = hashMapOf<Long, Long>()
+    private lateinit var binding: FragmentQueryAgendaBinding
 
-    private lateinit var viewFlipper: ViewFlipper
+    private val item2databaseIds = hashMapOf<Long, Long>()
 
     lateinit var viewAdapter: AgendaAdapter
 
@@ -50,26 +47,24 @@ class AgendaFragment :
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, inflater, container, savedInstanceState)
 
-        val view = inflater.inflate(R.layout.fragment_query_agenda, container, false)
+        binding = FragmentQueryAgendaBinding.inflate(inflater, container, false)
 
-        viewFlipper = view.findViewById(R.id.fragment_query_agenda_view_flipper)
+        setupRecyclerView()
 
-        setupRecyclerView(view)
-
-        return view
+        return binding.root
     }
 
-    private fun setupRecyclerView(view: View) {
-        val quickBars = QuickBars(view.context, false)
+    private fun setupRecyclerView() {
+        val quickBars = QuickBars(binding.root.context, false)
 
-        viewAdapter = AgendaAdapter(view.context, this, quickBars)
+        viewAdapter = AgendaAdapter(binding.root.context, this, quickBars)
         viewAdapter.setHasStableIds(true)
 
         val layoutManager = LinearLayoutManager(context)
 
         val dividerItemDecoration = DividerItemDecoration(context, layoutManager.orientation)
 
-        view.findViewById<RecyclerView>(R.id.fragment_query_agenda_recycler_view).let { rv ->
+        binding.fragmentQueryAgendaRecyclerView.let { rv ->
             rv.layoutManager = layoutManager
             rv.adapter = viewAdapter
             rv.addItemDecoration(dividerItemDecoration)
@@ -118,7 +113,7 @@ class AgendaFragment :
         viewModel.viewState.observe(viewLifecycleOwner, Observer { state ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed load state: $state")
 
-            viewFlipper.displayedChild = when (state) {
+            binding.fragmentQueryAgendaViewFlipper.displayedChild = when (state) {
                 QueryViewModel.ViewState.LOADING -> 0
                 QueryViewModel.ViewState.LOADED -> 1
                 else -> 1
@@ -153,18 +148,18 @@ class AgendaFragment :
     override fun onClick(view: View, position: Int, item: AgendaItem) {
         if (!AppPreferences.isReverseNoteClickAction(context)) {
             if (viewAdapter.getSelection().count > 0) {
-                toggleNoteSelection(view, position, item)
+                toggleNoteSelection(position, item)
             } else {
                 openNote(item)
             }
         } else {
-            toggleNoteSelection(view, position, item)
+            toggleNoteSelection(position, item)
         }
     }
 
     override fun onLongClick(view: View, position: Int, item: AgendaItem) {
         if (!AppPreferences.isReverseNoteClickAction(context)) {
-            toggleNoteSelection(view, position, item)
+            toggleNoteSelection(position, item)
         } else {
             openNote(item)
         }
@@ -178,7 +173,7 @@ class AgendaFragment :
         }
     }
 
-    private fun toggleNoteSelection(view: View, position: Int, item: AgendaItem) {
+    private fun toggleNoteSelection(position: Int, item: AgendaItem) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         if (item is AgendaItem.Note) {

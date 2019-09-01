@@ -1,32 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/screen_edge"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <CheckBox
-        android:id="@+id/dialog_book_delete_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|center_vertical"
-        android:gravity="start|center_vertical"
-        android:text="@string/also_delete_linked_book"
-        android:paddingLeft="8dp"
-        android:paddingStart="8dp"
-        android:textColor="?attr/text_primary_color"/>
-
-    <TextView
-        android:id="@+id/dialog_book_delete_text"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:textColor="?attr/text_disabled_color"
-        tools:text="content://com.android.providers.downloads.documents/tree/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg/document/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg%2Fgtd.org"/>
+        android:padding="@dimen/screen_edge"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <CheckBox
+            android:id="@+id/delete_linked_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:gravity="start|center_vertical"
+            android:text="@string/also_delete_linked_book"
+            android:paddingLeft="8dp"
+            android:paddingStart="8dp"
+            android:textColor="?attr/text_primary_color"/>
+
+        <TextView
+            android:id="@+id/delete_linked_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textColor="?attr/text_disabled_color"
+            tools:text="content://com.android.providers.downloads.documents/tree/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg/document/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg%2Fgtd.org"/>
+
+    </LinearLayout>
+
+</layout>

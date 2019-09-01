@@ -10,13 +10,13 @@ import com.orgzly.android.di.module.DataModule
 import com.orgzly.android.di.module.DatabaseModule
 import com.orgzly.android.widgets.ListWidgetService
 import dagger.Component
+import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
-import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [
-    AndroidSupportInjectionModule::class,
+    AndroidInjectionModule::class,
     ApplicationModule::class,
     AndroidModule::class,
     DatabaseModule::class,

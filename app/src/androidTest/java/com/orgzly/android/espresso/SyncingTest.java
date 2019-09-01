@@ -51,7 +51,7 @@ import static org.hamcrest.Matchers.not;
 public class SyncingTest extends OrgzlyTest {
     @Rule
     public ActivityTestRule activityRule =
-            new EspressoActivityTestRule<>(MainActivity.class, true, false);
+            new EspressoActivityTestRule<>(MainActivity.class);
 
     /**
      * Utility method for starting sync using drawer button.
@@ -759,7 +759,7 @@ public class SyncingTest extends OrgzlyTest {
         onBook(0).perform(longClick());
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.delete)).perform(click());
-        onView(withId(R.id.dialog_book_delete_checkbox)).perform(click());
+        onView(withId(R.id.delete_linked_checkbox)).perform(click());
         onView(withText(R.string.delete)).perform(click());
     }
 }

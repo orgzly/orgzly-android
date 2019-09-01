@@ -1,319 +1,322 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ViewFlipper
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_note_view_flipper"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
-        android:id="@+id/fragment_note_container"
+    <ViewFlipper
+        android:id="@+id/fragment_note_view_flipper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:fadeScrollbars="false"
-        android:scrollbarStyle="outsideOverlay">
+        android:layout_height="match_parent">
 
-        <!-- Entire note -->
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/fragment_note_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/screen_edge"
-            android:paddingBottom="@dimen/screen_edge"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:fadeScrollbars="false"
+            android:scrollbarStyle="outsideOverlay">
 
-            <!-- Breadcrumbs -->
-            <FrameLayout
-                android:id="@+id/fragment_note_breadcrumbs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/screen_edge"
-                android:layout_marginStart="@dimen/screen_edge"
-                android:layout_marginRight="@dimen/screen_edge"
-                android:layout_marginEnd="@dimen/screen_edge"
-                android:paddingLeft="4dp"
-                android:paddingStart="4dp"
-                android:paddingRight="4dp"
-                android:paddingEnd="4dp"
-                android:scrollbars="none"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/fragment_note_breadcrumbs_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center_vertical"
-                    android:linksClickable="true"
-                    android:textColor="?attr/text_secondary_color"
-                    android:textColorLink="?attr/text_secondary_color"
-
-                    android:lineSpacingMultiplier="1.2"
-                    tools:text="@string/breadcrumbs_sample" />
-            </FrameLayout>
-
-            <!-- Selectable notebook -->
-            <TextView
-                style="@style/NoteFragmentListItemSpinnerButton"
-                android:layout_marginLeft="@dimen/screen_edge"
-                android:layout_marginStart="@dimen/screen_edge"
-                android:layout_marginRight="@dimen/screen_edge"
-                android:layout_marginEnd="@dimen/screen_edge"
-                android:id="@+id/fragment_note_location_button"
-                tools:text="GTD"
-                android:visibility="gone"/>
-
-            <!-- Title -->
-            <EditText
-                android:id="@+id/fragment_note_title"
+            <!-- Entire note -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/screen_edge"
-                android:layout_marginStart="@dimen/screen_edge"
-                android:layout_marginRight="@dimen/screen_edge"
-                android:layout_marginEnd="@dimen/screen_edge"
-                android:layout_marginTop="@dimen/space_between_content_areas"
-                android:layout_marginBottom="@dimen/space_between_content_areas"
-                android:inputType="text|textCapSentences"
-                android:imeOptions="actionDone"
-                android:hint="@string/fragment_note_title_hint"
-                tools:text="@string/head_title_sample"
-                android:freezesText="true"/>
+                android:paddingTop="@dimen/screen_edge"
+                android:paddingBottom="@dimen/screen_edge"
+                android:orientation="vertical">
 
-            <!-- Metadata header -->
-            <LinearLayout
-                android:id="@+id/fragment_note_metadata_header"
-                style="@style/NoteFragmentFullWidthButton">
-
-                <ImageView
+                <!-- Breadcrumbs -->
+                <FrameLayout
+                    android:id="@+id/fragment_note_breadcrumbs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/screen_edge"
                     android:layout_marginStart="@dimen/screen_edge"
-                    android:src="?attr/ic_info_outline_24dp"
-                    android:alpha="?attr/oic_item_alpha" />
+                    android:layout_marginRight="@dimen/screen_edge"
+                    android:layout_marginEnd="@dimen/screen_edge"
+                    android:paddingLeft="4dp"
+                    android:paddingStart="4dp"
+                    android:paddingRight="4dp"
+                    android:paddingEnd="4dp"
+                    android:scrollbars="none"
+                    android:visibility="visible">
 
+                    <TextView
+                        android:id="@+id/fragment_note_breadcrumbs_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:linksClickable="true"
+                        android:textColor="?attr/text_secondary_color"
+                        android:textColorLink="?attr/text_secondary_color"
+
+                        android:lineSpacingMultiplier="1.2"
+                        tools:text="@string/breadcrumbs_sample" />
+                </FrameLayout>
+
+                <!-- Selectable notebook -->
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="2dp"
-                    android:paddingStart="2dp"
-                    android:paddingRight="2dp"
-                    android:paddingEnd="2dp"
-                    android:layout_marginLeft="@dimen/content_left_margin_from_icon"
-                    android:layout_marginStart="@dimen/content_left_margin_from_icon"
-                    android:text="@string/metadata"/>
-
-                <ImageView
-                    android:id="@+id/fragment_note_metadata_header_up_icon"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:padding="12dp"
-                    android:src="?attr/ic_keyboard_arrow_up_24dp"
-                    android:alpha="?attr/oic_item_alpha"/>
-
-                <ImageView
-                    android:id="@+id/fragment_note_metadata_header_down_icon"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:padding="12dp"
-                    android:src="?attr/ic_keyboard_arrow_down_24dp"
-                    android:alpha="?attr/oic_item_alpha"
+                    style="@style/NoteFragmentListItemSpinnerButton"
+                    android:layout_marginLeft="@dimen/screen_edge"
+                    android:layout_marginStart="@dimen/screen_edge"
+                    android:layout_marginRight="@dimen/screen_edge"
+                    android:layout_marginEnd="@dimen/screen_edge"
+                    android:id="@+id/fragment_note_location_button"
+                    tools:text="GTD"
                     android:visibility="gone"/>
 
-            </LinearLayout>
+                <!-- Title -->
+                <EditText
+                    android:id="@+id/fragment_note_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/screen_edge"
+                    android:layout_marginStart="@dimen/screen_edge"
+                    android:layout_marginRight="@dimen/screen_edge"
+                    android:layout_marginEnd="@dimen/screen_edge"
+                    android:layout_marginTop="@dimen/space_between_content_areas"
+                    android:layout_marginBottom="@dimen/space_between_content_areas"
+                    android:inputType="text|textCapSentences"
+                    android:imeOptions="actionDone"
+                    android:hint="@string/fragment_note_title_hint"
+                    tools:text="@string/head_title_sample"
+                    android:freezesText="true"/>
 
-            <!-- Metadata -->
-            <LinearLayout
-                android:id="@+id/fragment_note_metadata"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginRight="@dimen/screen_edge"
-                android:layout_marginEnd="@dimen/screen_edge">
-
-                <!-- Tags. -->
+                <!-- Metadata header -->
                 <LinearLayout
-                    android:id="@+id/fragment_note_tags_container"
-                    style="@style/NoteFragmentListItem">
+                    android:id="@+id/fragment_note_metadata_header"
+                    style="@style/NoteFragmentFullWidthButton">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="?attr/ic_label_outline_24dp"
+                        android:layout_marginLeft="@dimen/screen_edge"
+                        android:layout_marginStart="@dimen/screen_edge"
+                        android:src="?attr/ic_info_outline_24dp"
+                        android:alpha="?attr/oic_item_alpha" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="2dp"
+                        android:paddingStart="2dp"
+                        android:paddingRight="2dp"
+                        android:paddingEnd="2dp"
+                        android:layout_marginLeft="@dimen/content_left_margin_from_icon"
+                        android:layout_marginStart="@dimen/content_left_margin_from_icon"
+                        android:text="@string/metadata"/>
+
+                    <ImageView
+                        android:id="@+id/fragment_note_metadata_header_up_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:padding="12dp"
+                        android:src="?attr/ic_keyboard_arrow_up_24dp"
+                        android:alpha="?attr/oic_item_alpha"/>
+
+                    <ImageView
+                        android:id="@+id/fragment_note_metadata_header_down_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:padding="12dp"
+                        android:src="?attr/ic_keyboard_arrow_down_24dp"
                         android:alpha="?attr/oic_item_alpha"
-                        android:contentDescription="@string/tags"/>
+                        android:visibility="gone"/>
 
-                    <MultiAutoCompleteTextView
-                        android:id="@+id/fragment_note_tags"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
-                        android:layout_marginStart="@dimen/padded_content_left_margin_from_icon"
-                        android:inputType="text"
-                        android:hint="@string/fragment_note_tags_hint"
-                        android:completionThreshold="2"
-                        android:freezesText="true"
-                        android:textAppearance="?android:attr/textAppearanceSmall"/>
                 </LinearLayout>
 
-                <!-- State -->
+                <!-- Metadata -->
                 <LinearLayout
-                    android:id="@+id/fragment_note_state_container"
-                    style="@style/NoteFragmentListItem">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="?attr/ic_flag_24dp"
-                        android:alpha="?attr/oic_item_alpha"/>
-                    <TextView
-                        android:id="@+id/fragment_note_state_button"
-                        style="@style/NoteFragmentListItemSpinnerButton"
-                        android:hint="@string/state"
-                        tools:text="TODO"/>
-                </LinearLayout>
-
-                <!-- Priority -->
-                <LinearLayout
-                    android:id="@+id/fragment_note_priority_container"
-                    style="@style/NoteFragmentListItem">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="?attr/ic_star_border_24dp"
-                        android:alpha="?attr/oic_item_alpha"/>
-                    <TextView
-                        android:id="@+id/fragment_note_priority_button"
-                        style="@style/NoteFragmentListItemSpinnerButton"
-                        android:hint="@string/priority"
-                        tools:text="Priority A"/>
-                </LinearLayout>
-
-                <!-- Scheduled time -->
-                <LinearLayout
-                    android:id="@+id/fragment_note_scheduled_time_container"
-                    style="@style/NoteFragmentListItem">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="?attr/ic_today_24dp"
-                        android:alpha="?attr/oic_item_alpha"/>
-                    <TextView
-                        android:id="@+id/fragment_note_scheduled_button"
-                        style="@style/NoteFragmentListItemSpinnerButton"
-                        android:hint="@string/schedule_button_hint"/>
-                </LinearLayout>
-
-                <!-- Deadline time -->
-                <LinearLayout
-                    android:id="@+id/fragment_note_deadline_time_container"
-                    style="@style/NoteFragmentListItem">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="?attr/ic_alarm_24dp"
-                        android:alpha="?attr/oic_item_alpha"/>
-                    <TextView
-                        android:id="@+id/fragment_note_deadline_button"
-                        style="@style/NoteFragmentListItemSpinnerButton"
-                        android:hint="@string/deadline_button_hint"
-                        tools:text="@string/note_deadline_sample"/>
-                </LinearLayout>
-
-                <!-- Closed time -->
-                <LinearLayout
-                    android:id="@+id/fragment_note_closed_time_container"
-                    style="@style/NoteFragmentListItem">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="?attr/ic_outline_check_circle_24dp"
-                        android:alpha="?attr/oic_item_alpha"/>
-                    <TextView
-                        android:id="@+id/fragment_note_closed_edit_text"
-                        style="@style/NoteFragmentListItemSpinnerButton"
-                        android:hint="@string/closed_button_hint"/>
-                </LinearLayout>
-
-                <!-- List of properties -->
-                <LinearLayout
-                    android:id="@+id/fragment_note_properties_container"
+                    android:id="@+id/fragment_note_metadata"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginRight="@dimen/screen_edge"
+                    android:layout_marginEnd="@dimen/screen_edge">
 
-                    <include layout="@layout/fragment_note_property"/>
+                    <!-- Tags. -->
+                    <LinearLayout
+                        android:id="@+id/fragment_note_tags_container"
+                        style="@style/NoteFragmentListItem">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="?attr/ic_label_outline_24dp"
+                            android:alpha="?attr/oic_item_alpha"
+                            android:contentDescription="@string/tags"/>
+
+                        <MultiAutoCompleteTextView
+                            android:id="@+id/fragment_note_tags"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
+                            android:layout_marginStart="@dimen/padded_content_left_margin_from_icon"
+                            android:inputType="text"
+                            android:hint="@string/fragment_note_tags_hint"
+                            android:completionThreshold="2"
+                            android:freezesText="true"
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
+                    </LinearLayout>
+
+                    <!-- State -->
+                    <LinearLayout
+                        android:id="@+id/fragment_note_state_container"
+                        style="@style/NoteFragmentListItem">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="?attr/ic_flag_24dp"
+                            android:alpha="?attr/oic_item_alpha"/>
+                        <TextView
+                            android:id="@+id/fragment_note_state_button"
+                            style="@style/NoteFragmentListItemSpinnerButton"
+                            android:hint="@string/state"
+                            tools:text="TODO"/>
+                    </LinearLayout>
+
+                    <!-- Priority -->
+                    <LinearLayout
+                        android:id="@+id/fragment_note_priority_container"
+                        style="@style/NoteFragmentListItem">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="?attr/ic_star_border_24dp"
+                            android:alpha="?attr/oic_item_alpha"/>
+                        <TextView
+                            android:id="@+id/fragment_note_priority_button"
+                            style="@style/NoteFragmentListItemSpinnerButton"
+                            android:hint="@string/priority"
+                            tools:text="Priority A"/>
+                    </LinearLayout>
+
+                    <!-- Scheduled time -->
+                    <LinearLayout
+                        android:id="@+id/fragment_note_scheduled_time_container"
+                        style="@style/NoteFragmentListItem">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="?attr/ic_today_24dp"
+                            android:alpha="?attr/oic_item_alpha"/>
+                        <TextView
+                            android:id="@+id/fragment_note_scheduled_button"
+                            style="@style/NoteFragmentListItemSpinnerButton"
+                            android:hint="@string/schedule_button_hint"/>
+                    </LinearLayout>
+
+                    <!-- Deadline time -->
+                    <LinearLayout
+                        android:id="@+id/fragment_note_deadline_time_container"
+                        style="@style/NoteFragmentListItem">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="?attr/ic_alarm_24dp"
+                            android:alpha="?attr/oic_item_alpha"/>
+                        <TextView
+                            android:id="@+id/fragment_note_deadline_button"
+                            style="@style/NoteFragmentListItemSpinnerButton"
+                            android:hint="@string/deadline_button_hint"
+                            tools:text="@string/note_deadline_sample"/>
+                    </LinearLayout>
+
+                    <!-- Closed time -->
+                    <LinearLayout
+                        android:id="@+id/fragment_note_closed_time_container"
+                        style="@style/NoteFragmentListItem">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="?attr/ic_outline_check_circle_24dp"
+                            android:alpha="?attr/oic_item_alpha"/>
+                        <TextView
+                            android:id="@+id/fragment_note_closed_edit_text"
+                            style="@style/NoteFragmentListItemSpinnerButton"
+                            android:hint="@string/closed_button_hint"/>
+                    </LinearLayout>
+
+                    <!-- List of properties -->
+                    <LinearLayout
+                        android:id="@+id/fragment_note_properties_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <include layout="@layout/fragment_note_property"/>
+                    </LinearLayout>
+
                 </LinearLayout>
 
-            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/fragment_note_mode_toggle_button"
+                    style="@style/NoteFragmentFullWidthButton">
 
-            <LinearLayout
-                android:id="@+id/fragment_note_mode_toggle_button"
-                style="@style/NoteFragmentFullWidthButton">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/screen_edge"
+                        android:layout_marginStart="@dimen/screen_edge"
+                        android:src="?attr/ic_edit_24dp"
+                        android:alpha="?attr/oic_item_alpha"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/fragment_note_mode_text"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="2dp"
+                        android:paddingStart="2dp"
+                        android:paddingRight="2dp"
+                        android:paddingEnd="2dp"
+                        android:layout_marginLeft="@dimen/content_left_margin_from_icon"
+                        android:layout_marginStart="@dimen/content_left_margin_from_icon"
+                        android:text="@string/note_content_finish_editing" />
+                </LinearLayout>
+
+                <com.orgzly.android.ui.views.EditTextWithMarkup
+                    android:id="@+id/body_edit"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/screen_edge"
-                    android:layout_marginStart="@dimen/screen_edge"
-                    android:src="?attr/ic_edit_24dp"
-                    android:alpha="?attr/oic_item_alpha"/>
+                    android:layout_marginRight="@dimen/screen_edge"
+                    android:layout_marginTop="@dimen/ui_element_spacing"
+                    android:inputType="text|textCapSentences|textMultiLine"
+                    android:hint="@string/fragment_note_content_hint"
+                    android:gravity="start|top"
+                    android:freezesText="true"
+                    android:textSize="?attr/fragment_note_content_text_size"
+                    android:visibility="visible"  />
 
-                <TextView
-                    android:id="@+id/fragment_note_mode_text"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                <com.orgzly.android.ui.views.TextViewWithMarkup
+                    android:id="@+id/body_view"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="2dp"
-                    android:paddingStart="2dp"
-                    android:paddingRight="2dp"
-                    android:paddingEnd="2dp"
-                    android:layout_marginLeft="@dimen/content_left_margin_from_icon"
-                    android:layout_marginStart="@dimen/content_left_margin_from_icon"
-                    android:text="@string/note_content_finish_editing" />
+                    android:minHeight="48dp"
+                    android:layout_marginLeft="@dimen/screen_edge"
+                    android:layout_marginRight="@dimen/screen_edge"
+                    android:layout_marginTop="@dimen/ui_element_spacing"
+                    android:freezesText="true"
+                    android:gravity="start|top"
+                    android:textIsSelectable="true"
+                    android:textSize="?attr/fragment_note_content_text_size"
+                    android:hint="@string/fragment_note_content_hint"
+                    android:visibility="gone" />
             </LinearLayout>
+        </ScrollView>
 
-            <com.orgzly.android.ui.views.EditTextWithMarkup
-                android:id="@+id/body_edit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/screen_edge"
-                android:layout_marginRight="@dimen/screen_edge"
-                android:layout_marginTop="@dimen/ui_element_spacing"
-                android:inputType="text|textCapSentences|textMultiLine"
-                android:hint="@string/fragment_note_content_hint"
-                android:gravity="start|top"
-                android:freezesText="true"
-                android:textSize="?attr/fragment_note_content_text_size"
-                android:visibility="visible"  />
-
-            <com.orgzly.android.ui.views.TextViewWithMarkup
-                android:id="@+id/body_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginLeft="@dimen/screen_edge"
-                android:layout_marginRight="@dimen/screen_edge"
-                android:layout_marginTop="@dimen/ui_element_spacing"
-                android:freezesText="true"
-                android:gravity="start|top"
-                android:textIsSelectable="true"
-                android:textSize="?attr/fragment_note_content_text_size"
-                android:hint="@string/fragment_note_content_hint"
-                android:visibility="gone" />
-        </LinearLayout>
-    </ScrollView>
-
-    <TextView
-        style="@style/BigCenteredText"
-        android:text="@string/note_does_not_exist_anymore"/>
-</ViewFlipper>
+        <TextView
+            style="@style/BigCenteredText"
+            android:text="@string/note_does_not_exist_anymore"/>
+    </ViewFlipper>
+</layout>

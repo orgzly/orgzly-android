@@ -36,7 +36,8 @@
 
         <activity
             android:name="com.orgzly.android.ui.share.ShareActivity"
-            android:windowSoftInputMode="stateUnchanged">
+            android:windowSoftInputMode="stateUnchanged"
+            android:launchMode="singleInstance">
 
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
@@ -44,6 +45,12 @@
                 <category android:name="com.google.android.voicesearch.SELF_NOTE"/>
                 <action android:name="com.google.android.gm.action.AUTO_SEND"/>
                 <data android:mimeType="text/plain"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
             </intent-filter>
 
             <meta-data

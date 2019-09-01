@@ -1,16 +1,17 @@
 package com.orgzly.android.espresso;
 
+import androidx.test.espresso.ViewAction;
 import androidx.test.rule.ActivityTestRule;
+
+import android.os.SystemClock;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.db.entity.Note;
 import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -31,6 +32,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.clickClickableSpan;
 import static com.orgzly.android.espresso.EspressoUtils.clickSetting;
 import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
 import static com.orgzly.android.espresso.EspressoUtils.listViewItemCount;
@@ -58,7 +60,7 @@ import static org.hamcrest.Matchers.startsWith;
 @SuppressWarnings("unchecked")
 public class NoteFragmentTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
 
     @Before
     public void setUp() throws Exception {
@@ -309,12 +311,12 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_deadline_button)).perform(click());
 
         /* Set date. */
-        onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
+        onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
 
         /* Set time. */
-        onView(withId(R.id.dialog_timestamp_time_picker)).perform(scrollTo(), click());
+        onView(withId(R.id.time_picker_button)).perform(scrollTo(), click());
         onView(withClassName(equalTo(TimePicker.class.getName()))).perform(setTime(15, 15));
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
 
@@ -335,18 +337,18 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_deadline_button)).perform(click());
 
         /* Set date. */
-        onView(withId(R.id.dialog_timestamp_date_picker)).perform(click());
+        onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
 
         /* Set time. */
-        onView(withId(R.id.dialog_timestamp_time_picker)).perform(scrollTo(), click());
+        onView(withId(R.id.time_picker_button)).perform(scrollTo(), click());
         onView(withClassName(equalTo(TimePicker.class.getName()))).perform(setTime(9, 15));
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
 
         /* Set repeater. */
-        onView(withId(R.id.dialog_timestamp_repeater_check)).perform(scrollTo(), click());
-        onView(withId(R.id.dialog_timestamp_repeater_picker)).perform(scrollTo(), click());
+        onView(withId(R.id.repeater_used_checkbox)).perform(scrollTo(), click());
+        onView(withId(R.id.repeater_picker_button)).perform(scrollTo(), click());
         onView(withId(R.id.dialog_timestamp_repeater_value)).perform(setNumber(3));
         onView(withText(R.string.ok)).perform(click());
 
@@ -444,5 +446,41 @@ public class NoteFragmentTest extends OrgzlyTest {
         onView(withId(R.id.done)).perform(click());
         onNoteInBook(1, R.id.item_head_fold_button).perform(click());
         onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("3"))));
+    }
+
+    @Test
+    public void testBreadcrumbsFollowToBook() {
+        onNoteInBook(3).perform(click());
+
+        // onView(withId(R.id.fragment_note_breadcrumbs_text)).perform(clickClickableSpan("book-name"));
+        // SystemClock.sleep(5000);
+
+        onView(withId(R.id.fragment_note_breadcrumbs_text)).perform(click());
+
+        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testBreadcrumbsFollowToNote() {
+        onNoteInBook(3).perform(click());
+        onView(withId(R.id.fragment_note_breadcrumbs_text)).perform(clickClickableSpan("Note #2."));
+        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note #2.")));
+    }
+
+    @Test
+    public void testBreadcrumbsPromptWhenCreatingNewNote() {
+        onNoteInBook(1).perform(longClick());
+        onView(withId(R.id.bottom_action_bar_new)).perform(click());
+        onView(withText(R.string.new_under)).perform(click());
+        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("1.1"));
+        onView(withId(R.id.fragment_note_breadcrumbs_text)).perform(clickClickableSpan("Note #1."));
+
+        // Dialog is displayed
+        onView(withText(R.string.discard_or_save_changes)).check(matches(isDisplayed()));
+
+        onView(withText(R.string.cancel)).perform(click());
+
+        // Title remains the same
+        onView(withId(R.id.fragment_note_title)).check(matches(withText("1.1")));
     }
 }

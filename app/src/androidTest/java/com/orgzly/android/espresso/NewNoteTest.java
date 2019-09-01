@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.endsWith;
 @SuppressWarnings("unchecked")
 public class NewNoteTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
 
     @Test
     public void testNewNoteInEmptyNotebook() {

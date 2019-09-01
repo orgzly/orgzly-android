@@ -45,7 +45,6 @@ import com.orgzly.android.ui.notes.book.BookPrefaceFragment;
 import com.orgzly.android.ui.books.BooksFragment;
 import com.orgzly.android.ui.savedsearch.SavedSearchFragment;
 import com.orgzly.android.ui.note.NoteFragment;
-import com.orgzly.android.ui.note.NotePayload;
 import com.orgzly.android.ui.notes.book.BookFragment;
 import com.orgzly.android.ui.notifications.Notifications;
 import com.orgzly.android.ui.repos.ReposActivity;
@@ -69,7 +68,6 @@ import com.orgzly.android.usecase.SavedSearchImport;
 import com.orgzly.android.usecase.SavedSearchMoveDown;
 import com.orgzly.android.usecase.SavedSearchMoveUp;
 import com.orgzly.android.usecase.SavedSearchUpdate;
-import com.orgzly.android.usecase.NoteCreate;
 import com.orgzly.android.usecase.NoteCut;
 import com.orgzly.android.usecase.NoteDelete;
 import com.orgzly.android.usecase.NoteDemote;
@@ -77,7 +75,6 @@ import com.orgzly.android.usecase.NoteFindWithProperty;
 import com.orgzly.android.usecase.NoteMove;
 import com.orgzly.android.usecase.NotePaste;
 import com.orgzly.android.usecase.NotePromote;
-import com.orgzly.android.usecase.NoteUpdate;
 import com.orgzly.android.usecase.NoteUpdateDeadlineTime;
 import com.orgzly.android.usecase.NoteUpdateScheduledTime;
 import com.orgzly.android.usecase.NoteUpdateState;
@@ -536,13 +533,12 @@ public class MainActivity extends CommonActivity
             }
         }
 
-        /* Handle back press when editing note - check for changes */
+        // Handle back press when editing note in NoteFragment. TODO: Use OnBackPressedCallback
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(NoteFragment.FRAGMENT_TAG);
         if (fragment instanceof NoteFragment && fragment.isVisible()) {
             NoteFragment noteFragment = (NoteFragment) fragment;
-            if (noteFragment.isAskingForConfirmationForModifiedNote()) {
-                return;
-            }
+            noteFragment.userCancel();
+            return;
         }
 
         super.onBackPressed();
@@ -746,24 +742,34 @@ public class MainActivity extends CommonActivity
         DisplayManager.displayNewNote(getSupportFragmentManager(), target);
     }
 
-    /* Save note. */
     @Override
-    public void onNoteCreateRequest(@NotNull NotePayload notePayload, NotePlace notePlace) {
+    public void onNoteCreated(Note note) {
         finishActionMode();
-
         popBackStackAndCloseKeyboard();
 
-        mSyncFragment.run(new NoteCreate(notePayload, notePlace));
+        // Display Snackbar with an action (create new note below just created one)
+        View view = findViewById(R.id.main_content);
+        if (view != null) {
+            showSnackbar(Snackbar
+                    .make(view, R.string.message_note_created, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.new_below, v -> {
+                        NotePlace notePlace = new NotePlace(
+                                note.getPosition().getBookId(),
+                                note.getId(),
+                                Place.BELOW);
+
+                        DisplayManager.displayNewNote(getSupportFragmentManager(), notePlace);
+                    }));
+        }
     }
 
     @Override
-    public void onNoteUpdateRequest(@NotNull NotePayload notePayload, long noteId) {
+    public void onNoteUpdated(Note note) {
         popBackStackAndCloseKeyboard();
-        mSyncFragment.run(new NoteUpdate(noteId, notePayload));
     }
 
     @Override
-    public void onNoteCancelRequest() {
+    public void onNoteCanceled() {
         popBackStackAndCloseKeyboard();
     }
 
@@ -1122,6 +1128,11 @@ public class MainActivity extends CommonActivity
         startActivity(new Intent(MainActivity.this, SettingsActivity.class));
     }
 
+    public void popBackStackAndCloseKeyboard() {
+        getSupportFragmentManager().popBackStack();
+        ActivityUtils.closeSoftKeyboard(this);
+    }
+
     /**
      * User action succeeded.
      */
@@ -1129,26 +1140,6 @@ public class MainActivity extends CommonActivity
     public void onSuccess(UseCase action, UseCaseResult result) {
         if (action instanceof BookExport) {
             showSnackbar(getString(R.string.book_exported, (File) result.getUserData()));
-
-        } else if (action instanceof NoteCreate) {
-            Note note = (Note) result.getUserData();
-
-            /*
-             * Display Snackbar with an action - create new note below just created one.
-             */
-            View view = findViewById(R.id.main_content);
-            if (view != null) {
-                showSnackbar(Snackbar
-                        .make(view, R.string.message_note_created, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.new_below, v -> {
-                            NotePlace notePlace = new NotePlace(
-                                    note.getPosition().getBookId(),
-                                    note.getId(),
-                                    Place.BELOW);
-
-                            DisplayManager.displayNewNote(getSupportFragmentManager(), notePlace);
-                        }));
-            }
 
         } else if (action instanceof NoteCut) {
             NotesClipboard clipboard = (NotesClipboard) result.getUserData();
@@ -1201,12 +1192,6 @@ public class MainActivity extends CommonActivity
         if (action instanceof BookExport) {
             showSnackbar(getString(
                     R.string.failed_exporting_book, throwable.getLocalizedMessage()));
-
-        } else if (action instanceof NoteCreate) {
-            showSnackbar(R.string.message_failed_creating_note);
-
-        } else if (action instanceof NoteUpdate) {
-            showSnackbar(R.string.message_failed_updating_note);
 
         } else {
             if (throwable.getCause() != null) {

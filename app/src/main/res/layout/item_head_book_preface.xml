@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_book_header_container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center_vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.orgzly.android.ui.views.TextViewWithMarkup
-        android:id="@+id/fragment_book_header_text"
-        style="@style/ListViewItem"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        tools:hint="@string/book_preface_hint"
-        tools:text="@string/book_preface_sample"
-        android:textSize="?attr/item_head_title_text_size"/>
+        android:orientation="vertical"
+        android:gravity="center_vertical">
 
-</LinearLayout>
+        <com.orgzly.android.ui.views.TextViewWithMarkup
+            android:id="@+id/fragment_book_header_text"
+            style="@style/ListViewItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            tools:hint="@string/book_preface_hint"
+            tools:text="@string/book_preface_sample"
+            android:textSize="?attr/item_head_title_text_size"/>
+
+    </LinearLayout>
+
+</layout>

@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.orgzly.BuildConfig
@@ -22,6 +23,7 @@ import com.orgzly.android.ui.repo.DirectoryRepoActivity
 import com.orgzly.android.ui.repo.DropboxRepoActivity
 import com.orgzly.android.ui.repo.WebdavRepoActivity
 import com.orgzly.android.ui.repo.git.GitRepoActivity
+import com.orgzly.databinding.ActivityReposBinding
 import kotlinx.android.synthetic.main.activity_repos.*
 import javax.inject.Inject
 
@@ -29,6 +31,7 @@ import javax.inject.Inject
  * List of user-configured repositories.
  */
 class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, ActivityCompat.OnRequestPermissionsResultCallback  {
+    private lateinit var binding: ActivityReposBinding
 
     @Inject
     lateinit var repoFactory: RepoFactory
@@ -40,7 +43,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_repos)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_repos)
 
         setupActionBar(R.string.repositories)
 
@@ -60,7 +63,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             listAdapter.addAll(repos)
             listAdapter.notifyDataSetChanged() // FIXME
 
-            activity_repos_flipper.displayedChild =
+            binding.activityReposFlipper.displayedChild =
                     if (repos != null && repos.isNotEmpty()) 0 else 1
 
             invalidateOptionsMenu()
@@ -78,9 +81,11 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             }
         })
 
-        list.onItemClickListener = this
-        list.adapter = listAdapter
-        registerForContextMenu(list)
+        binding.list.let {
+            it.onItemClickListener = this
+            it.adapter = listAdapter
+            registerForContextMenu(it)
+        }
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -88,7 +93,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
     }
 
     private fun setupNoReposButtons() {
-        activity_repos_dropbox.let { button ->
+        binding.activityReposDropbox.let { button ->
             if (BuildConfig.IS_DROPBOX_ENABLED) {
                 button.setOnClickListener {
                     startRepoActivity(R.id.repos_options_menu_item_new_dropbox)
@@ -98,7 +103,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             }
         }
 
-        activity_repos_git.let { button ->
+        binding.activityReposGit.let { button ->
             if (BuildConfig.IS_GIT_ENABLED) {
                 button.setOnClickListener {
                     startRepoActivity(R.id.repos_options_menu_item_new_git)
@@ -108,11 +113,11 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             }
         }
 
-        activity_repos_webdav.setOnClickListener {
+        binding.activityReposWebdav.setOnClickListener {
             startRepoActivity(R.id.repos_options_menu_item_new_webdav)
         }
 
-        activity_repos_directory.setOnClickListener {
+        binding.activityReposDirectory.setOnClickListener {
             startRepoActivity(R.id.repos_options_menu_item_new_directory)
         }
     }

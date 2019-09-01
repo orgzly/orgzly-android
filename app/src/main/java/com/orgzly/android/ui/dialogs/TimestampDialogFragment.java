@@ -1,23 +1,23 @@
 package com.orgzly.android.ui.dialogs;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
+
+import androidx.fragment.app.DialogFragment;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.UserTimeFormatter;
+import com.orgzly.databinding.DialogTimestampBinding;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgDelay;
 import com.orgzly.org.datetime.OrgRepeater;
@@ -64,13 +64,7 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
     private Context mContext;
     private UserTimeFormatter mUserTimeFormatter;
 
-    private Button mDatePicker;
-
-    private Button mTimePicker;
-    private CompoundButton mIsTimeUsed;
-
-    private Button mRepeaterPicker;
-    private CompoundButton mIsRepeaterUsed;
+    private DialogTimestampBinding binding;
 
     private OrgDelay delay;
 
@@ -134,12 +128,12 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
         state.putInt(ARG_MONTH, mCurrentMonth);
         state.putInt(ARG_DAY, mCurrentDay);
 
-        state.putBoolean(ARG_USE_TIME, mIsTimeUsed.isChecked());
+        state.putBoolean(ARG_USE_TIME, binding.timeUsedCheckbox.isChecked());
         state.putInt(ARG_HOUR, mCurrentHour);
         state.putInt(ARG_MINUTE, mCurrentMinute);
 
-        state.putString(ARG_REPEATER, mRepeaterPicker.getText().toString());
-        state.putBoolean(ARG_USE_REPEAT, mIsRepeaterUsed.isChecked());
+        state.putString(ARG_REPEATER, binding.repeaterPickerButton.getText().toString());
+        state.putBoolean(ARG_USE_REPEAT, binding.repeaterUsedCheckbox.isChecked());
 
         if (delay != null) {
             state.putString(ARG_DELAY, delay.toString());
@@ -193,24 +187,14 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
             mNoteIds.add(e);
         }
 
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.dialog_timestamp, null, false);
-
-
-        mDatePicker = (Button) view.findViewById(R.id.dialog_timestamp_date_picker);
-
-        mTimePicker = (Button) view.findViewById(R.id.dialog_timestamp_time_picker);
-        mIsTimeUsed = (CompoundButton) view.findViewById(R.id.dialog_timestamp_time_check);
-
-        mRepeaterPicker = (Button) view.findViewById(R.id.dialog_timestamp_repeater_picker);
-        mIsRepeaterUsed = (CompoundButton) view.findViewById(R.id.dialog_timestamp_repeater_check);
+        binding = DialogTimestampBinding.inflate(LayoutInflater.from(getActivity()));
 
         /* Set before toggle buttons are setup, as they trigger dialog title update .*/
         setValues(OrgDateTime.parseOrNull(getArguments().getString(ARG_TIME)));
 
         mDialog = new AlertDialog.Builder(mContext)
                 .setTitle(getArguments().getInt(ARG_TITLE))
-                .setView(view)
+                .setView(binding.getRoot())
                 .setPositiveButton(R.string.set, (dialog, which) -> {
                     if (mActivityListener != null) {
                         OrgDateTime time = getCurrentOrgTime();
@@ -229,22 +213,22 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
                 })
                 .create();
 
-        mDatePicker.setOnClickListener(this);
-        mTimePicker.setOnClickListener(this);
-        mRepeaterPicker.setOnClickListener(this);
+        binding.datePickerButton.setOnClickListener(this);
+        binding.timePickerButton.setOnClickListener(this);
+        binding.repeaterPickerButton.setOnClickListener(this);
 
         /*
          * These callbacks are called not only on user press, but during initialization as well.
          * It's important that they are *after* dialog has been created.
          */
-        mIsTimeUsed.setOnCheckedChangeListener(this);
-        mIsRepeaterUsed.setOnCheckedChangeListener(this);
+        binding.timeUsedCheckbox.setOnCheckedChangeListener(this);
+        binding.repeaterUsedCheckbox.setOnCheckedChangeListener(this);
 
-        view.findViewById(R.id.dialog_timestamp_today_shortcut).setOnClickListener(this);
-        view.findViewById(R.id.dialog_timestamp_tomorrow_shortcut).setOnClickListener(this);
-        view.findViewById(R.id.dialog_timestamp_next_week_shortcut).setOnClickListener(this);
-        view.findViewById(R.id.dialog_timestamp_time_icon).setOnClickListener(this);
-        view.findViewById(R.id.dialog_timestamp_repeater_icon).setOnClickListener(this);
+        binding.todayButton.setOnClickListener(this);
+        binding.tomorrowButton.setOnClickListener(this);
+        binding.nextWeekButton.setOnClickListener(this);
+        binding.timeIcon.setOnClickListener(this);
+        binding.repeaterIcon.setOnClickListener(this);
 
         restoreState(savedInstanceState);
 
@@ -259,12 +243,12 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
             mCurrentMonth = savedInstanceState.getInt(ARG_MONTH);
             mCurrentDay = savedInstanceState.getInt(ARG_DAY);
 
-            mIsTimeUsed.setChecked(savedInstanceState.getBoolean(ARG_USE_TIME));
+            binding.timeUsedCheckbox.setChecked(savedInstanceState.getBoolean(ARG_USE_TIME));
             mCurrentHour = savedInstanceState.getInt(ARG_HOUR);
             mCurrentMinute = savedInstanceState.getInt(ARG_MINUTE);
 
-            mRepeaterPicker.setText(savedInstanceState.getString(ARG_REPEATER));
-            mIsRepeaterUsed.setChecked(savedInstanceState.getBoolean(ARG_USE_REPEAT));
+            binding.repeaterPickerButton.setText(savedInstanceState.getString(ARG_REPEATER));
+            binding.repeaterUsedCheckbox.setChecked(savedInstanceState.getBoolean(ARG_USE_REPEAT));
 
             if (savedInstanceState.getString(ARG_DELAY) != null) {
                 delay = OrgDelay.parse(savedInstanceState.getString(ARG_DELAY));
@@ -296,7 +280,7 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
         mCurrentMonth = cal.get(Calendar.MONTH);
         mCurrentDay = cal.get(Calendar.DAY_OF_MONTH);
 
-        mIsTimeUsed.setChecked(time != null && time.hasTime());
+        binding.timeUsedCheckbox.setChecked(time != null && time.hasTime());
 
         /* If there is no time part, set it to default's. */
         if (time != null && !time.hasTime()) {
@@ -311,10 +295,10 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
         mCurrentEndTimeMinute = cal.get(Calendar.MINUTE);
 
         if (time != null) {
-            mIsRepeaterUsed.setChecked(time.hasRepeater());
+            binding.repeaterUsedCheckbox.setChecked(time.hasRepeater());
 
             if (time.hasRepeater()) {
-                mRepeaterPicker.setText(time.getRepeater().toString());
+                binding.repeaterPickerButton.setText(time.getRepeater().toString());
             }
 
             if (time.hasDelay()) {
@@ -328,7 +312,7 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
         Calendar cal;
 
         switch (v.getId()) {
-            case R.id.dialog_timestamp_date_picker:
+            case R.id.date_picker_button:
                 pickerDialog = new DatePickerDialog(mContext, (view, year, monthOfYear, dayOfMonth) -> {
                     mCurrentYear = year;
                     mCurrentMonth = monthOfYear;
@@ -340,13 +324,13 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
                 pickerDialog.show();
                 break;
 
-            case R.id.dialog_timestamp_time_picker:
-            case R.id.dialog_timestamp_time_icon:
+            case R.id.time_picker_button:
+            case R.id.time_icon:
                 pickerDialog = new TimePickerDialog(mContext, (view, hourOfDay, minute) -> {
                     mCurrentHour = hourOfDay;
                     mCurrentMinute = minute;
 
-                    mIsTimeUsed.setChecked(true);
+                    binding.timeUsedCheckbox.setChecked(true);
 
                     setViewsFromCurrentValues();
                 }, mCurrentHour, mCurrentMinute, DateFormat.is24HourFormat(getContext()));
@@ -354,20 +338,20 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
                 pickerDialog.show();
                 break;
 
-            case R.id.dialog_timestamp_repeater_picker:
-            case R.id.dialog_timestamp_repeater_icon:
+            case R.id.repeater_picker_button:
+            case R.id.repeater_icon:
                 pickerDialog = new RepeaterPickerDialog(mContext, repeater -> {
-                    mRepeaterPicker.setText(repeater.toString());
-                    mIsRepeaterUsed.setChecked(true);
+                    binding.repeaterPickerButton.setText(repeater.toString());
+                    binding.repeaterUsedCheckbox.setChecked(true);
 
                     setViewsFromCurrentValues();
-                }, mRepeaterPicker.getText().toString());
+                }, binding.repeaterPickerButton.getText().toString());
                 pickerDialog.setOnDismissListener(dialog -> pickerDialog = null);
                 pickerDialog.show();
                 break;
 
 
-            case R.id.dialog_timestamp_today_shortcut:
+            case R.id.today_button:
                 cal = Calendar.getInstance();
 
                 mCurrentYear = cal.get(Calendar.YEAR);
@@ -377,7 +361,7 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
                 setViewsFromCurrentValues();
                 break;
 
-            case R.id.dialog_timestamp_tomorrow_shortcut:
+            case R.id.tomorrow_button:
                 cal = Calendar.getInstance();
                 cal.add(Calendar.DATE, 1);
 
@@ -388,7 +372,7 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
                 setViewsFromCurrentValues();
                 break;
 
-            case R.id.dialog_timestamp_next_week_shortcut:
+            case R.id.next_week_button:
                 cal = Calendar.getInstance();
                 cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
                 cal.add(Calendar.DATE, 7);
@@ -405,11 +389,11 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
-            case R.id.dialog_timestamp_time_check:
+            case R.id.time_used_checkbox:
                 setViewsFromCurrentValues();
                 break;
 
-            case R.id.dialog_timestamp_repeater_check:
+            case R.id.repeater_used_checkbox:
                 setViewsFromCurrentValues();
                 break;
         }
@@ -423,13 +407,13 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
                 .setYear(mCurrentYear)
                 .setMonth(mCurrentMonth)
 
-                .setHasTime(mIsTimeUsed.isChecked())
+                .setHasTime(binding.timeUsedCheckbox.isChecked())
                 .setDay(mCurrentDay)
                 .setHour(mCurrentHour)
                 .setMinute(mCurrentMinute);
 
-        if (mIsRepeaterUsed.isChecked()) {
-            OrgRepeater repeater = OrgRepeater.parse(mRepeaterPicker.getText().toString());
+        if (binding.repeaterUsedCheckbox.isChecked()) {
+            OrgRepeater repeater = OrgRepeater.parse(binding.repeaterPickerButton.getText().toString());
             builder.setHasRepeater(true);
             builder.setRepeater(repeater);
         }
@@ -450,11 +434,11 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
         if (mDialog != null) {
             OrgDateTime time = getCurrentOrgTime();
 
-            mDatePicker.setText(mUserTimeFormatter.formatDate(time));
-            mTimePicker.setText(mUserTimeFormatter.formatTime(time));
+            binding.datePickerButton.setText(mUserTimeFormatter.formatDate(time));
+            binding.timePickerButton.setText(mUserTimeFormatter.formatTime(time));
 
             if (time.hasRepeater()) {
-                mRepeaterPicker.setText(mUserTimeFormatter.formatRepeater(time));
+                binding.repeaterPickerButton.setText(mUserTimeFormatter.formatRepeater(time));
             }
 
             // mEndTimePicker.setText(mOrgTimeFormatter.formatEndTime(time));

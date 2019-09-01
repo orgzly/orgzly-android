@@ -18,8 +18,9 @@ import com.orgzly.android.ui.Selection
 import com.orgzly.android.ui.notes.NoteItemViewBinder
 import com.orgzly.android.ui.notes.NoteItemViewHolder
 import com.orgzly.android.ui.notes.quickbar.QuickBars
-import com.orgzly.android.ui.views.TextViewWithMarkup
 import com.orgzly.android.util.LogUtils
+import com.orgzly.databinding.ItemHeadBinding
+import com.orgzly.databinding.ItemHeadBookPrefaceBinding
 
 class BookAdapter(
         private val context: Context,
@@ -47,11 +48,11 @@ class BookAdapter(
 
     inner class FoldedViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
-    inner class PrefaceViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val preface: TextViewWithMarkup = view.findViewById(R.id.fragment_book_header_text)
+    inner class PrefaceViewHolder(val binding: ItemHeadBookPrefaceBinding) :
+            RecyclerView.ViewHolder(binding.root) {
 
         init {
-            view.setOnClickListener {
+            binding.root.setOnClickListener {
                 clickListener.onPrefaceClick()
             }
         }
@@ -74,10 +75,9 @@ class BookAdapter(
 
         return when (viewType) {
             R.layout.item_head_book_preface -> {
-                val layout = LayoutInflater.from(context)
-                        .inflate(R.layout.item_head_book_preface, parent, false)
-
-                PrefaceViewHolder(layout)
+                val binding = ItemHeadBookPrefaceBinding.inflate(
+                        LayoutInflater.from(context), parent, false)
+                PrefaceViewHolder(binding)
             }
 
             HIDDEN_ITEM_TYPE -> {
@@ -85,10 +85,8 @@ class BookAdapter(
             }
 
             else -> {
-                val layout = LayoutInflater.from(context)
-                        .inflate(R.layout.item_head, parent, false)
-
-                NoteItemViewHolder(layout, noteViewHolderListener)
+                val binding = ItemHeadBinding.inflate(LayoutInflater.from(context), parent, false)
+                NoteItemViewHolder(binding, noteViewHolderListener)
             }
         }
     }
@@ -99,26 +97,26 @@ class BookAdapter(
                 val holder = h as PrefaceViewHolder
 
                 if (!isPrefaceDisplayed()) {
-                    holder.preface.visibility = View.GONE
+                    holder.binding.fragmentBookHeaderText.visibility = View.GONE
 
 
                 } else {
                     if (context.getString(R.string.pref_value_preface_in_book_few_lines) ==
                             AppPreferences.prefaceDisplay(context)) {
 
-                        holder.preface.maxLines = 3
-                        holder.preface.ellipsize = TextUtils. TruncateAt.END
+                        holder.binding.fragmentBookHeaderText.maxLines = 3
+                        holder.binding.fragmentBookHeaderText.ellipsize = TextUtils. TruncateAt.END
 
                     } else {
-                        holder.preface.maxLines = Integer.MAX_VALUE
-                        holder.preface.ellipsize = null
+                        holder.binding.fragmentBookHeaderText.maxLines = Integer.MAX_VALUE
+                        holder.binding.fragmentBookHeaderText.ellipsize = null
                     }
 
                     currentPreface?.let {
-                        holder.preface.setRawText(it)
+                        holder.binding.fragmentBookHeaderText.setRawText(it)
                     }
 
-                    holder.preface.visibility = View.VISIBLE
+                    holder.binding.fragmentBookHeaderText.visibility = View.VISIBLE
                 }
             }
 

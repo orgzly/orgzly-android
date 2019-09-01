@@ -7,12 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import com.orgzly.R
 import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.Selection
+import com.orgzly.databinding.ItemListWidgetSelectionBinding
 
 class ListWidgetSelectionAdapter(
         private val clickListener: OnViewHolderClickListener<SavedSearch>
@@ -20,19 +19,14 @@ class ListWidgetSelectionAdapter(
 
     private val adapterSelection: Selection = Selection()
 
-    inner class ViewHolder(view: View) :
-            RecyclerView.ViewHolder(view),
+    inner class ViewHolder(val binding: ItemListWidgetSelectionBinding) :
+            RecyclerView.ViewHolder(binding.root),
             View.OnClickListener,
             View.OnLongClickListener {
 
-        val container: View = view.findViewById(R.id.item_list_widget_selection_container)
-
-        val name: TextView = view.findViewById(R.id.item_list_widget_selection_name)
-        val query: TextView = view.findViewById(R.id.item_list_widget_selection_description)
-
         init {
-            view.setOnClickListener(this)
-            view.setOnLongClickListener(this)
+            binding.root.setOnClickListener(this)
+            binding.root.setOnLongClickListener(this)
         }
 
         override fun onClick(view: View) {
@@ -59,16 +53,14 @@ class ListWidgetSelectionAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layout = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_list_widget_selection, parent, false)
-
-        return ViewHolder(layout)
+        return ViewHolder(ItemListWidgetSelectionBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val savedSearch = getItem(position)
 
-        with(holder) {
+        with(holder.binding) {
             name.text = savedSearch.name
             query.text = savedSearch.query
         }

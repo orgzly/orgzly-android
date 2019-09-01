@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_saved_search_container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    style="@style/ListViewItem"
-    android:gravity="center"
-    android:background="?attr/item_bg"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/item_list_widget_selection_name"
+    <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:textSize="?attr/font_medium"
-        android:textColor="?attr/text_primary_color"
-        tools:text="@string/saved_search_name_sample"/>
+        style="@style/ListViewItem"
+        android:gravity="center"
+        android:background="?attr/item_bg"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/item_list_widget_selection_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="?attr/text_secondary_color"
-        tools:text="@string/saved_search_query_sample_long"/>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="?attr/font_medium"
+            android:textColor="?attr/text_primary_color"
+            tools:text="@string/saved_search_name_sample"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/query"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/text_secondary_color"
+            tools:text="@string/saved_search_query_sample_long"/>
+
+    </LinearLayout>
+
+</layout>

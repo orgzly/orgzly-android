@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_book_preface_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/screen_edge"
-    android:clipToPadding="false"
-    android:fadeScrollbars="false"
-    android:scrollbarStyle="outsideOverlay">
-
-    <LinearLayout
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView
+        android:id="@+id/fragment_book_preface_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:padding="@dimen/screen_edge"
+        android:clipToPadding="false"
+        android:fadeScrollbars="false"
+        android:scrollbarStyle="outsideOverlay">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/book_preface_hint" />
+            android:orientation="vertical">
 
-        <com.orgzly.android.ui.views.EditTextWithMarkup
-            android:id="@+id/fragment_book_preface_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text|textCapSentences|textMultiLine" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/book_preface_hint" />
 
-    </LinearLayout>
+            <com.orgzly.android.ui.views.EditTextWithMarkup
+                android:id="@+id/fragment_book_preface_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textCapSentences|textMultiLine" />
 
-</ScrollView>
+        </LinearLayout>
+
+    </ScrollView>
+</layout>

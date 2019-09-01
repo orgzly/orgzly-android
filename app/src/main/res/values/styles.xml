@@ -567,23 +567,8 @@
         <item name="android:layout_marginLeft">4dp</item>
     </style>
 
-    <style name="RecyclerViewNoteList">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-
-        <item name="android:paddingTop">4dp</item>
-        <item name="android:paddingBottom">4dp</item>
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:paddingRight">0dp</item>
-
-        <!-- Crash on API 16 - what's the minimum version? -->
-        <!--
-        <item name="fastScrollEnabled">true</item>
-        <item name="fastScrollHorizontalThumbDrawable">@drawable/thumb_drawable</item>
-        <item name="fastScrollHorizontalTrackDrawable">@drawable/line_drawable</item>
-        <item name="fastScrollVerticalThumbDrawable">@drawable/thumb_drawable</item>
-        <item name="fastScrollVerticalTrackDrawable">@drawable/line_drawable</item>
-        -->
+    <style name="FastScroll">
+        <!-- Defined in values-v21/style.xml to be able to use attributes in drawables. -->
     </style>
 
     <style name="ListViewItem">

@@ -24,7 +24,7 @@ class QuickBar(val context: Context, val inBook: Boolean) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "$state - bind -> id:${holder.itemId}")
 
         if (state.id == holder.itemId) {
-            if (holder.actionBarLeft.childCount == 0 && holder.actionBarRight.childCount == 0) {
+            if (holder.binding.quickBar.quickBarLeft.childCount == 0 && holder.binding.quickBar.quickBarRight.childCount == 0) {
                 val direction = state.direction
                 val listener = state.listener
 
@@ -33,19 +33,19 @@ class QuickBar(val context: Context, val inBook: Boolean) {
                 }
             }
 
-            holder.actionBar.visibility = View.VISIBLE
+            holder.binding.quickBar.quickBarFlipper.visibility = View.VISIBLE
 
             state.direction?.let {
-                animator.removeFlipperAnimation(holder.actionBar)
+                animator.removeFlipperAnimation(holder.binding.quickBar.quickBarFlipper)
 
-                flipForDirection(holder.actionBar, it)
+                flipForDirection(holder.binding.quickBar.quickBarFlipper, it)
             }
 
             // Update view as user scrolls
-            state = state.copy(layout = holder.actionBar)
+            state = state.copy(layout = holder.binding.quickBar.quickBarFlipper)
 
         } else {
-            holder.actionBar.visibility = View.GONE
+            holder.binding.quickBar.quickBarFlipper.visibility = View.GONE
         }
     }
 
@@ -71,19 +71,19 @@ class QuickBar(val context: Context, val inBook: Boolean) {
     fun open(holder: NoteItemViewHolder, direction: Int, listener: QuickBarListener) {
         inflate(holder, listener, direction)
 
-        animator.removeFlipperAnimation(holder.actionBar)
+        animator.removeFlipperAnimation(holder.binding.quickBar.quickBarFlipper)
 
-        animator.open(holder.actionBar)
+        animator.open(holder.binding.quickBar.quickBarFlipper)
 
-        state = State(direction, holder.itemId, holder.actionBar, listener)
+        state = State(direction, holder.itemId, holder.binding.quickBar.quickBarFlipper, listener)
     }
 
     private fun change(holder: NoteItemViewHolder, direction: Int, listener: QuickBarListener) {
-        animator.setFlipperAnimation(holder.actionBar, direction)
+        animator.setFlipperAnimation(holder.binding.quickBar.quickBarFlipper, direction)
 
-        flipForDirection(holder.actionBar, direction)
+        flipForDirection(holder.binding.quickBar.quickBarFlipper, direction)
 
-        state = State(direction, holder.itemId, holder.actionBar, listener)
+        state = State(direction, holder.itemId, holder.binding.quickBar.quickBarFlipper, listener)
     }
 
     private fun inflate(holder: NoteItemViewHolder, listener: QuickBarListener, direction: Int) {
@@ -110,13 +110,13 @@ class QuickBar(val context: Context, val inBook: Boolean) {
         }
 
         Buttons.fromPreferences(context).let {
-            doInflate(holder.actionBarLeft, if (inBook) it.leftSwipeInBook else it.leftSwipeInQuery)
-            doInflate(holder.actionBarRight, it.rightSwipeInBook)
+            doInflate(holder.binding.quickBar.quickBarLeft, if (inBook) it.leftSwipeInBook else it.leftSwipeInQuery)
+            doInflate(holder.binding.quickBar.quickBarRight, it.rightSwipeInBook)
         }
 
-        animator.removeFlipperAnimation(holder.actionBar)
+        animator.removeFlipperAnimation(holder.binding.quickBar.quickBarFlipper)
 
-        flipForDirection(holder.actionBar, direction)
+        flipForDirection(holder.binding.quickBar.quickBarFlipper, direction)
 
         typedArray.recycle()
     }

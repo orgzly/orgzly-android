@@ -4,11 +4,16 @@ import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
-import android.text.*
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.*
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,27 +21,25 @@ import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.BookUtils
 import com.orgzly.android.data.DataRepository
-import com.orgzly.android.data.mappers.OrgMapper
 import com.orgzly.android.db.entity.BookView
+import com.orgzly.android.db.entity.Note
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.*
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
+import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.notes.book.BookFragment
 import com.orgzly.android.ui.share.ShareActivity
 import com.orgzly.android.ui.util.ActivityUtils
-import com.orgzly.android.ui.views.TextViewWithMarkup
 import com.orgzly.android.util.LogUtils
-import com.orgzly.android.util.MiscUtils
 import com.orgzly.android.util.SpaceTokenizer
 import com.orgzly.android.util.UserTimeFormatter
+import com.orgzly.databinding.FragmentNoteBinding
 import com.orgzly.org.OrgProperties
 import com.orgzly.org.datetime.OrgDateTime
 import com.orgzly.org.datetime.OrgRange
-import com.orgzly.org.parser.OrgParserWriter
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_note.*
 import java.util.*
 import javax.inject.Inject
 
@@ -45,8 +48,7 @@ import javax.inject.Inject
  */
 class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFragment.OnDateTimeSetListener, DrawerItem {
 
-    /** Note's book ID. */
-    private var bookId: Long = 0
+    private lateinit var binding: FragmentNoteBinding
 
     /** Could be 0 if new note is being created. */
     var noteId: Long = 0
@@ -66,43 +68,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private var listener: Listener? = null
 
     private lateinit var viewModel: NoteViewModel
-
-    private var book: BookView? = null
-
-    private lateinit var scrollView: ScrollView
-
-    private lateinit var title: EditText
-
-    private lateinit var breadcrumbs: ViewGroup
-    private lateinit var breadcrumbsText: TextView
-
-    private lateinit var locationButtonView: TextView
-
-    private lateinit var tagsContainer: View
-    private lateinit var tagsView: MultiAutoCompleteTextView
-
-    private lateinit var stateContainer: View
-    private lateinit var state: TextView
-
-    private lateinit var priorityContainer: View
-    private lateinit var priority: TextView
-
-    private lateinit var scheduledTimeContainer: View
-    private lateinit var scheduledButton: TextView
-
-    private lateinit var deadlineTimeContainer: View
-    private lateinit var deadlineButton: TextView
-
-    private lateinit var closedTimeContainer: ViewGroup
-    private lateinit var closedText: TextView
-
-    private lateinit var propertiesContainer: LinearLayout
-
-    private lateinit var bodyEdit: EditText
-    private lateinit var bodyView: TextViewWithMarkup
-
-    /** Used to switch to note-does-not-exist view, if the note has been deleted.  */
-    private lateinit var mViewFlipper: ViewFlipper
 
     private lateinit var mUserTimeFormatter: UserTimeFormatter
 
@@ -128,8 +93,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 throw IllegalArgumentException(NoteFragment::class.java.simpleName + " requires " + ARG_BOOK_ID + " argument passed")
             }
 
-            bookId = getLong(ARG_BOOK_ID)
-
             /* Note ID might or might not be passed - it depends if note is being edited or created. */
             if (containsKey(ARG_NOTE_ID)) {
                 noteId = getLong(ARG_NOTE_ID)
@@ -150,10 +113,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         }
     }
 
-    private fun isNew(): Boolean {
-        return place != null
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
         super.onCreate(savedInstanceState)
@@ -162,7 +121,13 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             ViewModelProviders.of(it).get(SharedMainActivityViewModel::class.java)
         } ?: throw IllegalStateException("No Activity")
 
-        val factory = NoteViewModelFactory.getInstance(dataRepository, bookId, isNew())
+        val factory = NoteViewModelFactory.getInstance(
+                dataRepository,
+                arguments?.getLong(ARG_BOOK_ID) ?: 0,
+                noteId,
+                place,
+                initialTitle,
+                initialContent)
 
         viewModel = ViewModelProviders.of(this, factory).get(NoteViewModel::class.java)
 
@@ -172,54 +137,50 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, inflater, container, savedInstanceState)
 
-        val top = inflater.inflate(R.layout.fragment_note, container, false)
-
-        scrollView = top.findViewById(R.id.fragment_note_container)
-
-        title = top.findViewById(R.id.fragment_note_title)
+        binding = FragmentNoteBinding.inflate(inflater, container, false)
 
         /*
-         * Only works when set from code.
+         * Not working when done in XML.
          * We want imeOptions="actionDone", so we can't use textMultiLine.
          */
-        title.setHorizontallyScrolling(false)
-        title.maxLines = Integer.MAX_VALUE
+        binding.fragmentNoteTitle.apply {
+            setHorizontallyScrolling(false)
 
-        /* Keyboard's action button pressed. */
-        title.setOnEditorActionListener { _, _, _ ->
-            save()
-            true
+            maxLines = Integer.MAX_VALUE
+
+            // Keyboard's action button pressed
+            setOnEditorActionListener { _, _, _ ->
+                userSave()
+                true
+            }
         }
 
-        breadcrumbs = top.findViewById(R.id.fragment_note_breadcrumbs)
-        breadcrumbsText = top.findViewById(R.id.fragment_note_breadcrumbs_text)
-        breadcrumbsText.movementMethod = LinkMovementMethod.getInstance()
-
-        locationButtonView = top.findViewById(R.id.fragment_note_location_button)
+        binding.fragmentNoteBreadcrumbsText.movementMethod = LinkMovementMethod.getInstance()
 
         if (activity is ShareActivity) {
-            breadcrumbs.visibility = View.GONE
-            locationButtonView.visibility = View.VISIBLE
-            locationButtonView.setOnClickListener(this)
+            binding.fragmentNoteBreadcrumbs.visibility = View.GONE
+
+            binding.fragmentNoteLocationButton.let {
+                it.visibility = View.VISIBLE
+                it.setOnClickListener(this)
+            }
         } else {
-            breadcrumbs.visibility = View.VISIBLE
-            locationButtonView.visibility = View.GONE
+            binding.fragmentNoteBreadcrumbs.visibility = View.VISIBLE
+            binding.fragmentNoteLocationButton.visibility = View.GONE
         }
 
 
-        tagsContainer = top.findViewById(R.id.fragment_note_tags_container)
-
-        tagsView = top.findViewById(R.id.fragment_note_tags)
-
         /* Hint causes minimum width - when tags' width is smaller then hint's, there is empty space. */
-        tagsView.addTextChangedListener(object : TextWatcher {
+        binding.fragmentNoteTags.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (!TextUtils.isEmpty(tagsView.text.toString())) {
-                    tagsView.hint = ""
-                } else {
-                    tagsView.setHint(R.string.fragment_note_tags_hint)
+                binding.fragmentNoteTags.apply {
+                    if (!TextUtils.isEmpty(text.toString())) {
+                        hint = ""
+                    } else {
+                        setHint(R.string.fragment_note_tags_hint)
+                    }
                 }
             }
 
@@ -228,75 +189,58 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         setupTagsViewAdapter()
 
-        priorityContainer = top.findViewById(R.id.fragment_note_priority_container)
-        priority = top.findViewById(R.id.fragment_note_priority_button)
-        priority.setOnClickListener(this)
+        binding.fragmentNotePriorityButton.setOnClickListener(this)
 
-        stateContainer = top.findViewById(R.id.fragment_note_state_container)
-        state = top.findViewById(R.id.fragment_note_state_button)
-        state.setOnClickListener(this)
+        binding.fragmentNoteStateButton.setOnClickListener(this)
 
-        scheduledTimeContainer = top.findViewById(R.id.fragment_note_scheduled_time_container)
-        scheduledButton = top.findViewById(R.id.fragment_note_scheduled_button)
-        scheduledButton.setOnClickListener(this)
+        binding.fragmentNoteScheduledButton.setOnClickListener(this)
 
-        deadlineTimeContainer = top.findViewById(R.id.fragment_note_deadline_time_container)
-        deadlineButton = top.findViewById(R.id.fragment_note_deadline_button)
-        deadlineButton.setOnClickListener(this)
+        binding.fragmentNoteDeadlineButton.setOnClickListener(this)
 
-        closedTimeContainer = top.findViewById(R.id.fragment_note_closed_time_container)
-        closedText = top.findViewById(R.id.fragment_note_closed_edit_text)
-        closedText.setOnClickListener(this)
+        binding.fragmentNoteClosedEditText.setOnClickListener(this)
 
-        propertiesContainer = top.findViewById(R.id.fragment_note_properties_container)
-
-        bodyEdit = top.findViewById(R.id.body_edit)
-
-        bodyView = top.findViewById(R.id.body_view)
-
-        bodyView.addTextChangedListener(object : TextWatcher {
+        binding.bodyView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable) {
                 // Update bodyEdit text when checkboxes are clicked
-                val text = bodyView.getRawText()
-                bodyEdit.setText(text)
+                val text = binding.bodyView.getRawText()
+                binding.bodyEdit.setText(text)
             }
         })
 
         if (activity != null && AppPreferences.isFontMonospaced(context)) {
-            bodyEdit.typeface = Typeface.MONOSPACE
-            bodyView.typeface = Typeface.MONOSPACE
+            binding.bodyEdit.typeface = Typeface.MONOSPACE
+            binding.bodyView.typeface = Typeface.MONOSPACE
         }
-
-        mViewFlipper = top.findViewById(R.id.fragment_note_view_flipper)
 
         setupObservers()
 
-        return top
+        return binding.root
     }
 
-    private fun toEditMode() {
-        fragment_note_mode_text.setText(R.string.note_content_finish_editing)
 
-        bodyView.visibility = View.GONE
-        bodyEdit.visibility = View.VISIBLE
+    private fun toEditMode() {
+        binding.fragmentNoteModeText.setText(R.string.note_content_finish_editing)
+
+        binding.bodyView.visibility = View.GONE
+        binding.bodyEdit.visibility = View.VISIBLE
     }
 
     private fun toViewMode() {
-        fragment_note_mode_text.setText(R.string.note_content_start_editing)
+        binding.fragmentNoteModeText.setText(R.string.note_content_start_editing)
 
-        bodyEdit.visibility = View.GONE
+        binding.bodyEdit.visibility = View.GONE
 
-        bodyView.setRawText(bodyEdit.text)
+        binding.bodyView.setRawText(binding.bodyEdit.text.toString())
 
-        ImageLoader.loadImages(bodyView)
+        ImageLoader.loadImages(binding.bodyView)
 
-        bodyView.visibility = View.VISIBLE
+        binding.bodyView.visibility = View.VISIBLE
 
-        scrollView.requestFocus()
+        binding.fragmentNoteContainer.requestFocus()
 
         ActivityUtils.closeSoftKeyboard(activity)
     }
@@ -309,41 +253,51 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
          * Metadata folding
          */
 
-        fragment_note_metadata_header.setOnClickListener {
-            val isFolded = fragment_note_metadata.visibility != View.VISIBLE
+        binding.fragmentNoteMetadataHeader.setOnClickListener {
+            val isFolded = binding.fragmentNoteMetadata.visibility != View.VISIBLE
             setMetadataFoldState(!isFolded)
             AppPreferences.noteMetadataFolded(context, !isFolded)
         }
 
         setMetadataFoldState(AppPreferences.noteMetadataFolded(context))
 
-        fragment_note_mode_toggle_button.setOnClickListener {
+        binding.fragmentNoteModeToggleButton.setOnClickListener {
             viewModel.toggleViewEditMode()
         }
     }
 
     private fun setMetadataFoldState(isFolded: Boolean) {
-        fragment_note_metadata.visibility = visibleOrGone(!isFolded)
-        fragment_note_metadata_header_up_icon.visibility = visibleOrGone(!isFolded)
-        fragment_note_metadata_header_down_icon.visibility = visibleOrGone(isFolded)
+        binding.fragmentNoteMetadata.visibility = visibleOrGone(!isFolded)
+        binding.fragmentNoteMetadataHeaderUpIcon.visibility = visibleOrGone(!isFolded)
+        binding.fragmentNoteMetadataHeaderDownIcon.visibility = visibleOrGone(isFolded)
     }
 
     private fun visibleOrGone(visible: Boolean) = if (visible) View.VISIBLE else View.GONE
 
     private fun setupObservers() {
+        viewModel.noteCreatedEvent.observe(viewLifecycleOwner, Observer { note ->
+            listener?.onNoteCreated(note)
+        })
+
+        viewModel.noteUpdatedEvent.observe(viewLifecycleOwner, Observer { note ->
+            listener?.onNoteUpdated(note)
+        })
+
         viewModel.noteDeletedEvent.observeSingle(viewLifecycleOwner, Observer { count ->
-            handleNoteDeleted(count ?: 0)
+            (activity as? MainActivity)?.popBackStackAndCloseKeyboard()
+
+            val message = if (count == 0) {
+                resources.getString(R.string.no_notes_deleted)
+            } else {
+                resources.getQuantityString(R.plurals.notes_deleted, count, count)
+            }
+
+            showSnackbar(message)
         })
 
         viewModel.bookChangeRequestEvent.observeSingle(viewLifecycleOwner, Observer { books ->
             if (books != null) {
                 handleNoteBookChangeRequest(books)
-            }
-        })
-
-        viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->
-            if (error != null) {
-                CommonActivity.showSnackbar(context, (error.cause ?: error).localizedMessage)
             }
         })
 
@@ -357,26 +311,20 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
                 NoteViewModel.ViewEditMode.EDIT_WITH_KEYBOARD -> {
                     toEditMode()
-                    ActivityUtils.openSoftKeyboard(activity, bodyEdit, scrollView)
+                    ActivityUtils.openSoftKeyboard(activity, binding.bodyEdit, binding.fragmentNoteContainer)
                 }
 
                 null -> { }
             }
         })
-    }
 
-    private fun handleNoteDeleted(count: Int) {
-        (activity as? CommonActivity)?.let {
-            it.popBackStackAndCloseKeyboard()
+        viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->
+            showSnackbar((error.cause ?: error).localizedMessage)
+        })
 
-            val message = if (count == 0) {
-                resources.getString(R.string.no_notes_deleted)
-            } else {
-                resources.getQuantityString(R.plurals.notes_deleted, count, count)
-            }
-
-            it.showSnackbar(message)
-        }
+        viewModel.snackBarMessage.observeSingle(viewLifecycleOwner, Observer { resId ->
+            showSnackbar(resId)
+        })
     }
 
     private fun updateViewsFromPayload() {
@@ -387,13 +335,13 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         setPriorityView(payload.priority)
 
         /* Title. */
-        title.setText(payload.title)
+        binding.fragmentNoteTitle.setText(payload.title)
 
         /* Tags. */
         if (!payload.tags.isEmpty()) {
-            tagsView.setText(TextUtils.join(" ", payload.tags))
+            binding.fragmentNoteTags.setText(TextUtils.join(" ", payload.tags))
         } else {
-            tagsView.text = null
+            binding.fragmentNoteTags.text = null
         }
 
         /* Times. */
@@ -402,7 +350,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         updateTimestampView(TimeType.CLOSED, OrgRange.parseOrNull(payload.closed))
 
         /* Properties. */
-        propertiesContainer.removeAllViews()
+        binding.fragmentNotePropertiesContainer.removeAllViews()
         for (property in payload.properties.all) {
             addPropertyToList(property.name, property.value)
         }
@@ -410,15 +358,15 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         /* Content. */
 
-        bodyEdit.setText(payload.content)
+        binding.bodyEdit.setText(payload.content)
 
-        bodyView.setRawText(payload.content ?: "")
+        binding.bodyView.setRawText(payload.content ?: "")
 
-        ImageLoader.loadImages(bodyView)
+        ImageLoader.loadImages(binding.bodyView)
     }
 
     private fun addPropertyToList(propName: String?, propValue: String?) {
-        View.inflate(activity, R.layout.fragment_note_property, propertiesContainer)
+        View.inflate(activity, R.layout.fragment_note_property, binding.fragmentNotePropertiesContainer)
 
         val propView = lastProperty()
 
@@ -436,7 +384,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 name.text = null
                 value.text = null
             } else {
-                propertiesContainer.removeView(propView)
+                binding.fragmentNotePropertiesContainer.removeView(propView)
             }
         }
 
@@ -464,18 +412,20 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     private fun isOnlyProperty(view: View): Boolean {
-        return propertiesContainer.childCount == 1 && propertiesContainer.getChildAt(0) === view
+        return binding.fragmentNotePropertiesContainer.childCount == 1
+                && binding.fragmentNotePropertiesContainer.getChildAt(0) === view
     }
 
     private fun lastProperty(): ViewGroup {
-        return propertiesContainer.getChildAt(propertiesContainer.childCount - 1) as ViewGroup
+        return binding.fragmentNotePropertiesContainer
+                .getChildAt(binding.fragmentNotePropertiesContainer.childCount - 1) as ViewGroup
     }
 
     private fun updatePayloadFromViews() {
         val properties = OrgProperties()
 
-        for (i in 0 until propertiesContainer.childCount) {
-            val property = propertiesContainer.getChildAt(i)
+        for (i in 0 until binding.fragmentNotePropertiesContainer.childCount) {
+            val property = binding.fragmentNotePropertiesContainer.getChildAt(i)
 
             val name = (property.findViewById<View>(R.id.name) as TextView).text
             val value = (property.findViewById<View>(R.id.value) as TextView).text
@@ -486,15 +436,23 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         }
 
         // Replace new lines with spaces, in case multi-line text has been pasted
-        val title = title.text.toString().replace("\n".toRegex(), " ").trim { it <= ' ' }
+        val title = binding.fragmentNoteTitle.text.toString().replace("\n".toRegex(), " ").trim { it <= ' ' }
 
-        val content = bodyEdit.text.toString()
+        val content = binding.bodyEdit.text.toString()
 
-        val state = if (TextUtils.isEmpty(state.text)) null else state.text.toString()
+        // TODO: Create a function (extension?) for this
+        val state = if (TextUtils.isEmpty(binding.fragmentNoteStateButton.text))
+            null
+        else
+            binding.fragmentNoteStateButton.text.toString()
 
-        val priority = if (TextUtils.isEmpty(priority.text)) null else priority.text.toString()
+        val priority = if (TextUtils.isEmpty(binding.fragmentNotePriorityButton.text))
+            null
+        else
+            binding.fragmentNotePriorityButton.text.toString()
 
-        val tags = tagsView.text.toString().split("\\s+".toRegex()).dropLastWhile { it.isEmpty() }
+        val tags = binding.fragmentNoteTags.text.toString()
+                .split("\\s+".toRegex()).dropLastWhile { it.isEmpty() }
 
         viewModel.updatePayload(title, content, state, priority, tags, properties)
 
@@ -506,67 +464,52 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         super.onActivityCreated(savedInstanceState)
 
         viewModel.noteDetailsDataEvent.observeSingle(viewLifecycleOwner, Observer { data ->
-            book = data.book
-
-            book?.let {
+            data.book?.let {
                 val bookTitle = BookUtils.getFragmentTitleForBook(it.book)
 
-                val breadcrumbs = Breadcrumbs()
+                val breadcrumbs = Breadcrumbs().apply {
+                    // Notebook
+                    add(bookTitle, 0, if (noteId == 0L) null else fun() {
+                        userFollowBookBreadcrumb()
+                    })
 
-                breadcrumbs.add(bookTitle, 0, if (noteId == 0L) null else fun() {
-                    ActivityUtils.closeSoftKeyboard(activity)
-                    viewModel.onBreadcrumbsBook(data)
-                })
-
-                data.ancestors.forEach { ancestor ->
-                    breadcrumbs.add(ancestor.title, 0) {
-                        ActivityUtils.closeSoftKeyboard(activity)
-                        viewModel.onBreadcrumbsNote(it.book.id, ancestor)
+                    // Ancestors
+                    data.ancestors.forEach { ancestor ->
+                        add(ancestor.title, 0) {
+                            userFollowNoteBreadcrumb(ancestor)
+                        }
                     }
                 }
 
-                breadcrumbsText.text = breadcrumbs.toCharSequence()
+                binding.fragmentNoteBreadcrumbsText.text = breadcrumbs.toCharSequence()
 
-                locationButtonView.text = bookTitle
+                binding.fragmentNoteLocationButton.text = bookTitle
             }
 
-            if (isNew()) { // Create new note
-                viewModel.initPayloadForNewNote(initialTitle ?: "", initialContent)
-
-                mViewFlipper.displayedChild = 0
+            if (viewModel.isNew()) { // Create new note
+                binding.fragmentNoteViewFlipper.displayedChild = 0
 
                 /* Open keyboard for new notes, unless fragment was given
                  * some initial values (for example from ShareActivity).
                  */
                 if (TextUtils.isEmpty(initialTitle) && TextUtils.isEmpty(initialContent)) {
-                    ActivityUtils.openSoftKeyboardWithDelay(activity, title)
+                    ActivityUtils.openSoftKeyboardWithDelay(activity, binding.fragmentNoteTitle)
                 }
 
             } else { // Open existing note
-                viewModel.initPayloadForExistingNote(noteId)
-
                 if (viewModel.notePayload != null) {
-                    mViewFlipper.displayedChild = 0
+                    binding.fragmentNoteViewFlipper.displayedChild = 0
                 } else {
-                    mViewFlipper.displayedChild = 1
+                    binding.fragmentNoteViewFlipper.displayedChild = 1
                 }
             }
 
-            /* Get current values from saved Bundle and populate all views. */
+            // Load payload from saved Bundle if available
             if (savedInstanceState != null) {
                 viewModel.restorePayloadFromBundle(savedInstanceState)
             }
 
             updateViewsFromPayload()
-
-            /* Store the hash value of original note. */
-            arguments?.apply {
-                if (!containsKey(ARG_ORIGINAL_NOTE_HASH)) {
-                    viewModel.notePayload?.let { payload ->
-                        putLong(ARG_ORIGINAL_NOTE_HASH, notePayloadHash(payload))
-                    }
-                }
-            }
 
             /* Refresh action bar items (hide or display, depending on if book is loaded. */
             activity?.invalidateOptionsMenu()
@@ -574,8 +517,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             announceChangesToActivity()
         })
 
-        viewModel.loadData(bookId, noteId, place)
-
+        viewModel.loadData()
     }
 
     /**
@@ -585,8 +527,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         viewModel.tags.observe(viewLifecycleOwner, Observer { tags ->
             context?.let {
                 val adapter = ArrayAdapter(it, R.layout.dropdown_item, tags)
-                tagsView.setAdapter(adapter)
-                tagsView.setTokenizer(SpaceTokenizer())
+                binding.fragmentNoteTags.setAdapter(adapter)
+                binding.fragmentNoteTags.setTokenizer(SpaceTokenizer())
             }
         })
     }
@@ -601,8 +543,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private fun announceChangesToActivity() {
         sharedMainActivityViewModel.setFragment(
                 FRAGMENT_TAG,
-                book?.book?.name,
-                BookUtils.getError(context, book?.book),
+                viewModel.bookView.value?.book?.name,
+                BookUtils.getError(context, viewModel.bookView.value?.book),
                 0)
     }
 
@@ -619,7 +561,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
         super.onDestroyView()
 
-        mViewFlipper.displayedChild = 0
+        binding.fragmentNoteViewFlipper.displayedChild = 0
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -638,19 +580,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         listener = null
     }
 
-    /**
-     * Hash used to detect note modifications.
-     * TODO: Avoid generating org
-     */
-    private fun notePayloadHash(payload: NotePayload): Long {
-        val head = OrgMapper.toOrgHead(payload)
-
-        val parserWriter = OrgParserWriter()
-        val str = parserWriter.whiteSpacedHead(head, 1, false)
-
-        return MiscUtils.sha1(str)
-    }
-
     private enum class TimeType {
         SCHEDULED, DEADLINE, CLOSED, CLOCKED
     }
@@ -658,16 +587,16 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private fun updateTimestampView(timeType: TimeType, range: OrgRange?) {
         when (timeType) {
             TimeType.SCHEDULED -> if (range != null) {
-                scheduledButton.text = mUserTimeFormatter.formatAll(range)
+                binding.fragmentNoteScheduledButton.text = mUserTimeFormatter.formatAll(range)
             } else {
-                scheduledButton.text = null
+                binding.fragmentNoteScheduledButton.text = null
             }
 
             TimeType.DEADLINE -> if (range != null) {
-                deadlineButton.text = mUserTimeFormatter.formatAll(range)
-                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "deadline button set to ${deadlineButton.text}")
+                binding.fragmentNoteDeadlineButton.text = mUserTimeFormatter.formatAll(range)
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "deadline button set to ${binding.fragmentNoteDeadlineButton.text}")
             } else {
-                deadlineButton.text = null
+                binding.fragmentNoteDeadlineButton.text = null
             }
 
             TimeType.CLOSED ->
@@ -676,10 +605,10 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                  * It will be updated on state change.
                  */
                 if (range != null) {
-                    closedText.text = mUserTimeFormatter.formatAll(range)
-                    closedTimeContainer.visibility = View.VISIBLE
+                    binding.fragmentNoteClosedEditText.text = mUserTimeFormatter.formatAll(range)
+                    binding.fragmentNoteClosedTimeContainer.visibility = View.VISIBLE
                 } else {
-                    closedTimeContainer.visibility = View.GONE
+                    binding.fragmentNoteClosedTimeContainer.visibility = View.GONE
                 }
 
             else -> { }
@@ -689,7 +618,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private fun handleNoteBookChangeRequest(books: List<BookView>) {
         val bookNames = books.map { it.book.name }.toTypedArray()
 
-        val selected = getSelectedBook(books, bookId)
+        val selected = getSelectedBook(books, viewModel.bookId)
 
         dialog = AlertDialog.Builder(context)
                 .setTitle(R.string.notebook)
@@ -717,8 +646,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
                 val keywords = states.array
 
-                val currentState = if (!TextUtils.isEmpty(state.text)) {
-                    states.indexOf(state.text.toString())
+                val currentState = if (!TextUtils.isEmpty(binding.fragmentNoteStateButton.text)) {
+                    states.indexOf(binding.fragmentNoteStateButton.text.toString())
                 } else {
                     -1
                 }
@@ -744,8 +673,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 val keywords = priorities.array
 
                 var currentPriority = -1
-                if (!TextUtils.isEmpty(priority.text)) {
-                    currentPriority = priorities.indexOf(priority.text.toString())
+                if (!TextUtils.isEmpty(binding.fragmentNotePriorityButton.text)) {
+                    currentPriority = priorities.indexOf(binding.fragmentNotePriorityButton.text.toString())
                 }
 
                 dialog = AlertDialog.Builder(context)
@@ -814,7 +743,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     override fun onDateTimeSet(id: Int, noteIds: TreeSet<Long>, time: OrgDateTime) {
         if (BuildConfig.LOG_DEBUG)
             LogUtils.d(
-                TAG, id, R.id.fragment_note_deadline_button, noteIds, time, viewModel.notePayload)
+                    TAG, id, R.id.fragment_note_deadline_button, noteIds, time, viewModel.notePayload)
 
         viewModel.notePayload?.let { payload ->
             val range = OrgRange(time)
@@ -890,7 +819,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         }
 
         /* Newly created note cannot be deleted. */
-        if (isNew()) {
+        if (viewModel.isNew()) {
             menu.removeItem(R.id.delete)
         }
     }
@@ -900,12 +829,17 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         when (item.itemId) {
             R.id.done -> {
-                save()
+                userSave()
                 return true
             }
 
             R.id.close -> {
-                cancelWithConfirmation()
+                userCancel()
+                return true
+            }
+
+            R.id.delete -> {
+                userDelete()
                 return true
             }
 
@@ -930,11 +864,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 return true
             }
 
-            R.id.delete -> {
-                delete()
-                return true
-            }
-
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -942,33 +871,33 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private fun setMetadataVisibility() {
         setMetadataVisibility(
                 "tags",
-                tagsContainer,
-                !TextUtils.isEmpty(tagsView.text))
+                binding.fragmentNoteTagsContainer,
+                !TextUtils.isEmpty(binding.fragmentNoteTags.text))
 
         setMetadataVisibility(
                 "state",
-                stateContainer,
-                !TextUtils.isEmpty(state.text))
+                binding.fragmentNoteStateContainer,
+                !TextUtils.isEmpty(binding.fragmentNoteStateButton.text))
 
         setMetadataVisibility(
                 "priority",
-                priorityContainer,
-                !TextUtils.isEmpty(priority.text))
+                binding.fragmentNotePriorityContainer,
+                !TextUtils.isEmpty(binding.fragmentNotePriorityButton.text))
 
         setMetadataVisibility(
                 "scheduled_time",
-                scheduledTimeContainer,
-                !TextUtils.isEmpty(scheduledButton.text))
+                binding.fragmentNoteScheduledTimeContainer,
+                !TextUtils.isEmpty(binding.fragmentNoteScheduledButton.text))
 
         setMetadataVisibility(
                 "deadline_time",
-                deadlineTimeContainer,
-                !TextUtils.isEmpty(deadlineButton.text))
+                binding.fragmentNoteDeadlineTimeContainer,
+                !TextUtils.isEmpty(binding.fragmentNoteDeadlineButton.text))
 
         setMetadataVisibility(
                 "properties",
-                propertiesContainer,
-                propertiesContainer.childCount > 1)
+                binding.fragmentNotePropertiesContainer,
+                binding.fragmentNotePropertiesContainer.childCount > 1)
     }
 
     private fun setMetadataVisibility(name: String?, container: View, isSet: Boolean) {
@@ -988,98 +917,100 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         }
     }
 
-    private fun delete() {
+    private fun userSave() {
+        ActivityUtils.closeSoftKeyboard(activity)
+
+        updatePayloadFromViews()
+
+        viewModel.saveNote()
+    }
+
+    fun userCancel(): Boolean {
+        ActivityUtils.closeSoftKeyboard(activity)
+
+        updatePayloadFromViews()
+
+        if (viewModel.isNew() || viewModel.isNoteModified()) {
+            dialog = AlertDialog.Builder(context)
+                    .setTitle(R.string.note_has_been_modified)
+                    .setMessage(R.string.discard_or_save_changes)
+                    .setPositiveButton(R.string.save) { _, _ ->
+                        viewModel.saveNote {
+                            listener?.onNoteCanceled()
+                        }
+                    }
+                    .setNegativeButton(R.string.discard) { _, _ ->
+                        listener?.onNoteCanceled()
+                    }
+                    .setNeutralButton(R.string.cancel, null)
+                    .show()
+
+            return true
+
+        } else {
+            listener?.onNoteCanceled()
+
+            return false
+        }
+    }
+
+    private fun userDelete() {
         dialog = AlertDialog.Builder(context)
                 .setTitle(R.string.delete_note)
                 .setMessage(R.string.delete_note_and_all_subnotes)
                 .setPositiveButton(R.string.delete) { _, _ ->
-                    viewModel.deleteNote(bookId, noteId)
+                    viewModel.deleteNote()
                 }
                 .setNegativeButton(R.string.cancel) { _, _ -> }
                 .show()
     }
 
-    private fun cancelWithConfirmation() {
-        if (!isAskingForConfirmationForModifiedNote()) {
-            cancel()
-        }
-    }
+    private fun userFollowBookBreadcrumb() {
+        ActivityUtils.closeSoftKeyboard(activity)
 
-    /* It's possible that note does not exist
-     * if it has been deleted and the user went back to it.
-     */
-    fun isAskingForConfirmationForModifiedNote(): Boolean {
         updatePayloadFromViews()
 
-        val payload = viewModel.notePayload
-
-        return if (payload != null && isNoteModified(payload)) {
+        if (viewModel.isNew() || viewModel.isNoteModified()) {
             dialog = AlertDialog.Builder(context)
                     .setTitle(R.string.note_has_been_modified)
                     .setMessage(R.string.discard_or_save_changes)
-                    .setPositiveButton(R.string.save) { _, _ -> save() }
-                    .setNegativeButton(R.string.discard) { _, _ -> cancel() }
+                    .setPositiveButton(R.string.save) { _, _ ->
+                        viewModel.saveNote {
+                            viewModel.followBookBreadcrumb()
+                        }
+                    }
+                    .setNegativeButton(R.string.discard) { _, _ ->
+                        viewModel.followBookBreadcrumb()
+                    }
                     .setNeutralButton(R.string.cancel, null)
                     .show()
-            true
-
         } else {
-            false
+            viewModel.followBookBreadcrumb()
         }
     }
 
-    private fun cancel() {
-        listener?.onNoteCancelRequest()
-    }
-
-    private fun save() {
-        /* Make sure notebook is set. */
-        if (bookId == 0L) {
-            (activity as? CommonActivity)?.showSnackbar(R.string.note_book_not_set)
-            return
-        }
+    private fun userFollowNoteBreadcrumb(ancestor: Note) {
+        ActivityUtils.closeSoftKeyboard(activity)
 
         updatePayloadFromViews()
 
-        if (isTitleValid()) {
-            val payload = viewModel.notePayload
-
-            if (isNew()) { // New note
-                val notePlace = if (place != Place.UNSPECIFIED)
-                    NotePlace(bookId, noteId, place)
-                else
-                    NotePlace(bookId)
-
-                if (payload != null) {
-                    listener?.onNoteCreateRequest(payload, notePlace)
-                }
-
-            } else { // Existing note
-                if (payload != null && isNoteModified(payload)) {
-                    listener?.onNoteUpdateRequest(payload, noteId)
-                } else {
-                    listener?.onNoteCancelRequest()
-                }
-            }
-        }
-    }
-
-    private fun isTitleValid(): Boolean {
-        val title = viewModel.notePayload?.title
-
-        return if (TextUtils.isEmpty(title)) {
-            CommonActivity.showSnackbar(context, getString(R.string.title_can_not_be_empty))
-            false
+        if (viewModel.isNew() || viewModel.isNoteModified()) {
+            dialog = AlertDialog.Builder(context)
+                    .setTitle(R.string.note_has_been_modified)
+                    .setMessage(R.string.discard_or_save_changes)
+                    .setPositiveButton(R.string.save) { _, _ ->
+                        viewModel.saveNote {
+                            viewModel.followNoteBreadcrumb(ancestor)
+                        }
+                    }
+                    .setNegativeButton(R.string.discard) { _, _ ->
+                        viewModel.followNoteBreadcrumb(ancestor)
+                    }
+                    .setNeutralButton(R.string.cancel, null)
+                    .show()
         } else {
-            true
+            viewModel.followNoteBreadcrumb(ancestor)
         }
-    }
-
-    private fun isNoteModified(payload: NotePayload): Boolean {
-        val currentHash = notePayloadHash(payload)
-        val originalHash = arguments?.getLong(ARG_ORIGINAL_NOTE_HASH)
-
-        return currentHash != originalHash
     }
 
     /**
@@ -1087,14 +1018,11 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
      * TODO: Should be setPosition and allow filing under specific note
      */
     private fun setBook(newBook: BookView) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, book)
+        viewModel.setBook(newBook)
 
-        book = newBook
-        bookId = newBook.book.id
-
-        val title = BookUtils.getFragmentTitleForBook(book?.book)
-        breadcrumbsText.text = title
-        locationButtonView.text = title
+        val title = BookUtils.getFragmentTitleForBook(viewModel.bookView.value?.book)
+        binding.fragmentNoteBreadcrumbsText.text = title
+        binding.fragmentNoteLocationButton.text = title
 
         arguments?.putLong(ARG_BOOK_ID, newBook.book.id)
     }
@@ -1112,38 +1040,43 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
     private fun setStateView(state: String?) {
         if (state == null || NoteStates.NO_STATE_KEYWORD == state) {
-            this.state.text = null
+            this.binding.fragmentNoteStateButton.text = null
         } else {
-            this.state.text = state
+            this.binding.fragmentNoteStateButton.text = state
         }
     }
 
     private fun setPriorityView(priority: String?) {
-        this.priority.text = priority
+        this.binding.fragmentNotePriorityButton.text = priority
     }
 
     /**
      * Mark note's book in the drawer.
      */
     override fun getCurrentDrawerItemId(): String {
-        return BookFragment.getDrawerItemId(bookId)
+        return BookFragment.getDrawerItemId(viewModel.bookId)
+    }
+
+    private fun showSnackbar(message: String) {
+        CommonActivity.showSnackbar(context, message)
+    }
+
+    private fun showSnackbar(@StringRes resId: Int) {
+        CommonActivity.showSnackbar(context, resId)
     }
 
     interface Listener {
-        fun onNoteCreateRequest(notePayload: NotePayload, notePlace: NotePlace)
-        fun onNoteUpdateRequest(notePayload: NotePayload, noteId: Long)
-        fun onNoteCancelRequest()
+        fun onNoteCreated(note: Note)
+        fun onNoteUpdated(note: Note)
+        fun onNoteCanceled()
     }
 
     companion object {
-
         private val TAG = NoteFragment::class.java.name
 
         /** Name used for [android.app.FragmentManager].  */
         @JvmField
         val FRAGMENT_TAG: String = NoteFragment::class.java.name
-
-        private const val ARG_ORIGINAL_NOTE_HASH = "original_note_hash"
 
         private const val ARG_BOOK_ID = "book_id"
         private const val ARG_NOTE_ID = "note_id"
