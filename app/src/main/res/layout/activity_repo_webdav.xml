@@ -66,6 +66,19 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <Button
+                    android:id="@+id/activity_repo_webdav_test_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:text="@string/webdav_test" />
+
+                <TextView
+                    android:id="@+id/activity_repo_webdav_test_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp" />
+
             </LinearLayout>
 
         </ScrollView>

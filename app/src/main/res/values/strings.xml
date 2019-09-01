@@ -224,10 +224,17 @@
     <string name="git_clone_error_target_not_empty">The target directory is not empty</string>
     <string name="git_clone_error_uri_not_supported">The remote address is not supported</string>
 
-    <string name="webdav">Webdav</string>
+    <string name="webdav" translatable="false">Webdav</string>
     <string name="webdav_url_hint">URL (e.g. webdavs://example.com/my-org-files/)</string>
     <string name="webdav_auth_username_hint">Username</string>
     <string name="webdav_auth_password_hint">Password</string>
+    <string name="webdav_url_can_not_be_empty">URL cannot be empty</string>
+    <string name="webdav_test">Test</string>
+    <string name="webdav_test_ok">OK</string>
+    <string name="webdav_test_warn_no_books">No books found</string>
+    <string name="webdav_test_error_auth">Login or password is invalid</string>
+    <string name="webdav_test_error_url">URL is invalid</string>
+    <string name="webdav_test_error_unknown">Unknown error occurred</string>
 
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Share action not set</string>

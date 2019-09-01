@@ -3,7 +3,11 @@ package com.orgzly.android.ui.repo
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
@@ -11,10 +15,12 @@ import androidx.databinding.DataBindingUtil
 import com.orgzly.R
 import com.orgzly.android.prefs.RepoPreferences
 import com.orgzly.android.repos.RepoFactory
+import com.orgzly.android.repos.WebdavRepo
 import com.orgzly.android.repos.WebdavRepo.Companion.PASSWORD_PREF_KEY
 import com.orgzly.android.repos.WebdavRepo.Companion.USERNAME_PREF_KEY
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.databinding.ActivityRepoWebdavBinding
+import com.thegrizzlylabs.sardineandroid.impl.SardineException
 import javax.inject.Inject
 
 class WebdavRepoActivity : CommonActivity() {
@@ -44,6 +50,8 @@ class WebdavRepoActivity : CommonActivity() {
             val password = prefs.getStringValue(PASSWORD_PREF_KEY, "")
             binding.activityRepoWebdavPassword.setText(password)
         }
+
+        binding.activityRepoWebdavTestButton.setOnClickListener { testRepo() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -72,12 +80,7 @@ class WebdavRepoActivity : CommonActivity() {
     }
 
     private fun saveAndFinish() {
-        val uriString = binding.activityRepoWebdavUrl.text.toString().trim { it <= ' ' }.let {
-            if (it.startsWith("http")) {
-                it.replaceFirst("http", "webdav")
-            }
-            it
-        }
+        val uriString = getUriString()
         val username = binding.activityRepoWebdavUsername.text.toString().trim { it <= ' ' }
         val password = binding.activityRepoWebdavPassword.text.toString().trim { it <= ' ' }
 
@@ -103,16 +106,99 @@ class WebdavRepoActivity : CommonActivity() {
 
     }
 
+    private fun getUriString(): String {
+        return binding.activityRepoWebdavUrl.text.toString().trim { it <= ' ' }.let {
+            if (it.startsWith("http")) {
+                it.replaceFirst("http", "webdav")
+            }
+            it
+        }
+    }
+
     private fun getWebdavUrlError(url: String): String? {
         return when {
-            TextUtils.isEmpty(url) -> getString(R.string.can_not_be_empty)
+            TextUtils.isEmpty(url) -> getString(R.string.webdav_url_can_not_be_empty)
             !webdavUrlRegex.matches(url) -> getString(R.string.invalid_repo_url)
             else -> null
         }
     }
 
+    private fun testRepo() {
+        val uriString = getUriString()
+        val username = binding.activityRepoWebdavUsername.text.toString().trim { it <= ' ' }
+        val password = binding.activityRepoWebdavPassword.text.toString().trim { it <= ' ' }
+
+        getWebdavUrlError(uriString)?.let {
+            setTestResultErrorText(it)
+            return
+        }
+
+        binding.activityRepoWebdavTestButton.isEnabled = false
+
+        RepoTester().execute(uriString, username, password)
+
+    }
+
+    private fun setTestResultErrorText(text: String) {
+        binding.activityRepoWebdavTestResult.setTextColor(Color.RED)
+        binding.activityRepoWebdavTestResult.text = text
+    }
+
+    private fun setTestResultOkText(text: String) {
+        binding.activityRepoWebdavTestResult.setTextColor(Color.GREEN)
+        binding.activityRepoWebdavTestResult.text = text
+    }
+
+    private fun setTestResultWarnText(text: String) {
+        binding.activityRepoWebdavTestResult.setTextColor(Color.YELLOW)
+        binding.activityRepoWebdavTestResult.text = text
+    }
+
+    private inner class RepoTester : AsyncTask<String, Void, Void>() {
+        override fun doInBackground(vararg params: String?): Void? {
+
+            try {
+                binding.activityRepoWebdavTestResult.text = ""
+
+                val uriString = params[0]
+                val username = params[1]
+                val password = params[2]
+
+                val uri = Uri.parse(uriString)
+                val repo = WebdavRepo(uri, username, password)
+                if (repo.books.isEmpty()) {
+                    setTestResultWarnText(getString(R.string.webdav_test_warn_no_books))
+                } else {
+                    setTestResultOkText(getString(R.string.webdav_test_ok))
+                }
+
+            } catch (e: Exception) {
+                when (e) {
+                    is SardineException -> {
+                        when (e.statusCode) {
+                            401 -> setTestResultErrorText(getString(R.string.webdav_test_error_auth))
+                            else -> setTestResultErrorText(arrayOf(e.statusCode, ":", e.responsePhrase).joinToString(" "))
+                        }
+
+                    }
+                    else -> setTestResultErrorText(e.message
+                            ?: getString(R.string.webdav_test_error_unknown))
+
+                }
+            } finally {
+                // Avoiding bug described here: https://stackoverflow.com/a/10687660
+                handler.post {
+                    binding.activityRepoWebdavTestButton.isEnabled = true
+                }
+                return null
+            }
+        }
+
+    }
+
     companion object {
         private const val ARG_REPO_ID = "repo_id"
+        private val handler = Handler()
 
         @JvmStatic
         @JvmOverloads
