@@ -7,16 +7,18 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
+import androidx.databinding.DataBindingUtil
 import com.orgzly.R
 import com.orgzly.android.prefs.RepoPreferences
 import com.orgzly.android.repos.RepoFactory
 import com.orgzly.android.repos.WebdavRepo.Companion.PASSWORD_PREF_KEY
 import com.orgzly.android.repos.WebdavRepo.Companion.USERNAME_PREF_KEY
 import com.orgzly.android.ui.CommonActivity
-import kotlinx.android.synthetic.main.activity_repo_webdav.*
+import com.orgzly.databinding.ActivityRepoWebdavBinding
 import javax.inject.Inject
 
 class WebdavRepoActivity : CommonActivity() {
+    private lateinit var binding: ActivityRepoWebdavBinding
 
     @Inject
     lateinit var repoFactory: RepoFactory
@@ -28,7 +30,7 @@ class WebdavRepoActivity : CommonActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_repo_webdav)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_webdav)
 
         setupActionBar(R.string.webdav)
 
@@ -36,11 +38,11 @@ class WebdavRepoActivity : CommonActivity() {
 
         if (repoId != 0L) {
             val prefs = RepoPreferences.fromId(this, repoId, dataRepository)
-            activity_repo_webdav_url.setText(prefs.repoUri.toString())
+            binding.activityRepoWebdavUrl.setText(prefs.repoUri.toString())
             val username = prefs.getStringValue(USERNAME_PREF_KEY, "")
-            activity_repo_webdav_username.setText(username)
+            binding.activityRepoWebdavUsername.setText(username)
             val password = prefs.getStringValue(PASSWORD_PREF_KEY, "")
-            activity_repo_webdav_password.setText(password)
+            binding.activityRepoWebdavPassword.setText(password)
         }
     }
 
@@ -70,17 +72,17 @@ class WebdavRepoActivity : CommonActivity() {
     }
 
     private fun saveAndFinish() {
-        val uriString = activity_repo_webdav_url.text.toString().trim { it <= ' ' }.let {
+        val uriString = binding.activityRepoWebdavUrl.text.toString().trim { it <= ' ' }.let {
             if (it.startsWith("http")) {
                 it.replaceFirst("http", "webdav")
             }
             it
         }
-        val username = activity_repo_webdav_username.text.toString().trim { it <= ' ' }
-        val password = activity_repo_webdav_password.text.toString().trim { it <= ' ' }
+        val username = binding.activityRepoWebdavUsername.text.toString().trim { it <= ' ' }
+        val password = binding.activityRepoWebdavPassword.text.toString().trim { it <= ' ' }
 
         val urlError = getWebdavUrlError(uriString)
-        activity_repo_webdav_url_layout.error = urlError
+        binding.activityRepoWebdavUrlLayout.error = urlError
         if (urlError != null) {
             return
         }
