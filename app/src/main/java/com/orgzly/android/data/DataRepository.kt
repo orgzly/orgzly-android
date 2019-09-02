@@ -983,15 +983,15 @@ class DataRepository @Inject constructor(
     fun toggleNoteFoldedStateForSubtree(noteId: Long) {
         db.runInTransaction {
             db.note().get(noteId)?.let { note ->
-                val foldedCount = db.note().getSubtreeFoldedNoteCount(noteId)
+                val foldedCount = db.note().getSubtreeFoldedNoteCount(listOf(noteId))
 
                 if (foldedCount == 0) {
                     // Fold all notes under note - all notes are unfolded
-                    db.note().foldSubtree(note.id)
+                    db.note().foldSubtree(listOf(note.id))
                     db.note().foldDescendantsUnderId(note.position.bookId, note.id, note.position.lft, note.position.rgt)
                 } else {
                     // Unfold all notes under note - there is at least one folded note
-                    db.note().unfoldSubtree(noteId)
+                    db.note().unfoldSubtree(listOf(noteId))
                 }
             }
         }
