@@ -99,6 +99,16 @@ abstract class NoteDao : BaseDao<Note> {
     """)
     abstract fun getBookUnfoldedNoteCount(bookId: Long): Int
 
+    @Query("""
+        SELECT count(*)
+        FROM notes
+        WHERE id IN (
+        SELECT DISTINCT d.id
+        FROM notes n, notes d
+        WHERE n.id = :id AND d.book_id = n.book_id AND d.is_cut = 0 AND n.lft <= d.lft AND d.rgt <= n.rgt
+        ) AND is_folded = 1
+    """)
+    abstract fun getSubtreeFoldedNoteCount(id: Long): Int
 
     @Query("""
         SELECT * FROM notes
@@ -206,6 +216,28 @@ abstract class NoteDao : BaseDao<Note> {
 
     @Query("UPDATE notes SET is_folded = 0 WHERE id IN (:ids)")
     abstract fun unfoldNotes(ids: List<Long>)
+
+    @Query("""
+        UPDATE notes
+        SET is_folded = 0, folded_under_id = 0
+        WHERE id IN (
+        SELECT DISTINCT d.id
+        FROM notes n, notes d
+        WHERE n.id = :id AND d.book_id = n.book_id AND d.is_cut = 0 AND n.lft <= d.lft AND d.rgt <= n.rgt
+        )
+    """)
+    abstract fun unfoldSubtree(id: Long)
+
+    @Query("""
+        UPDATE notes
+        SET is_folded = 1
+        WHERE id IN (
+        SELECT DISTINCT d.id
+        FROM notes n, notes d
+        WHERE n.id = :id AND d.book_id = n.book_id AND d.is_cut = 0 AND n.lft <= d.lft AND d.rgt <= n.rgt
+        )
+    """)
+    abstract fun foldSubtree(id: Long)
 
     @Query("UPDATE notes SET folded_under_id = 0 WHERE folded_under_id IN (:ids)")
     abstract fun updateFoldedUnderForNoteFoldedUnderId(ids: List<Long>)

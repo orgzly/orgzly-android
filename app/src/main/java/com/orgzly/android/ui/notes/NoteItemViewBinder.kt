@@ -16,6 +16,7 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.ImageLoader
 import com.orgzly.android.ui.util.TitleGenerator
 import com.orgzly.android.usecase.NoteToggleFolding
+import com.orgzly.android.usecase.NoteToggleFoldingSubtree
 import com.orgzly.android.usecase.NoteUpdateContent
 import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.UserTimeFormatter
@@ -248,11 +249,30 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
     private fun setupFoldingButtons(holder: NoteItemViewHolder, note: Note) {
         if (updateFoldingButtons(context, note, holder)) {
-            holder.binding.itemHeadFoldButton.setOnClickListener { toggleFoldedState(note.id) }
-            holder.binding.itemHeadBullet.setOnClickListener { toggleFoldedState(note.id) }
+            // Folding button
+            holder.binding.itemHeadFoldButton.setOnClickListener {
+                toggleFoldedState(note.id)
+            }
+            holder.binding.itemHeadFoldButton.setOnLongClickListener {
+                toggleFoldedStateForSubtree(note.id)
+            }
+
+            // Bullet
+            holder.binding.itemHeadBullet.setOnClickListener {
+                toggleFoldedState(note.id)
+            }
+            holder.binding.itemHeadBullet.setOnLongClickListener {
+                toggleFoldedStateForSubtree(note.id)
+            }
+
         } else {
+            // Folding button
             holder.binding.itemHeadFoldButton.setOnClickListener(null)
+            holder.binding.itemHeadFoldButton.setOnLongClickListener(null)
+
+            // Bullet
             holder.binding.itemHeadBullet.setOnClickListener(null)
+            holder.binding.itemHeadBullet.setOnLongClickListener(null)
         }
     }
 
@@ -335,6 +355,14 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         App.EXECUTORS.diskIO().execute {
             UseCaseRunner.run(NoteToggleFolding(id))
         }
+    }
+
+    private fun toggleFoldedStateForSubtree(id: Long): Boolean {
+        App.EXECUTORS.diskIO().execute {
+            UseCaseRunner.run(NoteToggleFoldingSubtree(id))
+        }
+
+        return true
     }
 
     companion object {
