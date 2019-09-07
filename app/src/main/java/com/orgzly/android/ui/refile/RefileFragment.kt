@@ -198,10 +198,12 @@ class RefileFragment : DaggerDialogFragment() {
             val w = resources.displayMetrics.widthPixels
             val h = resources.displayMetrics.heightPixels
 
-            if (h > w) { // Portrait
-                dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, (h * 0.90).toInt())
-            } else {
-                dialog.window?.setLayout((w * 0.90).toInt(), ViewGroup.LayoutParams.MATCH_PARENT)
+            requireDialog().window?.apply {
+                if (h > w) { // Portrait
+                    setLayout(ViewGroup.LayoutParams.MATCH_PARENT, (h * 0.90).toInt())
+                } else {
+                    setLayout((w * 0.90).toInt(), ViewGroup.LayoutParams.MATCH_PARENT)
+                }
             }
 
 //            window?.setLayout(

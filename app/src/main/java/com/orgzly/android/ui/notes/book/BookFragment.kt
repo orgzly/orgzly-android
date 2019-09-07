@@ -228,7 +228,7 @@ class BookFragment :
 
         viewModel.refileRequestEvent.observeSingle(viewLifecycleOwner, Observer {
             RefileFragment.getInstance(it.selected, it.count)
-                    .show(fragmentManager, RefileFragment.FRAGMENT_TAG)
+                    .show(requireFragmentManager(), RefileFragment.FRAGMENT_TAG)
         })
     }
 

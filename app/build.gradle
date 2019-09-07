@@ -119,6 +119,8 @@ dependencies {
 
     implementation "androidx.multidex:multidex:$android_multidex_version"
 
+    implementation "androidx.appcompat:appcompat:$android_appcompat_version"
+
     // UI
     implementation "androidx.cardview:cardview:$android_cardview_version"
     implementation "androidx.recyclerview:recyclerview:$android_recyclerview_version"
