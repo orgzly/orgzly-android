@@ -40,8 +40,8 @@ class AgendaFragment :
     lateinit var viewAdapter: AgendaAdapter
 
 
-    override fun getAdapter(): SelectableItemAdapter {
-        return viewAdapter
+    override fun getAdapter(): SelectableItemAdapter? {
+        return if (::viewAdapter.isInitialized) viewAdapter else null
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

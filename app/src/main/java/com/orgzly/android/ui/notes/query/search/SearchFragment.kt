@@ -41,8 +41,8 @@ class SearchFragment :
 
     private lateinit var viewAdapter: SearchAdapter
 
-    override fun getAdapter(): SelectableItemAdapter {
-        return viewAdapter
+    override fun getAdapter(): SelectableItemAdapter? {
+        return if (::viewAdapter.isInitialized) viewAdapter else null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -34,21 +34,8 @@ class ExternalLinksTest(private val param: Parameter) : OrgzlyTest() {
         fun data(): Collection<Parameter> {
             val cacheDir = App.getAppContext().cacheDir
             val storageDir = Environment.getExternalStorageDirectory()
-            val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-
-            File(storageDir, "orgzly-tests").let { dir ->
-                if (!dir.exists()) {
-                    if (!dir.mkdirs()) {
-                        fail("Failed to create $dir")
-                    }
-                }
-
-                MiscUtils.writeStringToFile("Lorem ipsum", File(dir, "document.txt"))
-
-                ExternalLinksTest::class.java.classLoader?.getResourceAsStream("assets/images/logo.png").use { stream ->
-                    MiscUtils.writeStreamToFile(stream, File(dir, "logo.png"))
-                }
-            }
+//            val downloadsDir = Environment.getExternalStoragePublicDirectory(
+//                    Environment.DIRECTORY_DOWNLOADS)
 
             return listOf(
                     Parameter("file:./non-existing-file") {
@@ -59,12 +46,12 @@ class ExternalLinksTest(private val param: Parameter) : OrgzlyTest() {
                     Parameter("file:$cacheDir") {
                         onSnackbar().check(matches(withText(startsWith(
                                 "Failed to open file: Failed to find configured root"))))
-                    },
-
-                    Parameter("file:${downloadsDir.absolutePath}") {
-                        onSnackbar().check(matches(withText(startsWith(
-                                "No application found to open this file"))))
                     }
+
+//                    Parameter("file:${storageDir.absolutePath}/orgzly-tests/book.org") {
+//                        onSnackbar().check(matches(withText(startsWith(
+//                                "No application found to open this file"))))
+//                    }
             )
         }
     }

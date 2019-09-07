@@ -59,8 +59,8 @@ class BookFragment :
 
     private lateinit var viewModel: BookViewModel
 
-    override fun getAdapter(): BookAdapter {
-        return viewAdapter
+    override fun getAdapter(): BookAdapter? {
+        return if (::viewAdapter.isInitialized) viewAdapter else null
     }
 
     override fun getCurrentListener(): NotesFragment.Listener? {
