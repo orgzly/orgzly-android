@@ -56,6 +56,8 @@ abstract class NotesFragment :
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+
         getAdapter().getSelection().saveIds(outState)
 
         /* Save action mode state (move mode). */
@@ -65,6 +67,8 @@ abstract class NotesFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         /*
          * Restore selected items, now that adapter is set.

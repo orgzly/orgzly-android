@@ -74,8 +74,9 @@ public class SyncService extends DaggerService {
 
     @Override
     public void onCreate() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onCreate();
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         startForeground(
                 Notifications.SYNC_IN_PROGRESS_ID,
@@ -203,8 +204,9 @@ public class SyncService extends DaggerService {
 
     @Override
     public void onDestroy() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onDestroy();
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
     }
 
     /**

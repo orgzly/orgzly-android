@@ -84,8 +84,9 @@ class BooksFragment :
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(drawerItemId, savedInstanceState)
         super.onCreate(savedInstanceState)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         sharedMainActivityViewModel = activity?.let {
             ViewModelProviders.of(it).get(SharedMainActivityViewModel::class.java)
@@ -98,7 +99,7 @@ class BooksFragment :
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(drawerItemId, inflater, container, savedInstanceState)
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         binding = FragmentBooksBinding.inflate(inflater, container, false)
 
@@ -337,13 +338,15 @@ class BooksFragment :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(drawerItemId, view, savedInstanceState)
         super.onViewCreated(view, savedInstanceState)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(drawerItemId, savedInstanceState)
         super.onActivityCreated(savedInstanceState)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         val factory = BooksViewModelFactory.getInstance(dataRepository)
         viewModel = ViewModelProviders.of(this, factory).get(BooksViewModel::class.java)
@@ -395,13 +398,15 @@ class BooksFragment :
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(drawerItemId, savedInstanceState)
         super.onViewStateRestored(savedInstanceState)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
     }
 
     override fun onResume() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(drawerItemId)
         super.onResume()
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         announceChangesToActivity()
 
@@ -410,23 +415,26 @@ class BooksFragment :
     }
 
     override fun onPause() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
         super.onPause()
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         actionMode?.finish()
     }
 
     override fun onDestroyView() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(drawerItemId)
         super.onDestroyView()
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         dialog?.dismiss()
         dialog = null
     }
 
     override fun onDetach() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(drawerItemId)
         super.onDetach()
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         listener = null
     }
@@ -435,7 +443,7 @@ class BooksFragment :
      * Callback for options menu.
      */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(drawerItemId, menu, inflater)
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater)
 
         inflater.inflate(R.menu.books_actions, menu)
     }

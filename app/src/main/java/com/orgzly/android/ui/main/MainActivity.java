@@ -153,8 +153,9 @@ public class MainActivity extends CommonActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onCreate(savedInstanceState);
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
@@ -425,8 +426,9 @@ public class MainActivity extends CommonActivity
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onPostCreate(savedInstanceState);
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
 
         // Sync the toggle state after onRestoreInstanceState has occurred.
         if (mDrawerToggle != null) {
@@ -436,8 +438,9 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, newConfig);
         super.onConfigurationChanged(newConfig);
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, newConfig);
 
         if (mDrawerToggle != null) {
             mDrawerToggle.onConfigurationChanged(newConfig);
@@ -446,8 +449,9 @@ public class MainActivity extends CommonActivity
 
     @Override
     protected void onResume() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onResume();
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         if (clearFragmentBackstack) {
             DisplayManager.clear(getSupportFragmentManager());
@@ -499,8 +503,9 @@ public class MainActivity extends CommonActivity
 
     @Override
     protected void onPause() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onPause();
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         LocalBroadcastManager bm = LocalBroadcastManager.getInstance(this);
         bm.unregisterReceiver(receiver);
@@ -513,8 +518,9 @@ public class MainActivity extends CommonActivity
 
     @Override
     protected void onDestroy() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onDestroy();
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         if (mDrawerLayout != null && mDrawerToggle != null) {
             mDrawerLayout.removeDrawerListener(mDrawerToggle);
@@ -546,9 +552,9 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onAttachFragment(Fragment fragment) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, fragment);
-
         super.onAttachFragment(fragment);
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, fragment);
 
 //        if (BuildConfig.LOG_DEBUG) {
 //            fragment.getLifecycle().addObserver((LifecycleEventObserver) this::logLifecycleEvent);
@@ -561,8 +567,9 @@ public class MainActivity extends CommonActivity
 
     @Override
     protected void onResumeFragments() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onResumeFragments();
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         /* Showing dialog in onResume() fails with:
          *   Can not perform this action after onSaveInstanceState
@@ -588,8 +595,9 @@ public class MainActivity extends CommonActivity
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu);
         super.onCreateOptionsMenu(menu);
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu);
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_actions, menu);
@@ -682,6 +690,8 @@ public class MainActivity extends CommonActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         switch (requestCode) {
             case ACTIVITY_REQUEST_CODE_FOR_BOOK_IMPORT:
                 if (resultCode == RESULT_OK) {

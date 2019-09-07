@@ -133,8 +133,9 @@ public class SavedSearchFragment extends DaggerFragment implements DrawerItem {
 
     @Override
     public void onResume() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onResume();
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         announceChangesToActivity();
     }
@@ -168,6 +169,7 @@ public class SavedSearchFragment extends DaggerFragment implements DrawerItem {
     @Override
     public void onDetach() {
         super.onDetach();
+
         mListener = null;
     }
 

@@ -107,8 +107,6 @@ public class GesturedListView extends ListView implements GestureDetector.OnGest
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        // if (BuildConfig.LOG_DEBUG) Dlog.method(TAG, friendlyMotionEvent(ev));
-
         return super.onInterceptTouchEvent(ev);
     }
 

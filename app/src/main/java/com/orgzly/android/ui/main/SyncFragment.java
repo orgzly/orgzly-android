@@ -129,8 +129,9 @@ public class SyncFragment extends Fragment {
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onCreate(savedInstanceState);
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
 
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
@@ -141,7 +142,7 @@ public class SyncFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, inflater, container, savedInstanceState);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_sync, container, false);
 
@@ -162,8 +163,9 @@ public class SyncFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onDestroy();
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(syncServiceReceiver);
     }
@@ -173,8 +175,10 @@ public class SyncFragment extends Fragment {
      */
     @Override
     public void onDetach() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
         super.onDetach();
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+
         mListener = null;
     }
 

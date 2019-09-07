@@ -36,8 +36,9 @@ class RefileFragment : DaggerDialogFragment() {
     lateinit var viewModel: RefileViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
         super.onCreate(savedInstanceState)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         val noteIds = arguments?.getLongArray(ARG_NOTE_IDS)?.toSet() ?: emptySet()
         val count = arguments?.getInt(ARG_COUNT) ?: 0
@@ -49,7 +50,6 @@ class RefileFragment : DaggerDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
-
 
         val dialog = object: Dialog(context!!, theme) {
             override fun onBackPressed() {
@@ -75,7 +75,7 @@ class RefileFragment : DaggerDialogFragment() {
 //    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         binding = DialogRefileBinding.inflate(inflater, container, false)
 

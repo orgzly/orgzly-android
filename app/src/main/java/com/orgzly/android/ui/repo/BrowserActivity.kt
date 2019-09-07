@@ -161,9 +161,9 @@ class BrowserActivity :
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, outState)
-
         super.onSaveInstanceState(outState)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, outState)
 
         outState.putString(ARG_DIRECTORY, currentItem)
     }
