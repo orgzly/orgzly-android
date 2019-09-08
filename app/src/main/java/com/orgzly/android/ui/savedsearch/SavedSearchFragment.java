@@ -78,16 +78,11 @@ public class SavedSearchFragment extends DaggerFragment implements DrawerItem {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FragmentActivity activity = getActivity();
-        if (activity != null) {
-            sharedMainActivityViewModel = ViewModelProviders.of(activity).get(SharedMainActivityViewModel.class);
-        } else {
-            throw new IllegalStateException("No Activity");
-        }
+        sharedMainActivityViewModel = ViewModelProviders.of(requireActivity())
+                .get(SharedMainActivityViewModel.class);
 
         setHasOptionsMenu(true);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -162,7 +157,7 @@ public class SavedSearchFragment extends DaggerFragment implements DrawerItem {
         try {
             mListener = (Listener) getActivity();
         } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString() + " must implement " + Listener.class);
+            throw new ClassCastException(requireActivity().toString() + " must implement " + Listener.class);
         }
     }
 

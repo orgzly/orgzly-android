@@ -87,7 +87,7 @@ public class SimpleOneLinerDialog extends DialogFragment {
         try {
             mListener = (Listener) getActivity();
         } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString() + " must implement " + Listener.class);
+            throw new ClassCastException(requireActivity().toString() + " must implement " + Listener.class);
         }
 
 
@@ -108,7 +108,7 @@ public class SimpleOneLinerDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
 
         @SuppressLint("InflateParams") final View view = inflater.inflate(R.layout.dialog_simple_one_liner, null, false);
 

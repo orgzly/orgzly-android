@@ -117,7 +117,7 @@ public class SyncFragment extends Fragment {
         try {
             mListener = (Listener) getActivity();
         } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString() + " must implement " + Listener.class);
+            throw new ClassCastException(requireActivity().toString() + " must implement " + Listener.class);
         }
 
         resources = context.getResources();
@@ -197,7 +197,7 @@ public class SyncFragment extends Fragment {
         private final Animation rotation;
 
         public SyncButton(View view, SyncButton prev) {
-            this.appContext = getActivity().getApplicationContext();
+            this.appContext = requireActivity().getApplicationContext();
 
             rotation = AnimationUtils.loadAnimation(appContext, R.anim.rotate_counterclockwise);
             rotation.setRepeatCount(Animation.INFINITE);
