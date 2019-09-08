@@ -95,8 +95,18 @@ class DirectoryRepoActivity : CommonActivity() {
              */
             try {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-                intent.putExtra("android.content.extra.SHOW_ADVANCED", true) // Shows SD card
+
+                /*
+                 * Try to show internal storage by default.
+                 * https://stackoverflow.com/a/31334967/2515600
+                 *
+                 * Stopped using it as some devices would still not show
+                 * it *and* would not display the option to do so.
+                 */
+                // intent.putExtra("android.content.extra.SHOW_ADVANCED", true)
+
                 startActivityForResult(intent, ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION)
+
                 browserStarted = true
 
             } catch (e: ActivityNotFoundException) {
