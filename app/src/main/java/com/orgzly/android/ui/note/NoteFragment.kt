@@ -134,6 +134,16 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         viewModel = ViewModelProviders.of(this, factory).get(NoteViewModel::class.java)
 
         setHasOptionsMenu(true)
+
+        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressed()
+            }
+        })
+    }
+
+    private fun onBackPressed() {
+        userCancel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -925,7 +935,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         viewModel.saveNote()
     }
 
-    fun userCancel(): Boolean {
+    private fun userCancel(): Boolean {
         ActivityUtils.closeSoftKeyboard(activity)
 
         updatePayloadFromViews()

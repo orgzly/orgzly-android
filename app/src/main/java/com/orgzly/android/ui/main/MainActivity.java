@@ -539,14 +539,6 @@ public class MainActivity extends CommonActivity
             }
         }
 
-        // Handle back press when editing note in NoteFragment. TODO: Use OnBackPressedCallback
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(NoteFragment.FRAGMENT_TAG);
-        if (fragment instanceof NoteFragment && fragment.isVisible()) {
-            NoteFragment noteFragment = (NoteFragment) fragment;
-            noteFragment.userCancel();
-            return;
-        }
-
         super.onBackPressed();
     }
 
