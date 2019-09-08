@@ -30,7 +30,10 @@ import com.orgzly.android.usecase.UseCaseResult;
 import com.orgzly.android.usecase.UseCaseRunner;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
+import com.orgzly.databinding.FragmentSyncBinding;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -43,6 +46,8 @@ public class SyncFragment extends Fragment {
 
     /** Name used for {@link android.app.FragmentManager}. */
     public static final String FRAGMENT_TAG = SyncFragment.class.getName();
+
+    private FragmentSyncBinding binding;
 
     /** Activity which has this fragment attached. Used as a target for hooks. */
     private Listener mListener;
@@ -144,12 +149,17 @@ public class SyncFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
 
-        View view = inflater.inflate(R.layout.fragment_sync, container, false);
+        binding = FragmentSyncBinding.inflate(inflater, container, false);
 
-        /* Retained on configuration change. */
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Retained on configuration change
         mSyncButton = new SyncButton(view, mSyncButton);
-
-        return view;
     }
 
     @Override

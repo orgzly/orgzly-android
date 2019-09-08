@@ -102,6 +102,14 @@ class BooksFragment :
 
         binding = FragmentBooksBinding.inflate(inflater, container, false)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
+
         viewAdapter = BooksAdapter(this)
         viewAdapter.setHasStableIds(true)
 
@@ -109,8 +117,6 @@ class BooksFragment :
             it.layoutManager = LinearLayoutManager(context)
             it.adapter = viewAdapter
         }
-
-        return binding.root
     }
 
     override fun onClick(view: View, position: Int, item: BookView) {
@@ -334,12 +340,6 @@ class BooksFragment :
         d.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
 
         dialog = d
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

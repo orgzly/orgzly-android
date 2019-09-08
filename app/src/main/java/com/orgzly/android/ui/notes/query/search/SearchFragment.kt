@@ -57,22 +57,19 @@ class SearchFragment :
 
         binding = FragmentQuerySearchBinding.inflate(inflater, container, false)
 
-        setupRecyclerView()
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
-    }
 
-    private fun setupRecyclerView() {
         val quickBars = QuickBars(binding.root.context, false)
 
         viewAdapter = SearchAdapter(binding.root.context, this, quickBars)
         viewAdapter.setHasStableIds(true)
+
+        // Restores selection, requires adapter
+        super.onViewCreated(view, savedInstanceState)
 
         val layoutManager = LinearLayoutManager(context)
 

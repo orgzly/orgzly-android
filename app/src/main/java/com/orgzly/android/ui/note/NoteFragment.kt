@@ -151,6 +151,14 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         binding = FragmentNoteBinding.inflate(inflater, container, false)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
+
         /*
          * Not working when done in XML.
          * We want imeOptions="actionDone", so we can't use textMultiLine.
@@ -230,38 +238,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         setupObservers()
 
-        return binding.root
-    }
-
-
-    private fun toEditMode() {
-        binding.fragmentNoteModeText.setText(R.string.note_content_finish_editing)
-
-        binding.bodyView.visibility = View.GONE
-        binding.bodyEdit.visibility = View.VISIBLE
-    }
-
-    private fun toViewMode() {
-        binding.fragmentNoteModeText.setText(R.string.note_content_start_editing)
-
-        binding.bodyEdit.visibility = View.GONE
-
-        binding.bodyView.setRawText(binding.bodyEdit.text.toString())
-
-        ImageLoader.loadImages(binding.bodyView)
-
-        binding.bodyView.visibility = View.VISIBLE
-
-        binding.fragmentNoteContainer.requestFocus()
-
-        ActivityUtils.closeSoftKeyboard(activity)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
-
         /*
          * Metadata folding
          */
@@ -338,6 +314,29 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         viewModel.snackBarMessage.observeSingle(viewLifecycleOwner, Observer { resId ->
             showSnackbar(resId)
         })
+    }
+
+    private fun toEditMode() {
+        binding.fragmentNoteModeText.setText(R.string.note_content_finish_editing)
+
+        binding.bodyView.visibility = View.GONE
+        binding.bodyEdit.visibility = View.VISIBLE
+    }
+
+    private fun toViewMode() {
+        binding.fragmentNoteModeText.setText(R.string.note_content_start_editing)
+
+        binding.bodyEdit.visibility = View.GONE
+
+        binding.bodyView.setRawText(binding.bodyEdit.text.toString())
+
+        ImageLoader.loadImages(binding.bodyView)
+
+        binding.bodyView.visibility = View.VISIBLE
+
+        binding.fragmentNoteContainer.requestFocus()
+
+        ActivityUtils.closeSoftKeyboard(activity)
     }
 
     private fun updateViewsFromPayload() {

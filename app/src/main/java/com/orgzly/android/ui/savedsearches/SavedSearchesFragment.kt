@@ -71,6 +71,12 @@ class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderCli
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSavedSearchesBinding.inflate(inflater, container, false)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         viewAdapter = SavedSearchesAdapter(this)
         viewAdapter.setHasStableIds(true)
 
@@ -83,8 +89,6 @@ class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderCli
             it.adapter = viewAdapter
             it.addItemDecoration(dividerItemDecoration)
         }
-
-        return binding.root
     }
 
     override fun onPause() {

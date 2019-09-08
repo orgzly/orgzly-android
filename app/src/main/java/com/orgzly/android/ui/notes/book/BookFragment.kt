@@ -119,16 +119,17 @@ class BookFragment :
 
         binding = FragmentNotesBookBinding.inflate(inflater, container, false)
 
-        setupRecyclerView()
-
         return binding.root
     }
 
-    private fun setupRecyclerView() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val quickBars = QuickBars(binding.root.context, true)
 
         viewAdapter = BookAdapter(binding.root.context, this, quickBars, inBook = true)
         viewAdapter.setHasStableIds(true)
+
+        // Restores selection, requires adapter
+        super.onViewCreated(view, savedInstanceState)
 
         layoutManager = LinearLayoutManager(context)
 

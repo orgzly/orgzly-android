@@ -60,6 +60,12 @@ class BookPrefaceFragment : DaggerFragment() {
 
         binding = FragmentBookPrefaceBinding.inflate(inflater, container, false)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val activity = activity
 
         if (activity != null && AppPreferences.isFontMonospaced(context)) {
@@ -72,23 +78,17 @@ class BookPrefaceFragment : DaggerFragment() {
         }
 
         /* Parse arguments - set content. */
-        arguments?.let {
-            if (!it.containsKey(ARG_BOOK_ID)) {
-                throw IllegalArgumentException("No book id passed")
-            }
+        requireArguments().apply {
+            require(containsKey(ARG_BOOK_ID)) { "No book id passed" }
 
-            if (!it.containsKey(ARG_BOOK_PREFACE)) {
-                throw IllegalArgumentException("No book preface passed")
-            }
+            require(containsKey(ARG_BOOK_PREFACE)) { "No book preface passed" }
 
-            bookId = it.getLong(ARG_BOOK_ID)
+            bookId = getLong(ARG_BOOK_ID)
 
-            binding.fragmentBookPrefaceContent.setText(it.getString(ARG_BOOK_PREFACE))
-        } ?: throw IllegalArgumentException("No arguments passed")
+            binding.fragmentBookPrefaceContent.setText(getString(ARG_BOOK_PREFACE))
+        }
 
         book = dataRepository.getBook(bookId)
-
-        return binding.root
     }
 
     override fun onResume() {

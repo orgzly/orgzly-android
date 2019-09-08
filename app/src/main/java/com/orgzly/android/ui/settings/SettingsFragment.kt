@@ -33,6 +33,12 @@ import java.util.*
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
     private var listener: Listener? = null
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        listener = activity as Listener
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource()
 
@@ -100,35 +106,25 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         /*
          * Set fragment's background.
          */
-        if (view != null) {
-            val textSizeAttr = intArrayOf(R.attr.item_book_card_bg_color)
-            val typedArray = view.context.obtainStyledAttributes(textSizeAttr)
-            val color = typedArray.getColor(0, -1)
-            typedArray.recycle()
+        val textSizeAttr = intArrayOf(R.attr.item_book_card_bg_color)
+        val typedArray = view.context.obtainStyledAttributes(textSizeAttr)
+        val color = typedArray.getColor(0, -1)
+        typedArray.recycle()
 
-            if (color != -1) {
-                view.setBackgroundColor(color)
-            }
+        if (color != -1) {
+            view.setBackgroundColor(color)
         }
 
         /* Remove dividers. */
 //        view?.findViewById(android.R.id.list)?.let {
 //            (it as? ListView)?.divider = null
 //        }
-
-        return view
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        listener = activity as Listener
     }
 
     /*

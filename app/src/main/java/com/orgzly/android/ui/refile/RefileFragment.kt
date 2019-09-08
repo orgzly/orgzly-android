@@ -79,6 +79,12 @@ class RefileFragment : DaggerDialogFragment() {
 
         binding = DialogRefileBinding.inflate(inflater, container, false)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.dialogRefileToolbar.apply {
             title = resources.getQuantityString(
                     R.plurals.refile_notes, viewModel.count, viewModel.count)
@@ -159,8 +165,6 @@ class RefileFragment : DaggerDialogFragment() {
         })
 
         viewModel.open(RefileViewModel.HOME)
-
-        return binding.root
     }
 
     private fun generateBreadcrumbs(path: List<RefileViewModel.Item>): CharSequence {
