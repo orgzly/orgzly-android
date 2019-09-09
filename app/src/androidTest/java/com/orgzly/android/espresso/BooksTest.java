@@ -4,6 +4,7 @@ import android.os.Environment;
 import androidx.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
+import com.orgzly.android.LocalStorage;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.main.MainActivity;
 
@@ -11,6 +12,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -123,7 +125,7 @@ public class BooksTest extends OrgzlyTest {
     }
 
     @Test
-    public void testExport() {
+    public void testExport() throws IOException {
         activityRule.launchActivity(null);
         onBook(0).perform(longClick());
         openContextualToolbarOverflowMenu();
@@ -135,6 +137,8 @@ public class BooksTest extends OrgzlyTest {
          */
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             onSnackbar().check(matches(withText(startsWith(context.getString(R.string.book_exported, "")))));
+            new File(new LocalStorage(context).downloadsDirectory(), "book-1.org").delete();
+
         } else {
             onSnackbar().check(matches(withText(startsWith(context.getString(R.string.failed_exporting_book, "")))));
         }
