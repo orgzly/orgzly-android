@@ -132,6 +132,8 @@ class DirectoryRepoActivity : CommonActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, requestCode, resultCode, data)
 
         when (requestCode) {

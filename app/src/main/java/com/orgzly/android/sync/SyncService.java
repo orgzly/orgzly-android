@@ -93,22 +93,28 @@ public class SyncService extends DaggerService {
 
         if (intent != null && AppIntent.ACTION_SYNC_START.equals(intent.getAction())) {
             if (!isRunning()) {
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Start requested while not running");
                 start(isTriggeredAutomatically);
             } else {
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Start requested while already running");
                 stopSelf();
             }
 
         } else if (intent != null && AppIntent.ACTION_SYNC_STOP.equals(intent.getAction())) {
             if (isRunning()) {
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Stop requested while already running");
                 stop();
             } else {
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Stop requested while not running");
                 stopSelf();
             }
 
         } else {
             if (isRunning()) {
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Sync requested while already running");
                 stop();
             } else {
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Sync requested while not running");
                 start(isTriggeredAutomatically);
             }
         }
