@@ -11,6 +11,9 @@ You can select multiple notes.
 Fling it left to open a different menu.
 
 ** Fold a note which contains sub-notes by clicking the icon next to it
+
+Long-click the icon to unfold entire subtree.
+
 *** There is no limit in number of levels you can have
 **** Use this to better organize your notes
 
