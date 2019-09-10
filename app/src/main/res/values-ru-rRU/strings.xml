@@ -61,7 +61,7 @@
     <string name="event">Событие</string>
     <plurals name="notes_deleted">
         <item quantity="one">Заметка удалена</item>
-        <item quantity="few">Удалено <b>%d</b> заметок</item>
+        <item quantity="few">Удалено <b>%d</b> заметки</item>
         <item quantity="many">Удалено <b>%d</b> заметок</item>
         <item quantity="other">Удалено <b>%d</b> заметок</item>
     </plurals>

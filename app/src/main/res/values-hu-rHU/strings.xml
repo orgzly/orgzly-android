@@ -483,13 +483,13 @@
     <string name="notification_default_priority">Alapértelmezett</string>
     <string name="notification_low_priority">Alacsony</string>
     <string name="notification_minimum_priority">Minimális</string>
-    <string name="breadcrumbs_target">Breadcrumbs target</string>
-    <string name="link_target">Link target</string>
-    <string name="note_details">Note details</string>
-    <string name="notebook_and_scroll_to_note">Notebook (scroll to note)</string>
-    <string name="notebook_and_focus_on_note">Notebook (focus on note)</string>
+    <string name="breadcrumbs_target">Navigáció célja</string>
+    <string name="link_target">Hivatkozás célja</string>
+    <string name="note_details">Bejegyzés részletei</string>
+    <string name="notebook_and_scroll_to_note">Jegyzetfüzet (lapozás a bejegyzéshez)</string>
+    <string name="notebook_and_focus_on_note">Jegyzetfüzet (bejegyzés kiválasztva)</string>
     <plurals name="refile_notes">
-        <item quantity="one">Refile note</item>
-        <item quantity="other">Refile <b>%d</b> notes</item>
+        <item quantity="one">Bejegyzés újraírása</item>
+        <item quantity="other"><b>%d</b> bejegyzés újraírása</item>
     </plurals>
 </resources>

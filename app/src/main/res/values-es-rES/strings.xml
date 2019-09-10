@@ -490,6 +490,6 @@
     <string name="notebook_and_focus_on_note">Bloc de notas (foco en la nota)</string>
     <plurals name="refile_notes">
         <item quantity="one">Reubicar nota</item>
-        <item quantity="other">Refile <b>%d</b> notes</item>
+        <item quantity="other">Reubicar <b>%d</b> notas</item>
     </plurals>
 </resources>
