@@ -24,6 +24,41 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.7.9-beta.1"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Unfold entire subtree on folding button long-click" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Preference for default note view mode (view, edit or last used)" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Preference for displaying checkmarks in widgets" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fast scroller in notebook and search results" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Share a link to locally stored image with Orgzly (not always available)" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Prompt to save or discard changes on breadcrumbs follow" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Honor current level when creating new checklist item on the next line" />
+
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.7.8"
             tools:ignore="HardcodedText" />
 
