@@ -187,15 +187,15 @@ class NoteViewModel(
     }
 
     fun updatePayloadScheduledTime(range: OrgRange?) {
-        notePayload = notePayload?.copy(scheduled = range.toString())
+        notePayload = notePayload?.copy(scheduled = range?.toString())
     }
 
     fun updatePayloadDeadlineTime(range: OrgRange?) {
-        notePayload = notePayload?.copy(deadline = range.toString())
+        notePayload = notePayload?.copy(deadline = range?.toString())
     }
 
     fun updatePayloadClosedTime(range: OrgRange?) {
-        notePayload = notePayload?.copy(closed = range.toString())
+        notePayload = notePayload?.copy(closed = range?.toString())
     }
 
     private fun createNote(postSave: ((note: Note) -> Unit)?) {

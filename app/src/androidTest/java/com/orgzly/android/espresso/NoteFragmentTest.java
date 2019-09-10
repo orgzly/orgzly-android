@@ -144,6 +144,16 @@ public class NoteFragmentTest extends OrgzlyTest {
     }
 
     @Test
+    public void testRemovingScheduledTimeAndOpeningTimestampDialogAgain() {
+        onNoteInBook(2).perform(click());
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(not(withText(""))));
+        onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
+        onView(withText(R.string.clear)).perform(click());
+        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText("")));
+        onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
+    }
+
+    @Test
     public void testSettingDeadlineTime() {
         onNoteInBook(1).perform(click());
         onView(withId(R.id.fragment_note_deadline_button)).check(matches(withText("")));
