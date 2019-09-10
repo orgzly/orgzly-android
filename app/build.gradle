@@ -174,8 +174,8 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide_version"
 
     implementation("org.eclipse.jgit:org.eclipse.jgit:$jgit_version") {
-        // Resolves DuplicatePlatformClasses lint error but it needs to be tested
-        // exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+        // Resolves DuplicatePlatformClasses lint error
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 }
 
