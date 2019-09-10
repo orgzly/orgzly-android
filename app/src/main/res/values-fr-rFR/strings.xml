@@ -21,6 +21,7 @@
     <string name="remove_notebook_link">Supprimer le lien</string>
     <string name="browse">Parcourir</string>
     <string name="dropbox">Dropbox</string>
+    <string name="view">View</string>
     <string name="edit">Modifier</string>
     <string name="edit_note">Modifier la note</string>
     <string name="delete">Supprimer</string>
@@ -183,6 +184,21 @@
     <string name="git_author_hint">Auteur (par exemple : Jean Dupont)</string>
     <string name="git_email_hint">Courriel (par exemple : jean@dupont.fr)</string>
     <string name="git_branch_hint">Branche (par exemple : master)</string>
+    <string name="git_auth_https_username_hint">Username</string>
+    <string name="git_auth_https_password_hint">Password</string>
+    <string name="git_generate_key_pair">Generate keypair</string>
+    <string name="git_copy_public_key">Copy public key</string>
+    <string name="git_auth_type_text">Authentication type</string>
+    <string name="git_auth_type_ssh">SSH</string>
+    <string name="git_auth_type_https">HTTPS</string>
+    <!-- Git sync repo errors -->
+    <!-- TODO: I don't think we can say more than this for ssh authentication failures, but we probably want to -->
+    <string name="git_clone_error_ssh_auth">Failure while cloning, authentication error</string>
+    <string name="git_clone_error_invalid_repo">The remote address is not a git repo</string>
+    <string name="git_clone_error_unknown">Unknown error while cloning</string>
+    <string name="git_clone_error_invalid_target_dir">The target directory does not exist</string>
+    <string name="git_clone_error_target_not_empty">The target directory is not empty</string>
+    <string name="git_clone_error_uri_not_supported">The remote address is not supported</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Action de partage non configurée</string>
     <string name="share_action_not_supported">L\'action de partage %s n\'est pas supportée</string>
@@ -492,4 +508,8 @@
         <item quantity="one"><b>%d</b> notes reclassées</item>
         <item quantity="other"><b>%d</b> notes reclassées</item>
     </plurals>
+    <string name="display_checkmarks">Display checkmarks</string>
+    <string name="display_checkmarks_summary">Allows marking notes as done</string>
+    <string name="last_used">Last used</string>
+    <string name="note_details_opening_mode">Opening mode</string>
 </resources>

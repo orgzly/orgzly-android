@@ -11,6 +11,9 @@ Můžete vybrat více poznámek.
 Přetáhněte ji doleva pro jiné menu.
 
 ** Složte poznámku obsahující pod-poznámky kliknutím na ikonu odrážky
+
+Kliknutí a podržení ikony rozvine celý úsek.
+
 *** Počet pod-úrovní je neomezený
 **** Využijte toho pro lepší organizaci vašich poznámek
 

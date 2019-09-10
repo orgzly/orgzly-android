@@ -21,6 +21,7 @@
     <string name="remove_notebook_link">Odstranit odkaz</string>
     <string name="browse">Procházet</string>
     <string name="dropbox">Dropbox</string>
+    <string name="view">Zobrazení</string>
     <string name="edit">Upravit</string>
     <string name="edit_note">Upravit poznámku</string>
     <string name="delete">Smazat</string>
@@ -191,6 +192,21 @@
     <string name="git_author_hint">Autor (např. Jan Novák)</string>
     <string name="git_email_hint">Email (např. john@email.com)</string>
     <string name="git_branch_hint">Větev (např. master)</string>
+    <string name="git_auth_https_username_hint">Uživatelské jméno</string>
+    <string name="git_auth_https_password_hint">Heslo</string>
+    <string name="git_generate_key_pair">Generovat pár klíčů</string>
+    <string name="git_copy_public_key">Zkopírovat veřejný klíč</string>
+    <string name="git_auth_type_text">Typ ověření</string>
+    <string name="git_auth_type_ssh">SSH</string>
+    <string name="git_auth_type_https">HTTPS</string>
+    <!-- Git sync repo errors -->
+    <!-- TODO: I don't think we can say more than this for ssh authentication failures, but we probably want to -->
+    <string name="git_clone_error_ssh_auth">Chyba ověření během klonování</string>
+    <string name="git_clone_error_invalid_repo">Zadaná adresa není git repozitář</string>
+    <string name="git_clone_error_unknown">Neznámá chyba během klonování</string>
+    <string name="git_clone_error_invalid_target_dir">Cílový adresář neexistuje</string>
+    <string name="git_clone_error_target_not_empty">Cílový adresář není prázdný</string>
+    <string name="git_clone_error_uri_not_supported">Zadaná adresa není podporována</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Není nastavena akce sdílení</string>
     <string name="share_action_not_supported">Sdílená akce %s není podporována</string>
@@ -508,4 +524,8 @@
         <item quantity="many">Přeuložit <b>%d</b> poznámky</item>
         <item quantity="other">Přeuložit <b>%d</b> poznámek</item>
     </plurals>
+    <string name="display_checkmarks">Zobraz zatržítka</string>
+    <string name="display_checkmarks_summary">Povolit označení poznámek jako hotových</string>
+    <string name="last_used">Naposledy použito</string>
+    <string name="note_details_opening_mode">Otevírací režim</string>
 </resources>

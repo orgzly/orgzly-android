@@ -21,6 +21,7 @@
     <string name="remove_notebook_link">Verknüpfung entfernen</string>
     <string name="browse">Durchsuchen</string>
     <string name="dropbox">Dropbox</string>
+    <string name="view">Anzeige</string>
     <string name="edit">Bearbeiten</string>
     <string name="edit_note">Notiz bearbeiten</string>
     <string name="delete">Löschen</string>
@@ -183,6 +184,21 @@
     <string name="git_author_hint">Autor (z.B. Hans Meier)</string>
     <string name="git_email_hint">E-Mail (z.B. hans@web.de)</string>
     <string name="git_branch_hint">Branch (z.B. master)</string>
+    <string name="git_auth_https_username_hint">Benutzername</string>
+    <string name="git_auth_https_password_hint">Passwort</string>
+    <string name="git_generate_key_pair">Schlüsselpaar erzeugen</string>
+    <string name="git_copy_public_key">Öffentlichen Schlüssel kopieren</string>
+    <string name="git_auth_type_text">Authentifizierungsart</string>
+    <string name="git_auth_type_ssh">SSH</string>
+    <string name="git_auth_type_https">HTTPS</string>
+    <!-- Git sync repo errors -->
+    <!-- TODO: I don't think we can say more than this for ssh authentication failures, but we probably want to -->
+    <string name="git_clone_error_ssh_auth">Fehler beim Klonen, Authentifizierungsfehler</string>
+    <string name="git_clone_error_invalid_repo">Die Remote-Adresse ist kein git-Repo</string>
+    <string name="git_clone_error_unknown">Unbekannter Fehler beim Klonen</string>
+    <string name="git_clone_error_invalid_target_dir">Zielverzeichnis existiert nicht</string>
+    <string name="git_clone_error_target_not_empty">Das Zielverzeichnis ist nicht leer</string>
+    <string name="git_clone_error_uri_not_supported">Die Remote-Adresse wird nicht unterstützt</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Teilen-Aktion noch nicht festgelegt</string>
     <string name="share_action_not_supported">Teilen-Aktion %s wird nicht unterstützt</string>
@@ -492,4 +508,8 @@
         <item quantity="one">Notiz aktualisieren</item>
         <item quantity="other"><b>%d</b> Notizen aktualisieren</item>
     </plurals>
+    <string name="display_checkmarks">Markierungszeichen anzeigen</string>
+    <string name="display_checkmarks_summary">Erlaubt das Markieren von Notizen als erledigt</string>
+    <string name="last_used">Zuletzt verwendet</string>
+    <string name="note_details_opening_mode">Öffnungsmodus</string>
 </resources>

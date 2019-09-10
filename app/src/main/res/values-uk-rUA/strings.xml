@@ -21,6 +21,7 @@
     <string name="remove_notebook_link">Видалити посилання</string>
     <string name="browse">Огляд</string>
     <string name="dropbox">Dropbox</string>
+    <string name="view">Вигляд</string>
     <string name="edit">Редагувати</string>
     <string name="edit_note">Редагувати нотатку</string>
     <string name="delete">Видалити</string>
@@ -191,6 +192,21 @@
     <string name="git_author_hint">Автор (напр. John Doe)</string>
     <string name="git_email_hint">Email (напр. john@email.com)</string>
     <string name="git_branch_hint">Гілка (напр. master)</string>
+    <string name="git_auth_https_username_hint">Ім\'я користувача</string>
+    <string name="git_auth_https_password_hint">Пароль</string>
+    <string name="git_generate_key_pair">Згенерувати ключову пару</string>
+    <string name="git_copy_public_key">Копіювати відкритий ключ</string>
+    <string name="git_auth_type_text">Тип автентифікації</string>
+    <string name="git_auth_type_ssh">SSH</string>
+    <string name="git_auth_type_https">HTTPS</string>
+    <!-- Git sync repo errors -->
+    <!-- TODO: I don't think we can say more than this for ssh authentication failures, but we probably want to -->
+    <string name="git_clone_error_ssh_auth">Збій клонування, помилка автентифікації</string>
+    <string name="git_clone_error_invalid_repo">Віддалена адреса не є git-репозиторієм</string>
+    <string name="git_clone_error_unknown">Невідома помилка під час клонування</string>
+    <string name="git_clone_error_invalid_target_dir">Цільова директорія не існує</string>
+    <string name="git_clone_error_target_not_empty">Цільова директорія не порожня</string>
+    <string name="git_clone_error_uri_not_supported">Віддалена адреса не підтримується</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Дію «Поділитись» не задано</string>
     <string name="share_action_not_supported">Дія «Поділитися» %s не підтримується</string>
@@ -508,4 +524,8 @@
         <item quantity="many">Перемістити <b>%d</b> нотаток</item>
         <item quantity="other">Перемістити <b>%d</b> нотаток</item>
     </plurals>
+    <string name="display_checkmarks">Показувати прапорці</string>
+    <string name="display_checkmarks_summary">Дозволяти маркувати нотатки як виконані</string>
+    <string name="last_used">Останнє використане</string>
+    <string name="note_details_opening_mode">Режим відкриття</string>
 </resources>
