@@ -12,7 +12,7 @@
 
 ** 通過按一下旁邊的圖示來折疊包含子項目的筆記
 
-Long-click the icon to unfold entire subtree.
+長按圖示展開子樹集
 
 您可以擁有無限的筆記階層數
 用這個來更好的整理你的筆記
