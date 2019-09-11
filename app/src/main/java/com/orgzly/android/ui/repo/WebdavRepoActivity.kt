@@ -110,8 +110,9 @@ class WebdavRepoActivity : CommonActivity() {
         return binding.activityRepoWebdavUrl.text.toString().trim { it <= ' ' }.let {
             if (it.startsWith("http")) {
                 it.replaceFirst("http", "webdav")
+            } else {
+                it
             }
-            it
         }
     }
 
