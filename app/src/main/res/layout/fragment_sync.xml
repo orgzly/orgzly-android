@@ -1,60 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_sync_container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/drawer_bg"
-    android:orientation="vertical">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ProgressBar
-        android:id="@+id/sync_progress_bar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="16dp"
-        android:background="?attr/drawer_bg"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:listDivider"/>
-
-    <!-- Sync button. Not using compound drawable as image has to be rotated while syncing. -->
     <LinearLayout
-        android:id="@+id/sync_button_container"
-        style="@style/BorderlessButton"
-        android:paddingLeft="@dimen/screen_edge"
-        android:paddingStart="@dimen/screen_edge"
-        android:paddingRight="@dimen/screen_edge"
-        android:paddingEnd="@dimen/screen_edge"
-        android:layout_height="48dp"
+        android:id="@+id/fragment_sync_container"
         android:layout_width="match_parent"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="start|center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:background="?attr/drawer_bg"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/sync_button_icon"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:src="?attr/ic_sync_24dp"
-            android:contentDescription="@string/sync"/>
+        <ProgressBar
+            android:id="@+id/sync_progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:background="?attr/drawer_bg"/>
 
-        <TextView
-            android:id="@+id/sync_button_text"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:gravity="center_vertical"
-            tools:text="@string/sync_button_sample"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:scrollHorizontally="true"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textStyle="bold"
-            android:textColor="?attr/text_primary_color"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:listDivider"/>
+
+        <!-- Sync button. Not using compound drawable as image has to be rotated while syncing. -->
+        <LinearLayout
+            android:id="@+id/sync_button_container"
+            style="@style/BorderlessButton"
+            android:paddingLeft="@dimen/screen_edge"
+            android:paddingStart="@dimen/screen_edge"
+            android:paddingRight="@dimen/screen_edge"
+            android:paddingEnd="@dimen/screen_edge"
+            android:layout_height="48dp"
+            android:layout_width="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/sync_button_icon"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="?attr/ic_sync_24dp"
+                android:contentDescription="@string/sync"/>
+
+            <TextView
+                android:id="@+id/sync_button_text"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:gravity="center_vertical"
+                tools:text="@string/sync_button_sample"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:scrollHorizontally="true"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textStyle="bold"
+                android:textColor="?attr/text_primary_color"/>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+</layout>

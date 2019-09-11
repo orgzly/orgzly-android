@@ -145,8 +145,9 @@ public class TimestampDialogFragment extends DialogFragment implements View.OnCl
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
         super.onCreate(savedInstanceState);
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
     }
 
     @Override

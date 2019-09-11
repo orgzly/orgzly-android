@@ -29,11 +29,6 @@ class ItemGestureDetector(context: Context, private val listener: Listener) :
                 false
             }
         }
-
-        override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, e1.action, e2.action)
-            return super.onScroll(e1, e2, distanceX, distanceY)
-        }
     })
 
     override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {

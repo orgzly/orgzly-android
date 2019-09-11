@@ -37,27 +37,34 @@ class BookPrefaceFragment : DaggerFragment() {
     private lateinit var sharedMainActivityViewModel: SharedMainActivityViewModel
 
     override fun onAttach(context: Context) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, activity)
         super.onAttach(context)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, activity)
 
         listener = activity as Listener
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
         super.onCreate(savedInstanceState)
 
-        sharedMainActivityViewModel = activity?.let {
-            ViewModelProviders.of(it).get(SharedMainActivityViewModel::class.java)
-        } ?: throw IllegalStateException("No Activity")
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
+
+        sharedMainActivityViewModel = ViewModelProviders.of(requireActivity())
+                .get(SharedMainActivityViewModel::class.java)
 
         setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, inflater, container, savedInstanceState)
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         binding = FragmentBookPrefaceBinding.inflate(inflater, container, false)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val activity = activity
 
@@ -71,28 +78,23 @@ class BookPrefaceFragment : DaggerFragment() {
         }
 
         /* Parse arguments - set content. */
-        arguments?.let {
-            if (!it.containsKey(ARG_BOOK_ID)) {
-                throw IllegalArgumentException("No book id passed")
-            }
+        requireArguments().apply {
+            require(containsKey(ARG_BOOK_ID)) { "No book id passed" }
 
-            if (!it.containsKey(ARG_BOOK_PREFACE)) {
-                throw IllegalArgumentException("No book preface passed")
-            }
+            require(containsKey(ARG_BOOK_PREFACE)) { "No book preface passed" }
 
-            bookId = it.getLong(ARG_BOOK_ID)
+            bookId = getLong(ARG_BOOK_ID)
 
-            binding.fragmentBookPrefaceContent.setText(it.getString(ARG_BOOK_PREFACE))
-        } ?: throw IllegalArgumentException("No arguments passed")
+            binding.fragmentBookPrefaceContent.setText(getString(ARG_BOOK_PREFACE))
+        }
 
         book = dataRepository.getBook(bookId)
-
-        return binding.root
     }
 
     override fun onResume() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
         super.onResume()
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         announceChangesToActivity()
     }
@@ -106,8 +108,9 @@ class BookPrefaceFragment : DaggerFragment() {
     }
 
     override fun onDetach() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
         super.onDetach()
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         listener = null
     }

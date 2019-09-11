@@ -179,7 +179,7 @@ public class GesturedListViewItemMenus {
 
         } else {
             if (menu.isClosed()) {
-                openedMenus.delete(noteId);
+                openedMenus.remove(noteId);
 
             } else {
                 menu.updateView(menuContainer, menuFlipper);

@@ -3,6 +3,7 @@ package com.orgzly.android;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 import com.orgzly.R;
@@ -22,6 +23,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import androidx.core.content.pm.PackageInfoCompat;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 /**
@@ -98,7 +100,8 @@ public class OrgzlyTest {
     private void setPreferencesForTests() {
         /* Last used version. */
         try {
-            int versionCode = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
+            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            int versionCode = (int) PackageInfoCompat.getLongVersionCode(info);
             AppPreferences.lastUsedVersionCode(context, versionCode);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();

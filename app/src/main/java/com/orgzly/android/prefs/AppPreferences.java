@@ -770,6 +770,7 @@ public class AppPreferences {
     }
 
     public static String defaultRepositoryStorageDirectory(Context context) {
+        // FIXME: Test on API 16 emulator: "Field requires API level 19 (current min is 16)"
         File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
         return getStringFromSelector(
                 context, R.string.pref_key_git_default_repository_directory, path.toString());

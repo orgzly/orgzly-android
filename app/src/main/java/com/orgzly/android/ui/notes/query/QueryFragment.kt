@@ -58,16 +58,16 @@ abstract class QueryFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedMainActivityViewModel = activity?.let {
-            ViewModelProviders.of(it).get(SharedMainActivityViewModel::class.java)
-        } ?: throw IllegalStateException("No Activity")
+        sharedMainActivityViewModel = ViewModelProviders.of(requireActivity())
+                .get(SharedMainActivityViewModel::class.java)
 
         setHasOptionsMenu(true)
     }
 
     override fun onResume() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
         super.onResume()
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         announceChangesToActivity()
     }
@@ -75,8 +75,9 @@ abstract class QueryFragment :
     internal abstract fun announceChangesToActivity()
 
     override fun onDetach() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
         super.onDetach()
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         actionModeListener = null
     }

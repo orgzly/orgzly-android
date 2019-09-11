@@ -41,8 +41,8 @@ class SearchFragment :
 
     private lateinit var viewAdapter: SearchAdapter
 
-    override fun getAdapter(): SelectableItemAdapter {
-        return viewAdapter
+    override fun getAdapter(): SelectableItemAdapter? {
+        return if (::viewAdapter.isInitialized) viewAdapter else null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,20 +53,23 @@ class SearchFragment :
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, inflater, container, savedInstanceState)
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         binding = FragmentQuerySearchBinding.inflate(inflater, container, false)
-
-        setupRecyclerView()
 
         return binding.root
     }
 
-    private fun setupRecyclerView() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
+
         val quickBars = QuickBars(binding.root.context, false)
 
         viewAdapter = SearchAdapter(binding.root.context, this, quickBars)
         viewAdapter.setHasStableIds(true)
+
+        // Restores selection, requires adapter
+        super.onViewCreated(view, savedInstanceState)
 
         val layoutManager = LinearLayoutManager(context)
 
@@ -104,8 +107,9 @@ class SearchFragment :
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
         super.onActivityCreated(savedInstanceState)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { state ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed load state: $state")

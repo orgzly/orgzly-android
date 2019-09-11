@@ -35,7 +35,7 @@ abstract class NotesFragment :
 
     abstract fun getCurrentListener(): Listener?
 
-    abstract fun getAdapter(): SelectableItemAdapter
+    abstract fun getAdapter(): SelectableItemAdapter?
 
 
     @JvmField
@@ -56,22 +56,28 @@ abstract class NotesFragment :
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        getAdapter().getSelection().saveIds(outState)
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        /* Save action mode state (move mode). */
-        val actionMode = actionModeListener?.actionMode
-        outState.putBoolean("actionModeMove", actionMode != null && "M" == actionMode.tag)
+        getAdapter()?.let { adapter ->
+            adapter.getSelection().saveIds(outState)
+
+            /* Save action mode state (move mode). */
+            val actionMode = actionModeListener?.actionMode
+            outState.putBoolean("actionModeMove", actionMode != null && "M" == actionMode.tag)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         /*
          * Restore selected items, now that adapter is set.
          * Saved with {@link Selection#saveSelectedIds(android.os.Bundle, String)}.
          */
         if (savedInstanceState != null) {
-            getAdapter().getSelection().restoreIds(savedInstanceState)
+            getAdapter()?.getSelection()?.restoreIds(savedInstanceState)
         }
     }
 

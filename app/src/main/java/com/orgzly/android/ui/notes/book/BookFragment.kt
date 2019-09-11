@@ -59,8 +59,8 @@ class BookFragment :
 
     private lateinit var viewModel: BookViewModel
 
-    override fun getAdapter(): BookAdapter {
-        return viewAdapter
+    override fun getAdapter(): BookAdapter? {
+        return if (::viewAdapter.isInitialized) viewAdapter else null
     }
 
     override fun getCurrentListener(): NotesFragment.Listener? {
@@ -83,20 +83,21 @@ class BookFragment :
 
 
     override fun onAttach(context: Context) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, context)
         super.onAttach(context)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, context)
 
         listener = activity as Listener
         actionModeListener = activity as ActionModeListener
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
         super.onCreate(savedInstanceState)
 
-        sharedMainActivityViewModel = activity?.let {
-            ViewModelProviders.of(it).get(SharedMainActivityViewModel::class.java)
-        } ?: throw IllegalStateException("No Activity")
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
+
+        sharedMainActivityViewModel = ViewModelProviders.of(requireActivity())
+                .get(SharedMainActivityViewModel::class.java)
 
         /* Would like to add items to the Options Menu.
          * Required (for fragments only) to receive onCreateOptionsMenu() call.
@@ -114,20 +115,21 @@ class BookFragment :
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         binding = FragmentNotesBookBinding.inflate(inflater, container, false)
-
-        setupRecyclerView()
 
         return binding.root
     }
 
-    private fun setupRecyclerView() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val quickBars = QuickBars(binding.root.context, true)
 
         viewAdapter = BookAdapter(binding.root.context, this, quickBars, inBook = true)
         viewAdapter.setHasStableIds(true)
+
+        // Restores selection, requires adapter
+        super.onViewCreated(view, savedInstanceState)
 
         layoutManager = LinearLayoutManager(context)
 
@@ -169,8 +171,9 @@ class BookFragment :
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
         super.onActivityCreated(savedInstanceState)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { state ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed load state: $state")
@@ -228,7 +231,7 @@ class BookFragment :
 
         viewModel.refileRequestEvent.observeSingle(viewLifecycleOwner, Observer {
             RefileFragment.getInstance(it.selected, it.count)
-                    .show(fragmentManager, RefileFragment.FRAGMENT_TAG)
+                    .show(requireFragmentManager(), RefileFragment.FRAGMENT_TAG)
         })
     }
 
@@ -250,13 +253,15 @@ class BookFragment :
     }
 
     override fun onDestroyView() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
         super.onDestroyView()
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
     }
 
     override fun onDetach() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
         super.onDetach()
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         listener = null
     }

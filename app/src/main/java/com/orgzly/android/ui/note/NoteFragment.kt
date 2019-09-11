@@ -13,6 +13,7 @@ import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -76,8 +77,9 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private lateinit var sharedMainActivityViewModel: SharedMainActivityViewModel
 
     override fun onAttach(context: Context) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, activity)
         super.onAttach(context)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, activity)
 
         listener = activity as Listener
 
@@ -114,12 +116,12 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
         super.onCreate(savedInstanceState)
 
-        sharedMainActivityViewModel = activity?.let {
-            ViewModelProviders.of(it).get(SharedMainActivityViewModel::class.java)
-        } ?: throw IllegalStateException("No Activity")
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
+
+        sharedMainActivityViewModel = ViewModelProviders.of(requireActivity())
+                .get(SharedMainActivityViewModel::class.java)
 
         val factory = NoteViewModelFactory.getInstance(
                 dataRepository,
@@ -132,12 +134,30 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         viewModel = ViewModelProviders.of(this, factory).get(NoteViewModel::class.java)
 
         setHasOptionsMenu(true)
+
+        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressed()
+            }
+        })
+    }
+
+    private fun onBackPressed() {
+        userCancel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, inflater, container, savedInstanceState)
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         binding = FragmentNoteBinding.inflate(inflater, container, false)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         /*
          * Not working when done in XML.
@@ -218,37 +238,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         setupObservers()
 
-        return binding.root
-    }
-
-
-    private fun toEditMode() {
-        binding.fragmentNoteModeText.setText(R.string.note_content_finish_editing)
-
-        binding.bodyView.visibility = View.GONE
-        binding.bodyEdit.visibility = View.VISIBLE
-    }
-
-    private fun toViewMode() {
-        binding.fragmentNoteModeText.setText(R.string.note_content_start_editing)
-
-        binding.bodyEdit.visibility = View.GONE
-
-        binding.bodyView.setRawText(binding.bodyEdit.text.toString())
-
-        ImageLoader.loadImages(binding.bodyView)
-
-        binding.bodyView.visibility = View.VISIBLE
-
-        binding.fragmentNoteContainer.requestFocus()
-
-        ActivityUtils.closeSoftKeyboard(activity)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, view, savedInstanceState)
-        super.onViewCreated(view, savedInstanceState)
-
         /*
          * Metadata folding
          */
@@ -325,6 +314,29 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         viewModel.snackBarMessage.observeSingle(viewLifecycleOwner, Observer { resId ->
             showSnackbar(resId)
         })
+    }
+
+    private fun toEditMode() {
+        binding.fragmentNoteModeText.setText(R.string.note_content_finish_editing)
+
+        binding.bodyView.visibility = View.GONE
+        binding.bodyEdit.visibility = View.VISIBLE
+    }
+
+    private fun toViewMode() {
+        binding.fragmentNoteModeText.setText(R.string.note_content_start_editing)
+
+        binding.bodyEdit.visibility = View.GONE
+
+        binding.bodyView.setRawText(binding.bodyEdit.text.toString())
+
+        ImageLoader.loadImages(binding.bodyView)
+
+        binding.bodyView.visibility = View.VISIBLE
+
+        binding.fragmentNoteContainer.requestFocus()
+
+        ActivityUtils.closeSoftKeyboard(activity)
     }
 
     private fun updateViewsFromPayload() {
@@ -460,8 +472,9 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
         super.onActivityCreated(savedInstanceState)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         viewModel.noteDetailsDataEvent.observeSingle(viewLifecycleOwner, Observer { data ->
             data.book?.let {
@@ -534,8 +547,9 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     override fun onResume() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
         super.onResume()
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         setMetadataVisibility()
     }
@@ -558,15 +572,17 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     override fun onDestroyView() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
         super.onDestroyView()
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         binding.fragmentNoteViewFlipper.displayedChild = 0
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, outState)
         super.onSaveInstanceState(outState)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, outState)
 
         updatePayloadFromViews()
 
@@ -574,8 +590,9 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     override fun onDetach() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
         super.onDetach()
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         listener = null
     }
@@ -741,50 +758,42 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     }
 
     override fun onDateTimeSet(id: Int, noteIds: TreeSet<Long>, time: OrgDateTime) {
-        if (BuildConfig.LOG_DEBUG)
-            LogUtils.d(
-                    TAG, id, R.id.fragment_note_deadline_button, noteIds, time, viewModel.notePayload)
+        val range = OrgRange(time)
 
-        viewModel.notePayload?.let { payload ->
-            val range = OrgRange(time)
+        when (id) {
+            R.id.fragment_note_scheduled_button -> {
+                updateTimestampView(TimeType.SCHEDULED, range)
+                viewModel.updatePayloadScheduledTime(range)
 
-            when (id) {
-                R.id.fragment_note_scheduled_button -> {
-                    updateTimestampView(TimeType.SCHEDULED, range)
-                    viewModel.updatePayloadScheduledTime(range)
+            }
 
-                }
+            R.id.fragment_note_deadline_button -> {
+                updateTimestampView(TimeType.DEADLINE, range)
+                viewModel.updatePayloadDeadlineTime(range)
+            }
 
-                R.id.fragment_note_deadline_button -> {
-                    updateTimestampView(TimeType.DEADLINE, range)
-                    viewModel.updatePayloadDeadlineTime(range)
-                }
-
-                R.id.fragment_note_closed_edit_text -> {
-                    updateTimestampView(TimeType.CLOSED, range)
-                    viewModel.updatePayloadClosedTime(range)
-                }
+            R.id.fragment_note_closed_edit_text -> {
+                updateTimestampView(TimeType.CLOSED, range)
+                viewModel.updatePayloadClosedTime(range)
             }
         }
     }
 
     override fun onDateTimeCleared(id: Int, noteIds: TreeSet<Long>) {
-        viewModel.notePayload?.let { payload ->
-            when (id) {
-                R.id.fragment_note_scheduled_button -> {
-                    updateTimestampView(TimeType.SCHEDULED, null)
-                    viewModel.updatePayloadScheduledTime(null)
-                }
+        when (id) {
+            R.id.fragment_note_scheduled_button -> {
+                updateTimestampView(TimeType.SCHEDULED, null)
+                viewModel.updatePayloadScheduledTime(null)
+            }
 
-                R.id.fragment_note_deadline_button -> {
-                    updateTimestampView(TimeType.DEADLINE, null)
-                    viewModel.updatePayloadDeadlineTime(null)
-                }
+            R.id.fragment_note_deadline_button -> {
+                updateTimestampView(TimeType.DEADLINE, null)
+                viewModel.updatePayloadDeadlineTime(null)
+            }
 
-                R.id.fragment_note_closed_edit_text -> {
-                    updateTimestampView(TimeType.CLOSED, null)
-                    viewModel.updatePayloadClosedTime(null)
-                }
+            R.id.fragment_note_closed_edit_text -> {
+                updateTimestampView(TimeType.CLOSED, null)
+                viewModel.updatePayloadClosedTime(null)
             }
         }
     }
@@ -925,7 +934,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         viewModel.saveNote()
     }
 
-    fun userCancel(): Boolean {
+    private fun userCancel(): Boolean {
         ActivityUtils.closeSoftKeyboard(activity)
 
         updatePayloadFromViews()

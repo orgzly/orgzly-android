@@ -62,15 +62,20 @@ class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderCli
         val factory = SavedSearchesViewModelFactory.getInstance(dataRepository)
         viewModel = ViewModelProviders.of(this, factory).get(SavedSearchesViewModel::class.java)
 
-        sharedMainActivityViewModel = activity?.let {
-            ViewModelProviders.of(it).get(SharedMainActivityViewModel::class.java)
-        } ?: throw IllegalStateException("No Activity")
+        sharedMainActivityViewModel = ViewModelProviders.of(requireActivity())
+                .get(SharedMainActivityViewModel::class.java)
 
         setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSavedSearchesBinding.inflate(inflater, container, false)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         viewAdapter = SavedSearchesAdapter(this)
         viewAdapter.setHasStableIds(true)
@@ -84,8 +89,6 @@ class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderCli
             it.adapter = viewAdapter
             it.addItemDecoration(dividerItemDecoration)
         }
-
-        return binding.root
     }
 
     override fun onPause() {
@@ -202,8 +205,9 @@ class SavedSearchesFragment : DaggerFragment(), Fab, DrawerItem, OnViewHolderCli
     }
 
     override fun onResume() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
         super.onResume()
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         announceChangesToActivity()
     }

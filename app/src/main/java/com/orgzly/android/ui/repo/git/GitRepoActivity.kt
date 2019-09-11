@@ -319,6 +319,8 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
         when (requestCode) {
             ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION ->
                 if (resultCode == Activity.RESULT_OK && data != null) {

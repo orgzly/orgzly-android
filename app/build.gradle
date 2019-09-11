@@ -119,6 +119,8 @@ dependencies {
 
     implementation "androidx.multidex:multidex:$android_multidex_version"
 
+    implementation "androidx.appcompat:appcompat:$android_appcompat_version"
+
     // UI
     implementation "androidx.cardview:cardview:$android_cardview_version"
     implementation "androidx.recyclerview:recyclerview:$android_recyclerview_version"
@@ -171,9 +173,12 @@ dependencies {
 
     implementation "com.github.bumptech.glide:glide:$glide_version"
 
-    implementation "org.eclipse.jgit:org.eclipse.jgit:$jgit_version"
-
     implementation "com.thegrizzlylabs.sardine-android:sardine-android:$sardine_version"
+
+    implementation("org.eclipse.jgit:org.eclipse.jgit:$jgit_version") {
+        // Resolves DuplicatePlatformClasses lint error
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
 }
 
 repositories {
