@@ -511,11 +511,9 @@
     <string name="webdav_auth_password_hint">Пароль</string>
     <string name="webdav_auth_username_hint">Имя пользователя</string>
     <string name="webdav_test">Тест</string>
-    <string name="webdav_test_ok">Ок</string>
     <string name="webdav_url_hint">URL (пример: webdavs://example.com/my-org-files/)</string>
     <string name="webdav_test_error_auth">Неверный логин или пароль</string>
     <string name="webdav_test_error_unknown">Произошла неизвестная ошибка</string>
     <string name="webdav_test_error_url">Неверный URL</string>
-    <string name="webdav_test_warn_no_books">Блокноты не найдены</string>
     <string name="webdav_url_can_not_be_empty">Url не может быть пустым</string>
 </resources>

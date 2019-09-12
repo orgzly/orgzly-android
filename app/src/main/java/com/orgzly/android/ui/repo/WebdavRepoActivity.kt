@@ -3,7 +3,6 @@ package com.orgzly.android.ui.repo
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
@@ -130,29 +129,19 @@ class WebdavRepoActivity : CommonActivity() {
         val password = binding.activityRepoWebdavPassword.text.toString().trim { it <= ' ' }
 
         getWebdavUrlError(uriString)?.let {
-            setTestResultErrorText(it)
+            setTestResultText(it)
             return
         }
 
         binding.activityRepoWebdavTestButton.isEnabled = false
 
         RepoTester().execute(uriString, username, password)
-
     }
 
-    private fun setTestResultErrorText(text: String) {
-        binding.activityRepoWebdavTestResult.setTextColor(Color.RED)
-        binding.activityRepoWebdavTestResult.text = text
-    }
-
-    private fun setTestResultOkText(text: String) {
-        binding.activityRepoWebdavTestResult.setTextColor(Color.GREEN)
-        binding.activityRepoWebdavTestResult.text = text
-    }
-
-    private fun setTestResultWarnText(text: String) {
-        binding.activityRepoWebdavTestResult.setTextColor(Color.YELLOW)
-        binding.activityRepoWebdavTestResult.text = text
+    private fun setTestResultText(message: String) {
+        handler.post {
+            binding.activityRepoWebdavTestResult.text = message
+        }
     }
 
     private inner class RepoTester : AsyncTask<String, Void, Void>() {
@@ -166,24 +155,30 @@ class WebdavRepoActivity : CommonActivity() {
                 val password = params[2]
 
                 val uri = Uri.parse(uriString)
-                val repo = WebdavRepo(uri, username, password)
-                if (repo.books.isEmpty()) {
-                    setTestResultWarnText(getString(R.string.webdav_test_warn_no_books))
-                } else {
-                    setTestResultOkText(getString(R.string.webdav_test_ok))
+
+                val bookCount = WebdavRepo(uri, username, password).run {
+                    books.size
                 }
+
+                val bookCountMsg = resources.getQuantityString(
+                        R.plurals.found_number_of_notebooks, bookCount, bookCount)
+
+                setTestResultText(getString(R.string.connection_successful) + "\n" + bookCountMsg)
 
             } catch (e: Exception) {
                 when (e) {
                     is SardineException -> {
                         when (e.statusCode) {
-                            401 -> setTestResultErrorText(getString(R.string.webdav_test_error_auth))
-                            else -> setTestResultErrorText(arrayOf(e.statusCode, ":", e.responsePhrase).joinToString(" "))
+                            401 -> setTestResultText(
+                                    getString(R.string.webdav_test_error_auth))
+
+                            else -> setTestResultText(
+                                    arrayOf(e.statusCode, ":", e.responsePhrase).joinToString(" "))
                         }
 
                     }
-                    else -> setTestResultErrorText(e.message
-                            ?: getString(R.string.webdav_test_error_unknown))
+                    else -> setTestResultText(
+                            e.message ?: getString(R.string.webdav_test_error_unknown))
 
                 }
             } finally {
@@ -194,7 +189,6 @@ class WebdavRepoActivity : CommonActivity() {
                 return null
             }
         }
-
     }
 
     companion object {

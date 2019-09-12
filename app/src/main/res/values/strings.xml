@@ -230,8 +230,6 @@
     <string name="webdav_auth_password_hint">Password</string>
     <string name="webdav_url_can_not_be_empty">URL cannot be empty</string>
     <string name="webdav_test">Test</string>
-    <string name="webdav_test_ok">OK</string>
-    <string name="webdav_test_warn_no_books">No books found</string>
     <string name="webdav_test_error_auth">Login or password is invalid</string>
     <string name="webdav_test_error_url">URL is invalid</string>
     <string name="webdav_test_error_unknown">Unknown error occurred</string>
@@ -345,6 +343,7 @@
     <string name="app">App</string>
     <string name="no_repos_configured">No repos configured</string>
     <string name="no_connection">No connection</string>
+    <string name="connection_successful">Connection successful</string>
     <string name="last_sync_with_argument">Last sync: %s</string>
 
     <string name="force_loading_from_uri">Force-loading from %s …</string>
@@ -528,6 +527,12 @@
     <plurals name="notes_count_nonzero">
         <item quantity="one">Contains <b>%d</b> note</item>
         <item quantity="other">Contains <b>%d</b> notes</item>
+    </plurals>
+
+    <plurals name="found_number_of_notebooks">
+        <item quantity="zero">Found no notebooks</item>
+        <item quantity="one">Found <b>%d</b> notebook</item>
+        <item quantity="other">Found <b>%d</b> notebooks</item>
     </plurals>
 
     <string name="content_line_count_displayed">Display content line count</string>
