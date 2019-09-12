@@ -51,6 +51,9 @@ public class RepoFactory {
                     case MockRepo.SCHEME:
                         return new MockRepo(dbRepoBookRepository, uriString);
 
+                    case WebdavRepo.SCHEME:
+                    case WebdavRepo.SSL_SCHEME:
+                        return WebdavRepo.buildFromUri(context, uri, repo);
                     default:
                         // TODO: Should be guarded with Buildconfig.IS_GIT_ENABLED?
                         return GitRepo.buildFromUri(context, uri, repo);

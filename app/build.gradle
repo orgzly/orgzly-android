@@ -173,6 +173,8 @@ dependencies {
 
     implementation "com.github.bumptech.glide:glide:$glide_version"
 
+    implementation "com.thegrizzlylabs.sardine-android:sardine-android:$sardine_version"
+
     implementation("org.eclipse.jgit:org.eclipse.jgit:$jgit_version") {
         // Resolves DuplicatePlatformClasses lint error
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
