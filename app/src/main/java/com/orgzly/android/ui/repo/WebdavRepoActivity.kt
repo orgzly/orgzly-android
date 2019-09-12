@@ -79,15 +79,13 @@ class WebdavRepoActivity : CommonActivity() {
     }
 
     private fun saveAndFinish() {
+        if (!isInputValid()) {
+            return
+        }
+
         val uriString = getUriString()
         val username = binding.activityRepoWebdavUsername.text.toString().trim { it <= ' ' }
         val password = binding.activityRepoWebdavPassword.text.toString().trim { it <= ' ' }
-
-        val urlError = getWebdavUrlError(uriString)
-        binding.activityRepoWebdavUrlLayout.error = urlError
-        if (urlError != null) {
-            return
-        }
 
         repoId = if (repoId == 0L) {
             dataRepository.createRepo(uriString)
@@ -115,23 +113,40 @@ class WebdavRepoActivity : CommonActivity() {
         }
     }
 
-    private fun getWebdavUrlError(url: String): String? {
-        return when {
-            TextUtils.isEmpty(url) -> getString(R.string.webdav_url_can_not_be_empty)
-            !webdavUrlRegex.matches(url) -> getString(R.string.invalid_repo_url)
+    private fun isInputValid(): Boolean {
+        val url = binding.activityRepoWebdavUrl.text.toString().trim()
+        val username = binding.activityRepoWebdavUsername.text.toString().trim()
+        val password = binding.activityRepoWebdavPassword.text.toString().trim()
+
+        binding.activityRepoWebdavUrlLayout.error = when {
+            TextUtils.isEmpty(url) -> getString(R.string.can_not_be_empty)
+            !webdavUrlRegex.matches(url) -> getString(R.string.invalid_url)
             else -> null
         }
+
+        binding.activityRepoWebdavUsernameLayout.error = when {
+            TextUtils.isEmpty(username) -> getString(R.string.can_not_be_empty)
+            else -> null
+        }
+
+        binding.activityRepoWebdavPasswordLayout.error = when {
+            TextUtils.isEmpty(password) -> getString(R.string.can_not_be_empty)
+            else -> null
+        }
+
+        return binding.activityRepoWebdavUrlLayout.error == null
+                && binding.activityRepoWebdavUsernameLayout.error == null
+                && binding.activityRepoWebdavPasswordLayout.error == null
     }
 
     private fun testRepo() {
+        if (!isInputValid()) {
+            return
+        }
+
         val uriString = getUriString()
         val username = binding.activityRepoWebdavUsername.text.toString().trim { it <= ' ' }
         val password = binding.activityRepoWebdavPassword.text.toString().trim { it <= ' ' }
-
-        getWebdavUrlError(uriString)?.let {
-            setTestResultText(it)
-            return
-        }
 
         binding.activityRepoWebdavTestButton.isEnabled = false
 

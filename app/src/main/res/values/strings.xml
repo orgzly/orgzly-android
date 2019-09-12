@@ -228,10 +228,8 @@
     <string name="webdav_url_hint">URL (e.g. webdavs://example.com/my-org-files/)</string>
     <string name="webdav_auth_username_hint">Username</string>
     <string name="webdav_auth_password_hint">Password</string>
-    <string name="webdav_url_can_not_be_empty">URL cannot be empty</string>
     <string name="webdav_test">Test</string>
     <string name="webdav_test_error_auth">Login or password is invalid</string>
-    <string name="webdav_test_error_url">URL is invalid</string>
     <string name="webdav_test_error_unknown">Unknown error occurred</string>
 
     <!-- Share button - error messages (set as title). -->
@@ -258,6 +256,7 @@
     <string name="note_book_not_set">Notebook not set</string>
     <string name="title_can_not_be_empty">Title cannot be empty</string>
     <string name="can_not_be_empty">Cannot be empty</string>
+    <string name="invalid_url">Invalid URL</string>
 
     <string name="no_notebooks">You have no notebooks</string>
     <string name="no_notes">Notebook has no notes</string>
