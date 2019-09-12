@@ -62,7 +62,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
-                        android:drawableTop="?attr/ic_folder_open_48dp"
+                        android:drawableTop="?attr/ic_outline_cloud_48dp"
                         android:text="@string/webdav" />
 
                     <Button

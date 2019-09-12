@@ -24,7 +24,6 @@ import com.orgzly.android.ui.repo.DropboxRepoActivity
 import com.orgzly.android.ui.repo.WebdavRepoActivity
 import com.orgzly.android.ui.repo.git.GitRepoActivity
 import com.orgzly.databinding.ActivityReposBinding
-import kotlinx.android.synthetic.main.activity_repos.*
 import javax.inject.Inject
 
 /**
@@ -248,6 +247,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
 
         } else if (repo is GitRepo) {
             GitRepoActivity.start(this, repoEntity.id)
+
         } else if (repo is WebdavRepo) {
             WebdavRepoActivity.start(this, repoEntity.id)
         } else {
