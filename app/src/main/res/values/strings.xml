@@ -228,7 +228,6 @@
     <string name="webdav_url_hint">URL (e.g. webdavs://example.com/my-org-files/)</string>
     <string name="webdav_auth_username_hint">Username</string>
     <string name="webdav_auth_password_hint">Password</string>
-    <string name="webdav_test">Test</string>
     <string name="webdav_test_error_auth">Login or password is invalid</string>
     <string name="webdav_test_error_unknown">Unknown error occurred</string>
 
@@ -341,6 +340,7 @@
     <string name="prefs_title_notifications">Notifications</string>
     <string name="app">App</string>
     <string name="no_repos_configured">No repos configured</string>
+    <string name="test_connection">Test connection</string>
     <string name="no_connection">No connection</string>
     <string name="connection_successful">Connection successful</string>
     <string name="last_sync_with_argument">Last sync: %s</string>

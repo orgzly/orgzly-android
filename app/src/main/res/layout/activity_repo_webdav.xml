@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_between_content_areas"
                     android:enabled="true"
-                    android:text="@string/webdav_test" />
+                    android:text="@string/test_connection" />
 
                 <TextView
                     android:id="@+id/activity_repo_webdav_test_result"

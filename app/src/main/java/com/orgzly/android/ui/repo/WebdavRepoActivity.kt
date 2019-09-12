@@ -18,6 +18,7 @@ import com.orgzly.android.repos.WebdavRepo
 import com.orgzly.android.repos.WebdavRepo.Companion.PASSWORD_PREF_KEY
 import com.orgzly.android.repos.WebdavRepo.Companion.USERNAME_PREF_KEY
 import com.orgzly.android.ui.CommonActivity
+import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.databinding.ActivityRepoWebdavBinding
 import com.thegrizzlylabs.sardineandroid.impl.SardineException
 import javax.inject.Inject
@@ -50,7 +51,9 @@ class WebdavRepoActivity : CommonActivity() {
             binding.activityRepoWebdavPassword.setText(password)
         }
 
-        binding.activityRepoWebdavTestButton.setOnClickListener { testRepo() }
+        binding.activityRepoWebdavTestButton.setOnClickListener {
+            testConnection()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -139,7 +142,9 @@ class WebdavRepoActivity : CommonActivity() {
                 && binding.activityRepoWebdavPasswordLayout.error == null
     }
 
-    private fun testRepo() {
+    private fun testConnection() {
+        ActivityUtils.closeSoftKeyboard(this)
+
         if (!isInputValid()) {
             return
         }

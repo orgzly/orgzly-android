@@ -510,7 +510,7 @@
     </plurals>
     <string name="webdav_auth_password_hint">Пароль</string>
     <string name="webdav_auth_username_hint">Имя пользователя</string>
-    <string name="webdav_test">Тест</string>
+    <string name="test_connection">Тест</string>
     <string name="webdav_url_hint">URL (пример: webdavs://example.com/my-org-files/)</string>
     <string name="webdav_test_error_auth">Неверный логин или пароль</string>
     <string name="webdav_test_error_unknown">Произошла неизвестная ошибка</string>
