@@ -11,7 +11,7 @@ import com.orgzly.android.usecase.RepoUpdate
 import com.orgzly.android.usecase.UseCase
 import com.orgzly.android.usecase.UseCaseRunner
 
-class RepoViewModel(private val dataRepository: DataRepository, var repoId: Long) : CommonViewModel() {
+open class RepoViewModel(private val dataRepository: DataRepository, open var repoId: Long) : CommonViewModel() {
     val repo: LiveData<Repo> by lazy {
         dataRepository.getRepoLiveData(repoId)
     }

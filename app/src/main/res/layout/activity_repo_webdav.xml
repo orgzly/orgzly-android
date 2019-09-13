@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="@dimen/screen_edge"
-                tools:context=".android.ui.repo.WebdavRepoActivity">
+                tools:context=".android.ui.repo.webdav.WebdavRepoActivity">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/activity_repo_webdav_url_layout"

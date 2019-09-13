@@ -81,7 +81,7 @@
         </activity>
 
         <activity
-            android:name="com.orgzly.android.ui.repo.DropboxRepoActivity"
+            android:name="com.orgzly.android.ui.repo.dropbox.DropboxRepoActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
@@ -91,12 +91,12 @@
         </activity>
 
         <activity
-            android:name="com.orgzly.android.ui.repo.WebdavRepoActivity"
+            android:name="com.orgzly.android.ui.repo.webdav.WebdavRepoActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
         <activity
-            android:name="com.orgzly.android.ui.repo.DirectoryRepoActivity"
+            android:name="com.orgzly.android.ui.repo.directory.DirectoryRepoActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 

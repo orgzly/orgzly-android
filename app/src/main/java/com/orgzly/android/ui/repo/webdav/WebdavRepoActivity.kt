@@ -1,12 +1,9 @@
-package com.orgzly.android.ui.repo
+package com.orgzly.android.ui.repo.webdav
 
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
-import android.os.AsyncTask
 import android.os.Bundle
-import android.os.Handler
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
@@ -16,13 +13,11 @@ import androidx.lifecycle.ViewModelProviders
 import com.orgzly.R
 import com.orgzly.android.prefs.RepoPreferences
 import com.orgzly.android.repos.RepoFactory
-import com.orgzly.android.repos.WebdavRepo
 import com.orgzly.android.repos.WebdavRepo.Companion.PASSWORD_PREF_KEY
 import com.orgzly.android.repos.WebdavRepo.Companion.USERNAME_PREF_KEY
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.databinding.ActivityRepoWebdavBinding
-import com.thegrizzlylabs.sardineandroid.impl.SardineException
 import javax.inject.Inject
 
 class WebdavRepoActivity : CommonActivity() {
@@ -33,7 +28,7 @@ class WebdavRepoActivity : CommonActivity() {
 
     private var webdavUrlRegex = Regex("^(webdav|http)(s)?://.+\$")
 
-    private lateinit var viewModel: RepoViewModel
+    private lateinit var viewModel: WebdavRepoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +52,9 @@ class WebdavRepoActivity : CommonActivity() {
             testConnection()
         }
 
-        val factory = RepoViewModelFactory.getInstance(dataRepository, repoId)
+        val factory = WebdavRepoViewModelFactory.getInstance(dataRepository, repoId)
 
-        viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, factory).get(WebdavRepoViewModel::class.java)
 
         viewModel.finishEvent.observeSingle(this, Observer {
             val username = binding.activityRepoWebdavUsername.text.toString().trim { it <= ' ' }
@@ -83,6 +78,36 @@ class WebdavRepoActivity : CommonActivity() {
             if (error != null) {
                 showSnackbar((error.cause ?: error).localizedMessage)
             }
+        })
+
+        viewModel.connectionTestStatus.observe(this, Observer {
+            binding.activityRepoWebdavTestResult.text =
+                    when (it) {
+                        is WebdavRepoViewModel.ConnectionResult.InProgress -> {
+                            binding.activityRepoWebdavTestButton.isEnabled = false
+
+                            getString(it.msg)
+                        }
+
+                        is WebdavRepoViewModel.ConnectionResult.Success -> {
+                            binding.activityRepoWebdavTestButton.isEnabled = true
+
+                            val bookCountMsg = resources.getQuantityString(
+                                    R.plurals.found_number_of_notebooks, it.bookCount, it.bookCount)
+
+                            "${getString(R.string.connection_successful)}\n$bookCountMsg"
+                        }
+
+                        is WebdavRepoViewModel.ConnectionResult.Error -> {
+                            binding.activityRepoWebdavTestButton.isEnabled = true
+
+                            when (it.msg) {
+                                is Int -> getString(it.msg)
+                                is String -> it.msg
+                                else -> null
+                            }
+                        }
+                    }
         })
     }
 
@@ -166,67 +191,11 @@ class WebdavRepoActivity : CommonActivity() {
         val username = binding.activityRepoWebdavUsername.text.toString().trim { it <= ' ' }
         val password = binding.activityRepoWebdavPassword.text.toString().trim { it <= ' ' }
 
-        binding.activityRepoWebdavTestButton.isEnabled = false
-
-        RepoTester().execute(uriString, username, password)
-    }
-
-    private fun setTestResultText(message: String) {
-        handler.post {
-            binding.activityRepoWebdavTestResult.text = message
-        }
-    }
-
-    private inner class RepoTester : AsyncTask<String, Void, Void>() {
-        override fun doInBackground(vararg params: String?): Void? {
-
-            try {
-                binding.activityRepoWebdavTestResult.text = ""
-
-                val uriString = params[0]
-                val username = params[1]
-                val password = params[2]
-
-                val uri = Uri.parse(uriString)
-
-                val bookCount = WebdavRepo(uri, username, password).run {
-                    books.size
-                }
-
-                val bookCountMsg = resources.getQuantityString(
-                        R.plurals.found_number_of_notebooks, bookCount, bookCount)
-
-                setTestResultText(getString(R.string.connection_successful) + "\n" + bookCountMsg)
-
-            } catch (e: Exception) {
-                when (e) {
-                    is SardineException -> {
-                        when (e.statusCode) {
-                            401 -> setTestResultText(
-                                    getString(R.string.webdav_test_error_auth))
-
-                            else -> setTestResultText(
-                                    arrayOf(e.statusCode, ":", e.responsePhrase).joinToString(" "))
-                        }
-
-                    }
-                    else -> setTestResultText(
-                            e.message ?: getString(R.string.webdav_test_error_unknown))
-
-                }
-            } finally {
-                // Avoiding bug described here: https://stackoverflow.com/a/10687660
-                handler.post {
-                    binding.activityRepoWebdavTestButton.isEnabled = true
-                }
-                return null
-            }
-        }
+        viewModel.testConnection(uriString, username, password)
     }
 
     companion object {
         private const val ARG_REPO_ID = "repo_id"
-        private val handler = Handler()
 
         @JvmStatic
         @JvmOverloads

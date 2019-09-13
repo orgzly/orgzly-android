@@ -1,4 +1,4 @@
-package com.orgzly.android.ui.repo
+package com.orgzly.android.ui.repo.dropbox
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -18,6 +18,8 @@ import com.orgzly.android.repos.DropboxClient
 import com.orgzly.android.repos.DropboxRepo
 import com.orgzly.android.repos.RepoFactory
 import com.orgzly.android.ui.CommonActivity
+import com.orgzly.android.ui.repo.RepoViewModel
+import com.orgzly.android.ui.repo.RepoViewModelFactory
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils

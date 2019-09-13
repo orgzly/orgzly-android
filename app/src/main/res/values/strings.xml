@@ -341,6 +341,7 @@
     <string name="app">App</string>
     <string name="no_repos_configured">No repos configured</string>
     <string name="test_connection">Test connection</string>
+    <string name="connecting">Connecting…</string>
     <string name="no_connection">No connection</string>
     <string name="connection_successful">Connection successful</string>
     <string name="last_sync_with_argument">Last sync: %s</string>

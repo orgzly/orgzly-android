@@ -1,4 +1,4 @@
-package com.orgzly.android.ui.repo
+package com.orgzly.android.ui.repo.directory
 
 import android.app.Activity
 import androidx.lifecycle.Observer
@@ -18,6 +18,9 @@ import com.orgzly.android.repos.ContentRepo
 import com.orgzly.android.repos.DirectoryRepo
 import com.orgzly.android.repos.RepoFactory
 import com.orgzly.android.ui.CommonActivity
+import com.orgzly.android.ui.repo.BrowserActivity
+import com.orgzly.android.ui.repo.RepoViewModel
+import com.orgzly.android.ui.repo.RepoViewModelFactory
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
