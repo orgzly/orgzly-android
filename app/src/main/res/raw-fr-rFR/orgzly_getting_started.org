@@ -1,8 +1,8 @@
 Bienvenue dans Orgzly!
 
 * Notes
-** Cliquez sur une note pour l’ouvrir
-** Cliquez et restez appuyé·e sur une note pour la sélectionner
+** Cliquez sur la note pour l’ouvrir
+** Cliquez et restez appuyé·e sur la note pour la sélectionner
 
 Vous pouvez sélectionner plusieurs notes.
 
@@ -11,13 +11,16 @@ Vous pouvez sélectionner plusieurs notes.
 ** Appuyez et glissez rapidement vers la gauche pour ouvrir un menu différent.
 
 ** Ouvrez une note qui contient des sous-notes en cliquant sur l'icône voisine
+
+Long-click the icon to unfold entire subtree.
+
 *** Il n’y a pas de limite au nombre de niveaux que vous pouvez avoir
-**** Vous pouvez utiliser ça pour mieux organiser vos notes
+**** Utilisez ceci pour mieux organiser vos notes
 
 ** Les notes peuvent avoir des étiquettes :tag1:tag2:
 *** Les sous-notes héritent des étiquettes parentes :tag3:
 
-If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
+Si vous recherchez des notes avec le tag “tag1” en utilisant la requête “t.tag1”, cette note sera incluse dans les résultats de recherche.
 
 ** TODO Les notes peuvent avoir un état
 

@@ -584,7 +584,9 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, outState)
 
-        updatePayloadFromViews()
+        if (::binding.isInitialized) {
+            updatePayloadFromViews()
+        }
 
         viewModel.savePayloadToBundle(outState)
     }

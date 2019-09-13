@@ -11,6 +11,9 @@ Puoi selezionare più note.
 Fling it left to open a different menu.
 
 ** Apri una nota che contiene sotto-note premendo sull'icona vicina ad essa
+
+Long-click the icon to unfold entire subtree.
+
 ** Non ci sono limiti al numero di livelli che puoi avere
 **** Usalo per meglio organizzare le tue note
 

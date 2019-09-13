@@ -21,6 +21,7 @@
     <string name="remove_notebook_link">Link verwijderen</string>
     <string name="browse">Bladeren</string>
     <string name="dropbox">Dropbox</string>
+    <string name="view">Weergave</string>
     <string name="edit">Bewerk</string>
     <string name="edit_note">Notitie bewerken</string>
     <string name="delete">Verwijder</string>
@@ -183,6 +184,21 @@
     <string name="git_author_hint">Auteur (bijv. John Doe)</string>
     <string name="git_email_hint">E-mail (bijv. john@email.com)</string>
     <string name="git_branch_hint">Branch (bijv. master)</string>
+    <string name="git_auth_https_username_hint">Gebruikersnaam</string>
+    <string name="git_auth_https_password_hint">Wachtwoord</string>
+    <string name="git_generate_key_pair">Sleutelpaar genereren</string>
+    <string name="git_copy_public_key">Publieke sleutel kopiëren</string>
+    <string name="git_auth_type_text">Authenticatietype</string>
+    <string name="git_auth_type_ssh">SSH</string>
+    <string name="git_auth_type_https">HTTPS</string>
+    <!-- Git sync repo errors -->
+    <!-- TODO: I don't think we can say more than this for ssh authentication failures, but we probably want to -->
+    <string name="git_clone_error_ssh_auth">Fout bij het klonen, authenticatiefout</string>
+    <string name="git_clone_error_invalid_repo">Het externe adres is geen git repo</string>
+    <string name="git_clone_error_unknown">Onbekende fout tijdens het klonen</string>
+    <string name="git_clone_error_invalid_target_dir">De doelmap bestaat niet</string>
+    <string name="git_clone_error_target_not_empty">De doelmap is niet leeg</string>
+    <string name="git_clone_error_uri_not_supported">Het externe adres wordt niet ondersteund</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Deelactie niet ingesteld</string>
     <string name="share_action_not_supported">Deelactie %s wordt niet ondersteund</string>
@@ -477,7 +493,7 @@
     <string name="below">Onder</string>
     <string name="loading">Bezig met laden…</string>
     <string name="go_to">Ga naar</string>
-    <string name="cannot_refile_to_the_same_subtree">Cannot refile to the same subtree</string>
+    <string name="cannot_refile_to_the_same_subtree">Kan niet opbergen naar dezelfde tak</string>
     <string name="notification_maximum_priority">Maximum</string>
     <string name="notification_high_priority">Hoog</string>
     <string name="notification_default_priority">Standaard</string>
@@ -492,4 +508,8 @@
         <item quantity="one">Refile notitie</item>
         <item quantity="other">Refile <b>%d</b> notities</item>
     </plurals>
+    <string name="display_checkmarks">Toon vinkjes</string>
+    <string name="display_checkmarks_summary">Sta het markeren van notities als gedaan toe</string>
+    <string name="last_used">Laatst gebruikt</string>
+    <string name="note_details_opening_mode">Openingsmodus</string>
 </resources>

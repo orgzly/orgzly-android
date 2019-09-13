@@ -11,6 +11,9 @@ Je kunt meerdere notities selecteren.
 Veeg het naar links om een ander menu te openen.
 
 ** Vouw een notitie met subnotities door op het icoon ernaast te klikken
+
+Lang klikken op het pictogram om volledig te ontvouwen.
+
 *** Er is geen limiet op het aantal niveaus dat je kunt hebben
 **** Gebruik dit om je notities beter te organiseren
 

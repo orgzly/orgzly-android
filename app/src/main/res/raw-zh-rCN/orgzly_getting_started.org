@@ -11,6 +11,9 @@
 左划笔记打开另一个菜单。
 
 ** 点击笔记旁的图标收起笔记的子笔记
+
+Long-click the icon to unfold entire subtree.
+
 *** 没有层数限制
 **** 以便更好地组织笔记
 

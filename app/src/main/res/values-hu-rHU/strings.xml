@@ -21,6 +21,7 @@
     <string name="remove_notebook_link">Hivatkozás eltávolítása</string>
     <string name="browse">Tallózás</string>
     <string name="dropbox">Dropbox</string>
+    <string name="view">Nézet</string>
     <string name="edit">Szerkesztés</string>
     <string name="edit_note">Bejegyzés szerkesztése</string>
     <string name="delete">Törlés</string>
@@ -183,6 +184,21 @@
     <string name="git_author_hint">Szerző (pl. Kovács Jenő)</string>
     <string name="git_email_hint">Email (pl. john@email.com)</string>
     <string name="git_branch_hint">Ág (pl. master)</string>
+    <string name="git_auth_https_username_hint">Felhasználónév</string>
+    <string name="git_auth_https_password_hint">Jelszó</string>
+    <string name="git_generate_key_pair">Kulcspár generálása</string>
+    <string name="git_copy_public_key">Nyilvános kulcs másolása</string>
+    <string name="git_auth_type_text">Hitelesítés típusa</string>
+    <string name="git_auth_type_ssh">SSH</string>
+    <string name="git_auth_type_https">HTTPS</string>
+    <!-- Git sync repo errors -->
+    <!-- TODO: I don't think we can say more than this for ssh authentication failures, but we probably want to -->
+    <string name="git_clone_error_ssh_auth">Nem sikerült klónozni, hitelesítési hiba</string>
+    <string name="git_clone_error_invalid_repo">A távoli cím nem git adattár</string>
+    <string name="git_clone_error_unknown">Ismeretlen hiba klónozás közben</string>
+    <string name="git_clone_error_invalid_target_dir">A cél mappa nem létezik</string>
+    <string name="git_clone_error_target_not_empty">A cél mappa nem üres</string>
+    <string name="git_clone_error_uri_not_supported">Nem támogatott távoli cím</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Megosztási művelet nincs beállítva</string>
     <string name="share_action_not_supported">%s megosztási művelet nem támogatott</string>
@@ -483,13 +499,17 @@
     <string name="notification_default_priority">Alapértelmezett</string>
     <string name="notification_low_priority">Alacsony</string>
     <string name="notification_minimum_priority">Minimális</string>
-    <string name="breadcrumbs_target">Breadcrumbs target</string>
-    <string name="link_target">Link target</string>
-    <string name="note_details">Note details</string>
-    <string name="notebook_and_scroll_to_note">Notebook (scroll to note)</string>
-    <string name="notebook_and_focus_on_note">Notebook (focus on note)</string>
+    <string name="breadcrumbs_target">Navigáció célja</string>
+    <string name="link_target">Hivatkozás célja</string>
+    <string name="note_details">Bejegyzés részletei</string>
+    <string name="notebook_and_scroll_to_note">Jegyzetfüzet (lapozás a bejegyzéshez)</string>
+    <string name="notebook_and_focus_on_note">Jegyzetfüzet (bejegyzés kiválasztva)</string>
     <plurals name="refile_notes">
-        <item quantity="one">Refile note</item>
-        <item quantity="other">Refile <b>%d</b> notes</item>
+        <item quantity="one">Bejegyzés újraírása</item>
+        <item quantity="other"><b>%d</b> bejegyzés újraírása</item>
     </plurals>
+    <string name="display_checkmarks">Pipák megjelenítése</string>
+    <string name="display_checkmarks_summary">Készre lehet jelölni egy bejegyzést</string>
+    <string name="last_used">Utoljára használt</string>
+    <string name="note_details_opening_mode">Nyitás módja</string>
 </resources>

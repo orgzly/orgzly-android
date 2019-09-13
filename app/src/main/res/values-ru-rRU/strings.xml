@@ -21,6 +21,7 @@
     <string name="remove_notebook_link">Удалить ссылку</string>
     <string name="browse">Обзор</string>
     <string name="dropbox">Dropbox</string>
+    <string name="view">View</string>
     <string name="edit">Редактировать</string>
     <string name="edit_note">Редактировать заметку</string>
     <string name="delete">Удалить</string>
@@ -61,7 +62,7 @@
     <string name="event">Событие</string>
     <plurals name="notes_deleted">
         <item quantity="one">Заметка удалена</item>
-        <item quantity="few">Удалено <b>%d</b> заметок</item>
+        <item quantity="few">Удалено <b>%d</b> заметки</item>
         <item quantity="many">Удалено <b>%d</b> заметок</item>
         <item quantity="other">Удалено <b>%d</b> заметок</item>
     </plurals>
@@ -191,6 +192,21 @@
     <string name="git_author_hint">Автор (например John Doe)</string>
     <string name="git_email_hint">Email (например, john@email.com)</string>
     <string name="git_branch_hint">Ветвь (например master)</string>
+    <string name="git_auth_https_username_hint">Имя пользователя</string>
+    <string name="git_auth_https_password_hint">Пароль</string>
+    <string name="git_generate_key_pair">Generate keypair</string>
+    <string name="git_copy_public_key">Copy public key</string>
+    <string name="git_auth_type_text">Тип аутентификации</string>
+    <string name="git_auth_type_ssh">SSH</string>
+    <string name="git_auth_type_https">HTTPS</string>
+    <!-- Git sync repo errors -->
+    <!-- TODO: I don't think we can say more than this for ssh authentication failures, but we probably want to -->
+    <string name="git_clone_error_ssh_auth">Failure while cloning, authentication error</string>
+    <string name="git_clone_error_invalid_repo">The remote address is not a git repo</string>
+    <string name="git_clone_error_unknown">Unknown error while cloning</string>
+    <string name="git_clone_error_invalid_target_dir">The target directory does not exist</string>
+    <string name="git_clone_error_target_not_empty">The target directory is not empty</string>
+    <string name="git_clone_error_uri_not_supported">The remote address is not supported</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Действие «Поделиться» не задано</string>
     <string name="share_action_not_supported">Действие «Поделиться» %s не поддерживается</string>
@@ -508,10 +524,8 @@
         <item quantity="many">Переместить <b>%d</b> заметок</item>
         <item quantity="other">Refile <b>%d</b> notes</item>
     </plurals>
-    <string name="webdav_auth_password_hint">Пароль</string>
-    <string name="webdav_auth_username_hint">Имя пользователя</string>
-    <string name="test_connection">Тест</string>
-    <string name="webdav_url_hint">URL (пример: webdavs://example.com/my-org-files/)</string>
-    <string name="webdav_test_error_auth">Неверный логин или пароль</string>
-    <string name="webdav_test_error_unknown">Произошла неизвестная ошибка</string>
+    <string name="display_checkmarks">Display checkmarks</string>
+    <string name="display_checkmarks_summary">Allows marking notes as done</string>
+    <string name="last_used">Last used</string>
+    <string name="note_details_opening_mode">Opening mode</string>
 </resources>

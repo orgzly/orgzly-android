@@ -21,6 +21,7 @@
     <string name="remove_notebook_link">Eliminar enlace</string>
     <string name="browse">Navegar</string>
     <string name="dropbox">Dropbox</string>
+    <string name="view">Ver</string>
     <string name="edit">Editar</string>
     <string name="edit_note">Editar nota</string>
     <string name="delete">Borrar</string>
@@ -183,6 +184,21 @@
     <string name="git_author_hint">Autor (por ejemplo, Juan Pérez)</string>
     <string name="git_email_hint">Correo electrónico (por ejemplo, juan@email.com)</string>
     <string name="git_branch_hint">Rama (por ejemplo, master)</string>
+    <string name="git_auth_https_username_hint">Usuario</string>
+    <string name="git_auth_https_password_hint">Contraseña</string>
+    <string name="git_generate_key_pair">Generar par de claves</string>
+    <string name="git_copy_public_key">Copiar clave pública</string>
+    <string name="git_auth_type_text">Tipo de autenticación</string>
+    <string name="git_auth_type_ssh">SSH</string>
+    <string name="git_auth_type_https">HTTPS</string>
+    <!-- Git sync repo errors -->
+    <!-- TODO: I don't think we can say more than this for ssh authentication failures, but we probably want to -->
+    <string name="git_clone_error_ssh_auth">Fallo al clonar, error de autenticación</string>
+    <string name="git_clone_error_invalid_repo">La dirección remota no es un repositorio git</string>
+    <string name="git_clone_error_unknown">Error desconocido mientras se clona</string>
+    <string name="git_clone_error_invalid_target_dir">El directorio de destino no existe</string>
+    <string name="git_clone_error_target_not_empty">El directorio de destino no está vacío</string>
+    <string name="git_clone_error_uri_not_supported">La dirección remota no es soportada</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Compartir acción no definida</string>
     <string name="share_action_not_supported">Acción de compartir %s no es permitida</string>
@@ -490,6 +506,10 @@
     <string name="notebook_and_focus_on_note">Bloc de notas (foco en la nota)</string>
     <plurals name="refile_notes">
         <item quantity="one">Reubicar nota</item>
-        <item quantity="other">Refile <b>%d</b> notes</item>
+        <item quantity="other">Reubicar <b>%d</b> notas</item>
     </plurals>
+    <string name="display_checkmarks">Mostrar marcas</string>
+    <string name="display_checkmarks_summary">Permite marcar notas como hechas</string>
+    <string name="last_used">Último usado</string>
+    <string name="note_details_opening_mode">Modo de apertura</string>
 </resources>

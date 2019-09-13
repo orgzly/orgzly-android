@@ -21,6 +21,7 @@
     <string name="remove_notebook_link">移除連結</string>
     <string name="browse">瀏覽</string>
     <string name="dropbox">Dropbox</string>
+    <string name="view">檢視</string>
     <string name="edit">編輯</string>
     <string name="edit_note">編輯筆記</string>
     <string name="delete">刪除</string>
@@ -179,6 +180,21 @@
     <string name="git_author_hint">作者 (如 無名氏)</string>
     <string name="git_email_hint">電子郵件 (例如 john@email.com)</string>
     <string name="git_branch_hint">Branch 分支 (如 master)</string>
+    <string name="git_auth_https_username_hint">使用者名稱</string>
+    <string name="git_auth_https_password_hint">密碼</string>
+    <string name="git_generate_key_pair">產生金鑰</string>
+    <string name="git_copy_public_key">複製公鑰</string>
+    <string name="git_auth_type_text">驗證類型</string>
+    <string name="git_auth_type_ssh">SSH</string>
+    <string name="git_auth_type_https">HTTPS</string>
+    <!-- Git sync repo errors -->
+    <!-- TODO: I don't think we can say more than this for ssh authentication failures, but we probably want to -->
+    <string name="git_clone_error_ssh_auth">複製失敗，身份驗證錯誤</string>
+    <string name="git_clone_error_invalid_repo">遠端位址不是 git repo 倉庫</string>
+    <string name="git_clone_error_unknown">複製時發生不明錯誤</string>
+    <string name="git_clone_error_invalid_target_dir">目標目錄不存在</string>
+    <string name="git_clone_error_target_not_empty">目標不是空目錄</string>
+    <string name="git_clone_error_uri_not_supported">不支援此遠端位址</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">沒有設置共用</string>
     <string name="share_action_not_supported">不支援 %s 共用操作</string>
@@ -484,4 +500,8 @@
     <plurals name="refile_notes">
         <item quantity="other">移動 <b>%d</b> 筆記</item>
     </plurals>
+    <string name="display_checkmarks">顯示check標誌</string>
+    <string name="display_checkmarks_summary">允許將筆記標記為done完成</string>
+    <string name="last_used">最後使用的</string>
+    <string name="note_details_opening_mode">開始的模式</string>
 </resources>

@@ -11,6 +11,9 @@ Birden fazla not seçebilirsiniz.
 Fling it left to open a different menu.
 
 ** Bir notun alt notlarını yanındaki simgeye tıklayarak gizleyebilirsiniz
+
+Long-click the icon to unfold entire subtree.
+
 *** Sahip olabileceğiniz seviyelerin sınırı yoktur
 Notlarınızı daha iyi düzenlemek için bunu kullanın
 

@@ -11,13 +11,16 @@ Kijelölhetsz több bejegyzést is.
 Balra simítva egy másik menü nyílik meg.
 
 ** Ha egy bejegyzés tartalmaz aljegyzeteket is, be lehet hajtogatni azokat, ha az ikonra koppintasz mellette
+
+Hosszú koppintás az ikonon megnyitja az egész fát.
+
 *** Nincs korlátozva, hogy hány szinten lehet aljegyzet
 **** Így könnyebb elrendezni a bejegyzéseket
 
 ** Lehet címkéket is ragasztani bejegyzésekre :címke1:címke2:
 *** Az aljegyzet örökli a címkéket :címke3:
 
-If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
+Ha a "címke1" címkéjű bejegyzéseket keresed a "t.címke1" lekérdezés használatával, akkor ez a bejegyzés benne lesz a keresési eredményben.
 
 ** TODO Egy bejegyzésnek állapota is lehet
 

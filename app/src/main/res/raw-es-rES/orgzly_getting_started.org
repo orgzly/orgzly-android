@@ -11,6 +11,9 @@ Se pueden seleccionar múltiples notas.
 Arrastre a la izquierda para abrir un menú diferente.
 
 ** Plegar una nota que contiene subnotas haciendo clic en el icono a su lado
+
+Haga clic largo en el icono para desplegar subárbol completo.
+
 *** No hay límite en el número de niveles que se pueden tener
 **** Utilice esto para organizar mejor sus notas
 

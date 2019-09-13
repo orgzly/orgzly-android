@@ -11,6 +11,9 @@ Anda dapat membuat beberapa catatan.
 Fling it left to open a different menu.
 
 ** Lipat catatan yang berisi sub-catatan dengan mengklik ikon di sebelahnya
+
+Long-click the icon to unfold entire subtree.
+
 *** Tidak ada batas jumlah level yang bisa anda miliki
 **** Gunakan ini untuk mengatur catatan anda dengan lebih baik
 

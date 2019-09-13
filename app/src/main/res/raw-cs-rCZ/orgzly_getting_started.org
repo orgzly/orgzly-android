@@ -1,0 +1,92 @@
+Vítejte v Orgzly!
+
+* Poznámky
+** Klikněte na poznámku, pro její otevření
+** Klikněte a držte na poznámce, pro vybrání
+
+Můžete vybrat více poznámek.
+
+** Přetáhněte poznámku doprava pro rychlé menu
+
+Přetáhněte ji doleva pro jiné menu.
+
+** Složte poznámku obsahující pod-poznámky kliknutím na ikonu odrážky
+
+Kliknutí a podržení ikony rozvine celý úsek.
+
+*** Počet pod-úrovní je neomezený
+**** Využijte toho pro lepší organizaci vašich poznámek
+
+** Poznámky mohou mít štítky :štítek1:štítek2:
+*** Pod-poznámky štítky dědí :štítek3:
+
+Při hledání poznámek se štítkem "štítek1" a použijete "t.štítek1", bude tato poznámka zahrnuta do výsledků hledání.
+
+** TODO Poznámka může mít stav
+
+Lze nastavit množství stavů: TODO, NEXT, DONE, atd.
+
+*** Existují dva /typy/ stavů: k udělání a hotovo
+
+*** DONE je dokončená poznámka, se stavem /done/
+CLOSED: [2018-01-24 Wed 17:00]
+
+** Poznámka může obsahovat naplánovaný čas
+SCHEDULED: <2015-02-20 Fri 15:15>
+
+*** Časy mohou obsahovat opakovač
+SCHEDULED: <2015-02-16 Mon .+2d>
+
+** Můžete také nastavit termín
+DEADLINE: <2015-02-20 Fri>
+
+** Upozornění pro časy plánované a časy po termínu jsou podporovány
+
+Ve výchozím nastavení jsou tyto vypnuty a je nutno je povolit v nastavení.
+
+** [#A] Poznámky mohou obsahovat prioritu
+
+Priority můžete nastavit v Nastavení. Můžete také nastavit výchozí prioritu - předpokládanou prioritu pro poznámky bez nastavené priority.
+
+** Poznámky mohou obsahovat odkazy
+
+Vytočení telefonního čísla (tel:555-0199), poslání textové zprávy (sms:555-0199), email (mailto:support@orgzly.com) nebo webová stránky ([[http://www.orgzly.com][Orgzly.com]]).
+
+Linkovat lze i ostatní poznámky nebo sešity v rámci aplikace.
+
+Navštivte http://www.orgzly.com/help#links pro více informací.
+
+** Základní typografická zvýraznění jsou podporována
+
+Slova lze označit jako *tučná*, /kurzíva/, _podtržená_, =doslovná=, ~kód~ a +přeškrtnutá+.
+
+** Zaškrtávací políčka jsou k dispozici
+
+- [X] Úkol 1
+- [ ] Úkol 2
+- [ ] Úkol 3
+
+Klikněte na zaškrtávací políčko pro odškrtnutí. Klikněte na ikonu nového-řádku na konci řádku pro vytvoření nové položky.
+
+* Hledání
+** Podporováno je mnoho vyhledávacích operátorů
+
+Můžete hledat dle stavu, štítku, času plánovaného nebo termínu a podobně.
+
+Navšivte http://www.orgzly.com/help#search pro další podrobnosti.
+
+** Hledání je možno uložit pro rychlý přístup
+
+Zkuste si ukázková hledání v navigační liště a všimněte si jaké vyhledávací dotazy obsahují.
+
+Můžete vytvořit vlastní uložená hledání kliknutím na "Hledání" v navigační liště.
+
+* Synchronizace
+
+** Sešity je možno uložit jako čistě textové soubory
+
+Soubory jsou ve formátu používaném v "Org módu".
+
+** Typ (umístění) úložiště
+
+Sešity můžete synchronizovat se složkou na vašem mobilním zařízení, na SD kartě nebo na Dropboxu.
