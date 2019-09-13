@@ -11,17 +11,25 @@ import com.orgzly.android.usecase.RepoUpdate
 import com.orgzly.android.usecase.UseCase
 import com.orgzly.android.usecase.UseCaseRunner
 
-class RepoViewModel(dataRepository: DataRepository, private val id: Long) : CommonViewModel() {
+class RepoViewModel(private val dataRepository: DataRepository, var repoId: Long) : CommonViewModel() {
     val repo: LiveData<Repo> by lazy {
-        dataRepository.getRepoLiveData(id)
+        dataRepository.getRepoLiveData(repoId)
     }
 
     val finishEvent: SingleLiveEvent<Any> = SingleLiveEvent()
 
     val alreadyExistsEvent: SingleLiveEvent<Any> = SingleLiveEvent()
 
+    fun saveRepo(url: String) {
+        if (repoId == 0L) {
+            create(url)
+        } else {
+            update(url)
+        }
+    }
+
     fun update(url: String) {
-        run(RepoUpdate(id, url))
+        run(RepoUpdate(repoId, url))
     }
 
     fun create(url: String) {
@@ -31,7 +39,12 @@ class RepoViewModel(dataRepository: DataRepository, private val id: Long) : Comm
     private fun run(useCase: UseCase) {
         App.EXECUTORS.diskIO().execute {
             try {
-                finishEvent.postValue(UseCaseRunner.run(useCase))
+                val result = UseCaseRunner.run(useCase)
+
+                // Update repo ID
+                repoId = result.userData as Long
+
+                finishEvent.postValue(result)
 
             } catch (ae: RepoCreate.AlreadyExists) {
                 alreadyExistsEvent.postValue(true)

@@ -11,6 +11,8 @@ import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.orgzly.R
 import com.orgzly.android.prefs.RepoPreferences
 import com.orgzly.android.repos.RepoFactory
@@ -29,9 +31,9 @@ class WebdavRepoActivity : CommonActivity() {
     @Inject
     lateinit var repoFactory: RepoFactory
 
-    private var repoId: Long = 0
-
     private var webdavUrlRegex = Regex("^(webdav|http)(s)?://.+\$")
+
+    private lateinit var viewModel: RepoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +42,7 @@ class WebdavRepoActivity : CommonActivity() {
 
         setupActionBar(R.string.webdav)
 
-        repoId = intent.getLongExtra(ARG_REPO_ID, 0)
+        val repoId = intent.getLongExtra(ARG_REPO_ID, 0)
 
         if (repoId != 0L) {
             val prefs = RepoPreferences.fromId(this, repoId, dataRepository)
@@ -54,6 +56,34 @@ class WebdavRepoActivity : CommonActivity() {
         binding.activityRepoWebdavTestButton.setOnClickListener {
             testConnection()
         }
+
+        val factory = RepoViewModelFactory.getInstance(dataRepository, repoId)
+
+        viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
+
+        viewModel.finishEvent.observeSingle(this, Observer {
+            val username = binding.activityRepoWebdavUsername.text.toString().trim { it <= ' ' }
+            val password = binding.activityRepoWebdavPassword.text.toString().trim { it <= ' ' }
+
+            // TODO: Move to RepoPreferences
+            val editor: SharedPreferences.Editor = RepoPreferences.fromId(this, viewModel.repoId, dataRepository).repoPreferences.edit()
+            editor.putString(USERNAME_PREF_KEY, username)
+            editor.putString(PASSWORD_PREF_KEY, password)
+            editor.apply()
+
+            finish()
+        })
+
+        viewModel.alreadyExistsEvent.observeSingle(this, Observer {
+            showSnackbar(R.string.repository_url_already_exists)
+        })
+
+
+        viewModel.errorEvent.observeSingle(this, Observer { error ->
+            if (error != null) {
+                showSnackbar((error.cause ?: error).localizedMessage)
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -82,28 +112,11 @@ class WebdavRepoActivity : CommonActivity() {
     }
 
     private fun saveAndFinish() {
-        if (!isInputValid()) {
-            return
+        if (isInputValid()) {
+            val uriString = getUriString()
+
+            viewModel.saveRepo(uriString)
         }
-
-        val uriString = getUriString()
-        val username = binding.activityRepoWebdavUsername.text.toString().trim { it <= ' ' }
-        val password = binding.activityRepoWebdavPassword.text.toString().trim { it <= ' ' }
-
-        repoId = if (repoId == 0L) {
-            dataRepository.createRepo(uriString)
-        } else {
-            dataRepository.updateRepo(repoId, uriString)
-            dataRepository.getRepo(uriString)!!.id
-        }
-
-        val editor: SharedPreferences.Editor = RepoPreferences.fromId(this, repoId, dataRepository).repoPreferences.edit()
-        editor.putString(USERNAME_PREF_KEY, username)
-        editor.putString(PASSWORD_PREF_KEY, password)
-        editor.apply()
-
-        finish()
-
     }
 
     private fun getUriString(): String {

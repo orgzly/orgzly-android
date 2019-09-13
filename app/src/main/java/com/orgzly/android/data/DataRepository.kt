@@ -2004,8 +2004,8 @@ class DataRepository @Inject constructor(
     /**
      * Since old url might be in use, do not update the existing record, but replace it.
      */
-    fun updateRepo(id: Long, url: String) {
-        db.repo().replace(id, url)
+    fun updateRepo(id: Long, url: String): Long {
+        return db.repo().replace(id, url)
     }
 
     fun deleteRepo(id: Long) {

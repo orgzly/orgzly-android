@@ -10,25 +10,24 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
 import android.text.TextUtils
-import android.util.Log
 import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.textfield.TextInputLayout
 import com.orgzly.R
-import com.orgzly.android.App
 import com.orgzly.android.git.GitPreferences
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.prefs.RepoPreferences
 import com.orgzly.android.repos.GitRepo
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.BrowserActivity
-import com.orgzly.android.usecase.RepoCreate
-import com.orgzly.android.usecase.RepoUpdate
-import com.orgzly.android.usecase.UseCaseRunner
+import com.orgzly.android.ui.repo.RepoViewModel
+import com.orgzly.android.ui.repo.RepoViewModelFactory
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.databinding.ActivityRepoGitBinding
@@ -45,9 +44,9 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
     private lateinit var fields: Array<Field>
 
-    private var repoId: Long = 0
-
     data class Field(var editText: EditText, var layout: TextInputLayout, var preference: Int)
+
+    private lateinit var viewModel: RepoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +92,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             startLocalFileBrowser(binding.activityRepoGitSshKey, ACTIVITY_REQUEST_CODE_FOR_SSH_KEY_SELECTION, true)
         }
 
-        repoId = intent.getLongExtra(ARG_REPO_ID, 0)
+        val repoId = intent.getLongExtra(ARG_REPO_ID, 0)
 
         /* Set directory value for existing repository being edited. */
         if (repoId != 0L) {
@@ -102,8 +101,30 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
                 setFromPreferences()
             }
         } else {
-            createDefaultRepoFolder();
+            createDefaultRepoFolder()
         }
+
+        val factory = RepoViewModelFactory.getInstance(dataRepository, repoId)
+
+        viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
+
+        viewModel.finishEvent.observeSingle(this, Observer {
+            saveToPreferences(viewModel.repoId)
+
+            // TODO: Check permission on start
+            runWithPermission(AppPermissions.Usage.LOCAL_REPO, Runnable { finish() })
+        })
+
+        viewModel.alreadyExistsEvent.observeSingle(this, Observer {
+            showSnackbar(R.string.repository_url_already_exists)
+        })
+
+
+        viewModel.errorEvent.observeSingle(this, Observer { error ->
+            if (error != null) {
+                showSnackbar((error.cause ?: error).localizedMessage)
+            }
+        })
     }
 
     // TODO: Since we can create multiple syncs, this folder might be re-used, do we want to create
@@ -124,7 +145,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     }
 
     private fun setFromPreferences() {
-        val prefs = RepoPreferences.fromId(this, repoId, dataRepository)
+        val prefs = RepoPreferences.fromId(this, viewModel.repoId, dataRepository)
         for (field in fields) {
             setTextFromPrefKey(prefs, field.editText, field.preference)
         }
@@ -214,23 +235,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private fun save() {
         val remoteUriString = remoteUri().toString()
 
-        val useCase = if (repoId != 0L) {
-            RepoUpdate(repoId, remoteUriString)
-        } else {
-            RepoCreate(remoteUriString)
-        }
-
-        App.EXECUTORS.diskIO().execute {
-            val result = UseCaseRunner.run(useCase)
-            if (repoId == 0L) {
-                repoId = result.userData as Long
-            }
-
-            App.EXECUTORS.mainThread().execute {
-                saveToPreferences(repoId)
-                runWithPermission(AppPermissions.Usage.LOCAL_REPO, Runnable { finish() })
-            }
-        }
+        viewModel.saveRepo(remoteUriString)
     }
 
     private fun validateFields(): Boolean {

@@ -33,8 +33,6 @@ class DropboxRepoActivity : CommonActivity() {
 
     private lateinit var client: DropboxClient
 
-    private var repoId: Long = 0
-
     private lateinit var viewModel: RepoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,13 +64,13 @@ class DropboxRepoActivity : CommonActivity() {
             }
         }
 
-        repoId = intent.getLongExtra(ARG_REPO_ID, 0)
+        val repoId = intent.getLongExtra(ARG_REPO_ID, 0)
 
         val factory = RepoViewModelFactory.getInstance(dataRepository, repoId)
 
         viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
 
-        if (repoId != 0L) { // Editing existing
+        if (viewModel.repoId != 0L) { // Editing existing
             viewModel.repo.observe(this, Observer { repo ->
                 if (repo != null) {
                     val path = Uri.parse(repo.url).path
@@ -157,11 +155,7 @@ class DropboxRepoActivity : CommonActivity() {
             return
         }
 
-        if (repoId != 0L) {
-            viewModel.update(repo.uri.toString())
-        } else {
-            viewModel.create(repo.uri.toString())
-        }
+        viewModel.saveRepo(repo.uri.toString())
     }
 
     private fun toggleLinkAfterConfirmation() {
