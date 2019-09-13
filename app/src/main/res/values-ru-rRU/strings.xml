@@ -192,11 +192,11 @@
     <string name="git_author_hint">Автор (например John Doe)</string>
     <string name="git_email_hint">Email (например, john@email.com)</string>
     <string name="git_branch_hint">Ветвь (например master)</string>
-    <string name="git_auth_https_username_hint">Username</string>
-    <string name="git_auth_https_password_hint">Password</string>
+    <string name="git_auth_https_username_hint">Имя пользователя</string>
+    <string name="git_auth_https_password_hint">Пароль</string>
     <string name="git_generate_key_pair">Generate keypair</string>
     <string name="git_copy_public_key">Copy public key</string>
-    <string name="git_auth_type_text">Authentication type</string>
+    <string name="git_auth_type_text">Тип аутентификации</string>
     <string name="git_auth_type_ssh">SSH</string>
     <string name="git_auth_type_https">HTTPS</string>
     <!-- Git sync repo errors -->
