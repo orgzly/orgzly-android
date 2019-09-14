@@ -36,6 +36,8 @@ class WebdavRepoViewModel(
                 connectionTestStatus.postValue(ConnectionResult.Success(bookCount))
 
             } catch (e: Exception) {
+                e.printStackTrace()
+
                 val result = when (e) {
                     is SardineException -> {
                         when (e.statusCode) {

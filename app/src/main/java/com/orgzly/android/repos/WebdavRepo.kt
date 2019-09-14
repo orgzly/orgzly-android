@@ -20,8 +20,8 @@ class WebdavRepo(private val uri: Uri, username: String?, password: String?) : S
     }
 
     companion object {
-        const val SCHEME = "webdav"
-        const val SSL_SCHEME = "webdavs"
+        val SCHEMES = arrayOf("webdav", "webdavs", "dav", "davs", "http", "https")
+
         const val USERNAME_PREF_KEY = "repo_webdav_username"
         const val PASSWORD_PREF_KEY = "repo_webdav_password"
 
@@ -92,12 +92,6 @@ class WebdavRepo(private val uri: Uri, username: String?, password: String?) : S
     }
 
     private fun Uri.toUrl(): String {
-        return this.toString().let {
-            if (it.startsWith("webdav")) {
-                it.replaceFirst("webdav", "http")
-            } else {
-                it
-            }
-        }
+        return this.toString().replace("^(?:web)?dav(s?://)".toRegex(), "http$1")
     }
 }

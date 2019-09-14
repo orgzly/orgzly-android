@@ -322,8 +322,10 @@ class DataRepository @Inject constructor(
 
     fun deleteBook(book: BookView, deleteLinked: Boolean) {
         if (deleteLinked) {
-            val repo = repoFactory.getFromUri(context, book.syncedTo?.repoUri, this)
-            repo?.delete(book.syncedTo?.uri)
+            book.syncedTo?.repoUri?.let { url ->
+                val repo = repoFactory.getFromUri(context, url, this)
+                repo?.delete(url)
+            }
         }
 
         db.book().delete(book.book)
@@ -375,11 +377,14 @@ class DataRepository @Inject constructor(
         /* Prefer link. */
         if (bookView.syncedTo != null) {
             val vrook = bookView.syncedTo
+
             val repo = repoFactory.getFromUri(context, vrook.repoUri, this)
 
-            val movedVrook = repo.renameBook(vrook.uri, name)
+            if (repo != null) {
+                val movedVrook = repo.renameBook(vrook.uri, name)
 
-            updateBookLinkAndSync(book.id, movedVrook)
+                updateBookLinkAndSync(book.id, movedVrook)
+            }
         }
 
         if (db.book().updateName(book.id, name) != 1) {

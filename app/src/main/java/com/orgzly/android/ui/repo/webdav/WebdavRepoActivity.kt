@@ -26,8 +26,6 @@ class WebdavRepoActivity : CommonActivity() {
     @Inject
     lateinit var repoFactory: RepoFactory
 
-    private var webdavUrlRegex = Regex("^(webdav|http)(s)?://.+\$")
-
     private lateinit var viewModel: WebdavRepoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,9 +39,12 @@ class WebdavRepoActivity : CommonActivity() {
 
         if (repoId != 0L) {
             val prefs = RepoPreferences.fromId(this, repoId, dataRepository)
+
             binding.activityRepoWebdavUrl.setText(prefs.repoUri.toString())
+
             val username = prefs.getStringValue(USERNAME_PREF_KEY, "")
             binding.activityRepoWebdavUsername.setText(username)
+
             val password = prefs.getStringValue(PASSWORD_PREF_KEY, "")
             binding.activityRepoWebdavPassword.setText(password)
         }
@@ -57,8 +58,8 @@ class WebdavRepoActivity : CommonActivity() {
         viewModel = ViewModelProviders.of(this, factory).get(WebdavRepoViewModel::class.java)
 
         viewModel.finishEvent.observeSingle(this, Observer {
-            val username = binding.activityRepoWebdavUsername.text.toString().trim { it <= ' ' }
-            val password = binding.activityRepoWebdavPassword.text.toString().trim { it <= ' ' }
+            val username = getUsername()
+            val password = getPassword()
 
             // TODO: Move to RepoPreferences
             val editor: SharedPreferences.Editor = RepoPreferences.fromId(this, viewModel.repoId, dataRepository).repoPreferences.edit()
@@ -138,30 +139,32 @@ class WebdavRepoActivity : CommonActivity() {
 
     private fun saveAndFinish() {
         if (isInputValid()) {
-            val uriString = getUriString()
+            val uriString = getUrl()
 
             viewModel.saveRepo(uriString)
         }
     }
 
-    private fun getUriString(): String {
-        return binding.activityRepoWebdavUrl.text.toString().trim { it <= ' ' }.let {
-            if (it.startsWith("http")) {
-                it.replaceFirst("http", "webdav")
-            } else {
-                it
-            }
-        }
+    private fun getUrl(): String {
+        return binding.activityRepoWebdavUrl.text.toString().trim { it <= ' ' }
+    }
+
+    private fun getUsername(): String {
+        return binding.activityRepoWebdavUsername.text.toString().trim { it <= ' ' }
+    }
+
+    private fun getPassword(): String {
+        return binding.activityRepoWebdavPassword.text.toString().trim { it <= ' ' }
     }
 
     private fun isInputValid(): Boolean {
-        val url = binding.activityRepoWebdavUrl.text.toString().trim()
-        val username = binding.activityRepoWebdavUsername.text.toString().trim()
-        val password = binding.activityRepoWebdavPassword.text.toString().trim()
+        val url = getUrl()
+        val username = getUsername()
+        val password = getPassword()
 
         binding.activityRepoWebdavUrlLayout.error = when {
             TextUtils.isEmpty(url) -> getString(R.string.can_not_be_empty)
-            !webdavUrlRegex.matches(url) -> getString(R.string.invalid_url)
+            !WEB_DAV_SCHEME_REGEX.matches(url) -> getString(R.string.invalid_url)
             else -> null
         }
 
@@ -187,15 +190,17 @@ class WebdavRepoActivity : CommonActivity() {
             return
         }
 
-        val uriString = getUriString()
-        val username = binding.activityRepoWebdavUsername.text.toString().trim { it <= ' ' }
-        val password = binding.activityRepoWebdavPassword.text.toString().trim { it <= ' ' }
+        val uriString = getUrl()
+        val username = getUsername()
+        val password = getPassword()
 
         viewModel.testConnection(uriString, username, password)
     }
 
     companion object {
         private const val ARG_REPO_ID = "repo_id"
+
+        private val WEB_DAV_SCHEME_REGEX = Regex("^(webdav|dav|http)s?://.+\$")
 
         @JvmStatic
         @JvmOverloads
