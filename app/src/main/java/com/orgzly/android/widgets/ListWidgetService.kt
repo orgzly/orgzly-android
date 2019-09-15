@@ -39,7 +39,7 @@ class ListWidgetService : RemoteViewsService() {
     }
 
     private sealed class WidgetEntry(open val id: Long) {
-        data class WidgetNoteEntry(override val id: Long, val noteView: NoteView) : WidgetEntry(id)
+        data class WidgetNoteEntry(override val id: Long, val noteView: NoteView, val agendaTimeType: Int) : WidgetEntry(id)
 
         data class WidgetDividerEntry(override val id: Long, val day: DateTime) : WidgetEntry(id)
     }
@@ -87,14 +87,14 @@ class ListWidgetService : RemoteViewsService() {
 
                 dataList = agendaItems.map {
                     when (it) {
-                        is AgendaItem.Note -> WidgetEntry.WidgetNoteEntry(it.id, it.note)
+                        is AgendaItem.Note -> WidgetEntry.WidgetNoteEntry(it.id, it.note, it.timeType)
                         is AgendaItem.Divider -> WidgetEntry.WidgetDividerEntry(it.id, it.day)
                     }
                 }
 
             } else {
                 dataList = notes.map {
-                    WidgetEntry.WidgetNoteEntry(it.note.id, it)
+                    WidgetEntry.WidgetNoteEntry(it.note.id, it, 0)
                 }
             }
         }
@@ -173,9 +173,38 @@ class ListWidgetService : RemoteViewsService() {
                 row.setViewVisibility(R.id.item_list_widget_closed, View.GONE)
             }
 
+            var scheduled = noteView.scheduledRangeString
+            var deadline = noteView.deadlineRangeString
+            var event = noteView.eventString
+
+            // In Agenda only display time responsible for item's presence
+            when (entry.agendaTimeType) {
+                1 -> {
+                    deadline = null
+                    event = null
+                }
+                2 -> {
+                    scheduled = null
+                    event = null
+                }
+                3 -> {
+                    scheduled = null
+                    deadline = null
+                }
+            }
+
+            // Scheduled time
+            if (displayPlanningTimes && scheduled != null) {
+                val time = userTimeFormatter.formatAll(OrgRange.parse(scheduled))
+                row.setTextViewText(R.id.item_list_widget_scheduled_text, time)
+                row.setViewVisibility(R.id.item_list_widget_scheduled, View.VISIBLE)
+            } else {
+                row.setViewVisibility(R.id.item_list_widget_scheduled, View.GONE)
+            }
+
             // Deadline time
-            if (displayPlanningTimes && noteView.deadlineRangeString != null) {
-                val time = userTimeFormatter.formatAll(OrgRange.parse(noteView.deadlineRangeString))
+            if (displayPlanningTimes && deadline != null) {
+                val time = userTimeFormatter.formatAll(OrgRange.parse(deadline))
                 row.setTextViewText(R.id.item_list_widget_deadline_text, time)
                 row.setViewVisibility(R.id.item_list_widget_deadline, View.VISIBLE)
             } else {
@@ -183,22 +212,14 @@ class ListWidgetService : RemoteViewsService() {
             }
 
             // Event time
-            if (displayPlanningTimes && noteView.eventString != null) {
-                val time = userTimeFormatter.formatAll(OrgRange.parse(noteView.eventString))
+            if (displayPlanningTimes && event != null) {
+                val time = userTimeFormatter.formatAll(OrgRange.parse(event))
                 row.setTextViewText(R.id.item_list_widget_event_text, time)
                 row.setViewVisibility(R.id.item_list_widget_event, View.VISIBLE)
             } else {
                 row.setViewVisibility(R.id.item_list_widget_event, View.GONE)
             }
 
-            // Scheduled time
-            if (displayPlanningTimes && noteView.scheduledRangeString != null) {
-                val time = userTimeFormatter.formatAll(OrgRange.parse(noteView.scheduledRangeString))
-                row.setTextViewText(R.id.item_list_widget_scheduled_text, time)
-                row.setViewVisibility(R.id.item_list_widget_scheduled, View.VISIBLE)
-            } else {
-                row.setViewVisibility(R.id.item_list_widget_scheduled, View.GONE)
-            }
 
             // Check mark
             if (!AppPreferences.widgetDisplayCheckmarks(context) || doneStates.contains(noteView.note.state)) {
