@@ -17,10 +17,6 @@ import java.util.TreeSet;
 
 public class AgendaUtils {
 
-    /**
-     * This method returns only one {@link DateTime} per day
-     * to avoid displaying the same note multiple times.
-     */
     public static Set<DateTime> expandOrgDateTime(
             AgendaItems.ExpandableOrgRange[] rangeStrings, DateTime now, int days) {
 
@@ -33,13 +29,7 @@ public class AgendaUtils {
             }
         }
 
-        /* Truncate and remove duplicates. */
-        Set<DateTime> result = new TreeSet<>();
-        for (DateTime dt: set) {
-            result.add(dt.withTimeAtStartOfDay());
-        }
-
-        return result;
+        return set;
     }
 
     /** Used by tests. */

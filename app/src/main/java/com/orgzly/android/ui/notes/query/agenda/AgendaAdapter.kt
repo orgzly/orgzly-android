@@ -69,7 +69,7 @@ class AgendaAdapter(
             val holder = h as NoteItemViewHolder
             val item = getItem(position) as AgendaItem.Note
 
-            noteViewBinder.bind(holder, item.note)
+            noteViewBinder.bind(holder, item.note, item.timeType)
 
             quickBar.bind(holder)
 

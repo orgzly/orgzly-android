@@ -43,7 +43,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         userTimeFormatter = UserTimeFormatter(context)
     }
 
-    fun bind(holder: NoteItemViewHolder, noteView: NoteView) {
+    fun bind(holder: NoteItemViewHolder, noteView: NoteView, agendaTimeType: Int? = 0) {
 
         setupTitle(holder, noteView)
 
@@ -51,7 +51,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
         setupBookName(holder, noteView)
 
-        setupPlanningTimes(holder, noteView)
+        setupPlanningTimes(holder, noteView, agendaTimeType)
 
         setupContent(holder, noteView.note)
 
@@ -135,7 +135,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         }
     }
 
-    private fun setupPlanningTimes(holder: NoteItemViewHolder, noteView: NoteView) {
+    private fun setupPlanningTimes(holder: NoteItemViewHolder, noteView: NoteView, agendaTimeType: Int? = 0) {
 
         fun setupPlanningTime(containerView: View, textView: TextView, value: String?) {
             if (value != null && AppPreferences.displayPlanning(context)) {
@@ -148,20 +148,40 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
             }
         }
 
+        var scheduled = noteView.scheduledRangeString
+        var deadline = noteView.deadlineRangeString
+        var event = noteView.eventString
+
+        // In Agenda only display time responsible for item's presence
+        when (agendaTimeType) {
+            1 -> {
+                deadline = null
+                event = null
+            }
+            2 -> {
+                scheduled = null
+                event = null
+            }
+            3 -> {
+                scheduled = null
+                deadline = null
+            }
+        }
+
         setupPlanningTime(
                 holder.binding.itemHeadScheduled,
                 holder.binding.itemHeadScheduledText,
-                noteView.scheduledRangeString)
+                scheduled)
 
         setupPlanningTime(
                 holder.binding.itemHeadDeadline,
                 holder.binding.itemHeadDeadlineText,
-                noteView.deadlineRangeString)
+                deadline)
 
         setupPlanningTime(
                 holder.binding.itemHeadEvent,
                 holder.binding.itemHeadEventText,
-                noteView.eventString)
+                event)
 
         setupPlanningTime(
                 holder.binding.itemHeadClosed,

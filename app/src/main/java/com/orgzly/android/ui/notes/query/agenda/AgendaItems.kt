@@ -51,36 +51,39 @@ object AgendaItems {
                         { it.millis },
                         { mutableListOf<AgendaItem>(AgendaItem.Divider(index++, it)) })
 
-        val dedup = HashSet<Pair<Long, Long>>()
+        val addedPlanningTimes = HashSet<Long>()
 
         notes.forEach { note ->
 
-            val times = arrayOf(
-                    ExpandableOrgRange(note.scheduledRangeString, overdueToday = true),
-                    ExpandableOrgRange(note.deadlineRangeString, overdueToday = true),
-                    ExpandableOrgRange(note.eventString, overdueToday = false)
-            )
+            fun addInstances(timeType: Int, timeString: String?, overdueToday: Boolean) {
+                // Expand each note if it has a repeater or is a range
+                val times = AgendaUtils.expandOrgDateTime(
+                        arrayOf(ExpandableOrgRange(timeString, overdueToday)),
+                        now,
+                        agendaDays)
 
-            // Expand each note if it has a repeater or is a range
-            val days = AgendaUtils.expandOrgDateTime(times, now, agendaDays)
+                // Add each note instance to its day bucket
+                times.forEach { time ->
+                    val bucketKey = time.withTimeAtStartOfDay().millis
 
-            // Add each note instance to its day bucket
-            days.forEach { day ->
-
-                val bucketKey = day.millis
-
-                val dedupKey = Pair(bucketKey, note.note.id)
-
-                if (!dedup.contains(dedupKey)) {
                     dayBuckets[bucketKey]?.let {
-                        it.add(AgendaItem.Note(index, note))
+                        it.add(AgendaItem.Note(index, note, timeType))
                         item2databaseIds[index] = note.note.id
                         index++
                     }
-
-                    dedup.add(dedupKey)
                 }
             }
+
+            // Add planning times for a note only once
+            if (!addedPlanningTimes.contains(note.note.id)) {
+                addInstances(1, note.scheduledRangeString, true)
+                addInstances(2, note.deadlineRangeString, true)
+
+                addedPlanningTimes.add(note.note.id)
+            }
+
+            // Add each note's event
+            addInstances(3, note.eventString, false)
         }
 
         return dayBuckets.values.flatten() // FIXME
