@@ -70,6 +70,12 @@ open class BasicQueryParser : QueryParser() {
 
 
     override val sortOrders = listOf(
+            SortOrderMatch("""^(-)?sort-order:(?:notebook|book)$""") { match ->
+                SortOrder.Book(match.groupValues[1].isNotEmpty())
+            },
+            SortOrderMatch("""^(-)?sort-order:(?:title)$""") { match ->
+                SortOrder.Title(match.groupValues[1].isNotEmpty())
+            },
             SortOrderMatch("""^(-)?sort-order:(?:scheduled|sched)$""") { match ->
                 SortOrder.Scheduled(match.groupValues[1].isNotEmpty())
             },
@@ -87,9 +93,6 @@ open class BasicQueryParser : QueryParser() {
             },
             SortOrderMatch("""^(-)?sort-order:(?:priority|prio)$""") { match ->
                 SortOrder.Priority(match.groupValues[1].isNotEmpty())
-            },
-            SortOrderMatch("""^(-)?sort-order:(?:notebook|book)$""") { match ->
-                SortOrder.Book(match.groupValues[1].isNotEmpty())
             },
             SortOrderMatch("""^(-)?sort-order:(?:state|st)$""") { match ->
                 SortOrder.State(match.groupValues[1].isNotEmpty())

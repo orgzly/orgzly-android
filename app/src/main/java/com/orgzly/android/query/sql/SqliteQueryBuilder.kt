@@ -66,6 +66,9 @@ class SqliteQueryBuilder(val context: Context) {
                     is SortOrder.Book ->
                         o.add("book_name" + if (order.desc) " DESC" else "")
 
+                    is SortOrder.Title ->
+                        o.add("title" + if (order.desc) " DESC" else "")
+
                     is SortOrder.Scheduled -> {
                         o.add("scheduled_time_timestamp IS NULL")
 

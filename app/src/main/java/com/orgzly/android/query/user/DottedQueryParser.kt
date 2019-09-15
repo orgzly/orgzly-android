@@ -77,6 +77,12 @@ open class DottedQueryParser : QueryParser() {
     )
 
     override val sortOrders = listOf(
+            SortOrderMatch("""^(\.)?o\.(?:notebook|book|b)$""") { match ->
+                SortOrder.Book(match.groupValues[1].isNotEmpty())
+            },
+            SortOrderMatch("""^(\.)?o\.(?:title|t)$""") { match ->
+                SortOrder.Title(match.groupValues[1].isNotEmpty())
+            },
             SortOrderMatch("""^(\.)?o\.(?:scheduled|sched|s)$""") { match ->
                 SortOrder.Scheduled(match.groupValues[1].isNotEmpty())
             },
@@ -94,9 +100,6 @@ open class DottedQueryParser : QueryParser() {
             },
             SortOrderMatch("""^(\.)?o\.(?:priority|prio|pri|p)$""") { match ->
                 SortOrder.Priority(match.groupValues[1].isNotEmpty())
-            },
-            SortOrderMatch("""^(\.)?o\.(?:notebook|book|b)$""") { match ->
-                SortOrder.Book(match.groupValues[1].isNotEmpty())
             },
             SortOrderMatch("""^(\.)?o\.(?:state|st)$""") { match ->
                 SortOrder.State(match.groupValues[1].isNotEmpty())

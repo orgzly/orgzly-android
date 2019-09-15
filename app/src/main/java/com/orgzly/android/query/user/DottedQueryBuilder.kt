@@ -98,6 +98,7 @@ open class DottedQueryBuilder {
             orders.forEach { order ->
                 list.add(when (order) {
                     is SortOrder.Book -> dot(order) + "o.b"
+                    is SortOrder.Title -> dot(order) + "o.t"
                     is SortOrder.Scheduled -> dot(order) + "o.s"
                     is SortOrder.Deadline -> dot(order) + "o.d"
                     is SortOrder.Event -> dot(order) + "o.e"

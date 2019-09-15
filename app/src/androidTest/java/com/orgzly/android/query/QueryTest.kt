@@ -280,6 +280,14 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             queryString = "((i.todo s.no) or i.later) o.state",
                             expectedQueryString = "(i.todo s.none or i.later) o.state",
                             expectedQuerySortOrders = listOf(SortOrder.State())
+                    ),
+                    Parameter(
+                            queryString = "o.title",
+                            expectedQueryString = "o.t",
+                            expectedSqlSelection = "",
+                            expectedSelectionArgs = listOf(),
+                            expectedSqlOrder = "title, lft",
+                            expectedQuerySortOrders = listOf(SortOrder.Title())
                     )
             )
         }

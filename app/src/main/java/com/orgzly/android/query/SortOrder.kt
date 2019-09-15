@@ -4,6 +4,7 @@ sealed class SortOrder {
     abstract val desc: Boolean
 
     data class Book(override val desc: Boolean = false) : SortOrder()
+    data class Title(override val desc: Boolean = false) : SortOrder()
     data class Scheduled(override val desc: Boolean = false) : SortOrder()
     data class Deadline(override val desc: Boolean = false) : SortOrder()
     data class Event(override val desc: Boolean = false) : SortOrder()
