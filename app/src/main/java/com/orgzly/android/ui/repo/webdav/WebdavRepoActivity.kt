@@ -1,6 +1,7 @@
 package com.orgzly.android.ui.repo.webdav
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -17,6 +18,7 @@ import com.orgzly.android.repos.WebdavRepo.Companion.PASSWORD_PREF_KEY
 import com.orgzly.android.repos.WebdavRepo.Companion.USERNAME_PREF_KEY
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.util.UriUtils
 import com.orgzly.databinding.ActivityRepoWebdavBinding
 import javax.inject.Inject
 
@@ -141,7 +143,19 @@ class WebdavRepoActivity : CommonActivity() {
         if (isInputValid()) {
             val uriString = getUrl()
 
-            viewModel.saveRepo(uriString)
+            if (UriUtils.isUrlSecure(uriString)) {
+                viewModel.saveRepo(uriString)
+
+            } else {
+                alertDialog = AlertDialog.Builder(this)
+                        .setTitle(R.string.cleartext_traffic)
+                        .setMessage(R.string.cleartext_traffic_message)
+                        .setPositiveButton(R.string.yes) { _, _ ->
+                            viewModel.saveRepo(uriString)
+                        }
+                        .setNegativeButton(R.string.cancel, null)
+                        .show()
+            }
         }
     }
 

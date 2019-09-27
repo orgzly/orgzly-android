@@ -647,4 +647,7 @@
     <string name="last_used">Last used</string>
 
     <string name="note_details_opening_mode">Opening mode</string>
+
+    <string name="cleartext_traffic">Cleartext traffic</string>
+    <string name="cleartext_traffic_message">Are you sure you want to use this URL?</string>
 </resources>

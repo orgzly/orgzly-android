@@ -57,4 +57,8 @@ public class UriUtils {
                 .appendPath(newFilename) // New file name
                 .build();
     }
+
+    public static boolean isUrlSecure(String url) {
+        return url.matches("^(https|davs|webdavs)://.*");
+    }
 }
