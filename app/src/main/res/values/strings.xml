@@ -650,4 +650,6 @@
 
     <string name="cleartext_traffic">Cleartext traffic</string>
     <string name="cleartext_traffic_message">Are you sure you want to use this URL?</string>
+
+    <string name="credentials_in_url_not_supported">Passing credentials in URL is not supported</string>
 </resources>

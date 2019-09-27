@@ -179,6 +179,7 @@ class WebdavRepoActivity : CommonActivity() {
         binding.activityRepoWebdavUrlLayout.error = when {
             TextUtils.isEmpty(url) -> getString(R.string.can_not_be_empty)
             !WEB_DAV_SCHEME_REGEX.matches(url) -> getString(R.string.invalid_url)
+            UriUtils.containsUser(url) -> getString(R.string.credentials_in_url_not_supported)
             else -> null
         }
 
