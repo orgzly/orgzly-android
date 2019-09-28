@@ -50,7 +50,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
 
         listAdapter = object : ArrayAdapter<Repo>(this, R.layout.item_repo, R.id.item_repo_url) {
             override fun getItemId(position: Int): Long {
-                return getItem(position).id
+                return getItem(position)?.id ?: 0
             }
         }
 

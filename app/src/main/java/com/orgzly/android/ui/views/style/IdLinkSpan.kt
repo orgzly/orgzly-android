@@ -5,7 +5,7 @@ import android.view.View
 import com.orgzly.android.ui.views.TextViewWithMarkup
 
 class IdLinkSpan(val value: String) : ClickableSpan() {
-    override fun onClick(widget: View?) {
+    override fun onClick(widget: View) {
         if (widget is TextViewWithMarkup) {
             widget.followLinkToNoteWithProperty(PROPERTY, value)
         }
