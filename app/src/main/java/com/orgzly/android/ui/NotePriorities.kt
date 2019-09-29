@@ -21,8 +21,8 @@ class NotePriorities {
 
             val lastPriority = AppPreferences.minPriority(context)
 
-            if (lastPriority == null || lastPriority.length != 1) {
-                throw IllegalArgumentException("Last priority must be a character, not $lastPriority")
+            require(lastPriority != null && lastPriority.length == 1) {
+                "Last priority must be a character, not $lastPriority"
             }
 
             'A'.rangeTo(lastPriority[0]).forEach { p -> obj.values.add(p.toString()) }

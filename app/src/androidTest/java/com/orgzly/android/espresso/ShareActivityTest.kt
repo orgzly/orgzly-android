@@ -2,7 +2,6 @@ package com.orgzly.android.espresso
 
 import android.content.Intent
 import android.net.Uri
-import android.os.SystemClock
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
@@ -19,7 +18,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
-//@Ignore
 class ShareActivityTest : OrgzlyTest() {
     @get:Rule
     val activityRule = EspressoActivityTestRule(ShareActivity::class.java)

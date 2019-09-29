@@ -1,6 +1,7 @@
 package com.orgzly.android.espresso;
 
 import android.os.Environment;
+
 import androidx.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
@@ -27,8 +28,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
 import static com.orgzly.android.espresso.EspressoUtils.onBook;
+import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
 import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
 import static com.orgzly.android.espresso.EspressoUtils.openContextualToolbarOverflowMenu;
 import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
@@ -37,7 +38,6 @@ import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
 
-//@Ignore
 public class BooksTest extends OrgzlyTest {
     @Rule
     public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);

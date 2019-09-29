@@ -59,9 +59,8 @@ class QueryTokenizer(val str: String, private val groupOpen: String, private val
                 return "\"\""
             }
 
-            for (i in 0 until s.length) {
-                val c = s[i]
-                if (c == '"' || c == '\\' || delim.indexOf(c) >= 0) {
+            for (element in s) {
+                if (element == '"' || element == '\\' || delim.indexOf(element) >= 0) {
                     return quoteUnconditionally(s)
                 }
             }
@@ -72,12 +71,11 @@ class QueryTokenizer(val str: String, private val groupOpen: String, private val
         fun quoteUnconditionally(s: String): String {
             val builder = StringBuilder(s.length + 8)
             builder.append('"')
-            for (i in 0 until s.length) {
-                val c = s[i]
-                if (c == '"') {
+            for (element in s) {
+                if (element == '"') {
                     builder.append('\\')
                 }
-                builder.append(c)
+                builder.append(element)
                 continue
             }
             builder.append('"')

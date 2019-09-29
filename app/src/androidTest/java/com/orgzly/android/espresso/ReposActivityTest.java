@@ -6,7 +6,6 @@ import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.repos.ReposActivity;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -22,7 +21,6 @@ import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
 import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
 
-//@Ignore
 public class ReposActivityTest extends OrgzlyTest {
     @Rule
     public ActivityTestRule activityRule = new EspressoActivityTestRule<>(ReposActivity.class);

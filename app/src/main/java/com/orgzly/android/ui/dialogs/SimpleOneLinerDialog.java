@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.DialogFragment;
 import android.text.TextUtils;
@@ -158,6 +160,6 @@ public class SimpleOneLinerDialog extends DialogFragment {
     }
 
     public interface Listener {
-        void onSimpleOneLinerDialogValue(int id, String value, Bundle bundle);
+        void onSimpleOneLinerDialogValue(int id, @NonNull String value, Bundle bundle);
     }
 }

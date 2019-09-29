@@ -10,9 +10,9 @@ class QueryInterval(val none: Boolean = false, val now: Boolean = false) : OrgIn
         return when {
             none -> "none"
             now -> "now"
-            unit == OrgInterval.Unit.DAY && value ==  0 -> "today"
-            unit == OrgInterval.Unit.DAY && value ==  1 -> "tomorrow"
-            unit == OrgInterval.Unit.DAY && value == -1 -> "yesterday"
+            unit == Unit.DAY && value ==  0 -> "today"
+            unit == Unit.DAY && value ==  1 -> "tomorrow"
+            unit == Unit.DAY && value == -1 -> "yesterday"
             else -> super.toString()
         }
     }
@@ -32,21 +32,21 @@ class QueryInterval(val none: Boolean = false, val now: Boolean = false) : OrgIn
             "today", "tod" -> {
                 val interval = QueryInterval()
                 interval.setValue(0)
-                interval.setUnit(OrgInterval.Unit.DAY)
+                interval.setUnit(Unit.DAY)
                 interval
             }
 
             "tomorrow", "tmrw", "tom" -> {
                 val interval = QueryInterval()
                 interval.setValue(1)
-                interval.setUnit(OrgInterval.Unit.DAY)
+                interval.setUnit(Unit.DAY)
                 interval
             }
 
             "yesterday" -> {
                 val interval = QueryInterval()
                 interval.setValue(-1)
-                interval.setUnit(OrgInterval.Unit.DAY)
+                interval.setUnit(Unit.DAY)
                 interval
             }
 

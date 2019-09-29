@@ -13,7 +13,7 @@ import org.junit.Ignore
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
-@Ignore
+@Ignore("Test suite")
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
         ActionModeTest::class,

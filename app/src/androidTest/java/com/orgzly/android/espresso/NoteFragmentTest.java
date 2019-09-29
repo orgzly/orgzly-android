@@ -1,11 +1,9 @@
 package com.orgzly.android.espresso;
 
-import androidx.test.espresso.ViewAction;
-import androidx.test.rule.ActivityTestRule;
-
-import android.os.SystemClock;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+
+import androidx.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
@@ -55,9 +53,6 @@ import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
 
-
-//@Ignore
-@SuppressWarnings("unchecked")
 public class NoteFragmentTest extends OrgzlyTest {
     @Rule
     public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);

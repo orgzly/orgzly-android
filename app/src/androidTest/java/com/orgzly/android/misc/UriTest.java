@@ -2,24 +2,12 @@ package com.orgzly.android.misc;
 
 import android.net.Uri;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class UriTest {
-    @Test @Ignore
-    public void testUriParseDropbox1() {
-        Uri uri = Uri.parse("dropbox:1/2/3.org");
-
-        assertEquals("URI", "dropbox:/1/2/3.org", uri.toString());
-        assertEquals("Scheme", "dropbox", uri.getScheme());
-        assertNull("Authority", uri.getAuthority());
-        assertEquals("Path", "/1/2/3.org", uri.getPath());
-        assertEquals("Filename", "3.org", uri.getLastPathSegment());
-    }
-
     @Test
     public void testUriParseDropbox2() {
         Uri uri = Uri.parse("dropbox:/1/2/3.org");
@@ -29,17 +17,6 @@ public class UriTest {
         assertNull("Authority", uri.getAuthority());
         assertEquals("Path", "/1/2/3.org", uri.getPath());
         assertEquals("Filename", "3.org", uri.getLastPathSegment());
-    }
-
-    @Test @Ignore
-    public void testUriParseDropbox3() {
-        Uri uri = Uri.parse("dropbox:1");
-
-        assertEquals("URI", "dropbox:/1", uri.toString());
-        assertEquals("Scheme", "dropbox", uri.getScheme());
-        assertNull("Authority", uri.getAuthority());
-        assertEquals("Path", "/1", uri.getPath());
-        assertEquals("Filename", "1", uri.getLastPathSegment());
     }
 
     @Test
@@ -139,39 +116,6 @@ public class UriTest {
         assertEquals("Authority", "user:pass@hostname", uri.getAuthority());
         assertEquals("Path", "/1/2/3.org", uri.getPath());
         assertEquals("Filename", "3.org", uri.getLastPathSegment());
-    }
-
-    @Test @Ignore
-    public void testAppendPath3() {
-        Uri uri = Uri.parse("dropbox:1").buildUpon().appendPath("2").appendPath("3.org").build();
-
-        assertEquals("URI", "dropbox:/1/2/3.org", uri.toString());
-        assertEquals("Scheme", "dropbox", uri.getScheme());
-        assertNull("Authority", uri.getAuthority());
-        assertEquals("Path", "/1/2/3.org", uri.getPath());
-        assertEquals("Filename", "3.org", uri.getLastPathSegment());
-    }
-
-    @Test @Ignore
-    public void testAppendPath4() {
-        Uri uri = Uri.parse("dropbox:1").buildUpon().appendPath("2.org").build();
-
-        assertEquals("URI", "dropbox:/1/2.org", uri.toString());
-        assertEquals("Scheme", "dropbox", uri.getScheme());
-        assertNull("Authority", uri.getAuthority());
-        assertEquals("Path", "/1/2.org", uri.getPath());
-        assertEquals("Filename", "2.org", uri.getLastPathSegment());
-    }
-
-    @Test @Ignore
-    public void testAppendPath5() {
-        Uri uri = Uri.parse("dropbox:1/").buildUpon().appendPath("2.org").build();
-
-        assertEquals("URI", "dropbox:/1/2.org", uri.toString());
-        assertEquals("Scheme", "dropbox", uri.getScheme());
-        assertNull("Authority", uri.getAuthority());
-        assertEquals("Path", "/1/2.org", uri.getPath());
-        assertEquals("Filename", "2.org", uri.getLastPathSegment());
     }
 
     @Test

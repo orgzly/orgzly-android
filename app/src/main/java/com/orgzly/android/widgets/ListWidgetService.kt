@@ -28,7 +28,7 @@ class ListWidgetService : RemoteViewsService() {
     @Inject
     lateinit var dataRepository: DataRepository
 
-    override fun onGetViewFactory(intent: Intent): RemoteViewsService.RemoteViewsFactory {
+    override fun onGetViewFactory(intent: Intent): RemoteViewsFactory {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         AndroidInjection.inject(this)
@@ -44,8 +44,10 @@ class ListWidgetService : RemoteViewsService() {
         data class WidgetDividerEntry(override val id: Long, val day: DateTime) : WidgetEntry(id)
     }
 
-    inner class ListWidgetViewsFactory(val context: Context, val queryString: String) :
-            RemoteViewsService.RemoteViewsFactory {
+    inner class ListWidgetViewsFactory(
+            val context: Context,
+            private val queryString: String
+    ) : RemoteViewsFactory {
 
         private val query: Query by lazy {
             val parser = InternalQueryParser()

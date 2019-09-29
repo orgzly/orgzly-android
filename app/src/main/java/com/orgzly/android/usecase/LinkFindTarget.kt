@@ -44,6 +44,7 @@ class LinkFindTarget(val path: String) : UseCase() {
     }
 
     private fun hasParent(file: File): Boolean {
-        return file.parentFile != null && file.parentFile.name != "."
+        val parentFile = file.parentFile
+        return parentFile != null && parentFile.name != "."
     }
 }

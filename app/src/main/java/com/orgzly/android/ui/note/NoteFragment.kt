@@ -91,8 +91,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private fun parseArguments() {
         arguments?.apply {
             /* Book ID must exist. */
-            if (!containsKey(ARG_BOOK_ID)) {
-                throw IllegalArgumentException(NoteFragment::class.java.simpleName + " requires " + ARG_BOOK_ID + " argument passed")
+            require(containsKey(ARG_BOOK_ID)) {
+                "${NoteFragment::class.java.simpleName} requires $ARG_BOOK_ID argument passed"
             }
 
             /* Note ID might or might not be passed - it depends if note is being edited or created. */
@@ -100,8 +100,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 noteId = getLong(ARG_NOTE_ID)
 
                 /* Note ID must be valid if it exists. */
-                if (noteId <= 0) {
-                    throw IllegalArgumentException("Note id is $noteId")
+                require(noteId > 0) {
+                    "Note id is $noteId"
                 }
             }
 
@@ -1068,7 +1068,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         return BookFragment.getDrawerItemId(viewModel.bookId)
     }
 
-    private fun showSnackbar(message: String) {
+    private fun showSnackbar(message: String?) {
         CommonActivity.showSnackbar(context, message)
     }
 

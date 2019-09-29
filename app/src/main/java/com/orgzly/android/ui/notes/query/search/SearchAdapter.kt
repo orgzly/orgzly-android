@@ -1,4 +1,4 @@
-package com.orgzly.android.ui.notes
+package com.orgzly.android.ui.notes.query.search
 
 import android.content.Context
 import androidx.recyclerview.widget.ListAdapter
@@ -8,11 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
-import com.orgzly.R
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.Selection
+import com.orgzly.android.ui.notes.NoteItemViewBinder
+import com.orgzly.android.ui.notes.NoteItemViewHolder
 import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.ItemHeadBinding

@@ -111,7 +111,7 @@ object PreRoomMigration {
                 val nodeFromStack = stack.pop()
                 sequence += 1
                 nodeFromStack.rgt = sequence
-                calculateAndSetDescendantsCount(nodeFromStack, 1)
+                calculateAndSetDescendantsCount(nodeFromStack)
                 updateNotePositionValues(db, nodeFromStack)
 
                 /* Put the current thisNode on the stack. */
@@ -132,7 +132,7 @@ object PreRoomMigration {
 
                         sequence += 1
                         nodeFromStack.rgt = sequence
-                        calculateAndSetDescendantsCount(nodeFromStack, 1)
+                        calculateAndSetDescendantsCount(nodeFromStack)
                         updateNotePositionValues(db, nodeFromStack)
 
                     } else {
@@ -154,7 +154,7 @@ object PreRoomMigration {
             val nodeFromStack = stack.pop()
             sequence += 1
             nodeFromStack.rgt = sequence
-            calculateAndSetDescendantsCount(nodeFromStack, 1)
+            calculateAndSetDescendantsCount(nodeFromStack)
             updateNotePositionValues(db, nodeFromStack)
         }
     }
@@ -165,8 +165,8 @@ object PreRoomMigration {
         return db.update("notes", SQLiteDatabase.CONFLICT_ROLLBACK, values, "_id = ${note.id}", null)
     }
 
-    private fun calculateAndSetDescendantsCount(node: NotePosition, gap: Int) {
-        node.descendantsCount = (node.rgt - node.lft - gap).toInt() / (2 * gap)
+    private fun calculateAndSetDescendantsCount(node: NotePosition) {
+        node.descendantsCount = (node.rgt - node.lft - 1).toInt() / (2 * 1)
     }
 
     private fun updateParentIds(db: SupportSQLiteDatabase, bookId: Long) {
@@ -396,12 +396,19 @@ object PreRoomMigration {
         val m = propertiesPattern.matcher(content)
 
         if (m.find()) {
-            for (propertyLine in m.group(1).split("\n")) {
+            val propertyLines = m.group(1)?.split("\n") ?: emptyList()
+
+            for (propertyLine in propertyLines) {
                 val pm = propertyPattern.matcher(propertyLine.trim())
 
                 if (pm.find()) {
+                    val name = pm.group(1)
+                    val value = pm.group(2)
+
                     // Add name-value pair
-                    properties.add(arrayOf(pm.group(1), pm.group(2)))
+                    if (name != null && value != null) {
+                        properties.add(arrayOf(name, value))
+                    }
                 }
             }
 

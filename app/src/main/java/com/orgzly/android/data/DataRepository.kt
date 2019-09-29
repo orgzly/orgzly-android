@@ -669,7 +669,7 @@ class DataRepository @Inject constructor(
                             lft = lft,
                             rgt = rgt,
                             level = level,
-                            parentId = parentIds.peekLast(),
+                            parentId = parentIds.peekLast() ?: 0,
                             foldedUnderId = foldedUnderId
                     )
             )
@@ -1972,7 +1972,7 @@ class DataRepository @Inject constructor(
     fun getRepos(): Map<String, SyncRepo> {
         val repos = db.repo().getAll()
 
-        val result = java.util.HashMap<String, SyncRepo>()
+        val result = HashMap<String, SyncRepo>()
 
         for ((_, url) in repos) {
             val repo = repoFactory.getFromUri(context, url, this)

@@ -110,7 +110,7 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Database created")
 
-                            OrgzlyDatabase.insertDefaultSearches(db)
+                            insertDefaultSearches(db)
                         }
 
                         override fun onOpen(db: SupportSQLiteDatabase) {

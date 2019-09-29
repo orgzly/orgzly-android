@@ -8,7 +8,7 @@ class NotePromote(val noteIds: Set<Long>) : UseCase() {
 
         return UseCaseResult(
                 modifiesLocalData = true,
-                triggersSync = UseCase.SYNC_DATA_MODIFIED,
+                triggersSync = SYNC_DATA_MODIFIED,
                 userData = count
         )
     }

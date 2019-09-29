@@ -115,7 +115,7 @@ object OrgFormatter {
                 // Additional spans could be added here
 
                 val spanRegion = SpanRegion(
-                        link.whole.range.start,
+                        link.whole.range.first,
                         link.whole.range.last + 1,
                         link.name.value,
                         spans)
@@ -234,7 +234,7 @@ object OrgFormatter {
         fun setMarkupSpan(matcher: Matcher) {
             // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Type matched", matcher.start(group), matcher.end(group))
 
-            val str = matcher.group(1)
+            val str = matcher.group(1)!!
             val start = matcher.start(1)
             val end = matcher.end(1)
 
@@ -275,11 +275,15 @@ object OrgFormatter {
 
         while (m.find()) {
             val content = m.group(1)
-            val start = m.start(1)
-            val end = m.end(1)
-            ssb.setSpan(CheckboxSpan(content, start, end), start, end, FLAGS)
-            ssb.setSpan(TypefaceSpan("monospace"), start, end, FLAGS)
-            ssb.setSpan(StyleSpan(Typeface.BOLD), start, end, FLAGS)
+
+            if (content != null) {
+                val start = m.start(1)
+                val end = m.end(1)
+
+                ssb.setSpan(CheckboxSpan(content, start, end), start, end, FLAGS)
+                ssb.setSpan(TypefaceSpan("monospace"), start, end, FLAGS)
+                ssb.setSpan(StyleSpan(Typeface.BOLD), start, end, FLAGS)
+            }
         }
     }
 
@@ -288,7 +292,7 @@ object OrgFormatter {
 
         return collectRegions(ssb) { spanRegions ->
             while (m.find()) {
-                val name = m.group(1)
+                val name = m.group(1)!!
 
                 // Use subSequence to keep existing spans
                 val contentStart = m.start(2)
@@ -296,12 +300,12 @@ object OrgFormatter {
                 val content = ssb.subSequence(contentStart, contentEnd)
 
 
-                // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found drawer", name, content, "All:'${m.group(0)}'")
+                // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found drawer", name, content, "All:'${m.group()}'")
 
                 val drawerSpanned = TextViewWithMarkup.drawerSpanned(name, content, foldDrawers)
 
-                val start = if (m.group(0).startsWith("\n")) m.start() + 1 else m.start()
-                val end = if (m.group(0).endsWith("\n")) m.end() - 1 else m.end()
+                val start = if (m.group().startsWith("\n")) m.start() + 1 else m.start()
+                val end = if (m.group().endsWith("\n")) m.end() - 1 else m.end()
 
                 spanRegions.add(SpanRegion(start, end, drawerSpanned))
             }

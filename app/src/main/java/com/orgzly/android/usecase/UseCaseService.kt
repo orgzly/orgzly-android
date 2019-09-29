@@ -70,7 +70,7 @@ class UseCaseService : JobIntentService() {
         val TAG: String = UseCaseService::class.java.name
 
         fun enqueueWork(context: Context, intent: Intent) {
-            JobIntentService.enqueueWork(
+            enqueueWork(
                     context,
                     UseCaseService::class.java,
                     App.ACTION_SERVICE_JOB_ID,

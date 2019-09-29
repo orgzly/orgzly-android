@@ -183,7 +183,6 @@ public class SyncService extends DaggerService {
                && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
     }
 
-    @SuppressWarnings("deprecation")
     private boolean haveNetworkConnectionPreM(ConnectivityManager cm) {
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
 
@@ -492,14 +491,8 @@ public class SyncService extends DaggerService {
                         namesake.getStatus().msg(namesake.getRooks().get(0).getUri()));
                 break;
 
-            case BOOK_WITH_LINK_AND_ROOK_MODIFIED:
-                dataRepository.loadBookFromRepo(namesake.getLatestLinkedRook());
-                bookAction = BookAction.forNow(
-                        BookAction.Type.INFO,
-                        namesake.getStatus().msg(namesake.getLatestLinkedRook().getUri()));
-                break;
-
             case DUMMY_WITH_LINK:
+            case BOOK_WITH_LINK_AND_ROOK_MODIFIED:
                 dataRepository.loadBookFromRepo(namesake.getLatestLinkedRook());
                 bookAction = BookAction.forNow(
                         BookAction.Type.INFO,

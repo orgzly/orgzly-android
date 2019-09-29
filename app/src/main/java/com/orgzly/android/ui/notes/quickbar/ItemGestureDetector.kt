@@ -7,6 +7,7 @@ import android.view.ViewConfiguration
 import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.android.util.LogUtils
+import kotlin.math.abs
 
 class ItemGestureDetector(context: Context, private val listener: Listener) :
         RecyclerView.OnItemTouchListener {
@@ -50,8 +51,8 @@ class ItemGestureDetector(context: Context, private val listener: Listener) :
     private fun isHorizontalFling(velocityX: Float, velocityY: Float): Int {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, velocityX, velocityY, minFlingVelocity, maxFlingVelocity)
 
-        val x = Math.abs(velocityX)
-        val y = Math.abs(velocityY)
+        val x = abs(velocityX)
+        val y = abs(velocityY)
 
         // Large enough horizontal velocity and greater then vertical
         val isHorizontalFLing = x >= minFlingVelocity && x <= maxFlingVelocity && x > 3 * y

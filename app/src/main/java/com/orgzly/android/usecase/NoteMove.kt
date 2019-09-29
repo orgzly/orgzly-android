@@ -10,7 +10,7 @@ class NoteMove(val bookId: Long, val noteIds: Set<Long>, val offset: Int) : UseC
 
         return UseCaseResult(
                 modifiesLocalData = true,
-                triggersSync = UseCase.SYNC_DATA_MODIFIED
+                triggersSync = SYNC_DATA_MODIFIED
         )
     }
 }

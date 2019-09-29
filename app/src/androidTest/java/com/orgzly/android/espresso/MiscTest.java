@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
+import androidx.test.rule.ActivityTestRule;
+
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.db.entity.NotePosition;
@@ -17,8 +19,6 @@ import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
-import androidx.test.rule.ActivityTestRule;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
@@ -61,9 +61,6 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertTrue;
 
-
-//@Ignore
-@SuppressWarnings("unchecked")
 public class MiscTest extends OrgzlyTest {
     @Rule
     public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);

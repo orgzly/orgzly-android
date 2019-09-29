@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
 
+import androidx.test.rule.ActivityTestRule;
+
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.OrgzlyTest;
@@ -15,8 +17,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
-
-import androidx.test.rule.ActivityTestRule;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
@@ -46,7 +46,6 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.not;
 
-//@Ignore
 @SuppressWarnings("unchecked")
 public class SyncingTest extends OrgzlyTest {
     @Rule

@@ -11,7 +11,7 @@ class NoteUpdateContent(val bookId: Long, val noteId: Long, val content: String?
 
         return UseCaseResult(
                 modifiesLocalData = true,
-                triggersSync = UseCase.SYNC_DATA_MODIFIED
+                triggersSync = SYNC_DATA_MODIFIED
         )
     }
 }

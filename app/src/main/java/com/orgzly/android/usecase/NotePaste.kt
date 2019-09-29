@@ -16,10 +16,7 @@ class NotePaste(val bookId: Long, val noteId: Long, val place: Place) : UseCase(
 
         return UseCaseResult(
                 modifiesLocalData = count > 0,
-                triggersSync = if (count > 0)
-                    UseCase.SYNC_DATA_MODIFIED
-                else
-                    UseCase.SYNC_NOT_REQUIRED,
+                triggersSync = if (count > 0) SYNC_DATA_MODIFIED else SYNC_NOT_REQUIRED,
                 userData = count)
     }
 }

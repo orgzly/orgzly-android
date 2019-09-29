@@ -114,7 +114,6 @@ class EspressoUtils {
         };
     }
 
-    @SuppressWarnings("unchecked")
     public static DataInteraction onListItem(int pos) {
         return onData(anything())
                 .inAdapterView(allOf(isAssignableFrom(ListView.class),isDisplayed()))

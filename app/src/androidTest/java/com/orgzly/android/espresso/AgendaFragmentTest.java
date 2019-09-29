@@ -3,6 +3,9 @@ package com.orgzly.android.espresso;
 import android.content.pm.ActivityInfo;
 import android.widget.DatePicker;
 
+import androidx.test.espresso.contrib.PickerActions;
+import androidx.test.rule.ActivityTestRule;
+
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.prefs.AppPreferences;
@@ -12,9 +15,6 @@ import org.joda.time.DateTime;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-
-import androidx.test.espresso.contrib.PickerActions;
-import androidx.test.rule.ActivityTestRule;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -37,7 +37,6 @@ import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 
-//@Ignore
 public class AgendaFragmentTest extends OrgzlyTest {
     @Rule
     public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
@@ -180,7 +179,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         onView(withId(R.id.action_bar_title)).check(doesNotExist());
     }
 
-    @Ignore // TODO: Implement
+    @Ignore("Not implemented yet")
     @Test
     public void testPreselectedStateOfSelectedNote() {
         testUtils.setupBook("notebook", "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>");
@@ -200,16 +199,6 @@ public class AgendaFragmentTest extends OrgzlyTest {
         activityRule.launchActivity(null);
         searchForText("ad.3");
         onItemInAgenda(0).perform(swipeLeft());
-    }
-
-    @Ignore
-    @Test
-    public void testOpenBookFromAgendaBySwiping() {
-        testUtils.setupBook("notebook", "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>");
-        activityRule.launchActivity(null);
-        searchForText("ad.3");
-        onItemInAgenda(1).perform(swipeLeft());
-        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
     }
 
     /* Tests correct mapping of agenda ID to note's DB ID. */

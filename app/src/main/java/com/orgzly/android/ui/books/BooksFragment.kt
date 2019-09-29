@@ -75,9 +75,7 @@ class BooksFragment :
     }
 
     private fun parseArguments() {
-        if (arguments == null) {
-            throw IllegalArgumentException("No arguments found to " + BooksFragment::class.java.simpleName)
-        }
+        requireNotNull(arguments) { "No arguments found to " + BooksFragment::class.java.simpleName }
 
         withOptionsMenu = arguments?.getBoolean(ARG_WITH_OPTIONS_MENU) ?: true
         withActionBar = arguments?.getBoolean(ARG_WITH_ACTION_BAR) ?: true

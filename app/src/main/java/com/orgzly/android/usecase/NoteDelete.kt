@@ -8,7 +8,7 @@ class NoteDelete(val bookId: Long, val ids: Set<Long>) : UseCase() {
 
         return UseCaseResult(
                 modifiesLocalData = true,
-                triggersSync = UseCase.SYNC_DATA_MODIFIED,
+                triggersSync = SYNC_DATA_MODIFIED,
                 userData = count
         )
     }

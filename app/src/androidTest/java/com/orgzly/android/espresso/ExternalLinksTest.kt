@@ -9,17 +9,12 @@ import com.orgzly.android.App
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
-import com.orgzly.android.util.MiscUtils
 import org.hamcrest.Matchers.startsWith
-import org.junit.Assert.fail
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import java.io.File
 
-//@Ignore
 @RunWith(value = Parameterized::class)
 class ExternalLinksTest(private val param: Parameter) : OrgzlyTest() {
 
@@ -66,8 +61,7 @@ class ExternalLinksTest(private val param: Parameter) : OrgzlyTest() {
         onBook(0).perform(click())
 
         // Click on link
-        onNoteInBook(1, R.id.item_head_content)
-                .perform(EspressoUtils.clickClickableSpan(param.link))
+        onNoteInBook(1, R.id.item_head_content).perform(clickClickableSpan(param.link))
 
         param.check()
     }

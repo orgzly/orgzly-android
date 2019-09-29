@@ -83,7 +83,7 @@ class TextViewWithMarkup : TextViewFixed {
     }
 
     fun toggleCheckbox(checkboxSpan: CheckboxSpan) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TextViewWithMarkup.TAG, checkboxSpan)
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, checkboxSpan)
 
         val textSpanned = text as Spanned
 
