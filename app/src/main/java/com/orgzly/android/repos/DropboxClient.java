@@ -267,7 +267,11 @@ public class DropboxClient {
         linkedOrThrow();
 
         try {
-            dbxClient.files().deleteV2(path);
+            if (dbxClient.files().getMetadata(path) instanceof FileMetadata) {
+                dbxClient.files().deleteV2(path);
+            } else {
+                throw new IOException("Not a file: " + path);
+            }
 
         } catch (DbxException e) {
             e.printStackTrace();
