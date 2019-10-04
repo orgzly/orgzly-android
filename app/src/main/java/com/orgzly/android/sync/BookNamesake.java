@@ -192,15 +192,14 @@ public class BookNamesake {
             if (book.getSyncedTo().getRevision().equals(latestLinkedRook.getRevision())) {
                 /* Revision did not change. */
 
-                if (book.isOutOfSync()) { // Local change.
+                if (book.isOutOfSync()) { // Local change
                     status = BookSyncStatus.BOOK_WITH_LINK_LOCAL_MODIFIED;
                 } else {
                     status = BookSyncStatus.NO_CHANGE;
                 }
 
             } else { /* Remote book has been modified. */
-                if (book.isOutOfSync()) {
-                    /* Uh oh. Both local and remote modified. */
+                if (book.isOutOfSync()) { // Local change
                     status = BookSyncStatus.CONFLICT_BOTH_BOOK_AND_ROOK_MODIFIED;
                 } else {
                     status = BookSyncStatus.BOOK_WITH_LINK_AND_ROOK_MODIFIED;
