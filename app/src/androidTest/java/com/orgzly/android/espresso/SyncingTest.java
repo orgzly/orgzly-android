@@ -13,6 +13,7 @@ import com.orgzly.android.sync.BookSyncStatus;
 import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.main.MainActivity;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -760,5 +761,23 @@ public class SyncingTest extends OrgzlyTest {
         onView(withText(R.string.delete)).perform(click());
         onView(withId(R.id.delete_linked_checkbox)).perform(click());
         onView(withText(R.string.delete)).perform(click());
+    }
+
+    @Test
+    public void testDeleteExistingRemoteFile() {
+        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupBook("booky", "Sample book used for tests");
+        activityRule.launchActivity(null);
+
+        sync();
+
+        onView(allOf(withText("booky"), isDisplayed())).check(matches(isDisplayed()));
+        onBook(0).perform(longClick());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.delete)).perform(click());
+        onView(withId(R.id.delete_linked_checkbox)).perform(click());
+        onView(withText(R.string.delete)).perform(click());
+
+        Assert.assertEquals(0, dbRepoBookRepository.getBooks(Uri.parse("mock://repo-a")).size());
     }
 }
