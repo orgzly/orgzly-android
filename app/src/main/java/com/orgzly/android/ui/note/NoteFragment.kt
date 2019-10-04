@@ -943,7 +943,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         updatePayloadFromViews()
 
-        if (viewModel.isNew() || viewModel.isNoteModified()) {
+        if (viewModel.isNoteModified()) {
             dialog = AlertDialog.Builder(context)
                     .setTitle(R.string.note_has_been_modified)
                     .setMessage(R.string.discard_or_save_changes)
@@ -983,7 +983,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         updatePayloadFromViews()
 
-        if (viewModel.isNew() || viewModel.isNoteModified()) {
+        if (viewModel.isNoteModified()) {
             dialog = AlertDialog.Builder(context)
                     .setTitle(R.string.note_has_been_modified)
                     .setMessage(R.string.discard_or_save_changes)
@@ -1007,7 +1007,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         updatePayloadFromViews()
 
-        if (viewModel.isNew() || viewModel.isNoteModified()) {
+        if (viewModel.isNoteModified()) {
             dialog = AlertDialog.Builder(context)
                     .setTitle(R.string.note_has_been_modified)
                     .setMessage(R.string.discard_or_save_changes)

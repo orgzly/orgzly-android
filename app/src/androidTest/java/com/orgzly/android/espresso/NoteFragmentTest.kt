@@ -499,4 +499,13 @@ class NoteFragmentTest : OrgzlyTest() {
         onNoteInBook(10).perform(click())
         onView(withText("CREATED")).check(matches(isDisplayed()))
     }
+
+    @Test
+    fun testDoNotPromptAfterLeavingNewNoteUnmodified() {
+        onView(withId(R.id.fab)).perform(click())
+        pressBack() // Close keyboard
+        pressBack() // Leave note
+
+        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()))
+    }
 }
