@@ -59,6 +59,9 @@ class NoteFragmentTest : OrgzlyTest() {
                     **** Note #9.
 
                     ** Note #10.
+                    :PROPERTIES:
+                    :CREATED:  [2019-10-04 Fri 10:23]
+                    :END:
 
                 """.trimIndent())
 
@@ -481,5 +484,19 @@ class NoteFragmentTest : OrgzlyTest() {
 
         // Title remains the same
         onView(withId(R.id.fragment_note_title)).check(matches(withText("1.1")))
+    }
+
+    // https://github.com/orgzly/orgzly-android/issues/605
+    @Test
+    fun testMetadataShowSelectedOnNoteLoad() {
+        onNoteInBook(10).perform(click())
+        onView(withText("CREATED")).check(matches(isDisplayed()))
+        openActionBarOverflowOrOptionsMenu(context)
+        onView(withText(R.string.metadata)).perform(click())
+        onView(withText(R.string.show_selected)).perform(click())
+        onView(withText("CREATED")).check(matches(isDisplayed()))
+        pressBack()
+        onNoteInBook(10).perform(click())
+        onView(withText("CREATED")).check(matches(isDisplayed()))
     }
 }

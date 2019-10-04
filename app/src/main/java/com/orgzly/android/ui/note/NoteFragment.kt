@@ -526,6 +526,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
             updateViewsFromPayload()
 
+            setMetadataViewsVisibility()
+
             /* Refresh action bar items (hide or display, depending on if book is loaded. */
             activity?.invalidateOptionsMenu()
 
@@ -552,8 +554,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         super.onResume()
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
-
-        setMetadataViewsVisibility()
     }
 
     private fun announceChangesToActivity() {
