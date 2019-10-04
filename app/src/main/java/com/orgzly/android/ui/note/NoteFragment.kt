@@ -342,33 +342,35 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private fun updateViewsFromPayload() {
         val payload = viewModel.notePayload ?: return
 
+        // State
         setStateView(payload.state)
 
+        // Priority
         setPriorityView(payload.priority)
 
-        /* Title. */
+        // Title
         binding.fragmentNoteTitle.setText(payload.title)
 
-        /* Tags. */
+        // Tags
         if (!payload.tags.isEmpty()) {
             binding.fragmentNoteTags.setText(TextUtils.join(" ", payload.tags))
         } else {
             binding.fragmentNoteTags.text = null
         }
 
-        /* Times. */
+        // Times
         updateTimestampView(TimeType.SCHEDULED, OrgRange.parseOrNull(payload.scheduled))
         updateTimestampView(TimeType.DEADLINE, OrgRange.parseOrNull(payload.deadline))
         updateTimestampView(TimeType.CLOSED, OrgRange.parseOrNull(payload.closed))
 
-        /* Properties. */
+        // Properties
         binding.fragmentNotePropertiesContainer.removeAllViews()
         for (property in payload.properties.all) {
             addPropertyToList(property.name, property.value)
         }
         addPropertyToList(null, null)
 
-        /* Content. */
+        // Content
 
         binding.bodyEdit.setText(payload.content)
 
@@ -551,7 +553,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        setMetadataVisibility()
+        setMetadataViewsVisibility()
     }
 
     private fun announceChangesToActivity() {
@@ -857,21 +859,21 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             R.id.metadata_show_all -> {
                 item.isChecked = true
                 AppPreferences.noteMetadataVisibility(context, "all")
-                setMetadataVisibility()
+                setMetadataViewsVisibility()
                 return true
             }
 
             R.id.metadata_show_selected -> {
                 item.isChecked = true
                 AppPreferences.noteMetadataVisibility(context, "selected")
-                setMetadataVisibility()
+                setMetadataViewsVisibility()
                 return true
             }
 
             R.id.metadata_always_show_set -> {
                 item.isChecked = !item.isChecked
                 AppPreferences.alwaysShowSetNoteMetadata(context, item.isChecked)
-                setMetadataVisibility()
+                setMetadataViewsVisibility()
                 return true
             }
 
@@ -879,39 +881,39 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         }
     }
 
-    private fun setMetadataVisibility() {
-        setMetadataVisibility(
+    private fun setMetadataViewsVisibility() {
+        setMetadataViewsVisibility(
                 "tags",
                 binding.fragmentNoteTagsContainer,
                 !TextUtils.isEmpty(binding.fragmentNoteTags.text))
 
-        setMetadataVisibility(
+        setMetadataViewsVisibility(
                 "state",
                 binding.fragmentNoteStateContainer,
                 !TextUtils.isEmpty(binding.fragmentNoteStateButton.text))
 
-        setMetadataVisibility(
+        setMetadataViewsVisibility(
                 "priority",
                 binding.fragmentNotePriorityContainer,
                 !TextUtils.isEmpty(binding.fragmentNotePriorityButton.text))
 
-        setMetadataVisibility(
+        setMetadataViewsVisibility(
                 "scheduled_time",
                 binding.fragmentNoteScheduledTimeContainer,
                 !TextUtils.isEmpty(binding.fragmentNoteScheduledButton.text))
 
-        setMetadataVisibility(
+        setMetadataViewsVisibility(
                 "deadline_time",
                 binding.fragmentNoteDeadlineTimeContainer,
                 !TextUtils.isEmpty(binding.fragmentNoteDeadlineButton.text))
 
-        setMetadataVisibility(
+        setMetadataViewsVisibility(
                 "properties",
                 binding.fragmentNotePropertiesContainer,
                 binding.fragmentNotePropertiesContainer.childCount > 1)
     }
 
-    private fun setMetadataVisibility(name: String?, container: View, isSet: Boolean) {
+    private fun setMetadataViewsVisibility(name: String?, container: View, isSet: Boolean) {
         val context = context
 
         if (context != null) {
