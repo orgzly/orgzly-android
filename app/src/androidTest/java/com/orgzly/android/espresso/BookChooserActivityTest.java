@@ -53,6 +53,7 @@ public class BookChooserActivityTest extends OrgzlyTest {
         onView(allOf(withText("book-one"), isDisplayed())).check(matches(isDisplayed()));
     }
 
+    @Ignore("SecurityException")
     @Test
     public void testLongClickChoosesBook() {
         startActivityWithIntent(Intent.ACTION_CREATE_SHORTCUT);
