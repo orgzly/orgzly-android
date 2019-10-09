@@ -14,6 +14,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.view.ActionMode;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.orgzly.BuildConfig;
@@ -39,17 +53,17 @@ import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.DisplayManager;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
+import com.orgzly.android.ui.books.BooksFragment;
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.drawer.DrawerNavigationView;
-import com.orgzly.android.ui.notes.book.BookPrefaceFragment;
-import com.orgzly.android.ui.books.BooksFragment;
-import com.orgzly.android.ui.savedsearch.SavedSearchFragment;
 import com.orgzly.android.ui.note.NoteFragment;
 import com.orgzly.android.ui.notes.book.BookFragment;
+import com.orgzly.android.ui.notes.book.BookPrefaceFragment;
 import com.orgzly.android.ui.notifications.Notifications;
 import com.orgzly.android.ui.repos.ReposActivity;
-import com.orgzly.android.ui.settings.SettingsActivity;
+import com.orgzly.android.ui.savedsearch.SavedSearchFragment;
 import com.orgzly.android.ui.savedsearches.SavedSearchesFragment;
+import com.orgzly.android.ui.settings.SettingsActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.usecase.BookCreate;
 import com.orgzly.android.usecase.BookExport;
@@ -61,13 +75,6 @@ import com.orgzly.android.usecase.BookLinkUpdate;
 import com.orgzly.android.usecase.BookSparseTreeForNote;
 import com.orgzly.android.usecase.BookUpdatePreface;
 import com.orgzly.android.usecase.NoteCopy;
-import com.orgzly.android.usecase.SavedSearchCreate;
-import com.orgzly.android.usecase.SavedSearchDelete;
-import com.orgzly.android.usecase.SavedSearchExport;
-import com.orgzly.android.usecase.SavedSearchImport;
-import com.orgzly.android.usecase.SavedSearchMoveDown;
-import com.orgzly.android.usecase.SavedSearchMoveUp;
-import com.orgzly.android.usecase.SavedSearchUpdate;
 import com.orgzly.android.usecase.NoteCut;
 import com.orgzly.android.usecase.NoteDelete;
 import com.orgzly.android.usecase.NoteDemote;
@@ -79,6 +86,13 @@ import com.orgzly.android.usecase.NoteUpdateDeadlineTime;
 import com.orgzly.android.usecase.NoteUpdateScheduledTime;
 import com.orgzly.android.usecase.NoteUpdateState;
 import com.orgzly.android.usecase.NoteUpdateStateToggle;
+import com.orgzly.android.usecase.SavedSearchCreate;
+import com.orgzly.android.usecase.SavedSearchDelete;
+import com.orgzly.android.usecase.SavedSearchExport;
+import com.orgzly.android.usecase.SavedSearchImport;
+import com.orgzly.android.usecase.SavedSearchMoveDown;
+import com.orgzly.android.usecase.SavedSearchMoveUp;
+import com.orgzly.android.usecase.SavedSearchUpdate;
 import com.orgzly.android.usecase.UseCase;
 import com.orgzly.android.usecase.UseCaseResult;
 import com.orgzly.android.usecase.UseCaseRunner;
@@ -91,23 +105,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Set;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.view.ActionMode;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 public class MainActivity extends CommonActivity
         implements
@@ -122,9 +124,6 @@ public class MainActivity extends CommonActivity
         BookPrefaceFragment.Listener {
 
     public static final String TAG = MainActivity.class.getName();
-
-    public static final int ACTIVITY_REQUEST_CODE_FOR_BOOK_IMPORT = 0;
-    public static final int ACTIVITY_REQUEST_CODE_FOR_QUERIES_IMPORT = 1;
 
     private static final int DIALOG_NEW_BOOK = 1;
     private static final int DIALOG_IMPORT_BOOK = 2;
@@ -150,6 +149,8 @@ public class MainActivity extends CommonActivity
     private SharedMainActivityViewModel sharedMainActivityViewModel;
 
     private MainActivityViewModel viewModel;
+
+    private ActivityForResult activityForResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,6 +180,20 @@ public class MainActivity extends CommonActivity
         if (AppPreferences.newNoteNotification(this)) {
             Notifications.createNewNoteNotification(this);
         }
+
+        activityForResult = new ActivityForResult(this) {
+            @Override
+            public void onBookImport(@NotNull Uri uri) {
+                runnableOnResumeFragments = () ->
+                        importChosenBook(uri);
+            }
+
+            @Override
+            public void onSearchQueriesImport(@NotNull Uri uri) {
+                runnableOnResumeFragments = () ->
+                        mSyncFragment.run(new SavedSearchImport(uri));
+            }
+        };
     }
 
     /**
@@ -684,22 +699,7 @@ public class MainActivity extends CommonActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case ACTIVITY_REQUEST_CODE_FOR_BOOK_IMPORT:
-                if (resultCode == RESULT_OK) {
-                    Uri uri = data.getData();
-                    runnableOnResumeFragments = () -> importChosenBook(uri);
-                }
-                break;
-
-            case ACTIVITY_REQUEST_CODE_FOR_QUERIES_IMPORT:
-                if (resultCode == RESULT_OK) {
-                    Uri uri = data.getData();
-                    runnableOnResumeFragments = () ->
-                            mSyncFragment.run(new SavedSearchImport(uri));
-                }
-                break;
-        }
+        activityForResult.onResult(requestCode, resultCode, data);
     }
 
     /**
@@ -868,15 +868,7 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onBookImportRequest() {
-        startFileChooser(R.string.import_org_file, ACTIVITY_REQUEST_CODE_FOR_BOOK_IMPORT);
-    }
-
-    private void startFileChooser(@StringRes int titleResId, int code) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("*/*");
-
-        startActivityForResult(Intent.createChooser(intent, getString(titleResId)), code);
+        activityForResult.startBookImportFileChooser();
     }
 
     /**
@@ -1123,7 +1115,7 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onSavedSearchesImportRequest(int title, @NonNull String message) {
-        startFileChooser(R.string.import_, ACTIVITY_REQUEST_CODE_FOR_QUERIES_IMPORT);
+        activityForResult.startSavedSearchesImportFileChooser();
     }
 
     private void openSettings() {
