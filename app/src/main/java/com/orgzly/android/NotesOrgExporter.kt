@@ -1,6 +1,6 @@
 package com.orgzly.android
 
-import android.content.Context
+import android.util.Log
 import com.orgzly.R
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.data.mappers.OrgMapper
@@ -14,7 +14,7 @@ import java.io.PrintWriter
 import java.io.Writer
 import java.nio.charset.Charset
 
-class NotesOrgExporter(val context: Context, val dataRepository: DataRepository) {
+class NotesOrgExporter(val dataRepository: DataRepository) {
 
     /**
      * Writes content of the book from database to a specified file.
@@ -30,7 +30,7 @@ class NotesOrgExporter(val context: Context, val dataRepository: DataRepository)
 
     @Throws(IOException::class)
     fun exportBook(book: Book, writer: Writer) {
-        val orgParserSettings = getOrgParserSettingsFromPreferences(context)
+        val orgParserSettings = getOrgParserSettingsFromPreferences()
         val orgWriter = OrgParserWriter(orgParserSettings)
 
         // Write preface
@@ -49,8 +49,11 @@ class NotesOrgExporter(val context: Context, val dataRepository: DataRepository)
     }
 
     companion object {
-        private fun getOrgParserSettingsFromPreferences(context: Context): OrgParserSettings {
+        private fun getOrgParserSettingsFromPreferences(): OrgParserSettings {
             val parserSettings = OrgParserSettings.getBasic()
+
+            // FIXME: Inject AppPreferences instead
+            val context = App.getAppContext()
 
             when (AppPreferences.separateNotesWithNewLine(context)) {
                 context.getString(R.string.pref_value_separate_notes_with_new_line_always) ->

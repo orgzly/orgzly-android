@@ -535,7 +535,7 @@ public class SyncService extends DaggerService {
         VersionedRook newRook = currentRook;
         File dbFile = dataRepository.getTempBookFile();
         try {
-            new NotesOrgExporter(App.getAppContext(), dataRepository).exportBook(bookView.getBook(), dbFile);
+            new NotesOrgExporter(dataRepository).exportBook(bookView.getBook(), dbFile);
             TwoWaySyncResult result = repo.syncBook(someRook.getUri(), currentRook, dbFile);
             // We only need to write it if syncback is needed
             if (result.getLoadFile() != null) {

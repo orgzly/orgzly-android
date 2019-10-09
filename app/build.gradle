@@ -144,6 +144,7 @@ dependencies {
     // AndroidX Test
     androidTestImplementation "androidx.test.espresso:espresso-core:$android_test_espresso_version"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$android_test_espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$android_test_espresso_version"
     androidTestImplementation "androidx.test:runner:$android_test_version"
     androidTestImplementation "androidx.test:rules:$android_test_version"
 

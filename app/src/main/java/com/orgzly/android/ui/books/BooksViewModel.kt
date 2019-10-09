@@ -4,7 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.orgzly.BuildConfig
 import com.orgzly.android.App
+import com.orgzly.android.BookFormat
 import com.orgzly.android.data.DataRepository
+import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent
@@ -23,6 +25,8 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
     val bookDeletedEvent: SingleLiveEvent<UseCaseResult> = SingleLiveEvent()
 
     val bookRenameRequestEvent: SingleLiveEvent<BookView> = SingleLiveEvent()
+
+    val bookExportRequestEvent: SingleLiveEvent<Pair<Book, BookFormat>> = SingleLiveEvent()
 
     enum class ViewState {
         LOADING,
@@ -77,6 +81,15 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
         App.EXECUTORS.diskIO().execute {
             catchAndPostError {
                 UseCaseRunner.run(BookRename(book, name))
+            }
+        }
+    }
+
+    fun exportBookRequest(bookId: Long, format: BookFormat) {
+        App.EXECUTORS.diskIO().execute {
+            catchAndPostError {
+                val book = dataRepository.getBookOrThrow(bookId)
+                bookExportRequestEvent.postValue(book to format)
             }
         }
     }

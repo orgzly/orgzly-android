@@ -47,7 +47,7 @@ class CreatedAtTest : OrgzlyTest() {
                         ":END:\n")
 
         withTempFile { file ->
-            NotesOrgExporter(context, dataRepository).exportBook(book.book, file)
+            NotesOrgExporter(dataRepository).exportBook(book.book, file)
 
             dataRepository.loadBookFromFile("book-a", BookFormat.ORG, file)
 
@@ -74,7 +74,7 @@ class CreatedAtTest : OrgzlyTest() {
                 dataRepository.updateNote(it.id, NotePayload.getInstance(it.title, it.content))
             }
 
-            NotesOrgExporter(context, dataRepository).exportBook(book.book, file)
+            NotesOrgExporter(dataRepository).exportBook(book.book, file)
 
             dataRepository.loadBookFromFile("book-a", BookFormat.ORG, file)
 

@@ -54,6 +54,7 @@ import com.orgzly.org.parser.OrgParser
 import com.orgzly.org.parser.OrgParserWriter
 import com.orgzly.org.utils.StateChangeLogic
 import java.io.*
+import java.lang.IllegalStateException
 import java.util.*
 import java.util.concurrent.Callable
 import javax.inject.Inject
@@ -150,7 +151,7 @@ class DataRepository @Inject constructor(
         val tmpFile = getTempBookFile()
         try {
             /* Write to temporary file. */
-            NotesOrgExporter(context, this).exportBook(bookView.book, tmpFile)
+            NotesOrgExporter(this).exportBook(bookView.book, tmpFile)
 
             /* Upload to repo. */
             uploadedBook = repo.storeBook(tmpFile, fileName)
@@ -247,6 +248,10 @@ class DataRepository @Inject constructor(
         return db.book().get(id)
     }
 
+    fun getBookOrThrow(id: Long): Book {
+        return db.book().get(id) ?: throw IllegalStateException("Book with ID $id not found")
+    }
+
     fun getBookLiveData(id: Long): LiveData<Book> {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id)
         return db.book().getLiveData(id)
@@ -262,7 +267,7 @@ class DataRepository @Inject constructor(
         if (book != null) {
             val file = getTempBookFile()
             try {
-                NotesOrgExporter(context, this).exportBook(book, file)
+                NotesOrgExporter(this).exportBook(book, file)
                 return MiscUtils.readStringFromFile(file)
             } finally {
                 file.delete()
@@ -1869,7 +1874,7 @@ class DataRepository @Inject constructor(
         val file = localStorage.getExportFile(book.name, format)
 
         /* Write book. */
-        NotesOrgExporter(context, this).exportBook(book, file)
+        NotesOrgExporter(this).exportBook(book, file)
 
         /* Make file immediately visible when using MTP.
          * See https://github.com/orgzly/orgzly-android/issues/44
@@ -1877,6 +1882,10 @@ class DataRepository @Inject constructor(
         MediaScannerConnection.scanFile(App.getAppContext(), arrayOf(file.absolutePath), null, null)
 
         return file
+    }
+
+    fun exportBook(book: Book, writer: Writer) {
+        NotesOrgExporter(this).exportBook(book, writer)
     }
 
     fun findNoteHavingProperty(name: String, value: String): NoteDao.NoteIdBookId? {

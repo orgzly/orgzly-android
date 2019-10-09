@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -67,6 +68,7 @@ import com.orgzly.android.ui.settings.SettingsActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.usecase.BookCreate;
 import com.orgzly.android.usecase.BookExport;
+import com.orgzly.android.usecase.BookExportToUri;
 import com.orgzly.android.usecase.BookForceLoad;
 import com.orgzly.android.usecase.BookForceSave;
 import com.orgzly.android.usecase.BookImportFromUri;
@@ -105,7 +107,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -189,11 +190,34 @@ public class MainActivity extends CommonActivity
             }
 
             @Override
+            public void onBookExport(@NotNull Uri uri, long bookId) {
+                runnableOnResumeFragments = () ->
+                        mSyncFragment.run(new BookExportToUri(uri, bookId) {
+                            @NotNull
+                            @Override
+                            public OutputStream getStream(@NotNull Uri uri) throws IOException {
+                                return getOutputStream(uri);
+                            }
+                        });
+            }
+
+            @Override
             public void onSearchQueriesImport(@NotNull Uri uri) {
                 runnableOnResumeFragments = () ->
                         mSyncFragment.run(new SavedSearchImport(uri));
             }
         };
+    }
+
+    @NotNull
+    private OutputStream getOutputStream(@NotNull Uri uri) throws IOException {
+        OutputStream stream = getContentResolver().openOutputStream(uri);
+
+        if (stream == null) {
+            throw new IOException("Failed opening output stream for " + uri);
+        }
+
+        return stream;
     }
 
     /**
@@ -860,10 +884,17 @@ public class MainActivity extends CommonActivity
      * Callback from {@link BooksFragment}.
      */
     @Override
-    public void onBookExportRequest(final long bookId) {
-        runWithPermission(
-                AppPermissions.Usage.BOOK_EXPORT,
-                () -> mSyncFragment.run(new BookExport(bookId)));
+    public void onBookExportRequest(@NotNull Book book, @NotNull BookFormat format) {
+        // For scoped storage
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            String defaultFileName = BookName.fileName(book.getName(), format);
+            activityForResult.startBookExportFileChooser(book.getId(), defaultFileName);
+
+        } else {
+            runWithPermission(
+                    AppPermissions.Usage.BOOK_EXPORT,
+                    () -> mSyncFragment.run(new BookExport(book.getId())));
+        }
     }
 
     @Override
@@ -1134,6 +1165,9 @@ public class MainActivity extends CommonActivity
     public void onSuccess(UseCase action, UseCaseResult result) {
         if (action instanceof BookExport) {
             showSnackbar(getString(R.string.book_exported, (File) result.getUserData()));
+
+        } else if (action instanceof BookExportToUri) {
+            showSnackbar(getString(R.string.book_exported, (Uri) result.getUserData()));
 
         } else if (action instanceof NoteCut) {
             NotesClipboard clipboard = (NotesClipboard) result.getUserData();
