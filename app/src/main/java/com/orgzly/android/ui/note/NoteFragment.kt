@@ -295,12 +295,27 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 NoteViewModel.ViewEditMode.VIEW ->
                     toViewMode()
 
-                NoteViewModel.ViewEditMode.EDIT ->
+                NoteViewModel.ViewEditMode.EDIT_TITLE -> {
                     toEditMode()
+                    binding.fragmentNoteTitle.requestFocus()
+                }
 
-                NoteViewModel.ViewEditMode.EDIT_WITH_KEYBOARD -> {
+                NoteViewModel.ViewEditMode.EDIT_TITLE_WITH_KEYBOARD -> {
                     toEditMode()
-                    ActivityUtils.openSoftKeyboard(activity, binding.bodyEdit, binding.fragmentNoteContainer)
+                    ActivityUtils.openSoftKeyboard(
+                            activity,
+                            binding.fragmentNoteTitle,
+                            binding.fragmentNoteContainer,
+                            binding.fragmentNoteContent)
+                }
+
+                NoteViewModel.ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD -> {
+                    toEditMode()
+                    ActivityUtils.openSoftKeyboard(
+                            activity,
+                            binding.bodyEdit,
+                            binding.fragmentNoteContainer,
+                            binding.bodyEdit)
                 }
 
                 null -> { }
@@ -508,7 +523,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                  * some initial values (for example from ShareActivity).
                  */
                 if (TextUtils.isEmpty(initialTitle) && TextUtils.isEmpty(initialContent)) {
-                    ActivityUtils.openSoftKeyboardWithDelay(activity, binding.fragmentNoteTitle)
+                    viewModel.viewEditMode.value = NoteViewModel.ViewEditMode.EDIT_TITLE_WITH_KEYBOARD
                 }
 
             } else { // Open existing note
