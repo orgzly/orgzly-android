@@ -136,11 +136,11 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testExport() throws IOException {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            testExportQ();
-        } else {
+//        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            testExportQ();
+//        } else {
             testExportPreQ();
-        }
+//        }
     }
 
     private void testExportQ() {

@@ -886,15 +886,15 @@ public class MainActivity extends CommonActivity
     @Override
     public void onBookExportRequest(@NotNull Book book, @NotNull BookFormat format) {
         // For scoped storage
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            String defaultFileName = BookName.fileName(book.getName(), format);
-            activityForResult.startBookExportFileChooser(book.getId(), defaultFileName);
-
-        } else {
+//        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            String defaultFileName = BookName.fileName(book.getName(), format);
+//            activityForResult.startBookExportFileChooser(book.getId(), defaultFileName);
+//
+//        } else {
             runWithPermission(
                     AppPermissions.Usage.BOOK_EXPORT,
                     () -> mSyncFragment.run(new BookExport(book.getId())));
-        }
+//        }
     }
 
     @Override
