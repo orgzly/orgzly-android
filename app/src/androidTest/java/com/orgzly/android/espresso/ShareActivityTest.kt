@@ -62,11 +62,10 @@ class ShareActivityTest : OrgzlyTest() {
                 extraText = "This is some shared text")
 
         toPortrait(activityRule)
-        onView(allOf(withId(R.id.fragment_note_location_button), isDisplayed()))
+        onView(withId(R.id.fragment_note_location_button))
                 .check(matches(withText(context.getString(R.string.default_share_notebook))))
         toLandscape(activityRule)
-        onView(withId(R.id.fragment_note_location_button)).perform(scrollTo())
-        onView(allOf(withId(R.id.fragment_note_location_button), isDisplayed()))
+        onView(withId(R.id.fragment_note_location_button))
                 .check(matches(withText(context.getString(R.string.default_share_notebook))))
     }
 
@@ -82,7 +81,7 @@ class ShareActivityTest : OrgzlyTest() {
                 extraText = "This is some shared text")
 
         toPortrait(activityRule)
-        onView(withId(R.id.fragment_note_location_button)).perform(click())
+        onView(withId(R.id.fragment_note_location_button)).perform(scrollTo(), click())
         onView(withText("book-two")).perform(click())
         onView(withId(R.id.fragment_note_location_button)).check(matches(withText("book-two")))
         toLandscape(activityRule)
@@ -96,7 +95,7 @@ class ShareActivityTest : OrgzlyTest() {
                 type = "text/plain",
                 extraText = "This is some shared text")
 
-        onView(allOf(withId(R.id.fragment_note_location_button), isDisplayed()))
+        onView(withId(R.id.fragment_note_location_button))
                 .check(matches(withText(context.getString(R.string.default_share_notebook))))
     }
 
@@ -210,7 +209,6 @@ class ShareActivityTest : OrgzlyTest() {
                 extraText = "This is some shared text",
                 queryString = "b.foo")
 
-        onView(allOf(withId(R.id.fragment_note_location_button), isDisplayed()))
-                .check(matches(withText("foo")))
+        onView(withId(R.id.fragment_note_location_button)).check(matches(withText("foo")))
     }
 }
