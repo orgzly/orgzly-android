@@ -25,35 +25,35 @@ class NoteEventsTest : OrgzlyTest() {
 
     private val today: String
         get() = OrgDateTime.Builder()
-                .setDay(System.currentTimeMillis())
+                .setDateTime(System.currentTimeMillis())
                 .setIsActive(true)
                 .build()
                 .toString()
 
     private val tomorrow: String
             get() = OrgDateTime.Builder()
-                    .setDay(System.currentTimeMillis() + 1000 * 60 * 60 * 24)
+                    .setDateTime(System.currentTimeMillis() + 1000 * 60 * 60 * 24)
                     .setIsActive(true)
                     .build()
                     .toString()
 
     private val inFewDays: String
         get() = OrgDateTime.Builder()
-                .setDay(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 3)
+                .setDateTime(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 3)
                 .setIsActive(true)
                 .build()
                 .toString()
 
     private val yesterday: String
         get() = OrgDateTime.Builder()
-                .setDay(System.currentTimeMillis() - 1000 * 60 * 60 * 24)
+                .setDateTime(System.currentTimeMillis() - 1000 * 60 * 60 * 24)
                 .setIsActive(true)
                 .build()
                 .toString()
 
     private val fewDaysAgo: String
         get() = OrgDateTime.Builder()
-                .setDay(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 3)
+                .setDateTime(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 3)
                 .setIsActive(true)
                 .build()
                 .toString()
@@ -116,7 +116,7 @@ class NoteEventsTest : OrgzlyTest() {
 
     private fun time(offset: Long = 0, hasTime: Boolean = false): OrgDateTime {
         return OrgDateTime.Builder()
-                .setDay(System.currentTimeMillis() + offset)
+                .setDateTime(System.currentTimeMillis() + offset)
                 .setHasTime(hasTime)
                 .setIsActive(true)
                 .build()
