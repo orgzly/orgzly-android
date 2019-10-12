@@ -29,10 +29,12 @@ android {
 
         buildConfigField "boolean", "IS_GIT_ENABLED", gradle.ext.appProperties.getProperty("git.enabled", 'false')
 
-        // Used by Room, to test migrations
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [ "room.schemaLocation": "$projectDir/schemas".toString() ]
+                arguments = [
+                        "room.schemaLocation": "$projectDir/schemas".toString(),
+                        "room.incremental": "true"
+                ]
             }
         }
     }
