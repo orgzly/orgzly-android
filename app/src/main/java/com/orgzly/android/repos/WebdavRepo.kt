@@ -2,11 +2,13 @@ package com.orgzly.android.repos
 
 import android.net.Uri
 import com.orgzly.android.BookName
+import com.orgzly.android.util.UriUtils
 import com.thegrizzlylabs.sardineandroid.DavResource
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+
 
 class WebdavRepo(private val repoId: Long, private val uri: Uri, username: String, password: String) : SyncRepo {
 
@@ -74,7 +76,7 @@ class WebdavRepo(private val repoId: Long, private val uri: Uri, username: Strin
     }
 
     override fun renameBook(from: Uri, name: String?): VersionedRook {
-        val destUrl = Uri.withAppendedPath(uri, name).toUrl()
+        val destUrl = UriUtils.getUriForNewName(from, name).toUrl()
         sardine.move(from.toUrl(), destUrl)
         return sardine.list(destUrl).first().toVersionedRook()
     }
