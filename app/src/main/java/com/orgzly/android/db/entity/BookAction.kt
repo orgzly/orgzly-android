@@ -7,7 +7,6 @@ import androidx.room.Entity
  *
  * Action can be a result of renaming, syncing (loading, saving, ...), importing, etc.
  */
-@Entity
 data class BookAction(
         val type: Type,
         val message: String,

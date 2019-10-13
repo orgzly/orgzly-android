@@ -1,17 +1,14 @@
 package com.orgzly.android.prefs;
 
-
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
-import com.orgzly.R;
-
 import androidx.preference.DialogPreference;
 
+import com.orgzly.R;
+
 public class StatesPreference extends DialogPreference {
-    @TargetApi(21)
     public StatesPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         setDialogLayoutResource(R.layout.pref_dialog_states);
@@ -27,7 +24,6 @@ public class StatesPreference extends DialogPreference {
         setDialogLayoutResource(R.layout.pref_dialog_states);
     }
 
-    @TargetApi(21)
     public StatesPreference(Context context) {
         super(context);
         setDialogLayoutResource(R.layout.pref_dialog_states);

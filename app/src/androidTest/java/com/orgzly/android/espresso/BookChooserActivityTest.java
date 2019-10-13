@@ -2,6 +2,8 @@ package com.orgzly.android.espresso;
 
 import android.content.Intent;
 
+import androidx.test.rule.ActivityTestRule;
+
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.BookChooserActivity;
 
@@ -9,8 +11,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-
-import androidx.test.rule.ActivityTestRule;
 
 import static android.app.Activity.RESULT_OK;
 import static androidx.test.espresso.Espresso.onView;
@@ -24,7 +24,6 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertTrue;
 
-//@Ignore
 public class BookChooserActivityTest extends OrgzlyTest {
     @Rule
     public ActivityTestRule activityRule = new EspressoActivityTestRule<>(BookChooserActivity.class);
@@ -54,8 +53,8 @@ public class BookChooserActivityTest extends OrgzlyTest {
         onView(allOf(withText("book-one"), isDisplayed())).check(matches(isDisplayed()));
     }
 
+    @Ignore("SecurityException")
     @Test
-    @Ignore
     public void testLongClickChoosesBook() {
         startActivityWithIntent(Intent.ACTION_CREATE_SHORTCUT);
 

@@ -207,7 +207,6 @@
     <string name="repositories">Depolamalar</string>
     <string name="invalid_repo_url">Geçersiz depo URL “%s”</string>
     <string name="repository_url_already_exists">Repository with this URL already exists</string>
-    <string name="message_unsupported_repository_type">Desteklenmeyen depo türü</string>
     <string name="fragment_left_drawer_list_view_content_description">Sol çekme</string>
     <string name="drawer_item">Çekme Öğesi</string>
     <string name="prev_state">Önceki Durum</string>

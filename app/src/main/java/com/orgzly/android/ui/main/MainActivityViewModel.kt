@@ -7,10 +7,7 @@ import com.orgzly.BuildConfig
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.dao.NoteDao
-import com.orgzly.android.db.entity.Book
-import com.orgzly.android.db.entity.BookView
-import com.orgzly.android.db.entity.Note
-import com.orgzly.android.db.entity.SavedSearch
+import com.orgzly.android.db.entity.*
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent
@@ -33,7 +30,7 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
 
     val openNoteRequestEvent: SingleLiveEvent<Note> = SingleLiveEvent()
 
-    data class BookLinkOptions(val book: Book, val links: List<CharSequence>, val selected: Int)
+    data class BookLinkOptions(val book: Book, val links: List<Repo>, val selected: Int)
 
     val setBookLinkRequestEvent: SingleLiveEvent<BookLinkOptions> = SingleLiveEvent()
 
@@ -105,21 +102,23 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
 
             if (bookView == null) {
                 errorEvent.postValue(IllegalStateException("Book not found"))
+
             } else {
-                val repos = dataRepository.getReposList()
+                val repos = dataRepository.getRepos()
 
                 val a = if (repos.isEmpty()) {
                     BookLinkOptions(bookView.book, emptyList(), -1)
 
                 } else {
-                    val currentLink = bookView.linkedTo
+                    val currentLink = bookView.linkRepo
 
                     var selectedLink = -1
                     val links = repos.mapIndexed { index, repo ->
-                        if (repo.url == currentLink) {
+                        if (repo.url == currentLink?.url) {
                             selectedLink = index
                         }
-                        repo.url
+
+                        repo
                     }
 
                     BookLinkOptions(bookView.book, links, selectedLink)

@@ -3,7 +3,6 @@ package com.orgzly.android.ui.repo.webdav
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.Menu
@@ -12,8 +11,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.orgzly.R
-import com.orgzly.android.prefs.RepoPreferences
 import com.orgzly.android.repos.RepoFactory
+import com.orgzly.android.repos.RepoType
 import com.orgzly.android.repos.WebdavRepo.Companion.PASSWORD_PREF_KEY
 import com.orgzly.android.repos.WebdavRepo.Companion.USERNAME_PREF_KEY
 import com.orgzly.android.ui.CommonActivity
@@ -37,38 +36,25 @@ class WebdavRepoActivity : CommonActivity() {
 
         setupActionBar(R.string.webdav)
 
-        val repoId = intent.getLongExtra(ARG_REPO_ID, 0)
-
-        if (repoId != 0L) {
-            val prefs = RepoPreferences.fromId(this, repoId, dataRepository)
-
-            binding.activityRepoWebdavUrl.setText(prefs.repoUri.toString())
-
-            val username = prefs.getStringValue(USERNAME_PREF_KEY, "")
-            binding.activityRepoWebdavUsername.setText(username)
-
-            val password = prefs.getStringValue(PASSWORD_PREF_KEY, "")
-            binding.activityRepoWebdavPassword.setText(password)
-        }
-
         binding.activityRepoWebdavTestButton.setOnClickListener {
             testConnection()
         }
 
+        val repoId = intent.getLongExtra(ARG_REPO_ID, 0)
         val factory = WebdavRepoViewModelFactory.getInstance(dataRepository, repoId)
 
         viewModel = ViewModelProviders.of(this, factory).get(WebdavRepoViewModel::class.java)
 
+        if (viewModel.repoId != 0L) { // Editing existing
+            viewModel.loadRepoProperties()?.let { repoWithProps ->
+                binding.activityRepoWebdavUrl.setText(repoWithProps.repo.url)
+
+                binding.activityRepoWebdavUsername.setText(repoWithProps.props[USERNAME_PREF_KEY])
+                binding.activityRepoWebdavPassword.setText(repoWithProps.props[PASSWORD_PREF_KEY])
+            }
+        }
+
         viewModel.finishEvent.observeSingle(this, Observer {
-            val username = getUsername()
-            val password = getPassword()
-
-            // TODO: Move to RepoPreferences
-            val editor: SharedPreferences.Editor = RepoPreferences.fromId(this, viewModel.repoId, dataRepository).repoPreferences.edit()
-            editor.putString(USERNAME_PREF_KEY, username)
-            editor.putString(PASSWORD_PREF_KEY, password)
-            editor.apply()
-
             finish()
         })
 
@@ -142,16 +128,21 @@ class WebdavRepoActivity : CommonActivity() {
     private fun saveAndFinish() {
         if (isInputValid()) {
             val uriString = getUrl()
+            val username = getUsername()
+            val password = getPassword()
+
+            val props = mapOf(USERNAME_PREF_KEY to username, PASSWORD_PREF_KEY to password)
 
             if (UriUtils.isUrlSecure(uriString)) {
-                viewModel.saveRepo(uriString)
+                viewModel.saveRepo(RepoType.WEBDAV, uriString, props)
 
             } else {
+                // Warn about clear-text traffic
                 alertDialog = AlertDialog.Builder(this)
                         .setTitle(R.string.cleartext_traffic)
                         .setMessage(R.string.cleartext_traffic_message)
                         .setPositiveButton(R.string.yes) { _, _ ->
-                            viewModel.saveRepo(uriString)
+                            viewModel.saveRepo(RepoType.WEBDAV, uriString, props)
                         }
                         .setNegativeButton(R.string.cancel, null)
                         .show()

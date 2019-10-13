@@ -2,12 +2,10 @@ package com.orgzly.android.query
 
 import com.orgzly.android.query.user.DottedQueryParser
 import org.junit.Assert.assertEquals
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
-//@Ignore
 @RunWith(value = Parameterized::class)
 class QueryUtilsTest(private val param: Parameter) {
 

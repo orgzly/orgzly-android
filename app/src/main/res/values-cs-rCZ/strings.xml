@@ -215,7 +215,6 @@
     <string name="repositories">Repozitáře</string>
     <string name="invalid_repo_url">Adresa repozitáře \"%s\" je neplatná</string>
     <string name="repository_url_already_exists">Repozitář s touto adresou již existuje</string>
-    <string name="message_unsupported_repository_type">Tento typ adresáře není podporován</string>
     <string name="fragment_left_drawer_list_view_content_description">Levý šuplík</string>
     <string name="drawer_item">Položka v šuplíku</string>
     <string name="prev_state">Předchozí stav</string>

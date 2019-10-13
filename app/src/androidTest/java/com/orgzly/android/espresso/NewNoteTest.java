@@ -1,14 +1,13 @@
 package com.orgzly.android.espresso;
 
+import androidx.test.rule.ActivityTestRule;
+
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.main.MainActivity;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-
-import androidx.test.rule.ActivityTestRule;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
@@ -25,11 +24,6 @@ import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
 
-/**
- *
- */
-//@Ignore
-@SuppressWarnings("unchecked")
 public class NewNoteTest extends OrgzlyTest {
     @Rule
     public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);

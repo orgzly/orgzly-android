@@ -1,32 +1,25 @@
 package com.orgzly.android.repos;
 
-import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
 import com.orgzly.android.BookName;
-import com.orgzly.android.data.DataRepository;
 import com.orgzly.android.git.GitFileSynchronizer;
 import com.orgzly.android.git.GitPreferences;
 import com.orgzly.android.git.GitPreferencesFromRepoPrefs;
 import com.orgzly.android.git.GitSSHKeyTransportSetter;
 import com.orgzly.android.git.GitTransportSetter;
-import com.orgzly.android.prefs.RepoPreferences;
 
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
-import org.eclipse.jgit.api.errors.NoHeadException;
-import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.ignore.IgnoreNode;
-import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.FileMode;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ProgressMonitor;
-import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -36,16 +29,14 @@ import org.eclipse.jgit.treewalk.filter.TreeFilter;
 import org.eclipse.jgit.util.FileUtils;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GitRepo implements SyncRepo, TwoWaySyncRepo {
-    public final static String SCHEME = "git";
+    private final long repoId;
 
     /**
      * Used as cause when we try to clone into a non-empty directory
@@ -58,25 +49,26 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
         }
     }
 
+    public static GitRepo getInstance(RepoWithProps props) throws IOException {
+        GitPreferencesFromRepoPrefs prefs = null;
+
+        // TODO: Build from info
+
+        return build(props.getRepo().getId(), prefs, false);
+    }
+
     public static GitTransportSetter getTransportSetter(GitPreferences preferences) {
         return new GitSSHKeyTransportSetter(Uri.parse(preferences.sshKeyPathString()).getPath());
     }
 
-    public static GitRepo buildFromUri(Context context, Uri uri, DataRepository repo)
-            throws IOException {
-        GitPreferencesFromRepoPrefs prefs = new GitPreferencesFromRepoPrefs(
-                RepoPreferences.fromUri(context, uri, repo));
-        return build(prefs, false);
-    }
-
-    private static GitRepo build(GitPreferences prefs, boolean clone) throws IOException {
+    private static GitRepo build(long id, GitPreferences prefs, boolean clone) throws IOException {
         Git git = ensureRepositoryExists(prefs, clone, null);
 
         StoredConfig config = git.getRepository().getConfig();
         config.setString("remote", prefs.remoteName(), "url", prefs.remoteUri().toString());
         config.save();
 
-        return new GitRepo(git, prefs);
+        return new GitRepo(id, git, prefs);
     }
 
     static boolean isRepo(FileRepositoryBuilder frb, File f) {
@@ -170,7 +162,8 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     private GitFileSynchronizer synchronizer;
     private GitPreferences preferences;
 
-    public GitRepo(Git g, GitPreferences prefs) {
+    public GitRepo(long id, Git g, GitPreferences prefs) {
+        repoId = id;
         git = g;
         preferences = prefs;
         synchronizer = new GitFileSynchronizer(git, prefs);
@@ -233,7 +226,7 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
             e.printStackTrace();
         }
         long mtime = (long)commit.getCommitTime()*1000;
-        return new VersionedRook(getUri(), uri, commit.name(), mtime);
+        return new VersionedRook(repoId, RepoType.GIT, getUri(), uri, commit.name(), mtime);
     }
 
     private IgnoreNode getIgnores() throws IOException {

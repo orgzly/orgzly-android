@@ -29,25 +29,25 @@ object WidgetStyle {
         remoteViews.setInt(
                 R.id.list_widget_header_container,
                 "setBackgroundColor",
-                WidgetStyle.headerBackground(context))
+                headerBackground(context))
 
         remoteViews.setTextViewTextSize(
                 R.id.list_widget_header_selection,
                 TypedValue.COMPLEX_UNIT_PX,
-                WidgetStyle.headerTextSize(context))
+                headerTextSize(context))
 
         remoteViews.setTextColor(
                 R.id.list_widget_header_selection,
-                WidgetStyle.headerTextColor(context))
+                headerTextColor(context))
 
         remoteViews.setTextColor(
                 R.id.list_widget_empty_view,
-                WidgetStyle.primaryTextColor(context))
+                primaryTextColor(context))
 
         remoteViews.setInt(
                 R.id.list_widget_list_container,
                 "setBackgroundColor",
-                WidgetStyle.listBackgroundColor(context))
+                listBackgroundColor(context))
     }
 
     @JvmStatic
@@ -55,11 +55,11 @@ object WidgetStyle {
         remoteViews.setTextViewTextSize(
                 R.id.widget_list_item_divider_value,
                 TypedValue.COMPLEX_UNIT_PX,
-                WidgetStyle.titleTextSize(context))
+                titleTextSize(context))
 
         remoteViews.setTextColor(
                 R.id.widget_list_item_divider_value,
-                WidgetStyle.primaryTextColor(context))
+                primaryTextColor(context))
     }
 
     @JvmStatic
@@ -69,95 +69,95 @@ object WidgetStyle {
         remoteViews.setTextViewTextSize(
                 R.id.item_list_widget_title,
                 TypedValue.COMPLEX_UNIT_PX,
-                WidgetStyle.titleTextSize(context))
+                titleTextSize(context))
 
         remoteViews.setTextColor(
                 R.id.item_list_widget_title,
-                WidgetStyle.primaryTextColor(context))
+                primaryTextColor(context))
 
         /* Book name */
 
         remoteViews.setImageViewResource(
                 R.id.item_list_widget_book_icon,
-                WidgetStyle.bookIcon(context))
+                bookIcon(context))
 
         remoteViews.setTextViewTextSize(
                 R.id.item_list_widget_book_text,
                 TypedValue.COMPLEX_UNIT_PX,
-                WidgetStyle.postTitleTextSize(context))
+                postTitleTextSize(context))
 
         remoteViews.setTextColor(
                 R.id.item_list_widget_book_text,
-                WidgetStyle.secondaryTextColor(context))
+                secondaryTextColor(context))
 
         /* Scheduled time */
 
         remoteViews.setImageViewResource(
                 R.id.item_list_widget_scheduled_icon,
-                WidgetStyle.scheduledIcon(context))
+                scheduledIcon(context))
 
         remoteViews.setTextViewTextSize(
                 R.id.item_list_widget_scheduled_text,
                 TypedValue.COMPLEX_UNIT_PX,
-                WidgetStyle.postTitleTextSize(context))
+                postTitleTextSize(context))
 
         remoteViews.setTextColor(
                 R.id.item_list_widget_scheduled_text,
-                WidgetStyle.secondaryTextColor(context))
+                secondaryTextColor(context))
 
         /* Deadline time */
 
         remoteViews.setImageViewResource(
                 R.id.item_list_widget_deadline_icon,
-                WidgetStyle.deadlineIcon(context))
+                deadlineIcon(context))
 
         remoteViews.setTextViewTextSize(
                 R.id.item_list_widget_deadline_text,
                 TypedValue.COMPLEX_UNIT_PX,
-                WidgetStyle.postTitleTextSize(context))
+                postTitleTextSize(context))
 
         remoteViews.setTextColor(
                 R.id.item_list_widget_deadline_text,
-                WidgetStyle.secondaryTextColor(context))
+                secondaryTextColor(context))
 
         /* Event time */
 
         remoteViews.setImageViewResource(
                 R.id.item_list_widget_event_icon,
-                WidgetStyle.eventIcon(context))
+                eventIcon(context))
 
         remoteViews.setTextViewTextSize(
                 R.id.item_list_widget_event_text,
                 TypedValue.COMPLEX_UNIT_PX,
-                WidgetStyle.postTitleTextSize(context))
+                postTitleTextSize(context))
 
         remoteViews.setTextColor(
                 R.id.item_list_widget_event_text,
-                WidgetStyle.secondaryTextColor(context))
+                secondaryTextColor(context))
 
         /* Closed time */
 
         remoteViews.setImageViewResource(
                 R.id.item_list_widget_closed_icon,
-                WidgetStyle.closedIcon(context))
+                closedIcon(context))
 
         remoteViews.setTextViewTextSize(
                 R.id.item_list_widget_closed_text,
                 TypedValue.COMPLEX_UNIT_PX,
-                WidgetStyle.postTitleTextSize(context))
+                postTitleTextSize(context))
 
         remoteViews.setTextColor(
                 R.id.item_list_widget_closed_text,
-                WidgetStyle.secondaryTextColor(context))
+                secondaryTextColor(context))
 
         /* Done icon */
 
         remoteViews.setImageViewResource(
                 R.id.item_list_widget_done,
-                WidgetStyle.doneIcon(context))
+                doneIcon(context))
 
         remoteViews.setInt(
-                R.id.item_list_widget_done, "setAlpha", WidgetStyle.doneIconAlpha(context))
+                R.id.item_list_widget_done, "setAlpha", doneIconAlpha(context))
     }
 
     @JvmStatic

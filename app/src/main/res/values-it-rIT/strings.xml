@@ -207,7 +207,6 @@
     <string name="repositories">Depositi</string>
     <string name="invalid_repo_url">URL \"%s\" del deposito non valido</string>
     <string name="repository_url_already_exists">Un repository con questo URL esiste già</string>
-    <string name="message_unsupported_repository_type">Tipo di deposito non supportato</string>
     <string name="fragment_left_drawer_list_view_content_description">Menu di sinistra</string>
     <string name="drawer_item">Elemento del Menu</string>
     <string name="prev_state">Stato precedente</string>

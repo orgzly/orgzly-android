@@ -7,15 +7,12 @@ import com.orgzly.android.ui.views.style.IdLinkSpan
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.assertThat
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import java.io.File
 import java.io.IOException
 
-
-//@Ignore
 @RunWith(value = Parameterized::class)
 class OrgFormatterLinkTest(private val param: Parameter) : OrgFormatterTest() {
 

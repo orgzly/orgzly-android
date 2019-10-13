@@ -203,7 +203,6 @@
     <string name="repositories">リポジトリ</string>
     <string name="invalid_repo_url">\"%s\"は無効なリポジトリURLです</string>
     <string name="repository_url_already_exists">このURLのリポジトリは既に存在します</string>
-    <string name="message_unsupported_repository_type">サポートされていないリポジトリタイプです</string>
     <string name="fragment_left_drawer_list_view_content_description">左ドロワー</string>
     <string name="drawer_item">ドロワー項目</string>
     <string name="prev_state">前の状態</string>

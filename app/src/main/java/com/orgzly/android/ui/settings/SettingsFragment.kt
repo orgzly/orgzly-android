@@ -6,9 +6,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.preference.*
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -64,14 +62,14 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 //        }
 
         findPreference(getString(R.string.pref_key_clear_database))?.let {
-            it.setOnPreferenceClickListener { _ ->
+            it.setOnPreferenceClickListener {
                 listener?.onDatabaseClearRequest()
                 true
             }
         }
 
         findPreference(getString(R.string.pref_key_reload_getting_started))?.let {
-            it.setOnPreferenceClickListener { _ ->
+            it.setOnPreferenceClickListener {
                 listener?.onGettingStartedNotebookReloadRequest()
                 true
             }
@@ -99,7 +97,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             pref.summary = BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_SUFFIX
 
             /* Display changelog dialog when version is clicked. */
-            pref.setOnPreferenceClickListener { _ ->
+            pref.setOnPreferenceClickListener {
                 listener?.onWhatsNewDisplayRequest()
                 true
             }

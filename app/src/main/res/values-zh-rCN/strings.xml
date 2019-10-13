@@ -203,7 +203,6 @@
     <string name="repositories">存储库</string>
     <string name="invalid_repo_url">无效的仓库地址 %s</string>
     <string name="repository_url_already_exists">此地址仓库已存在</string>
-    <string name="message_unsupported_repository_type">不支持的存储库类型</string>
     <string name="fragment_left_drawer_list_view_content_description">左侧抽屉</string>
     <string name="drawer_item">抽屉条目</string>
     <string name="prev_state">上一个状态</string>

@@ -5,6 +5,7 @@ import com.orgzly.android.BookName;
 import com.orgzly.android.NotesOrgExporter;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.db.entity.Book;
+import com.orgzly.android.db.entity.Repo;
 import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.util.MiscUtils;
 
@@ -28,8 +29,8 @@ public class LocalDbRepoTest extends OrgzlyTest {
 
     @Test
     public void testGetBooksFromAllRepos() throws IOException {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/mock-book.org", "book content\n\n* First note\n** Second note", "rev1", 1234567890000L);
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupRook(repo, "mock://repo-a/mock-book.org", "book content\n\n* First note\n** Second note", "rev1", 1234567890000L);
 
         List<VersionedRook> books = SyncService.getBooksFromAllRepos(dataRepository, null);
 
@@ -55,8 +56,8 @@ public class LocalDbRepoTest extends OrgzlyTest {
         File tmpFile = dataRepository.getTempBookFile();
 
         try {
-            new NotesOrgExporter(context, dataRepository).exportBook(book, tmpFile);
-            repo = repoFactory.getFromUri(context, "mock://repo-a", dataRepository);
+            new NotesOrgExporter(dataRepository).exportBook(book, tmpFile);
+            repo = testUtils.repoInstance(RepoType.MOCK, "mock://repo-a");
             repo.storeBook(tmpFile, BookName.fileName(book.getName(), BookFormat.ORG));
         } finally {
             tmpFile.delete();
@@ -73,15 +74,15 @@ public class LocalDbRepoTest extends OrgzlyTest {
 
     @Test
     public void testRetrievingBook() throws IOException {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/mock-book.org", "book content\n\n* First note\n** Second note", "rev1", 1234567890000L);
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupRook(repo, "mock://repo-a/mock-book.org", "book content\n\n* First note\n** Second note", "rev1", 1234567890000L);
 
-        SyncRepo repo = repoFactory.getFromUri(context, "mock://repo-a", dataRepository);
+        SyncRepo syncRepo = testUtils.repoInstance(RepoType.MOCK, "mock://repo-a");
         VersionedRook vrook = SyncService.getBooksFromAllRepos(dataRepository, null).get(0);
 
         File tmpFile = dataRepository.getTempBookFile();
         try {
-            repo.retrieveBook("mock-book.org", tmpFile);
+            syncRepo.retrieveBook("mock-book.org", tmpFile);
             String content = MiscUtils.readStringFromFile(tmpFile);
             assertEquals("book content\n" + "\n" + "* First note\n" + "** Second note", content);
         } finally {

@@ -24,6 +24,7 @@ import com.orgzly.android.git.GitPreferences
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.prefs.RepoPreferences
 import com.orgzly.android.repos.GitRepo
+import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.BrowserActivity
 import com.orgzly.android.ui.repo.RepoViewModel
@@ -235,7 +236,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private fun save() {
         val remoteUriString = remoteUri().toString()
 
-        viewModel.saveRepo(remoteUriString)
+        viewModel.saveRepo(RepoType.GIT, remoteUriString /* TODO: preferences. */)
     }
 
     private fun validateFields(): Boolean {
@@ -269,7 +270,9 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private fun withDefault(v: String?, selector: Int): String {
         return if (v != null && v.isNotEmpty()) {
             v
-        } else AppPreferences.getStateSharedPreferences(this).getString(getSettingName(selector), "")
+        } else {
+            AppPreferences.getStateSharedPreferences(this)?.getString(getSettingName(selector), "") ?: ""
+        }
     }
 
     override fun sshKeyPathString(): String {
@@ -330,12 +333,12 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION ->
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val uri = data.data
-                    binding.activityRepoGitDirectory.setText(uri.path)
+                    binding.activityRepoGitDirectory.setText(uri?.path)
                 }
             ACTIVITY_REQUEST_CODE_FOR_SSH_KEY_SELECTION ->
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val uri = data.data
-                    binding.activityRepoGitSshKey.setText(uri.path)
+                    binding.activityRepoGitSshKey.setText(uri?.path)
                 }
         }
     }

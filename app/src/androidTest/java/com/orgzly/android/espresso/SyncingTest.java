@@ -4,19 +4,22 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
 
+import androidx.test.rule.ActivityTestRule;
+
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.db.entity.Repo;
+import com.orgzly.android.repos.RepoType;
 import com.orgzly.android.sync.BookSyncStatus;
 import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.main.MainActivity;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
-
-import androidx.test.rule.ActivityTestRule;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
@@ -46,7 +49,6 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.not;
 
-//@Ignore
 @SuppressWarnings("unchecked")
 public class SyncingTest extends OrgzlyTest {
     @Rule
@@ -70,8 +72,8 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testForceLoadingBookWithLink() {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/booky.org", "New content", "abc", 1234567890000L);
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupRook(repo, "mock://repo-a/booky.org", "New content", "abc", 1234567890000L);
         testUtils.setupBook("booky", "First book used for testing\n* Note A");
         activityRule.launchActivity(null);
 
@@ -92,8 +94,8 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testAutoSyncIsTriggeredAfterCreatingNote() {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/booky.org", "", "abc", 1234567890000L);
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupRook(repo, "mock://repo-a/booky.org", "", "abc", 1234567890000L);
         activityRule.launchActivity(null);
         sync();
 
@@ -126,8 +128,8 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testPrefaceModificationMakesBookOutOfSync() {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/booky.org", "", "abc", 1234567890000L);
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupRook(repo, "mock://repo-a/booky.org", "", "abc", 1234567890000L);
         activityRule.launchActivity(null);
         sync();
 
@@ -174,7 +176,7 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testForceLoadingBookWithNoLinkSingleRepo() {
-        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         testUtils.setupBook("booky", "First book used for testing\n* Note A");
         testUtils.setupBook("book-two", "Second book used for testing\n* Note 1\n* Note 2");
         activityRule.launchActivity(null);
@@ -190,8 +192,8 @@ public class SyncingTest extends OrgzlyTest {
      */
     @Test
     public void testForceLoadingMultipleTimes() {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/book-one.org", "New content", "abc", 1234567890000L);
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupRook(repo, "mock://repo-a/book-one.org", "New content", "abc", 1234567890000L);
         testUtils.setupBook("book-one", "First book used for testing\n* Note A");
         testUtils.setupBook("book-two", "Second book used for testing\n* Note 1\n* Note 2");
         activityRule.launchActivity(null);
@@ -225,7 +227,7 @@ public class SyncingTest extends OrgzlyTest {
     @Test
     public void testForceLoadingAfterModification() {
         testUtils.setupBook("book-one", "* Note");
-        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         activityRule.launchActivity(null);
 
         // Force save
@@ -251,8 +253,8 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testForceSavingBookWithNoLinkAndMultipleRepos() {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRepo("mock://repo-b");
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-b");
         testUtils.setupBook("book-one", "First book used for testing\n* Note A");
         testUtils.setupBook("book-two", "Second book used for testing\n* Note 1\n* Note 2");
         activityRule.launchActivity(null);
@@ -282,7 +284,7 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testForceSavingBookWithNoLinkSingleRepo() {
-        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         testUtils.setupBook("book-one", "First book used for testing\n* Note A");
         testUtils.setupBook("book-two", "Second book used for testing\n* Note 1\n* Note 2");
         activityRule.launchActivity(null);
@@ -298,8 +300,8 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testForceSavingBookWithLink() {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupBook("booky", "First book used for testing\n* Note A", "mock://repo-a");
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupBook("booky", "First book used for testing\n* Note A", repo);
         activityRule.launchActivity(null);
 
         onView(allOf(withText("booky"), isDisplayed())).perform(longClick());
@@ -313,7 +315,7 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testSyncButton() throws IOException {
-        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         testUtils.setupBook("book-one", "First book used for testing\n* Note A");
         testUtils.setupBook("book-two", "Second book used for testing\n* Note 1\n* Note 2");
         activityRule.launchActivity(null);
@@ -322,7 +324,7 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testSavingAndLoadingBookBySyncing() throws IOException {
-        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         testUtils.setupBook("booky",
                 "Sample book used for tests\n" +
                 "* Note #1.\n" +
@@ -347,7 +349,8 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testBackToModifiedBookAfterSyncing() throws IOException {
-        testUtils.setupRepo("mock://repo-a");
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+
         testUtils.setupBook("booky",
                 "Sample book used for tests\n" +
                 "* Note #1.\n" +
@@ -375,7 +378,7 @@ public class SyncingTest extends OrgzlyTest {
         onBook(0, R.id.item_book_synced_url).check(matches(allOf(withText("mock://repo-a/booky.org"), isDisplayed())));
 
         /* Modify remote book directly. */
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/booky.org", "NEW CONTENT", "abc", 1234567890000L);
+        testUtils.setupRook(repo, "mock://repo-a/booky.org", "NEW CONTENT", "abc", 1234567890000L);
 
         sync();
 
@@ -386,7 +389,7 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testBookParsingAfterKeywordsSettingChange() throws IOException {
-        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         testUtils.setupBook("booky",
                 "Sample book used for tests\n" +
                 "* Note #1.\n" +
@@ -434,10 +437,10 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testChangeBookLink() throws IOException {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRepo("mock://repo-b");
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/book-1.org", "Remote content for book in repo a", "abc", 1234567890);
-        testUtils.setupRook("mock://repo-b", "mock://repo-b/book-1.org", "Remote content for book in repo b", "def", 1234567891);
+        Repo repoA = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        Repo repoB = testUtils.setupRepo(RepoType.MOCK, "mock://repo-b");
+        testUtils.setupRook(repoA, "mock://repo-a/book-1.org", "Remote content for book in repo a", "abc", 1234567890);
+        testUtils.setupRook(repoB, "mock://repo-b/book-1.org", "Remote content for book in repo b", "def", 1234567891);
         activityRule.launchActivity(null);
 
         sync();
@@ -482,12 +485,12 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testSyncTwiceInARow() {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRepo("mock://repo-b");
-        testUtils.setupRook("mock://repo-b", "mock://repo-b/book-2.org", "Remote content for book 2", "abc", 1234567890000L);
-        testUtils.setupRook("mock://repo-b", "mock://repo-b/book-3.org", "Remote content for book 3", "def", 1234567891000L);
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        Repo repoB = testUtils.setupRepo(RepoType.MOCK, "mock://repo-b");
+        testUtils.setupRook(repoB, "mock://repo-b/book-2.org", "Remote content for book 2", "abc", 1234567890000L);
+        testUtils.setupRook(repoB, "mock://repo-b/book-3.org", "Remote content for book 3", "def", 1234567891000L);
         testUtils.setupBook("book-1", "Local content for book 1");
-        testUtils.setupBook("book-2", "Local content for book 2", "mock://repo-b");
+        testUtils.setupBook("book-2", "Local content for book 2", repoB);
         activityRule.launchActivity(null);
 
         sync();
@@ -536,8 +539,8 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testEncodingAfterSyncSaving() {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/book-one.org", "Täht", "1abcde", 1400067156000L);
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupRook(repo, "mock://repo-a/book-one.org", "Täht", "1abcde", 1400067156000L);
         activityRule.launchActivity(null);
 
         sync();
@@ -553,8 +556,8 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testSettingLinkToRenamedRepo() {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/booky.org", "Täht", "1abcde", 1400067156000L);
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupRook(repo, "mock://repo-a/booky.org", "Täht", "1abcde", 1400067156000L);
         activityRule.launchActivity(null);
 
         sync();
@@ -597,8 +600,8 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testRenamingReposRemovesLinksWhatUsedThem() {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRepo("mock://repo-b");
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-b");
         testUtils.setupBook("booky", "");
         activityRule.launchActivity(null);
 
@@ -631,8 +634,8 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testRemovingLinkFromBook() {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupBook("booky", "", "mock://repo-a");
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupBook("booky", "", repo);
         activityRule.launchActivity(null);
 
         onBook(0, R.id.item_book_link_repo).check(matches(allOf(withText("mock://repo-a"), isDisplayed())));
@@ -647,8 +650,8 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testSettingLinkForLoadedOrgTxtBook() {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/booky.org.txt", "", "1abcdef", 1400067155);
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupRook(repo, "mock://repo-a/booky.org.txt", "", "1abcdef", 1400067155);
         activityRule.launchActivity(null);
 
         sync();
@@ -667,8 +670,8 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testSpaceSeparatedBookName() throws IOException {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/Book%20Name.org", "", "1abcdef", 1400067155);
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupRook(repo, "mock://repo-a/Book%20Name.org", "", "1abcdef", 1400067155);
         activityRule.launchActivity(null);
 
         sync();
@@ -681,7 +684,7 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testRenameModifiedBook() {
-        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         testUtils.setupBook("booky", "* Note");
         activityRule.launchActivity(null);
 
@@ -709,9 +712,10 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testDeSelectRemovedNote() {
-        testUtils.setupRepo("mock://repo-a");
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+
         testUtils.setupRook(
-                "mock://repo-a",
+                repo,
                 "mock://repo-a/book-a.org",
                 "* TODO Note [a-1]\n* TODO Note [a-2]",
                 "1520077116000",
@@ -729,7 +733,7 @@ public class SyncingTest extends OrgzlyTest {
         onView(withId(R.id.action_bar_title)).check(matches(withText("1")));
 
         testUtils.setupRook(
-                "mock://repo-a",
+                repo,
                 "mock://repo-a/book-a.org",
                 "* TODO Note [a-1]",
                 "1520681916000",
@@ -747,7 +751,7 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testDeleteNonExistentRemoteFile() throws IOException {
-        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         testUtils.setupBook("booky", "Sample book used for tests");
         activityRule.launchActivity(null);
 
@@ -761,5 +765,23 @@ public class SyncingTest extends OrgzlyTest {
         onView(withText(R.string.delete)).perform(click());
         onView(withId(R.id.delete_linked_checkbox)).perform(click());
         onView(withText(R.string.delete)).perform(click());
+    }
+
+    @Test
+    public void testDeleteExistingRemoteFile() {
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupBook("booky", "Sample book used for tests");
+        activityRule.launchActivity(null);
+
+        sync();
+
+        onView(allOf(withText("booky"), isDisplayed())).check(matches(isDisplayed()));
+        onBook(0).perform(longClick());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.delete)).perform(click());
+        onView(withId(R.id.delete_linked_checkbox)).perform(click());
+        onView(withText(R.string.delete)).perform(click());
+
+        Assert.assertEquals(0, dbRepoBookRepository.getBooks(Uri.parse("mock://repo-a")).size());
     }
 }

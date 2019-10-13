@@ -6,6 +6,7 @@ import com.orgzly.android.BookName;
 import com.orgzly.android.LocalStorage;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.db.entity.BookView;
+import com.orgzly.android.db.entity.Repo;
 import com.orgzly.android.util.MiscUtils;
 
 import org.junit.After;
@@ -45,7 +46,8 @@ public class DirectoryRepoTest extends OrgzlyTest {
 
     @Test
     public void testStoringFile() throws IOException {
-        SyncRepo repo = repoFactory.getFromUri(context, repoUriString, dataRepository);
+        testUtils.setupRepo(RepoType.DIRECTORY, repoUriString);
+        SyncRepo repo = testUtils.repoInstance(RepoType.DIRECTORY, repoUriString);
 
         File tmpFile = dataRepository.getTempBookFile();
         try {
@@ -66,7 +68,8 @@ public class DirectoryRepoTest extends OrgzlyTest {
 
     @Test
     public void testExtension() throws IOException {
-        DirectoryRepo repo = new DirectoryRepo(repoUriString, true);
+        RepoWithProps repoWithProps = new RepoWithProps(new Repo(13, RepoType.DIRECTORY, repoUriString));
+        DirectoryRepo repo = new DirectoryRepo(repoWithProps, true);
         MiscUtils.writeStringToFile("Notebook content 1", new File(dirFile, "01.txt"));
         MiscUtils.writeStringToFile("Notebook content 2", new File(dirFile, "02.o"));
         MiscUtils.writeStringToFile("Notebook content 3", new File(dirFile, "03.org"));
@@ -76,6 +79,7 @@ public class DirectoryRepoTest extends OrgzlyTest {
         assertEquals(1, books.size());
         assertEquals("03", BookName.getInstance(context, books.get(0)).getName());
         assertEquals("03.org", BookName.getInstance(context, books.get(0)).getFileName());
+        assertEquals(13, books.get(0).getRepoId());
         assertEquals(repoUriString, books.get(0).getRepoUri().toString());
         assertEquals(repoUriString + "/03.org", books.get(0).getUri().toString());
     }
@@ -85,30 +89,31 @@ public class DirectoryRepoTest extends OrgzlyTest {
         File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         String path = DirectoryRepo.SCHEME + ":" + dir.getAbsolutePath();
 
-        DirectoryRepo repo = new DirectoryRepo(path, false);
+        RepoWithProps repoWithProps = new RepoWithProps(new Repo(13, RepoType.DIRECTORY, path));
+        DirectoryRepo repo = new DirectoryRepo(repoWithProps, false);
 
         assertNotNull(repo.getBooks());
     }
 
     // TODO: Do the same for dropbox repo
     @Test
-    public void testRenameBook() throws IOException {
+    public void testRenameBook() {
         BookView bookView;
 
-        testUtils.setupRepo(repoUriString);
+        testUtils.setupRepo(RepoType.DIRECTORY, repoUriString);
         testUtils.setupBook("booky", "");
 
         testUtils.sync();
         bookView = dataRepository.getBookView("booky");
 
-        assertEquals(repoUriString, bookView.getLinkedTo());
+        assertEquals(repoUriString, bookView.getLinkRepo().getUrl());
         assertEquals(repoUriString, bookView.getSyncedTo().getRepoUri().toString());
         assertEquals(repoUriString + "/booky.org", bookView.getSyncedTo().getUri().toString());
 
         dataRepository.renameBook(bookView, "booky-renamed");
         bookView = dataRepository.getBookView("booky-renamed");
 
-        assertEquals(repoUriString, bookView.getLinkedTo());
+        assertEquals(repoUriString, bookView.getLinkRepo().getUrl());
         assertEquals(repoUriString, bookView.getSyncedTo().getRepoUri().toString());
         assertEquals(repoUriString + "/booky-renamed.org", bookView.getSyncedTo().getUri().toString());
     }
@@ -124,7 +129,8 @@ public class DirectoryRepoTest extends OrgzlyTest {
 
         MiscUtils.writeStringToFile("Notebook content 1", new File(localDir, "notebook.org"));
 
-        DirectoryRepo repo = (DirectoryRepo) testUtils.setupRepo("file:" + localDirEnc);
+        testUtils.setupRepo(RepoType.DIRECTORY, "file:" + localDirEnc);
+        DirectoryRepo repo = (DirectoryRepo) testUtils.repoInstance(RepoType.DIRECTORY, "file:" + localDirEnc);
 
         testUtils.sync();
 

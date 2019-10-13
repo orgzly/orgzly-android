@@ -40,33 +40,62 @@ object ActivityUtils {
 
     @JvmStatic
     @JvmOverloads
-    fun openSoftKeyboard(activity: Activity?, view: View, scrollView: ScrollView? = null) {
-        openSoftKeyboardWithDelay(activity, view, 0, scrollView)
+    fun openSoftKeyboard(
+            activity: Activity?,
+            view: View?,
+            scrollView: ScrollView? = null,
+            scrollToTopOfView: View? = null) {
+
+        openSoftKeyboardWithDelay(activity, view, 0, scrollView, scrollToTopOfView)
     }
 
     // TODO: Remove, open immediately when ready
     @JvmStatic
     @JvmOverloads
-    fun openSoftKeyboardWithDelay(activity: Activity?, view: View, delay: Long = 200, scrollView: ScrollView? = null) {
-        if (activity != null) {
-            if (view.requestFocus()) {
-                if (BuildConfig.LOG_DEBUG)
-                    LogUtils.d(TAG, "Showing keyboard for view $view in activity $activity")
+    fun openSoftKeyboardWithDelay(
+            activity: Activity?,
+            viewToFocus: View?,
+            delay: Long = 200,
+            scrollView: ScrollView? = null,
+            scrollToTopOfView: View? = null) {
 
-                doOpenSoftKeyboard(activity, view, delay, scrollView)
+        if (activity != null) {
+
+            // Focus on view or use currently focused view
+            val focusedView = if (viewToFocus != null) {
+                if (viewToFocus.requestFocus()) {
+                    viewToFocus
+                } else {
+                    null // Failed to get focus
+                }
+            } else {
+                activity.currentFocus
+            }
+
+            if (focusedView != null) {
+                if (BuildConfig.LOG_DEBUG)
+                    LogUtils.d(TAG, "Showing keyboard for view $focusedView in activity $activity")
+
+                doOpenSoftKeyboard(activity, focusedView, delay, scrollView, scrollToTopOfView)
 
             } else {
-                Log.w(TAG, "Can't open keyboard because view " + view +
+                Log.w(TAG, "Can't open keyboard because view " + viewToFocus +
                         " failed to get focus in activity " + activity)
             }
         }
     }
 
-    private fun doOpenSoftKeyboard(activity: Activity, view: View, delay: Long, scrollView: ScrollView?) {
-        val listener = if (scrollView != null) {
+    private fun doOpenSoftKeyboard(
+            activity: Activity,
+            view: View,
+            delay: Long,
+            scrollView: ScrollView?,
+            scrollToTopOfView: View? = null) {
+
+        val listener = if (scrollView != null && scrollToTopOfView != null) {
             // Keep scrolling the view as the keyboard opens
             ViewTreeObserver.OnGlobalLayoutListener {
-                scrollView.scrollTo(0, view.top)
+                scrollView.scrollTo(0, scrollToTopOfView.top)
             }
         } else {
             null

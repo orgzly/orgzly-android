@@ -207,7 +207,6 @@
     <string name="repositories">Ablageorte</string>
     <string name="invalid_repo_url">Ungültige Ablageort-URL \"%s\"</string>
     <string name="repository_url_already_exists">Ein Repository mit dieser URL ist bereits vorhanden</string>
-    <string name="message_unsupported_repository_type">Nicht unterstützter Ablageort</string>
     <string name="fragment_left_drawer_list_view_content_description">Linke Seitenleiste</string>
     <string name="drawer_item">Seitenleisteneintrag</string>
     <string name="prev_state">Vorheriger Status</string>

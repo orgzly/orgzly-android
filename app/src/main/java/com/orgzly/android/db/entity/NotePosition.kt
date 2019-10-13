@@ -6,7 +6,6 @@ import androidx.room.Entity
 /**
  * Note's position in the book.
  */
-@Entity
 data class NotePosition(
         @ColumnInfo(name = "book_id")
         val bookId: Long,

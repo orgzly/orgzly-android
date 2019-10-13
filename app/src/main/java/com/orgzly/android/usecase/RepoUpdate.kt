@@ -1,10 +1,11 @@
 package com.orgzly.android.usecase
 
 import com.orgzly.android.data.DataRepository
+import com.orgzly.android.repos.RepoWithProps
 
-class RepoUpdate(val repoId: Long, val url: String) : UseCase() {
+class RepoUpdate(val repoWithProps: RepoWithProps) : UseCase() {
     override fun run(dataRepository: DataRepository): UseCaseResult {
-        val id = dataRepository.updateRepo(repoId, url)
+        val id = dataRepository.updateRepo(repoWithProps)
 
         return UseCaseResult(id)
     }

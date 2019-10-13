@@ -3,6 +3,7 @@ package com.orgzly.android.data
 import android.net.Uri
 import com.orgzly.android.db.OrgzlyDatabase
 import com.orgzly.android.db.entity.DbRepoBook
+import com.orgzly.android.repos.RepoType
 import com.orgzly.android.repos.VersionedRook
 import com.orgzly.android.util.MiscUtils
 import java.io.File
@@ -15,7 +16,7 @@ class DbRepoBookRepository @Inject constructor(db: OrgzlyDatabase) {
 
     fun getBooks(repoUri: Uri): List<VersionedRook> {
         return dbRepoBook.getAllByRepo(repoUri.toString()).map {
-            VersionedRook(Uri.parse(it.repoUrl), Uri.parse(it.url), it.revision, it.mtime)
+            VersionedRook(0, RepoType.MOCK, Uri.parse(it.repoUrl), Uri.parse(it.url), it.revision, it.mtime)
         }
     }
 
@@ -24,7 +25,7 @@ class DbRepoBookRepository @Inject constructor(db: OrgzlyDatabase) {
 
         MiscUtils.writeStringToFile(book.content, file)
 
-        return VersionedRook(repoUri, uri, book.revision, book.mtime)
+        return VersionedRook(0, RepoType.MOCK, repoUri, uri, book.revision, book.mtime)
     }
 
     fun createBook(vrook: VersionedRook, content: String): VersionedRook {
@@ -41,6 +42,8 @@ class DbRepoBookRepository @Inject constructor(db: OrgzlyDatabase) {
         dbRepoBook.replace(book)
 
         return VersionedRook(
+                0,
+                RepoType.MOCK,
                 Uri.parse(book.repoUrl),
                 Uri.parse(book.url),
                 book.revision,
@@ -59,6 +62,8 @@ class DbRepoBookRepository @Inject constructor(db: OrgzlyDatabase) {
         dbRepoBook.update(renamedBook)
 
         return VersionedRook(
+                0,
+                RepoType.MOCK,
                 Uri.parse(renamedBook.repoUrl),
                 Uri.parse(renamedBook.url),
                 renamedBook.revision,

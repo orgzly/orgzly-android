@@ -8,7 +8,7 @@ class NoteCreateFromNotification(val title: String) : UseCase() {
 
         return UseCaseResult(
                 modifiesLocalData = true,
-                triggersSync = UseCase.SYNC_NOTE_CREATED
+                triggersSync = SYNC_NOTE_CREATED
         )
     }
 }

@@ -142,10 +142,12 @@ class RefileFragment : DaggerDialogFragment() {
             dismiss()
 
             (result.userData as? Note)?.let { firstRefiledNote ->
-                val view = activity?.findViewById<View>(R.id.main_content)
+                activity?.findViewById<View>(R.id.main_content)?.let { viewForSnackbar ->
 
-                if (view != null) {
-                    (activity as CommonActivity).showSnackbar(Snackbar.make(view, firstRefiledNote.title, Snackbar.LENGTH_LONG)
+                    val snackbar = Snackbar.make(
+                            viewForSnackbar, firstRefiledNote.title, Snackbar.LENGTH_LONG)
+
+                    (activity as CommonActivity).showSnackbar(snackbar
                             .setAction(R.string.go_to) {
                                 App.EXECUTORS.diskIO().execute {
                                     UseCaseRunner.run(BookSparseTreeForNote(firstRefiledNote.id))

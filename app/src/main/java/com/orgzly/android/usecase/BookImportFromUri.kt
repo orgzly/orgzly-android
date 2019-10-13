@@ -14,7 +14,7 @@ class BookImportFromUri(val bookName: String, val format: BookFormat, val uri: U
 
         return UseCaseResult(
                 modifiesLocalData = true,
-                triggersSync = UseCase.SYNC_DATA_MODIFIED
+                triggersSync = SYNC_DATA_MODIFIED
         )
     }
 }

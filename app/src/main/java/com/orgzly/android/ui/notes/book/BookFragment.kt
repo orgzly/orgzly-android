@@ -268,14 +268,14 @@ class BookFragment :
 
     private fun parseArguments() {
         arguments?.let {
-            if (!it.containsKey(ARG_BOOK_ID)) {
-                throw IllegalArgumentException("No book id passed")
+            require(it.containsKey(ARG_BOOK_ID)) {
+                "No book id passed"
             }
 
             mBookId = it.getLong(ARG_BOOK_ID)
 
-            if (mBookId <= 0) {
-                throw IllegalArgumentException("Passed book id $mBookId is not valid")
+            require(mBookId > 0) {
+                "Passed book id $mBookId is not valid"
             }
         } ?: throw IllegalArgumentException("No arguments passed")
     }

@@ -9,7 +9,7 @@ class NoteUpdateDeadlineTime(val noteIds: Set<Long>, val time: OrgDateTime?) : U
 
         return UseCaseResult(
                 modifiesLocalData = true,
-                triggersSync = UseCase.SYNC_DATA_MODIFIED
+                triggersSync = SYNC_DATA_MODIFIED
         )
     }
 }

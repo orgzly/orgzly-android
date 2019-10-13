@@ -2,8 +2,6 @@ package com.orgzly.android.ui.repo.dropbox
 
 import android.app.Activity
 import android.app.AlertDialog
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -12,11 +10,11 @@ import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.repos.DropboxClient
-import com.orgzly.android.repos.DropboxRepo
-import com.orgzly.android.repos.RepoFactory
+import com.orgzly.android.repos.*
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.RepoViewModel
 import com.orgzly.android.ui.repo.RepoViewModelFactory
@@ -73,12 +71,11 @@ class DropboxRepoActivity : CommonActivity() {
         viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
 
         if (viewModel.repoId != 0L) { // Editing existing
-            viewModel.repo.observe(this, Observer { repo ->
-                if (repo != null) {
-                    val path = Uri.parse(repo.url).path
-                    binding.activityRepoDropboxDirectory.setText(path)
-                }
-            })
+            viewModel.loadRepoProperties()?.let { repoWithProps ->
+                val path = Uri.parse(repoWithProps.repo.url).path
+
+                binding.activityRepoDropboxDirectory.setText(path)
+            }
         }
 
         viewModel.finishEvent.observeSingle(this, Observer {
@@ -101,7 +98,7 @@ class DropboxRepoActivity : CommonActivity() {
 
         ActivityUtils.openSoftKeyboardWithDelay(this, binding.activityRepoDropboxDirectory)
 
-        client = DropboxClient(applicationContext)
+        client = DropboxClient(applicationContext, repoId)
     }
 
 
@@ -148,16 +145,18 @@ class DropboxRepoActivity : CommonActivity() {
             binding.activityRepoDropboxDirectoryInputLayout.error = null
         }
 
-        val uri = UriUtils.uriFromPath(DropboxRepo.SCHEME, directory)
+        val url = UriUtils.uriFromPath(DropboxRepo.SCHEME, directory).toString()
 
-        val repo = repoFactory.getFromUri(this, uri, dataRepository)
-
-        if (repo == null) {
-            binding.activityRepoDropboxDirectoryInputLayout.error = getString(R.string.invalid_repo_url, uri)
+        val repo = try {
+            viewModel.validate(RepoType.DROPBOX, url)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            binding.activityRepoDropboxDirectoryInputLayout.error =
+                    getString(R.string.repository_not_valid_with_reason, e.message)
             return
         }
 
-        viewModel.saveRepo(repo.uri.toString())
+        viewModel.saveRepo(RepoType.DROPBOX, repo.uri.toString())
     }
 
     private fun toggleLinkAfterConfirmation() {

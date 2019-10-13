@@ -18,7 +18,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.BookFormat
 import com.orgzly.android.data.DataRepository
+import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.sync.SyncService
@@ -77,9 +79,7 @@ class BooksFragment :
     }
 
     private fun parseArguments() {
-        if (arguments == null) {
-            throw IllegalArgumentException("No arguments found to " + BooksFragment::class.java.simpleName)
-        }
+        requireNotNull(arguments) { "No arguments found to " + BooksFragment::class.java.simpleName }
 
         withOptionsMenu = arguments?.getBoolean(ARG_WITH_OPTIONS_MENU) ?: true
         withActionBar = arguments?.getBoolean(ARG_WITH_ACTION_BAR) ?: true
@@ -194,7 +194,7 @@ class BooksFragment :
                     }
 
                     R.id.books_context_menu_export -> {
-                        listener?.onBookExportRequest(bookId)
+                        viewModel.exportBookRequest(bookId, BookFormat.ORG)
                     }
 
                     R.id.books_context_menu_delete -> {
@@ -388,6 +388,10 @@ class BooksFragment :
             }
         })
 
+        viewModel.bookExportRequestEvent.observeSingle(viewLifecycleOwner, Observer { (book, format) ->
+            listener?.onBookExportRequest(book, format)
+        })
+
         viewModel.bookDeletedEvent.observeSingle(viewLifecycleOwner, Observer {
             CommonActivity.showSnackbar(context, R.string.message_book_deleted)
         })
@@ -505,7 +509,7 @@ class BooksFragment :
 
         fun onForceLoadRequest(bookId: Long)
 
-        fun onBookExportRequest(bookId: Long)
+        fun onBookExportRequest(book: Book, format: BookFormat)
 
         fun onBookImportRequest()
     }

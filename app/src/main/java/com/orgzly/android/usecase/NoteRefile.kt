@@ -13,7 +13,7 @@ class NoteRefile(val noteIds: Set<Long>, val target: NotePlace) : UseCase() {
 
         return UseCaseResult(
                 modifiesLocalData = true,
-                triggersSync = UseCase.SYNC_DATA_MODIFIED,
+                triggersSync = SYNC_DATA_MODIFIED,
                 userData = firstRefilledNote
         )
     }

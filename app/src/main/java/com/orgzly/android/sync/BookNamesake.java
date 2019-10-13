@@ -1,10 +1,10 @@
 package com.orgzly.android.sync;
 
 import android.content.Context;
-import android.net.Uri;
 
 import com.orgzly.android.BookName;
 import com.orgzly.android.db.entity.BookView;
+import com.orgzly.android.db.entity.Repo;
 import com.orgzly.android.repos.VersionedRook;
 
 import java.util.ArrayList;
@@ -192,15 +192,14 @@ public class BookNamesake {
             if (book.getSyncedTo().getRevision().equals(latestLinkedRook.getRevision())) {
                 /* Revision did not change. */
 
-                if (book.isOutOfSync()) { // Local change.
+                if (book.isOutOfSync()) { // Local change
                     status = BookSyncStatus.BOOK_WITH_LINK_LOCAL_MODIFIED;
                 } else {
                     status = BookSyncStatus.NO_CHANGE;
                 }
 
             } else { /* Remote book has been modified. */
-                if (book.isOutOfSync()) {
-                    /* Uh oh. Both local and remote modified. */
+                if (book.isOutOfSync()) { // Local change
                     status = BookSyncStatus.CONFLICT_BOTH_BOOK_AND_ROOK_MODIFIED;
                 } else {
                     status = BookSyncStatus.BOOK_WITH_LINK_AND_ROOK_MODIFIED;
@@ -224,9 +223,13 @@ public class BookNamesake {
 
     /** Find latest (current) remote book that local one links to. */
     private VersionedRook getLatestLinkedRookVersion(BookView bookView, List<VersionedRook> vrooks) {
-        for (VersionedRook vrook : vrooks) {
-            if (Uri.parse(bookView.getLinkedTo()).equals(vrook.getRepoUri())) {
-                return vrook;
+        Repo linkRepo = bookView.getLinkRepo();
+
+        if (linkRepo != null) {
+            for (VersionedRook vrook : vrooks) {
+                if (linkRepo.getUrl().equals(vrook.getRepoUri().toString())){
+                    return vrook;
+                }
             }
         }
 

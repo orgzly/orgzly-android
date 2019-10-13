@@ -1,54 +1,38 @@
 package com.orgzly.android.repos
 
 import android.content.Context
-import android.net.Uri
-
 import com.orgzly.BuildConfig
-import com.orgzly.android.data.DataRepository
 import com.orgzly.android.data.DbRepoBookRepository
-
 import javax.inject.Inject
 
-class RepoFactory @Inject constructor(private val dbRepoBookRepository: DbRepoBookRepository) {
+class RepoFactory @Inject constructor(
+        private val context: Context,
+        private val dbRepoBookRepository: DbRepoBookRepository
+) {
+    fun getInstance(repoWithProps: RepoWithProps): SyncRepo {
+        val type = repoWithProps.repo.type.id
 
-    fun getFromUri(context: Context, uri: Uri, repo: DataRepository): SyncRepo? {
-        return getFromUri(context, uri.toString(), repo)
-    }
+        return when {
+            type == RepoType.MOCK.id ->
+                MockRepo(repoWithProps, dbRepoBookRepository)
 
-    // TODO: Better throw exception, not return null?
-    // TODO: Can we inject the DataRepository instead? Like the DbRepoBookRepository
-    fun getFromUri(context: Context, uriString: String, repo: DataRepository): SyncRepo? {
-        val uri = Uri.parse(uriString)
+            type == RepoType.DROPBOX.id && BuildConfig.IS_DROPBOX_ENABLED ->
+                DropboxRepo(repoWithProps, context)
 
-        if (uri != null && uri.scheme != null) { // Make sure uri is valid and has a scheme
-            try {
-                return when  {
-                    uri.scheme == ContentRepo.SCHEME ->
-                        ContentRepo(context, uri)
+            type == RepoType.DIRECTORY.id ->
+                DirectoryRepo(repoWithProps, false)
 
-                    BuildConfig.IS_DROPBOX_ENABLED && uri.scheme == DropboxRepo.SCHEME && uri.authority == null ->
-                        DropboxRepo(context, uri)
+            type == RepoType.DOCUMENT.id ->
+                ContentRepo(repoWithProps, context)
 
-                    BuildConfig.IS_GIT_ENABLED && uri.scheme == GitRepo.SCHEME ->
-                        GitRepo.buildFromUri(context, uri, repo)
+            type == RepoType.WEBDAV.id ->
+                WebdavRepo.getInstance(repoWithProps)
 
-                    uri.scheme == DirectoryRepo.SCHEME ->
-                        DirectoryRepo(uriString, false)
+            type == RepoType.GIT.id && BuildConfig.IS_GIT_ENABLED ->
+                GitRepo.getInstance(repoWithProps)
 
-                    uri.scheme == MockRepo.SCHEME ->
-                        MockRepo(dbRepoBookRepository, uriString)
-
-                    uri.scheme in WebdavRepo.SCHEMES ->
-                        WebdavRepo.buildFromUri(context, uri, repo)
-
-                    else -> null
-                }
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            else ->
+                throw IllegalArgumentException("Unknown type or disabled repo $repoWithProps")
         }
-
-        return null
     }
 }

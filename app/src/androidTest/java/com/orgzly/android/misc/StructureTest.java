@@ -1420,7 +1420,7 @@ public class StructureTest extends OrgzlyTest {
                 dataRepository.getBookContent("Book A", BookFormat.ORG));
     }
 
-    @Ignore
+    @Ignore("Not supported")
     @Test
     public void moveMultipleDownWithChildrenSelected() throws IOException {
         BookView book = testUtils.setupBook(

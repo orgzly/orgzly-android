@@ -207,7 +207,6 @@
     <string name="repositories">Tárolók</string>
     <string name="invalid_repo_url">Érvénytelen tároló URL \"%s\"</string>
     <string name="repository_url_already_exists">Ilyen tároló URL más létezik</string>
-    <string name="message_unsupported_repository_type">Nem támogatott tároló típus</string>
     <string name="fragment_left_drawer_list_view_content_description">Bal fiók</string>
     <string name="drawer_item">Fiók elem</string>
     <string name="prev_state">Előző állapot</string>

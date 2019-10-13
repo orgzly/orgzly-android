@@ -56,7 +56,7 @@ public class OrgzlyTest {
 
         dbRepoBookRepository = new DbRepoBookRepository(database);
 
-        repoFactory = new RepoFactory(dbRepoBookRepository);
+        repoFactory = new RepoFactory(context, dbRepoBookRepository);
 
         dataRepository = new DataRepository(
                 context,
@@ -71,9 +71,9 @@ public class OrgzlyTest {
 
         // new LocalStorage(context).cleanup();
 
-        dataRepository.clearDatabase();
-
         setupPreferences();
+
+        dataRepository.clearDatabase();
     }
 
     @After

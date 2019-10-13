@@ -19,6 +19,7 @@
 
             <!-- Entire note -->
             <LinearLayout
+                android:id="@+id/fragment_note_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/screen_edge"
@@ -57,12 +58,12 @@
 
                 <!-- Selectable notebook -->
                 <TextView
+                    android:id="@+id/fragment_note_location_button"
                     style="@style/NoteFragmentListItemSpinnerButton"
                     android:layout_marginLeft="@dimen/screen_edge"
                     android:layout_marginStart="@dimen/screen_edge"
                     android:layout_marginRight="@dimen/screen_edge"
                     android:layout_marginEnd="@dimen/screen_edge"
-                    android:id="@+id/fragment_note_location_button"
                     tools:text="GTD"
                     android:visibility="gone"/>
 

@@ -207,7 +207,6 @@
     <string name="repositories">Opslagruimtes</string>
     <string name="invalid_repo_url">Ongeldige opslagruimte-URL \"%s\"</string>
     <string name="repository_url_already_exists">Repository met deze URL bestaat al</string>
-    <string name="message_unsupported_repository_type">Niet-ondersteund opslagruimte type</string>
     <string name="fragment_left_drawer_list_view_content_description">Linker Menu</string>
     <string name="drawer_item">Menu-item</string>
     <string name="prev_state">Vorige toestand</string>

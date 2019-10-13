@@ -8,7 +8,7 @@ class NoteUpdateState(val noteIds: Set<Long>, val state: String?) : UseCase() {
 
         return UseCaseResult(
                 modifiesLocalData = true,
-                triggersSync = UseCase.SYNC_DATA_MODIFIED
+                triggersSync = SYNC_DATA_MODIFIED
         )
     }
 }

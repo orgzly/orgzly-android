@@ -9,10 +9,12 @@ import com.orgzly.android.App;
 import com.orgzly.org.OrgStatesWorkflow;
 
 import org.eclipse.jgit.transport.URIish;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -35,6 +37,10 @@ public class AppPreferences {
         return context.getSharedPreferences("state", Context.MODE_PRIVATE);
     }
 
+    public static SharedPreferences getReposSharedPreferences(Context context) {
+        return context.getSharedPreferences("repos", Context.MODE_PRIVATE);
+    }
+
     public static boolean isDoneKeyword(Context context, String state) {
         return state != null && AppPreferences.doneKeywordsSet(context).contains(state);
     }
@@ -44,6 +50,7 @@ public class AppPreferences {
 
         values.defaultPrefsValues = getDefaultSharedPreferences(context).getAll();
         values.statePrefsValues = getStateSharedPreferences(context).getAll();
+        values.reposPrefsValues = getReposSharedPreferences(context).getAll();
 
         return values;
     }
@@ -53,6 +60,7 @@ public class AppPreferences {
 
         setPrefsFromValues(getDefaultSharedPreferences(context), values.defaultPrefsValues);
         setPrefsFromValues(getStateSharedPreferences(context), values.statePrefsValues);
+        setPrefsFromValues(getReposSharedPreferences(context), values.reposPrefsValues);
     }
 
     @SuppressWarnings("unchecked")
@@ -926,5 +934,84 @@ public class AppPreferences {
     public static void refileLastLocation(Context context, String value) {
         String key = context.getResources().getString(R.string.pref_key_refile_last_location);
         getStateSharedPreferences(context).edit().putString(key, value).apply();
+    }
+
+    /*
+     * Repository properties map
+     */
+
+    public static void repoPropsMap(Context context, long id, Map<String, String> map) {
+        SharedPreferences prefs = getReposSharedPreferences(context);
+
+        repoPropsMapDelete(context, id);
+
+        SharedPreferences.Editor edit = prefs.edit();
+
+        for (String name: map.keySet()) {
+            String key = repoPropsMapKeyPrefix(id) + name;
+            edit.putString(key, map.get(name));
+        }
+
+        edit.apply();
+    }
+
+    @NotNull
+    public static Map<String, String> repoPropsMap(Context context, long id) {
+        Map<String, String> map = new HashMap<>();
+
+        SharedPreferences prefs = getReposSharedPreferences(context);
+
+        for (String key: repoPropsMapKeys(context, id)) {
+            String name = key.replace(repoPropsMapKeyPrefix(id), "");
+            String value = prefs.getString(key, null);
+            if (value != null) {
+                map.put(name, value);
+            }
+        }
+
+        return map;
+    }
+
+    /**
+     * Delete all preferences belonging to the repository with specified ID.
+     */
+    public static void repoPropsMapDelete(Context context, long id) {
+        SharedPreferences prefs = getReposSharedPreferences(context);
+
+        SharedPreferences.Editor edit = prefs.edit();
+
+        for (String key: repoPropsMapKeys(context, id)) {
+            edit.remove(key);
+        }
+
+        edit.apply();
+    }
+
+    private static Set<String> repoPropsMapKeys(Context context, long id) {
+        Set<String> keys = new HashSet<>();
+
+        SharedPreferences prefs = getReposSharedPreferences(context);
+
+        for (String key: prefs.getAll().keySet()) {
+            if (key.startsWith(repoPropsMapKeyPrefix(id))) {
+                keys.add(key);
+            }
+        }
+
+        return keys;
+    }
+
+    public static void repoPropsMapDelete(Context context) {
+        SharedPreferences prefs = getReposSharedPreferences(context);
+        prefs.edit().clear().apply();
+    }
+
+    /**
+     * We're using the same SharedPreferences file to easily clean up values of deleted
+     * repositories. Deleting individual per-repository files might not be trivial as preferences
+     * are stored in memory and it's not clear (?) when the backing file is written to.
+     */
+    private static String repoPropsMapKeyPrefix(long id) {
+        return "id-" + id + "-";
     }
 }

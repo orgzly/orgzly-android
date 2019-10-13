@@ -7,13 +7,11 @@ import com.orgzly.android.query.user.DottedQueryBuilder
 import com.orgzly.android.query.user.DottedQueryParser
 import org.hamcrest.Matchers.`is`
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import java.util.*
 
-//@Ignore
 @RunWith(value = Parameterized::class)
 class QueryTest(private val param: Parameter) : OrgzlyTest() {
 

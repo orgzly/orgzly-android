@@ -1,8 +1,6 @@
 package com.orgzly.android.ui.repo.directory
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -12,11 +10,11 @@ import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.repos.ContentRepo
-import com.orgzly.android.repos.DirectoryRepo
-import com.orgzly.android.repos.RepoFactory
+import com.orgzly.android.repos.*
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.BrowserActivity
 import com.orgzly.android.ui.repo.RepoViewModel
@@ -25,6 +23,7 @@ import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.databinding.ActivityRepoDirectoryBinding
+import java.lang.Exception
 import javax.inject.Inject
 
 class DirectoryRepoActivity : CommonActivity() {
@@ -65,9 +64,9 @@ class DirectoryRepoActivity : CommonActivity() {
         viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
 
         if (viewModel.repoId != 0L) { // Editing existing
-            viewModel.repo.observe(this, Observer { repo ->
-                binding.activityRepoDirectory.setText(repo?.url)
-            })
+            viewModel.loadRepoProperties()?.let { repoWithProps ->
+                binding.activityRepoDirectory.setText(repoWithProps.repo.url)
+            }
         }
 
         viewModel.finishEvent.observeSingle(this, Observer {
@@ -187,29 +186,44 @@ class DirectoryRepoActivity : CommonActivity() {
     }
 
     private fun saveAndFinish() {
-        val uriString = binding.activityRepoDirectory.text.toString().trim { it <= ' ' }
+        val url = binding.activityRepoDirectory.text.toString().trim { it <= ' ' }
 
-        if (TextUtils.isEmpty(uriString)) {
+        if (TextUtils.isEmpty(url)) {
             binding.activityRepoDirectoryInputLayout.error = getString(R.string.can_not_be_empty)
             return
         } else {
             binding.activityRepoDirectoryInputLayout.error = null
         }
 
-        val uri = Uri.parse(uriString)
+        val repoType = when {
+            url.startsWith("file:") ->
+                RepoType.DIRECTORY
 
-        val repo = repoFactory.getFromUri(this, uri, dataRepository)
+            url.startsWith("content:") ->
+                RepoType.DOCUMENT
 
-        if (repo == null) {
-            binding.activityRepoDirectoryInputLayout.error = getString(R.string.invalid_repo_url, uri)
+            else -> {
+                binding.activityRepoDirectoryInputLayout.error =
+                        getString(R.string.invalid_repo_url, url)
+                return
+            }
+        }
+
+
+        val repo = try {
+            viewModel.validate(repoType, url)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            binding.activityRepoDirectoryInputLayout.error =
+                    getString(R.string.repository_not_valid_with_reason, e.message)
             return
         }
 
         val finalize = Runnable {
-            viewModel.saveRepo(repo.uri.toString())
+            viewModel.saveRepo(repoType, repo.uri.toString())
         }
 
-        if (repo is DirectoryRepo) { // Make sure "file:"-type repo has Storage permission
+        if (repoType == RepoType.DIRECTORY) { // Make sure repo has Storage permission
             runWithPermission(AppPermissions.Usage.LOCAL_REPO, finalize)
         } else {
             finalize.run()

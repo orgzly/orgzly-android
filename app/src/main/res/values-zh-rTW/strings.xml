@@ -203,7 +203,6 @@
     <string name="repositories">資料庫</string>
     <string name="invalid_repo_url">無效的資料庫位址 “%s”</string>
     <string name="repository_url_already_exists">具有此 url 的存儲庫已存在</string>
-    <string name="message_unsupported_repository_type">不支援的資料庫類型</string>
     <string name="fragment_left_drawer_list_view_content_description">左側抽屜</string>
     <string name="drawer_item">抽屜項目</string>
     <string name="prev_state">上一個狀態</string>

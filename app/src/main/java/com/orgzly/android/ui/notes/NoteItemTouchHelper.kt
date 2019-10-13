@@ -16,7 +16,7 @@ class NoteItemTouchHelper(inBook: Boolean, listener: Listener) :
     }
 
     class Callback(private val inBook: Boolean, private val listener: Listener) :
-            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.START or ItemTouchHelper.END) {
+            ItemTouchHelper.SimpleCallback(0, START or END) {
 
         private var leftSwipeAction: SwipeAction? = null
         private var rightSwipeAction: SwipeAction? = null
@@ -97,13 +97,6 @@ class NoteItemTouchHelper(inBook: Boolean, listener: Listener) :
                 LogUtils.d(TAG, direction, viewHolder.itemId, viewHolder.adapterPosition, viewHolder.layoutPosition)
 
             listener.onSwiped(viewHolder as NoteItemViewHolder, direction)
-        }
-
-        override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
-            if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
-            }
-
-            super.onSelectedChanged(viewHolder, actionState)
         }
 
         override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {

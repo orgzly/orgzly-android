@@ -29,16 +29,16 @@ public class OrgFormatterSpeedTest {
     }
 
     @Test
-    public void markupHeavy() throws IOException {
+    public void markupHeavy() {
         test(markup);
     }
 
     @Test
-    public void linksHeavy() throws IOException {
+    public void linksHeavy() {
         test(links);
     }
 
-    public void test(String str) throws IOException {
+    public void test(String str) {
         long t1, t2;
 
         long[] times = new long[ITERATIONS];

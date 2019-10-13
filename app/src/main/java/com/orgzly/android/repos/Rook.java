@@ -12,12 +12,24 @@ import android.net.Uri;
  * its repository could be either file:/Downloads or file:/Downloads/org
  */
 public class Rook {
+    protected long repoId;
+    protected RepoType repoType;
     protected Uri repoUri;
     protected Uri uri;
 
-    public Rook(Uri repoUri, Uri uri) {
+    public Rook(long repoId, RepoType repoType, Uri repoUri, Uri uri) {
+        this.repoId = repoId;
+        this.repoType = repoType;
         this.repoUri = repoUri;
         this.uri = uri;
+    }
+
+    public long getRepoId() {
+        return repoId;
+    }
+
+    public RepoType getRepoType() {
+        return repoType;
     }
 
     public Uri getRepoUri() {

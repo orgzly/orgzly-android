@@ -203,7 +203,6 @@
     <string name="repositories">저장소</string>
     <string name="invalid_repo_url">“%s”는 잘못된 저장소 URL 입니다.</string>
     <string name="repository_url_already_exists">URL이 이미 존재합니다.</string>
-    <string name="message_unsupported_repository_type">지원되지 않는 저장소입니다.</string>
     <string name="fragment_left_drawer_list_view_content_description">왼쪽 메뉴</string>
     <string name="drawer_item">메뉴 항목</string>
     <string name="prev_state">이전 상태</string>

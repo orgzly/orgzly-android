@@ -1,5 +1,6 @@
 package com.orgzly.android
 
+import android.annotation.SuppressLint
 import com.orgzly.android.di.DaggerAppComponent
 import com.orgzly.android.di.module.ApplicationModule
 import com.orgzly.android.di.module.DatabaseModule
@@ -8,6 +9,7 @@ import dagger.android.DaggerApplication
 import android.os.StrictMode
 
 
+@SuppressLint("Registered")
 class AppUnderTest : App() {
     override fun onCreate() {
         super.onCreate()

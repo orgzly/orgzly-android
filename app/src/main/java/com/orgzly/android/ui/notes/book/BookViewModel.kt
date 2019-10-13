@@ -33,7 +33,7 @@ class BookViewModel(private val dataRepository: DataRepository, val bookId: Long
 
     data class Data(val book: Book?, val notes: List<NoteView>?)
 
-    val data = Transformations.switchMap(params) { params ->
+    val data = Transformations.switchMap(params) { _ ->
         MediatorLiveData<Data>().apply {
             addSource(dataRepository.getBookLiveData(bookId)) {
                 value = Data(it, value?.notes)

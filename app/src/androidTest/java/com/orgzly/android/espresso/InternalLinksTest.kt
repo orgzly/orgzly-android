@@ -1,23 +1,17 @@
 package com.orgzly.android.espresso
 
-import androidx.test.rule.ActivityTestRule
-
-import com.orgzly.R
-import com.orgzly.android.OrgzlyTest
-import com.orgzly.android.ui.main.MainActivity
-
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
+import com.orgzly.R
+import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.EspressoUtils.*
-import org.junit.Ignore
+import com.orgzly.android.ui.main.MainActivity
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 
-//@Ignore
 class InternalLinksTest : OrgzlyTest() {
     @get:Rule
     val activityRule = EspressoActivityTestRule(MainActivity::class.java)

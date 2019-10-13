@@ -183,7 +183,7 @@ class RefileViewModel(
     }
 
     private fun replayPath(location: LocationPath) {
-        location.path.forEachIndexed { index, segment ->
+        location.path.forEachIndexed { index, _ ->
             when (index) {
                 0 -> { // Home
                 }

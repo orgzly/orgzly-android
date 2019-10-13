@@ -127,14 +127,14 @@ class BooksAdapter(
             }
 
             bookDetails.display(binding.itemBookLinkContainer, item.hasLink(), false) {
-                binding.itemBookLinkRepo.text = item.linkedTo
+                binding.itemBookLinkRepo.text = item.linkRepo?.url
             }
 
             bookDetails.display(binding.itemBookSyncedUrlContainer,item.hasSync(), false) {
                 binding.itemBookSyncedUrl.text = item.syncedTo?.uri.toString()
             }
 
-            bookDetails.display(binding.itemBookSyncedMtimeContainer, false, item.hasSync()) {
+            bookDetails.display(binding.itemBookSyncedMtimeContainer, item.hasSync(), false) {
                 binding.itemBookSyncedMtime.text = timeString(itemView.context, item.syncedTo?.mtime) ?: "N/A"
             }
 

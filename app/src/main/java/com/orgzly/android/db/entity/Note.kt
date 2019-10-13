@@ -89,18 +89,6 @@ data class Note(
 
         @Embedded(prefix = "")
         val position: NotePosition
-
-//        @Ignore
-//        val properties: Map<String, String> = LinkedHashMap(),
-//
-//        @Ignore
-//        val scheduledRangeString: String? = null,
-//
-//        @Ignore
-//        val deadlineRangeString: String? = null,
-//
-//        @Ignore
-//        val closedRangeString: String? = null
 ) {
 
     fun hasContent(): Boolean {

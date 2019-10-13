@@ -1,6 +1,7 @@
 package com.orgzly.android.db.entity
 
 import androidx.room.*
+import com.orgzly.android.repos.RepoType
 
 @Entity(
         tableName = "repos",
@@ -13,7 +14,8 @@ data class Repo(
         @PrimaryKey(autoGenerate = true)
         val id: Long,
 
-        @ColumnInfo(name = "url")
+        val type: RepoType,
+
         val url: String
 ) {
         override fun toString(): String {

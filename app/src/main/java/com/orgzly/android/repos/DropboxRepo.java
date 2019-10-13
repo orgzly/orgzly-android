@@ -16,9 +16,9 @@ public class DropboxRepo implements SyncRepo {
     private final Uri repoUri;
     private final DropboxClient client;
 
-    public DropboxRepo(Context context, Uri uri) {
-        this.repoUri = uri;
-        this.client = new DropboxClient(context);
+    public DropboxRepo(RepoWithProps repoWithProps, Context context) {
+        this.repoUri = Uri.parse(repoWithProps.getRepo().getUrl());
+        this.client = new DropboxClient(context, repoWithProps.getRepo().getId());
     }
 
     @Override

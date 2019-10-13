@@ -14,8 +14,6 @@
     android:fitsSystemWindows="true"
     app:menu="@menu/drawer">
 
-    <!--app:headerLayout="@layout/drawer_header"-->
-
     <!-- Sync button. -->
     <FrameLayout
         android:id="@+id/drawer_sync_container"

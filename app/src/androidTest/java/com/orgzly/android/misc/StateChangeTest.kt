@@ -123,7 +123,7 @@ class StateChangeTest : OrgzlyTest() {
     private fun exportBook(book: BookView): String {
         val sw = StringWriter()
 
-        NotesOrgExporter(context, dataRepository).exportBook(book.book, sw)
+        NotesOrgExporter(dataRepository).exportBook(book.book, sw)
 
         return sw.toString()
     }

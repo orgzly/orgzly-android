@@ -2,6 +2,9 @@ package com.orgzly.android.espresso;
 
 import android.widget.DatePicker;
 
+import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.rule.ActivityTestRule;
+
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.prefs.AppPreferences;
@@ -11,9 +14,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-
-import androidx.test.espresso.contrib.RecyclerViewActions;
-import androidx.test.rule.ActivityTestRule;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
@@ -46,7 +46,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
 
-//@Ignore
 public class BookTest extends OrgzlyTest {
     @Rule
     public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
@@ -124,13 +123,6 @@ public class BookTest extends OrgzlyTest {
     @Test
     public void testOpensNoteFromBook() {
         onNoteInBook(2).perform(click());
-        onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
-    }
-
-    @Ignore
-    @Test
-    public void testOpensNoteFromBookBySwiping() {
-        onNoteInBook(2).perform(swipeLeft());
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
     }
 
@@ -479,7 +471,7 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(5, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
     }
 
-    @Ignore // TODO: Implement
+    @Ignore("Not implemented yet")
     @Test
     public void testPreselectedStateOfSelectedNote() {
         onNoteInBook(3).perform(longClick());

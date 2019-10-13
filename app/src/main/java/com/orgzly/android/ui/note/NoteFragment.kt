@@ -91,8 +91,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private fun parseArguments() {
         arguments?.apply {
             /* Book ID must exist. */
-            if (!containsKey(ARG_BOOK_ID)) {
-                throw IllegalArgumentException(NoteFragment::class.java.simpleName + " requires " + ARG_BOOK_ID + " argument passed")
+            require(containsKey(ARG_BOOK_ID)) {
+                "${NoteFragment::class.java.simpleName} requires $ARG_BOOK_ID argument passed"
             }
 
             /* Note ID might or might not be passed - it depends if note is being edited or created. */
@@ -100,8 +100,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 noteId = getLong(ARG_NOTE_ID)
 
                 /* Note ID must be valid if it exists. */
-                if (noteId <= 0) {
-                    throw IllegalArgumentException("Note id is $noteId")
+                require(noteId > 0) {
+                    "Note id is $noteId"
                 }
             }
 
@@ -295,12 +295,27 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                 NoteViewModel.ViewEditMode.VIEW ->
                     toViewMode()
 
-                NoteViewModel.ViewEditMode.EDIT ->
+                NoteViewModel.ViewEditMode.EDIT_TITLE -> {
                     toEditMode()
+                    binding.fragmentNoteTitle.requestFocus()
+                }
 
-                NoteViewModel.ViewEditMode.EDIT_WITH_KEYBOARD -> {
+                NoteViewModel.ViewEditMode.EDIT_TITLE_WITH_KEYBOARD -> {
                     toEditMode()
-                    ActivityUtils.openSoftKeyboard(activity, binding.bodyEdit, binding.fragmentNoteContainer)
+                    ActivityUtils.openSoftKeyboard(
+                            activity,
+                            binding.fragmentNoteTitle,
+                            binding.fragmentNoteContainer,
+                            binding.fragmentNoteContent)
+                }
+
+                NoteViewModel.ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD -> {
+                    toEditMode()
+                    ActivityUtils.openSoftKeyboard(
+                            activity,
+                            binding.bodyEdit,
+                            binding.fragmentNoteContainer,
+                            binding.bodyEdit)
                 }
 
                 null -> { }
@@ -342,33 +357,35 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
     private fun updateViewsFromPayload() {
         val payload = viewModel.notePayload ?: return
 
+        // State
         setStateView(payload.state)
 
+        // Priority
         setPriorityView(payload.priority)
 
-        /* Title. */
+        // Title
         binding.fragmentNoteTitle.setText(payload.title)
 
-        /* Tags. */
+        // Tags
         if (!payload.tags.isEmpty()) {
             binding.fragmentNoteTags.setText(TextUtils.join(" ", payload.tags))
         } else {
             binding.fragmentNoteTags.text = null
         }
 
-        /* Times. */
+        // Times
         updateTimestampView(TimeType.SCHEDULED, OrgRange.parseOrNull(payload.scheduled))
         updateTimestampView(TimeType.DEADLINE, OrgRange.parseOrNull(payload.deadline))
         updateTimestampView(TimeType.CLOSED, OrgRange.parseOrNull(payload.closed))
 
-        /* Properties. */
+        // Properties
         binding.fragmentNotePropertiesContainer.removeAllViews()
         for (property in payload.properties.all) {
             addPropertyToList(property.name, property.value)
         }
         addPropertyToList(null, null)
 
-        /* Content. */
+        // Content
 
         binding.bodyEdit.setText(payload.content)
 
@@ -506,7 +523,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
                  * some initial values (for example from ShareActivity).
                  */
                 if (TextUtils.isEmpty(initialTitle) && TextUtils.isEmpty(initialContent)) {
-                    ActivityUtils.openSoftKeyboardWithDelay(activity, binding.fragmentNoteTitle)
+                    viewModel.viewEditMode.value = NoteViewModel.ViewEditMode.EDIT_TITLE_WITH_KEYBOARD
                 }
 
             } else { // Open existing note
@@ -523,6 +540,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             }
 
             updateViewsFromPayload()
+
+            setMetadataViewsVisibility()
 
             /* Refresh action bar items (hide or display, depending on if book is loaded. */
             activity?.invalidateOptionsMenu()
@@ -550,8 +569,6 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         super.onResume()
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
-
-        setMetadataVisibility()
     }
 
     private fun announceChangesToActivity() {
@@ -857,21 +874,21 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
             R.id.metadata_show_all -> {
                 item.isChecked = true
                 AppPreferences.noteMetadataVisibility(context, "all")
-                setMetadataVisibility()
+                setMetadataViewsVisibility()
                 return true
             }
 
             R.id.metadata_show_selected -> {
                 item.isChecked = true
                 AppPreferences.noteMetadataVisibility(context, "selected")
-                setMetadataVisibility()
+                setMetadataViewsVisibility()
                 return true
             }
 
             R.id.metadata_always_show_set -> {
                 item.isChecked = !item.isChecked
                 AppPreferences.alwaysShowSetNoteMetadata(context, item.isChecked)
-                setMetadataVisibility()
+                setMetadataViewsVisibility()
                 return true
             }
 
@@ -879,39 +896,39 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         }
     }
 
-    private fun setMetadataVisibility() {
-        setMetadataVisibility(
+    private fun setMetadataViewsVisibility() {
+        setMetadataViewsVisibility(
                 "tags",
                 binding.fragmentNoteTagsContainer,
                 !TextUtils.isEmpty(binding.fragmentNoteTags.text))
 
-        setMetadataVisibility(
+        setMetadataViewsVisibility(
                 "state",
                 binding.fragmentNoteStateContainer,
                 !TextUtils.isEmpty(binding.fragmentNoteStateButton.text))
 
-        setMetadataVisibility(
+        setMetadataViewsVisibility(
                 "priority",
                 binding.fragmentNotePriorityContainer,
                 !TextUtils.isEmpty(binding.fragmentNotePriorityButton.text))
 
-        setMetadataVisibility(
+        setMetadataViewsVisibility(
                 "scheduled_time",
                 binding.fragmentNoteScheduledTimeContainer,
                 !TextUtils.isEmpty(binding.fragmentNoteScheduledButton.text))
 
-        setMetadataVisibility(
+        setMetadataViewsVisibility(
                 "deadline_time",
                 binding.fragmentNoteDeadlineTimeContainer,
                 !TextUtils.isEmpty(binding.fragmentNoteDeadlineButton.text))
 
-        setMetadataVisibility(
+        setMetadataViewsVisibility(
                 "properties",
                 binding.fragmentNotePropertiesContainer,
                 binding.fragmentNotePropertiesContainer.childCount > 1)
     }
 
-    private fun setMetadataVisibility(name: String?, container: View, isSet: Boolean) {
+    private fun setMetadataViewsVisibility(name: String?, container: View, isSet: Boolean) {
         val context = context
 
         if (context != null) {
@@ -941,7 +958,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         updatePayloadFromViews()
 
-        if (viewModel.isNew() || viewModel.isNoteModified()) {
+        if (viewModel.isNoteModified()) {
             dialog = AlertDialog.Builder(context)
                     .setTitle(R.string.note_has_been_modified)
                     .setMessage(R.string.discard_or_save_changes)
@@ -981,7 +998,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         updatePayloadFromViews()
 
-        if (viewModel.isNew() || viewModel.isNoteModified()) {
+        if (viewModel.isNoteModified()) {
             dialog = AlertDialog.Builder(context)
                     .setTitle(R.string.note_has_been_modified)
                     .setMessage(R.string.discard_or_save_changes)
@@ -1005,7 +1022,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
         updatePayloadFromViews()
 
-        if (viewModel.isNew() || viewModel.isNoteModified()) {
+        if (viewModel.isNoteModified()) {
             dialog = AlertDialog.Builder(context)
                     .setTitle(R.string.note_has_been_modified)
                     .setMessage(R.string.discard_or_save_changes)
@@ -1068,7 +1085,7 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
         return BookFragment.getDrawerItemId(viewModel.bookId)
     }
 
-    private fun showSnackbar(message: String) {
+    private fun showSnackbar(message: String?) {
         CommonActivity.showSnackbar(context, message)
     }
 
