@@ -4,6 +4,7 @@ package com.orgzly.android.ui.books
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -20,6 +21,7 @@ import com.orgzly.R
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.sync.SyncService
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.Fab
 import com.orgzly.android.ui.OnViewHolderClickListener
@@ -101,6 +103,11 @@ class BooksFragment :
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         binding = FragmentBooksBinding.inflate(inflater, container, false)
+
+        binding.swipeContainer.setOnRefreshListener {
+            SyncService.start(context, Intent(context, SyncService::class.java))
+            binding.swipeContainer.isRefreshing = false
+        }
 
         return binding.root
     }
