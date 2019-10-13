@@ -6,7 +6,6 @@ import com.orgzly.android.util.UriUtils
 import com.thegrizzlylabs.sardineandroid.DavResource
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
 
 
@@ -62,16 +61,21 @@ class WebdavRepo(private val repoId: Long, private val uri: Uri, username: Strin
 
     override fun retrieveBook(fileName: String?, destination: File?): VersionedRook {
         val fileUrl = Uri.withAppendedPath(uri, fileName).toUrl()
-        val fileBytes = sardine.get(fileUrl).readBytes()
-        val outputStream = FileOutputStream(destination)
-        outputStream.write(fileBytes)
+
+        sardine.get(fileUrl).use { inputStream ->
+            FileOutputStream(destination).use { outputStream ->
+                inputStream.copyTo(outputStream)
+            }
+        }
+
         return sardine.list(fileUrl).first().toVersionedRook()
     }
 
     override fun storeBook(file: File?, fileName: String?): VersionedRook {
         val fileUrl = Uri.withAppendedPath(uri, fileName).toUrl()
-        val fileBytes = FileInputStream(file).readBytes()
-        sardine.put(fileUrl, fileBytes)
+
+        sardine.put(fileUrl, file, null)
+
         return sardine.list(fileUrl).first().toVersionedRook()
     }
 
