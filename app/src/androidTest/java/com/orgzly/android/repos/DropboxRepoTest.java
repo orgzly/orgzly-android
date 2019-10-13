@@ -30,49 +30,43 @@ public class DropboxRepoTest extends OrgzlyTest {
 
     @Test
     public void testUrl() {
-        assertEquals("dropbox:/dir", repoFactory
-                .getFromUri(context, "dropbox:/dir", dataRepository)
-                .getUri().toString());
+        assertEquals(
+                "dropbox:/dir",
+                testUtils.repoInstance(RepoType.DROPBOX, "dropbox:/dir").getUri().toString());
     }
 
     @Test
     public void testSyncingUrlWithTrailingSlash() throws IOException {
-        testUtils.setupRepo(randomUrl() + "/");
+        testUtils.setupRepo(RepoType.DROPBOX, randomUrl() + "/");
         assertNotNull(testUtils.sync());
-    }
-
-    /* Dropbox repo url should *not* have authority. */
-    @Test
-    public void testAuthority() {
-        assertNull(repoFactory.getFromUri(context, "dropbox://authority", dataRepository));
     }
 
     @Test
     public void testRenameBook() throws IOException {
         BookView bookView;
-        String repoUriString = repoFactory.getFromUri(context, randomUrl(), dataRepository).getUri().toString();
+        String repoUriString = testUtils.repoInstance(RepoType.DROPBOX, randomUrl()).getUri().toString();
 
-        testUtils.setupRepo(repoUriString);
+        testUtils.setupRepo(RepoType.DROPBOX, repoUriString);
         testUtils.setupBook("booky", "");
 
         testUtils.sync();
         bookView = dataRepository.getBookView("booky");
 
-        assertEquals(repoUriString, bookView.getLinkedTo());
+        assertEquals(repoUriString, bookView.getLinkRepo().getUrl());
         assertEquals(repoUriString, bookView.getSyncedTo().getRepoUri().toString());
         assertEquals(repoUriString + "/booky.org", bookView.getSyncedTo().getUri().toString());
 
         dataRepository.renameBook(bookView, "booky-renamed");
         bookView = dataRepository.getBookView("booky-renamed");
 
-        assertEquals(repoUriString, bookView.getLinkedTo());
+        assertEquals(repoUriString, bookView.getLinkRepo().getUrl());
         assertEquals(repoUriString, bookView.getSyncedTo().getRepoUri().toString());
         assertEquals(repoUriString + "/booky-renamed.org", bookView.getSyncedTo().getUri().toString());
     }
 
     @Test
     public void testDropboxFileRename() throws IOException {
-        SyncRepo repo = repoFactory.getFromUri(context, randomUrl(), dataRepository);
+        SyncRepo repo = testUtils.repoInstance(RepoType.DROPBOX, randomUrl());
 
         assertNotNull(repo);
         assertEquals(0, repo.getBooks().size());

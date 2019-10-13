@@ -127,7 +127,7 @@ class BooksAdapter(
             }
 
             bookDetails.display(binding.itemBookLinkContainer, item.hasLink(), false) {
-                binding.itemBookLinkRepo.text = item.linkedTo
+                binding.itemBookLinkRepo.text = item.linkRepo?.url
             }
 
             bookDetails.display(binding.itemBookSyncedUrlContainer,item.hasSync(), false) {

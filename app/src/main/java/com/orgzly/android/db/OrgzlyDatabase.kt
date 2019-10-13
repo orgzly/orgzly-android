@@ -38,7 +38,7 @@ import java.util.*
             VersionedRook::class
         ],
 
-        version = 152
+        version = 153
 )
 @TypeConverters(com.orgzly.android.db.TypeConverters::class)
 abstract class OrgzlyDatabase : RoomDatabase() {
@@ -104,7 +104,8 @@ abstract class OrgzlyDatabase : RoomDatabase() {
 
                             MIGRATION_149_150, // Switch to Room
                             MIGRATION_150_151,
-                            MIGRATION_151_152
+                            MIGRATION_151_152,
+                            MIGRATION_152_153
                     )
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
@@ -457,6 +458,46 @@ abstract class OrgzlyDatabase : RoomDatabase() {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("DROP INDEX index_note_properties_note_id_name")
                 db.execSQL("CREATE  INDEX `index_note_properties_note_id` ON `note_properties` (`note_id`)")
+            }
+        }
+
+        private val MIGRATION_152_153 = object : Migration(152, 153) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE repos ADD COLUMN type INTEGER NOT NULL DEFAULT 0")
+
+                val types = mutableMapOf<Long, Int>()
+
+                val query = SupportSQLiteQueryBuilder
+                        .builder("repos")
+                        .columns(arrayOf("id", "url"))
+                        .create()
+
+                db.query(query).use { cursor ->
+                    if (cursor.moveToFirst()) {
+                        while (!cursor.isAfterLast) {
+                            val id = cursor.getLong(0)
+                            val url = cursor.getString(1)
+
+                            types[id] = when {
+                                url.startsWith("mock") -> 1
+                                url.startsWith("dropbox") -> 2
+                                url.startsWith("file") -> 3
+                                url.startsWith("content") -> 4
+                                url.matches("^(webdav|dav|http)s?.*".toRegex()) -> 5
+                                else -> throw IllegalArgumentException("Unknown repo $url")
+                            }
+
+                            cursor.moveToNext()
+                        }
+                    }
+                }
+
+                types.keys.forEach { id ->
+                    val values = ContentValues().apply {
+                        put("type", types[id])
+                    }
+                    db.update("repos", SQLiteDatabase.CONFLICT_ROLLBACK, values, "id = $id", null)
+                }
             }
         }
     }

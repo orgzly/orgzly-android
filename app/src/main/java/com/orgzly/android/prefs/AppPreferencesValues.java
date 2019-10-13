@@ -10,4 +10,5 @@ import java.util.Map;
 public class AppPreferencesValues {
     Map<String, ?> defaultPrefsValues;
     Map<String, ?> statePrefsValues;
+    Map<String, ?> reposPrefsValues;
 }

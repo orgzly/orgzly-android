@@ -207,7 +207,6 @@
     <string name="repositories">Dépôts</string>
     <string name="invalid_repo_url">URL du dépôt invalide « %s »</string>
     <string name="repository_url_already_exists">Un dépôt avec cette URL existe déjà</string>
-    <string name="message_unsupported_repository_type">Type de dépôt non pris en charge</string>
     <string name="fragment_left_drawer_list_view_content_description">Panneau de gauche</string>
     <string name="drawer_item">Élément du panneau</string>
     <string name="prev_state">État précédent</string>

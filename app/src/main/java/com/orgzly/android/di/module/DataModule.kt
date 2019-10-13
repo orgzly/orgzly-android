@@ -28,8 +28,8 @@ internal open class DataModule {
 
     @Provides
     @Singleton
-    internal fun providesRepoFactory(dbRepoBookRepository: DbRepoBookRepository): RepoFactory {
-        return RepoFactory(dbRepoBookRepository)
+    internal fun providesRepoFactory(app: Application, dbRepoBookRepository: DbRepoBookRepository): RepoFactory {
+        return RepoFactory(app, dbRepoBookRepository)
     }
 
     @Provides

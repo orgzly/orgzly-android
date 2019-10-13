@@ -4,6 +4,7 @@ import com.orgzly.android.BookName;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.db.entity.BookView;
 import com.orgzly.android.db.entity.Note;
+import com.orgzly.android.db.entity.Repo;
 import com.orgzly.android.sync.BookNamesake;
 import com.orgzly.android.sync.SyncService;
 
@@ -35,17 +36,17 @@ public class DataRepositoryTest extends OrgzlyTest {
 
     @Test
     public void testInsertDeletedRepo() {
-        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         testUtils.deleteRepo("mock://repo-a");
-        testUtils.setupRepo("mock://repo-a");
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
     }
 
     @Test
     public void testRepoAndShelfSetup() throws IOException {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/remote-book-1.org", "", "0abcdef", 1400067156000L);
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/remote-book-2.org", "", "1abcdef", 1300067156000L);
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/remote-book-3.org", "", "2abcdef", 1200067156000L);
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupRook(repo, "mock://repo-a/remote-book-1.org", "", "0abcdef", 1400067156000L);
+        testUtils.setupRook(repo, "mock://repo-a/remote-book-2.org", "", "1abcdef", 1300067156000L);
+        testUtils.setupRook(repo, "mock://repo-a/remote-book-3.org", "", "2abcdef", 1200067156000L);
 
         testUtils.setupBook("local-book-1", "");
 
@@ -55,10 +56,10 @@ public class DataRepositoryTest extends OrgzlyTest {
 
     @Test
     public void testLoadRook() throws IOException {
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/remote-book-1.org", "", "0abcdef", 1400067156000L);
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/remote-book-2.org", "", "1abcdef", 1300067156000L);
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/remote-book-3.org", "", "2abcdef", 1200067156000L);
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupRook(repo, "mock://repo-a/remote-book-1.org", "", "0abcdef", 1400067156000L);
+        testUtils.setupRook(repo, "mock://repo-a/remote-book-2.org", "", "1abcdef", 1300067156000L);
+        testUtils.setupRook(repo, "mock://repo-a/remote-book-3.org", "", "2abcdef", 1200067156000L);
 
         VersionedRook vrook = SyncService.getBooksFromAllRepos(dataRepository, null).get(0);
 
@@ -86,10 +87,10 @@ public class DataRepositoryTest extends OrgzlyTest {
     @Test
     public void testCompareWithRepo() throws IOException {
         assertEquals("Starting with empty shelf", 0, dataRepository.getBooks().size());
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/remote-book-1.org", "", "0abcdef", 1400067156);
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/remote-book-2.org", "", "1abcdef", 1400412756);
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/remote-book-3.org", "", "2abcdef", 1400671956);
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupRook(repo, "mock://repo-a/remote-book-1.org", "", "0abcdef", 1400067156);
+        testUtils.setupRook(repo, "mock://repo-a/remote-book-2.org", "", "1abcdef", 1400412756);
+        testUtils.setupRook(repo, "mock://repo-a/remote-book-3.org", "", "2abcdef", 1400671956);
 
         Map<String, BookNamesake> groups = SyncService.groupAllNotebooksByName(dataRepository);
 
@@ -125,11 +126,11 @@ public class DataRepositoryTest extends OrgzlyTest {
         assertNull(book.getSyncedTo());
 
         /* Setup mock repo. */
-        testUtils.setupRepo("mock://repo-a");
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/remote-book-2.org", "", "1abcdef", 1400412756000L);
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/common-book-1.org", "", "2abcdef", 1400671956000L);
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/common-book-2.org", "", "3abcdef", 1400671956000L);
-        testUtils.setupRook("mock://repo-a", "mock://repo-a/remote-book-1.org", "", "0abcdef", 1400067156000L);
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        testUtils.setupRook(repo, "mock://repo-a/remote-book-2.org", "", "1abcdef", 1400412756000L);
+        testUtils.setupRook(repo, "mock://repo-a/common-book-1.org", "", "2abcdef", 1400671956000L);
+        testUtils.setupRook(repo, "mock://repo-a/common-book-2.org", "", "3abcdef", 1400671956000L);
+        testUtils.setupRook(repo, "mock://repo-a/remote-book-1.org", "", "0abcdef", 1400067156000L);
 
         Map<String, BookNamesake> groups = SyncService.groupAllNotebooksByName(dataRepository);
 

@@ -9,13 +9,14 @@ data class BookView(
 
         val noteCount: Int,
 
-        val linkedTo: String? = null,
+        @Embedded(prefix = "link_repo_")
+        val linkRepo: Repo? = null,
 
         @Embedded(prefix = "synced_to_")
         val syncedTo: VersionedRook? = null
 ) {
     fun hasLink(): Boolean {
-        return linkedTo != null
+        return linkRepo != null
     }
 
     fun hasSync(): Boolean {

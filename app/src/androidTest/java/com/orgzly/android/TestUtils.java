@@ -9,6 +9,8 @@ import com.orgzly.android.db.entity.BookAction;
 import com.orgzly.android.db.entity.BookView;
 import com.orgzly.android.db.entity.Repo;
 import com.orgzly.android.repos.RepoFactory;
+import com.orgzly.android.repos.RepoWithProps;
+import com.orgzly.android.repos.RepoType;
 import com.orgzly.android.repos.SyncRepo;
 import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.sync.BookNamesake;
@@ -29,7 +31,6 @@ import static org.junit.Assert.fail;
 public class TestUtils {
     private Context context;
     private DataRepository dataRepository;
-    private RepoFactory repoFactory;
     private DbRepoBookRepository dbRepoBookRepository;
 
     public TestUtils(
@@ -40,14 +41,22 @@ public class TestUtils {
 
         this.context = context;
         this.dataRepository = dataRepository;
-        this.repoFactory = repoFactory;
         this.dbRepoBookRepository = dbRepoBookRepository;
     }
 
-    public SyncRepo setupRepo(String url) {
-        dataRepository.createRepo(url);
+    // TODO: Allow passing key-values or remove
+    public SyncRepo repoInstance(RepoType type, String url) {
+        return repoInstance(13, type, url);
+    }
 
-        return repoFactory.getFromUri(context, url, dataRepository);
+    private SyncRepo repoInstance(long id, RepoType type, String url) {
+        return dataRepository.getRepoInstance(id, type, url);
+    }
+
+    public Repo setupRepo(RepoType type, String url) {
+        long id = dataRepository.createRepo(new RepoWithProps(new Repo(0, type, url)));
+
+        return dataRepository.getRepo(id);
     }
 
     public void deleteRepo(String url) {
@@ -60,7 +69,8 @@ public class TestUtils {
     public void renameRepo(String fromUrl, String toUrl) {
         Repo repo = dataRepository.getRepo(fromUrl);
         if (repo != null) {
-            dataRepository.updateRepo(repo.getId(), toUrl);
+            Repo newRepo = new Repo(repo.getId(), repo.getType(), toUrl);
+            dataRepository.updateRepo(new RepoWithProps(newRepo));
         } else {
             throw new IllegalStateException("Repo " + fromUrl + " does not exist");
         }
@@ -77,7 +87,7 @@ public class TestUtils {
         return bookView;
     }
 
-    public BookView setupBook(String name, String content, String linkRepoUrl) {
+    public BookView setupBook(String name, String content, Repo link) {
         BookView bookView = null;
         try {
             bookView = loadBookFromContent(name, BookFormat.ORG, content, null);
@@ -85,15 +95,17 @@ public class TestUtils {
             e.printStackTrace();
             fail(e.toString());
         }
-        dataRepository.setLink(bookView.getBook().getId(), linkRepoUrl);
+        dataRepository.setLink(bookView.getBook().getId(), link);
         return bookView;
     }
 
     /**
      * Overwrites existing repoUrl / url combinations (due to table definition).
      */
-    public void setupRook(String repoUrl, String url, String content, String rev, long mtime) {
-        VersionedRook vrook = new VersionedRook(Uri.parse(repoUrl), Uri.parse(url), rev, mtime);
+    public void setupRook(Repo repo, String url, String content, String rev, long mtime) {
+        VersionedRook vrook = new VersionedRook(
+                repo.getId(), repo.getType(), Uri.parse(repo.getUrl()), Uri.parse(url), rev, mtime);
+
         dbRepoBookRepository.createBook(vrook, content);
 
         // RemoteBookRevision remoteBookRevision = new RemoteBookRevision(repoUrl, url, rev, mtime);
@@ -144,7 +156,7 @@ public class TestUtils {
 
             return nameGroups;
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

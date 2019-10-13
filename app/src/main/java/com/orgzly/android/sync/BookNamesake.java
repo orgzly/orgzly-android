@@ -1,10 +1,10 @@
 package com.orgzly.android.sync;
 
 import android.content.Context;
-import android.net.Uri;
 
 import com.orgzly.android.BookName;
 import com.orgzly.android.db.entity.BookView;
+import com.orgzly.android.db.entity.Repo;
 import com.orgzly.android.repos.VersionedRook;
 
 import java.util.ArrayList;
@@ -223,9 +223,13 @@ public class BookNamesake {
 
     /** Find latest (current) remote book that local one links to. */
     private VersionedRook getLatestLinkedRookVersion(BookView bookView, List<VersionedRook> vrooks) {
-        for (VersionedRook vrook : vrooks) {
-            if (Uri.parse(bookView.getLinkedTo()).equals(vrook.getRepoUri())) {
-                return vrook;
+        Repo linkRepo = bookView.getLinkRepo();
+
+        if (linkRepo != null) {
+            for (VersionedRook vrook : vrooks) {
+                if (linkRepo.getUrl().equals(vrook.getRepoUri().toString())){
+                    return vrook;
+                }
             }
         }
 

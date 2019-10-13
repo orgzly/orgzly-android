@@ -21,8 +21,8 @@ import com.orgzly.android.repos.*
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.directory.DirectoryRepoActivity
 import com.orgzly.android.ui.repo.dropbox.DropboxRepoActivity
-import com.orgzly.android.ui.repo.webdav.WebdavRepoActivity
 import com.orgzly.android.ui.repo.git.GitRepoActivity
+import com.orgzly.android.ui.repo.webdav.WebdavRepoActivity
 import com.orgzly.databinding.ActivityReposBinding
 import javax.inject.Inject
 
@@ -237,21 +237,33 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
     }
 
     private fun openRepo(repoEntity: Repo) {
-        val repo = repoFactory.getFromUri(this, repoEntity.url, dataRepository)
+        // Validate before opening
+        try {
+            dataRepository.getRepoInstance(repoEntity.id, repoEntity.type, repoEntity.url)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showSnackbar(getString(R.string.repository_not_valid_with_reason, e.message))
+            return
+        }
 
-        if (repo is DropboxRepo || repo is MockRepo) { // TODO: Remove Mock from here
-            DropboxRepoActivity.start(this, repoEntity.id)
+        when (repoEntity.type) {
+            RepoType.MOCK -> // TODO: Remove
+                DropboxRepoActivity.start(this, repoEntity.id)
 
-        } else if (repo is DirectoryRepo || repo is ContentRepo) {
-            DirectoryRepoActivity.start(this, repoEntity.id)
+            RepoType.DROPBOX ->
+                DropboxRepoActivity.start(this, repoEntity.id)
 
-        } else if (repo is GitRepo) {
-            GitRepoActivity.start(this, repoEntity.id)
+            RepoType.DIRECTORY ->
+                DirectoryRepoActivity.start(this, repoEntity.id)
 
-        } else if (repo is WebdavRepo) {
-            WebdavRepoActivity.start(this, repoEntity.id)
-        } else {
-            showSnackbar(R.string.message_unsupported_repository_type)
+            RepoType.DOCUMENT ->
+                DirectoryRepoActivity.start(this, repoEntity.id)
+
+            RepoType.WEBDAV ->
+                WebdavRepoActivity.start(this, repoEntity.id)
+
+            RepoType.GIT ->
+                GitRepoActivity.start(this, repoEntity.id)
         }
     }
 

@@ -9,7 +9,6 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Build;
@@ -26,7 +25,9 @@ import com.orgzly.android.BookFormat;
 import com.orgzly.android.BookName;
 import com.orgzly.android.data.DataRepository;
 import com.orgzly.android.NotesOrgExporter;
+import com.orgzly.android.db.entity.Repo;
 import com.orgzly.android.reminders.ReminderService;
+import com.orgzly.android.repos.RepoType;
 import com.orgzly.android.ui.notifications.Notifications;
 import com.orgzly.android.db.entity.BookAction;
 import com.orgzly.android.db.entity.BookView;
@@ -237,11 +238,11 @@ public class SyncService extends DaggerService {
 
             Context context = SyncService.this;
 
-            Map<String, SyncRepo> repos = dataRepository.getRepos();
+            List<SyncRepo> repos = getRepos(dataRepository);
 
             /* Do nothing if it's auto-sync and there are no repos or they require connection. */
             if (isTriggeredAutomatically) {
-                if (repos.size() == 0 || RepoUtils.requireConnection(repos.values())) {
+                if (repos.size() == 0 || RepoUtils.requireConnection(repos)) {
                     return null;
                 }
             }
@@ -256,7 +257,7 @@ public class SyncService extends DaggerService {
             }
 
             /* If one of the repositories requires internet connection, check for it. */
-            if (RepoUtils.requireConnection(repos.values()) && !haveNetworkConnection()) {
+            if (RepoUtils.requireConnection(repos) && !haveNetworkConnection()) {
                 status.set(SyncStatus.Type.FAILED, getString(R.string.no_connection), 0, 0);
                 announceActiveSyncStatus();
                 return null;
@@ -265,7 +266,7 @@ public class SyncService extends DaggerService {
             /* Make sure we have permission to access local storage,
              * if there are repositories that would use it.
              */
-            if (reposRequireStoragePermission(repos.values())) {
+            if (reposRequireStoragePermission(repos)) {
                 if (!AppPermissions.isGranted(context, AppPermissions.Usage.SYNC_START)) {
                     status.set(SyncStatus.Type.NO_STORAGE_PERMISSION, null, 0, 0);
                     announceActiveSyncStatus();
@@ -396,7 +397,7 @@ public class SyncService extends DaggerService {
     public static Map<String, BookNamesake> groupAllNotebooksByName(DataRepository dataRepository) throws IOException {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Collecting all local and remote books ...");
 
-        Map<String, SyncRepo> repos = dataRepository.getRepos();
+        List<SyncRepo> repos = getRepos(dataRepository);
 
         List<BookView> localBooks = dataRepository.getBooks();
         List<VersionedRook> versionedRooks = getBooksFromAllRepos(dataRepository, repos);
@@ -421,14 +422,14 @@ public class SyncService extends DaggerService {
     /**
      * Goes through each repository and collects all books from each one.
      */
-    public static List<VersionedRook> getBooksFromAllRepos(DataRepository dataRepository, Map<String, SyncRepo> repos) throws IOException {
+    public static List<VersionedRook> getBooksFromAllRepos(DataRepository dataRepository, List<SyncRepo> repos) throws IOException {
         List<VersionedRook> result = new ArrayList<>();
 
         if (repos == null) {
-            repos = dataRepository.getRepos();
+            repos = getRepos(dataRepository);
         }
 
-        for (SyncRepo repo: repos.values()) { /* Each repository. */
+        for (SyncRepo repo: repos) {
             List<VersionedRook> libBooks = repo.getBooks();
 
             /* Each book in repository. */
@@ -438,12 +439,25 @@ public class SyncService extends DaggerService {
         return result;
     }
 
+    private static List<SyncRepo> getRepos(DataRepository dataRepository) {
+        List<SyncRepo> list = new ArrayList<>();
+        for (Repo repo: dataRepository.getRepos()) {
+            try {
+                list.add(dataRepository.getRepoInstance(repo.getId(), repo.getType(), repo.getUrl()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
     /**
      * Passed {@link com.orgzly.android.sync.BookNamesake} is NOT updated after load or save.
      *
      * FIXME: Hardcoded BookName.Format.ORG below
      */
-    public static BookAction syncNamesake(DataRepository dataRepository, final BookNamesake namesake) throws IOException {
+    public static BookAction syncNamesake(DataRepository dataRepository, final BookNamesake namesake) throws Exception {
+        Repo repoEntity;
         String repoUrl;
         String fileName;
         BookAction bookAction = null;
@@ -452,8 +466,8 @@ public class SyncService extends DaggerService {
         if (!namesake.getRooks().isEmpty()) {
             VersionedRook rook = namesake.getRooks().get(0);
             if (rook != null && namesake.getStatus() != BookSyncStatus.NO_CHANGE) {
-                Uri repoUri = rook.getRepoUri();
-                SyncRepo repo = dataRepository.getRepo(repoUri);
+                SyncRepo repo = dataRepository.getRepoInstance(
+                        rook.getRepoId(), rook.getRepoType(),rook.getRepoUri().toString());
                 if (repo instanceof TwoWaySyncRepo) {
                     handleTwoWaySync(dataRepository, (TwoWaySyncRepo) repo, namesake);
                     return BookAction.forNow(
@@ -502,24 +516,26 @@ public class SyncService extends DaggerService {
             /* Save local book to repository. */
 
             case ONLY_BOOK_WITHOUT_LINK_AND_ONE_REPO:
-                /* Save local book to the one and only repository. */
-                repoUrl = dataRepository.getRepos().entrySet().iterator().next().getValue().getUri().toString();
+                repoEntity = dataRepository.getRepos().iterator().next();
+                repoUrl = repoEntity.getUrl();
                 fileName = BookName.fileName(namesake.getBook().getBook().getName(), BookFormat.ORG);
-                dataRepository.saveBookToRepo(repoUrl, fileName, namesake.getBook(), BookFormat.ORG);
+                dataRepository.saveBookToRepo(repoEntity, fileName, namesake.getBook(), BookFormat.ORG);
                 bookAction = BookAction.forNow(BookAction.Type.INFO, namesake.getStatus().msg(repoUrl));
                 break;
 
             case BOOK_WITH_LINK_LOCAL_MODIFIED:
-                repoUrl = namesake.getBook().getSyncedTo().getRepoUri().toString();
+                repoEntity = namesake.getBook().getLinkRepo();
+                repoUrl = repoEntity.getUrl();
                 fileName = BookName.getFileName(App.getAppContext(), namesake.getBook().getSyncedTo().getUri());
-                dataRepository.saveBookToRepo(repoUrl, fileName, namesake.getBook(), BookFormat.ORG);
+                dataRepository.saveBookToRepo(repoEntity, fileName, namesake.getBook(), BookFormat.ORG);
                 bookAction = BookAction.forNow(BookAction.Type.INFO, namesake.getStatus().msg(repoUrl));
                 break;
 
             case ONLY_BOOK_WITH_LINK:
-                repoUrl = namesake.getBook().getLinkedTo();
+                repoEntity = namesake.getBook().getLinkRepo();
+                repoUrl = repoEntity.getUrl();
                 fileName = BookName.fileName(namesake.getBook().getBook().getName(), BookFormat.ORG);
-                dataRepository.saveBookToRepo(repoUrl, fileName, namesake.getBook(), BookFormat.ORG);
+                dataRepository.saveBookToRepo(repoEntity, fileName, namesake.getBook(), BookFormat.ORG);
                 bookAction = BookAction.forNow(BookAction.Type.INFO, namesake.getStatus().msg(repoUrl));
                 break;
         }

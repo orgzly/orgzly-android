@@ -24,6 +24,7 @@ import com.orgzly.android.git.GitPreferences
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.prefs.RepoPreferences
 import com.orgzly.android.repos.GitRepo
+import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.BrowserActivity
 import com.orgzly.android.ui.repo.RepoViewModel
@@ -235,7 +236,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private fun save() {
         val remoteUriString = remoteUri().toString()
 
-        viewModel.saveRepo(remoteUriString)
+        viewModel.saveRepo(RepoType.GIT, remoteUriString /* TODO: preferences. */)
     }
 
     private fun validateFields(): Boolean {

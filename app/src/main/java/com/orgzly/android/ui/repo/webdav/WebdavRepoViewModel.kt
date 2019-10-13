@@ -29,7 +29,7 @@ class WebdavRepoViewModel(
 
                 val uri = Uri.parse(uriString)
 
-                val bookCount = WebdavRepo(uri, username, password).run {
+                val bookCount = WebdavRepo(repoId, uri, username, password).run {
                     books.size
                 }
 

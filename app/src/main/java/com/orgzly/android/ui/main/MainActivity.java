@@ -7,13 +7,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -41,6 +41,7 @@ import com.orgzly.android.db.NotesClipboard;
 import com.orgzly.android.db.dao.NoteDao;
 import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.db.entity.Note;
+import com.orgzly.android.db.entity.Repo;
 import com.orgzly.android.db.entity.SavedSearch;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.query.Condition;
@@ -402,20 +403,25 @@ public class MainActivity extends CommonActivity
 
         viewModel.getSetBookLinkRequestEvent().observeSingle(this, result -> {
             Book book = result.getBook();
-            List<CharSequence> links = result.getLinks();
+            List<Repo> links = result.getLinks();
             int checked = result.getSelected();
 
             if (links.isEmpty()) {
                 showSnackbarWithReposLink(getString(R.string.no_repos));
 
             } else {
+                ArrayAdapter<Repo> adapter = new ArrayAdapter<>(
+                        this, R.layout.item_repo, R.id.item_repo_url);
+                adapter.addAll(links);
+
                 dialog = new AlertDialog.Builder(this)
                         .setTitle("Link " + MiscUtils.quotedString(book.getName()) + " to repository")
-                        .setSingleChoiceItems(links.toArray(new CharSequence[0]), checked, (d, which) -> {
-                            mSyncFragment.run(new BookLinkUpdate(book.getId(), links.get(which).toString()));
-                            dialog.dismiss();
-                            dialog = null;
-                        })
+                        .setSingleChoiceItems(
+                                adapter, checked, (d, which) -> {
+                                    mSyncFragment.run(new BookLinkUpdate(book.getId(), links.get(which)));
+                                    dialog.dismiss();
+                                    dialog = null;
+                                })
 
                         .setNeutralButton(R.string.remove_notebook_link, (dialog, which) -> {
                             mSyncFragment.run(new BookLinkUpdate(book.getId()));

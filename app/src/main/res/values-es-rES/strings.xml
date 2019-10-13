@@ -207,7 +207,6 @@
     <string name="repositories">Repositorios</string>
     <string name="invalid_repo_url">URL del repositorio no válido \"%s\"</string>
     <string name="repository_url_already_exists">Repositorio con esta URL ya existe</string>
-    <string name="message_unsupported_repository_type">Tipo de repositorio no permitido</string>
     <string name="fragment_left_drawer_list_view_content_description">Cajón izquierdo</string>
     <string name="drawer_item">Artículo de cajón</string>
     <string name="prev_state">Estado anterior</string>

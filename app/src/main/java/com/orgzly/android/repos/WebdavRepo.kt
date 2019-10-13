@@ -1,17 +1,14 @@
 package com.orgzly.android.repos
 
-import android.content.Context
 import android.net.Uri
 import com.orgzly.android.BookName
-import com.orgzly.android.data.DataRepository
-import com.orgzly.android.prefs.RepoPreferences
 import com.thegrizzlylabs.sardineandroid.DavResource
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
-class WebdavRepo(private val uri: Uri, username: String?, password: String?) : SyncRepo {
+class WebdavRepo(private val repoId: Long, private val uri: Uri, username: String, password: String) : SyncRepo {
 
     private val sardine = OkHttpSardine()
 
@@ -20,19 +17,23 @@ class WebdavRepo(private val uri: Uri, username: String?, password: String?) : S
     }
 
     companion object {
-        val SCHEMES = arrayOf("webdav", "webdavs", "dav", "davs", "http", "https")
+        const val USERNAME_PREF_KEY = "username"
+        const val PASSWORD_PREF_KEY = "password"
 
-        const val USERNAME_PREF_KEY = "repo_webdav_username"
-        const val PASSWORD_PREF_KEY = "repo_webdav_password"
+        fun getInstance(repoWithProps: RepoWithProps): WebdavRepo {
+            val id = repoWithProps.repo.id
 
-        @JvmStatic
-        fun buildFromUri(context: Context, uri: Uri, repo: DataRepository): WebdavRepo {
-            val prefs = RepoPreferences.fromUri(context, uri, repo).repoPreferences
-            return WebdavRepo(
-                    uri,
-                    prefs.getString(USERNAME_PREF_KEY, null),
-                    prefs.getString(PASSWORD_PREF_KEY, null)
-            )
+            val uri = Uri.parse(repoWithProps.repo.url)
+
+            val username = checkNotNull(repoWithProps.props[USERNAME_PREF_KEY]) {
+                "Username not found"
+            }.toString()
+
+            val password = checkNotNull(repoWithProps.props[PASSWORD_PREF_KEY]) {
+                "Password not found"
+            }.toString()
+
+            return WebdavRepo(id, uri, username, password)
         }
     }
 
@@ -84,6 +85,8 @@ class WebdavRepo(private val uri: Uri, username: String?, password: String?) : S
 
     private fun DavResource.toVersionedRook(): VersionedRook {
         return VersionedRook(
+                repoId,
+                RepoType.WEBDAV,
                 uri,
                 Uri.withAppendedPath(uri, this.name),
                 this.name + this.modified.time.toString(),

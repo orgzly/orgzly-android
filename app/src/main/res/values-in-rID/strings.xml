@@ -203,7 +203,6 @@
     <string name="repositories">Repositori</string>
     <string name="invalid_repo_url">URL Repositori tidak valid %s</string>
     <string name="repository_url_already_exists">Repository with this URL already exists</string>
-    <string name="message_unsupported_repository_type">Jenis repositori tidak didukung</string>
     <string name="fragment_left_drawer_list_view_content_description">Laci Kiri</string>
     <string name="drawer_item">Item Laci</string>
     <string name="prev_state">Negara yang sebenarnya</string>

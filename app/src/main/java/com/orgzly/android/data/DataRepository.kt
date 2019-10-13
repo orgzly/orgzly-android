@@ -8,7 +8,6 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Handler
 import android.text.TextUtils
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -30,9 +29,8 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.query.Query
 import com.orgzly.android.query.sql.SqliteQueryBuilder
 import com.orgzly.android.query.user.InternalQueryParser
-import com.orgzly.android.repos.RepoFactory
+import com.orgzly.android.repos.*
 import com.orgzly.android.repos.Rook
-import com.orgzly.android.repos.SyncRepo
 import com.orgzly.android.repos.VersionedRook
 import com.orgzly.android.savedsearch.FileSavedSearchStore
 import com.orgzly.android.sync.BookSyncStatus
@@ -72,17 +70,17 @@ class DataRepository @Inject constructor(
                 ?: throw IOException(resources.getString(R.string.book_does_not_exist_anymore))
 
         try {
-            if (book.linkedTo == null) {
+            if (book.linkRepo == null) {
                 throw IOException(resources.getString(R.string.message_book_has_no_link))
             }
 
             setBookLastActionAndSyncStatus(bookId, BookAction.forNow(
                     BookAction.Type.PROGRESS,
-                    resources.getString(R.string.force_loading_from_uri, book.linkedTo)))
+                    resources.getString(R.string.force_loading_from_uri, book.linkRepo.url)))
 
             val fileName = BookName.getFileName(context, book)
 
-            val loadedBook = loadBookFromRepo(Uri.parse(book.linkedTo), fileName)
+            val loadedBook = loadBookFromRepo(book.linkRepo.id, book.linkRepo.type, book.linkRepo.url, fileName)
 
             setBookLastActionAndSyncStatus(loadedBook!!.book.id, BookAction.forNow(
                     BookAction.Type.INFO,
@@ -107,13 +105,13 @@ class DataRepository @Inject constructor(
 
         try {
             /* Prefer link. */
-            val repoUrl = book.linkedTo ?: repoForSavingBook()
+            val repoEntity = book.linkRepo ?: defaultRepoForSavingBook()
 
             setBookLastActionAndSyncStatus(book.book.id, BookAction.forNow(
                     BookAction.Type.PROGRESS,
-                    resources.getString(R.string.force_saving_to_uri, repoUrl)))
+                    resources.getString(R.string.force_saving_to_uri, repoEntity)))
 
-            saveBookToRepo(repoUrl, fileName, book, BookFormat.ORG)
+            saveBookToRepo(repoEntity, fileName, book, BookFormat.ORG)
 
             val savedBook = getBookView(bookId)
 
@@ -142,11 +140,10 @@ class DataRepository @Inject constructor(
      * @throws IOException
      */
     @Throws(IOException::class)
-    fun saveBookToRepo(repoUrl: String, fileName: String, bookView: BookView, format: BookFormat) {
-
+    fun saveBookToRepo(repoEntity: Repo, fileName: String, bookView: BookView, format: BookFormat) {
         val uploadedBook: VersionedRook
 
-        val repo = getRepo(Uri.parse(repoUrl))
+        val repo = getRepoInstance(repoEntity.id, repoEntity.type, repoEntity.url)
 
         val tmpFile = getTempBookFile()
         try {
@@ -172,24 +169,16 @@ class DataRepository @Inject constructor(
         return localStorage.getTempBookFile()
     }
 
-    @Throws(IOException::class)
-    fun getRepo(repoUrl: Uri): SyncRepo {
-        return repoFactory.getFromUri(context, repoUrl, this)
-                ?: throw IOException("Unsupported repository URL \"$repoUrl\"")
-    }
-
     /*
      * If there is only one repository, return its URL.
      * If there are more, we don't know which one to use, so throw exception.
      */
     @Throws(IOException::class)
-    private fun repoForSavingBook(): String {
+    private fun defaultRepoForSavingBook(): Repo {
         val repos = getRepos()
 
-        /* Use repository if there is only one. */
-
         return when {
-            repos.size == 1 -> repos.keys.iterator().next()
+            repos.size == 1 -> repos.first()
             repos.isEmpty() -> throw IOException(resources.getString(R.string.no_repos))
             else -> throw IOException(resources.getString(R.string.multiple_repos))
         }
@@ -328,8 +317,9 @@ class DataRepository @Inject constructor(
     fun deleteBook(book: BookView, deleteLinked: Boolean) {
         if (deleteLinked) {
             book.syncedTo?.let { vrook ->
-                val repo = repoFactory.getFromUri(context, vrook.repoUri, this)
-                repo?.delete(vrook.uri)
+                val repo = getRepoInstance(vrook.repoId, vrook.repoType, vrook.repoUri.toString())
+
+                repo.delete(vrook.uri)
             }
         }
 
@@ -366,8 +356,8 @@ class DataRepository @Inject constructor(
         }
 
         /* Make sure link's repo is the same as sync book repo. */
-        if (bookView.hasLink() && bookView.syncedTo != null) {
-            if (!TextUtils.equals(bookView.linkedTo, bookView.syncedTo.repoUri.toString())) {
+        if (bookView.linkRepo != null && bookView.syncedTo != null) {
+            if (!TextUtils.equals(bookView.linkRepo.url, bookView.syncedTo.repoUri.toString())) {
                 val s = BookSyncStatus.ROOK_AND_VROOK_HAVE_DIFFERENT_REPOS.toString()
                 setBookLastActionAndSyncStatus(book.id, BookAction.forNow(BookAction.Type.ERROR, s), s)
                 return
@@ -380,16 +370,12 @@ class DataRepository @Inject constructor(
         }
 
         /* Prefer link. */
-        if (bookView.syncedTo != null) {
-            val vrook = bookView.syncedTo
+        bookView.syncedTo?.let { vrook ->
+            val repo = getRepoInstance(vrook.repoId, vrook.repoType, vrook.repoUri.toString())
 
-            val repo = repoFactory.getFromUri(context, vrook.repoUri, this)
+            val movedVrook = repo.renameBook(vrook.uri, name)
 
-            if (repo != null) {
-                val movedVrook = repo.renameBook(vrook.uri, name)
-
-                updateBookLinkAndSync(book.id, movedVrook)
-            }
+            updateBookLinkAndSync(book.id, movedVrook)
         }
 
         if (db.book().updateName(book.id, name) != 1) {
@@ -431,12 +417,16 @@ class DataRepository @Inject constructor(
         val rookRevision = uploadedBook.revision
         val rookMtime = uploadedBook.mtime
 
-        val repoId = db.repo().getOrInsert(repoUrl)
+        val repoId = checkNotNull(db.repo().get(repoUrl)) {
+            "Repo $repoUrl not found"
+        }.id
+
         val rookUrlId = db.rookUrl().getOrInsert(rookUrl)
         val rookId = db.rook().getOrInsert(repoId, rookUrlId)
 
         val versionedRookId = db.versionedRook().replace(
-                VersionedRook(0, rookId, rookRevision, rookMtime))
+                com.orgzly.android.db.entity.VersionedRook(
+                        0, rookId, rookRevision, rookMtime))
 
         db.bookLink().upsert(bookId, repoId)
         db.bookSync().upsert(bookId, versionedRookId)
@@ -481,16 +471,19 @@ class DataRepository @Inject constructor(
         return db.note().getRootNode(bookId)
     }
 
-    fun setLink(bookId: Long, repoUrl: String?) {
-        if (repoUrl == null) {
+    fun setLink(bookId: Long, repo: Repo?) {
+        if (repo == null) {
             deleteBookLink(bookId)
         } else {
-            setBookLink(bookId, repoUrl)
+            setBookLink(bookId, repo)
         }
     }
 
-    private fun setBookLink(bookId: Long, repoUrl: String) {
-        val repoId = db.repo().getOrInsert(repoUrl)
+    private fun setBookLink(bookId: Long, repo: Repo) {
+        val repoId = checkNotNull(db.repo().get(repo.url)) {
+            "Repo ${repo.url} not found"
+        }.id
+
         db.bookLink().upsert(bookId, repoId)
     }
 
@@ -737,7 +730,7 @@ class DataRepository @Inject constructor(
                 subtreeRgt = note.position.rgt
                 levelOffset = note.position.level - 1
 
-                while (! stack.empty()) {
+                while (!stack.empty()) {
                     val popped = stack.pop()
 
                     sequence++
@@ -799,7 +792,7 @@ class DataRepository @Inject constructor(
             prevLevel = level
         }
 
-        while (! stack.empty()) {
+        while (!stack.empty()) {
             val popped = stack.pop()
 
             sequence++
@@ -1515,7 +1508,7 @@ class DataRepository @Inject constructor(
             parseAndInsertEvents(noteId, title)
         }
 
-        if (! content.isNullOrEmpty()) {
+        if (!content.isNullOrEmpty()) {
             parseAndInsertEvents(noteId, content)
         }
     }
@@ -1542,15 +1535,14 @@ class DataRepository @Inject constructor(
     fun loadBookFromRepo(rook: Rook): BookView? {
         val fileName = BookName.getFileName(context, rook.uri)
 
-        return loadBookFromRepo(rook.repoUri, fileName)
+        return loadBookFromRepo(rook.repoId, rook.repoType, rook.repoUri.toString(), fileName)
     }
 
     @Throws(IOException::class)
-    fun loadBookFromRepo(repoUri: Uri, fileName: String): BookView? {
+    fun loadBookFromRepo(repoId: Long, repoType: RepoType, repoUrl: String, fileName: String): BookView? {
         val book: BookView?
 
-        val repo = repoFactory.getFromUri(context, repoUri, this)
-                ?: throw IOException("Unsupported repository URL \"$repoUri\"")
+        val repo = getRepoInstance(repoId, repoType, repoUrl)
 
         val tmpFile = getTempBookFile()
         try {
@@ -1779,14 +1771,20 @@ class DataRepository @Inject constructor(
         if (vrook != null) {
             // TODO: Reuse updateBookLinkAndSync
 
-            val repoId = db.repo().getOrInsert(vrook.repoUri.toString())
+            val repoUrl = vrook.repoUri.toString()
+
+            val repoId = checkNotNull(db.repo().get(repoUrl)) {
+                "Repo $repoUrl not found"
+            }.id
+
             db.bookLink().upsert(bookId, repoId)
 
             val rookUrlId = db.rookUrl().getOrInsert(vrook.uri.toString())
             val rookId = db.rook().getOrInsert(repoId, rookUrlId)
 
             val versionedRookId = db.versionedRook().replace(
-                    VersionedRook(0, rookId, vrook.revision, vrook.mtime))
+                    com.orgzly.android.db.entity.VersionedRook(
+                            0, rookId, vrook.revision, vrook.mtime))
 
             db.bookLink().upsert(bookId, repoId)
             db.bookSync().upsert(bookId, versionedRookId)
@@ -1974,26 +1972,8 @@ class DataRepository @Inject constructor(
         return db.repo().getAllLiveData()
     }
 
-    fun getReposList(): List<Repo> {
+    fun getRepos(): List<Repo> {
         return db.repo().getAll()
-    }
-
-    fun getRepos(): Map<String, SyncRepo> {
-        val repos = db.repo().getAll()
-
-        val result = HashMap<String, SyncRepo>()
-
-        for ((_, url) in repos) {
-            val repo = repoFactory.getFromUri(context, url, this)
-
-            if (repo != null) {
-                result[url] = repo
-            } else {
-                Log.e(TAG, "Unsupported repository URL\"$url\"")
-            }
-        }
-
-        return result
     }
 
     fun getRepo(url: String): Repo? {
@@ -2008,22 +1988,33 @@ class DataRepository @Inject constructor(
         return db.repo().get(id)
     }
 
-    fun createRepo(url: String): Long {
-        if (getRepo(url) != null) {
+    fun createRepo(repoWithProps: RepoWithProps): Long {
+        if (getRepo(repoWithProps.repo.url) != null) {
             throw RepoCreate.AlreadyExists()
         }
-        return db.repo().insert(Repo(0, url))
+
+        val id = db.repo().insert(repoWithProps.repo)
+
+        AppPreferences.repoPropsMap(context, id, repoWithProps.props)
+
+        return id
     }
 
-    /**
-     * Since old url might be in use, do not update the existing record, but replace it.
-     */
-    fun updateRepo(id: Long, url: String): Long {
-        return db.repo().replace(id, url)
+    fun updateRepo(repoWithProps: RepoWithProps): Long {
+        // Since old url might be in use, do not update the existing record, but replace it
+        val newId = db.repo().deleteAndInsert(repoWithProps.repo)
+
+        AppPreferences.repoPropsMapDelete(context, repoWithProps.repo.id)
+
+        AppPreferences.repoPropsMap(context, newId, repoWithProps.props)
+
+        return newId
     }
 
     fun deleteRepo(id: Long) {
         db.repo().delete(id)
+
+        AppPreferences.repoPropsMapDelete(context, id)
     }
 
     /*
@@ -2109,7 +2100,7 @@ class DataRepository @Inject constructor(
     }
 
     private fun syncCreatedAtTimeWithPropertyInTransaction() {
-        if (! AppPreferences.createdAt(context)) {
+        if (!AppPreferences.createdAt(context)) {
             return
         }
 
@@ -2244,8 +2235,11 @@ class DataRepository @Inject constructor(
             OrgzlyDatabase.insertDefaultSearches(db.openHelper.writableDatabase)
         }
 
-        /* Clear last sync time. */
+        // Clear last sync time
         AppPreferences.lastSuccessfulSyncTime(context, 0L)
+
+        // Clear repo preferences
+        AppPreferences.repoPropsMapDelete(context)
 
         val intent = Intent(AppIntent.ACTION_DB_CLEARED)
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
@@ -2259,6 +2253,19 @@ class DataRepository @Inject constructor(
             val timestamp = OrgDateTime.doParse(it.string).calendar.timeInMillis
             db.orgTimestamp().update(it.copy(timestamp = timestamp))
         }
+    }
+
+    fun getRepoInstance(id: Long, type: RepoType, url: String): SyncRepo {
+        // Load additional repo parameters, if available
+        val props = getRepoPropsMap(id)
+
+        val repoWithProps = RepoWithProps(Repo(id, type, url), props)
+
+        return repoFactory.getInstance(repoWithProps)
+    }
+
+    fun getRepoPropsMap(id: Long): Map<String, String> {
+        return AppPreferences.repoPropsMap(context, id)
     }
 
     companion object {

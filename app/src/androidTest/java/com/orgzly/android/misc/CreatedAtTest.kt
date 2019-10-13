@@ -5,7 +5,9 @@ import com.orgzly.android.BookFormat
 import com.orgzly.android.LocalStorage
 import com.orgzly.android.NotesOrgExporter
 import com.orgzly.android.OrgzlyTest
+import com.orgzly.android.db.entity.Repo
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.note.NotePayload
 import com.orgzly.org.datetime.OrgDateTime
 import org.junit.Assert.*
@@ -91,9 +93,9 @@ class CreatedAtTest : OrgzlyTest() {
 
         val createdProperty = context.getString(R.string.created_property_name)
 
-        testUtils.setupRepo("mock://repo-a")
+        val repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a")
         testUtils.setupRook(
-                "mock://repo-a",
+                repo,
                 "mock://repo-a/book-a.org",
                 "* Note [a-1]\n" +
                         ":PROPERTIES:\n" +
@@ -114,7 +116,7 @@ class CreatedAtTest : OrgzlyTest() {
 
     @Test
     fun testBookMarkedSyncedAfterSettingCreatedAtTime() {
-        testUtils.setupRepo("mock://repo-a")
+        testUtils.setupRepo(RepoType.MOCK, "mock://repo-a")
         testUtils.setupBook(
                 "book-a",
                 "* Note [a-1]\n" +

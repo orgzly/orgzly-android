@@ -18,8 +18,6 @@ import java.util.List;
  * TODO: Use {@link DirectoryRepo} instead, remove {@link DbRepoBookRepository}.
  */
 public class MockRepo implements SyncRepo {
-    public static final String SCHEME = "mock";
-
     private static final long SLEEP_FOR_GET_BOOKS = 100;
     private static final long SLEEP_FOR_RETRIEVE_BOOK = 200;
     private static final long SLEEP_FOR_STORE_BOOK = 200;
@@ -27,8 +25,8 @@ public class MockRepo implements SyncRepo {
 
     private DatabaseRepo databaseRepo;
 
-    public MockRepo(DbRepoBookRepository dbRepo, String url) {
-        databaseRepo = new DatabaseRepo(dbRepo, url);
+    public MockRepo(RepoWithProps repoWithProps, DbRepoBookRepository dbRepo) {
+        databaseRepo = new DatabaseRepo(repoWithProps, dbRepo);
     }
 
     @Override

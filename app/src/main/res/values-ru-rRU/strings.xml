@@ -206,7 +206,7 @@
     <string name="git_clone_error_unknown">Unknown error while cloning</string>
     <string name="git_clone_error_invalid_target_dir">The target directory does not exist</string>
     <string name="git_clone_error_target_not_empty">The target directory is not empty</string>
-    <string name="git_clone_error_uri_not_supported">The remote address is not supported</string>
+    <string name="git_clone_error_uri_not_supported">The remkote address is not supported</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Действие «Поделиться» не задано</string>
     <string name="share_action_not_supported">Действие «Поделиться» %s не поддерживается</string>
@@ -215,7 +215,6 @@
     <string name="repositories">Хранилища</string>
     <string name="invalid_repo_url">Недопустимый URL-адрес хранилища «%s»</string>
     <string name="repository_url_already_exists">Репозиторий с таким URL уже существует</string>
-    <string name="message_unsupported_repository_type">Неподдерживаемый тип хранилища</string>
     <string name="fragment_left_drawer_list_view_content_description">Левое меню</string>
     <string name="drawer_item">Элемент меню</string>
     <string name="prev_state">Предыдущее состояние</string>
