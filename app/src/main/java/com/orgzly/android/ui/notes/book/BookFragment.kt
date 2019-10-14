@@ -3,6 +3,7 @@ package com.orgzly.android.ui.notes.book
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -18,6 +19,7 @@ import com.orgzly.android.BookUtils
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.sync.SyncService
 import com.orgzly.android.ui.*
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
@@ -164,6 +166,12 @@ class BookFragment :
 //
 //            itemTouchHelper.attachToRecyclerView(rv)
         }
+
+        binding.swipeContainer.setOnRefreshListener {
+            SyncService.start(context, Intent(context, SyncService::class.java))
+            binding.swipeContainer.isRefreshing = false
+        }
+        binding.swipeContainer.setDistanceToTriggerSync(1000)
     }
 
     override fun onQuickBarButtonClick(buttonId: Int, itemId: Long) {

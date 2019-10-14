@@ -104,11 +104,6 @@ class BooksFragment :
 
         binding = FragmentBooksBinding.inflate(inflater, container, false)
 
-        binding.swipeContainer.setOnRefreshListener {
-            SyncService.start(context, Intent(context, SyncService::class.java))
-            binding.swipeContainer.isRefreshing = false
-        }
-
         return binding.root
     }
 
@@ -124,6 +119,12 @@ class BooksFragment :
             it.layoutManager = LinearLayoutManager(context)
             it.adapter = viewAdapter
         }
+
+        binding.swipeContainer.setOnRefreshListener {
+            SyncService.start(context, Intent(context, SyncService::class.java))
+            binding.swipeContainer.isRefreshing = false
+        }
+
     }
 
     override fun onClick(view: View, position: Int, item: BookView) {
