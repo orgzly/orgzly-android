@@ -17,8 +17,6 @@
     <!-- Reasoning - "Spacing between each UI element is 8dp."
          (http://developer.android.com/design/style/metrics-grids.html) -->
 
-    <dimen name="ui_element_spacing">8dp</dimen>
-
     <dimen name="list_view_with_fab_bottom_padding">88dp</dimen>
 
     <dimen name="fab_margin">16dp</dimen>
