@@ -55,7 +55,11 @@ public class DropboxClient {
 
         repoId = id;
 
-        String accessToken = loadToken();
+        createClient();
+    }
+
+    private void createClient() {
+        String accessToken = getToken();
 
         if (accessToken != null) {
             dbxClient = getDbxClient(accessToken);
@@ -66,7 +70,7 @@ public class DropboxClient {
         return dbxClient != null;
     }
 
-    public void linkedOrThrow() throws IOException {
+    private void linkedOrThrow() throws IOException {
         if (! isLinked()) {
             throw new IOException(NOT_LINKED);
         }
@@ -85,7 +89,7 @@ public class DropboxClient {
 
     public boolean finishAuthentication() {
         if (dbxClient == null && tryLinking) {
-            String accessToken = loadToken();
+            String accessToken = getToken();
 
             if (accessToken == null) {
                 accessToken = Auth.getOAuth2Token();
@@ -118,11 +122,16 @@ public class DropboxClient {
         return new DbxClientV2(requestConfig, accessToken);
     }
 
+    public void setToken(String token) {
+        saveToken(token);
+        createClient();
+    }
+
     private void saveToken(String token) {
         AppPreferences.dropboxToken(mContext, token);
     }
 
-    private String loadToken() {
+    public String getToken() {
         return AppPreferences.dropboxToken(mContext);
     }
 

@@ -745,7 +745,13 @@ public class AppPreferences {
 
     public static void dropboxToken(Context context, String value) {
         String key = context.getResources().getString(R.string.pref_key_dropbox_token);
-        getStateSharedPreferences(context).edit().putString(key, value).apply();
+        SharedPreferences.Editor editor = getStateSharedPreferences(context).edit();
+        if (value == null) {
+            editor.remove(key);
+        } else {
+            editor.putString(key, value);
+        }
+        editor.apply();
     }
 
     /*

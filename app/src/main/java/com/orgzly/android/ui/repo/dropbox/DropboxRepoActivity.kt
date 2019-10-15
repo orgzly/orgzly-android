@@ -1,5 +1,6 @@
 package com.orgzly.android.ui.repo.dropbox
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -9,12 +10,16 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.repos.*
+import com.orgzly.android.repos.DropboxClient
+import com.orgzly.android.repos.DropboxRepo
+import com.orgzly.android.repos.RepoFactory
+import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.RepoViewModel
 import com.orgzly.android.ui.repo.RepoViewModelFactory
@@ -24,6 +29,7 @@ import com.orgzly.android.util.MiscUtils
 import com.orgzly.android.util.UriUtils
 import com.orgzly.databinding.ActivityRepoDropboxBinding
 import javax.inject.Inject
+
 
 class DropboxRepoActivity : CommonActivity() {
     private lateinit var binding: ActivityRepoDropboxBinding
@@ -49,6 +55,11 @@ class DropboxRepoActivity : CommonActivity() {
             } else {
                 toggleLink()
             }
+        }
+
+        binding.activityRepoDropboxLinkButton.setOnLongClickListener {
+            editAccessToken()
+            true
         }
 
         // Not working when done in XML
@@ -101,6 +112,46 @@ class DropboxRepoActivity : CommonActivity() {
         client = DropboxClient(applicationContext, repoId)
     }
 
+    private fun editAccessToken() {
+        @SuppressLint("InflateParams")
+        val view = layoutInflater.inflate(R.layout.dialog_simple_one_liner, null, false)
+
+        val editView = view.findViewById<EditText>(R.id.dialog_input).apply {
+            setSelectAllOnFocus(true)
+
+            setHint(R.string.access_token)
+
+            client.token?.let {
+                setText(it)
+            }
+        }
+
+        alertDialog = AlertDialog.Builder(this)
+                .setView(view)
+                .setTitle(R.string.access_token)
+                .setPositiveButton(R.string.set) { _, _ ->
+                    editView.text.toString().let { value ->
+                        if (TextUtils.isEmpty(value)) {
+                            client.unlink()
+                        } else {
+                            client.setToken(value)
+                        }
+                    }
+                    updateDropboxLinkUnlinkButton()
+                }
+                .setNeutralButton(R.string.clear) { _, _ ->
+                    client.unlink()
+                    updateDropboxLinkUnlinkButton()
+                }
+                .setNegativeButton(R.string.cancel) { _, _ -> }
+                .create().apply {
+                    setOnShowListener {
+                        ActivityUtils.openSoftKeyboard(this@DropboxRepoActivity, editView)
+                    }
+
+                    show()
+                }
+    }
 
     public override fun onResume() {
         super.onResume()
