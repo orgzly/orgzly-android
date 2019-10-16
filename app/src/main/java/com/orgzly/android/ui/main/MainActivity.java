@@ -404,6 +404,7 @@ public class MainActivity extends CommonActivity
         viewModel.getSetBookLinkRequestEvent().observeSingle(this, result -> {
             Book book = result.getBook();
             List<Repo> links = result.getLinks();
+            CharSequence[] urls = result.getUrls();
             int checked = result.getSelected();
 
             if (links.isEmpty()) {
@@ -414,10 +415,12 @@ public class MainActivity extends CommonActivity
                         this, R.layout.item_repo, R.id.item_repo_url);
                 adapter.addAll(links);
 
+
+
                 dialog = new AlertDialog.Builder(this)
-                        .setTitle("Link " + MiscUtils.quotedString(book.getName()) + " to repository")
+                        .setTitle(R.string.book_link)
                         .setSingleChoiceItems(
-                                adapter, checked, (d, which) -> {
+                                urls, checked, (d, which) -> {
                                     mSyncFragment.run(new BookLinkUpdate(book.getId(), links.get(which)));
                                     dialog.dismiss();
                                     dialog = null;

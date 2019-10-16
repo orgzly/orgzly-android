@@ -30,7 +30,11 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
 
     val openNoteRequestEvent: SingleLiveEvent<Note> = SingleLiveEvent()
 
-    data class BookLinkOptions(val book: Book, val links: List<Repo>, val selected: Int)
+    data class BookLinkOptions(
+            val book: Book,
+            val links: List<Repo>,
+            val urls: Array<CharSequence>,
+            val selected: Int)
 
     val setBookLinkRequestEvent: SingleLiveEvent<BookLinkOptions> = SingleLiveEvent()
 
@@ -107,13 +111,13 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
                 val repos = dataRepository.getRepos()
 
                 val a = if (repos.isEmpty()) {
-                    BookLinkOptions(bookView.book, emptyList(), -1)
+                    BookLinkOptions(bookView.book, emptyList(), emptyArray(), -1)
 
                 } else {
                     val currentLink = bookView.linkRepo
 
                     var selectedLink = -1
-                    val links = repos.mapIndexed { index, repo ->
+                    val repos = repos.mapIndexed { index, repo ->
                         if (repo.url == currentLink?.url) {
                             selectedLink = index
                         }
@@ -121,7 +125,11 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
                         repo
                     }
 
-                    BookLinkOptions(bookView.book, links, selectedLink)
+                    BookLinkOptions(
+                            bookView.book,
+                            repos,
+                            repos.map { it.url }.toTypedArray(),
+                            selectedLink)
                 }
 
                 setBookLinkRequestEvent.postValue(a)
