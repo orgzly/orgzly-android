@@ -171,7 +171,6 @@ class BookFragment :
             SyncService.start(context, Intent(context, SyncService::class.java))
             binding.swipeContainer.isRefreshing = false
         }
-        binding.swipeContainer.setDistanceToTriggerSync(1000)
     }
 
     override fun onQuickBarButtonClick(buttonId: Int, itemId: Long) {
