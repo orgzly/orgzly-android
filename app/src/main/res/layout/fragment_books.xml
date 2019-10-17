@@ -1,28 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <ViewFlipper
-        android:id="@+id/fragment_books_view_flipper"
+
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/fragment_books_bg_color">
+        android:layout_height="match_parent">
 
-        <ProgressBar style="@style/LoadingProgressBar" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_books_recycler_view"
+        <ViewFlipper
+            android:id="@+id/fragment_books_view_flipper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="@dimen/screen_edge_minus_2dp"
-            android:paddingRight="@dimen/screen_edge_minus_2dp"
-            android:paddingTop="@dimen/screen_edge_minus_2dp"
-            android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
-            android:clipToPadding="false" />
+            android:background="?attr/fragment_books_bg_color">
 
-        <TextView
-            style="@style/BigCenteredText"
-            android:text="@string/no_notebooks"
-            android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
+            <ProgressBar style="@style/LoadingProgressBar" />
 
-    </ViewFlipper>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fragment_books_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingLeft="@dimen/screen_edge_minus_2dp"
+                android:paddingTop="@dimen/screen_edge_minus_2dp"
+                android:paddingRight="@dimen/screen_edge_minus_2dp"
+                android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    style="@style/BigCenteredText"
+                    android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
+                    android:text="@string/no_notebooks" />
+
+            </ScrollView>
+
+        </ViewFlipper>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </layout>

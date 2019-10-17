@@ -129,6 +129,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$android_constraint_layout_version"
     implementation "androidx.preference:preference:$android_preference_version"
     implementation "com.google.android.material:material:$android_material_version"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$android_swiperefreshlayout_version"
 
     // Room
     implementation "androidx.room:room-runtime:$android_room_version"
