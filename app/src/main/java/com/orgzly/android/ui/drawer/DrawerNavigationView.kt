@@ -23,6 +23,7 @@ import com.orgzly.android.ui.main.MainActivityViewModel
 import com.orgzly.android.ui.notes.book.BookFragment
 import com.orgzly.android.ui.notes.query.QueryFragment
 import com.orgzly.android.ui.savedsearches.SavedSearchesFragment
+import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
 import java.util.*
 
@@ -155,11 +156,8 @@ internal class DrawerNavigationView(
 
     @SuppressLint("ResourceType")
     private fun getAttributes(): Attributes {
-        val typedArray = activity.obtainStyledAttributes(intArrayOf(R.attr.text_disabled_color))
-        try {
-            return Attributes(typedArray.getColor(0, 0))
-        } finally {
-            typedArray.recycle()
+        return activity.styledAttributes(intArrayOf(R.attr.text_disabled_color)) { typedArray ->
+            Attributes(typedArray.getColor(0, 0))
         }
     }
 

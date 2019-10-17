@@ -24,6 +24,7 @@ import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.RepoViewModel
 import com.orgzly.android.ui.repo.RepoViewModelFactory
 import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.android.util.UriUtils
@@ -264,25 +265,22 @@ class DropboxRepoActivity : CommonActivity() {
     private fun updateDropboxLinkUnlinkButton() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        val typedArray = obtainStyledAttributes(R.styleable.Icons)
-
-        val text: String
-        val imageResource: Int
-
-        if (isDropboxLinked()) {
-            text = getString(R.string.repo_dropbox_button_linked)
-            imageResource = typedArray.getResourceId(R.styleable.Icons_oic_dropbox_linked, 0)
-        } else {
-            text = getString(R.string.repo_dropbox_button_not_linked)
-            imageResource = typedArray.getResourceId(R.styleable.Icons_oic_dropbox_not_linked, 0)
+        val resources = styledAttributes(R.styleable.Icons) { typedArray ->
+            if (isDropboxLinked()) {
+                Pair(
+                        getString(R.string.repo_dropbox_button_linked),
+                        typedArray.getResourceId(R.styleable.Icons_oic_dropbox_linked, 0))
+            } else {
+                Pair(
+                        getString(R.string.repo_dropbox_button_not_linked),
+                        typedArray.getResourceId(R.styleable.Icons_oic_dropbox_not_linked, 0))
+            }
         }
 
-        typedArray.recycle()
+        binding.activityRepoDropboxLinkButton.text = resources.first
 
-        binding.activityRepoDropboxLinkButton.text = text
-
-        if (imageResource != 0) {
-            binding.activityRepoDropboxIcon.setImageResource(imageResource)
+        if (resources.second != 0) {
+            binding.activityRepoDropboxIcon.setImageResource(resources.second)
         }
     }
 

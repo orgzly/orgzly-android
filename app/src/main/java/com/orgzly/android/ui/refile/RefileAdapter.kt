@@ -13,6 +13,7 @@ import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.ui.notes.NoteItemViewBinder
+import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.databinding.ItemRefileBinding
 
 class RefileAdapter(val context: Context, val listener: OnClickListener) :
@@ -95,17 +96,13 @@ class RefileAdapter(val context: Context, val listener: OnClickListener) :
     }
 
     private fun getIcons(context: Context): Icons {
-        val typedArray = context.obtainStyledAttributes(R.styleable.Icons)
-
-        val result = Icons(
-                typedArray.getResourceId(R.styleable.Icons_ic_keyboard_arrow_up_24dp, 0),
-                typedArray.getResourceId(R.styleable.Icons_ic_library_books_24dp, 0),
-                typedArray.getResourceId(R.styleable.Icons_bullet_folded, 0),
-                typedArray.getResourceId(R.styleable.Icons_bullet_default, 0))
-
-        typedArray.recycle()
-
-        return result
+        return context.styledAttributes(R.styleable.Icons) { typedArray ->
+            Icons(
+                    typedArray.getResourceId(R.styleable.Icons_ic_keyboard_arrow_up_24dp, 0),
+                    typedArray.getResourceId(R.styleable.Icons_ic_library_books_24dp, 0),
+                    typedArray.getResourceId(R.styleable.Icons_bullet_folded, 0),
+                    typedArray.getResourceId(R.styleable.Icons_bullet_default, 0))
+        }
     }
 
     companion object {

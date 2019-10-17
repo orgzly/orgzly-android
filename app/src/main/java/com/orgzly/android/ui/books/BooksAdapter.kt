@@ -22,6 +22,7 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.Selection
+import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.databinding.ItemBookBinding
 
 
@@ -204,9 +205,9 @@ class BooksAdapter(
 
         if (book.lastAction?.type === BookAction.Type.ERROR) {
             /* Get error color attribute. */
-            val arr = context.obtainStyledAttributes(intArrayOf(R.attr.text_error_color))
-            val color = arr.getColor(0, 0)
-            arr.recycle()
+            val color = context.styledAttributes(intArrayOf(R.attr.text_error_color)) { typedArray ->
+                typedArray.getColor(0, 0)
+            }
 
             /* Set error color. */
             builder.setSpan(ForegroundColorSpan(color), pos, builder.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)

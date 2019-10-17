@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.preference.EditTextPreference
 import com.orgzly.R
+import com.orgzly.android.ui.util.styledAttributes
 
 class IntegerPreference : EditTextPreference {
     private var min = Integer.MIN_VALUE
@@ -19,12 +20,10 @@ class IntegerPreference : EditTextPreference {
 
     private fun parseAttrs(attrs: AttributeSet?) {
         if (attrs != null) {
-            val typedArray = context.obtainStyledAttributes(attrs, R.styleable.IntegerRange)
-
-            min = typedArray.getInt(R.styleable.IntegerRange_min, Integer.MIN_VALUE)
-            max = typedArray.getInt(R.styleable.IntegerRange_max, Integer.MAX_VALUE)
-
-            typedArray.recycle()
+            context.styledAttributes(attrs, R.styleable.IntegerRange) { typedArray ->
+                min = typedArray.getInt(R.styleable.IntegerRange_min, Integer.MIN_VALUE)
+                max = typedArray.getInt(R.styleable.IntegerRange_max, Integer.MAX_VALUE)
+            }
         }
     }
 

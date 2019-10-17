@@ -28,6 +28,7 @@ import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.usecase.BookDelete
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
@@ -243,17 +244,16 @@ class BooksFragment :
         val dialogBinding = DialogBookDeleteBinding.inflate(LayoutInflater.from(context))
 
         dialogBinding.deleteLinkedCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            val typedArray = activity?.obtainStyledAttributes(R.styleable.ColorScheme)
+            activity?.apply {
+                val color = styledAttributes(R.styleable.ColorScheme) { typedArray ->
+                    val index = if (isChecked) {
+                        R.styleable.ColorScheme_text_primary_color
+                    } else {
+                        R.styleable.ColorScheme_text_disabled_color
+                    }
 
-            if (typedArray != null) {
-                val color = if (isChecked) {
-                    typedArray.getColor(R.styleable.ColorScheme_text_primary_color, 0)
-                } else {
-                    typedArray.getColor(R.styleable.ColorScheme_text_disabled_color, 0)
+                    typedArray.getColor(index, 0)
                 }
-
-                typedArray.recycle()
-
                 dialogBinding.deleteLinkedUrl.setTextColor(color)
             }
         }

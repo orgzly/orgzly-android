@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.ui.util.ExtensionsKt;
 import com.orgzly.android.util.LogUtils;
 
 import java.util.HashMap;
@@ -71,25 +72,24 @@ public class GesturedListView extends ListView implements GestureDetector.OnGest
 
         /* Get attributes from XML. */
         if (attrs != null) {
-            TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.GesturedListView);
+            menuContainerId = ExtensionsKt.styledAttributes(getContext(), attrs, R.styleable.GesturedListView, typedArray -> {
+                int id = typedArray.getResourceId(R.styleable.GesturedListView_menu_container, 0);
 
-            menuContainerId = typedArray.getResourceId(R.styleable.GesturedListView_menu_container, 0);
+                int child;
 
-            int child;
+                child = typedArray.getInt(R.styleable.GesturedListView_menu_for_fling_left, -1);
+                if (child != -1) {
+                    gestureMenuMap.put(Gesture.FLING_LEFT, child);
+                }
 
-            child = typedArray.getInt(R.styleable.GesturedListView_menu_for_fling_left, -1);
-            if (child != -1) {
-                gestureMenuMap.put(Gesture.FLING_LEFT, child);
-            }
+                child = typedArray.getInt(R.styleable.GesturedListView_menu_for_fling_right, -1);
+                if (child != -1) {
+                    gestureMenuMap.put(Gesture.FLING_RIGHT, child);
+                }
 
-            child = typedArray.getInt(R.styleable.GesturedListView_menu_for_fling_right, -1);
-            if (child != -1) {
-                gestureMenuMap.put(Gesture.FLING_RIGHT, child);
-            }
-
-            typedArray.recycle();
+                return id;
+            });
         }
-
 
         /* Disable selector. */
         // setSelector(android.R.color.transparent);

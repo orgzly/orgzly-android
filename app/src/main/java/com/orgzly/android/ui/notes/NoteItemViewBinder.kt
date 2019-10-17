@@ -15,6 +15,7 @@ import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.ImageLoader
 import com.orgzly.android.ui.util.TitleGenerator
+import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.usecase.NoteToggleFolding
 import com.orgzly.android.usecase.NoteToggleFoldingSubtree
 import com.orgzly.android.usecase.NoteUpdateContent
@@ -429,29 +430,27 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         companion object {
             @SuppressWarnings("ResourceType")
             fun obtain(context: Context): Attrs {
-                val typedArray = context.obtainStyledAttributes(intArrayOf(
-                        R.attr.item_head_state_todo_color,
-                        R.attr.item_head_state_done_color,
-                        R.attr.item_head_state_unknown_color,
-                        R.attr.item_head_post_title_text_size,
-                        R.attr.text_secondary_color,
-                        R.attr.bullet_default,
-                        R.attr.bullet_folded,
-                        R.attr.bullet_unfolded))
+                return context.styledAttributes(
+                        intArrayOf(
+                                R.attr.item_head_state_todo_color,
+                                R.attr.item_head_state_done_color,
+                                R.attr.item_head_state_unknown_color,
+                                R.attr.item_head_post_title_text_size,
+                                R.attr.text_secondary_color,
+                                R.attr.bullet_default,
+                                R.attr.bullet_folded,
+                                R.attr.bullet_unfolded)) { typedArray ->
 
-                val attrs = Attrs(
-                        typedArray.getColor(0, 0),
-                        typedArray.getColor(1, 0),
-                        typedArray.getColor(2, 0),
-                        typedArray.getDimensionPixelSize(3, 0),
-                        typedArray.getColor(4, 0),
-                        typedArray.getDrawable(5)!!,
-                        typedArray.getDrawable(6)!!,
-                        typedArray.getDrawable(7)!!)
-
-                typedArray.recycle()
-
-                return attrs
+                    Attrs(
+                            typedArray.getColor(0, 0),
+                            typedArray.getColor(1, 0),
+                            typedArray.getColor(2, 0),
+                            typedArray.getDimensionPixelSize(3, 0),
+                            typedArray.getColor(4, 0),
+                            typedArray.getDrawable(5)!!,
+                            typedArray.getDrawable(6)!!,
+                            typedArray.getDrawable(7)!!)
+                }
             }
         }
     }

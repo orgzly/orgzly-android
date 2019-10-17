@@ -10,6 +10,7 @@ import androidx.annotation.IdRes
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.ui.notes.NoteItemViewHolder
+import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
 
 
@@ -89,36 +90,34 @@ class QuickBar(val context: Context, val inBook: Boolean) {
     private fun inflate(holder: NoteItemViewHolder, listener: QuickBarListener, direction: Int) {
         val inflater = LayoutInflater.from(context)
 
-        val typedArray = context.obtainStyledAttributes(R.styleable.Icons)
+        context.styledAttributes(R.styleable.Icons) { typedArray ->
+            fun doInflate(container: ViewGroup, buttons: List<Button>) {
+                container.removeAllViews()
 
-        fun doInflate(container: ViewGroup, buttons: List<Button>) {
-            container.removeAllViews()
+                buttons.forEach { button ->
+                    (inflater.inflate(R.layout.quick_bar_button, container, false) as ImageButton).apply {
+                        id = button.id
 
-            buttons.forEach { button ->
-                (inflater.inflate(R.layout.quick_bar_button, container, false) as ImageButton).apply {
-                    id = button.id
+                        setImageResource(typedArray.getResourceId(button.icon, 0))
 
-                    setImageResource(typedArray.getResourceId(button.icon, 0))
+                        setOnClickListener {
+                            listener.onQuickBarButtonClick(button.id, holder.itemId)
+                        }
 
-                    setOnClickListener {
-                        listener.onQuickBarButtonClick(button.id, holder.itemId)
+                        container.addView(this)
                     }
-
-                    container.addView(this)
                 }
             }
+
+            Buttons.fromPreferences(context).let {
+                doInflate(holder.binding.quickBar.quickBarLeft, if (inBook) it.leftSwipeInBook else it.leftSwipeInQuery)
+                doInflate(holder.binding.quickBar.quickBarRight, it.rightSwipeInBook)
+            }
+
+            animator.removeFlipperAnimation(holder.binding.quickBar.quickBarFlipper)
+
+            flipForDirection(holder.binding.quickBar.quickBarFlipper, direction)
         }
-
-        Buttons.fromPreferences(context).let {
-            doInflate(holder.binding.quickBar.quickBarLeft, if (inBook) it.leftSwipeInBook else it.leftSwipeInQuery)
-            doInflate(holder.binding.quickBar.quickBarRight, it.rightSwipeInBook)
-        }
-
-        animator.removeFlipperAnimation(holder.binding.quickBar.quickBarFlipper)
-
-        flipForDirection(holder.binding.quickBar.quickBarFlipper, direction)
-
-        typedArray.recycle()
     }
 
     private fun flipForDirection(flipper: ViewFlipper, direction: Int) {

@@ -17,6 +17,7 @@ import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.NoteStates
 import com.orgzly.android.ui.notifications.Notifications
 import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.usecase.NoteReparseStateAndTitles
 import com.orgzly.android.usecase.NoteSyncCreatedAtTimeWithProperty
 import com.orgzly.android.usecase.UseCase
@@ -110,10 +111,9 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         /*
          * Set fragment's background.
          */
-        val textSizeAttr = intArrayOf(R.attr.item_book_card_bg_color)
-        val typedArray = view.context.obtainStyledAttributes(textSizeAttr)
-        val color = typedArray.getColor(0, -1)
-        typedArray.recycle()
+        val color = view.context.styledAttributes(R.styleable.ColorScheme) { typedArray ->
+            typedArray.getColor(R.styleable.ColorScheme_item_book_card_bg_color, -1)
+        }
 
         if (color != -1) {
             view.setBackgroundColor(color)

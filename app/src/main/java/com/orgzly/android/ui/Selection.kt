@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.annotation.ColorInt
 import android.view.View
 import com.orgzly.R
+import com.orgzly.android.ui.util.styledAttributes
 import java.util.*
 
 class Selection {
@@ -101,9 +102,9 @@ class Selection {
 
     fun setIsSelectedBackground(view: View, id: Long) {
         if (selectionBgColor == 0) {
-            val arr = view.context.obtainStyledAttributes(R.styleable.ColorScheme)
-            selectionBgColor = arr.getColor(R.styleable.ColorScheme_item_selected_bg_color, 0)
-            arr.recycle()
+            selectionBgColor = view.context.styledAttributes(R.styleable.ColorScheme) { typedArray ->
+                typedArray.getColor(R.styleable.ColorScheme_item_selected_bg_color, 0)
+            }
         }
 
         if (contains(id)) {

@@ -24,6 +24,7 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.sync.AutoSync
 import com.orgzly.android.ui.dialogs.WhatsNewDialog
+import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import dagger.android.support.DaggerAppCompatActivity
@@ -109,10 +110,9 @@ abstract class CommonActivity : DaggerAppCompatActivity() {
 
     private val snackbarBackgroundColor: Int
         get() {
-            val arr = obtainStyledAttributes(R.styleable.ColorScheme)
-            val color = arr.getColor(R.styleable.ColorScheme_snackbar_bg_color, 0)
-            arr.recycle()
-            return color
+            return styledAttributes(R.styleable.ColorScheme) { typedArray ->
+                typedArray.getColor(R.styleable.ColorScheme_snackbar_bg_color, 0)
+            }
         }
 
     private fun dismissSnackbar() {

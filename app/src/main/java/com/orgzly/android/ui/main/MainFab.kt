@@ -9,6 +9,7 @@ import com.orgzly.android.ui.Fab
 import com.orgzly.android.ui.books.BooksFragment
 import com.orgzly.android.ui.notes.book.BookFragment
 import com.orgzly.android.ui.savedsearches.SavedSearchesFragment
+import com.orgzly.android.ui.util.styledAttributes
 
 object MainFab {
 
@@ -67,9 +68,9 @@ object MainFab {
                 else -> 0
             }
 
-            val typedArray = context.obtainStyledAttributes(intArrayOf(fabAttr))
-            fabDrawable = typedArray.getDrawable(0)
-            typedArray.recycle()
+            fabDrawable = context.styledAttributes(intArrayOf(fabAttr)) { typedArray ->
+                typedArray.getDrawable(0)
+            }
         }
     }
 }
