@@ -1,6 +1,5 @@
 package com.orgzly.android;
 
-import android.content.Context;
 import android.net.Uri;
 
 import com.orgzly.android.data.DataRepository;
@@ -8,9 +7,8 @@ import com.orgzly.android.data.DbRepoBookRepository;
 import com.orgzly.android.db.entity.BookAction;
 import com.orgzly.android.db.entity.BookView;
 import com.orgzly.android.db.entity.Repo;
-import com.orgzly.android.repos.RepoFactory;
-import com.orgzly.android.repos.RepoWithProps;
 import com.orgzly.android.repos.RepoType;
+import com.orgzly.android.repos.RepoWithProps;
 import com.orgzly.android.repos.SyncRepo;
 import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.sync.BookNamesake;
@@ -29,28 +27,17 @@ import static org.junit.Assert.fail;
  * Creating and checking books, rooks, encodings etc.
  */
 public class TestUtils {
-    private Context context;
     private DataRepository dataRepository;
     private DbRepoBookRepository dbRepoBookRepository;
 
-    public TestUtils(
-            Context context,
-            DataRepository dataRepository,
-            RepoFactory repoFactory,
-            DbRepoBookRepository dbRepoBookRepository) {
-
-        this.context = context;
+    TestUtils(DataRepository dataRepository, DbRepoBookRepository dbRepoBookRepository) {
         this.dataRepository = dataRepository;
         this.dbRepoBookRepository = dbRepoBookRepository;
     }
 
     // TODO: Allow passing key-values or remove
     public SyncRepo repoInstance(RepoType type, String url) {
-        return repoInstance(13, type, url);
-    }
-
-    private SyncRepo repoInstance(long id, RepoType type, String url) {
-        return dataRepository.getRepoInstance(id, type, url);
+        return dataRepository.getRepoInstance(13, type, url);
     }
 
     public Repo setupRepo(RepoType type, String url) {

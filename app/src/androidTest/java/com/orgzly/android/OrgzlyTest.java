@@ -44,8 +44,6 @@ public class OrgzlyTest {
 
     protected DataRepository dataRepository;
 
-    protected RepoFactory repoFactory;
-
     private OrgzlyDatabase database;
 
     @Before
@@ -56,7 +54,7 @@ public class OrgzlyTest {
 
         dbRepoBookRepository = new DbRepoBookRepository(database);
 
-        repoFactory = new RepoFactory(context, dbRepoBookRepository);
+        RepoFactory repoFactory = new RepoFactory(context, dbRepoBookRepository);
 
         dataRepository = new DataRepository(
                 context,
@@ -65,7 +63,7 @@ public class OrgzlyTest {
                 context.getResources(),
                 new LocalStorage(context));
 
-        testUtils = new TestUtils(context, dataRepository, repoFactory, dbRepoBookRepository);
+        testUtils = new TestUtils(dataRepository, dbRepoBookRepository);
 
         userTimeFormatter = new UserTimeFormatter(context);
 
