@@ -42,6 +42,8 @@ public class OrgzlyTest {
 
     private UserTimeFormatter userTimeFormatter;
 
+    protected LocalStorage localStorage;
+
     protected DataRepository dataRepository;
 
     private OrgzlyDatabase database;
@@ -54,20 +56,18 @@ public class OrgzlyTest {
 
         dbRepoBookRepository = new DbRepoBookRepository(database);
 
+        localStorage = new LocalStorage(context);
+
         RepoFactory repoFactory = new RepoFactory(context, dbRepoBookRepository);
 
         dataRepository = new DataRepository(
-                context,
-                database,
-                repoFactory,
-                context.getResources(),
-                new LocalStorage(context));
+                context, database, repoFactory, context.getResources(), localStorage);
 
         testUtils = new TestUtils(dataRepository, dbRepoBookRepository);
 
         userTimeFormatter = new UserTimeFormatter(context);
 
-        // new LocalStorage(context).cleanup();
+        // localStorage.cleanup();
 
         setupPreferences();
 

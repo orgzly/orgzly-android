@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.SystemClock;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.NumberPicker;
@@ -338,7 +339,7 @@ class EspressoUtils {
 
     static void searchForText(String str) {
         onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
-        onView(withHint(R.string.search_hint)).perform(replaceText(str), pressKey(66));
+        onView(withHint(R.string.search_hint)).perform(replaceText(str), pressKey(KeyEvent.KEYCODE_ENTER));
     }
 
     static ViewAction[] replaceTextCloseKeyboard(String str) {

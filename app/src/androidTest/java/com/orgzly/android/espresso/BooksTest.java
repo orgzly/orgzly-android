@@ -178,7 +178,7 @@ public class BooksTest extends OrgzlyTest {
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.export)).perform(click());
         onSnackbar().check(matches(withText(startsWith(context.getString(R.string.book_exported, "")))));
-        new LocalStorage(context).getExportFile("book-1", BookFormat.ORG).delete();
+        localStorage.getExportFile("book-1", BookFormat.ORG).delete();
     }
 
     @Test

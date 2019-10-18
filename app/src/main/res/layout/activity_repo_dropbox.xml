@@ -43,8 +43,8 @@
                         android:id="@+id/activity_repo_dropbox_link_button"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="@dimen/content_left_margin_from_icon"
-                        android:layout_marginLeft="@dimen/content_left_margin_from_icon"
+                        android:layout_marginStart="@dimen/screen_edge"
+                        android:layout_marginLeft="@dimen/screen_edge"
                         android:text="@string/repo_dropbox_button_not_linked" />
 
                 </LinearLayout>

@@ -162,7 +162,7 @@ class CreatedAtTest : OrgzlyTest() {
     }
 
     private fun withTempFile(f: (file: File) -> Unit) {
-        val file = LocalStorage(context).tempBookFile
+        val file = localStorage.tempBookFile
         try {
             f(file)
         } finally {
