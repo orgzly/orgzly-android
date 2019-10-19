@@ -31,6 +31,7 @@ import com.orgzly.android.ui.notes.quickbar.QuickBarListener
 import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.ui.refile.RefileFragment
 import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.ui.util.setup
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentNotesBookBinding
@@ -168,10 +169,7 @@ class BookFragment :
 //            itemTouchHelper.attachToRecyclerView(rv)
         }
 
-        binding.swipeContainer.setOnRefreshListener {
-            SyncService.start(context, Intent(context, SyncService::class.java))
-            binding.swipeContainer.isRefreshing = false
-        }
+        binding.swipeContainer.setup()
     }
 
     override fun onQuickBarButtonClick(buttonId: Int, itemId: Long) {
