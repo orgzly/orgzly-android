@@ -47,8 +47,14 @@ class WebdavRepo(private val repoId: Long, private val uri: Uri, username: Strin
     }
 
     override fun getBooks(): MutableList<VersionedRook> {
+        val url = uri.toUrl()
+
+        if (!sardine.exists(url)) {
+            sardine.createDirectory(url)
+        }
+
         return sardine
-                .list(uri.toUrl())
+                .list(url)
                 .mapNotNull {
                     if (it.isDirectory || !BookName.isSupportedFormatFileName(it.name)) {
                         null
