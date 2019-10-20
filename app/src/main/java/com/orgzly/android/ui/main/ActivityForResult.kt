@@ -53,35 +53,40 @@ abstract class ActivityForResult(val activity: ComponentActivity) {
         activity.startActivityForResult(chooserIntent, code)
     }
 
-    fun onResult(requestCode: Int, resultCode: Int, data: Intent) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, requestCode, resultCode, data)
+    fun onResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, requestCode, resultCode, intent)
 
         if (resultCode != Activity.RESULT_OK) {
             Log.w(TAG, "Activity result not OK")
             return
         }
 
+        if (intent == null) {
+            Log.w(TAG, "Activity result has no intent")
+            return
+        }
+
         when (requestCode) {
             REQUEST_CODE_BOOK_IMPORT -> {
-                data.data?.let { uri ->
+                intent.data?.let { uri ->
                     onBookImport(uri)
                 }
             }
 
             REQUEST_CODE_BOOK_EXPORT -> {
-                data.data?.let { uri ->
+                intent.data?.let { uri ->
                     onBookExport(uri, userData[ARG_BOOK_ID] as Long)
                 }
             }
 
             REQUEST_CODE_SAVED_SEARCHES_IMPORT -> {
-                data.data?.let { uri ->
+                intent.data?.let { uri ->
                     onSearchQueriesImport(uri)
                 }
             }
 
             else -> {
-                Log.e(TAG, "Unknown request code $requestCode intent $data")
+                Log.e(TAG, "Unknown request code $requestCode intent $intent")
             }
         }
     }
