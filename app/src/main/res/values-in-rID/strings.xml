@@ -195,12 +195,18 @@
     <string name="git_clone_error_invalid_target_dir">The target directory does not exist</string>
     <string name="git_clone_error_target_not_empty">The target directory is not empty</string>
     <string name="git_clone_error_uri_not_supported">The remote address is not supported</string>
+    <string name="webdav_url_hint">URL (e.g. webdavs://example.com/my-org-files/)</string>
+    <string name="webdav_auth_username_hint">Username</string>
+    <string name="webdav_auth_password_hint">Password</string>
+    <string name="webdav_test_error_auth">Login or password is invalid</string>
+    <string name="webdav_test_error_unknown">Unknown error occurred</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Bagikan tindakan tidak diatur</string>
     <string name="share_action_not_supported">Bagikan tindakan %s tidak didukung</string>
     <string name="share_type_not_set">Bagikan jenis tidak diatur</string>
     <string name="share_type_not_supported">Bagikan jenis %s tidak didukung</string>
     <string name="repositories">Repositori</string>
+    <string name="repository_not_valid_with_reason">Repository invalid: %s</string>
     <string name="invalid_repo_url">URL Repositori tidak valid %s</string>
     <string name="repository_url_already_exists">Repository with this URL already exists</string>
     <string name="fragment_left_drawer_list_view_content_description">Laci Kiri</string>
@@ -215,6 +221,7 @@
     <string name="note_book_not_set">Notebook tidak diatur</string>
     <string name="title_can_not_be_empty">Title cannot be empty</string>
     <string name="can_not_be_empty">Tidak bisa kosong</string>
+    <string name="invalid_url">Invalid URL</string>
     <string name="no_notebooks">Anda tidak memiliki notebook</string>
     <string name="no_notes">Notebook tidak memiliki catatan</string>
     <string name="create_new_repository_for_syncing">Buat repositori baru untuk menyinkronkan notebook Anda</string>
@@ -284,7 +291,10 @@
     <string name="prefs_title_notifications">Pemberitahuan</string>
     <string name="app">Aplikasi</string>
     <string name="no_repos_configured">Tidak ada repos yang dikonfigurasi</string>
+    <string name="test_connection">Test connection</string>
+    <string name="connecting">Connecting…</string>
     <string name="no_connection">Tidak ada koneksi</string>
+    <string name="connection_successful">Connection successful</string>
     <string name="last_sync_with_argument">Sinkron terakhir: %s</string>
     <string name="force_loading_from_uri">Pemuatan paksa dari %s …</string>
     <string name="force_loaded_from_uri">Pemuatan paksa dari %s</string>
@@ -421,6 +431,9 @@
     <plurals name="notes_count_nonzero">
         <item quantity="other">Berisi catatan <b>%d</b></item>
     </plurals>
+    <plurals name="found_number_of_notebooks">
+        <item quantity="other">Found <b>%d</b> notebooks</item>
+    </plurals>
     <string name="content_line_count_displayed">Tampilkan jumlah baris konten</string>
     <string name="content_line_count_displayed_summary">Jumlah baris tampilan saat konten tidak ditampilkan</string>
     <string name="style_text_title">Gaya teks</string>
@@ -503,4 +516,8 @@
     <string name="display_checkmarks_summary">Allows marking notes as done</string>
     <string name="last_used">Last used</string>
     <string name="note_details_opening_mode">Opening mode</string>
+    <string name="cleartext_traffic">Cleartext traffic</string>
+    <string name="cleartext_traffic_message">Are you sure you want to use this URL?</string>
+    <string name="credentials_in_url_not_supported">Passing credentials in URL is not supported</string>
+    <string name="access_token">Access token</string>
 </resources>

@@ -199,12 +199,18 @@
     <string name="git_clone_error_invalid_target_dir">El directorio de destino no existe</string>
     <string name="git_clone_error_target_not_empty">El directorio de destino no está vacío</string>
     <string name="git_clone_error_uri_not_supported">La dirección remota no es soportada</string>
+    <string name="webdav_url_hint">URL (ej. webdavs://example.com/my-org-files/)</string>
+    <string name="webdav_auth_username_hint">Usuario</string>
+    <string name="webdav_auth_password_hint">Contraseña</string>
+    <string name="webdav_test_error_auth">Usuario o contraseña es inválida</string>
+    <string name="webdav_test_error_unknown">Se ha producido un error desconocido</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Compartir acción no definida</string>
     <string name="share_action_not_supported">Acción de compartir %s no es permitida</string>
     <string name="share_type_not_set">Compartir tipo no definido</string>
     <string name="share_type_not_supported">No se admite la participación tipo %s</string>
     <string name="repositories">Repositorios</string>
+    <string name="repository_not_valid_with_reason">Repositorio inválido: %s</string>
     <string name="invalid_repo_url">URL del repositorio no válido \"%s\"</string>
     <string name="repository_url_already_exists">Repositorio con esta URL ya existe</string>
     <string name="fragment_left_drawer_list_view_content_description">Cajón izquierdo</string>
@@ -219,6 +225,7 @@
     <string name="note_book_not_set">Nota no establecida</string>
     <string name="title_can_not_be_empty">El título no puede estar vacío</string>
     <string name="can_not_be_empty">No puede estar en blanco</string>
+    <string name="invalid_url">URL no válida</string>
     <string name="no_notebooks">No tienes notas</string>
     <string name="no_notes">El bloc no tiene notas</string>
     <string name="create_new_repository_for_syncing">Crear nuevo repositorio para sincronizar sus blocs de notas</string>
@@ -288,7 +295,10 @@
     <string name="prefs_title_notifications">Notificaciones</string>
     <string name="app">Aplicación</string>
     <string name="no_repos_configured">No hay repositorios configurados</string>
+    <string name="test_connection">Probar conexión</string>
+    <string name="connecting">Conectando…</string>
     <string name="no_connection">Sin conexión</string>
+    <string name="connection_successful">Conectado con éxito</string>
     <string name="last_sync_with_argument">Última sincronización: %s</string>
     <string name="force_loading_from_uri">Carga-forzada para %s …</string>
     <string name="force_loaded_from_uri">Carga-forzada para %s</string>
@@ -426,6 +436,10 @@
         <item quantity="one">Contiene <b>%d</b> notas</item>
         <item quantity="other">Contiene <b>%d</b> notas</item>
     </plurals>
+    <plurals name="found_number_of_notebooks">
+        <item quantity="one">Encontrado <b>%d</b> bloc de notas</item>
+        <item quantity="other">Encontrados <b>%d</b> blocs de notas</item>
+    </plurals>
     <string name="content_line_count_displayed">Mostrar contenido de contador de linea</string>
     <string name="content_line_count_displayed_summary">Mostrar la cuenta de línea cuando no se muestre el contenido</string>
     <string name="style_text_title">Estilo de texto</string>
@@ -511,4 +525,8 @@
     <string name="display_checkmarks_summary">Permite marcar notas como hechas</string>
     <string name="last_used">Último usado</string>
     <string name="note_details_opening_mode">Modo de apertura</string>
+    <string name="cleartext_traffic">Tráfico de Cleartext</string>
+    <string name="cleartext_traffic_message">¿Seguro que quieres utilizar esta URL?</string>
+    <string name="credentials_in_url_not_supported">El paso de credenciales en la URL no está soportado</string>
+    <string name="access_token">Token de Acceso</string>
 </resources>

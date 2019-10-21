@@ -195,12 +195,18 @@
     <string name="git_clone_error_invalid_target_dir">The target directory does not exist</string>
     <string name="git_clone_error_target_not_empty">The target directory is not empty</string>
     <string name="git_clone_error_uri_not_supported">The remote address is not supported</string>
+    <string name="webdav_url_hint">URL (e.g. webdavs://example.com/my-org-files/)</string>
+    <string name="webdav_auth_username_hint">Username</string>
+    <string name="webdav_auth_password_hint">Password</string>
+    <string name="webdav_test_error_auth">Login or password is invalid</string>
+    <string name="webdav_test_error_unknown">Unknown error occurred</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">共有アクションが設定されていません</string>
     <string name="share_action_not_supported">共有アクション %s はサポートされていません</string>
     <string name="share_type_not_set">共有の種類が設定されていません</string>
     <string name="share_type_not_supported">共有タイプ %s はサポートされていません</string>
     <string name="repositories">リポジトリ</string>
+    <string name="repository_not_valid_with_reason">Repository invalid: %s</string>
     <string name="invalid_repo_url">\"%s\"は無効なリポジトリURLです</string>
     <string name="repository_url_already_exists">このURLのリポジトリは既に存在します</string>
     <string name="fragment_left_drawer_list_view_content_description">左ドロワー</string>
@@ -215,6 +221,7 @@
     <string name="note_book_not_set">メモ帳がセットされていません</string>
     <string name="title_can_not_be_empty">タイトルは空にできません</string>
     <string name="can_not_be_empty">空にできません</string>
+    <string name="invalid_url">Invalid URL</string>
     <string name="no_notebooks">メモ帳がありません</string>
     <string name="no_notes">メモ帳にメモがありません</string>
     <string name="create_new_repository_for_syncing">メモ帳の同期用に新しいリポジトリを作成します。</string>
@@ -284,7 +291,10 @@
     <string name="prefs_title_notifications">通知</string>
     <string name="app">アプリ</string>
     <string name="no_repos_configured">リポジトリが設定されていません</string>
+    <string name="test_connection">Test connection</string>
+    <string name="connecting">Connecting…</string>
     <string name="no_connection">接続されていません</string>
+    <string name="connection_successful">Connection successful</string>
     <string name="last_sync_with_argument">最終同期: %s</string>
     <string name="force_loading_from_uri">%s から強制読み込み</string>
     <string name="force_loaded_from_uri">強制読み込み: %s</string>
@@ -421,6 +431,9 @@
     <plurals name="notes_count_nonzero">
         <item quantity="other"><b>%d</b> 個のメモを含みます</item>
     </plurals>
+    <plurals name="found_number_of_notebooks">
+        <item quantity="other">Found <b>%d</b> notebooks</item>
+    </plurals>
     <string name="content_line_count_displayed">内容の行数を表示</string>
     <string name="content_line_count_displayed_summary">内容が表示されていないとき、行数を表示する</string>
     <string name="style_text_title">スタイル適用</string>
@@ -503,4 +516,8 @@
     <string name="display_checkmarks_summary">Allows marking notes as done</string>
     <string name="last_used">Last used</string>
     <string name="note_details_opening_mode">Opening mode</string>
+    <string name="cleartext_traffic">Cleartext traffic</string>
+    <string name="cleartext_traffic_message">Are you sure you want to use this URL?</string>
+    <string name="credentials_in_url_not_supported">Passing credentials in URL is not supported</string>
+    <string name="access_token">Access token</string>
 </resources>

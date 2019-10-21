@@ -199,12 +199,18 @@
     <string name="git_clone_error_invalid_target_dir">The target directory does not exist</string>
     <string name="git_clone_error_target_not_empty">The target directory is not empty</string>
     <string name="git_clone_error_uri_not_supported">The remote address is not supported</string>
+    <string name="webdav_url_hint">URL (e.g. webdavs://example.com/my-org-files/)</string>
+    <string name="webdav_auth_username_hint">Username</string>
+    <string name="webdav_auth_password_hint">Password</string>
+    <string name="webdav_test_error_auth">Login or password is invalid</string>
+    <string name="webdav_test_error_unknown">Unknown error occurred</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Condividi azione non stabilita</string>
     <string name="share_action_not_supported">L\'azione condivisa %s non è supportata</string>
     <string name="share_type_not_set">Il tipo di condivisione non è stabilita</string>
     <string name="share_type_not_supported">Il tipo di condivisione %s non è supportata</string>
     <string name="repositories">Depositi</string>
+    <string name="repository_not_valid_with_reason">Repository invalid: %s</string>
     <string name="invalid_repo_url">URL \"%s\" del deposito non valido</string>
     <string name="repository_url_already_exists">Un repository con questo URL esiste già</string>
     <string name="fragment_left_drawer_list_view_content_description">Menu di sinistra</string>
@@ -219,6 +225,7 @@
     <string name="note_book_not_set">Taccuino non stabilito</string>
     <string name="title_can_not_be_empty">Il campo \"Titolo\" non può essere vuoto</string>
     <string name="can_not_be_empty">Non può essere vuoto</string>
+    <string name="invalid_url">Invalid URL</string>
     <string name="no_notebooks">Non hai taccuini</string>
     <string name="no_notes">Il taccuino non ha note</string>
     <string name="create_new_repository_for_syncing">Crea un nuovo deposito per sincronizzare i tuoi taccuini</string>
@@ -288,7 +295,10 @@
     <string name="prefs_title_notifications">Notifiche</string>
     <string name="app">App</string>
     <string name="no_repos_configured">Nessun deposito configurato</string>
+    <string name="test_connection">Test connection</string>
+    <string name="connecting">Connecting…</string>
     <string name="no_connection">Nessuna connessione</string>
+    <string name="connection_successful">Connection successful</string>
     <string name="last_sync_with_argument">Ultima sincronizzazione: %s</string>
     <string name="force_loading_from_uri">Forza caricamento da %s …</string>
     <string name="force_loaded_from_uri">Caricamento forzato da %s</string>
@@ -426,6 +436,10 @@
         <item quantity="one">Contiene <b>%d</b> nota</item>
         <item quantity="other">Contiene <b>%d</b> note</item>
     </plurals>
+    <plurals name="found_number_of_notebooks">
+        <item quantity="one">Found <b>%d</b> notebook</item>
+        <item quantity="other">Found <b>%d</b> notebooks</item>
+    </plurals>
     <string name="content_line_count_displayed">Mostra il conteggio della linea del contenuto</string>
     <string name="content_line_count_displayed_summary">Mostra il conteggio della linea quando il contenuto non è mostrato</string>
     <string name="style_text_title">Stile del testo</string>
@@ -511,4 +525,8 @@
     <string name="display_checkmarks_summary">Allows marking notes as done</string>
     <string name="last_used">Last used</string>
     <string name="note_details_opening_mode">Opening mode</string>
+    <string name="cleartext_traffic">Cleartext traffic</string>
+    <string name="cleartext_traffic_message">Are you sure you want to use this URL?</string>
+    <string name="credentials_in_url_not_supported">Passing credentials in URL is not supported</string>
+    <string name="access_token">Access token</string>
 </resources>
