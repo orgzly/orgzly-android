@@ -195,12 +195,18 @@
     <string name="git_clone_error_invalid_target_dir">目標目錄不存在</string>
     <string name="git_clone_error_target_not_empty">目標不是空目錄</string>
     <string name="git_clone_error_uri_not_supported">不支援此遠端位址</string>
+    <string name="webdav_url_hint">URL網址 (例如 webdavs://example.com/my-org-files/)</string>
+    <string name="webdav_auth_username_hint">使用者名稱</string>
+    <string name="webdav_auth_password_hint">密碼</string>
+    <string name="webdav_test_error_auth">帳號或密碼不正確</string>
+    <string name="webdav_test_error_unknown">發生未知的錯誤</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">沒有設置共用</string>
     <string name="share_action_not_supported">不支援 %s 共用操作</string>
     <string name="share_type_not_set">沒有設置共用類型</string>
     <string name="share_type_not_supported">共用操作 %s 不支援</string>
     <string name="repositories">資料庫</string>
+    <string name="repository_not_valid_with_reason">資料庫無效: %s</string>
     <string name="invalid_repo_url">無效的資料庫位址 “%s”</string>
     <string name="repository_url_already_exists">具有此 url 的存儲庫已存在</string>
     <string name="fragment_left_drawer_list_view_content_description">左側抽屜</string>
@@ -215,6 +221,7 @@
     <string name="note_book_not_set">未設置筆記本</string>
     <string name="title_can_not_be_empty">標題不能空白</string>
     <string name="can_not_be_empty">不能留空</string>
+    <string name="invalid_url">無效的URL網址</string>
     <string name="no_notebooks">你沒有筆記本</string>
     <string name="no_notes">筆記本沒有筆記</string>
     <string name="create_new_repository_for_syncing">創建用於同步筆記本的新資料庫</string>
@@ -284,7 +291,10 @@
     <string name="prefs_title_notifications">通知訊息</string>
     <string name="app">應用程式</string>
     <string name="no_repos_configured">找不到任何資料庫</string>
+    <string name="test_connection">連線測試</string>
+    <string name="connecting">連線中…</string>
     <string name="no_connection">沒有連接</string>
+    <string name="connection_successful">連線成功</string>
     <string name="last_sync_with_argument">上次同步: %s</string>
     <string name="force_loading_from_uri">從%s 中強制讀取..</string>
     <string name="force_loaded_from_uri">從%s 強制讀取</string>
@@ -421,6 +431,9 @@
     <plurals name="notes_count_nonzero">
         <item quantity="other">包含 <b>%d</b> 筆記</item>
     </plurals>
+    <plurals name="found_number_of_notebooks">
+        <item quantity="other">找到 <b>%d</b> 筆記本</item>
+    </plurals>
     <string name="content_line_count_displayed">顯示內文行數</string>
     <string name="content_line_count_displayed_summary">當內文不顯示時，顯示行數</string>
     <string name="style_text_title">文字風格</string>
@@ -503,4 +516,8 @@
     <string name="display_checkmarks_summary">允許將筆記標記為done完成</string>
     <string name="last_used">最後使用的</string>
     <string name="note_details_opening_mode">開始的模式</string>
+    <string name="cleartext_traffic">明文傳輸</string>
+    <string name="cleartext_traffic_message">確定要使用這個URL網址？</string>
+    <string name="credentials_in_url_not_supported">不支持在URL網址中傳送認證</string>
+    <string name="access_token">存取權杖</string>
 </resources>

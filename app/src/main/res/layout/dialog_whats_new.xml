@@ -24,6 +24,48 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.8"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="WebDAV repository support" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Swipe down to sync (notebooks and notebook views)" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Sort by title (&lt;tt&gt;o.title&lt;/tt&gt;)" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Set Dropbox token by long-clicking the link button" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Scroll to top when editing title (to keep breadcrumbs visible)" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix displaying of remote notebook's modification time in notebook details" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Do not display confirmation dialog when new note is not modified" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix metadata visibility issue on initial note loading" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Display all note's events in agenda" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.7.9"
             tools:ignore="HardcodedText" />
 

@@ -195,12 +195,18 @@
     <string name="git_clone_error_invalid_target_dir">The target directory does not exist</string>
     <string name="git_clone_error_target_not_empty">The target directory is not empty</string>
     <string name="git_clone_error_uri_not_supported">The remote address is not supported</string>
+    <string name="webdav_url_hint">URL (e.g. webdavs://example.com/my-org-files/)</string>
+    <string name="webdav_auth_username_hint">Username</string>
+    <string name="webdav_auth_password_hint">Password</string>
+    <string name="webdav_test_error_auth">Login or password is invalid</string>
+    <string name="webdav_test_error_unknown">Unknown error occurred</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">分享操作未设定</string>
     <string name="share_action_not_supported">分享操作 %s 不受支持</string>
     <string name="share_type_not_set">分享类型未设定</string>
     <string name="share_type_not_supported">分享类型 %s 不受支持</string>
     <string name="repositories">存储库</string>
+    <string name="repository_not_valid_with_reason">Repository invalid: %s</string>
     <string name="invalid_repo_url">无效的仓库地址 %s</string>
     <string name="repository_url_already_exists">此地址仓库已存在</string>
     <string name="fragment_left_drawer_list_view_content_description">左侧抽屉</string>
@@ -215,6 +221,7 @@
     <string name="note_book_not_set">笔记本未设定</string>
     <string name="title_can_not_be_empty">标题不能为空</string>
     <string name="can_not_be_empty">不能为空</string>
+    <string name="invalid_url">Invalid URL</string>
     <string name="no_notebooks">无笔记本</string>
     <string name="no_notes">笔记本无笔记</string>
     <string name="create_new_repository_for_syncing">为同步笔记本新建存储库</string>
@@ -284,7 +291,10 @@
     <string name="prefs_title_notifications">通知</string>
     <string name="app">应用程序</string>
     <string name="no_repos_configured">无已配置的存储库</string>
+    <string name="test_connection">Test connection</string>
+    <string name="connecting">Connecting…</string>
     <string name="no_connection">无网络连接</string>
+    <string name="connection_successful">Connection successful</string>
     <string name="last_sync_with_argument">上次同步：%s</string>
     <string name="force_loading_from_uri">从 %s 强制加载 …</string>
     <string name="force_loaded_from_uri">已从 %s 强制加载</string>
@@ -421,6 +431,9 @@
     <plurals name="notes_count_nonzero">
         <item quantity="other">包含 <b>%d</b> 笔记</item>
     </plurals>
+    <plurals name="found_number_of_notebooks">
+        <item quantity="other">Found <b>%d</b> notebooks</item>
+    </plurals>
     <string name="content_line_count_displayed">显示内容行数</string>
     <string name="content_line_count_displayed_summary">不显示内容时显示行数</string>
     <string name="style_text_title">样式文本</string>
@@ -503,4 +516,8 @@
     <string name="display_checkmarks_summary">Allows marking notes as done</string>
     <string name="last_used">Last used</string>
     <string name="note_details_opening_mode">Opening mode</string>
+    <string name="cleartext_traffic">Cleartext traffic</string>
+    <string name="cleartext_traffic_message">Are you sure you want to use this URL?</string>
+    <string name="credentials_in_url_not_supported">Passing credentials in URL is not supported</string>
+    <string name="access_token">Access token</string>
 </resources>

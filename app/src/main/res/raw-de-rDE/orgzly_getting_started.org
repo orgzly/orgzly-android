@@ -12,7 +12,7 @@ Nach links wischen öffnet ein weiteres Menü.
 
 ** Unterpunkte können Sie über das Symbole links und rechts daneben ein- und ausklappen
 
-Long-click the icon to unfold entire subtree.
+Langer-Klick auf das Symbol, um das gesamte Unterverzeichnis zu entfalten.
 
 *** Es gibt keine Begrenzung in der Anzahl der Ebenen
 **** Dies hilft dabei Ihre Notizen besser zu organisieren

@@ -207,12 +207,18 @@
     <string name="git_clone_error_invalid_target_dir">Цільова директорія не існує</string>
     <string name="git_clone_error_target_not_empty">Цільова директорія не порожня</string>
     <string name="git_clone_error_uri_not_supported">Віддалена адреса не підтримується</string>
+    <string name="webdav_url_hint">URL (напр. webdavs://example.com/my-org-files/)</string>
+    <string name="webdav_auth_username_hint">Логін</string>
+    <string name="webdav_auth_password_hint">Пароль</string>
+    <string name="webdav_test_error_auth">Неправильний логін або пароль</string>
+    <string name="webdav_test_error_unknown">Сталася невідома помилка</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Дію «Поділитись» не задано</string>
     <string name="share_action_not_supported">Дія «Поділитися» %s не підтримується</string>
     <string name="share_type_not_set">Тип дії «Поділитись» не задано</string>
     <string name="share_type_not_supported">Тип дії «Поділитись» %s не підтримується</string>
     <string name="repositories">Сховища</string>
+    <string name="repository_not_valid_with_reason">Неправильний репозиторій: %s</string>
     <string name="invalid_repo_url">Неприпустимий URL сховища «%s»</string>
     <string name="repository_url_already_exists">Сховище з таким URL вже існує</string>
     <string name="fragment_left_drawer_list_view_content_description">Ліве меню</string>
@@ -227,6 +233,7 @@
     <string name="note_book_not_set">Блокнот не задано</string>
     <string name="title_can_not_be_empty">Заголовок не може бути пустим</string>
     <string name="can_not_be_empty">Не може бути пустим</string>
+    <string name="invalid_url">Некоректний URL</string>
     <string name="no_notebooks">У вас немає блокнотів</string>
     <string name="no_notes">У блокноті відсутні нотатки</string>
     <string name="create_new_repository_for_syncing">Створити нове сховище для синхронізації блокнотів</string>
@@ -296,7 +303,10 @@
     <string name="prefs_title_notifications">Сповіщення</string>
     <string name="app">Про програму</string>
     <string name="no_repos_configured">Налаштовані сховища відсутні</string>
+    <string name="test_connection">Перевірка з\'єднання</string>
+    <string name="connecting">З\'єднання…</string>
     <string name="no_connection">Відсутнє з\'єднання</string>
+    <string name="connection_successful">З\'єднання успішне</string>
     <string name="last_sync_with_argument">Синхронізовано: %s</string>
     <string name="force_loading_from_uri">Примусове завантаження з %s…</string>
     <string name="force_loaded_from_uri">Примусово завантажено з %s</string>
@@ -436,6 +446,12 @@
         <item quantity="many">Містить <b>%d</b> нотаток</item>
         <item quantity="other">Містить <b>%d</b> нотаток</item>
     </plurals>
+    <plurals name="found_number_of_notebooks">
+        <item quantity="one">Знайдено блокнотів: <b>%d</b></item>
+        <item quantity="few">Знайдено блокнотів: <b>%d</b></item>
+        <item quantity="many">Знайдено блокнотів: <b>%d</b></item>
+        <item quantity="other">Знайдено блокнотів: <b>%d</b></item>
+    </plurals>
     <string name="content_line_count_displayed">Показувати кількість рядків</string>
     <string name="content_line_count_displayed_summary">Показувати кількість рядків, коли вміст не показується</string>
     <string name="style_text_title">Стиль тексту</string>
@@ -527,4 +543,8 @@
     <string name="display_checkmarks_summary">Дозволяти маркувати нотатки як виконані</string>
     <string name="last_used">Останнє використане</string>
     <string name="note_details_opening_mode">Режим відкриття</string>
+    <string name="cleartext_traffic">Незашифрований трафік</string>
+    <string name="cleartext_traffic_message">Ви впевнені, що хочете використовувати цей URL?</string>
+    <string name="credentials_in_url_not_supported">Передача облікових даних в URL не підтримується</string>
+    <string name="access_token">Маркер доступу</string>
 </resources>
