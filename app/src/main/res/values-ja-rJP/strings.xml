@@ -21,7 +21,7 @@
     <string name="remove_notebook_link">リンクを削除</string>
     <string name="browse">参照</string>
     <string name="dropbox">Dropbox</string>
-    <string name="view">View</string>
+    <string name="view">表示</string>
     <string name="edit">編集</string>
     <string name="edit_note">メモを編集</string>
     <string name="delete">削除</string>
@@ -56,7 +56,7 @@
     <string name="priority">優先度</string>
     <string name="nothing">なし</string>
     <string name="open">開く</string>
-    <string name="focus">焦点</string>
+    <string name="focus">フォーカス</string>
     <string name="widget">ウィジェット</string>
     <string name="history">履歴</string>
     <string name="event">予定</string>
@@ -180,33 +180,33 @@
     <string name="git_author_hint">Author (例:  John Doe)</string>
     <string name="git_email_hint">E-mail (例: john@email.com)</string>
     <string name="git_branch_hint">ブランチ (例: master)</string>
-    <string name="git_auth_https_username_hint">Username</string>
-    <string name="git_auth_https_password_hint">Password</string>
-    <string name="git_generate_key_pair">Generate keypair</string>
-    <string name="git_copy_public_key">Copy public key</string>
-    <string name="git_auth_type_text">Authentication type</string>
+    <string name="git_auth_https_username_hint">ユーザー名</string>
+    <string name="git_auth_https_password_hint">パスワード</string>
+    <string name="git_generate_key_pair">鍵のペアを作成</string>
+    <string name="git_copy_public_key">パブリックキーをコピー</string>
+    <string name="git_auth_type_text">認証タイプ</string>
     <string name="git_auth_type_ssh">SSH</string>
     <string name="git_auth_type_https">HTTPS</string>
     <!-- Git sync repo errors -->
     <!-- TODO: I don't think we can say more than this for ssh authentication failures, but we probably want to -->
-    <string name="git_clone_error_ssh_auth">Failure while cloning, authentication error</string>
-    <string name="git_clone_error_invalid_repo">The remote address is not a git repo</string>
-    <string name="git_clone_error_unknown">Unknown error while cloning</string>
-    <string name="git_clone_error_invalid_target_dir">The target directory does not exist</string>
-    <string name="git_clone_error_target_not_empty">The target directory is not empty</string>
-    <string name="git_clone_error_uri_not_supported">The remote address is not supported</string>
-    <string name="webdav_url_hint">URL (e.g. webdavs://example.com/my-org-files/)</string>
-    <string name="webdav_auth_username_hint">Username</string>
-    <string name="webdav_auth_password_hint">Password</string>
-    <string name="webdav_test_error_auth">Login or password is invalid</string>
-    <string name="webdav_test_error_unknown">Unknown error occurred</string>
+    <string name="git_clone_error_ssh_auth">git cloneに失敗しました。認証エラーです。</string>
+    <string name="git_clone_error_invalid_repo">リモートアドレスがgitリポジトリではありません</string>
+    <string name="git_clone_error_unknown">git cloneの不明なエラーです</string>
+    <string name="git_clone_error_invalid_target_dir">ターゲットディレクトリが存在しません</string>
+    <string name="git_clone_error_target_not_empty">ターゲットディレクトリが空ではありません</string>
+    <string name="git_clone_error_uri_not_supported">そのリモートアドレスはサポートされません</string>
+    <string name="webdav_url_hint">URL (例: webdavs://example.com/my-org-files/)</string>
+    <string name="webdav_auth_username_hint">ユーザー名</string>
+    <string name="webdav_auth_password_hint">パスワード</string>
+    <string name="webdav_test_error_auth">ユーザ名またはパスワードが無効です。</string>
+    <string name="webdav_test_error_unknown">不明なエラーが発生しました</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">共有アクションが設定されていません</string>
     <string name="share_action_not_supported">共有アクション %s はサポートされていません</string>
     <string name="share_type_not_set">共有の種類が設定されていません</string>
     <string name="share_type_not_supported">共有タイプ %s はサポートされていません</string>
     <string name="repositories">リポジトリ</string>
-    <string name="repository_not_valid_with_reason">Repository invalid: %s</string>
+    <string name="repository_not_valid_with_reason">リポジトリが不正です: %s</string>
     <string name="invalid_repo_url">\"%s\"は無効なリポジトリURLです</string>
     <string name="repository_url_already_exists">このURLのリポジトリは既に存在します</string>
     <string name="fragment_left_drawer_list_view_content_description">左ドロワー</string>
@@ -221,7 +221,7 @@
     <string name="note_book_not_set">メモ帳がセットされていません</string>
     <string name="title_can_not_be_empty">タイトルは空にできません</string>
     <string name="can_not_be_empty">空にできません</string>
-    <string name="invalid_url">Invalid URL</string>
+    <string name="invalid_url">無効な URL</string>
     <string name="no_notebooks">メモ帳がありません</string>
     <string name="no_notes">メモ帳にメモがありません</string>
     <string name="create_new_repository_for_syncing">メモ帳の同期用に新しいリポジトリを作成します。</string>
@@ -273,7 +273,7 @@
     <string name="display_both_title_and_content">タイトルと内容の両方を表示する</string>
     <string name="display_planning_times">各種日時を表示する</string>
     <string name="display_planning_times_summary">予定、期限、終了日時を表示する</string>
-    <string name="density">密度</string>
+    <string name="density">行の密度</string>
     <string name="details">詳細</string>
     <string name="notebook_details">メモ帳の詳細</string>
     <string name="displayed_details_about_notebook">メモ帳の詳細を表示する</string>
@@ -291,10 +291,10 @@
     <string name="prefs_title_notifications">通知</string>
     <string name="app">アプリ</string>
     <string name="no_repos_configured">リポジトリが設定されていません</string>
-    <string name="test_connection">Test connection</string>
-    <string name="connecting">Connecting…</string>
+    <string name="test_connection">接続テスト</string>
+    <string name="connecting">接続中...</string>
     <string name="no_connection">接続されていません</string>
-    <string name="connection_successful">Connection successful</string>
+    <string name="connection_successful">接続成功</string>
     <string name="last_sync_with_argument">最終同期: %s</string>
     <string name="force_loading_from_uri">%s から強制読み込み</string>
     <string name="force_loaded_from_uri">強制読み込み: %s</string>
@@ -324,7 +324,7 @@
     <string name="month">月</string>
     <string name="year">年</string>
     <string name="repeater_dialog_title">くり返し</string>
-    <string name="repeater_description">タスクが完了されると、タイムシフトされくり返します</string>
+    <string name="repeater_description">タスクが完了されると、タイムシフトされ、くり返します</string>
     <string name="repeater_description_cumulate">日時に期間を追加します（例：家賃の支払いタスク）</string>
     <!-- + -->
     <string name="repeater_description_catch_up">日時が未来となるまで、期間を追加し続けます（例：毎週日曜日に家族に電話をするタスク）</string>
@@ -341,17 +341,17 @@
     <string name="displayed_book_details_used_encoding">使用されたエンコーディング</string>
     <string name="displayed_book_details_last_action">最後のアクション</string>
     <string name="displayed_book_details_notes_count">メモの数</string>
-    <string name="color_scheme_light">Light</string>
-    <string name="color_scheme_dark">Dark</string>
-    <string name="color_scheme_black">Black</string>
-    <string name="font_size_small">Small</string>
+    <string name="color_scheme_light">ライト</string>
+    <string name="color_scheme_dark">ダーク</string>
+    <string name="color_scheme_black">黒</string>
+    <string name="font_size_small">小</string>
     <string name="font_size_default">デフォルト</string>
-    <string name="font_size_large">より大きく</string>
+    <string name="font_size_large">大</string>
     <string name="book_name_in_search_hide">隠す</string>
     <string name="book_name_in_search_before_note">メモの前</string>
     <string name="book_name_in_search_under_note">メモの下</string>
-    <string name="list_density_comfortable">快適な</string>
-    <string name="list_density_cozy">居心地の良い</string>
+    <string name="list_density_comfortable">ゆったり</string>
+    <string name="list_density_cozy">心地良い</string>
     <string name="list_density_compact">コンパクト</string>
     <string name="notebooks_sort_order_name">名前</string>
     <string name="notebooks_sort_order_modification_time">更新日時</string>
@@ -367,9 +367,9 @@
     <string name="display_notebook_name">メモ帳の名前を表示</string>
     <string name="display_inherited_tags_in_search_results">継承したタグを検索結果で表示</string>
     <string name="display_inherited_tags_in_search_results_summary">継承したタグを検索結果で表示</string>
-    <string name="ongoing_notification">進行中</string>
+    <string name="ongoing_notification">実行中</string>
     <string name="ongoing_notification_summary">通知ドロワーから簡単に、新しいメモの作成やメモ帳同期をする</string>
-    <string name="ongoing_notification_priority">Ongoing priority</string>
+    <string name="ongoing_notification_priority">実行中優先度</string>
     <string name="show_sync_notifications_title">同期の失敗</string>
     <string name="show_sync_notifications_summary">同期エラーの通知を表示する</string>
     <string name="prefs_title_reminders">リマインダ</string>
@@ -410,9 +410,9 @@
     <string name="default_notebook_desc">Orgzlyに送るときや、通知からの新規メモ作成時に使われるメモ帳</string>
     <string name="force_utf8">UTF-8エンコーディングを強制</string>
     <string name="force_utf8_summary">エンコーディングを検出せず、常にUTF-8を使用</string>
-    <string name="notebooks_start_folded">Start folded</string>
-    <string name="notebooks_start_folded_summary">Fold all notes when notebook is loaded</string>
-    <string name="list_widget_name">Saved search</string>
+    <string name="notebooks_start_folded">畳んだ状態から始める</string>
+    <string name="notebooks_start_folded_summary">すべてのメモを畳んだ状態でメモ帳を開く</string>
+    <string name="list_widget_name">保存した検索クエリ</string>
     <string name="list_widget_select_search">検索を選択</string>
     <string name="list_widget_nothing_selected">検索が選択されていません</string>
     <string name="auto_sync">自動同期</string>
@@ -432,7 +432,7 @@
         <item quantity="other"><b>%d</b> 個のメモを含みます</item>
     </plurals>
     <plurals name="found_number_of_notebooks">
-        <item quantity="other">Found <b>%d</b> notebooks</item>
+        <item quantity="other"><b>%d</b> 件のメモ帳が見つかりました</item>
     </plurals>
     <string name="content_line_count_displayed">内容の行数を表示</string>
     <string name="content_line_count_displayed_summary">内容が表示されていないとき、行数を表示する</string>
@@ -455,7 +455,7 @@
     <!-- Notification channels -->
     <string name="reminders_channel_name">リマインダ</string>
     <string name="reminders_channel_description">予定または期限のタスクを表示</string>
-    <string name="ongoing_channel_name">進行中 (新規メモ)</string>
+    <string name="ongoing_channel_name">実行中 (新規メモ)</string>
     <string name="ongoing_channel_description">すぐに新しいメモを作成または同期を開始</string>
     <string name="sync_progress_channel_name">同期の進捗</string>
     <string name="sync_progress_channel_description">同期の進捗を表示</string>
@@ -470,7 +470,7 @@
     <string name="drawers_folded_by_default_summary">初期状態でドロワーを折りたたむ</string>
     <string name="log_on_time_shift">タイムシフト時、ドロワーにログを記録する</string>
     <string name="log_on_time_shift_summary">くり返しメモが終了された場合、その日時を記録する</string>
-    <string name="set_last_repeat_on_time_shift">タイムシフト時に優先度を設定する</string>
+    <string name="set_last_repeat_on_time_shift">タイムシフト時にプロパティを設定する</string>
     <string name="set_last_repeat_on_time_shift_summary">くり返しメモが終了された場合、その日時を記録する</string>
     <string name="background_opacity">背景の不透明度</string>
     <string name="update_frequency">更新頻度</string>
@@ -493,31 +493,31 @@
     <string name="argument_selected">%s を選択</string>
     <string name="fixed_width_value">幅(ピクセル)</string>
     <string name="share_target_service">Orgzlyメモ帳に送る</string>
-    <string name="under">Under</string>
-    <string name="above">Above</string>
-    <string name="below">Below</string>
+    <string name="under">下</string>
+    <string name="above">上側</string>
+    <string name="below">下側</string>
     <string name="loading">読み込み中…</string>
-    <string name="go_to">Go to</string>
+    <string name="go_to">移動</string>
     <string name="cannot_refile_to_the_same_subtree">同じサブツリーにはリファイルできません</string>
     <string name="notification_maximum_priority">最大値</string>
     <string name="notification_high_priority">高</string>
     <string name="notification_default_priority">デフォルト</string>
     <string name="notification_low_priority">低</string>
     <string name="notification_minimum_priority">最小値</string>
-    <string name="breadcrumbs_target">Breadcrumbs target</string>
+    <string name="breadcrumbs_target">パンくずのターゲット</string>
     <string name="link_target">リンク先</string>
-    <string name="note_details">Note details</string>
+    <string name="note_details">メモの詳細</string>
     <string name="notebook_and_scroll_to_note">メモ帳 (メモにスクロール)</string>
     <string name="notebook_and_focus_on_note">メモ帳 (メモにフォーカス)</string>
     <plurals name="refile_notes">
         <item quantity="other"><b>%d</b> メモをリファイルしました</item>
     </plurals>
-    <string name="display_checkmarks">Display checkmarks</string>
-    <string name="display_checkmarks_summary">Allows marking notes as done</string>
-    <string name="last_used">Last used</string>
-    <string name="note_details_opening_mode">Opening mode</string>
-    <string name="cleartext_traffic">Cleartext traffic</string>
-    <string name="cleartext_traffic_message">Are you sure you want to use this URL?</string>
-    <string name="credentials_in_url_not_supported">Passing credentials in URL is not supported</string>
-    <string name="access_token">Access token</string>
+    <string name="display_checkmarks">チェックボックスを表示</string>
+    <string name="display_checkmarks_summary">メモを完了する事ができる</string>
+    <string name="last_used">最近使用</string>
+    <string name="note_details_opening_mode">開くときのモード</string>
+    <string name="cleartext_traffic">平文通信</string>
+    <string name="cleartext_traffic_message">このURLを使用しますか？</string>
+    <string name="credentials_in_url_not_supported">認証情報を含むURLはサポートしていません</string>
+    <string name="access_token">アクセストークン</string>
 </resources>

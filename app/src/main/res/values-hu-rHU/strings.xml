@@ -199,18 +199,18 @@
     <string name="git_clone_error_invalid_target_dir">A cél mappa nem létezik</string>
     <string name="git_clone_error_target_not_empty">A cél mappa nem üres</string>
     <string name="git_clone_error_uri_not_supported">Nem támogatott távoli cím</string>
-    <string name="webdav_url_hint">URL (e.g. webdavs://example.com/my-org-files/)</string>
-    <string name="webdav_auth_username_hint">Username</string>
-    <string name="webdav_auth_password_hint">Password</string>
-    <string name="webdav_test_error_auth">Login or password is invalid</string>
-    <string name="webdav_test_error_unknown">Unknown error occurred</string>
+    <string name="webdav_url_hint">URL (pl. webdavs://example.com/my-org-files/)</string>
+    <string name="webdav_auth_username_hint">Felhasználónév</string>
+    <string name="webdav_auth_password_hint">Jelszó</string>
+    <string name="webdav_test_error_auth">Felhasználónév vagy a jelszó hibás</string>
+    <string name="webdav_test_error_unknown">Ismeretlen hiba történt</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Megosztási művelet nincs beállítva</string>
     <string name="share_action_not_supported">%s megosztási művelet nem támogatott</string>
     <string name="share_type_not_set">Megosztástípus nincs beállítva</string>
     <string name="share_type_not_supported">%s megosztás típus nem támogatott</string>
     <string name="repositories">Tárolók</string>
-    <string name="repository_not_valid_with_reason">Repository invalid: %s</string>
+    <string name="repository_not_valid_with_reason">Érvénytelen tároló: %s</string>
     <string name="invalid_repo_url">Érvénytelen tároló URL \"%s\"</string>
     <string name="repository_url_already_exists">Ilyen tároló URL más létezik</string>
     <string name="fragment_left_drawer_list_view_content_description">Bal fiók</string>
@@ -225,7 +225,7 @@
     <string name="note_book_not_set">Jegyzetfüzet nincs beállítva</string>
     <string name="title_can_not_be_empty">Cím nem lehet üres</string>
     <string name="can_not_be_empty">Nem lehet üres</string>
-    <string name="invalid_url">Invalid URL</string>
+    <string name="invalid_url">Érvénytelen URL</string>
     <string name="no_notebooks">Nincs jegyzetfüzet</string>
     <string name="no_notes">Nincs bejegyzés a jegyzetfüzetben</string>
     <string name="create_new_repository_for_syncing">Új tároló létrehozása jegyzetfüzet szinkronizáláshoz</string>
@@ -295,10 +295,10 @@
     <string name="prefs_title_notifications">Értesítések</string>
     <string name="app">App</string>
     <string name="no_repos_configured">Nincs beállítva tárolóhely</string>
-    <string name="test_connection">Test connection</string>
-    <string name="connecting">Connecting…</string>
+    <string name="test_connection">Kapcsolat tesztelése</string>
+    <string name="connecting">Kapcsolódás…</string>
     <string name="no_connection">Nincs kapcsolat</string>
-    <string name="connection_successful">Connection successful</string>
+    <string name="connection_successful">Kapcsolódás sikeres</string>
     <string name="last_sync_with_argument">Utolsó szinkronizálás: %s</string>
     <string name="force_loading_from_uri">Betöltés mindenképp: %s …</string>
     <string name="force_loaded_from_uri">Betöltve: %s</string>
@@ -437,8 +437,8 @@
         <item quantity="other">Tartalmaz <b>%d</b> bejegyzést</item>
     </plurals>
     <plurals name="found_number_of_notebooks">
-        <item quantity="one">Found <b>%d</b> notebook</item>
-        <item quantity="other">Found <b>%d</b> notebooks</item>
+        <item quantity="one"><b>%d</b> jegyzetfüzetet találtam</item>
+        <item quantity="other"><b>%d</b> jegyzetfüzetet találtam</item>
     </plurals>
     <string name="content_line_count_displayed">Tartalom sorainak számát mutassa</string>
     <string name="content_line_count_displayed_summary">Tartalom sorainak számát mutassa, ha az el van rejtve</string>
@@ -525,8 +525,8 @@
     <string name="display_checkmarks_summary">Készre lehet jelölni egy bejegyzést</string>
     <string name="last_used">Utoljára használt</string>
     <string name="note_details_opening_mode">Nyitás módja</string>
-    <string name="cleartext_traffic">Cleartext traffic</string>
-    <string name="cleartext_traffic_message">Are you sure you want to use this URL?</string>
-    <string name="credentials_in_url_not_supported">Passing credentials in URL is not supported</string>
-    <string name="access_token">Access token</string>
+    <string name="cleartext_traffic">Kódolatlan adatforgalom</string>
+    <string name="cleartext_traffic_message">Biztosan ezt az URL-t akarod használni?</string>
+    <string name="credentials_in_url_not_supported">Hitelesítő adatok továbbítása URL-ben nem támogatott</string>
+    <string name="access_token">Hozzáférési token</string>
 </resources>

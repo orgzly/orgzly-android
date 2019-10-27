@@ -12,7 +12,7 @@ Orgzly へようこそ!
 
 ** メモは階層を持つことができ、隣のアイコンをタップすると折りたためます
 
-Long-click the icon to unfold entire subtree.
+アイコンをロングタップすると配下の全てを広げます
 
 *** 階層の数に上限はありません
 **** これを使うと、メモをうまく整理できます
@@ -20,7 +20,7 @@ Long-click the icon to unfold entire subtree.
 ** メモはタグを付けられます :tag1:tag2:
 *** 下の階層のメモは、親階層のタグを引き継ぎます :tag3:
 
-If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
+"tag1"を検索する"t.tag1"クエリを使うと、このメモも検索結果に含まれます
 
 ** TODO メモには状態を付けられます
 
