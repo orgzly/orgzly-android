@@ -14,7 +14,7 @@
                 android:width="@dimen/bullet_inner_size"
                 android:height="@dimen/bullet_inner_size" />
 
-            <solid android:color="@color/white_text_secondary_color"/>
+            <solid android:color="@color/grey_400"/>
         </shape>
 
     </item>

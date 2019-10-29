@@ -4,10 +4,10 @@ import android.content.Context
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.db.entity.Note
@@ -21,6 +21,8 @@ import com.orgzly.android.usecase.NoteToggleFoldingSubtree
 import com.orgzly.android.usecase.NoteUpdateContent
 import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.UserTimeFormatter
+import com.orgzly.databinding.ItemAgendaDividerBinding
+import com.orgzly.databinding.ItemHeadBinding
 
 class NoteItemViewBinder(private val context: Context, private val inBook: Boolean) {
     private val attrs: Attrs
@@ -48,8 +50,6 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
         setupTitle(holder, noteView)
 
-        setupMargins(holder) // TODO: Stop doing this for every note
-
         setupBookName(holder, noteView)
 
         setupPlanningTimes(holder, noteView, agendaTimeType)
@@ -67,19 +67,22 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
     private fun setupBookName(holder: NoteItemViewHolder, noteView: NoteView) {
         if (inBook) {
-            holder.binding.itemHeadBookName.visibility = View.GONE
+            holder.binding.itemHeadBookNameIcon.visibility = View.GONE
+            holder.binding.itemHeadBookNameText.visibility = View.GONE
             holder.binding.itemHeadBookNameBeforeNoteText.visibility = View.GONE
 
         } else {
             when (Integer.valueOf(AppPreferences.bookNameInSearchResults(context))) {
                 0 -> { // Hide
-                    holder.binding.itemHeadBookName.visibility = View.GONE
+                    holder.binding.itemHeadBookNameIcon.visibility = View.GONE
+                    holder.binding.itemHeadBookNameText.visibility = View.GONE
 
                     holder.binding.itemHeadBookNameBeforeNoteText.visibility = View.GONE
                 }
 
                 1 -> { // Show before note
-                    holder.binding.itemHeadBookName.visibility = View.GONE
+                    holder.binding.itemHeadBookNameIcon.visibility = View.GONE
+                    holder.binding.itemHeadBookNameText.visibility = View.GONE
 
                     holder.binding.itemHeadBookNameBeforeNoteText.text = noteView.bookName
                     holder.binding.itemHeadBookNameBeforeNoteText.visibility = View.VISIBLE
@@ -87,7 +90,8 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
                 2 -> { // Show under note
                     holder.binding.itemHeadBookNameText.text = noteView.bookName
-                    holder.binding.itemHeadBookName.visibility = View.VISIBLE
+                    holder.binding.itemHeadBookNameText.visibility = View.VISIBLE
+                    holder.binding.itemHeadBookNameIcon.visibility = View.VISIBLE
 
                     holder.binding.itemHeadBookNameBeforeNoteText.visibility = View.GONE
                 }
@@ -138,14 +142,16 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
     private fun setupPlanningTimes(holder: NoteItemViewHolder, noteView: NoteView, agendaTimeType: Int? = 0) {
 
-        fun setupPlanningTime(containerView: View, textView: TextView, value: String?) {
+        fun setupPlanningTime(textView: TextView, iconView: ImageView, value: String?) {
             if (value != null && AppPreferences.displayPlanning(context)) {
                 val range = com.orgzly.org.datetime.OrgRange.parse(value)
                 textView.text = userTimeFormatter.formatAll(range)
-                containerView.visibility = View.VISIBLE
+                textView.visibility = View.VISIBLE
+                iconView.visibility = View.VISIBLE
 
             } else {
-                containerView.visibility = View.GONE
+                textView.visibility = View.GONE
+                iconView.visibility = View.GONE
             }
         }
 
@@ -170,29 +176,29 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         }
 
         setupPlanningTime(
-                holder.binding.itemHeadScheduled,
                 holder.binding.itemHeadScheduledText,
+                holder.binding.itemHeadScheduledIcon,
                 scheduled)
 
         setupPlanningTime(
-                holder.binding.itemHeadDeadline,
                 holder.binding.itemHeadDeadlineText,
+                holder.binding.itemHeadDeadlineIcon,
                 deadline)
 
         setupPlanningTime(
-                holder.binding.itemHeadEvent,
                 holder.binding.itemHeadEventText,
+                holder.binding.itemHeadEventIcon,
                 event)
 
         setupPlanningTime(
-                holder.binding.itemHeadClosed,
                 holder.binding.itemHeadClosedText,
+                holder.binding.itemHeadClosedIcon,
                 noteView.closedRangeString)
     }
 
     /** Set alpha for done items. */
     private fun setupAlpha(holder: NoteItemViewHolder, note: Note) {
-        holder.binding.itemHeadPayload.alpha =
+        holder.binding.alpha =
                 if (note.state != null && AppPreferences.doneKeywordsSet(context).contains(note.state)) {
                     0.45f
                 } else {
@@ -209,35 +215,31 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         val level = if (inBook) note.position.level - 1 else 0
 
         when {
-            container.childCount < level -> {
-                /* We need more lines. */
-
-                /* Make all existing visible. */
+            container.childCount < level -> { // More levels needed
+                // Make all existing levels visible
                 for (i in 1..container.childCount) {
                     container.getChildAt(i - 1).visibility = View.VISIBLE
                 }
 
-                /* Inflate the rest. */
+                // Inflate the rest
                 for (i in container.childCount + 1..level) {
                     View.inflate(container.context, R.layout.indent, container)
                 }
             }
 
-            level < container.childCount -> {
-                /* Has more lines then needed. */
-
-                /* Make required lines visible. */
+            level < container.childCount -> { // Too many levels
+                // Make required levels visible
                 for (i in 1..level) {
                     container.getChildAt(i - 1).visibility = View.VISIBLE
                 }
 
-                /* Hide the rest. */
+                // Hide the rest
                 for (i in level + 1..container.childCount) {
                     container.getChildAt(i - 1).visibility = View.GONE
                 }
             }
 
-            else -> /* Make all visible. */
+            else -> // Make all visible
                 for (i in 1..container.childCount) {
                     container.getChildAt(i - 1).visibility = View.VISIBLE
                 }
@@ -251,8 +253,6 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
      */
     private fun setupBullet(holder: NoteItemViewHolder, note: Note) {
         if (inBook) {
-            holder.binding.itemHeadBulletContainer.visibility = View.VISIBLE
-
             if (note.position.descendantsCount > 0) { // With descendants
                 if (note.position.isFolded) { // Folded
                     holder.binding.itemHeadBullet.setImageDrawable(attrs.bulletFolded)
@@ -263,18 +263,20 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
                 holder.binding.itemHeadBullet.setImageDrawable(attrs.bulletDefault)
             }
 
+            holder.binding.itemHeadBullet.visibility = View.VISIBLE
+
         } else {
-            holder.binding.itemHeadBulletContainer.visibility = View.GONE
+            holder.binding.itemHeadBullet.visibility = View.GONE
         }
     }
 
     private fun setupFoldingButtons(holder: NoteItemViewHolder, note: Note) {
         if (updateFoldingButtons(context, note, holder)) {
             // Folding button
-            holder.binding.itemHeadFoldButton.setOnClickListener {
+            holder.binding.itemHeadFoldButtonText.setOnClickListener {
                 toggleFoldedState(note.id)
             }
-            holder.binding.itemHeadFoldButton.setOnLongClickListener {
+            holder.binding.itemHeadFoldButtonText.setOnLongClickListener {
                 toggleFoldedStateForSubtree(note.id)
             }
 
@@ -288,8 +290,8 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
         } else {
             // Folding button
-            holder.binding.itemHeadFoldButton.setOnClickListener(null)
-            holder.binding.itemHeadFoldButton.setOnLongClickListener(null)
+            holder.binding.itemHeadFoldButtonText.setOnClickListener(null)
+            holder.binding.itemHeadFoldButtonText.setOnLongClickListener(null)
 
             // Bullet
             holder.binding.itemHeadBullet.setOnClickListener(null)
@@ -321,54 +323,42 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         }
 
         if (isVisible) {
-            holder.binding.itemHeadFoldButton.visibility = View.VISIBLE
             holder.binding.itemHeadFoldButtonText.visibility = View.VISIBLE
         } else {
             if (inBook) { // Leave invisible for padding
-                holder.binding.itemHeadFoldButton.visibility = View.INVISIBLE
                 holder.binding.itemHeadFoldButtonText.visibility = View.INVISIBLE
             } else {
-                holder.binding.itemHeadFoldButton.visibility = View.GONE
                 holder.binding.itemHeadFoldButtonText.visibility = View.GONE
             }
         }
 
-        // Add right margin in search results
+        // Add horizontal padding when in search results (no bullet, no folding button)
+        val horizontalPadding = context.resources.getDimension(R.dimen.screen_edge).toInt()
         if (!inBook) {
-            (holder.binding.itemHeadContainer.layoutParams as LinearLayout.LayoutParams).apply {
-                val right = if (holder.binding.itemHeadFoldButton.visibility == View.GONE) {
-                    context.resources.getDimension(R.dimen.screen_edge).toInt()
-                } else {
-                    0
-                }
+            holder.binding.itemHeadContainer.setPadding(
+                    horizontalPadding,
+                    holder.binding.itemHeadContainer.paddingTop,
+                    horizontalPadding,
+                    holder.binding.itemHeadContainer.paddingBottom)
 
-                setMargins(leftMargin, topMargin, right, bottomMargin)
-            }
+//            (holder.binding.itemHeadContainer.layoutParams as ConstraintLayout.LayoutParams).apply {
+//                val right = if (holder.binding.itemHeadFoldButtonText.visibility == View.GONE) {
+//                    context.resources.getDimension(R.dimen.screen_edge).toInt()
+//                } else {
+//                    0
+//                }
+//
+//                setMargins(leftMargin, topMargin, right, bottomMargin)
+//            }
+        } else {
+            holder.binding.itemHeadContainer.setPadding(
+                    horizontalPadding,
+                    holder.binding.itemHeadContainer.paddingTop,
+                    holder.binding.itemHeadContainer.paddingRight,
+                    holder.binding.itemHeadContainer.paddingBottom)
         }
 
         return isVisible
-    }
-
-
-    /**
-     * Setup margins for different list density options.
-     */
-    private fun setupMargins(holder: NoteItemViewHolder) {
-        val margins = getMarginsForListDensity(context)
-
-        val payloadParams = holder.binding.itemHeadPayload.layoutParams as RelativeLayout.LayoutParams
-        payloadParams.setMargins(payloadParams.leftMargin, margins.first, payloadParams.rightMargin, 0)
-
-        val params = arrayOf(
-                holder.binding.itemHeadScheduled.layoutParams as LinearLayout.LayoutParams,
-                holder.binding.itemHeadDeadline.layoutParams as LinearLayout.LayoutParams,
-                holder.binding.itemHeadEvent.layoutParams as LinearLayout.LayoutParams,
-                holder.binding.itemHeadClosed.layoutParams as LinearLayout.LayoutParams,
-                holder.binding.itemHeadContent.layoutParams as LinearLayout.LayoutParams)
-
-        for (p in params) {
-            p.setMargins(0, margins.second, 0, 0)
-        }
     }
 
     // TODO: Move out
@@ -387,6 +377,48 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     }
 
     companion object {
+        /**
+         * Setup margins or padding for different list density settings.
+         */
+        fun setupSpacingForDensitySetting(context: Context, binding: ItemAgendaDividerBinding) {
+            val margins = getMarginsForListDensity(context)
+
+            binding.root.setPadding(
+                    binding.root.paddingLeft,
+                    margins.first,
+                    binding.root.paddingRight,
+                    margins.first)
+
+        }
+        fun setupSpacingForDensitySetting(context: Context, binding: ItemHeadBinding) {
+            val margins = getMarginsForListDensity(context)
+
+            // Whole item margins
+            listOf(binding.itemHeadTop, binding.itemHeadBottom).forEach {
+                (it.layoutParams as ConstraintLayout.LayoutParams).apply {
+                    height = margins.first
+                }
+            }
+
+            // Spacing for views inside the item
+            val views = arrayOf(
+                    binding.itemHeadScheduledText,
+                    binding.itemHeadScheduledIcon,
+                    binding.itemHeadDeadlineText,
+                    binding.itemHeadDeadlineIcon,
+                    binding.itemHeadEventText,
+                    binding.itemHeadEventIcon,
+                    binding.itemHeadClosedIcon,
+                    binding.itemHeadClosedText,
+                    binding.itemHeadContent)
+
+            for (view in views) {
+                (view.layoutParams as ConstraintLayout.LayoutParams).apply {
+                    setMargins(leftMargin, margins.second, rightMargin, bottomMargin)
+                }
+            }
+        }
+
         fun getMarginsForListDensity(context: Context): Pair<Int, Int> {
             val itemMargins: Int
             val belowTitleMargins: Int
@@ -399,13 +431,13 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
                 context.getString(R.string.pref_value_list_density_comfortable) -> { // Comfortable
                     itemMargins = res.getDimension(R.dimen.item_head_padding_comfortable).toInt()
                     belowTitleMargins = res.getDimension(R.dimen.item_head_below_title_padding_comfortable).toInt()
-
                 }
+
                 context.getString(R.string.pref_value_list_density_compact) -> { // Compact
                     itemMargins = res.getDimension(R.dimen.item_head_padding_compact).toInt()
                     belowTitleMargins = res.getDimension(R.dimen.item_head_below_title_padding_compact).toInt()
-
                 }
+
                 else -> { // Cozy
                     itemMargins = res.getDimension(R.dimen.item_head_padding_cozy).toInt()
                     belowTitleMargins = res.getDimension(R.dimen.item_head_below_title_padding_cozy).toInt()
@@ -436,7 +468,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
                                 R.attr.item_head_state_done_color,
                                 R.attr.item_head_state_unknown_color,
                                 R.attr.item_head_post_title_text_size,
-                                R.attr.text_secondary_color,
+                                R.attr.item_head_post_title_color,
                                 R.attr.bullet_default,
                                 R.attr.bullet_folded,
                                 R.attr.bullet_unfolded)) { typedArray ->

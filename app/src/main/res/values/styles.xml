@@ -85,6 +85,8 @@
         <item name="item_head_state_done_color">@color/green_900</item>
         <item name="item_head_state_unknown_color">@color/blue_900</item>
 
+        <item name="item_head_post_title_color">@color/grey_600</item>
+
         <item name="text_primary_color">@color/dark_text_primary_color</item>
         <item name="text_secondary_color">@color/dark_text_secondary_color</item>
         <item name="text_disabled_color">@color/dark_text_disabled_color</item>
@@ -250,6 +252,8 @@
         <item name="item_head_state_todo_color">@color/red_200</item>
         <item name="item_head_state_done_color">@color/green_200</item>
         <item name="item_head_state_unknown_color">@color/blue_200</item>
+
+        <item name="item_head_post_title_color">@color/grey_400</item>
 
         <item name="text_primary_color">@color/white_text_primary_color</item>
         <item name="text_secondary_color">@color/white_text_secondary_color</item>

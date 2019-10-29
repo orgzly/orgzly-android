@@ -27,11 +27,13 @@
     <string name="saved_search_name_sample" translatable="false">Someday/Maybe</string>
     <string name="saved_search_query_sample_long" translatable="false">b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday b.Home i.someday</string>
     <string name="head_title_sample" translatable="false">Sample note title for layout testing</string>
-    <string name="note_closed_sample" translatable="false">2013\-06\-10 12:00</string>
     <string name="note_content_sample" translatable="false">This is a multi-line\nnote\'s content which could be quite long, so this needs to be a longer string so we can see how it would look like. There should be both new-lines here, as well as long single line, like this one.</string>
-    <string name="note_deadline_sample" translatable="false">2013\-12\-04 Sat</string>
     <string name="note_scheduled_sample" translatable="false">2013\-12\-04 Sat</string>
+    <string name="note_deadline_sample" translatable="false">2013\-12\-04 Sat</string>
+    <string name="note_event_sample" translatable="false">2013\-06\-10 09:00</string>
+    <string name="note_closed_sample" translatable="false">2013\-06\-10 12:00</string>
     <string name="note_title_sample" translatable="false">Simple sample title</string>
+    <string name="note_title_long_sample" translatable="false">Long sample title Long sample title Long sample title Long sample title</string>
     <string name="repo_url_sample" translatable="false">dropbox:/Some/Path/To/Repo/Directory</string>
     <string name="rook_url_long_sample" translatable="false">dropbox:/Some/Long/Path/So/Layout/Could/Be/Tested/To/Org/File/notebook.org</string>
     <string name="rook_url_sample" translatable="false">dropbox:/Some/Path/To/Org/File/notebook.org</string>

@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="item_head_book_name_width">80dp</dimen>
 
-    <dimen name="item_head_padding_comfortable">10dp</dimen>
-    <dimen name="item_head_padding_cozy">5dp</dimen>
+    <dimen name="item_head_padding_comfortable">5dp</dimen>
+    <dimen name="item_head_padding_cozy">2dp</dimen>
     <dimen name="item_head_padding_compact">0dp</dimen>
 
     <dimen name="item_head_below_title_padding_comfortable">2dp</dimen>
@@ -27,8 +27,9 @@
     <dimen name="design_navigation_icon_padding" tools:override="true">16dp</dimen>
 
     <dimen name="bullet_inner_size">8dp</dimen>
-    <dimen name="bullet_inner_inset">8dp</dimen>
+    <dimen name="bullet_inner_inset">4dp</dimen>
     <dimen name="bullet_outer_inset">4dp</dimen>
+    <dimen name="bullet_total_size">16dp</dimen>
 
     <dimen name="content_left_margin_from_icon">32dp</dimen>
     <dimen name="padded_content_left_margin_from_icon">30dp</dimen>

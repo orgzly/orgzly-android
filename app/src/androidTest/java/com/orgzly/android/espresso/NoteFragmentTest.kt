@@ -446,7 +446,7 @@ class NoteFragmentTest : OrgzlyTest() {
         onView(withId(R.id.body_edit)).perform(scrollTo()) // For smaller screens
         onView(withId(R.id.body_edit)).perform(*replaceTextCloseKeyboard("a\nb\nc"))
         onView(withId(R.id.done)).perform(click())
-        onNoteInBook(1, R.id.item_head_fold_button).perform(click())
+        onNoteInBook(1, R.id.item_head_fold_button_text).perform(click())
         onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("3"))))
     }
 

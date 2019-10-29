@@ -2,16 +2,10 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:top="@dimen/bullet_outer_inset"
-        android:right="@dimen/bullet_outer_inset"
-        android:bottom="@dimen/bullet_outer_inset"
-        android:left="@dimen/bullet_outer_inset">
-
+    <item>
         <shape android:shape="oval">
             <solid android:color="@color/grey_800"/>
         </shape>
-
     </item>
 
     <item android:drawable="@drawable/bullet_state_default_dark"/>

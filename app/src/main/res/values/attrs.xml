@@ -63,6 +63,8 @@
         <attr name="item_head_state_done_color" format="color"/>
         <attr name="item_head_state_unknown_color" format="color"/>
 
+        <attr name="item_head_post_title_color" format="color"/>
+
         <attr name="text_primary_color" format="color"/>
         <attr name="text_secondary_color" format="color"/>
         <attr name="text_disabled_color" format="color"/>

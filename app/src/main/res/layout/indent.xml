@@ -3,7 +3,7 @@
     android:layout_width="?attr/item_head_indent_width"
     android:layout_height="match_parent">
 
-    <TextView
+    <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"

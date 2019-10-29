@@ -143,29 +143,29 @@ class NoteEventsTest : OrgzlyTest() {
         onNotesInAgenda().check(matches(recyclerViewItemCount(10)))
 
         // Today: deadline
-        onItemInAgenda(1, R.id.item_head_scheduled).check(matches(not(isDisplayed())))
-        onItemInAgenda(1, R.id.item_head_deadline).check(matches(isDisplayed()))
-        onItemInAgenda(1, R.id.item_head_event).check(matches(not(isDisplayed())))
+        onItemInAgenda(1, R.id.item_head_scheduled_text).check(matches(not(isDisplayed())))
+        onItemInAgenda(1, R.id.item_head_deadline_text).check(matches(isDisplayed()))
+        onItemInAgenda(1, R.id.item_head_event_text).check(matches(not(isDisplayed())))
 
         // Today: event
-        onItemInAgenda(2, R.id.item_head_scheduled).check(matches(not(isDisplayed())))
-        onItemInAgenda(2, R.id.item_head_deadline).check(matches(not(isDisplayed())))
-        onItemInAgenda(2, R.id.item_head_event).check(matches(isDisplayed()))
+        onItemInAgenda(2, R.id.item_head_scheduled_text).check(matches(not(isDisplayed())))
+        onItemInAgenda(2, R.id.item_head_deadline_text).check(matches(not(isDisplayed())))
+        onItemInAgenda(2, R.id.item_head_event_text).check(matches(isDisplayed()))
 
         // Today: event
-        onItemInAgenda(3, R.id.item_head_scheduled).check(matches(not(isDisplayed())))
-        onItemInAgenda(3, R.id.item_head_deadline).check(matches(not(isDisplayed())))
-        onItemInAgenda(3, R.id.item_head_event).check(matches(isDisplayed()))
+        onItemInAgenda(3, R.id.item_head_scheduled_text).check(matches(not(isDisplayed())))
+        onItemInAgenda(3, R.id.item_head_deadline_text).check(matches(not(isDisplayed())))
+        onItemInAgenda(3, R.id.item_head_event_text).check(matches(isDisplayed()))
 
         // Tomorrow: event
-        onItemInAgenda(5, R.id.item_head_scheduled).check(matches(not(isDisplayed())))
-        onItemInAgenda(5, R.id.item_head_deadline).check(matches(not(isDisplayed())))
-        onItemInAgenda(5, R.id.item_head_event).check(matches(isDisplayed()))
+        onItemInAgenda(5, R.id.item_head_scheduled_text).check(matches(not(isDisplayed())))
+        onItemInAgenda(5, R.id.item_head_deadline_text).check(matches(not(isDisplayed())))
+        onItemInAgenda(5, R.id.item_head_event_text).check(matches(isDisplayed()))
 
         // In two days: scheduled
-        onItemInAgenda(7, R.id.item_head_scheduled).check(matches(isDisplayed()))
-        onItemInAgenda(7, R.id.item_head_deadline).check(matches(not(isDisplayed())))
-        onItemInAgenda(7, R.id.item_head_event).check(matches(not(isDisplayed())))
+        onItemInAgenda(7, R.id.item_head_scheduled_text).check(matches(isDisplayed()))
+        onItemInAgenda(7, R.id.item_head_deadline_text).check(matches(not(isDisplayed())))
+        onItemInAgenda(7, R.id.item_head_event_text).check(matches(not(isDisplayed())))
     }
 
     @Test
@@ -185,9 +185,9 @@ class NoteEventsTest : OrgzlyTest() {
 
         onNotesInSearch().check(matches(recyclerViewItemCount(1)))
 
-        onNoteInSearch(0, R.id.item_head_scheduled).check(matches(isDisplayed()))
-        onNoteInSearch(0, R.id.item_head_deadline).check(matches(isDisplayed()))
-        onNoteInSearch(0, R.id.item_head_event).check(matches(isDisplayed()))
+        onNoteInSearch(0, R.id.item_head_scheduled_text).check(matches(isDisplayed()))
+        onNoteInSearch(0, R.id.item_head_deadline_text).check(matches(isDisplayed()))
+        onNoteInSearch(0, R.id.item_head_event_text).check(matches(isDisplayed()))
     }
 
     @Test

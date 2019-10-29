@@ -40,9 +40,11 @@ class SearchAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        return NoteItemViewHolder(
-                ItemHeadBinding.inflate(LayoutInflater.from(context), parent, false),
-                viewHolderListener)
+        val binding = ItemHeadBinding.inflate(LayoutInflater.from(context), parent, false)
+
+        NoteItemViewBinder.setupSpacingForDensitySetting(context, binding)
+
+        return NoteItemViewHolder(binding, viewHolderListener)
     }
 
     override fun onBindViewHolder(h: RecyclerView.ViewHolder, position: Int) {

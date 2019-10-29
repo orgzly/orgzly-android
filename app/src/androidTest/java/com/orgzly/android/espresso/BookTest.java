@@ -20,7 +20,6 @@ import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
-import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -139,8 +138,8 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testRemovingScheduledTimeFromMultipleNotes() {
-        onNoteInBook(8, R.id.item_head_scheduled).check(matches(not(isDisplayed())));
-        onNoteInBook(9, R.id.item_head_scheduled).check(matches(isDisplayed()));
+        onNoteInBook(8, R.id.item_head_scheduled_text).check(matches(not(isDisplayed())));
+        onNoteInBook(9, R.id.item_head_scheduled_text).check(matches(isDisplayed()));
 
         onNoteInBook(8).perform(longClick());
         onNoteInBook(9).perform(click());
@@ -148,8 +147,8 @@ public class BookTest extends OrgzlyTest {
         onView(withId(R.id.bottom_action_bar_schedule)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
-        onNoteInBook(8, R.id.item_head_scheduled).check(matches(not(isDisplayed())));
-        onNoteInBook(9, R.id.item_head_scheduled).check(matches(not(isDisplayed())));
+        onNoteInBook(8, R.id.item_head_scheduled_text).check(matches(not(isDisplayed())));
+        onNoteInBook(9, R.id.item_head_scheduled_text).check(matches(not(isDisplayed())));
     }
 
     @Test
@@ -353,7 +352,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testFoldNotes() {
-        onNoteInBook(2, R.id.item_head_fold_button).perform(click());
+        onNoteInBook(2, R.id.item_head_fold_button_text).perform(click());
 
         onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
         onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #2."))));
@@ -363,7 +362,7 @@ public class BookTest extends OrgzlyTest {
     @Test
     public void testCreateNewNoteUnderFolded() {
         /* Fold. */
-        onNoteInBook(2, R.id.item_head_fold_button).perform(click());
+        onNoteInBook(2, R.id.item_head_fold_button_text).perform(click());
 
         /* Create new note under folded. */
         onNoteInBook(2).perform(longClick());

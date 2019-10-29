@@ -19,8 +19,8 @@ import com.orgzly.android.ui.notes.NoteItemViewBinder
 import com.orgzly.android.ui.notes.NoteItemViewHolder
 import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.util.LogUtils
-import com.orgzly.databinding.ItemHeadBinding
 import com.orgzly.databinding.ItemHeadBookPrefaceBinding
+import com.orgzly.databinding.ItemHeadBinding
 
 class BookAdapter(
         private val context: Context,
@@ -86,6 +86,9 @@ class BookAdapter(
 
             else -> {
                 val binding = ItemHeadBinding.inflate(LayoutInflater.from(context), parent, false)
+
+                NoteItemViewBinder.setupSpacingForDensitySetting(context, binding)
+
                 NoteItemViewHolder(binding, noteViewHolderListener)
             }
         }
@@ -98,7 +101,6 @@ class BookAdapter(
 
                 if (!isPrefaceDisplayed()) {
                     holder.binding.fragmentBookHeaderText.visibility = View.GONE
-
 
                 } else {
                     if (context.getString(R.string.pref_value_preface_in_book_few_lines) ==
@@ -177,7 +179,7 @@ class BookAdapter(
     companion object {
         private val TAG = BookAdapter::class.java.name
 
-        const val HIDDEN_ITEM_TYPE = 0
+        const val HIDDEN_ITEM_TYPE = 0 // Not used
         const val VISIBLE_ITEM_TYPE = 1
 
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<NoteView> =

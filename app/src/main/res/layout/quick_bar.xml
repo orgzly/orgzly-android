@@ -10,7 +10,7 @@
         android:layout_height="@dimen/quick_bar_height"
         android:paddingLeft="@dimen/screen_edge"
         android:paddingRight="@dimen/screen_edge"
-        android:visibility="gone"
+        android:visibility="visible"
         android:gravity="center">
 
         <LinearLayout

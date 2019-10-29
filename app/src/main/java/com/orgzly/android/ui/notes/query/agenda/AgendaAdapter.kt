@@ -23,7 +23,7 @@ class AgendaAdapter(
         private val context: Context,
         private val clickListener: OnViewHolderClickListener<AgendaItem>,
         private val quickBar: QuickBars
- ) : ListAdapter<AgendaItem, RecyclerView.ViewHolder>(DIFF_CALLBACK), SelectableItemAdapter {
+) : ListAdapter<AgendaItem, RecyclerView.ViewHolder>(DIFF_CALLBACK), SelectableItemAdapter {
 
     private val adapterSelection: Selection = Selection()
 
@@ -45,15 +45,20 @@ class AgendaAdapter(
 
         return when (viewType) {
             DIVIDER_ITEM_TYPE -> {
-                DividerViewHolder(
-                        ItemAgendaDividerBinding.inflate(
-                                LayoutInflater.from(context), parent, false))
+                val binding = ItemAgendaDividerBinding.inflate(
+                        LayoutInflater.from(context), parent, false)
+
+                NoteItemViewBinder.setupSpacingForDensitySetting(context, binding)
+
+                DividerViewHolder(binding)
             }
 
             else -> {
-                NoteItemViewHolder(
-                        ItemHeadBinding.inflate(LayoutInflater.from(context), parent, false),
-                        viewHolderListener)
+                val binding = ItemHeadBinding.inflate(LayoutInflater.from(context), parent, false)
+
+                NoteItemViewBinder.setupSpacingForDensitySetting(context, binding)
+
+                NoteItemViewHolder(binding, viewHolderListener)
             }
         }
     }
@@ -78,15 +83,7 @@ class AgendaAdapter(
     }
 
     private fun bindDividerView(holder: DividerViewHolder, item: AgendaItem.Divider) {
-        val margins = NoteItemViewBinder.getMarginsForListDensity(context)
-
         holder.binding.itemAgendaTimeText.text = userTimeFormatter.formatDate(item.day)
-
-        holder.binding.root.setPadding(
-                holder.binding.root.paddingLeft,
-                margins.first,
-                holder.binding.root.paddingRight,
-                margins.first)
     }
 
     inner class DividerViewHolder(val binding: ItemAgendaDividerBinding) :
