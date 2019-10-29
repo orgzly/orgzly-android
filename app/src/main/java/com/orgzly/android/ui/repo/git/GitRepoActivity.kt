@@ -20,6 +20,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.textfield.TextInputLayout
 import com.orgzly.R
+import com.orgzly.android.App
 import com.orgzly.android.git.GitPreferences
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.prefs.RepoPreferences
@@ -50,6 +51,8 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private lateinit var viewModel: RepoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
+
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_git)

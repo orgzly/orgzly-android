@@ -6,12 +6,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ViewFlipper
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.App
 import com.orgzly.android.AppIntent
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.SavedSearch
@@ -19,18 +21,19 @@ import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.savedsearches.SavedSearchesViewModel
 import com.orgzly.android.ui.savedsearches.SavedSearchesViewModelFactory
 import com.orgzly.android.util.LogUtils
-import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
 /**
  * Widget selection.
  */
-class ListWidgetSelectionActivity : DaggerAppCompatActivity(), OnViewHolderClickListener<SavedSearch> {
+class ListWidgetSelectionActivity : AppCompatActivity(), OnViewHolderClickListener<SavedSearch> {
 
     @Inject
     lateinit var dataRepository: DataRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
+
         WidgetStyle.updateActivity(this)
 
         super.onCreate(savedInstanceState)

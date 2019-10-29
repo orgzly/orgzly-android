@@ -8,6 +8,7 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.App
 import com.orgzly.android.AppIntent
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.NoteView
@@ -20,7 +21,6 @@ import com.orgzly.android.ui.util.TitleGenerator
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.UserTimeFormatter
 import com.orgzly.org.datetime.OrgRange
-import dagger.android.AndroidInjection
 import org.joda.time.DateTime
 import javax.inject.Inject
 
@@ -28,10 +28,14 @@ class ListWidgetService : RemoteViewsService() {
     @Inject
     lateinit var dataRepository: DataRepository
 
+    override fun onCreate() {
+        App.appComponent.inject(this)
+
+        super.onCreate()
+    }
+
     override fun onGetViewFactory(intent: Intent): RemoteViewsFactory {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
-
-        AndroidInjection.inject(this)
 
         return ListWidgetViewsFactory(
                 applicationContext,

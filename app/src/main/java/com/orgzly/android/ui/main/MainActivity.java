@@ -156,6 +156,8 @@ public class MainActivity extends CommonActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        App.appComponent.inject(this);
+
         super.onCreate(savedInstanceState);
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);

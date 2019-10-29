@@ -12,11 +12,13 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.App
 import com.orgzly.android.BookFormat
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
@@ -36,18 +38,13 @@ import com.orgzly.android.util.MiscUtils
 import com.orgzly.databinding.DialogBookDeleteBinding
 import com.orgzly.databinding.DialogBookRenameBinding
 import com.orgzly.databinding.FragmentBooksBinding
-import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 /**
  * Displays all notebooks.
  * Allows creating new, deleting, renaming, setting links etc.
  */
-class BooksFragment :
-        DaggerFragment(),
-        Fab,
-        DrawerItem,
-        OnViewHolderClickListener<BookView> {
+class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<BookView> {
 
     private lateinit var binding: FragmentBooksBinding
 
@@ -72,6 +69,8 @@ class BooksFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
+        App.appComponent.inject(this)
 
         listener = activity as Listener
 

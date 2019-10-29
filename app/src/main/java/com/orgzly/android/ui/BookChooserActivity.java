@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.App;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.BookFormat;
 import com.orgzly.android.data.DataRepository;
@@ -37,6 +38,8 @@ public class BookChooserActivity extends CommonActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        App.appComponent.inject(this);
+
         super.onCreate(savedInstanceState);
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);

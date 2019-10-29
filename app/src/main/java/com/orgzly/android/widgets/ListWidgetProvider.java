@@ -31,8 +31,6 @@ import java.util.Collections;
 
 import javax.inject.Inject;
 
-import dagger.android.AndroidInjection;
-
 /**
  * The AppWidgetProvider for the list widget
  */
@@ -271,7 +269,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        AndroidInjection.inject(this, App.getAppContext());
+        App.appComponent.inject(this);
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 

@@ -15,6 +15,7 @@ import androidx.core.app.TaskStackBuilder;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.App;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.data.DataRepository;
 import com.orgzly.android.db.entity.Book;
@@ -67,6 +68,8 @@ public class ShareActivity extends CommonActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        App.appComponent.inject(this);
+
         super.onCreate(savedInstanceState);
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);

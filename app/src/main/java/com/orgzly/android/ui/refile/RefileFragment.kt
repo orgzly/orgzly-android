@@ -1,11 +1,13 @@
 package com.orgzly.android.ui.refile
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,10 +25,9 @@ import com.orgzly.android.usecase.NoteRefile
 import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.DialogRefileBinding
-import dagger.android.support.DaggerDialogFragment
 import javax.inject.Inject
 
-class RefileFragment : DaggerDialogFragment() {
+class RefileFragment : DialogFragment() {
 
     private lateinit var binding: DialogRefileBinding
 
@@ -34,6 +35,12 @@ class RefileFragment : DaggerDialogFragment() {
     lateinit var dataRepository: DataRepository
 
     lateinit var viewModel: RefileViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        App.appComponent.inject(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

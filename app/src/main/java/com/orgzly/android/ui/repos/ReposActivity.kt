@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.App
 import com.orgzly.android.db.entity.Repo
 import com.orgzly.android.repos.*
 import com.orgzly.android.ui.CommonActivity
@@ -40,6 +41,8 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
     lateinit var viewModel: ReposViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
+
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_repos)

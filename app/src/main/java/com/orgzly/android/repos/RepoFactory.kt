@@ -4,7 +4,9 @@ import android.content.Context
 import com.orgzly.BuildConfig
 import com.orgzly.android.data.DbRepoBookRepository
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class RepoFactory @Inject constructor(
         private val context: Context,
         private val dbRepoBookRepository: DbRepoBookRepository

@@ -51,9 +51,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import dagger.android.DaggerService;
-
-public class SyncService extends DaggerService {
+public class SyncService extends Service {
     public static final String TAG = SyncService.class.getName();
 
     private SyncStatus status = new SyncStatus();
@@ -75,6 +73,8 @@ public class SyncService extends DaggerService {
 
     @Override
     public void onCreate() {
+        App.appComponent.inject(this);
+
         super.onCreate();
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);

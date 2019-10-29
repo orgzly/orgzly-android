@@ -1,6 +1,7 @@
 package com.orgzly.android;
 
 
+import android.app.Application;
 import android.content.Context;
 
 import androidx.multidex.MultiDex;
@@ -18,10 +19,10 @@ import com.orgzly.android.ui.settings.SettingsFragment;
 import org.jetbrains.annotations.Nullable;
 
 import androidx.preference.PreferenceManager;
-import dagger.android.AndroidInjector;
-import dagger.android.DaggerApplication;
 
-public class App extends DaggerApplication {
+import dagger.Component;
+
+public class App extends Application {
 
     /**
      * Job IDs for {@link androidx.core.app.JobIntentService#enqueueWork}.
@@ -35,10 +36,10 @@ public class App extends DaggerApplication {
 
     private static CommonActivity currentActivity;
 
-    public static AppComponent appComponent; // TODO: Remove, used only in UseCaseRunner
-
     // TODO: Inject
     public static AppExecutors EXECUTORS = new AppExecutors();
+
+    public static AppComponent appComponent;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -50,6 +51,12 @@ public class App extends DaggerApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        appComponent = DaggerAppComponent
+                .builder()
+                .applicationModule(new ApplicationModule(this))
+                .databaseModule(new DatabaseModule(false))
+                .build();
 
 //        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
 //                .detectAll()
@@ -67,17 +74,6 @@ public class App extends DaggerApplication {
         JobManager.create(this).addJobCreator(new AppJobCreator());
 
         NotificationChannels.createAll(this);
-    }
-
-    @Override
-    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
-        appComponent = DaggerAppComponent
-                .builder()
-                .applicationModule(new ApplicationModule(this))
-                .databaseModule(new DatabaseModule(false))
-                .build();
-
-        return appComponent;
     }
 
     public static void setDefaultPreferences(Context context, boolean readAgain) {

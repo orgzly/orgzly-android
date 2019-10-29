@@ -23,7 +23,6 @@ class ChooserShareTargetService : ChooserTargetService() {
 
     override fun onCreate() {
         App.appComponent.inject(this)
-        // AndroidInjection.inject(this)
 
         super.onCreate()
     }

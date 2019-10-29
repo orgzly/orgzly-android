@@ -4,9 +4,11 @@ import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.*
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.App
 import com.orgzly.android.BookUtils
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
@@ -15,13 +17,12 @@ import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentBookPrefaceBinding
-import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 /**
  * Book's preface and settings.
  */
-class BookPrefaceFragment : DaggerFragment() {
+class BookPrefaceFragment : Fragment() {
 
     private lateinit var binding: FragmentBookPrefaceBinding
 
@@ -38,6 +39,8 @@ class BookPrefaceFragment : DaggerFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
+        App.appComponent.inject(this)
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, activity)
 

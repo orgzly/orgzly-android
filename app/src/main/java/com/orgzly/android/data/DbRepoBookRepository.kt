@@ -9,9 +9,10 @@ import com.orgzly.android.util.MiscUtils
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class DbRepoBookRepository @Inject constructor(db: OrgzlyDatabase) {
-
     private val dbRepoBook = db.dbRepoBook()
 
     fun getBooks(repoUri: Uri): List<VersionedRook> {

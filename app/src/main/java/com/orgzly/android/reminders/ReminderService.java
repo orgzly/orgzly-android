@@ -45,7 +45,6 @@ import androidx.annotation.StringRes;
 import androidx.core.app.JobIntentService;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
-import dagger.android.AndroidInjection;
 
 /**
  * Every event that can affect reminders is going through this service.
@@ -67,7 +66,6 @@ public class ReminderService extends JobIntentService {
 
     @Inject
     DataRepository dataRepository;
-
 
     public static List<NoteReminder> getNoteReminders(
             final Context context,
@@ -198,7 +196,8 @@ public class ReminderService extends JobIntentService {
 
     @Override
     public void onCreate() {
-        AndroidInjection.inject(this);
+        App.appComponent.inject(this);
+
         super.onCreate();
     }
 

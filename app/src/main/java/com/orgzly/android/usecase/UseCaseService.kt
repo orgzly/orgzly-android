@@ -10,7 +10,6 @@ import com.orgzly.android.AppIntent
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.util.LogUtils
-import dagger.android.AndroidInjection
 import javax.inject.Inject
 
 class UseCaseService : JobIntentService() {
@@ -18,7 +17,8 @@ class UseCaseService : JobIntentService() {
     lateinit var dataRepository: DataRepository
 
     override fun onCreate() {
-        AndroidInjection.inject(this)
+        App.appComponent.inject(this)
+
         super.onCreate()
     }
 

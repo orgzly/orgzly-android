@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.App
 import com.orgzly.android.repos.DropboxClient
 import com.orgzly.android.repos.DropboxRepo
 import com.orgzly.android.repos.RepoFactory
@@ -43,6 +44,8 @@ class DropboxRepoActivity : CommonActivity() {
     private lateinit var viewModel: RepoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
+
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_dropbox)

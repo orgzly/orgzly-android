@@ -56,8 +56,10 @@ import java.lang.IllegalStateException
 import java.util.*
 import java.util.concurrent.Callable
 import javax.inject.Inject
+import javax.inject.Singleton
 
 // TODO: Split
+@Singleton
 class DataRepository @Inject constructor(
         private val context: Context,
         private val db: OrgzlyDatabase,

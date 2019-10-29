@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.orgzly.R
+import com.orgzly.android.App
 import com.orgzly.android.repos.RepoFactory
 import com.orgzly.android.repos.RepoType
 import com.orgzly.android.repos.WebdavRepo.Companion.PASSWORD_PREF_KEY
@@ -30,6 +31,8 @@ class WebdavRepoActivity : CommonActivity() {
     private lateinit var viewModel: WebdavRepoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
+
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_webdav)

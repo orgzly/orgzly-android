@@ -1,11 +1,14 @@
 package com.orgzly.android.ui.notes
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.view.ActionMode
+import androidx.fragment.app.Fragment
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.ui.ActionModeListener
 import com.orgzly.android.ui.NotePlace
@@ -15,7 +18,6 @@ import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
 import com.orgzly.org.datetime.OrgDateTime
-import dagger.android.support.DaggerFragment
 import java.util.*
 import javax.inject.Inject
 
@@ -23,9 +25,7 @@ import javax.inject.Inject
  * Fragment which is displaying a list of notes,
  * such as BookFragment, SearchFragment or AgendaFragment.
  */
-abstract class NotesFragment :
-        DaggerFragment(),
-        TimestampDialogFragment.OnDateTimeSetListener {
+abstract class NotesFragment : Fragment(), TimestampDialogFragment.OnDateTimeSetListener {
 
     @JvmField
     var actionModeListener: ActionModeListener? = null
@@ -43,6 +43,12 @@ abstract class NotesFragment :
 
 
     var fragmentActionMode: ActionMode? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        App.appComponent.inject(this)
+    }
 
     override fun onPause() {
         super.onPause()

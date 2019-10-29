@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.databinding.DataBindingUtil
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.App
 import com.orgzly.android.repos.DirectoryRepo
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog
@@ -39,6 +40,8 @@ class BrowserActivity :
     private var isFileSelectable: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
+
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_browser)

@@ -16,10 +16,12 @@ import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.App
 import com.orgzly.android.BookUtils
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.BookView
@@ -40,14 +42,13 @@ import com.orgzly.databinding.FragmentNoteBinding
 import com.orgzly.org.OrgProperties
 import com.orgzly.org.datetime.OrgDateTime
 import com.orgzly.org.datetime.OrgRange
-import dagger.android.support.DaggerFragment
 import java.util.*
 import javax.inject.Inject
 
 /**
  * Note editor.
  */
-class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFragment.OnDateTimeSetListener, DrawerItem {
+class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.OnDateTimeSetListener, DrawerItem {
 
     private lateinit var binding: FragmentNoteBinding
 
@@ -78,6 +79,8 @@ class NoteFragment : DaggerFragment(), View.OnClickListener, TimestampDialogFrag
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
+        App.appComponent.inject(this)
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, activity)
 

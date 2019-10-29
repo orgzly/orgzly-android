@@ -1,5 +1,6 @@
 package com.orgzly.android
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_TIMEZONE_CHANGED
@@ -9,16 +10,15 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.usecase.TimestampRefresh
 import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.LogUtils
-import dagger.android.DaggerBroadcastReceiver
 import javax.inject.Inject
 
-class TimeChangeBroadcastReceiver : DaggerBroadcastReceiver() {
+class TimeChangeBroadcastReceiver : BroadcastReceiver() {
 
     @Inject
     internal lateinit var dataRepository: DataRepository
 
     override fun onReceive(context: Context, intent: Intent) {
-        super.onReceive(context, intent)
+        App.appComponent.inject(this)
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent)
 

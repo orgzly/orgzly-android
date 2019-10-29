@@ -10,6 +10,7 @@ import android.os.Handler
 import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
@@ -27,7 +28,6 @@ import com.orgzly.android.ui.dialogs.WhatsNewDialog
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
-import dagger.android.support.DaggerAppCompatActivity
 import java.io.File
 import java.util.*
 import javax.inject.Inject
@@ -36,7 +36,7 @@ import javax.inject.Inject
 /**
  * Inherited by every activity in the app.
  */
-abstract class CommonActivity : DaggerAppCompatActivity() {
+abstract class CommonActivity : AppCompatActivity() {
 
     private var snackbar: Snackbar? = null
 
