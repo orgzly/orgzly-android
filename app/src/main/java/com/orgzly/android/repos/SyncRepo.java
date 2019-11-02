@@ -10,7 +10,9 @@ import java.util.List;
  * Remote source of books (such as Dropbox directory, SSH directory, etc.)
  */
 public interface SyncRepo {
-    boolean requiresConnection();
+    boolean isConnectionRequired();
+
+    boolean isAutoSyncSupported();
 
     /**
      * Unique URL.

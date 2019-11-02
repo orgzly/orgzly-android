@@ -27,7 +27,6 @@ import com.orgzly.android.data.DataRepository;
 import com.orgzly.android.NotesOrgExporter;
 import com.orgzly.android.db.entity.Repo;
 import com.orgzly.android.reminders.ReminderService;
-import com.orgzly.android.repos.RepoType;
 import com.orgzly.android.ui.notifications.Notifications;
 import com.orgzly.android.db.entity.BookAction;
 import com.orgzly.android.db.entity.BookView;
@@ -242,7 +241,7 @@ public class SyncService extends Service {
 
             /* Do nothing if it's auto-sync and there are no repos or they require connection. */
             if (isTriggeredAutomatically) {
-                if (repos.size() == 0 || RepoUtils.requireConnection(repos)) {
+                if (repos.size() == 0 || !RepoUtils.isAutoSyncSupported(repos)) {
                     return null;
                 }
             }
@@ -257,7 +256,7 @@ public class SyncService extends Service {
             }
 
             /* If one of the repositories requires internet connection, check for it. */
-            if (RepoUtils.requireConnection(repos) && !haveNetworkConnection()) {
+            if (RepoUtils.isConnectionRequired(repos) && !haveNetworkConnection()) {
                 status.set(SyncStatus.Type.FAILED, getString(R.string.no_connection), 0, 0);
                 announceActiveSyncStatus();
                 return null;

@@ -22,8 +22,13 @@ public class DropboxRepo implements SyncRepo {
     }
 
     @Override
-    public boolean requiresConnection() {
+    public boolean isConnectionRequired() {
         return true;
+    }
+
+    @Override
+    public boolean isAutoSyncSupported() {
+        return false;
     }
 
     @Override

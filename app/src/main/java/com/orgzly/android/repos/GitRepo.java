@@ -169,8 +169,13 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
         synchronizer = new GitFileSynchronizer(git, prefs);
     }
 
-    public boolean requiresConnection() {
-        return false;
+    public boolean isConnectionRequired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAutoSyncSupported() {
+        return true;
     }
 
     public VersionedRook storeBook(File file, String fileName) throws IOException {

@@ -48,8 +48,13 @@ public class ContentRepo implements SyncRepo {
     }
 
     @Override
-    public boolean requiresConnection() {
+    public boolean isConnectionRequired() {
         return false;
+    }
+
+    @Override
+    public boolean isAutoSyncSupported() {
+        return true;
     }
 
     @Override

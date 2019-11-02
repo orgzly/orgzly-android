@@ -38,7 +38,11 @@ class WebdavRepo(private val repoId: Long, private val uri: Uri, username: Strin
         }
     }
 
-    override fun requiresConnection(): Boolean {
+    override fun isConnectionRequired(): Boolean {
+        return true
+    }
+
+    override fun isAutoSyncSupported(): Boolean {
         return true
     }
 
