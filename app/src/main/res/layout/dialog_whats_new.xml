@@ -24,6 +24,16 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.8.1"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Enable auto-sync for WebDAV" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.8"
             tools:ignore="HardcodedText" />
 

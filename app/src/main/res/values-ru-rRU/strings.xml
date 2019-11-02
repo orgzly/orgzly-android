@@ -21,7 +21,7 @@
     <string name="remove_notebook_link">Удалить ссылку</string>
     <string name="browse">Обзор</string>
     <string name="dropbox">Dropbox</string>
-    <string name="view">View</string>
+    <string name="view">Просмотр</string>
     <string name="edit">Редактировать</string>
     <string name="edit_note">Редактировать заметку</string>
     <string name="delete">Удалить</string>
@@ -194,31 +194,31 @@
     <string name="git_branch_hint">Ветвь (например master)</string>
     <string name="git_auth_https_username_hint">Имя пользователя</string>
     <string name="git_auth_https_password_hint">Пароль</string>
-    <string name="git_generate_key_pair">Generate keypair</string>
-    <string name="git_copy_public_key">Copy public key</string>
+    <string name="git_generate_key_pair">Сгенерировать ключи</string>
+    <string name="git_copy_public_key">Скопировать открытый ключ</string>
     <string name="git_auth_type_text">Тип аутентификации</string>
     <string name="git_auth_type_ssh">SSH</string>
     <string name="git_auth_type_https">HTTPS</string>
     <!-- Git sync repo errors -->
     <!-- TODO: I don't think we can say more than this for ssh authentication failures, but we probably want to -->
-    <string name="git_clone_error_ssh_auth">Failure while cloning, authentication error</string>
-    <string name="git_clone_error_invalid_repo">The remote address is not a git repo</string>
-    <string name="git_clone_error_unknown">Unknown error while cloning</string>
-    <string name="git_clone_error_invalid_target_dir">The target directory does not exist</string>
-    <string name="git_clone_error_target_not_empty">The target directory is not empty</string>
-    <string name="git_clone_error_uri_not_supported">The remote address is not supported</string>
-    <string name="webdav_url_hint">URL (e.g. webdavs://example.com/my-org-files/)</string>
-    <string name="webdav_auth_username_hint">Username</string>
-    <string name="webdav_auth_password_hint">Password</string>
-    <string name="webdav_test_error_auth">Login or password is invalid</string>
-    <string name="webdav_test_error_unknown">Unknown error occurred</string>
+    <string name="git_clone_error_ssh_auth">Сбой при клонировании, ошибка аутентификации</string>
+    <string name="git_clone_error_invalid_repo">Удалённый адрес не является git-репозиторием</string>
+    <string name="git_clone_error_unknown">Неизвестная ошибка при клонировании</string>
+    <string name="git_clone_error_invalid_target_dir">Целевая директория не существует</string>
+    <string name="git_clone_error_target_not_empty">Целевая директория не пуста</string>
+    <string name="git_clone_error_uri_not_supported">Удалённый адрес не поддерживается</string>
+    <string name="webdav_url_hint">URL (напр. webdavs://example.com/my-org-files/)</string>
+    <string name="webdav_auth_username_hint">Имя пользователя</string>
+    <string name="webdav_auth_password_hint">Пароль</string>
+    <string name="webdav_test_error_auth">Неверное имя пользователя или пароль</string>
+    <string name="webdav_test_error_unknown">Произошла неизвестная ошибка</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Действие «Поделиться» не задано</string>
     <string name="share_action_not_supported">Действие «Поделиться» %s не поддерживается</string>
     <string name="share_type_not_set">Тип действия «Поделиться» не задан</string>
     <string name="share_type_not_supported">Тип действия «Поделиться» %s не поддерживается</string>
     <string name="repositories">Хранилища</string>
-    <string name="repository_not_valid_with_reason">Repository invalid: %s</string>
+    <string name="repository_not_valid_with_reason">Неверный репозиторий: %s</string>
     <string name="invalid_repo_url">Недопустимый URL-адрес хранилища «%s»</string>
     <string name="repository_url_already_exists">Репозиторий с таким URL уже существует</string>
     <string name="fragment_left_drawer_list_view_content_description">Левое меню</string>
@@ -233,7 +233,7 @@
     <string name="note_book_not_set">Блокнот не задан</string>
     <string name="title_can_not_be_empty">Заголовок не может быть пустым</string>
     <string name="can_not_be_empty">Не может быть пустым</string>
-    <string name="invalid_url">Invalid URL</string>
+    <string name="invalid_url">Неверный URL</string>
     <string name="no_notebooks">У вас нет блокнотов</string>
     <string name="no_notes">Блокнот не содержит заметок</string>
     <string name="create_new_repository_for_syncing">Создать новое хранилище для синхронизации блокнотов</string>
@@ -303,10 +303,10 @@
     <string name="prefs_title_notifications">Уведомления</string>
     <string name="app">О программе</string>
     <string name="no_repos_configured">Нет настроенных хранилищ</string>
-    <string name="test_connection">Test connection</string>
-    <string name="connecting">Connecting…</string>
+    <string name="test_connection">Проверить поключение</string>
+    <string name="connecting">Подключение…</string>
     <string name="no_connection">Нет соединения</string>
-    <string name="connection_successful">Connection successful</string>
+    <string name="connection_successful">Подключение успешно</string>
     <string name="last_sync_with_argument">Синхронизировано: %s</string>
     <string name="force_loading_from_uri">Принудительная загрузка из %s…</string>
     <string name="force_loaded_from_uri">Принудительно загружено из %s</string>
@@ -447,10 +447,10 @@
         <item quantity="other">Содержит <b>%d</b> заметок</item>
     </plurals>
     <plurals name="found_number_of_notebooks">
-        <item quantity="one">Found <b>%d</b> notebook</item>
-        <item quantity="few">Found <b>%d</b> notebooks</item>
-        <item quantity="many">Found <b>%d</b> notebooks</item>
-        <item quantity="other">Found <b>%d</b> notebooks</item>
+        <item quantity="one">Найден <b>%d</b> блокнот</item>
+        <item quantity="few">Найдено <b>%d</b> блокнота</item>
+        <item quantity="many">Найдено <b>%d</b> блокнотов</item>
+        <item quantity="other">Найдено блокнотов: <b>%d</b></item>
     </plurals>
     <string name="content_line_count_displayed">Количество строк содержимого</string>
     <string name="content_line_count_displayed_summary">Отображать количество строк, когда содержимое не отображается</string>
@@ -528,8 +528,8 @@
     <string name="notification_default_priority">По умолчанию</string>
     <string name="notification_low_priority">Низкий</string>
     <string name="notification_minimum_priority">Минимальный</string>
-    <string name="breadcrumbs_target">Breadcrumbs target</string>
-    <string name="link_target">Link target</string>
+    <string name="breadcrumbs_target">Цепочка навигации ведёт на...</string>
+    <string name="link_target">Ссылка ведёт на...</string>
     <string name="note_details">Подробности заметки</string>
     <string name="notebook_and_scroll_to_note">Блокнот (прокрутка к заметке)</string>
     <string name="notebook_and_focus_on_note">Блокнот (фокус на заметке)</string>
@@ -537,14 +537,14 @@
         <item quantity="one">Переместить заметку</item>
         <item quantity="few">Переместить <b>%d</b> заметки</item>
         <item quantity="many">Переместить <b>%d</b> заметок</item>
-        <item quantity="other">Refile <b>%d</b> notes</item>
+        <item quantity="other">Переместить <b>%d</b> заметок</item>
     </plurals>
-    <string name="display_checkmarks">Display checkmarks</string>
-    <string name="display_checkmarks_summary">Allows marking notes as done</string>
-    <string name="last_used">Last used</string>
-    <string name="note_details_opening_mode">Opening mode</string>
-    <string name="cleartext_traffic">Cleartext traffic</string>
-    <string name="cleartext_traffic_message">Are you sure you want to use this URL?</string>
-    <string name="credentials_in_url_not_supported">Passing credentials in URL is not supported</string>
-    <string name="access_token">Access token</string>
+    <string name="display_checkmarks">Показывать флажки</string>
+    <string name="display_checkmarks_summary">Разрешить отмечать заметки как сделанные</string>
+    <string name="last_used">Последннее использование</string>
+    <string name="note_details_opening_mode">Режим открытия</string>
+    <string name="cleartext_traffic">Незашифрованное соединение</string>
+    <string name="cleartext_traffic_message">Вы уверены, что хотите использовать этот URL?</string>
+    <string name="credentials_in_url_not_supported">Передача учетных данных в URL не поддерживается</string>
+    <string name="access_token">Токен для доступа</string>
 </resources>

@@ -12,7 +12,7 @@
 
 ** 点击笔记旁的图标收起笔记的子笔记
 
-Long-click the icon to unfold entire subtree.
+长按图标展开整个子树。
 
 *** 没有层数限制
 **** 以便更好地组织笔记
