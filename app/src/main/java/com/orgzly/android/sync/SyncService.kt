@@ -198,7 +198,7 @@ class SyncService : Service() {
 
             /* Do nothing if it's auto-sync and there are no repos or they require connection. */
             if (isTriggeredAutomatically) {
-                if (repos.isEmpty() || RepoUtils.isConnectionRequired(repos)) {
+                if (repos.isEmpty() || !RepoUtils.isAutoSyncSupported(repos)) {
                     return null
                 }
             }
