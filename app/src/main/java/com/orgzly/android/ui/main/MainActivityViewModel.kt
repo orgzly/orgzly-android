@@ -110,19 +110,14 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
             } else {
                 val repos = dataRepository.getRepos()
 
-                val a = if (repos.isEmpty()) {
+                val options = if (repos.isEmpty()) {
                     BookLinkOptions(bookView.book, emptyList(), emptyArray(), -1)
 
                 } else {
                     val currentLink = bookView.linkRepo
 
-                    var selectedLink = -1
-                    val repos = repos.mapIndexed { index, repo ->
-                        if (repo.url == currentLink?.url) {
-                            selectedLink = index
-                        }
-
-                        repo
+                    val selectedLink = repos.indexOfFirst {
+                        it.url == currentLink?.url
                     }
 
                     BookLinkOptions(
@@ -132,7 +127,7 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
                             selectedLink)
                 }
 
-                setBookLinkRequestEvent.postValue(a)
+                setBookLinkRequestEvent.postValue(options)
             }
         }
     }

@@ -142,7 +142,12 @@ class DataRepository @Inject constructor(
      * @throws IOException
      */
     @Throws(IOException::class)
-    fun saveBookToRepo(repoEntity: Repo, fileName: String, bookView: BookView, format: BookFormat) {
+    fun saveBookToRepo(
+            repoEntity: Repo,
+            fileName: String,
+            bookView: BookView,
+            @Suppress("UNUSED_PARAMETER") format: BookFormat) {
+
         val uploadedBook: VersionedRook
 
         val repo = getRepoInstance(repoEntity.id, repoEntity.type, repoEntity.url)
@@ -252,7 +257,7 @@ class DataRepository @Inject constructor(
      * Returns full string content of the book in format specified. Used by tests.
      */
     @Throws(IOException::class)
-    fun getBookContent(name: String, format: BookFormat): String? {
+    fun getBookContent(name: String, @Suppress("UNUSED_PARAMETER") format: BookFormat): String? {
         val book = getBook(name)
 
         if (book != null) {
@@ -1581,7 +1586,7 @@ class DataRepository @Inject constructor(
     @Throws(IOException::class)
     fun loadBookFromFile(
             name: String,
-            format: BookFormat,
+            @Suppress("UNUSED_PARAMETER") format: BookFormat,
             file: File,
             vrook: VersionedRook? = null,
             selectedEncoding: String? = null

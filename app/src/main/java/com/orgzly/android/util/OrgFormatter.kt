@@ -172,7 +172,7 @@ object OrgFormatter {
     }
 
     // TODO: Check for existence if not too slow
-    private fun isFile(str: String): Boolean {
+    private fun isFile(@Suppress("UNUSED_PARAMETER") str: String): Boolean {
         return true
     }
 

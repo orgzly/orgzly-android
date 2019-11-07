@@ -179,7 +179,7 @@ class QuickBar(val context: Context, val inBook: Boolean) {
                     Button(R.id.quick_bar_focus, R.styleable.Icons_ic_center_focus_strong_24dp)
             )
 
-            fun fromPreferences(context: Context): Buttons {
+            fun fromPreferences(@Suppress("UNUSED_PARAMETER") context: Context): Buttons {
                 // TODO: Allow user to modify buttons
                 return Buttons(RIGHT_IN_BOOK, LEFT_IN_BOOK, LEFT_IN_QUERY)
             }
