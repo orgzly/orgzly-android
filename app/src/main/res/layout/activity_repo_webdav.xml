@@ -36,11 +36,21 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <Button
+                    android:id="@+id/activity_repo_webdav_certificates"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_between_content_areas"
+                    android:layout_marginBottom="@dimen/space_between_content_areas"
+                    android:text="@string/add_trusted_certificates_optional"
+                    android:onClick="editCertificates"/>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/activity_repo_webdav_username_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_between_content_areas">
+                    android:layout_marginTop="@dimen/space_between_content_areas"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/activity_repo_webdav_username"
@@ -55,7 +65,8 @@
                     android:id="@+id/activity_repo_webdav_password_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_between_content_areas">
+                    android:layout_marginTop="@dimen/space_between_content_areas"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/activity_repo_webdav_password"

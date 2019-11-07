@@ -39,4 +39,6 @@
     <string name="synced_rook_mtime_sample" translatable="false">Jul 3, 2013 9:45:37 PM</string>
     <string name="synced_rook_revision_sample" translatable="false">42f97fe238</string>
     <string name="breadcrumbs_sample" translatable="false">Item • Item • Item • Item • Item • Item • Item • Item • Item • Item</string>
+
+    <string name="certificates_hint">-----BEGIN CERTIFICATE-----</string>
 </resources>

@@ -5,8 +5,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -14,12 +13,15 @@ import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.repos.RepoFactory
 import com.orgzly.android.repos.RepoType
+import com.orgzly.android.repos.WebdavRepo.Companion.CERTIFICATES_PREF_KEY
 import com.orgzly.android.repos.WebdavRepo.Companion.PASSWORD_PREF_KEY
 import com.orgzly.android.repos.WebdavRepo.Companion.USERNAME_PREF_KEY
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.UriUtils
 import com.orgzly.databinding.ActivityRepoWebdavBinding
+import com.orgzly.databinding.DialogCertificatesBinding
+import kotlinx.android.synthetic.main.dialog_certificates.*
 import javax.inject.Inject
 
 class WebdavRepoActivity : CommonActivity() {
@@ -47,15 +49,6 @@ class WebdavRepoActivity : CommonActivity() {
         val factory = WebdavRepoViewModelFactory.getInstance(dataRepository, repoId)
 
         viewModel = ViewModelProviders.of(this, factory).get(WebdavRepoViewModel::class.java)
-
-        if (viewModel.repoId != 0L) { // Editing existing
-            viewModel.loadRepoProperties()?.let { repoWithProps ->
-                binding.activityRepoWebdavUrl.setText(repoWithProps.repo.url)
-
-                binding.activityRepoWebdavUsername.setText(repoWithProps.props[USERNAME_PREF_KEY])
-                binding.activityRepoWebdavPassword.setText(repoWithProps.props[PASSWORD_PREF_KEY])
-            }
-        }
 
         viewModel.finishEvent.observeSingle(this, Observer {
             finish()
@@ -101,6 +94,24 @@ class WebdavRepoActivity : CommonActivity() {
                         }
                     }
         })
+
+        viewModel.certificates.observe(this, Observer { str ->
+            binding.activityRepoWebdavCertificates.text = getString(if (str.isNullOrEmpty()) {
+                R.string.add_trusted_certificates_optional
+            } else {
+                R.string.edit_trusted_certificates
+            })
+        })
+
+        if (viewModel.repoId != 0L) { // Editing existing
+            viewModel.loadRepoProperties()?.let { repoWithProps ->
+                binding.activityRepoWebdavUrl.setText(repoWithProps.repo.url)
+
+                binding.activityRepoWebdavUsername.setText(repoWithProps.props[USERNAME_PREF_KEY])
+                binding.activityRepoWebdavPassword.setText(repoWithProps.props[PASSWORD_PREF_KEY])
+                viewModel.certificates.value = repoWithProps.props[CERTIFICATES_PREF_KEY]
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -133,8 +144,15 @@ class WebdavRepoActivity : CommonActivity() {
             val uriString = getUrl()
             val username = getUsername()
             val password = getPassword()
+            val certificates = getCertificates()
 
-            val props = mapOf(USERNAME_PREF_KEY to username, PASSWORD_PREF_KEY to password)
+            val props = mutableMapOf(
+                    USERNAME_PREF_KEY to username,
+                    PASSWORD_PREF_KEY to password)
+
+            if (certificates != null) {
+                props[CERTIFICATES_PREF_KEY] = certificates
+            }
 
             if (UriUtils.isUrlSecure(uriString)) {
                 viewModel.saveRepo(RepoType.WEBDAV, uriString, props)
@@ -165,6 +183,10 @@ class WebdavRepoActivity : CommonActivity() {
         return binding.activityRepoWebdavPassword.text.toString().trim { it <= ' ' }
     }
 
+    private fun getCertificates(): String? {
+        return viewModel.certificates.value
+    }
+
     private fun isInputValid(): Boolean {
         val url = getUrl()
         val username = getUsername()
@@ -192,6 +214,33 @@ class WebdavRepoActivity : CommonActivity() {
                 && binding.activityRepoWebdavPasswordLayout.error == null
     }
 
+    fun editCertificates(view: View) {
+        val dialogBinding = DialogCertificatesBinding.inflate(layoutInflater)
+
+        dialogBinding.certificates.setText(viewModel.certificates.value)
+
+        alertDialog = AlertDialog.Builder(this)
+                .setTitle(getString(R.string.trusted_certificates))
+                .setPositiveButton(R.string.set) { _, _ ->
+                    viewModel.certificates.value = dialogBinding.certificates.text.toString()
+                }
+                .setNeutralButton(R.string.clear) { _, _ ->
+                    viewModel.certificates.value = null
+                }
+                .setNegativeButton(R.string.cancel) { _, _ ->
+                    // Cancel
+                }
+                .setView(dialogBinding.root)
+                .show()
+
+        alertDialog?.setOnShowListener { dialog ->
+            /// ActivityUtils.openSoftKeyboard(this, dialogBinding.certificates)
+        }
+        alertDialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
+        // alertDialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+    }
+
     private fun testConnection() {
         ActivityUtils.closeSoftKeyboard(this)
 
@@ -202,8 +251,9 @@ class WebdavRepoActivity : CommonActivity() {
         val uriString = getUrl()
         val username = getUsername()
         val password = getPassword()
+        val certificates = getCertificates()
 
-        viewModel.testConnection(uriString, username, password)
+        viewModel.testConnection(uriString, username, password, certificates)
     }
 
     companion object {
