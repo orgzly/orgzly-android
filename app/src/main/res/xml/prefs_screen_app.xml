@@ -2,19 +2,22 @@
 
 <androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/app">
 
     <Preference
         android:key="@string/pref_key_reload_getting_started"
         android:title="@string/reload_getting_started"
-        android:summary="@string/reload_getting_started_summary"/>
+        android:summary="@string/reload_getting_started_summary" />
 
     <Preference
         android:key="@string/pref_key_clear_database"
         android:title="@string/clear_database"
-        android:summary="@string/clear_database_summary"/>
+        android:summary="@string/clear_database_summary" />
 
     <Preference
         android:key="@string/pref_key_version"
-        android:title="@string/version"/>
+        android:title="@string/version"
+        app:enableCopying="true" />
+
 </androidx.preference.PreferenceScreen>
