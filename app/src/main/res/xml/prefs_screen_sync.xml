@@ -2,6 +2,7 @@
 
 <androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/sync">
 
     <Preference
@@ -27,13 +28,14 @@
             android:summary="@string/use_created_at_property_summary"
             android:defaultValue="@bool/pref_default_is_created_at_added"/>
 
-        <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
+        <EditTextPreference
             android:key="@string/pref_key_created_at_property"
             android:dependency="@string/pref_key_is_created_at_added"
             android:title="@string/created_at_property"
             android:dialogTitle="@string/property_name"
             android:inputType="text"
-            android:defaultValue="@string/pref_default_created_at_property"/>
+            android:defaultValue="@string/pref_default_created_at_property"
+            app:useSimpleSummaryProvider="true"/>
 
         <androidx.preference.PreferenceScreen
             android:key="prefs_screen_org_file_format"
