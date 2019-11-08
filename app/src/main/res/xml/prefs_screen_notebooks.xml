@@ -6,13 +6,14 @@
     android:title="@string/pref_title_notebooks">
 
     <PreferenceCategory android:title="@string/notebooks">
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        <ListPreference
             android:key="@string/pref_key_notebooks_sort_order"
             android:title="@string/sort_order"
             android:dialogTitle="@string/notebooks_sort_order"
             android:entries="@array/notebooks_sort_order"
             android:entryValues="@array/notebooks_sort_order_values"
-            android:defaultValue="@string/pref_default_notebooks_sort_order"/>
+            android:defaultValue="@string/pref_default_notebooks_sort_order"
+            app:useSimpleSummaryProvider="true"/>
 
         <MultiSelectListPreference
             android:key="@string/pref_key_displayed_book_details"
@@ -23,14 +24,15 @@
             android:entryValues="@array/displayed_book_details_values"
             android:defaultValue="@array/displayed_book_details_default"/>
 
-        <com.orgzly.android.prefs.EditTextPreferenceWithValueAsSummary
+        <ListPreference
             android:key="@string/pref_key_share_notebook"
             android:title="@string/default_notebook"
             android:selectAllOnFocus="true"
             android:inputType="text"
             android:singleLine="true"
             android:dialogMessage="@string/default_notebook_desc"
-            android:defaultValue="@string/default_share_notebook"/>
+            android:defaultValue="@string/default_share_notebook"
+            app:useSimpleSummaryProvider="true"/>
 
         <SwitchPreference
             android:key="@string/pref_key_force_utf8"
@@ -47,12 +49,13 @@
             android:summary="@string/notebooks_start_folded_summary"
             android:defaultValue="@bool/pref_default_notebooks_start_folded"/>
 
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        <ListPreference
             android:key="@string/pref_key_notes_list_density"
             android:title="@string/density"
             android:entries="@array/list_density"
             android:entryValues="@array/list_density_values"
-            android:defaultValue="@string/pref_default_notes_list_density"/>
+            android:defaultValue="@string/pref_default_notes_list_density"
+            app:useSimpleSummaryProvider="true"/>
 
         <SwitchPreference
             android:key="@string/pref_key_display_planning"
@@ -60,12 +63,13 @@
             android:summary="@string/display_planning_times_summary"
             android:defaultValue="@bool/pref_default_display_planning"/>
 
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        <ListPreference
             android:key="@string/pref_key_book_name_in_search"
             android:title="@string/book_name_in_search"
             android:entries="@array/book_name_in_search_entries"
             android:entryValues="@array/book_name_in_search_entry_values"
-            android:defaultValue="@string/pref_default_book_name_in_search"/>
+            android:defaultValue="@string/pref_default_book_name_in_search"
+            app:useSimpleSummaryProvider="true"/>
 
         <SwitchPreference
             android:key="@string/pref_key_display_inherited_tags_in_search_results"
@@ -99,22 +103,24 @@
             android:summary="@string/content_line_count_displayed_summary"
             android:defaultValue="@bool/pref_default_content_line_count_displayed"/>
 
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        <ListPreference
             android:key="@string/pref_key_preface_in_book"
             android:title="@string/preface_in_book"
             android:entries="@array/preface_in_book_entries"
             android:entryValues="@array/preface_in_book_entry_values"
-            android:defaultValue="@string/pref_default_preface_in_book"/>
+            android:defaultValue="@string/pref_default_preface_in_book"
+            app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/note">
 
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        <ListPreference
             android:key="@string/pref_key_note_details_opening_mode"
             android:title="@string/note_details_opening_mode"
             android:entries="@array/note_details_opening_mode"
             android:entryValues="@array/note_details_opening_mode_values"
-            android:defaultValue="@string/pref_default_note_details_opening_mode"/>
+            android:defaultValue="@string/pref_default_note_details_opening_mode"
+            app:useSimpleSummaryProvider="true"/>
 
         <com.orgzly.android.prefs.StatesPreference
             android:key="@string/pref_key_states"
@@ -122,19 +128,21 @@
             android:dialogTitle="@string/states"
             android:defaultValue="@string/pref_default_states"/>
 
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        <ListPreference
             android:key="@string/pref_key_default_priority"
             android:title="@string/default_priority"
             android:entries="@array/priorities"
             android:entryValues="@array/priority_values"
-            android:defaultValue="@string/pref_default_default_priority"/>
+            android:defaultValue="@string/pref_default_default_priority"
+            app:useSimpleSummaryProvider="true"/>
 
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        <ListPreference
             android:key="@string/pref_key_min_priority"
             android:title="@string/lowest_priority"
             android:entries="@array/priorities"
             android:entryValues="@array/priority_values"
-            android:defaultValue="@string/pref_default_min_priority"/>
+            android:defaultValue="@string/pref_default_min_priority"
+            app:useSimpleSummaryProvider="true"/>
 
         <MultiSelectListPreference
             android:key="@string/pref_key_selected_note_metadata"
@@ -163,27 +171,30 @@
             android:summary="@string/set_last_repeat_on_time_shift_summary"
             android:defaultValue="@bool/pref_default_set_last_repeat_on_time_shift"/>
 
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        <ListPreference
             android:key="@string/pref_key_breadcrumbs_target"
             android:title="@string/breadcrumbs_target"
             android:entries="@array/open_targets"
             android:entryValues="@array/open_targets_values"
-            android:defaultValue="@string/pref_default_breadcrumbs_target"/>
+            android:defaultValue="@string/pref_default_breadcrumbs_target"
+            app:useSimpleSummaryProvider="true"/>
 
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        <ListPreference
             android:key="@string/pref_key_link_target"
             android:title="@string/link_target"
             android:entries="@array/open_targets"
             android:entryValues="@array/open_targets_values"
-            android:defaultValue="@string/pref_default_link_target"/>
+            android:defaultValue="@string/pref_default_link_target"
+            app:useSimpleSummaryProvider="true"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefs_title_new_note">
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        <ListPreference
             android:key="@string/pref_key_new_note_state"
             android:title="@string/state"
-            android:defaultValue="@string/pref_default_new_note_state"/>
+            android:defaultValue="@string/pref_default_new_note_state"
+            app:useSimpleSummaryProvider="true"/>
 
         <SwitchPreference
             android:key="@string/pref_key_is_new_note_scheduled"

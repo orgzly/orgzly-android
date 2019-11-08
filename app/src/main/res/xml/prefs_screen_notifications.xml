@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.preference.PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/prefs_title_notifications">
 
     <SwitchPreference
@@ -10,13 +10,14 @@
         android:summary="@string/ongoing_notification_summary"
         android:defaultValue="@bool/pref_default_ongoing_notification"/>
 
-    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+    <ListPreference
         android:key="@string/pref_key_ongoing_notification_priority"
         android:dependency="@string/pref_key_ongoing_notification"
         android:title="@string/ongoing_notification_priority"
         android:entries="@array/notification_priorities"
         android:entryValues="@array/notification_priority_values"
-        android:defaultValue="@string/pref_default_ongoing_notification_priority" />
+        android:defaultValue="@string/pref_default_ongoing_notification_priority"
+        app:useSimpleSummaryProvider="true"/>
 
     <SwitchPreference
         android:key="@string/pref_key_show_sync_notifications"

@@ -220,7 +220,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             // Update default priority when minimum priority changes
             getString(R.string.pref_key_min_priority) -> {
                 preference(R.string.pref_key_default_priority)?.let {
-                    val pref = it as ListPreferenceWithValueAsSummary
+                    val pref = it as ListPreference
 
                     val defPri = AppPreferences.defaultPriority(context)
                     val minPri = sharedPreferences.getString(key, null)
@@ -237,7 +237,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             // Update minimum priority when default priority changes
             getString(R.string.pref_key_default_priority) -> {
                 preference(R.string.pref_key_min_priority)?.let {
-                    val pref = it as ListPreferenceWithValueAsSummary
+                    val pref = it as ListPreference
 
                     val minPri = AppPreferences.minPriority(context)
                     val defPri = sharedPreferences.getString(key, null)
@@ -325,7 +325,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
      */
     private fun setDefaultStateForNewNote() {
         preference(R.string.pref_key_new_note_state)?.let {
-            val pref = it as ListPreferenceWithValueAsSummary
+            val pref = it as ListPreference
 
             /* NOTE followed by to-do keywords */
             val entries = LinkedHashSet<CharSequence>()

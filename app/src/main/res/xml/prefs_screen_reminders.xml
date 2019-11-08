@@ -53,11 +53,12 @@
             android:defaultValue="@string/pref_default_snooze_time"
             app:min="1" />
 
-        <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+        <ListPreference
             android:key="@string/pref_key_snooze_type"
             android:title="@string/pref_title_snooze_type"
             android:entries="@array/snooze_types"
             android:entryValues="@array/snooze_type_values"
-            android:defaultValue="@string/pref_default_snooze_type" />
+            android:defaultValue="@string/pref_default_snooze_type"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>

@@ -2,6 +2,7 @@
 
 <androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/look_and_feel">
 
     <SwitchPreference
@@ -10,19 +11,21 @@
         android:summary="@string/reversed_note_click_action_summary"
         android:defaultValue="@bool/pref_default_is_reverse_click_action"/>
 
-    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+    <ListPreference
         android:key="@string/pref_key_color_scheme"
         android:title="@string/color_scheme"
         android:entries="@array/color_scheme"
         android:entryValues="@array/color_scheme_values"
-        android:defaultValue="@string/pref_default_color_scheme"/>
+        android:defaultValue="@string/pref_default_color_scheme"
+        app:useSimpleSummaryProvider="true"/>
 
-    <com.orgzly.android.prefs.ListPreferenceWithValueAsSummary
+    <ListPreference
         android:key="@string/pref_key_font_size"
         android:title="@string/font_size"
         android:entries="@array/font_sizes"
         android:entryValues="@array/font_sizes_values"
-        android:defaultValue="@string/pref_default_font_size"/>
+        android:defaultValue="@string/pref_default_font_size"
+        app:useSimpleSummaryProvider="true"/>
 
     <SwitchPreference
         android:key="@string/pref_key_is_font_monospaced"
