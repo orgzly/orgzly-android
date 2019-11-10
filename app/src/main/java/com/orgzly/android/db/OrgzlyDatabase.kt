@@ -38,7 +38,7 @@ import java.util.*
             VersionedRook::class
         ],
 
-        version = 153
+        version = 154
 )
 @TypeConverters(com.orgzly.android.db.TypeConverters::class)
 abstract class OrgzlyDatabase : RoomDatabase() {
@@ -105,7 +105,8 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                             MIGRATION_149_150, // Switch to Room
                             MIGRATION_150_151,
                             MIGRATION_151_152,
-                            MIGRATION_152_153
+                            MIGRATION_152_153,
+                            MIGRATION_153_154
                     )
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
@@ -498,6 +499,23 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                     }
                     db.update("repos", SQLiteDatabase.CONFLICT_ROLLBACK, values, "id = $id", null)
                 }
+            }
+        }
+
+        private val MIGRATION_153_154 = object : Migration(153, 154) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                /*
+                 * Delete entries with missing required data.
+                 * Deleting or renaming repositories before v1.7 was deleting entries from repos
+                 * without deleting dependent entries from other tables. This started causing
+                 * crashes in v1.8 with addition of RepoType.
+                 */
+                db.execSQL("DELETE FROM rooks WHERE repo_id NOT IN (SELECT id FROM repos)")
+                db.execSQL("DELETE FROM versioned_rooks WHERE rook_id NOT IN (SELECT id FROM rooks)")
+                db.execSQL("DELETE FROM book_syncs WHERE versioned_rook_id NOT IN (SELECT id FROM versioned_rooks)")
+                db.execSQL("DELETE FROM book_syncs WHERE book_id NOT IN (SELECT id FROM books)")
+
+                // TODO: Remove rook_urls, just store URLs in rooks
             }
         }
     }
