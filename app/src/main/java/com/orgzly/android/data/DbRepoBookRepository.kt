@@ -15,21 +15,21 @@ import javax.inject.Singleton
 class DbRepoBookRepository @Inject constructor(db: OrgzlyDatabase) {
     private val dbRepoBook = db.dbRepoBook()
 
-    fun getBooks(repoUri: Uri): List<VersionedRook> {
+    fun getBooks(repoId: Long, repoUri: Uri): List<VersionedRook> {
         return dbRepoBook.getAllByRepo(repoUri.toString()).map {
-            VersionedRook(0, RepoType.MOCK, Uri.parse(it.repoUrl), Uri.parse(it.url), it.revision, it.mtime)
+            VersionedRook(repoId, RepoType.MOCK, Uri.parse(it.repoUrl), Uri.parse(it.url), it.revision, it.mtime)
         }
     }
 
-    fun retrieveBook(repoUri: Uri, uri: Uri, file: File): VersionedRook {
+    fun retrieveBook(repoId: Long, repoUri: Uri, uri: Uri, file: File): VersionedRook {
         val book = dbRepoBook.getByUrl(uri.toString()) ?: throw IOException()
 
         MiscUtils.writeStringToFile(book.content, file)
 
-        return VersionedRook(0, RepoType.MOCK, repoUri, uri, book.revision, book.mtime)
+        return VersionedRook(repoId, RepoType.MOCK, repoUri, uri, book.revision, book.mtime)
     }
 
-    fun createBook(vrook: VersionedRook, content: String): VersionedRook {
+    fun createBook(repoId: Long, vrook: VersionedRook, content: String): VersionedRook {
         val book = DbRepoBook(
                 0,
                 vrook.repoUri.toString(),
@@ -43,7 +43,7 @@ class DbRepoBookRepository @Inject constructor(db: OrgzlyDatabase) {
         dbRepoBook.replace(book)
 
         return VersionedRook(
-                0,
+                repoId,
                 RepoType.MOCK,
                 Uri.parse(book.repoUrl),
                 Uri.parse(book.url),
@@ -51,7 +51,7 @@ class DbRepoBookRepository @Inject constructor(db: OrgzlyDatabase) {
                 book.mtime)
     }
 
-    fun renameBook(from: Uri, to: Uri): VersionedRook {
+    fun renameBook(repoId: Long, from: Uri, to: Uri): VersionedRook {
         val book = dbRepoBook.getByUrl(from.toString())
                 ?: throw IOException("Failed moving notebook from $from to $to")
 
@@ -63,7 +63,7 @@ class DbRepoBookRepository @Inject constructor(db: OrgzlyDatabase) {
         dbRepoBook.update(renamedBook)
 
         return VersionedRook(
-                0,
+                repoId,
                 RepoType.MOCK,
                 Uri.parse(renamedBook.repoUrl),
                 Uri.parse(renamedBook.url),

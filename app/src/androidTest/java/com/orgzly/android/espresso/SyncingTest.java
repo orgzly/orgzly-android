@@ -769,7 +769,7 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testDeleteExistingRemoteFile() {
-        testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
+        Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         testUtils.setupBook("booky", "Sample book used for tests");
         activityRule.launchActivity(null);
 
@@ -782,6 +782,7 @@ public class SyncingTest extends OrgzlyTest {
         onView(withId(R.id.delete_linked_checkbox)).perform(click());
         onView(withText(R.string.delete)).perform(click());
 
-        Assert.assertEquals(0, dbRepoBookRepository.getBooks(Uri.parse("mock://repo-a")).size());
+        Assert.assertEquals(0, dbRepoBookRepository.getBooks(
+                repo.getId(), Uri.parse("mock://repo-a")).size());
     }
 }

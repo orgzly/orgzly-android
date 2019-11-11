@@ -43,13 +43,13 @@ public class DatabaseRepo implements SyncRepo {
 
     @Override
     public List<VersionedRook> getBooks() {
-        return dbRepo.getBooks(repoUri);
+        return dbRepo.getBooks(repoId, repoUri);
     }
 
     @Override
     public VersionedRook retrieveBook(String fileName, File file) {
         Uri uri = repoUri.buildUpon().appendPath(fileName).build();
-        return dbRepo.retrieveBook(repoUri, uri, file);
+        return dbRepo.retrieveBook(repoId, repoUri, uri, file);
     }
 
     @Override
@@ -63,13 +63,13 @@ public class DatabaseRepo implements SyncRepo {
 
         VersionedRook vrook = new VersionedRook(repoId, RepoType.MOCK, repoUri, uri, rev, mtime);
 
-        return dbRepo.createBook(vrook, content);
+        return dbRepo.createBook(repoId, vrook, content);
     }
 
     @Override
     public VersionedRook renameBook(Uri fromUri, String name) {
         Uri toUri = UriUtils.getUriForNewName(fromUri, name);
-        return dbRepo.renameBook(fromUri, toUri);
+        return dbRepo.renameBook(repoId, fromUri, toUri);
     }
 
     @Override

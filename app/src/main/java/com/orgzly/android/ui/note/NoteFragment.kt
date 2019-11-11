@@ -292,8 +292,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                     R.plurals.delete_note_or_notes_with_count_question, count, count)
 
             dialog = AlertDialog.Builder(context)
-                    .setTitle(R.string.delete)
-                    .setMessage(question)
+                    .setTitle(question)
                     .setPositiveButton(R.string.delete) { _, _ ->
                         viewModel.deleteNote()
                     }
