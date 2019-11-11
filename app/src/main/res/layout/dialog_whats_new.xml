@@ -24,6 +24,24 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.8.2-beta.1"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support adding trusted certificates for WebDAV repo" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix issue causing crash on start related to deleted repositories in the past" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Display number of notes to be deleted in confirmation dialog" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.8.1"
             tools:ignore="HardcodedText" />
 
