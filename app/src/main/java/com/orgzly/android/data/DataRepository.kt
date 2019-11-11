@@ -419,14 +419,10 @@ class DataRepository @Inject constructor(
     }
 
     fun updateBookLinkAndSync(bookId: Long, uploadedBook: VersionedRook) {
-        val repoUrl = uploadedBook.repoUri.toString()
         val rookUrl = uploadedBook.uri.toString()
+        val repoId = uploadedBook.repoId
         val rookRevision = uploadedBook.revision
         val rookMtime = uploadedBook.mtime
-
-        val repoId = checkNotNull(db.repo().get(repoUrl)) {
-            "Repo $repoUrl not found"
-        }.id
 
         val rookUrlId = db.rookUrl().getOrInsert(rookUrl)
         val rookId = db.rook().getOrInsert(repoId, rookUrlId)
@@ -1776,25 +1772,7 @@ class DataRepository @Inject constructor(
                     (System.currentTimeMillis() - startedAt) + " ms")
 
         if (vrook != null) {
-            // TODO: Reuse updateBookLinkAndSync
-
-            val repoUrl = vrook.repoUri.toString()
-
-            val repoId = checkNotNull(db.repo().get(repoUrl)) {
-                "Repo $repoUrl not found"
-            }.id
-
-            db.bookLink().upsert(bookId, repoId)
-
-            val rookUrlId = db.rookUrl().getOrInsert(vrook.uri.toString())
-            val rookId = db.rook().getOrInsert(repoId, rookUrlId)
-
-            val versionedRookId = db.versionedRook().replace(
-                    com.orgzly.android.db.entity.VersionedRook(
-                            0, rookId, vrook.revision, vrook.mtime))
-
-            db.bookLink().upsert(bookId, repoId)
-            db.bookSync().upsert(bookId, versionedRookId)
+            updateBookLinkAndSync(bookId, vrook)
         }
 
         updateBookIsModified(bookId, false)
