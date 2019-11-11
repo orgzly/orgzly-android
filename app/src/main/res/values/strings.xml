@@ -410,15 +410,15 @@
     <string name="notebooks_sort_order_name">Name</string>
     <string name="notebooks_sort_order_modification_time">Modification time</string>
 
-    <!-- Note from details view -->
-    <string name="delete_note">Delete note</string>
     <plurals name="delete_note_or_notes_with_count_question">
         <item quantity="one">Delete note?</item>
         <item quantity="other">Delete <b>%d</b> notes?</item>
     </plurals>
 
-    <!-- Selected notes in the book -->
+    <!-- Unused -->
+    <string name="delete_note">Delete note</string>
     <string name="delete_notes">Delete notes</string>
+    <string name="delete_note_and_all_subnotes">Delete this note and all its sub-notes?</string>
     <string name="delete_notes_and_all_subnotes">Delete notes and all its sub-notes?</string>
 
     <plurals name="notes_deleted">

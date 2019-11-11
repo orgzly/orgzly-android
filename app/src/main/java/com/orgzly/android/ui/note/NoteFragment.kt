@@ -288,12 +288,12 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         })
 
         viewModel.noteDeleteRequest.observeSingle(viewLifecycleOwner, Observer { count ->
-            val title = resources.getQuantityString(
+            val question = resources.getQuantityString(
                     R.plurals.delete_note_or_notes_with_count_question, count, count)
 
             dialog = AlertDialog.Builder(context)
-                    .setTitle(title)
-                    // .setMessage(R.string.this_action_cannot_be_undone)
+                    .setTitle(R.string.delete)
+                    .setMessage(question)
                     .setPositiveButton(R.string.delete) { _, _ ->
                         viewModel.deleteNote()
                     }
@@ -1001,7 +1001,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     }
 
     private fun userDelete() {
-        viewModel.deleteNoteRequest()
+        viewModel.requestNoteDelete()
     }
 
     private fun userFollowBookBreadcrumb() {

@@ -88,7 +88,7 @@ class NoteViewModel(
         }
     }
 
-    fun deleteNoteRequest() {
+    fun requestNoteDelete() {
         App.EXECUTORS.diskIO().execute {
             val count = dataRepository.getNotesAndSubtreesCount(setOf(noteId))
             noteDeleteRequest.postValue(count)

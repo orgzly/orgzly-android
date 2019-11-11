@@ -3,7 +3,6 @@ package com.orgzly.android.ui.notes.book
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -19,7 +18,6 @@ import com.orgzly.android.BookUtils
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.sync.SyncService
 import com.orgzly.android.ui.*
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
@@ -239,6 +237,23 @@ class BookFragment :
             RefileFragment.getInstance(it.selected, it.count)
                     .show(requireFragmentManager(), RefileFragment.FRAGMENT_TAG)
         })
+
+        viewModel.notesDeleteRequest.observeSingle(viewLifecycleOwner, Observer { pair ->
+            val ids = pair.first
+            val count = pair.second
+
+            val question = resources.getQuantityString(
+                    R.plurals.delete_note_or_notes_with_count_question, count, count)
+
+            dialog = AlertDialog.Builder(context)
+                    .setTitle(R.string.delete)
+                    .setMessage(question)
+                    .setPositiveButton(R.string.delete) { _, _ ->
+                        listener?.onNotesDeleteRequest(mBookId, ids)
+                    }
+                    .setNegativeButton(R.string.cancel) { _, _ -> }
+                    .show()
+        })
     }
 
     private fun updateViewState(notes: List<NoteView>?) {
@@ -444,14 +459,7 @@ class BookFragment :
     }
 
     private fun delete(ids: Set<Long>) {
-        dialog = AlertDialog.Builder(context)
-                .setTitle(R.string.delete_notes)
-                .setMessage(R.string.delete_notes_and_all_subnotes)
-                .setPositiveButton(R.string.delete) { _, _ ->
-                    listener?.onNotesDeleteRequest(mBookId, ids)
-                }
-                .setNegativeButton(R.string.cancel) { _, _ -> }
-                .show()
+        viewModel.requestNotesDelete(ids)
     }
 
     override fun getCurrentDrawerItemId(): String {

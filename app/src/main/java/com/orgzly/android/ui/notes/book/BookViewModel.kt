@@ -64,4 +64,14 @@ class BookViewModel(private val dataRepository: DataRepository, val bookId: Long
             refileRequestEvent.postValue(NotesToRefile(ids, count))
         }
     }
+
+
+    val notesDeleteRequest: SingleLiveEvent<Pair<Set<Long>, Int>> = SingleLiveEvent()
+
+    fun requestNotesDelete(ids: Set<Long>) {
+        App.EXECUTORS.diskIO().execute {
+            val count = dataRepository.getNotesAndSubtreesCount(ids)
+            notesDeleteRequest.postValue(Pair(ids, count))
+        }
+    }
 }
