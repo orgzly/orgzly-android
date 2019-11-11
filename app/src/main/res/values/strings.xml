@@ -57,13 +57,6 @@
     <string name="history">History</string>
     <string name="event">Event</string>
 
-    <plurals name="notes_deleted">
-        <item quantity="one">Note deleted</item>
-        <item quantity="other">Deleted <b>%d</b> notes</item>
-    </plurals>
-
-    <string name="no_notes_deleted">No notes deleted</string>
-
     <plurals name="notes_cut">
         <item quantity="one">Note cut</item>
         <item quantity="other">Cut <b>%d</b> notes</item>
@@ -417,11 +410,23 @@
     <string name="notebooks_sort_order_name">Name</string>
     <string name="notebooks_sort_order_modification_time">Modification time</string>
 
+    <!-- Note from details view -->
     <string name="delete_note">Delete note</string>
-    <string name="delete_note_and_all_subnotes">Delete this note and all its sub-notes?</string>
+    <plurals name="delete_note_or_notes_with_count_question">
+        <item quantity="one">Delete note?</item>
+        <item quantity="other">Delete <b>%d</b> notes?</item>
+    </plurals>
 
+    <!-- Selected notes in the book -->
     <string name="delete_notes">Delete notes</string>
     <string name="delete_notes_and_all_subnotes">Delete notes and all its sub-notes?</string>
+
+    <plurals name="notes_deleted">
+        <item quantity="one">Note deleted</item>
+        <item quantity="other">Deleted <b>%d</b> notes</item>
+    </plurals>
+
+    <string name="no_notes_deleted">No notes deleted</string>
 
     <string name="note_content_finish_editing">View content</string>
     <string name="note_content_start_editing">Edit content</string>
@@ -659,4 +664,5 @@
     <string name="add_trusted_certificates_optional">Add trusted certificates (optional)</string>
     <string name="edit_trusted_certificates">Edit trusted certificates</string>
 
+    <string name="this_action_cannot_be_undone">This action cannot be undone.</string>
 </resources>

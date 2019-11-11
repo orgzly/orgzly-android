@@ -287,6 +287,21 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             showSnackbar(message)
         })
 
+        viewModel.noteDeleteRequest.observeSingle(viewLifecycleOwner, Observer { count ->
+            val title = resources.getQuantityString(
+                    R.plurals.delete_note_or_notes_with_count_question, count, count)
+
+            dialog = AlertDialog.Builder(context)
+                    .setTitle(title)
+                    // .setMessage(R.string.this_action_cannot_be_undone)
+                    .setPositiveButton(R.string.delete) { _, _ ->
+                        viewModel.deleteNote()
+                    }
+                    .setNegativeButton(R.string.cancel) { _, _ -> }
+                    .show()
+
+        })
+
         viewModel.bookChangeRequestEvent.observeSingle(viewLifecycleOwner, Observer { books ->
             if (books != null) {
                 handleNoteBookChangeRequest(books)
@@ -986,14 +1001,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     }
 
     private fun userDelete() {
-        dialog = AlertDialog.Builder(context)
-                .setTitle(R.string.delete_note)
-                .setMessage(R.string.delete_note_and_all_subnotes)
-                .setPositiveButton(R.string.delete) { _, _ ->
-                    viewModel.deleteNote()
-                }
-                .setNegativeButton(R.string.cancel) { _, _ -> }
-                .show()
+        viewModel.deleteNoteRequest()
     }
 
     private fun userFollowBookBreadcrumb() {

@@ -505,7 +505,7 @@ abstract class OrgzlyDatabase : RoomDatabase() {
         private val MIGRATION_153_154 = object : Migration(153, 154) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 /*
-                 * Delete entries with missing required data.
+                 * Delete book-related entries with missing repos data.
                  * Deleting or renaming repositories before v1.7 was deleting entries from repos
                  * without deleting dependent entries from other tables. This started causing
                  * crashes in v1.8 with addition of RepoType.
@@ -514,8 +514,6 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                 db.execSQL("DELETE FROM versioned_rooks WHERE rook_id NOT IN (SELECT id FROM rooks)")
                 db.execSQL("DELETE FROM book_syncs WHERE versioned_rook_id NOT IN (SELECT id FROM versioned_rooks)")
                 db.execSQL("DELETE FROM book_syncs WHERE book_id NOT IN (SELECT id FROM books)")
-
-                // TODO: Remove rook_urls, just store URLs in rooks
             }
         }
     }

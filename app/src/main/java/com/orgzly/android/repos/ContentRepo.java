@@ -108,6 +108,10 @@ public class ContentRepo implements SyncRepo {
         DocumentFile sourceFile = repoDocumentFile.findFile(fileName);
         if (sourceFile == null) {
             throw new FileNotFoundException("Book " + fileName + " not found in " + repoUri);
+        } else {
+            if (BuildConfig.LOG_DEBUG) {
+                LogUtils.d(TAG, "Found DocumentFile for " + fileName + ": " + sourceFile.getUri());
+            }
         }
 
         /* "Download" the file. */

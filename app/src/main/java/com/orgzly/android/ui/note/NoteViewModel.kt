@@ -47,6 +47,7 @@ class NoteViewModel(
     val noteUpdatedEvent: SingleLiveEvent<Note> = SingleLiveEvent()
     val noteDeletedEvent: SingleLiveEvent<Int> = SingleLiveEvent()
 
+    val noteDeleteRequest: SingleLiveEvent<Int> = SingleLiveEvent()
     val bookChangeRequestEvent: SingleLiveEvent<List<BookView>> = SingleLiveEvent()
 
     var notePayload: NotePayload? = null
@@ -84,6 +85,13 @@ class NoteViewModel(
             bookView.postValue(book)
 
             noteDetailsDataEvent.postValue(NoteDetailsData(book, note, ancestors))
+        }
+    }
+
+    fun deleteNoteRequest() {
+        App.EXECUTORS.diskIO().execute {
+            val count = dataRepository.getNotesAndSubtreesCount(setOf(noteId))
+            noteDeleteRequest.postValue(count)
         }
     }
 
