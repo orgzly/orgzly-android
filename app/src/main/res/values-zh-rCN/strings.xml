@@ -60,10 +60,6 @@
     <string name="widget">桌面小部件</string>
     <string name="history">历史</string>
     <string name="event">事件</string>
-    <plurals name="notes_deleted">
-        <item quantity="other">已删除 <b>%d</b> 笔记</item>
-    </plurals>
-    <string name="no_notes_deleted">没有笔记被删除</string>
     <plurals name="notes_cut">
         <item quantity="other">已剪切 <b>%d</b> 条笔记</item>
     </plurals>
@@ -355,10 +351,18 @@
     <string name="list_density_compact">紧凑</string>
     <string name="notebooks_sort_order_name">名称</string>
     <string name="notebooks_sort_order_modification_time">修改时间</string>
+    <plurals name="delete_note_or_notes_with_count_question">
+        <item quantity="other">删除 <b>%d</b> 笔记？</item>
+    </plurals>
+    <!-- Unused -->
     <string name="delete_note">删除笔记</string>
-    <string name="delete_note_and_all_subnotes">删除此笔记和它的所有子笔记？</string>
     <string name="delete_notes">删除笔记</string>
+    <string name="delete_note_and_all_subnotes">删除此笔记和它的所有子笔记？</string>
     <string name="delete_notes_and_all_subnotes">删除笔记和它的所有子笔记？</string>
+    <plurals name="notes_deleted">
+        <item quantity="other">已删除 <b>%d</b> 笔记</item>
+    </plurals>
+    <string name="no_notes_deleted">没有笔记被删除</string>
     <string name="note_content_finish_editing">查看内容</string>
     <string name="note_content_start_editing">编辑内容</string>
     <string name="duplicate_keywords_not_allowed">关键字 %s 已使用</string>
@@ -520,4 +524,8 @@
     <string name="cleartext_traffic_message">确定要使用此URL？</string>
     <string name="credentials_in_url_not_supported">不支持通过URL传递凭据</string>
     <string name="access_token">访问令牌</string>
+    <string name="trusted_certificates">信任证书</string>
+    <string name="add_trusted_certificates_optional">添加信任证书（可选）</string>
+    <string name="edit_trusted_certificates">编辑信任证书</string>
+    <string name="this_action_cannot_be_undone">无法撤消此操作。</string>
 </resources>

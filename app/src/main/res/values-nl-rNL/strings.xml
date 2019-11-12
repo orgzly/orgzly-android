@@ -60,11 +60,6 @@
     <string name="widget">Widget</string>
     <string name="history">Geschiedenis</string>
     <string name="event">Gebeurtenis</string>
-    <plurals name="notes_deleted">
-        <item quantity="one">Notitie verwijderd</item>
-        <item quantity="other">Verwijderde <b>%d</b> notities</item>
-    </plurals>
-    <string name="no_notes_deleted">Geen notities verwijderd</string>
     <plurals name="notes_cut">
         <item quantity="one">Notitie knippen</item>
         <item quantity="other">Knip <b>%d</b> notities</item>
@@ -359,10 +354,20 @@
     <string name="list_density_compact">Compact</string>
     <string name="notebooks_sort_order_name">Naam</string>
     <string name="notebooks_sort_order_modification_time">Tijdstip van wijzigen</string>
+    <plurals name="delete_note_or_notes_with_count_question">
+        <item quantity="one">Delete note?</item>
+        <item quantity="other">Delete <b>%d</b> notes?</item>
+    </plurals>
+    <!-- Unused -->
     <string name="delete_note">Notitie verwijderen</string>
-    <string name="delete_note_and_all_subnotes">Deze notitie en al haar sub-notities verwijderen?</string>
     <string name="delete_notes">Notities verwijderen</string>
+    <string name="delete_note_and_all_subnotes">Deze notitie en al haar sub-notities verwijderen?</string>
     <string name="delete_notes_and_all_subnotes">Notities en alle sub-notities verwijderen?</string>
+    <plurals name="notes_deleted">
+        <item quantity="one">Notitie verwijderd</item>
+        <item quantity="other">Verwijderde <b>%d</b> notities</item>
+    </plurals>
+    <string name="no_notes_deleted">Geen notities verwijderd</string>
     <string name="note_content_finish_editing">Bekijk inhoud</string>
     <string name="note_content_start_editing">Bewerk inhoud</string>
     <string name="duplicate_keywords_not_allowed">Keyword %s wordt al gebruikt</string>
@@ -529,4 +534,8 @@
     <string name="cleartext_traffic_message">Weet u zeker dat u deze URL wilt gebruiken?</string>
     <string name="credentials_in_url_not_supported">Inloggegevens in URL doorgeven wordt niet ondersteund</string>
     <string name="access_token">Toegangstoken</string>
+    <string name="trusted_certificates">Trusted certificates</string>
+    <string name="add_trusted_certificates_optional">Add trusted certificates (optional)</string>
+    <string name="edit_trusted_certificates">Edit trusted certificates</string>
+    <string name="this_action_cannot_be_undone">This action cannot be undone.</string>
 </resources>

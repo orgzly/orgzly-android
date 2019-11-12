@@ -60,10 +60,6 @@
     <string name="widget">ウィジェット</string>
     <string name="history">履歴</string>
     <string name="event">予定</string>
-    <plurals name="notes_deleted">
-        <item quantity="other"><b>%d</b> メモを削除しました</item>
-    </plurals>
-    <string name="no_notes_deleted">削除されたメモはありません</string>
     <plurals name="notes_cut">
         <item quantity="other"><b>%d</b> メモをカットします</item>
     </plurals>
@@ -355,10 +351,18 @@
     <string name="list_density_compact">コンパクト</string>
     <string name="notebooks_sort_order_name">名前</string>
     <string name="notebooks_sort_order_modification_time">更新日時</string>
+    <plurals name="delete_note_or_notes_with_count_question">
+        <item quantity="other">Delete <b>%d</b> notes?</item>
+    </plurals>
+    <!-- Unused -->
     <string name="delete_note">メモの削除</string>
-    <string name="delete_note_and_all_subnotes">このメモと、その配下のメモ全てを削除しますか？</string>
     <string name="delete_notes">メモを削除</string>
+    <string name="delete_note_and_all_subnotes">このメモと、その配下のメモ全てを削除しますか？</string>
     <string name="delete_notes_and_all_subnotes">メモと、その配下のメモ全てを削除しますか？</string>
+    <plurals name="notes_deleted">
+        <item quantity="other"><b>%d</b> メモを削除しました</item>
+    </plurals>
+    <string name="no_notes_deleted">削除されたメモはありません</string>
     <string name="note_content_finish_editing">内容を見る</string>
     <string name="note_content_start_editing">内容を編集する</string>
     <string name="duplicate_keywords_not_allowed">キーワード %s は既に使われています</string>
@@ -520,4 +524,8 @@
     <string name="cleartext_traffic_message">このURLを使用しますか？</string>
     <string name="credentials_in_url_not_supported">認証情報を含むURLはサポートしていません</string>
     <string name="access_token">アクセストークン</string>
+    <string name="trusted_certificates">Trusted certificates</string>
+    <string name="add_trusted_certificates_optional">Add trusted certificates (optional)</string>
+    <string name="edit_trusted_certificates">Edit trusted certificates</string>
+    <string name="this_action_cannot_be_undone">This action cannot be undone.</string>
 </resources>

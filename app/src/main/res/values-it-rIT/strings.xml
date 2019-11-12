@@ -60,11 +60,6 @@
     <string name="widget">Widget</string>
     <string name="history">Cronologia</string>
     <string name="event">Evento</string>
-    <plurals name="notes_deleted">
-        <item quantity="one">Nota cancellata</item>
-        <item quantity="other">Cancellate <b>%d</b> note</item>
-    </plurals>
-    <string name="no_notes_deleted">Nessuna nota cancellata</string>
     <plurals name="notes_cut">
         <item quantity="one">Nota tagliata</item>
         <item quantity="other">Tagliate <b>%d</b> note</item>
@@ -359,10 +354,20 @@
     <string name="list_density_compact">Compatto</string>
     <string name="notebooks_sort_order_name">Nome</string>
     <string name="notebooks_sort_order_modification_time">Ora modifica</string>
+    <plurals name="delete_note_or_notes_with_count_question">
+        <item quantity="one">Delete note?</item>
+        <item quantity="other">Delete <b>%d</b> notes?</item>
+    </plurals>
+    <!-- Unused -->
     <string name="delete_note">Elimina nota</string>
-    <string name="delete_note_and_all_subnotes">Elimina questa nota e tutte le sue sotto-note?</string>
     <string name="delete_notes">Elimina le note</string>
+    <string name="delete_note_and_all_subnotes">Elimina questa nota e tutte le sue sotto-note?</string>
     <string name="delete_notes_and_all_subnotes">Elimina queste note e tutte le sue sotto-note?</string>
+    <plurals name="notes_deleted">
+        <item quantity="one">Nota cancellata</item>
+        <item quantity="other">Cancellate <b>%d</b> note</item>
+    </plurals>
+    <string name="no_notes_deleted">Nessuna nota cancellata</string>
     <string name="note_content_finish_editing">Mostra il contenuto</string>
     <string name="note_content_start_editing">Modifica il contenuto</string>
     <string name="duplicate_keywords_not_allowed">La parola chiave %s è già stata usata</string>
@@ -529,4 +534,8 @@
     <string name="cleartext_traffic_message">Are you sure you want to use this URL?</string>
     <string name="credentials_in_url_not_supported">Passing credentials in URL is not supported</string>
     <string name="access_token">Access token</string>
+    <string name="trusted_certificates">Trusted certificates</string>
+    <string name="add_trusted_certificates_optional">Add trusted certificates (optional)</string>
+    <string name="edit_trusted_certificates">Edit trusted certificates</string>
+    <string name="this_action_cannot_be_undone">This action cannot be undone.</string>
 </resources>

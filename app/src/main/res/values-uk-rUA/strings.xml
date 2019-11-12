@@ -60,13 +60,6 @@
     <string name="widget">Віджет</string>
     <string name="history">Історія</string>
     <string name="event">Подія</string>
-    <plurals name="notes_deleted">
-        <item quantity="one">Нотатка видалена</item>
-        <item quantity="few">Видалено <b>%d</b> нотаток</item>
-        <item quantity="many">Видалено <b>%d</b> нотаток</item>
-        <item quantity="other">Видалено <b>%d</b> нотаток</item>
-    </plurals>
-    <string name="no_notes_deleted">Видалені нотатки відсутні</string>
     <plurals name="notes_cut">
         <item quantity="one">Нотатка вирізана</item>
         <item quantity="few"><b>%d</b> нотатки вирізано</item>
@@ -367,10 +360,24 @@
     <string name="list_density_compact">Компактна</string>
     <string name="notebooks_sort_order_name">Назва</string>
     <string name="notebooks_sort_order_modification_time">Час зміни</string>
+    <plurals name="delete_note_or_notes_with_count_question">
+        <item quantity="one">Видалити нотатку?</item>
+        <item quantity="few">Видалити <b>%d</b> нотатки?</item>
+        <item quantity="many">Видалити <b>%d</b> нотаток?</item>
+        <item quantity="other">Видалити <b>%d</b> нотаток?</item>
+    </plurals>
+    <!-- Unused -->
     <string name="delete_note">Видалити нотатку</string>
-    <string name="delete_note_and_all_subnotes">Видалити цю нотатку з усіма примітками?</string>
     <string name="delete_notes">Видалити нотатки</string>
+    <string name="delete_note_and_all_subnotes">Видалити цю нотатку з усіма примітками?</string>
     <string name="delete_notes_and_all_subnotes">Видалити нотатки з усіма примітками?</string>
+    <plurals name="notes_deleted">
+        <item quantity="one">Нотатка видалена</item>
+        <item quantity="few">Видалено <b>%d</b> нотаток</item>
+        <item quantity="many">Видалено <b>%d</b> нотаток</item>
+        <item quantity="other">Видалено <b>%d</b> нотаток</item>
+    </plurals>
+    <string name="no_notes_deleted">Видалені нотатки відсутні</string>
     <string name="note_content_finish_editing">Переглянути вміст</string>
     <string name="note_content_start_editing">Редагувати вміст</string>
     <string name="duplicate_keywords_not_allowed">Ключове слово %s вже використовується</string>
@@ -547,4 +554,8 @@
     <string name="cleartext_traffic_message">Ви впевнені, що хочете використовувати цей URL?</string>
     <string name="credentials_in_url_not_supported">Передача облікових даних в URL не підтримується</string>
     <string name="access_token">Маркер доступу</string>
+    <string name="trusted_certificates">Довірені сертифікати</string>
+    <string name="add_trusted_certificates_optional">Додати довірені сертифікати (необов\'язково)</string>
+    <string name="edit_trusted_certificates">Редагувати довірені сертифікати</string>
+    <string name="this_action_cannot_be_undone">Цю дію не можна скасувати.</string>
 </resources>
