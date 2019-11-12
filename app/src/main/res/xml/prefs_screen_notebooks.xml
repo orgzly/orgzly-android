@@ -24,7 +24,7 @@
             android:entryValues="@array/displayed_book_details_values"
             android:defaultValue="@array/displayed_book_details_default"/>
 
-        <ListPreference
+        <EditTextPreference
             android:key="@string/pref_key_share_notebook"
             android:title="@string/default_notebook"
             android:selectAllOnFocus="true"

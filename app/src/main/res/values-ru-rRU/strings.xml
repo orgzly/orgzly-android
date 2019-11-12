@@ -60,13 +60,6 @@
     <string name="widget">Виджет</string>
     <string name="history">История</string>
     <string name="event">Событие</string>
-    <plurals name="notes_deleted">
-        <item quantity="one">Заметка удалена</item>
-        <item quantity="few">Удалено <b>%d</b> заметки</item>
-        <item quantity="many">Удалено <b>%d</b> заметок</item>
-        <item quantity="other">Удалено <b>%d</b> заметок</item>
-    </plurals>
-    <string name="no_notes_deleted">Нет удаленных заметок</string>
     <plurals name="notes_cut">
         <item quantity="one">Заметка вырезана</item>
         <item quantity="few">Вырезаны <b>%d</b> заметки</item>
@@ -367,10 +360,24 @@
     <string name="list_density_compact">Компактная</string>
     <string name="notebooks_sort_order_name">Название</string>
     <string name="notebooks_sort_order_modification_time">Время изменения</string>
+    <plurals name="delete_note_or_notes_with_count_question">
+        <item quantity="one">Delete note?</item>
+        <item quantity="few">Delete <b>%d</b> notes?</item>
+        <item quantity="many">Delete <b>%d</b> notes?</item>
+        <item quantity="other">Delete <b>%d</b> notes?</item>
+    </plurals>
+    <!-- Unused -->
     <string name="delete_note">Удалить заметку</string>
-    <string name="delete_note_and_all_subnotes">Удалить эту заметку и все ее примечания?</string>
     <string name="delete_notes">Удалить заметки</string>
+    <string name="delete_note_and_all_subnotes">Удалить эту заметку и все ее примечания?</string>
     <string name="delete_notes_and_all_subnotes">Удалить заметки и все их примечания?</string>
+    <plurals name="notes_deleted">
+        <item quantity="one">Заметка удалена</item>
+        <item quantity="few">Удалено <b>%d</b> заметки</item>
+        <item quantity="many">Удалено <b>%d</b> заметок</item>
+        <item quantity="other">Удалено <b>%d</b> заметок</item>
+    </plurals>
+    <string name="no_notes_deleted">Нет удаленных заметок</string>
     <string name="note_content_finish_editing">Просмотр содержимого</string>
     <string name="note_content_start_editing">Изменить содержимое</string>
     <string name="duplicate_keywords_not_allowed">Ключевое слово %s уже используется</string>
@@ -547,4 +554,8 @@
     <string name="cleartext_traffic_message">Вы уверены, что хотите использовать этот URL?</string>
     <string name="credentials_in_url_not_supported">Передача учетных данных в URL не поддерживается</string>
     <string name="access_token">Токен для доступа</string>
+    <string name="trusted_certificates">Trusted certificates</string>
+    <string name="add_trusted_certificates_optional">Add trusted certificates (optional)</string>
+    <string name="edit_trusted_certificates">Edit trusted certificates</string>
+    <string name="this_action_cannot_be_undone">This action cannot be undone.</string>
 </resources>

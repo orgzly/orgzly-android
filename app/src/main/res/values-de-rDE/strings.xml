@@ -60,11 +60,6 @@
     <string name="widget">Widget</string>
     <string name="history">Verlauf</string>
     <string name="event">Ereignis</string>
-    <plurals name="notes_deleted">
-        <item quantity="one">Notiz gelöscht</item>
-        <item quantity="other"><b>%d</b> Notizen gelöscht</item>
-    </plurals>
-    <string name="no_notes_deleted">Keine Notizen gelöscht</string>
     <plurals name="notes_cut">
         <item quantity="one">Notiz ausgeschnitten</item>
         <item quantity="other"><b>%d</b> Notizen ausgeschnitten</item>
@@ -359,10 +354,20 @@
     <string name="list_density_compact">Kompakt</string>
     <string name="notebooks_sort_order_name">Name</string>
     <string name="notebooks_sort_order_modification_time">Bearbeitungszeitpunkt</string>
+    <plurals name="delete_note_or_notes_with_count_question">
+        <item quantity="one">Delete note?</item>
+        <item quantity="other">Delete <b>%d</b> notes?</item>
+    </plurals>
+    <!-- Unused -->
     <string name="delete_note">Notiz löschen</string>
-    <string name="delete_note_and_all_subnotes">Diese Notiz und deren Unternotizen löschen?</string>
     <string name="delete_notes">Notizen löschen</string>
+    <string name="delete_note_and_all_subnotes">Diese Notiz und deren Unternotizen löschen?</string>
     <string name="delete_notes_and_all_subnotes">Notizen und deren Unternotizen löschen?</string>
+    <plurals name="notes_deleted">
+        <item quantity="one">Notiz gelöscht</item>
+        <item quantity="other"><b>%d</b> Notizen gelöscht</item>
+    </plurals>
+    <string name="no_notes_deleted">Keine Notizen gelöscht</string>
     <string name="note_content_finish_editing">Inhalt anzeigen</string>
     <string name="note_content_start_editing">Inhalt bearbeiten</string>
     <string name="duplicate_keywords_not_allowed">Schlüsselwort %s wird bereits verwendet</string>
@@ -529,4 +534,8 @@
     <string name="cleartext_traffic_message">Möchten Sie wirklich diese URL verwenden?</string>
     <string name="credentials_in_url_not_supported">Übergabe von Zugangsdaten in URL wird nicht unterstützt</string>
     <string name="access_token">Zugangstoken</string>
+    <string name="trusted_certificates">Trusted certificates</string>
+    <string name="add_trusted_certificates_optional">Add trusted certificates (optional)</string>
+    <string name="edit_trusted_certificates">Edit trusted certificates</string>
+    <string name="this_action_cannot_be_undone">This action cannot be undone.</string>
 </resources>

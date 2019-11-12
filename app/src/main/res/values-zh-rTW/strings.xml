@@ -60,10 +60,6 @@
     <string name="widget">桌面小工具</string>
     <string name="history">歷史記錄</string>
     <string name="event">事件</string>
-    <plurals name="notes_deleted">
-        <item quantity="other">已刪除 <b>%d</b> 筆記</item>
-    </plurals>
-    <string name="no_notes_deleted">沒有筆記被刪除</string>
     <plurals name="notes_cut">
         <item quantity="other">剪下 <b>%d</b> 筆記</item>
     </plurals>
@@ -195,7 +191,7 @@
     <string name="git_clone_error_invalid_target_dir">目標目錄不存在</string>
     <string name="git_clone_error_target_not_empty">目標不是空目錄</string>
     <string name="git_clone_error_uri_not_supported">不支援此遠端位址</string>
-    <string name="webdav_url_hint">URL網址 (例如 webdavs://example.com/my-org-files/)</string>
+    <string name="webdav_url_hint">URL位址 (例如 webdavs://example.com/my-org-files/)</string>
     <string name="webdav_auth_username_hint">使用者名稱</string>
     <string name="webdav_auth_password_hint">密碼</string>
     <string name="webdav_test_error_auth">帳號或密碼不正確</string>
@@ -207,8 +203,8 @@
     <string name="share_type_not_supported">共用操作 %s 不支援</string>
     <string name="repositories">資料庫</string>
     <string name="repository_not_valid_with_reason">資料庫無效: %s</string>
-    <string name="invalid_repo_url">無效的資料庫位址 “%s”</string>
-    <string name="repository_url_already_exists">具有此 url 的存儲庫已存在</string>
+    <string name="invalid_repo_url">無效的資料庫 URL 位址 “%s”</string>
+    <string name="repository_url_already_exists">具有此 url 位址的存儲庫已存在</string>
     <string name="fragment_left_drawer_list_view_content_description">左側抽屜</string>
     <string name="drawer_item">抽屜項目</string>
     <string name="prev_state">上一個狀態</string>
@@ -221,7 +217,7 @@
     <string name="note_book_not_set">未設置筆記本</string>
     <string name="title_can_not_be_empty">標題不能空白</string>
     <string name="can_not_be_empty">不能留空</string>
-    <string name="invalid_url">無效的URL網址</string>
+    <string name="invalid_url">無效的URL位址</string>
     <string name="no_notebooks">你沒有筆記本</string>
     <string name="no_notes">筆記本沒有筆記</string>
     <string name="create_new_repository_for_syncing">創建用於同步筆記本的新資料庫</string>
@@ -332,8 +328,8 @@
     <string name="repeater_description_restart">將時間週期添加到當前時間</string>
     <!-- .+ -->
     <string name="displayed_book_details_local_mtime">本地修改時間</string>
-    <string name="displayed_book_details_link_url">連結位址：</string>
-    <string name="displayed_book_details_sync_url">同步位址</string>
+    <string name="displayed_book_details_link_url">連結 URL 位址：</string>
+    <string name="displayed_book_details_sync_url">同步 URL 位址</string>
     <string name="displayed_book_details_sync_mtime">同步修改時間</string>
     <string name="displayed_book_details_sync_revision">同步修訂</string>
     <string name="displayed_book_details_selected_encoding">選取編碼</string>
@@ -355,10 +351,18 @@
     <string name="list_density_compact">緊湊</string>
     <string name="notebooks_sort_order_name">名稱</string>
     <string name="notebooks_sort_order_modification_time">修改時間</string>
+    <plurals name="delete_note_or_notes_with_count_question">
+        <item quantity="other">刪除 <b>%d</b> 筆記？</item>
+    </plurals>
+    <!-- Unused -->
     <string name="delete_note">刪除筆記</string>
-    <string name="delete_note_and_all_subnotes">是否刪除此筆記及所有內文？</string>
     <string name="delete_notes">刪除筆記</string>
+    <string name="delete_note_and_all_subnotes">是否刪除此筆記及所有內文？</string>
     <string name="delete_notes_and_all_subnotes">是否刪除此筆記及所有內文？</string>
+    <plurals name="notes_deleted">
+        <item quantity="other">已刪除 <b>%d</b> 筆記</item>
+    </plurals>
+    <string name="no_notes_deleted">沒有筆記被刪除</string>
     <string name="note_content_finish_editing">查看內容</string>
     <string name="note_content_start_editing">編輯內容</string>
     <string name="duplicate_keywords_not_allowed">關鍵字%s 已使用</string>
@@ -517,7 +521,11 @@
     <string name="last_used">最後使用的</string>
     <string name="note_details_opening_mode">開始的模式</string>
     <string name="cleartext_traffic">明文傳輸</string>
-    <string name="cleartext_traffic_message">確定要使用這個URL網址？</string>
-    <string name="credentials_in_url_not_supported">不支持在URL網址中傳送認證</string>
+    <string name="cleartext_traffic_message">確定要使用這個URL位址？</string>
+    <string name="credentials_in_url_not_supported">不支持在URL位址中傳送認證</string>
     <string name="access_token">存取權杖</string>
+    <string name="trusted_certificates">可信任的憑證</string>
+    <string name="add_trusted_certificates_optional">新增可信任的憑證(可選)</string>
+    <string name="edit_trusted_certificates">編輯可信任的憑證</string>
+    <string name="this_action_cannot_be_undone">這項操作無法復原</string>
 </resources>

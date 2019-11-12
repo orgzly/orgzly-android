@@ -60,13 +60,6 @@
     <string name="widget">Miniaplikace</string>
     <string name="history">Historie</string>
     <string name="event">Událost</string>
-    <plurals name="notes_deleted">
-        <item quantity="one">Poznámka smazána</item>
-        <item quantity="few">Smazány <b>%d</b> poznámky</item>
-        <item quantity="many">Smazáno <b>%d</b> poznámek</item>
-        <item quantity="other">Smazáno <b>%d</b> poznámek</item>
-    </plurals>
-    <string name="no_notes_deleted">Žádné poznámky nebyly odstraněny</string>
     <plurals name="notes_cut">
         <item quantity="one">Poznámka vystřižena</item>
         <item quantity="few">Vystřiženy <b>%d</b> poznámky</item>
@@ -367,10 +360,24 @@
     <string name="list_density_compact">Kompaktní</string>
     <string name="notebooks_sort_order_name">Jméno</string>
     <string name="notebooks_sort_order_modification_time">Čas změny</string>
+    <plurals name="delete_note_or_notes_with_count_question">
+        <item quantity="one">Delete note?</item>
+        <item quantity="few">Delete <b>%d</b> notes?</item>
+        <item quantity="many">Delete <b>%d</b> notes?</item>
+        <item quantity="other">Odstranit <b>%d</b> poznámek?</item>
+    </plurals>
+    <!-- Unused -->
     <string name="delete_note">Odstranit poznámku</string>
-    <string name="delete_note_and_all_subnotes">Odstranit tuto poznámku a všechny její podpoznámky?</string>
     <string name="delete_notes">Odstranit poznámky</string>
+    <string name="delete_note_and_all_subnotes">Odstranit tuto poznámku a všechny její podpoznámky?</string>
     <string name="delete_notes_and_all_subnotes">Odstranit poznámky a všechny jejich podpoznámky?</string>
+    <plurals name="notes_deleted">
+        <item quantity="one">Poznámka smazána</item>
+        <item quantity="few">Smazány <b>%d</b> poznámky</item>
+        <item quantity="many">Smazáno <b>%d</b> poznámek</item>
+        <item quantity="other">Smazáno <b>%d</b> poznámek</item>
+    </plurals>
+    <string name="no_notes_deleted">Žádné poznámky nebyly odstraněny</string>
     <string name="note_content_finish_editing">Zobrazit obsah</string>
     <string name="note_content_start_editing">Upravit obsah</string>
     <string name="duplicate_keywords_not_allowed">Klíčové slovo %s již bylo použito</string>
@@ -543,8 +550,12 @@
     <string name="display_checkmarks_summary">Povolit označení poznámek jako hotových</string>
     <string name="last_used">Naposledy použito</string>
     <string name="note_details_opening_mode">Otevírací režim</string>
-    <string name="cleartext_traffic">Cleartext traffic</string>
+    <string name="cleartext_traffic">Nešifrované spojení</string>
     <string name="cleartext_traffic_message">Určitě chcete použít tuto URL adresu?</string>
     <string name="credentials_in_url_not_supported">Předávání přihlašovacích údajů v URL není podporováno</string>
     <string name="access_token">Přístupový token</string>
+    <string name="trusted_certificates">Důvěryhodné certifikáty</string>
+    <string name="add_trusted_certificates_optional">Přidat důvěryhodné certifikáty (volitelné)</string>
+    <string name="edit_trusted_certificates">Upravit důvěryhodné certifikáty</string>
+    <string name="this_action_cannot_be_undone">Tuto akci nelze vrátit zpět.</string>
 </resources>

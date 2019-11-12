@@ -60,11 +60,6 @@
     <string name="widget">Widget</string>
     <string name="history">History</string>
     <string name="event">Event</string>
-    <plurals name="notes_deleted">
-        <item quantity="one">Not Silindi</item>
-        <item quantity="other">Silindi <b>%d</b> notlar</item>
-    </plurals>
-    <string name="no_notes_deleted">Silinen not yok</string>
     <plurals name="notes_cut">
         <item quantity="one">Notu kes</item>
         <item quantity="other">Kes <b>%d</b> notları</item>
@@ -359,10 +354,20 @@
     <string name="list_density_compact">Sıkışık</string>
     <string name="notebooks_sort_order_name">İsim</string>
     <string name="notebooks_sort_order_modification_time">Değiştirme zamanı</string>
+    <plurals name="delete_note_or_notes_with_count_question">
+        <item quantity="one">Delete note?</item>
+        <item quantity="other">Delete <b>%d</b> notes?</item>
+    </plurals>
+    <!-- Unused -->
     <string name="delete_note">Not sil</string>
-    <string name="delete_note_and_all_subnotes">Bu not ve alt notları silinsin mi?</string>
     <string name="delete_notes">Notları sil</string>
+    <string name="delete_note_and_all_subnotes">Bu not ve alt notları silinsin mi?</string>
     <string name="delete_notes_and_all_subnotes">Notlar ve alt notlar silinsin mi?</string>
+    <plurals name="notes_deleted">
+        <item quantity="one">Not Silindi</item>
+        <item quantity="other">Silindi <b>%d</b> notlar</item>
+    </plurals>
+    <string name="no_notes_deleted">Silinen not yok</string>
     <string name="note_content_finish_editing">Içeriği göster</string>
     <string name="note_content_start_editing">Içeriği düzenle</string>
     <string name="duplicate_keywords_not_allowed">Anahtar kelime %s zaten kullanılıyor</string>
@@ -529,4 +534,8 @@
     <string name="cleartext_traffic_message">Are you sure you want to use this URL?</string>
     <string name="credentials_in_url_not_supported">Passing credentials in URL is not supported</string>
     <string name="access_token">Access token</string>
+    <string name="trusted_certificates">Trusted certificates</string>
+    <string name="add_trusted_certificates_optional">Add trusted certificates (optional)</string>
+    <string name="edit_trusted_certificates">Edit trusted certificates</string>
+    <string name="this_action_cannot_be_undone">This action cannot be undone.</string>
 </resources>

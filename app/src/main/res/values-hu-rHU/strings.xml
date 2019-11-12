@@ -60,11 +60,6 @@
     <string name="widget">Kisalkalmazás</string>
     <string name="history">Előzmények</string>
     <string name="event">Esemény</string>
-    <plurals name="notes_deleted">
-        <item quantity="one">Bejegyzés törölve</item>
-        <item quantity="other"><b>%d</b> bejegyzés törölve</item>
-    </plurals>
-    <string name="no_notes_deleted">Nem töröltem bejegyzést</string>
     <plurals name="notes_cut">
         <item quantity="one">Jegyzet kivágva</item>
         <item quantity="other"><b>%d</b> jegyzet kivágva</item>
@@ -359,10 +354,20 @@
     <string name="list_density_compact">Tömör</string>
     <string name="notebooks_sort_order_name">Név</string>
     <string name="notebooks_sort_order_modification_time">Módosítás időpontja</string>
+    <plurals name="delete_note_or_notes_with_count_question">
+        <item quantity="one">Delete note?</item>
+        <item quantity="other"><b>%d</b> bejegyzés törlése?</item>
+    </plurals>
+    <!-- Unused -->
     <string name="delete_note">Bejegyzés törlése</string>
-    <string name="delete_note_and_all_subnotes">Törli a bejegyzést és minden aljegyzetet?</string>
     <string name="delete_notes">Bejegyzések törlése</string>
+    <string name="delete_note_and_all_subnotes">Törli a bejegyzést és minden aljegyzetet?</string>
     <string name="delete_notes_and_all_subnotes">Törli a bejegyzéseket és minden aljegyzetet?</string>
+    <plurals name="notes_deleted">
+        <item quantity="one">Bejegyzés törölve</item>
+        <item quantity="other"><b>%d</b> bejegyzés törölve</item>
+    </plurals>
+    <string name="no_notes_deleted">Nem töröltem bejegyzést</string>
     <string name="note_content_finish_editing">Szövegkörnyezet mutatása</string>
     <string name="note_content_start_editing">Tartalom szerkesztése</string>
     <string name="duplicate_keywords_not_allowed">%s kulcsszó már használt</string>
@@ -529,4 +534,8 @@
     <string name="cleartext_traffic_message">Biztosan ezt az URL-t akarod használni?</string>
     <string name="credentials_in_url_not_supported">Hitelesítő adatok továbbítása URL-ben nem támogatott</string>
     <string name="access_token">Hozzáférési token</string>
+    <string name="trusted_certificates">Megbízható tanúsítványok</string>
+    <string name="add_trusted_certificates_optional">Megbízható tanúsítványok hozzáadása (választható)</string>
+    <string name="edit_trusted_certificates">Megbízható tanúsítványok szerkesztése</string>
+    <string name="this_action_cannot_be_undone">Ez a művelet nem vonható vissza.</string>
 </resources>

@@ -60,10 +60,6 @@
     <string name="widget">Widget</string>
     <string name="history">History</string>
     <string name="event">Event</string>
-    <plurals name="notes_deleted">
-        <item quantity="other">Catatan <b>%d</b> dihapus</item>
-    </plurals>
-    <string name="no_notes_deleted">Tidak ada catatan yang dihapus</string>
     <plurals name="notes_cut">
         <item quantity="other">Potong <b>%d</b> catatan</item>
     </plurals>
@@ -355,10 +351,18 @@
     <string name="list_density_compact">Kompak</string>
     <string name="notebooks_sort_order_name">Nama</string>
     <string name="notebooks_sort_order_modification_time">Waktu modifikasi</string>
+    <plurals name="delete_note_or_notes_with_count_question">
+        <item quantity="other">Delete <b>%d</b> notes?</item>
+    </plurals>
+    <!-- Unused -->
     <string name="delete_note">Hapus catatan</string>
-    <string name="delete_note_and_all_subnotes">Hapus catatan ini dan semua sub catatannya?</string>
     <string name="delete_notes">Hapus Catatan</string>
+    <string name="delete_note_and_all_subnotes">Hapus catatan ini dan semua sub catatannya?</string>
     <string name="delete_notes_and_all_subnotes">Hapus catatan dan semua sub catatan?</string>
+    <plurals name="notes_deleted">
+        <item quantity="other">Catatan <b>%d</b> dihapus</item>
+    </plurals>
+    <string name="no_notes_deleted">Tidak ada catatan yang dihapus</string>
     <string name="note_content_finish_editing">Lihat konten</string>
     <string name="note_content_start_editing">Sunting konten</string>
     <string name="duplicate_keywords_not_allowed">Kata kunci %s sudah digunakan</string>
@@ -520,4 +524,8 @@
     <string name="cleartext_traffic_message">Are you sure you want to use this URL?</string>
     <string name="credentials_in_url_not_supported">Passing credentials in URL is not supported</string>
     <string name="access_token">Access token</string>
+    <string name="trusted_certificates">Trusted certificates</string>
+    <string name="add_trusted_certificates_optional">Add trusted certificates (optional)</string>
+    <string name="edit_trusted_certificates">Edit trusted certificates</string>
+    <string name="this_action_cannot_be_undone">This action cannot be undone.</string>
 </resources>
