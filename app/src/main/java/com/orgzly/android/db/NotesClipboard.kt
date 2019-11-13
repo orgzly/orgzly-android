@@ -10,7 +10,7 @@ import com.orgzly.android.util.MiscUtils
 import java.io.File
 import java.io.StringWriter
 
-data class NotesClipboard(val entries: List<Entry>) {
+data class NotesClipboard(val entries: List<Entry> = emptyList()) {
 
     data class Entry(
             val note: Note,
@@ -37,6 +37,10 @@ data class NotesClipboard(val entries: List<Entry>) {
 
 
     companion object {
+        fun count(): Int {
+            return AppPreferences.notesClipboard(App.getAppContext())?.toInt() ?: 0
+        }
+
         fun create(dataRepository: DataRepository, ids: Set<Long>): NotesClipboard {
             val alignedNotes = dataRepository.getSubtreesAligned(ids).map { note ->
                 Entry(note, dataRepository.getNoteProperties(note.id))
@@ -45,10 +49,8 @@ data class NotesClipboard(val entries: List<Entry>) {
             return NotesClipboard(alignedNotes)
         }
 
-        fun load(): NotesClipboard? {
-            val pref = AppPreferences.notesClipboard(App.getAppContext())
-
-            if (pref != null) {
+        fun load(): NotesClipboard {
+            if (count() > 0) {
                 try {
                     val data = MiscUtils.readStringFromFile(dataFile())
 
@@ -60,7 +62,7 @@ data class NotesClipboard(val entries: List<Entry>) {
                 }
             }
 
-            return null
+            return NotesClipboard()
         }
 
         @JvmStatic

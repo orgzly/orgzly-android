@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.BookUtils
+import com.orgzly.android.db.NotesClipboard
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
@@ -327,6 +328,19 @@ class BookFragment :
         if (currentBook == null) {
             menu.removeItem(R.id.books_options_menu_book_preface)
         }
+
+        // Hide paste button if clipboard is empty, update title if not
+        NotesClipboard.count().let { count ->
+            if (count == 0) {
+                menu.removeItem(R.id.book_actions_paste)
+
+            } else {
+                val title = resources.getQuantityString(
+                        R.plurals.paste_note_or_notes_with_count, count, count)
+
+                menu.findItem(R.id.book_actions_paste).setTitle(title)
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -335,6 +349,11 @@ class BookFragment :
         when (item.itemId) {
             R.id.books_options_menu_item_cycle_visibility -> {
                 viewModel.cycleVisibility()
+                return true
+            }
+
+            R.id.book_actions_paste -> {
+                pasteNotes(Place.UNDER, 0)
                 return true
             }
 

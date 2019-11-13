@@ -19,8 +19,9 @@
         app:showAsAction="never"
         android:title="@string/edit_book_preface"/>
 
-    <!--<item-->
-    <!--android:id="@+id/books_options_menu_item_paste"-->
-    <!--app:showAsAction="never"-->
-    <!--android:title="@string/paste"/>-->
+    <!-- Title is updated depending on the number of notes in clipboard -->
+    <item
+        android:id="@+id/book_actions_paste"
+        app:showAsAction="never"
+        android:title="@string/paste"/>
 </menu>

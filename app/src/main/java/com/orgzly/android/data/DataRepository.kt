@@ -604,20 +604,26 @@ class DataRepository @Inject constructor(
         }
     }
 
-    fun pasteNotes(clipboard: NotesClipboard, noteId: Long, place: Place): Int {
+    fun pasteNotes(clipboard: NotesClipboard, bookId: Long, noteId: Long, place: Place): Int {
         return db.runInTransaction(Callable {
-            pasteNotesClipboard(clipboard, place, noteId)
+            pasteNotesClipboard(clipboard, bookId, place, noteId)
         })
     }
 
     private fun pasteNotesClipboard(
             clipboard: NotesClipboard,
+            bookId: Long,
             place: Place,
             targetNoteId: Long): Int {
 
         val pastedNoteIds = mutableSetOf<Long>()
 
-        val targetNote = db.note().get(targetNoteId) ?: return 0
+        // Empty book, use root node
+        val targetNote = if (targetNoteId == 0L) {
+            db.note().getRootNode(bookId)
+        } else {
+            db.note().get(targetNoteId)
+        } ?: return 0
 
         val targetPosition = TargetPosition.getInstance(db, targetNote, place)
 
@@ -698,7 +704,7 @@ class DataRepository @Inject constructor(
         // Update descendants count for the target note and its ancestors
         db.note().updateDescendantsCountForNoteAndAncestors(listOf(targetNote.id))
 
-        unfoldTargetIfMovingUnder(place, targetNoteId)
+        unfoldTargetIfMovingUnder(place, targetNote.id)
 
         updateBookIsModified(targetNote.position.bookId, true)
 

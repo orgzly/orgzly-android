@@ -9,7 +9,7 @@ class NotePaste(val bookId: Long, val noteId: Long, val place: Place) : UseCase(
         val clipboard = NotesClipboard.load()
 
         val count = if (clipboard != null) {
-            dataRepository.pasteNotes(clipboard, noteId, place)
+            dataRepository.pasteNotes(clipboard, bookId, noteId, place)
         } else {
             0
         }

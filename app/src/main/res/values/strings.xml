@@ -665,4 +665,9 @@
     <string name="edit_trusted_certificates">Edit trusted certificates</string>
 
     <string name="this_action_cannot_be_undone">This action cannot be undone.</string>
+
+    <plurals name="paste_note_or_notes_with_count">
+        <item quantity="one">Paste note</item>
+        <item quantity="other">Paste <b>%d</b> notes</item>
+    </plurals>
 </resources>
