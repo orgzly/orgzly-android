@@ -35,8 +35,24 @@
         android:theme="@style/AppLightTheme.Light"
         android:fullBackupContent="@xml/backup_config">
 
+        <activity android:name=".android.ui.LauncherActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
-            android:name="com.orgzly.android.ui.share.ShareActivity"
+            android:name=".android.ui.main.MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+
+        <activity
+            android:name=".android.ui.share.ShareActivity"
             android:windowSoftInputMode="stateUnchanged"
             android:launchMode="singleInstance">
 
@@ -60,18 +76,6 @@
         </activity>
 
         <activity
-            android:name="com.orgzly.android.ui.main.MainActivity"
-            android:windowSoftInputMode="stateAlwaysHidden">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-            <meta-data android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts" />
-        </activity>
-
-        <activity
             android:name=".android.ui.settings.SettingsActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
@@ -82,50 +86,8 @@
         </activity>
 
         <activity
-            android:name="com.orgzly.android.ui.repo.dropbox.DropboxRepoActivity"
+            android:name=".android.ui.repo.dropbox.DropboxRepoActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
-
-        <activity
-            android:name="com.orgzly.android.ui.repo.git.GitRepoActivity"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
-
-        <activity
-            android:name="com.orgzly.android.ui.repo.webdav.WebdavRepoActivity"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
-
-        <activity
-            android:name="com.orgzly.android.ui.repo.directory.DirectoryRepoActivity"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
-
-        <activity
-            android:name="com.orgzly.android.ui.repo.BrowserActivity"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
-
-        <activity
-            android:name="com.orgzly.android.ui.BookChooserActivity"
-            android:label="@string/book_shortcut_label"
-            android:icon="@mipmap/cic_shortcut_notebook">
-
-            <intent-filter>
-                <action android:name="android.intent.action.CREATE_SHORTCUT" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name="com.orgzly.android.ui.TemplateChooserActivity"
-            android:label="@string/new_note_shortcut_label"
-            android:icon="@mipmap/cic_shortcut_new_note">
-
-            <intent-filter>
-                <action android:name="android.intent.action.CREATE_SHORTCUT" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
 
         <activity
@@ -143,7 +105,54 @@
         </activity>
 
         <activity
-            android:name="com.orgzly.android.widgets.ListWidgetSelectionActivity"
+            android:name=".android.ui.repo.git.GitRepoActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+
+        <activity
+            android:name=".android.ui.repo.webdav.WebdavRepoActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+
+        <activity
+            android:name=".android.ui.repo.directory.DirectoryRepoActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+
+        <activity
+            android:name=".android.ui.repo.BrowserActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+
+        <activity
+            android:name=".android.ui.BookChooserActivity"
+            android:label="@string/book_shortcut_label"
+            android:icon="@mipmap/cic_shortcut_notebook">
+
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".android.ui.TemplateChooserActivity"
+            android:label="@string/new_note_shortcut_label"
+            android:icon="@mipmap/cic_shortcut_new_note">
+
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".android.widgets.ListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="false" />
+
+        <activity
+            android:name=".android.widgets.ListWidgetSelectionActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppCompat.Light.Dialog"
             android:excludeFromRecents="true"/>
@@ -153,17 +162,17 @@
             android:taskAffinity="" />
 
         <service
-            android:name=".android.widgets.ListWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"
-            android:exported="false" />
+            android:name=".android.sync.SyncService"
+            android:exported="true" />
 
-        <service android:name=".android.sync.SyncService" android:exported="true" />
         <service
             android:name=".android.NotificationActionService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
+
         <service
             android:name=".android.reminders.ReminderService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
+
         <service
             android:name=".android.usecase.UseCaseService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
@@ -188,7 +197,7 @@
         </provider>
 
         <receiver
-            android:name="com.orgzly.android.widgets.ListWidgetProvider"
+            android:name=".android.widgets.ListWidgetProvider"
             android:label="@string/list_widget_name">
 
             <intent-filter>
