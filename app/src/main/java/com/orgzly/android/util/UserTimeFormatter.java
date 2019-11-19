@@ -4,11 +4,13 @@ import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.text.format.DateUtils;
 
+import com.orgzly.android.ui.dialogs.TimestampDialogViewModel;
 import com.orgzly.org.datetime.OrgDateTime;
 import com.orgzly.org.datetime.OrgRange;
 
 import org.joda.time.DateTime;
 
+import java.util.Calendar;
 import java.util.Formatter;
 import java.util.Locale;
 
@@ -74,6 +76,15 @@ public class UserTimeFormatter {
         return formatDate(datetime.getMillis());
     }
 
+    public String formatDate(TimestampDialogViewModel.DateTime dateTime) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, dateTime.getYear());
+        cal.set(Calendar.MONTH, dateTime.getMonth());
+        cal.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
+
+        return formatDate(cal.getTimeInMillis());
+    }
+
     public String formatDate(OrgDateTime time) {
         return formatDate(time.getCalendar().getTimeInMillis());
     }
@@ -91,10 +102,30 @@ public class UserTimeFormatter {
         return formatTime(time.getCalendar().getTimeInMillis());
     }
 
+    public String formatTime(TimestampDialogViewModel.DateTime dateTime) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, dateTime.getHour());
+        cal.set(Calendar.MINUTE, dateTime.getMinute());
+
+        return formatTime(cal.getTimeInMillis());
+    }
+
+    public String formatEndTime(TimestampDialogViewModel.DateTime dateTime) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, dateTime.getEndHour());
+        cal.set(Calendar.MINUTE, dateTime.getEndMinute());
+
+        return formatTime(cal.getTimeInMillis());
+    }
+
     public String formatTime(long timestamp) {
         int flags = DateUtils.FORMAT_SHOW_TIME;
 
         return format(timestamp, timestamp, flags);
+    }
+
+    public String formatEndTime(OrgDateTime time) {
+        return formatTime(time.getEndCalendar().getTimeInMillis());
     }
 
     public String formatTimeAndEndTime(OrgDateTime time) {
@@ -110,8 +141,16 @@ public class UserTimeFormatter {
         return time.getRepeater().toString();
     }
 
+    public String formatRepeater(TimestampDialogViewModel.DateTime dateTime) {
+        return dateTime.getRepeater().toString();
+    }
+
     public String formatDelay(OrgDateTime time) {
         return time.getDelay().toString();
+    }
+
+    public String formatDelay(TimestampDialogViewModel.DateTime dateTime) {
+        return dateTime.getDelay().toString();
     }
 
     /**

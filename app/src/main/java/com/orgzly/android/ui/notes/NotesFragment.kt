@@ -144,11 +144,6 @@ abstract class NotesFragment : Fragment(), TimestampDialogFragment.OnDateTimeSet
         }
     }
 
-    override fun onDateTimeCleared(id: Int, noteIds: TreeSet<Long>) {
-        onDateTimeSet(id, noteIds, null)
-    }
-
-
     override fun onDateTimeAborted(id: Int, noteIds: TreeSet<Long>) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, id)
     }

@@ -793,8 +793,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         return selected
     }
 
-    override fun onDateTimeSet(id: Int, noteIds: TreeSet<Long>, time: OrgDateTime) {
-        val range = OrgRange(time)
+    override fun onDateTimeSet(id: Int, noteIds: TreeSet<Long>, time: OrgDateTime?) {
+        val range = if (time != null) OrgRange(time) else null
 
         when (id) {
             R.id.fragment_note_scheduled_button -> {
@@ -815,26 +815,9 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         }
     }
 
-    override fun onDateTimeCleared(id: Int, noteIds: TreeSet<Long>) {
-        when (id) {
-            R.id.fragment_note_scheduled_button -> {
-                updateTimestampView(TimeType.SCHEDULED, null)
-                viewModel.updatePayloadScheduledTime(null)
-            }
+    override fun onDateTimeAborted(id: Int, noteIds: TreeSet<Long>) {
 
-            R.id.fragment_note_deadline_button -> {
-                updateTimestampView(TimeType.DEADLINE, null)
-                viewModel.updatePayloadDeadlineTime(null)
-            }
-
-            R.id.fragment_note_closed_edit_text -> {
-                updateTimestampView(TimeType.CLOSED, null)
-                viewModel.updatePayloadClosedTime(null)
-            }
-        }
     }
-
-    override/* TimestampDialog */ fun onDateTimeAborted(id: Int, noteIds: TreeSet<Long>) {}
 
     /*
      * Options Menu.

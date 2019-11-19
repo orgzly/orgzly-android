@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/screen_edge"
+        android:layout_marginLeft="@dimen/screen_edge"
+        android:layout_marginRight="@dimen/screen_edge"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -17,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/space_between_content_areas"
-            android:gravity="center"
+            android:gravity="start|center_vertical"
             android:text="@string/repeater_description"
             android:lines="2"/>
 

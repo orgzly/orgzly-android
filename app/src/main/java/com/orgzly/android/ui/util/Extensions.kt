@@ -8,6 +8,8 @@ import androidx.annotation.StyleableRes
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.orgzly.R
 import com.orgzly.android.sync.SyncService
+import com.orgzly.android.ui.dialogs.TimestampDialogViewModel
+import java.util.*
 
 fun <R> Context.styledAttributes(@StyleableRes attrs: IntArray, f: (typedArray: TypedArray) -> R): R {
     val typedArray = obtainStyledAttributes(attrs)

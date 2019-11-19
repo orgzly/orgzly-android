@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/timestamp"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:lines="1"
+            android:layout_margin="@dimen/screen_edge"
+            android:textColor="?attr/text_primary_color"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="?attr/font_medium"
+            app:autoSizeMinTextSize="?attr/font_small"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/dialog_timestamp_org_timestamp_sample" />
+
+    </FrameLayout>
+
+</layout>

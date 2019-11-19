@@ -83,7 +83,7 @@ public class AgendaUtils {
                 .setMinute(date.getMinuteOfHour());
 
         if (repeater != null)
-            builder.setHasRepeater(true).setRepeater(repeater);
+            builder.setRepeater(repeater);
 
         return builder.build();
     }

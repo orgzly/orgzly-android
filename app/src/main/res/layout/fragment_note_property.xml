@@ -43,10 +43,5 @@
 
     <ImageButton
         android:id="@+id/delete"
-        style="?android:attr/borderlessButtonStyle"
-        android:contentDescription="@string/new_above"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="?attr/ic_close_24dp"
-        android:alpha="?attr/oic_item_alpha"/>
+        style="@style/RemoveButton" />
 </LinearLayout>
