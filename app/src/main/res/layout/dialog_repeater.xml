@@ -1,60 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/screen_edge"
-        android:layout_marginLeft="@dimen/screen_edge"
-        android:layout_marginRight="@dimen/screen_edge"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/space_between_content_areas"
-            android:gravity="start|center_vertical"
-            android:text="@string/repeater_description"
-            android:lines="2"/>
+            android:padding="16dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            <TextView
+                android:id="@+id/repeater_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/repeater_description"
+                android:gravity="center"
+                android:lines="2" />
 
             <NumberPicker
                 android:id="@+id/dialog_timestamp_repeater_type"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/dialog_timestamp_repeater_value"
+                app:layout_constraintTop_toTopOf="@+id/dialog_timestamp_repeater_value"
+                android:layout_marginEnd="@dimen/space_between_content_areas"
+                android:layout_marginRight="@dimen/space_between_content_areas" />
 
             <NumberPicker
                 android:id="@+id/dialog_timestamp_repeater_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/space_between_content_areas"
-                android:layout_marginRight="@dimen/space_between_content_areas"/>
+                app:layout_constraintTop_toBottomOf="@+id/repeater_description"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/space_between_content_areas"/>
 
             <NumberPicker
                 android:id="@+id/dialog_timestamp_repeater_unit"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/dialog_timestamp_repeater_value"
+                app:layout_constraintStart_toEndOf="@+id/dialog_timestamp_repeater_value"
+                android:layout_marginStart="@dimen/space_between_content_areas"
+                android:layout_marginLeft="@dimen/space_between_content_areas" />
 
-        <!-- lines=2 added to avoid layout change on different length descriptions -->
-        <TextView
-            android:id="@+id/dialog_timestamp_repeater_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_between_content_areas"
-            android:gravity="center"
-            tools:text="@string/repeater_description_cumulate"
-            android:lines="2"/>
-    </LinearLayout>
-</ScrollView>
+            <!-- lines=2 added to avoid layout change on different length descriptions -->
+            <TextView
+                android:id="@+id/dialog_timestamp_repeater_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_timestamp_repeater_value"
+                android:layout_marginTop="@dimen/space_between_content_areas"
+                tools:text="@string/repeater_description_cumulate"
+                android:gravity="center"
+                android:lines="2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</layout>
