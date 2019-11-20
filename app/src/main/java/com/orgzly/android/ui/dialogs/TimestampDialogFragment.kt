@@ -22,6 +22,7 @@ import com.orgzly.android.util.UserTimeFormatter
 import com.orgzly.databinding.DialogTimestampBinding
 import com.orgzly.databinding.DialogTimestampTitleBinding
 import com.orgzly.org.datetime.OrgDateTime
+import com.orgzly.org.datetime.OrgRepeater
 
 import java.util.Calendar
 import java.util.TreeSet
@@ -196,8 +197,10 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
             }
 
             R.id.repeater_picker_button -> {
-                val picker = RepeaterPickerDialog(mContext, { repeater ->
-                    viewModel.set(repeater)
+                val picker = RepeaterPickerDialog(requireContext(), object : RepeaterPickerDialog.OnRepeaterSetListener {
+                    override fun onRepeaterSet(repeater: OrgRepeater) {
+                        viewModel.set(repeater)
+                    }
                 }, viewModel.getRepeaterString())
 
                 picker.setOnDismissListener {

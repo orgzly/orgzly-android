@@ -351,7 +351,7 @@ class NoteFragmentTest : OrgzlyTest() {
         /* Set repeater. */
         onView(withId(R.id.repeater_used_checkbox)).perform(scrollTo(), click())
         onView(withId(R.id.repeater_picker_button)).perform(scrollTo(), click())
-        onView(withId(R.id.dialog_timestamp_repeater_value)).perform(setNumber(3))
+        onView(withId(R.id.value_picker)).perform(setNumber(3))
         onView(withText(R.string.ok)).perform(click())
 
         /* Rotate screen. */

@@ -15,7 +15,7 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/repeater_description"
+                android:id="@+id/dialog_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
@@ -24,38 +24,38 @@
                 android:lines="2" />
 
             <NumberPicker
-                android:id="@+id/dialog_timestamp_repeater_type"
+                android:id="@+id/type_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@+id/dialog_timestamp_repeater_value"
-                app:layout_constraintTop_toTopOf="@+id/dialog_timestamp_repeater_value"
+                app:layout_constraintEnd_toStartOf="@+id/value_picker"
+                app:layout_constraintTop_toTopOf="@+id/value_picker"
                 android:layout_marginEnd="@dimen/space_between_content_areas"
                 android:layout_marginRight="@dimen/space_between_content_areas" />
 
             <NumberPicker
-                android:id="@+id/dialog_timestamp_repeater_value"
+                android:id="@+id/value_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/repeater_description"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_description"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="@dimen/space_between_content_areas"/>
 
             <NumberPicker
-                android:id="@+id/dialog_timestamp_repeater_unit"
+                android:id="@+id/unit_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@+id/dialog_timestamp_repeater_value"
-                app:layout_constraintStart_toEndOf="@+id/dialog_timestamp_repeater_value"
+                app:layout_constraintTop_toTopOf="@+id/value_picker"
+                app:layout_constraintStart_toEndOf="@+id/value_picker"
                 android:layout_marginStart="@dimen/space_between_content_areas"
                 android:layout_marginLeft="@dimen/space_between_content_areas" />
 
             <!-- lines=2 added to avoid layout change on different length descriptions -->
             <TextView
-                android:id="@+id/dialog_timestamp_repeater_description"
+                android:id="@+id/type_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/dialog_timestamp_repeater_value"
+                app:layout_constraintTop_toBottomOf="@+id/value_picker"
                 android:layout_marginTop="@dimen/space_between_content_areas"
                 tools:text="@string/repeater_description_cumulate"
                 android:gravity="center"
