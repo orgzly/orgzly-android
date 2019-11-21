@@ -132,6 +132,10 @@ class TimestampDialogViewModel(orgDateTime: String?) : CommonViewModel() {
         return (dateTime.value?.repeater ?: DEFAULT_REPEATER).toString()
     }
 
+    fun getDelayString(): String {
+        return (dateTime.value?.delay ?: DEFAULT_DELAY).toString()
+    }
+
     fun getOrgDateTime(): OrgDateTime? {
         return dateTime.value?.let {
             getOrgDateTime(it)
@@ -183,6 +187,12 @@ class TimestampDialogViewModel(orgDateTime: String?) : CommonViewModel() {
     fun set(repeater: OrgRepeater) {
         dateTime.value?.let { value ->
             dateTimeMutable.postValue(value.copy(isRepeaterUsed = true, repeater = repeater))
+        }
+    }
+
+    fun set(delay: OrgDelay) {
+        dateTime.value?.let { value ->
+            dateTimeMutable.postValue(value.copy(isDelayUsed = true, delay = delay))
         }
     }
 

@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
-import android.view.Window
 
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -22,13 +21,11 @@ import com.orgzly.android.util.UserTimeFormatter
 import com.orgzly.databinding.DialogTimestampBinding
 import com.orgzly.databinding.DialogTimestampTitleBinding
 import com.orgzly.org.datetime.OrgDateTime
-import com.orgzly.org.datetime.OrgRepeater
 
 import java.util.Calendar
 import java.util.TreeSet
 
 class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
-
 
     /** Use by caller to know what's the timestamp for (scheduled, deadline, etc.).  */
     private var mId: Int = 0
@@ -197,11 +194,23 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
             }
 
             R.id.repeater_picker_button -> {
-                val picker = RepeaterPickerDialog(requireContext(), object : RepeaterPickerDialog.OnRepeaterSetListener {
-                    override fun onRepeaterSet(repeater: OrgRepeater) {
-                        viewModel.set(repeater)
-                    }
-                }, viewModel.getRepeaterString())
+                val picker = RepeaterPickerDialog(requireContext(), viewModel.getRepeaterString()) {
+                    viewModel.set(it)
+                }
+
+                picker.setOnDismissListener {
+                    pickerDialog = null
+                }
+
+                pickerDialog = picker.apply {
+                    show()
+                }
+            }
+
+            R.id.delay_picker_button -> {
+                val picker = DelayPickerDialog(requireContext(), viewModel.getDelayString()) {
+                    viewModel.set(it)
+                }
 
                 picker.setOnDismissListener {
                     pickerDialog = null

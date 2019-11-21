@@ -12,14 +12,17 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:paddingTop="@dimen/screen_edge"
+            android:paddingBottom="@dimen/screen_edge">
 
             <TextView
                 android:id="@+id/dialog_description"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="@string/repeater_description"
+                app:layout_constraintLeft_toLeftOf="@id/type_picker"
+                app:layout_constraintRight_toRightOf="@+id/unit_picker"
+                tools:text="@string/repeater_description"
                 android:gravity="center"
                 android:lines="2" />
 
@@ -53,9 +56,11 @@
             <!-- lines=2 added to avoid layout change on different length descriptions -->
             <TextView
                 android:id="@+id/type_description"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/value_picker"
+                app:layout_constraintLeft_toLeftOf="@id/type_picker"
+                app:layout_constraintRight_toRightOf="@+id/unit_picker"
                 android:layout_marginTop="@dimen/space_between_content_areas"
                 tools:text="@string/repeater_description_cumulate"
                 android:gravity="center"

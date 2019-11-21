@@ -16,10 +16,20 @@
         <item>.+</item>
     </string-array>
 
-    <string-array name="repeater_types_desc">
+    <string-array name="repeater_types_description">
         <item>@string/repeater_description_cumulate</item>
         <item>@string/repeater_description_catch_up</item>
         <item>@string/repeater_description_restart</item>
+    </string-array>
+
+    <string-array name="delay_types">
+        <item>-</item>
+        <item>--</item>
+    </string-array>
+
+    <string-array name="delay_types_description">
+        <item>@string/delay_description_affects_all</item>
+        <item>@string/delay_description_affects_first</item>
     </string-array>
 
     <string-array name="refile_places">
@@ -27,5 +37,4 @@
         <item>@string/above</item>
         <item>@string/below</item>
     </string-array>
-
 </resources>

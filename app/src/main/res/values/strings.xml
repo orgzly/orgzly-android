@@ -380,6 +380,11 @@
     <string name="repeater_description_catch_up">Keep adding period to time until time reaches future</string> <!-- ++ -->
     <string name="repeater_description_restart">Add period to current time</string> <!-- .+ -->
 
+    <string name="delay_dialog_title">Delay</string>
+    <string name="delay_description">Delay the display of the task in the agenda</string>
+    <string name="delay_description_affects_all">Affects all occurrences</string>
+    <string name="delay_description_affects_first">Affects only the first scheduled occurrence</string>
+
     <string name="displayed_book_details_local_mtime">Local modification time</string>
     <string name="displayed_book_details_link_url">Link URL</string>
     <string name="displayed_book_details_sync_url">Sync URL</string>
