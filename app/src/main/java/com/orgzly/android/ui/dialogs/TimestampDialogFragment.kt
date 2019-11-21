@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.LayoutInflater
@@ -16,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.ui.TimeType
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.UserTimeFormatter
 import com.orgzly.databinding.DialogTimestampBinding
@@ -26,14 +26,7 @@ import java.util.Calendar
 import java.util.TreeSet
 
 class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
-
-    /** Use by caller to know what's the timestamp for (scheduled, deadline, etc.).  */
-    private var mId: Int = 0
-
-    private var mNoteIds = TreeSet<Long>()
-
-    private var mActivityListener: OnDateTimeSetListener? = null
-    private var mContext: Context? = null
+    private var listener: OnDateTimeSetListener? = null
 
     private lateinit var userTimeFormatter: UserTimeFormatter
 
@@ -48,10 +41,7 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        userTimeFormatter = UserTimeFormatter(context)
-
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
+        userTimeFormatter = UserTimeFormatter(requireContext())
     }
 
     /**
@@ -66,29 +56,24 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
          */
         check(parentFragment is OnDateTimeSetListener) { "Fragment " + parentFragment + " must implement " + OnDateTimeSetListener::class.java }
 
-        mActivityListener = parentFragment as OnDateTimeSetListener?
-
-        mContext = activity
+        listener = parentFragment as OnDateTimeSetListener?
 
 
         val args = requireArguments()
 
-        mId = args.getInt(ARG_DIALOG_ID)
-        mNoteIds.addAll(args.getLongArray(ARG_NOTE_IDS)?.toList() ?: emptyList())
-
-        // Ignored, replaced by Org timestamp
-        // val title = args.getInt(ARG_TITLE)
-
+        val dialogId = args.getInt(ARG_DIALOG_ID)
+        val timeType = TimeType.valueOf(requireNotNull(args.getString(ARG_TIME_TYPE)))
+        val noteIds = TreeSet(args.getLongArray(ARG_NOTE_IDS)?.toList() ?: emptyList())
         val dateTimeString = args.getString(ARG_TIME)
 
 
-        LayoutInflater.from(activity).let { inflater ->
+        LayoutInflater.from(requireContext()).let { inflater ->
             binding = DialogTimestampBinding.inflate(inflater)
             titleBinding = DialogTimestampTitleBinding.inflate(inflater)
         }
 
 
-        val factory = TimestampDialogViewModelFactory.getInstance(dateTimeString)
+        val factory = TimestampDialogViewModelFactory.getInstance(timeType, dateTimeString)
         viewModel = ViewModelProviders.of(this, factory).get(TimestampDialogViewModel::class.java)
 
         setupObservers()
@@ -124,18 +109,18 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
         binding.nextWeekButton.setOnClickListener(this)
 
 
-        return AlertDialog.Builder(mContext)
+        return AlertDialog.Builder(requireContext())
                 .setCustomTitle(titleBinding.root)
                 .setView(binding.root)
                 .setPositiveButton(R.string.set) { _, _ ->
                     val time = viewModel.getOrgDateTime()
-                    mActivityListener?.onDateTimeSet(mId, mNoteIds, time)
+                    listener?.onDateTimeSet(dialogId, noteIds, time)
                 }
                 .setNeutralButton(R.string.clear) { _, _ ->
-                    mActivityListener?.onDateTimeSet(mId, mNoteIds, null)
+                    listener?.onDateTimeSet(dialogId, noteIds, null)
                 }
                 .setNegativeButton(R.string.cancel) { _, _ ->
-                    mActivityListener?.onDateTimeAborted(mId, mNoteIds)
+                    listener?.onDateTimeAborted(dialogId, noteIds)
                 }
                 .show()
     }
@@ -148,7 +133,7 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
             R.id.date_picker_button -> {
                 val yearMonthDay = viewModel.getYearMonthDay()
 
-                val picker = DatePickerDialog(mContext!!, { _, year, monthOfYear, dayOfMonth ->
+                val picker = DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
                     viewModel.set(year, monthOfYear, dayOfMonth)
                 }, yearMonthDay.first, yearMonthDay.second, yearMonthDay.third)
 
@@ -164,7 +149,7 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
             R.id.time_picker_button -> {
                 val hourMinute = viewModel.getTimeHourMinute()
 
-                val picker = TimePickerDialog(mContext, { _, hourOfDay, minute ->
+                val picker = TimePickerDialog(requireContext(), { _, hourOfDay, minute ->
                     viewModel.setTime(hourOfDay, minute)
                 }, hourMinute.first, hourMinute.second, DateFormat.is24HourFormat(context))
 
@@ -180,7 +165,7 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
             R.id.end_time_picker_button -> {
                 val hourMinute = viewModel.getEndTimeHourMinute()
 
-                val picker = TimePickerDialog(mContext, { _, hourOfDay, minute ->
+                val picker = TimePickerDialog(requireContext(), { _, hourOfDay, minute ->
                     viewModel.setEndTime(hourOfDay, minute)
                 }, hourMinute.first, hourMinute.second, DateFormat.is24HourFormat(context))
 
@@ -293,23 +278,19 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
         private val TAG = TimestampDialogFragment::class.java.name
 
         private const val ARG_DIALOG_ID = "id"
-        private const val ARG_TITLE = "title"
+        private const val ARG_TIME_TYPE = "time_type"
         private const val ARG_NOTE_IDS = "note_ids"
         private const val ARG_TIME = "time"
 
 
-        fun getInstance(id: Int, title: Int, noteId: Long, time: OrgDateTime?): TimestampDialogFragment {
-            return getInstance(id, title, setOf(noteId), time)
-        }
-
-        fun getInstance(id: Int, title: Int, noteIds: Set<Long>, time: OrgDateTime?): TimestampDialogFragment {
+        fun getInstance(id: Int, timeType: TimeType, noteIds: Set<Long>, time: OrgDateTime?): TimestampDialogFragment {
             val fragment = TimestampDialogFragment()
 
             /* Set arguments for fragment. */
             val bundle = Bundle()
 
             bundle.putInt(ARG_DIALOG_ID, id)
-            bundle.putInt(ARG_TITLE, title)
+            bundle.putString(ARG_TIME_TYPE, timeType.name)
             bundle.putLongArray(ARG_NOTE_IDS, toArray(noteIds))
 
             if (time != null) {

@@ -2,9 +2,8 @@ package com.orgzly.android.ui.dialogs
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.orgzly.BuildConfig
 import com.orgzly.android.ui.CommonViewModel
-import com.orgzly.android.util.LogUtils
+import com.orgzly.android.ui.TimeType
 import com.orgzly.org.datetime.OrgDateTime
 import com.orgzly.org.datetime.OrgDelay
 import com.orgzly.org.datetime.OrgInterval
@@ -12,7 +11,7 @@ import com.orgzly.org.datetime.OrgRepeater
 import java.util.*
 
 
-class TimestampDialogViewModel(orgDateTime: String?) : CommonViewModel() {
+class TimestampDialogViewModel(val timeType: TimeType, orgDateTime: String?) : CommonViewModel() {
 
     data class DateTime(
             val year: Int,

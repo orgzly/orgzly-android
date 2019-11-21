@@ -13,6 +13,7 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.ui.ActionModeListener
 import com.orgzly.android.ui.NotePlace
 import com.orgzly.android.ui.SelectableItemAdapter
+import com.orgzly.android.ui.TimeType
 import com.orgzly.android.ui.dialogs.NoteStateDialog
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.util.ActivityUtils
@@ -109,11 +110,12 @@ abstract class NotesFragment : Fragment(), TimestampDialogFragment.OnDateTimeSet
             null
         }
 
-        val f = TimestampDialogFragment.getInstance(
-                id,
-                if (id in scheduledTimeButtonIds()) R.string.schedule else R.string.deadline,
-                noteIds,
-                time)
+        val timeType = if (id in scheduledTimeButtonIds())
+            TimeType.SCHEDULED
+        else
+            TimeType.DEADLINE
+
+        val f = TimestampDialogFragment.getInstance(id, timeType, noteIds, time)
 
         f.show(childFragmentManager, TimestampDialogFragment.FRAGMENT_TAG)
     }

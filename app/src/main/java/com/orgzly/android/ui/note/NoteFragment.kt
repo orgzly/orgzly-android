@@ -633,10 +633,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         listener = null
     }
 
-    private enum class TimeType {
-        SCHEDULED, DEADLINE, CLOSED, CLOCKED
-    }
-
     private fun updateTimestampView(timeType: TimeType, range: OrgRange?) {
         when (timeType) {
             TimeType.SCHEDULED -> if (range != null) {
@@ -745,24 +741,24 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             R.id.fragment_note_scheduled_button ->
                 f = TimestampDialogFragment.getInstance(
                         R.id.fragment_note_scheduled_button,
-                        R.string.schedule,
-                        0, // Unused
+                        TimeType.SCHEDULED,
+                        emptySet(), // Unused
                         OrgRange.parseOrNull(viewModel.notePayload?.scheduled)?.startTime)
 
             /* Setting deadline time. */
             R.id.fragment_note_deadline_button ->
                 f = TimestampDialogFragment.getInstance(
                         R.id.fragment_note_deadline_button,
-                        R.string.deadline,
-                        0, // Unused
+                        TimeType.DEADLINE,
+                        emptySet(), // Unused
                         OrgRange.parseOrNull(viewModel.notePayload?.deadline)?.startTime)
 
             /* Setting closed time. */
             R.id.fragment_note_closed_edit_text ->
                 f = TimestampDialogFragment.getInstance(
                         R.id.fragment_note_closed_edit_text,
-                        R.string.closed,
-                        0, // Unused
+                        TimeType.CLOSED,
+                        emptySet(), // Unused
                         OrgRange.parseOrNull(viewModel.notePayload?.closed)?.startTime)
         }
 
