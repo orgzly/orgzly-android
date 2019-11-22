@@ -52,8 +52,6 @@ import androidx.core.content.ContextCompat;
 public class ReminderService extends JobIntentService {
     public static final String TAG = ReminderService.class.getName();
 
-    private static final String EXTRA_EVENT = "event";
-
     public static final int EVENT_DATA_CHANGED = 1;
     public static final int EVENT_JOB_TRIGGERED = 2;
     public static final int EVENT_SNOOZE_JOB_TRIGGERED = 3;
@@ -135,7 +133,7 @@ public class ReminderService extends JobIntentService {
      */
     public static void notifyDataChanged(Context context) {
         Intent intent = new Intent(context, ReminderService.class);
-        intent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_DATA_CHANGED);
+        intent.putExtra(AppIntent.EXTRA_REMINDER_EVENT, ReminderService.EVENT_DATA_CHANGED);
         enqueueWork(context, intent);
     }
 
@@ -144,14 +142,14 @@ public class ReminderService extends JobIntentService {
      */
     public static void notifyJobTriggered(Context context) {
         Intent intent = new Intent(context, ReminderService.class);
-        intent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_JOB_TRIGGERED);
+        intent.putExtra(AppIntent.EXTRA_REMINDER_EVENT, ReminderService.EVENT_JOB_TRIGGERED);
         enqueueWork(context, intent);
     }
 
     public static void notifySnoozeTriggered(Context context, long noteId, int noteTimeType, long timestamp) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
         Intent intent = new Intent(context, ReminderService.class);
-        intent.putExtra(ReminderService.EXTRA_EVENT, ReminderService.EVENT_SNOOZE_JOB_TRIGGERED);
+        intent.putExtra(AppIntent.EXTRA_REMINDER_EVENT, ReminderService.EVENT_SNOOZE_JOB_TRIGGERED);
         intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId);
         intent.putExtra(AppIntent.EXTRA_NOTE_TIME_TYPE, noteTimeType);
         intent.putExtra(AppIntent.EXTRA_SNOOZE_TIMESTAMP, timestamp);
@@ -169,11 +167,11 @@ public class ReminderService extends JobIntentService {
             case TIME_BEFORE_NOW: // Before now, starting from lastRun, depending on timeType
 
                 if (timeType == ReminderTimeDao.SCHEDULED_TIME) {
-                    res[0] = lastRun.scheduled;
+                    res[0] = lastRun.getScheduled();
                 } else if (timeType == ReminderTimeDao.DEADLINE_TIME) {
-                    res[0] = lastRun.deadline;
+                    res[0] = lastRun.getDeadline();
                 } else {
-                    res[0] = lastRun.event;
+                    res[0] = lastRun.getEvent();
                 }
 
                 if (res[0] == null) {
@@ -214,9 +212,9 @@ public class ReminderService extends JobIntentService {
 
         DateTime now = new DateTime();
 
-        LastRun lastRun = readLastRun();
+        LastRun lastRun = LastRun.fromPreferences(this);
 
-        int event = intent.getIntExtra(EXTRA_EVENT, EVENT_UNKNOWN);
+        int event = intent.getIntExtra(AppIntent.EXTRA_REMINDER_EVENT, EVENT_UNKNOWN);
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Event: " + event);
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, " Last: " + lastRun);
@@ -249,45 +247,7 @@ public class ReminderService extends JobIntentService {
 
         scheduleNextJob(now, lastRun);
 
-        writeLastRun(now);
-    }
-
-    private LastRun readLastRun() {
-        LastRun lastRun = new LastRun();
-        long ms;
-
-        ms = AppPreferences.reminderLastRunForScheduled(this);
-        if (ms > 0) {
-            lastRun.scheduled = new DateTime(ms);
-        }
-
-        ms = AppPreferences.reminderLastRunForDeadline(this);
-        if (ms > 0) {
-            lastRun.deadline = new DateTime(ms);
-        }
-
-        ms = AppPreferences.reminderLastRunForEvents(this);
-        if (ms > 0) {
-            lastRun.event = new DateTime(ms);
-        }
-
-        return lastRun;
-    }
-
-    private void writeLastRun(DateTime now) {
-        Context context = this;
-
-        if (AppPreferences.remindersForScheduledEnabled(context)) {
-            AppPreferences.reminderLastRunForScheduled(context, now.getMillis());
-        }
-
-        if (AppPreferences.remindersForDeadlineEnabled(context)) {
-            AppPreferences.reminderLastRunForDeadline(context, now.getMillis());
-        }
-
-        if (AppPreferences.remindersForEventsEnabled(context)) {
-            AppPreferences.reminderLastRunForEvents(context, now.getMillis());
-        }
+        LastRun.toPreferences(this, now);
     }
 
     private void scheduleNextJob(DateTime now, LastRun lastRun) {
@@ -589,16 +549,5 @@ public class ReminderService extends JobIntentService {
                 Long.valueOf(noteId).intValue(),
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    static class LastRun {
-        DateTime scheduled;
-        DateTime deadline;
-        DateTime event;
-
-        @Override
-        public String toString() {
-            return "Scheduled: " + scheduled + "  Deadline: " + deadline + "  Event: " + event;
-        }
     }
 }

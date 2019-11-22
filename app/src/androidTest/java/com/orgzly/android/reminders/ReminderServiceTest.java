@@ -22,7 +22,7 @@ public class ReminderServiceTest extends OrgzlyTest {
                 "SCHEDULED: <2017-03-20>\n" +
                 "* Note 3");
 
-        ReminderService.LastRun lastRun = new ReminderService.LastRun();
+        LastRun lastRun = new LastRun();
         Instant now = Instant.parse("2017-03-15");
         AppPreferences.remindersForScheduledEnabled(context, true);
 
@@ -43,7 +43,7 @@ public class ReminderServiceTest extends OrgzlyTest {
                 "* Note 4\n"+
                 "SCHEDULED: <2017-03-16 Fri +1w>\n");
 
-        ReminderService.LastRun lastRun = new ReminderService.LastRun();
+        LastRun lastRun = new LastRun();
         Instant now = Instant.parse("2017-03-15T13:00:00"); // Wed
         AppPreferences.remindersForScheduledEnabled(context, true);
 
@@ -67,7 +67,7 @@ public class ReminderServiceTest extends OrgzlyTest {
                 "* Note 2\n"+
                 "DEADLINE: <2017-03-20 Mon 16:00>\n");
 
-        ReminderService.LastRun lastRun = new ReminderService.LastRun();
+        LastRun lastRun = new LastRun();
         Instant now = Instant.parse("2017-03-15T13:00:00"); // Wed
         AppPreferences.remindersForDeadlineEnabled(context, true);
 
