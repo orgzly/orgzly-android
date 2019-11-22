@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.orgzly.R
+import com.orgzly.android.reminders.ReminderNotifications
 import com.orgzly.android.reminders.ReminderService
 
 
@@ -44,7 +45,7 @@ object NotificationChannels {
         channel.enableLights(true)
         channel.lightColor = Color.BLUE
 
-        channel.vibrationPattern = ReminderService.VIBRATION_PATTERN
+        channel.vibrationPattern = ReminderNotifications.VIBRATION_PATTERN
 
         channel.setShowBadge(false)
 
