@@ -73,7 +73,7 @@ public class ReminderService extends JobIntentService {
 
                 ReadableInstant[] interval = getInterval(beforeOrAfter, now, lastRun, noteTime.getTimeType());
 
-                DateTime time = OrgDateTimeUtils.getFirstWarningTime(
+                DateTime time = getFirstTime(
                         noteTime.getTimeType(),
                         orgDateTime,
                         interval[0],
@@ -114,7 +114,7 @@ public class ReminderService extends JobIntentService {
     /**
      * Notify reminder service about changes that might affect scheduling of reminders.
      */
-    public static void notifyDataChanged(Context context) {
+    public static void notifyForDataChanged(Context context) {
         Intent intent = new Intent(context, ReminderService.class);
         intent.putExtra(AppIntent.EXTRA_REMINDER_EVENT, ReminderService.EVENT_DATA_CHANGED);
         enqueueWork(context, intent);
@@ -123,13 +123,13 @@ public class ReminderService extends JobIntentService {
     /**
      * Notify ReminderService about the triggered job.
      */
-    public static void notifyJobTriggered(Context context) {
+    public static void notifyForJobTriggered(Context context) {
         Intent intent = new Intent(context, ReminderService.class);
         intent.putExtra(AppIntent.EXTRA_REMINDER_EVENT, ReminderService.EVENT_JOB_TRIGGERED);
         enqueueWork(context, intent);
     }
 
-    public static void notifySnoozeTriggered(Context context, long noteId, int noteTimeType, long timestamp) {
+    public static void notifyForSnoozeTriggered(Context context, long noteId, int noteTimeType, long timestamp) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
         Intent intent = new Intent(context, ReminderService.class);
         intent.putExtra(AppIntent.EXTRA_REMINDER_EVENT, ReminderService.EVENT_SNOOZE_JOB_TRIGGERED);
@@ -173,6 +173,31 @@ public class ReminderService extends JobIntentService {
         }
 
         return res;
+    }
+
+    private static DateTime getFirstTime(
+            int timeType,
+            OrgDateTime orgDateTime,
+            ReadableInstant fromTime,
+            ReadableInstant beforeTime,
+            OrgInterval defaultTimeOfDay,
+            OrgInterval defaultWarningPeriod) {
+
+        List<DateTime> times = OrgDateTimeUtils.getTimesInInterval(
+                orgDateTime, fromTime, beforeTime, false, 1);
+
+        if (times.isEmpty()) {
+            return null;
+        }
+
+        DateTime time = times.get(0);
+
+        if (!orgDateTime.hasTime()) {
+            // TODO: Move to preferences
+            time = time.plusHours(9);
+        }
+
+        return time;
     }
 
     @Override

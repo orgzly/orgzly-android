@@ -11,7 +11,7 @@ public class ReminderJob extends Job {
 
     @Override @NonNull
     protected Result onRunJob(Params params) {
-        ReminderService.notifyJobTriggered(getContext());
+        ReminderService.notifyForJobTriggered(getContext());
 
         return Result.SUCCESS;
     }

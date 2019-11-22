@@ -22,7 +22,7 @@ public class SnoozeJob extends Job {
         int noteTimeType = params.getExtras().getInt(AppIntent.EXTRA_NOTE_TIME_TYPE, 0);
         long timestamp = params.getExtras().getLong(AppIntent.EXTRA_SNOOZE_TIMESTAMP, 0);
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
-        ReminderService.notifySnoozeTriggered(getContext(), noteId, noteTimeType, timestamp);
+        ReminderService.notifyForSnoozeTriggered(getContext(), noteId, noteTimeType, timestamp);
         return Result.SUCCESS;
     }
 

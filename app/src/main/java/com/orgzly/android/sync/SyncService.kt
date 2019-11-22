@@ -307,7 +307,7 @@ class SyncService : Service() {
                     }
 
                     // TODO: Call only if book was loaded, move to usecase
-                    ReminderService.notifyDataChanged(App.getAppContext())
+                    ReminderService.notifyForDataChanged(App.getAppContext())
                     ListWidgetProvider.notifyDataChanged(App.getAppContext())
 
                     syncStatus.set(SyncStatus.Type.BOOK_ENDED, namesake.name, curr + 1, namesakes.size)

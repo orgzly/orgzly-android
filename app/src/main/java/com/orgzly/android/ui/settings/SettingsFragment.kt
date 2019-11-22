@@ -292,7 +292,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
          * - Changing states or priorities can affect the displayed data
          * - Enabling or disabling reminders needs to trigger reminder service notification
          */
-        ReminderService.notifyDataChanged(context)
+        ReminderService.notifyForDataChanged(context)
         ListWidgetProvider.notifyDataChanged(context)
     }
 
