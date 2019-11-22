@@ -193,8 +193,14 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
             }
 
             R.id.delay_picker_button -> {
-                val picker = DelayPickerDialog(requireContext(), viewModel.getDelayString()) {
-                    viewModel.set(it)
+                val picker = if (viewModel.timeType == TimeType.SCHEDULED) {
+                    DelayPickerDialog(requireContext(), viewModel.getDelayString()) {
+                        viewModel.set(it)
+                    }
+                } else {
+                    WarningPeriodPickerDialog(requireContext(), viewModel.getDelayString()) {
+                        viewModel.set(it)
+                    }
                 }
 
                 picker.setOnDismissListener {

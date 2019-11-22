@@ -32,6 +32,10 @@
         <item>@string/delay_description_affects_first</item>
     </string-array>
 
+    <string-array name="warning_period_types">
+        <item>-</item>
+    </string-array>
+
     <string-array name="refile_places">
         <item>@string/under</item>
         <item>@string/above</item>

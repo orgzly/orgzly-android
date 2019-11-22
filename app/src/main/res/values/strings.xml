@@ -385,6 +385,9 @@
     <string name="delay_description_affects_all">Affects all occurrences</string>
     <string name="delay_description_affects_first">Affects only the first scheduled occurrence</string>
 
+    <string name="warning_period_dialog_title">Warning period</string>
+    <string name="warning_period_description">Warn about the approaching or missed deadline</string>
+
     <string name="displayed_book_details_local_mtime">Local modification time</string>
     <string name="displayed_book_details_link_url">Link URL</string>
     <string name="displayed_book_details_sync_url">Sync URL</string>

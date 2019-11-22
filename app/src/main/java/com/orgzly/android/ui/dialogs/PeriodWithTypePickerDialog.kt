@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import androidx.annotation.ArrayRes
 import androidx.annotation.StringRes
 import com.orgzly.R
@@ -114,8 +115,13 @@ abstract class PeriodWithTypePickerDialog(
     }
 
     private fun setTypeDescription(index: Int) {
-        binding.typeDescription.text =
-                context.resources.getStringArray(typesDescriptionsId)[index]
+        if (typesDescriptionsId == 0) {
+            binding.typeDescription.visibility = View.GONE
+        } else {
+            binding.typeDescription.text =
+                    context.resources.getStringArray(typesDescriptionsId)[index]
+            binding.typeDescription.visibility = View.VISIBLE
+        }
     }
 
     private fun getInterval(value: Int, unitIndex: Int): OrgInterval {
