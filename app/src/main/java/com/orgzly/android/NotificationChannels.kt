@@ -8,7 +8,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.orgzly.R
 import com.orgzly.android.reminders.ReminderNotifications
-import com.orgzly.android.reminders.ReminderService
 
 
 /**
