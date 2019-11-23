@@ -2,7 +2,7 @@ package com.orgzly.android.reminders;
 
 import org.joda.time.DateTime;
 
-class NoteReminder {
+public class NoteReminder {
     private DateTime runTime;
     private NoteReminderPayload payload;
 
