@@ -253,12 +253,25 @@ class ReminderService : JobIntentService() {
 
                     val interval = intervalToConsider(beforeOrAfter, now, lastRun, noteTime.timeType)
 
+                    // Deadline warning period
+
+                    val warningPeriod = if (isWarningPeriodSupported(noteTime)) {
+                        if (orgDateTime.hasDelay()) {
+                            orgDateTime.delay as OrgInterval
+                        } else {
+                            // TODO: Use default from user preference
+                            // OrgInterval(1, OrgInterval.Unit.DAY)
+                            null
+                        }
+                    } else {
+                        null
+                    }
+
                     val time = getFirstTime(
-                            noteTime.timeType,
                             orgDateTime,
                             interval,
                             OrgInterval(9, OrgInterval.Unit.HOUR),  // Default time of day
-                            OrgInterval(1, OrgInterval.Unit.DAY) // Warning period for deadlines
+                            warningPeriod
                     )
 
                     if (time != null) {
@@ -285,6 +298,11 @@ class ReminderService : JobIntentService() {
                     && noteTime.timeType == ReminderTimeDao.EVENT_TIME
 
             return isEnabled && !isDone
+        }
+
+        private fun isWarningPeriodSupported(noteTime: NoteTime): Boolean {
+            return noteTime.timeType == ReminderTimeDao.DEADLINE_TIME
+                    || noteTime.timeType == ReminderTimeDao.EVENT_TIME
         }
 
         /**
@@ -361,20 +379,20 @@ class ReminderService : JobIntentService() {
         }
 
         private fun getFirstTime(
-                timeType: Int,
                 orgDateTime: OrgDateTime,
                 interval: Pair<ReadableInstant, ReadableInstant?>,
                 defaultTimeOfDay: OrgInterval,
-                defaultWarningPeriod: OrgInterval): DateTime? {
+                warningPeriod: OrgInterval?): DateTime? {
 
             val times = OrgDateTimeUtils.getTimesInInterval(
-                    orgDateTime, interval.first, interval.second, false, 1)
+                    orgDateTime, interval.first, interval.second, false, warningPeriod, 1)
 
             if (times.isEmpty()) {
                 return null
             }
             var time = times[0]
-            if (!orgDateTime.hasTime()) { // TODO: Move to preferences
+            if (!orgDateTime.hasTime()) {
+                // TODO: Move to preferences
                 time = time.plusHours(9)
             }
             return time
