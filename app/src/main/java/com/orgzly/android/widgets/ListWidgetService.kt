@@ -15,6 +15,7 @@ import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.query.Query
 import com.orgzly.android.query.user.InternalQueryParser
+import com.orgzly.android.ui.TimeType
 import com.orgzly.android.ui.notes.query.agenda.AgendaItem
 import com.orgzly.android.ui.notes.query.agenda.AgendaItems
 import com.orgzly.android.ui.util.TitleGenerator
@@ -43,7 +44,11 @@ class ListWidgetService : RemoteViewsService() {
     }
 
     private sealed class WidgetEntry(open val id: Long) {
-        data class WidgetNoteEntry(override val id: Long, val noteView: NoteView, val agendaTimeType: Int) : WidgetEntry(id)
+        data class WidgetNoteEntry(
+                override val id: Long,
+                val noteView: NoteView,
+                val agendaTimeType: TimeType? = null
+        ) : WidgetEntry(id)
 
         data class WidgetDividerEntry(override val id: Long, val day: DateTime) : WidgetEntry(id)
     }
@@ -100,7 +105,7 @@ class ListWidgetService : RemoteViewsService() {
 
             } else {
                 dataList = notes.map {
-                    WidgetEntry.WidgetNoteEntry(it.note.id, it, 0)
+                    WidgetEntry.WidgetNoteEntry(it.note.id, it)
                 }
             }
         }
@@ -117,9 +122,7 @@ class ListWidgetService : RemoteViewsService() {
                 return null
             }
 
-            val entry = dataList[position]
-
-            return when (entry) {
+            return when (val entry = dataList[position]) {
                 is WidgetEntry.WidgetDividerEntry ->
                     RemoteViews(context.packageName, R.layout.item_list_widget_divider).apply {
                         setupRemoteViews(this, entry)
@@ -185,17 +188,19 @@ class ListWidgetService : RemoteViewsService() {
 
             // In Agenda only display time responsible for item's presence
             when (entry.agendaTimeType) {
-                1 -> {
+                TimeType.SCHEDULED -> {
                     deadline = null
                     event = null
                 }
-                2 -> {
+                TimeType.DEADLINE -> {
                     scheduled = null
                     event = null
                 }
-                3 -> {
+                TimeType.EVENT -> {
                     scheduled = null
                     deadline = null
+                }
+                else -> {
                 }
             }
 

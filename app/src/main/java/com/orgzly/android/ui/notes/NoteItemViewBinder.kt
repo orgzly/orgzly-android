@@ -14,6 +14,7 @@ import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.ImageLoader
+import com.orgzly.android.ui.TimeType
 import com.orgzly.android.ui.util.TitleGenerator
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.usecase.NoteToggleFolding
@@ -46,7 +47,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         userTimeFormatter = UserTimeFormatter(context)
     }
 
-    fun bind(holder: NoteItemViewHolder, noteView: NoteView, agendaTimeType: Int? = 0) {
+    fun bind(holder: NoteItemViewHolder, noteView: NoteView, agendaTimeType: TimeType? = null) {
 
         setupTitle(holder, noteView)
 
@@ -140,7 +141,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         }
     }
 
-    private fun setupPlanningTimes(holder: NoteItemViewHolder, noteView: NoteView, agendaTimeType: Int? = 0) {
+    private fun setupPlanningTimes(holder: NoteItemViewHolder, noteView: NoteView, agendaTimeType: TimeType?) {
 
         fun setupPlanningTime(textView: TextView, iconView: ImageView, value: String?) {
             if (value != null && AppPreferences.displayPlanning(context)) {
@@ -161,17 +162,19 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
         // In Agenda only display time responsible for item's presence
         when (agendaTimeType) {
-            1 -> {
+            TimeType.SCHEDULED -> {
                 deadline = null
                 event = null
             }
-            2 -> {
+            TimeType.DEADLINE -> {
                 scheduled = null
                 event = null
             }
-            3 -> {
+            TimeType.EVENT -> {
                 scheduled = null
                 deadline = null
+            }
+            else -> {
             }
         }
 
@@ -419,7 +422,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
             }
         }
 
-        fun getMarginsForListDensity(context: Context): Pair<Int, Int> {
+        private fun getMarginsForListDensity(context: Context): Pair<Int, Int> {
             val itemMargins: Int
             val belowTitleMargins: Int
 

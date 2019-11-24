@@ -3,6 +3,7 @@ package com.orgzly.android.ui.notes.query.agenda
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.query.Query
 import com.orgzly.android.query.user.InternalQueryParser
+import com.orgzly.android.ui.TimeType
 import com.orgzly.android.util.AgendaUtils
 import org.joda.time.DateTime
 
@@ -40,7 +41,7 @@ object AgendaItems {
 
         item2databaseIds.clear()
 
-        var index = 1L
+        var agendaItemId = 1L
 
         val now = DateTime.now().withTimeAtStartOfDay()
 
@@ -49,13 +50,13 @@ object AgendaItems {
                 .map { i -> now.plusDays(i) }
                 .associateBy(
                         { it.millis },
-                        { mutableListOf<AgendaItem>(AgendaItem.Divider(index++, it)) })
+                        { mutableListOf<AgendaItem>(AgendaItem.Divider(agendaItemId++, it)) })
 
         val addedPlanningTimes = HashSet<Long>()
 
         notes.forEach { note ->
 
-            fun addInstances(timeType: Int, timeString: String?, overdueToday: Boolean) {
+            fun addInstances(timeType: TimeType, timeString: String?, overdueToday: Boolean) {
                 // Expand each note if it has a repeater or is a range
                 val times = AgendaUtils.expandOrgDateTime(
                         arrayOf(ExpandableOrgRange(timeString, overdueToday)),
@@ -67,23 +68,23 @@ object AgendaItems {
                     val bucketKey = time.withTimeAtStartOfDay().millis
 
                     dayBuckets[bucketKey]?.let {
-                        it.add(AgendaItem.Note(index, note, timeType))
-                        item2databaseIds[index] = note.note.id
-                        index++
+                        it.add(AgendaItem.Note(agendaItemId, note, timeType))
+                        item2databaseIds[agendaItemId] = note.note.id
+                        agendaItemId++
                     }
                 }
             }
 
             // Add planning times for a note only once
             if (!addedPlanningTimes.contains(note.note.id)) {
-                addInstances(1, note.scheduledRangeString, true)
-                addInstances(2, note.deadlineRangeString, true)
+                addInstances(TimeType.SCHEDULED, note.scheduledRangeString, true)
+                addInstances(TimeType.DEADLINE, note.deadlineRangeString, true)
 
                 addedPlanningTimes.add(note.note.id)
             }
 
             // Add each note's event
-            addInstances(3, note.eventString, false)
+            addInstances(TimeType.EVENT, note.eventString, false)
         }
 
         return dayBuckets.values.flatten() // FIXME
