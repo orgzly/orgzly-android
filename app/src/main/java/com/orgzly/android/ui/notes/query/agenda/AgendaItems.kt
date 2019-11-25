@@ -8,7 +8,7 @@ import com.orgzly.android.util.AgendaUtils
 import org.joda.time.DateTime
 
 object AgendaItems {
-    data class ExpandableOrgRange(val range: String?, val overdueToday: Boolean)
+    data class ExpandableOrgRange(val range: String, val overdueToday: Boolean)
 
     fun getList(
             notes: List<NoteView>, queryString: String?, idMap: MutableMap<Long, Long>
@@ -56,7 +56,7 @@ object AgendaItems {
 
         notes.forEach { note ->
 
-            fun addInstances(timeType: TimeType, timeString: String?, overdueToday: Boolean) {
+            fun addInstances(timeType: TimeType, timeString: String, overdueToday: Boolean) {
                 // Expand each note if it has a repeater or is a range
                 val times = AgendaUtils.expandOrgDateTime(
                         arrayOf(ExpandableOrgRange(timeString, overdueToday)),
@@ -77,14 +77,20 @@ object AgendaItems {
 
             // Add planning times for a note only once
             if (!addedPlanningTimes.contains(note.note.id)) {
-                addInstances(TimeType.SCHEDULED, note.scheduledRangeString, true)
-                addInstances(TimeType.DEADLINE, note.deadlineRangeString, true)
+                note.scheduledRangeString?.let {
+                    addInstances(TimeType.SCHEDULED, it, true)
+                }
+                note.deadlineRangeString?.let {
+                    addInstances(TimeType.DEADLINE, it, true)
+                }
 
                 addedPlanningTimes.add(note.note.id)
             }
 
             // Add each note's event
-            addInstances(TimeType.EVENT, note.eventString, false)
+            note.eventString?.let {
+                addInstances(TimeType.EVENT, it, false)
+            }
         }
 
         return dayBuckets.values.flatten() // FIXME
