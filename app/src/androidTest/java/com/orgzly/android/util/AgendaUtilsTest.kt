@@ -23,7 +23,7 @@ class AgendaUtilsTest(private val param: Parameter) {
     @Test
     fun testExpander() {
         val expandedDates = AgendaUtils.expandOrgDateTime(
-                param.rangeStr, now, param.days, param.overdueToday)
+                param.rangeStr, DateTime(now), param.days, param.overdueToday)
 
         Assert.assertEquals(param.dates.size.toLong(), expandedDates.size.toLong())
         Assert.assertThat(toStringArray(expandedDates), Matchers.`is`(toStringArray(param.dates)))
