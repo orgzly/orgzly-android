@@ -1,10 +1,7 @@
 package com.orgzly.android.util
 
 import com.orgzly.android.ui.notes.query.agenda.AgendaItems.ExpandableOrgRange
-import com.orgzly.org.datetime.OrgDateTime
-import com.orgzly.org.datetime.OrgDateTimeUtils
-import com.orgzly.org.datetime.OrgRange
-import com.orgzly.org.datetime.OrgRepeater
+import com.orgzly.org.datetime.*
 import org.joda.time.DateTime
 import java.util.*
 
@@ -19,7 +16,8 @@ object AgendaUtils {
 
         for (expandableRange in expandableRanges) {
             OrgRange.parseOrNull(expandableRange.range)?.let {
-                set.addAll(expandOrgDateTime(it, expandableRange.overdueToday, now, days))
+                set.addAll(expandOrgDateTime(
+                        it, expandableRange.overdueToday, expandableRange.warningPeriod, now, days))
             }
         }
 
@@ -27,12 +25,24 @@ object AgendaUtils {
     }
 
     /** Used by tests.  */
-    fun expandOrgDateTime(rangeStr: String?, now: DateTime, days: Int, overdueToday: Boolean): List<DateTime> {
-        return expandOrgDateTime(OrgRange.parse(rangeStr), overdueToday, now, days)
+    fun expandOrgDateTime(
+            rangeStr: String?,
+            now: DateTime,
+            days: Int,
+            overdueToday: Boolean,
+            warningPeriod: OrgInterval?
+    ): List<DateTime> {
+
+        return expandOrgDateTime(OrgRange.parse(rangeStr), overdueToday, warningPeriod, now, days)
     }
 
     private fun expandOrgDateTime(
-            range: OrgRange, overdueToday: Boolean, now: DateTime, days: Int): List<DateTime> {
+            range: OrgRange,
+            overdueToday: Boolean,
+            warningPeriod: OrgInterval?,
+            now: DateTime,
+            days: Int
+    ): List<DateTime> {
 
         // Only unique values
         val result: MutableSet<DateTime> = LinkedHashSet()
@@ -50,7 +60,8 @@ object AgendaUtils {
         var to = now.plusDays(days).withTimeAtStartOfDay()
 
         if (rangeEnd == null) {
-            result.addAll(OrgDateTimeUtils.getTimesInInterval(rangeStart, now, to, true, 0))
+            result.addAll(OrgDateTimeUtils.getTimesInInterval(
+                    rangeStart, now, to, true, warningPeriod, 0))
 
         } else { // a time range
             if (to.isAfter(rangeEnd.calendar.timeInMillis)) {
@@ -63,7 +74,8 @@ object AgendaUtils {
                 rangeStart = buildOrgDateTimeFromDate(start, OrgRepeater.parse("++1d"))
             }
 
-            result.addAll(OrgDateTimeUtils.getTimesInInterval(rangeStart, now, to, true, 0))
+            result.addAll(OrgDateTimeUtils.getTimesInInterval(
+                    rangeStart, now, to, true, warningPeriod, 0))
         }
 
         return ArrayList(result)

@@ -1,5 +1,6 @@
 package com.orgzly.android.util
 
+import com.orgzly.org.datetime.OrgInterval
 import org.hamcrest.Matchers
 import org.joda.time.DateTime
 import org.junit.Assert
@@ -15,6 +16,7 @@ class AgendaUtilsTest(private val param: Parameter) {
             val rangeStr: String,
             val days: Int,
             val overdueToday: Boolean,
+            val warningPeriod: OrgInterval? = null,
             val dates: List<DateTime>)
 
     // 2017 May 5, 13:00:00
@@ -23,7 +25,7 @@ class AgendaUtilsTest(private val param: Parameter) {
     @Test
     fun testExpander() {
         val expandedDates = AgendaUtils.expandOrgDateTime(
-                param.rangeStr, DateTime(now), param.days, param.overdueToday)
+                param.rangeStr, DateTime(now), param.days, param.overdueToday, param.warningPeriod)
 
         Assert.assertEquals(param.dates.size.toLong(), expandedDates.size.toLong())
         Assert.assertThat(toStringArray(expandedDates), Matchers.`is`(toStringArray(param.dates)))
@@ -181,7 +183,8 @@ class AgendaUtilsTest(private val param: Parameter) {
                             dates = listOf(
                                     DateTime(2017, 5, 5, 0, 0),
                                     DateTime(2017, 5, 6, 0, 0),
-                                    DateTime(2017, 5, 7, 0, 0))))
+                                    DateTime(2017, 5, 7, 0, 0)))
+            )
         }
     }
 

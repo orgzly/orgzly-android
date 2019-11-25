@@ -5,10 +5,12 @@ import com.orgzly.android.query.Query
 import com.orgzly.android.query.user.InternalQueryParser
 import com.orgzly.android.ui.TimeType
 import com.orgzly.android.util.AgendaUtils
+import com.orgzly.org.datetime.OrgInterval
 import org.joda.time.DateTime
 
 object AgendaItems {
-    data class ExpandableOrgRange(val range: String, val overdueToday: Boolean)
+    data class ExpandableOrgRange(
+            val range: String, val overdueToday: Boolean, val warningPeriod: OrgInterval?)
 
     fun getList(
             notes: List<NoteView>, queryString: String?, idMap: MutableMap<Long, Long>
@@ -59,7 +61,7 @@ object AgendaItems {
             fun addInstances(timeType: TimeType, timeString: String, overdueToday: Boolean) {
                 // Expand each note if it has a repeater or is a range
                 val times = AgendaUtils.expandOrgDateTime(
-                        arrayOf(ExpandableOrgRange(timeString, overdueToday)),
+                        arrayOf(ExpandableOrgRange(timeString, overdueToday, null)),
                         now,
                         agendaDays)
 
