@@ -24,10 +24,13 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
+
+import kotlin.io.FileAlreadyExistsException;
 
 public class GitFileSynchronizer {
     private static String TAG = GitFileSynchronizer.class.getSimpleName();
@@ -234,6 +237,15 @@ public class GitFileSynchronizer {
             e.printStackTrace();
             throw new IOException("Failed to update from remote");
         }
+    }
+
+    public void updateAndCommitExistingFile(File sourceFile, String repositoryPath) throws IOException {
+        ensureRepoIsClean();
+        File destinationFile = repoDirectoryFile(repositoryPath);
+        if (!destinationFile.exists()) {
+            throw new FileNotFoundException("File " + destinationFile + " does not exist");
+        }
+        updateAndCommitFile(sourceFile, repositoryPath);
     }
 
     /**

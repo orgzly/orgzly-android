@@ -98,6 +98,10 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
         val repoId = intent.getLongExtra(ARG_REPO_ID, 0)
 
+        val factory = RepoViewModelFactory.getInstance(dataRepository, repoId)
+
+        viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
+
         /* Set directory value for existing repository being edited. */
         if (repoId != 0L) {
             dataRepository.getRepo(repoId)?.let { repo ->
@@ -107,10 +111,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         } else {
             createDefaultRepoFolder()
         }
-
-        val factory = RepoViewModelFactory.getInstance(dataRepository, repoId)
-
-        viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
 
         viewModel.finishEvent.observeSingle(this, Observer {
             saveToPreferences(viewModel.repoId)

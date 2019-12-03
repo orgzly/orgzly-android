@@ -1,14 +1,17 @@
 package com.orgzly.android.repos;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
 import com.orgzly.android.BookName;
+import com.orgzly.android.db.entity.Repo;
 import com.orgzly.android.git.GitFileSynchronizer;
 import com.orgzly.android.git.GitPreferences;
 import com.orgzly.android.git.GitPreferencesFromRepoPrefs;
 import com.orgzly.android.git.GitSSHKeyTransportSetter;
 import com.orgzly.android.git.GitTransportSetter;
+import com.orgzly.android.prefs.RepoPreferences;
 
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
@@ -49,8 +52,13 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
         }
     }
 
-    public static GitRepo getInstance(RepoWithProps props) throws IOException {
-        GitPreferencesFromRepoPrefs prefs = null;
+    public static GitRepo getInstance(RepoWithProps props, Context context) throws IOException {
+        // TODO: This doesn't seem to be implemented in the same way as WebdavRepo.kt, do
+        //  we want to store configuration data the same way they do?
+        Repo repo = props.getRepo();
+        Uri repoUri = Uri.parse(repo.getUrl());
+        RepoPreferences repoPreferences = new RepoPreferences(context, repo.getId(), repoUri);
+        GitPreferencesFromRepoPrefs prefs = new GitPreferencesFromRepoPrefs(repoPreferences);
 
         // TODO: Build from info
 
@@ -179,9 +187,13 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     }
 
     public VersionedRook storeBook(File file, String fileName) throws IOException {
-        // Since GitRepo implements TwoWaySync this method is only called if fileName doesn't exist
-        // in the git repository, therefore we can just add the file and push the change.
-        synchronizer.addAndCommitNewFile(file, fileName);
+        // If the file already exists it is because we're trying to force save a file
+        File destination = synchronizer.repoDirectoryFile(fileName);
+        if (destination.exists()) {
+            synchronizer.updateAndCommitExistingFile(file, fileName);
+        } else {
+            synchronizer.addAndCommitNewFile(file, fileName);
+        }
         synchronizer.tryPush();
         return currentVersionedRook(Uri.EMPTY.buildUpon().appendPath(fileName).build());
     }
@@ -212,6 +224,12 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
 
         // TODO: consider
         // synchronizer.checkoutSelected();
+        try {
+            currentCommit = synchronizer.getLatestCommitOfFile(Uri.parse(fileName));
+        } catch (GitAPIException ex) {
+            throw new IOException("Error while retrieving latest commit of " + fileName, ex);
+        }
+        // TODO: What if we  can't merge here? Can that not happen?
         synchronizer.mergeWithRemote();
         synchronizer.tryPushIfUpdated(currentCommit);
         synchronizer.safelyRetrieveLatestVersionOfFile(
