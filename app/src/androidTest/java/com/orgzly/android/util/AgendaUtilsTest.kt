@@ -183,7 +183,15 @@ class AgendaUtilsTest(private val param: Parameter) {
                             dates = listOf(
                                     DateTime(2017, 5, 5, 0, 0),
                                     DateTime(2017, 5, 6, 0, 0),
-                                    DateTime(2017, 5, 7, 0, 0)))
+                                    DateTime(2017, 5, 7, 0, 0))),
+
+                    Parameter(
+                            rangeStr = "<2017-05-10 -4d>",
+                            days = 3,
+                            overdueToday = false,
+                            warningPeriod = OrgInterval(4, OrgInterval.Unit.DAY),
+                            dates = listOf(
+                                    DateTime(2017, 5, 6, 0, 0)))
             )
         }
     }
