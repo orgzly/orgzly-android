@@ -102,6 +102,11 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
         binding.delayUsedCheckbox.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setIsDelayUsed(isChecked)
         }
+        binding.delayPickerLabel.text = if (viewModel.timeType == TimeType.SCHEDULED) {
+            getString(R.string.timestamp_dialog_delay)
+        } else {
+            getString(R.string.timestamp_dialog_warning_period)
+        }
 
         // Shortcuts
         binding.todayButton.setOnClickListener(this)

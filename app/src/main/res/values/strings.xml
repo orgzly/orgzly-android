@@ -678,4 +678,11 @@
         <item quantity="one">Paste note</item>
         <item quantity="other">Paste <b>%d</b> notes</item>
     </plurals>
+
+    <string name="timestamp_dialog_day">Day</string>
+    <string name="timestamp_dialog_time">Time</string>
+    <string name="timestamp_dialog_end_time">End time</string>
+    <string name="timestamp_dialog_repeater">Repeater</string>
+    <string name="timestamp_dialog_delay">Delay</string>
+    <string name="timestamp_dialog_warning_period">Warning period</string>
 </resources>
