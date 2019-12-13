@@ -11,14 +11,6 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import com.orgzly.R;
-import com.orgzly.android.ui.SpanUtils;
-
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
-import org.hamcrest.TypeSafeMatcher;
-
 import androidx.annotation.IdRes;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +24,14 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.orgzly.R;
+import com.orgzly.android.ui.SpanUtils;
+
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
+import org.hamcrest.TypeSafeMatcher;
+
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
@@ -43,11 +43,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.anyOf;
+import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.Matchers.anything;
 
 /*
@@ -332,7 +335,9 @@ class EspressoUtils {
 
     static void openContextualToolbarOverflowMenu() {
         onView(allOf(
-                withContentDescription(R.string.abc_action_menu_overflow_description),
+                anyOf(
+                        withContentDescription(R.string.abc_action_menu_overflow_description),
+                        withClassName(endsWith("OverflowMenuButton"))),
                 isDescendantOfA(withId(R.id.toolbar))
         )).perform(click());
     }

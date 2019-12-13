@@ -253,7 +253,8 @@ public class BooksTest extends OrgzlyTest {
         onView(withId(R.id.dialog_input)).perform(replaceTextCloseKeyboard("new-book"));
         onView(withText(R.string.create)).perform(click());
 
-        onSnackbar().check(matches(withText("Notebook new-book already exists")));
+        onSnackbar().check(matches(
+                withText(context.getString(R.string.book_name_already_exists, "new-book"))));
     }
 
     @Test
@@ -274,7 +275,7 @@ public class BooksTest extends OrgzlyTest {
         onView(withId(R.id.name)).perform(replaceTextCloseKeyboard("book-2"));
         onView(withText(R.string.rename)).perform(click());
         onBook(0, R.id.item_book_last_action)
-                .check(matches(withText(endsWith("Notebook book-2 already exists"))));
+                .check(matches(withText(endsWith(context.getString(R.string.book_name_already_exists, "book-2")))));
     }
 
     @Test

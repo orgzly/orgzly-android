@@ -544,14 +544,20 @@ public class SyncingTest extends OrgzlyTest {
         activityRule.launchActivity(null);
 
         sync();
-        onBook(0, R.id.item_book_encoding_used).check(matches((withText("UTF-8 used"))));
-        onBook(0, R.id.item_book_encoding_detected).check(matches((withText("UTF-8 detected"))));
-        onBook(0, R.id.item_book_encoding_selected).check(matches(not(isDisplayed())));
+        onBook(0, R.id.item_book_encoding_used)
+                .check(matches((withText(context.getString(R.string.argument_used, "UTF-8")))));
+        onBook(0, R.id.item_book_encoding_detected)
+                .check(matches((withText(context.getString(R.string.argument_detected, "UTF-8")))));
+        onBook(0, R.id.item_book_encoding_selected)
+                .check(matches(not(isDisplayed())));
 
         sync();
-        onBook(0, R.id.item_book_encoding_used).check(matches((withText("UTF-8 used"))));
-        onBook(0, R.id.item_book_encoding_detected).check(matches((withText("UTF-8 detected"))));
-        onBook(0, R.id.item_book_encoding_selected).check(matches(not(isDisplayed())));
+        onBook(0, R.id.item_book_encoding_used)
+                .check(matches((withText(context.getString(R.string.argument_used, "UTF-8")))));
+        onBook(0, R.id.item_book_encoding_detected)
+                .check(matches((withText(context.getString(R.string.argument_detected, "UTF-8")))));
+        onBook(0, R.id.item_book_encoding_selected)
+                .check(matches(not(isDisplayed())));
     }
 
     @Test
@@ -561,11 +567,16 @@ public class SyncingTest extends OrgzlyTest {
         activityRule.launchActivity(null);
 
         sync();
-        onBook(0, R.id.item_book_link_repo).check(matches(allOf(withText("mock://repo-a"), isDisplayed())));
-        onBook(0, R.id.item_book_synced_url).check(matches(allOf(withText("mock://repo-a/booky.org"), isDisplayed())));
-        onBook(0, R.id.item_book_encoding_used).check(matches((withText("UTF-8 used"))));
-        onBook(0, R.id.item_book_encoding_detected).check(matches((withText("UTF-8 detected"))));
-        onBook(0, R.id.item_book_encoding_selected).check(matches(not(isDisplayed())));
+        onBook(0, R.id.item_book_link_repo)
+                .check(matches(allOf(withText("mock://repo-a"), isDisplayed())));
+        onBook(0, R.id.item_book_synced_url)
+                .check(matches(allOf(withText("mock://repo-a/booky.org"), isDisplayed())));
+        onBook(0, R.id.item_book_encoding_used)
+                .check(matches((withText(context.getString(R.string.argument_used, "UTF-8")))));
+        onBook(0, R.id.item_book_encoding_detected)
+                .check(matches((withText(context.getString(R.string.argument_detected, "UTF-8")))));
+        onBook(0, R.id.item_book_encoding_selected)
+                .check(matches(not(isDisplayed())));
 
         /* Rename repository. */
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
@@ -586,11 +597,16 @@ public class SyncingTest extends OrgzlyTest {
         onView(withText(R.string.books_context_menu_item_set_link)).perform(click());
         onView(withText("dropbox:/repo-b")).perform(click());
 
-        onBook(0, R.id.item_book_link_repo).check(matches(allOf(withText("dropbox:/repo-b"), isDisplayed())));
-        onBook(0, R.id.item_book_synced_url).check(matches(not(isDisplayed())));
-        onBook(0, R.id.item_book_encoding_used).check(matches((withText("UTF-8 used"))));
-        onBook(0, R.id.item_book_encoding_detected).check(matches((withText("UTF-8 detected"))));
-        onBook(0, R.id.item_book_encoding_selected).check(matches(not(isDisplayed())));
+        onBook(0, R.id.item_book_link_repo)
+                .check(matches(allOf(withText("dropbox:/repo-b"), isDisplayed())));
+        onBook(0, R.id.item_book_synced_url)
+                .check(matches(not(isDisplayed())));
+        onBook(0, R.id.item_book_encoding_used)
+                .check(matches((withText(context.getString(R.string.argument_used, "UTF-8")))));
+        onBook(0, R.id.item_book_encoding_detected)
+                .check(matches((withText(context.getString(R.string.argument_detected, "UTF-8")))));
+        onBook(0, R.id.item_book_encoding_selected)
+                .check(matches(not(isDisplayed())));
 
         onView(allOf(withText("booky"), isDisplayed())).perform(longClick());
         openContextualToolbarOverflowMenu();

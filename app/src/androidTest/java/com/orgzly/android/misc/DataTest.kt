@@ -1,5 +1,6 @@
 package com.orgzly.android.misc
 
+import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
 import org.junit.Assert.*
 
@@ -24,7 +25,7 @@ class DataTest : OrgzlyTest() {
             fail("Second insert of the book should fail")
 
         } catch (e: IOException) {
-            assertEquals("Notebook book-01 already exists", e.message)
+            assertEquals(context.getString(R.string.book_name_already_exists, "book-01"), e.message)
         }
 
     }
