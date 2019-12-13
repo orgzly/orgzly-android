@@ -6,11 +6,34 @@ import com.orgzly.android.query.user.InternalQueryParser
 import com.orgzly.android.ui.TimeType
 import com.orgzly.android.util.AgendaUtils
 import com.orgzly.org.datetime.OrgInterval
+import com.orgzly.org.datetime.OrgRange
 import org.joda.time.DateTime
 
 object AgendaItems {
     data class ExpandableOrgRange(
-            val range: String, val overdueToday: Boolean, val warningPeriod: OrgInterval?)
+            val range: OrgRange,
+            val overdueToday: Boolean,
+            val warningPeriod: OrgInterval?,
+            val delayPeriod: OrgInterval?) {
+
+        companion object {
+            fun fromRange(timeType: TimeType, range: OrgRange): ExpandableOrgRange {
+                val overdueToday = timeType == TimeType.SCHEDULED || timeType == TimeType.DEADLINE
+
+                val warningPeriod = when (timeType) {
+                    TimeType.DEADLINE -> range.startTime.delay
+                    else -> null
+                }
+
+                val delayPeriod = when (timeType) {
+                    TimeType.SCHEDULED -> range.startTime.delay
+                    else -> null
+                }
+
+                return ExpandableOrgRange(range, overdueToday, warningPeriod, delayPeriod)
+            }
+        }
+    }
 
     fun getList(
             notes: List<NoteView>, queryString: String?, idMap: MutableMap<Long, Long>
@@ -58,12 +81,12 @@ object AgendaItems {
 
         notes.forEach { note ->
 
-            fun addInstances(timeType: TimeType, timeString: String, overdueToday: Boolean) {
-                // Expand each note if it has a repeater or is a range
-                val times = AgendaUtils.expandOrgDateTime(
-                        arrayOf(ExpandableOrgRange(timeString, overdueToday, null)),
-                        now,
-                        agendaDays)
+            fun addInstances(timeType: TimeType, timeString: String) {
+                val range = OrgRange.parseOrNull(timeString) ?: return
+
+                val expandable = ExpandableOrgRange.fromRange(timeType, range)
+
+                val times = AgendaUtils.expandOrgDateTime(expandable, now, agendaDays)
 
                 // Add each note instance to its day bucket
                 times.forEach { time ->
@@ -80,10 +103,10 @@ object AgendaItems {
             // Add planning times for a note only once
             if (!addedPlanningTimes.contains(note.note.id)) {
                 note.scheduledRangeString?.let {
-                    addInstances(TimeType.SCHEDULED, it, true)
+                    addInstances(TimeType.SCHEDULED, it)
                 }
                 note.deadlineRangeString?.let {
-                    addInstances(TimeType.DEADLINE, it, true)
+                    addInstances(TimeType.DEADLINE, it)
                 }
 
                 addedPlanningTimes.add(note.note.id)
@@ -91,7 +114,7 @@ object AgendaItems {
 
             // Add each note's event
             note.eventString?.let {
-                addInstances(TimeType.EVENT, it, false)
+                addInstances(TimeType.EVENT, it)
             }
         }
 

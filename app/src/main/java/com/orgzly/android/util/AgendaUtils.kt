@@ -6,40 +6,23 @@ import org.joda.time.DateTime
 import java.util.*
 
 object AgendaUtils {
-    fun expandOrgDateTime(
-            expandableRanges: Array<ExpandableOrgRange>,
-            now: DateTime,
-            days: Int
-    ): Set<DateTime> {
-
-        val set: MutableSet<DateTime> = TreeSet()
-
-        for (expandableRange in expandableRanges) {
-            OrgRange.parseOrNull(expandableRange.range)?.let {
-                set.addAll(expandOrgDateTime(
-                        it, expandableRange.overdueToday, expandableRange.warningPeriod, now, days))
-            }
+    fun expandOrgDateTime(range: ExpandableOrgRange, now: DateTime, days: Int): Set<DateTime> {
+        return TreeSet<DateTime>().apply {
+            addAll(expandOrgDateTime(
+                    range.range,
+                    range.overdueToday,
+                    range.warningPeriod,
+                    range.delayPeriod,
+                    now,
+                    days))
         }
-
-        return set
-    }
-
-    /** Used by tests.  */
-    fun expandOrgDateTime(
-            rangeStr: String?,
-            now: DateTime,
-            days: Int,
-            overdueToday: Boolean,
-            warningPeriod: OrgInterval?
-    ): List<DateTime> {
-
-        return expandOrgDateTime(OrgRange.parse(rangeStr), overdueToday, warningPeriod, now, days)
     }
 
     private fun expandOrgDateTime(
             range: OrgRange,
             overdueToday: Boolean,
             warningPeriod: OrgInterval?,
+            delayPeriod: OrgInterval?,
             now: DateTime,
             days: Int
     ): List<DateTime> {
@@ -71,7 +54,9 @@ object AgendaUtils {
             // If start time has no repeater, use a daily repeater
             if (!rangeStart.hasRepeater()) {
                 val start = DateTime(rangeStart.calendar)
-                rangeStart = buildOrgDateTimeFromDate(start, OrgRepeater.parse("++1d"))
+                val repeater = OrgRepeater(OrgRepeater.Type.CATCH_UP, 1, OrgInterval.Unit.DAY)
+
+                rangeStart = buildOrgDateTimeFromDate(start, repeater)
             }
 
             result.addAll(OrgDateTimeUtils.getTimesInInterval(
