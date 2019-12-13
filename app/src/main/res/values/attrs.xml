@@ -151,9 +151,6 @@
         <attr name="oic_new_above_24dp" format="reference"/>
         <attr name="oic_new_below_24dp" format="reference"/>
         <attr name="oic_new_under_24dp" format="reference"/>
-        <attr name="oic_next_week_36dp" format="reference"/>
-        <attr name="oic_today_36dp" format="reference"/>
-        <attr name="oic_tomorrow_36dp" format="reference"/>
 
         <attr name="active_focused_icon_alpha" format="float"/>
         <attr name="oic_item_alpha" format="float"/>

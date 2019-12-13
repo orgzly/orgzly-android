@@ -173,9 +173,6 @@
         <item name="oic_new_above_24dp">@drawable/cic_new_above_black_24dp</item>
         <item name="oic_new_below_24dp">@drawable/cic_new_below_black_24dp</item>
         <item name="oic_new_under_24dp">@drawable/cic_new_under_black_24dp</item>
-        <item name="oic_next_week_36dp">@drawable/cic_next_week_black_36dp</item>
-        <item name="oic_today_36dp">@drawable/cic_today_black_36dp</item>
-        <item name="oic_tomorrow_36dp">@drawable/cic_tomorrow_black_36dp</item>
 
         <item name="active_focused_icon_alpha">0.87</item>
         <item name="oic_item_alpha">0.54</item>
@@ -341,9 +338,6 @@
         <item name="oic_new_above_24dp">@drawable/cic_new_above_white_24dp</item>
         <item name="oic_new_below_24dp">@drawable/cic_new_below_white_24dp</item>
         <item name="oic_new_under_24dp">@drawable/cic_new_under_white_24dp</item>
-        <item name="oic_next_week_36dp">@drawable/cic_next_week_white_36dp</item>
-        <item name="oic_today_36dp">@drawable/cic_today_white_36dp</item>
-        <item name="oic_tomorrow_36dp">@drawable/cic_tomorrow_white_36dp</item>
 
         <item name="active_focused_icon_alpha">1</item>
         <item name="oic_item_alpha">0.70</item>
