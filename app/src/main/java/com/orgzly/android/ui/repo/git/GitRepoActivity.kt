@@ -22,6 +22,9 @@ import com.google.android.material.textfield.TextInputLayout
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.git.GitPreferences
+import com.orgzly.android.git.GitSSHKeyTransportSetter
+import com.orgzly.android.git.GitTransportSetter
+import com.orgzly.android.git.HTTPTransportSetter
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.prefs.RepoPreferences
 import com.orgzly.android.repos.GitRepo
@@ -278,8 +281,14 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         }
     }
 
-    override fun sshKeyPathString(): String {
-        return withDefault(binding.activityRepoGitSshKey.text.toString(), R.string.pref_key_git_ssh_key_path)
+    override fun createTransportSetter(): GitTransportSetter {
+        val scheme = remoteUri().scheme
+        if ("https" == scheme || "http" == scheme) {
+            return HTTPTransportSetter()
+        } else {
+            val sshKeyPath = withDefault(binding.activityRepoGitSshKey.text.toString(), R.string.pref_key_git_ssh_key_path)
+            return GitSSHKeyTransportSetter(sshKeyPath)
+        }
     }
 
     override fun getAuthor(): String {

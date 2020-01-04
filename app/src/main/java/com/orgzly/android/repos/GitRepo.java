@@ -65,10 +65,6 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
         return build(props.getRepo().getId(), prefs, false);
     }
 
-    public static GitTransportSetter getTransportSetter(GitPreferences preferences) {
-        return new GitSSHKeyTransportSetter(Uri.parse(preferences.sshKeyPathString()).getPath());
-    }
-
     private static GitRepo build(long id, GitPreferences prefs, boolean clone) throws IOException {
         Git git = ensureRepositoryExists(prefs, clone, null);
 
@@ -88,7 +84,7 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
             GitPreferences prefs, boolean clone, ProgressMonitor pm) throws IOException {
         return ensureRepositoryExists(
                 prefs.remoteUri(), new File(prefs.repositoryFilepath()),
-                getTransportSetter(prefs), clone, pm);
+                prefs.createTransportSetter(), clone, pm);
     }
 
     public static Git ensureRepositoryExists(

@@ -14,9 +14,16 @@ public class GitPreferencesFromRepoPrefs implements GitPreferences {
     }
 
     @Override
-    public String sshKeyPathString() {
-        return repoPreferences.getStringValueWithGlobalDefault(
-                R.string.pref_key_git_ssh_key_path, "orgzly");
+    public GitTransportSetter createTransportSetter() {
+        String scheme = remoteUri().getScheme();
+        if ("https".equals(scheme) || "http".equals(scheme)) {
+            return new HTTPTransportSetter();
+        } else {
+            // assume SSH, since ssh:// usually isn't specified as the scheme when cloning via SSH.
+            String sshKeyPath = repoPreferences.getStringValueWithGlobalDefault(
+                    R.string.pref_key_git_ssh_key_path, "orgzly");
+            return new GitSSHKeyTransportSetter(sshKeyPath);
+        }
     }
 
     @Override

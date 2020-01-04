@@ -44,7 +44,7 @@ public class GitFileSynchronizer {
     }
 
     private GitTransportSetter transportSetter() {
-        return GitRepo.getTransportSetter(preferences);
+        return preferences.createTransportSetter();
     }
 
     public void safelyRetrieveLatestVersionOfFile(
