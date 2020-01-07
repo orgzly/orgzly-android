@@ -16,8 +16,10 @@ public class GitPreferencesFromRepoPrefs implements GitPreferences {
     @Override
     public GitTransportSetter createTransportSetter() {
         String scheme = remoteUri().getScheme();
-        if ("https".equals(scheme) || "http".equals(scheme)) {
-            return new HTTPTransportSetter();
+        if ("https".equals(scheme)) {
+            String username = repoPreferences.getStringValue(R.string.pref_key_git_https_username, "");
+            String password = repoPreferences.getStringValue(R.string.pref_key_git_https_password, "");
+            return new HTTPSTransportSetter(username, password);
         } else {
             // assume SSH, since ssh:// usually isn't specified as the scheme when cloning via SSH.
             String sshKeyPath = repoPreferences.getStringValueWithGlobalDefault(
