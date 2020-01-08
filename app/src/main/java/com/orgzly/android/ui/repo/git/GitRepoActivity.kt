@@ -432,7 +432,8 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         var progressDialog: ProgressDialog = ProgressDialog(this@GitRepoActivity)
 
         override fun onPreExecute() {
-            progressDialog.setMessage("Ensuring repository settings will work.")
+            val message = fragment.resources.getString(R.string.git_verifying_settings)
+            progressDialog.setMessage(message)
             progressDialog.show()
         }
 
@@ -450,7 +451,8 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             for (i in updates.indices) {
                 val u = updates[i]
                 if (u.setMax) {
-                    progressDialog.setMessage("Cloning repository")
+                    val message = fragment.resources.getString(R.string.git_clone_progress)
+                    progressDialog.setMessage(message)
                     progressDialog.hide()
                     progressDialog.isIndeterminate = false
                     progressDialog.show()
