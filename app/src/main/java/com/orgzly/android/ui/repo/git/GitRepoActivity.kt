@@ -316,6 +316,11 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             hasEmptyFields = true
         }
 
+        val targetDirectory = File(binding.activityRepoGitDirectory.text.toString())
+        if (!targetDirectory.exists() || targetDirectory.list().isNotEmpty()) {
+            binding.activityRepoGitDirectoryLayout.error = getString(R.string.git_clone_error_target_not_empty)
+        }
+
         for (field in fields) {
             if (field.layout.visibility == View.GONE || field.allowEmpty) {
                 continue;
