@@ -311,6 +311,17 @@ public class AppPreferences {
                 context.getResources().getString(R.string.pref_default_snooze_type));
     }
 
+    public static int reminderDailyTime(Context context) {
+        String key = context.getResources().getString(R.string.pref_key_daily_reminder_time);
+        return getStateSharedPreferences(context).getInt(key,
+                context.getResources().getInteger(R.integer.pref_default_daily_reminder_time));
+    }
+
+    public static void reminderDailyTime(Context context, int value) {
+        String key = context.getResources().getString(R.string.pref_key_daily_reminder_time);
+        getStateSharedPreferences(context).edit().putInt(key, value).apply();
+    }
+
     public static boolean showSyncNotifications(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_show_sync_notifications),
