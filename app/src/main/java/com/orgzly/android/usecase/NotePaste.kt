@@ -8,11 +8,7 @@ class NotePaste(val bookId: Long, val noteId: Long, val place: Place) : UseCase(
     override fun run(dataRepository: DataRepository): UseCaseResult {
         val clipboard = NotesClipboard.load()
 
-        val count = if (clipboard != null) {
-            dataRepository.pasteNotes(clipboard, bookId, noteId, place)
-        } else {
-            0
-        }
+        val count = dataRepository.pasteNotes(clipboard, bookId, noteId, place)
 
         return UseCaseResult(
                 modifiesLocalData = count > 0,
