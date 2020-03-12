@@ -68,7 +68,6 @@ class SyncService : Service() {
                 start(isTriggeredAutomatically)
             } else {
                 if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Start requested while already running")
-                stopSelf()
             }
 
         } else if (intent != null && AppIntent.ACTION_SYNC_STOP == intent.action) {

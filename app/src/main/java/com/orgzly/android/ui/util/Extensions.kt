@@ -7,9 +7,8 @@ import android.util.AttributeSet
 import androidx.annotation.StyleableRes
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.orgzly.R
+import com.orgzly.android.AppIntent
 import com.orgzly.android.sync.SyncService
-import com.orgzly.android.ui.dialogs.TimestampDialogViewModel
-import java.util.*
 
 fun <R> Context.styledAttributes(@StyleableRes attrs: IntArray, f: (typedArray: TypedArray) -> R): R {
     val typedArray = obtainStyledAttributes(attrs)
@@ -31,7 +30,10 @@ fun <R> Context.styledAttributes(set: AttributeSet, @StyleableRes attrs: IntArra
 
 fun SwipeRefreshLayout.setup() {
     setOnRefreshListener {
-        SyncService.start(context, Intent(context, SyncService::class.java))
+        Intent(context, SyncService::class.java).setAction(AppIntent.ACTION_SYNC_START).let {
+            SyncService.start(context, it)
+        }
+
         isRefreshing = false
     }
 
