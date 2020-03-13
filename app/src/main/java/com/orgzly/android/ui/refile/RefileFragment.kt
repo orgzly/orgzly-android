@@ -20,7 +20,7 @@ import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.ui.Breadcrumbs
 import com.orgzly.android.ui.CommonActivity
-import com.orgzly.android.usecase.BookSparseTreeForNote
+import com.orgzly.android.usecase.BookScrollToNote
 import com.orgzly.android.usecase.NoteRefile
 import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.LogUtils
@@ -157,7 +157,7 @@ class RefileFragment : DialogFragment() {
                     (activity as CommonActivity).showSnackbar(snackbar
                             .setAction(R.string.go_to) {
                                 App.EXECUTORS.diskIO().execute {
-                                    UseCaseRunner.run(BookSparseTreeForNote(firstRefiledNote.id))
+                                    UseCaseRunner.run(BookScrollToNote(firstRefiledNote.id))
                                 }
                             })
                 }
