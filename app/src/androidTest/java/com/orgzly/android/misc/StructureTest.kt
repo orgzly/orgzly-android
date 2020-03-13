@@ -13,6 +13,7 @@ import org.junit.Assert
 import org.junit.Ignore
 import org.junit.Test
 import java.io.IOException
+import java.lang.StringBuilder
 import java.util.*
 
 class StructureTest : OrgzlyTest() {
@@ -375,6 +376,49 @@ class StructureTest : OrgzlyTest() {
         Assert.assertEquals(0, nA04.position.foldedUnderId)
         Assert.assertEquals(0, nA06.position.foldedUnderId)
         Assert.assertEquals(0, nA05.position.foldedUnderId)
+    }
+
+    /**
+     * "too many SQL variables" (999 is the limit)
+     */
+    @Test
+    fun testCutAndPasteMany() {
+        val bookContent = StringBuilder().apply {
+            append("* Note A-01\n")
+
+            for (i in 1..999) {
+                append("** Note A-01 ($i)\n")
+            }
+
+            append("* Note A-02\n")
+        }.toString()
+
+        val book = testUtils.setupBook("Book A", bookContent)
+
+        UseCaseRunner.run(NoteCut(
+                book.book.id, setOf(getNote("Note A-01").id)))
+
+        getNote("Note A-02").let { note ->
+            UseCaseRunner.run(NotePaste(note.position.bookId, note.id, Place.BELOW))
+        }
+    }
+
+    @Test
+    fun testMoveMany() {
+        val bookContent = StringBuilder().apply {
+            append("* Note A-01\n")
+
+            for (i in 1..999) {
+                append("** Note A-01 ($i)\n")
+            }
+
+            append("* Note A-02\n")
+        }.toString()
+
+        val book = testUtils.setupBook("Book A", bookContent)
+
+        UseCaseRunner.run(NoteMove(
+                book.book.id, setOf(getNote("Note A-01").id), 1))
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.orgzly.android.db.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import com.orgzly.android.db.OrgzlyDatabase
 import com.orgzly.android.db.entity.NoteAncestor
 
@@ -25,6 +26,14 @@ abstract class NoteAncestorDao(val db: OrgzlyDatabase) : BaseDao<NoteAncestor> {
      * https://issuetracker.google.com/issues/109900809#comment9
      */
 
+
+    @Transaction
+    open fun insertAncestorsForNotes(ids: Set<Long>) {
+        ids.chunked(OrgzlyDatabase.SQLITE_MAX_VARIABLE_NUMBER).forEach { chunk ->
+            insertAncestorsForNotesChunk(chunk)
+        }
+    }
+
     @Query("""
         INSERT INTO note_ancestors (book_id, note_id, ancestor_note_id)
         SELECT n.book_id, n.id, a.id
@@ -32,7 +41,7 @@ abstract class NoteAncestorDao(val db: OrgzlyDatabase) : BaseDao<NoteAncestor> {
         JOIN notes a ON (n.book_id = a.book_id AND a.lft < n.lft AND n.rgt < a.rgt)
         WHERE n.id IN (:ids)
     """)
-    abstract fun insertAncestorsForNotes(ids: Set<Long>)
+    abstract fun insertAncestorsForNotesChunk(ids: List<Long>)
 
     @Query("""
         INSERT INTO note_ancestors (book_id, note_id, ancestor_note_id)

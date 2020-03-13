@@ -436,10 +436,10 @@ class DataRepository @Inject constructor(
     }
 
     private fun updateBookIsModified(bookId: Long, isModified: Boolean, time: Long = System.currentTimeMillis()) {
-        updateBookIsModified(listOf(bookId), isModified, time)
+        updateBookIsModified(setOf(bookId), isModified, time)
     }
 
-    private fun updateBookIsModified(bookIds: List<Long>, isModified: Boolean, time: Long = System.currentTimeMillis()) {
+    private fun updateBookIsModified(bookIds: Set<Long>, isModified: Boolean, time: Long = System.currentTimeMillis()) {
         if (bookIds.isNotEmpty()) {
             if (isModified) {
                 db.book().setIsModified(bookIds, time)
@@ -828,7 +828,7 @@ class DataRepository @Inject constructor(
 
 
         val ids = mutableSetOf<Long>()
-        val sourceBookIds = mutableListOf<Long>()
+        val sourceBookIds = mutableSetOf<Long>()
 
         // Update notes
         alignedNotes.map { note ->
@@ -961,7 +961,7 @@ class DataRepository @Inject constructor(
 
         db.note().updateScheduledTime(noteIds, timeId)
 
-        db.note().get(noteIds).map { it.position.bookId }.let {
+        db.note().get(noteIds).mapTo(hashSetOf()) { it.position.bookId }.let {
             updateBookIsModified(it, true)
         }
     }
@@ -971,7 +971,7 @@ class DataRepository @Inject constructor(
 
         db.note().updateDeadlineTime(noteIds, timeId)
 
-        db.note().get(noteIds).map { it.position.bookId }.let {
+        db.note().get(noteIds).mapTo(hashSetOf()) { it.position.bookId }.let {
             updateBookIsModified(it, true)
         }
     }
@@ -1037,7 +1037,7 @@ class DataRepository @Inject constructor(
              * Notebooks must be updated before notes,
              * because this query checks for notes what will be affected.
              */
-            updateBookIsModified(db.note().getBookIdsForNotesNotMatchingState(noteIds, state), true)
+            updateBookIsModified(db.note().getBookIdsForNotesNotMatchingState(noteIds, state).toSet(), true)
 
             return@Callable if (AppPreferences.isDoneKeyword(context, state)) {
                 var updated = 0
@@ -2153,7 +2153,7 @@ class DataRepository @Inject constructor(
             } // else: Neither created-at time nor property are set
         }
 
-        updateBookIsModified(bookIds.toList(), true)
+        updateBookIsModified(bookIds, true)
     }
 
     private fun setNoteCreatedAt(note: Note, propValue: OrgDateTime, currValue: Long) {

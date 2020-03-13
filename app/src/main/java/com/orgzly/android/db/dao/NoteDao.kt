@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
+import com.orgzly.android.db.OrgzlyDatabase
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NotePosition
 import org.intellij.lang.annotations.Language
@@ -265,13 +266,20 @@ abstract class NoteDao : BaseDao<Note> {
     @Query("UPDATE notes SET rgt = rgt + :inc WHERE book_id = :bookId AND is_cut = 0 AND rgt >= :value")
     abstract fun incrementRgtForRgtGeOrRoot(bookId: Long, value: Long, inc: Int)
 
+    @Transaction
+    open fun unfoldNotesFoldedUnderOthers(ids: Set<Long>) {
+        ids.chunked(OrgzlyDatabase.SQLITE_MAX_VARIABLE_NUMBER/2).forEach { chunk ->
+            unfoldNotesFoldedUnderOthersChunk(chunk)
+        }
+    }
+
     @Query("""
         UPDATE notes
         SET folded_under_id = 0
         WHERE id IN (:ids)
         AND folded_under_id NOT IN (:ids)
     """)
-    abstract fun unfoldNotesFoldedUnderOthers(ids: Set<Long>)
+    abstract fun unfoldNotesFoldedUnderOthersChunk(ids: List<Long>)
 
     @Query("UPDATE notes SET folded_under_id = :foldedUnder WHERE id IN (:ids) AND folded_under_id = 0")
     abstract fun foldUnfolded(ids: Set<Long>, foldedUnder: Long)

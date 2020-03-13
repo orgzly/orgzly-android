@@ -69,6 +69,9 @@ abstract class OrgzlyDatabase : RoomDatabase() {
 
         const val NAME_FOR_TESTS = "test_orgzly.db"
 
+        /// Defined in sqlite3.c: The maximum value of a ?nnn wildcard that the parser will accept
+        const val SQLITE_MAX_VARIABLE_NUMBER = 999
+
         @JvmStatic
         fun forMemory(context: Context): OrgzlyDatabase {
             return Room.inMemoryDatabaseBuilder(context.applicationContext, OrgzlyDatabase::class.java)

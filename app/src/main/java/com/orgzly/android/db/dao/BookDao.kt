@@ -42,17 +42,10 @@ abstract class BookDao : BaseDao<Book> {
     abstract fun updateDummy(id: Long, dummy: Boolean)
 
     @Query("UPDATE books SET mtime = :mtime, is_modified = 1 WHERE id IN (:ids)")
-    abstract fun setIsModified(ids: List<Long>, mtime: Long): Int
+    abstract fun setIsModified(ids: Set<Long>, mtime: Long): Int
 
     @Query("UPDATE books SET is_modified = 0 WHERE id IN (:ids)")
-    abstract fun setIsNotModified(ids: List<Long>): Int
-
-    @Query("""
-        UPDATE books
-        SET mtime = :mtime
-        WHERE id IN (SELECT DISTINCT book_id FROM notes WHERE id IN (:noteIds))
-    """)
-    abstract fun updateMtimeForNotes(noteIds: Set<Long>, mtime: Long): Int
+    abstract fun setIsNotModified(ids: Set<Long>): Int
 
     fun getOrInsert(name: String): Long =
             get(name).let {
