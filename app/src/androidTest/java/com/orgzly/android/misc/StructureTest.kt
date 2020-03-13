@@ -1190,6 +1190,29 @@ class StructureTest : OrgzlyTest() {
     }
 
     @Test
+    fun testFoldingSubtree() {
+        testUtils.setupBook(
+                "Book A",
+                """
+                    Preface
+                    * Note A-01
+                    ** Note A-02
+                    *** Note A-03
+                """.trimIndent())
+
+        // Fold Entire Note A-01 subtree
+        UseCaseRunner.run(NoteToggleFoldingSubtree(getNote("Note A-01").id))
+
+        // Unfold Note A-01
+        UseCaseRunner.run(NoteToggleFolding(getNote("Note A-01").id))
+
+        Assert.assertFalse(getNote("Note A-01").position.isFolded)
+        Assert.assertTrue(getNote("Note A-02").position.isFolded)
+        Assert.assertTrue(getNote("Note A-03").position.isFolded)
+        Assert.assertEquals(getNote("Note A-02").id, getNote("Note A-03").position.foldedUnderId)
+    }
+
+    @Test
     fun testFoldingAllWhenContentOnlyIsFolded() {
         val book = testUtils.setupBook(
                 "Book A",

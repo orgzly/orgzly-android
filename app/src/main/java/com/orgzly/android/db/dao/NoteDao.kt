@@ -211,14 +211,23 @@ abstract class NoteDao : BaseDao<Note> {
         SET is_folded = 0, folded_under_id = 0
         WHERE id IN ($SELECT_SUBTREE_IDS_FOR_IDS)
     """)
-    abstract fun unfoldSubtree(ids: List<Long>)
+    abstract fun unfoldSubtrees(ids: List<Long>)
+
+    @Transaction
+    open fun foldSubtrees(ids: List<Long>) {
+        foldSubtreesSetRoots(ids)
+        foldSubtreesSetDescendants(ids)
+    }
+
+    @Query("UPDATE notes SET is_folded = 1 WHERE id IN (:ids)")
+    abstract fun foldSubtreesSetRoots(ids: List<Long>)
 
     @Query("""
         UPDATE notes
-        SET is_folded = 1
-        WHERE id IN ($SELECT_SUBTREE_IDS_FOR_IDS)
+        SET is_folded = 1, folded_under_id = parent_id
+        WHERE id IN ($SELECT_DESCENDANTS_IDS_FOR_IDS)
     """)
-    abstract fun foldSubtree(ids: List<Long>)
+    abstract fun foldSubtreesSetDescendants(ids: List<Long>)
 
     @Query("UPDATE notes SET folded_under_id = 0 WHERE folded_under_id IN (:ids)")
     abstract fun updateFoldedUnderForNoteFoldedUnderId(ids: List<Long>)
@@ -373,6 +382,17 @@ abstract class NoteDao : BaseDao<Note> {
             AND d.is_cut = 0
             AND n.lft <= d.lft
             AND d.rgt <= n.rgt
+            """
+
+        @Language("RoomSql")
+        private const val SELECT_DESCENDANTS_IDS_FOR_IDS = """
+            SELECT DISTINCT d.id
+            FROM notes n, notes d
+            WHERE n.id IN (:ids)
+            AND d.book_id = n.book_id
+            AND d.is_cut = 0
+            AND n.lft < d.lft
+            AND d.rgt < n.rgt
             """
 
         fun rootNote(bookId: Long): Note {
