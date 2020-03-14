@@ -286,4 +286,19 @@ class NoteEventsTest : OrgzlyTest() {
         onView(withText("DONE")).perform(click())
         onView(withId(R.id.fragment_note_title)).check(matches(withText("Note A-01 <2000-01-11 Tue +1d>")))
     }
+
+    @Test
+    fun agenda_NoteWithScheduledTimeNotHiddenWhenUsingSortByEvent() {
+        testUtils.setupBook(
+                "Book A",
+                """
+                * Note A-01
+                  SCHEDULED: $tomorrow
+                """.trimIndent())
+        activityRule.launchActivity(null)
+        searchForText(".it.done ad.7 o.e")
+
+        onNotesInAgenda().check(matches(recyclerViewItemCount(8)))
+        onItemInAgenda(2, R.id.item_head_title).check(matches(withText(startsWith("Note A-01"))))
+    }
 }
