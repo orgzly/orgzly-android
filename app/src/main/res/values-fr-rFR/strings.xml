@@ -159,7 +159,6 @@
     <string name="searches">Recherches</string>
     <string name="search">Chercher</string>
     <string name="new_search">Nouvelle recherche</string>
-    <string name="active">Actif</string>
     <string name="no_repos">Aucun dépôt configuré</string>
     <string name="multiple_repos">Il existe plusieurs dépôts</string>
     <string name="book_encoding">Encodage du bloc-notes</string>

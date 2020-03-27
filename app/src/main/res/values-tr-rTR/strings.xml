@@ -159,7 +159,6 @@
     <string name="searches">Aramalar</string>
     <string name="search">Arama</string>
     <string name="new_search">Yeni Arama</string>
-    <string name="active">Aktif</string>
     <string name="no_repos">Depolamalar yapılandırılmadı</string>
     <string name="multiple_repos">Birden fazla depo var</string>
     <string name="book_encoding">NotDefter\'leri kodlamaları</string>

@@ -165,7 +165,6 @@
     <string name="searches">Vyhledávání</string>
     <string name="search">Hledat</string>
     <string name="new_search">Nové hledání</string>
-    <string name="active">Aktivní</string>
     <string name="no_repos">Nebyly konfigurovány žádné repozitáře</string>
     <string name="multiple_repos">Existuje více úložišť</string>
     <string name="book_encoding">Znaková sada sešitu</string>

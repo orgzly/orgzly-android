@@ -159,7 +159,6 @@
     <string name="searches">Zoekopdrachten</string>
     <string name="search">Zoeken</string>
     <string name="new_search">Nieuwe zoekopdracht</string>
-    <string name="active">Actief</string>
     <string name="no_repos">Geen opslagruimtes ingesteld</string>
     <string name="multiple_repos">Er bestaan meerdere opslagruimtes</string>
     <string name="book_encoding">Encodering van notitieboekje</string>

@@ -165,7 +165,6 @@
     <string name="searches">Поисковые запросы</string>
     <string name="search">Поиск</string>
     <string name="new_search">Новый поиск</string>
-    <string name="active">Активно</string>
     <string name="no_repos">Нет настроенных хранилищ</string>
     <string name="multiple_repos">Существует несколько хранилищ</string>
     <string name="book_encoding">Кодировка блокнота</string>

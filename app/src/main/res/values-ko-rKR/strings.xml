@@ -156,7 +156,6 @@
     <string name="searches">찾기</string>
     <string name="search">찾기</string>
     <string name="new_search">새로 검색</string>
-    <string name="active">진행 중</string>
     <string name="no_repos">구성된 저장소가 없습니다.</string>
     <string name="multiple_repos">여러 개의 저장소가 존재합니다.</string>
     <string name="book_encoding">인코딩</string>

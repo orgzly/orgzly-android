@@ -156,7 +156,6 @@
     <string name="searches">検索</string>
     <string name="search">検索</string>
     <string name="new_search">新しい検索</string>
-    <string name="active">有効</string>
     <string name="no_repos">リポジトリが設定されていません</string>
     <string name="multiple_repos">複数のリポジトリが存在します</string>
     <string name="book_encoding">メモ帳のエンコーディング</string>

@@ -165,7 +165,6 @@
     <string name="searches">Пошукові запити</string>
     <string name="search">Пошук</string>
     <string name="new_search">Новий пошуковий запит</string>
-    <string name="active">Активно</string>
     <string name="no_repos">Не налаштовано сховище</string>
     <string name="multiple_repos">Існує декілька сховищ</string>
     <string name="book_encoding">Кодування блокнота</string>

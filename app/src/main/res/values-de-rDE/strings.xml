@@ -159,7 +159,6 @@
     <string name="searches">Suchen</string>
     <string name="search">Suche</string>
     <string name="new_search">Neue Suche</string>
-    <string name="active">Aktiv</string>
     <string name="no_repos">Keine Ablageorte eingerichtet</string>
     <string name="multiple_repos">Es existieren mehrere Ablageorte</string>
     <string name="book_encoding">Zeichensatz für das Notizbuch</string>

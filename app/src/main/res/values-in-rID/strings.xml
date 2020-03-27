@@ -156,7 +156,6 @@
     <string name="searches">Pencarian</string>
     <string name="search">Cari</string>
     <string name="new_search">Cari lagi</string>
-    <string name="active">Aktif</string>
     <string name="no_repos">Tidak ada repositori yang dikonfigurasi</string>
     <string name="multiple_repos">Beberapa repositori ada</string>
     <string name="book_encoding">Pengkodean notebook</string>

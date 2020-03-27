@@ -159,7 +159,6 @@
     <string name="searches">Búsquedas</string>
     <string name="search">Búsqueda</string>
     <string name="new_search">Nueva búsqueda</string>
-    <string name="active">Activo</string>
     <string name="no_repos">No hay repositorios configurados</string>
     <string name="multiple_repos">Existen múltiples repositorios</string>
     <string name="book_encoding">Codificación de la nota</string>

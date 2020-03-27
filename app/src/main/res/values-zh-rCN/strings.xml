@@ -156,7 +156,6 @@
     <string name="searches">搜索</string>
     <string name="search">搜索</string>
     <string name="new_search">新建搜索</string>
-    <string name="active">激活</string>
     <string name="no_repos">无已配置的存储库</string>
     <string name="multiple_repos">存在多个存储库</string>
     <string name="book_encoding">笔记本编码</string>

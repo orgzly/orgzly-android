@@ -159,7 +159,6 @@
     <string name="searches">Keresések</string>
     <string name="search">Keresés</string>
     <string name="new_search">Új keresés</string>
-    <string name="active">Aktív</string>
     <string name="no_repos">Nincs beállítva tárolóhely</string>
     <string name="multiple_repos">Több tárolóhely is létezik</string>
     <string name="book_encoding">Jegyzetfüzet kódolása</string>

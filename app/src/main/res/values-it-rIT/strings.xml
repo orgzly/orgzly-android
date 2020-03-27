@@ -159,7 +159,6 @@
     <string name="searches">Ricerche</string>
     <string name="search">Cerca</string>
     <string name="new_search">Nuova ricerca</string>
-    <string name="active">Attivo</string>
     <string name="no_repos">Nessun deposito è configurato</string>
     <string name="multiple_repos">Esistono depositi multipli</string>
     <string name="book_encoding">Codifica del taccuino</string>
