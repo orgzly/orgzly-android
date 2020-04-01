@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
+import com.orgzly.R
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.Selection
@@ -44,7 +45,7 @@ class AgendaAdapter(
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         return when (viewType) {
-            DIVIDER_ITEM_TYPE -> {
+            OVERDUE_ITEM_TYPE, DAY_ITEM_TYPE -> {
                 val binding = ItemAgendaDividerBinding.inflate(
                         LayoutInflater.from(context), parent, false)
 
@@ -64,25 +65,39 @@ class AgendaAdapter(
     }
 
     override fun onBindViewHolder(h: RecyclerView.ViewHolder, position: Int) {
-        if (h.itemViewType == DIVIDER_ITEM_TYPE) {
-            val holder = h as DividerViewHolder
-            val item = getItem(position) as AgendaItem.Divider
+        when (h.itemViewType) {
+            OVERDUE_ITEM_TYPE -> {
+                val holder = h as DividerViewHolder
+                val item = getItem(position) as AgendaItem.Overdue
 
-            bindDividerView(holder, item)
+                bindDividerView(holder, item)
+            }
 
-        } else {
-            val holder = h as NoteItemViewHolder
-            val item = getItem(position) as AgendaItem.Note
+            DAY_ITEM_TYPE -> {
+                val holder = h as DividerViewHolder
+                val item = getItem(position) as AgendaItem.Day
 
-            noteViewBinder.bind(holder, item.note, item.timeType)
+                bindDividerView(holder, item)
+            }
 
-            quickBar.bind(holder)
+            else -> {
+                val holder = h as NoteItemViewHolder
+                val item = getItem(position) as AgendaItem.Note
 
-            getSelection().setIsSelectedBackground(holder.itemView, item.id)
+                noteViewBinder.bind(holder, item.note, item.timeType)
+
+                quickBar.bind(holder)
+
+                getSelection().setIsSelectedBackground(holder.itemView, item.id)
+            }
         }
     }
 
-    private fun bindDividerView(holder: DividerViewHolder, item: AgendaItem.Divider) {
+    private fun bindDividerView(holder: DividerViewHolder, item: AgendaItem.Overdue) {
+        holder.binding.itemAgendaTimeText.text = context.getString(R.string.overdue)
+    }
+
+    private fun bindDividerView(holder: DividerViewHolder, item: AgendaItem.Day) {
         holder.binding.itemAgendaTimeText.text = userTimeFormatter.formatDate(item.day)
     }
 
@@ -90,12 +105,10 @@ class AgendaAdapter(
             RecyclerView.ViewHolder(binding.root)
 
     override fun getItemViewType(position: Int): Int {
-        val item = getItem(position)
-
-        return if (item is AgendaItem.Note) {
-            NOTE_ITEM_TYPE
-        } else {
-            DIVIDER_ITEM_TYPE
+        return when (getItem(position)) {
+            is AgendaItem.Overdue -> OVERDUE_ITEM_TYPE
+            is AgendaItem.Day -> DAY_ITEM_TYPE
+            else -> NOTE_ITEM_TYPE
         }
     }
 
@@ -110,8 +123,9 @@ class AgendaAdapter(
     companion object {
         private val TAG = AgendaAdapter::class.java.name
 
-        const val DIVIDER_ITEM_TYPE = 0
-        const val NOTE_ITEM_TYPE = 1
+        const val OVERDUE_ITEM_TYPE = 0
+        const val DAY_ITEM_TYPE = 1
+        const val NOTE_ITEM_TYPE = 2
 
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<AgendaItem> =
                 object : DiffUtil.ItemCallback<AgendaItem>() {
@@ -128,7 +142,7 @@ class AgendaAdapter(
 
                             old == new
 
-                        } else if (oldItem is AgendaItem.Divider && newItem is AgendaItem.Divider) {
+                        } else if (oldItem is AgendaItem.Day && newItem is AgendaItem.Day) {
                             oldItem.day == newItem.day
 
                         } else {

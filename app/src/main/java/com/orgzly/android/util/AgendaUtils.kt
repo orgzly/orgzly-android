@@ -6,45 +6,32 @@ import org.joda.time.DateTime
 import java.util.*
 
 object AgendaUtils {
-    fun expandOrgDateTime(range: ExpandableOrgRange, now: DateTime, days: Int): Set<DateTime> {
-        return TreeSet<DateTime>().apply {
-            addAll(expandOrgDateTime(
-                    range.range,
-                    range.overdueToday,
-                    range.warningPeriod,
-                    range.delayPeriod,
-                    now,
-                    days))
-        }
-    }
+    data class ExpandedOrgRange(val isOverdueToday: Boolean, val expanded: Set<DateTime>)
 
-    private fun expandOrgDateTime(
-            range: OrgRange,
-            overdueToday: Boolean,
-            warningPeriod: OrgInterval?,
-            delayPeriod: OrgInterval?,
-            now: DateTime,
-            days: Int
-    ): List<DateTime> {
+    fun expandOrgDateTime(expandable: ExpandableOrgRange, now: DateTime, days: Int): ExpandedOrgRange {
+        val today = now.withTimeAtStartOfDay()
 
         // Only unique values
         val result: MutableSet<DateTime> = LinkedHashSet()
 
-        var rangeStart = range.startTime
-        val rangeEnd = range.endTime
+        var rangeStart = expandable.range.startTime
+        val rangeEnd = expandable.range.endTime
 
-        // Add today if task is overdue
-        if (overdueToday) {
-            if (rangeStart.calendar.before(now.toGregorianCalendar())) {
-                result.add(now.withTimeAtStartOfDay())
+        // Check if overdue
+        var isOverdueToday = false
+        if (expandable.canBeOverdueToday) {
+            val nowCal = today.toGregorianCalendar()
+
+            if (rangeStart.calendar.before(nowCal)) {
+                isOverdueToday = true
             }
         }
 
-        var to = now.plusDays(days).withTimeAtStartOfDay()
+        var to = today.plusDays(days).withTimeAtStartOfDay()
 
         if (rangeEnd == null) {
             result.addAll(OrgDateTimeUtils.getTimesInInterval(
-                    rangeStart, now, to, true, warningPeriod, 0))
+                    rangeStart, today, to, true, expandable.warningPeriod, 0))
 
         } else { // a time range
             if (to.isAfter(rangeEnd.calendar.timeInMillis)) {
@@ -60,10 +47,10 @@ object AgendaUtils {
             }
 
             result.addAll(OrgDateTimeUtils.getTimesInInterval(
-                    rangeStart, now, to, true, warningPeriod, 0))
+                    rangeStart, today, to, true, expandable.warningPeriod, 0))
         }
 
-        return ArrayList(result)
+        return ExpandedOrgRange(isOverdueToday, TreeSet(result))
     }
 
     private fun buildOrgDateTimeFromDate(date: DateTime, repeater: OrgRepeater?): OrgDateTime {

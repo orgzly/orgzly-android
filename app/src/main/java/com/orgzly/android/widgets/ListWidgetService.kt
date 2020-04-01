@@ -44,13 +44,15 @@ class ListWidgetService : RemoteViewsService() {
     }
 
     private sealed class WidgetEntry(open val id: Long) {
-        data class WidgetNoteEntry(
+        data class Overdue(override val id: Long) : WidgetEntry(id)
+
+        data class Day(override val id: Long, val day: DateTime) : WidgetEntry(id)
+
+        data class Note(
                 override val id: Long,
                 val noteView: NoteView,
                 val agendaTimeType: TimeType? = null
         ) : WidgetEntry(id)
-
-        data class WidgetDividerEntry(override val id: Long, val day: DateTime) : WidgetEntry(id)
     }
 
     inner class ListWidgetViewsFactory(
@@ -98,14 +100,15 @@ class ListWidgetService : RemoteViewsService() {
 
                 dataList = agendaItems.map {
                     when (it) {
-                        is AgendaItem.Note -> WidgetEntry.WidgetNoteEntry(it.id, it.note, it.timeType)
-                        is AgendaItem.Divider -> WidgetEntry.WidgetDividerEntry(it.id, it.day)
+                        is AgendaItem.Overdue -> WidgetEntry.Overdue(it.id)
+                        is AgendaItem.Day -> WidgetEntry.Day(it.id, it.day)
+                        is AgendaItem.Note -> WidgetEntry.Note(it.id, it.note, it.timeType)
                     }
                 }
 
             } else {
                 dataList = notes.map {
-                    WidgetEntry.WidgetNoteEntry(it.note.id, it)
+                    WidgetEntry.Note(it.note.id, it)
                 }
             }
         }
@@ -123,13 +126,19 @@ class ListWidgetService : RemoteViewsService() {
             }
 
             return when (val entry = dataList[position]) {
-                is WidgetEntry.WidgetDividerEntry ->
+                is WidgetEntry.Overdue ->
+                    RemoteViews(context.packageName, R.layout.item_list_widget_divider).apply {
+                        setupRemoteViews(this)
+                        WidgetStyle.updateDivider(this, context)
+                    }
+
+                is WidgetEntry.Day ->
                     RemoteViews(context.packageName, R.layout.item_list_widget_divider).apply {
                         setupRemoteViews(this, entry)
                         WidgetStyle.updateDivider(this, context)
                     }
 
-                is WidgetEntry.WidgetNoteEntry ->
+                is WidgetEntry.Note ->
                     RemoteViews(context.packageName, R.layout.item_list_widget).apply {
                         setupRemoteViews(this, entry)
                         WidgetStyle.updateNote(this, context)
@@ -149,13 +158,19 @@ class ListWidgetService : RemoteViewsService() {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
         }
 
-        private fun setupRemoteViews(views: RemoteViews, entry: WidgetEntry.WidgetDividerEntry) {
+        private fun setupRemoteViews(views: RemoteViews) {
+            views.setTextViewText(
+                    R.id.widget_list_item_divider_value,
+                    context.getString(R.string.overdue))
+        }
+
+        private fun setupRemoteViews(views: RemoteViews, entry: WidgetEntry.Day) {
             views.setTextViewText(
                     R.id.widget_list_item_divider_value,
                     userTimeFormatter.formatDate(entry.day))
         }
 
-        private fun setupRemoteViews(row: RemoteViews, entry: WidgetEntry.WidgetNoteEntry) {
+        private fun setupRemoteViews(row: RemoteViews, entry: WidgetEntry.Note) {
             val noteView = entry.noteView
 
             val displayPlanningTimes = AppPreferences.displayPlanning(context)

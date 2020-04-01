@@ -684,4 +684,6 @@
     <string name="timestamp_dialog_repeater">Repeater</string>
     <string name="timestamp_dialog_delay">Delay</string>
     <string name="timestamp_dialog_warning_period">Warning period</string>
+
+    <string name="overdue">Overdue</string>
 </resources>

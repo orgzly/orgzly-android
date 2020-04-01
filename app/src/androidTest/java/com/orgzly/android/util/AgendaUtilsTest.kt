@@ -18,7 +18,8 @@ class AgendaUtilsTest(private val param: Parameter) {
             val timeType: TimeType,
             val rangeStr: String,
             val days: Int,
-            val dates: List<DateTime>)
+            val dates: List<DateTime>,
+            val isOverdueToday: Boolean = false)
 
     // 2017 May 5, 13:00:00
     private val now = GregorianCalendar(2017, Calendar.MAY, 5, 13, 0)
@@ -31,9 +32,11 @@ class AgendaUtilsTest(private val param: Parameter) {
 
         val expandedDates = AgendaUtils.expandOrgDateTime(expandable, DateTime(now), param.days)
 
-        Assert.assertEquals(param.dates.size.toLong(), expandedDates.size.toLong())
+        Assert.assertEquals(param.isOverdueToday, expandedDates.isOverdueToday)
+
+        Assert.assertEquals(param.dates.size.toLong(), expandedDates.expanded.size.toLong())
         Assert.assertThat(
-                toStringArray(expandedDates.toList()),
+                toStringArray(expandedDates.expanded.toList()),
                 Matchers.`is`(toStringArray(param.dates)))
     }
 
@@ -53,6 +56,7 @@ class AgendaUtilsTest(private val param: Parameter) {
                             timeType = TimeType.SCHEDULED,
                             rangeStr = "<2017-05-03 Wed>--<2017-05-11 Do>",
                             days = 2,
+                            isOverdueToday = true,
                             dates = listOf(
                                     DateTime(2017, 5, 5, 0, 0),
                                     DateTime(2017, 5, 6, 0, 0))),
@@ -61,6 +65,7 @@ class AgendaUtilsTest(private val param: Parameter) {
                             timeType = TimeType.SCHEDULED,
                             rangeStr = "<2017-05-03 Wed>--<2017-05-11 Do>",
                             days = 1,
+                            isOverdueToday = true,
                             dates = listOf(
                                     DateTime(2017, 5, 5, 0, 0))),
 
@@ -77,6 +82,7 @@ class AgendaUtilsTest(private val param: Parameter) {
                             timeType = TimeType.SCHEDULED,
                             rangeStr = "<2017-05-02 Tue ++3d>",
                             days = 5,
+                            isOverdueToday = true,
                             dates = listOf(
                                     DateTime(2017, 5, 5, 0, 0),
                                     DateTime(2017, 5, 8, 0, 0))),
@@ -85,8 +91,8 @@ class AgendaUtilsTest(private val param: Parameter) {
                             timeType = TimeType.SCHEDULED,
                             rangeStr = "<2017-05-04 Do>",
                             days = 5,
-                            dates = listOf(
-                                    DateTime(2017, 5, 5, 0, 0))),
+                            isOverdueToday = true,
+                            dates = emptyList()),
 
                     Parameter(
                             timeType = TimeType.SCHEDULED,
@@ -106,8 +112,9 @@ class AgendaUtilsTest(private val param: Parameter) {
                             timeType = TimeType.SCHEDULED,
                             rangeStr = "<2017-05-03 Wed 09:00 ++12h>",
                             days = 2,
+                            isOverdueToday = true,
                             dates = listOf(
-                                    DateTime(2017, 5, 5, 0, 0), // overdue
+                                    DateTime(2017, 5, 5, 9, 0),
                                     DateTime(2017, 5, 5, 21, 0),
                                     DateTime(2017, 5, 6, 9, 0),
                                     DateTime(2017, 5, 6, 21, 0))),
@@ -117,7 +124,7 @@ class AgendaUtilsTest(private val param: Parameter) {
                             rangeStr = "<2017-05-05 Fri 09:00 ++12h>",
                             days = 2,
                             dates = listOf(
-                                    DateTime(2017, 5, 5, 0, 0), // overdue
+                                    DateTime(2017, 5, 5, 9, 0),
                                     DateTime(2017, 5, 5, 21, 0),
                                     DateTime(2017, 5, 6, 9, 0),
                                     DateTime(2017, 5, 6, 21, 0))),
@@ -139,8 +146,9 @@ class AgendaUtilsTest(private val param: Parameter) {
                             timeType = TimeType.SCHEDULED,
                             rangeStr = "<2017-05-03 Wed 09:00 .+12h>",
                             days = 2,
+                            isOverdueToday = true,
                             dates = listOf(
-                                    DateTime(2017, 5, 5, 0, 0),  // overdue
+                                    DateTime(2017, 5, 5, 9, 0),
                                     DateTime(2017, 5, 5, 21, 0),
                                     DateTime(2017, 5, 6, 9, 0),
                                     DateTime(2017, 5, 6, 21, 0))),
@@ -149,8 +157,9 @@ class AgendaUtilsTest(private val param: Parameter) {
                             timeType = TimeType.SCHEDULED,
                             rangeStr = "<2017-05-03 Wed 09:00 +12h>",
                             days = 3,
+                            isOverdueToday = true,
                             dates = listOf(
-                                    DateTime(2017, 5, 5, 0, 0),  // overdue
+                                    DateTime(2017, 5, 5, 9, 0),
                                     DateTime(2017, 5, 5, 21, 0),
                                     DateTime(2017, 5, 6, 9, 0),
                                     DateTime(2017, 5, 6, 21, 0),

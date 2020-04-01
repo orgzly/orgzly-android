@@ -12,13 +12,13 @@ import org.joda.time.DateTime
 object AgendaItems {
     data class ExpandableOrgRange(
             val range: OrgRange,
-            val overdueToday: Boolean,
+            val canBeOverdueToday: Boolean,
             val warningPeriod: OrgInterval?,
             val delayPeriod: OrgInterval?) {
 
         companion object {
             fun fromRange(timeType: TimeType, range: OrgRange): ExpandableOrgRange {
-                val overdueToday = timeType == TimeType.SCHEDULED || timeType == TimeType.DEADLINE
+                val canBeOverdueToday = timeType == TimeType.SCHEDULED || timeType == TimeType.DEADLINE
 
                 val warningPeriod = when (timeType) {
                     TimeType.DEADLINE -> range.startTime.delay
@@ -30,7 +30,7 @@ object AgendaItems {
                     else -> null
                 }
 
-                return ExpandableOrgRange(range, overdueToday, warningPeriod, delayPeriod)
+                return ExpandableOrgRange(range, canBeOverdueToday, warningPeriod, delayPeriod)
             }
         }
     }
@@ -70,12 +70,11 @@ object AgendaItems {
 
         val now = DateTime.now().withTimeAtStartOfDay()
 
-        // Create day buckets
-        val dayBuckets = (0 until agendaDays)
+        val overdueNotes = mutableListOf<AgendaItem>()
+
+        val dailyNotes = (0 until agendaDays)
                 .map { i -> now.plusDays(i) }
-                .associateBy(
-                        { it.millis },
-                        { mutableListOf<AgendaItem>(AgendaItem.Divider(agendaItemId++, it)) })
+                .associateBy({ it.millis }, { mutableListOf<AgendaItem>() })
 
         val addedPlanningTimes = HashSet<Long>()
 
@@ -88,11 +87,17 @@ object AgendaItems {
 
                 val times = AgendaUtils.expandOrgDateTime(expandable, now, agendaDays)
 
+                if (times.isOverdueToday) {
+                    overdueNotes.add(AgendaItem.Note(agendaItemId, note, timeType))
+                    item2databaseIds[agendaItemId] = note.note.id
+                    agendaItemId++
+                }
+
                 // Add each note instance to its day bucket
-                times.forEach { time ->
+                times.expanded.forEach { time ->
                     val bucketKey = time.withTimeAtStartOfDay().millis
 
-                    dayBuckets[bucketKey]?.let {
+                    dailyNotes[bucketKey]?.let {
                         it.add(AgendaItem.Note(agendaItemId, note, timeType))
                         item2databaseIds[agendaItemId] = note.note.id
                         agendaItemId++
@@ -118,6 +123,24 @@ object AgendaItems {
             }
         }
 
-        return dayBuckets.values.flatten() // FIXME
+        val result = mutableListOf<AgendaItem>()
+
+        // Add overdue heading and notes
+        if (overdueNotes.isNotEmpty()) {
+            result.add(AgendaItem.Overdue(agendaItemId++))
+            result.addAll(overdueNotes)
+        }
+
+        // Add daily
+        dailyNotes.forEach { d ->
+            // Always add day heading
+            result.add(AgendaItem.Day(agendaItemId++, DateTime(d.key)))
+
+            if (d.value.isNotEmpty()) {
+                result.addAll(d.value)
+            }
+        }
+
+        return result
     }
 }

@@ -138,8 +138,6 @@ class NoteEventsTest : OrgzlyTest() {
 
         searchForText("ad.5")
 
-        SystemClock.sleep(10000)
-
         onNotesInAgenda().check(matches(recyclerViewItemCount(10)))
 
         // Today: deadline
