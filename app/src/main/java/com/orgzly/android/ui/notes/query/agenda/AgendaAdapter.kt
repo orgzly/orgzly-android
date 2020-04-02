@@ -94,11 +94,11 @@ class AgendaAdapter(
     }
 
     private fun bindDividerView(holder: DividerViewHolder, item: AgendaItem.Overdue) {
-        holder.binding.itemAgendaTimeText.text = context.getString(R.string.overdue)
+        holder.binding.itemAgendaDividerText.text = context.getString(R.string.overdue)
     }
 
     private fun bindDividerView(holder: DividerViewHolder, item: AgendaItem.Day) {
-        holder.binding.itemAgendaTimeText.text = userTimeFormatter.formatDate(item.day)
+        holder.binding.itemAgendaDividerText.text = userTimeFormatter.formatDate(item.day)
     }
 
     inner class DividerViewHolder(val binding: ItemAgendaDividerBinding) :
