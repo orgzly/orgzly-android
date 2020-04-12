@@ -18,25 +18,33 @@ import java.util.regex.Pattern;
 public class BookName {
     private static final String TAG = BookName.class.getName();
 
-    private static final Pattern PATTERN = Pattern.compile("(.*)\\.(org)(\\.txt)?$");
+    private static final Pattern PATTERN = Pattern.compile("(.*)\\.(org)(\\.txt)?(\\.gpg)?$"); // todo (.gpg)
     private static final Pattern SKIP_PATTERN = Pattern.compile("^\\.#.*");
+    // todo private static final Pattern GPG_PATTERN = Pattern.compile("(.*)(\\.gpg)$");
+    // todo ?what happens with .org.txt.gpg files
 
     private final String mFileName;
     private final String mName;
     private final BookFormat mFormat;
+    private final boolean mEncrypted;
 
-    private BookName(String fileName, String name, BookFormat format) {
+    private BookName(String fileName, String name, BookFormat format, boolean encrypted) {
         mFileName = fileName;
         mName = name;
         mFormat = format;
+        mEncrypted = encrypted;
     }
 
     public static String getFileName(Context context, com.orgzly.android.db.entity.BookView bookView) {
-        if (bookView.getSyncedTo() != null) {
-            return getFileName(context, bookView.getSyncedTo().getUri());
 
-        } else {
-            return fileName(bookView.getBook().getName(), BookFormat.ORG);
+//        if (bookView.getSyncedTo() != null) { // todo and if the encryption state of this file fits. or make sure that
+//            // todo after encryption toggle syncedTo should be deleted
+//            return getFileName(context, bookView.getSyncedTo().getUri());
+//
+//        }
+//        else
+            {
+                return fileName(bookView.getBook().getName(), BookFormat.ORG, bookView.hasEncryption());
         }
     }
 
@@ -63,6 +71,13 @@ public class BookName {
         return fileName;
     }
 
+    public static boolean getEncrypted(Context context, Uri uri) {
+        String fileName = getFileName(context, uri);
+        return ((fileName.length() > 4)
+                && fileName.substring(fileName.length() - 4).equals(".gpg"));
+        // todo replace by matcher
+    }
+
     public static BookName getInstance(Context context, Rook rook) {
         return fromFileName(getFileName(context, rook.getUri()));
     }
@@ -71,13 +86,20 @@ public class BookName {
         return PATTERN.matcher(fileName).matches() && !SKIP_PATTERN.matcher(fileName).matches();
     }
 
-    public static String fileName(String name, BookFormat format) {
+    // todo $!or introduce filename without .gpg ending to which the caller can add their .gpg
+    public static String fileName(String name, BookFormat format, boolean encrypted) {
+        String fullName = name;
         if (format == BookFormat.ORG) {
-            return name + ".org";
-
+            fullName += ".org";
         } else {
             throw new IllegalArgumentException("Unsupported format " + format);
         }
+
+        if (encrypted) {
+            fullName += ".gpg";
+        }
+
+        return fullName;
     }
 
     public static BookName fromFileName(String fileName) {
@@ -87,9 +109,12 @@ public class BookName {
             if (m.find()) {
                 String name = m.group(1);
                 String extension = m.group(2);
+                String lastExtension = m.group(m.groupCount()); // todo ?needed
 
                 if (extension.equals("org")) {
-                    return new BookName(fileName, name, BookFormat.ORG);
+                    boolean encrypted = (lastExtension != null && lastExtension.equals(".gpg"));
+
+                    return new BookName(fileName, name, BookFormat.ORG, encrypted);
                 }
             }
         }
@@ -109,4 +134,7 @@ public class BookName {
         return mFileName;
     }
 
+    public boolean getEncrypted() {
+        return mEncrypted;
+    }
 }

@@ -8,6 +8,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
@@ -30,6 +32,7 @@ import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.android.util.UriUtils
 import com.orgzly.databinding.ActivityRepoDropboxBinding
+import kotlinx.android.synthetic.main.activity_repo_dropbox.view.*
 import javax.inject.Inject
 
 
@@ -90,6 +93,12 @@ class DropboxRepoActivity : CommonActivity() {
                 val path = Uri.parse(repoWithProps.repo.url).path
 
                 binding.activityRepoDropboxDirectory.setText(path)
+
+                val encryption = repoWithProps.props.get("pgpPassphrase")
+
+                encryption?.also {
+                    binding.activityRepoDropboxEncryptionPassphrase.setText(it)
+                }
             }
         }
 
@@ -202,6 +211,13 @@ class DropboxRepoActivity : CommonActivity() {
 
         val url = UriUtils.uriFromPath(DropboxRepo.SCHEME, directory).toString()
 
+        val propsMap = if (!binding.activityRepoDropboxEncryptionPassphrase.text.isNullOrEmpty()) {
+            val passphrase = binding.activityRepoDropboxEncryptionPassphrase.text.toString()
+            mapOf("pgpPassphrase" to passphrase)
+        } else {
+            emptyMap()
+        }
+
         val repo = try {
             viewModel.validate(RepoType.DROPBOX, url)
         } catch (e: Exception) {
@@ -211,7 +227,7 @@ class DropboxRepoActivity : CommonActivity() {
             return
         }
 
-        viewModel.saveRepo(RepoType.DROPBOX, repo.uri.toString())
+        viewModel.saveRepo(RepoType.DROPBOX, repo.uri.toString(), propsMap)
     }
 
     private fun toggleLinkAfterConfirmation() {

@@ -29,6 +29,12 @@
     </item>
 
     <item
+        android:id="@+id/books_context_menu_set_encryption"
+        android:title="@string/books_context_menu_item_set_encryption"
+        app:showAsAction="never">
+    </item> <!-- todo -->
+
+    <item
         android:id="@+id/books_context_menu_export"
         android:title="@string/export"
         app:showAsAction="never">

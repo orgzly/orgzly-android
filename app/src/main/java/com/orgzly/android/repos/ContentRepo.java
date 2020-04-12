@@ -167,7 +167,7 @@ public class ContentRepo implements SyncRepo {
     public VersionedRook renameBook(Uri from, String name) throws IOException {
         DocumentFile fromDocFile = DocumentFile.fromSingleUri(context, from);
         BookName bookName = BookName.fromFileName(fromDocFile.getName());
-        String newFileName = BookName.fileName(name, bookName.getFormat());
+        String newFileName = BookName.fileName(name, bookName.getFormat(), bookName.getEncrypted());
 
         /* Check if document already exists. */
         DocumentFile existingFile = repoDocumentFile.findFile(newFileName);

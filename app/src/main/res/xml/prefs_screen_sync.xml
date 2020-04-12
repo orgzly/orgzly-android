@@ -21,6 +21,12 @@
         android:summary="@string/auto_sync_experimental_summary">
     </androidx.preference.PreferenceScreen>
 
+    <androidx.preference.PreferenceScreen
+        android:key="prefs_screen_encryption"
+        android:title="@string/encryption"
+        android:summary="@string/encryption_summary">
+    </androidx.preference.PreferenceScreen>
+
     <PreferenceCategory android:title="@string/notebook_files">
         <SwitchPreference
             android:key="@string/pref_key_is_created_at_added"

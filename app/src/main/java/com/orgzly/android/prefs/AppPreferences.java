@@ -970,6 +970,16 @@ public class AppPreferences {
     }
 
     /*
+     * Encryption
+     */
+
+    public static String defaultPassphrase(Context context) {
+        return getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_encryption_default_passphrase),
+                context.getResources().getString(R.string.pref_key_encryption_default_passphrase_default_value));
+    }
+
+    /*
      * Notes clipboard
      */
 

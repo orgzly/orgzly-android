@@ -50,7 +50,7 @@ public class UriUtils {
         BookName bookName = BookName.fromFileName(uri.getLastPathSegment());
         BookFormat format = bookName.getFormat();
 
-        String newFilename = BookName.fileName(name, format);
+        String newFilename = BookName.fileName(name, format, bookName.getEncrypted());
 
         return UriUtils.dirUri(uri) // Old Uri without file name
                 .buildUpon()

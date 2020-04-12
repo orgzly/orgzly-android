@@ -36,6 +36,7 @@ import com.orgzly.android.usecase.BookDelete
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.databinding.DialogBookDeleteBinding
+import com.orgzly.databinding.DialogBookEncryptionBinding
 import com.orgzly.databinding.DialogBookRenameBinding
 import com.orgzly.databinding.FragmentBooksBinding
 import javax.inject.Inject
@@ -181,6 +182,10 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
                         listener?.onBookLinkSetRequest(bookId)
                     }
 
+                    R.id.books_context_menu_set_encryption -> {
+                        viewModel.bookEncryptionRequest(bookId)
+                    }
+
                     R.id.books_context_menu_force_save -> {
                         listener?.onForceSaveRequest(bookId)
                     }
@@ -264,7 +269,7 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
             when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
                     val deleteLinked = dialogBinding.deleteLinkedCheckbox.isChecked
-                    viewModel.deleteBook(book.book.id, deleteLinked)
+                    viewModel.deleteBook(book.book.id, deleteLinked, true)
                 }
             }
         }
@@ -278,6 +283,94 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
             dialogBinding.deleteLinkedUrl.text = book.syncedTo.uri.toString()
             builder.setView(dialogBinding.root)
         }
+
+        dialog = builder.show()
+    }
+
+    private fun bookEncryptionDialog(book: BookView) {
+        val dialogBinding = DialogBookEncryptionBinding.inflate(LayoutInflater.from(context))
+
+        if (book.hasEncryption()) {
+            dialogBinding.bookEncryptionPassphrase.setText(book.encryption?.passphrase)
+        }
+
+        dialogBinding.bookEncryptionPassphrase.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val encryptionToggled = book.hasEncryption() == s.isNullOrEmpty()
+                dialogBinding.deletePreviousCheckbox.visibility =
+                        if (book.syncedTo != null && encryptionToggled) { // todo uncomment
+                            View.VISIBLE
+                        } else {
+                            View.INVISIBLE
+                        }
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+
+        val defaultPassword: String? = dataRepository.getDefaultPassphrase()
+        dialogBinding.useDefaultPassphraseButton.isEnabled = defaultPassword != null
+        dialogBinding.useDefaultPassphraseButton.setOnClickListener { _ -> defaultPassword?.let {dialogBinding.bookEncryptionPassphrase.setText(it)} }
+
+        // todo ? if default password already used, disable button as well
+
+//        dialogBinding.deleteLinkedCheckbox.setOnCheckedChangeListener { _, isChecked ->
+//            activity?.apply {
+//                val color = styledAttributes(R.styleable.ColorScheme) { typedArray ->
+//                    val index = if (isChecked) {
+//                        R.styleable.ColorScheme_text_primary_color
+//                    } else {
+//                        R.styleable.ColorScheme_text_disabled_color
+//                    }
+//
+//                    typedArray.getColor(index, 0)
+//                }
+//                dialogBinding.deleteLinkedUrl.setTextColor(color)
+//            }
+//        }
+
+        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
+            when (which) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    val encryptionToggled = (book.hasEncryption() == dialogBinding.bookEncryptionPassphrase.text.isNullOrEmpty())
+
+                    if (encryptionToggled) {
+                        // todo refactor into method that always deletes syncedTo and optionally removes remote book
+
+                        if (dialogBinding.deletePreviousCheckbox.isChecked) {
+                            viewModel.deleteBook(book.book.id, true, false)
+                        }
+
+                        // remove syncedTo
+                        // todo I believe this is necessary since the old
+                        // todo doesn't seem necessary since we will make sure that the old syncedTo url is not used inappropriately
+//                        if(book.syncedTo != null) {
+//                            viewModel.removeBookSync(book.book.id)
+//                        }
+                    }
+
+                    if (dialogBinding.bookEncryptionPassphrase.text.isNullOrEmpty()) {
+                        viewModel.bookEncryption(book.book.id, null)
+                    } else {
+                        viewModel.bookEncryption(book.book.id, dialogBinding.bookEncryptionPassphrase.text.toString())
+                    }
+                }
+            }
+        }
+
+        val builder = AlertDialog.Builder(context)
+                .setTitle(getString(R.string.delete_with_quoted_argument, book.book.name)) // todo
+                .setPositiveButton(R.string.delete, dialogClickListener) // todo
+                .setNegativeButton(R.string.cancel, dialogClickListener)
+
+        //if (book.syncedTo != null) {
+            //dialogBinding.deleteLinkedUrl.text = book.syncedTo.uri.toString()
+            builder.setView(dialogBinding.root) // todo ?needed
+        //}
 
         dialog = builder.show()
     }
@@ -344,6 +437,8 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
         dialog = d
     }
 
+
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -387,8 +482,24 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
             listener?.onBookExportRequest(book, format)
         })
 
+        viewModel.bookEncryptionRequestEvent.observeSingle(viewLifecycleOwner, Observer { bookView ->
+            if (bookView != null) {
+                // todo if dummy & modified then it is out of sync
+                // maybe out of sync should be changed to include "not dummy"
+//                if (!bookView.isOutOfSync()) {
+                    bookEncryptionDialog(bookView)
+//                } else {
+//                    CommonActivity.showSnackbar(context, R.string.message_book_deleted) // todo error
+//                }
+            }
+        })
+
         viewModel.bookDeletedEvent.observeSingle(viewLifecycleOwner, Observer {
             CommonActivity.showSnackbar(context, R.string.message_book_deleted)
+        })
+
+        viewModel.bookEncryptionSetEvent.observeSingle(viewLifecycleOwner, Observer {
+            CommonActivity.showSnackbar(context, R.string.message_book_deleted) // todo string // todo ?always display success message
         })
 
         viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->

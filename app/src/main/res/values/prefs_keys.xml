@@ -254,6 +254,10 @@
     <string name="pref_key_auto_sync_on_repo_change" translatable="false">pref_key_auto_sync_on_repo_change</string>
     <bool name="pref_default_auto_sync_on_repo_change" translatable="false">false</bool>
 
+    <!-- Encryption -->
+
+    <string name="pref_key_encryption_default_passphrase" translatable="false">pref_key_encryption_default_passphrase</string>
+    <string name="pref_key_encryption_default_passphrase_default_value" translatable="false"></string>
 
     <string name="pref_key_snooze_time" translatable="false">pref_key_snooze_time</string>
     <string name="pref_default_snooze_time" translatable="false">5</string>

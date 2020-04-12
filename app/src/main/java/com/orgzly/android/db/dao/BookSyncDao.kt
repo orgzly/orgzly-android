@@ -8,6 +8,9 @@ interface BookSyncDao : BaseDao<BookSync> {
     @Query("SELECT * FROM book_syncs WHERE book_id = :bookId")
     fun get(bookId: Long): BookSync?
 
+    @Query("DELETE FROM book_syncs WHERE book_id = :bookId")
+    abstract fun deleteByBookId(bookId: Long)
+
     @Transaction
     fun upsert(bookId: Long, versionedRookId: Long) {
         val sync = get(bookId)

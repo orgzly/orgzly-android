@@ -2,11 +2,11 @@ package com.orgzly.android.usecase
 
 import com.orgzly.android.data.DataRepository
 
-class BookDelete(val bookId: Long, val deleteLinked: Boolean, val deleteLocal: Boolean) : UseCase() {
+class BookRemoveSync(val bookId: Long) : UseCase() {
     override fun run(dataRepository: DataRepository): UseCaseResult {
         val book = dataRepository.getBookView(bookId) ?: throw NotFound()
 
-        dataRepository.deleteBook(book, deleteLinked, deleteLocal)
+        dataRepository.removeBookSync(book)
 
         return UseCaseResult(
                 modifiesLocalData = true,

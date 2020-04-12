@@ -44,7 +44,10 @@ abstract class BookViewDao {
             synced_repos.url as synced_to_repoUri,
             synced_rook_urls.url as synced_to_uri,
             synced_versioned_rooks.rook_revision as synced_to_revision,
-            synced_versioned_rooks.rook_mtime as synced_to_mtime
+            synced_versioned_rooks.rook_mtime as synced_to_mtime,
+            
+            book_encryptions.passphrase as encryption_passphrase,
+            book_encryptions.book_id as encryption_book_id
 
             FROM books
 
@@ -58,8 +61,10 @@ abstract class BookViewDao {
             LEFT JOIN rooks AS synced_rooks ON (synced_versioned_rooks.rook_id = synced_rooks.id)
             LEFT JOIN repos AS synced_repos ON (synced_rooks.repo_id = synced_repos.id)
             LEFT JOIN rook_urls AS synced_rook_urls ON (synced_rooks.rook_url_id = synced_rook_urls.id)
+            
+            LEFT JOIN book_encryptions ON (books.id = book_encryptions.book_id)
         """
-
+//encryptions.passphrase as encryption_passphrase
         private const val ORDER_BY_TIME = "is_dummy, MAX(COALESCE(mtime, 0), COALESCE(synced_to_mtime, 0)) DESC, name"
 
         private const val ORDER_BY_NAME = "is_dummy, LOWER(COALESCE(books.title, name))"

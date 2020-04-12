@@ -52,7 +52,6 @@ import com.orgzly.org.parser.OrgParser
 import com.orgzly.org.parser.OrgParserWriter
 import com.orgzly.org.utils.StateChangeLogic
 import java.io.*
-import java.lang.IllegalStateException
 import java.util.*
 import java.util.concurrent.Callable
 import javax.inject.Inject
@@ -82,7 +81,12 @@ class DataRepository @Inject constructor(
 
             val fileName = BookName.getFileName(context, book)
 
-            val loadedBook = loadBookFromRepo(book.linkRepo.id, book.linkRepo.type, book.linkRepo.url, fileName)
+            val loadedBook = loadBookFromRepo(
+                    book.linkRepo.id,
+                    book.linkRepo.type,
+                    book.linkRepo.url,
+                    fileName,
+                    book.encryption?.passphrase)
 
             setBookLastActionAndSyncStatus(loadedBook!!.book.id, BookAction.forNow(
                     BookAction.Type.INFO,
@@ -148,27 +152,48 @@ class DataRepository @Inject constructor(
             bookView: BookView,
             @Suppress("UNUSED_PARAMETER") format: BookFormat) {
 
-        val uploadedBook: VersionedRook
+        var uploadedBook: VersionedRook? = null
 
         val repo = getRepoInstance(repoEntity.id, repoEntity.type, repoEntity.url)
 
         val tmpFile = getTempBookFile()
+        val tmpFileEncrypted = getTempBookFile()
         try {
             /* Write to temporary file. */
             NotesOrgExporter(this).exportBook(bookView.book, tmpFile)
 
+            // TODO fileName argument is the correct one from the get-go, no need to fix extension
+            val (toStoreFile, toStoreFileName) =
+                    if (bookView.hasEncryption()) {
+                        val inFile: InputStream = BufferedInputStream(FileInputStream(tmpFile))
+                        val outFile: OutputStream = BufferedOutputStream(FileOutputStream(tmpFileEncrypted))
+
+                        try {
+                            MiscUtils.pgpEncrypt(inFile, outFile, fileName, bookView.encryption!!.passphrase)
+                        } finally {
+                            inFile.close()
+                            outFile.close()
+                        }
+
+                        Pair(tmpFileEncrypted, MiscUtils.ensureGpgExtensionFileName(fileName))
+                    } else {
+                        // remove possible .gpg extension left over from a previous encrypted sync
+                        Pair(tmpFile, MiscUtils.ensureNoGpgExtensionFileName(fileName))
+                    }
+
             /* Upload to repo. */
-            uploadedBook = repo.storeBook(tmpFile, fileName)
+            uploadedBook = repo.storeBook(toStoreFile, toStoreFileName)
 
         } finally {
             /* Delete temporary file. */
             tmpFile.delete()
+            tmpFileEncrypted.delete()
         }
 
-        updateBookLinkAndSync(bookView.book.id, uploadedBook)
-
-        updateBookIsModified(bookView.book.id, false)
-
+        if (uploadedBook != null) {
+            updateBookLinkAndSync(bookView.book.id, uploadedBook)
+            updateBookIsModified(bookView.book.id, false)
+        }
     }
 
     @Throws(IOException::class)
@@ -224,6 +249,7 @@ class DataRepository @Inject constructor(
         }
     }
 
+    // todo not unique anymore
     fun getBookView(name: String): BookView? {
         return db.bookView().get(name)
     }
@@ -232,6 +258,7 @@ class DataRepository @Inject constructor(
         return db.bookView().get(id)
     }
 
+    // todo not unique anymore
     private fun doesBookExist(name: String): Boolean {
         return getBook(name) != null
     }
@@ -278,7 +305,7 @@ class DataRepository @Inject constructor(
      * (before remote book has been downloaded, or linked etc.)
      */
     @Throws(IOException::class)
-    fun createDummyBook(name: String): BookView {
+    fun createDummyBook(name: String): BookView { // todo might be encrypted, then set encryption to default value
         if (doesBookExist(name)) {
             throw IOException("Can't insert notebook with the same name: $name")
         }
@@ -321,16 +348,38 @@ class DataRepository @Inject constructor(
         return BookView(book.copy(id = id), 0)
     }
 
-    fun deleteBook(book: BookView, deleteLinked: Boolean) {
+    fun deleteBook(book: BookView, deleteLinked: Boolean, deleteLocal: Boolean) { // todo refactor into two methods
         if (deleteLinked) {
             book.syncedTo?.let { vrook ->
                 val repo = getRepoInstance(vrook.repoId, vrook.repoType, vrook.repoUri.toString())
 
                 repo.delete(vrook.uri)
             }
+
+            // todo ?no need to also delete book link
+            db.bookSync().deleteByBookId(book.book.id)
         }
 
-        db.book().delete(book.book)
+        if (deleteLocal) {
+            db.book().delete(book.book)
+        }
+    }
+
+    fun removeBookSync(book: BookView) { // todo make remove syncedTo with optional deleteLinked
+        db.bookSync().deleteByBookId(book.book.id)
+    }
+
+    fun setEncryptionPassphrase(book: BookView, passphrase: String?) {
+        if (book.hasEncryption()) {
+            db.bookEncryption().deleteByBookId(book.book.id)
+        }
+
+        if (passphrase != null) {
+            db.bookEncryption().upsert(book.book.id, passphrase)
+        }
+
+        // also set modified flag (even if passphrase stayed the same, for simplicity)
+        updateBookIsModified(book.book.id, true)
     }
 
     fun renameBook(bookView: BookView, name: String) {
@@ -492,6 +541,39 @@ class DataRepository @Inject constructor(
 
     private fun deleteBookLink(bookId: Long) {
         db.bookLink().deleteByBookId(bookId)
+    }
+
+    fun setEncryption(bookId: Long, passphrase: String?) {
+        if (passphrase == null) {
+            deleteBookEncryption(bookId)
+        } else {
+            setEncryptionPassphrase(bookId, passphrase)
+        }
+    }
+
+    private fun setEncryptionPassphrase(bookId: Long, passphrase: String) {
+        db.bookEncryption().upsert(bookId, passphrase)
+    }
+
+    fun getDefaultPassphrase() : String? {
+        // todo use this? error handling
+        val defaultPassphrase = AppPreferences.defaultPassphrase(context)
+        if (defaultPassphrase.isEmpty()) {
+            return null
+        }
+        return defaultPassphrase
+    }
+
+    fun getDefaultPassphraseOrThrow() : String {
+        val defaultPassphrase = AppPreferences.defaultPassphrase(context)
+        if (defaultPassphrase.isEmpty()) {
+            throw IllegalStateException("Default passphrase not set") // TODO i18n
+        }
+        return defaultPassphrase
+    }
+
+    private fun deleteBookEncryption(bookId: Long) {
+        db.bookEncryption().deleteByBookId(bookId)
     }
 
     fun cycleVisibility(bookId: Long): Int {
@@ -1550,30 +1632,49 @@ class DataRepository @Inject constructor(
     }
 
     @Throws(IOException::class)
-    fun loadBookFromRepo(rook: Rook): BookView? {
+    fun loadBookFromRepo(rook: Rook, encryption: String?): BookView? {
         val fileName = BookName.getFileName(context, rook.uri)
 
-        return loadBookFromRepo(rook.repoId, rook.repoType, rook.repoUri.toString(), fileName)
+        return loadBookFromRepo(rook.repoId, rook.repoType, rook.repoUri.toString(), fileName, encryption)
     }
 
     @Throws(IOException::class)
-    fun loadBookFromRepo(repoId: Long, repoType: RepoType, repoUrl: String, fileName: String): BookView? {
-        val book: BookView?
+    fun loadBookFromRepo(repoId: Long, repoType: RepoType, repoUrl: String, fileName: String, encryption: String?): BookView? {
+        var book: BookView? = null
 
         val repo = getRepoInstance(repoId, repoType, repoUrl)
 
         val tmpFile = getTempBookFile()
+        val tmpFileDecrypted = getTempBookFile()
         try {
             /* Download from repo. */
+
             val vrook = repo.retrieveBook(fileName, tmpFile)
+
+            val plaintextBookFile: File =
+                    if (encryption != null) {
+                        val inFile: InputStream = BufferedInputStream(FileInputStream(tmpFile))
+                        val outFile: OutputStream = BufferedOutputStream(FileOutputStream(tmpFileDecrypted))
+
+                        try {
+                            MiscUtils.pgpDecrypt(inFile, outFile, encryption!!)
+                        } finally {
+                            inFile.close()
+                            outFile.close()
+                        }
+
+                        tmpFileDecrypted
+                    } else {
+                        tmpFile
+                    }
 
             val bookName = BookName.fromFileName(fileName)
 
             /* Store from file to Shelf. */
-            book = loadBookFromFile(bookName.name, bookName.format, tmpFile, vrook)
-
+            book = loadBookFromFile(bookName.name, bookName.format, plaintextBookFile, vrook)
         } finally {
             tmpFile.delete()
+            tmpFileDecrypted.delete()
         }
 
         return book
