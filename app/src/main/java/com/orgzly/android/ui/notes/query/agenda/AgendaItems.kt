@@ -78,40 +78,39 @@ object AgendaItems {
 
         val addedPlanningTimes = HashSet<Long>()
 
-        notes.forEach { note ->
+        fun addInstances(note: NoteView, timeType: TimeType, timeString: String) {
+            val range = OrgRange.parseOrNull(timeString) ?: return
 
-            fun addInstances(timeType: TimeType, timeString: String) {
-                val range = OrgRange.parseOrNull(timeString) ?: return
+            val expandable = ExpandableOrgRange.fromRange(timeType, range)
 
-                val expandable = ExpandableOrgRange.fromRange(timeType, range)
+            val times = AgendaUtils.expandOrgDateTime(expandable, now, agendaDays)
 
-                val times = AgendaUtils.expandOrgDateTime(expandable, now, agendaDays)
+            if (times.isOverdueToday) {
+                overdueNotes.add(AgendaItem.Note(agendaItemId, note, timeType))
+                item2databaseIds[agendaItemId] = note.note.id
+                agendaItemId++
+            }
 
-                if (times.isOverdueToday) {
-                    overdueNotes.add(AgendaItem.Note(agendaItemId, note, timeType))
+            // Add each note instance to its day bucket
+            times.expanded.forEach { time ->
+                val bucketKey = time.withTimeAtStartOfDay().millis
+
+                dailyNotes[bucketKey]?.let {
+                    it.add(AgendaItem.Note(agendaItemId, note, timeType))
                     item2databaseIds[agendaItemId] = note.note.id
                     agendaItemId++
                 }
-
-                // Add each note instance to its day bucket
-                times.expanded.forEach { time ->
-                    val bucketKey = time.withTimeAtStartOfDay().millis
-
-                    dailyNotes[bucketKey]?.let {
-                        it.add(AgendaItem.Note(agendaItemId, note, timeType))
-                        item2databaseIds[agendaItemId] = note.note.id
-                        agendaItemId++
-                    }
-                }
             }
+        }
 
+        notes.forEach { note ->
             // Add planning times for a note only once
             if (!addedPlanningTimes.contains(note.note.id)) {
                 note.scheduledRangeString?.let {
-                    addInstances(TimeType.SCHEDULED, it)
+                    addInstances(note, TimeType.SCHEDULED, it)
                 }
                 note.deadlineRangeString?.let {
-                    addInstances(TimeType.DEADLINE, it)
+                    addInstances(note, TimeType.DEADLINE, it)
                 }
 
                 addedPlanningTimes.add(note.note.id)
@@ -119,7 +118,7 @@ object AgendaItems {
 
             // Add each note's event
             note.eventString?.let {
-                addInstances(TimeType.EVENT, it)
+                addInstances(note, TimeType.EVENT, it)
             }
         }
 
