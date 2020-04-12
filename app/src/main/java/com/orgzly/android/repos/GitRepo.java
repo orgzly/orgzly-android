@@ -298,6 +298,12 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
         return preferences.remoteUri();
     }
 
+    @Override
+    public boolean isEncryptionEnabled() { return false; }
+
+    @Override
+    public String getEncryptionPassphrase() { return null; }
+
     public void delete(Uri deleteUri) throws IOException {
         // FIXME: finish me
         throw new IOException("Don't do that");

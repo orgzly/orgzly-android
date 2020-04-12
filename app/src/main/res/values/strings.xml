@@ -178,6 +178,7 @@
     <string name="searches">Searches</string>
     <string name="search">Search</string>
     <string name="new_search">New Search</string>
+    <string name="active">Active</string>
     <string name="no_repos">No repositories configured</string>
     <string name="multiple_repos">Multiple repositories exist</string>
 
@@ -193,6 +194,8 @@
 
     <string name="fragment_repo_dropbox_directory_desc">Directory inside Dropbox (e.g. “/Documents/Orgzly”)</string>
     <string name="directory_uri">Directory URI</string>
+    <string name="fragment_repo_dropbox_encryption_passphrase_desc">Enter a passphrase to enable encryption</string>
+    <string name="fragment_repo_dropbox_encryption_desc">The contents of an existing repository should be cleared before changing the passphrase or enabling encryption. Changing the passphrase does not automatically re-encrypt remote notebooks. Enabling encryption will create new files in the repository with extension “.org.gpg”, existing unencrypted files with extension “.org” are not automatically deleted.</string>
 
     <string name="git_url_hint">Remote address (e.g. git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Directory location (e.g. “file:/sdcard/orgzly”)</string>

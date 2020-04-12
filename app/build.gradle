@@ -184,6 +184,9 @@ dependencies {
         // Resolves DuplicatePlatformClasses lint error
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
+
+    // Encryption
+    implementation "org.bouncycastle:bcpg-jdk15on:1.65"
 }
 
 repositories {

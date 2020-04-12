@@ -110,6 +110,12 @@ public class DirectoryRepo implements SyncRepo {
     }
 
     @Override
+    public boolean isEncryptionEnabled() { return false; }
+
+    @Override
+    public String getEncryptionPassphrase() { return null; }
+
+    @Override
     public VersionedRook retrieveBook(String fileName, File destinationFile) throws IOException {
         Uri uri = repoUri.buildUpon().appendPath(fileName).build();
 

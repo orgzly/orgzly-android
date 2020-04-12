@@ -64,6 +64,12 @@ public class ContentRepo implements SyncRepo {
     }
 
     @Override
+    public boolean isEncryptionEnabled() { return false; }
+
+    @Override
+    public String getEncryptionPassphrase() { return null; }
+
+    @Override
     public List<VersionedRook> getBooks() throws IOException {
         List<VersionedRook> result = new ArrayList<>();
 

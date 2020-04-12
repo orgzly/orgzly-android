@@ -52,7 +52,6 @@ import com.orgzly.org.parser.OrgParser
 import com.orgzly.org.parser.OrgParserWriter
 import com.orgzly.org.utils.StateChangeLogic
 import java.io.*
-import java.lang.IllegalStateException
 import java.util.*
 import java.util.concurrent.Callable
 import javax.inject.Inject
@@ -82,7 +81,13 @@ class DataRepository @Inject constructor(
 
             val fileName = BookName.getFileName(context, book)
 
-            val loadedBook = loadBookFromRepo(book.linkRepo.id, book.linkRepo.type, book.linkRepo.url, fileName)
+            val loadedBook = loadBookFromRepo(
+                    book.linkRepo.id,
+                    book.linkRepo.type,
+                    book.linkRepo.url,
+                    fileName)
+
+            val id = loadedBook!!.book.id;
 
             setBookLastActionAndSyncStatus(loadedBook!!.book.id, BookAction.forNow(
                     BookAction.Type.INFO,
@@ -148,27 +153,48 @@ class DataRepository @Inject constructor(
             bookView: BookView,
             @Suppress("UNUSED_PARAMETER") format: BookFormat) {
 
-        val uploadedBook: VersionedRook
+        var uploadedBook: VersionedRook? = null
 
         val repo = getRepoInstance(repoEntity.id, repoEntity.type, repoEntity.url)
 
         val tmpFile = getTempBookFile()
+        val tmpFileEncrypted = getTempBookFile()
         try {
             /* Write to temporary file. */
             NotesOrgExporter(this).exportBook(bookView.book, tmpFile)
 
+            val (toStoreFile, toStoreFileName) =
+                    if (repo.isEncryptionEnabled) {
+                        val inFile: InputStream = BufferedInputStream(FileInputStream(tmpFile))
+                        val outFile: OutputStream = BufferedOutputStream(FileOutputStream(tmpFileEncrypted))
+
+                        try {
+                            MiscUtils.pgpEncrypt(inFile, outFile, fileName, repo.encryptionPassphrase)
+                        } finally {
+                            inFile.close()
+                            outFile.close()
+                        }
+
+                        Pair(tmpFileEncrypted, MiscUtils.ensureGpgExtensionFileName(fileName))
+                    } else {
+                        // remove possible .gpg extension left over from a previous encrypted sync
+                        // ?maybe move this logic to BookView.getFileName()
+                        Pair(tmpFile, MiscUtils.ensureNoGpgExtensionFileName(fileName))
+                    }
+
             /* Upload to repo. */
-            uploadedBook = repo.storeBook(tmpFile, fileName)
+            uploadedBook = repo.storeBook(toStoreFile, toStoreFileName)
 
         } finally {
             /* Delete temporary file. */
             tmpFile.delete()
+            tmpFileEncrypted.delete()
         }
 
-        updateBookLinkAndSync(bookView.book.id, uploadedBook)
-
-        updateBookIsModified(bookView.book.id, false)
-
+        if (uploadedBook != null) {
+            updateBookLinkAndSync(bookView.book.id, uploadedBook)
+            updateBookIsModified(bookView.book.id, false)
+        }
     }
 
     @Throws(IOException::class)
@@ -1550,22 +1576,48 @@ class DataRepository @Inject constructor(
 
     @Throws(IOException::class)
     fun loadBookFromRepo(repoId: Long, repoType: RepoType, repoUrl: String, fileName: String): BookView? {
-        val book: BookView?
+        var book: BookView? = null
 
         val repo = getRepoInstance(repoId, repoType, repoUrl)
 
         val tmpFile = getTempBookFile()
+        val tmpFileDecrypted = getTempBookFile()
         try {
             /* Download from repo. */
-            val vrook = repo.retrieveBook(fileName, tmpFile)
+            // ensure that we don't try to decrypt .org files or interpret .org.gpg as plaintext
+            // problem if both 'nb.org' and 'nb.org.gpg' exist. probably some other mechanism that
+            // runs at a higher level that here should be made aware and responsible of .pgp extensions
+            val toRecvFileName = if (repo.isEncryptionEnabled) {
+                MiscUtils.ensureGpgExtensionFileName(fileName)
+            } else {
+                MiscUtils.ensureNoGpgExtensionFileName(fileName)
+            }
+            val vrook = repo.retrieveBook(toRecvFileName, tmpFile)
 
-            val bookName = BookName.fromFileName(fileName)
+            val plaintextBookFile: File =
+                    if (repo.isEncryptionEnabled) {
+                        val inFile: InputStream = BufferedInputStream(FileInputStream(tmpFile))
+                        val outFile: OutputStream = BufferedOutputStream(FileOutputStream(tmpFileDecrypted))
+
+                        try {
+                            MiscUtils.pgpDecrypt(inFile, outFile, repo.encryptionPassphrase)
+                        } finally {
+                            inFile.close()
+                            outFile.close()
+                        }
+
+                        tmpFileDecrypted
+                    } else {
+                        tmpFile
+                    }
+
+            val bookName = BookName.fromFileName(toRecvFileName)
 
             /* Store from file to Shelf. */
-            book = loadBookFromFile(bookName.name, bookName.format, tmpFile, vrook)
-
+            book = loadBookFromFile(bookName.name, bookName.format, plaintextBookFile, vrook)
         } finally {
             tmpFile.delete()
+            tmpFileDecrypted.delete()
         }
 
         return book

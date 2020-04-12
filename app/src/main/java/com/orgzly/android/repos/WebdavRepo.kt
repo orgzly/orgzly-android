@@ -125,6 +125,14 @@ class WebdavRepo(
         return uri
     }
 
+    override fun isEncryptionEnabled(): Boolean {
+        return false
+    }
+
+    override fun getEncryptionPassphrase(): String? {
+        return null
+    }
+
     override fun getBooks(): MutableList<VersionedRook> {
         val url = uri.toUrl()
 

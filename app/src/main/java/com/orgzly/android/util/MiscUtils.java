@@ -1,3 +1,4 @@
+
 package com.orgzly.android.util;
 
 
@@ -7,9 +8,32 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.TextView;
 
+import org.bouncycastle.bcpg.ArmoredInputStream;
+import org.bouncycastle.bcpg.BCPGOutputStream;
+import org.bouncycastle.bcpg.SymmetricKeyAlgorithmTags;
+import org.bouncycastle.openpgp.PGPCompressedData;
+import org.bouncycastle.openpgp.PGPCompressedDataGenerator;
+import org.bouncycastle.openpgp.PGPDataValidationException;
+import org.bouncycastle.openpgp.PGPEncryptedDataGenerator;
+import org.bouncycastle.openpgp.PGPEncryptedDataList;
+import org.bouncycastle.openpgp.PGPException;
+import org.bouncycastle.openpgp.PGPLiteralData;
+import org.bouncycastle.openpgp.PGPLiteralDataGenerator;
+import org.bouncycastle.openpgp.PGPMarker;
+import org.bouncycastle.openpgp.PGPPBEEncryptedData;
+import org.bouncycastle.openpgp.PGPUtil;
+import org.bouncycastle.openpgp.bc.BcPGPObjectFactory;
+import org.bouncycastle.openpgp.operator.bc.BcPBEDataDecryptorFactory;
+import org.bouncycastle.openpgp.operator.bc.BcPBEKeyEncryptionMethodGenerator;
+import org.bouncycastle.openpgp.operator.bc.BcPGPDataEncryptorBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPGPDigestCalculatorProvider;
+import org.bouncycastle.util.io.Streams;
+
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,7 +46,10 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.security.MessageDigest;
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 
 public class MiscUtils {
@@ -183,6 +210,173 @@ public class MiscUtils {
         }
         in.close();
         out.close();
+    }
+
+    /**
+     * Encrypt data with AES-256 symmetric encryption and wrap it in a PGP packet.
+     *
+     * This code is based on the encryption code in OpenKeychain. It uses the bouncycastle cryptography provider
+     * as an extra library since some features were removed in recent Android APIs.
+     * See https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html for details
+     *
+     * @param src The input stream to be encrypted.
+     * @param dst The output stream to receive the PGP data
+     * @param originalFilename The filename to store as PGP metadata.
+     * @param passphrase The passphrase to derive the encryption key from.
+     * @throws IOException
+     * @throws PGPException
+     */
+    public static void pgpEncrypt(
+            InputStream src,
+            OutputStream dst,
+            String originalFilename,
+            String passphrase) throws IOException, PGPException {
+        int symmetricEncryptionAlgorithm = SymmetricKeyAlgorithmTags.AES_256;
+
+        // a PGP generator must be created and a passphrase to key generation method must be set
+        BcPGPDataEncryptorBuilder encryptorBuilder = new BcPGPDataEncryptorBuilder(symmetricEncryptionAlgorithm)
+                .setSecureRandom(new SecureRandom())
+                .setWithIntegrityPacket(true);
+        PGPEncryptedDataGenerator encGen =
+                new PGPEncryptedDataGenerator(encryptorBuilder);
+        BcPBEKeyEncryptionMethodGenerator symmetricEncryptionGenerator =
+                new BcPBEKeyEncryptionMethodGenerator(passphrase.toCharArray());
+        encGen.addMethod(symmetricEncryptionGenerator);
+
+        OutputStream encryptionOut = encGen.open(dst, new byte[1 << 16]);
+        // since books contain text, we also use compression
+        PGPCompressedDataGenerator compressedGen = new PGPCompressedDataGenerator(PGPCompressedDataGenerator.ZIP);
+        BCPGOutputStream bcpgOut = new BCPGOutputStream(compressedGen.open(encryptionOut));
+        PGPLiteralDataGenerator literalGen = new PGPLiteralDataGenerator();
+        char literalDataFormatTag = PGPLiteralData.BINARY;
+        OutputStream pOut = literalGen.open(bcpgOut, literalDataFormatTag,
+                        originalFilename, new Date(), new byte[1 << 16]);
+        Streams.pipeAll(src, pOut);
+
+        literalGen.close();
+        compressedGen.close();
+        encryptionOut.close();
+        // close to write PGP footer
+        //encGen.close();
+        dst.close();
+    }
+
+    /**
+     * Skip PGP marker packets while iterating PGP objects
+     */
+    public static Object nextObjectSkipMarker(BcPGPObjectFactory fact) throws IOException{
+        Object o = fact.nextObject();
+        while (o instanceof PGPMarker) {
+            o = fact.nextObject();
+        }
+        return o;
+    }
+
+    /**
+     * Decrypt a symmetrically encrypted PGP packet.
+     *
+     * This code is based on the encryption code in OpenKeychain. It uses the bouncycastle cryptography provider
+     * as an extra library since some features were removed in recent Android APIs.
+     * See https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html for details
+     *
+     * @param src The symetrycally encrypted PGP packet data.
+     * @param dst Output plaintext stream.
+     * @param passphrase The passphrase to derive the decryption key from.
+     * @throws IOException
+     * @throws PGPException
+     */
+    public static void pgpDecrypt(InputStream src, OutputStream dst, String passphrase) throws IOException, PGPException {
+        InputStream pgpIn = PGPUtil.getDecoderStream(src);
+
+        if (pgpIn instanceof ArmoredInputStream) {
+            throw new PGPException("ASCII Armored PGP data is not supported.");
+        }
+
+        BcPGPObjectFactory pgpF = new BcPGPObjectFactory(pgpIn);
+
+        Object obj = nextObjectSkipMarker(pgpF);
+        if (!(obj instanceof PGPEncryptedDataList)) {
+            throw new PGPException("Unencrypted PGP data is not supported.");
+        }
+        PGPEncryptedDataList enc = (PGPEncryptedDataList) obj;
+
+        // if there are more than one symmetric encrypted packet, get only the first
+        PGPPBEEncryptedData encryptedDataSymmetric = null;
+        Iterator<?> it = enc.getEncryptedDataObjects();
+        while (it.hasNext()) {
+            Object packetObj = it.next();
+            if (!(packetObj instanceof PGPPBEEncryptedData)) {
+                continue;
+            }
+            encryptedDataSymmetric = (PGPPBEEncryptedData) packetObj;
+            break;
+        }
+
+        if (encryptedDataSymmetric == null) {
+            throw new PGPException("Asymmetrically encrypted PGP data is not supported.");
+        }
+
+        // decrypt
+        InputStream cleartextStream;
+        BcPGPDigestCalculatorProvider digestCalcProvider = new BcPGPDigestCalculatorProvider();
+        BcPBEDataDecryptorFactory decryptorFactory = new BcPBEDataDecryptorFactory(passphrase.toCharArray(), digestCalcProvider);
+        try {
+            cleartextStream = encryptedDataSymmetric.getDataStream(decryptorFactory);
+        } catch (PGPDataValidationException ex) {
+            throw new PGPException("Failed to decrypt data. Wrong password?");
+        }
+
+        BcPGPObjectFactory plainFact = new BcPGPObjectFactory(cleartextStream);
+        Object dataChunk = nextObjectSkipMarker(plainFact);
+
+        // if we're trying to read a file generated by someone other than us
+        // the data might not be compressed, so we check the return type from
+        // the factory and behave accordingly.
+        if (dataChunk instanceof PGPCompressedData) {
+            PGPCompressedData compressedData = (PGPCompressedData) dataChunk;
+            plainFact = new BcPGPObjectFactory(compressedData.getDataStream());
+            dataChunk = nextObjectSkipMarker(plainFact);
+        }
+
+        if (!(dataChunk instanceof PGPLiteralData)) {
+            throw new UnsupportedOperationException("Encountered an error reading input data!");
+        }
+        PGPLiteralData literalData = (PGPLiteralData) dataChunk;
+        InputStream dataIn = literalData.getInputStream();
+
+        // write out
+        Streams.pipeAll(dataIn, dst);
+
+        // require integrity check (must be done after piping out the data)
+        if (!encryptedDataSymmetric.isIntegrityProtected()) {
+            throw new PGPException("Missing the Modification Detection Code (MDC) packet!");
+        }
+        if (!encryptedDataSymmetric.verify()) {
+            throw new PGPException("Integrity check error!");
+        }
+    }
+
+    /**
+     * Add a .gpg file extension to a file name if not already present.
+     */
+    public static String ensureGpgExtensionFileName(String fileName) {
+        if ((fileName.length() > 4)
+                && fileName.substring(fileName.length() - 4).equals(".gpg")) {
+            return fileName;
+        } else {
+            return "$fileName.gpg";
+        }
+    }
+
+    /**
+     * Remove a .gpg file extension from a file name if present.
+     */
+    public static String ensureNoGpgExtensionFileName(String fileName) {
+        if ((fileName.length() > 4) && fileName.substring(fileName.length() - 4).equals(".gpg")) {
+            return fileName.substring(0, fileName.length() - 4);
+        } else {
+            return fileName;
+        }
     }
 
     /**

@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class BookName {
     private static final String TAG = BookName.class.getName();
 
-    private static final Pattern PATTERN = Pattern.compile("(.*)\\.(org)(\\.txt)?$");
+    private static final Pattern PATTERN = Pattern.compile("(.*)\\.(org)(\\.txt)?(\\.gpg)?$");
     private static final Pattern SKIP_PATTERN = Pattern.compile("^\\.#.*");
 
     private final String mFileName;

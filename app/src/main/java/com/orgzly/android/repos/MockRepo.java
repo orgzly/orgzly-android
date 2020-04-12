@@ -45,6 +45,12 @@ public class MockRepo implements SyncRepo {
     }
 
     @Override
+    public boolean isEncryptionEnabled() { return false; }
+
+    @Override
+    public String getEncryptionPassphrase() { return null; }
+
+    @Override
     public List<VersionedRook> getBooks() throws IOException {
         SystemClock.sleep(SLEEP_FOR_GET_BOOKS);
         return databaseRepo.getBooks();

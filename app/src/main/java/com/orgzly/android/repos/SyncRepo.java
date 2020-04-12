@@ -28,6 +28,16 @@ public interface SyncRepo {
     List<VersionedRook> getBooks() throws IOException;
 
     /**
+     * Whether this repo shall be treated as containing encrypted files.
+     */
+    boolean isEncryptionEnabled();
+
+    /**
+     * The PGP passphrase to use for cryptography operations on files in this repo.
+     */
+    String getEncryptionPassphrase();
+
+    /**
      * Download the latest available revision of the book and store its content to {@code File}.
      */
     VersionedRook retrieveBook(String fileName, File destination) throws IOException;

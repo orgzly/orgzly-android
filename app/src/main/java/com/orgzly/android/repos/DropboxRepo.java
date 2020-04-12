@@ -14,10 +14,14 @@ public class DropboxRepo implements SyncRepo {
     public static final String SCHEME = "dropbox";
 
     private final Uri repoUri;
+    private final boolean encryptionEnabled;
+    private final String encryptionPassphrase;
     private final DropboxClient client;
 
     public DropboxRepo(RepoWithProps repoWithProps, Context context) {
         this.repoUri = Uri.parse(repoWithProps.getRepo().getUrl());
+        this.encryptionEnabled = repoWithProps.getProps().containsKey("pgpPassphrase");
+        this.encryptionPassphrase = repoWithProps.getProps().get("pgpPassphrase");
         this.client = new DropboxClient(context, repoWithProps.getRepo().getId());
     }
 
@@ -39,6 +43,16 @@ public class DropboxRepo implements SyncRepo {
     @Override
     public List<VersionedRook> getBooks() throws IOException {
         return client.getBooks(repoUri);
+    }
+
+    @Override
+    public boolean isEncryptionEnabled() {
+        return this.encryptionEnabled;
+    }
+
+    @Override
+    public String getEncryptionPassphrase() {
+        return this.encryptionPassphrase;
     }
 
     @Override

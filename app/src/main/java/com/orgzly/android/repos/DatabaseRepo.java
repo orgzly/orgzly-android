@@ -42,6 +42,12 @@ public class DatabaseRepo implements SyncRepo {
     }
 
     @Override
+    public boolean isEncryptionEnabled() { return false; }
+
+    @Override
+    public String getEncryptionPassphrase() { return null; }
+
+    @Override
     public List<VersionedRook> getBooks() {
         return dbRepo.getBooks(repoId, repoUri);
     }
