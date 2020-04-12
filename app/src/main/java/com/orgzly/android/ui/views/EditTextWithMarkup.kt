@@ -22,47 +22,94 @@ class EditTextWithMarkup : AppCompatEditText {
         addTextChangedListener(textWatcher)
     }
 
-    private val textWatcher: TextWatcher = object: TextWatcher {
-        private var nextCheckboxPosition = -1
-        private var nextCheckboxIndent: String = ""
+    data class ListItem(val pattern: Pattern, val bullet: String)
 
+    data class CurrentListItem(
+            val listItem: ListItem,
+            var currLineStart: Int,
+            var nextItemStart: Int,
+            var indent: String,
+            var content: String)
+
+    private val textWatcher: TextWatcher = object: TextWatcher {
+
+        // TODO: Remove space at the end of bullet
+        private val listItemTypes = arrayOf(
+                ListItem(Pattern.compile("^(\\s*)-\\s+\\[[ X]](.*)"), "- [ ] "),
+                ListItem(Pattern.compile("^(\\s*)-(.*)"), "- ")
+        )
+
+        private var currentListItem : CurrentListItem? = null
+
+        /*
+         * count: 0
+         * after: 1
+         *               start
+         *   0   1   2     3
+         * +---+---+---+
+         * | - |   | ~ |
+         * +---+---+---+
+         *       s
+         */
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, s, "Start", start, "Count", count, "After", after)
+            if (BuildConfig.LOG_DEBUG)
+                LogUtils.d(TAG, "s", s, "start", start, "count", count, "after", after)
 
             if (s.length == start || s[start] == '\n') { // End of string or line
-                var startOfLine = s.lastIndexOf("\n", start - 1)
-                if (startOfLine < 0) {
-                    startOfLine = 0
-                } else {
-                    startOfLine++
+
+                val currLineStart = s.lastIndexOf("\n", start - 1).let { prevNewLine ->
+                    if (prevNewLine < 0) {
+                        0
+                    } else {
+                        prevNewLine + 1
+                    }
                 }
 
-                val line = s.substring(startOfLine, start)
+                val line = s.substring(currLineStart, start)
 
-                val p = Pattern.compile("^(\\s*)-\\s+\\[[ X]]")
-                val m = p.matcher(line)
-                if (m.find()) {
-                    nextCheckboxPosition = start + 1
-                    nextCheckboxIndent = m.group(1)!!
+                currentListItem = searchForListItem(line, currLineStart, start + 1)
+            }
+        }
+
+        private fun searchForListItem(line: String, currLineStart: Int, nextItemStart: Int): CurrentListItem? {
+            listItemTypes.forEach { listItemType ->
+                listItemType.pattern.matcher(line).let { m ->
+                    if (m.find()) {
+                        return CurrentListItem(
+                                listItemType,
+                                currLineStart,
+                                nextItemStart,
+                                m.group(1)!!,
+                                m.group(2)!!)
+                    }
                 }
             }
+
+            return null
         }
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, s, "Start", start, "Before", before, "Count", count)
 
-            if (nextCheckboxPosition != -1 && before == 0 && count == 1 && start < s.length && s[start] == '\n') {
-                // All set
-            } else {
-                nextCheckboxPosition = -1
+            currentListItem?.let {
+                if (before == 0 && count == 1 && start < s.length && s[start] == '\n') {
+                    // New line
+                } else {
+                    currentListItem = null
+                }
             }
         }
 
         override fun afterTextChanged(s: Editable) {
-            if (nextCheckboxPosition != -1) {
-                s.replace(nextCheckboxPosition, nextCheckboxPosition, "$nextCheckboxIndent- [ ] ")
-                nextCheckboxPosition = -1
-                nextCheckboxIndent = ""
+            currentListItem?.let {
+                // Remove bullet if content is empty
+                // if (it.content.matches(Regex("\\s*"))) {
+                    // s.replace(it.currLineStart, it.nextItemStart, "")
+                // } else {
+                    s.replace(it.nextItemStart, it.nextItemStart, "${it.indent}${it.listItem.bullet}")
+                // }
+
+                currentListItem = null
             }
         }
     }
