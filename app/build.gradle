@@ -196,7 +196,7 @@ def orgJavaLocation() {
         logger.info("app: Using org-java from ${gradle.ext.orgJavaDir}")
         return project(':org-java')
     } else {
-        logger.info("app: Using com.orgzly:org-java:$org_java_version from Maven repository")
-        return "com.orgzly:org-java:$org_java_version"
+        logger.info("app: Using com.orgzly:org-java:$versions.org_java from Maven repository")
+        return "com.orgzly:org-java:$versions.org_java"
     }
 }

@@ -13,7 +13,7 @@ import org.junit.Ignore
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
-@Ignore("Test suite")
+@Ignore("Used only in case tests can't be started from Android Studio")
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
         ActionModeTest::class,
@@ -74,5 +74,6 @@ import org.junit.runners.Suite
         OrgFormatterMiscTest::class,
         OrgFormatterSpeedTest::class,
         OrgFormatterStyleTextTest::class,
-        UriUtilsTest::class)
+        UriUtilsTest::class
+)
 class AllTestSuite
