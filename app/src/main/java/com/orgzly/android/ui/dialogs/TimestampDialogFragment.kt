@@ -257,6 +257,8 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
 
             binding.endTimePickerButton.text = userTimeFormatter.formatEndTime(dateTime)
             binding.endTimeUsedCheckbox.isChecked = dateTime.isEndTimeUsed
+            // Disable if there is no start time
+            binding.endTimePickerLabel.isEnabled = dateTime.isTimeUsed
             binding.endTimePickerButton.isEnabled = dateTime.isTimeUsed
             binding.endTimeUsedCheckbox.isEnabled = dateTime.isTimeUsed
 
