@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/saved_searches_help"
+        android:icon="?attr/ic_help_outline_24dp"
+        app:showAsAction="always"
+        android:title="@string/help" />
+
+    <item
         android:id="@+id/saved_searches_import"
         app:showAsAction="never"
         android:title="@string/import_"/>
@@ -11,5 +17,6 @@
         android:id="@+id/saved_searches_export"
         app:showAsAction="never"
         android:title="@string/export"/>
+
 
 </menu>

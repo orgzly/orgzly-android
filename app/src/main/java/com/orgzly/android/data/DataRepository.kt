@@ -1822,7 +1822,7 @@ class DataRepository @Inject constructor(
             }
 
             // Open book
-            // FIXME: Run with delay to be executed after the observer for unfoldForNote
+            // FIXME: Runs with delay to be executed after the observer for unfoldForNote
             App.EXECUTORS.mainThread().execute {
                 Handler().postDelayed({
                     val intent = Intent(AppIntent.ACTION_OPEN_BOOK)

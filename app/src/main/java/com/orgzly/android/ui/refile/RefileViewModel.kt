@@ -8,6 +8,7 @@ import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.*
+import com.orgzly.android.usecase.BookScrollToNote
 import com.orgzly.android.usecase.NoteRefile
 import com.orgzly.android.usecase.UseCaseResult
 import com.orgzly.android.usecase.UseCaseRunner
@@ -206,6 +207,12 @@ class RefileViewModel(
         }
 
         open(item)
+    }
+
+    fun goTo(noteId: Long) {
+        App.EXECUTORS.diskIO().execute {
+            UseCaseRunner.run(BookScrollToNote(noteId))
+        }
     }
 
     companion object {

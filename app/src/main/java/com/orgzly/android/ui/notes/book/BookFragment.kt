@@ -439,7 +439,6 @@ class BookFragment :
 
     private fun spotlightScrolledToView(position: Int) {
         layoutManager.findViewByPosition(position)?.let {
-            // highlightScrolledToIndent(it)
             highlightScrolledToView(it)
         }
     }

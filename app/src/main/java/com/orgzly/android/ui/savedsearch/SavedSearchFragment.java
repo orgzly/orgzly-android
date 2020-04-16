@@ -179,7 +179,7 @@ public class SavedSearchFragment extends Fragment implements DrawerItem {
 
         inflater.inflate(R.menu.close_done, menu);
 
-        /* Remove search item. */
+        // Remove search item.
         menu.removeItem(R.id.activity_action_search);
     }
 

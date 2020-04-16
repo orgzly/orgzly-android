@@ -823,7 +823,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         inflater.inflate(R.menu.note_actions, menu)
 
-        /* Remove search item. */
+        // Remove search item
         menu.removeItem(R.id.activity_action_search)
 
         if (viewModel.notePayload == null) { // Displaying non-existent note.

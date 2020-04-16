@@ -123,6 +123,7 @@
         <item name="ic_done_24dp">@drawable/ic_done_black_24dp</item>
         <item name="ic_edit_24dp">@drawable/ic_edit_black_24dp</item>
         <item name="ic_event_24dp">@drawable/ic_event_black_24dp</item>
+        <item name="ic_help_outline_24dp">@drawable/ic_help_outline_black_24dp</item>
         <item name="ic_history_24dp">@drawable/ic_history_black_24dp</item>
         <item name="ic_file_download_24dp">@drawable/ic_file_download_black_24dp</item>
         <item name="ic_file_upload_24dp">@drawable/ic_file_upload_black_24dp</item>
@@ -288,6 +289,7 @@
         <item name="ic_done_24dp">@drawable/ic_done_white_24dp</item>
         <item name="ic_edit_24dp">@drawable/ic_edit_white_24dp</item>
         <item name="ic_event_24dp">@drawable/ic_event_white_24dp</item>
+        <item name="ic_help_outline_24dp">@drawable/ic_help_outline_white_24dp</item>
         <item name="ic_history_24dp">@drawable/ic_history_white_24dp</item>
         <item name="ic_file_download_24dp">@drawable/ic_file_download_white_24dp</item>
         <item name="ic_file_upload_24dp">@drawable/ic_file_upload_white_24dp</item>

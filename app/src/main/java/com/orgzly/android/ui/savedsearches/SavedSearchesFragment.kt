@@ -2,6 +2,8 @@ package com.orgzly.android.ui.savedsearches
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -129,6 +131,13 @@ class SavedSearchesFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickList
                 listener?.let {
                     importExport(R.string.export_to, it::onSavedSearchesExportRequest)
                 }
+                true
+            }
+
+            R.id.saved_searches_help -> {
+                val uri = Uri.parse("http://www.orgzly.com/help#search")
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
                 true
             }
 
