@@ -18,6 +18,7 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.notifications.Notifications
 import com.orgzly.android.ui.util.ActivityUtils.mainActivityPendingIntent
 import com.orgzly.android.util.OrgFormatter
+import com.orgzly.android.util.UserTimeFormatter
 
 object ReminderNotifications {
     val VIBRATION_PATTERN = longArrayOf(500, 50, 50, 300)
@@ -138,8 +139,10 @@ object ReminderNotifications {
                 R.string.reminder_for_event
         }
 
-        return context.getString(
-                resId, noteReminder.payload.orgDateTime.toStringWithoutBrackets())
+
+        val timeStr = UserTimeFormatter(context).formatAll(noteReminder.payload.orgDateTime)
+
+        return context.getString(resId, timeStr)
     }
 
     // Create a group summary notification, but only if notifications be grouped and expanded

@@ -248,7 +248,7 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
 
             val orgDateTime = viewModel.getOrgDateTime(dateTime)
 
-            titleBinding.timestamp.text = orgDateTime.toStringWithoutBrackets()
+            titleBinding.timestamp.text = userTimeFormatter.formatAll(orgDateTime)
 
             binding.datePickerButton.text = userTimeFormatter.formatDate(dateTime)
 
