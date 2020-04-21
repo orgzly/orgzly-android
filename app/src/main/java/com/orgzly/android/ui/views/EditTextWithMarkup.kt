@@ -36,7 +36,9 @@ class EditTextWithMarkup : AppCompatEditText {
         // TODO: Remove space at the end of bullet
         private val listItemTypes = arrayOf(
                 ListItem(Pattern.compile("^(\\s*)-\\s+\\[[ X]](.*)"), "- [ ] "),
-                ListItem(Pattern.compile("^(\\s*)-(.*)"), "- ")
+                ListItem(Pattern.compile("^(\\s*)-(.*)"), "- "),
+                ListItem(Pattern.compile("^(\\s*)\\+\\s+\\[[ X]](.*)"), "+ [ ] "),
+                ListItem(Pattern.compile("^(\\s*)\\+(.*)"), "+ ")
         )
 
         private var currentListItem : CurrentListItem? = null
