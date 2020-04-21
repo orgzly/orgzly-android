@@ -55,7 +55,7 @@ object OrgFormatter {
     private const val PLAIN_LIST_CHARS = "-\\+"
     private val CHECKBOXES_PATTERN = Pattern.compile("""^\s*[$PLAIN_LIST_CHARS]\s+(\[[ X]])""", Pattern.MULTILINE)
 
-    private val FULL_TIMESTAMP ="([\\[<][0-9]{4,}-[0-9]{2}-[0-9]{2} +[A-Za-z\\.]* +[0-9]{1,2}:[0-9]{2}[\\]>])"
+    private val INACTIVE_DATETIME ="(\\[[0-9]{4,}-[0-9]{2}-[0-9]{2} +[A-Za-z\\.]* +[0-9]{1,2}:[0-9]{2}\\])"
 
     private const val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 
@@ -396,7 +396,7 @@ object OrgFormatter {
             val start = m.start(2) // Content start
             val end = m.end()
 
-            val CLOCKED_TIMES_P = Pattern.compile("(CLOCK: *" + FULL_TIMESTAMP + ") *(-- *" + FULL_TIMESTAMP + ")?( *=> *[0-9]{1,4}:[0-9]{2})?[\\r\\n]*")
+            val CLOCKED_TIMES_P = Pattern.compile("(CLOCK: *$INACTIVE_DATETIME) *(-- *$INACTIVE_DATETIME)?( *=> *[0-9]{1,4}:[0-9]{2})?[\\r\\n]*")
 
             val m2 = CLOCKED_TIMES_P.matcher(content?.subSequence(start, end))
             while (m2.find()) {
@@ -457,7 +457,7 @@ object OrgFormatter {
                 // If we find an already clocked entry, we clock-out
                 if(pos.isNotEmpty()) {
                     // Find the timestamp to compute the difference
-                    val m2 = Pattern.compile(FULL_TIMESTAMP).matcher(content)
+                    val m2 = Pattern.compile(INACTIVE_DATETIME).matcher(content)
 
                     if (m2.find()) {
                         val clock_in = OrgDateTime.parseOrNull(m2.group(1))
