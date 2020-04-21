@@ -9,6 +9,7 @@ import android.text.style.*
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.views.TextViewWithMarkup
 import com.orgzly.android.ui.views.style.*
+import com.orgzly.org.datetime.OrgDateTime
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -53,6 +54,8 @@ object OrgFormatter {
 
     private const val PLAIN_LIST_CHARS = "-\\+"
     private val CHECKBOXES_PATTERN = Pattern.compile("""^\s*[$PLAIN_LIST_CHARS]\s+(\[[ X]])""", Pattern.MULTILINE)
+
+    private val FULL_TIMESTAMP ="([\\[<][0-9]{4,}-[0-9]{2}-[0-9]{2} +[A-Za-z\\.]* +[0-9]{1,2}:[0-9]{2}[\\]>])"
 
     private const val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 
@@ -381,6 +384,143 @@ object OrgFormatter {
     private fun insertLogbookEntryLineWithoutDrawer(content: String?, entry: String): String {
         val prefixedContent = if (content.isNullOrEmpty()) "" else "\n\n$content"
         return ":$LOGBOOK_DRAWER_NAME:\n$entry\n:END:$prefixedContent"
+    }
+
+    @JvmStatic
+    fun getLastClockInPosition(content: String?): ArrayList<Int> {
+        val m = LOGBOOK_DRAWER_PATTERN.matcher(content)
+
+        val pos = ArrayList<Int>()
+
+        if (m.find()) {
+            val start = m.start(2) // Content start
+            val end = m.end()
+
+            val CLOCKED_TIMES_P = Pattern.compile("(CLOCK: *" + FULL_TIMESTAMP + ") *(-- *" + FULL_TIMESTAMP + ")?( *=> *[0-9]{1,4}:[0-9]{2})?[\\r\\n]*")
+
+            val m2 = CLOCKED_TIMES_P.matcher(content?.subSequence(start, end))
+            while (m2.find()) {
+
+                // Check if we have one entry without clock-out
+                if (m2.group(3).isNullOrEmpty()) {
+                    pos.add(m2.start(1))
+                    pos.add(m2.end(1))
+                    break
+                }
+            }
+
+        }
+
+        return pos
+    }
+
+    @JvmStatic
+    fun clockIn(content: String?): String {
+        val currentTime = OrgDateTime(false).toString()
+        val clockStr = "CLOCK: $currentTime"
+
+        return if (content.isNullOrEmpty()) {
+            insertLogbookEntryLineWithoutDrawer(content, clockStr)
+        } else {
+            val m = LOGBOOK_DRAWER_PATTERN.matcher(content)
+
+            if (m.find()) {
+                val pos = getLastClockInPosition(content)
+
+                // If we cannot find an already clocked entry, we add one
+                if(pos.isEmpty()) {
+                    StringBuilder(content).insert(m.start(2), clockStr + "\n").toString()
+                }
+                // Otherwise, we just return the original content
+                else {
+                    content
+                }
+            } else {
+                insertLogbookEntryLineWithoutDrawer(content, clockStr)
+            }
+        }
+    }
+
+    @JvmStatic
+    fun clockOut(content: String?): String {
+        val clock_out = OrgDateTime(false)
+        val currentTime = clock_out.toString()
+
+        return if (content.isNullOrEmpty()) {
+            ""
+        } else {
+            val m = LOGBOOK_DRAWER_PATTERN.matcher(content)
+
+            if (m.find()) {
+                val pos = getLastClockInPosition(content)
+
+                // If we find an already clocked entry, we clock-out
+                if(pos.isNotEmpty()) {
+                    // Find the timestamp to compute the difference
+                    val m2 = Pattern.compile(FULL_TIMESTAMP).matcher(content)
+
+                    if (m2.find()) {
+                        val clock_in = OrgDateTime.parseOrNull(m2.group(1))
+
+                        val time_in = clock_in.getCalendar()
+                        val time_out = clock_out.getCalendar()
+
+                        // Reported times are in milliseconds
+                        val diff = time_out.time.time - time_in.time.time
+
+                        val minute = 1000 * 60
+                        val hour = minute * 60
+
+                        val elapsedHours: Long = diff / hour
+                        val diff2 = diff % hour
+                        val elapsedMinutes: Long = diff2 / minute
+
+                        StringBuilder(content).insert(m.start(2) + pos[1], "--" + currentTime + " => " + elapsedHours + ":" + String.format("%02d", elapsedMinutes)).toString()
+                    }
+                    // This should never happen, but put as a precaution<
+                    else
+                    {
+                        StringBuilder(content).insert(m.start(2) + pos[1], "--" + currentTime).toString()
+                    }
+
+                }
+                // Otherwise, we just return the original content
+                else {
+                    content
+                }
+            }
+            // Otherwise, we just return the original content
+            else {
+                content
+            }
+        }
+    }
+
+    @JvmStatic
+    fun clockCancel(content: String?): String {
+        return if (content.isNullOrEmpty()) {
+            ""
+        } else {
+
+            val m = LOGBOOK_DRAWER_PATTERN.matcher(content)
+
+            if (m.find()) {
+                val pos = getLastClockInPosition(content)
+
+                // If we find an already clocked entry, we cancel it
+                if(pos.isNotEmpty()) {
+                    StringBuilder(content).delete(m.start(2) + pos[0], m.start(2) + pos[1] + 1).toString()
+                }
+                // Otherwise, we just return the original content
+                else {
+                    content
+                }
+            }
+            // Otherwise, we just return the original content
+            else {
+                content
+            }
+        }
     }
 
     @JvmStatic

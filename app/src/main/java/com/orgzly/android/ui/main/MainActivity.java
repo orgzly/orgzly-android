@@ -89,6 +89,7 @@ import com.orgzly.android.usecase.NoteUpdateDeadlineTime;
 import com.orgzly.android.usecase.NoteUpdateScheduledTime;
 import com.orgzly.android.usecase.NoteUpdateState;
 import com.orgzly.android.usecase.NoteUpdateStateToggle;
+import com.orgzly.android.usecase.NoteUpdateClockingState;
 import com.orgzly.android.usecase.SavedSearchCreate;
 import com.orgzly.android.usecase.SavedSearchDelete;
 import com.orgzly.android.usecase.SavedSearchExport;
@@ -828,6 +829,11 @@ public class MainActivity extends CommonActivity
     @Override
     public void onDeadlineTimeUpdateRequest(Set<Long> noteIds, OrgDateTime time) {
         mSyncFragment.run(new NoteUpdateDeadlineTime(noteIds, time));
+    }
+
+    @Override
+    public void onClockingUpdateRequest(Set<Long> noteIds, Integer type) {
+        mSyncFragment.run(new NoteUpdateClockingState(noteIds, type));
     }
 
     @Override /* BookFragment */

@@ -976,6 +976,31 @@ class DataRepository @Inject constructor(
         }
     }
 
+    fun setNotesClockingState(noteIds: Set<Long>, type: Int) {
+
+        noteIds.forEach() { noteId ->
+            val content = db.note().get(noteId)?.content
+
+            if(type == 0) {
+                val newContent = OrgFormatter.clockIn(content)
+                db.note().updateContent(noteId, newContent)
+            }
+            else if(type == 1) {
+                val newContent = OrgFormatter.clockOut(content)
+                db.note().updateContent(noteId, newContent)
+            }
+            else if(type == 2)
+            {
+                val newContent = OrgFormatter.clockCancel(content)
+                db.note().updateContent(noteId, newContent)
+            }
+        }
+
+        db.note().get(noteIds).mapTo(hashSetOf()) { it.position.bookId }.let {
+            updateBookIsModified(it, true)
+        }
+    }
+
     fun toggleNoteFoldedState(noteId: Long): Int {
         return db.runInTransaction(Callable {
             val note = db.note().get(noteId) ?: return@Callable 0

@@ -122,6 +122,13 @@ abstract class QueryFragment :
             R.id.bottom_action_bar_deadline ->
                 displayTimestampDialog(R.id.bottom_action_bar_deadline, ids)
 
+            R.id.quick_bar_clock_in ->
+                listener?.onClockingUpdateRequest(ids, 0)
+            R.id.quick_bar_clock_out ->
+                listener?.onClockingUpdateRequest(ids, 1)
+            R.id.quick_bar_clock_cancel ->
+                listener?.onClockingUpdateRequest(ids, 2)
+
             R.id.quick_bar_state,
             R.id.bottom_action_bar_state ->
                 listener?.let {

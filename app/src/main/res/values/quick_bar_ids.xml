@@ -12,4 +12,7 @@
     <item type="id" name="quick_bar_refile" />
     <item type="id" name="quick_bar_open" />
     <item type="id" name="quick_bar_focus" />
+    <item type="id" name="quick_bar_clock_in" />
+    <item type="id" name="quick_bar_clock_out" />
+    <item type="id" name="quick_bar_clock_cancel" />
 </resources>
