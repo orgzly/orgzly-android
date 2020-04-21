@@ -1218,6 +1218,10 @@ class DataRepository @Inject constructor(
         return db.note().get(noteId)
     }
 
+    fun getNotesByTitle(title: String): List<Note> {
+        return db.note().getByTitle(title)
+    }
+
     fun getFirstNote(noteIds: Set<Long>): Note? {
         return db.note().getFirst(noteIds)
     }

@@ -24,6 +24,9 @@ abstract class NoteDao : BaseDao<Note> {
     @Query("SELECT * FROM notes WHERE title = :title ORDER BY lft DESC LIMIT 1")
     abstract fun getLast(title: String): Note?
 
+    @Query("SELECT * FROM notes WHERE title = :title ORDER BY lft")
+    abstract fun getByTitle(title: String): List<Note>
+
     @Query("SELECT * FROM notes WHERE id IN (:ids)")
     abstract fun get(ids: Set<Long>): List<Note>
 

@@ -10,6 +10,7 @@ import com.orgzly.org.OrgStatesWorkflow;
 
 import org.eclipse.jgit.transport.URIish;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -931,6 +932,7 @@ public class AppPreferences {
      * Refile history
      */
 
+    @Nullable
     public static String refileLastLocation(Context context) {
         String key = context.getResources().getString(R.string.pref_key_refile_last_location);
         return getStateSharedPreferences(context).getString(key, null);

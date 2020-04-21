@@ -58,26 +58,16 @@ class RefileFragment : DialogFragment() {
 
         val dialog = object: Dialog(context!!, theme) {
             override fun onBackPressed() {
-                if (viewModel.location.value?.breadcrumbs?.size ?: 0 > 1) {
-                    viewModel.goUp()
+                if (viewModel.locationHasParent()) {
+                    viewModel.openParent()
                 } else {
                     super.onBackPressed()
                 }
             }
         }
 
-//        val dialog = object: Dialog(context!!, theme) {
-//            override fun onBackPressed() {
-//                backPressed()
-//            }
-//        }
-
         return dialog
     }
-
-//    private fun backPressed() {
-//        viewModel.goUp()
-//    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
@@ -122,20 +112,21 @@ class RefileFragment : DialogFragment() {
 
         binding.dialogRefileBreadcrumbs.movementMethod = LinkMovementMethod.getInstance()
 
-        viewModel.location.observe(viewLifecycleOwner, Observer { location ->
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed location: $location")
+        viewModel.data.observe(viewLifecycleOwner, Observer { data ->
+            val breadcrumbs = data.first
+            val list = data.second
 
-            adapter.submitList(location.list)
+            adapter.submitList(list)
 
             // Hide refile-here button in notebook list
-            if (location.breadcrumbs.size == 1) {
+            if (breadcrumbs.size == 1) {
                 refileHereButton.visibility = View.INVISIBLE
             } else {
                 refileHereButton.visibility = View.VISIBLE
             }
 
             // Update and scroll breadcrumbs to the end
-            binding.dialogRefileBreadcrumbs.text = generateBreadcrumbs(location.breadcrumbs)
+            binding.dialogRefileBreadcrumbs.text = generateBreadcrumbs(breadcrumbs)
             binding.dialogRefileBreadcrumbsScrollView.apply {
                 post {
                     fullScroll(View.FOCUS_RIGHT)
@@ -169,7 +160,7 @@ class RefileFragment : DialogFragment() {
                     }
         })
 
-        viewModel.open(RefileViewModel.HOME)
+        viewModel.openForTheFirstTime()
     }
 
     private fun generateBreadcrumbs(path: List<RefileViewModel.Item>): CharSequence {
