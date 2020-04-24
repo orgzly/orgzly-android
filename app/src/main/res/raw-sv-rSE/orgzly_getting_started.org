@@ -1,0 +1,92 @@
+Välkommen till Orgzly!
+
+* Anteckningar
+** Tryck på en anteckning för att öppna den
+** Tryck och håll på en anteckning för att markera den
+
+Du kan markera flera anteckningar.
+
+** Skjut en anteckning till höger för att öppna snabbmenyn
+
+Skjut den till vänster för att öppna en annan meny.
+
+** Fold a note which contains sub-notes by clicking the icon next to it
+
+Long-click the icon to unfold entire subtree.
+
+*** There is no limit in number of levels you can have
+**** Use this to better organize your notes
+
+** Note can have tags :tag1:tag2:
+*** Sub-note inherits the tags :tag3:
+
+If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
+
+** TODO Anteckningar kan ha en status
+
+Du kan sätta upp olika status att jobba med: TODO, NEXT, DONE, osv.
+
+*** There are two /types/ of states: to-do and done
+
+*** DONE This is a note with /done/ type of state
+CLOSED: [2018-01-24 Wed 17:00]
+
+** Note can have a scheduled time
+SCHEDULED: <2015-02-20 Fri 15:15>
+
+*** Times can have a repeater
+SCHEDULED: <2015-02-16 Mon .+2d>
+
+** You can also set a deadline time
+DEADLINE: <2015-02-20 Fri>
+
+** Reminders for scheduled and deadline times are supported
+
+They are disabled by default and need to be enabled in Settings.
+
+** [#A] Note can have a priority
+
+You can change the number of priorities in Settings. You can also change default priority - assumed priority for notes without one set.
+
+** Note can include links
+
+Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[http://www.orgzly.com][Orgzly.com]]).
+
+You can also link to another note or notebook within the app.
+
+See http://www.orgzly.com/help#links for more information.
+
+** Basic typographical emphasis is supported
+
+You can make words *bold*, /italic/, _underlined_, =verbatim=, ~code~ and +strike-through+.
+
+** Checkbox list is available
+
+- [X] Task 1
+- [ ] Task 2
+- [ ] Task 3
+
+Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
+
+* Search
+** There are many search operators supported
+
+You can search notes by state, tag, scheduled or deadline time etc.
+
+See http://www.orgzly.com/help#search to learn more.
+
+** Search queries can be saved for quick access
+
+Try sample searches from navigation drawer and note the queries they use.
+
+You can create your own saved searches by clicking on “Searches” in the navigation drawer.
+
+* Syncing
+
+** Notebooks can be saved as plain-text files
+
+Files are in the format used by “Org mode”.
+
+** Location (repository) type
+
+You can keep notebooks synced with a directory on your mobile device, SD card or Dropbox.

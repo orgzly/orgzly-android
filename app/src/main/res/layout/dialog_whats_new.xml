@@ -24,6 +24,56 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.8.3"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Overdue section in agenda" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="UI for end-time and delay/warning period" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Paste button in notebook for when it's empty" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Start new plain list item on enter press while editing content" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix issue of hidden notes when &lt;tt&gt;o.e&lt;/tt&gt; is used" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix issue when pasting a large number of notes" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix subtree unfolding (long-click)" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Do not cancel sync on pull-to-sync" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Add labels and make buttons obvious in timestamp dialog" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Underline breadcrumb links" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Do not fold other notes on refile's go-to action" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.8.2"
             tools:ignore="HardcodedText" />
 
