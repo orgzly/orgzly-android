@@ -334,12 +334,12 @@
     <!-- ++ -->
     <string name="repeater_description_restart">Add period to current time</string>
     <!-- .+ -->
-    <string name="delay_dialog_title">Delay</string>
-    <string name="delay_description">Delay the display of the task in the agenda</string>
-    <string name="delay_description_affects_all">Affects all occurrences</string>
-    <string name="delay_description_affects_first">Affects only the first scheduled occurrence</string>
-    <string name="warning_period_dialog_title">Warning period</string>
-    <string name="warning_period_description">Warn about the approaching or missed deadline</string>
+    <string name="delay_dialog_title">Opóźnienie</string>
+    <string name="delay_description">Opóźnij wyświetlenie zadania w agendzie</string>
+    <string name="delay_description_affects_all">Wpływa na wszystkie wystąpienia</string>
+    <string name="delay_description_affects_first">Wpływa tylko na pierwsze zaplanowane wystąpienie</string>
+    <string name="warning_period_dialog_title">Okres ostrzeżenia</string>
+    <string name="warning_period_description">Ostrzegaj o zbliżającym się lub pominiętym terminie</string>
     <string name="displayed_book_details_local_mtime">Czas modyfikacji</string>
     <string name="displayed_book_details_link_url">Link URL</string>
     <string name="displayed_book_details_sync_url">URL synchronizacji</string>
@@ -563,16 +563,16 @@
     <string name="edit_trusted_certificates">Edit trusted certificates</string>
     <string name="this_action_cannot_be_undone">This action cannot be undone.</string>
     <plurals name="paste_note_or_notes_with_count">
-        <item quantity="one">Paste note</item>
-        <item quantity="few">Paste <b>%d</b> notes</item>
-        <item quantity="many">Paste <b>%d</b> notes</item>
-        <item quantity="other">Paste <b>%d</b> notes</item>
+        <item quantity="one">Wklej <b>%d</b> notatkę</item>
+        <item quantity="few">Wklej <b>%d</b> notatki</item>
+        <item quantity="many">Wklej <b>%d</b> notatek</item>
+        <item quantity="other">Wklej <b>%d</b> notatki</item>
     </plurals>
-    <string name="timestamp_dialog_day">Day</string>
-    <string name="timestamp_dialog_time">Time</string>
-    <string name="timestamp_dialog_end_time">End time</string>
+    <string name="timestamp_dialog_day">Dzień</string>
+    <string name="timestamp_dialog_time">Czas</string>
+    <string name="timestamp_dialog_end_time">Czas zakończenia</string>
     <string name="timestamp_dialog_repeater">Repeater</string>
-    <string name="timestamp_dialog_delay">Delay</string>
-    <string name="timestamp_dialog_warning_period">Warning period</string>
-    <string name="overdue">Overdue</string>
+    <string name="timestamp_dialog_delay">Opóźnienie</string>
+    <string name="timestamp_dialog_warning_period">Okres ostrzeżenia</string>
+    <string name="overdue">Zaległe</string>
 </resources>

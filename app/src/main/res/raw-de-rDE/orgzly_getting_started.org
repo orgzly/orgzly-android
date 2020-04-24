@@ -1,4 +1,4 @@
-Wilkommen in Orgzly!
+Wilkommen bei Orgzly!
 
 * Notizen
 ** Klicken Sie auf die Notiz, um sie zu öffnen
@@ -6,27 +6,27 @@ Wilkommen in Orgzly!
 
 Sie können mehrere Notizen auswählen.
 
-** Wischen Sie über der Notiz nach rechts, um das Schnell-Menü anzuzeigen
+** Notiz nach rechts wischen, um deren Schnellmenü zu öffnen
 
-Nach links wischen öffnet ein weiteres Menü.
+Notiz nach links wischen, um ein anderes Menü zu öffnen.
 
-** Unterpunkte können Sie über das Symbole links und rechts daneben ein- und ausklappen
+** Unterpunkte einer Notiz können Sie einklappen, indem Sie das Symbol neben ihr antippen
 
-Langer-Klick auf das Symbol, um das gesamte Unterverzeichnis zu entfalten.
+Halten Sie das Symbol gedrückt, um den gesamten Unterbaum aufzuklappen.
 
-*** Es gibt keine Begrenzung in der Anzahl der Ebenen
-**** Dies hilft dabei Ihre Notizen besser zu organisieren
+*** Es existiert keine Begrenzung bei der möglichen Anzahl der Ebenen
+**** Dies hilft dabei, Ihre Notizen besser zu organisieren
 
-** Eine Notiz kann Tags enthalten :tag1:tag2:
-*** Tags werden an Unterpunkte vererbt :tag3:
+** Notizen können Schlagwörter besitzen :Schlagwort1:Schlagwort2:
+*** Unternotizen erben die Schlagwörter :tag3:
 
-Wenn Ihre Suche nach Notizen mit Tag “Tag1”verwendet “t.tag1” Abfrage, diese Notiz wird in den Suchergebnissen mit eingeschlossen.
+Wenn Sie mit der Abfrage „t.Schlagwort1“ nach Notizen mit dem Schlagwort „Schlagwort1“ suchen, wird diese Notiz in die Suchergebnisse aufgenommen.
 
-** TODO Notizen können einen Status haben
+** TODO-Notizen können einen Status besitzen
 
-Sie können eine beliebige Anzahl von Status konfigurieren: TODO, NEXT, DONE usw.
+Sie können eine beliebige Anzahl zu verwendender Status konfigurieren: TODO, NEXT, DONE usw.
 
-*** Es gibt zwei Arten von Status: zu erledigen, erledigt
+*** Es gibt zwei /Statusarten/: „to-do“ (zu erledigen) und „done“ (erledigt)
 
 *** DONE Dies ist eine Notiz mit dem Status /done/ (also erledigt)
 CLOSED: [2018-01-24 Wed 17:00]
@@ -50,7 +50,7 @@ Die verschiedenen Prioritätsstufen können in den Einstellungen verändert werd
 
 ** Notizen können Links enthalten
 
-Wähle eine Telefonnummer (tel:555-0199), sende eine SMS (sms:555-0199), verfasse eine Email (mailto:support@orgzly.com), oder besuche eine Webseite ([[http://www.orgzly.com][Orgzly.com]]).
+Wählen Sie eine Telefonnummer (tel:555-0199), senden Sie SMS (sms:555-0199), schreiben Sie eine E-Mail (mailto:support@orgzly.com) oder besuchen Sie eine Webseite ([[http://www.orgzly.com][Orgzly.com]]).
 
 Sie können auch auf eine andere Notiz oder ein anderes Notizbuch innerhalb der App verweisen.
 
@@ -71,19 +71,19 @@ Klicken Sie auf das Kontrollkästchen, um es zu wechseln. Wenn Sie aus einer Zei
 * Suchen
 ** Es werden viele Suchoperatoren unterstützt
 
-Sie können Notizen nach Status (state), Tag (tag), Termin (scheduled) oder Frist (deadline) usw. durchsuchen
+Sie können Notizen nach Status (state), Schlagwort (tag), Termin (scheduled) oder Frist (deadline) usw. durchsuchen.
 
-Besuchen Sie http://www.orgzly.com/help#search um mehr darüber zu erfahren.
+Besuchen Sie http://www.orgzly.com/help#search, um mehr zu erfahren.
 
 ** Suchabfragen können für den Schnellzugriff gespeichert werden
 
 Probieren Sie die Beispielabfragen in der Navigationsleiste aus und schauen Sie sich an, wie diese Abfragen aufgebaut sind.
 
-Sie können Ihre eigenen gespeicherten Suchen erstellen, indem Sie in der Navigationsleiste auf "Suchen" klicken.
+Sie können Ihre eigenen gespeicherten Suchen erstellen, indem Sie in der Navigationsleiste „Suchen“ antippen.
 
-* Synchronisiere
+* Synchronisieren
 
-** Notizbücher können als Nur-Text-Dateien gespeichert werden
+** Notizbücher können als reine Textdateien gespeichert werden
 
 Diese Dateien haben das "Org mode"-Format.
 

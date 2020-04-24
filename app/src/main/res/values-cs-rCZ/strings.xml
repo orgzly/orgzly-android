@@ -334,12 +334,12 @@
     <!-- ++ -->
     <string name="repeater_description_restart">Doplnit období k aktuálnímu času</string>
     <!-- .+ -->
-    <string name="delay_dialog_title">Delay</string>
-    <string name="delay_description">Delay the display of the task in the agenda</string>
-    <string name="delay_description_affects_all">Affects all occurrences</string>
-    <string name="delay_description_affects_first">Affects only the first scheduled occurrence</string>
-    <string name="warning_period_dialog_title">Warning period</string>
-    <string name="warning_period_description">Warn about the approaching or missed deadline</string>
+    <string name="delay_dialog_title">Zpoždění</string>
+    <string name="delay_description">Zpozdit zobrazení úkolu v agendě</string>
+    <string name="delay_description_affects_all">Ovlivňuje všechny výskyty</string>
+    <string name="delay_description_affects_first">Ovlivňuje pouze první výskyt</string>
+    <string name="warning_period_dialog_title">Doba upozornění</string>
+    <string name="warning_period_description">Upozornit na blížící se nebo zmeškaný termín</string>
     <string name="displayed_book_details_local_mtime">Čas místní změny</string>
     <string name="displayed_book_details_link_url">Adresa odkazu</string>
     <string name="displayed_book_details_sync_url">Adresa synchronizace</string>
@@ -563,16 +563,16 @@
     <string name="edit_trusted_certificates">Upravit důvěryhodné certifikáty</string>
     <string name="this_action_cannot_be_undone">Tuto akci nelze vrátit zpět.</string>
     <plurals name="paste_note_or_notes_with_count">
-        <item quantity="one">Paste note</item>
+        <item quantity="one">Vložit poznámku</item>
         <item quantity="few">Paste <b>%d</b> notes</item>
         <item quantity="many">Paste <b>%d</b> notes</item>
-        <item quantity="other">Paste <b>%d</b> notes</item>
+        <item quantity="other">Vložit <b>%d</b> poznámky</item>
     </plurals>
-    <string name="timestamp_dialog_day">Day</string>
-    <string name="timestamp_dialog_time">Time</string>
-    <string name="timestamp_dialog_end_time">End time</string>
-    <string name="timestamp_dialog_repeater">Repeater</string>
-    <string name="timestamp_dialog_delay">Delay</string>
-    <string name="timestamp_dialog_warning_period">Warning period</string>
-    <string name="overdue">Overdue</string>
+    <string name="timestamp_dialog_day">Den</string>
+    <string name="timestamp_dialog_time">Čas</string>
+    <string name="timestamp_dialog_end_time">Čas ukončení</string>
+    <string name="timestamp_dialog_repeater">Opakovač</string>
+    <string name="timestamp_dialog_delay">Zpoždění</string>
+    <string name="timestamp_dialog_warning_period">Doba upozornění</string>
+    <string name="overdue">Po termínu</string>
 </resources>

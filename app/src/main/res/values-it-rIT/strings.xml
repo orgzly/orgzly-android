@@ -331,7 +331,7 @@
     <string name="delay_dialog_title">Delay</string>
     <string name="delay_description">Delay the display of the task in the agenda</string>
     <string name="delay_description_affects_all">Affects all occurrences</string>
-    <string name="delay_description_affects_first">Affects only the first scheduled occurrence</string>
+    <string name="delay_description_affects_first">Influenza solo la prima occorrenza programmata</string>
     <string name="warning_period_dialog_title">Warning period</string>
     <string name="warning_period_description">Warn about the approaching or missed deadline</string>
     <string name="displayed_book_details_local_mtime">Ora di modifica locale</string>
@@ -543,14 +543,14 @@
     <string name="edit_trusted_certificates">Edit trusted certificates</string>
     <string name="this_action_cannot_be_undone">This action cannot be undone.</string>
     <plurals name="paste_note_or_notes_with_count">
-        <item quantity="one">Paste note</item>
+        <item quantity="one">Incolla nota</item>
         <item quantity="other">Paste <b>%d</b> notes</item>
     </plurals>
-    <string name="timestamp_dialog_day">Day</string>
-    <string name="timestamp_dialog_time">Time</string>
+    <string name="timestamp_dialog_day">Giorno</string>
+    <string name="timestamp_dialog_time">Ora</string>
     <string name="timestamp_dialog_end_time">End time</string>
     <string name="timestamp_dialog_repeater">Repeater</string>
     <string name="timestamp_dialog_delay">Delay</string>
     <string name="timestamp_dialog_warning_period">Warning period</string>
-    <string name="overdue">Overdue</string>
+    <string name="overdue">Scaduto</string>
 </resources>

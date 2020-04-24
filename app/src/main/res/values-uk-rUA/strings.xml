@@ -334,12 +334,12 @@
     <!-- ++ -->
     <string name="repeater_description_restart">Додавання періоду повтору до поточного часу</string>
     <!-- .+ -->
-    <string name="delay_dialog_title">Delay</string>
-    <string name="delay_description">Delay the display of the task in the agenda</string>
+    <string name="delay_dialog_title">Затримка</string>
+    <string name="delay_description">Затримка відображення завдання в розкладі</string>
     <string name="delay_description_affects_all">Affects all occurrences</string>
     <string name="delay_description_affects_first">Affects only the first scheduled occurrence</string>
-    <string name="warning_period_dialog_title">Warning period</string>
-    <string name="warning_period_description">Warn about the approaching or missed deadline</string>
+    <string name="warning_period_dialog_title">Час попередження</string>
+    <string name="warning_period_description">Попереджати про наближення та пропуск крайнього строку</string>
     <string name="displayed_book_details_local_mtime">Час зміни</string>
     <string name="displayed_book_details_link_url">URL посилання</string>
     <string name="displayed_book_details_sync_url">Синхронізувати URL</string>
@@ -563,16 +563,16 @@
     <string name="edit_trusted_certificates">Редагувати довірені сертифікати</string>
     <string name="this_action_cannot_be_undone">Цю дію не можна скасувати.</string>
     <plurals name="paste_note_or_notes_with_count">
-        <item quantity="one">Paste note</item>
-        <item quantity="few">Paste <b>%d</b> notes</item>
-        <item quantity="many">Paste <b>%d</b> notes</item>
-        <item quantity="other">Paste <b>%d</b> notes</item>
+        <item quantity="one">Вставити нотатку</item>
+        <item quantity="few">Вставити <b>%d</b> нотатки</item>
+        <item quantity="many">Вставити <b>%d</b> нотаток</item>
+        <item quantity="other">Вставити <b>%d</b> нотаток</item>
     </plurals>
-    <string name="timestamp_dialog_day">Day</string>
-    <string name="timestamp_dialog_time">Time</string>
-    <string name="timestamp_dialog_end_time">End time</string>
-    <string name="timestamp_dialog_repeater">Repeater</string>
-    <string name="timestamp_dialog_delay">Delay</string>
-    <string name="timestamp_dialog_warning_period">Warning period</string>
-    <string name="overdue">Overdue</string>
+    <string name="timestamp_dialog_day">День</string>
+    <string name="timestamp_dialog_time">Час</string>
+    <string name="timestamp_dialog_end_time">Час завершення</string>
+    <string name="timestamp_dialog_repeater">Повторення</string>
+    <string name="timestamp_dialog_delay">Затримка</string>
+    <string name="timestamp_dialog_warning_period">Час попередження</string>
+    <string name="overdue">Прострочено</string>
 </resources>

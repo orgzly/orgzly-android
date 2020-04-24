@@ -80,7 +80,7 @@
     <string name="message_dropbox_linked">Dropbox erfolgreich verknüpft</string>
     <!-- Preferences (Settings). -->
     <string name="repos_preference_title">Ablageorte</string>
-    <string name="repos_preference_summary">Speicherort um die Synchronisierung der Notizbücher mit</string>
+    <string name="repos_preference_summary">Speicherort, mit dem Notizbücher synchronisiert werden sollen</string>
     <string name="message_book_has_no_link">Keine Verknüpfung festgelegt</string>
     <string name="message_note_created">Notiz erstellt</string>
     <string name="message_failed_creating_note">Notiz konnte nicht erstellt werden</string>
@@ -234,7 +234,7 @@
     <string name="permissions_rationale_for_sync_start">Synchronisierung mit lokalem Ablageort erfordert Speicherzugriffsrechte</string>
     <string name="permissions_rationale_for_external_files_access">Zugriff auf externe Dateien erfordert Speicherzugriffsrechte</string>
     <string name="cycle_visibility">Alle ein-/ausklappen</string>
-    <string name="running_database_update">Datenbank aktualisieren…</string>
+    <string name="running_database_update">Datenbank wird aktualisiert …</string>
     <string name="note_has_been_modified">Notiz bearbeitet</string>
     <string name="discard_or_save_changes">Änderungen speichern?</string>
     <string name="rename">Umbenennen</string>
@@ -281,7 +281,7 @@
     <string name="monospaced_font">Nichtproportionale Schriftart</string>
     <string name="monospaced_font_summary">Für Notizinhalt und Notizbucheinleitung nichtproportionale Schriftart verwenden</string>
     <string name="reversed_note_click_action">Notizklick- und Langklick-Aktionen tauschen</string>
-    <string name="reversed_note_click_action_summary">Antippen, um Notiz auszuwählen, gedrückt halten zum Öffnen</string>
+    <string name="reversed_note_click_action_summary">Antippen zum Auswählen der Notiz, gedrückt halten zum Öffnen</string>
     <string name="look_and_feel">Erscheinungsbild</string>
     <string name="notes_list">Notizenliste</string>
     <string name="prefs_title_new_note">Neue Notiz</string>
@@ -293,10 +293,10 @@
     <string name="no_connection">Keine Verbindung</string>
     <string name="connection_successful">Verbindung erfolgreich</string>
     <string name="last_sync_with_argument">Letzte Synchronisierung: %s</string>
-    <string name="force_loading_from_uri">Erzwungenes Laden von %s …</string>
-    <string name="force_loaded_from_uri">Erzwungenes Laden von %s</string>
-    <string name="force_saving_to_uri">Erzwungenes Speichern nach %s …</string>
-    <string name="force_saved_to_uri">Erzwungenes Speichern nach %s</string>
+    <string name="force_loading_from_uri">Wird erzwungen geladen von %s …</string>
+    <string name="force_loaded_from_uri">Erzwungen geladen von %s</string>
+    <string name="force_saving_to_uri">Wird erzwungen gespeichert nach %s …</string>
+    <string name="force_saved_to_uri">Erzwungen gespeichert nach %s</string>
     <string name="force_saving_failed">Erzwungenes Speichern fehlgeschlagen: %s</string>
     <string name="force_loading_failed">Erzwungenes Laden fehlgeschlagen: %s</string>
     <string name="loaded_from_resource">Geladen von Ressource %s</string>
@@ -328,12 +328,12 @@
     <!-- ++ -->
     <string name="repeater_description_restart">Zeitraum zur aktuellen Zeit addieren</string>
     <!-- .+ -->
-    <string name="delay_dialog_title">Delay</string>
-    <string name="delay_description">Delay the display of the task in the agenda</string>
-    <string name="delay_description_affects_all">Affects all occurrences</string>
-    <string name="delay_description_affects_first">Affects only the first scheduled occurrence</string>
-    <string name="warning_period_dialog_title">Warning period</string>
-    <string name="warning_period_description">Warn about the approaching or missed deadline</string>
+    <string name="delay_dialog_title">Verzögerung</string>
+    <string name="delay_description">Anzeige der Aufgabe in der Agenda verzögern</string>
+    <string name="delay_description_affects_all">Beeinflusst alle Ereignisse</string>
+    <string name="delay_description_affects_first">Beeinflusst nur das erste geplante Ereignis</string>
+    <string name="warning_period_dialog_title">Benachrichtigungszeit</string>
+    <string name="warning_period_description">Bei nahender oder verpasster Frist warnen</string>
     <string name="displayed_book_details_local_mtime">Lokaler Bearbeitungszeitpunkt</string>
     <string name="displayed_book_details_link_url">Verknüpfungs-URL</string>
     <string name="displayed_book_details_sync_url">Synchronisations-URL</string>
@@ -513,7 +513,7 @@
     <string name="under">Unter</string>
     <string name="above">Oben</string>
     <string name="below">Unten</string>
-    <string name="loading">Lade…</string>
+    <string name="loading">Wird geladen …</string>
     <string name="go_to">Gehe zu</string>
     <string name="cannot_refile_to_the_same_subtree">Kann nicht auf denselben Unterbaum zurückkehren</string>
     <string name="notification_maximum_priority">Maximal</string>
@@ -543,14 +543,14 @@
     <string name="edit_trusted_certificates">Vertrauenswürdige Zertifikate bearbeiten</string>
     <string name="this_action_cannot_be_undone">Diese Aktion kann nicht rückgängig gemacht werden.</string>
     <plurals name="paste_note_or_notes_with_count">
-        <item quantity="one">Paste note</item>
-        <item quantity="other">Paste <b>%d</b> notes</item>
+        <item quantity="one">Notiz einfügen</item>
+        <item quantity="other"><b>%d</b> Notizen einfügen</item>
     </plurals>
-    <string name="timestamp_dialog_day">Day</string>
-    <string name="timestamp_dialog_time">Time</string>
-    <string name="timestamp_dialog_end_time">End time</string>
-    <string name="timestamp_dialog_repeater">Repeater</string>
-    <string name="timestamp_dialog_delay">Delay</string>
-    <string name="timestamp_dialog_warning_period">Warning period</string>
-    <string name="overdue">Overdue</string>
+    <string name="timestamp_dialog_day">Tag</string>
+    <string name="timestamp_dialog_time">Zeit</string>
+    <string name="timestamp_dialog_end_time">Endzeit</string>
+    <string name="timestamp_dialog_repeater">Wiederholung</string>
+    <string name="timestamp_dialog_delay">Verzögerung</string>
+    <string name="timestamp_dialog_warning_period">Benachrichtigungszeit</string>
+    <string name="overdue">Überfällig</string>
 </resources>
