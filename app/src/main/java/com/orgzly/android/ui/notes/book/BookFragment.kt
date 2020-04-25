@@ -330,17 +330,17 @@ class BookFragment :
         }
 
         // Hide paste button if clipboard is empty, update title if not
-        NotesClipboard.count().let { count ->
-            menu.findItem(R.id.book_actions_paste).apply {
-                if (count == 0) {
-                    isVisible = false
+        menu.findItem(R.id.book_actions_paste)?.apply {
+            val count = NotesClipboard.count()
 
-                } else {
-                    title = resources.getQuantityString(
-                            R.plurals.paste_note_or_notes_with_count, count, count)
+            if (count == 0) {
+                isVisible = false
 
-                    isVisible = true
-                }
+            } else {
+                title = resources.getQuantityString(
+                        R.plurals.paste_note_or_notes_with_count, count, count)
+
+                isVisible = true
             }
         }
     }
