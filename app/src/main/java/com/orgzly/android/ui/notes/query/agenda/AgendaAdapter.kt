@@ -15,6 +15,7 @@ import com.orgzly.android.ui.Selection
 import com.orgzly.android.ui.notes.NoteItemViewBinder
 import com.orgzly.android.ui.notes.NoteItemViewHolder
 import com.orgzly.android.ui.notes.quickbar.QuickBars
+import com.orgzly.android.ui.stickyheaders.StickyHeaders
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.UserTimeFormatter
 import com.orgzly.databinding.ItemAgendaDividerBinding
@@ -24,7 +25,7 @@ class AgendaAdapter(
         private val context: Context,
         private val clickListener: OnViewHolderClickListener<AgendaItem>,
         private val quickBar: QuickBars
-) : ListAdapter<AgendaItem, RecyclerView.ViewHolder>(DIFF_CALLBACK), SelectableItemAdapter {
+) : ListAdapter<AgendaItem, RecyclerView.ViewHolder>(DIFF_CALLBACK), SelectableItemAdapter, StickyHeaders {
 
     private val adapterSelection: Selection = Selection()
 
@@ -118,6 +119,13 @@ class AgendaAdapter(
 
     override fun getSelection(): Selection {
         return adapterSelection
+    }
+
+    override fun isStickyHeader(position: Int): Boolean {
+        return when (getItemViewType(position)) {
+            OVERDUE_ITEM_TYPE, DAY_ITEM_TYPE -> true
+            else -> false
+        }
     }
 
     companion object {

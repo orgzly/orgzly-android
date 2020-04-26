@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/screen_edge"
         android:paddingRight="@dimen/screen_edge"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="?android:attr/windowBackground">
 
         <TextView
             android:id="@+id/item_agenda_divider_text"

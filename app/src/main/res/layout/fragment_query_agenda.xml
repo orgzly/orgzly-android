@@ -13,7 +13,6 @@
             style="@style/FastScroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="4dp"
             android:paddingBottom="?attr/actionBarSize"
             android:clipToPadding="false" />
 

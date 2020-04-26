@@ -1,5 +1,6 @@
 package com.orgzly.android.ui.notes.query.agenda
 
+import android.R.attr.orientation
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.view.ActionMode
@@ -20,9 +21,11 @@ import com.orgzly.android.ui.notes.query.QueryViewModelFactory
 import com.orgzly.android.ui.notes.quickbar.ItemGestureDetector
 import com.orgzly.android.ui.notes.quickbar.QuickBarListener
 import com.orgzly.android.ui.notes.quickbar.QuickBars
+import com.orgzly.android.ui.stickyheaders.StickyHeadersLinearLayoutManager
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentQueryAgendaBinding
+
 
 /**
  * Displays agenda results.
@@ -63,7 +66,8 @@ class AgendaFragment :
         // Restores selection, requires adapter
         super.onViewCreated(view, savedInstanceState)
 
-        val layoutManager = LinearLayoutManager(context)
+        val layoutManager = StickyHeadersLinearLayoutManager<AgendaAdapter>(
+                context, LinearLayoutManager.VERTICAL, false)
 
         val dividerItemDecoration = DividerItemDecoration(context, layoutManager.orientation)
 
