@@ -4,7 +4,7 @@ import android.os.Environment
 import android.text.style.URLSpan
 import com.orgzly.android.ui.views.style.FileLinkSpan
 import com.orgzly.android.ui.views.style.IdLinkSpan
-import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -16,13 +16,9 @@ import java.io.IOException
 @RunWith(value = Parameterized::class)
 class OrgFormatterLinkTest(private val param: Parameter) : OrgFormatterTest() {
 
-    data class Parameter(
-            val input: String,
-            val output: String,
-            val size: Int,
-            val start: Int,
-            val end: Int,
-            val type: Class<*>? = null)
+    data class Span(val start: Int, val end: Int, val klass: Class<*>)
+
+    data class Parameter(val input: String, val output: String, val startEnd: List<Span>)
 
     @Before
     @Throws(Exception::class)
@@ -49,22 +45,25 @@ class OrgFormatterLinkTest(private val param: Parameter) : OrgFormatterTest() {
         @JvmStatic @Parameterized.Parameters(name = "{index}: {0}")
         fun data(): Collection<Parameter> {
             return listOf(
-                    Parameter("[[orgzly-tests/document.txt]]", "orgzly-tests/document.txt", 1, 0, 25, FileLinkSpan::class.java),
-                    Parameter("[[./document.txt]]", "./document.txt", 1, 0, 14, FileLinkSpan::class.java),
-                    Parameter("[[/document.txt]]", "/document.txt", 1, 0, 13, FileLinkSpan::class.java),
-                    Parameter("[[document.txt]]", "document.txt", 1, 0, 12, FileLinkSpan::class.java),
+                    Parameter("[[orgzly-tests/document.txt]]", "orgzly-tests/document.txt", listOf(Span(0, 25, FileLinkSpan::class.java))),
+                    Parameter("[[./document.txt]]", "./document.txt", listOf(Span(0, 14, FileLinkSpan::class.java))),
+                    Parameter("[[/document.txt]]", "/document.txt", listOf(Span(0, 13, FileLinkSpan::class.java))),
+                    Parameter("[[document.txt]]", "document.txt", listOf(Span(0, 12, FileLinkSpan::class.java))),
 
-                    Parameter("file:orgzly-tests/document.txt", "file:orgzly-tests/document.txt", 1, 0, 30, FileLinkSpan::class.java),
-                    Parameter("[[file:orgzly-tests/document.txt]]", "file:orgzly-tests/document.txt", 1, 0, 30, FileLinkSpan::class.java),
-                    Parameter("[[file:orgzly-tests/document.txt][Document]]", "Document", 1, 0, 8, FileLinkSpan::class.java),
+                    Parameter("file:orgzly-tests/document.txt", "file:orgzly-tests/document.txt", listOf(Span(0, 30, FileLinkSpan::class.java))),
+                    Parameter("[[file:orgzly-tests/document.txt]]", "file:orgzly-tests/document.txt", listOf(Span(0, 30, FileLinkSpan::class.java))),
+                    Parameter("[[file:orgzly-tests/document.txt][Document]]", "Document", listOf(Span(0, 8, FileLinkSpan::class.java))),
 
-                    Parameter("id:45DFE015-255E-4B86-B957-F7FD77364DCA", "id:45DFE015-255E-4B86-B957-F7FD77364DCA", 1, 0, 39, IdLinkSpan::class.java),
-                    Parameter("[[id:45DFE015-255E-4B86-B957-F7FD77364DCA]]", "id:45DFE015-255E-4B86-B957-F7FD77364DCA", 1, 0, 39, IdLinkSpan::class.java),
-                    Parameter("id:foo", "id:foo", 1, 0, 6, IdLinkSpan::class.java),
-                    Parameter("[[id:foo]]", "id:foo", 1, 0, 6, IdLinkSpan::class.java),
+                    Parameter("id:45DFE015-255E-4B86-B957-F7FD77364DCA", "id:45DFE015-255E-4B86-B957-F7FD77364DCA", listOf(Span(0, 39, IdLinkSpan::class.java))),
+                    Parameter("[[id:45DFE015-255E-4B86-B957-F7FD77364DCA]]", "id:45DFE015-255E-4B86-B957-F7FD77364DCA", listOf(Span(0, 39, IdLinkSpan::class.java))),
+                    Parameter("id:foo", "id:foo", listOf(Span(0, 6, IdLinkSpan::class.java))),
+                    Parameter("[[id:foo]]", "id:foo", listOf(Span(0, 6, IdLinkSpan::class.java))),
 
-                    Parameter("mailto:a@b.com", "mailto:a@b.com", 1, 0, 14, URLSpan::class.java),
-                    Parameter("[[mailto:a@b.com]]", "mailto:a@b.com", 1, 0, 14, URLSpan::class.java)
+                    Parameter("mailto:a@b.com", "mailto:a@b.com", listOf(Span(0, 14, URLSpan::class.java))),
+                    Parameter("[[mailto:a@b.com]]", "mailto:a@b.com", listOf(Span(0, 14, URLSpan::class.java))),
+
+                    Parameter("[[id:123][[a] b]]", "[a] b", listOf(Span(0, 5, IdLinkSpan::class.java))),
+                    Parameter("[[id:123][[a] b]] [[./456][[c] d]]", "[a] b [c] d", listOf(Span(0, 5, IdLinkSpan::class.java), Span(6, 11, FileLinkSpan::class.java)))
             )
         }
     }
@@ -73,13 +72,13 @@ class OrgFormatterLinkTest(private val param: Parameter) : OrgFormatterTest() {
     fun testLink() {
         val spannable = OrgSpannable(param.input)
 
-        assertThat(spannable.string, `is`(param.output))
-        assertThat(spannable.spans.size, `is`(param.size))
-        assertThat(spannable.spans[0].start, `is`(param.start))
-        assertThat(spannable.spans[0].end, `is`(param.end))
+        assertThat(spannable.string, equalTo(param.output))
+        assertThat(spannable.spans.size, equalTo(param.startEnd.size))
 
-        if (param.type != null) {
-            assertThat(spannable.spans[0].span.javaClass.simpleName, `is`(param.type.simpleName))
+        for (i in spannable.spans.indices) {
+            assertThat(spannable.spans[i].start, equalTo(param.startEnd[i].start))
+            assertThat(spannable.spans[i].end, equalTo(param.startEnd[i].end))
+            assertThat(spannable.spans[i].span.javaClass.simpleName, equalTo(param.startEnd[i].klass.simpleName))
         }
     }
 }

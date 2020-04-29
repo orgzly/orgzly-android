@@ -26,7 +26,7 @@ object OrgFormatter {
     private const val LINK_SCHEMES = "(?:$SYSTEM_LINK_SCHEMES|$CUSTOM_LINK_SCHEMES)"
 
     private val LINK_REGEX =
-            """($LINK_SCHEMES:\S+)|(\[\[([^]]+)]\[([^]]+)]])|(\[\[([^]]+)]])""".toRegex()
+            """($LINK_SCHEMES:\S+)|(\[\[([^]]+)]\[(.+?)]])|(\[\[([^]]+)]])""".toRegex()
 
     private const val PRE = "- \t('\"{"
     private const val POST = "- \\t.,:!?;'\")}\\["
