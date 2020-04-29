@@ -1,6 +1,5 @@
 package com.orgzly.android.ui.notes.query.agenda
 
-import android.R.attr.orientation
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.view.ActionMode
@@ -23,6 +22,7 @@ import com.orgzly.android.ui.notes.quickbar.QuickBarListener
 import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.ui.stickyheaders.StickyHeadersLinearLayoutManager
 import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.ui.util.setup
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentQueryAgendaBinding
 
@@ -101,6 +101,8 @@ class AgendaFragment :
 //
 //            itemTouchHelper.attachToRecyclerView(rv)
         }
+
+        binding.swipeContainer.setup()
     }
 
     override fun onQuickBarButtonClick(buttonId: Int, itemId: Long) {

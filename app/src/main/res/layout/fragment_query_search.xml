@@ -1,25 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <ViewFlipper
-        android:id="@+id/fragment_query_search_view_flipper"
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar style="@style/LoadingProgressBar" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_query_search_recycler_view"
-            style="@style/FastScroll"
+        <ViewFlipper
+            android:id="@+id/fragment_query_search_view_flipper"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="?attr/actionBarSize"
-            android:clipToPadding="false" />
+            android:layout_height="match_parent">
 
-        <TextView
-            style="@style/BigCenteredText"
-            android:text="@string/no_notes_found_after_search"
-            android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
+            <ProgressBar style="@style/LoadingProgressBar" />
 
-    </ViewFlipper>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fragment_query_search_recycler_view"
+                style="@style/FastScroll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="?attr/actionBarSize"
+                android:clipToPadding="false" />
+
+            <TextView
+                style="@style/BigCenteredText"
+                android:text="@string/no_notes_found_after_search"
+                android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
+
+        </ViewFlipper>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </layout>
