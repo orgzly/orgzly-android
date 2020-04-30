@@ -2,7 +2,10 @@ package com.orgzly.android.ui.main;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -12,10 +15,16 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -31,11 +40,6 @@ import com.orgzly.android.usecase.UseCaseRunner;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.databinding.FragmentSyncBinding;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 
 /**
@@ -236,16 +240,17 @@ public class SyncFragment extends Fragment {
             buttonContainer.setOnClickListener(v ->
                     SyncService.start(getContext(), new Intent(getContext(), SyncService.class)));
 
-            buttonContainer.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    new AlertDialog.Builder(getContext())
-                            .setPositiveButton(R.string.ok, null)
-                            .setMessage(buttonText.getText())
-                            .show();
+            buttonContainer.setOnLongClickListener(v -> {
+                Dialog dialog = new AlertDialog.Builder(getContext())
+                        .setPositiveButton(R.string.ok, null)
+                        .setNeutralButton(R.string.copy, (d, w) ->
+                                copyToClipboard("Sync output", buttonText.getText()))
+                        .setMessage(buttonText.getText())
+                        .show();
 
-                    return true;
-                }
+                setDialogMessageSelectable(dialog);
+
+                return true;
             });
         }
 
@@ -356,6 +361,29 @@ public class SyncFragment extends Fragment {
                     appContext,
                     time,
                     DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_MONTH | DateUtils.FORMAT_SHOW_TIME);
+        }
+    }
+
+    private void setDialogMessageSelectable(Dialog dialog) {
+        Window window = dialog.getWindow();
+        if (window != null) {
+            TextView textView = window.getDecorView().findViewById(android.R.id.message);
+            if (textView != null) {
+                textView.setTextIsSelectable(true);
+            }
+        }
+    }
+
+    private void copyToClipboard(CharSequence label, CharSequence text) {
+        Context context = getActivity();
+
+        if (context != null) {
+            ClipboardManager clipboard = (ClipboardManager)
+                    context.getSystemService(Context.CLIPBOARD_SERVICE);
+
+            ClipData clip = ClipData.newPlainText(label, text);
+
+            clipboard.setPrimaryClip(clip);
         }
     }
 
