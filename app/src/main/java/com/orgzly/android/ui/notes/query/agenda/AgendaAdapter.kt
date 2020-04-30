@@ -122,9 +122,13 @@ class AgendaAdapter(
     }
 
     override fun isStickyHeader(position: Int): Boolean {
-        return when (getItemViewType(position)) {
-            OVERDUE_ITEM_TYPE, DAY_ITEM_TYPE -> true
-            else -> false
+        return if (position < itemCount) {
+            return when (getItemViewType(position)) {
+                OVERDUE_ITEM_TYPE, DAY_ITEM_TYPE -> true
+                else -> false
+            }
+        } else {
+            false
         }
     }
 
