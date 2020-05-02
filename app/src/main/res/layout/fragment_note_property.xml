@@ -43,5 +43,7 @@
 
     <ImageButton
         android:id="@+id/delete"
-        style="@style/RemoveButton" />
+        style="@style/NoteFragmentButton"
+        android:src="?attr/ic_close_24dp" />
+
 </LinearLayout>

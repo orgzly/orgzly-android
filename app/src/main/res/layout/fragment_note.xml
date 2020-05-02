@@ -153,15 +153,21 @@
 
                         <MultiAutoCompleteTextView
                             android:id="@+id/fragment_note_tags"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
                             android:layout_marginStart="@dimen/padded_content_left_margin_from_icon"
                             android:inputType="text"
                             android:hint="@string/fragment_note_tags_hint"
-                            android:completionThreshold="2"
+                            android:completionThreshold="1"
                             android:freezesText="true"
-                            android:textAppearance="?android:attr/textAppearanceSmall"/>
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        <ImageButton
+                            android:id="@+id/fragment_note_tags_button"
+                            style="@style/NoteFragmentButton"
+                            android:src="?attr/ic_menu_open_24dp" />
                     </LinearLayout>
 
                     <!-- State -->

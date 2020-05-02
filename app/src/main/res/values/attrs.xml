@@ -119,6 +119,7 @@
         <attr name="ic_language_18dp" format="reference"/>
         <attr name="ic_library_books_24dp" format="reference"/>
         <attr name="ic_link_18dp" format="reference"/>
+        <attr name="ic_menu_open_24dp" format="reference"/>
         <attr name="ic_move_to_inbox_24dp" format="reference"/>
         <attr name="ic_notifications_none_24dp" format="reference"/>
         <attr name="ic_open_in_new_24dp" format="reference"/>

@@ -210,6 +210,10 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             override fun afterTextChanged(s: Editable) {}
         })
 
+        binding.fragmentNoteTagsButton.setOnClickListener {
+            binding.fragmentNoteTags.showDropDown()
+        }
+
         setupTagsViewAdapter()
 
         binding.fragmentNotePriorityButton.setOnClickListener(this)
