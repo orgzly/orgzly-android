@@ -35,6 +35,7 @@ import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.notes.book.BookFragment
 import com.orgzly.android.ui.share.ShareActivity
 import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.ui.util.removeBackgroundKeepPadding
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.SpaceTokenizer
 import com.orgzly.android.util.UserTimeFormatter
@@ -178,6 +179,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             }
         }
 
+        binding.fragmentNoteTitleView.removeBackgroundKeepPadding()
+
         binding.fragmentNoteBreadcrumbsText.movementMethod = LinkMovementMethod.getInstance()
 
         if (activity is ShareActivity) {
@@ -238,6 +241,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             }
         })
 
+        binding.bodyView.removeBackgroundKeepPadding()
+
         if (activity != null && AppPreferences.isFontMonospaced(context)) {
             binding.bodyEdit.typeface = Typeface.MONOSPACE
             binding.bodyView.typeface = Typeface.MONOSPACE
@@ -256,10 +261,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         }
 
         setMetadataFoldState(AppPreferences.noteMetadataFolded(context))
-
-        binding.fragmentNoteModeToggleButton.setOnClickListener {
-            viewModel.toggleViewEditMode()
-        }
     }
 
     private fun setMetadataFoldState(isFolded: Boolean) {
@@ -341,6 +342,9 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
                 null -> { }
             }
+
+            // For updating the displayed action bar icon (view or edit)
+            activity?.invalidateOptionsMenu()
         })
 
         viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->
@@ -353,14 +357,17 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     }
 
     private fun toEditMode() {
-        binding.fragmentNoteModeText.setText(R.string.note_content_finish_editing)
+        binding.fragmentNoteTitleView.visibility = View.GONE
+        binding.fragmentNoteTitle.visibility = View.VISIBLE
 
         binding.bodyView.visibility = View.GONE
         binding.bodyEdit.visibility = View.VISIBLE
     }
 
     private fun toViewMode() {
-        binding.fragmentNoteModeText.setText(R.string.note_content_start_editing)
+        binding.fragmentNoteTitle.visibility = View.GONE
+        binding.fragmentNoteTitleView.setRawText(binding.fragmentNoteTitle.text.toString())
+        binding.fragmentNoteTitleView.visibility = View.VISIBLE
 
         binding.bodyEdit.visibility = View.GONE
 
@@ -386,6 +393,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         // Title
         binding.fragmentNoteTitle.setText(payload.title)
+        binding.fragmentNoteTitleView.setRawText(payload.title ?: "")
 
         // Tags
         if (!payload.tags.isEmpty()) {
@@ -544,7 +552,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                  * some initial values (for example from ShareActivity).
                  */
                 if (TextUtils.isEmpty(initialTitle) && TextUtils.isEmpty(initialContent)) {
-                    viewModel.viewEditMode.value = NoteViewModel.ViewEditMode.EDIT_TITLE_WITH_KEYBOARD
+                    viewModel.setViewEditModeEditTitleWithKeyboard()
                 }
 
             } else { // Open existing note
@@ -593,11 +601,13 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     }
 
     private fun announceChangesToActivity() {
-        sharedMainActivityViewModel.setFragment(
-                FRAGMENT_TAG,
-                viewModel.bookView.value?.book?.name,
-                BookUtils.getError(context, viewModel.bookView.value?.book),
-                0)
+//        sharedMainActivityViewModel.setFragment(
+//                FRAGMENT_TAG,
+//                viewModel.bookView.value?.book?.name,
+//                BookUtils.getError(context, viewModel.bookView.value?.book),
+//                0)
+
+        sharedMainActivityViewModel.setFragment(FRAGMENT_TAG, null, null, 0)
     }
 
     override fun onPause() {
@@ -831,7 +841,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         menu.removeItem(R.id.activity_action_search)
 
         if (viewModel.notePayload == null) { // Displaying non-existent note.
-            menu.removeItem(R.id.close)
+            menu.removeItem(R.id.edit_mode)
+            menu.removeItem(R.id.view_mode)
             menu.removeItem(R.id.done)
             menu.removeItem(R.id.metadata)
             menu.removeItem(R.id.delete)
@@ -844,6 +855,12 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
             menu.findItem(R.id.metadata_always_show_set).isChecked =
                     AppPreferences.alwaysShowSetNoteMetadata(context)
+
+            if (viewModel.isInEditMode()) {
+                menu.removeItem(R.id.edit_mode)
+            } else {
+                menu.removeItem(R.id.view_mode)
+            }
         }
 
         /* Newly created note cannot be deleted. */
@@ -856,13 +873,14 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, item)
 
         when (item.itemId) {
-            R.id.done -> {
-                userSave()
+            R.id.edit_mode,
+            R.id.view_mode-> {
+                viewModel.toggleViewEditMode()
                 return true
             }
 
-            R.id.close -> {
-                userCancel()
+            R.id.done -> {
+                userSave()
                 return true
             }
 

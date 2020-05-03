@@ -51,7 +51,6 @@
                         android:linksClickable="true"
                         android:textColor="?attr/text_secondary_color"
                         android:textColorLink="?attr/text_secondary_color"
-
                         android:lineSpacingMultiplier="1.2"
                         tools:text="@string/breadcrumbs_sample" />
                 </FrameLayout>
@@ -82,7 +81,26 @@
                     android:imeOptions="actionDone"
                     android:hint="@string/fragment_note_title_hint"
                     tools:text="@string/head_title_sample"
-                    android:freezesText="true"/>
+                    android:freezesText="true"
+                    android:textSize="?attr/font_large"
+                    android:visibility="visible" />
+
+                <com.orgzly.android.ui.views.TextViewWithMarkup
+                    android:id="@+id/fragment_note_title_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/screen_edge"
+                    android:layout_marginStart="@dimen/screen_edge"
+                    android:layout_marginRight="@dimen/screen_edge"
+                    android:layout_marginEnd="@dimen/screen_edge"
+                    android:layout_marginTop="@dimen/space_between_content_areas"
+                    android:layout_marginBottom="@dimen/space_between_content_areas"
+                    style="@style/Widget.AppCompat.EditText"
+                    tools:text="@string/head_title_sample"
+                    android:freezesText="true"
+                    android:textIsSelectable="true"
+                    android:textSize="?attr/font_large"
+                    android:visibility="gone" />
 
                 <!-- Metadata header -->
                 <LinearLayout
@@ -265,32 +283,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/fragment_note_mode_toggle_button"
-                    style="@style/NoteFragmentFullWidthButton">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/screen_edge"
-                        android:layout_marginStart="@dimen/screen_edge"
-                        android:src="?attr/ic_edit_24dp"
-                        android:alpha="?attr/oic_item_alpha"/>
-
-                    <TextView
-                        android:id="@+id/fragment_note_mode_text"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="2dp"
-                        android:paddingStart="2dp"
-                        android:paddingRight="2dp"
-                        android:paddingEnd="2dp"
-                        android:layout_marginLeft="@dimen/content_left_margin_from_icon"
-                        android:layout_marginStart="@dimen/content_left_margin_from_icon"
-                        android:text="@string/note_content_finish_editing" />
-                </LinearLayout>
-
                 <com.orgzly.android.ui.views.EditTextWithMarkup
                     android:id="@+id/body_edit"
                     android:layout_width="match_parent"
@@ -315,6 +307,7 @@
                     android:layout_marginTop="@dimen/space_between_content_areas"
                     android:freezesText="true"
                     android:gravity="start|top"
+                    style="@style/Widget.AppCompat.EditText"
                     android:textIsSelectable="true"
                     android:textSize="?attr/fragment_note_content_text_size"
                     android:hint="@string/fragment_note_content_hint"

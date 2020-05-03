@@ -32,6 +32,16 @@ class NoteViewModel(
         private val content: String?
 ) : CommonViewModel() {
 
+    enum class ViewEditMode {
+        VIEW,
+        EDIT_TITLE,
+        EDIT_TITLE_WITH_KEYBOARD,
+        EDIT_CONTENT_WITH_KEYBOARD
+    }
+
+    val viewEditMode = MutableLiveData(startMode())
+
+
     val bookView: MutableLiveData<BookView> = MutableLiveData()
 
 
@@ -111,15 +121,6 @@ class NoteViewModel(
         }
     }
 
-    enum class ViewEditMode {
-        VIEW,
-        EDIT_TITLE,
-        EDIT_TITLE_WITH_KEYBOARD,
-        EDIT_CONTENT_WITH_KEYBOARD
-    }
-
-    val viewEditMode = MutableLiveData<ViewEditMode>(startMode())
-
     private fun startMode(): ViewEditMode {
         // Always start new notes in edit mode
         if (isNew()) {
@@ -145,22 +146,34 @@ class NoteViewModel(
     fun toggleViewEditMode() {
         val context = App.getAppContext()
 
-        viewEditMode.value  = when (viewEditMode.value) {
-            ViewEditMode.VIEW -> ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD
-            ViewEditMode.EDIT_TITLE -> ViewEditMode.VIEW
-            ViewEditMode.EDIT_TITLE_WITH_KEYBOARD -> ViewEditMode.VIEW
-            ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD -> ViewEditMode.VIEW
-            null -> ViewEditMode.EDIT_TITLE
+        val mode = when (viewEditMode.value) {
+            ViewEditMode.VIEW ->
+                ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD
+
+            ViewEditMode.EDIT_TITLE,
+            ViewEditMode.EDIT_TITLE_WITH_KEYBOARD,
+            ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD ->
+                ViewEditMode.VIEW
+
+            null ->
+                ViewEditMode.EDIT_TITLE
         }
+
+        viewEditMode.postValue(mode)
 
         // Only remember last mode when opening existing notes
         if (!isNew()) {
-            if (viewEditMode.value == ViewEditMode.VIEW) {
-                AppPreferences.noteDetailsLastMode(context, "view")
-            } else {
-                AppPreferences.noteDetailsLastMode(context, "edit")
-            }
+            AppPreferences.noteDetailsLastMode(
+                    context, if (mode == ViewEditMode.VIEW) "view" else "edit")
         }
+    }
+
+    fun setViewEditModeEditTitleWithKeyboard() {
+        viewEditMode.postValue(ViewEditMode.EDIT_TITLE_WITH_KEYBOARD)
+    }
+
+    fun isInEditMode(): Boolean {
+        return viewEditMode.value != ViewEditMode.VIEW
     }
 
     fun savePayloadToBundle(outState: Bundle) {
@@ -336,5 +349,4 @@ class NoteViewModel(
             true
         }
     }
-
 }

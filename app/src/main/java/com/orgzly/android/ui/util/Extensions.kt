@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import android.view.View
 import androidx.annotation.StyleableRes
+import androidx.core.view.ViewCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.orgzly.R
 import com.orgzly.android.AppIntent
@@ -44,4 +46,15 @@ fun SwipeRefreshLayout.setup() {
         setColorSchemeColors(
                 typedArray.getColor(R.styleable.ColorScheme_accent_color, 0))
     }
+}
+
+fun View.removeBackgroundKeepPadding() {
+    val paddingBottom = this.paddingBottom
+    val paddingStart = ViewCompat.getPaddingStart(this)
+    val paddingEnd = ViewCompat.getPaddingEnd(this)
+    val paddingTop = this.paddingTop
+
+    ViewCompat.setBackground(this, null)
+
+    ViewCompat.setPaddingRelative(this, paddingStart, paddingTop, paddingEnd, paddingBottom)
 }
