@@ -34,7 +34,7 @@ class NoteViewModel(
 
     enum class ViewEditMode {
         VIEW,
-        EDIT_TITLE,
+        EDIT,
         EDIT_TITLE_WITH_KEYBOARD,
         EDIT_CONTENT_WITH_KEYBOARD
     }
@@ -131,12 +131,12 @@ class NoteViewModel(
             "last" ->
                 return when (AppPreferences.noteDetailsLastMode(App.getAppContext())) {
                     "view" -> ViewEditMode.VIEW
-                    "edit" -> ViewEditMode.EDIT_TITLE
-                    else -> ViewEditMode.EDIT_TITLE
+                    "edit" -> ViewEditMode.EDIT
+                    else -> ViewEditMode.EDIT
                 }
             "view" -> ViewEditMode.VIEW
-            "edit" -> ViewEditMode.EDIT_TITLE
-            else -> ViewEditMode.EDIT_TITLE
+            "edit" -> ViewEditMode.EDIT
+            else -> ViewEditMode.EDIT
         }
     }
 
@@ -148,15 +148,15 @@ class NoteViewModel(
 
         val mode = when (viewEditMode.value) {
             ViewEditMode.VIEW ->
-                ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD
+                ViewEditMode.EDIT
 
-            ViewEditMode.EDIT_TITLE,
+            ViewEditMode.EDIT,
             ViewEditMode.EDIT_TITLE_WITH_KEYBOARD,
             ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD ->
                 ViewEditMode.VIEW
 
             null ->
-                ViewEditMode.EDIT_TITLE
+                ViewEditMode.EDIT
         }
 
         viewEditMode.postValue(mode)
@@ -168,8 +168,12 @@ class NoteViewModel(
         }
     }
 
-    fun setViewEditModeEditTitleWithKeyboard() {
+    fun editTitle() {
         viewEditMode.postValue(ViewEditMode.EDIT_TITLE_WITH_KEYBOARD)
+    }
+
+    fun editContent() {
+        viewEditMode.postValue(ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD)
     }
 
     fun isInEditMode(): Boolean {

@@ -179,7 +179,15 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             }
         }
 
-        binding.fragmentNoteTitleView.removeBackgroundKeepPadding()
+        binding.fragmentNoteTitleView.apply {
+            removeBackgroundKeepPadding()
+
+            setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    viewModel.editTitle()
+                }
+            }
+        }
 
         binding.fragmentNoteBreadcrumbsText.movementMethod = LinkMovementMethod.getInstance()
 
@@ -241,7 +249,15 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             }
         })
 
-        binding.bodyView.removeBackgroundKeepPadding()
+        binding.bodyView.apply {
+            removeBackgroundKeepPadding()
+
+            setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    viewModel.editContent()
+                }
+            }
+        }
 
         if (activity != null && AppPreferences.isFontMonospaced(context)) {
             binding.bodyEdit.typeface = Typeface.MONOSPACE
@@ -317,9 +333,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 NoteViewModel.ViewEditMode.VIEW ->
                     toViewMode()
 
-                NoteViewModel.ViewEditMode.EDIT_TITLE -> {
+                NoteViewModel.ViewEditMode.EDIT -> {
                     toEditMode()
-                    binding.fragmentNoteTitle.requestFocus()
                 }
 
                 NoteViewModel.ViewEditMode.EDIT_TITLE_WITH_KEYBOARD -> {
@@ -365,6 +380,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     }
 
     private fun toViewMode() {
+        ActivityUtils.closeSoftKeyboard(activity)
+
         binding.fragmentNoteTitle.visibility = View.GONE
         binding.fragmentNoteTitleView.setRawText(binding.fragmentNoteTitle.text.toString())
         binding.fragmentNoteTitleView.visibility = View.VISIBLE
@@ -376,10 +393,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         ImageLoader.loadImages(binding.bodyView)
 
         binding.bodyView.visibility = View.VISIBLE
-
-        binding.fragmentNoteContainer.requestFocus()
-
-        ActivityUtils.closeSoftKeyboard(activity)
     }
 
     private fun updateViewsFromPayload() {
@@ -552,7 +565,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                  * some initial values (for example from ShareActivity).
                  */
                 if (TextUtils.isEmpty(initialTitle) && TextUtils.isEmpty(initialContent)) {
-                    viewModel.setViewEditModeEditTitleWithKeyboard()
+                    viewModel.editTitle()
                 }
 
             } else { // Open existing note

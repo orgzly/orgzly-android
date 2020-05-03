@@ -28,7 +28,8 @@ object ActivityUtils {
     @JvmStatic
     fun closeSoftKeyboard(activity: Activity?) {
         if (activity != null) {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Hiding keyboard in activity $activity")
+            if (BuildConfig.LOG_DEBUG)
+                LogUtils.d(TAG, "Hiding keyboard, current focus ${activity.currentFocus}")
 
             // If no view currently has focus, create a new one to grab a window token from it
             val view = activity.currentFocus ?: View(activity)
