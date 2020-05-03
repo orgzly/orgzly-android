@@ -29,12 +29,12 @@ class LinkFindTarget(val path: String) : UseCase() {
         }
     }
 
-    private fun isAbsolute(path: String): Boolean {
-        return path.startsWith('/')
+    private fun isAbsolute(bookPath: String): Boolean {
+        return bookPath.startsWith('/')
     }
 
-    private fun isMaybeBook(path: String): BookName? {
-        val file = File(path)
+    private fun isMaybeBook(bookPath: String): BookName? {
+        val file = File(bookPath)
 
         return if (!hasParent(file) && BookName.isSupportedFormatFileName(file.name)) {
             BookName.fromFileName(file.name)
