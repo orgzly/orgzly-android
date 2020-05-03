@@ -3,6 +3,8 @@ package com.orgzly.android.usecase
 import android.os.Environment
 import com.orgzly.android.BookName
 import com.orgzly.android.data.DataRepository
+import com.orgzly.android.db.entity.Book
+import com.orgzly.android.db.entity.NoteView
 import java.io.File
 
 class LinkFindTarget(val path: String) : UseCase() {
@@ -15,9 +17,23 @@ class LinkFindTarget(val path: String) : UseCase() {
     }
 
     private fun openLink(dataRepository: DataRepository, path: String): Any {
+        val regex = """(.*)\:\:(.*)""".toRegex()
         return if (isAbsolute(path)) {
             File(path)
-
+        } else if (regex.matches(path)) {
+            val matchResults = regex.matchEntire(path)
+            val (_, notebook, heading) = matchResults!!.groupValues
+            isMaybeBook(notebook)?.let { bookName ->
+                dataRepository.getBook(bookName.name)?.let {
+                    val allNotes = dataRepository.getNotes(it.name)
+                    for (note in allNotes) {
+                        if (note.note.title == heading.substring(1)) { // fist char of heading is '*'
+                            return Pair<Book, NoteView>(it, note);
+                        }
+                    }
+                }
+            }
+            File(Environment.getExternalStorageDirectory(), path)
         } else {
             isMaybeBook(path)?.let { bookName ->
                 dataRepository.getBook(bookName.name)?.let {

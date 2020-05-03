@@ -41,6 +41,7 @@ import com.orgzly.android.db.NotesClipboard;
 import com.orgzly.android.db.dao.NoteDao;
 import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.db.entity.Note;
+import com.orgzly.android.db.entity.NoteView;
 import com.orgzly.android.db.entity.Repo;
 import com.orgzly.android.db.entity.SavedSearch;
 import com.orgzly.android.prefs.AppPreferences;
@@ -112,6 +113,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Set;
+
+import kotlin.Pair;
 
 public class MainActivity extends CommonActivity
         implements
@@ -396,6 +399,15 @@ public class MainActivity extends CommonActivity
                 } else if (userData instanceof File) {
                     File file = (File) userData;
                     openFileIfExists(file);
+                }
+                else if (userData instanceof Pair) {
+                    if (((Pair) userData).getFirst() instanceof  Book && ((Pair) userData).getSecond() instanceof NoteView) {
+                        NoteView noteView = (NoteView) ((Pair) userData).getSecond();
+                        Intent intent = new Intent(AppIntent.ACTION_OPEN_NOTE);
+                        intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteView.getNote().getId());
+                        intent.putExtra(AppIntent.EXTRA_BOOK_ID, ((Book) ((Pair) userData).getFirst()).getId());
+                        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                    }
                 }
             }
         });
