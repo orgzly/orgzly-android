@@ -142,6 +142,7 @@
         <item name="ic_library_books_24dp">@drawable/ic_library_books_black_24dp</item>
         <item name="ic_link_18dp">@drawable/ic_link_black_18dp</item>
         <item name="ic_move_to_inbox_24dp">@drawable/ic_move_to_inbox_black_24dp</item>
+        <item name="ic_more_horiz_24dp">@drawable/ic_more_horiz_black_24dp</item>
         <item name="ic_menu_open_24dp">@drawable/ic_menu_open_black_24dp</item>
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_black_24dp</item>
         <item name="ic_open_in_new_24dp">@drawable/ic_open_in_new_black_24dp</item>
@@ -309,6 +310,7 @@
         <item name="ic_library_books_24dp">@drawable/ic_library_books_white_24dp</item>
         <item name="ic_link_18dp">@drawable/ic_link_white_18dp</item>
         <item name="ic_move_to_inbox_24dp">@drawable/ic_move_to_inbox_white_24dp</item>
+        <item name="ic_more_horiz_24dp">@drawable/ic_more_horiz_white_24dp</item>
         <item name="ic_menu_open_24dp">@drawable/ic_menu_open_white_24dp</item>
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_white_24dp</item>
         <item name="ic_open_in_new_24dp">@drawable/ic_open_in_new_white_24dp</item>

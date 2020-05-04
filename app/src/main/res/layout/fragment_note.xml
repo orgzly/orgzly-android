@@ -176,7 +176,7 @@
                         <ImageButton
                             android:id="@+id/fragment_note_tags_button"
                             style="@style/NoteFragmentButton"
-                            android:src="?attr/ic_menu_open_24dp" />
+                            android:src="?attr/ic_more_horiz_24dp" />
                     </LinearLayout>
 
                     <!-- State -->
