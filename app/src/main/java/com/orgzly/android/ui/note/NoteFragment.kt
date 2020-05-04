@@ -277,7 +277,32 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         }
 
         setMetadataFoldState(AppPreferences.noteMetadataFolded(context))
+
+        /*
+         * Content folding
+         */
+
+        binding.fragmentNoteContentHeader.setOnClickListener {
+            isNoteContentFolded().let { isFolded ->
+                setContentFoldState(!isFolded)
+                AppPreferences.isNoteContentFolded(context, !isFolded)
+            }
+        }
+
+        setContentFoldState(AppPreferences.isNoteContentFolded(context))
+
     }
+
+    private fun isNoteContentFolded(): Boolean {
+        return binding.fragmentNoteContentViews.visibility != View.VISIBLE
+    }
+
+    private fun setContentFoldState(isFolded: Boolean) {
+        binding.fragmentNoteContentViews.visibility = visibleOrGone(!isFolded)
+        binding.fragmentNoteContentHeaderUpIcon.visibility = visibleOrGone(!isFolded)
+        binding.fragmentNoteContentHeaderDownIcon.visibility = visibleOrGone(isFolded)
+    }
+
 
     private fun setMetadataFoldState(isFolded: Boolean) {
         binding.fragmentNoteMetadata.visibility = visibleOrGone(!isFolded)

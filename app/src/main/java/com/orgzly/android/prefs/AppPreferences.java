@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
+
 import com.orgzly.R;
 import com.orgzly.android.App;
 import com.orgzly.org.OrgStatesWorkflow;
@@ -679,6 +680,20 @@ public class AppPreferences {
         getDefaultSharedPreferences(context).edit().putString(key, value).apply();
     }
 
+    /*
+     * Content folding state in note details
+     */
+
+    public static boolean isNoteContentFolded(Context context) {
+        return getStateSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_is_note_content_folded),
+                context.getResources().getBoolean(R.bool.pref_default_is_note_content_folded));
+    }
+
+    public static void isNoteContentFolded(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_is_note_content_folded);
+        getStateSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
 
     /*
      * Keep screen on menu item

@@ -107,25 +107,16 @@
                     android:id="@+id/fragment_note_metadata_header"
                     style="@style/NoteFragmentFullWidthButton">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/screen_edge"
-                        android:layout_marginStart="@dimen/screen_edge"
-                        android:src="?attr/ic_info_outline_24dp"
-                        android:alpha="?attr/oic_item_alpha" />
-
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="2dp"
-                        android:paddingStart="2dp"
-                        android:paddingRight="2dp"
-                        android:paddingEnd="2dp"
-                        android:layout_marginLeft="@dimen/content_left_margin_from_icon"
-                        android:layout_marginStart="@dimen/content_left_margin_from_icon"
+                        android:paddingLeft="4dp"
+                        android:paddingStart="4dp"
+                        android:paddingRight="4dp"
+                        android:paddingEnd="4dp"
+                        android:layout_marginLeft="@dimen/screen_edge"
+                        android:layout_marginStart="@dimen/screen_edge"
                         android:text="@string/metadata"/>
 
                     <ImageView
@@ -283,35 +274,76 @@
 
                 </LinearLayout>
 
-                <com.orgzly.android.ui.views.EditTextWithMarkup
-                    android:id="@+id/body_edit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/screen_edge"
-                    android:layout_marginRight="@dimen/screen_edge"
-                    android:layout_marginTop="@dimen/space_between_content_areas"
-                    android:inputType="text|textCapSentences|textMultiLine"
-                    android:hint="@string/fragment_note_content_hint"
-                    android:gravity="start|top"
-                    android:freezesText="true"
-                    android:textSize="?attr/fragment_note_content_text_size"
-                    android:visibility="visible"  />
+                <!-- Metadata header -->
+                <LinearLayout
+                    android:id="@+id/fragment_note_content_header"
+                    style="@style/NoteFragmentFullWidthButton">
 
-                <com.orgzly.android.ui.views.TextViewWithMarkup
-                    android:id="@+id/body_view"
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="4dp"
+                        android:paddingStart="4dp"
+                        android:paddingRight="4dp"
+                        android:paddingEnd="4dp"
+                        android:layout_marginLeft="@dimen/screen_edge"
+                        android:layout_marginStart="@dimen/screen_edge"
+                        android:text="@string/content"/>
+
+                    <ImageView
+                        android:id="@+id/fragment_note_content_header_up_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:padding="12dp"
+                        android:src="?attr/ic_keyboard_arrow_up_24dp"
+                        android:alpha="?attr/oic_item_alpha"/>
+
+                    <ImageView
+                        android:id="@+id/fragment_note_content_header_down_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:padding="12dp"
+                        android:src="?attr/ic_keyboard_arrow_down_24dp"
+                        android:alpha="?attr/oic_item_alpha"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/fragment_note_content_views"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    android:layout_marginLeft="@dimen/screen_edge"
-                    android:layout_marginRight="@dimen/screen_edge"
-                    android:layout_marginTop="@dimen/space_between_content_areas"
-                    android:freezesText="true"
-                    android:gravity="start|top"
-                    style="@style/Widget.AppCompat.EditText"
-                    android:textIsSelectable="true"
-                    android:textSize="?attr/fragment_note_content_text_size"
-                    android:hint="@string/fragment_note_content_hint"
-                    android:visibility="gone" />
+                    android:orientation="vertical">
+
+                    <com.orgzly.android.ui.views.EditTextWithMarkup
+                        android:id="@+id/body_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/screen_edge"
+                        android:layout_marginRight="@dimen/screen_edge"
+                        android:inputType="text|textCapSentences|textMultiLine"
+                        android:hint="@string/fragment_note_content_hint"
+                        android:gravity="start|top"
+                        android:freezesText="true"
+                        android:textSize="?attr/fragment_note_content_text_size"
+                        android:visibility="visible"  />
+
+                    <com.orgzly.android.ui.views.TextViewWithMarkup
+                        android:id="@+id/body_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:layout_marginLeft="@dimen/screen_edge"
+                        android:layout_marginRight="@dimen/screen_edge"
+                        android:freezesText="true"
+                        android:gravity="start|top"
+                        style="@style/Widget.AppCompat.EditText"
+                        android:textIsSelectable="true"
+                        android:textSize="?attr/fragment_note_content_text_size"
+                        android:hint="@string/fragment_note_content_hint"
+                        android:visibility="gone" />
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
 
