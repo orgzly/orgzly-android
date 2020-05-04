@@ -233,7 +233,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onNotesInSearch().check(matches(recyclerViewItemCount(29)));
         onNoteInSearch(27).perform(click());
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
-        onView(withText("Note #28.")).check(matches(isDisplayed()));
+        onView(allOf(withText("Note #28."), isDisplayed())).check(matches(isDisplayed()));
     }
 
     @Test
