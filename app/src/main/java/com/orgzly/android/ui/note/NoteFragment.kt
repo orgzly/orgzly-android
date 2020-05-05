@@ -283,9 +283,13 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
          */
 
         binding.fragmentNoteContentHeader.setOnClickListener {
-            isNoteContentFolded().let { isFolded ->
-                setContentFoldState(!isFolded)
-                AppPreferences.isNoteContentFolded(context, !isFolded)
+            isNoteContentFolded().not().let { isFolded ->
+                if (isFolded && binding.bodyEdit.hasFocus()) {
+                    ActivityUtils.closeSoftKeyboard(activity)
+                }
+
+                setContentFoldState(isFolded)
+                AppPreferences.isNoteContentFolded(context, isFolded)
             }
         }
 
