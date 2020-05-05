@@ -2,9 +2,7 @@ package com.orgzly.android.ui
 
 import android.text.Spannable
 import android.text.SpannableStringBuilder
-import android.text.TextPaint
 import android.text.style.ClickableSpan
-import android.text.style.UnderlineSpan
 import android.view.View
 
 class Breadcrumbs {
@@ -12,7 +10,7 @@ class Breadcrumbs {
 
     fun add(name: String, truncateLength: Int = MAX_NAME_LENGTH, onClick: (() -> Unit)? = null) {
         if (ssb.isNotEmpty()) {
-            ssb.append(" • ")
+            ssb.append("  •  ")
         }
 
         val start = ssb.length
@@ -21,18 +19,15 @@ class Breadcrumbs {
 
         if (onClick != null) {
             val lastClickableSpan = object : ClickableSpan() {
-                override fun updateDrawState(ds: TextPaint) {
-                    // Do not color
-                    ds.isUnderlineText = true
-                }
+//                override fun updateDrawState(ds: TextPaint) {
+//                    ds.color = ds.linkColor
+//                    ds.isUnderlineText = true
+//                }
 
                 override fun onClick(widget: View) {
                     onClick()
                 }
             }
-
-            // Underline links (done above)
-            // ssb.setSpan(UnderlineSpan(), start, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
             ssb.setSpan(lastClickableSpan, start, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
