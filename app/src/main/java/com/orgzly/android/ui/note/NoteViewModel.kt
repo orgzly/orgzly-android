@@ -144,8 +144,6 @@ class NoteViewModel(
      * Toggle view/edit mode.
      */
     fun toggleViewEditMode() {
-        val context = App.getAppContext()
-
         val mode = when (viewEditMode.value) {
             ViewEditMode.VIEW ->
                 ViewEditMode.EDIT
@@ -163,21 +161,36 @@ class NoteViewModel(
 
         // Only remember last mode when opening existing notes
         if (!isNew()) {
-            AppPreferences.noteDetailsLastMode(
-                    context, if (mode == ViewEditMode.VIEW) "view" else "edit")
+            saveCurrentMode(mode)
         }
     }
 
-    fun editTitle() {
-        viewEditMode.postValue(ViewEditMode.EDIT_TITLE_WITH_KEYBOARD)
+    fun editTitle(saveMode: Boolean = true) {
+        ViewEditMode.EDIT_TITLE_WITH_KEYBOARD.let { mode ->
+            viewEditMode.postValue(mode)
+            if (saveMode) {
+                saveCurrentMode(mode)
+            }
+        }
     }
 
     fun editContent() {
-        viewEditMode.postValue(ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD)
+        ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD.let { mode ->
+            viewEditMode.postValue(mode)
+            saveCurrentMode(mode)
+        }
     }
 
     fun isInEditMode(): Boolean {
         return viewEditMode.value != ViewEditMode.VIEW
+    }
+
+    private fun saveCurrentMode(mode: ViewEditMode) {
+        val context = App.getAppContext()
+
+        AppPreferences.noteDetailsLastMode(
+                context, if (mode == ViewEditMode.VIEW) "view" else "edit")
+
     }
 
     fun savePayloadToBundle(outState: Bundle) {

@@ -594,7 +594,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                  * some initial values (for example from ShareActivity).
                  */
                 if (TextUtils.isEmpty(initialTitle) && TextUtils.isEmpty(initialContent)) {
-                    viewModel.editTitle()
+                    viewModel.editTitle(saveMode = false)
                 }
 
             } else { // Open existing note
