@@ -122,6 +122,9 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:$versions.android_appcompat"
 
+    implementation "androidx.documentfile:documentfile:$versions.android_documentfile"
+    implementation "androidx.localbroadcastmanager:localbroadcastmanager:$versions.android_localbroadcastmanager"
+
     // UI
     implementation "androidx.cardview:cardview:$versions.android_cardview"
     implementation "androidx.recyclerview:recyclerview:$versions.android_recyclerview"

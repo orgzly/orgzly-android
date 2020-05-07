@@ -14,12 +14,15 @@ buildscript {
 
     versions.android_appcompat = '1.1.0'
 
+    versions.android_documentfile = '1.0.1'
+    versions.android_localbroadcastmanager = '1.0.0'
+
     versions.android_cardview = '1.0.0'
     versions.android_recyclerview = '1.0.0'
     versions.android_viewpager = '1.0.0'
     versions.android_constraint_layout = '2.0.0-beta4'
     versions.android_preference = '1.1.0'
-    versions.android_material = '1.0.0'
+    versions.android_material = '1.1.0'
     versions.android_swiperefreshlayout = '1.0.0'
 
     versions.android_room = '2.2.1'
