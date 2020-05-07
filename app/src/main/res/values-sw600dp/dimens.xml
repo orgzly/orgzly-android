@@ -11,6 +11,7 @@
 
     <dimen name="screen_edge">24dp</dimen>
     <dimen name="screen_edge_minus_2dp">22dp</dimen>
+    <dimen name="screen_edge_minus_4dp">20dp</dimen>
 
     <dimen name="item_head_book_name_width">120dp</dimen>
 

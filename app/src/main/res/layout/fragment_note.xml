@@ -22,85 +22,96 @@
                 android:id="@+id/fragment_note_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/screen_edge"
                 android:paddingBottom="@dimen/screen_edge"
                 android:orientation="vertical">
 
-                <!-- Breadcrumbs -->
-                <FrameLayout
-                    android:id="@+id/fragment_note_breadcrumbs"
-                    android:layout_width="wrap_content"
+                <!-- Breadcrumbs and title -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/screen_edge"
-                    android:layout_marginStart="@dimen/screen_edge"
-                    android:layout_marginRight="@dimen/screen_edge"
-                    android:layout_marginEnd="@dimen/screen_edge"
-                    android:paddingLeft="4dp"
-                    android:paddingStart="4dp"
-                    android:paddingRight="4dp"
-                    android:paddingEnd="4dp"
-                    android:scrollbars="none"
-                    android:visibility="visible">
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/screen_edge">
 
+                    <!-- Breadcrumbs -->
+                    <FrameLayout
+                        android:id="@+id/fragment_note_breadcrumbs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/screen_edge"
+                        android:layout_marginStart="@dimen/screen_edge"
+                        android:layout_marginRight="@dimen/screen_edge"
+                        android:layout_marginEnd="@dimen/screen_edge"
+                        android:scrollbars="none"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:id="@+id/fragment_note_breadcrumbs_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center_vertical"
+                            android:linksClickable="true"
+                            android:textColor="?attr/text_primary_color"
+                            android:textSize="?attr/fragment_note_content_text_size"
+                            android:lineSpacingMultiplier="1.25"
+                            tools:text="@string/breadcrumbs_sample" />
+                    </FrameLayout>
+
+                    <!-- Selectable notebook -->
                     <TextView
-                        android:id="@+id/fragment_note_breadcrumbs_text"
+                        android:id="@+id/fragment_note_location_button"
+                        style="@style/NoteFragmentListItemSpinnerButton"
+                        android:layout_marginLeft="@dimen/screen_edge"
+                        android:layout_marginStart="@dimen/screen_edge"
+                        android:layout_marginRight="@dimen/screen_edge"
+                        android:layout_marginEnd="@dimen/screen_edge"
+                        tools:text="GTD"
+                        android:visibility="gone"/>
+
+                    <!-- Title -->
+                    <com.orgzly.android.ui.views.EditTextWithMarkup
+                        android:id="@+id/fragment_note_title"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center_vertical"
-                        android:linksClickable="true"
-                        android:textColor="?attr/text_primary_color"
-                        android:textSize="?attr/fragment_note_content_text_size"
-                        android:lineSpacingMultiplier="1.25"
-                        tools:text="@string/breadcrumbs_sample" />
-                </FrameLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginStart="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginRight="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginEnd="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginTop="@dimen/space_between_content_areas"
+                        android:layout_marginBottom="@dimen/space_between_content_areas"
+                        android:inputType="text|textCapSentences"
+                        android:imeOptions="actionDone"
+                        android:hint="@string/fragment_note_title_hint"
+                        tools:text="@string/head_title_sample"
+                        android:freezesText="true"
+                        android:textSize="?attr/font_large"
+                        android:visibility="visible" />
 
-                <!-- Selectable notebook -->
-                <TextView
-                    android:id="@+id/fragment_note_location_button"
-                    style="@style/NoteFragmentListItemSpinnerButton"
-                    android:layout_marginLeft="@dimen/screen_edge"
-                    android:layout_marginStart="@dimen/screen_edge"
-                    android:layout_marginRight="@dimen/screen_edge"
-                    android:layout_marginEnd="@dimen/screen_edge"
-                    tools:text="GTD"
-                    android:visibility="gone"/>
+                    <com.orgzly.android.ui.views.TextViewWithMarkup
+                        android:id="@+id/fragment_note_title_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginStart="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginRight="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginEnd="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginTop="@dimen/space_between_content_areas"
+                        android:layout_marginBottom="@dimen/space_between_content_areas"
+                        style="@style/Widget.AppCompat.EditText"
+                        tools:text="@string/head_title_sample"
+                        android:freezesText="true"
+                        android:textIsSelectable="true"
+                        android:textSize="?attr/font_large"
+                        android:visibility="gone" />
 
-                <!-- Title -->
-                <EditText
-                    android:id="@+id/fragment_note_title"
+                </LinearLayout>
+
+                <!--
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/screen_edge"
-                    android:layout_marginStart="@dimen/screen_edge"
-                    android:layout_marginRight="@dimen/screen_edge"
-                    android:layout_marginEnd="@dimen/screen_edge"
-                    android:layout_marginTop="@dimen/space_between_content_areas"
-                    android:layout_marginBottom="@dimen/space_between_content_areas"
-                    android:inputType="text|textCapSentences"
-                    android:imeOptions="actionDone"
-                    android:hint="@string/fragment_note_title_hint"
-                    tools:text="@string/head_title_sample"
-                    android:freezesText="true"
-                    android:textSize="?attr/font_large"
-                    android:visibility="visible" />
-
-                <com.orgzly.android.ui.views.TextViewWithMarkup
-                    android:id="@+id/fragment_note_title_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/screen_edge"
-                    android:layout_marginStart="@dimen/screen_edge"
-                    android:layout_marginRight="@dimen/screen_edge"
-                    android:layout_marginEnd="@dimen/screen_edge"
-                    android:layout_marginTop="@dimen/space_between_content_areas"
-                    android:layout_marginBottom="@dimen/space_between_content_areas"
-                    style="@style/Widget.AppCompat.EditText"
-                    tools:text="@string/head_title_sample"
-                    android:freezesText="true"
-                    android:textIsSelectable="true"
-                    android:textSize="?attr/font_large"
-                    android:visibility="gone" />
+                    android:layout_height="1dp"
+                    android:background="?android:attr/dividerHorizontal" />
+                    -->
 
                 <!-- Metadata header -->
                 <LinearLayout
@@ -111,12 +122,10 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="4dp"
-                        android:paddingStart="4dp"
-                        android:paddingRight="4dp"
-                        android:paddingEnd="4dp"
                         android:layout_marginLeft="@dimen/screen_edge"
                         android:layout_marginStart="@dimen/screen_edge"
+                        android:textSize="?attr/fragment_note_content_text_size"
+                        android:textColor="?attr/text_primary_color"
                         android:text="@string/metadata"/>
 
                     <ImageView
@@ -144,6 +153,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/space_between_content_areas"
+                    android:layout_marginStart="@dimen/screen_edge"
+                    android:layout_marginLeft="@dimen/screen_edge"
                     android:layout_marginRight="@dimen/screen_edge"
                     android:layout_marginEnd="@dimen/screen_edge">
 
@@ -274,21 +286,28 @@
 
                 </LinearLayout>
 
-                <!-- Metadata header -->
+                <!--
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/space_between_content_areas"
+                    android:background="?android:attr/dividerHorizontal" />
+                    -->
+
+                <!-- Content header -->
                 <LinearLayout
                     android:id="@+id/fragment_note_content_header"
-                    style="@style/NoteFragmentFullWidthButton">
+                    style="@style/NoteFragmentFullWidthButton"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="4dp"
-                        android:paddingStart="4dp"
-                        android:paddingRight="4dp"
-                        android:paddingEnd="4dp"
                         android:layout_marginLeft="@dimen/screen_edge"
                         android:layout_marginStart="@dimen/screen_edge"
+                        android:textSize="?attr/fragment_note_content_text_size"
+                        android:textColor="?attr/text_primary_color"
                         android:text="@string/content"/>
 
                     <ImageView
@@ -320,8 +339,10 @@
                         android:id="@+id/body_edit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/screen_edge"
-                        android:layout_marginRight="@dimen/screen_edge"
+                        android:layout_marginLeft="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginStart="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginRight="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginEnd="@dimen/screen_edge_minus_4dp"
                         android:inputType="text|textCapSentences|textMultiLine"
                         android:hint="@string/fragment_note_content_hint"
                         android:gravity="start|top"
@@ -333,9 +354,10 @@
                         android:id="@+id/body_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="48dp"
-                        android:layout_marginLeft="@dimen/screen_edge"
-                        android:layout_marginRight="@dimen/screen_edge"
+                        android:layout_marginLeft="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginStart="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginRight="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginEnd="@dimen/screen_edge_minus_4dp"
                         android:freezesText="true"
                         android:gravity="start|top"
                         style="@style/Widget.AppCompat.EditText"
@@ -344,6 +366,7 @@
                         android:hint="@string/fragment_note_content_hint"
                         android:visibility="gone" />
                 </LinearLayout>
+
             </LinearLayout>
         </ScrollView>
 
