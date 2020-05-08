@@ -134,7 +134,7 @@
                         android:layout_height="48dp"
                         android:padding="12dp"
                         android:src="?attr/ic_keyboard_arrow_up_24dp"
-                        android:alpha="?attr/oic_item_alpha"/>
+                        android:alpha="?attr/active_unfocused_icon_alpha"/>
 
                     <ImageView
                         android:id="@+id/fragment_note_metadata_header_down_icon"
@@ -142,7 +142,7 @@
                         android:layout_height="48dp"
                         android:padding="12dp"
                         android:src="?attr/ic_keyboard_arrow_down_24dp"
-                        android:alpha="?attr/oic_item_alpha"
+                        android:alpha="?attr/active_unfocused_icon_alpha"
                         android:visibility="gone"/>
 
                 </LinearLayout>
@@ -169,7 +169,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:src="?attr/ic_label_outline_24dp"
-                            android:alpha="?attr/oic_item_alpha"
+                            android:alpha="?attr/active_unfocused_icon_alpha"
                             android:contentDescription="@string/tags"/>
 
                         <MultiAutoCompleteTextView
@@ -200,7 +200,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="?attr/ic_flag_24dp"
-                            android:alpha="?attr/oic_item_alpha"/>
+                            android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
                             android:id="@+id/fragment_note_state_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
@@ -217,7 +217,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="?attr/ic_star_border_24dp"
-                            android:alpha="?attr/oic_item_alpha"/>
+                            android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
                             android:id="@+id/fragment_note_priority_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
@@ -234,7 +234,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="?attr/ic_today_24dp"
-                            android:alpha="?attr/oic_item_alpha"/>
+                            android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
                             android:id="@+id/fragment_note_scheduled_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
@@ -250,7 +250,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="?attr/ic_alarm_24dp"
-                            android:alpha="?attr/oic_item_alpha"/>
+                            android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
                             android:id="@+id/fragment_note_deadline_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
@@ -267,7 +267,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="?attr/ic_outline_check_circle_24dp"
-                            android:alpha="?attr/oic_item_alpha"/>
+                            android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
                             android:id="@+id/fragment_note_closed_edit_text"
                             style="@style/NoteFragmentListItemSpinnerButton"
@@ -316,7 +316,7 @@
                         android:layout_height="48dp"
                         android:padding="12dp"
                         android:src="?attr/ic_keyboard_arrow_up_24dp"
-                        android:alpha="?attr/oic_item_alpha"/>
+                        android:alpha="?attr/active_unfocused_icon_alpha"/>
 
                     <ImageView
                         android:id="@+id/fragment_note_content_header_down_icon"
@@ -324,7 +324,7 @@
                         android:layout_height="48dp"
                         android:padding="12dp"
                         android:src="?attr/ic_keyboard_arrow_down_24dp"
-                        android:alpha="?attr/oic_item_alpha"
+                        android:alpha="?attr/active_unfocused_icon_alpha"
                         android:visibility="gone"/>
 
                 </LinearLayout>

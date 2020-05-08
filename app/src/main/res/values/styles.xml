@@ -177,8 +177,9 @@
         <item name="oic_new_below_24dp">@drawable/cic_new_below_black_24dp</item>
         <item name="oic_new_under_24dp">@drawable/cic_new_under_black_24dp</item>
 
+        <!-- https://material.io/design/iconography/system-icons.html#color -->
         <item name="active_focused_icon_alpha">0.87</item>
-        <item name="oic_item_alpha">0.54</item>
+        <item name="active_unfocused_icon_alpha">0.54</item>
 
         <item name="bullet_default">@drawable/bullet_state_default</item>
         <item name="bullet_folded">@drawable/bullet_state_folded</item>
@@ -345,8 +346,9 @@
         <item name="oic_new_below_24dp">@drawable/cic_new_below_white_24dp</item>
         <item name="oic_new_under_24dp">@drawable/cic_new_under_white_24dp</item>
 
-        <item name="active_focused_icon_alpha">1</item>
-        <item name="oic_item_alpha">0.70</item>
+        <!-- https://material.io/design/iconography/system-icons.html#color -->
+        <item name="active_focused_icon_alpha">1.00</item>
+        <item name="active_unfocused_icon_alpha">0.70</item>
 
         <item name="bullet_default">@drawable/bullet_state_default_dark</item>
         <item name="bullet_folded">@drawable/bullet_state_folded_dark</item>
@@ -521,7 +523,7 @@
     <style name="NoteFragmentButton" parent="Base.Widget.AppCompat.Button.Borderless">
         <item name="android:layout_width">48dp</item>
         <item name="android:layout_height">48dp</item>
-        <item name="android:alpha">?attr/oic_item_alpha</item>
+        <item name="android:alpha">?attr/active_unfocused_icon_alpha</item>
     </style>
 
     <style name="NoteFragmentListItem">

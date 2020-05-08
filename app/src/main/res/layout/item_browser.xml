@@ -14,7 +14,7 @@
         android:id="@+id/item_browser_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:alpha="?attr/oic_item_alpha"
+        android:alpha="?attr/active_unfocused_icon_alpha"
         android:src="?attr/ic_folder_open_24dp" />
 
     <TextView
