@@ -364,20 +364,12 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
                 NoteViewModel.ViewEditMode.EDIT_TITLE_WITH_KEYBOARD -> {
                     toEditMode()
-                    ActivityUtils.openSoftKeyboard(
-                            activity,
-                            binding.fragmentNoteTitle,
-                            binding.fragmentNoteContainer,
-                            binding.fragmentNoteContent)
+                    ActivityUtils.openSoftKeyboard(activity, binding.fragmentNoteTitle)
                 }
 
                 NoteViewModel.ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD -> {
                     toEditMode()
-                    ActivityUtils.openSoftKeyboard(
-                            activity,
-                            binding.bodyEdit,
-                            binding.fragmentNoteContainer,
-                            binding.bodyEdit)
+                    ActivityUtils.openSoftKeyboard(activity, binding.bodyEdit)
                 }
 
                 null -> { }
