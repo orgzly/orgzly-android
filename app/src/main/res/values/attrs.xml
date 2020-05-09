@@ -43,8 +43,6 @@
     </declare-styleable>
 
     <declare-styleable name="ColorScheme">
-        <attr name="accent_color" format="color" />
-
         <attr name="app_bar_bg_color" format="color"/>
         <attr name="bottom_action_bar_bg_color" format="color"/>
 

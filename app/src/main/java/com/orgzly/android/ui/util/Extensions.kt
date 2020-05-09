@@ -12,6 +12,7 @@ import com.orgzly.R
 import com.orgzly.android.AppIntent
 import com.orgzly.android.sync.SyncService
 
+
 fun <R> Context.styledAttributes(@StyleableRes attrs: IntArray, f: (typedArray: TypedArray) -> R): R {
     val typedArray = obtainStyledAttributes(attrs)
     try {
@@ -43,8 +44,13 @@ fun SwipeRefreshLayout.setup() {
         setProgressBackgroundColorSchemeColor(
                 typedArray.getColor(R.styleable.ColorScheme_item_book_card_bg_color, 0))
 
-        setColorSchemeColors(
-                typedArray.getColor(R.styleable.ColorScheme_accent_color, 0))
+        val color = context.obtainStyledAttributes(intArrayOf(R.attr.colorAccent)).let {
+            val color = it.getColor(0, 0)
+            it.recycle()
+            color
+        }
+
+        setColorSchemeColors(color)
     }
 }
 
