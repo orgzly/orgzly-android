@@ -8,8 +8,10 @@ import android.text.Spanned
 import android.text.TextUtils
 import android.text.style.ClickableSpan
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.MotionEvent
 import android.widget.TextView
+import androidx.core.view.GestureDetectorCompat
 
 /**
  * [TextView] with few fixes and workarounds.
@@ -22,12 +24,27 @@ open class TextViewFixed : AppCompatTextView {
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+
+    private var onFocusOrClickListener: OnClickListener? = null
+
+    private val gestureDetector = GestureDetectorCompat(context, object : GestureDetector.SimpleOnGestureListener() {
+        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+            return true
+        }
+    })
+
+    fun setOnFocusOrClickListener(l: OnClickListener?) {
+        onFocusOrClickListener = l
+    }
+
     /**
      * Added as setMovementMethod was preventing clicks outside of ClickableSpan.
      * https://stackoverflow.com/q/30452627
      **/
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        val isSingleTapUp = gestureDetector.onTouchEvent(event)
+
         val layout = this.layout
 
         if (layout != null) {
@@ -40,13 +57,24 @@ open class TextViewFixed : AppCompatTextView {
                 val clickableSpans = spanned.getSpans(offset, offset, ClickableSpan::class.java)
 
                 if (clickableSpans.isNotEmpty()) {
-                    when {
-                        event.action == MotionEvent.ACTION_DOWN -> return true
-                        event.action == MotionEvent.ACTION_UP -> clickableSpans[0].onClick(this)
-                        else -> return super.onTouchEvent(event)
+                    return when (event.action) {
+                        MotionEvent.ACTION_DOWN ->
+                            true
+
+                        MotionEvent.ACTION_UP -> {
+                            clickableSpans[0].onClick(this)
+                            super.onTouchEvent(event)
+                        }
+
+                        else ->
+                            super.onTouchEvent(event)
                     }
                 }
             }
+        }
+
+        if (isSingleTapUp) {
+            onFocusOrClickListener?.onClick(this)
         }
 
         return super.onTouchEvent(event)

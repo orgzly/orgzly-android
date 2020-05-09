@@ -182,11 +182,9 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         binding.fragmentNoteTitleView.apply {
             removeBackgroundKeepPadding()
 
-            setOnFocusChangeListener { v, hasFocus ->
-                if (hasFocus) {
-                    viewModel.editTitle()
-                }
-            }
+            setOnFocusOrClickListener(View.OnClickListener {
+                viewModel.editTitle()
+            })
         }
 
         binding.fragmentNoteBreadcrumbsText.movementMethod = LinkMovementMethod.getInstance()
@@ -252,11 +250,9 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         binding.bodyView.apply {
             removeBackgroundKeepPadding()
 
-            setOnFocusChangeListener { v, hasFocus ->
-                if (hasFocus) {
-                    viewModel.editContent()
-                }
-            }
+            setOnFocusOrClickListener(View.OnClickListener {
+                viewModel.editContent()
+            })
         }
 
         if (activity != null && AppPreferences.isFontMonospaced(context)) {
