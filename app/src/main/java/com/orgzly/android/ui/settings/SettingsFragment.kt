@@ -278,13 +278,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             getString(R.string.pref_key_use_reminders_for_event_times) ->
                 AppPreferences.reminderLastRunForEvents(context, 0L)
 
-            getString(R.string.pref_key_daily_reminder_time) -> {
-                AppPreferences.reminderLastRunForScheduled(context, 0L)
-                AppPreferences.reminderLastRunForDeadline(context, 0L)
-                AppPreferences.reminderLastRunForEvents(context, 0L)
-            }
-
-
             // Display images inline enabled - request permission
             getString(R.string.pref_key_images_enabled) -> {
                 if (AppPreferences.imagesEnabled(context)) {
