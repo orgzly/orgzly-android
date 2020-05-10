@@ -139,7 +139,7 @@ public class DropboxClient {
         AppPreferences.dropboxToken(mContext, null);
     }
 
-    public List<VersionedRook> getBooks(Uri repoUri) throws IOException {
+    public List<VersionedRook> getBooks(Uri repoUri, boolean encrypted) throws IOException {
         linkedOrThrow();
 
         List<VersionedRook> list = new ArrayList<>();
@@ -163,7 +163,8 @@ public class DropboxClient {
                         if (metadata instanceof FileMetadata) {
                             FileMetadata file = (FileMetadata) metadata;
 
-                            if (BookName.isSupportedFormatFileName(file.getName())) {
+                            if ((!encrypted && BookName.isSupportedFormatFileName(file.getName()))
+                                    || (encrypted && BookName.isEncryptedSupportedFormatFileName(file.getName()))) {
                                 Uri uri = repoUri.buildUpon().appendPath(file.getName()).build();
                                 VersionedRook book = new VersionedRook(
                                         repoId,

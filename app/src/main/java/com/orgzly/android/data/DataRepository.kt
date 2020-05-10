@@ -178,7 +178,6 @@ class DataRepository @Inject constructor(
                         Pair(tmpFileEncrypted, MiscUtils.ensureGpgExtensionFileName(fileName))
                     } else {
                         // remove possible .gpg extension left over from a previous encrypted sync
-                        // ?maybe move this logic to BookView.getFileName()
                         Pair(tmpFile, MiscUtils.ensureNoGpgExtensionFileName(fileName))
                     }
 
@@ -1584,9 +1583,6 @@ class DataRepository @Inject constructor(
         val tmpFileDecrypted = getTempBookFile()
         try {
             /* Download from repo. */
-            // ensure that we don't try to decrypt .org files or interpret .org.gpg as plaintext
-            // problem if both 'nb.org' and 'nb.org.gpg' exist. probably some other mechanism that
-            // runs at a higher level that here should be made aware and responsible of .pgp extensions
             val toRecvFileName = if (repo.isEncryptionEnabled) {
                 MiscUtils.ensureGpgExtensionFileName(fileName)
             } else {

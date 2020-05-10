@@ -42,7 +42,7 @@ public class DropboxRepo implements SyncRepo {
 
     @Override
     public List<VersionedRook> getBooks() throws IOException {
-        return client.getBooks(repoUri);
+        return client.getBooks(repoUri, isEncryptionEnabled());
     }
 
     @Override

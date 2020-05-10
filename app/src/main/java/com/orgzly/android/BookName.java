@@ -20,6 +20,7 @@ public class BookName {
 
     private static final Pattern PATTERN = Pattern.compile("(.*)\\.(org)(\\.txt)?(\\.gpg)?$");
     private static final Pattern SKIP_PATTERN = Pattern.compile("^\\.#.*");
+    private static final Pattern GPG_PATTERN = Pattern.compile("(.*)(\\.gpg)$");
 
     private final String mFileName;
     private final String mName;
@@ -69,6 +70,10 @@ public class BookName {
 
     public static boolean isSupportedFormatFileName(String fileName) {
         return PATTERN.matcher(fileName).matches() && !SKIP_PATTERN.matcher(fileName).matches();
+    }
+
+    public static boolean isEncryptedSupportedFormatFileName(String fileName) {
+        return isSupportedFormatFileName(fileName) && GPG_PATTERN.matcher(fileName).matches();
     }
 
     public static String fileName(String name, BookFormat format) {
