@@ -16,49 +16,51 @@ class TimePreferenceFragment : PreferenceDialogFragmentCompat() {
     override fun onBindDialogView(view: View) {
         super.onBindDialogView(view)
 
-        timePicker = view.findViewById(com.orgzly.R.id.time_picker_layout)
-
         // Get the time from the related Preference
-        var minutesAfterMidnight: Int? = null
-        val preference = preference
-        if (preference is TimePreference) {
-            minutesAfterMidnight = preference.getTime()
-        }
+        val minutesAfterMidnight = (preference as TimePreference).getTime()
 
         // Set the time to the TimePicker
-        if (minutesAfterMidnight != null) {
+        timePicker = view.findViewById<TimePicker>(com.orgzly.R.id.time_picker_layout).apply {
             val hours = minutesAfterMidnight / 60
             val minutes = minutesAfterMidnight % 60
             val is24hour = DateFormat.is24HourFormat(context)
 
-            timePicker.setIs24HourView(is24hour)
+            setIs24HourView(is24hour)
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                timePicker.hour = hours
-                timePicker.minute = minutes
+                hour = hours
+                minute = minutes
             } else {
-                timePicker.currentHour = minutes
-                timePicker.currentMinute = minutes
+                currentHour = hours
+                currentMinute = minutes
             }
         }
     }
 
     override fun onDialogClosed(positiveResult: Boolean) {
         if (positiveResult) {
-            val hours = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) timePicker.hour else timePicker.currentHour
-            val minutes = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) timePicker.minute else timePicker.currentMinute
+            val hours = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                timePicker.hour
+            } else {
+                timePicker.currentHour
+            }
+            val minutes = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                timePicker.minute
+            } else {
+                timePicker.currentMinute
+            }
+
             val minutesAfterMidnight = hours * 60 + minutes
 
             // Get the related Preference and save the value
             val preference = preference
             if (preference is TimePreference) {
                 // This allows the client to ignore the user value.
-                if (preference.callChangeListener(
-                                minutesAfterMidnight)) {
+                if (preference.callChangeListener(minutesAfterMidnight)) {
                     // Save the value
                     preference.setTime(minutesAfterMidnight)
                 }
             }
-
 
             preference.summary = minutesAfterMidnight.toString()
         }
