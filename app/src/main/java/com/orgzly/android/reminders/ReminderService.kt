@@ -270,7 +270,7 @@ class ReminderService : JobIntentService() {
                     val time = getFirstTime(
                             orgDateTime,
                             interval,
-                            OrgInterval(9, OrgInterval.Unit.HOUR),  // Default time of day
+                            AppPreferences.reminderDailyTime(context),
                             warningPeriod
                     )
 
@@ -381,7 +381,7 @@ class ReminderService : JobIntentService() {
         private fun getFirstTime(
                 orgDateTime: OrgDateTime,
                 interval: Pair<ReadableInstant, ReadableInstant?>,
-                defaultTimeOfDay: OrgInterval,
+                defaultTimeOfDay: Int,
                 warningPeriod: OrgInterval?): DateTime? {
 
             val times = OrgDateTimeUtils.getTimesInInterval(
@@ -392,8 +392,7 @@ class ReminderService : JobIntentService() {
             }
             var time = times[0]
             if (!orgDateTime.hasTime()) {
-                // TODO: Move to preferences
-                time = time.plusHours(9)
+                time = time.plusMinutes(defaultTimeOfDay)
             }
             return time
         }

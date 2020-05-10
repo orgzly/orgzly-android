@@ -230,6 +230,10 @@
     <string name="pref_key_reminders_led" translatable="false">pref_key_reminders_led</string>
     <bool name="pref_default_reminders_led" translatable="false">true</bool>
 
+    <string name="pref_key_daily_reminder_time" translatable="false">pref_key_daily_reminder_time</string>
+    <!-- Time in minutes after midnight. 540 minutes == 9 o'clock -->
+    <integer name="pref_default_daily_reminder_time" translatable="false">540</integer>
+
     <!-- Auto-sync -->
 
     <string name="pref_key_auto_sync" translatable="false">pref_key_auto_sync</string>

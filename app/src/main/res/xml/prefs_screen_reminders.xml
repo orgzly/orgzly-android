@@ -61,4 +61,8 @@
             android:defaultValue="@string/pref_default_snooze_type"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
+
+    <com.orgzly.android.prefs.TimePreference
+        android:key="@string/pref_key_daily_reminder_time"
+        android:title="@string/pref_title_daily_reminder_time" />
 </androidx.preference.PreferenceScreen>
