@@ -23,6 +23,10 @@
         android:summary="@string/pref_title_summary_reminders_for_event_times"
         android:defaultValue="@bool/pref_default_use_reminders_for_event_times" />
 
+    <com.orgzly.android.prefs.TimePreference
+        android:key="@string/pref_key_daily_reminder_time"
+        android:title="@string/pref_title_daily_reminder_time" />
+
     <PreferenceCategory
         android:key="@string/pref_key_reminders_notification_settings"
         android:title="@string/prefs_title_notifications">
@@ -62,7 +66,4 @@
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
-    <com.orgzly.android.prefs.TimePreference
-        android:key="@string/pref_key_daily_reminder_time"
-        android:title="@string/pref_title_daily_reminder_time" />
 </androidx.preference.PreferenceScreen>
