@@ -61,12 +61,14 @@
                     <TextView
                         android:id="@+id/fragment_note_location_button"
                         style="@style/NoteFragmentListItemSpinnerButton"
-                        android:layout_marginLeft="@dimen/screen_edge"
-                        android:layout_marginStart="@dimen/screen_edge"
-                        android:layout_marginRight="@dimen/screen_edge"
-                        android:layout_marginEnd="@dimen/screen_edge"
+                        android:layout_width="match_parent"
+                        android:layout_marginLeft="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginStart="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginRight="@dimen/screen_edge_minus_4dp"
+                        android:layout_marginEnd="@dimen/screen_edge_minus_4dp"
+                        android:textSize="?attr/fragment_note_content_text_size"
                         tools:text="GTD"
-                        android:visibility="gone"/>
+                        android:visibility="visible"/>
 
                     <!-- Title -->
                     <com.orgzly.android.ui.views.EditTextWithMarkup
@@ -156,8 +158,8 @@
                     android:layout_marginBottom="@dimen/space_between_content_areas"
                     android:layout_marginStart="@dimen/screen_edge"
                     android:layout_marginLeft="@dimen/screen_edge"
-                    android:layout_marginRight="@dimen/screen_edge"
-                    android:layout_marginEnd="@dimen/screen_edge">
+                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="4dp">
 
                     <!-- Tags. -->
                     <LinearLayout
@@ -206,6 +208,10 @@
                             style="@style/NoteFragmentListItemSpinnerButton"
                             android:hint="@string/state"
                             tools:text="TODO"/>
+                        <ImageButton
+                            android:id="@+id/fragment_note_state_remove"
+                            style="@style/NoteFragmentButton"
+                            android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
                     <!-- Priority -->
@@ -223,6 +229,10 @@
                             style="@style/NoteFragmentListItemSpinnerButton"
                             android:hint="@string/priority"
                             tools:text="Priority A"/>
+                        <ImageButton
+                            android:id="@+id/fragment_note_priority_remove"
+                            style="@style/NoteFragmentButton"
+                            android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
                     <!-- Scheduled time -->
@@ -239,6 +249,10 @@
                             android:id="@+id/fragment_note_scheduled_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
                             android:hint="@string/schedule_button_hint"/>
+                        <ImageButton
+                            android:id="@+id/fragment_note_scheduled_remove"
+                            style="@style/NoteFragmentButton"
+                            android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
                     <!-- Deadline time -->
@@ -256,6 +270,10 @@
                             style="@style/NoteFragmentListItemSpinnerButton"
                             android:hint="@string/deadline_button_hint"
                             tools:text="@string/note_deadline_sample"/>
+                        <ImageButton
+                            android:id="@+id/fragment_note_deadline_remove"
+                            style="@style/NoteFragmentButton"
+                            android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
                     <!-- Closed time -->
@@ -272,6 +290,10 @@
                             android:id="@+id/fragment_note_closed_edit_text"
                             style="@style/NoteFragmentListItemSpinnerButton"
                             android:hint="@string/closed_button_hint"/>
+                        <ImageButton
+                            android:id="@+id/fragment_note_closed_remove"
+                            style="@style/NoteFragmentButton"
+                            android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
                     <!-- List of properties -->

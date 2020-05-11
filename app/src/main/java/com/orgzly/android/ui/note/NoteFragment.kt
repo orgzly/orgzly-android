@@ -226,14 +226,19 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         setupTagsViewAdapter()
 
         binding.fragmentNotePriorityButton.setOnClickListener(this)
+        binding.fragmentNotePriorityRemove.setOnClickListener(this)
 
         binding.fragmentNoteStateButton.setOnClickListener(this)
+        binding.fragmentNoteStateRemove.setOnClickListener(this)
 
         binding.fragmentNoteScheduledButton.setOnClickListener(this)
+        binding.fragmentNoteScheduledRemove.setOnClickListener(this)
 
         binding.fragmentNoteDeadlineButton.setOnClickListener(this)
+        binding.fragmentNoteDeadlineRemove.setOnClickListener(this)
 
         binding.fragmentNoteClosedEditText.setOnClickListener(this)
+        binding.fragmentNoteClosedRemove.setOnClickListener(this)
 
         binding.bodyView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -760,6 +765,10 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                         .show()
             }
 
+            R.id.fragment_note_state_remove -> {
+                setState(null)
+            }
+
             R.id.fragment_note_priority_button -> {
                 val priorities = NotePriorities.fromPreferences(context!!)
 
@@ -781,6 +790,10 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                         .show()
             }
 
+            R.id.fragment_note_priority_remove -> {
+                setPriorityView(null)
+            }
+
             /* Setting scheduled time. */
             R.id.fragment_note_scheduled_button ->
                 f = TimestampDialogFragment.getInstance(
@@ -788,6 +801,11 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                         TimeType.SCHEDULED,
                         emptySet(), // Unused
                         OrgRange.parseOrNull(viewModel.notePayload?.scheduled)?.startTime)
+
+            R.id.fragment_note_scheduled_remove -> {
+                updateTimestampView(TimeType.SCHEDULED, null)
+                viewModel.updatePayloadScheduledTime(null)
+            }
 
             /* Setting deadline time. */
             R.id.fragment_note_deadline_button ->
@@ -797,6 +815,11 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                         emptySet(), // Unused
                         OrgRange.parseOrNull(viewModel.notePayload?.deadline)?.startTime)
 
+            R.id.fragment_note_deadline_remove -> {
+                updateTimestampView(TimeType.DEADLINE, null)
+                viewModel.updatePayloadDeadlineTime(null)
+            }
+
             /* Setting closed time. */
             R.id.fragment_note_closed_edit_text ->
                 f = TimestampDialogFragment.getInstance(
@@ -804,6 +827,11 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                         TimeType.CLOSED,
                         emptySet(), // Unused
                         OrgRange.parseOrNull(viewModel.notePayload?.closed)?.startTime)
+
+            R.id.fragment_note_closed_remove -> {
+                updateTimestampView(TimeType.CLOSED, null)
+                viewModel.updatePayloadClosedTime(null)
+            }
         }
 
         f?.show(childFragmentManager, TimestampDialogFragment.FRAGMENT_TAG)
@@ -840,7 +868,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             R.id.fragment_note_scheduled_button -> {
                 updateTimestampView(TimeType.SCHEDULED, range)
                 viewModel.updatePayloadScheduledTime(range)
-
             }
 
             R.id.fragment_note_deadline_button -> {
