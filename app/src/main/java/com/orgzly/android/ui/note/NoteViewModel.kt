@@ -315,7 +315,7 @@ class NoteViewModel(
     fun followBookBreadcrumb() {
         App.EXECUTORS.diskIO().execute {
             catchAndPostError {
-                UseCaseRunner.run(BookSparseTreeForNote(noteId))
+                UseCaseRunner.run(BookScrollToNote(noteId))
             }
         }
     }
