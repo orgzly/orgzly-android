@@ -19,6 +19,9 @@
 
     <dimen name="list_view_with_fab_bottom_padding">88dp</dimen>
 
+    <dimen name="card_margin">2dp</dimen>
+    <dimen name="cards_margin">6dp</dimen>
+
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- Padding for sync button -->
