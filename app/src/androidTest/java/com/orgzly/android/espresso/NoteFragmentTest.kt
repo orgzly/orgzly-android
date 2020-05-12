@@ -12,6 +12,7 @@ import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.PickerActions.setDate
 import androidx.test.espresso.contrib.PickerActions.setTime
+import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
@@ -478,7 +479,9 @@ class NoteFragmentTest : OrgzlyTest() {
         onView(withId(R.id.fragment_note_breadcrumbs_text)).perform(clickClickableSpan("Note #1."))
 
         // Dialog is displayed
-        onView(withText(R.string.discard_or_save_changes)).check(matches(isDisplayed()))
+        onView(withText(R.string.discard_or_save_changes))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
 
         onView(withText(R.string.cancel)).perform(click())
 
