@@ -526,7 +526,7 @@ class SyncService : Service() {
             val dbFile = dataRepository.getTempBookFile()
             try {
                 NotesOrgExporter(dataRepository).exportBook(book, dbFile)
-                val (newRook1, loadFile) = repo.syncBook(someRook.uri, currentRook!!, dbFile)
+                val (newRook1, loadFile) = repo.syncBook(someRook.uri, currentRook, dbFile)
                 // We only need to write it if syncback is needed
                 if (loadFile != null) {
                     newRook = newRook1
