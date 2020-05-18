@@ -2,6 +2,7 @@ package com.orgzly.android.repos;
 
 import com.orgzly.android.OrgzlyTest;
 
+import org.junit.Assume;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -12,6 +13,8 @@ public class RepoFactoryTest extends OrgzlyTest {
 
     @Test
     public void testCreateRepoFromUrl1() {
+        Assume.assumeTrue(com.orgzly.test.BuildConfig.IS_DROPBOX_ENABLED);
+
         SyncRepo repo = testUtils.repoInstance(RepoType.DROPBOX, "dropbox:");
         assertTrue(repo instanceof DropboxRepo);
         assertEquals("dropbox:", repo.getUri().toString());
@@ -19,6 +22,8 @@ public class RepoFactoryTest extends OrgzlyTest {
 
     @Test
     public void testCreateRepoFromUrl2() {
+        Assume.assumeTrue(com.orgzly.test.BuildConfig.IS_DROPBOX_ENABLED);
+
         SyncRepo repo = testUtils.repoInstance(RepoType.DROPBOX, "dropbox:/path");
         assertTrue(repo instanceof DropboxRepo);
         assertEquals("dropbox:/path", repo.getUri().toString());

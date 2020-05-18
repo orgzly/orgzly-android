@@ -24,6 +24,7 @@ import com.orgzly.android.ui.repo.directory.DirectoryRepoActivity
 import com.orgzly.android.ui.repo.dropbox.DropboxRepoActivity
 import com.orgzly.android.ui.repo.git.GitRepoActivity
 import com.orgzly.android.ui.repo.webdav.WebdavRepoActivity
+import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.ActivityReposBinding
 import javax.inject.Inject
 

@@ -14,8 +14,10 @@ import com.orgzly.android.repos.RepoType;
 import com.orgzly.android.sync.BookSyncStatus;
 import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.main.MainActivity;
+import com.orgzly.test.BuildConfig;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -562,6 +564,8 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testSettingLinkToRenamedRepo() {
+        Assume.assumeTrue(BuildConfig.IS_DROPBOX_ENABLED);
+
         Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         testUtils.setupRook(repo, "mock://repo-a/booky.org", "Täht", "1abcde", 1400067156000L);
         activityRule.launchActivity(null);
@@ -616,6 +620,8 @@ public class SyncingTest extends OrgzlyTest {
 
     @Test
     public void testRenamingReposRemovesLinksWhatUsedThem() {
+        Assume.assumeTrue(BuildConfig.IS_DROPBOX_ENABLED);
+
         testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         testUtils.setupRepo(RepoType.MOCK, "mock://repo-b");
         testUtils.setupBook("booky", "");

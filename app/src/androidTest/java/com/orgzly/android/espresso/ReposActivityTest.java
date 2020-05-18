@@ -2,10 +2,12 @@ package com.orgzly.android.espresso;
 
 import androidx.test.rule.ActivityTestRule;
 
+import com.orgzly.test.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.repos.ReposActivity;
 
+import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -59,6 +61,8 @@ public class ReposActivityTest extends OrgzlyTest {
 
     @Test
     public void testDropboxRepoWithPercentCharacter() {
+        Assume.assumeTrue(BuildConfig.IS_DROPBOX_ENABLED);
+
         String localDir = "/Documents/user@host%2Fdir";
 
         activityRule.launchActivity(null);
