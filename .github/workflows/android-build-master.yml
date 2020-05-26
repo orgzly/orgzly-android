@@ -1,4 +1,4 @@
-name: Build Android on Create & Merge of Pull Request
+name: Build on PR Create or Merge
 
 on:
   pull_request:
@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Build Debug APK
+      - name: Build APK
         run: ./gradlew assembleDebug
       - name: Upload APK
         uses: actions/upload-artifact@v2
