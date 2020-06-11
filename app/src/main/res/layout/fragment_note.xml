@@ -120,6 +120,14 @@
                     android:id="@+id/fragment_note_metadata_header"
                     style="@style/NoteFragmentFullWidthButton">
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/screen_edge"
+                        android:layout_marginLeft="@dimen/screen_edge"
+                        android:src="?attr/ic_info_outline_24dp"
+                        android:alpha="?attr/active_unfocused_icon_alpha"/>
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"

@@ -5,12 +5,6 @@
     tools:ignore="AlwaysShowAction">
 
     <item
-        android:id="@+id/done"
-        android:icon="?attr/ic_done_24dp"
-        app:showAsAction="always"
-        android:title="@string/done" />
-
-    <item
         android:id="@+id/edit_mode"
         android:icon="?attr/ic_edit_24dp"
         app:showAsAction="always"
@@ -21,6 +15,12 @@
         android:icon="?attr/ic_remove_red_eye_24dp"
         app:showAsAction="always"
         android:title="@string/view" />
+
+    <item
+        android:id="@+id/done"
+        android:icon="?attr/ic_done_24dp"
+        app:showAsAction="always"
+        android:title="@string/done" />
 
     <item
         android:id="@+id/metadata"
