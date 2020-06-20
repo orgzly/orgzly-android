@@ -57,13 +57,13 @@ enum class BookSyncStatus {
                 return "Notebook has no link and multiple repositories exist"
 
             BOOK_WITH_LINK_AND_ROOK_EXISTS_BUT_LINK_POINTING_TO_DIFFERENT_ROOK ->
-                return "Notebook has link and remote notebook with the same name exists, but link is pointing to a different remote notebook which does not exist"
+                return "Notebook has link and remote notebook with the same name exists, but link is pointing to a different remote nuotebook which does not exist"
 
             BOOK_ENCRYPTED_WITH_LINK_AND_ONLY_UNENCRYPTED_ROOK_EXISTS ->
-                return "BOOK_ENCRYPTED_WITH_LINK_AND_UNENCRYPTED_ROOK_EXISTS_BUT_LINK_POINTING_TO_DIFFERENT_ROOK"
+                return "Notebook has link and remote notebook with the same name exists, but local book is marked as encrypted and remote book is unencrypted"
 
             BOOK_UNENCRYPTED_WITH_LINK_AND_ONLY_ENCRYPTED_ROOK_EXISTS ->
-                return "BOOK_UNENCRYPTED_WITH_LINK_AND_ENCRYPTED_ROOK_EXISTS_BUT_LINK_POINTING_TO_DIFFERENT_ROOK"
+                return "Notebook has link and remote notebook with the same name exists, but local book is marked as unencrypted and remote book is encrypted"
 
             ONLY_DUMMY ->
                 return "Only local dummy exists"
@@ -81,10 +81,10 @@ enum class BookSyncStatus {
                 return "Last synced notebook and latest remote notebook differ"
 
             CONFLICT_ENCRYPTION_TOGGLED_AND_TARGET_ROOK_EXISTS ->
-                return "todo CONFLICT_ENCRYPTION_TOGGLED_AND_TARGET_ROOK_EXISTS"
+                return "Notebook encryption was toggled but a remote book already exists in the place of the target remote book that would be newly created"
 
             CONFLICT_BOTH_ENCRYPTED_AND_UNENCRYPTED_ROOK_EXIST ->
-                return "CONFLICT_BOTH_ENCRYPTED_AND_UNENCRYPTED_ROOK_EXIST"
+                return "Both encrypted and unencrypted versions of the remote book exist"
 
             NO_BOOK_ONE_ROOK, NO_BOOK_ONE_ROOK_ENCRYPTED, DUMMY_WITHOUT_LINK_AND_ONE_ROOK, DUMMY_WITHOUT_LINK_AND_ONE_ROOK_ENCRYPTED, BOOK_WITH_LINK_AND_ROOK_MODIFIED, BOOK_WITH_LINK_AND_ROOK_MODIFIED_ENCRYPTED, DUMMY_WITH_LINK, DUMMY_WITH_LINK_ENCRYPTED ->
                 return "Loaded from $arg"

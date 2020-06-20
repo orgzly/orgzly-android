@@ -249,7 +249,6 @@ class DataRepository @Inject constructor(
         }
     }
 
-    // todo not unique anymore
     fun getBookView(name: String): BookView? {
         return db.bookView().get(name)
     }
@@ -258,7 +257,6 @@ class DataRepository @Inject constructor(
         return db.bookView().get(id)
     }
 
-    // todo not unique anymore
     private fun doesBookExist(name: String): Boolean {
         return getBook(name) != null
     }
@@ -305,7 +303,7 @@ class DataRepository @Inject constructor(
      * (before remote book has been downloaded, or linked etc.)
      */
     @Throws(IOException::class)
-    fun createDummyBook(name: String): BookView { // todo might be encrypted, then set encryption to default value
+    fun createDummyBook(name: String): BookView {
         if (doesBookExist(name)) {
             throw IOException("Can't insert notebook with the same name: $name")
         }
