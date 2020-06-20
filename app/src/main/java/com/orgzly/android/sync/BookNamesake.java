@@ -180,10 +180,10 @@ public class BookNamesake {
             VersionedRook latestLinkedRookEncrypted = getLatestLinkedRookVersion(book, versionedRooksEncrypted);
             VersionedRook latestLinkedRookUnencrypted = getLatestLinkedRookVersion(book, versionedRooksUnencrypted);
 
-//            if (latestLinkedRookEncrypted != null && latestLinkedRookUnencrypted != null) {
-//                status = BookSyncStatus.CONFLICT_BOTH_ENCRYPTED_AND_UNENCRYPTED_ROOK_EXIST;
-//                return;
-//            }
+            if (latestLinkedRookEncrypted != null && latestLinkedRookUnencrypted != null) {
+                status = BookSyncStatus.CONFLICT_BOTH_ENCRYPTED_AND_UNENCRYPTED_ROOK_EXIST;
+                return;
+            }
 
             /* Fallback */
 //            if (latestLinkedRook == null) { // todo don't go through all again
@@ -215,9 +215,9 @@ public class BookNamesake {
 
 
             if (book.getBook().isDummy()) {
-                if (versionedRooksUnencrypted.size() == 1) {
+                if (!versionedRooksUnencrypted.isEmpty()) {
                     status = BookSyncStatus.DUMMY_WITH_LINK;
-                } else {
+                } else { // todo check
                     status = BookSyncStatus.DUMMY_WITH_LINK_ENCRYPTED;
                 }
                 return;
