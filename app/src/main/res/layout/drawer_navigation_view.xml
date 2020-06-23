@@ -11,7 +11,7 @@
     app:itemIconTint="@color/drawer_item_icon_tint"
     app:itemTextColor="@color/drawer_item_text_color"
     app:itemBackground="?attr/drawer_item_bg"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     app:menu="@menu/drawer">
 
     <!-- Sync button. -->
