@@ -23,7 +23,7 @@ http://orgmode.org for more information.
 </a>
 #+END_HTML
 
-** Documentation
+** End-user documentation
 
 Find out more here: https://github.com/orgzly/documentation
 
@@ -37,6 +37,13 @@ example:
 - ~./gradlew connectedAndroidTest~ runs instrumented unit tests
 
 Make sure you [[https://developer.android.com/training/testing/espresso/setup][turn off animations]] for the device you're testing on.
+
+Java 8 is required for command line usage. Later versions are currently not compatible.
+
+*** Dropbox
+
+Dropbox integration, and associated tests, are disabled in the default configuration.
+To enable, follow the instructions in sample.app.properties.
 
 ** License
 

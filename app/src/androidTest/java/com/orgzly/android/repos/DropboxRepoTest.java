@@ -7,6 +7,7 @@ import com.orgzly.android.db.entity.BookView;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.util.MiscUtils;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,6 +25,7 @@ public class DropboxRepoTest extends OrgzlyTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
+        Assume.assumeTrue(com.orgzly.test.BuildConfig.IS_DROPBOX_ENABLED);
 
         AppPreferences.dropboxToken(context, BuildConfig.DROPBOX_TOKEN);
     }

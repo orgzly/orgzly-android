@@ -7,6 +7,7 @@ import android.widget.TimePicker;
 
 import androidx.test.rule.ActivityTestRule;
 
+import com.orgzly.test.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.db.entity.NotePosition;
@@ -15,6 +16,7 @@ import com.orgzly.android.ui.main.MainActivity;
 import com.orgzly.android.ui.repos.ReposActivity;
 
 import org.hamcrest.Matcher;
+import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -478,6 +480,8 @@ public class MiscTest extends OrgzlyTest {
 
     @Test
     public void testReposActivityFragments() {
+        Assume.assumeTrue(BuildConfig.IS_DROPBOX_ENABLED);
+
         ActivityTestRule rule = new EspressoActivityTestRule<>(ReposActivity.class);
 
         testUtils.setupRepo(RepoType.DIRECTORY, "file:/");
