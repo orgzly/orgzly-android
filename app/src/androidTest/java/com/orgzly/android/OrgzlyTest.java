@@ -1,5 +1,6 @@
 package com.orgzly.android;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import com.orgzly.org.datetime.OrgDateTime;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -25,6 +27,7 @@ import java.util.Calendar;
 
 import androidx.core.content.pm.PackageInfoCompat;
 import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.GrantPermissionRule;
 
 /**
  * Sets up the environment for tests, such as shelf, preferences and contexts.
@@ -47,6 +50,11 @@ public class OrgzlyTest {
     protected DataRepository dataRepository;
 
     private OrgzlyDatabase database;
+
+    @Rule
+    public GrantPermissionRule mRuntimePermissionRule = GrantPermissionRule.grant(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
     @Before
     public void setUp() throws Exception {
