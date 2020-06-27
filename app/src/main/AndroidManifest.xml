@@ -55,7 +55,8 @@
         <activity
             android:name=".android.ui.share.ShareActivity"
             android:windowSoftInputMode="stateUnchanged"
-            android:launchMode="singleInstance">
+            android:excludeFromRecents="true"
+            android:taskAffinity="">
 
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
