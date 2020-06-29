@@ -99,6 +99,10 @@
         <item name="swipe_label_bg_color">@color/grey_100</item>
         <item name="swipe_label_border_color">@color/grey_200</item>
 
+        <item name="switch_thumb_color">@color/grey_100</item>
+        <item name="switch_thumb_icon_tint">@color/grey_600</item>
+        <item name="switch_track_color">@color/grey_500</item>
+
         <!-- / Color scheme -->
 
         <item name="ic_access_time_18dp">@drawable/ic_access_time_black_18dp</item>
@@ -219,6 +223,10 @@
         <!-- For some reason, cursor is invisible (or was it black on black?) on Nexus 7 (API 19).
              With this, it's white. -->
         <item name="android:textCursorDrawable">@null</item>
+
+        <item name="switch_thumb_color">@color/grey_800</item>
+        <item name="switch_thumb_icon_tint">@color/white</item>
+        <item name="switch_track_color">#141414</item> <!-- TODO: Fix dark color scheme -->
 
         <!-- Color scheme -->
 
@@ -390,6 +398,10 @@
 
         <item name="swipe_label_bg_color">#1cffffff</item>
         <item name="swipe_label_border_color">#33FFFFFF</item>
+
+        <item name="switch_thumb_color">@color/grey_800</item>
+        <item name="switch_thumb_icon_tint">@color/grey_300</item>
+        <item name="switch_track_color">@color/grey_900</item>
 
         <item name="bullet_default">@drawable/bullet_state_default_dark</item>
         <item name="bullet_folded">@drawable/bullet_state_folded_black</item>

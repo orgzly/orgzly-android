@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Switch
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
@@ -380,8 +381,9 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 null -> { }
             }
 
-            // For updating the displayed action bar icon (view or edit)
+            // For updating view-edit switch
             activity?.invalidateOptionsMenu()
+
         })
 
         viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->
@@ -898,8 +900,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         menu.removeItem(R.id.activity_action_search)
 
         if (viewModel.notePayload == null) { // Displaying non-existent note.
-            menu.removeItem(R.id.edit_mode)
-            menu.removeItem(R.id.view_mode)
+            menu.removeItem(R.id.note_view_edit)
             menu.removeItem(R.id.done)
             menu.removeItem(R.id.metadata)
             menu.removeItem(R.id.delete)
@@ -913,11 +914,17 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             menu.findItem(R.id.metadata_always_show_set).isChecked =
                     AppPreferences.alwaysShowSetNoteMetadata(context)
 
-            if (viewModel.isInEditMode()) {
-                menu.removeItem(R.id.edit_mode)
-            } else {
-                menu.removeItem(R.id.view_mode)
-            }
+            menu.findItem(R.id.note_view_edit)
+                    ?.actionView
+                    ?.findViewById<Switch>(R.id.note_view_edit_switch)
+                    ?.let { switch ->
+
+                        switch.isChecked = viewModel.isInEditMode()
+
+                        switch.setOnCheckedChangeListener { _, _ ->
+                            viewModel.toggleViewEditMode()
+                        }
+                    }
         }
 
         /* Newly created note cannot be deleted. */
@@ -930,12 +937,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, item)
 
         when (item.itemId) {
-            R.id.edit_mode,
-            R.id.view_mode-> {
-                viewModel.toggleViewEditMode()
-                return true
-            }
-
             R.id.done -> {
                 userSave()
                 return true

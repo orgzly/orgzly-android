@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true">
+        <bitmap
+            android:src="@drawable/ic_edit_black_24dp"
+            android:tint="?attr/switch_thumb_icon_tint" />
+    </item>
+
+    <item>
+        <bitmap
+            android:src="@drawable/ic_remove_red_eye_black_24dp"
+            android:tint="?attr/switch_thumb_icon_tint" />
+    </item>
+</selector>
