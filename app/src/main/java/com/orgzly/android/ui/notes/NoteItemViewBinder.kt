@@ -276,10 +276,10 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     private fun setupFoldingButtons(holder: NoteItemViewHolder, note: Note) {
         if (updateFoldingButtons(context, note, holder)) {
             // Folding button
-            holder.binding.itemHeadFoldButtonText.setOnClickListener {
+            holder.binding.itemHeadFoldButton.setOnClickListener {
                 toggleFoldedState(note.id)
             }
-            holder.binding.itemHeadFoldButtonText.setOnLongClickListener {
+            holder.binding.itemHeadFoldButton.setOnLongClickListener {
                 toggleFoldedStateForSubtree(note.id)
             }
 
@@ -293,8 +293,8 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
         } else {
             // Folding button
-            holder.binding.itemHeadFoldButtonText.setOnClickListener(null)
-            holder.binding.itemHeadFoldButtonText.setOnLongClickListener(null)
+            holder.binding.itemHeadFoldButton.setOnClickListener(null)
+            holder.binding.itemHeadFoldButton.setOnLongClickListener(null)
 
             // Bullet
             holder.binding.itemHeadBullet.setOnClickListener(null)
@@ -326,11 +326,14 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         }
 
         if (isVisible) {
+            holder.binding.itemHeadFoldButton.visibility = View.VISIBLE
             holder.binding.itemHeadFoldButtonText.visibility = View.VISIBLE
         } else {
             if (inBook) { // Leave invisible for padding
+                holder.binding.itemHeadFoldButton.visibility = View.INVISIBLE
                 holder.binding.itemHeadFoldButtonText.visibility = View.INVISIBLE
             } else {
+                holder.binding.itemHeadFoldButton.visibility = View.GONE
                 holder.binding.itemHeadFoldButtonText.visibility = View.GONE
             }
         }

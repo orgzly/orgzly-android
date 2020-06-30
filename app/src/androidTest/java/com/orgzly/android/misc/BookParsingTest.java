@@ -172,7 +172,7 @@ public class BookParsingTest extends OrgzlyTest {
     }
 
     @Test
-    public void testLoadingTextZh() {
+    public void  testLoadingTextZh() {
         onBookFile("html/zh.org").onLoad().onGet();
     }
 

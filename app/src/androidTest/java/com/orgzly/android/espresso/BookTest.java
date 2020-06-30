@@ -352,7 +352,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testFoldNotes() {
-        onNoteInBook(2, R.id.item_head_fold_button_text).perform(click());
+        onNoteInBook(2, R.id.item_head_fold_button).perform(click());
 
         onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
         onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #2."))));
@@ -362,7 +362,7 @@ public class BookTest extends OrgzlyTest {
     @Test
     public void testCreateNewNoteUnderFolded() {
         /* Fold. */
-        onNoteInBook(2, R.id.item_head_fold_button_text).perform(click());
+        onNoteInBook(2, R.id.item_head_fold_button).perform(click());
 
         /* Create new note under folded. */
         onNoteInBook(2).perform(longClick());

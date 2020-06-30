@@ -718,7 +718,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         activityRule.launchActivity(null);
 
         onView(allOf(withText("notebook"), isDisplayed())).perform(click());
-        onNoteInBook(1, R.id.item_head_fold_button_text).perform(click());
+        onNoteInBook(1, R.id.item_head_fold_button).perform(click());
         searchForText("note");
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onNotesInSearch().check(matches(recyclerViewItemCount(3)));

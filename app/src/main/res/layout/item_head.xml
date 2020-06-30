@@ -21,6 +21,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:background="@color/green_200"
             android:visibility="invisible"/>
 
         <View
@@ -29,6 +30,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:background="@color/blue_200"
             android:visibility="invisible"/>
 
         <!-- Indent -->
@@ -251,6 +253,15 @@
             android:visibility="visible" />
 
         <!-- Folding button -->
+        <View
+            android:id="@+id/item_head_fold_button"
+            android:layout_width="@dimen/fold_button_width"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="@+id/item_head_top"
+            app:layout_constraintBottom_toBottomOf="@+id/item_head_bottom"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Folding button text -->
         <TextView
             android:id="@+id/item_head_fold_button_text"
             android:layout_width="@dimen/fold_button_width"
