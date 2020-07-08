@@ -375,7 +375,7 @@
                         android:layout_marginRight="@dimen/screen_edge_minus_4dp"
                         android:layout_marginEnd="@dimen/screen_edge_minus_4dp"
                         android:inputType="text|textCapSentences|textMultiLine"
-                        android:hint="@string/fragment_note_content_hint"
+                        android:hint="@string/content"
                         android:gravity="start|top"
                         android:freezesText="true"
                         android:textSize="?attr/fragment_note_content_text_size"
@@ -394,7 +394,7 @@
                         style="@style/Widget.AppCompat.EditText"
                         android:textIsSelectable="true"
                         android:textSize="?attr/fragment_note_content_text_size"
-                        android:hint="@string/fragment_note_content_hint"
+                        android:hint="@string/content"
                         android:visibility="gone" />
                 </LinearLayout>
 
