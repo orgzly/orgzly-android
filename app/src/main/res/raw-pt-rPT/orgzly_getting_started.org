@@ -1,0 +1,92 @@
+Boas-vindas ao Orgzly!
+
+* Notas
+** Toque numa nota para abri-la
+** Toque e segure a nota para seleciona-la
+
+Você pode selecionar várias notas.
+
+** Deslize a nota para a direita para abrir o menu rápido
+
+Deslizar para a esquerda abre um menu diferente.
+
+** Feche uma nota que contenha sub-notas clicando no ícone próxima a ela
+
+Toque longo no ícone abre a subárvore inteira.
+
+*** Não há limites na quantidade de níveis que você pode ter
+**** Use isso para organizar suas notas de uma forma melhor
+
+** Notas podem ter etiquetas :tag1:tag2:
+*** Sub-notas herdam as etiquetas :tag3:
+
+Se você pesquisar por notas com a etiqueta "tag1" usando a consulta "t.tag1", esta nota será incluida nos resultados da busca.
+
+** TODO Notas podem ter um estado
+
+Você pode configurar qualquer quantidade de estados para uso: TODO, NEXT, DONE etc.
+
+Existem dois /tipos/ de estados: afazeres e feito
+
+*** DONE isto é uma nota com o tipo de estado /feito/
+CLOSED: [2018-01-24 Wed 17:00]
+
+* * Notas podem ter um dia/horário agendado
+SCHEDULED: <2015-02-20 Fri 15:15>
+
+*** Datas podem ter um repetidor
+SCHEDULED: <2015-02-16 Mon .+2d>
+
+** Você também pode definir uma data limite
+DEADLINE: <2015-02-20 Fri>
+
+** Lembretes para dias agendados e datas limite são suportados
+
+Eles ficam desativados por padrão e precisam ser ativados nas Configurações.
+
+** [#A] Notas podem ter prioridades
+
+Você pode alterar a quantidade de prioridades nas Configurações. Você também pode alterar a prioridade padrão - assumida por notas sem prioridades definidas explicitamente.
+
+** Notas podem conter links
+
+Ligar para um número (tel:555-0199), enviar SMS (sms:555-0199), enviar emails (mailto:support@orgzly.com) ou acessar uma página da web ([[http://www.orgzly.com][Orgzly.com]]).
+
+Você também pode criar um link para outra nota ou bloco de notas dentro do aplicativo.
+
+Acesse http://www.orgzly.com/help#links para mais informações (conteúdo em inglês).
+
+** Ênfase tipográfica básica é suportada
+
+Você pode escrever palavras em *negrito*, /itálico/, _sublinhado_, =citação=, ~monoespaçado~ e +tachado+.
+
+** Caixas de seleção estão disponíveis
+
+- [X] Tarefa 1
+- [ ] Tarefa 2
+- [ ] Tarefa 3
+
+Selecione a caixa de seleção para marcá-la / desmarcá-la. Pressione o botão de nova linha no fim da linha para criar um novo item.
+
+* Busca
+** Existem diversos operadores de busca suportados
+
+Você pode buscar notas por estado, etiqueta, agendas ou datas limite etc.
+
+Acesse http://orgzly.com/help#search para saber mais (em inglês).
+
+** Consultas de busca podem ser salvas para acesso rápido
+
+Experimente as buscas salvas no painel de navegação e observe os operadores que elas usam.
+
+Você pode criar suas próprias buscas salvas clicando em "Buscas" no painel de navegação.
+
+* Sincronização
+
+** Blocos de notas podem ser salvos como arquivos de texto simples
+
+Arquivos estão no formato usado pelo "Org mode".
+
+** Tipo de localização (repositório)
+
+Você pode manter os blocos de notas sincronizados em uma pasta em seu aparelho, no cartão SD ou no Dropbox.

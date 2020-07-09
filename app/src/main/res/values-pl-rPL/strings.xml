@@ -129,10 +129,10 @@
     <string name="failed_creating_directory">Failed creating directory %s</string>
     <string name="version">Co nowego</string>
     <string name="search_hint">Wyszukaj notatki</string>
-    <string name="clear_database">Clear database</string>
+    <string name="clear_database">Wyczyść bazę danych</string>
     <string name="clear_database_dialog_message">Clear local database?</string>
-    <string name="clear_database_summary">Clear local database</string>
-    <string name="clear_database_performed">Database cleared</string>
+    <string name="clear_database_summary">Wyczyść lokalną bazę danych</string>
+    <string name="clear_database_performed">Baza danych wyczyszczona</string>
     <string name="getting_started_notebook_name">Pierwsze kroki z Orgzly</string>
     <string name="reload_getting_started">Import “Getting Started with Orgzly”</string>
     <string name="reload_getting_started_summary">Import the latest version of the notebook</string>
@@ -186,7 +186,7 @@
     <string name="git_auth_https_username_hint">Username</string>
     <string name="git_auth_https_password_hint">Hasło</string>
     <string name="git_generate_key_pair">Generate keypair</string>
-    <string name="git_copy_public_key">Copy public key</string>
+    <string name="git_copy_public_key">Kopiuj klucz publiczny</string>
     <string name="git_auth_type_text">Authentication type</string>
     <string name="git_auth_type_ssh">SSH</string>
     <string name="git_auth_type_https">HTTPS</string>

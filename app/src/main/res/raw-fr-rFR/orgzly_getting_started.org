@@ -1,24 +1,24 @@
 Bienvenue dans Orgzly!
 
 * Notes
-** Cliquez sur la note pour l’ouvrir
+** Cliquez sur une note pour l’ouvrir
 ** Cliquez et restez appuyé·e sur la note pour la sélectionner
 
 Vous pouvez sélectionner plusieurs notes.
 
-** Appuyez et glissez rapidement une note vers la droite pour ouvrir son menu rapide
+** Appuyez et glissez rapidement sur une note vers la droite pour ouvrir son menu rapide
 
-** Appuyez et glissez rapidement vers la gauche pour ouvrir un menu différent.
+** Appuyez et glissez rapidement vers la gauche pour ouvrir un autre menu.
 
-** Ouvrez une note qui contient des sous-notes en cliquant sur l'icône voisine
+** Dépliez une note qui contient des sous-notes en cliquant sur l'icône à droite
 
-Long-click the icon to unfold entire subtree.
+Appuyiez longuement pour ouvrir toute la sous-arborescence.
 
 *** Il n’y a pas de limite au nombre de niveaux que vous pouvez avoir
 **** Utilisez ceci pour mieux organiser vos notes
 
 ** Les notes peuvent avoir des étiquettes :tag1:tag2:
-*** Les sous-notes héritent des étiquettes parentes :tag3:
+*** Les sous-notes héritent des étiquettes des parents :tag3:
 
 Si vous recherchez des notes avec le tag “tag1” en utilisant la requête “t.tag1”, cette note sera incluse dans les résultats de recherche.
 
@@ -31,7 +31,7 @@ Vous pouvez configurer tous les états que vous souhaitez : TODO, NEXT, DONE, e
 *** DONE C'est une note avec un type d'état /fait/
 CLOSED: [2018-01-24 Mer 17:00]
 
-** La note peut avoir une date de début programmée
+** Une note peut avoir une date de début programmée
 SCHEDULED: <2015-02-20 Ven 15:15>
 
 *** L'horaire peut avoir un répetiteur
@@ -50,17 +50,17 @@ Vous pouvez modifier le nombre de priorités dans les paramètres. Vous pouvez �
 
 ** Les notes peuvent inclure des liens
 
-Composer un numéro de téléphone (tel:555-0199), envoyer un SMS (sms:555-0199), écrire un courriel (mailto:support@orgzly.com) ou visiter une page web ([[http://www.orgzly.com][Orgzly.com]]).
+Composer un numéro de téléphone (tel:555-0199), envoyer un SMS (sms:555-0199), écrire un courriel (mailto:support@orgzly.com) ou aller à une page web ([[http://www.orgzly.com][Orgzly.com]]).
 
 Vous pouvez également lier une autre note ou un autre bloc-note de l'application.
 
 Voir http://www.orgzly.com/help#links pour de plus amples informations (en anglais).
 
-** Le formatage de base est supporté
+** Les formatages de base sont supportés
 
 Vous pouvez mettre les mots en *gras*, /italique/, _souligné_, =verbatim=, ~en code~ ou les +biffer+.
 
-** Liste de cases à cocher
+** Les liste de cases à cocher sont utilsables
 
 - [X] Tâche 1
 - [X] Tâche 2
@@ -69,7 +69,7 @@ Vous pouvez mettre les mots en *gras*, /italique/, _souligné_, =verbatim=, ~en 
 Un appui sur la case à cocher change son état. Un retour à la ligne crée une nouvelle case à cocher.
 
 * Recherche
-** Il y a beaucoup d’opérateurs de recherche supportés
+** Il y a beaucoup d’opérateurs de recherche
 
 Vous pouvez rechercher des notes par état, étiquette, planification, échéance, etc.
 
