@@ -100,7 +100,7 @@
         <item name="swipe_label_border_color">@color/grey_200</item>
 
         <item name="switch_thumb_color">@color/grey_100</item>
-        <item name="switch_thumb_icon_tint">@color/grey_600</item>
+        <item name="switch_thumb_icon_tint">@color/grey_800</item>
         <item name="switch_track_color">@color/grey_500</item>
 
         <!-- / Color scheme -->
@@ -400,7 +400,7 @@
         <item name="swipe_label_border_color">#33FFFFFF</item>
 
         <item name="switch_thumb_color">@color/grey_800</item>
-        <item name="switch_thumb_icon_tint">@color/grey_300</item>
+        <item name="switch_thumb_icon_tint">@color/white</item>
         <item name="switch_track_color">@color/grey_900</item>
 
         <item name="bullet_default">@drawable/bullet_state_default_dark</item>
