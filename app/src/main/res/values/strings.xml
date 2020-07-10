@@ -690,4 +690,7 @@
     <string name="overdue">Overdue</string>
     <string name="help">Help</string>
     <string name="content">Content</string>
+
+    <string name="prepend">Prepend</string>
+    <string name="insert_new_note_at_beginning">Insert new note at beginning</string>
 </resources>

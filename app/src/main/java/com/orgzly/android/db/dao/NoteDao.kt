@@ -338,6 +338,9 @@ abstract class NoteDao : BaseDao<Note> {
     @Query("SELECT MAX(rgt) FROM notes WHERE book_id = :bookId AND is_cut = 0")
     abstract fun getMaxRgtForBook(bookId: Long): Long?
 
+    @Query("SELECT * FROM notes WHERE book_id = :bookId AND level > 0 ORDER BY lft LIMIT 1")
+    abstract fun getFirstNoteInBook(bookId: Long): Note?
+
     @Query("UPDATE notes SET created_at= :time WHERE id = :noteId")
     abstract fun updateCreatedAtTime(noteId: Long, time: Long)
 

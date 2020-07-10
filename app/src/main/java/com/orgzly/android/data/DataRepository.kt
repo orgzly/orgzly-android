@@ -1316,10 +1316,18 @@ class DataRepository @Inject constructor(
     private fun createNote(notePayload: NotePayload, target: NotePlace, time: Long): Note {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, notePayload, target, time)
 
-        val targetNote = if (target.place != Place.UNSPECIFIED) {
+        var targetNote = if (target.place != Place.UNSPECIFIED) {
             db.note().get(target.noteId) ?: throw IOException("Target note not found")
         } else {
             null
+        }
+
+        /* Set place to ABOVE if prepend is enabled in settings and book is not empty */
+        if (target.place == Place.UNSPECIFIED && AppPreferences.isNewNotePrepend(context)) {
+            targetNote = db.note().getFirstNoteInBook(target.bookId)
+            if (targetNote != null) {
+                target.place = Place.ABOVE
+            }
         }
 
         val newNotePosition = when (target.place) {
