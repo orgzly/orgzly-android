@@ -397,6 +397,7 @@
     <string name="pref_title_reminders_led">Licht</string>
     <string name="pref_title_snooze_time">Sluimertijd (minuten)</string>
     <string name="pref_title_snooze_type">Sluimersoort</string>
+    <string name="pref_title_daily_reminder_time">Daily reminder time</string>
     <string name="primary_storage">Hoofdopslag</string>
     <string name="book_exported">Notitieboekje geëxporteerd naar %s</string>
     <string name="failed_exporting_book">Notitieboekje eporteren mislukt: %s</string>
@@ -553,4 +554,6 @@
     <string name="timestamp_dialog_delay">Vertraging</string>
     <string name="timestamp_dialog_warning_period">Waarschuwing periode</string>
     <string name="overdue">Achterstallig</string>
+    <string name="help">Help</string>
+    <string name="content">Content</string>
 </resources>

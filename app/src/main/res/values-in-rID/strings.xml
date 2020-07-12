@@ -392,6 +392,7 @@
     <string name="pref_title_reminders_led">Terang</string>
     <string name="pref_title_snooze_time">Waktu tundah (menit)</string>
     <string name="pref_title_snooze_type">Jenis tunda</string>
+    <string name="pref_title_daily_reminder_time">Daily reminder time</string>
     <string name="primary_storage">Penyimpanan utama</string>
     <string name="book_exported">Notebook diekspor ke %s</string>
     <string name="failed_exporting_book">Gagal mengekspor buku: %s</string>
@@ -542,4 +543,6 @@
     <string name="timestamp_dialog_delay">Delay</string>
     <string name="timestamp_dialog_warning_period">Warning period</string>
     <string name="overdue">Overdue</string>
+    <string name="help">Help</string>
+    <string name="content">Content</string>
 </resources>

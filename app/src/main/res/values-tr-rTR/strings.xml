@@ -397,6 +397,7 @@
     <string name="pref_title_reminders_led">Işık</string>
     <string name="pref_title_snooze_time">Erteleme zamanı (dakika)</string>
     <string name="pref_title_snooze_type">Erteleme şekli</string>
+    <string name="pref_title_daily_reminder_time">Daily reminder time</string>
     <string name="primary_storage">Ana Depolama</string>
     <string name="book_exported">Not defteri dışa aktarıldı %s</string>
     <string name="failed_exporting_book">Kitap ihraç edilemedi: %s</string>
@@ -553,4 +554,6 @@
     <string name="timestamp_dialog_delay">Delay</string>
     <string name="timestamp_dialog_warning_period">Warning period</string>
     <string name="overdue">Overdue</string>
+    <string name="help">Help</string>
+    <string name="content">Content</string>
 </resources>

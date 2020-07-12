@@ -392,6 +392,7 @@
     <string name="pref_title_reminders_led">Light</string>
     <string name="pref_title_snooze_time">スヌーズ時間 (分)</string>
     <string name="pref_title_snooze_type">スヌーズの種類</string>
+    <string name="pref_title_daily_reminder_time">Daily reminder time</string>
     <string name="primary_storage">メインのストレージ</string>
     <string name="book_exported">メモ帳をエクスポートしました: %s</string>
     <string name="failed_exporting_book">メモ帳のエクスポートに失敗しました: %s</string>
@@ -542,4 +543,6 @@
     <string name="timestamp_dialog_delay">遅延</string>
     <string name="timestamp_dialog_warning_period">警告期間</string>
     <string name="overdue">期限切れ</string>
+    <string name="help">Help</string>
+    <string name="content">Content</string>
 </resources>

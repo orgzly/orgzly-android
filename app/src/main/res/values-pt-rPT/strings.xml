@@ -393,10 +393,11 @@
     <string name="pref_title_reminders_for_event_times">Eventos</string>
     <string name="pref_title_summary_reminders_for_event_times">Display notification for notes with event time</string>
     <string name="pref_title_reminders_sound">Sound</string>
-    <string name="pref_title_reminders_vibrate">Vibration</string>
+    <string name="pref_title_reminders_vibrate">Vibração</string>
     <string name="pref_title_reminders_led">Claro</string>
     <string name="pref_title_snooze_time">Tempo de soneca (minutos)</string>
     <string name="pref_title_snooze_type">Tipo de soneca</string>
+    <string name="pref_title_daily_reminder_time">Horário do lembrete diário</string>
     <string name="primary_storage">Armazenamento principal</string>
     <string name="book_exported">Caderno exportado para %s</string>
     <string name="failed_exporting_book">Falha ao exportar o caderno: %s</string>
@@ -553,4 +554,6 @@
     <string name="timestamp_dialog_delay">Atraso</string>
     <string name="timestamp_dialog_warning_period">Período de alerta</string>
     <string name="overdue">Em atraso</string>
+    <string name="help">Help</string>
+    <string name="content">Content</string>
 </resources>

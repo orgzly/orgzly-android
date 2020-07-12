@@ -397,6 +397,7 @@
     <string name="pref_title_reminders_led">Info-LED</string>
     <string name="pref_title_snooze_time">Schlummer-Zeit (Minuten)</string>
     <string name="pref_title_snooze_type">Schlummer-Typ</string>
+    <string name="pref_title_daily_reminder_time">Tägliche Erinnerungszeit</string>
     <string name="primary_storage">Haupt-Speicherort</string>
     <string name="book_exported">Notizbuch nach %s exportiert</string>
     <string name="failed_exporting_book">Exportieren des Buches fehlgeschlagen: %s</string>
@@ -553,4 +554,6 @@
     <string name="timestamp_dialog_delay">Verzögerung</string>
     <string name="timestamp_dialog_warning_period">Benachrichtigungszeit</string>
     <string name="overdue">Überfällig</string>
+    <string name="help">Hilfe</string>
+    <string name="content">Inhalt</string>
 </resources>

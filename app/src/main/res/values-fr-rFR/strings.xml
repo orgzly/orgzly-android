@@ -397,6 +397,7 @@
     <string name="pref_title_reminders_led">Lumière</string>
     <string name="pref_title_snooze_time">Durée du report (minutes)</string>
     <string name="pref_title_snooze_type">Type de report</string>
+    <string name="pref_title_daily_reminder_time">Rappel quotidien</string>
     <string name="primary_storage">Stockage principal</string>
     <string name="book_exported">Bloc-notes exporté vers %s</string>
     <string name="failed_exporting_book">Échec de l’export du bloc-notes : %s</string>
@@ -553,4 +554,6 @@
     <string name="timestamp_dialog_delay">Délai</string>
     <string name="timestamp_dialog_warning_period">Période d\'avertissement</string>
     <string name="overdue">En retard</string>
+    <string name="help">Aide</string>
+    <string name="content">Contenu</string>
 </resources>

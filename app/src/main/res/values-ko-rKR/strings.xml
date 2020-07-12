@@ -392,6 +392,7 @@
     <string name="pref_title_reminders_led">밝은</string>
     <string name="pref_title_snooze_time">일시 중지 (분)</string>
     <string name="pref_title_snooze_type">일시 중지 유형</string>
+    <string name="pref_title_daily_reminder_time">Daily reminder time</string>
     <string name="primary_storage">주 저장소</string>
     <string name="book_exported">메모장 %s로 내보내기</string>
     <string name="failed_exporting_book">메모장 내보내기 실패: %s</string>
@@ -543,4 +544,6 @@
     <string name="timestamp_dialog_delay">Delay</string>
     <string name="timestamp_dialog_warning_period">Warning period</string>
     <string name="overdue">Overdue</string>
+    <string name="help">Help</string>
+    <string name="content">Content</string>
 </resources>

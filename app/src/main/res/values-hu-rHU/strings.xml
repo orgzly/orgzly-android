@@ -397,6 +397,7 @@
     <string name="pref_title_reminders_led">Fény</string>
     <string name="pref_title_snooze_time">Szundi ideje (perc)</string>
     <string name="pref_title_snooze_type">Szundi típusa</string>
+    <string name="pref_title_daily_reminder_time">Napi emlékeztető időpontja</string>
     <string name="primary_storage">Fő tároló</string>
     <string name="book_exported">Jegyzetfüzet elmentve: %s</string>
     <string name="failed_exporting_book">Sikertelen mentés: %s</string>
@@ -553,4 +554,6 @@
     <string name="timestamp_dialog_delay">Késleltetés</string>
     <string name="timestamp_dialog_warning_period">Figyelmeztetés időszaka</string>
     <string name="overdue">Lejárt</string>
+    <string name="help">Súgó</string>
+    <string name="content">Tartalom</string>
 </resources>

@@ -392,6 +392,7 @@
     <string name="pref_title_reminders_led">呼吸灯</string>
     <string name="pref_title_snooze_time">推迟时间（分钟）</string>
     <string name="pref_title_snooze_type">推迟类型</string>
+    <string name="pref_title_daily_reminder_time">每日提醒时间</string>
     <string name="primary_storage">主存储</string>
     <string name="book_exported">笔记本导出到 %s</string>
     <string name="failed_exporting_book">导出笔记本失败：%s</string>
@@ -542,4 +543,6 @@
     <string name="timestamp_dialog_delay">推迟</string>
     <string name="timestamp_dialog_warning_period">警告时间</string>
     <string name="overdue">过期</string>
+    <string name="help">帮助</string>
+    <string name="content">内容</string>
 </resources>

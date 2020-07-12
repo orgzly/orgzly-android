@@ -407,6 +407,7 @@
     <string name="pref_title_reminders_led">Dioda</string>
     <string name="pref_title_snooze_time">Snooze time (minutes)</string>
     <string name="pref_title_snooze_type">Snooze type</string>
+    <string name="pref_title_daily_reminder_time">Czas codziennego przypomnienia</string>
     <string name="primary_storage">Main storage</string>
     <string name="book_exported">Wyeksportowano notatnik do %s</string>
     <string name="failed_exporting_book">Eksport notatnika nie powiódł się: %s</string>
@@ -575,4 +576,6 @@
     <string name="timestamp_dialog_delay">Opóźnienie</string>
     <string name="timestamp_dialog_warning_period">Okres ostrzeżenia</string>
     <string name="overdue">Zaległe</string>
+    <string name="help">Pomoc</string>
+    <string name="content">Zawartość</string>
 </resources>
