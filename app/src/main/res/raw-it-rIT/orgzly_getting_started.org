@@ -8,11 +8,11 @@ Puoi selezionare più note.
 
 ** Tieni premuto e muovi velocemente a destra per aprire il suo menu rapido
 
-Fling it left to open a different menu.
+Trascina verso sinistra per aprire un menu diverso.
 
 ** Apri una nota che contiene sotto-note premendo sull'icona vicina ad essa
 
-Long-click the icon to unfold entire subtree.
+Fare clic sull'icona per dispiegare l'intero sotto-albero.
 
 ** Non ci sono limiti al numero di livelli che puoi avere
 **** Usalo per meglio organizzare le tue note
@@ -20,15 +20,15 @@ Long-click the icon to unfold entire subtree.
 *** Ora puoi avere anche le etichette :tag1:tag2:
 *** La sotto-nota eredita l'etichetta :tag3:
 
-If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
+Se si cerca note con tag “tag1” utilizzando la query “t.tag1”, questa nota sarà inclusa nei risultati di ricerca.
 
-** DAFARE La nota può avere uno stato
+** TODO La nota può avere uno stato
 
-Puoi configurare un qualsiasi numero di stati da usare: DAFARE, PROSSIMO, FATTO, ecc.
+È possibile configurare qualsiasi numero di stati da usare: TODO, NEXT, DONE, ecc.
 
-*** Ci sono due /tipi/ di stati: da-fare e completato
+*** Ci sono due /tipi/ di stati: todo e done
 
-*** COMPLETATO Questa è una nota con il tipo di stato /completato/
+*** DONE Questa è una nota con il tipo di stato /Done/
 CLOSED: [2018-01-24 Mer 17:00]
 
 ** La nota può avere un orario programmato
@@ -40,7 +40,7 @@ SCHEDULED: <2015-02-16 Mon .+2d>
 ** Puoi anche stabilire una scadenza
 DEADLINE: <2015-02-20 Ven>
 
-** Reminders for scheduled and deadline times are supported
+** Sono supportati i promemoria per i task pianificati e per le scadenze
 
 Sono disabilitati di default e devono essere abilitati nelle impostazioni.
 
@@ -50,28 +50,28 @@ Sono disabilitati di default e devono essere abilitati nelle impostazioni.
 
 ** Le note possono includere link
 
-Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[http://www.orgzly.com][Orgzly.com]]).
+Digita un numero di telefono (tel:555-0199), invia SMS (sms:555-0199), componi un'email (mailto:support@orgzly.com) o visita una pagina web ([[http://www.orgzly.com][Orgzly.com]]).
 
-You can also link to another note or notebook within the app.
+Puoi anche collegarti a un'altra nota o a un taccuino all'interno dell'app.
 
-See http://www.orgzly.com/help#links for more information.
+Vai su http://www.orgzly.com/help#links per maggiori informazioni.
 
 ** Sono supportati i livelli di formattazione base
 
 Puoi usare parole in *grassetto*, /corsivo/, _sottolineato_, =scandito=, ~tipo codice~ e +barrato+.
 
-** E' disponile l'elenco con caselle da spuntare
+** È disponibile una lista di checkbox
 
 - [X] Attività 1
 - [ ] Attività 2
 - [ ] Attività 3
 
-Fare clic sulla casella per attivarlo. Premere il pulsante nuova riga alla fine della linea per creare un nuovo elemento.
+Fare clic sulla casella per cambiare lo stato. Premere il pulsante nuova riga alla fine della linea per creare un nuovo elemento.
 
 * Cerca
-** Sono supportati molti diversi operatori di ricerca
+** Sono supportati molti operatori di ricerca
 
-Puoi cercare nelle note a seconda dello stato, dell'etichetta, della programmazione o della scadenza ecc.
+Puoi cercare nelle note a seconda dello stato, del tag, della programmazione o della scadenza ecc.
 
 Vai su http://www.orgzly.com/help#search per saperne di più.
 
@@ -87,6 +87,6 @@ Puoi creare le proprie ricerche salvate premendo su "Ricerche" nel menu di navig
 
 I file sono nel formato usato da "Org mode".
 
-** Tipo di localizzazione (deposito)
+** Tipo di percorso (repository)
 
 Puoi tenere sincronizzati i taccuini sul tuo dispositivo mobile in una directory, su di una scheda di memoria o su Dropbox.
