@@ -407,6 +407,7 @@
     <string name="pref_title_reminders_led">LED oznámení</string>
     <string name="pref_title_snooze_time">Odložit (v minutách)</string>
     <string name="pref_title_snooze_type">Typ časovače odložení</string>
+    <string name="pref_title_daily_reminder_time">Každodenní čas připomenutí</string>
     <string name="primary_storage">Hlavní úložiště</string>
     <string name="book_exported">Sešit exportován do %s</string>
     <string name="failed_exporting_book">Chyba při exportování sešitu: %s</string>
@@ -575,4 +576,6 @@
     <string name="timestamp_dialog_delay">Zpoždění</string>
     <string name="timestamp_dialog_warning_period">Doba upozornění</string>
     <string name="overdue">Po termínu</string>
+    <string name="help">Nápověda</string>
+    <string name="content">Obsah</string>
 </resources>

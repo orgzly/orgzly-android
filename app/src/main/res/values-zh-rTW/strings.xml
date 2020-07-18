@@ -392,6 +392,7 @@
     <string name="pref_title_reminders_led">燈光</string>
     <string name="pref_title_snooze_time">延遲時間 (分鐘)</string>
     <string name="pref_title_snooze_type">延遲方式</string>
+    <string name="pref_title_daily_reminder_time">每日提醒時間</string>
     <string name="primary_storage">主存儲</string>
     <string name="book_exported">匯出筆記到%s</string>
     <string name="failed_exporting_book">匯出筆記到%s失敗</string>
@@ -542,4 +543,6 @@
     <string name="timestamp_dialog_delay">延遲</string>
     <string name="timestamp_dialog_warning_period">警告期</string>
     <string name="overdue">逾期</string>
+    <string name="help">幫助</string>
+    <string name="content">内容</string>
 </resources>

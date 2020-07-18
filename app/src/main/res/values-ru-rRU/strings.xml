@@ -407,6 +407,7 @@
     <string name="pref_title_reminders_led">Светлый</string>
     <string name="pref_title_snooze_time">Время повтора (минут)</string>
     <string name="pref_title_snooze_type">Тип повтора</string>
+    <string name="pref_title_daily_reminder_time">Время ежедневного напоминания</string>
     <string name="primary_storage">Основное хранилище</string>
     <string name="book_exported">Блокнот экспортирован в %s</string>
     <string name="failed_exporting_book">Не удалось экспортировать блокнот: %s</string>
@@ -575,4 +576,6 @@
     <string name="timestamp_dialog_delay">Задержка</string>
     <string name="timestamp_dialog_warning_period">Период предупреждения</string>
     <string name="overdue">Просрочено</string>
+    <string name="help">Справка</string>
+    <string name="content">Описание</string>
 </resources>

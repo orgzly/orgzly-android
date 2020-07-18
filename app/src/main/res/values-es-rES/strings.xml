@@ -397,6 +397,7 @@
     <string name="pref_title_reminders_led">Claro</string>
     <string name="pref_title_snooze_time">Tiempo de siesta (minutos)</string>
     <string name="pref_title_snooze_type">Tipo de siesta</string>
+    <string name="pref_title_daily_reminder_time">Hora de recordatorio diario</string>
     <string name="primary_storage">Almacenamiento principal</string>
     <string name="book_exported">Nota exportada a %s</string>
     <string name="failed_exporting_book">Error al exportar libro %s</string>
@@ -553,4 +554,6 @@
     <string name="timestamp_dialog_delay">Retrasar</string>
     <string name="timestamp_dialog_warning_period">Período de aviso</string>
     <string name="overdue">Atrasado</string>
+    <string name="help">Ayuda</string>
+    <string name="content">Contenido</string>
 </resources>

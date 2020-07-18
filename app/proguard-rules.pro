@@ -50,3 +50,5 @@
 -dontwarn org.eclipse.jgit.**
 -dontwarn com.jcraft.**
 -dontwarn org.slf4j.**
+
+-keepclassmembers enum com.orgzly.android.ui.refile.RefileLocation$Type { *; }

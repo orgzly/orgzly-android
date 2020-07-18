@@ -20,7 +20,7 @@
     <string name="remove_notebook_link">Rimuovi il collegamento</string>
     <string name="browse">Cerca</string>
     <string name="dropbox">Dropbox</string>
-    <string name="view">View</string>
+    <string name="view">Vista</string>
     <string name="edit">Modifica</string>
     <string name="edit_note">Modifica la nota</string>
     <string name="delete">Cancella</string>
@@ -53,7 +53,7 @@
     <string name="repeater">Ripetitore</string>
     <string name="state">Stato</string>
     <string name="priority">Priorità</string>
-    <string name="nothing">Nessuno</string>
+    <string name="nothing">Vuoto</string>
     <string name="open">Apri</string>
     <string name="focus">Focus</string>
     <string name="widget">Widget</string>
@@ -177,33 +177,33 @@
     <string name="git_author_hint">Autore (es. Sergio Rossi)</string>
     <string name="git_email_hint">E-mail (es. sergio@email.com)</string>
     <string name="git_branch_hint">Ramo (es. master)</string>
-    <string name="git_auth_https_username_hint">Username</string>
+    <string name="git_auth_https_username_hint">Nome utente</string>
     <string name="git_auth_https_password_hint">Password</string>
-    <string name="git_generate_key_pair">Generate keypair</string>
-    <string name="git_copy_public_key">Copy public key</string>
-    <string name="git_auth_type_text">Authentication type</string>
+    <string name="git_generate_key_pair">Genera keypair</string>
+    <string name="git_copy_public_key">Copia la chiave pubblica</string>
+    <string name="git_auth_type_text">Tipo di autenticazione</string>
     <string name="git_auth_type_ssh">SSH</string>
     <string name="git_auth_type_https">HTTPS</string>
     <!-- Git sync repo errors -->
     <!-- TODO: I don't think we can say more than this for ssh authentication failures, but we probably want to -->
-    <string name="git_clone_error_ssh_auth">Failure while cloning, authentication error</string>
-    <string name="git_clone_error_invalid_repo">The remote address is not a git repo</string>
-    <string name="git_clone_error_unknown">Unknown error while cloning</string>
-    <string name="git_clone_error_invalid_target_dir">The target directory does not exist</string>
-    <string name="git_clone_error_target_not_empty">The target directory is not empty</string>
-    <string name="git_clone_error_uri_not_supported">The remote address is not supported</string>
-    <string name="webdav_url_hint">URL (e.g. webdavs://example.com/my-org-files/)</string>
-    <string name="webdav_auth_username_hint">Username</string>
+    <string name="git_clone_error_ssh_auth">Errore durante la clonazione, errore di autenticazione</string>
+    <string name="git_clone_error_invalid_repo">L\'indirizzo remoto non è un git repo</string>
+    <string name="git_clone_error_unknown">Errore sconosciuto durante la clonazione</string>
+    <string name="git_clone_error_invalid_target_dir">Il percorso specificato non esiste</string>
+    <string name="git_clone_error_target_not_empty">La directory di destinazione non è vuota</string>
+    <string name="git_clone_error_uri_not_supported">L\'indirizzo remoto non è supportato</string>
+    <string name="webdav_url_hint">URL (es. webdavs://example.com/my-org-files/)</string>
+    <string name="webdav_auth_username_hint">Nome utente</string>
     <string name="webdav_auth_password_hint">Password</string>
-    <string name="webdav_test_error_auth">Login or password is invalid</string>
-    <string name="webdav_test_error_unknown">Unknown error occurred</string>
+    <string name="webdav_test_error_auth">Nome utente o password non validi</string>
+    <string name="webdav_test_error_unknown">Si è verificato un errore sconosciuto</string>
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Condividi azione non stabilita</string>
     <string name="share_action_not_supported">L\'azione condivisa %s non è supportata</string>
     <string name="share_type_not_set">Il tipo di condivisione non è stabilita</string>
     <string name="share_type_not_supported">Il tipo di condivisione %s non è supportata</string>
     <string name="repositories">Depositi</string>
-    <string name="repository_not_valid_with_reason">Repository invalid: %s</string>
+    <string name="repository_not_valid_with_reason">Repository non valido: %s</string>
     <string name="invalid_repo_url">URL \"%s\" del deposito non valido</string>
     <string name="repository_url_already_exists">Un repository con questo URL esiste già</string>
     <string name="fragment_left_drawer_list_view_content_description">Menu di sinistra</string>
@@ -218,7 +218,7 @@
     <string name="note_book_not_set">Taccuino non stabilito</string>
     <string name="title_can_not_be_empty">Il campo \"Titolo\" non può essere vuoto</string>
     <string name="can_not_be_empty">Non può essere vuoto</string>
-    <string name="invalid_url">Invalid URL</string>
+    <string name="invalid_url">URL non valido</string>
     <string name="no_notebooks">Non hai taccuini</string>
     <string name="no_notes">Il taccuino non ha note</string>
     <string name="create_new_repository_for_syncing">Crea un nuovo deposito per sincronizzare i tuoi taccuini</string>
@@ -288,10 +288,10 @@
     <string name="prefs_title_notifications">Notifiche</string>
     <string name="app">App</string>
     <string name="no_repos_configured">Nessun deposito configurato</string>
-    <string name="test_connection">Test connection</string>
-    <string name="connecting">Connecting…</string>
+    <string name="test_connection">Test connessione</string>
+    <string name="connecting">Connessione in corso…</string>
     <string name="no_connection">Nessuna connessione</string>
-    <string name="connection_successful">Connection successful</string>
+    <string name="connection_successful">Connessione riuscita</string>
     <string name="last_sync_with_argument">Ultima sincronizzazione: %s</string>
     <string name="force_loading_from_uri">Forza caricamento da %s …</string>
     <string name="force_loaded_from_uri">Caricamento forzato da %s</string>
@@ -329,11 +329,11 @@
     <string name="repeater_description_restart">Aggiungi periodo all\'orario corrente</string>
     <!-- .+ -->
     <string name="delay_dialog_title">Delay</string>
-    <string name="delay_description">Delay the display of the task in the agenda</string>
-    <string name="delay_description_affects_all">Affects all occurrences</string>
+    <string name="delay_description">Ritarda la visualizzazione dell\'attività nell\'agenda</string>
+    <string name="delay_description_affects_all">Si applica a tutti gli eventi</string>
     <string name="delay_description_affects_first">Influenza solo la prima occorrenza programmata</string>
     <string name="warning_period_dialog_title">Warning period</string>
-    <string name="warning_period_description">Warn about the approaching or missed deadline</string>
+    <string name="warning_period_description">Segnala le scadenze imminenti o mancate</string>
     <string name="displayed_book_details_local_mtime">Ora di modifica locale</string>
     <string name="displayed_book_details_link_url">Collegamento URL</string>
     <string name="displayed_book_details_sync_url">Sincronizza URL</string>
@@ -359,7 +359,7 @@
     <string name="notebooks_sort_order_name">Nome</string>
     <string name="notebooks_sort_order_modification_time">Ora modifica</string>
     <plurals name="delete_note_or_notes_with_count_question">
-        <item quantity="one">Delete note?</item>
+        <item quantity="one">Elimina nota?</item>
         <item quantity="other">Delete <b>%d</b> notes?</item>
     </plurals>
     <!-- Unused -->
@@ -397,6 +397,7 @@
     <string name="pref_title_reminders_led">Illuminazione</string>
     <string name="pref_title_snooze_time">Durata sveglia (minuti)</string>
     <string name="pref_title_snooze_type">Tipo di allarme</string>
+    <string name="pref_title_daily_reminder_time">Ora promemoria giornaliero</string>
     <string name="primary_storage">Memoria principale</string>
     <string name="book_exported">Taccuino esportato su %s</string>
     <string name="failed_exporting_book">Esportazione del libro %s non riuscita</string>
@@ -423,8 +424,8 @@
     <string name="default_notebook_desc">Il taccuino usato quando si condivide con Orgzly o si crea una nuova nota per le notifiche in corso</string>
     <string name="force_utf8">Forza codifica UTF-8</string>
     <string name="force_utf8_summary">Non provare a individuare la modalità di codifica, usa sempre l\'UTF-8</string>
-    <string name="notebooks_start_folded">Start folded</string>
-    <string name="notebooks_start_folded_summary">Fold all notes when notebook is loaded</string>
+    <string name="notebooks_start_folded">Avvia chiuso</string>
+    <string name="notebooks_start_folded_summary">Chiudi tutte le note quando il taccuino è stato caricato</string>
     <string name="list_widget_name">Ricerca salvata</string>
     <string name="list_widget_select_search">Selezionare il tipo di ricerca</string>
     <string name="list_widget_nothing_selected">Nessuna ricerca selezionata</string>
@@ -446,7 +447,7 @@
         <item quantity="other">Contiene <b>%d</b> note</item>
     </plurals>
     <plurals name="found_number_of_notebooks">
-        <item quantity="one">Found <b>%d</b> notebook</item>
+        <item quantity="one">Trovato <b>%d</b> taccuino</item>
         <item quantity="other">Found <b>%d</b> notebooks</item>
     </plurals>
     <string name="content_line_count_displayed">Mostra il conteggio della linea del contenuto</string>
@@ -515,30 +516,30 @@
     <string name="below">Sotto</string>
     <string name="loading">Caricamento…</string>
     <string name="go_to">Vai a</string>
-    <string name="cannot_refile_to_the_same_subtree">Cannot refile to the same subtree</string>
+    <string name="cannot_refile_to_the_same_subtree">Impossibile riferirsi allo stesso sotto-albero</string>
     <string name="notification_maximum_priority">Massimo</string>
     <string name="notification_high_priority">Alta</string>
     <string name="notification_default_priority">Predefinito</string>
     <string name="notification_low_priority">Bassa</string>
     <string name="notification_minimum_priority">Minima</string>
     <string name="breadcrumbs_target">Breadcrumbs target</string>
-    <string name="link_target">Link target</string>
-    <string name="note_details">Note details</string>
-    <string name="notebook_and_scroll_to_note">Notebook (scroll to note)</string>
-    <string name="notebook_and_focus_on_note">Notebook (focus on note)</string>
+    <string name="link_target">Link di destinazione</string>
+    <string name="note_details">Dettagli nota</string>
+    <string name="notebook_and_scroll_to_note">Taccuino (scorri alla nota)</string>
+    <string name="notebook_and_focus_on_note">Taccuino (focus sulla nota)</string>
     <plurals name="refile_notes">
         <item quantity="one">Refile note</item>
         <item quantity="other">Refile <b>%d</b> notes</item>
     </plurals>
-    <string name="display_checkmarks">Display checkmarks</string>
-    <string name="display_checkmarks_summary">Allows marking notes as done</string>
-    <string name="last_used">Last used</string>
-    <string name="note_details_opening_mode">Opening mode</string>
-    <string name="cleartext_traffic">Cleartext traffic</string>
-    <string name="cleartext_traffic_message">Are you sure you want to use this URL?</string>
+    <string name="display_checkmarks">Visualizza checkmarks</string>
+    <string name="display_checkmarks_summary">Consenti di segnare le note come Done</string>
+    <string name="last_used">Ultimo utilizzato</string>
+    <string name="note_details_opening_mode">Modalità di apertura</string>
+    <string name="cleartext_traffic">Traffico non criptato</string>
+    <string name="cleartext_traffic_message">Sei sicuro di voler usare questo URL?</string>
     <string name="credentials_in_url_not_supported">Passing credentials in URL is not supported</string>
-    <string name="access_token">Access token</string>
-    <string name="trusted_certificates">Trusted certificates</string>
+    <string name="access_token">Token di accesso</string>
+    <string name="trusted_certificates">Certificati di sistema affidabili</string>
     <string name="add_trusted_certificates_optional">Add trusted certificates (optional)</string>
     <string name="edit_trusted_certificates">Edit trusted certificates</string>
     <string name="this_action_cannot_be_undone">This action cannot be undone.</string>
@@ -553,4 +554,6 @@
     <string name="timestamp_dialog_delay">Delay</string>
     <string name="timestamp_dialog_warning_period">Warning period</string>
     <string name="overdue">Scaduto</string>
+    <string name="help">Help</string>
+    <string name="content">Content</string>
 </resources>
