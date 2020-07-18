@@ -181,6 +181,9 @@
     <string name="pref_key_is_new_note_scheduled" translatable="false">pref_key_is_new_note_scheduled</string>
     <bool name="pref_default_is_new_note_scheduled" translatable="false">false</bool>
 
+    <string name="pref_key_is_new_note_prepend" translatable="false">pref_key_is_new_note_prepend</string>
+    <bool name="pref_default_is_new_note_prepend" translatable="false">false</bool>
+
     <string name="pref_key_is_created_at_added" translatable="false">pref_key_is_created_at_added</string>
     <bool name="pref_default_is_created_at_added" translatable="false">false</bool>
 

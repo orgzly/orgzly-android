@@ -432,6 +432,16 @@ public class AppPreferences {
     }
 
     /*
+     * Prepend new note.
+     */
+
+    public static boolean isNewNotePrepend(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_is_new_note_prepend),
+                context.getResources().getBoolean(R.bool.pref_default_is_new_note_prepend));
+    }
+
+    /*
      * Set to-do for new note.
      */
 

@@ -35,6 +35,8 @@ public class NotePlace {
         return place;
     }
 
+    public void setPlace(Place _place) { place = _place; }
+
     public String toString() {
         return "Book#" + bookId + " Note#" + noteId + " Place#" + place;
     }
