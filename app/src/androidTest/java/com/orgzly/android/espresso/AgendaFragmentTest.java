@@ -244,4 +244,31 @@ public class AgendaFragmentTest extends OrgzlyTest {
         onView(withId(R.id.bottom_action_bar_state)).perform(click());
         onView(withText("NEXT")).perform(click());
     }
+
+    @Test
+    public void testInactiveScheduled() {
+        testUtils.setupBook("notebook-1", "* Note A\nSCHEDULED: [2020-07-01]\nDEADLINE: <2020-07-01>");
+        activityRule.launchActivity(null);
+        searchForText("ad.1");
+        // Overdue, note (deadline), today
+        onNotesInAgenda().check(matches(recyclerViewItemCount(3)));
+    }
+
+    @Test
+    public void testInactiveDeadline() {
+        testUtils.setupBook("notebook-1", "* Note A\nDEADLINE: [2020-07-01]\nSCHEDULED: <2020-07-01>");
+        activityRule.launchActivity(null);
+        searchForText("ad.1");
+        // Overdue, note (scheduled), today
+        onNotesInAgenda().check(matches(recyclerViewItemCount(3)));
+    }
+
+    @Test
+    public void testInactiveScheduledAndDeadline() {
+        testUtils.setupBook("notebook-1", "* Note A\nSCHEDULED: [2020-07-01]\nDEADLINE: [2020-07-01]");
+        activityRule.launchActivity(null);
+        searchForText("ad.1");
+        // Today
+        onNotesInAgenda().check(matches(recyclerViewItemCount(1)));
+    }
 }

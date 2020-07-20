@@ -81,6 +81,10 @@ object AgendaItems {
         fun addInstances(note: NoteView, timeType: TimeType, timeString: String) {
             val range = OrgRange.parseOrNull(timeString) ?: return
 
+            if (!range.startTime.isActive) {
+                return
+            }
+
             val expandable = ExpandableOrgRange.fromRange(timeType, range)
 
             val times = AgendaUtils.expandOrgDateTime(expandable, now, agendaDays)

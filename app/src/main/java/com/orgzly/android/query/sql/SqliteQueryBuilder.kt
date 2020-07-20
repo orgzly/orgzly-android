@@ -235,12 +235,12 @@ class SqliteQueryBuilder(val context: Context) {
 
             is Condition.Scheduled -> {
                 hasScheduledCondition = true
-                toInterval("scheduled_time_timestamp", expr.interval, expr.relation)
+                "(scheduled_is_active = 1 AND ${toInterval("scheduled_time_timestamp", expr.interval, expr.relation)})"
             }
 
             is Condition.Deadline -> {
                 hasDeadlineCondition = true
-                toInterval("deadline_time_timestamp", expr.interval, expr.relation)
+                "(deadline_is_active = 1 AND ${toInterval("deadline_time_timestamp", expr.interval, expr.relation)})"
             }
 
             is Condition.Created -> {

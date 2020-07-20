@@ -775,4 +775,20 @@ public class QueryFragmentTest extends OrgzlyTest {
         searchForText("e.lt.now");
         onNoteInSearch(0).perform(click());
     }
+
+    @Test
+    public void testInactiveScheduled() {
+        testUtils.setupBook("notebook-1", "* Note A\nSCHEDULED: [2020-07-01]");
+        activityRule.launchActivity(null);
+        searchForText("s.le.today");
+        onNotesInSearch().check(matches(recyclerViewItemCount(0)));
+    }
+
+    @Test
+    public void testInactiveDeadline() {
+        testUtils.setupBook("notebook-1", "* Note A\nDEADLINE: [2020-07-01]");
+        activityRule.launchActivity(null);
+        searchForText("d.le.today");
+        onNotesInSearch().check(matches(recyclerViewItemCount(0)));
+    }
 }

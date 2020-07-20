@@ -124,6 +124,7 @@ abstract class NoteViewDao {
             group_concat(t_notes_with_inherited_tags.tags, ' ') AS inherited_tags,
 
             t_scheduled_range.string AS scheduled_range_string,
+            t_scheduled_timestamps_start.is_active AS scheduled_is_active,
             t_scheduled_timestamps_start.string AS scheduled_time_string,
             t_scheduled_timestamps_end.string AS scheduled_time_end_string,
             t_scheduled_timestamps_start.timestamp AS scheduled_time_timestamp,
@@ -131,6 +132,7 @@ abstract class NoteViewDao {
             t_scheduled_timestamps_start.hour AS scheduled_time_hour,
 
             t_deadline_range.string AS deadline_range_string,
+            t_deadline_timestamps_start.is_active AS deadline_is_active,
             t_deadline_timestamps_start.string AS deadline_time_string,
             t_deadline_timestamps_end.string AS deadline_time_end_string,
             t_deadline_timestamps_start.timestamp AS deadline_time_timestamp,

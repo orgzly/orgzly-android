@@ -1138,7 +1138,7 @@ class DataRepository @Inject constructor(
         }
 
         if (query.options.agendaDays > 0) {
-            s.add("(scheduled_range_id IS NOT NULL OR deadline_range_id IS NOT NULL OR event_timestamp IS NOT NULL)")
+            s.add("((scheduled_range_id IS NOT NULL AND scheduled_is_active = 1) OR (deadline_range_id IS NOT NULL AND deadline_is_active = 1) OR event_timestamp IS NOT NULL)")
         }
 
         if (!s.isEmpty() || !query.sortOrders.isEmpty()) {
