@@ -409,7 +409,7 @@ public class BookTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
         onView(withText(R.string.note_does_not_exist_anymore)).check(matches(isDisplayed()));
         onView(withId(R.id.done)).check(doesNotExist());
-        onView(withId(R.id.close)).check(doesNotExist());
+        onView(withId(R.id.note_view_edit_switch)).check(doesNotExist());
 
         // Rotate
         toLandscape(activityRule);
