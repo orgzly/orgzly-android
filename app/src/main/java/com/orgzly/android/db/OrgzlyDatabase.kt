@@ -38,7 +38,7 @@ import java.util.*
             VersionedRook::class
         ],
 
-        version = 154
+        version = 155
 )
 @TypeConverters(com.orgzly.android.db.TypeConverters::class)
 abstract class OrgzlyDatabase : RoomDatabase() {
@@ -109,7 +109,8 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                             MIGRATION_150_151,
                             MIGRATION_151_152,
                             MIGRATION_152_153,
-                            MIGRATION_153_154
+                            MIGRATION_153_154,
+                            MIGRATION_154_155
                     )
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
@@ -517,6 +518,39 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                 db.execSQL("DELETE FROM versioned_rooks WHERE rook_id NOT IN (SELECT id FROM rooks)")
                 db.execSQL("DELETE FROM book_syncs WHERE versioned_rook_id NOT IN (SELECT id FROM versioned_rooks)")
                 db.execSQL("DELETE FROM book_syncs WHERE book_id NOT IN (SELECT id FROM books)")
+            }
+        }
+
+        private val MIGRATION_154_155 = object : Migration(154, 155) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                /*
+                 * Fix timestamp values in org_timestamps
+                 * https://github.com/orgzly/orgzly-android/issues/704
+                 */
+
+                val query = SupportSQLiteQueryBuilder
+                        .builder("org_timestamps")
+                        .columns(arrayOf("id", "string"))
+                        .create()
+
+                db.query(query).use { cursor ->
+                    if (cursor.moveToFirst()) {
+                        while (!cursor.isAfterLast) {
+                            val id = cursor.getLong(0)
+                            val string = cursor.getString(1)
+
+                            val timestamp = OrgDateTime.doParse(string).calendar.timeInMillis
+
+                            val values = ContentValues().apply {
+                                put("timestamp", timestamp)
+                            }
+
+                            db.update("org_timestamps", SQLiteDatabase.CONFLICT_ROLLBACK, values, "id = $id", null)
+
+                            cursor.moveToNext()
+                        }
+                    }
+                }
             }
         }
     }
