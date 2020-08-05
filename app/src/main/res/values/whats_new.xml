@@ -5,9 +5,13 @@
     <string name="whats_new_intro"><![CDATA[
         Visit
         <a href="http://www.orgzly.com">Orgzly.com</a>
-        and
-        <a href="mailto:support@orgzly.com">contact us</a>
-        if you have any issues or suggestions.
+        for documentation.
+
+        <br><br>
+
+        Use
+        <a href="https://github.com/orgzly/orgzly-android/issues">GitHub</a>
+        to check for existing feature requests or bug reports and report new ones.
 
         <br><br>
 
@@ -17,6 +21,8 @@
 
         <br><br>
 
-        Help us <a href="https://crowdin.com/project/orgzly">translate</a> the app.
+        Help us
+        <a href="https://crowdin.com/project/orgzly">translate</a>
+        the app on Crowdin.
     ]]></string>
 </resources>
