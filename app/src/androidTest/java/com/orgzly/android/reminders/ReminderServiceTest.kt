@@ -39,7 +39,7 @@ class ReminderServiceTest : OrgzlyTest() {
                     SCHEDULED: <2017-03-20 Mon 16:00>
                     * Note 3
                     * Note 4
-                    SCHEDULED: <2017-03-16 Fri +1w>
+                    SCHEDULED: <2017-03-16 Thu +1w>
                 """.trimIndent())
 
         val now = Instant.parse("2017-03-15T13:00:00") // Wed
@@ -66,7 +66,7 @@ class ReminderServiceTest : OrgzlyTest() {
                 "notebook",
                 """
                     * Note 1
-                    SCHEDULED: <2017-03-16 Fri +1w>
+                    SCHEDULED: <2017-03-16 Thu +1w>
                     * Note 2
                     DEADLINE: <2017-03-20 Mon 16:00>
                 """.trimIndent())
@@ -88,6 +88,29 @@ class ReminderServiceTest : OrgzlyTest() {
             Assert.assertEquals("Note 2", payload.title)
             Assert.assertEquals(ReminderTimeDao.DEADLINE_TIME, payload.timeType)
             Assert.assertEquals("2017-03-20T16:00:00.000", runTime.toLocalDateTime().toString())
+        }
+    }
+
+    @Test
+    fun testSchedulingBeforeDailyTime() {
+        testUtils.setupBook(
+                "notebook",
+                """
+                    * Note 1
+                    SCHEDULED: <2017-03-16 Fri +1w>
+                """.trimIndent())
+
+        val now = Instant.parse("2017-03-16T07:00:00")
+
+        val notes = getNoteReminders(
+                context, dataRepository, now, LastRun(), ReminderService.TIME_FROM_NOW)
+
+        Assert.assertEquals(1, notes.size.toLong())
+
+        notes[0].apply {
+            Assert.assertEquals("Note 1", payload.title)
+            Assert.assertEquals(ReminderTimeDao.SCHEDULED_TIME, payload.timeType)
+            Assert.assertEquals("2017-03-16T09:00:00.000", runTime.toLocalDateTime().toString())
         }
     }
 }

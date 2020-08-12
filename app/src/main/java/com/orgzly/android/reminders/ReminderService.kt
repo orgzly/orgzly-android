@@ -274,6 +274,13 @@ class ReminderService : JobIntentService() {
                             warningPeriod
                     )
 
+                    if (BuildConfig.LOG_DEBUG) {
+                        LogUtils.d(TAG,
+                                "Note's time", noteTime,
+                                "Interval", interval,
+                                "Found first time", time)
+                    }
+
                     if (time != null) {
                         result.add(NoteReminder(time, payload))
                     }
@@ -385,16 +392,15 @@ class ReminderService : JobIntentService() {
                 warningPeriod: OrgInterval?): DateTime? {
 
             val times = OrgDateTimeUtils.getTimesInInterval(
-                    orgDateTime, interval.first, interval.second, false, warningPeriod, 1)
+                    orgDateTime,
+                    interval.first,
+                    interval.second,
+                    defaultTimeOfDay,
+                    false, // Do not use repeater for reminders
+                    warningPeriod,
+                    1)
 
-            if (times.isEmpty()) {
-                return null
-            }
-            var time = times[0]
-            if (!orgDateTime.hasTime()) {
-                time = time.plusMinutes(defaultTimeOfDay)
-            }
-            return time
+            return times.firstOrNull()
         }
     }
 }

@@ -31,7 +31,7 @@ object AgendaUtils {
 
         if (rangeEnd == null) {
             result.addAll(OrgDateTimeUtils.getTimesInInterval(
-                    rangeStart, today, to, true, expandable.warningPeriod, 0))
+                    rangeStart, today, to, 0, true, expandable.warningPeriod, 0))
 
         } else { // a time range
             if (to.isAfter(rangeEnd.calendar.timeInMillis)) {
@@ -47,7 +47,7 @@ object AgendaUtils {
             }
 
             result.addAll(OrgDateTimeUtils.getTimesInInterval(
-                    rangeStart, today, to, true, expandable.warningPeriod, 0))
+                    rangeStart, today, to, 0, true, expandable.warningPeriod, 0))
         }
 
         return ExpandedOrgRange(isOverdueToday, TreeSet(result))
