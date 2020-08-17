@@ -2,6 +2,7 @@ package com.orgzly.android.util;
 
 import android.text.style.URLSpan;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -118,5 +119,13 @@ public class OrgFormatterMiscTest extends OrgFormatterTest {
     public void testPlainLinkWithTrailingSlash() {
         OrgSpannable spannable = new OrgSpannable("http://orgzly.com/");
         assertThat(spannable.string, is("http://orgzly.com/"));
+    }
+
+    @Ignore
+    @Test
+    public void testPlainLinkPrefixed() {
+        OrgSpannable spannable = new OrgSpannable("strhttp://orgzly.com");
+        assertThat(spannable.string, is("strhttp://orgzly.com"));
+        assertThat(spannable.spans.length, is(0));
     }
 }

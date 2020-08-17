@@ -26,7 +26,7 @@ object OrgFormatter {
     private const val LINK_SCHEMES = "(?:$SYSTEM_LINK_SCHEMES|$CUSTOM_LINK_SCHEMES)"
 
     private val LINK_REGEX =
-            """($LINK_SCHEMES:\S+)|(\[\[([^]]+)]\[(.+?)]])|(\[\[([^]]+)]])""".toRegex()
+            """($LINK_SCHEMES:\S+)|(\[\[(.+?)](?:\[(.+?)])?])""".toRegex()
 
     private const val PRE = "- \t('\"{"
     private const val POST = "- \\t.,:!?;'\")}\\["
@@ -132,13 +132,13 @@ object OrgFormatter {
                 // http://link.com
                 Link(whole = groups[1]!!, link = groups[1]!!, name = groups[1]!!)
 
-            groups[2] != null ->
+            groups[4] != null ->
                 // [[http://link.com][name]]
                 Link(whole = groups[2]!!, link = groups[3]!!, name = groups[4]!!)
 
-            groups[5] != null ->
+            groups[2] != null ->
                 // [[http://link.com]]
-                Link(whole = groups[5]!!, link = groups[6]!!, name = groups[6]!!)
+                Link(whole = groups[2]!!, link = groups[3]!!, name = groups[3]!!)
 
             else -> throw IllegalStateException()
         }

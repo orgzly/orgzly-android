@@ -63,7 +63,10 @@ class OrgFormatterLinkTest(private val param: Parameter) : OrgFormatterTest() {
                     Parameter("[[mailto:a@b.com]]", "mailto:a@b.com", listOf(Span(0, 14, URLSpan::class.java))),
 
                     Parameter("[[id:123][[a] b]]", "[a] b", listOf(Span(0, 5, IdLinkSpan::class.java))),
-                    Parameter("[[id:123][[a] b]] [[./456][[c] d]]", "[a] b [c] d", listOf(Span(0, 5, IdLinkSpan::class.java), Span(6, 11, FileLinkSpan::class.java)))
+                    Parameter("[[id:123][[a] b]] [[./456][[c] d]]", "[a] b [c] d", listOf(Span(0, 5, IdLinkSpan::class.java), Span(6, 11, FileLinkSpan::class.java))),
+
+                    Parameter("[[gnus:msgid][subject]]", "subject", listOf(Span(0, 7, FileLinkSpan::class.java))),
+                    Parameter("[[gnus:\\[Gmail\\]/All Mail#msgid][subject]]", "subject", listOf(Span(0, 7, FileLinkSpan::class.java)))
             )
         }
     }
