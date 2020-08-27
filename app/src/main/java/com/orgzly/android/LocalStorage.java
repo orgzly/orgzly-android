@@ -47,10 +47,10 @@ public class LocalStorage {
     }
 
     public File getCacheDirectory(String child) throws IOException {
-        File dir = externalCacheDir(child);
+        File dir = internalCacheDir(child);
 
         if (dir == null) {
-            dir = internalCacheDir(child);
+            throw new IOException("Failed to get cache directory " + child);
         }
 
         return dir;
@@ -103,12 +103,12 @@ public class LocalStorage {
         }
     }
 
-    private File internalCacheDir(String dir) throws IOException {
+    private File internalCacheDir(String dir) {
         File file = new File(mContext.getCacheDir(), dir);
 
         if (! file.isDirectory()) {
             if (! file.mkdirs()) {
-                throw new IOException("Failed creating directory " + file);
+                return null;
             }
         }
 
