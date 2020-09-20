@@ -11,6 +11,7 @@ import com.orgzly.android.repos.GitRepo;
 import com.orgzly.android.util.MiscUtils;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.MergeResult;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.Status;
@@ -19,6 +20,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
@@ -27,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 public class GitFileSynchronizer {
@@ -183,6 +186,45 @@ public class GitFileSynchronizer {
 
     public void tryPushIfUpdated(@NonNull RevCommit commit) throws IOException {
         if (!commit.equals(currentHead())) {
+            tryPush();
+        }
+    }
+
+    /**
+     * Try to push to remote if local and remote HEADs for the current branch
+     * point to different commits. This method was added to allow pushing only
+     * once per sync occasion: right after the "for namesake in namesakes"-loop
+     * in SyncService.doInBackground().
+     */
+    public void tryPushIfHeadDiffersFromRemote() {
+        String branchName = null;
+        String remoteName = null;
+        RevCommit localHead = null;
+        RevCommit remoteHead = null;
+        Repository repo = git.getRepository();
+
+        try {
+            branchName = repo.getBranch();
+            localHead = currentHead();
+            remoteName = preferences.remoteName();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // If the current branch exists on the remote side, find out its HEAD commit.
+        try {
+            List<Ref> remoteBranches = git.branchList().setListMode(ListBranchCommand.ListMode.REMOTE).call();
+            for (Ref remoteBranch : remoteBranches) {
+                if (remoteBranch.getName().equals("refs/remotes/" + remoteName + "/" + branchName)) {
+                    remoteHead = getCommit(remoteName + "/" + branchName);
+                    break;
+                }
+            }
+        } catch (GitAPIException | IOException e) {
+            e.printStackTrace();
+        }
+
+        if (localHead != null && !localHead.equals(remoteHead)) {
             tryPush();
         }
     }
