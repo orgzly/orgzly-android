@@ -1,8 +1,6 @@
 package com.orgzly.android.espresso;
 
-import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
-import android.os.SystemClock;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
 import android.view.KeyEvent;
@@ -22,7 +20,6 @@ import androidx.test.espresso.action.CloseKeyboardAction;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
 import com.orgzly.android.ui.SpanUtils;
@@ -288,21 +285,6 @@ class EspressoUtils {
             openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getTargetContext());
             onView(withText(resourceId)).perform(click());
         }
-    }
-
-    static void toLandscape(ActivityTestRule activityRule) {
-        toOrientation(activityRule, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    }
-
-    static void toPortrait(ActivityTestRule activityRule) {
-        toOrientation(activityRule, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-    }
-
-    private static void toOrientation(ActivityTestRule activityRule, int requestedOrientation) {
-        activityRule.getActivity().setRequestedOrientation(requestedOrientation);
-
-        /* Not pretty, but it does seem to fix testFragments from randomly failing. */
-        SystemClock.sleep(750);
     }
 
     public static void clickSetting(String key, int title) {

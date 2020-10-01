@@ -3,8 +3,8 @@ package com.orgzly.android.espresso;
 import android.content.pm.ActivityInfo;
 import android.widget.DatePicker;
 
+import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.contrib.PickerActions;
-import androidx.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
@@ -13,7 +13,6 @@ import com.orgzly.android.ui.main.MainActivity;
 
 import org.joda.time.DateTime;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -37,10 +36,7 @@ import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 
 public class AgendaFragmentTest extends OrgzlyTest {
-    @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
-
-    private void defaultSetUp() {
+    private ActivityScenario<MainActivity> defaultSetUp() {
         testUtils.setupBook("book-one",
                 "First book used for testing\n" +
 
@@ -61,11 +57,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
                         "**** Note 2\n" +
                         "SCHEDULED: <2014-01-04 Sat>--<2044-01-10 Fri>\n");
 
-        activityRule.launchActivity(null);
-    }
-
-    private void emptySetup() {
-        activityRule.launchActivity(null);
+        return ActivityScenario.launch(MainActivity.class);
     }
 
     @Test
@@ -86,7 +78,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
 
     @Test
     public void testWithNoBook() {
-        emptySetup();
+        ActivityScenario.launch(MainActivity.class);
         searchForText(".it.done (s.7d or d.7d) ad.7");
         onNotesInAgenda().check(matches(recyclerViewItemCount(7)));
         searchForText(".it.done (s.7d or d.7d) ad.3");
@@ -164,10 +156,14 @@ public class AgendaFragmentTest extends OrgzlyTest {
 
     @Test
     public void testPersistedSpinnerSelection() {
-        defaultSetUp();
+        ActivityScenario<MainActivity> scenario = defaultSetUp();
+
         searchForText(".it.done ad.7");
         onNotesInAgenda().check(matches(recyclerViewItemCount(25)));
-        activityRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        scenario.onActivity(activity ->
+                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
+
         onNotesInAgenda().check(matches(recyclerViewItemCount(25)));
     }
 
@@ -178,7 +174,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
                 "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>\n" +
                 "* TODO Note B\nSCHEDULED: <2018-01-01 .+1d>\n");
 
-        activityRule.launchActivity(null);
+        ActivityScenario.launch(MainActivity.class);
 
         searchForText("i.todo ad.3");
 
@@ -199,7 +195,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
     @Test
     public void testPreselectedStateOfSelectedNote() {
         testUtils.setupBook("notebook", "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>");
-        activityRule.launchActivity(null);
+        ActivityScenario.launch(MainActivity.class);
 
         searchForText("ad.3");
 
@@ -212,7 +208,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
     @Test
     public void testSwipeDivider() {
         testUtils.setupBook("notebook", "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>");
-        activityRule.launchActivity(null);
+        ActivityScenario.launch(MainActivity.class);
         searchForText("ad.3");
         onItemInAgenda(0).perform(swipeLeft());
         onItemInAgenda(2).perform(swipeLeft());
@@ -222,7 +218,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
     @Test
     public void testOpenCorrectNote() {
         testUtils.setupBook("notebook", "* TODO Note A\nSCHEDULED: <2018-01-01 +1d>");
-        activityRule.launchActivity(null);
+        ActivityScenario.launch(MainActivity.class);
 
         searchForText("ad.3");
 
@@ -237,7 +233,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         testUtils.setupBook("book-1","* DONE Note A");
         testUtils.setupBook("book-2","* TODO Note B\nSCHEDULED: <2014-01-01>\n* TODO Note C\nSCHEDULED: <2014-01-02>\n");
         AppPreferences.isReverseNoteClickAction(context, false);
-        activityRule.launchActivity(null);
+        ActivityScenario.launch(MainActivity.class);
 
         searchForText(".it.done ad.7");
         onItemInAgenda(1).perform(longClick());
@@ -248,7 +244,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
     @Test
     public void testInactiveScheduled() {
         testUtils.setupBook("notebook-1", "* Note A\nSCHEDULED: [2020-07-01]\nDEADLINE: <2020-07-01>");
-        activityRule.launchActivity(null);
+        ActivityScenario.launch(MainActivity.class);
         searchForText("ad.1");
         // Overdue, note (deadline), today
         onNotesInAgenda().check(matches(recyclerViewItemCount(3)));
@@ -257,7 +253,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
     @Test
     public void testInactiveDeadline() {
         testUtils.setupBook("notebook-1", "* Note A\nDEADLINE: [2020-07-01]\nSCHEDULED: <2020-07-01>");
-        activityRule.launchActivity(null);
+        ActivityScenario.launch(MainActivity.class);
         searchForText("ad.1");
         // Overdue, note (scheduled), today
         onNotesInAgenda().check(matches(recyclerViewItemCount(3)));
@@ -266,7 +262,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
     @Test
     public void testInactiveScheduledAndDeadline() {
         testUtils.setupBook("notebook-1", "* Note A\nSCHEDULED: [2020-07-01]\nDEADLINE: [2020-07-01]");
-        activityRule.launchActivity(null);
+        ActivityScenario.launch(MainActivity.class);
         searchForText("ad.1");
         // Today
         onNotesInAgenda().check(matches(recyclerViewItemCount(1)));

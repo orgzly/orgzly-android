@@ -1,7 +1,9 @@
 package com.orgzly.android.espresso
 
+import android.content.pm.ActivityInfo
 import android.widget.DatePicker
 import android.widget.TimePicker
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
@@ -20,13 +22,11 @@ import com.orgzly.android.espresso.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
 import org.hamcrest.Matchers.*
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 
 class NoteFragmentTest : OrgzlyTest() {
-    @get:Rule
-    var activityRule = EspressoActivityTestRule(MainActivity::class.java)
+    private lateinit var scenario: ActivityScenario<MainActivity>
 
     @Before
     @Throws(Exception::class)
@@ -66,7 +66,7 @@ class NoteFragmentTest : OrgzlyTest() {
 
                 """.trimIndent())
 
-        activityRule.launchActivity(null)
+        scenario = ActivityScenario.launch(MainActivity::class.java)
 
         onBook(0).perform(click())
     }
@@ -250,36 +250,57 @@ class NoteFragmentTest : OrgzlyTest() {
 
     @Test
     fun testSettingStateRemainsSetAfterRotation() {
-        toPortrait(activityRule)
+        scenario.onActivity { activity ->
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
         onNoteInBook(1).perform(click())
         onView(withId(R.id.fragment_note_state_button)).perform(click())
         onView(withText("TODO")).perform(click())
         onView(withText("TODO")).check(matches(isDisplayed()))
-        toLandscape(activityRule)
+
+        scenario.onActivity { activity ->
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
+
         onView(withText("TODO")).check(matches(isDisplayed()))
     }
 
     @Test
     fun testSettingPriorityRemainsSetAfterRotation() {
-        toPortrait(activityRule)
+        scenario.onActivity { activity ->
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
         onNoteInBook(1).perform(click())
         onView(withId(R.id.fragment_note_priority_button)).perform(click())
         onView(withText("B")).perform(click())
         onView(withId(R.id.fragment_note_priority_button)).check(matches(withText("B")))
-        toLandscape(activityRule)
+
+        scenario.onActivity { activity ->
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
+
         onView(withId(R.id.fragment_note_priority_button)).check(matches(withText("B")))
     }
 
     @Test
     fun testSettingScheduledTimeRemainsSetAfterRotation() {
-        toPortrait(activityRule)
+        scenario.onActivity { activity ->
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
         onNoteInBook(1).perform(click())
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText("")))
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click())
         onView(withText(R.string.set)).perform(click())
         onView(withId(R.id.fragment_note_scheduled_button))
                 .check(matches(withText(startsWith(defaultDialogUserDate()))))
-        toLandscape(activityRule)
+
+        scenario.onActivity { activity ->
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
+
         onView(withId(R.id.fragment_note_scheduled_button))
                 .check(matches(withText(startsWith(defaultDialogUserDate()))))
     }
@@ -287,10 +308,18 @@ class NoteFragmentTest : OrgzlyTest() {
     @Test
     fun testSetScheduledTimeAfterRotation() {
         onNoteInBook(1).perform(click())
-        toPortrait(activityRule)
+
+        scenario.onActivity { activity ->
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
         onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText("")))
         onView(withId(R.id.fragment_note_scheduled_button)).perform(click())
-        toLandscape(activityRule)
+
+        scenario.onActivity { activity ->
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
+
         onView(withText(R.string.set)).perform(closeSoftKeyboardWithDelay(), click())
         onView(withId(R.id.fragment_note_scheduled_button))
                 .check(matches(withText(startsWith(defaultDialogUserDate()))))
@@ -335,7 +364,9 @@ class NoteFragmentTest : OrgzlyTest() {
 
         onView(withId(R.id.fragment_note_deadline_button)).check(matches(withText("")))
 
-        toPortrait(activityRule)
+        scenario.onActivity { activity ->
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
 
         onView(withId(R.id.fragment_note_deadline_button)).perform(click())
 
@@ -356,7 +387,9 @@ class NoteFragmentTest : OrgzlyTest() {
         onView(withText(R.string.ok)).perform(click())
 
         /* Rotate screen. */
-        toLandscape(activityRule)
+        scenario.onActivity { activity ->
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
 
         /* Set time. */
         onView(withText(R.string.set)).perform(click())
@@ -410,8 +443,10 @@ class NoteFragmentTest : OrgzlyTest() {
         onView(allOf(withId(R.id.value), hasSibling(withText("prop-name-2"))))
                 .perform(*replaceTextCloseKeyboard("prop-value-2"))
 
-        toLandscape(activityRule)
-        toPortrait(activityRule)
+        scenario.onActivity { activity ->
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
 
         onView(withId(R.id.fragment_note_container)).perform(swipeUp()) // For small screens
 

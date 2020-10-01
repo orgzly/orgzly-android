@@ -1,15 +1,15 @@
 package com.orgzly.android.espresso;
 
+import android.app.Instrumentation;
 import android.content.Intent;
 
-import androidx.test.rule.ActivityTestRule;
+import androidx.test.core.app.ActivityScenario;
 
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.BookChooserActivity;
 
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 
 import static android.app.Activity.RESULT_OK;
@@ -25,17 +25,10 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertTrue;
 
 public class BookChooserActivityTest extends OrgzlyTest {
-    @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(BookChooserActivity.class);
-
-    private void startActivityWithIntent(String action) {
-        Intent intent = new Intent();
-
-        if (action != null) {
-            intent.setAction(action);
-        }
-
-        activityRule.launchActivity(intent);
+    private ActivityScenario<BookChooserActivity> startActivityWithCreateShortcutAction() {
+        Intent intent = new Intent(context, BookChooserActivity.class);
+        intent.setAction(Intent.ACTION_CREATE_SHORTCUT);
+        return ActivityScenario.launch(intent);
     }
 
     @Before
@@ -49,28 +42,31 @@ public class BookChooserActivityTest extends OrgzlyTest {
 
     @Test
     public void testDisplayBooks() {
-        startActivityWithIntent(Intent.ACTION_CREATE_SHORTCUT);
+        startActivityWithCreateShortcutAction();
+
         onView(allOf(withText("book-one"), isDisplayed())).check(matches(isDisplayed()));
     }
 
     @Ignore("SecurityException")
     @Test
     public void testLongClickChoosesBook() {
-        startActivityWithIntent(Intent.ACTION_CREATE_SHORTCUT);
+        ActivityScenario<BookChooserActivity> scenario = startActivityWithCreateShortcutAction();
 
         onView(allOf(withText("book-one"), isDisplayed())).perform(longClick());
         // java.lang.SecurityException: Injecting to another application requires INJECT_EVENTS permission
 
-        assertTrue(activityRule.getActivity().isFinishing());
+        scenario.onActivity(activity -> assertTrue(activity.isFinishing()));
     }
 
     @Test
-    public void testCreateShortcut() throws Exception {
-        startActivityWithIntent(Intent.ACTION_CREATE_SHORTCUT);
+    public void testCreateShortcut() {
+        ActivityScenario<BookChooserActivity> scenario = startActivityWithCreateShortcutAction();
+
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
 
-        assertThat(getActivityResultCode(activityRule.getActivity()), is(RESULT_OK));
-        Intent resultIntent = getActivityResultData(activityRule.getActivity());
-        assertThat(resultIntent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME), is("book-one"));
+        Instrumentation.ActivityResult result = scenario.getResult();
+
+        assertThat(result.getResultCode(), is(RESULT_OK));
+        assertThat(result.getResultData().getStringExtra(Intent.EXTRA_SHORTCUT_NAME), is("book-one"));
     }
 }

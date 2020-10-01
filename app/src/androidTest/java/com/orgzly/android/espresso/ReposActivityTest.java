@@ -1,14 +1,13 @@
 package com.orgzly.android.espresso;
 
-import androidx.test.rule.ActivityTestRule;
+import androidx.test.core.app.ActivityScenario;
 
-import com.orgzly.test.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.repos.ReposActivity;
+import com.orgzly.test.BuildConfig;
 
 import org.junit.Assume;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.File;
@@ -25,12 +24,10 @@ import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
 import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
 
 public class ReposActivityTest extends OrgzlyTest {
-    @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(ReposActivity.class);
-
     @Test
     public void testSavingWithBogusDirectoryUri() {
-        activityRule.launchActivity(null);
+        ActivityScenario.launch(ReposActivity.class);
+
         onView(withId(R.id.activity_repos_flipper)).check(matches(isDisplayed()));
         onView(withId(R.id.activity_repos_directory)).perform(scrollTo(), click());
         onView(withId(R.id.activity_repo_directory)).perform(replaceTextCloseKeyboard("non-existent-directory"));
@@ -45,7 +42,7 @@ public class ReposActivityTest extends OrgzlyTest {
 
         new File(localDir).mkdirs();
 
-        activityRule.launchActivity(null);
+        ActivityScenario.launch(ReposActivity.class);
 
         onView(withId(R.id.activity_repos_flipper)).check(matches(isDisplayed()));
         onView(withId(R.id.activity_repos_directory)).perform(scrollTo(), click());
@@ -65,7 +62,7 @@ public class ReposActivityTest extends OrgzlyTest {
 
         String localDir = "/Documents/user@host%2Fdir";
 
-        activityRule.launchActivity(null);
+        ActivityScenario.launch(ReposActivity.class);
 
         onView(withId(R.id.activity_repos_flipper)).check(matches(isDisplayed()));
         onView(withId(R.id.activity_repos_dropbox)).perform(click());
@@ -81,7 +78,7 @@ public class ReposActivityTest extends OrgzlyTest {
 
     @Test
     public void testCreateRepoWithExistingUrl() {
-        activityRule.launchActivity(null);
+        ActivityScenario.launch(ReposActivity.class);
 
         String url = "file:" + context.getExternalCacheDir().getAbsolutePath();
 

@@ -1,13 +1,14 @@
 package com.orgzly.android.espresso;
 
-import androidx.test.rule.ActivityTestRule;
+import android.content.pm.ActivityInfo;
+
+import androidx.test.core.app.ActivityScenario;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -22,14 +23,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
 import static com.orgzly.android.espresso.EspressoUtils.onNoteInSearch;
-import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
-import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
 public class ActionModeTest extends OrgzlyTest {
-    @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
+    private ActivityScenario<MainActivity> scenario;
 
     @Before
     public void setUp() throws Exception {
@@ -62,7 +60,7 @@ public class ActionModeTest extends OrgzlyTest {
                 "** Note #10.\n" +
                 "");
 
-        activityRule.launchActivity(null);
+        scenario = ActivityScenario.launch(MainActivity.class);
 
         onView(allOf(withText("book-one"), isDisplayed())).perform(click());
     }
@@ -79,11 +77,13 @@ public class ActionModeTest extends OrgzlyTest {
 
     @Test
     public void testCabStaysOpenOnRotation() {
-        toPortrait(activityRule);
+        scenario.onActivity(activity ->
+                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
 
         onNoteInBook(3).perform(longClick());
 
-        toLandscape(activityRule);
+        scenario.onActivity(activity ->
+                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
 
         onView(withId(R.id.book_cab_cut)).check(matches(isDisplayed()));
 
@@ -92,18 +92,21 @@ public class ActionModeTest extends OrgzlyTest {
 
     @Test
     public void testCabStaysOpenOnRotationInQueryFragment() {
-        toPortrait(activityRule);
+        scenario.onActivity(activity ->
+                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
 
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText("Scheduled")).perform(click());
 
         onNoteInSearch(1).perform(longClick());
 
-        toLandscape(activityRule);
+        scenario.onActivity(activity ->
+                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
 
         // TODO: Check *the same* note is selected.
 
-        toPortrait(activityRule);
+        scenario.onActivity(activity ->
+                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
 
         onView(withId(R.id.bottom_action_bar_done)).check(matches(isDisplayed()));
     }

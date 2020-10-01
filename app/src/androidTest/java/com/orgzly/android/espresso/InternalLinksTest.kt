@@ -1,5 +1,6 @@
 package com.orgzly.android.espresso
 
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -9,13 +10,10 @@ import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
-class InternalLinksTest : OrgzlyTest() {
-    @get:Rule
-    val activityRule = EspressoActivityTestRule(MainActivity::class.java)
 
+class InternalLinksTest : OrgzlyTest() {
     @Before
     @Throws(Exception::class)
     override fun setUp() {
@@ -61,7 +59,7 @@ class InternalLinksTest : OrgzlyTest() {
                 """.trimIndent()
         )
 
-        activityRule.launchActivity(null)
+        ActivityScenario.launch(MainActivity::class.java)
 
         onBook(0).perform(click())
     }

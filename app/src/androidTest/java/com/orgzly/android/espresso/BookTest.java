@@ -1,9 +1,10 @@
 package com.orgzly.android.espresso;
 
+import android.content.pm.ActivityInfo;
 import android.widget.DatePicker;
 
+import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.contrib.RecyclerViewActions;
-import androidx.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
@@ -12,7 +13,6 @@ import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -36,8 +36,6 @@ import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
 import static com.orgzly.android.espresso.EspressoUtils.onNotesInBook;
 import static com.orgzly.android.espresso.EspressoUtils.openContextualToolbarOverflowMenu;
 import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
-import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
-import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
@@ -46,8 +44,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
 
 public class BookTest extends OrgzlyTest {
-    @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
+    private ActivityScenario<MainActivity> scenario;
 
     @Before
     public void setUp() throws Exception {
@@ -104,7 +101,7 @@ public class BookTest extends OrgzlyTest {
                 "** Note #40.\n" +
                 "");
 
-        activityRule.launchActivity(null);
+        scenario = ActivityScenario.launch(MainActivity.class);
 
         onView(allOf(withText("book-name"), isDisplayed())).perform(click());
     }
@@ -179,9 +176,14 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testScrollPositionKeptOnRotation() {
-        toLandscape(activityRule);
+        scenario.onActivity(activity ->
+                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
+
         onNoteInBook(40).check(matches(isDisplayed())); // Scroll to note
-        toPortrait(activityRule);
+
+        scenario.onActivity(activity ->
+                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
+
         onView(withText("Note #40.")).check(matches(isDisplayed()));
     }
 
@@ -264,7 +266,8 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testActionModeMovingStaysOpenAfterRotation() {
-        toPortrait(activityRule);
+        scenario.onActivity(activity ->
+                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
 
         onView(withId(R.id.notes_action_move_down)).check(doesNotExist());
 
@@ -274,7 +277,8 @@ public class BookTest extends OrgzlyTest {
         onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).check(matches(isDisplayed()));
 
-        toLandscape(activityRule);
+        scenario.onActivity(activity ->
+                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
 
         onView(withId(R.id.notes_action_move_down)).check(matches(isDisplayed()));
     }
@@ -412,8 +416,10 @@ public class BookTest extends OrgzlyTest {
         onView(withId(R.id.note_view_edit_switch)).check(doesNotExist());
 
         // Rotate
-        toLandscape(activityRule);
-        toPortrait(activityRule);
+        scenario.onActivity(activity -> {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        });
 
         // Leave the note
         pressBack();

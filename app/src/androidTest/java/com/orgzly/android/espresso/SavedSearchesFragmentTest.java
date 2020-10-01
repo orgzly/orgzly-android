@@ -1,13 +1,12 @@
 package com.orgzly.android.espresso;
 
-import androidx.test.rule.ActivityTestRule;
+import androidx.test.core.app.ActivityScenario;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -30,16 +29,13 @@ import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard
 import static org.hamcrest.Matchers.allOf;
 
 public class SavedSearchesFragmentTest extends OrgzlyTest {
-    @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
-
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
         testUtils.setupBook("book-one", "Preface\n* Note A.\n");
 
-        activityRule.launchActivity(null);
+        ActivityScenario.launch(MainActivity.class);
 
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.searches)).perform(click());

@@ -1,13 +1,12 @@
 package com.orgzly.android.espresso;
 
-import androidx.test.rule.ActivityTestRule;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.main.MainActivity;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -31,14 +30,7 @@ import static org.hamcrest.Matchers.hasToString;
 
 public class SettingsFragmentTest extends OrgzlyTest {
     @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
-
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-
-        activityRule.launchActivity(null);
-    }
+    public ActivityScenarioRule<MainActivity> rule = new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
     public void testImportingGettingStartedFromGettingStartedNotebook() {

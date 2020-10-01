@@ -1,13 +1,12 @@
 package com.orgzly.android.espresso;
 
-import androidx.test.rule.ActivityTestRule;
+import androidx.test.core.app.ActivityScenario;
 
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import static androidx.test.espresso.Espresso.onData;
@@ -29,9 +28,6 @@ import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.not;
 
 public class SettingsChangeTest extends OrgzlyTest {
-    @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
-
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -45,7 +41,7 @@ public class SettingsChangeTest extends OrgzlyTest {
                 "SCHEDULED: <2014-01-01>\n"
         );
 
-        activityRule.launchActivity(null);
+        ActivityScenario.launch(MainActivity.class);
     }
 
     @Test

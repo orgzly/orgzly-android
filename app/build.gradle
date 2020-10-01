@@ -152,6 +152,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-intents:$versions.android_test_espresso"
     androidTestImplementation "androidx.test:runner:$versions.android_test"
     androidTestImplementation "androidx.test:rules:$versions.android_test"
+    androidTestImplementation "androidx.test.ext:junit:$versions.android_test_ext_junit"
 
     // For ANDROIDX_TEST_ORCHESTRATOR
     // androidTestUtil "androidx.test:orchestrator:$android_test_version"

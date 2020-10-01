@@ -1,6 +1,7 @@
 package com.orgzly.android.espresso
 
 import androidx.annotation.StringRes
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -11,13 +12,9 @@ import com.orgzly.android.espresso.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
 import org.hamcrest.Matchers.not
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 class BookPrefaceTest : OrgzlyTest() {
-    @get:Rule
-    val activityRule = EspressoActivityTestRule(MainActivity::class.java)
-
     @Before
     @Throws(Exception::class)
     override fun setUp() {
@@ -37,7 +34,8 @@ class BookPrefaceTest : OrgzlyTest() {
                     ** TODO Note #3.
                 """.trimIndent())
 
-        activityRule.launchActivity(null)
+        ActivityScenario.launch(MainActivity::class.java)
+
         onBook(0).perform(click())
     }
 

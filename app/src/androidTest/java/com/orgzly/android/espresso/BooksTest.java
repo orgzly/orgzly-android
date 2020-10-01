@@ -3,20 +3,17 @@ package com.orgzly.android.espresso;
 import android.app.Activity;
 import android.app.Instrumentation.ActivityResult;
 import android.content.Intent;
-import android.os.Build;
 
 import androidx.documentfile.provider.DocumentFile;
+import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.intent.Intents;
-import androidx.test.rule.ActivityTestRule;
 
 import com.orgzly.R;
 import com.orgzly.android.BookFormat;
-import com.orgzly.android.LocalStorage;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.File;
@@ -49,9 +46,6 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
 
 public class BooksTest extends OrgzlyTest {
-    @Rule
-    public ActivityTestRule activityRule = new EspressoActivityTestRule<>(MainActivity.class);
-
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -84,18 +78,20 @@ public class BooksTest extends OrgzlyTest {
                 "** Note #10.\n" +
                 ""
         );
+
+        testUtils.setupBook("book-3", "");
+
+        ActivityScenario.launch(MainActivity.class);
     }
 
     @Test
     public void testOpenSettings() {
-        activityRule.launchActivity(null);
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
         onView(withText(R.string.look_and_feel)).check(matches(isDisplayed()));
     }
 
     @Test
     public void testReturnToNonExistentBookByPressingBack() {
-        activityRule.launchActivity(null);
         onView(allOf(withText("book-1"), withId(R.id.item_book_title))).perform(click());
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText(R.string.notebooks)).perform(click());
@@ -115,7 +111,6 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testEnterPrefaceForNonExistentBook() {
-        activityRule.launchActivity(null);
         onView(allOf(withText("book-1"), withId(R.id.item_book_title))).perform(click());
 
         onView(withId(R.id.drawer_layout)).perform(open());
@@ -144,7 +139,6 @@ public class BooksTest extends OrgzlyTest {
     }
 
     private void testExportQ() {
-        activityRule.launchActivity(null);
         onBook(0).perform(longClick());
         openContextualToolbarOverflowMenu();
 
@@ -173,7 +167,6 @@ public class BooksTest extends OrgzlyTest {
     }
 
     private void testExportPreQ() throws IOException {
-        activityRule.launchActivity(null);
         onBook(0).perform(longClick());
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.export)).perform(click());
@@ -183,7 +176,6 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testCreateNewBookWithoutExtension() {
-        activityRule.launchActivity(null);
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.dialog_input)).perform(replaceTextCloseKeyboard("book-created-from-scratch"));
         onView(withText(R.string.create)).perform(click());
@@ -193,7 +185,6 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testCreateNewBookWithExtension() {
-        activityRule.launchActivity(null);
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.dialog_input)).perform(replaceTextCloseKeyboard("book-created-from-scratch.org"));
         onView(withText(R.string.create)).perform(click());
@@ -203,14 +194,13 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testCreateAndDeleteBook() {
-        activityRule.launchActivity(null);
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.dialog_input)).perform(replaceTextCloseKeyboard("book-created-from-scratch"));
         onView(withText(R.string.create)).perform(click());
 
         onView(allOf(withText("book-created-from-scratch"), isDisplayed())).check(matches(isDisplayed()));
 
-        onBook(2).perform(longClick());
+        onBook(3).perform(longClick());
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.delete)).perform(click());
         onView(withText(R.string.delete)).perform(click());
@@ -220,7 +210,6 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testDifferentBookLoading() {
-        activityRule.launchActivity(null);
         onView(allOf(withText("book-1"), isDisplayed())).perform(click());
         onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note A.")));
         pressBack();
@@ -230,7 +219,6 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testLoadingBookOnlyIfFragmentHasViewCreated() {
-        activityRule.launchActivity(null);
         onView(allOf(withText("book-1"), isDisplayed())).perform(click());
 
         onView(withId(R.id.drawer_layout)).perform(open());
@@ -244,7 +232,6 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testCreateNewBookWithExistingName() {
-        activityRule.launchActivity(null);
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.dialog_input)).perform(replaceTextCloseKeyboard("new-book"));
         onView(withText(R.string.create)).perform(click());
@@ -259,16 +246,14 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testCreateNewBookWithWhiteSpace() {
-        activityRule.launchActivity(null);
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.dialog_input)).perform(replaceTextCloseKeyboard(" new-book  "));
         onView(withText(R.string.create)).perform(click());
-        onBook(2, R.id.item_book_title).check(matches(withText("new-book")));
+        onBook(3, R.id.item_book_title).check(matches(withText("new-book")));
     }
 
     @Test
     public void testRenameBookToExistingName() {
-        activityRule.launchActivity(null);
         onBook(0).perform(longClick());
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.rename)).perform(click());
@@ -280,7 +265,6 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testRenameBookToSameName() {
-        activityRule.launchActivity(null);
         onBook(0).perform(longClick());
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.rename)).perform(click());
@@ -289,9 +273,6 @@ public class BooksTest extends OrgzlyTest {
 
     @Test
     public void testNoteCountDisplayed() throws IOException {
-        testUtils.setupBook("book-3", "");
-        activityRule.launchActivity(null);
-
         onBook(0, R.id.item_book_note_count)
                 .check(matches(withText(context.getResources().getQuantityString(R.plurals.notes_count_nonzero, 5, 5))));
         onBook(1, R.id.item_book_note_count)

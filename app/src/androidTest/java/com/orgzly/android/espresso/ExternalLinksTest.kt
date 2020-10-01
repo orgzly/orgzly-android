@@ -1,6 +1,7 @@
 package com.orgzly.android.espresso
 
 import android.os.Environment
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -10,18 +11,15 @@ import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
 import org.hamcrest.Matchers.startsWith
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+
 
 @RunWith(value = Parameterized::class)
 class ExternalLinksTest(private val param: Parameter) : OrgzlyTest() {
 
     data class Parameter(val link: String, val check: () -> Any)
-
-    @get:Rule
-    val activityRule = EspressoActivityTestRule(MainActivity::class.java)
 
     companion object {
         @JvmStatic
@@ -55,7 +53,7 @@ class ExternalLinksTest(private val param: Parameter) : OrgzlyTest() {
     fun testLink() {
         testUtils.setupBook("book", "* Note\n${param.link}")
 
-        activityRule.launchActivity(null)
+        ActivityScenario.launch(MainActivity::class.java)
 
         // Open book
         onBook(0).perform(click())
