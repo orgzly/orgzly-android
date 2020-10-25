@@ -113,6 +113,9 @@
         <attr name="ic_folder_open_24dp" format="reference"/>
         <attr name="ic_folder_open_48dp" format="reference"/>
         <attr name="ic_format_list_bulleted_18dp" format="reference"/>
+        <attr name="ic_hourglass_top" format="reference"/>
+        <attr name="ic_hourglass_bottom" format="reference"/>
+        <attr name="ic_hourglass_disabled" format="reference"/>
         <attr name="ic_info_outline_18dp" format="reference"/>
         <attr name="ic_info_outline_24dp" format="reference"/>
         <attr name="ic_insert_drive_file_24dp" format="reference"/>

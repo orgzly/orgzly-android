@@ -981,16 +981,13 @@ class DataRepository @Inject constructor(
         noteIds.forEach() { noteId ->
             val content = db.note().get(noteId)?.content
 
-            if(type == 0) {
+            if (type == 0) {
                 val newContent = OrgFormatter.clockIn(content)
                 db.note().updateContent(noteId, newContent)
-            }
-            else if(type == 1) {
+            } else if (type == 1) {
                 val newContent = OrgFormatter.clockOut(content)
                 db.note().updateContent(noteId, newContent)
-            }
-            else if(type == 2)
-            {
+            } else if (type == 2) {
                 val newContent = OrgFormatter.clockCancel(content)
                 db.note().updateContent(noteId, newContent)
             }
@@ -1839,7 +1836,11 @@ class DataRepository @Inject constructor(
 
         val startId = getOrgDateTimeId(range.startTime)
 
-        val rangeEndTime = if (range.endTime != null) { range.endTime } else { null }
+        val rangeEndTime = if (range.endTime != null) {
+            range.endTime
+        } else {
+            null
+        }
         val endId = if (rangeEndTime != null) getOrgDateTimeId(rangeEndTime) else null
 
         return db.orgRange().insert(OrgRange(0, str, startId, endId))

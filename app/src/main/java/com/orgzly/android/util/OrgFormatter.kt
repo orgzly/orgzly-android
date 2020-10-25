@@ -55,7 +55,8 @@ object OrgFormatter {
     private const val PLAIN_LIST_CHARS = "-\\+"
     private val CHECKBOXES_PATTERN = Pattern.compile("""^\s*[$PLAIN_LIST_CHARS]\s+(\[[ X]])""", Pattern.MULTILINE)
 
-    private val INACTIVE_DATETIME ="(\\[[0-9]{4,}-[0-9]{2}-[0-9]{2} +[A-Za-z\\.]* +[0-9]{1,2}:[0-9]{2}\\])"
+    private val INACTIVE_DATETIME = "(\\[[0-9]{4,}-[0-9]{2}-[0-9]{2} ?[^\\]\\r\\n>]*?[0-9]{1,2}:[0-9]{2}\\])"
+    private val CLOCKED_TIMES_P = Pattern.compile("(CLOCK: *$INACTIVE_DATETIME) *(-- *$INACTIVE_DATETIME)?( *=> *[0-9]{1,4}:[0-9]{2})?[\\r\\n]*")
 
     private const val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 
@@ -386,8 +387,7 @@ object OrgFormatter {
         return ":$LOGBOOK_DRAWER_NAME:\n$entry\n:END:$prefixedContent"
     }
 
-    @JvmStatic
-    fun getLastClockInPosition(content: String?): ArrayList<Int> {
+    private fun getLastClockInPosition(content: String): ArrayList<Int> {
         val m = LOGBOOK_DRAWER_PATTERN.matcher(content)
 
         val pos = ArrayList<Int>()
@@ -396,9 +396,7 @@ object OrgFormatter {
             val start = m.start(2) // Content start
             val end = m.end()
 
-            val CLOCKED_TIMES_P = Pattern.compile("(CLOCK: *$INACTIVE_DATETIME) *(-- *$INACTIVE_DATETIME)?( *=> *[0-9]{1,4}:[0-9]{2})?[\\r\\n]*")
-
-            val m2 = CLOCKED_TIMES_P.matcher(content?.subSequence(start, end))
+            val m2 = CLOCKED_TIMES_P.matcher(content.subSequence(start, end))
             while (m2.find()) {
 
                 // Check if we have one entry without clock-out

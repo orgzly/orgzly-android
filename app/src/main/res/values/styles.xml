@@ -135,6 +135,9 @@
         <item name="ic_folder_open_48dp">@drawable/ic_folder_open_black_48dp</item>
         <item name="ic_format_list_bulleted_18dp">@drawable/ic_format_list_bulleted_black_18dp</item>
         <item name="ic_info_outline_18dp">@drawable/ic_info_outline_black_18dp</item>
+        <item name="ic_hourglass_top">@drawable/ic_hourglass_top</item>
+        <item name="ic_hourglass_bottom">@drawable/ic_hourglass_bottom</item>
+        <item name="ic_hourglass_disabled">@drawable/ic_hourglass_disabled</item>
         <item name="ic_info_outline_24dp">@drawable/ic_info_outline_black_24dp</item>
         <item name="ic_insert_drive_file_24dp">@drawable/ic_insert_drive_file_black_24dp</item>
         <item name="ic_keyboard_arrow_down_24dp">@drawable/ic_keyboard_arrow_down_black_24dp</item>
@@ -305,6 +308,9 @@
         <item name="ic_folder_open_24dp">@drawable/ic_folder_open_white_24dp</item>
         <item name="ic_folder_open_48dp">@drawable/ic_folder_open_white_48dp</item>
         <item name="ic_format_list_bulleted_18dp">@drawable/ic_format_list_bulleted_white_18dp</item>
+        <item name="ic_hourglass_top">@drawable/ic_hourglass_top</item>
+        <item name="ic_hourglass_bottom">@drawable/ic_hourglass_bottom</item>
+        <item name="ic_hourglass_disabled">@drawable/ic_hourglass_disabled</item>
         <item name="ic_info_outline_18dp">@drawable/ic_info_outline_white_18dp</item>
         <item name="ic_info_outline_24dp">@drawable/ic_info_outline_white_24dp</item>
         <item name="ic_insert_drive_file_24dp">@drawable/ic_insert_drive_file_white_24dp</item>
