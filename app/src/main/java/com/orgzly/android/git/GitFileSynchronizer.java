@@ -68,8 +68,12 @@ public class GitFileSynchronizer {
     }
 
     private void fetch() throws GitAPIException {
-        transportSetter().setTransport(git.fetch().setRemote(preferences.remoteName())).call();
-    }
+        transportSetter()
+                .setTransport(git.fetch()
+                        .setRemote(preferences.remoteName())
+                        .setRemoveDeletedRefs(true))
+                .call();
+}
 
     public void checkoutSelected() throws GitAPIException {
         git.checkout().setName(preferences.branchName()).call();
