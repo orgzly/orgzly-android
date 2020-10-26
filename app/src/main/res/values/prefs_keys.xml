@@ -440,6 +440,11 @@
     <string name="pref_key_images_scale_down_to_width_value" translatable="false">pref_key_set_images_fixed_width_value</string>
     <string name="pref_default_images_scale_down_to_width_value" translatable="false">256</string>
 
+    <string name="pref_key_file_absolute_root">pref_key_file_absolute_root</string>
+    <string name="pref_default_file_absolute_root">/</string>
+
+    <string name="pref_key_file_relative_root">pref_key_file_relative_root</string>
+
     <!-- Separate notes with an empty line -->
     <string name="pref_key_separate_notes_with_new_line" translatable="false">pref_key_separate_notes_with_new_line</string>
     <string name="pref_default_separate_notes_with_new_line" translatable="false">@string/pref_value_separate_notes_with_new_line_multi_line_notes_only</string>

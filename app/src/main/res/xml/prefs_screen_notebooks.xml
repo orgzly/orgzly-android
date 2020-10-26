@@ -230,5 +230,23 @@
             android:defaultValue="@string/pref_default_images_scale_down_to_width_value"
             app:min="1"
             android:dependency="@string/pref_key_images_scale_down_to_width"/>
+
+        <EditTextPreference
+            android:key="@string/pref_key_file_absolute_root"
+            android:title="@string/file_absolute_root"
+            android:selectAllOnFocus="false"
+            android:inputType="text"
+            android:maxLines="1"
+            android:defaultValue="@string/pref_default_file_absolute_root"
+            app:useSimpleSummaryProvider="true"/>
+
+        <EditTextPreference
+            android:key="@string/pref_key_file_relative_root"
+            android:title="@string/file_relative_root"
+            android:selectAllOnFocus="false"
+            android:inputType="text"
+            android:maxLines="1"
+            app:useSimpleSummaryProvider="true"/>
+
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>
