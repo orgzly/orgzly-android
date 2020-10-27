@@ -831,11 +831,6 @@ public class MainActivity extends CommonActivity
         mSyncFragment.run(new NoteUpdateDeadlineTime(noteIds, time));
     }
 
-    @Override
-    public void onClockingUpdateRequest(Set<Long> noteIds, Integer type) {
-        mSyncFragment.run(new NoteUpdateClockingState(noteIds, type));
-    }
-
     @Override /* BookFragment */
     public void onBookPrefaceEditRequest(Book book) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);

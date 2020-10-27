@@ -387,26 +387,17 @@ object OrgFormatter {
         return ":$LOGBOOK_DRAWER_NAME:\n$entry\n:END:$prefixedContent"
     }
 
-    private fun getLastClockInPosition(content: String): ArrayList<Int> {
-        val m = LOGBOOK_DRAWER_PATTERN.matcher(content)
-
+    private fun getLastClockInPosition(logbookContent: String): ArrayList<Int> {
         val pos = ArrayList<Int>()
 
-        if (m.find()) {
-            val start = m.start(2) // Content start
-            val end = m.end()
-
-            val m2 = CLOCKED_TIMES_P.matcher(content.subSequence(start, end))
-            while (m2.find()) {
-
-                // Check if we have one entry without clock-out
-                if (m2.group(3).isNullOrEmpty()) {
-                    pos.add(m2.start(1))
-                    pos.add(m2.end(1))
-                    break
-                }
+        val m = CLOCKED_TIMES_P.matcher(logbookContent)
+        while (m.find()) {
+            // Check if we have one entry without clock-out
+            if (m.group(3).isNullOrEmpty()) {
+                pos.add(m.start(1))
+                pos.add(m.end(1))
+                break
             }
-
         }
 
         return pos
@@ -423,7 +414,8 @@ object OrgFormatter {
             val m = LOGBOOK_DRAWER_PATTERN.matcher(content)
 
             if (m.find()) {
-                val pos = getLastClockInPosition(content)
+                val logbookContent = content.substring(m.start(2), m.end(2))
+                val pos = getLastClockInPosition(logbookContent)
 
                 // If we cannot find an already clocked entry, we add one
                 if(pos.isEmpty()) {
@@ -450,12 +442,13 @@ object OrgFormatter {
             val m = LOGBOOK_DRAWER_PATTERN.matcher(content)
 
             if (m.find()) {
-                val pos = getLastClockInPosition(content)
+                val logbookContent = content.substring(m.start(2), m.end(2))
+                val pos = getLastClockInPosition(logbookContent)
 
                 // If we find an already clocked entry, we clock-out
                 if(pos.isNotEmpty()) {
                     // Find the timestamp to compute the difference
-                    val m2 = Pattern.compile(INACTIVE_DATETIME).matcher(content)
+                    val m2 = Pattern.compile(INACTIVE_DATETIME).matcher(logbookContent.substring(pos[0], pos[1]))
 
                     if (m2.find()) {
                         val clock_in = OrgDateTime.parseOrNull(m2.group(1))
@@ -503,7 +496,8 @@ object OrgFormatter {
             val m = LOGBOOK_DRAWER_PATTERN.matcher(content)
 
             if (m.find()) {
-                val pos = getLastClockInPosition(content)
+                val logbookContent = content.substring(m.start(2), m.end(2))
+                val pos = getLastClockInPosition(logbookContent)
 
                 // If we find an already clocked entry, we cancel it
                 if(pos.isNotEmpty()) {
