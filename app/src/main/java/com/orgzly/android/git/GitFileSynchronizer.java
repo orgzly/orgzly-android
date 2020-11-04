@@ -285,6 +285,35 @@ public class GitFileSynchronizer {
         }
     }
 
+    public boolean attemptReturnToMainBranch() throws IOException {
+        ensureRepoIsClean();
+        String originalBranch = git.getRepository().getBranch();
+        RevCommit mergeTarget = getCommit(
+                String.format("%s/%s", preferences.remoteName(), preferences.branchName()));
+        boolean backOnMainBranch = false;
+        try {
+            if (doMerge(mergeTarget)) {
+                RevCommit merged = currentHead();
+                checkoutSelected();
+                if (doMerge(merged)) {
+                    backOnMainBranch = true;
+                    git.branchDelete().setBranchNames(originalBranch);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (!backOnMainBranch) {
+            try {
+                git.checkout().setName(originalBranch).call();
+            } catch (GitAPIException ge) {
+                ge.printStackTrace();
+                throw new IOException("Error during checkout after failed merge attempt.");
+            }
+        }
+        return backOnMainBranch;
+    }
+
     public void updateAndCommitExistingFile(File sourceFile, String repositoryPath) throws IOException {
         ensureRepoIsClean();
         File destinationFile = repoDirectoryFile(repositoryPath);
