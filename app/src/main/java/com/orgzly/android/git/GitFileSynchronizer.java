@@ -270,15 +270,20 @@ public class GitFileSynchronizer {
         ensureRepoIsClean();
         try {
             fetch();
-            // FIXME: maybe:
-            // checkoutSelected();
             RevCommit current = currentHead();
             RevCommit mergeTarget = getCommit(
-                    String.format("%s/%s", preferences.remoteName(), preferences.branchName()));
-            if (!doMerge(mergeTarget))
-                throw new IOException(
-                        String.format("Failed to merge %s and %s",
-                                current.getName(), mergeTarget.getName()));
+                    String.format("%s/%s", preferences.remoteName(), git.getRepository().getBranch()));
+            if (mergeTarget != null) {
+                if (doMerge(mergeTarget)) {  // Try to merge with the current branch.
+                    if (!git.getRepository().getBranch().equals(preferences.branchName())) {
+                        // We are not on the main branch. Make an attempt to return to it.
+                        attemptReturnToMainBranch();
+                    }
+                } else {
+                    throw new IOException(String.format("Failed to merge %s and %s",
+                            current.getName(), mergeTarget.getName()));
+                }
+            }
         } catch (GitAPIException e) {
             e.printStackTrace();
             throw new IOException("Failed to update from remote");
