@@ -2,10 +2,10 @@ package com.orgzly.android.espresso;
 
 import androidx.test.core.app.ActivityScenario;
 
+import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.repos.ReposActivity;
-import com.orgzly.test.BuildConfig;
 
 import org.junit.Assume;
 import org.junit.Test;

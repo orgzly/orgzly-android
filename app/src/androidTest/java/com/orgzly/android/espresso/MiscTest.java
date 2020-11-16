@@ -10,13 +10,13 @@ import android.widget.TimePicker;
 
 import androidx.test.core.app.ActivityScenario;
 
+import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.db.entity.NotePosition;
 import com.orgzly.android.repos.RepoType;
 import com.orgzly.android.ui.main.MainActivity;
 import com.orgzly.android.ui.repos.ReposActivity;
-import com.orgzly.test.BuildConfig;
 
 import org.hamcrest.Matcher;
 import org.junit.Assume;

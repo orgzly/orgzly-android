@@ -17,7 +17,6 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 public class DropboxRepoTest extends OrgzlyTest {
     private static final String DROPBOX_TEST_DIR = "/orgzly-android-tests";
@@ -25,7 +24,7 @@ public class DropboxRepoTest extends OrgzlyTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        Assume.assumeTrue(com.orgzly.test.BuildConfig.IS_DROPBOX_ENABLED);
+        Assume.assumeTrue(BuildConfig.IS_DROPBOX_ENABLED);
 
         AppPreferences.dropboxToken(context, BuildConfig.DROPBOX_TOKEN);
     }
