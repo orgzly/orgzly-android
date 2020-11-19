@@ -3,6 +3,7 @@ package com.orgzly.android.ui.repo.git
 
 import android.app.Activity
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
@@ -14,14 +15,20 @@ import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.git.GitPreferences
+import com.orgzly.android.git.GitSSHKeyTransportSetter
+import com.orgzly.android.git.GitTransportSetter
+import com.orgzly.android.git.HTTPSTransportSetter
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.prefs.RepoPreferences
 import com.orgzly.android.repos.GitRepo
@@ -46,7 +53,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
     private lateinit var fields: Array<Field>
 
-    data class Field(var editText: EditText, var layout: TextInputLayout, var preference: Int)
+    data class Field(var editText: EditText, var layout: TextInputLayout, var preference: Int, var allowEmpty: Boolean = false)
 
     private lateinit var viewModel: RepoViewModel
 
@@ -65,6 +72,18 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
                         binding.activityRepoGitDirectoryLayout,
                         R.string.pref_key_git_repository_filepath),
                 Field(
+                        binding.activityRepoGitHttpsUsername,
+                        binding.activityRepoGitHttpsUsernameLayout,
+                        R.string.pref_key_git_https_username,
+                        true
+                ),
+                Field(
+                        binding.activityRepoGitHttpsPassword,
+                        binding.activityRepoGitHttpsPasswordLayout,
+                        R.string.pref_key_git_https_password,
+                        true
+                ),
+                Field(
                         binding.activityRepoGitSshKey,
                         binding.activityRepoGitSshKeyLayout,
                         R.string.pref_key_git_ssh_key_path),
@@ -80,7 +99,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
                         binding.activityRepoGitBranch,
                         binding.activityRepoGitBranchLayout,
                         R.string.pref_key_git_branch_name))
-
 
         /* Clear error after field value has been modified. */
         MiscUtils.clearErrorOnTextChange(binding.activityRepoGitUrl, binding.activityRepoGitUrlLayout)
@@ -98,6 +116,10 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
         val repoId = intent.getLongExtra(ARG_REPO_ID, 0)
 
+        val factory = RepoViewModelFactory.getInstance(dataRepository, repoId)
+
+        viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
+
         /* Set directory value for existing repository being edited. */
         if (repoId != 0L) {
             dataRepository.getRepo(repoId)?.let { repo ->
@@ -107,10 +129,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         } else {
             createDefaultRepoFolder()
         }
-
-        val factory = RepoViewModelFactory.getInstance(dataRepository, repoId)
-
-        viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
 
         viewModel.finishEvent.observeSingle(this, Observer {
             saveToPreferences(viewModel.repoId)
@@ -129,6 +147,55 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
                 showSnackbar((error.cause ?: error).localizedMessage)
             }
         })
+
+        binding.activityRepoGitUrl.setOnFocusChangeListener { _view, _hasFocus ->
+            updateAuthVisibility()
+            setHttpsAuthFromUri()
+        }
+
+        updateAuthVisibility()
+    }
+
+    private fun getRepoScheme(): String {
+        return try {
+            Uri.parse(binding.activityRepoGitUrl.text.toString()).scheme ?: ""
+        } catch(_: Throwable) {
+            ""
+        }
+    }
+
+    private fun setHttpsAuthFromUri() {
+        val repoScheme = getRepoScheme()
+        if ("https" != repoScheme) {
+            return
+        }
+        val userInfo = Uri.parse(binding.activityRepoGitUrl.text.toString()).userInfo ?: ""
+        // We don't want the password visible if it was copy-pasted to the remote address field
+        var repoUrl = binding.activityRepoGitUrl.text.toString()
+        repoUrl.replaceFirst(userInfo, "")
+        binding.activityRepoGitUrl.setText(repoUrl)
+        val splitInfo = userInfo.split(":")
+        val username = splitInfo[0]
+        val password = splitInfo.asIterable().elementAtOrElse(1) { "" }
+        binding.activityRepoGitHttpsUsername.setText(username)
+        binding.activityRepoGitHttpsPassword.setText(password)
+    }
+
+    private fun updateAuthVisibility() {
+        val repoScheme = getRepoScheme()
+        if ("https" == repoScheme) {
+            binding.activityRepoGitSshAuthInfo.visibility = View.GONE
+            binding.activityRepoGitSshKeyLayout.visibility = View.GONE
+            binding.activityRepoGitHttpsAuthInfo.visibility = View.VISIBLE
+            binding.activityRepoGitHttpsUsernameLayout.visibility = View.VISIBLE
+            binding.activityRepoGitHttpsPasswordLayout.visibility = View.VISIBLE
+        } else {
+            binding.activityRepoGitSshAuthInfo.visibility = View.VISIBLE
+            binding.activityRepoGitSshKeyLayout.visibility = View.VISIBLE
+            binding.activityRepoGitHttpsAuthInfo.visibility = View.GONE
+            binding.activityRepoGitHttpsUsernameLayout.visibility = View.GONE
+            binding.activityRepoGitHttpsPasswordLayout.visibility = View.GONE
+        }
     }
 
     // TODO: Since we can create multiple syncs, this folder might be re-used, do we want to create
@@ -249,7 +316,15 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             hasEmptyFields = true
         }
 
+        val targetDirectory = File(binding.activityRepoGitDirectory.text.toString())
+        if (!targetDirectory.exists() || targetDirectory.list().isNotEmpty()) {
+            binding.activityRepoGitDirectoryLayout.error = getString(R.string.git_clone_error_target_not_empty)
+        }
+
         for (field in fields) {
+            if (field.layout.visibility == View.GONE || field.allowEmpty) {
+                continue;
+            }
             if (errorIfEmpty(field.editText, field.layout)) {
                 hasEmptyFields = true
             }
@@ -278,8 +353,18 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         }
     }
 
-    override fun sshKeyPathString(): String {
-        return withDefault(binding.activityRepoGitSshKey.text.toString(), R.string.pref_key_git_ssh_key_path)
+    // TODO: This is pretty much a duplication of GitPreferencesFromRepoPrefs, it would be nice
+    //  to join them somehow.
+    override fun createTransportSetter(): GitTransportSetter {
+        val scheme = remoteUri().scheme
+        if ("https" == scheme) {
+            val username = withDefault(binding.activityRepoGitHttpsUsername.text.toString(), R.string.pref_key_git_https_username)
+            val password = withDefault(binding.activityRepoGitHttpsPassword.text.toString(), R.string.pref_key_git_https_password)
+            return HTTPSTransportSetter(username, password)
+        } else {
+            val sshKeyPath = withDefault(binding.activityRepoGitSshKey.text.toString(), R.string.pref_key_git_ssh_key_path)
+            return GitSSHKeyTransportSetter(sshKeyPath)
+        }
     }
 
     override fun getAuthor(): String {
@@ -352,7 +437,8 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         var progressDialog: ProgressDialog = ProgressDialog(this@GitRepoActivity)
 
         override fun onPreExecute() {
-            progressDialog.setMessage("Ensuring repository settings will work.")
+            val message = fragment.resources.getString(R.string.git_verifying_settings)
+            progressDialog.setMessage(message)
             progressDialog.show()
         }
 
@@ -370,7 +456,8 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             for (i in updates.indices) {
                 val u = updates[i]
                 if (u.setMax) {
-                    progressDialog.setMessage("Cloning repository")
+                    val message = fragment.resources.getString(R.string.git_clone_progress)
+                    progressDialog.setMessage(message)
                     progressDialog.hide()
                     progressDialog.isIndeterminate = false
                     progressDialog.show()

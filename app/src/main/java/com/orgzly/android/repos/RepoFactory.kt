@@ -31,7 +31,7 @@ class RepoFactory @Inject constructor(
                 WebdavRepo.getInstance(repoWithProps)
 
             type == RepoType.GIT.id && BuildConfig.IS_GIT_ENABLED ->
-                GitRepo.getInstance(repoWithProps)
+                GitRepo.getInstance(repoWithProps, context)
 
             else ->
                 throw IllegalArgumentException("Unknown type or disabled repo $repoWithProps")
