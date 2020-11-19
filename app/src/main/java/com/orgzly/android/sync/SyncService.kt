@@ -316,6 +316,12 @@ class SyncService : Service() {
                 curr++
             }
 
+            for (repo in repos) {
+                if (repo is TwoWaySyncRepo) {
+                    repo.tryPushIfHeadDiffersFromRemote()
+                }
+            }
+
             syncStatus.set(SyncStatus.Type.FINISHED, null, 0, 0)
             announceActiveSyncStatus()
 
