@@ -24,6 +24,8 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.request.RequestOptions
 import com.orgzly.R
+import com.orgzly.android.usecase.LinkFindTarget
+import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.LogUtils
 
 
@@ -52,11 +54,11 @@ object ImageLoader {
             // Get the current context
             val context = App.getAppContext()
 
-            // Get the file
-            val file = if (path.startsWith('/')) {
-                File(path)
-            } else {
-                File(Environment.getExternalStorageDirectory(), path)
+            val file = UseCaseRunner.run(LinkFindTarget(path)).userData
+
+            if (file !is File) {
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Did not find a File target for $path, actually found $file")
+                return
             }
 
             if (file.exists()) {

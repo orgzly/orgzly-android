@@ -1,11 +1,14 @@
 package com.orgzly.android.usecase
 
-import android.os.Environment
+import com.orgzly.android.App
 import com.orgzly.android.BookName
 import com.orgzly.android.data.DataRepository
+import com.orgzly.android.prefs.AppPreferences
 import java.io.File
 
 class LinkFindTarget(val path: String) : UseCase() {
+    val context = App.getAppContext();
+
     override fun run(dataRepository: DataRepository): UseCaseResult {
         val target = openLink(dataRepository, path)
 
@@ -16,8 +19,7 @@ class LinkFindTarget(val path: String) : UseCase() {
 
     private fun openLink(dataRepository: DataRepository, path: String): Any {
         return if (isAbsolute(path)) {
-            File(path)
-
+            File(AppPreferences.fileAbsoluteRoot(context), path)
         } else {
             isMaybeBook(path)?.let { bookName ->
                 dataRepository.getBook(bookName.name)?.let {
@@ -25,7 +27,7 @@ class LinkFindTarget(val path: String) : UseCase() {
                 }
             }
 
-            File(Environment.getExternalStorageDirectory(), path)
+            File(AppPreferences.fileRelativeRoot(context), path)
         }
     }
 
