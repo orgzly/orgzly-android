@@ -6,7 +6,7 @@ import java.io.IOException
 
 interface TwoWaySyncRepo {
     @Throws(IOException::class)
-    fun syncBook(uri: Uri, current: VersionedRook, fromDB: File): TwoWaySyncResult
+    fun syncBook(uri: Uri, current: VersionedRook?, fromDB: File): TwoWaySyncResult
 
     fun tryPushIfHeadDiffersFromRemote()
 }

@@ -296,7 +296,7 @@ class SyncService : Service() {
                         val action = syncNamesake(dataRepository, namesake)
                         dataRepository.setBookLastActionAndSyncStatus(
                                 namesake.book.book.id,
-                                action!!,
+                                action,
                                 namesake.status.toString())
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -440,7 +440,7 @@ class SyncService : Service() {
          */
         @Throws(Exception::class)
         @JvmStatic
-        fun syncNamesake(dataRepository: DataRepository, namesake: BookNamesake): BookAction? {
+        fun syncNamesake(dataRepository: DataRepository, namesake: BookNamesake): BookAction {
             val repoEntity: Repo?
             val repoUrl: String
             val fileName: String
@@ -532,7 +532,7 @@ class SyncService : Service() {
             val dbFile = dataRepository.getTempBookFile()
             try {
                 NotesOrgExporter(dataRepository).exportBook(book, dbFile)
-                val (newRook1, loadFile) = repo.syncBook(someRook.uri, currentRook!!, dbFile)
+                val (newRook1, loadFile) = repo.syncBook(someRook.uri, currentRook, dbFile)
                 // We only need to write it if syncback is needed
                 if (loadFile != null) {
                     newRook = newRook1
