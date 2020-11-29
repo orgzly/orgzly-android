@@ -9,7 +9,6 @@ import com.orgzly.android.db.entity.Repo;
 import com.orgzly.android.git.GitFileSynchronizer;
 import com.orgzly.android.git.GitPreferences;
 import com.orgzly.android.git.GitPreferencesFromRepoPrefs;
-import com.orgzly.android.git.GitSSHKeyTransportSetter;
 import com.orgzly.android.git.GitTransportSetter;
 import com.orgzly.android.prefs.RepoPreferences;
 

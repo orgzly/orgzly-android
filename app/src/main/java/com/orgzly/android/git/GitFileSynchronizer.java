@@ -7,7 +7,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.orgzly.android.App;
-import com.orgzly.android.repos.GitRepo;
 import com.orgzly.android.util.MiscUtils;
 
 import org.eclipse.jgit.api.Git;
@@ -32,8 +31,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
-
-import kotlin.io.FileAlreadyExistsException;
 
 public class GitFileSynchronizer {
     private static String TAG = GitFileSynchronizer.class.getSimpleName();
@@ -76,7 +73,7 @@ public class GitFileSynchronizer {
                         .setRemote(preferences.remoteName())
                         .setRemoveDeletedRefs(true))
                 .call();
-}
+    }
 
     public void checkoutSelected() throws GitAPIException {
         git.checkout().setName(preferences.branchName()).call();
