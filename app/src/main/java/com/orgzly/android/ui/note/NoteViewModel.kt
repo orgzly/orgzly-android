@@ -1,5 +1,6 @@
 package com.orgzly.android.ui.note
 
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.lifecycle.LiveData
@@ -29,7 +30,8 @@ class NoteViewModel(
         private var noteId: Long,
         private val place: Place?,
         private val title: String?,
-        private val content: String?
+        private val content: String?,
+        private val attachmentUri: Uri?
 ) : CommonViewModel() {
 
     enum class ViewEditMode {
@@ -78,7 +80,7 @@ class NoteViewModel(
             }
 
             notePayload = if (isNew()) {
-                NoteBuilder.newPayload(App.getAppContext(), title ?: "", content)
+                NoteBuilder.newPayload(App.getAppContext(), title ?: "", content, attachmentUri)
             } else {
                 dataRepository.getNotePayload(noteId)
             }

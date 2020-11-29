@@ -1,5 +1,6 @@
 package com.orgzly.android.ui.note
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.android.data.DataRepository
@@ -11,12 +12,13 @@ class NoteViewModelFactory(
         private val noteId: Long,
         private val place: Place?,
         private val title: String?,
-        private val content: String?
+        private val content: String?,
+        private val attachmentUri: Uri?
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
-        return NoteViewModel(dataRepository, bookId, noteId, place, title, content) as T
+        return NoteViewModel(dataRepository, bookId, noteId, place, title, content, attachmentUri) as T
     }
 
     companion object {
@@ -27,10 +29,11 @@ class NoteViewModelFactory(
                 noteId: Long,
                 place: Place?,
                 title: String?,
-                content: String?
+                content: String?,
+                attachmentUri: Uri?
         ): ViewModelProvider.Factory {
 
-            return NoteViewModelFactory(dataRepository, bookId, noteId, place, title, content)
+            return NoteViewModelFactory(dataRepository, bookId, noteId, place, title, content, attachmentUri)
         }
     }
 }

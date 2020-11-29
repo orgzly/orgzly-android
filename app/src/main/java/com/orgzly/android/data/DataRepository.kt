@@ -8,6 +8,7 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Handler
 import android.text.TextUtils
+import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -1281,7 +1282,7 @@ class DataRepository @Inject constructor(
     fun createNoteFromNotification(title: String) {
         val book = getTargetBook(context)
 
-        val notePayload = NoteBuilder.newPayload(context, title, "")
+        val notePayload = NoteBuilder.newPayload(context, title, "", null)
 
         createNote(notePayload, NotePlace(book.book.id))
     }
@@ -1537,6 +1538,43 @@ class DataRepository @Inject constructor(
                 db.noteEvent().replace(NoteEvent(noteId, orgRangeId))
             }
         }
+    }
+
+    /**
+     * Store the attachment content, in the repo for [bookId].
+     *
+     * @throws IOException
+     */
+    @Throws(IOException::class)
+    fun storeAttachment(bookId: Long, notePayload: NotePayload) {
+        // Get the fileName from the provider.
+        // TODO provide a way to customize the fileName
+        val uri = notePayload.attachmentUri!!
+        val documentFile: DocumentFile = DocumentFile.fromSingleUri(context, uri)
+                ?: throw IOException("Cannot get the fileName for Uri $uri")
+        val fileName = documentFile.name
+
+        val attachDir = notePayload.attachDir(context)
+        val filePath = attachDir + File.separator + fileName
+
+        val book = getBookView(bookId)
+                ?: throw IOException(resources.getString(R.string.book_does_not_exist_anymore))
+
+        // Not quite sure what repo to use.
+        val repoEntity = book.linkRepo ?: defaultRepoForSavingBook()
+        val repo = getRepoInstance(repoEntity.id, repoEntity.type, repoEntity.url)
+
+        val tempFile: File
+        // Get the InputStream of the content and write it to a File.
+        context.contentResolver.openInputStream(uri).use { inputStream ->
+            tempFile = getTempBookFile()
+            MiscUtils.writeStreamToFile(inputStream, tempFile)
+            LogUtils.d(TAG, "Wrote to file $tempFile")
+        }
+
+        repo.storeBook(tempFile, filePath)
+        LogUtils.d(TAG, "Stored file to repo")
+        tempFile.delete()
     }
 
     /**

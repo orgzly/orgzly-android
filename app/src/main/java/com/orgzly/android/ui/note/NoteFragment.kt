@@ -67,6 +67,9 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     /** Initial content, used for when sharing. */
     private var initialContent: String? = null
 
+    /** Content URI of the attachment, used for when a file is being shared. */
+    private var attachmentUri: Uri? = null
+
     @Inject
     internal lateinit var dataRepository: DataRepository
 
@@ -118,6 +121,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
             initialTitle = getString(ARG_TITLE)
             initialContent = getString(ARG_CONTENT)
+            attachmentUri = getString(ARG_ATTACHMENT_URI)?.let { Uri.parse(it) }
         }
     }
 
@@ -135,7 +139,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 noteId,
                 place,
                 initialTitle,
-                initialContent)
+                initialContent,
+                attachmentUri)
 
         viewModel = ViewModelProviders.of(this, factory).get(NoteViewModel::class.java)
 
@@ -1191,6 +1196,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         private const val ARG_PLACE = "place"
         private const val ARG_TITLE = "title"
         private const val ARG_CONTENT = "content"
+        private const val ARG_ATTACHMENT_URI = "attachment_uri"
 
         @JvmStatic
         @JvmOverloads
@@ -1206,7 +1212,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                         notePlace.noteId,
                         notePlace.place,
                         initialTitle,
-                        initialContent)
+                        initialContent,
+                        attachmentUri)
             } else {
                 Log.e(TAG, "Invalid book id ${notePlace.bookId}")
                 null
@@ -1229,7 +1236,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 noteId: Long,
                 place: Place? = null,
                 initialTitle: String? = null,
-                initialContent: String? = null): NoteFragment {
+                initialContent: String? = null,
+                attachmentUri: Uri? = null): NoteFragment {
 
             val fragment = NoteFragment()
 
@@ -1251,6 +1259,10 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
             if (initialContent != null) {
                 args.putString(ARG_CONTENT, initialContent)
+            }
+
+            if (attachmentUri != null) {
+                args.putString(ARG_ATTACHMENT_URI, attachmentUri.toString());
             }
 
             fragment.arguments = args

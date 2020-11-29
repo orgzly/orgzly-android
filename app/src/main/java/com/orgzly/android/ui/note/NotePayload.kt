@@ -1,7 +1,11 @@
 package com.orgzly.android.ui.note
 
+import android.content.Context
+import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
+import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.ui.share.ShareActivity
 import com.orgzly.org.OrgProperties
 
 data class NotePayload @JvmOverloads constructor(
@@ -13,7 +17,8 @@ data class NotePayload @JvmOverloads constructor(
         val deadline: String? = null,
         val closed: String? = null,
         val tags: List<String> = emptyList(),
-        val properties: OrgProperties = OrgProperties()
+        val properties: OrgProperties = OrgProperties(),
+        val attachmentUri: Uri? = null
 ) : Parcelable {
 
     override fun describeContents(): Int {
@@ -40,6 +45,18 @@ data class NotePayload @JvmOverloads constructor(
                 out.writeString(property.value)
             }
         }
+
+        out.writeString(attachmentUri.toString())
+    }
+
+    fun attachDir(context: Context): String {
+        // TODO get from property if exists
+        when(AppPreferences.attachMethod(context)) {
+            ShareActivity.ATTACH_METHOD_LINK -> return ""
+            ShareActivity.ATTACH_METHOD_COPY_DIR -> return AppPreferences.attachDirDefaultPath(context)
+            ShareActivity.ATTACH_METHOD_COPY_ID -> return ""
+        }
+        return ""
     }
 
     companion object {
@@ -69,6 +86,8 @@ data class NotePayload @JvmOverloads constructor(
                 properties.put(name!!, value!!)
             }
 
+            val attachmentUri: Uri? = parcel.readString()?.let { Uri.parse(it) }
+
             return NotePayload(
                     title!!,
                     content,
@@ -78,7 +97,8 @@ data class NotePayload @JvmOverloads constructor(
                     deadline,
                     closed,
                     tags,
-                    properties
+                    properties,
+                    attachmentUri
             )
         }
 
