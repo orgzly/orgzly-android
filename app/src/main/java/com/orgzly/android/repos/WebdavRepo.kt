@@ -164,6 +164,10 @@ class WebdavRepo(
         return sardine.list(fileUrl).first().toVersionedRook()
     }
 
+    override fun storeFile(file: File?, pathInRepo: String?, fileName: String?): VersionedRook {
+        TODO("Not yet implemented")
+    }
+
     override fun renameBook(from: Uri, name: String?): VersionedRook {
         val destUrl = UriUtils.getUriForNewName(from, name).toUrl()
         sardine.move(from.toUrl(), destUrl)

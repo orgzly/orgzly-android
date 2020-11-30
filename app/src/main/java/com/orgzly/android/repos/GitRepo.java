@@ -193,6 +193,11 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
         return currentVersionedRook(Uri.EMPTY.buildUpon().appendPath(fileName).build());
     }
 
+    @Override
+    public VersionedRook storeFile(File file, String pathInRepo, String fileName) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
     private RevWalk walk() {
         return new RevWalk(git.getRepository());
     }

@@ -1555,7 +1555,6 @@ class DataRepository @Inject constructor(
         val fileName = documentFile.name
 
         val attachDir = notePayload.attachDir(context)
-        val filePath = attachDir + File.separator + fileName
 
         val book = getBookView(bookId)
                 ?: throw IOException(resources.getString(R.string.book_does_not_exist_anymore))
@@ -1572,7 +1571,7 @@ class DataRepository @Inject constructor(
             LogUtils.d(TAG, "Wrote to file $tempFile")
         }
 
-        repo.storeBook(tempFile, filePath)
+        repo.storeFile(tempFile, attachDir, fileName)
         LogUtils.d(TAG, "Stored file to repo")
         tempFile.delete()
     }

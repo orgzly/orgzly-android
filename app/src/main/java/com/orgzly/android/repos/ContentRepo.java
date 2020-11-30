@@ -128,18 +128,25 @@ public class ContentRepo implements SyncRepo {
 
     @Override
     public VersionedRook storeBook(File file, String fileName) throws IOException {
+        return storeFile(file, "", fileName);
+    }
+
+    @Override
+    public VersionedRook storeFile(File file, String pathInRepo, String fileName) throws IOException {
         if (!file.exists()) {
             throw new FileNotFoundException("File " + file + " does not exist");
         }
 
+        DocumentFile documentFile = createRecursive(repoDocumentFile, pathInRepo);
+
         /* Delete existing file. */
-        DocumentFile existingFile = repoDocumentFile.findFile(fileName);
+        DocumentFile existingFile = documentFile.findFile(fileName);
         if (existingFile != null) {
             existingFile.delete();
         }
 
         /* Create new file. */
-        DocumentFile destinationFile = repoDocumentFile.createFile("text/*", fileName);
+        DocumentFile destinationFile = documentFile.createFile("text/*", fileName);
 
         if (destinationFile == null) {
             throw new IOException("Failed creating " + fileName + " in " + repoUri);
@@ -161,6 +168,27 @@ public class ContentRepo implements SyncRepo {
         long mtime = System.currentTimeMillis();
 
         return new VersionedRook(repoId, RepoType.DOCUMENT, getUri(), uri, rev, mtime);
+    }
+
+    private DocumentFile createRecursive(DocumentFile parent, String path) {
+        if (".".equals(path) || "".equals(path)) {
+            return parent;
+        }
+        int l = path.lastIndexOf('/');
+        DocumentFile p;
+        if (l >= 0) {
+            p = createRecursive(parent, path.substring(0, l));
+        } else {
+            p = parent;
+        }
+        String subdir = path.substring(l+1);
+        DocumentFile f = p.findFile(subdir);
+        if (f != null) {
+            // already exist, return it
+            return f;
+        }
+        // Otherwise, create the directory
+        return p.createDirectory(subdir);
     }
 
     @Override
