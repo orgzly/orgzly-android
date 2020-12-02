@@ -7,7 +7,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.orgzly.android.App;
-import com.orgzly.android.repos.GitRepo;
 import com.orgzly.android.util.MiscUtils;
 
 import org.eclipse.jgit.api.Git;
@@ -32,8 +31,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
-
-import kotlin.io.FileAlreadyExistsException;
 
 public class GitFileSynchronizer {
     private static String TAG = GitFileSynchronizer.class.getSimpleName();
@@ -76,7 +73,7 @@ public class GitFileSynchronizer {
                         .setRemote(preferences.remoteName())
                         .setRemoveDeletedRefs(true))
                 .call();
-}
+    }
 
     public void checkoutSelected() throws GitAPIException {
         git.checkout().setName(preferences.branchName()).call();
@@ -270,19 +267,53 @@ public class GitFileSynchronizer {
         ensureRepoIsClean();
         try {
             fetch();
-            // FIXME: maybe:
-            // checkoutSelected();
             RevCommit current = currentHead();
             RevCommit mergeTarget = getCommit(
-                    String.format("%s/%s", preferences.remoteName(), preferences.branchName()));
-            if (!doMerge(mergeTarget))
-                throw new IOException(
-                        String.format("Failed to merge %s and %s",
-                                current.getName(), mergeTarget.getName()));
+                    String.format("%s/%s", preferences.remoteName(), git.getRepository().getBranch()));
+            if (mergeTarget != null) {
+                if (doMerge(mergeTarget)) {  // Try to merge with the current branch.
+                    if (!git.getRepository().getBranch().equals(preferences.branchName())) {
+                        // We are not on the main branch. Make an attempt to return to it.
+                        attemptReturnToMainBranch();
+                    }
+                } else {
+                    throw new IOException(String.format("Failed to merge %s and %s",
+                            current.getName(), mergeTarget.getName()));
+                }
+            }
         } catch (GitAPIException e) {
             e.printStackTrace();
             throw new IOException("Failed to update from remote");
         }
+    }
+
+    public boolean attemptReturnToMainBranch() throws IOException {
+        ensureRepoIsClean();
+        String originalBranch = git.getRepository().getBranch();
+        RevCommit mergeTarget = getCommit(
+                String.format("%s/%s", preferences.remoteName(), preferences.branchName()));
+        boolean backOnMainBranch = false;
+        try {
+            if (doMerge(mergeTarget)) {
+                RevCommit merged = currentHead();
+                checkoutSelected();
+                if (doMerge(merged)) {
+                    backOnMainBranch = true;
+                    git.branchDelete().setBranchNames(originalBranch);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (!backOnMainBranch) {
+            try {
+                git.checkout().setName(originalBranch).call();
+            } catch (GitAPIException ge) {
+                ge.printStackTrace();
+                throw new IOException("Error during checkout after failed merge attempt.");
+            }
+        }
+        return backOnMainBranch;
     }
 
     public void updateAndCommitExistingFile(File sourceFile, String repositoryPath) throws IOException {

@@ -453,10 +453,13 @@ class SyncService : Service() {
                     val repo = dataRepository.getRepoInstance(
                             rook.repoId, rook.repoType, rook.repoUri.toString())
                     if (repo is TwoWaySyncRepo) {
-                        handleTwoWaySync(dataRepository, repo as TwoWaySyncRepo, namesake)
-                        return BookAction.forNow(
-                                BookAction.Type.INFO,
-                                namesake.status.msg(repo.uri.toString()))
+                        return if (handleTwoWaySync(dataRepository, repo as TwoWaySyncRepo, namesake)) {
+                            BookAction.forNow(
+                                    BookAction.Type.INFO,
+                                    namesake.status.msg(repo.uri.toString()))
+                        } else {
+                            throw Exception("Merge conflict; saved to temporary branch.")
+                        }
                     }
                 }
             }
@@ -525,14 +528,17 @@ class SyncService : Service() {
         }
 
         @Throws(IOException::class)
-        private fun handleTwoWaySync(dataRepository: DataRepository, repo: TwoWaySyncRepo, namesake: BookNamesake) {
+        private fun handleTwoWaySync(dataRepository: DataRepository, repo: TwoWaySyncRepo, namesake: BookNamesake): Boolean {
             val (book, _, _, currentRook) = namesake.book
             val someRook = currentRook ?: namesake.rooks[0]
             var newRook = currentRook
+            var onMainBranch = true
             val dbFile = dataRepository.getTempBookFile()
             try {
                 NotesOrgExporter(dataRepository).exportBook(book, dbFile)
-                val (newRook1, loadFile) = repo.syncBook(someRook.uri, currentRook, dbFile)
+                val (newRook1, onMainBranch1, loadFile) =
+                        repo.syncBook(someRook.uri, currentRook, dbFile)
+                onMainBranch = onMainBranch1
                 // We only need to write it if syncback is needed
                 if (loadFile != null) {
                     newRook = newRook1
@@ -554,6 +560,8 @@ class SyncService : Service() {
             }
 
             dataRepository.updateBookLinkAndSync(book.id, newRook!!)
+
+            return onMainBranch;
         }
     }
 }
