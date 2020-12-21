@@ -205,7 +205,12 @@ object ActivityUtils {
                 if (childView is ViewGroup) {
                     val innerChildCount = childView.childCount
 
-                    val itemWidth = screenWidth / innerChildCount
+                    /*
+                     * Use 1 less pixel for item width to avoid exception in tests:
+                     * Caused by: java.lang.RuntimeException: Action will not be performed because the target view does not match one or more of the following constraints:
+                     * at least 90 percent of the view's area is displayed to the user.
+                     */
+                    val itemWidth = screenWidth / innerChildCount - 1
 
                     for (j in 0 until innerChildCount) {
                         val grandChild = childView.getChildAt(j)
