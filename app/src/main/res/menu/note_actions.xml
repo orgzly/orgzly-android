@@ -18,6 +18,12 @@
         android:title="@string/done" />
 
     <item
+        android:id="@+id/keep_screen_on"
+        app:showAsAction="never"
+        android:checkable="true"
+        android:title="@string/keep_screen_on"/>
+
+    <item
         android:id="@+id/metadata"
         android:icon="?attr/ic_unfold_more_24dp"
         app:showAsAction="never"

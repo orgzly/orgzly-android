@@ -650,10 +650,10 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     override fun onPause() {
         super.onPause()
 
-        if (dialog != null) {
-            dialog?.dismiss()
-            dialog = null
-        }
+        dialog?.dismiss()
+        dialog = null
+
+        ActivityUtils.keepScreenOnClear(activity)
     }
 
     override fun onDestroyView() {
@@ -896,6 +896,11 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         inflater.inflate(R.menu.note_actions, menu)
 
+        ActivityUtils.keepScreenOnUpdateMenuItem(
+                activity,
+                menu,
+                menu.findItem(R.id.keep_screen_on))
+
         // Remove search item
         menu.removeItem(R.id.activity_action_search)
 
@@ -939,6 +944,11 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         when (item.itemId) {
             R.id.done -> {
                 userSave()
+                return true
+            }
+
+            R.id.keep_screen_on -> {
+                dialog = ActivityUtils.keepScreenOnToggle(activity, item)
                 return true
             }
 
