@@ -6,6 +6,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.share.ShareActivity
+import com.orgzly.android.util.AttachmentUtils
 import com.orgzly.org.OrgProperties
 
 data class NotePayload @JvmOverloads constructor(
@@ -49,12 +50,16 @@ data class NotePayload @JvmOverloads constructor(
         out.writeString(attachmentUri.toString())
     }
 
+    /** Returns the path to store the attachment. */
     fun attachDir(context: Context): String {
-        // TODO get from property if exists
+        val idStr = properties.get("ID")
+        // TODO idStr could be null. Throw a warning exception, show a toast, don't attach anything
         when(AppPreferences.attachMethod(context)) {
             ShareActivity.ATTACH_METHOD_LINK -> return ""
             ShareActivity.ATTACH_METHOD_COPY_DIR -> return AppPreferences.attachDirDefaultPath(context)
-            ShareActivity.ATTACH_METHOD_COPY_ID -> return ""
+            ShareActivity.ATTACH_METHOD_COPY_ID -> {
+                return AttachmentUtils.getAttachDir(context, idStr)
+            }
         }
         return ""
     }

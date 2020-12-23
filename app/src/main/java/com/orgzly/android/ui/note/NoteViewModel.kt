@@ -18,11 +18,13 @@ import com.orgzly.android.ui.NotePlace
 import com.orgzly.android.ui.Place
 import com.orgzly.android.ui.SingleLiveEvent
 import com.orgzly.android.ui.main.MainActivity
+import com.orgzly.android.ui.share.ShareActivity
 import com.orgzly.android.usecase.*
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.org.OrgProperties
 import com.orgzly.org.datetime.OrgRange
 import com.orgzly.org.parser.OrgParserWriter
+import java.util.*
 
 class NoteViewModel(
         private val dataRepository: DataRepository,
@@ -79,10 +81,14 @@ class NoteViewModel(
                 dataRepository.getNoteAncestors(noteId)
             }
 
-            notePayload = if (isNew()) {
-                NoteBuilder.newPayload(App.getAppContext(), title ?: "", content, attachmentUri)
+            if (isNew()) {
+                notePayload = NoteBuilder.newPayload(App.getAppContext(), title ?: "", content, attachmentUri)
+                // Auto generate ID property if it has attachment.
+                if (attachmentUri != null && AppPreferences.attachMethod(App.getAppContext()) == ShareActivity.ATTACH_METHOD_COPY_ID) {
+                    updatePayloadCreateIdProperty()
+                }
             } else {
-                dataRepository.getNotePayload(noteId)
+                notePayload = dataRepository.getNotePayload(noteId)
             }
 
             // Calculate payload's hash once for the original note
@@ -238,6 +244,15 @@ class NoteViewModel(
 
     fun updatePayloadClosedTime(range: OrgRange?) {
         notePayload = notePayload?.copy(closed = range?.toString())
+    }
+
+    fun updatePayloadCreateIdProperty() {
+        if (notePayload?.properties!!.containsKey("ID")) {
+            return
+        }
+        notePayload = notePayload?.copy()
+        val idStr = UUID.randomUUID().toString().toUpperCase()
+        notePayload?.properties!!.put("ID", idStr)
     }
 
     private fun createNote(postSave: ((note: Note) -> Unit)?) {
