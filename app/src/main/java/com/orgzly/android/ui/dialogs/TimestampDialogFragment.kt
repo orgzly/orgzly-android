@@ -8,22 +8,19 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
-
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.ui.TimeType
+import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.UserTimeFormatter
 import com.orgzly.databinding.DialogTimestampBinding
 import com.orgzly.databinding.DialogTimestampTitleBinding
 import com.orgzly.org.datetime.OrgDateTime
-
-import java.util.Calendar
-import java.util.TreeSet
+import java.util.*
 
 class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
     private var listener: OnDateTimeSetListener? = null
@@ -268,6 +265,11 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
             binding.delayPickerButton.text = userTimeFormatter.formatDelay(dateTime)
             binding.delayUsedCheckbox.isChecked = dateTime.isDelayUsed
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ActivityUtils.closeSoftKeyboard(activity)
     }
 
     override fun onPause() {
