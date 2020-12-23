@@ -13,6 +13,7 @@ import com.orgzly.android.App
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.ui.AttachmentSpanLoader
 import com.orgzly.android.ui.ImageLoader
 import com.orgzly.android.ui.TimeType
 import com.orgzly.android.ui.util.TitleGenerator
@@ -132,6 +133,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
                 }
             }
 
+            AttachmentSpanLoader.loadAttachmentPaths(note.id, holder.binding.itemHeadContent)
             ImageLoader.loadImages(holder.binding.itemHeadContent)
 
             holder.binding.itemHeadContent.visibility = View.VISIBLE

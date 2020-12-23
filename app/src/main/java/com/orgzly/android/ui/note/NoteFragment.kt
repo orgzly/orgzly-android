@@ -420,6 +420,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         binding.bodyView.setRawText(binding.bodyEdit.text.toString())
 
+        AttachmentSpanLoader.loadAttachmentPaths(noteId, binding.bodyView)
         ImageLoader.loadImages(binding.bodyView)
 
         binding.bodyView.visibility = View.VISIBLE
@@ -463,6 +464,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         binding.bodyView.setRawText(payload.content ?: "")
 
+        AttachmentSpanLoader.loadAttachmentPaths(noteId, binding.bodyView)
         ImageLoader.loadImages(binding.bodyView)
     }
 
