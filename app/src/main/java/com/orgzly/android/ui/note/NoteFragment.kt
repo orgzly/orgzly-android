@@ -3,6 +3,7 @@ package com.orgzly.android.ui.note
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -1196,7 +1197,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         fun forNewNote(
                 notePlace: NotePlace,
                 initialTitle: String? = null,
-                initialContent: String? = null): NoteFragment? {
+                initialContent: String? = null,
+                attachmentUri: Uri? = null): NoteFragment? {
 
             return if (notePlace.bookId > 0) {
                 getInstance(
