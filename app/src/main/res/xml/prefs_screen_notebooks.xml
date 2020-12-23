@@ -203,6 +203,23 @@
             android:maxLines="1"
             app:useSimpleSummaryProvider="true"/>
 
+        <ListPreference
+            android:key="@string/pref_key_attach_method"
+            android:title="@string/attach_method"
+            android:entries="@array/attach_method_names"
+            android:entryValues="@array/attach_method_values"
+            android:defaultValue="@string/pref_default_attach_method"
+            app:useSimpleSummaryProvider="true"/>
+
+        <EditTextPreference
+            android:key="@string/pref_key_attach_dir_default_path"
+            android:defaultValue="@string/pref_default_attach_dir_default_path"
+            android:title="@string/attach_dir_default_path"
+            android:selectAllOnFocus="false"
+            android:inputType="text"
+            android:maxLines="1"
+            app:useSimpleSummaryProvider="true"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefs_title_new_note">

@@ -445,6 +445,22 @@
 
     <string name="pref_key_file_relative_root">pref_key_file_relative_root</string>
 
+    <string name="pref_key_attach_method" translatable="false">pref_key_attach_method</string>
+    <string name="pref_default_attach_method" translatable="false">copy_id</string>
+    <string-array name="attach_method_names">
+        <item>@string/attach_method_link</item>
+        <item>@string/attach_method_copy_dir</item>
+        <item>@string/attach_method_copy_id</item>
+    </string-array>
+    <string-array name="attach_method_values">
+        <item>link</item>
+        <item>copy_dir</item>
+        <item>copy_id</item>
+    </string-array>
+
+    <string name="pref_key_attach_dir_default_path" translatable="false">pref_key_attach_dir_default_path</string>
+    <string name="pref_default_attach_dir_default_path" translatable="false">.</string>
+
     <!-- Separate notes with an empty line -->
     <string name="pref_key_separate_notes_with_new_line" translatable="false">pref_key_separate_notes_with_new_line</string>
     <string name="pref_default_separate_notes_with_new_line" translatable="false">@string/pref_value_separate_notes_with_new_line_multi_line_notes_only</string>
