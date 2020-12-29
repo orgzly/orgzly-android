@@ -501,7 +501,17 @@ object OrgFormatter {
 
                 // If we find an already clocked entry, we cancel it
                 if(pos.isNotEmpty()) {
-                    StringBuilder(content).delete(m.start(2) + pos[0], m.start(2) + pos[1] + 1).toString()
+                    val updatedContent = StringBuilder(content).delete(m.start(2) + pos[0], m.start(2) + pos[1] + 1).toString()
+
+                    // If the LOGBOOK ends up being empty
+                    // We delete it like Org would do
+                    val endPos = updatedContent.indexOf(":END:", m.start(2))
+                    if( endPos == (m.start(2)) ) {
+                        StringBuilder(updatedContent).delete(m.start(0), m.start(0) + endPos + ":END:".length + 2).toString()
+                    }
+                    else {
+                        updatedContent
+                    }
                 }
                 // Otherwise, we just return the original content
                 else {
