@@ -82,7 +82,7 @@ public class SettingsChangeTest extends OrgzlyTest {
     public void testDisplayedContentInBook() {
         onBook(0).perform(click());
 
-        onNoteInBook(1, R.id.item_head_content)
+        onNoteInBook(1, R.id.item_head_content_list)
                 .check(matches(allOf(withText(containsString("Content for [a-1]")), isDisplayed())));
 
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
@@ -91,7 +91,7 @@ public class SettingsChangeTest extends OrgzlyTest {
         pressBack();
         pressBack();
 
-        onNoteInBook(1, R.id.item_head_content).check(matches(not(isDisplayed())));
+        onNoteInBook(1, R.id.item_head_content_list).check(matches(not(isDisplayed())));
     }
 
     private void setDefaultPriority(String priority) {

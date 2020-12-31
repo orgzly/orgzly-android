@@ -70,6 +70,20 @@ You can make words *bold*, /italic/, _underlined_, =verbatim=, ~code~ and +strik
 
 Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
 
+** Tables can be created
+
+A table starts the line with the pipe | character.
+
+| Here is a table                 |                   |                |       |
+| We rely on horizontal scrolling | to show very wide |  table content |       |
+
+You can have more than one table in a note.
+
+| Like this | one     |
+| for       | example |
+
+Editing tables is not yet supported.
+
 * Search
 ** There are many search operators supported
 

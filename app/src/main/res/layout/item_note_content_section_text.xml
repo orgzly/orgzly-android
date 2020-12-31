@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.orgzly.android.ui.views.TextViewWithMarkup
+        android:id="@+id/aoc_section_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/item_head_post_title_color"
+        android:textSize="?attr/item_head_sub_title_content_text"
+        tools:text="plain text rather than a table" />
+
+    <!-- TODO restore this
+        android:alpha="@{alpha}"
+    -->
+</layout>
