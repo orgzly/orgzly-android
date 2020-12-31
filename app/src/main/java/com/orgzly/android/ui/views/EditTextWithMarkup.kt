@@ -55,7 +55,8 @@ class EditTextWithMarkup : AppCompatEditText {
          */
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             if (BuildConfig.LOG_DEBUG)
-                LogUtils.d(TAG, "s", s, "start", start, "count", count, "after", after)
+                LogUtils.d(TAG, "Within '$s', $count characters beginning at $start"
+                        + " are about to be replaced by new text with length $after")
 
             if (s.length == start || s[start] == '\n') { // End of string or line
 
@@ -91,7 +92,9 @@ class EditTextWithMarkup : AppCompatEditText {
         }
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, s, "Start", start, "Before", before, "Count", count)
+            if (BuildConfig.LOG_DEBUG)
+                LogUtils.d(TAG, "Within '$s', the $count characters"
+                    + " beginning at $start have just replaced old text that had length $before")
 
             currentListItem?.let {
                 if (before == 0 && count == 1 && start < s.length && s[start] == '\n') {
@@ -103,6 +106,9 @@ class EditTextWithMarkup : AppCompatEditText {
         }
 
         override fun afterTextChanged(s: Editable) {
+            if (BuildConfig.LOG_DEBUG)
+                LogUtils.d(TAG, "Somewhere within '$s', the text has been changed")
+
             currentListItem?.let {
                 // Remove bullet if content is empty
                 // if (it.content.matches(Regex("\\s*"))) {
