@@ -43,34 +43,31 @@ class EditTextWithMarkup : AppCompatEditText {
 
         private var currentListItem : CurrentListItem? = null
 
-        /*
-         * count: 0
-         * after: 1
-         *               start
-         *   0   1   2     3
-         * +---+---+---+
-         * | - |   | ~ |
-         * +---+---+---+
-         *       s
-         */
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            if (BuildConfig.LOG_DEBUG)
-                LogUtils.d(TAG, "Within '$s', $count characters beginning at $start"
-                        + " are about to be replaced by new text with length $after")
+            if (BuildConfig.LOG_DEBUG) {
+                LogUtils.d(TAG, "Within '$s', $count (count) characters beginning at"
+                        + " $start (start) are about to be replaced by new text "
+                        + "with length $after (after)")
+            }
 
-            if (s.length == start || s[start] == '\n') { // End of string or line
+            if (after == count + 1) { // Adding one new character
 
-                val currLineStart = s.lastIndexOf("\n", start - 1).let { prevNewLine ->
-                    if (prevNewLine < 0) {
-                        0
-                    } else {
-                        prevNewLine + 1
+                val endCharIndex = start + after - 1
+
+                if (s.length == endCharIndex || s[endCharIndex] == '\n') { // End of string or line
+
+                    val currLineStart = s.lastIndexOf("\n", start - 1).let { prevNewLine ->
+                        if (prevNewLine < 0) {
+                            0
+                        } else {
+                            prevNewLine + 1
+                        }
                     }
+
+                    val line = s.substring(currLineStart, endCharIndex)
+
+                    currentListItem = searchForListItem(line, currLineStart, endCharIndex + 1)
                 }
-
-                val line = s.substring(currLineStart, start)
-
-                currentListItem = searchForListItem(line, currLineStart, start + 1)
             }
         }
 
@@ -92,13 +89,14 @@ class EditTextWithMarkup : AppCompatEditText {
         }
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            if (BuildConfig.LOG_DEBUG)
-                LogUtils.d(TAG, "Within '$s', the $count characters"
-                    + " beginning at $start have just replaced old text that had length $before")
+            if (BuildConfig.LOG_DEBUG) {
+                LogUtils.d(TAG, "Within '$s', the $count (count) characters beginning at "
+                        + " $start (start) have just replaced old text that had length $before (before)")
+            }
 
             currentListItem?.let {
-                if (before == 0 && count == 1 && start < s.length && s[start] == '\n') {
-                    // New line
+                if (count == before + 1 && s[start + count - 1] == '\n') {
+                    // New line added
                 } else {
                     currentListItem = null
                 }
