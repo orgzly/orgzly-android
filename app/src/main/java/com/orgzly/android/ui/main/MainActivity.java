@@ -187,12 +187,6 @@ public class MainActivity extends CommonActivity
 
         activityForResult = new ActivityForResult(this) {
             @Override
-            public void onBookImport(@NotNull Uri uri) {
-                runnableOnResumeFragments = () ->
-                        importChosenBook(uri);
-            }
-
-            @Override
             public void onBookExport(@NotNull Uri uri, long bookId) {
                 runnableOnResumeFragments = () ->
                         mSyncFragment.run(new BookExportToUri(uri, bookId) {
@@ -205,9 +199,19 @@ public class MainActivity extends CommonActivity
             }
 
             @Override
-            public void onSearchQueriesImport(@NotNull Uri uri) {
+            public void onBookImport(@NotNull Uri uri) {
                 runnableOnResumeFragments = () ->
-                        mSyncFragment.run(new SavedSearchImport(uri));
+                        importChosenBook(uri);
+            }
+
+            @Override
+            public void onSearchQueriesImport(@NotNull Uri uri) {
+                viewModel.importSavedSearches(uri);
+            }
+
+            @Override
+            public void onSearchQueriesExport(@NotNull Uri uri) {
+                viewModel.exportSavedSearches(uri);
             }
         };
     }
@@ -436,6 +440,14 @@ public class MainActivity extends CommonActivity
             }
         });
 
+        viewModel.getSavedSearchedExportEvent().observeSingle(this, count -> {
+            showSnackbar(getResources().getQuantityString(R.plurals.exported_searches, count, count));
+        });
+
+        viewModel.getSavedSearchedImportEvent().observeSingle(this, count -> {
+            showSnackbar(getResources().getQuantityString(R.plurals.imported_searches, count, count));
+
+        });
         viewModel.getErrorEvent().observeSingle(this, error -> {
             if (error != null) {
                 showSnackbar(error.getLocalizedMessage());
@@ -734,6 +746,8 @@ public class MainActivity extends CommonActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+
         activityForResult.onResult(requestCode, resultCode, data);
     }
 
@@ -897,7 +911,7 @@ public class MainActivity extends CommonActivity
     @Override
     public void onBookExportRequest(@NotNull Book book, @NotNull BookFormat format) {
         // For scoped storage
-//        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
 //            String defaultFileName = BookName.fileName(book.getName(), format);
 //            activityForResult.startBookExportFileChooser(book.getId(), defaultFileName);
 //
@@ -1150,9 +1164,14 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onSavedSearchesExportRequest(int title, @NonNull String message) {
-        runWithPermission(
-                AppPermissions.Usage.SAVED_SEARCHES_EXPORT_IMPORT,
-                () -> mSyncFragment.run(new SavedSearchExport()));
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            activityForResult.startSavedSearchesExportFileChooser();
+
+        } else {
+            runWithPermission(
+                    AppPermissions.Usage.SAVED_SEARCHES_EXPORT_IMPORT,
+                    () -> mSyncFragment.run(new SavedSearchExport()));
+        }
     }
 
     @Override

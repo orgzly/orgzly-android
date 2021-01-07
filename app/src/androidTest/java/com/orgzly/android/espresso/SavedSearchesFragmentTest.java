@@ -1,13 +1,27 @@
 package com.orgzly.android.espresso;
 
+import android.app.Activity;
+import android.app.Instrumentation;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
+import android.os.SystemClock;
+import android.provider.MediaStore;
+
+import androidx.documentfile.provider.DocumentFile;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.intent.Intents;
 
 import com.orgzly.R;
+import com.orgzly.android.LocalStorage;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
@@ -17,6 +31,11 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerActions.open;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.Intents.intending;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasData;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -106,9 +125,24 @@ public class SavedSearchesFragmentTest extends OrgzlyTest {
     }
 
     @Test
-    public void testExportSavedSearches() {
+    public void testExportSavedSearches() throws IOException {
+        Intents.init();
+
+        // Uri to get back after sending Intent.ACTION_CREATE_DOCUMENT
+        DocumentFile file = DocumentFile.fromFile(
+                new LocalStorage(context).downloadsDirectory("searches.json"));
+        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(
+                Activity.RESULT_OK, new Intent().setData(file.getUri()));
+
+        intending(hasAction(Intent.ACTION_CREATE_DOCUMENT)).respondWith(result);
+
         onActionItemClick(R.id.saved_searches_export, R.string.export);
+
         onSnackbar().check(matches(withText(
                 context.getResources().getQuantityString(R.plurals.exported_searches, 4, 4))));
+
+        Intents.release();
+
+        file.delete();
     }
 }

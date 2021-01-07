@@ -5,9 +5,10 @@ import com.orgzly.android.data.DataRepository
 
 class SavedSearchImport(val uri: Uri) : UseCase() {
     override fun run(dataRepository: DataRepository): UseCaseResult {
-        dataRepository.importSavedSearches(uri)
+        val count = dataRepository.importSavedSearches(uri)
 
         return UseCaseResult(
+                userData = count,
                 modifiesListWidget = true
         )
     }
