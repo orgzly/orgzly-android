@@ -9,11 +9,11 @@ android {
         javaMaxHeapSize "2g"
     }
 
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 16 // Jelly Bean (4.1)
-        targetSdkVersion 28 // Android Pie (9)
+        targetSdkVersion 29 // Android 10
         applicationId "com.orgzly"
         versionCode 155
         versionName "1.8.4"
