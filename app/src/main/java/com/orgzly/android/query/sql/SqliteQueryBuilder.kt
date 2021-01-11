@@ -226,7 +226,7 @@ class SqliteQueryBuilder(val context: Context) {
 
             is Condition.HasOwnTag -> {
                 arguments.add("%${expr.tag}%")
-                "tags LIKE ?"
+                not(expr.not, "(COALESCE(tags, '') LIKE ?)")
             }
 
             is Condition.Event -> {

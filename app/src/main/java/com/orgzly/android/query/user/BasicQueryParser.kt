@@ -35,8 +35,8 @@ open class BasicQueryParser : QueryParser() {
                 Condition.HasTag(unQuote(match.groupValues[2]), match.groupValues[1].isNotEmpty())
             },
 
-            ConditionMatch("""^own-tag:(.+)""") { match ->
-                Condition.HasOwnTag(unQuote(match.groupValues[1]))
+            ConditionMatch("""^(-)?own-tag:(.+)""") { match ->
+                Condition.HasOwnTag(unQuote(match.groupValues[2]), match.groupValues[1].isNotEmpty())
             },
 
             ConditionMatch("""^(scheduled|deadline|closed|created):(?:(!=|<|<=|>|>=))?(.+)""") { match ->
