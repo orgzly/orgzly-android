@@ -350,6 +350,7 @@
     <string name="displayed_book_details_used_encoding">Используемая кодировка</string>
     <string name="displayed_book_details_last_action">Последнее действие</string>
     <string name="displayed_book_details_notes_count">Количество заметок</string>
+    <string name="color_scheme_system">Использовать системную настройку</string>
     <string name="color_scheme_light">Светлая</string>
     <string name="color_scheme_dark">Темная</string>
     <string name="color_scheme_black">Черная</string>

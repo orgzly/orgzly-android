@@ -102,16 +102,19 @@
 
     <!-- Color scheme. -->
     <string name="pref_key_color_scheme" translatable="false">pref_key_color_scheme</string>
-    <string name="pref_default_color_scheme" translatable="false">@string/pref_value_color_scheme_light</string>
+    <string name="pref_default_color_scheme" translatable="false">@string/pref_value_color_scheme_system</string>
+    <string name="pref_value_color_scheme_system" translatable="false">system</string>
     <string name="pref_value_color_scheme_light" translatable="false">light</string>
     <string name="pref_value_color_scheme_dark" translatable="false">dark</string>
     <string name="pref_value_color_scheme_black" translatable="false">black</string>
     <string-array name="color_scheme">
+        <item>@string/color_scheme_system</item>
         <item>@string/color_scheme_light</item>
         <item>@string/color_scheme_dark</item>
         <item>@string/color_scheme_black</item>
     </string-array>
     <string-array name="color_scheme_values">
+        <item>@string/pref_value_color_scheme_system</item>
         <item>@string/pref_value_color_scheme_light</item>
         <item>@string/pref_value_color_scheme_dark</item>
         <item>@string/pref_value_color_scheme_black</item>
