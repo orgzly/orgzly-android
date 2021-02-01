@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.orgzly.android.ui.views.TextViewWithMarkup
-        android:id="@+id/aoc_section_text"
+        android:id="@+id/note_content_section_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="?attr/item_head_post_title_color"
