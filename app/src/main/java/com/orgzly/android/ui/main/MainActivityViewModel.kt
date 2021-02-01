@@ -1,5 +1,6 @@
 package com.orgzly.android.ui.main
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -37,6 +38,9 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
             val selected: Int)
 
     val setBookLinkRequestEvent: SingleLiveEvent<BookLinkOptions> = SingleLiveEvent()
+
+    val savedSearchedExportEvent: SingleLiveEvent<Int> = SingleLiveEvent()
+    val savedSearchedImportEvent: SingleLiveEvent<Int> = SingleLiveEvent()
 
     init {
         // Observe parameters, run query when they change
@@ -128,6 +132,24 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
                 }
 
                 setBookLinkRequestEvent.postValue(options)
+            }
+        }
+    }
+
+    fun exportSavedSearches(uri: Uri) {
+        App.EXECUTORS.diskIO().execute {
+            catchAndPostError {
+                val result = UseCaseRunner.run(SavedSearchExport(uri))
+                savedSearchedExportEvent.postValue(result.userData as Int)
+            }
+        }
+    }
+
+    fun importSavedSearches(uri: Uri) {
+        App.EXECUTORS.diskIO().execute {
+            catchAndPostError {
+                val result = UseCaseRunner.run(SavedSearchImport(uri))
+                savedSearchedImportEvent.postValue(result.userData as Int)
             }
         }
     }

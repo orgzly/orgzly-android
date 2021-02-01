@@ -2,26 +2,23 @@ package com.orgzly.android.savedsearch
 
 import android.content.Context
 import android.net.Uri
-import com.orgzly.R
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.LocalStorage
 import com.orgzly.android.db.entity.SavedSearch
-import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.util.MiscUtils
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
 import java.io.File
-import java.io.FileNotFoundException
+import java.io.IOException
 
 
 class FileSavedSearchStore(
         private val context: Context,
         private val dataRepository: DataRepository) : SavedSearchStore {
 
-    override fun importSearches(uri: Uri) {
-        val json = parseJson(uri) ?: return
+    override fun importSearches(uri: Uri): Int {
+        val json = parseJson(uri)
 
         val savedSearches = (0 until json.length()).map { i ->
             with(json.getJSONObject(i)) {
@@ -29,46 +26,34 @@ class FileSavedSearchStore(
             }
         }
 
-        val count = dataRepository.replaceSavedSearches(savedSearches)
-
-        val msg = context.resources.getQuantityString(R.plurals.imported_searches, count, count)
-
-        CommonActivity.showSnackbar(context, msg)
+        return dataRepository.replaceSavedSearches(savedSearches)
     }
 
     /**
      * Parse JSON content.
      */
-    private fun parseJson(uri: Uri): JSONArray? {
-        return try {
-
-            val fileContent = context.contentResolver.openInputStream(uri).use { stream ->
-                MiscUtils.readStream(stream)
-            }
-
-            JSONArray(JSONTokener(fileContent))
-
-        } catch (e: FileNotFoundException) {
-            CommonActivity.showSnackbar(context, e.localizedMessage)
-            return null
-
-        } catch (e: JSONException) {
-            CommonActivity.showSnackbar(context, e.localizedMessage)
-            return null
+    private fun parseJson(uri: Uri): JSONArray {
+        val fileContent = context.contentResolver.openInputStream(uri).use { stream ->
+            MiscUtils.readStream(stream)
         }
+
+        return JSONArray(JSONTokener(fileContent))
     }
 
-    override fun exportSearches() {
-        file().bufferedWriter().use { out ->
+    override fun exportSearches(uri: Uri?): Int {
+        val stream = if (uri != null) {
+            context.contentResolver.openOutputStream(uri, "rwt")
+                    ?: throw IOException("Cannot open output stream for $uri")
+        } else {
+            file().outputStream()
+        }
+
+        stream.bufferedWriter().use { out ->
             val json = exportToJson()
 
             out.write(json.toString(2))
 
-            val count = json.length()
-
-            val msg = context.resources.getQuantityString(R.plurals.exported_searches, count, count)
-
-            CommonActivity.showSnackbar(context, msg)
+            return json.length()
         }
     }
 
@@ -89,10 +74,10 @@ class FileSavedSearchStore(
 
     fun file(): File {
         val dir = LocalStorage(context).downloadsDirectory()
-        return File(dir, FILE_NAME)
+        return File(dir, "$FILE_NAME.json")
     }
 
     companion object {
-        val FILE_NAME = "Orgzly Search Queries.json"
+        const val FILE_NAME = "Orgzly Search Queries"
     }
 }
