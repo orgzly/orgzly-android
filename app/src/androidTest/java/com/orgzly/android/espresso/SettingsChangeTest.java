@@ -91,7 +91,7 @@ public class SettingsChangeTest extends OrgzlyTest {
         pressBack();
         pressBack();
 
-        onNoteInBook(1, R.id.note_content_section_text).check(matches(not(isDisplayed())));
+        onNoteInBook(1, R.id.item_head_content_list).check(matches(not(isDisplayed())));
     }
 
     private void setDefaultPriority(String priority) {
