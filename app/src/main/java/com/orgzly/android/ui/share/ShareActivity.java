@@ -171,11 +171,9 @@ public class ShareActivity extends CommonActivity
                     || ATTACH_METHOD_COPY_ID.equals(AppPreferences.attachMethod(this))) {
                 handleCopyFile(intent, data);
 
-            } else if (type.startsWith("image/")) {
-                handleSendImage(intent, data); // Handle single image being sent
-
             } else {
-                mError = getString(R.string.share_type_not_supported, type);
+                // Link method.
+                handleLinkFile(intent, data);
             }
 
         } else if (action.equals("com.google.android.gm.action.AUTO_SEND")) {
@@ -323,10 +321,10 @@ public class ShareActivity extends CommonActivity
     }
 
     /**
-     * Get file path from image shared with Orgzly
+     * Get file path shared with Orgzly
      * and put it as a file link in the note's content.
      */
-    private void handleSendImage(Intent intent, Data data) {
+    private void handleLinkFile(Intent intent, Data data) {
         // Get file uri from intent which probably looks like this:
         // content://media/external/images/...
         Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
@@ -353,8 +351,7 @@ public class ShareActivity extends CommonActivity
 
                 if (data.content == null) {
                     data.content = uri.toString()
-                            + "\n\nCannot determine path to this image "
-                            + "and only linking to an image is currently supported.";
+                            + "\n\nCannot determine a local path to this file.";
 
                     Log.e(TAG, DatabaseUtils.dumpCursorToString(cursor));
                 }
@@ -371,7 +368,7 @@ public class ShareActivity extends CommonActivity
 
         if (data.title == null) {
             data.title = uri.toString();
-            data.content = "Cannot find image using this URI.";
+            data.content = "Cannot find filename using this URI.";
         }
     }
 
