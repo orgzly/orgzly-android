@@ -167,10 +167,10 @@ public class ShareActivity extends CommonActivity
                     data.bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0L);
                 }
 
-            } else if (ATTACH_METHOD_COPY_DIR.equals(AppPreferences.attachMethod(this))
-                    || ATTACH_METHOD_COPY_ID.equals(AppPreferences.attachMethod(this))) {
-                handleCopyFile(intent, data);
-
+            } else if (ATTACH_METHOD_COPY_DIR.equals(AppPreferences.attachMethod(this))) {
+                handleCopyFile(intent, data, "file:");
+            } else if (ATTACH_METHOD_COPY_ID.equals(AppPreferences.attachMethod(this))) {
+                handleCopyFile(intent, data, "attachment:");
             } else {
                 // Link method.
                 handleLinkFile(intent, data);
@@ -372,7 +372,7 @@ public class ShareActivity extends CommonActivity
         }
     }
 
-    private void handleCopyFile(Intent intent, Data data) {
+    private void handleCopyFile(Intent intent, Data data, String linkPrefix) {
         Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
 
         // Get the file name of the content.
@@ -383,7 +383,7 @@ public class ShareActivity extends CommonActivity
         }
         if (!OrgStringUtils.isEmpty(fileName)) {
             data.title = fileName;
-            data.content = "attachment:" + fileName;
+            data.content = "[[" + linkPrefix + fileName + "]]";
         } else {
             data.title = uri.toString();
             data.content = uri.toString() + "\n\nCannot determine fileName to this content.";
