@@ -20,7 +20,7 @@ sealed class NoteContent {
 
     companion object {
 
-        private fun lineIsTable(raw: String) = raw.length > 0 && raw.get(0) == '|'
+        private fun lineIsTable(raw: String) = raw.isNotEmpty() && raw[0] == '|'
 
         /**
          * Converts the provided raw string  (with embedded newlines) into a list of sections of
