@@ -301,6 +301,13 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_reminders_vibrate));
     }
 
+    public static boolean remindersSticky(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_reminders_sticky),
+                context.getResources().getBoolean(R.bool.pref_default_reminders_sticky));
+    }
+
+
     public static int remindersSnoozeTime(Context context) {
         return Integer.valueOf(getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_snooze_time),

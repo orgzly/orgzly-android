@@ -469,6 +469,9 @@
     <string name="pref_title_reminders_for_event_times">Events</string>
     <string name="pref_title_summary_reminders_for_event_times">Display notification for notes with event time</string>
 
+    <string name="pref_title_reminders_remindersSticky">Sticky Reminders"</string>
+    <string name="pref_title_summary_remindersSticky">Reminders can not be dismissed by swiping</string>
+
     <string name="pref_title_reminders_sound">Sound</string>
     <string name="pref_title_reminders_vibrate">Vibration</string>
     <string name="pref_title_reminders_led">Light</string>

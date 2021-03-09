@@ -230,6 +230,9 @@
     <string name="pref_key_reminders_vibrate" translatable="false">pref_key_reminders_vibrate</string>
     <bool name="pref_default_reminders_vibrate" translatable="false">false</bool>
 
+    <string name="pref_key_reminders_sticky" translatable="false">pref_key_reminders_sticky</string>
+    <bool name="pref_default_reminders_sticky" translatable="false">false</bool>
+
     <string name="pref_key_reminders_led" translatable="false">pref_key_reminders_led</string>
     <bool name="pref_default_reminders_led" translatable="false">true</bool>
 
