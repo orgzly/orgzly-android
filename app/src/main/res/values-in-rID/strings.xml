@@ -26,7 +26,6 @@
     <string name="delete">Hapus</string>
     <string name="delete_with_quoted_argument">Hapus \" %s\"</string>
     <string name="name">Nama</string>
-    <string name="value">Nilai</string>
     <string name="query">Permintaan</string>
     <string name="done">Selesai</string>
     <string name="mark_as_done">Tandai sudah selesai</string>

@@ -26,7 +26,6 @@
     <string name="delete">Удалить</string>
     <string name="delete_with_quoted_argument">Удалить «%s»</string>
     <string name="name">Название</string>
-    <string name="value">Значение</string>
     <string name="query">Запрос</string>
     <string name="done">Выполнено</string>
     <string name="mark_as_done">Пометить как выполненное</string>

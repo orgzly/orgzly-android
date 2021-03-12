@@ -26,7 +26,6 @@
     <string name="delete">Sil</string>
     <string name="delete_with_quoted_argument">Delete “%s”</string>
     <string name="name">İsim</string>
-    <string name="value">Değer</string>
     <string name="query">Sorgula</string>
     <string name="done">Uygula</string>
     <string name="mark_as_done">Tamamlandı olarak işaretle</string>
