@@ -5,10 +5,11 @@ import java.lang.IllegalArgumentException
 enum class RepoType(val id: Int) {
     MOCK(1),
     DROPBOX(2),
-    DIRECTORY(3),
-    DOCUMENT(4),
-    WEBDAV(5),
-    GIT(6);
+    GOOGLE_DRIVE(3),
+    DIRECTORY(4),
+    DOCUMENT(5),
+    WEBDAV(6),
+    GIT(7);
 
     companion object {
         @JvmStatic
@@ -16,10 +17,11 @@ enum class RepoType(val id: Int) {
             return when (type) {
                 1 -> MOCK
                 2 -> DROPBOX
-                3 -> DIRECTORY
-                4 -> DOCUMENT
-                5 -> WEBDAV
-                6 -> GIT
+                3 -> GOOGLE_DRIVE
+                4 -> DIRECTORY
+                5 -> DOCUMENT
+                6 -> WEBDAV
+                7 -> GIT
 
                 else -> throw IllegalArgumentException("Unknown repo type id $type")
             }

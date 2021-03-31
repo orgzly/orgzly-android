@@ -94,6 +94,11 @@
         </activity>
 
         <activity
+            android:name=".android.ui.repo.googledrive.GoogleDriveRepoActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+
+        <activity
             android:name="com.dropbox.core.android.AuthActivity"
             android:configChanges="orientation|keyboard"
             android:launchMode="singleTask">
