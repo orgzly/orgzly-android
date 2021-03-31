@@ -23,6 +23,7 @@ import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.directory.DirectoryRepoActivity
 import com.orgzly.android.ui.repo.dropbox.DropboxRepoActivity
+import com.orgzly.android.ui.repo.googledrive.GoogleDriveRepoActivity
 import com.orgzly.android.ui.repo.git.GitRepoActivity
 import com.orgzly.android.ui.repo.webdav.WebdavRepoActivity
 import com.orgzly.android.ui.showSnackbar
@@ -156,6 +157,16 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             }
         }
 
+        binding.activityReposGoogleDrive.let { button ->
+            if (BuildConfig.IS_GOOGLE_DRIVE_ENABLED) {
+                button.setOnClickListener {
+                    startRepoActivity(R.id.repos_options_menu_item_new_google_drive)
+                }
+            } else {
+                button.visibility = View.GONE
+            }
+        }
+
         binding.activityReposGit.let { button ->
             if (AppPreferences.gitIsEnabled(this)) {
                 button.setOnClickListener {
@@ -218,6 +229,11 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
                 return
             }
 
+            R.id.repos_options_menu_item_new_google_drive -> {
+                GoogleDriveRepoActivity.start(this)
+                return
+            }
+
             R.id.repos_options_menu_item_new_git -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     GitRepoActivity.start(this)
@@ -261,6 +277,9 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
 
             RepoType.DROPBOX ->
                 DropboxRepoActivity.start(this, repoEntity.id)
+
+            RepoType.GOOGLE_DRIVE ->
+                GoogleDriveRepoActivity.start(this, repoEntity.id)
 
             RepoType.DIRECTORY ->
                 DirectoryRepoActivity.start(this, repoEntity.id)

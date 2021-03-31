@@ -46,6 +46,12 @@
                     android:text="@string/dropbox" />
 
                 <Button
+                    android:id="@+id/activity_repos_google_drive"
+                    style="@style/Button.ReposRepo"
+                    app:icon="?attr/oic_google_drive_not_linked"
+                    android:text="@string/google_drive" />
+
+                <Button
                     android:id="@+id/activity_repos_git"
                     style="@style/Button.ReposRepo"
                     app:icon="?attr/oic_git_48dp"

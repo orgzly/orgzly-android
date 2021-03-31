@@ -22,6 +22,9 @@ class RepoFactory @Inject constructor(
             type == RepoType.DROPBOX.id && BuildConfig.IS_DROPBOX_ENABLED ->
                 DropboxRepo(repoWithProps, context)
 
+            type == RepoType.GOOGLE_DRIVE.id && BuildConfig.IS_GOOGLE_DRIVE_ENABLED ->
+                GoogleDriveRepo(repoWithProps, context)
+
             type == RepoType.DIRECTORY.id ->
                 DirectoryRepo(repoWithProps, false)
 
