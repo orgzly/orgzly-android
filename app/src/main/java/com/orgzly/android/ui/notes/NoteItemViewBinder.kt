@@ -124,8 +124,8 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
             val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
             alternatingTableAndTextContent.forEach { noteContent ->
-                when (noteContent) {
-                    is NoteContent.TableNoteContent -> {
+                when (noteContent.textType) {
+                    NoteContent.TextType.TABLE -> {
 
                         val noteContentSectionTableTextView = layoutInflater.inflate(R.layout.item_note_content_section_table, linearLayout, false)
 
@@ -133,7 +133,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
                         linearLayout.addView(noteContentSectionTableTextView)
                     }
-                    else -> {
+                    NoteContent.TextType.TEXT ->  {
 
                         val layout = layoutInflater.inflate(R.layout.item_note_content_section_text, linearLayout, false)
 

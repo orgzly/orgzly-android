@@ -1,7 +1,5 @@
 package com.orgzly.android.ui.notes
 
-import com.orgzly.android.ui.notes.NoteContent.TableNoteContent
-import com.orgzly.android.ui.notes.NoteContent.TextNoteContent
 import org.hamcrest.Matchers.emptyCollectionOf
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
@@ -19,7 +17,7 @@ class NoteContentTest {
 
     @Test
     fun emptyLinesShouldStayInSingleSection() {
-        checkExpected("\n\n", listOf(TextNoteContent("\n\n")))
+        checkExpected("\n\n", listOf(NoteContent("\n\n", 0, 1, NoteContent.TextType.TEXT)))
     }
 
     @Test
@@ -28,9 +26,9 @@ class NoteContentTest {
 |
 
 foo|bar""", listOf(
-                TextNoteContent("foo\n"),
-                TableNoteContent("|\n"),
-                TextNoteContent("\nfoo|bar")
+                NoteContent("foo\n", 0, 3, NoteContent.TextType.TEXT),
+                NoteContent("|\n", 4, 5, NoteContent.TextType.TABLE),
+                NoteContent("\nfoo|bar", 6, 13, NoteContent.TextType.TEXT)
         ))
     }
 
@@ -38,16 +36,16 @@ foo|bar""", listOf(
     fun singleTable() {
         checkExpected("""|a|b|
 |c|d|
-""", listOf(TableNoteContent("""|a|b|
+""", listOf(NoteContent("""|a|b|
 |c|d|
-""")))
+""", 0, 11, NoteContent.TextType.TABLE)))
     }
 
     @Test
     fun singleTableNoFinalNewline() {
         checkExpected("""|a|b|
-|c|d|""", listOf(TableNoteContent("""|a|b|
-|c|d|""")))
+|c|d|""", listOf(NoteContent("""|a|b|
+|c|d|""", 0, 10, NoteContent.TextType.TABLE)))
     }
 
     @Test
@@ -55,9 +53,9 @@ foo|bar""", listOf(
         checkExpected("""foo
 |
 bar""", listOf(
-                TextNoteContent("foo\n"),
-                TableNoteContent("|\n"),
-                TextNoteContent("bar")
+                NoteContent("foo\n", 0, 3, NoteContent.TextType.TEXT),
+                NoteContent("|\n", 4, 5, NoteContent.TextType.TABLE),
+                NoteContent("bar", 6, 8, NoteContent.TextType.TEXT)
         ))
     }
 
@@ -68,9 +66,9 @@ bar""", listOf(
 |
 bar
 """, listOf(
-                TextNoteContent("\n"),
-                TableNoteContent("|\n"),
-                TextNoteContent("bar\n")
+                NoteContent("\n", 0, 0, NoteContent.TextType.TEXT),
+                NoteContent("|\n", 1, 2, NoteContent.TextType.TABLE),
+                NoteContent("bar\n", 3, 6, NoteContent.TextType.TEXT)
         ))
     }
 
@@ -79,9 +77,9 @@ bar
         checkExpected("""|zoo|
 
 |zog|""", listOf(
-                TableNoteContent("|zoo|\n"),
-                TextNoteContent("\n"),
-                TableNoteContent("|zog|")
+                NoteContent("|zoo|\n", 0, 5, NoteContent.TextType.TABLE),
+                NoteContent("\n", 6, 6, NoteContent.TextType.TEXT),
+                NoteContent("|zog|", 7, 11, NoteContent.TextType.TABLE)
         ))
     }
 
@@ -91,9 +89,9 @@ bar
 |
 
 chops""", listOf(
-                TextNoteContent("foo\n"),
-                TableNoteContent("|\n"),
-                TextNoteContent("\nchops")
+                NoteContent("foo\n", 0, 3, NoteContent.TextType.TEXT),
+                NoteContent("|\n", 4, 5, NoteContent.TextType.TABLE),
+                NoteContent("\nchops", 6, 11, NoteContent.TextType.TEXT)
         ))
     }
 
@@ -109,11 +107,11 @@ text3c
 |table4|
 text5
 """, listOf(
-                TextNoteContent("text1\n"),
-                TableNoteContent("|table2a|\n|table2b|\n"),
-                TextNoteContent("text3a\ntext3b\ntext3c\n"),
-                TableNoteContent("|table4|\n"),
-                TextNoteContent("text5\n")
+                NoteContent("text1\n", 0, 5, NoteContent.TextType.TEXT),
+                NoteContent("|table2a|\n|table2b|\n", 6, 25, NoteContent.TextType.TABLE),
+                NoteContent("text3a\ntext3b\ntext3c\n", 26, 46, NoteContent.TextType.TEXT),
+                NoteContent("|table4|\n", 47, 55, NoteContent.TextType.TABLE),
+                NoteContent("text5\n", 56, 61, NoteContent.TextType.TEXT)
         ))
     }
 
@@ -150,5 +148,8 @@ text5
 
         assertEquals(input, roundTripped)
 
+        actual.forEach {
+            assertEquals(it.text, input.substring(it.startOffset, it.endOffset + 1))
+        }
     }
 }

@@ -3,18 +3,10 @@ package com.orgzly.android.ui.notes
 /**
  * Represents a subsection of note content: either text, or a table
  */
-sealed class NoteContent {
+data class NoteContent(val text: String, val startOffset: Int, val endOffset: Int, val textType: TextType) {
 
-    abstract val text: String
-
-    data class TextNoteContent(override val text: String) : NoteContent() {
-    }
-
-    data class TableNoteContent(override val text: String) : NoteContent() {
-
-        fun reformat() {
-            // placeholder - but would fix all the spacing, missing cells, etc. Complicated
-        }
+    enum class TextType {
+        TEXT, TABLE
     }
 
 
@@ -55,12 +47,14 @@ sealed class NoteContent {
                     }
                     currentIsTable && !previousIsTable -> {
                         currentTable = it + "\n"
-                        list.add(TextNoteContent(currentText))
+                        val startOffset = getLastOffset(list)
+                        list.add(NoteContent(currentText, startOffset, startOffset + currentText.length - 1, TextType.TEXT))
                         currentText = ""
                     }
                     !currentIsTable && previousIsTable -> {
                         currentText = it + "\n"
-                        list.add(TableNoteContent(currentTable))
+                        val startOffset = getLastOffset(list)
+                        list.add(NoteContent(currentTable, startOffset, startOffset + currentTable.length - 1, TextType.TABLE))
                         currentTable = ""
                     }
                     !currentIsTable && !previousIsTable -> {
@@ -71,18 +65,23 @@ sealed class NoteContent {
             }
 
             if (linesForParsing.isNotEmpty()) {
+
+                val endOffsetAdjustment = if (missingLastNewline) 2 else 1
+
                 if (previousIsTable) {
-                    list.add(TableNoteContent(if (missingLastNewline) {
+                    list.add(NoteContent(if (missingLastNewline) {
                         currentTable.dropLast(1)
-                    } else currentTable))
+                    } else currentTable, getLastOffset(list), getLastOffset(list) + currentTable.length - endOffsetAdjustment, TextType.TABLE))
                 } else {
-                    list.add(TextNoteContent(if (missingLastNewline) {
+                    list.add(NoteContent(if (missingLastNewline) {
                         currentText.dropLast(1)
-                    } else currentText))
+                    } else currentText, getLastOffset(list), getLastOffset(list) + currentText.length - endOffsetAdjustment, TextType.TEXT))
                 }
             }
 
             return list
         }
+
+        private fun getLastOffset(list: MutableList<NoteContent>) = if (list.isEmpty()) 0 else list.last().endOffset + 1
     }
 }
