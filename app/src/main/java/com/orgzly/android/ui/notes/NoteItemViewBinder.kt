@@ -11,6 +11,7 @@ import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.orgzly.R
 import com.orgzly.android.App
+import com.orgzly.android.AppIntent
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
@@ -129,7 +130,13 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
                         val noteContentSectionTableTextView = layoutInflater.inflate(R.layout.item_note_content_section_table, linearLayout, false)
 
-                        noteContentSectionTableTextView.findViewById<TextView>(R.id.note_content_section_table_text).text = noteContent.text
+                        val tableTextView = noteContentSectionTableTextView.findViewById<TextView>(R.id.note_content_section_table_text)
+                        tableTextView.text = noteContent.text
+
+                        tableTextView.setTag(AppIntent.EXTRA_BOOK_ID.hashCode(), note.position.bookId)
+                        tableTextView.setTag(AppIntent.EXTRA_NOTE_ID.hashCode(), note.id)
+                        tableTextView.setTag(AppIntent.EXTRA_TABLE_START_OFFSET.hashCode(), noteContent.startOffset)
+                        tableTextView.setTag(AppIntent.EXTRA_TABLE_END_OFFSET.hashCode(), noteContent.endOffset)
 
                         linearLayout.addView(noteContentSectionTableTextView)
                     }

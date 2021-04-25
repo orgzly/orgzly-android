@@ -82,7 +82,7 @@ You can have more than one table in a note.
 | Like this | one     |
 | for       | example |
 
-Editing tables is not yet supported.
+Click on a table to edit it.
 
 * Search
 ** There are many search operators supported
