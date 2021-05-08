@@ -19,6 +19,7 @@ import com.orgzly.android.AppIntent;
 import com.orgzly.android.data.DataRepository;
 import com.orgzly.android.db.entity.SavedSearch;
 import com.orgzly.android.prefs.AppPreferences;
+import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.main.MainActivity;
 import com.orgzly.android.ui.share.ShareActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
@@ -100,6 +101,13 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
                 // Plus icon - new note
                 remoteViews.setOnClickPendingIntent(R.id.list_widget_header_add, ShareActivity.createNewNoteIntent(context, savedSearch));
+
+                // Sync icon - sync start
+                Intent syncIntent = new Intent(context, SyncService.class);
+                syncIntent.setAction(AppIntent.ACTION_SYNC_START);
+                PendingIntent syncPendingIntent = PendingIntent.getService(
+                        context, 0, syncIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                remoteViews.setOnClickPendingIntent(R.id.list_widget_header_sync, syncPendingIntent);
 
                 // Logo - open query
                 Intent openIntent = Intent.makeRestartActivityTask(new ComponentName(context, MainActivity.class));
