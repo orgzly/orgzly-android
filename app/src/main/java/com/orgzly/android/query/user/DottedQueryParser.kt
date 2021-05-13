@@ -36,8 +36,8 @@ open class DottedQueryParser : QueryParser() {
                 Condition.HasTag(unQuote(match.groupValues[2]), match.groupValues[1].isNotEmpty())
             },
 
-            ConditionMatch("""^tn\.(.+)""") { match ->
-                Condition.HasOwnTag(unQuote(match.groupValues[1]))
+            ConditionMatch("""^(\.)?tn\.(.+)""") { match ->
+                Condition.HasOwnTag(unQuote(match.groupValues[2]), match.groupValues[1].isNotEmpty())
             },
 
             ConditionMatch("""^(e|s|d|c|cr)(?:\.(eq|ne|lt|le|gt|ge))?\.(.+)""") { match ->

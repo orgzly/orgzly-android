@@ -43,7 +43,7 @@ open class DottedQueryBuilder {
             is Condition.HasSetPriority -> "${dot(expr.not)}ps.${expr.priority}"
 
             is Condition.HasTag -> "${dot(expr.not)}t.${expr.tag}"
-            is Condition.HasOwnTag -> "tn.${expr.tag}"
+            is Condition.HasOwnTag -> "${dot(expr.not)}tn.${expr.tag}"
 
             is Condition.Event -> {
                 val rel = expr.relation.toString().toLowerCase()

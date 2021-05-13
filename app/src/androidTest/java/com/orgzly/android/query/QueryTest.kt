@@ -164,6 +164,12 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             expectedSelectionArgs = listOf("%tag%", "%tag%")
                     ),
                     Parameter(
+                            queryString = ".tn.tag",
+                            expectedQueryString = ".tn.tag",
+                            expectedSqlSelection = "(NOT((COALESCE(tags, '') LIKE ?)))",
+                            expectedSelectionArgs = listOf("%tag%")
+                    ),
+                    Parameter(
                             queryString = "i.todo (b.\"book(1) name\" or b.book2)",
                             expectedQueryString = "i.todo (b.\"book(1) name\" or b.book2)",
                             expectedSqlSelection = "(COALESCE(state, '') = ? AND (book_name = ? OR book_name = ?))",
