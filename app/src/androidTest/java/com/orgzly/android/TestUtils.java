@@ -136,7 +136,7 @@ public class TestUtils {
             Map<String, BookNamesake> nameGroups = SyncService.groupAllNotebooksByName(dataRepository);
 
             for (BookNamesake group : nameGroups.values()) {
-                BookAction action = SyncService.syncNamesake(dataRepository, group);
+                BookAction action = SyncService.syncNamesake(dataRepository, group, null);
                 dataRepository.setBookLastActionAndSyncStatus(
                         group.getBook().getBook().getId(), action, group.getStatus().toString());
             }

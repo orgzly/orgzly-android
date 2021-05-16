@@ -128,7 +128,7 @@ public class GitFileSynchronizer {
 
     public boolean updateAndCommitFileFromRevisionAndMerge(
             File sourceFile, String repositoryPath,
-            ObjectId fileRevision, RevCommit revision)
+            ObjectId fileRevision, RevCommit revision, RevCommit branchStartPoint)
             throws IOException {
         ensureRepoIsClean();
         if (updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision)) {
@@ -145,8 +145,8 @@ public class GitFileSynchronizer {
         try {
             RevCommit mergeTarget = currentHead();
             git.checkout().setCreateBranch(true).setForce(true).
-                    setStartPoint(revision).setName(mergeBranch).call();
-            if (!currentHead().equals(revision))
+                    setStartPoint(branchStartPoint).setName(mergeBranch).call();
+            if (!currentHead().equals(branchStartPoint))
                 throw new IOException("Unable to set revision to " + revision.toString());
             if (!updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision))
                 throw new IOException(

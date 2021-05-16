@@ -322,7 +322,7 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
 
     @Override
     public TwoWaySyncResult syncBook(
-            Uri uri, VersionedRook current, File fromDB) throws IOException {
+            Uri uri, VersionedRook current, File fromDB, RevCommit branchStartPoint) throws IOException {
         File writeBack = null;
         boolean onMainBranch = true;
         String fileName = uri.getPath();
@@ -335,7 +335,7 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
             boolean merged = synchronizer.updateAndCommitFileFromRevisionAndMerge(
                     fromDB, fileName,
                     synchronizer.getFileRevision(fileName, rookCommit),
-                    rookCommit);
+                    rookCommit, branchStartPoint);
 
             // We have attempted a merge. Are we back on the main branch, or still on a temp branch?
             onMainBranch = git.getRepository().getBranch().equals(preferences.branchName());
@@ -362,5 +362,15 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
 
     public void tryPushIfHeadDiffersFromRemote() {
         synchronizer.tryPushIfHeadDiffersFromRemote();
+    }
+    
+    public RevCommit getCurrentHead() {
+        RevCommit current = null;
+        try {
+            current = synchronizer.currentHead();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return current;
     }
 }
