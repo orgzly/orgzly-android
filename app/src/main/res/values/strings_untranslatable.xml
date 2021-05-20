@@ -2,13 +2,6 @@
 <resources>
     <string name="app_name" translatable="false">Orgzly</string>
 
-    <string name="unfold_button_character" translatable="false">+</string>
-    <string name="fold_button_character" translatable="false">–</string>
-
-    <string name="default_share_notebook" translatable="false">Inbox</string>
-
-    <string name="git_default_branch" translatable="false">master</string>
-
     <!-- Samples used in tools:text -->
     <string name="book_mtime_sample" translatable="false">Jul 3, 2013 9:45:37 PM</string>
     <string name="book_name_sample" translatable="false">notebook-name</string>
@@ -43,5 +36,11 @@
     <string name="synced_rook_revision_sample" translatable="false">42f97fe238</string>
     <string name="breadcrumbs_sample" translatable="false">Item • Item • Item • Item • Item • Item • Item • Item • Item • Item</string>
 
+    <string name="unfold_button_character" translatable="false">+</string>
+    <string name="fold_button_character" translatable="false">–</string>
+    <string name="default_share_notebook" translatable="false">Inbox</string>
+    <string name="git_default_branch" translatable="false">master</string>
     <string name="certificates_hint">-----BEGIN CERTIFICATE-----</string>
+    <string name="webdav" translatable="false">WebDAV</string>
+
 </resources>
