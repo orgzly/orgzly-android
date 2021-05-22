@@ -473,10 +473,15 @@ class SyncService : Service() {
                 BookSyncStatus.NO_BOOK_MULTIPLE_ROOKS,
                 BookSyncStatus.ONLY_BOOK_WITHOUT_LINK_AND_MULTIPLE_REPOS,
                 BookSyncStatus.BOOK_WITH_LINK_AND_ROOK_EXISTS_BUT_LINK_POINTING_TO_DIFFERENT_ROOK,
+                    // todo ?do the following two belong here
+                BookSyncStatus.BOOK_ENCRYPTED_WITH_LINK_AND_ONLY_UNENCRYPTED_ROOK_EXISTS,
+                BookSyncStatus.BOOK_UNENCRYPTED_WITH_LINK_AND_ONLY_ENCRYPTED_ROOK_EXISTS,
                 BookSyncStatus.CONFLICT_BOTH_BOOK_AND_ROOK_MODIFIED,
                 BookSyncStatus.CONFLICT_BOOK_WITH_LINK_AND_ROOK_BUT_NEVER_SYNCED_BEFORE,
                 BookSyncStatus.CONFLICT_LAST_SYNCED_ROOK_AND_LATEST_ROOK_ARE_DIFFERENT,
                 BookSyncStatus.CONFLICT_ENCRYPTION_TOGGLED_AND_TARGET_ROOK_EXISTS,
+                    // todo ?does the following belong here
+                BookSyncStatus.CONFLICT_BOTH_ENCRYPTED_AND_UNENCRYPTED_ROOK_EXIST,
                 BookSyncStatus.ROOK_AND_VROOK_HAVE_DIFFERENT_REPOS,
                 BookSyncStatus.ONLY_DUMMY ->
                     bookAction = BookAction.forNow(BookAction.Type.ERROR, namesake.status.msg())
@@ -558,14 +563,9 @@ class SyncService : Service() {
                 BookSyncStatus.BOOK_WITH_LINK_LOCAL_MODIFIED -> {
                     repoEntity = namesake.book.linkRepo
                     repoUrl = repoEntity!!.url
-                    // fileName = BookName.getFileName(App.getAppContext(), namesake.book.syncedTo!!.uri)
 
                     fileName = BookName.getFileName(App.getAppContext(), namesake.book)
 
-                    // todo filename is determined by syncedTo, but this could be outdated if encryption was just flipped
-                    // todo this case should never occur because we make sure that local modified books are not encryption toggled
-                    // todo syncedTo should be updated to the new .gpg one -> what happens after the next modification?
-                    // todo after encryption toggle, syncedTo should be deleted
                     dataRepository.saveBookToRepo(repoEntity, fileName, namesake.book, BookFormat.ORG)
                     bookAction = BookAction.forNow(BookAction.Type.INFO, namesake.status.msg(repoUrl))
                 }

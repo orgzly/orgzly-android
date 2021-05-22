@@ -7,7 +7,7 @@
     <Preference
         android:selectable="false"
         android:icon="?attr/ic_warning_24dp"
-        android:summary="@string/encryption_warning"/>
+        android:summary="@string/pref_encryption_warning"/>
 
     <EditTextPreference
         android:key="@string/pref_key_encryption_default_passphrase"

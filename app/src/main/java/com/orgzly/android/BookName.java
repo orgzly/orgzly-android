@@ -18,10 +18,8 @@ import java.util.regex.Pattern;
 public class BookName {
     private static final String TAG = BookName.class.getName();
 
-    private static final Pattern PATTERN = Pattern.compile("(.*)\\.(org)(\\.txt)?(\\.gpg)?$"); // todo (.gpg)
+    private static final Pattern PATTERN = Pattern.compile("(.*)\\.(org)(\\.txt)?(\\.gpg)?$");
     private static final Pattern SKIP_PATTERN = Pattern.compile("^\\.#.*");
-    // todo private static final Pattern GPG_PATTERN = Pattern.compile("(.*)(\\.gpg)$");
-    // todo ?what happens with .org.txt.gpg files
 
     private final String mFileName;
     private final String mName;
@@ -36,16 +34,7 @@ public class BookName {
     }
 
     public static String getFileName(Context context, com.orgzly.android.db.entity.BookView bookView) {
-
-//        if (bookView.getSyncedTo() != null) { // todo and if the encryption state of this file fits. or make sure that
-//            // todo after encryption toggle syncedTo should be deleted
-//            return getFileName(context, bookView.getSyncedTo().getUri());
-//
-//        }
-//        else
-            {
-                return fileName(bookView.getBook().getName(), BookFormat.ORG, bookView.hasEncryption());
-        }
+        return fileName(bookView.getBook().getName(), BookFormat.ORG, bookView.hasEncryption());
     }
 
     public static String getFileName(Context context, Uri uri) {
@@ -109,10 +98,10 @@ public class BookName {
             if (m.find()) {
                 String name = m.group(1);
                 String extension = m.group(2);
-                String lastExtension = m.group(m.groupCount()); // todo ?needed
+                String gpgExtension = m.group(4); // todo ?needed
 
                 if (extension.equals("org")) {
-                    boolean encrypted = (lastExtension != null && lastExtension.equals(".gpg"));
+                    boolean encrypted = (gpgExtension != null && gpgExtension.equals(".gpg"));
 
                     return new BookName(fileName, name, BookFormat.ORG, encrypted);
                 }

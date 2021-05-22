@@ -363,7 +363,7 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
         }
 
         val builder = AlertDialog.Builder(context)
-                .setTitle(getString(R.string.delete_with_quoted_argument, book.book.name)) // todo
+                .setTitle(getString(R.string.set_encryption_with_quoted_argument, book.book.name)) // todo
                 .setPositiveButton(R.string.delete, dialogClickListener) // todo
                 .setNegativeButton(R.string.cancel, dialogClickListener)
 

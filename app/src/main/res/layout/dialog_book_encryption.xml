@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:imeOptions="actionDone"
-                android:hint="@string/fragment_repo_dropbox_encryption_passphrase_desc" /><!-- todo -->
+                android:hint="@string/encryption_passphrase_input_desc" /><!-- todo -->
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -34,7 +34,7 @@
             android:id="@+id/use_default_passphrase_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="use default passphrase" /><!-- todo -->
+            android:text="use default passphrase" /><!-- TODO use string resource -->
 
         <!-- todo display possible candidate<TextView
     android:id="@+id/delete_linked_url"
@@ -44,7 +44,8 @@
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
     android:textColor="?attr/text_disabled_color"
-    tools:text="content://com.android.providers.downloads.documents/tree/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg/document/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg%2Fgtd.org"/>-->
+    tools:text="content://com.android.providers.downloads.documents/tree/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg/document/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg%2Fgtd.org"/>
+    -->
 
         <CheckBox
             android:id="@+id/delete_previous_checkbox"

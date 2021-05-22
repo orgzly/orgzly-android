@@ -156,33 +156,27 @@ class DataRepository @Inject constructor(
 
         val repo = getRepoInstance(repoEntity.id, repoEntity.type, repoEntity.url)
 
-        val tmpFile = getTempBookFile()
+        var tmpFile = getTempBookFile()
         val tmpFileEncrypted = getTempBookFile()
         try {
             /* Write to temporary file. */
             NotesOrgExporter(this).exportBook(bookView.book, tmpFile)
 
-            // TODO fileName argument is the correct one from the get-go, no need to fix extension
-            val (toStoreFile, toStoreFileName) =
-                    if (bookView.hasEncryption()) {
-                        val inFile: InputStream = BufferedInputStream(FileInputStream(tmpFile))
-                        val outFile: OutputStream = BufferedOutputStream(FileOutputStream(tmpFileEncrypted))
+            if (bookView.hasEncryption()) {
+                val inFile: InputStream = BufferedInputStream(FileInputStream(tmpFile))
+                val outFile: OutputStream = BufferedOutputStream(FileOutputStream(tmpFileEncrypted))
 
-                        try {
-                            MiscUtils.pgpEncrypt(inFile, outFile, fileName, bookView.encryption!!.passphrase)
-                        } finally {
-                            inFile.close()
-                            outFile.close()
-                        }
-
-                        Pair(tmpFileEncrypted, MiscUtils.ensureGpgExtensionFileName(fileName))
-                    } else {
-                        // remove possible .gpg extension left over from a previous encrypted sync
-                        Pair(tmpFile, MiscUtils.ensureNoGpgExtensionFileName(fileName))
-                    }
+                try {
+                    MiscUtils.pgpEncrypt(inFile, outFile, fileName, bookView.encryption!!.passphrase)
+                } finally {
+                    inFile.close()
+                    outFile.close()
+                }
+                tmpFile = tmpFileEncrypted
+            }
 
             /* Upload to repo. */
-            uploadedBook = repo.storeBook(toStoreFile, toStoreFileName)
+            uploadedBook = repo.storeBook(tmpFile, fileName)
 
         } finally {
             /* Delete temporary file. */

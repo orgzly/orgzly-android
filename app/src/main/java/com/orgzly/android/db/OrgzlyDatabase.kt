@@ -39,7 +39,7 @@ import java.util.*
             VersionedRook::class
         ],
 
-        version = 155
+        version = 156
 )
 @TypeConverters(com.orgzly.android.db.TypeConverters::class)
 abstract class OrgzlyDatabase : RoomDatabase() {
