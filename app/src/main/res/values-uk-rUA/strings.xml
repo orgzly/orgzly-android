@@ -26,6 +26,7 @@
     <string name="delete">Видалити</string>
     <string name="delete_with_quoted_argument">Видалити “%s”</string>
     <string name="name">Назва</string>
+    <string name="value">Значення</string>
     <string name="query">Запит</string>
     <string name="done">Виконано</string>
     <string name="mark_as_done">Позначити як виконане</string>
@@ -335,8 +336,8 @@
     <!-- .+ -->
     <string name="delay_dialog_title">Затримка</string>
     <string name="delay_description">Затримка відображення завдання в розкладі</string>
-    <string name="delay_description_affects_all">Affects all occurrences</string>
-    <string name="delay_description_affects_first">Affects only the first scheduled occurrence</string>
+    <string name="delay_description_affects_all">Впливає на всі події</string>
+    <string name="delay_description_affects_first">Впливає лише на першу заплановану подію</string>
     <string name="warning_period_dialog_title">Час попередження</string>
     <string name="warning_period_description">Попереджати про наближення та пропуск крайнього строку</string>
     <string name="displayed_book_details_local_mtime">Час зміни</string>

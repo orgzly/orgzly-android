@@ -35,7 +35,7 @@ CLOSED: [2018-01-24 Mer 17:00]
 SCHEDULED: <2015-02-20 Ven 15:15>
 
 *** Gli orari possono avere una ripetizione
-SCHEDULED: <2015-02-16 Mon .+2d>
+SCHEDULED: <2015-02-16 Lun .+2d>
 
 ** Puoi anche stabilire una scadenza
 DEADLINE: <2015-02-20 Ven>

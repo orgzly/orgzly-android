@@ -26,6 +26,7 @@
     <string name="delete">Supprimer</string>
     <string name="delete_with_quoted_argument">Supprimer “%s”</string>
     <string name="name">Nom</string>
+    <string name="value">Valeur</string>
     <string name="query">Requête</string>
     <string name="done">Fini</string>
     <string name="mark_as_done">Marquer comme fait</string>
@@ -291,7 +292,7 @@
     <string name="connecting">Connexion en cours…</string>
     <string name="no_connection">Aucune connexion</string>
     <string name="connection_successful">Connexion réussie</string>
-    <string name="last_sync_with_argument">Dernière synchronisation : %s</string>
+    <string name="last_sync_with_argument">Dernière synchronisation: %s</string>
     <string name="force_loading_from_uri">Chargement forcé de %s…</string>
     <string name="force_loaded_from_uri">%s chargé de manière forcée</string>
     <string name="force_saving_to_uri">Sauvegarde forcée de %s…</string>
@@ -534,7 +535,7 @@
     <string name="display_checkmarks_summary">Permet de marquer les notes comme terminées</string>
     <string name="last_used">Dernier utilisé</string>
     <string name="note_details_opening_mode">Mode d’ouverture</string>
-    <string name="cleartext_traffic">Cleartext traffic</string>
+    <string name="cleartext_traffic">Communication non-cryptée</string>
     <string name="cleartext_traffic_message">Êtes-vous sûr de vouloir utiliser cette URL ?</string>
     <string name="credentials_in_url_not_supported">La transmission des identifiants par URL n\'est pas pris en charge</string>
     <string name="access_token">Jeton d\'accès</string>

@@ -26,6 +26,7 @@
     <string name="delete">삭제</string>
     <string name="delete_with_quoted_argument">\"%s\" 삭제</string>
     <string name="name">이름</string>
+    <string name="value">값</string>
     <string name="query">질의</string>
     <string name="done">완료</string>
     <string name="mark_as_done">완료로 표시</string>

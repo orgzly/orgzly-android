@@ -26,6 +26,7 @@
     <string name="delete">Eliminar</string>
     <string name="delete_with_quoted_argument">Eliminar \"%s\"</string>
     <string name="name">Nome</string>
+    <string name="value">Valor</string>
     <string name="query">Consulta</string>
     <string name="done">Feito</string>
     <string name="mark_as_done">Marcar como feito</string>
@@ -391,7 +392,7 @@
     <string name="pref_title_summary_reminders_for_deadline_times">Display notification for notes with deadline time</string>
     <string name="pref_title_reminders_for_event_times">Eventos</string>
     <string name="pref_title_summary_reminders_for_event_times">Display notification for notes with event time</string>
-    <string name="pref_title_reminders_sound">Sound</string>
+    <string name="pref_title_reminders_sound">Som</string>
     <string name="pref_title_reminders_vibrate">Vibração</string>
     <string name="pref_title_reminders_led">Claro</string>
     <string name="pref_title_snooze_time">Tempo de soneca (minutos)</string>
@@ -497,7 +498,7 @@
     <string name="show_all">Show all</string>
     <string name="always_show_set">Always show set</string>
     <string name="show_selected">Show selected</string>
-    <string name="hide_all">Hide all</string>
+    <string name="hide_all">Ocultar tudo</string>
     <string name="external_file_no_app_found">No application found to open this file</string>
     <string name="failed_to_open_linked_file_with_reason">Failed to open file: %s</string>
     <string name="images">Imagens</string>
