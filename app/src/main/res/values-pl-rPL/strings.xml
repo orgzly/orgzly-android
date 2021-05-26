@@ -26,7 +26,6 @@
     <string name="delete">Usuń</string>
     <string name="delete_with_quoted_argument">Usuń „%s”</string>
     <string name="name">Nazwa</string>
-    <string name="value">Wartość</string>
     <string name="query">Zapytanie</string>
     <string name="done">Gotowe</string>
     <string name="mark_as_done">Oznacz jako wykonane</string>

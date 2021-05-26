@@ -26,7 +26,6 @@
     <string name="delete">删除</string>
     <string name="delete_with_quoted_argument">删除 “%s”</string>
     <string name="name">名称</string>
-    <string name="value">值</string>
     <string name="query">查询</string>
     <string name="done">完成</string>
     <string name="mark_as_done">标记为完成</string>

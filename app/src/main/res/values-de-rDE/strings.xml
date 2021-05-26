@@ -26,7 +26,6 @@
     <string name="delete">Löschen</string>
     <string name="delete_with_quoted_argument">\"%s\" löschen</string>
     <string name="name">Name</string>
-    <string name="value">Wert</string>
     <string name="query">Abfrage</string>
     <string name="done">Erledigt</string>
     <string name="mark_as_done">Als erledigt markieren</string>
