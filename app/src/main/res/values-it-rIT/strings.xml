@@ -170,9 +170,13 @@
     <string name="directory">Directory</string>
     <string name="fragment_repo_dropbox_directory_desc">La directory all\'interno di Dropbox (es. “/Documenti/Orgzly”)</string>
     <string name="directory_uri">Directory dell\'URL</string>
+    <string name="git_clone_progress">Cloning repository</string>
+    <string name="git_verifying_settings">Ensuring repository settings will work.</string>
     <string name="git_url_hint">Indirizzo remoto (es. git@github.com:orgzly / orgzly-android.git)</string>
     <string name="git_directory_hint">Percorso directory (es. \"file:/sdcard/orgzly\")</string>
     <string name="git_ssh_key_hint">Posizione della chiave SSH (es. “file:/sdcard/id_rsa”)</string>
+    <string name="git_https_username_hint">Username</string>
+    <string name="git_https_password_hint">Password</string>
     <string name="git_author_hint">Autore (es. Sergio Rossi)</string>
     <string name="git_email_hint">E-mail (es. sergio@email.com)</string>
     <string name="git_branch_hint">Ramo (es. master)</string>
@@ -505,6 +509,8 @@
     <string name="display_inline_images_summary">Visualizzare le immagini nelle note</string>
     <string name="scale_down_to_width">Scalare alla larghezza</string>
     <string name="scale_down_to_width_summary">Scalare l\'immagine alla larghezza specificata</string>
+    <string name="file_absolute_root">Root for absolute links (e.g. file:/readme.txt)</string>
+    <string name="file_relative_root">Root for relative links (e.g. file:readme.txt)</string>
     <string name="argument_used">%s usati</string>
     <string name="argument_detected">%s rilevato</string>
     <string name="argument_selected">%s selezionati</string>
@@ -555,4 +561,6 @@
     <string name="overdue">Scaduto</string>
     <string name="help">Aiuto</string>
     <string name="content">Contenuto</string>
+    <string name="prepend">Prepend</string>
+    <string name="insert_new_note_at_beginning">Insert new note at beginning</string>
 </resources>

@@ -22,6 +22,8 @@ Przytrzymaj ikonę „+”, aby rozwinąć wszystkie podrzędne notatki.
 
 Jeśli wyszukasz notatki ze znacznikiem „znacznik1” za pomocą zapytania „t.znacznik1”, to ta notatka zostanie uwzględniona w wynikach wyszukiwania.
 
+*** A note that has the =ARCHIVE= tag set is grayed out :ARCHIVE:
+
 ** TODO Notatka może mieć przypisany stan
 
 Możesz skonfigurować dowolną liczbę stanów do użycia: TODO, NEXT, DONE, itp.

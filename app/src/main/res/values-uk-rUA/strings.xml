@@ -176,9 +176,13 @@
     <string name="directory">Каталог</string>
     <string name="fragment_repo_dropbox_directory_desc">Каталог у Dropbox (наприклад, «/Documents/Orgzly»)</string>
     <string name="directory_uri">Каталог URI</string>
+    <string name="git_clone_progress">Клонування репозиторію</string>
+    <string name="git_verifying_settings">Перевірка налаштувань сховища.</string>
     <string name="git_url_hint">Віддалена адреса (напр. git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Шлях до каталогу (напр. “file:/sdcard/orgzly”)</string>
     <string name="git_ssh_key_hint">Шлях SSH ключа (напр. «file:/sdcard/id_rsa»)</string>
+    <string name="git_https_username_hint">Ім\'я користувача</string>
+    <string name="git_https_password_hint">Пароль</string>
     <string name="git_author_hint">Автор (напр. John Doe)</string>
     <string name="git_email_hint">Email (напр. john@email.com)</string>
     <string name="git_branch_hint">Гілка (напр. master)</string>
@@ -523,6 +527,8 @@
     <string name="display_inline_images_summary">Показувати малюнки в нотатках</string>
     <string name="scale_down_to_width">Масштабувати по ширині</string>
     <string name="scale_down_to_width_summary">Масштабувати малюнок до вказаної ширини</string>
+    <string name="file_absolute_root">Коренева адреса для абсолютних посилань (напр., file:/readme.txt)</string>
+    <string name="file_relative_root">Коренева адреса для відносних посилань (напр., file:readme.txt)</string>
     <string name="argument_used">%s використано</string>
     <string name="argument_detected">%s виявлено</string>
     <string name="argument_selected">%s вибрано</string>
@@ -577,4 +583,6 @@
     <string name="overdue">Прострочено</string>
     <string name="help">Поміч</string>
     <string name="content">Зміст</string>
+    <string name="prepend">Додати перед</string>
+    <string name="insert_new_note_at_beginning">Вставити нову нотатку на початок</string>
 </resources>

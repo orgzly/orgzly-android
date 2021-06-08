@@ -176,9 +176,13 @@
     <string name="directory">Katalog</string>
     <string name="fragment_repo_dropbox_directory_desc">Katalog w ramach Dropbox (np. \"/Documents/Orgzly\")</string>
     <string name="directory_uri">Katalog URI</string>
+    <string name="git_clone_progress">Cloning repository</string>
+    <string name="git_verifying_settings">Ensuring repository settings will work.</string>
     <string name="git_url_hint">Adres zdalny (np. git@github.com:orgzly / orgzly-android.git)</string>
     <string name="git_directory_hint">Lokalizacja katalogu (np. “file:/sdcard/orgzly”)</string>
     <string name="git_ssh_key_hint">Lokalizacja klucza SSH (np. \"file:/sdcard/id_rsa\")</string>
+    <string name="git_https_username_hint">Username</string>
+    <string name="git_https_password_hint">Password</string>
     <string name="git_author_hint">Autor (np. John Doe)</string>
     <string name="git_email_hint">Email (np. john@email.com)</string>
     <string name="git_branch_hint">Gałąź (np. master)</string>
@@ -523,6 +527,8 @@
     <string name="display_inline_images_summary">Wyświetl obrazy w notatkach</string>
     <string name="scale_down_to_width">Skaluj do szerokości</string>
     <string name="scale_down_to_width_summary">Skaluj obraz do określonej szerokości</string>
+    <string name="file_absolute_root">Root for absolute links (e.g. file:/readme.txt)</string>
+    <string name="file_relative_root">Root for relative links (e.g. file:readme.txt)</string>
     <string name="argument_used">Użyto %s</string>
     <string name="argument_detected">Wykryto %s</string>
     <string name="argument_selected">Wybrano %s</string>
@@ -577,4 +583,6 @@
     <string name="overdue">Zaległe</string>
     <string name="help">Pomoc</string>
     <string name="content">Zawartość</string>
+    <string name="prepend">Prepend</string>
+    <string name="insert_new_note_at_beginning">Insert new note at beginning</string>
 </resources>

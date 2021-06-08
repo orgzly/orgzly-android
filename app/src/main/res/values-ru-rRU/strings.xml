@@ -176,9 +176,13 @@
     <string name="directory">Каталог</string>
     <string name="fragment_repo_dropbox_directory_desc">Каталог внутри Dropbox (например, «/Documents/Orgzly»)</string>
     <string name="directory_uri">URI каталога</string>
+    <string name="git_clone_progress">Клонирование репозитория</string>
+    <string name="git_verifying_settings">Обеспечение работоспособных настроек репозитория.</string>
     <string name="git_url_hint">Удалённый адрес (например, git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Путь к каталогу (например, «file:/sdcard/orgzly»)</string>
     <string name="git_ssh_key_hint">Путь к SSH-ключу (например, «file:/sdcard/id_rsa»)</string>
+    <string name="git_https_username_hint">Имя</string>
+    <string name="git_https_password_hint">Пароль</string>
     <string name="git_author_hint">Автор (например, John Doe)</string>
     <string name="git_email_hint">Эл. почта (например, john@email.com)</string>
     <string name="git_branch_hint">Ветвь (например, master)</string>
@@ -523,6 +527,8 @@
     <string name="display_inline_images_summary">Показывать изображения в заметках</string>
     <string name="scale_down_to_width">Уменьшать по ширине</string>
     <string name="scale_down_to_width_summary">Уменьшать изображения до указанной ширины</string>
+    <string name="file_absolute_root">Корень абсолютных ссылок (например, file:/readme.txt)</string>
+    <string name="file_relative_root">Корень относительных ссылок (например, file:readme.txt)</string>
     <string name="argument_used">используется %s</string>
     <string name="argument_detected">%s обнаружен</string>
     <string name="argument_selected">%s выбран</string>
@@ -577,4 +583,6 @@
     <string name="overdue">Просрочено</string>
     <string name="help">Справка</string>
     <string name="content">Описание</string>
+    <string name="prepend">Добавить</string>
+    <string name="insert_new_note_at_beginning">Вставить новую заметку в начало</string>
 </resources>
