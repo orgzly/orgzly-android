@@ -24,6 +24,7 @@ import com.orgzly.android.ui.refile.RefileFragment
 import com.orgzly.android.ui.repo.BrowserActivity
 import com.orgzly.android.ui.repo.directory.DirectoryRepoActivity
 import com.orgzly.android.ui.repo.dropbox.DropboxRepoActivity
+import com.orgzly.android.ui.repo.googledrive.GoogleDriveRepoActivity
 import com.orgzly.android.ui.repo.git.GitRepoActivity
 import com.orgzly.android.ui.repo.webdav.WebdavRepoActivity
 import com.orgzly.android.ui.repos.ReposActivity
@@ -51,6 +52,7 @@ interface AppComponent {
     fun inject(arg: MainActivity)
     fun inject(arg: ReposActivity)
     fun inject(arg: DropboxRepoActivity)
+    fun inject(arg: GoogleDriveRepoActivity)
     fun inject(arg: DirectoryRepoActivity)
     fun inject(arg: WebdavRepoActivity)
     fun inject(arg: GitRepoActivity)

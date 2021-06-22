@@ -22,6 +22,7 @@ import com.orgzly.android.repos.*
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.directory.DirectoryRepoActivity
 import com.orgzly.android.ui.repo.dropbox.DropboxRepoActivity
+import com.orgzly.android.ui.repo.googledrive.GoogleDriveRepoActivity
 import com.orgzly.android.ui.repo.git.GitRepoActivity
 import com.orgzly.android.ui.repo.webdav.WebdavRepoActivity
 import com.orgzly.android.util.LogUtils
@@ -106,6 +107,16 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             }
         }
 
+        binding.activityReposGoogleDrive.let { button ->
+            if (BuildConfig.IS_GOOGLE_DRIVE_ENABLED) {
+                button.setOnClickListener {
+                    startRepoActivity(R.id.repos_options_menu_item_new_google_drive)
+                }
+            } else {
+                button.visibility = View.GONE
+            }
+        }
+
         binding.activityReposGit.let { button ->
             if (BuildConfig.IS_GIT_ENABLED) {
                 button.setOnClickListener {
@@ -157,6 +168,10 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
                 newRepos.removeItem(R.id.repos_options_menu_item_new_dropbox)
             }
 
+            if (!BuildConfig.IS_GOOGLE_DRIVE_ENABLED) {
+                newRepos.removeItem(R.id.repos_options_menu_item_new_google_drive)
+            }
+
             if (!BuildConfig.IS_GIT_ENABLED) {
                 newRepos.removeItem(R.id.repos_options_menu_item_new_git)
             }
@@ -168,6 +183,11 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.repos_options_menu_item_new_dropbox -> {
+                startRepoActivity(item.itemId)
+                return true
+            }
+
+            R.id.repos_options_menu_item_new_google_drive -> {
                 startRepoActivity(item.itemId)
                 return true
             }
@@ -216,6 +236,11 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
                 return
             }
 
+            R.id.repos_options_menu_item_new_google_drive -> {
+                GoogleDriveRepoActivity.start(this)
+                return
+            }
+
             R.id.repos_options_menu_item_new_git -> {
                 if (ContextCompat.checkSelfPermission(this, READ_WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     GitRepoActivity.start(this)
@@ -256,6 +281,9 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
 
             RepoType.DROPBOX ->
                 DropboxRepoActivity.start(this, repoEntity.id)
+
+            RepoType.GOOGLE_DRIVE ->
+                GoogleDriveRepoActivity.start(this, repoEntity.id)
 
             RepoType.DIRECTORY ->
                 DirectoryRepoActivity.start(this, repoEntity.id)

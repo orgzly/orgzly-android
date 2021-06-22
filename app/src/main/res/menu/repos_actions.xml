@@ -24,6 +24,10 @@
                 app:showAsAction="ifRoom"
                 android:title="@string/dropbox"/>
             <item
+                android:id="@+id/repos_options_menu_item_new_google_drive"
+                app:showAsAction="ifRoom"
+                android:title="@string/google_drive"/>
+            <item
                 android:id="@+id/repos_options_menu_item_new_git"
                 app:showAsAction="ifRoom"
                 android:title="@string/git"/>
