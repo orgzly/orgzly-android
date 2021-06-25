@@ -4,7 +4,7 @@
     <string name="settings">Configurações</string>
     <string name="ok">Ok</string>
     <string name="yes">Sim</string>
-    <string name="unlink">Desassociar</string>
+    <string name="unlink">Desvincular</string>
     <!-- Unlink from Dropbox -->
     <string name="clear">Limpar</string>
     <string name="cancel">Cancelar</string>
@@ -59,8 +59,8 @@
     <string name="history">Histórico</string>
     <string name="event">Evento</string>
     <plurals name="notes_cut">
-        <item quantity="one">Cortar nota</item>
-        <item quantity="other">Cortar <b>%d</b> notas</item>
+        <item quantity="one">Nota cortada</item>
+        <item quantity="other"><b>%d</b> notas cortadas</item>
     </plurals>
     <string name="no_notes_cut">Nenhuma nota cortada</string>
     <plurals name="notes_copied">
@@ -69,7 +69,7 @@
     </plurals>
     <plurals name="notes_pasted">
         <item quantity="one">Nota colada</item>
-        <item quantity="other">Colada <b>%d</b> notas</item>
+        <item quantity="other"><b>%d</b> notas coladas</item>
     </plurals>
     <string name="no_notes_pasted">Nada para colar</string>
     <string name="fragment_note_title_hint">Título</string>
@@ -79,7 +79,7 @@
     <string name="message_dropbox_linked">Vinculado ao Dropbox com sucesso</string>
     <!-- Preferences (Settings). -->
     <string name="repos_preference_title">Repositórios</string>
-    <string name="repos_preference_summary">Localização para sincronizar seus cadernos com</string>
+    <string name="repos_preference_summary">Localização para sincronizar seus cadernos</string>
     <string name="message_book_has_no_link">Nenhum link definido</string>
     <string name="message_note_created">Nota criada</string>
     <string name="message_failed_creating_note">Falha ao criar nota</string>
@@ -88,7 +88,7 @@
     <string name="drawer_open">Abrir menu</string>
     <string name="schedule">Agendamento</string>
     <string name="refile">Recarregar</string>
-    <string name="refile_to">Rearquivado para</string>
+    <string name="refile_to">Movido para</string>
     <string name="deadline">Prazo</string>
     <string name="closed">Fechado</string>
     <!-- TODO: Not hints, rename -->
@@ -175,12 +175,12 @@
     <string name="git_url_hint">URL remota (por exemplo git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Local do diretório (por exemplo, “/sdcard/orgzly”)</string>
     <string name="git_ssh_key_hint">Localização da chave SSH (por exemplo, “/sdcard/id_rsa”)</string>
-    <string name="git_https_username_hint">Nome de Usuário</string>
+    <string name="git_https_username_hint">Nome do Usuário</string>
     <string name="git_https_password_hint">Senha</string>
     <string name="git_author_hint">Autor (por exemplo, John Doe)</string>
     <string name="git_email_hint">Email (por exemplo, john@email.com)</string>
     <string name="git_branch_hint">Branch (por exemplo, master)</string>
-    <string name="git_auth_https_username_hint">Nome de Usuário</string>
+    <string name="git_auth_https_username_hint">Nome do Usuário</string>
     <string name="git_auth_https_password_hint">Senha</string>
     <string name="git_generate_key_pair">Gerar par de chaves</string>
     <string name="git_copy_public_key">Copiar chave pública</string>
@@ -196,7 +196,7 @@
     <string name="git_clone_error_target_not_empty">O diretório de destino não existe</string>
     <string name="git_clone_error_uri_not_supported">O endereço remoto não é um repositório git</string>
     <string name="webdav_url_hint">URL (ex. webdavs://exemplo.com/meus-arquivos-org/)</string>
-    <string name="webdav_auth_username_hint">Nome de Usuário</string>
+    <string name="webdav_auth_username_hint">Nome do Usuário</string>
     <string name="webdav_auth_password_hint">Senha</string>
     <string name="webdav_test_error_auth">Login ou senha inválidos</string>
     <string name="webdav_test_error_unknown">Ocorreu um erro desconhecido</string>
@@ -271,7 +271,7 @@
     <string name="display_content_in_search_results">Exibir conteúdo nos resultados de busca</string>
     <string name="display_content">Exibir conteúdo</string>
     <string name="display_both_title_and_content">Exibir título e conteúdo</string>
-    <string name="display_planning_times">Exibir horário de planejamento</string>
+    <string name="display_planning_times">Exibir horário de agendamento</string>
     <string name="display_planning_times_summary">Mostrar agendados, prazos limites e horários finalizados</string>
     <string name="density">Densidade</string>
     <string name="details">Detalhes</string>
@@ -283,9 +283,9 @@
     <string name="color_scheme">Tema</string>
     <string name="monospaced_font">Fonte monoespaçada</string>
     <string name="monospaced_font_summary">Usar fonte monoespaçada para o conteúdo das notas e prefácio dos cadernos</string>
-    <string name="reversed_note_click_action">Trocar ações de clique longo e curto</string>
+    <string name="reversed_note_click_action">Inverter ações de clique curto e longo</string>
     <string name="reversed_note_click_action_summary">Clique para selecionar nota, toque longo para abrir</string>
-    <string name="look_and_feel">Aparência &amp; Sensação</string>
+    <string name="look_and_feel">Aparência &amp; Interação</string>
     <string name="notes_list">Lista de notas</string>
     <string name="prefs_title_new_note">Nova nota</string>
     <string name="prefs_title_notifications">Notificações</string>
@@ -327,9 +327,9 @@
     <string name="repeater_description">Após a conclusão da tarefa, o repetidor mudará o tempo</string>
     <string name="repeater_description_cumulate">Adicionar período ao tempo</string>
     <!-- + -->
-    <string name="repeater_description_catch_up">Continuar adicionando períodos ao tempo até o tempo atingir o futuro</string>
+    <string name="repeater_description_catch_up">Adicionar períodos até atingir o futuro</string>
     <!-- ++ -->
-    <string name="repeater_description_restart">Adicionar período ao horário atual</string>
+    <string name="repeater_description_restart">Adicionar ao horário atual</string>
     <!-- .+ -->
     <string name="delay_dialog_title">Atraso</string>
     <string name="delay_description">Atrasar a exibição da tarefa na agenda</string>
@@ -355,7 +355,7 @@
     <string name="font_size_large">Grande</string>
     <string name="book_name_in_search_hide">Ocultar</string>
     <string name="book_name_in_search_before_note">Antes da nota</string>
-    <string name="book_name_in_search_under_note">Dentro da nota</string>
+    <string name="book_name_in_search_under_note">Depois da nota</string>
     <string name="list_density_comfortable">Confortável</string>
     <string name="list_density_cozy">Regular</string>
     <string name="list_density_compact">Compacto</string>
@@ -382,9 +382,9 @@
     <string name="book_name_in_search">Nome do caderno nos resultados de pesquisa</string>
     <string name="display_notebook_name">Mostrar nome do caderno</string>
     <string name="display_inherited_tags_in_search_results">Tags herdadas nos resultados da pesquisa</string>
-    <string name="display_inherited_tags_in_search_results_summary">Mostrar tags herdadas nos resultados de pesquisa</string>
+    <string name="display_inherited_tags_in_search_results_summary">Mostrar tags herdadas nos resultados da pesquisa</string>
     <string name="ongoing_notification">Em andamento</string>
-    <string name="ongoing_notification_summary">Criar rapidamente nova nota ou sincronizar cadernos da central de notificações</string>
+    <string name="ongoing_notification_summary">Criar rapidamente uma nova nota ou sincronizar cadernos da central de notificações</string>
     <string name="ongoing_notification_priority">Prioridade notificação em andamento</string>
     <string name="show_sync_notifications_title">Falha na sincronização</string>
     <string name="show_sync_notifications_summary">Exibir notificação após falha na sincronização</string>
@@ -434,7 +434,7 @@
     <string name="list_widget_nothing_selected">Nenhuma pesquisa selecionada</string>
     <string name="auto_sync">Auto-sincronizar</string>
     <string name="auto_sync_experimental_summary">Usado para repositórios locais apenas</string>
-    <string name="auto_sync_warning">Dependendo das opções que você escolher, a sincronização pode ser acionada com frequência. Se o caderno for modificado, todo o conteúdo será transferido do repositório. Certas ações podem ser atrasadas durante a sincronização estiver em andamento.</string>
+    <string name="auto_sync_warning">Dependendo das opções que você escolher, a sincronização pode ser acionada com frequência. Se o caderno for modificado, todo o conteúdo será transferido para o repositório. Certas ações podem ser atrasadas enquanto a sincronização estiver em andamento.</string>
     <string name="pref_title_sync_after_note_create">Nota criada</string>
     <string name="pref_summary_sync_after_note_create">Sincronizar após criar uma nova nota</string>
     <string name="pref_title_sync_after_note_update">Nota atualizada ou excluída</string>
@@ -453,8 +453,8 @@
         <item quantity="one">Encontrado <b>%d</b> caderno</item>
         <item quantity="other">Encontrados <b>%d</b> cadernos</item>
     </plurals>
-    <string name="content_line_count_displayed">Mostrar contagem de linhas contidas</string>
-    <string name="content_line_count_displayed_summary">Mostrar contagem de linhas quando o conteúdo não for exibido</string>
+    <string name="content_line_count_displayed">Mostrar número de linhas contidas</string>
+    <string name="content_line_count_displayed_summary">Mostrar número de linhas quando o conteúdo não for exibido</string>
     <string name="style_text_title">Estilo do texto</string>
     <string name="style_text_summary">Usar marcadores especiais para ênfase e monoespaçamento</string>
     <string name="styled_text_with_marks_title">Texto estilizado com marcadores</string>
@@ -462,11 +462,11 @@
     <string name="no_such_link_target">Nota com “%1$s” propriedade definida para “%2$s” não encontrada(s)</string>
     <plurals name="imported_searches">
         <item quantity="one">Importada uma pesquisa</item>
-        <item quantity="other">Importadas <b>%d</b> pesquisas</item>
+        <item quantity="other"><b>%d</b> pesquisas importadas</item>
     </plurals>
     <plurals name="exported_searches">
         <item quantity="one">Uma pesquisa exportada</item>
-        <item quantity="other">Exportadas <b>%d</b> pesquisas</item>
+        <item quantity="other"><b>%d</b> pesquisas exportadas</item>
     </plurals>
     <string name="storage_permissions_missing">Sem permissão de armazenamento</string>
     <string name="file_does_not_exist">Arquivo não existe: %s</string>
@@ -483,15 +483,15 @@
     <string name="sync_failed_channel_name">Falha ao sincronizar</string>
     <string name="sync_failed_channel_description">Mostrar quando a sincronização falhar</string>
     <string name="notification_channel_settings">Notificações</string>
-    <string name="notification_channel_settings_summary">Som, vibração, ponto de notificação</string>
+    <string name="notification_channel_settings_summary">Som, vibração e ponto de notificação</string>
     <string name="hide_note_metadata">Ocultar metadados</string>
     <string name="overwrite_local_notebook_question">Substituir caderno local?</string>
     <string name="overwrite_remote_notebook_question">Substituir caderno remoto?</string>
     <string name="drawers_folded_by_default">Desenhos recolhidos</string>
     <string name="drawers_folded_by_default_summary">Gavetas recolhidas por padrão</string>
-    <string name="log_on_time_shift">Registrar na gaveta no turno do tempo</string>
+    <string name="log_on_time_shift">Registrar o tempo na gaveta</string>
     <string name="log_on_time_shift_summary">Registrar o tempo quando uma nota com repetidor é marcada como concluída</string>
-    <string name="set_last_repeat_on_time_shift">Definir propriedade no turno do tempo</string>
+    <string name="set_last_repeat_on_time_shift">Definir propriedade para o tempo</string>
     <string name="set_last_repeat_on_time_shift_summary">Registrar o horário quando uma nota com repetidor é marcada como concluída</string>
     <string name="background_opacity">Opacidade do fundo</string>
     <string name="update_frequency">Frequência de atualização</string>
@@ -499,8 +499,8 @@
     <string name="metadata">Metadados</string>
     <string name="selected_metadata_summary">Metadados que você pode optar por exibir sempre na nota</string>
     <string name="show_all">Mostrar tudo</string>
-    <string name="always_show_set">Sempre mostrar definido</string>
-    <string name="show_selected">Mostrar selecionados</string>
+    <string name="always_show_set">Exibir sempre</string>
+    <string name="show_selected">Exibir selecionados</string>
     <string name="hide_all">Ocultar tudo</string>
     <string name="external_file_no_app_found">Nenhum aplicativo encontrado para abrir este arquivo</string>
     <string name="failed_to_open_linked_file_with_reason">Falha ao abrir o arquivo: %s</string>
@@ -510,7 +510,7 @@
     <string name="scale_down_to_width">Reduzir para a largura</string>
     <string name="scale_down_to_width_summary">Reduzir a imagem para uma largura especificada</string>
     <string name="file_absolute_root">Raiz para links absolutos (por exemplo, file:/leia-me.txt)</string>
-    <string name="file_relative_root">Raiz para links relativos (por exemplo, file:/leia-me.txt)</string>
+    <string name="file_relative_root">Raiz para links relativos (por exemplo, file:leia-me.txt)</string>
     <string name="argument_used">%s usado(s)</string>
     <string name="argument_detected">%s detectada(s)</string>
     <string name="argument_selected">%s selecionado(s)</string>
@@ -533,8 +533,8 @@
     <string name="notebook_and_scroll_to_note">Caderno (deslize para a nota)</string>
     <string name="notebook_and_focus_on_note">Caderno (foco na nota)</string>
     <plurals name="refile_notes">
-        <item quantity="one">Rearquivar nota</item>
-        <item quantity="other">Rearquivar <b>%d</b> notas</item>
+        <item quantity="one">Mover nota</item>
+        <item quantity="other">Mover <b>%d</b> notas</item>
     </plurals>
     <string name="display_checkmarks">Exibir marcadores</string>
     <string name="display_checkmarks_summary">Permitir marcar notas como concluídas</string>
@@ -561,6 +561,6 @@
     <string name="overdue">Em atraso</string>
     <string name="help">Ajuda</string>
     <string name="content">Conteúdo</string>
-    <string name="prepend">Prefixar</string>
+    <string name="prepend">Fixar ao topo</string>
     <string name="insert_new_note_at_beginning">Inserir nova nota no início</string>
 </resources>

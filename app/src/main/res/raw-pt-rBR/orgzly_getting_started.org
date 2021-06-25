@@ -48,38 +48,38 @@ Eles estão desativados por padrão e precisam ser ativados nas Configurações.
 
 ** [#A] Notas podem ter prioridade
 
-Você pode alterar o número de prioridades nas Configurações. Você também pode alterar a prioridade padrão - assumindo prioridade para notas que não possuem.
+Você pode alterar o número de prioridades nas Configurações. Você também pode alterar a prioridade padrão - definindo prioridade para as notas que não possuem.
 
-** Notas podem incluir links
+** Notas podem conter links
 
 Discar um número de telefone (tel:555-0199), enviar SMS (sms:555-0199), escrever e-mail (mailto:support@orgzly.com) ou visitar uma página da web ([[http://www.orgzly.com][Orgzly.com]]).
 
-Você também pode criar links para outra nota ou caderno dentro do app.
+Você também pode criar links para uma outra nota ou caderno dentro do app.
 
 Consulte http://www.orgzly.com/help#links para obter mais informações.
 
 ** Ênfase tipográfica básica é suportada
 
-Você pode deixar as palavras *negrito*, /itálico/, _sublinhado_, =textualmente=, ~código~ e +riscado+.
+Você pode deixar as palavras *negrito*, /itálico/, _sublinhado_, =textuais=, ~código~ e +riscado+.
 
-** Marcadores de lista são suportados
+** Checklists podem ser criados
 
 - [X] Tarefa 1
 - [ ] Tarefa 2
 - [ ] Tarefa 3
 
-Clique na caixa de seleção para alterá-lo. Pressione o botão de nova linha no final da linha para criar um novo item.
+Clique na caixa de seleção para marcá-lo. Tecle enter no final da linha para criar um novo item.
 
-* Pesquisar
+* Pesquisa
 ** Existem muitos operadores de pesquisa suportados
 
 Você pode buscar notas por estado, tag, horário agendado, prazo, etc.
 
-Veja em http://www.orgzly.com/help#search para aprender mais.
+Acesse http://www.orgzly.com/help#search para aprender mais.
 
-** As consultas de pesquisa podem ser salvas para acesso rápido
+** Pesquisas podem ser salvas para acesso rápido
 
-Teste as pesquisas de exemplo na gaveta de navegação e observe o que as consultas que usam.
+Teste as pesquisas de exemplo na gaveta de navegação e observe o que as pesquisas fazem.
 
 Você pode criar suas próprias pesquisas e salvá-las na gaveta de navegação em "Pesquisas".
 
@@ -87,8 +87,8 @@ Você pode criar suas próprias pesquisas e salvá-las na gaveta de navegação 
 
 ** Cadernos podem ser salvos como arquivos de texto simples
 
-Arquivos são formatados no "Modo Org".
+Arquivos são formatados usando o "Modo Org".
 
 ** Tipo de localização (repositório)
 
-Você pode manter os cadernos sincronizados com um diretório no seu dispositivo móvel, cartão SD ou Dropbox.
+Você pode manter os cadernos sincronizados usando um diretório no seu dispositivo móvel, cartão SD ou Dropbox.
