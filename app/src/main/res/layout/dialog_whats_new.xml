@@ -24,21 +24,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="v1.8.5-beta.2"
-            tools:ignore="HardcodedText" />
-
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange"
-            app:text="Handle missing type in refile position" />
-
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange"
-            app:text="Fix &lt;tt&gt;s.no&lt;/tt&gt; and &lt;tt&gt;d.no&lt;/tt&gt; to work with active timestamp check" />
-
-
-        <TextView
-            style="@style/WhatsNewVersion"
-            android:text="v1.8.5-beta.1"
+            android:text="v1.8.5"
             tools:ignore="HardcodedText" />
 
         <com.orgzly.android.ui.views.WhatsNewChange
