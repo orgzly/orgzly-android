@@ -15,8 +15,8 @@ android {
         minSdkVersion 16 // Jelly Bean (4.1)
         targetSdkVersion 29 // Android 10
         applicationId "com.orgzly"
-        versionCode 155
-        versionName "1.8.4"
+        versionCode 158
+        versionName "1.8.5"
 
         testInstrumentationRunner "com.orgzly.android.OrgzlyTestRunner"
         // testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -177,7 +177,7 @@ dependencies {
 
     implementation "com.github.bumptech.glide:glide:$versions.glide"
 
-    implementation("com.thegrizzlylabs.sardine-android:sardine-android:$versions.sardine") {
+    implementation("com.github.thegrizzlylabs:sardine-android:$versions.sardine") {
         exclude group: 'xpp3', module: 'xpp3'
     }
 

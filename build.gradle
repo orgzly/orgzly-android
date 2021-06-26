@@ -4,9 +4,9 @@ buildscript {
 
     def versions = [:]
 
-    versions.android_gradle_plugin = '4.2.0'
+    versions.android_gradle_plugin = '4.2.1'
 
-    versions.kotlin = '1.4.31'
+    versions.kotlin = '1.5.10'
 
     versions.jetbrains_annotations = '16.0.3'
 
@@ -66,7 +66,7 @@ buildscript {
     ext.versions = versions
 
     repositories {
-        jcenter()
+        mavenCentral()
         google()
     }
 
@@ -83,12 +83,17 @@ plugins {
 
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
 
         google()
 
         maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots"
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+        }
+
+        // For sardine-android
+        maven {
+            url 'https://jitpack.io'
         }
     }
 

@@ -5,7 +5,7 @@ import com.google.gson.JsonSyntaxException
 import com.google.gson.annotations.SerializedName
 
 data class RefileLocation(
-        val type: Type,
+        val type: Type? = null,
 
         val id: Long? = null,
 

@@ -21,6 +21,57 @@
             android:layout_marginBottom="@dimen/space_between_content_areas"
             android:text="@string/whats_new_intro"/>
 
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.8.5"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support &lt;tt&gt;.tn&lt;/tt&gt; search operator" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Preference to insert new note at the beginning of notebook" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Preference to define root directory for file links" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Gray out notes with &lt;tt&gt;ARCHIVE&lt;/tt&gt; tag" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support &lt;tt&gt;+&lt;/tt&gt; as a bullet for lists" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support “Keep screen on” option in note view" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Allow picking directory for saved searches export" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix list continuing on some keyboards" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Handle escaped brackets in links" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Few fixes for timestamps without time part set (fix for &lt;tt&gt;s.now&lt;/tt&gt; and reminders)" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Ignore inactive scheduled and deadline times in agenda" />
+
+
         <TextView
             style="@style/WhatsNewVersion"
             android:text="v1.8.4"

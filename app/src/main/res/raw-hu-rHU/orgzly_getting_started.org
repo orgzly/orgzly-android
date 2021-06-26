@@ -22,6 +22,8 @@ Hosszú koppintás az ikonon megnyitja az egész fát.
 
 Ha a "címke1" címkéjű bejegyzéseket keresed a "t.címke1" lekérdezés használatával, akkor ez a bejegyzés benne lesz a keresési eredményben.
 
+*** Az =ARCHIVE= -nak cimkézett jegyzet kiszürkített :ARCHIVE:
+
 ** TODO Egy bejegyzésnek állapota is lehet
 
 Létre lehet hozni akárhány állapot jelzőt: TODO, NEXT, DONE, stb.
