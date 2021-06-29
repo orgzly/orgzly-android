@@ -742,7 +742,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             }
 
             R.id.fragment_note_state_button -> {
-                val states = NoteStates.fromPreferences(context!!)
+                val states = NoteStates.fromPreferences(requireContext())
 
                 val keywords = states.array
 
@@ -772,7 +772,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             }
 
             R.id.fragment_note_priority_button -> {
-                val priorities = NotePriorities.fromPreferences(context!!)
+                val priorities = NotePriorities.fromPreferences(requireContext())
 
                 val keywords = priorities.array
 

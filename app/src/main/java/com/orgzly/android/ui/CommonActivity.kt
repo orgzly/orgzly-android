@@ -325,6 +325,8 @@ abstract class CommonActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         when (requestCode) {
             in AppPermissions.Usage.values().map { it.ordinal } -> {
                 /* If request is cancelled, the result arrays are empty. */

@@ -147,7 +147,7 @@ class SavedSearchesFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickList
 
     private fun importExport(resId: Int, f: (Int, String) -> Any) {
         try {
-            val file = FileSavedSearchStore(context!!, dataRepository).file()
+            val file = FileSavedSearchStore(requireContext(), dataRepository).file()
             f(R.string.searches, getString(resId, file))
         } catch (e: IOException) {
             CommonActivity.showSnackbar(context, e.localizedMessage)

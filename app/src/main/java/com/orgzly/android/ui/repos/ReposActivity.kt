@@ -197,6 +197,8 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         when (requestCode) {
             ACTIVITY_REQUEST_CODE_FOR_READ_WRITE_EXTERNAL_STORAGE -> {
                 val granted = grantResults.zip(permissions)

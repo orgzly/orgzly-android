@@ -52,7 +52,7 @@ abstract class QueryFragment :
         listener = activity as Listener
         actionModeListener = activity as ActionModeListener
 
-        currentQuery = arguments!!.getString(ARG_QUERY)
+        currentQuery = requireArguments().getString(ARG_QUERY)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

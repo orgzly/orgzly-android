@@ -56,7 +56,7 @@ class RefileFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        val dialog = object: Dialog(context!!, theme) {
+        val dialog = object: Dialog(requireContext(), theme) {
             override fun onBackPressed() {
                 if (viewModel.locationHasParent()) {
                     viewModel.openParent()
