@@ -11,11 +11,13 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
-import com.orgzly.android.repos.*
+import com.orgzly.android.repos.ContentRepo
+import com.orgzly.android.repos.RepoFactory
+import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.BrowserActivity
 import com.orgzly.android.ui.repo.RepoViewModel
@@ -24,7 +26,6 @@ import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.databinding.ActivityRepoDirectoryBinding
-import java.lang.Exception
 import javax.inject.Inject
 
 class DirectoryRepoActivity : CommonActivity() {
@@ -64,7 +65,7 @@ class DirectoryRepoActivity : CommonActivity() {
 
         val factory = RepoViewModelFactory.getInstance(dataRepository, repoId)
 
-        viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(RepoViewModel::class.java)
 
         if (viewModel.repoId != 0L) { // Editing existing
             viewModel.loadRepoProperties()?.let { repoWithProps ->

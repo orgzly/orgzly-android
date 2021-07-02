@@ -19,7 +19,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
@@ -125,7 +125,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
-        sharedMainActivityViewModel = ViewModelProviders.of(requireActivity())
+        sharedMainActivityViewModel = ViewModelProvider(requireActivity())
                 .get(SharedMainActivityViewModel::class.java)
 
         val factory = NoteViewModelFactory.getInstance(
@@ -136,7 +136,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 initialTitle,
                 initialContent)
 
-        viewModel = ViewModelProviders.of(this, factory).get(NoteViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(NoteViewModel::class.java)
 
         setHasOptionsMenu(true)
 

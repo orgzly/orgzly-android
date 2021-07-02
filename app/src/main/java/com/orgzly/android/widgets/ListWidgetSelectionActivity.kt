@@ -8,7 +8,7 @@ import android.view.View
 import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
@@ -51,7 +51,7 @@ class ListWidgetSelectionActivity : AppCompatActivity(), OnViewHolderClickListen
         }
 
         val factory = SavedSearchesViewModelFactory.getInstance(dataRepository)
-        val model = ViewModelProviders.of(this, factory).get(SavedSearchesViewModel::class.java)
+        val model = ViewModelProvider(this, factory).get(SavedSearchesViewModel::class.java)
 
         model.viewState.observe(this, Observer {
             viewFlipper.displayedChild = when (it) {

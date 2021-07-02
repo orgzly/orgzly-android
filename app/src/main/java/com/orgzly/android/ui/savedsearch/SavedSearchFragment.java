@@ -14,8 +14,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -78,7 +77,7 @@ public class SavedSearchFragment extends Fragment implements DrawerItem {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sharedMainActivityViewModel = ViewModelProviders.of(requireActivity())
+        sharedMainActivityViewModel = new ViewModelProvider(requireActivity())
                 .get(SharedMainActivityViewModel.class);
 
         setHasOptionsMenu(true);

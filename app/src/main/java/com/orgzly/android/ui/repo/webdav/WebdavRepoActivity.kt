@@ -11,7 +11,7 @@ import android.view.View
 import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.repos.RepoFactory
@@ -50,7 +50,7 @@ class WebdavRepoActivity : CommonActivity() {
         val repoId = intent.getLongExtra(ARG_REPO_ID, 0)
         val factory = WebdavRepoViewModelFactory.getInstance(dataRepository, repoId)
 
-        viewModel = ViewModelProviders.of(this, factory).get(WebdavRepoViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(WebdavRepoViewModel::class.java)
 
         viewModel.finishEvent.observeSingle(this, Observer {
             finish()
