@@ -33,11 +33,11 @@ buildscript {
 
     versions.junit = '4.12'
 
-    versions.android_test_espresso = '3.3.0'
+    versions.android_test_espresso = '3.4.0'
 
-    versions.android_test = '1.3.0'
+    versions.android_test = '1.4.0'
 
-    versions.android_test_ext_junit = '1.1.2'
+    versions.android_test_ext_junit = '1.1.3'
 
     versions.android_test_uiautomator = '2.2.0'
 
