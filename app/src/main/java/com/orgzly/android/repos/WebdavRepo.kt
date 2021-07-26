@@ -24,8 +24,10 @@ class WebdavRepo(
         certificates: String? = null
 ) : SyncRepo {
 
-    private val sardine = client(certificates).apply {
-        setCredentials(username, password)
+    private val sardine by lazy {
+        client(certificates).apply {
+            setCredentials(username, password)
+        }
     }
 
     private fun client(certificates: String?): OkHttpSardine {
