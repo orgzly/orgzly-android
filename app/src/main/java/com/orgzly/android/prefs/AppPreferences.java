@@ -746,6 +746,16 @@ public class AppPreferences {
     }
 
     /*
+     * Hide empty days in agenda
+     */
+
+    public static boolean hideEmptyDaysInAgenda(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_hide_empty_days_in_agenda),
+                context.getResources().getBoolean(R.bool.pref_default_hide_empty_days_in_agenda));
+    }
+
+    /*
      * Widget
      */
 

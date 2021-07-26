@@ -445,6 +445,7 @@
     <string name="book_name_in_search">Notebook name in search results</string>
 
     <string name="display_notebook_name">Display notebook name</string>
+    <string name="hide_empty_days_in_agenda">Hide empty days in agenda</string>
 
     <string name="display_inherited_tags_in_search_results">Inherited tags in search results</string>
     <string name="display_inherited_tags_in_search_results_summary">Display inherited tags in search results</string>

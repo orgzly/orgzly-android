@@ -381,6 +381,7 @@
     <string name="no_states_defined">Keine Status definiert</string>
     <string name="book_name_in_search">Notizbuchname in den Suchergebnissen</string>
     <string name="display_notebook_name">Notizbuchname anzeigen</string>
+    <string name="hide_empty_days_in_agenda">Tage ohne Notizen in Agenda ausblenden</string>
     <string name="display_inherited_tags_in_search_results">Geerbte Schlagwörter in Suchergebnissen</string>
     <string name="display_inherited_tags_in_search_results_summary">Geerbte Schlagwörter in Suchergebnissen anzeigen</string>
     <string name="ongoing_notification">Aktuell</string>
