@@ -274,6 +274,9 @@ abstract class CommonActivity : AppCompatActivity() {
     private fun setupTheme() {
         // Set theme (color scheme)
         when (AppPreferences.colorScheme(this)) {
+            getString(R.string.pref_value_color_scheme_system) ->
+                setTheme(R.style.AppDayNightTheme)
+
             getString(R.string.pref_value_color_scheme_dark) ->
                 setTheme(R.style.AppDarkTheme_Dark)
 
