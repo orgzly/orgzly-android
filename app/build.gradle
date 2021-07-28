@@ -4,6 +4,14 @@ apply plugin: 'kotlin-kapt'
 
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('/home/felix/.keystore_android/keystore.jks')
+            storePassword 'android'
+            keyPassword 'android'
+            keyAlias 'alias_name'
+        }
+    }
     dexOptions {
         maxProcessCount 4
         javaMaxHeapSize "2g"
@@ -185,6 +193,9 @@ dependencies {
         // Resolves DuplicatePlatformClasses lint error
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
+
+    // Encryption
+    implementation "org.bouncycastle:bcpg-jdk15on:1.65"
 }
 
 repositories {

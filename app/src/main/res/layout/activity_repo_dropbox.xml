@@ -24,6 +24,7 @@
                 tools:context=".android.ui.main.MainActivity">
 
                 <!-- Link/unlink button. -->
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -56,13 +57,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_between_content_areas"
                     app:errorEnabled="true">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/activity_repo_dropbox_directory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
-                        android:imeOptions="actionDone"
+                        android:imeOptions="actionNext"
                         android:hint="@string/fragment_repo_dropbox_directory_desc" />
+
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
@@ -72,4 +75,5 @@
         <include layout="@layout/app_bar" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

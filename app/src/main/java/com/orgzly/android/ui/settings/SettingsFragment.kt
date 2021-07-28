@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.text.InputType
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.preference.*
@@ -26,6 +27,8 @@ import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.widgets.ListWidgetProvider
 import java.util.*
+
+import androidx.preference.EditTextPreference;
 
 /**
  * Displays settings.
@@ -72,6 +75,12 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             it.setOnPreferenceClickListener {
                 listener?.onGettingStartedNotebookReloadRequest()
                 true
+            }
+        }
+
+        preference(R.string.pref_key_encryption_default_passphrase).let {
+            (it as? EditTextPreference)?.setOnBindEditTextListener {
+                it.inputType = (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
             }
         }
 
@@ -397,6 +406,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                 "prefs_screen_reminders" to R.xml.prefs_screen_reminders,
                 "prefs_screen_sync" to R.xml.prefs_screen_sync,
                 "prefs_screen_auto_sync" to R.xml.prefs_screen_auto_sync, // Sub-screen
+                "prefs_screen_encryption" to R.xml.prefs_screen_encryption, // Sub-screen
                 "prefs_screen_org_file_format" to R.xml.prefs_screen_org_file_format, // Sub-screen
                 "prefs_screen_org_mode_tags_indent" to R.xml.prefs_screen_org_mode_tags_indent, // Sub-screen
                 "prefs_screen_widget" to R.xml.prefs_screen_widget, // Sub-screen

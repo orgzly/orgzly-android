@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/auto_sync">
+
+    <Preference
+        android:selectable="false"
+        android:icon="?attr/ic_warning_24dp"
+        android:summary="@string/pref_encryption_warning"/>
+
+    <EditTextPreference
+        android:key="@string/pref_key_encryption_default_passphrase"
+        android:title="@string/pref_title_default_passphrase"
+        android:summary="@string/pref_summary_default_passphrase"
+        android:selectAllOnFocus="false"
+        android:dialogMessage="@string/pref_dialog_desc_default_passphrase"
+        android:defaultValue="@string/pref_key_encryption_default_passphrase_default_value"/>
+    <!-- android:inputType="text"
+        android:singleLine="true" -->
+</androidx.preference.PreferenceScreen>

@@ -22,6 +22,7 @@ import java.util.*
 @Database(
         entities = [
             Book::class,
+            BookEncryption::class,
             BookLink::class,
             BookSync::class,
             DbRepoBook::class,
@@ -38,12 +39,13 @@ import java.util.*
             VersionedRook::class
         ],
 
-        version = 155
+        version = 156
 )
 @TypeConverters(com.orgzly.android.db.TypeConverters::class)
 abstract class OrgzlyDatabase : RoomDatabase() {
 
     abstract fun book(): BookDao
+    abstract fun bookEncryption(): BookEncryptionDao
     abstract fun bookLink(): BookLinkDao
     abstract fun bookView(): BookViewDao
     abstract fun bookSync(): BookSyncDao
@@ -111,6 +113,7 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                             MIGRATION_152_153,
                             MIGRATION_153_154,
                             MIGRATION_154_155
+                            // MIGRATION_155_156// todo how to migrate to an encryption ready db ,
                     )
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {

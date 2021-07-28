@@ -393,7 +393,7 @@ class SyncService : Service() {
                     namesake.book = dataRepository.createDummyBook(namesake.name)
                 }
 
-                namesake.updateStatus(repos.size)
+                namesake.updateStatus(App.getAppContext(), repos.size)
             }
 
             return namesakes
@@ -473,9 +473,15 @@ class SyncService : Service() {
                 BookSyncStatus.NO_BOOK_MULTIPLE_ROOKS,
                 BookSyncStatus.ONLY_BOOK_WITHOUT_LINK_AND_MULTIPLE_REPOS,
                 BookSyncStatus.BOOK_WITH_LINK_AND_ROOK_EXISTS_BUT_LINK_POINTING_TO_DIFFERENT_ROOK,
+                    // todo ?do the following two belong here
+                BookSyncStatus.BOOK_ENCRYPTED_WITH_LINK_AND_ONLY_UNENCRYPTED_ROOK_EXISTS,
+                BookSyncStatus.BOOK_UNENCRYPTED_WITH_LINK_AND_ONLY_ENCRYPTED_ROOK_EXISTS,
                 BookSyncStatus.CONFLICT_BOTH_BOOK_AND_ROOK_MODIFIED,
                 BookSyncStatus.CONFLICT_BOOK_WITH_LINK_AND_ROOK_BUT_NEVER_SYNCED_BEFORE,
                 BookSyncStatus.CONFLICT_LAST_SYNCED_ROOK_AND_LATEST_ROOK_ARE_DIFFERENT,
+                BookSyncStatus.CONFLICT_ENCRYPTION_TOGGLED_AND_TARGET_ROOK_EXISTS,
+                    // todo ?does the following belong here
+                BookSyncStatus.CONFLICT_BOTH_ENCRYPTED_AND_UNENCRYPTED_ROOK_EXIST,
                 BookSyncStatus.ROOK_AND_VROOK_HAVE_DIFFERENT_REPOS,
                 BookSyncStatus.ONLY_DUMMY ->
                     bookAction = BookAction.forNow(BookAction.Type.ERROR, namesake.status.msg())
@@ -483,14 +489,62 @@ class SyncService : Service() {
                 /* Load remote book. */
 
                 BookSyncStatus.NO_BOOK_ONE_ROOK, BookSyncStatus.DUMMY_WITHOUT_LINK_AND_ONE_ROOK -> {
-                    dataRepository.loadBookFromRepo(namesake.rooks[0])
+                    dataRepository.loadBookFromRepo(namesake.rooks[0], null)
                     bookAction = BookAction.forNow(
                             BookAction.Type.INFO,
                             namesake.status.msg(namesake.rooks[0].uri))
                 }
 
-                BookSyncStatus.DUMMY_WITH_LINK, BookSyncStatus.BOOK_WITH_LINK_AND_ROOK_MODIFIED -> {
-                    dataRepository.loadBookFromRepo(namesake.latestLinkedRook)
+                BookSyncStatus.NO_BOOK_ONE_ROOK_ENCRYPTED-> {
+                    val defaultPassphrase = dataRepository.getDefaultPassphraseOrThrow()
+                    // TODO if the passphrase has been set manually on the dummy, how do we retrieve it?
+                    val loadedBookView = dataRepository.loadBookFromRepo(namesake.rooks[0], defaultPassphrase)
+
+                    // TODO: could also write !! unwrap here, is always set since it will only fail through exception
+                    loadedBookView?.let { dataRepository.setEncryption(it.book.id, defaultPassphrase) }
+                    bookAction = BookAction.forNow(
+                            BookAction.Type.INFO,
+                            namesake.status.msg(namesake.rooks[0].uri))
+                }
+
+                BookSyncStatus.DUMMY_WITHOUT_LINK_AND_ONE_ROOK_ENCRYPTED -> {
+                    val chosenPassphrase = namesake.book.encryption?.passphrase ?: dataRepository.getDefaultPassphraseOrThrow()
+                    val loadedBookView = dataRepository.loadBookFromRepo(namesake.rooks[0], chosenPassphrase)
+
+                    // could also write !! unwrap here, should always be set since it will only fail through exception
+                    loadedBookView?.let { dataRepository.setEncryption(it.book.id, chosenPassphrase) }
+                    bookAction = BookAction.forNow(
+                            BookAction.Type.INFO,
+                            namesake.status.msg(namesake.rooks[0].uri))
+                }
+
+                BookSyncStatus.DUMMY_WITH_LINK -> {
+                    dataRepository.loadBookFromRepo(namesake.latestLinkedRook, null)
+                    bookAction = BookAction.forNow(
+                            BookAction.Type.INFO,
+                            namesake.status.msg(namesake.latestLinkedRook.uri))
+                }
+
+                BookSyncStatus.DUMMY_WITH_LINK_ENCRYPTED -> {
+                    val defaultPassphrase = dataRepository.getDefaultPassphraseOrThrow()
+                    val loadedBookView = dataRepository.loadBookFromRepo(namesake.rooks[0], defaultPassphrase)
+
+                    // TODO: could also write !! unwrap here, is always set since it will only fail through exception
+                    loadedBookView?.let { dataRepository.setEncryption(it.book.id, defaultPassphrase) }
+                    bookAction = BookAction.forNow(
+                            BookAction.Type.INFO,
+                            namesake.status.msg(namesake.latestLinkedRook.uri))
+                }
+
+                BookSyncStatus.BOOK_WITH_LINK_AND_ROOK_MODIFIED -> {
+                    dataRepository.loadBookFromRepo(namesake.latestLinkedRook, null)
+                    bookAction = BookAction.forNow(
+                            BookAction.Type.INFO,
+                            namesake.status.msg(namesake.latestLinkedRook.uri))
+                }
+
+                BookSyncStatus.BOOK_WITH_LINK_AND_ROOK_MODIFIED_ENCRYPTED -> {
+                    dataRepository.loadBookFromRepo(namesake.latestLinkedRook, namesake.book.encryption?.passphrase)
                     bookAction = BookAction.forNow(
                             BookAction.Type.INFO,
                             namesake.status.msg(namesake.latestLinkedRook.uri))
@@ -501,7 +555,7 @@ class SyncService : Service() {
                 BookSyncStatus.ONLY_BOOK_WITHOUT_LINK_AND_ONE_REPO -> {
                     repoEntity = dataRepository.getRepos().iterator().next()
                     repoUrl = repoEntity.url
-                    fileName = BookName.fileName(namesake.book.book.name, BookFormat.ORG)
+                    fileName = BookName.fileName(namesake.book.book.name, BookFormat.ORG, namesake.book.hasEncryption())
                     dataRepository.saveBookToRepo(repoEntity, fileName, namesake.book, BookFormat.ORG)
                     bookAction = BookAction.forNow(BookAction.Type.INFO, namesake.status.msg(repoUrl))
                 }
@@ -509,7 +563,9 @@ class SyncService : Service() {
                 BookSyncStatus.BOOK_WITH_LINK_LOCAL_MODIFIED -> {
                     repoEntity = namesake.book.linkRepo
                     repoUrl = repoEntity!!.url
-                    fileName = BookName.getFileName(App.getAppContext(), namesake.book.syncedTo!!.uri)
+
+                    fileName = BookName.getFileName(App.getAppContext(), namesake.book)
+
                     dataRepository.saveBookToRepo(repoEntity, fileName, namesake.book, BookFormat.ORG)
                     bookAction = BookAction.forNow(BookAction.Type.INFO, namesake.status.msg(repoUrl))
                 }
@@ -517,7 +573,15 @@ class SyncService : Service() {
                 BookSyncStatus.ONLY_BOOK_WITH_LINK -> {
                     repoEntity = namesake.book.linkRepo
                     repoUrl = repoEntity!!.url
-                    fileName = BookName.fileName(namesake.book.book.name, BookFormat.ORG)
+                    fileName = BookName.fileName(namesake.book.book.name, BookFormat.ORG, namesake.book.hasEncryption())
+                    dataRepository.saveBookToRepo(repoEntity, fileName, namesake.book, BookFormat.ORG)
+                    bookAction = BookAction.forNow(BookAction.Type.INFO, namesake.status.msg(repoUrl))
+                }
+
+                BookSyncStatus.BOOK_WITH_LINK_ENCRYPTION_TOGGLED_INITIAL_PUSH -> {
+                    repoEntity = namesake.book.linkRepo
+                    repoUrl = repoEntity!!.url
+                    fileName = BookName.fileName(namesake.book.book.name, BookFormat.ORG, namesake.book.hasEncryption())
                     dataRepository.saveBookToRepo(repoEntity, fileName, namesake.book, BookFormat.ORG)
                     bookAction = BookAction.forNow(BookAction.Type.INFO, namesake.status.msg(repoUrl))
                 }

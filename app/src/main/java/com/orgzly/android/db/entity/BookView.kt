@@ -13,7 +13,10 @@ data class BookView(
         val linkRepo: Repo? = null,
 
         @Embedded(prefix = "synced_to_")
-        val syncedTo: VersionedRook? = null
+        val syncedTo: VersionedRook? = null,
+
+        @Embedded(prefix = "encryption_")
+        val encryption: BookEncryption? = null
 ) {
     fun hasLink(): Boolean {
         return linkRepo != null
@@ -25,6 +28,10 @@ data class BookView(
 
     fun isOutOfSync(): Boolean {
         return syncedTo != null && book.isModified
+    }
+
+    fun hasEncryption(): Boolean {
+        return encryption != null
     }
 
     fun isModified(): Boolean {

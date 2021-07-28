@@ -106,6 +106,7 @@
     <string name="fragment_note_content_hint">Note content</string>
     <string name="books_context_menu_item_rename">Rename</string>
     <string name="books_context_menu_item_set_link">Set Link</string>
+    <string name="books_context_menu_item_set_encryption">Set Encryption</string>
     <string name="books_context_menu_item_force_save">Force Save</string>
     <string name="books_context_menu_item_force_load">Force Load</string>
 
@@ -177,6 +178,7 @@
     <string name="searches">Searches</string>
     <string name="search">Search</string>
     <string name="new_search">New Search</string>
+    <string name="active">Active</string>
     <string name="no_repos">No repositories configured</string>
     <string name="multiple_repos">Multiple repositories exist</string>
 
@@ -192,6 +194,11 @@
 
     <string name="fragment_repo_dropbox_directory_desc">Directory inside Dropbox (e.g. “/Documents/Orgzly”)</string>
     <string name="directory_uri">Directory URI</string>
+    <string name="encryption_passphrase_input_desc">Enter a passphrase to enable encryption</string>
+    <!-- todo: should be a warning in the "set encryption" dialog
+    <string name="fragment_repo_dropbox_encryption_desc">The contents of an existing repository should be cleared before changing the passphrase or enabling encryption. Changing the passphrase does not automatically re-encrypt remote notebooks. Enabling encryption will create new files in the repository with extension “.org.gpg”, existing unencrypted files with extension “.org” are not automatically deleted.</string>
+    -->
+    <string name="set_encryption_with_quoted_argument">Set Encryption for “%s”</string>
 
     <string name="git_clone_progress">Cloning repository</string>
     <string name="git_verifying_settings">Ensuring repository settings will work.</string>
@@ -538,6 +545,14 @@
 
     <string name="pref_title_repo_update_sync">Repositories modified (not implemented yet)</string>
     <string name="pref_summary_repo_update_sync">Sync whenever an update in repositories is detected</string>
+
+    <string name="encryption">Encryption</string>
+    <string name="encryption_summary">Remote notebook encryption settings</string>
+
+    <string name="pref_encryption_warning">Encryption can be turned on individually for each notebook. If a default password is set here this can be used from there. This default passphrase will also be tried when a remote book.org.gpg is downloaded for the first time TODO give the possibility to enable encryption for each newly created notebook automatically TODO better description of what this setting implies and what to look out for.</string>
+    <string name="pref_title_default_passphrase">Default passphrase</string>
+    <string name="pref_summary_default_passphrase">Passphrase can be used when enabling encryption for a notebook</string>
+    <string name="pref_dialog_desc_default_passphrase">TODO dialog desc</string>
 
     <string name="not_modified">Not modified</string>
 
