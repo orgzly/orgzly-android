@@ -224,6 +224,7 @@
     <string name="webdav_auth_password_hint">Password</string>
     <string name="webdav_test_error_auth">Login or password is invalid</string>
     <string name="webdav_test_error_unknown">Unknown error occurred</string>
+	<string name="webdav_timeout_hint">Timeout for server connection (seconds), 0 means no timeout</string>
 
     <!-- Share button - error messages (set as title). -->
     <string name="share_action_not_set">Share action not set</string>
@@ -250,6 +251,7 @@
     <string name="title_can_not_be_empty">Title cannot be empty</string>
     <string name="can_not_be_empty">Cannot be empty</string>
     <string name="invalid_url">Invalid URL</string>
+	<string name="invalid_number">Invalid number</string>
 
     <string name="no_notebooks">You have no notebooks</string>
     <string name="no_notes">Notebook has no notes</string>

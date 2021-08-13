@@ -24,14 +24,14 @@ class WebdavRepoViewModel(
 
     val connectionTestStatus: MutableLiveData<ConnectionResult> = MutableLiveData()
 
-    fun testConnection(uriString: String, username: String, password: String, certificates: String?) {
+    fun testConnection(uriString: String, username: String, password: String, certificates: String?, connectionTimeout: UInt?) {
         App.EXECUTORS.networkIO().execute {
             try {
                 connectionTestStatus.postValue(ConnectionResult.InProgress(R.string.connecting))
 
                 val uri = Uri.parse(uriString)
 
-                val bookCount = WebdavRepo(repoId, uri, username, password, certificates).run {
+                val bookCount = WebdavRepo(repoId, uri, username, password, certificates, connectionTimeout).run {
                     books.size
                 }
 

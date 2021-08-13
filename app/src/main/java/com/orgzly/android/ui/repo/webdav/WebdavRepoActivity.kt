@@ -19,12 +19,14 @@ import com.orgzly.android.repos.RepoType
 import com.orgzly.android.repos.WebdavRepo.Companion.CERTIFICATES_PREF_KEY
 import com.orgzly.android.repos.WebdavRepo.Companion.PASSWORD_PREF_KEY
 import com.orgzly.android.repos.WebdavRepo.Companion.USERNAME_PREF_KEY
+import com.orgzly.android.repos.WebdavRepo.Companion.CONNECTION_TIMEOUT_PREF_KEY
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.UriUtils
 import com.orgzly.databinding.ActivityRepoWebdavBinding
 import com.orgzly.databinding.DialogCertificatesBinding
 import javax.inject.Inject
+import kotlin.text.toUIntOrNull
 
 class WebdavRepoActivity : CommonActivity() {
     private lateinit var binding: ActivityRepoWebdavBinding
@@ -111,6 +113,7 @@ class WebdavRepoActivity : CommonActivity() {
 
                 binding.activityRepoWebdavUsername.setText(repoWithProps.props[USERNAME_PREF_KEY])
                 binding.activityRepoWebdavPassword.setText(repoWithProps.props[PASSWORD_PREF_KEY])
+				binding.activityRepoWebdavTimeout.setText(repoWithProps.props[CONNECTION_TIMEOUT_PREF_KEY])
                 viewModel.certificates.value = repoWithProps.props[CERTIFICATES_PREF_KEY]
             }
         }
@@ -147,6 +150,7 @@ class WebdavRepoActivity : CommonActivity() {
             val username = getUsername()
             val password = getPassword()
             val certificates = getCertificates()
+			val connectionTimeout = getConnectionTimeout()
 
             val props = mutableMapOf(
                     USERNAME_PREF_KEY to username,
@@ -155,6 +159,10 @@ class WebdavRepoActivity : CommonActivity() {
             if (certificates != null) {
                 props[CERTIFICATES_PREF_KEY] = certificates
             }
+
+			if (connectionTimeout != null) {
+                props[CONNECTION_TIMEOUT_PREF_KEY] = connectionTimeout
+			}
 
             if (UriUtils.isUrlSecure(uriString)) {
                 viewModel.saveRepo(RepoType.WEBDAV, uriString, props)
@@ -189,10 +197,15 @@ class WebdavRepoActivity : CommonActivity() {
         return viewModel.certificates.value
     }
 
+	private fun getConnectionTimeout(): String {
+		return binding.activityRepoWebdavTimeout.text.toString().trim { it <= ' '};
+	}
+
     private fun isInputValid(): Boolean {
         val url = getUrl()
         val username = getUsername()
         val password = getPassword()
+		val timeout = getConnectionTimeout()
 
         binding.activityRepoWebdavUrlLayout.error = when {
             TextUtils.isEmpty(url) -> getString(R.string.can_not_be_empty)
@@ -211,9 +224,15 @@ class WebdavRepoActivity : CommonActivity() {
             else -> null
         }
 
+		binding.activityRepoWebdavTimeoutLayout.error = when {
+			(!TextUtils.isEmpty(timeout) && timeout.toUIntOrNull() == null) -> getString(R.string.invalid_number)
+			else -> null
+		}
+
         return binding.activityRepoWebdavUrlLayout.error == null
                 && binding.activityRepoWebdavUsernameLayout.error == null
                 && binding.activityRepoWebdavPasswordLayout.error == null
+				&& binding.activityRepoWebdavTimeoutLayout.error == null
     }
 
     fun editCertificates(@Suppress("UNUSED_PARAMETER") view: View) {
@@ -250,8 +269,9 @@ class WebdavRepoActivity : CommonActivity() {
         val username = getUsername()
         val password = getPassword()
         val certificates = getCertificates()
+        val connectionTimeout = getConnectionTimeout().toUIntOrNull()
 
-        viewModel.testConnection(uriString, username, password, certificates)
+        viewModel.testConnection(uriString, username, password, certificates, connectionTimeout)
     }
 
     companion object {

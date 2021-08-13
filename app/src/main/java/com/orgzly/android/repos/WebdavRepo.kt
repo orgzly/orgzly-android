@@ -5,8 +5,6 @@ import com.orgzly.android.BookName
 import com.orgzly.android.util.UriUtils
 import com.thegrizzlylabs.sardineandroid.DavResource
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
-import okhttp3.OkHttpClient
-import okio.Buffer
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -15,57 +13,66 @@ import java.security.cert.CertificateFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.*
-
+import kotlin.text.toUInt
+import kotlin.text.toUIntOrNull
+import okhttp3.OkHttpClient
+import okio.Buffer
 
 class WebdavRepo(
         private val repoId: Long,
         private val uri: Uri,
         username: String,
         password: String,
-        certificates: String? = null
+        certificates: String? = null,
+        connectionTimeout: UInt? = null
 ) : SyncRepo {
 
-    private val sardine = client(certificates).apply {
-        setCredentials(username, password)
-    }
+    private val sardine =
+            client(certificates, connectionTimeout).apply { setCredentials(username, password) }
 
-    private fun client(certificates: String?): OkHttpSardine {
-		var okClient: OkHttpClient; 
-        if (certificates.isNullOrEmpty()) {
-			okClient = OkHttpClient.Builder().build(); 
+    private fun client(certificates: String?, connectionTimeout: UInt?): OkHttpSardine {
+        var okClient: OkHttpClient
+        okClient = if (certificates.isNullOrEmpty()) {
+            OkHttpClient.Builder().build()
         } else {
-            okClient = okHttpClientWithTrustedCertificates(certificates);
+            okHttpClientWithTrustedCertificates(certificates)
         }
-		return OkHttpSardine(setTimeouts(okClient));
+        if (connectionTimeout != null) {
+            okClient = setTimeouts(okClient, connectionTimeout)
+        }
+        return OkHttpSardine(okClient)
     }
 
-	private fun setTimeouts(okClient: OkHttpClient): OkHttpClient {
-		return okClient.newBuilder().connectTimeout(200, TimeUnit.SECONDS).readTimeout(200, TimeUnit.SECONDS).writeTimeout(200,TimeUnit.SECONDS).build();
-	}
+    private fun setTimeouts(okClient: OkHttpClient, timeout: UInt): OkHttpClient {
+        val timeoutLong = timeout.toLong()
+        return okClient.newBuilder()
+                .connectTimeout(timeoutLong, TimeUnit.SECONDS)
+                .readTimeout(timeoutLong, TimeUnit.SECONDS)
+                .writeTimeout(timeoutLong, TimeUnit.SECONDS)
+                .build()
+    }
 
     private fun okHttpClientWithTrustedCertificates(certificates: String): OkHttpClient {
         val trustManager = trustManagerForCertificates(certificates)
 
-        val sslContext = SSLContext.getInstance("TLS").apply {
-            init(null, arrayOf(trustManager), null)
-        }
+        val sslContext =
+                SSLContext.getInstance("TLS").apply { init(null, arrayOf(trustManager), null) }
 
         val sslSocketFactory = sslContext.socketFactory
 
-        return OkHttpClient.Builder()
-                .sslSocketFactory(sslSocketFactory, trustManager)
-                .build()
+        return OkHttpClient.Builder().sslSocketFactory(sslSocketFactory, trustManager).build()
     }
 
     private fun trustManagerForCertificates(str: String): X509TrustManager {
         // Read certificates
-        val certificates = Buffer().writeUtf8(str).inputStream().use { stream ->
-            CertificateFactory.getInstance("X.509").generateCertificates(stream)
-        }
+        val certificates =
+                Buffer().writeUtf8(str).inputStream().use { stream ->
+                    CertificateFactory.getInstance("X.509").generateCertificates(stream)
+                }
 
-//        require(!certificates.isEmpty()) {
-//            "Expected non-empty set of trusted certificates"
-//        }
+        //        require(!certificates.isEmpty()) {
+        //            "Expected non-empty set of trusted certificates"
+        //        }
 
         // Create new key store
         val password = "password".toCharArray() // Any password will work
@@ -75,11 +82,10 @@ class WebdavRepo(
             keyStore.setCertificateEntry(certificateAlias, certificate)
         }
 
-        val trustManagerFactory = TrustManagerFactory.getInstance(
-                TrustManagerFactory.getDefaultAlgorithm()
-        ).apply {
-            init(keyStore)
-        }
+        val trustManagerFactory =
+                TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()).apply {
+                    init(keyStore)
+                }
 
         val trustManagers = trustManagerFactory.trustManagers
         check(trustManagers.size == 1 && trustManagers[0] is X509TrustManager) {
@@ -100,23 +106,26 @@ class WebdavRepo(
         const val USERNAME_PREF_KEY = "username"
         const val PASSWORD_PREF_KEY = "password"
         const val CERTIFICATES_PREF_KEY = "certificates"
+        const val CONNECTION_TIMEOUT_PREF_KEY = "connectionTimeout"
 
         fun getInstance(repoWithProps: RepoWithProps): WebdavRepo {
             val id = repoWithProps.repo.id
 
             val uri = Uri.parse(repoWithProps.repo.url)
 
-            val username = checkNotNull(repoWithProps.props[USERNAME_PREF_KEY]) {
-                "Username not found"
-            }.toString()
+            val username =
+                    checkNotNull(repoWithProps.props[USERNAME_PREF_KEY]) { "Username not found" }
+                            .toString()
 
-            val password = checkNotNull(repoWithProps.props[PASSWORD_PREF_KEY]) {
-                "Password not found"
-            }.toString()
+            val password =
+                    checkNotNull(repoWithProps.props[PASSWORD_PREF_KEY]) { "Password not found" }
+                            .toString()
 
             val certificates = repoWithProps.props[CERTIFICATES_PREF_KEY]
 
-            return WebdavRepo(id, uri, username, password, certificates)
+            val connectionTimeout = repoWithProps.props[CONNECTION_TIMEOUT_PREF_KEY]?.toUIntOrNull()
+
+            return WebdavRepo(id, uri, username, password, certificates, connectionTimeout)
         }
     }
 
@@ -139,8 +148,7 @@ class WebdavRepo(
             sardine.createDirectory(url)
         }
 
-        return sardine
-                .list(url)
+        return sardine.list(url)
                 .mapNotNull {
                     if (it.isDirectory || !BookName.isSupportedFormatFileName(it.name)) {
                         null
@@ -155,9 +163,7 @@ class WebdavRepo(
         val fileUrl = Uri.withAppendedPath(uri, fileName).toUrl()
 
         sardine.get(fileUrl).use { inputStream ->
-            FileOutputStream(destination).use { outputStream ->
-                inputStream.copyTo(outputStream)
-            }
+            FileOutputStream(destination).use { outputStream -> inputStream.copyTo(outputStream) }
         }
 
         return sardine.list(fileUrl).first().toVersionedRook()
