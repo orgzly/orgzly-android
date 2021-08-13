@@ -13,6 +13,7 @@ import java.io.InputStream
 import java.security.KeyStore
 import java.security.cert.CertificateFactory
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.net.ssl.*
 
 
@@ -29,12 +30,18 @@ class WebdavRepo(
     }
 
     private fun client(certificates: String?): OkHttpSardine {
-        return if (certificates.isNullOrEmpty()) {
-            OkHttpSardine()
+		var okClient: OkHttpClient; 
+        if (certificates.isNullOrEmpty()) {
+			okClient = OkHttpClient.Builder().build(); 
         } else {
-            OkHttpSardine(okHttpClientWithTrustedCertificates(certificates))
+            okClient = okHttpClientWithTrustedCertificates(certificates);
         }
+		return OkHttpSardine(setTimeouts(okClient));
     }
+
+	private fun setTimeouts(okClient: OkHttpClient): OkHttpClient {
+		return okClient.newBuilder().connectTimeout(200, TimeUnit.SECONDS).readTimeout(200, TimeUnit.SECONDS).writeTimeout(200,TimeUnit.SECONDS).build();
+	}
 
     private fun okHttpClientWithTrustedCertificates(certificates: String): OkHttpClient {
         val trustManager = trustManagerForCertificates(certificates)
