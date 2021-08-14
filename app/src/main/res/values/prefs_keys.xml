@@ -546,4 +546,6 @@
     <string name="pref_key_is_note_content_folded" translatable="false">pref_key_is_note_content_folded</string>
     <bool name="pref_default_is_note_content_folded" translatable="false">false</bool>
 
+	<bool name="pref_custom_timeout_enabled" translatable="false">false</bool>
+
 </resources>

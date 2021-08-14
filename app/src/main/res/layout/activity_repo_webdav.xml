@@ -77,26 +77,27 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-				<SwitchPreference
-					android:id="@+id/activity_repo_webdav_enable_custom_timeout"
-					android:title="@string/webdav_enable_custom_timeout"
-				    android:summary="@string/webdav_custom_timeout_summary"
-					android:defaultValue="@bool/pref_custom_timeout_enabled">
+				<com.google.android.material.switchmaterial.SwitchMaterial
+					android:id="@+id/activity_repo_webdav_custom_timeout_enabled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+				    android:text="@string/webdav_custom_timeout_summary"
+					android:checked="@bool/pref_custom_timeout_enabled"/>
         
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_repo_webdav_timeout_value_layout"
+                    android:id="@+id/activity_repo_webdav_custom_timeout_value_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
         			android:layout_marginTop="@dimen/space_between_content_areas"
-        			app:errorEnabled="true"
-					android:dependency="@+id/activity_repo_webdav_enable_custom_timeout">
+        			app:errorEnabled="true">
         
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_repo_webdav_timeout_value"
+                        android:id="@+id/activity_repo_webdav_custom_timeout_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 						android:hint="@string/webdav_timeout_hint"
                         android:inputType="number"
+						android:text="@string/webdav_custom_timeout_value_default"
                         app:min="0" />
 
                 </com.google.android.material.textfield.TextInputLayout>

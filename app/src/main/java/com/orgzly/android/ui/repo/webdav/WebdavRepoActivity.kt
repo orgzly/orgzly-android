@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import android.text.InputType 
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -48,7 +49,15 @@ class WebdavRepoActivity : CommonActivity() {
         binding.activityRepoWebdavTestButton.setOnClickListener {
             testConnection()
         }
-
+        binding.activityRepoWebdavCustomTimeoutEnabled.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.activityRepoWebdavCustomTimeoutValueLayout.setEnabled(true)
+                binding.activityRepoWebdavCustomTimeoutValue.inputType = InputType.TYPE_CLASS_NUMBER
+            } else {
+                binding.activityRepoWebdavCustomTimeoutValueLayout.setEnabled(false)
+                binding.activityRepoWebdavCustomTimeoutValue.inputType = InputType.TYPE_NULL
+            }
+        }        
         val repoId = intent.getLongExtra(ARG_REPO_ID, 0)
         val factory = WebdavRepoViewModelFactory.getInstance(dataRepository, repoId)
 
@@ -113,7 +122,13 @@ class WebdavRepoActivity : CommonActivity() {
 
                 binding.activityRepoWebdavUsername.setText(repoWithProps.props[USERNAME_PREF_KEY])
                 binding.activityRepoWebdavPassword.setText(repoWithProps.props[PASSWORD_PREF_KEY])
-				binding.activityRepoWebdavTimeout.setText(repoWithProps.props[CONNECTION_TIMEOUT_PREF_KEY])
+				if(repoWithProps.props[CONNECTION_TIMEOUT_PREF_KEY] != null){
+				binding.activityRepoWebdavCustomTimeoutValue.setText(repoWithProps.props[CONNECTION_TIMEOUT_PREF_KEY])
+				binding.activityRepoWebdavCustomTimeoutEnabled.setChecked(true)
+				}
+                else {
+                    binding.activityRepoWebdavCustomTimeoutEnabled.setChecked(false)
+                }
                 viewModel.certificates.value = repoWithProps.props[CERTIFICATES_PREF_KEY]
             }
         }
@@ -197,8 +212,12 @@ class WebdavRepoActivity : CommonActivity() {
         return viewModel.certificates.value
     }
 
-	private fun getConnectionTimeout(): String {
-		return binding.activityRepoWebdavTimeout.text.toString().trim { it <= ' '};
+	private fun getConnectionTimeout(): String? {
+		return if (binding.activityRepoWebdavCustomTimeoutEnabled.isChecked) {
+		binding.activityRepoWebdavCustomTimeoutValue.text.toString().trim { it <= ' '}
+		}
+		else
+		null
 	}
 
     private fun isInputValid(): Boolean {
@@ -224,15 +243,15 @@ class WebdavRepoActivity : CommonActivity() {
             else -> null
         }
 
-		binding.activityRepoWebdavTimeoutLayout.error = when {
-			(!TextUtils.isEmpty(timeout) && timeout.toUIntOrNull() == null) -> getString(R.string.invalid_number)
+		binding.activityRepoWebdavCustomTimeoutValueLayout.error = when {
+			(timeout != null && timeout.toUIntOrNull() == null) -> getString(R.string.invalid_number)
 			else -> null
 		}
 
         return binding.activityRepoWebdavUrlLayout.error == null
                 && binding.activityRepoWebdavUsernameLayout.error == null
                 && binding.activityRepoWebdavPasswordLayout.error == null
-				&& binding.activityRepoWebdavTimeoutLayout.error == null
+				&& binding.activityRepoWebdavCustomTimeoutValueLayout.error == null
     }
 
     fun editCertificates(@Suppress("UNUSED_PARAMETER") view: View) {
@@ -269,7 +288,7 @@ class WebdavRepoActivity : CommonActivity() {
         val username = getUsername()
         val password = getPassword()
         val certificates = getCertificates()
-        val connectionTimeout = getConnectionTimeout().toUIntOrNull()
+        val connectionTimeout = getConnectionTimeout()?.toUIntOrNull()
 
         viewModel.testConnection(uriString, username, password, certificates, connectionTimeout)
     }
