@@ -107,6 +107,7 @@ class WebdavRepo(
         const val PASSWORD_PREF_KEY = "password"
         const val CERTIFICATES_PREF_KEY = "certificates"
         const val CONNECTION_TIMEOUT_PREF_KEY = "connectionTimeout"
+		const val USE_CUSTOM_CONNECTION_TIMEOUT_PREF_KEY = "useCustomTimeout"
 
         fun getInstance(repoWithProps: RepoWithProps): WebdavRepo {
             val id = repoWithProps.repo.id
@@ -123,7 +124,9 @@ class WebdavRepo(
 
             val certificates = repoWithProps.props[CERTIFICATES_PREF_KEY]
 
-            val connectionTimeout = repoWithProps.props[CONNECTION_TIMEOUT_PREF_KEY]?.toUIntOrNull()
+			val useCustomConnectionTimeout = repoWithProps.props[USE_CUSTOM_CONNECTION_TIMEOUT_PREF_KEY].toBoolean()
+
+            val connectionTimeout = if (useCustomConnectionTimeout) repoWithProps.props[CONNECTION_TIMEOUT_PREF_KEY]?.toUIntOrNull() else null
 
             return WebdavRepo(id, uri, username, password, certificates, connectionTimeout)
         }
