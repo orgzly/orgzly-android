@@ -89,6 +89,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
         			android:layout_marginTop="@dimen/space_between_content_areas"
+					android:enabled="@bool/pref_custom_timeout_enabled"
         			app:errorEnabled="true">
         
                     <com.google.android.material.textfield.TextInputEditText
@@ -98,6 +99,7 @@
 						android:hint="@string/webdav_timeout_hint"
                         android:inputType="number"
 						android:text="@string/webdav_custom_timeout_value_default"
+					    android:enabled="@bool/pref_custom_timeout_enabled"
                         app:min="0" />
 
                 </com.google.android.material.textfield.TextInputLayout>
