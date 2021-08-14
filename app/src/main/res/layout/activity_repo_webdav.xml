@@ -82,24 +82,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
 				    android:text="@string/webdav_custom_timeout_summary"
-					android:checked="@bool/pref_custom_timeout_enabled"/>
+					android:checked="@bool/pref_default_custom_timeout_enabled"/>
         
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/activity_repo_webdav_custom_timeout_value_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
         			android:layout_marginTop="@dimen/space_between_content_areas"
-					android:enabled="@bool/pref_custom_timeout_enabled"
+					android:enabled="@bool/pref_default_custom_timeout_enabled"
         			app:errorEnabled="true">
         
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/activity_repo_webdav_custom_timeout_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-						android:hint="@string/webdav_timeout_hint"
+						android:hint="@string/webdav_custom_timeout_hint"
                         android:inputType="number"
-						android:text="@string/webdav_custom_timeout_value_default"
-					    android:enabled="@bool/pref_custom_timeout_enabled"
+						android:text="@string/pref_default_webdav_custom_timeout_value"
+					    android:enabled="@bool/pref_default_custom_timeout_enabled"
                         app:min="0" />
 
                 </com.google.android.material.textfield.TextInputLayout>
