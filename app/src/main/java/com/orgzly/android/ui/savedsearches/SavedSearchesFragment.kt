@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orgzly.BuildConfig
@@ -65,9 +65,9 @@ class SavedSearchesFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickList
         super.onCreate(savedInstanceState)
 
         val factory = SavedSearchesViewModelFactory.getInstance(dataRepository)
-        viewModel = ViewModelProviders.of(this, factory).get(SavedSearchesViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(SavedSearchesViewModel::class.java)
 
-        sharedMainActivityViewModel = ViewModelProviders.of(requireActivity())
+        sharedMainActivityViewModel = ViewModelProvider(requireActivity())
                 .get(SharedMainActivityViewModel::class.java)
 
         setHasOptionsMenu(true)
@@ -147,7 +147,7 @@ class SavedSearchesFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickList
 
     private fun importExport(resId: Int, f: (Int, String) -> Any) {
         try {
-            val file = FileSavedSearchStore(context!!, dataRepository).file()
+            val file = FileSavedSearchStore(requireContext(), dataRepository).file()
             f(R.string.searches, getString(resId, file))
         } catch (e: IOException) {
             CommonActivity.showSnackbar(context, e.localizedMessage)

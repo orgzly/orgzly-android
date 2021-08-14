@@ -130,7 +130,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$versions.android_recyclerview"
     implementation "androidx.viewpager:viewpager:$versions.android_viewpager"
     implementation "androidx.constraintlayout:constraintlayout:$versions.android_constraint_layout"
-    implementation "androidx.preference:preference:$versions.android_preference"
+    implementation "androidx.preference:preference-ktx:$versions.android_preference"
     implementation "com.google.android.material:material:$versions.android_material"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$versions.android_swiperefreshlayout"
 

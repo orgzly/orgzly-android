@@ -5,7 +5,7 @@ import android.view.*
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orgzly.BuildConfig
@@ -49,7 +49,7 @@ class SearchFragment :
         super.onCreate(savedInstanceState)
 
         val factory = QueryViewModelFactory.forQuery(dataRepository)
-        viewModel = ViewModelProviders.of(this, factory).get(QueryViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(QueryViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

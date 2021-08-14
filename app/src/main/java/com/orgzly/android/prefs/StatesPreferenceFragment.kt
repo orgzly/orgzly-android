@@ -103,7 +103,7 @@ class StatesPreferenceFragment : PreferenceDialogFragmentCompat() {
             )
 
             val value = workflow.toString()
-            AppPreferences.states(context!!, value)
+            AppPreferences.states(requireContext(), value)
             preference.summary = value
         }
     }

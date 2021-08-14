@@ -3,6 +3,8 @@
 <resources
     xmlns:tools="http://schemas.android.com/tools">
 
+    <style name="AppDayNightTheme" parent="AppLightTheme" />
+
     <!--
          Custom light themes should inherit from AppLightTheme, dark themes from AppDarkTheme.
          They both contain same default font and icon sizes. TODO: DRY (how?)

@@ -13,18 +13,18 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.db.entity.Repo
-import com.orgzly.android.repos.*
+import com.orgzly.android.repos.RepoFactory
+import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.directory.DirectoryRepoActivity
 import com.orgzly.android.ui.repo.dropbox.DropboxRepoActivity
 import com.orgzly.android.ui.repo.git.GitRepoActivity
 import com.orgzly.android.ui.repo.webdav.WebdavRepoActivity
-import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.ActivityReposBinding
 import javax.inject.Inject
 
@@ -59,7 +59,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
         }
 
         val factory = ReposViewModelFactory.getInstance(dataRepository)
-        viewModel = ViewModelProviders.of(this, factory).get(ReposViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(ReposViewModel::class.java)
 
         viewModel.repos.observe(this, Observer { repos ->
             listAdapter.clear()
@@ -197,6 +197,8 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         when (requestCode) {
             ACTIVITY_REQUEST_CODE_FOR_READ_WRITE_EXTERNAL_STORAGE -> {
                 val granted = grantResults.zip(permissions)

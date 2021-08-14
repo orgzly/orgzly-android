@@ -26,8 +26,11 @@ class WebdavRepo(
         customTimeout: UInt? = null
 ) : SyncRepo {
 
-    private val sardine =
-            client(certificates, customTimeout).apply { setCredentials(username, password) }
+    private val sardine by lazy {
+        client(certificates, customTimeout).apply {
+            setCredentials(username, password)
+        }
+    }
 
     private fun client(certificates: String?, customTimeout: UInt?): OkHttpSardine {
         var okClient: OkHttpClient
