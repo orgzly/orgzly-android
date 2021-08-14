@@ -15,7 +15,6 @@ import java.security.cert.CertificateFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.*
-import kotlin.text.toUInt
 import kotlin.text.toUIntOrNull
 
 class WebdavRepo(
@@ -32,11 +31,12 @@ class WebdavRepo(
 
     private fun client(certificates: String?, customTimeout: UInt?): OkHttpSardine {
         var okClient: OkHttpClient
-        okClient = if (certificates.isNullOrEmpty()) {
-            OkHttpClient.Builder().build()
-        } else {
-            okHttpClientWithTrustedCertificates(certificates)
-        }
+        okClient =
+                if (certificates.isNullOrEmpty()) {
+                    OkHttpClient.Builder().build()
+                } else {
+                    okHttpClientWithTrustedCertificates(certificates)
+                }
         if (customTimeout != null) {
             okClient = setTimeouts(okClient, customTimeout)
         }
@@ -55,24 +55,26 @@ class WebdavRepo(
     private fun okHttpClientWithTrustedCertificates(certificates: String): OkHttpClient {
         val trustManager = trustManagerForCertificates(certificates)
 
-        val sslContext =
-                SSLContext.getInstance("TLS").apply { init(null, arrayOf(trustManager), null) }
+        val sslContext = SSLContext.getInstance("TLS").apply {
+            init(null, arrayOf(trustManager), null)
+        }
 
         val sslSocketFactory = sslContext.socketFactory
 
-        return OkHttpClient.Builder().sslSocketFactory(sslSocketFactory, trustManager).build()
+        return OkHttpClient.Builder()
+                .sslSocketFactory(sslSocketFactory, trustManager)
+                .build()
     }
 
     private fun trustManagerForCertificates(str: String): X509TrustManager {
         // Read certificates
-        val certificates =
-                Buffer().writeUtf8(str).inputStream().use { stream ->
-                    CertificateFactory.getInstance("X.509").generateCertificates(stream)
-                }
+        val certificates = Buffer().writeUtf8(str).inputStream().use { stream ->
+            CertificateFactory.getInstance("X.509").generateCertificates(stream)
+        }
 
-        //        require(!certificates.isEmpty()) {
-        //            "Expected non-empty set of trusted certificates"
-        //        }
+//        require(!certificates.isEmpty()) {
+//            "Expected non-empty set of trusted certificates"
+//        }
 
         // Create new key store
         val password = "password".toCharArray() // Any password will work
@@ -82,10 +84,11 @@ class WebdavRepo(
             keyStore.setCertificateEntry(certificateAlias, certificate)
         }
 
-        val trustManagerFactory =
-                TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()).apply {
-                    init(keyStore)
-                }
+        val trustManagerFactory = TrustManagerFactory.getInstance(
+                TrustManagerFactory.getDefaultAlgorithm()
+        ).apply {
+            init(keyStore)
+        }
 
         val trustManagers = trustManagerFactory.trustManagers
         check(trustManagers.size == 1 && trustManagers[0] is X509TrustManager) {
@@ -107,27 +110,30 @@ class WebdavRepo(
         const val PASSWORD_PREF_KEY = "password"
         const val CERTIFICATES_PREF_KEY = "certificates"
         const val CUSTOM_TIMEOUT_PREF_KEY = "customTimeout"
-		const val USE_CUSTOM_TIMEOUT_PREF_KEY = "useCustomTimeout"
+        const val USE_CUSTOM_TIMEOUT_PREF_KEY = "useCustomTimeout"
 
         fun getInstance(repoWithProps: RepoWithProps): WebdavRepo {
             val id = repoWithProps.repo.id
 
             val uri = Uri.parse(repoWithProps.repo.url)
 
-            val username =
-                    checkNotNull(repoWithProps.props[USERNAME_PREF_KEY]) { "Username not found" }
-                            .toString()
+            val username = checkNotNull(repoWithProps.props[USERNAME_PREF_KEY]) {
+                "Username not found"
+            }.toString()
 
-            val password =
-                    checkNotNull(repoWithProps.props[PASSWORD_PREF_KEY]) { "Password not found" }
-                            .toString()
+            val password = checkNotNull(repoWithProps.props[PASSWORD_PREF_KEY]) {
+                "Password not found"
+            }.toString()
 
             val certificates = repoWithProps.props[CERTIFICATES_PREF_KEY]
 
-			val useCustomConnectionTimeout = repoWithProps.props[USE_CUSTOM_TIMEOUT_PREF_KEY].toBoolean()
+            val useCustomConnectionTimeout =
+                    repoWithProps.props[USE_CUSTOM_TIMEOUT_PREF_KEY].toBoolean()
 
-            val customTimeout = if (useCustomConnectionTimeout) repoWithProps.props[CUSTOM_TIMEOUT_PREF_KEY]?.toUIntOrNull() else null
-
+            val customTimeout =
+                    if (useCustomConnectionTimeout)
+                            repoWithProps.props[CUSTOM_TIMEOUT_PREF_KEY]?.toUIntOrNull()
+                    else null
             return WebdavRepo(id, uri, username, password, certificates, customTimeout)
         }
     }
@@ -151,7 +157,8 @@ class WebdavRepo(
             sardine.createDirectory(url)
         }
 
-        return sardine.list(url)
+        return sardine
+                .list(url)
                 .mapNotNull {
                     if (it.isDirectory || !BookName.isSupportedFormatFileName(it.name)) {
                         null
@@ -166,7 +173,9 @@ class WebdavRepo(
         val fileUrl = Uri.withAppendedPath(uri, fileName).toUrl()
 
         sardine.get(fileUrl).use { inputStream ->
-            FileOutputStream(destination).use { outputStream -> inputStream.copyTo(outputStream) }
+            FileOutputStream(destination).use { outputStream ->
+                inputStream.copyTo(outputStream)
+            }
         }
 
         return sardine.list(fileUrl).first().toVersionedRook()

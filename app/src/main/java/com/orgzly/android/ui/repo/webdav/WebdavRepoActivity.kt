@@ -4,12 +4,12 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
-import android.text.InputType 
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -18,9 +18,9 @@ import com.orgzly.android.App
 import com.orgzly.android.repos.RepoFactory
 import com.orgzly.android.repos.RepoType
 import com.orgzly.android.repos.WebdavRepo.Companion.CERTIFICATES_PREF_KEY
+import com.orgzly.android.repos.WebdavRepo.Companion.CUSTOM_TIMEOUT_PREF_KEY
 import com.orgzly.android.repos.WebdavRepo.Companion.PASSWORD_PREF_KEY
 import com.orgzly.android.repos.WebdavRepo.Companion.USERNAME_PREF_KEY
-import com.orgzly.android.repos.WebdavRepo.Companion.CUSTOM_TIMEOUT_PREF_KEY
 import com.orgzly.android.repos.WebdavRepo.Companion.USE_CUSTOM_TIMEOUT_PREF_KEY
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.util.ActivityUtils
@@ -58,7 +58,7 @@ class WebdavRepoActivity : CommonActivity() {
                 binding.activityRepoWebdavCustomTimeoutValueLayout.setEnabled(false)
                 binding.activityRepoWebdavCustomTimeoutValue.inputType = InputType.TYPE_NULL
             }
-        }        
+        }
         val repoId = intent.getLongExtra(ARG_REPO_ID, 0)
         val factory = WebdavRepoViewModelFactory.getInstance(dataRepository, repoId)
 
@@ -123,13 +123,14 @@ class WebdavRepoActivity : CommonActivity() {
 
                 binding.activityRepoWebdavUsername.setText(repoWithProps.props[USERNAME_PREF_KEY])
                 binding.activityRepoWebdavPassword.setText(repoWithProps.props[PASSWORD_PREF_KEY])
-				if(repoWithProps.props[CUSTOM_TIMEOUT_PREF_KEY] != null){
-					binding.activityRepoWebdavCustomTimeoutValue.setText(repoWithProps.props[CUSTOM_TIMEOUT_PREF_KEY])
-				}
-				if (repoWithProps.props[USE_CUSTOM_TIMEOUT_PREF_KEY].toBoolean()){
+                if (repoWithProps.props[CUSTOM_TIMEOUT_PREF_KEY] != null) {
+                    binding.activityRepoWebdavCustomTimeoutValue.setText(
+                            repoWithProps.props[CUSTOM_TIMEOUT_PREF_KEY]
+                    )
+                }
+                if (repoWithProps.props[USE_CUSTOM_TIMEOUT_PREF_KEY].toBoolean()) {
                     binding.activityRepoWebdavCustomTimeoutEnabled.setChecked(true)
-				}
-                else {
+                } else {
                     binding.activityRepoWebdavCustomTimeoutEnabled.setChecked(false)
                 }
                 viewModel.certificates.value = repoWithProps.props[CERTIFICATES_PREF_KEY]
@@ -168,8 +169,8 @@ class WebdavRepoActivity : CommonActivity() {
             val username = getUsername()
             val password = getPassword()
             val certificates = getCertificates()
-			val timeoutValue = getCustomTimeoutValue()
-			val useCustomTimeout = getCustomTimeoutEnabled()
+            val timeoutValue = getCustomTimeoutValue()
+            val useCustomTimeout = getCustomTimeoutEnabled()
 
             val props = mutableMapOf(
                     USERNAME_PREF_KEY to username,
@@ -179,13 +180,13 @@ class WebdavRepoActivity : CommonActivity() {
                 props[CERTIFICATES_PREF_KEY] = certificates
             }
 
-			if (timeoutValue != null) {
+            if (timeoutValue != null) {
                 props[CUSTOM_TIMEOUT_PREF_KEY] = timeoutValue
-			}
+            }
 
-			if (useCustomTimeout) {
-				props[USE_CUSTOM_TIMEOUT_PREF_KEY] = useCustomTimeout.toString()
-			}
+            if (useCustomTimeout) {
+                props[USE_CUSTOM_TIMEOUT_PREF_KEY] = useCustomTimeout.toString()
+            }
 
             if (UriUtils.isUrlSecure(uriString)) {
                 viewModel.saveRepo(RepoType.WEBDAV, uriString, props)
@@ -220,23 +221,24 @@ class WebdavRepoActivity : CommonActivity() {
         return viewModel.certificates.value
     }
 
-	private fun getCustomTimeoutEnabled(): Boolean {
-		return binding.activityRepoWebdavCustomTimeoutEnabled.isChecked
-	}
-
-    private fun getCustomTimeoutValue(): String {
-     	return binding.activityRepoWebdavCustomTimeoutValue.text.toString().trim { it <= ' ' }
+    private fun getCustomTimeoutEnabled(): Boolean {
+        return binding.activityRepoWebdavCustomTimeoutEnabled.isChecked
     }
 
-	private fun getCustomTimeout(): String? {
-		return if (getCustomTimeoutEnabled()) getCustomTimeoutValue() else null
-	}
- 	   private fun isInputValid(): Boolean {
+    private fun getCustomTimeoutValue(): String {
+        return binding.activityRepoWebdavCustomTimeoutValue.text.toString().trim { it <= ' ' }
+    }
+
+    private fun getCustomTimeout(): String? {
+        return if (getCustomTimeoutEnabled()) getCustomTimeoutValue() else null
+    }
+
+    private fun isInputValid(): Boolean {
         val url = getUrl()
         val username = getUsername()
         val password = getPassword()
-		val timeout = getCustomTimeoutValue()
-		val useCustomTimeout = getCustomTimeoutEnabled()
+        val timeout = getCustomTimeoutValue()
+        val useCustomTimeout = getCustomTimeoutEnabled()
 
         binding.activityRepoWebdavUrlLayout.error = when {
             TextUtils.isEmpty(url) -> getString(R.string.can_not_be_empty)
@@ -255,17 +257,19 @@ class WebdavRepoActivity : CommonActivity() {
             else -> null
         }
 
-		binding.activityRepoWebdavCustomTimeoutValueLayout.error = when {
-			!useCustomTimeout -> null
-			TextUtils.isEmpty(timeout) -> getString(R.string.can_not_be_empty)
-			(timeout.toUIntOrNull() == null || timeout.toUInt() > OKHTTP_MAX_TIMEOUT) -> getString(R.string.number_too_large_or_invalid)
-			else -> null
-		}
+        binding.activityRepoWebdavCustomTimeoutValueLayout.error =
+                when {
+                    !useCustomTimeout -> null
+                    TextUtils.isEmpty(timeout) -> getString(R.string.can_not_be_empty)
+                    (timeout.toUIntOrNull() == null || timeout.toUInt() > OKHTTP_MAX_TIMEOUT) ->
+                            getString(R.string.number_too_large_or_invalid)
+                    else -> null
+                }
 
-        return binding.activityRepoWebdavUrlLayout.error == null
-                && binding.activityRepoWebdavUsernameLayout.error == null
-                && binding.activityRepoWebdavPasswordLayout.error == null
-				&& binding.activityRepoWebdavCustomTimeoutValueLayout.error == null
+        return binding.activityRepoWebdavUrlLayout.error == null &&
+                binding.activityRepoWebdavUsernameLayout.error == null &&
+                binding.activityRepoWebdavPasswordLayout.error == null &&
+                binding.activityRepoWebdavCustomTimeoutValueLayout.error == null
     }
 
     fun editCertificates(@Suppress("UNUSED_PARAMETER") view: View) {
@@ -311,7 +315,7 @@ class WebdavRepoActivity : CommonActivity() {
         private const val ARG_REPO_ID = "repo_id"
 
         private val WEB_DAV_SCHEME_REGEX = Regex("^(webdav|dav|http)s?://.+\$")
-		private val OKHTTP_MAX_TIMEOUT = 2147483u
+        private val OKHTTP_MAX_TIMEOUT = 2147483u
 
         @JvmStatic
         @JvmOverloads
