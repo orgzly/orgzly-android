@@ -5,6 +5,8 @@ import com.orgzly.android.BookName
 import com.orgzly.android.util.UriUtils
 import com.thegrizzlylabs.sardineandroid.DavResource
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
+import okhttp3.OkHttpClient
+import okio.Buffer
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -15,8 +17,6 @@ import java.util.concurrent.TimeUnit
 import javax.net.ssl.*
 import kotlin.text.toUInt
 import kotlin.text.toUIntOrNull
-import okhttp3.OkHttpClient
-import okio.Buffer
 
 class WebdavRepo(
         private val repoId: Long,
@@ -24,21 +24,21 @@ class WebdavRepo(
         username: String,
         password: String,
         certificates: String? = null,
-        connectionTimeout: UInt? = null
+        customTimeout: UInt? = null
 ) : SyncRepo {
 
     private val sardine =
-            client(certificates, connectionTimeout).apply { setCredentials(username, password) }
+            client(certificates, customTimeout).apply { setCredentials(username, password) }
 
-    private fun client(certificates: String?, connectionTimeout: UInt?): OkHttpSardine {
+    private fun client(certificates: String?, customTimeout: UInt?): OkHttpSardine {
         var okClient: OkHttpClient
         okClient = if (certificates.isNullOrEmpty()) {
             OkHttpClient.Builder().build()
         } else {
             okHttpClientWithTrustedCertificates(certificates)
         }
-        if (connectionTimeout != null) {
-            okClient = setTimeouts(okClient, connectionTimeout)
+        if (customTimeout != null) {
+            okClient = setTimeouts(okClient, customTimeout)
         }
         return OkHttpSardine(okClient)
     }
@@ -106,8 +106,8 @@ class WebdavRepo(
         const val USERNAME_PREF_KEY = "username"
         const val PASSWORD_PREF_KEY = "password"
         const val CERTIFICATES_PREF_KEY = "certificates"
-        const val CONNECTION_TIMEOUT_PREF_KEY = "connectionTimeout"
-		const val USE_CUSTOM_CONNECTION_TIMEOUT_PREF_KEY = "useCustomTimeout"
+        const val CUSTOM_TIMEOUT_PREF_KEY = "customTimeout"
+		const val USE_CUSTOM_TIMEOUT_PREF_KEY = "useCustomTimeout"
 
         fun getInstance(repoWithProps: RepoWithProps): WebdavRepo {
             val id = repoWithProps.repo.id
@@ -124,11 +124,11 @@ class WebdavRepo(
 
             val certificates = repoWithProps.props[CERTIFICATES_PREF_KEY]
 
-			val useCustomConnectionTimeout = repoWithProps.props[USE_CUSTOM_CONNECTION_TIMEOUT_PREF_KEY].toBoolean()
+			val useCustomConnectionTimeout = repoWithProps.props[USE_CUSTOM_TIMEOUT_PREF_KEY].toBoolean()
 
-            val connectionTimeout = if (useCustomConnectionTimeout) repoWithProps.props[CONNECTION_TIMEOUT_PREF_KEY]?.toUIntOrNull() else null
+            val customTimeout = if (useCustomConnectionTimeout) repoWithProps.props[CUSTOM_TIMEOUT_PREF_KEY]?.toUIntOrNull() else null
 
-            return WebdavRepo(id, uri, username, password, certificates, connectionTimeout)
+            return WebdavRepo(id, uri, username, password, certificates, customTimeout)
         }
     }
 

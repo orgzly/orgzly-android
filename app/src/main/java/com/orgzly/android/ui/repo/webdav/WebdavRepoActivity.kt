@@ -20,8 +20,8 @@ import com.orgzly.android.repos.RepoType
 import com.orgzly.android.repos.WebdavRepo.Companion.CERTIFICATES_PREF_KEY
 import com.orgzly.android.repos.WebdavRepo.Companion.PASSWORD_PREF_KEY
 import com.orgzly.android.repos.WebdavRepo.Companion.USERNAME_PREF_KEY
-import com.orgzly.android.repos.WebdavRepo.Companion.CONNECTION_TIMEOUT_PREF_KEY
-import com.orgzly.android.repos.WebdavRepo.Companion.USE_CUSTOM_CONNECTION_TIMEOUT_PREF_KEY
+import com.orgzly.android.repos.WebdavRepo.Companion.CUSTOM_TIMEOUT_PREF_KEY
+import com.orgzly.android.repos.WebdavRepo.Companion.USE_CUSTOM_TIMEOUT_PREF_KEY
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.UriUtils
@@ -123,10 +123,10 @@ class WebdavRepoActivity : CommonActivity() {
 
                 binding.activityRepoWebdavUsername.setText(repoWithProps.props[USERNAME_PREF_KEY])
                 binding.activityRepoWebdavPassword.setText(repoWithProps.props[PASSWORD_PREF_KEY])
-				if(repoWithProps.props[CONNECTION_TIMEOUT_PREF_KEY] != null){
-					binding.activityRepoWebdavCustomTimeoutValue.setText(repoWithProps.props[CONNECTION_TIMEOUT_PREF_KEY])
+				if(repoWithProps.props[CUSTOM_TIMEOUT_PREF_KEY] != null){
+					binding.activityRepoWebdavCustomTimeoutValue.setText(repoWithProps.props[CUSTOM_TIMEOUT_PREF_KEY])
 				}
-				if (repoWithProps.props[USE_CUSTOM_CONNECTION_TIMEOUT_PREF_KEY].toBoolean()){
+				if (repoWithProps.props[USE_CUSTOM_TIMEOUT_PREF_KEY].toBoolean()){
                     binding.activityRepoWebdavCustomTimeoutEnabled.setChecked(true)
 				}
                 else {
@@ -168,8 +168,8 @@ class WebdavRepoActivity : CommonActivity() {
             val username = getUsername()
             val password = getPassword()
             val certificates = getCertificates()
-			val connectionTimeoutValue = getCustomConnectionTimeoutValue()
-			val useCustomConnectionTimeout = getCustomConnectionTimeoutEnabled()
+			val timeoutValue = getCustomTimeoutValue()
+			val useCustomTimeout = getCustomTimeoutEnabled()
 
             val props = mutableMapOf(
                     USERNAME_PREF_KEY to username,
@@ -179,12 +179,12 @@ class WebdavRepoActivity : CommonActivity() {
                 props[CERTIFICATES_PREF_KEY] = certificates
             }
 
-			if (connectionTimeoutValue != null) {
-                props[CONNECTION_TIMEOUT_PREF_KEY] = connectionTimeoutValue
+			if (timeoutValue != null) {
+                props[CUSTOM_TIMEOUT_PREF_KEY] = timeoutValue
 			}
 
-			if (useCustomConnectionTimeout) {
-				props[USE_CUSTOM_CONNECTION_TIMEOUT_PREF_KEY] = useCustomConnectionTimeout.toString()
+			if (useCustomTimeout) {
+				props[USE_CUSTOM_TIMEOUT_PREF_KEY] = useCustomTimeout.toString()
 			}
 
             if (UriUtils.isUrlSecure(uriString)) {
@@ -220,23 +220,23 @@ class WebdavRepoActivity : CommonActivity() {
         return viewModel.certificates.value
     }
 
-	private fun getCustomConnectionTimeoutEnabled(): Boolean {
+	private fun getCustomTimeoutEnabled(): Boolean {
 		return binding.activityRepoWebdavCustomTimeoutEnabled.isChecked
 	}
 
-    private fun getCustomConnectionTimeoutValue(): String {
+    private fun getCustomTimeoutValue(): String {
      	return binding.activityRepoWebdavCustomTimeoutValue.text.toString().trim { it <= ' ' }
     }
 
-	private fun getCustomConnectionTimeout(): String? {
-		return if (getCustomConnectionTimeoutEnabled()) getCustomConnectionTimeoutValue() else null
+	private fun getCustomTimeout(): String? {
+		return if (getCustomTimeoutEnabled()) getCustomTimeoutValue() else null
 	}
  	   private fun isInputValid(): Boolean {
         val url = getUrl()
         val username = getUsername()
         val password = getPassword()
-		val timeout = getCustomConnectionTimeoutValue()
-		val useCustomTimeout = getCustomConnectionTimeoutEnabled()
+		val timeout = getCustomTimeoutValue()
+		val useCustomTimeout = getCustomTimeoutEnabled()
 
         binding.activityRepoWebdavUrlLayout.error = when {
             TextUtils.isEmpty(url) -> getString(R.string.can_not_be_empty)
@@ -302,9 +302,9 @@ class WebdavRepoActivity : CommonActivity() {
         val username = getUsername()
         val password = getPassword()
         val certificates = getCertificates()
-        val connectionTimeout = getCustomConnectionTimeout()?.toUIntOrNull()
+        val timeout = getCustomTimeout()?.toUIntOrNull()
 
-        viewModel.testConnection(uriString, username, password, certificates, connectionTimeout)
+        viewModel.testConnection(uriString, username, password, certificates, timeout)
     }
 
     companion object {
