@@ -224,7 +224,7 @@
     <string name="webdav_auth_password_hint">Password</string>
     <string name="webdav_test_error_auth">Login or password is invalid</string>
     <string name="webdav_test_error_unknown">Unknown error occurred</string>
-	<string name="webdav_custom_timeout_hint">Timeout (in seconds) for server connection, 0 means no timeout</string>
+	<string name="webdav_custom_timeout_hint">Timeout (in seconds), 0 for no timeout</string>
 	<string name="webdav_custom_timeout_summary">Use custom timeout for connection to server</string>
 
     <!-- Share button - error messages (set as title). -->

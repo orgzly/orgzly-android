@@ -563,7 +563,7 @@
     <string name="content">Inhalt</string>
     <string name="prepend">Voranstellen</string>
     <string name="insert_new_note_at_beginning">Neue Notiz am Anfang einfügen</string>
-    <string name="webdav_custom_timeout_hint">Timeout für Serververbindungen (in Sekunden), 0 bedeutet kein Timeout</string>
+    <string name="webdav_custom_timeout_hint">Timeout (in Sekunden), 0 bedeutet kein Timeout</string>
     <string name="webdav_custom_timeout_summary">Benutzerdefiniertes Timeout für Serververbindungen nutzen</string>
     <string name="number_too_large_or_invalid">Zu große oder ungültige Zahl</string>
 </resources>
