@@ -231,10 +231,12 @@ class WebdavRepoActivity : CommonActivity() {
 	private fun getCustomConnectionTimeout(): String? {
 		return if (getCustomConnectionTimeoutEnabled()) getCustomConnectionTimeoutValue() else null
 	}
+ 	   private fun isInputValid(): Boolean {
         val url = getUrl()
         val username = getUsername()
         val password = getPassword()
-		val timeout = getConnectionTimeout()
+		val timeout = getCustomConnectionTimeoutValue()
+		val useCustomTimeout = getCustomConnectionTimeoutEnabled()
 
         binding.activityRepoWebdavUrlLayout.error = when {
             TextUtils.isEmpty(url) -> getString(R.string.can_not_be_empty)
@@ -254,7 +256,9 @@ class WebdavRepoActivity : CommonActivity() {
         }
 
 		binding.activityRepoWebdavCustomTimeoutValueLayout.error = when {
-			(timeout != null && timeout.toUIntOrNull() == null) -> getString(R.string.invalid_number)
+			!useCustomTimeout -> null
+			TextUtils.isEmpty(timeout) -> getString(R.string.can_not_be_empty)
+			(timeout.toUIntOrNull() == null || timeout.toUInt() > OKHTTP_MAX_TIMEOUT) -> getString(R.string.number_too_large_or_invalid)
 			else -> null
 		}
 
@@ -307,6 +311,7 @@ class WebdavRepoActivity : CommonActivity() {
         private const val ARG_REPO_ID = "repo_id"
 
         private val WEB_DAV_SCHEME_REGEX = Regex("^(webdav|dav|http)s?://.+\$")
+		private val OKHTTP_MAX_TIMEOUT = 2147483u
 
         @JvmStatic
         @JvmOverloads

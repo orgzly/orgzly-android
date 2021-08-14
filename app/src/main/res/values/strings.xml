@@ -253,7 +253,7 @@
     <string name="title_can_not_be_empty">Title cannot be empty</string>
     <string name="can_not_be_empty">Cannot be empty</string>
     <string name="invalid_url">Invalid URL</string>
-	<string name="invalid_number">Invalid number</string>
+	<string name="number_too_large_or_invalid">Number too large or invalid number</string>
 
     <string name="no_notebooks">You have no notebooks</string>
     <string name="no_notes">Notebook has no notes</string>
