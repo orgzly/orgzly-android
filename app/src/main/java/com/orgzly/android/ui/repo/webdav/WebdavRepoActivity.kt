@@ -174,18 +174,12 @@ class WebdavRepoActivity : CommonActivity() {
 
             val props = mutableMapOf(
                     USERNAME_PREF_KEY to username,
-                    PASSWORD_PREF_KEY to password)
+                    PASSWORD_PREF_KEY to password,
+                    CUSTOM_TIMEOUT_PREF_KEY to timeoutValue,
+                    USE_CUSTOM_TIMEOUT_PREF_KEY to useCustomTimeout.toString())
 
             if (certificates != null) {
                 props[CERTIFICATES_PREF_KEY] = certificates
-            }
-
-            if (timeoutValue != null) {
-                props[CUSTOM_TIMEOUT_PREF_KEY] = timeoutValue
-            }
-
-            if (useCustomTimeout) {
-                props[USE_CUSTOM_TIMEOUT_PREF_KEY] = useCustomTimeout.toString()
             }
 
             if (UriUtils.isUrlSecure(uriString)) {
