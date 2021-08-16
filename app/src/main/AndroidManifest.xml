@@ -221,6 +221,10 @@
 
         <receiver android:name=".android.NewNoteBroadcastReceiver"/>
 
+        <receiver android:name=".android.external.ExternalAccessReceiver"
+            android:exported="true">
+        </receiver>
+
         <receiver android:name=".android.TimeChangeBroadcastReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.TIME_SET"/>
