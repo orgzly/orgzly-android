@@ -242,6 +242,10 @@ public class ListWidgetProvider extends AppWidgetProvider {
     }
 
     private SavedSearch getSavedSearch(Context context, int appWidgetId) {
+        return getSavedSearch(context, appWidgetId, dataRepository);
+    }
+
+    public static SavedSearch getSavedSearch(Context context, int appWidgetId, DataRepository dataRepository) {
         long filterId = context.getSharedPreferences(PREFERENCES_ID, Context.MODE_PRIVATE)
                 .getLong(getFilterPreferenceKey(appWidgetId), -1);
 
@@ -265,7 +269,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
         editor.apply();
     }
 
-    private String getFilterPreferenceKey(int appWidgetId) {
+    private static String getFilterPreferenceKey(int appWidgetId) {
         return "widget-filter-" + appWidgetId;
     }
 
