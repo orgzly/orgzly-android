@@ -8,7 +8,12 @@ import com.orgzly.android.external.actionhandlers.*
 import com.orgzly.android.external.types.Response
 
 class ExternalAccessReceiver : BroadcastReceiver() {
-    val actionHandlers = emptyList<ExternalAccessActionHandler>()
+    val actionHandlers = listOf(
+            GetOrgInfo(),
+            RunSearch(),
+            EditNotes(),
+            ManageWidgets()
+    )
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val response = actionHandlers.asSequence()
