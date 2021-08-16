@@ -2003,8 +2003,9 @@ class DataRepository @Inject constructor(
     }
 
     fun updateRepo(repoWithProps: RepoWithProps): Long {
-        // Since old url might be in use, do not update the existing record, but replace it
-        val newId = db.repo().deleteAndInsert(repoWithProps.repo)
+
+        db.repo().update(repoWithProps.repo)
+        val newId = repoWithProps.repo.id // newId is old id
 
         AppPreferences.repoPropsMapDelete(context, repoWithProps.repo.id)
 
