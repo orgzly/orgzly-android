@@ -19,16 +19,14 @@ class EditNotes : ExternalAccessActionHandler() {
 
     @Suppress("UNUSED_PARAMETER")
     fun addNote(intent: Intent, context: Context): Response {
+        val book = getBook(intent) ?: return Response(false, "Couldn't find specified book")
         val newNote = notePayloadFromJson(intent.getStringExtra("PAYLOAD") ?: "")
                 ?: return Response(false, "Invalid payload")
         val path = intent.getStringExtra("PATH") ?: ""
-        val bookName = intent.getStringExtra("BOOK")
-        val bookId = dataRepository.getBooks().find { it.book.name == bookName }?.book?.id
-                ?: return Response(false, "Couldn't find specified book")
 
         val place = if (path.split("/").any { it.isNotEmpty() }) {
-            dataRepository.getNoteAtPath(bookName!!, path)?.let {
-                NotePlace(bookId, it.note.id, Place.UNDER)
+            dataRepository.getNoteAtPath(book.name, path)?.let {
+                NotePlace(book.id, it.note.id, Place.UNDER)
             }
         } else null
         place ?: return Response(false, "Couldn't find parent note at path")

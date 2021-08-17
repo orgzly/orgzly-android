@@ -27,14 +27,11 @@ class GetOrgInfo : ExternalAccessActionHandler() {
 
     @Suppress("UNUSED_PARAMETER")
     private fun getNote(intent: Intent, context: Context): Response {
-        val bookName = intent.getStringExtra("BOOK_NAME")
+        val book = getBook(intent) ?: return Response(false, "Couldn't find specified book")
         val path = intent.getStringExtra("PATH")
-        return if (bookName == null || path == null) {
-            Response(false, "Invalid arguments!")
-        } else {
-            dataRepository.getNoteAtPath(bookName, path)
-                    ?.let { Response(true, Note.from(it)) }
-                    ?: Response(false, "Couldn't find note at specified path!")
-        }
+                ?: return Response(false, "Invalid arguments!")
+        return dataRepository.getNoteAtPath(book.name, path)
+                ?.let { Response(true, Note.from(it)) }
+                ?: Response(false, "Couldn't find note at specified path!")
     }
 }
