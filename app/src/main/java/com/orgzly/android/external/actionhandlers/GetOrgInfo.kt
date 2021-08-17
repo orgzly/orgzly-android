@@ -5,28 +5,25 @@ import android.content.Intent
 import com.orgzly.android.external.types.*
 
 class GetOrgInfo : ExternalAccessActionHandler() {
-    override val actions = mapOf(
-            "GET_BOOKS" to ::getBooks,
-            "GET_SAVED_SEARCHES" to ::getSavedSearches,
-            "GET_NOTE" to ::getNote
+    override val actions = listOf(
+        action(::getBooks, "GET_BOOKS"),
+        action(::getSavedSearches, "GET_SAVED_SEARCHES"),
+        action(::getNote, "GET_NOTE")
     )
 
-    @Suppress("UNUSED_PARAMETER")
-    private fun getBooks(intent: Intent, context: Context) = Response(
+    private fun getBooks() = Response(
             true,
             dataRepository.getBooks()
                     .map(Book::from).toTypedArray()
     )
 
-    @Suppress("UNUSED_PARAMETER")
-    private fun getSavedSearches(intent: Intent, context: Context) = Response(
+    private fun getSavedSearches() = Response(
             true,
             dataRepository.getSavedSearches()
                     .map(SavedSearch::from).toTypedArray()
     )
 
-    @Suppress("UNUSED_PARAMETER")
-    private fun getNote(intent: Intent, context: Context): Response {
+    private fun getNote(intent: Intent): Response {
         val book = getBook(intent) ?: return Response(false, "Couldn't find specified book")
         val path = intent.getStringExtra("PATH")
                 ?: return Response(false, "Invalid arguments!")

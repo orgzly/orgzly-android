@@ -6,12 +6,11 @@ import com.orgzly.android.query.user.InternalQueryParser
 import com.orgzly.android.external.types.*
 
 class RunSearch : ExternalAccessActionHandler() {
-    override val actions = mapOf(
-            "SEARCH" to ::runSearch
+    override val actions = listOf(
+        action(::runSearch, "SEARCH")
     )
 
-    @Suppress("UNUSED_PARAMETER")
-    private fun runSearch(intent: Intent, context: Context): Response {
+    private fun runSearch(intent: Intent): Response {
         val searchTerm = intent.getStringExtra("QUERY")
         if (searchTerm.isNullOrBlank()) return Response(false, "Invalid search term!")
         val query = InternalQueryParser().parse(searchTerm)

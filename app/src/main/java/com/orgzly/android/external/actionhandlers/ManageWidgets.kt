@@ -9,13 +9,12 @@ import com.orgzly.android.external.types.Response
 import com.orgzly.android.widgets.ListWidgetProvider
 
 class ManageWidgets : ExternalAccessActionHandler() {
-    override val actions = mapOf(
-            "GET_WIDGETS" to ::getWidgets,
-            "SET_WIDGET" to ::setWidget
+    override val actions = listOf(
+        action(::getWidgets, "GET_WIDGETS"),
+        action(::setWidget, "SET_WIDGET")
     )
 
-    @Suppress("UNUSED_PARAMETER")
-    private fun getWidgets(intent: Intent, context: Context): Response {
+    private fun getWidgets(context: Context): Response {
         val widgetManager = AppWidgetManager.getInstance(context)
         val componentName = ComponentName(context.packageName, ListWidgetProvider::class.java.name)
         val widgetData = widgetManager.getAppWidgetIds(componentName)

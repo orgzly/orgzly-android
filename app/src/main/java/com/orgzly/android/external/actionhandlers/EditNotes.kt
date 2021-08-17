@@ -13,12 +13,12 @@ import com.orgzly.android.ui.note.NotePayload
 import com.orgzly.org.OrgProperties
 
 class EditNotes : ExternalAccessActionHandler() {
-    override val actions = mapOf(
-            "ADD_NOTES" to ::addNote
+    override val actions = listOf(
+        action(::addNote, "ADD_NOTE", "ADD_NOTES"),
+        action(::deleteNote, "DELETE_NOTE", "DELETE_NOTES")
     )
 
-    @Suppress("UNUSED_PARAMETER")
-    fun addNote(intent: Intent, context: Context): Response {
+    fun addNote(intent: Intent): Response {
         val book = getBook(intent) ?: return Response(false, "Couldn't find specified book")
         val newNote = notePayloadFromJson(intent.getStringExtra("PAYLOAD") ?: "")
                 ?: return Response(false, "Invalid payload")
@@ -33,6 +33,8 @@ class EditNotes : ExternalAccessActionHandler() {
         dataRepository.createNote(newNote, place)
         return Response(true, null)
     }
+
+    // <editor-fold desc="Helpers">
 
     private fun JsonObject.getString(name: String) = this[name]?.let {
         if (it.isJsonPrimitive && it.asJsonPrimitive.isString)
@@ -78,4 +80,6 @@ class EditNotes : ExternalAccessActionHandler() {
             )
         } catch (e: NullPointerException) { null }
     }
+
+    // </editor-fold>
 }
