@@ -26,15 +26,15 @@ class ManageWidgets : ExternalAccessActionHandler() {
     private fun setWidget(intent: Intent, context: Context): Response {
         val widgetId = intent.getIntExtra("WIDGET_ID", -1)
         if (widgetId < 0) return Response(false, "invalid widget ID")
-        val savedSearchId = intent.getLongExtra("SAVED_SEARCH_ID", -1)
-        if (savedSearchId < 0) return Response(false, "invalid saved search ID")
+        val savedSearch = intent.getSavedSearch()
+                ?: return Response(false, "invalid saved search ID")
 
         context.sendBroadcast(Intent(context, ListWidgetProvider::class.java).apply {
             action = AppIntent.ACTION_SET_LIST_WIDGET_SELECTION
             putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-            putExtra(AppIntent.EXTRA_SAVED_SEARCH_ID, savedSearchId)
+            putExtra(AppIntent.EXTRA_SAVED_SEARCH_ID, savedSearch.id)
         })
 
-        return Response(true, null)
+        return Response()
     }
 }

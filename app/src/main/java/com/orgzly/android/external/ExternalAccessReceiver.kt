@@ -12,6 +12,7 @@ class ExternalAccessReceiver : BroadcastReceiver() {
             GetOrgInfo(),
             RunSearch(),
             EditNotes(),
+            EditSavedSearches(),
             ManageWidgets()
     )
 

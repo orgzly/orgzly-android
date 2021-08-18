@@ -3,6 +3,7 @@ package com.orgzly.android.external.types
 import com.orgzly.android.db.entity.NoteView
 
 data class Note(
+        val id: Long,
         val title: String,
         val content: String?,
         val tags: List<String>,
@@ -20,6 +21,7 @@ data class Note(
         fun from(view: NoteView): Note {
             val note = view.note
             return Note(
+                    note.id,
                     note.title,
                     note.content,
                     note.tags?.split(" +".toRegex())

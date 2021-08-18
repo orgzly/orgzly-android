@@ -613,7 +613,7 @@ class DataRepository @Inject constructor(
 
         } else {
             db.runInTransaction(Callable {
-                moveSubtrees(noteIds, Place.UNDER, target.noteId)
+                moveSubtrees(noteIds, target.place, target.noteId)
             })
         }
     }
@@ -1281,12 +1281,14 @@ class DataRepository @Inject constructor(
     }
 
     fun getNoteAtPath(bookName: String, path: String) =
-            getNotes(bookName)
-                    .filter { ("/$path").endsWith("/" + it.note.title) }
-                    .firstOrNull { view ->
-                        getNoteAndAncestors(view.note.id)
-                                .joinToString("/") { it.title } == path
-                    }
+            if (path.split("/").any { it.isNotEmpty() })
+                getNotes(bookName)
+                        .filter { ("/$path").endsWith("/" + it.note.title) }
+                        .firstOrNull { view ->
+                            getNoteAndAncestors(view.note.id)
+                                    .joinToString("/") { it.title } == path
+                        }
+            else null
 
     fun getNotesAndSubtrees(ids: Set<Long>): List<Note> {
         return db.note().getNotesForSubtrees(ids)
