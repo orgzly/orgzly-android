@@ -2,7 +2,7 @@ package com.orgzly.android.external.actionhandlers
 
 import android.content.Intent
 import com.orgzly.android.db.entity.SavedSearch
-import com.orgzly.android.external.types.Response
+import com.orgzly.android.external.types.ExternalHandlerFailure
 
 class EditSavedSearches : ExternalAccessActionHandler() {
     override val actions = listOf(
@@ -12,37 +12,36 @@ class EditSavedSearches : ExternalAccessActionHandler() {
             action(::deleteSavedSearch, "DELETE_SAVED_SEARCH"),
     )
 
-    private fun addSavedSearch(intent: Intent) =
-            intent.getNewSavedSearch()?.let {
-                val id = dataRepository.createSavedSearch(it)
-                Response(true, "$id")
-            } ?: Response(false, "Invalid saved search details")
+    private fun addSavedSearch(intent: Intent): String {
+        val savedSearch = intent.getNewSavedSearch()
+        val id = dataRepository.createSavedSearch(savedSearch)
+        return "$id"
+    }
 
-    private fun editSavedSearch(intent: Intent) = intent.getSavedSearch()?.let { savedSearch ->
-        intent.getNewSavedSearch(allowBlank = true)?.let { newSavedSearch ->
-            dataRepository.updateSavedSearch(SavedSearch(
-                    savedSearch.id,
-                    (if (newSavedSearch.name.isBlank()) savedSearch.name
-                    else newSavedSearch.name),
-                    (if (newSavedSearch.query.isBlank()) savedSearch.query
-                    else newSavedSearch.query),
-                    savedSearch.position
-            ))
-            return Response()
-        } ?: Response(false, "Invalid saved search details")
-    } ?: Response(false, "Couldn't find saved search")
+    private fun editSavedSearch(intent: Intent) {
+        val savedSearch = intent.getSavedSearch()
+        val newSavedSearch = intent.getNewSavedSearch(allowBlank = true)
+        dataRepository.updateSavedSearch(SavedSearch(
+                savedSearch.id,
+                (if (newSavedSearch.name.isBlank()) savedSearch.name
+                else newSavedSearch.name),
+                (if (newSavedSearch.query.isBlank()) savedSearch.query
+                else newSavedSearch.query),
+                savedSearch.position
+        ))
+    }
 
-    private fun moveSavedSearch(intent: Intent) = intent.getSavedSearch()?.let { savedSearch ->
+    private fun moveSavedSearch(intent: Intent) {
+        val savedSearch = intent.getSavedSearch()
         when (intent.getStringExtra("DIRECTION")) {
             "UP" -> dataRepository.moveSavedSearchUp(savedSearch.id)
             "DOWN" -> dataRepository.moveSavedSearchDown(savedSearch.id)
-            else -> return Response(false, "Invalid direction")
+            else -> throw ExternalHandlerFailure("invalid direction")
         }
-        return Response()
-    } ?: Response(false, "Couldn't find saved search")
+    }
 
-    private fun deleteSavedSearch(intent: Intent) = intent.getSavedSearch()?.let { savedSearch ->
+    private fun deleteSavedSearch(intent: Intent) {
+        val savedSearch = intent.getSavedSearch()
         dataRepository.deleteSavedSearches(setOf(savedSearch.id))
-        return Response()
-    }  ?: Response(false, "Couldn't find saved search")
+    }
 }

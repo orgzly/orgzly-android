@@ -10,20 +10,12 @@ class GetOrgInfo : ExternalAccessActionHandler() {
         action(::getNote, "GET_NOTE")
     )
 
-    private fun getBooks() = Response(
-            true,
-            dataRepository.getBooks()
-                    .map(Book::from).toTypedArray()
-    )
+    private fun getBooks() =
+            dataRepository.getBooks().map(Book::from).toTypedArray()
 
-    private fun getSavedSearches() = Response(
-            true,
-            dataRepository.getSavedSearches()
-                    .map(SavedSearch::from).toTypedArray()
-    )
+    private fun getSavedSearches() =
+            dataRepository.getSavedSearches().map(SavedSearch::from).toTypedArray()
 
     private fun getNote(intent: Intent) =
-            intent.getNote()
-                ?.let { Response(true, Note.from(it)) }
-                ?: Response(false, "Couldn't find note at specified path!")
+            Note.from(intent.getNote())
 }
