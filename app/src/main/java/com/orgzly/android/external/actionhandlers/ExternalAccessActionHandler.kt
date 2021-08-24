@@ -8,7 +8,6 @@ import com.google.gson.JsonParseException
 import com.google.gson.JsonParser
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
-import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.external.types.Response
 import com.orgzly.android.ui.NotePlace
@@ -22,6 +21,7 @@ abstract class ExternalAccessActionHandler {
     lateinit var dataRepository: DataRepository
 
     init {
+        @Suppress("LeakingThis")
         App.appComponent.inject(this)
     }
 
@@ -59,37 +59,32 @@ abstract class ExternalAccessActionHandler {
         } catch (e: NullPointerException) { null }
     }
 
-    fun Intent.getNotePlace(book_: Book? = null) = (book_ ?: getBook(prefix="PARENT_"))
-            ?.let { book -> getNote(book, prefix="PARENT_")?.let { noteView ->
-                val place = try {
-                    Place.valueOf(getStringExtra("PLACEMENT") ?: "")
-                } catch (e: IllegalArgumentException) { Place.UNDER }
-                NotePlace(book.id, noteView.note.id, place)
-            } }
+    fun Intent.getNotePlace() = getNote(prefix="PARENT_")?.let { noteView ->
+        val place = try {
+            Place.valueOf(getStringExtra("PLACEMENT") ?: "")
+        } catch (e: IllegalArgumentException) { Place.UNDER }
+        dataRepository.getBook(noteView.bookName)?.let { book ->
+            NotePlace(book.id, noteView.note.id, place)
+        }
+    } ?: getBook(prefix="PARENT")?.let { book -> NotePlace(book.id) }
 
     fun Intent.getNoteIds(allowSingle: Boolean = true): Set<Long> {
         val id = if (allowSingle) getLongExtra("NOTE_ID", -1) else null
         val ids = getLongArrayExtra("NOTE_IDS")?.toTypedArray() ?: emptyArray()
-        val book = getBook()?.name
-        val (path, paths) = if (book != null) {
-            val path =
-                    if (allowSingle)
-                        getStringExtra("NOTE_PATH")
-                                ?.let { dataRepository.getNoteAtPath(book, it)?.note?.id }
-                    else null
-            val paths = (getStringArrayExtra("NOTE_PATHS") ?: emptyArray())
-                    .mapNotNull { dataRepository.getNoteAtPath(book, it)?.note?.id }
-                    .toTypedArray()
-            path to paths
-        } else null to emptyArray()
+        val path =
+                if (allowSingle)
+                    getStringExtra("NOTE_PATH")
+                            ?.let { dataRepository.getNoteAtPath(it)?.note?.id }
+                else null
+        val paths = (getStringArrayExtra("NOTE_PATHS") ?: emptyArray())
+                .mapNotNull { dataRepository.getNoteAtPath(it)?.note?.id }
+                .toTypedArray()
         return listOfNotNull(id, *ids, path, *paths).filter { it >= 0 }.toSet()
     }
 
-    fun Intent.getNote(book: Book? = null, prefix: String = "") =
+    fun Intent.getNote(prefix: String = "") =
             dataRepository.getNoteView(getLongExtra("${prefix}NOTE_ID", -1))
-                    ?: (book ?: getBook(prefix=prefix))
-                            ?.let { dataRepository.getNoteAtPath(it.name,
-                            getStringExtra("${prefix}NOTE_PATH") ?: "") }
+                    ?: dataRepository.getNoteAtPath(getStringExtra("${prefix}NOTE_PATH") ?: "")
 
     fun Intent.getBook(prefix: String = "") =
             dataRepository.getBook(getLongExtra("${prefix}BOOK_ID", -1))

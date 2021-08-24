@@ -14,7 +14,7 @@ class EditNotes : ExternalAccessActionHandler() {
 
     private fun addNote(intent: Intent): Response {
         val place = intent.getNotePlace()
-                ?: return Response(false, "Could not find parent note")
+                ?: return Response(false, "Could not find parent note/book")
         val newNote = intent.getNotePayload()
                 ?: return Response(false, "Invalid payload")
         val note = dataRepository.createNote(newNote, place)
