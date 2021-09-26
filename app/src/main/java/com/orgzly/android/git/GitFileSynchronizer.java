@@ -144,10 +144,15 @@ public class GitFileSynchronizer {
         Boolean doCleanup = false;
         try {
             RevCommit mergeTarget = currentHead();
+            // Try to use the branch "orgzly-pre-sync-marker" to find a good point for branching off.
+            RevCommit branchStartPoint = getCommit("orgzly-pre-sync-marker");
+            if (branchStartPoint == null) {
+                branchStartPoint = revision;
+            }
             git.checkout().setCreateBranch(true).setForce(true).
-                    setStartPoint(revision).setName(mergeBranch).call();
-            if (!currentHead().equals(revision))
-                throw new IOException("Unable to set revision to " + revision.toString());
+                    setStartPoint(branchStartPoint).setName(mergeBranch).call();
+            if (!currentHead().equals(branchStartPoint))
+                throw new IOException("Failed to create new branch at " + branchStartPoint.toString());
             if (!updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision))
                 throw new IOException(
                         String.format(
@@ -266,12 +271,15 @@ public class GitFileSynchronizer {
     public void setBranchAndGetLatest() throws IOException {
         ensureRepoIsClean();
         try {
+            // Point a "marker" branch to the current head, so that we know a good starting commit
+            // for merge conflict branches.
+            git.branchCreate().setName("orgzly-pre-sync-marker").setForce(true).call();
             fetch();
             RevCommit current = currentHead();
             RevCommit mergeTarget = getCommit(
                     String.format("%s/%s", preferences.remoteName(), git.getRepository().getBranch()));
             if (mergeTarget != null) {
-                if (doMerge(mergeTarget)) {  // Try to merge with the current branch.
+                if (doMerge(mergeTarget)) {  // Try to merge with the remote head of the current branch.
                     if (!git.getRepository().getBranch().equals(preferences.branchName())) {
                         // We are not on the main branch. Make an attempt to return to it.
                         attemptReturnToMainBranch();
