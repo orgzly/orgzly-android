@@ -42,8 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_between_content_areas"
                     android:layout_marginBottom="@dimen/space_between_content_areas"
-                    android:text="@string/add_trusted_certificates_optional"
-                    android:onClick="editCertificates"/>
+                    android:text="@string/add_trusted_certificates_optional" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/activity_repo_webdav_username_layout"

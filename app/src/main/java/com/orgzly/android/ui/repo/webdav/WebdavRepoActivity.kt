@@ -43,6 +43,10 @@ class WebdavRepoActivity : CommonActivity() {
 
         setupActionBar(R.string.webdav)
 
+        binding.activityRepoWebdavCertificates.setOnClickListener {
+            editCertificates()
+        }
+
         binding.activityRepoWebdavTestButton.setOnClickListener {
             testConnection()
         }
@@ -216,7 +220,7 @@ class WebdavRepoActivity : CommonActivity() {
                 && binding.activityRepoWebdavPasswordLayout.error == null
     }
 
-    fun editCertificates(@Suppress("UNUSED_PARAMETER") view: View) {
+    private fun editCertificates() {
         val dialogBinding = DialogCertificatesBinding.inflate(layoutInflater).apply {
             certificates.setText(viewModel.certificates.value)
         }
