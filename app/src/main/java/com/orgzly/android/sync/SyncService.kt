@@ -269,10 +269,28 @@ class SyncService : Service() {
             //                SystemClock.sleep(1000 - nowMsPart);
             //            }
 
+            /* If there are namesakes in Git repos with conflict status, make
+             * sure to sync them first, so that any conflict branches are
+             * created as early as possible. Otherwise, we risk committing
+             * changes on master which we cannot see on the conflict branch.
+             */
+            val orderedNamesakes = LinkedHashMap<String, BookNamesake>()
+            val lowPriorityNamesakes = LinkedHashMap<String, BookNamesake>()
+            for (namesake in namesakes.values) {
+                if (namesake.rooks.isNotEmpty() &&
+                        namesake.rooks[0].repoType == RepoType.GIT &&
+                        namesake.status == BookSyncStatus.CONFLICT_BOTH_BOOK_AND_ROOK_MODIFIED) {
+                    orderedNamesakes[namesake.name] = namesake
+                } else {
+                    lowPriorityNamesakes[namesake.name] = namesake
+                }
+            }
+            orderedNamesakes.putAll(lowPriorityNamesakes)
+
             /*
              * Update books' statuses, before starting to sync them.
              */
-            for (namesake in namesakes.values) {
+            for (namesake in orderedNamesakes.values) {
                 dataRepository.setBookLastActionAndSyncStatus(namesake.book.book.id, BookAction.forNow(
                         BookAction.Type.PROGRESS, getString(R.string.syncing_in_progress)))
             }
@@ -281,7 +299,7 @@ class SyncService : Service() {
              * Start syncing name by name.
              */
             var curr = 0
-            for (namesake in namesakes.values) {
+            for (namesake in orderedNamesakes.values) {
                 /* If task has been canceled, just mark the remaining books as such. */
                 if (isCancelled) {
                     dataRepository.setBookLastActionAndSyncStatus(
