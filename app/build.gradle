@@ -4,11 +4,6 @@ apply plugin: 'kotlin-kapt'
 
 
 android {
-    dexOptions {
-        maxProcessCount 4
-        javaMaxHeapSize "2g"
-    }
-
     compileSdkVersion 29
 
     defaultConfig {
