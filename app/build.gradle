@@ -103,6 +103,7 @@ android {
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
+        exclude 'plugin.properties'
     }
 }
 
@@ -176,10 +177,9 @@ dependencies {
         exclude group: 'xpp3', module: 'xpp3'
     }
 
-    implementation("org.eclipse.jgit:org.eclipse.jgit:$versions.jgit") {
-        // Resolves DuplicatePlatformClasses lint error
-        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
-    }
+    implementation "org.eclipse.jgit:org.eclipse.jgit:$versions.jgit"
+    implementation "org.eclipse.jgit:org.eclipse.jgit.ssh.jsch:$versions.jgit"
+
 }
 
 repositories {
