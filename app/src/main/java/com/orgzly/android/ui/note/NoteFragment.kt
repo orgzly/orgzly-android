@@ -430,7 +430,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         // Title
         binding.fragmentNoteTitle.setText(payload.title)
-        binding.fragmentNoteTitleView.setRawText(payload.title ?: "")
+        binding.fragmentNoteTitleView.setRawText(payload.title)
 
         // Tags
         if (!payload.tags.isEmpty()) {

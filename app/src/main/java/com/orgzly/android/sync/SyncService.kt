@@ -148,6 +148,7 @@ class SyncService : Service() {
         return capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
     }
 
+    @Suppress("DEPRECATION")
     private fun haveNetworkConnectionPreM(cm: ConnectivityManager): Boolean {
         val networkInfo = cm.activeNetworkInfo
 

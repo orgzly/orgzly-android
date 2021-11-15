@@ -9,6 +9,8 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.widget.TextView;
 
+import androidx.core.text.HtmlCompat;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -262,13 +264,7 @@ public class MiscUtils {
     }
 
     public static Spanned fromHtml(String html){
-        Spanned result;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            result = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            result = Html.fromHtml(html);
-        }
-        return result;
+        return HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY);
     }
 
     public static ArrayList<String> toArrayList(Map<String, String> map) {

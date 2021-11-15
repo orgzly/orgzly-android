@@ -603,21 +603,6 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onAttachFragment(Fragment fragment) {
-        super.onAttachFragment(fragment);
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, fragment);
-
-//        if (BuildConfig.LOG_DEBUG) {
-//            fragment.getLifecycle().addObserver((LifecycleEventObserver) this::logLifecycleEvent);
-//        }
-    }
-
-    private void logLifecycleEvent(LifecycleOwner source, Lifecycle.Event event) {
-        LogUtils.d(TAG, source.getClass().getSimpleName(), event);
-    }
-
-    @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
 

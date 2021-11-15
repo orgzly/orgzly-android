@@ -187,7 +187,7 @@ class SqliteQueryBuilder(val context: Context) {
             }
 
             is Condition.HasState -> {
-                arguments.add(expr.state.toUpperCase())
+                arguments.add(expr.state.uppercase())
                 not(expr.not, "COALESCE(state, '') = ?")
             }
 

@@ -19,7 +19,7 @@ open class BasicQueryParser : QueryParser() {
             },
 
             ConditionMatch("""^(-)?state-type:(todo|done|none)""") { match ->
-                val stateType = StateType.valueOf(match.groupValues[2].toUpperCase())
+                val stateType = StateType.valueOf(match.groupValues[2].uppercase())
                 Condition.HasStateType(stateType, match.groupValues[1].isNotEmpty())
             },
 

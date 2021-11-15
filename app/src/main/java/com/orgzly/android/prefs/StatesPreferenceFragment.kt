@@ -80,7 +80,7 @@ class StatesPreferenceFragment : PreferenceDialogFragmentCompat() {
         val context = context
 
         for (keyword in ArrayListSpaceSeparated(keywords)) {
-            val upper = keyword.toUpperCase()
+            val upper = keyword.uppercase()
 
             if (seenKeywords.contains(upper)) {
                 if (context != null) {
