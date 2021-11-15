@@ -59,7 +59,7 @@ buildscript {
 
     versions.glide = '4.10.0'
 
-    versions.sardine = '0.5'
+    versions.sardine = '0.8'
 
     versions.jgit = '4.4.1.201607150455-r'
 
