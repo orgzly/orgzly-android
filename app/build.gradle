@@ -176,6 +176,12 @@ dependencies {
         exclude group: 'xpp3', module: 'xpp3'
     }
 
+    constraints {
+        implementation('com.squareup.okhttp3:okhttp:4.10.0-RC1') {
+            because 'https://github.com/orgzly/orgzly-android/issues/880'
+        }
+    }
+
     implementation("org.eclipse.jgit:org.eclipse.jgit:$versions.jgit") {
         // Resolves DuplicatePlatformClasses lint error
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
