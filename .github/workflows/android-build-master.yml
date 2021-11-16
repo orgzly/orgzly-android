@@ -1,4 +1,4 @@
-name: Build on PR Create or Merge
+name: Build
 
 on:
   pull_request:
