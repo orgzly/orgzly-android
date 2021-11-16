@@ -6,7 +6,7 @@ buildscript {
 
     versions.android_gradle_plugin = '7.0.3'
 
-    versions.kotlin = '1.5.10'
+    versions.kotlin = '1.5.31'
 
     versions.jetbrains_annotations = '16.0.3'
 
