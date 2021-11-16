@@ -21,9 +21,11 @@ import java.security.KeyStore
 import java.security.cert.CertificateFactory
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
+import kotlin.time.Duration
 
 
 class WebdavRepo(
@@ -68,6 +70,12 @@ class WebdavRepo(
 
         builder.authenticator(CachingAuthenticatorDecorator(authenticator, authCache))
         builder.addInterceptor(AuthenticationCacheInterceptor(authCache))
+
+        // Double the values as some users are seeing timeouts.
+        // Make configurable if needed (https://github.com/orgzly/orgzly-android/issues/870).
+        builder.connectTimeout(20, TimeUnit.SECONDS)
+        builder.readTimeout(20, TimeUnit.SECONDS)
+        builder.writeTimeout(20, TimeUnit.SECONDS)
 
         return builder.build()
     }
