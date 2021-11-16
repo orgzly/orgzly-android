@@ -182,6 +182,8 @@ dependencies {
         }
     }
 
+    implementation "io.github.rburgst:okhttp-digest:$versions.okhttp_digest"
+
     implementation("org.eclipse.jgit:org.eclipse.jgit:$versions.jgit") {
         // Resolves DuplicatePlatformClasses lint error
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'

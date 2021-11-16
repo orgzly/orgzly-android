@@ -61,6 +61,8 @@ buildscript {
 
     versions.sardine = '0.8'
 
+    versions.okhttp_digest = '2.5'
+
     versions.jgit = '4.4.1.201607150455-r'
 
     ext.versions = versions
