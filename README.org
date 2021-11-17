@@ -17,10 +17,10 @@ http://orgmode.org for more information.
 
 #+BEGIN_HTML
 <a href="https://play.google.com/store/apps/details?id=com.orgzly">
-<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Get it on Google Play" height="70">
+<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Get it on Google Play" height="80">
 </a>
 <a href="https://f-droid.org/app/com.orgzly">
-<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="70">
+<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80">
 </a>
 #+END_HTML
 
@@ -38,11 +38,6 @@ example:
 - ~./gradlew connectedAndroidTest~ runs instrumented unit tests
 
 Make sure you [[https://developer.android.com/training/testing/espresso/setup][turn off animations]] for the device you're testing on.
-
-*** Dropbox
-
-Dropbox integration, and associated tests, are disabled in the default configuration.
-To enable, follow the instructions in sample.app.properties.
 
 ** License
 
