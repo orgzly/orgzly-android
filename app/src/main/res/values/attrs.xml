@@ -7,6 +7,10 @@
         <attr name="menu_for_fling_left" format="integer"/>
     </declare-styleable>
 
+    <declare-styleable name="TextViewWithMarkup">
+        <attr name="parse_checkboxes" format="boolean" />
+    </declare-styleable>
+
     <declare-styleable name="IntegerRange">
         <attr name="min" format="integer"/>
         <attr name="max" format="integer"/>

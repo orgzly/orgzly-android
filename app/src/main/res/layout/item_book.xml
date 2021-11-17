@@ -2,7 +2,7 @@
 
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
@@ -11,10 +11,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start|center_vertical"
         android:layout_margin="@dimen/card_margin"
-        card_view:cardUseCompatPadding="true"
-        card_view:cardCornerRadius="0dp"
-        card_view:cardElevation="1dp"
-        card_view:cardBackgroundColor="?attr/item_book_card_bg_color"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="1dp"
+        app:cardBackgroundColor="?attr/item_book_card_bg_color"
         android:foreground="?android:attr/selectableItemBackground">
 
         <LinearLayout
