@@ -80,17 +80,21 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
             catchAndPostError {
                 val result = UseCaseRunner.run(useCase)
 
-                val noteIdBookId = result.userData as NoteDao.NoteIdBookId
+                if (result.userData == null) {
+                    openNoteWithPropertyRequestEvent.postValue(Pair(useCase, result))
+                } else {
+                    val noteIdBookId = result.userData as NoteDao.NoteIdBookId
 
-                when (AppPreferences.linkTarget(App.getAppContext())) {
-                    "note_details" ->
-                        openNoteWithPropertyRequestEvent.postValue(Pair(useCase, result))
+                    when (AppPreferences.linkTarget(App.getAppContext())) {
+                        "note_details" ->
+                            openNoteWithPropertyRequestEvent.postValue(Pair(useCase, result))
 
-                    "book_and_sparse_tree" ->
-                        UseCaseRunner.run(BookSparseTreeForNote(noteIdBookId.noteId))
+                        "book_and_sparse_tree" ->
+                            UseCaseRunner.run(BookSparseTreeForNote(noteIdBookId.noteId))
 
-                    "book_and_scroll" ->
-                        UseCaseRunner.run(BookScrollToNote(noteIdBookId.noteId))
+                        "book_and_scroll" ->
+                            UseCaseRunner.run(BookScrollToNote(noteIdBookId.noteId))
+                    }
                 }
             }
         }
