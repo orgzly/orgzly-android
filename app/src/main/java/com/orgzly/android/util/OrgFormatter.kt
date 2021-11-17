@@ -26,7 +26,7 @@ object OrgFormatter {
     private const val LINK_SCHEMES = "(?:$SYSTEM_LINK_SCHEMES|$CUSTOM_LINK_SCHEMES)"
 
     private val LINK_REGEX =
-            """($LINK_SCHEMES:\S+)|(\[\[(.+?)](?:\[(.+?)])?])""".toRegex()
+        """(?<![a-zA-Z0-9_@%:])($LINK_SCHEMES:\S+)|(\[\[(.+?)](?:\[(.+?)])?])""".toRegex()
 
     private const val PRE = "- \t('\"{"
     private const val POST = "- \\t.,:!?;'\")}\\["
@@ -56,7 +56,7 @@ object OrgFormatter {
 
     private const val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 
-    data class Link(val whole: MatchGroup, val link: MatchGroup, val name: MatchGroup)
+    data class LinkParts(val all: MatchGroup, val link: MatchGroup, val name: MatchGroup)
 
     private data class SpanRegion(
             val start: Int,
@@ -103,53 +103,51 @@ object OrgFormatter {
     }
 
     private fun parseLinks(config: Config, ssb: SpannableStringBuilder): SpannableStringBuilder {
-        return collectRegions(ssb) { spanRegions ->
+        return collectRegions(ssb) { result ->
             LINK_REGEX.findAll(ssb).forEach { match ->
                 val spans = mutableListOf<Any>()
 
                 val link = getLinkFromGroups(match.groups)
 
-                getSpanForLink(config, link.link)?.let { span ->
+                createSpanForLink(config, link.link.value)?.let { span ->
                     spans.add(span)
                 }
 
                 // Additional spans could be added here
 
                 val spanRegion = SpanRegion(
-                        link.whole.range.first,
-                        link.whole.range.last + 1,
+                        link.all.range.first,
+                        link.all.range.last + 1,
                         link.name.value,
                         spans)
 
-                spanRegions.add(spanRegion)
+                result.add(spanRegion)
             }
         }
     }
 
-    private fun getLinkFromGroups(groups: MatchGroupCollection): Link {
+    private fun getLinkFromGroups(groups: MatchGroupCollection): LinkParts {
         return when {
             groups[1] != null ->
                 // http://link.com
-                Link(whole = groups[1]!!, link = groups[1]!!, name = groups[1]!!)
+                LinkParts(all = groups[1]!!, link = groups[1]!!, name = groups[1]!!)
 
             groups[4] != null ->
                 // [[http://link.com][name]]
-                Link(whole = groups[2]!!, link = groups[3]!!, name = groups[4]!!)
+                LinkParts(all = groups[2]!!, link = groups[3]!!, name = groups[4]!!)
 
             groups[2] != null ->
                 // [[http://link.com]]
-                Link(whole = groups[2]!!, link = groups[3]!!, name = groups[3]!!)
+                LinkParts(all = groups[2]!!, link = groups[3]!!, name = groups[3]!!)
 
             else -> throw IllegalStateException()
         }
     }
 
-    private fun getSpanForLink(config: Config, match: MatchGroup): Any? {
+    private fun createSpanForLink(config: Config, link: String): Any? {
         if (!config.linkify) {
             return null
         }
-
-        val link = match.value
 
         return when {
             link.startsWith("file:") ->
@@ -334,11 +332,10 @@ object OrgFormatter {
                 }
 
                 // Create spanned string
-                val str = SpannableString(region.content)
-
-                // Set spans
-                region.spans.forEach { span ->
-                    str.setSpan(span, 0, str.length, FLAGS)
+                val str = SpannableString(region.content).also { str ->
+                    region.spans.forEach { span ->
+                        str.setSpan(span, 0, str.length, FLAGS)
+                    }
                 }
 
                 // Append spanned string
