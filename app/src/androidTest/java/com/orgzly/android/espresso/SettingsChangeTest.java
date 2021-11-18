@@ -10,10 +10,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static androidx.test.espresso.Espresso.onData;
+import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.clickSetting;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
@@ -38,7 +41,9 @@ public class SettingsChangeTest extends OrgzlyTest {
                 "SCHEDULED: <2018-01-01>\n" +
                 "Content for [a-1]\n" +
                 "* Note [a-2]\n" +
-                "SCHEDULED: <2014-01-01>\n"
+                "SCHEDULED: <2014-01-01>\n" +
+                "* Indented content\n" +
+                "    indented note content"
         );
 
         ActivityScenario.launch(MainActivity.class);
@@ -92,6 +97,32 @@ public class SettingsChangeTest extends OrgzlyTest {
         pressBack();
 
         onNoteInBook(1, R.id.item_head_content).check(matches(not(isDisplayed())));
+    }
+
+    @Test
+    public void testRemoveIndent() {
+        onBook(0).perform(click());
+        onNoteInBook(3, R.id.item_head_content)
+                .check(matches(withText("indented note content")));
+        onNoteInBook(3).perform(longClick());
+        onView(withId(R.id.body_view)).check(matches(withText("indented note content")));
+        onView(withId(R.id.body_edit)).check(matches(withText("    indented note content")));
+        pressBack();
+        pressBack();
+
+        // Disable remove indent setting
+        onActionItemClick(R.id.activity_action_settings, R.string.settings);
+        clickSetting("prefs_screen_look_and_feel", R.string.look_and_feel);
+        clickSetting("pref_key_remove_indent_from_body", R.string.remove_indent_from_body);
+        pressBack();
+        pressBack();
+
+        onBook(0).perform(click());
+        onNoteInBook(3, R.id.item_head_content)
+                .check(matches(withText("    indented note content")));
+        onNoteInBook(3).perform(longClick());
+        onView(withId(R.id.body_view)).check(matches(withText("    indented note content")));
+        onView(withId(R.id.body_edit)).check(matches(withText("    indented note content")));
     }
 
     private void setDefaultPriority(String priority) {

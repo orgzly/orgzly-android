@@ -163,6 +163,17 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_is_font_monospaced));
     }
 
+    public static boolean removeIndentFromBody(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_remove_indent_from_body),
+                context.getResources().getBoolean(R.bool.pref_default_remove_indent_from_body));
+    }
+
+    public static void removeIndentFromBody(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_remove_indent_from_body);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
+
     public static boolean styleText(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_style_text),

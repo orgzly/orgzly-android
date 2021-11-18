@@ -34,6 +34,11 @@
         android:defaultValue="@bool/pref_default_is_font_monospaced"/>
 
     <SwitchPreference
+        android:key="@string/pref_key_remove_indent_from_body"
+        android:title="@string/remove_indent_from_body"
+        android:defaultValue="@bool/pref_default_remove_indent_from_body"/>
+
+    <SwitchPreference
         android:key="@string/pref_key_style_text"
         android:title="@string/style_text_title"
         android:summary="@string/style_text_summary"
