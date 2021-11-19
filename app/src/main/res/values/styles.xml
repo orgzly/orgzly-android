@@ -145,6 +145,7 @@
         <item name="ic_language_18dp">@drawable/ic_language_black_18dp</item>
         <item name="ic_library_books_24dp">@drawable/ic_library_books_black_24dp</item>
         <item name="ic_link_18dp">@drawable/ic_link_black_18dp</item>
+        <item name="ic_looks_24dp">@drawable/ic_looks_black_24dp</item>
         <item name="ic_move_to_inbox_24dp">@drawable/ic_move_to_inbox_black_24dp</item>
         <item name="ic_more_horiz_24dp">@drawable/ic_more_horiz_black_24dp</item>
         <item name="ic_menu_open_24dp">@drawable/ic_menu_open_black_24dp</item>
@@ -316,6 +317,7 @@
         <item name="ic_language_18dp">@drawable/ic_language_white_18dp</item>
         <item name="ic_library_books_24dp">@drawable/ic_library_books_white_24dp</item>
         <item name="ic_link_18dp">@drawable/ic_link_white_18dp</item>
+        <item name="ic_looks_24dp">@drawable/ic_looks_white_24dp</item>
         <item name="ic_move_to_inbox_24dp">@drawable/ic_move_to_inbox_white_24dp</item>
         <item name="ic_more_horiz_24dp">@drawable/ic_more_horiz_white_24dp</item>
         <item name="ic_menu_open_24dp">@drawable/ic_menu_open_white_24dp</item>

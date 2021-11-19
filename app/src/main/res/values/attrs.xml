@@ -126,6 +126,7 @@
         <attr name="ic_language_18dp" format="reference"/>
         <attr name="ic_library_books_24dp" format="reference"/>
         <attr name="ic_link_18dp" format="reference"/>
+        <attr name="ic_looks_24dp" format="reference"/>
         <attr name="ic_menu_open_24dp" format="reference"/>
         <attr name="ic_more_horiz_24dp" format="reference"/>
         <attr name="ic_move_to_inbox_24dp" format="reference"/>
