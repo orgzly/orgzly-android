@@ -520,6 +520,8 @@
     <bool name="pref_default_widget_display_book_name" translatable="false">false</bool>
 
     <!-- Git preferences -->
+    <string name="pref_key_git_is_enabled" translatable="false">pref_key_git_is_enabled</string>
+    <bool name="pref_default_git_is_enabled" translatable="false">false</bool>
     <string name="pref_key_git_author" traslatable="false">pref_key_git_author</string>
     <string name="pref_key_git_email" traslatable="false">pref_key_git_email</string>
     <string name="pref_key_git_https_username" translatable="false">pref_key_git_https_username</string>

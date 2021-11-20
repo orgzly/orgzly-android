@@ -400,6 +400,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                 "prefs_screen_org_file_format" to R.xml.prefs_screen_org_file_format, // Sub-screen
                 "prefs_screen_org_mode_tags_indent" to R.xml.prefs_screen_org_mode_tags_indent, // Sub-screen
                 "prefs_screen_widget" to R.xml.prefs_screen_widget, // Sub-screen
+                "prefs_screen_developer" to R.xml.prefs_screen_developer, // Sub-screen
                 "prefs_screen_app" to R.xml.prefs_screen_app
         )
 

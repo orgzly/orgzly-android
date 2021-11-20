@@ -18,6 +18,7 @@ import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.db.entity.Repo
+import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.repos.RepoFactory
 import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.CommonActivity
@@ -107,7 +108,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
         }
 
         binding.activityReposGit.let { button ->
-            if (BuildConfig.IS_GIT_ENABLED) {
+            if (AppPreferences.gitIsEnabled(this)) {
                 button.setOnClickListener {
                     startRepoActivity(R.id.repos_options_menu_item_new_git)
                 }
@@ -157,7 +158,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
                 newRepos.removeItem(R.id.repos_options_menu_item_new_dropbox)
             }
 
-            if (!BuildConfig.IS_GIT_ENABLED) {
+            if (!AppPreferences.gitIsEnabled(App.getAppContext())) {
                 newRepos.removeItem(R.id.repos_options_menu_item_new_git)
             }
         }
