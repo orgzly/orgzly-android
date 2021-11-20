@@ -63,7 +63,7 @@ buildscript {
 
     versions.okhttp_digest = '2.5'
 
-    versions.jgit = '4.4.1.201607150455-r'
+    versions.jgit = '5.13.0.202109080827-r'
 
     ext.versions = versions
 
