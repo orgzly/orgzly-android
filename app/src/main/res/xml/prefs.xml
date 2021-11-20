@@ -6,7 +6,7 @@
 
     <androidx.preference.PreferenceScreen
         android:title="@string/look_and_feel"
-        android:icon="?attr/ic_looks_24dp"
+        android:icon="?attr/ic_palette_24dp"
         android:key="prefs_screen_look_and_feel"/>
 
     <androidx.preference.PreferenceScreen
