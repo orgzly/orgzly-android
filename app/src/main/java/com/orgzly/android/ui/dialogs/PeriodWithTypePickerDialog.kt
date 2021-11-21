@@ -20,7 +20,7 @@ abstract class PeriodWithTypePickerDialog(
         context: Context,
         @StringRes private val titleId: Int,
         @StringRes private val descriptionId: Int,
-        @ArrayRes private val typesId: Int,
+        @ArrayRes private val typesId: Int?,
         @ArrayRes private val typesDescriptionsId: Int,
         private val initialValue: String
 ) : AlertDialog(context) {
@@ -49,15 +49,19 @@ abstract class PeriodWithTypePickerDialog(
             cancel()
         }
 
+        if (typesId != null) {
+            val types = context.resources.getStringArray(typesId)
 
-        val types = context.resources.getStringArray(typesId)
-        binding.typePicker.apply {
-            minValue = 0
-            maxValue = types.size - 1
-            displayedValues = types
-            setOnValueChangedListener { _, _, newVal ->
-                setTypeDescription(newVal)
+            binding.typePicker.apply {
+                minValue = 0
+                maxValue = types.size - 1
+                displayedValues = types
+                setOnValueChangedListener { _, _, newVal ->
+                    setTypeDescription(newVal)
+                }
             }
+        } else {
+            binding.typePicker.visibility = View.GONE
         }
 
         binding.valuePicker.apply {

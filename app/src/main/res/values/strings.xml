@@ -219,7 +219,6 @@
     <string name="git_clone_error_target_not_empty">The target directory is not empty</string>
     <string name="git_clone_error_uri_not_supported">The remote address is not supported</string>
 
-    <string name="webdav" translatable="false">WebDAV</string>
     <string name="webdav_url_hint">URL (e.g. webdavs://example.com/my-org-files/)</string>
     <string name="webdav_auth_username_hint">Username</string>
     <string name="webdav_auth_password_hint">Password</string>
@@ -401,6 +400,7 @@
     <string name="displayed_book_details_last_action">Last action</string>
     <string name="displayed_book_details_notes_count" >Notes count</string>
 
+    <string name="color_scheme_system">System</string>
     <string name="color_scheme_light">Light</string>
     <string name="color_scheme_dark">Dark</string>
     <string name="color_scheme_black">Black</string>
@@ -524,6 +524,7 @@
 
     <string name="auto_sync">Auto-sync</string>
     <string name="auto_sync_experimental_summary">Used for local repositories only</string>
+    <string name="auto_sync_summary">Not supported for Dropbox</string>
     <string name="auto_sync_warning">Depending on which options you choose, sync could be triggered often. If notebook is modified, its entire content is transferred to or from the repository. Certain actions might be delayed while syncing is in progress.</string>
 
     <string name="pref_title_sync_after_note_create">Note created</string>
@@ -706,4 +707,8 @@
     <string name="attach_method_copy_id">Copy to ID property based directory under attachment directory</string>
 
     <string name="attach_dir_default_path">Attachment directory, a relative path under the repository</string>
+
+    <string name="developer_options">Developer options</string>
+    <string name="git_repository_type">Git repository type</string>
+    <string name="in_development">In development</string>
 </resources>

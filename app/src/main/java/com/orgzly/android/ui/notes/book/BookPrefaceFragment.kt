@@ -5,7 +5,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
@@ -52,7 +52,7 @@ class BookPrefaceFragment : Fragment() {
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
-        sharedMainActivityViewModel = ViewModelProviders.of(requireActivity())
+        sharedMainActivityViewModel = ViewModelProvider(requireActivity())
                 .get(SharedMainActivityViewModel::class.java)
 
         setHasOptionsMenu(true)

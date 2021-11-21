@@ -2,6 +2,7 @@
 
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <ViewFlipper
@@ -90,6 +91,7 @@
                         android:visibility="visible" />
 
                     <com.orgzly.android.ui.views.TextViewWithMarkup
+                        app:parse_checkboxes="false"
                         android:id="@+id/fragment_note_title_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

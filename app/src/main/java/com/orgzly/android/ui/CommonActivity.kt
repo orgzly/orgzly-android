@@ -274,6 +274,9 @@ abstract class CommonActivity : AppCompatActivity() {
     private fun setupTheme() {
         // Set theme (color scheme)
         when (AppPreferences.colorScheme(this)) {
+            getString(R.string.pref_value_color_scheme_system) ->
+                setTheme(R.style.AppDayNightTheme)
+
             getString(R.string.pref_value_color_scheme_dark) ->
                 setTheme(R.style.AppDarkTheme_Dark)
 
@@ -325,6 +328,8 @@ abstract class CommonActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         when (requestCode) {
             in AppPermissions.Usage.values().map { it.ordinal } -> {
                 /* If request is cancelled, the result arrays are empty. */

@@ -22,6 +22,8 @@ Halten Sie das Symbol gedrückt, um den gesamten Unterbaum aufzuklappen.
 
 Wenn Sie mit der Abfrage „t.Schlagwort1“ nach Notizen mit dem Schlagwort „Schlagwort1“ suchen, wird diese Notiz in die Suchergebnisse aufgenommen.
 
+*** Eine Notiz mit dem Schlagwort =ARCHIVE= ist ausgegraut :ARCHIVE:
+
 ** TODO-Notizen können einen Status besitzen
 
 Sie können eine beliebige Anzahl zu verwendender Status konfigurieren: TODO, NEXT, DONE usw.

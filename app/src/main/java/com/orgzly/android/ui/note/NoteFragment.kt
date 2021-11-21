@@ -20,7 +20,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
@@ -130,7 +130,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
-        sharedMainActivityViewModel = ViewModelProviders.of(requireActivity())
+        sharedMainActivityViewModel = ViewModelProvider(requireActivity())
                 .get(SharedMainActivityViewModel::class.java)
 
         val factory = NoteViewModelFactory.getInstance(
@@ -142,7 +142,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 initialContent,
                 attachmentUri)
 
-        viewModel = ViewModelProviders.of(this, factory).get(NoteViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(NoteViewModel::class.java)
 
         setHasOptionsMenu(true)
 
@@ -437,7 +437,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         // Title
         binding.fragmentNoteTitle.setText(payload.title)
-        binding.fragmentNoteTitleView.setRawText(payload.title ?: "")
+        binding.fragmentNoteTitleView.setRawText(payload.title)
 
         // Tags
         if (!payload.tags.isEmpty()) {
@@ -750,7 +750,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             }
 
             R.id.fragment_note_state_button -> {
-                val states = NoteStates.fromPreferences(context!!)
+                val states = NoteStates.fromPreferences(requireContext())
 
                 val keywords = states.array
 
@@ -780,7 +780,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             }
 
             R.id.fragment_note_priority_button -> {
-                val priorities = NotePriorities.fromPreferences(context!!)
+                val priorities = NotePriorities.fromPreferences(requireContext())
 
                 val keywords = priorities.array
 

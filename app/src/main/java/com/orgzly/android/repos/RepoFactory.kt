@@ -3,6 +3,7 @@ package com.orgzly.android.repos
 import android.content.Context
 import com.orgzly.BuildConfig
 import com.orgzly.android.data.DbRepoBookRepository
+import com.orgzly.android.prefs.AppPreferences
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,7 +31,7 @@ class RepoFactory @Inject constructor(
             type == RepoType.WEBDAV.id ->
                 WebdavRepo.getInstance(repoWithProps)
 
-            type == RepoType.GIT.id && BuildConfig.IS_GIT_ENABLED ->
+            type == RepoType.GIT.id && AppPreferences.gitIsEnabled(context) ->
                 GitRepo.getInstance(repoWithProps, context)
 
             else ->

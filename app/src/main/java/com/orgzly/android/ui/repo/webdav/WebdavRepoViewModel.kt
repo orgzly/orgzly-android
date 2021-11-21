@@ -43,10 +43,11 @@ class WebdavRepoViewModel(
                 val result = when (e) {
                     is SardineException -> {
                         when (e.statusCode) {
-                            401 -> ConnectionResult.Error(R.string.webdav_test_error_auth)
-                            else -> ConnectionResult.Error("${e.statusCode}: ${e.responsePhrase}")
+                            401 -> // Unauthorized
+                                ConnectionResult.Error(R.string.webdav_test_error_auth)
+                            else ->
+                                ConnectionResult.Error("${e.statusCode}: ${e.responsePhrase}: ${e.localizedMessage}")
                         }
-
                     }
 
                     else -> ConnectionResult.Error(e.message ?: R.string.webdav_test_error_unknown)

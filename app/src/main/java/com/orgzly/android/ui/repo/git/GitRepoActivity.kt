@@ -3,7 +3,6 @@ package com.orgzly.android.ui.repo.git
 
 import android.app.Activity
 import android.app.ProgressDialog
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
@@ -15,13 +14,10 @@ import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.textfield.TextInputEditText
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import com.orgzly.R
 import com.orgzly.android.App
@@ -118,7 +114,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
         val factory = RepoViewModelFactory.getInstance(dataRepository, repoId)
 
-        viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(RepoViewModel::class.java)
 
         /* Set directory value for existing repository being edited. */
         if (repoId != 0L) {

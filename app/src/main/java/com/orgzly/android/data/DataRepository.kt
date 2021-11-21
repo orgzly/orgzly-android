@@ -1926,7 +1926,7 @@ class DataRepository @Inject constructor(
     }
 
     fun findNoteHavingProperty(name: String, value: String): NoteDao.NoteIdBookId? {
-        return db.note().firstNoteHavingPropertyLowerCase(name.toLowerCase(), value.toLowerCase())
+        return db.note().firstNoteHavingPropertyLowerCase(name.lowercase(), value.lowercase())
     }
 
     /*

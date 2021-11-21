@@ -815,4 +815,12 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onNotesInSearch().check(matches(recyclerViewItemCount(1)));
     }
+
+    @Test
+    public void testNotScheduled() {
+        testUtils.setupBook("notebook-1", "* Note A");
+        ActivityScenario.launch(MainActivity.class);
+        searchForText("s.no");
+        onNotesInSearch().check(matches(recyclerViewItemCount(1)));
+    }
 }

@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.ui.TimeType
@@ -71,7 +71,7 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
 
 
         val factory = TimestampDialogViewModelFactory.getInstance(timeType, dateTimeString)
-        viewModel = ViewModelProviders.of(this, factory).get(TimestampDialogViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(TimestampDialogViewModel::class.java)
 
         setupObservers()
 

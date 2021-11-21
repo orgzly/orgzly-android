@@ -1,92 +1,94 @@
-Welcome to Orgzly!
+Witaj w Orgzly!
 
-* Notes
-Kliknij notatkę, żeby ją otworzyć
-Kliknij notatkę i przytrzymaj, żeby ją zaznaczyć
+* Notatki
+** Kliknij notatkę, aby ją otworzyć
+** Kliknij i przytrzymaj notatkę, aby ją zaznaczyć
 
-You can select multiple notes.
+Możesz zaznaczyć wiele notatek.
 
-** Fling note right to open its quick-menu
+** Przeciągnij notatkę w prawo, aby otworzyć szybkie menu
 
-Fling it left to open a different menu.
+Przeciągnij w lewo, aby otworzyć inne menu.
 
-** Fold a note which contains sub-notes by clicking the icon next to it
+** Zwiń notatkę, która zawiera inne notatki, klikając ikonę „–” obok niej
 
-Long-click the icon to unfold entire subtree.
+Przytrzymaj ikonę „+”, aby rozwinąć wszystkie podrzędne notatki.
 
-*** There is no limit in number of levels you can have
-**** Use this to better organize your notes
+*** Liczba poziomów notatek jest nieograniczona
+**** Wykorzystaj to, aby lepiej uporządkować swoje notatki
 
-** Note can have tags :tag1:tag2:
-*** Sub-note inherits the tags :tag3:
+** Notatka może mieć przypisane znaczniki :znacznik1:znacznik2:
+*** Podrzędna notatka dziedziczy znaczniki :znacznik3:
 
-If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
+Jeśli wyszukasz notatki ze znacznikiem „znacznik1” za pomocą zapytania „t.znacznik1”, to ta notatka zostanie uwzględniona w wynikach wyszukiwania.
 
-** TODO Note can have a state
+*** A note that has the =ARCHIVE= tag set is grayed out :ARCHIVE:
 
-You can configure any number of states to use: TODO, NEXT, DONE, etc.
+** TODO Notatka może mieć przypisany stan
 
-*** There are two /types/ of states: to-do and done
+Możesz skonfigurować dowolną liczbę stanów do użycia: TODO, NEXT, DONE, itp.
 
-*** DONE This is a note with /done/ type of state
+*** Istnieją dwa /typy/ stanów: do zrobienia i zrobione
+
+*** DONE To jest notatka ze /zrobionym/ typem stanu
 CLOSED: [2018-01-24 Wed 17:00]
 
-** Note can have a scheduled time
+** Notatka może mieć zaplanowany termin
 SCHEDULED: <2015-02-20 Fri 15:15>
 
-*** Times can have a repeater
+*** Zaplanowane terminy mogą się okresowo powtarzać
 SCHEDULED: <2015-02-16 Mon .+2d>
 
-** You can also set a deadline time
+** Możesz również ustawić termin ostateczny
 DEADLINE: <2015-02-20 Fri>
 
-** Reminders for scheduled and deadline times are supported
+** Obsługiwane są przypomnienia o zaplanowanych i ostatecznych terminach
 
-They are disabled by default and need to be enabled in Settings.
+Są one domyślnie wyłączone i muszą zostać włączone w ustawieniach.
 
-** [#A] Note can have a priority
+** [#A] Notatka może mieć priorytet
 
-You can change the number of priorities in Settings. You can also change default priority - assumed priority for notes without one set.
+Możesz zmienić liczbę poziomów priorytetów w ustawieniach. Możesz również zmienić domyślny priorytet, przypisywany notatkom, które nie mają ustawionego żadnego.
 
-** Note can include links
+** Notatka może zawierać łącza
 
-Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[http://www.orgzly.com][Orgzly.com]]).
+Wybierz numer telefonu (tel:123-456-789), wyślij wiadomość SMS (sms:123-456-789), napisz e-mail (mailto:support@orgzly.com) lub odwiedź stronę internetową ([[http://www.orgzly.com][Orgzly.com]]).
 
-You can also link to another note or notebook within the app.
+Możesz również zamieszczać łącza do innych notatek lub notatników w aplikacji.
 
-See http://www.orgzly.com/help#links for more information.
+Zobacz http://www.orgzly.com/help#links, aby uzyskać więcej informacji.
 
-** Basic typographical emphasis is supported
+** Orgzly wspiera podstawowe formatowanie tekstu
 
-You can make words *bold*, /italic/, _underlined_, =verbatim=, ~code~ and +strike-through+.
+Możesz stosować *pogrubienie*, /kursywę/, _podkreślenie_, =dosłowny tekst=, ~kod~ i +przekreślenie+.
 
-** Checkbox list is available
+** Możliwe jest tworzenie list do odhaczania
 
-- [X] Task 1
-- [ ] Task 2
-- [ ] Task 3
+- [X] Zadanie „1”
+- [ ] Zadanie „2”
+- [ ] Zadanie „3”
 
-Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
+Kliknij pole wyboru, aby je przełączyć. Naciśnij klawisz ENTER na końcu linii, aby utworzyć nowy element listy.
 
-* Search
-** There are many search operators supported
+* Wyszukiwanie
+** Istnieje wiele obsługiwanych operatorów wyszukiwania
 
-You can search notes by state, tag, scheduled or deadline time etc.
+Możesz wyszukiwać notatki według stanu, znaczników, zaplanowanego lub ostatecznego terminu itp.
 
-See http://www.orgzly.com/help#search to learn more.
+Zobacz http://www.orgzly.com/help#search, aby dowiedzieć się więcej.
 
-** Search queries can be saved for quick access
+** Aby uzyskać szybki dostęp do wyszukań, można je zapisać
 
-Try sample searches from navigation drawer and note the queries they use.
+Wypróbuj przykładowe wyszukiwania z szuflady nawigacyjnej i zwróć uwagę na użyte w nich zapytania.
 
-You can create your own saved searches by clicking on “Searches” in the navigation drawer.
+Możesz utworzyć własne wyszukiwania, klikając na „Wyszukiwania” w szufladzie nawigacyjnej.
 
-* Syncing
+* Synchronizacja
 
-** Notebooks can be saved as plain-text files
+** Notatniki mogą być zapisywane jako zwykłe pliki tekstowe
 
-Files are in the format used by “Org mode”.
+Pliki zapisywane są w formacie używanym przez „Org-mode”.
 
-** Location (repository) type
+** Typ lokalizacji (repozytorium)
 
-You can keep notebooks synced with a directory on your mobile device, SD card or Dropbox.
+Możesz synchronizować notatniki z katalogiem na swoim urządzeniu mobilnym, karcie SD lub Dropboxie.
