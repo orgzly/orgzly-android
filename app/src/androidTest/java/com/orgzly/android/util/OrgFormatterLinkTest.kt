@@ -1,10 +1,10 @@
 package com.orgzly.android.util
 
-import android.os.Environment
 import android.text.style.URLSpan
 import com.orgzly.android.ui.views.style.FileLinkSpan
 import com.orgzly.android.ui.views.style.IdLinkSpan
 import org.hamcrest.CoreMatchers.equalTo
+import org.junit.After
 import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -28,7 +28,7 @@ class OrgFormatterLinkTest(private val param: Parameter) : OrgFormatterTest() {
     override fun setUp() {
         super.setUp()
 
-        File(Environment.getExternalStorageDirectory(), "orgzly-tests").let { dir ->
+        File(context.cacheDir, "orgzly-tests").let { dir ->
             if (!dir.exists() && !dir.mkdirs()) {
                 throw IOException("Failed to create $dir")
             }
@@ -41,6 +41,15 @@ class OrgFormatterLinkTest(private val param: Parameter) : OrgFormatterTest() {
             classLoader.getResourceAsStream("assets/images/logo.png").use { stream ->
                 MiscUtils.writeStreamToFile(stream, File(dir, "logo.png"))
             }
+        }
+    }
+
+    @After
+    override fun tearDown() {
+        super.tearDown()
+
+        File(context.cacheDir, "orgzly-tests").let { dir ->
+            dir.deleteRecursively()
         }
     }
 

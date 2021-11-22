@@ -4,11 +4,11 @@ apply plugin: 'kotlin-kapt'
 
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 16 // Jelly Bean (4.1)
-        targetSdkVersion 29 // Android 10
+        targetSdkVersion 30 // Android 11
         applicationId "com.orgzly"
         versionCode 158
         versionName "1.8.5"
@@ -92,11 +92,13 @@ android {
          * javax.servlet.http. Referenced from com.dropbox.core.DbxStandardSessionStore.
          */
         disable 'InvalidPackage'
+
+        checkDependencies true
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     packagingOptions {
