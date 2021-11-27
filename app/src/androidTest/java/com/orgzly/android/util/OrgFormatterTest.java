@@ -16,19 +16,20 @@ public class OrgFormatterTest extends OrgzlyTest {
         String url;
     }
 
-    protected class OrgSpannable {
-        final String string;
-        final SpanItem[] spans;
+    protected class ParseResult {
+        final String outputString;
+        final SpanItem[] foundSpans;
 
-        public OrgSpannable(String str) {
+        public ParseResult(String str) {
             SpannableStringBuilder ssb = OrgFormatter.parse(str, context);
 
-            string = ssb.toString();
+            outputString = ssb.toString();
 
+            Object[] allSpans = ssb.getSpans(0, ssb.length(), Object.class);
 
-            Object[] allSpans = ssb.getSpans(0, ssb.length() - 1, Object.class);
+            // LogUtils.d("WIP", "Found " + allSpans.length + " spans in: " + str + " parsed to: " + outputString);
 
-            spans = new SpanItem[allSpans.length];
+            foundSpans = new SpanItem[allSpans.length];
 
             for (int i = 0; i < allSpans.length; i++) {
                 Object span = allSpans[i];
@@ -42,11 +43,11 @@ public class OrgFormatterTest extends OrgzlyTest {
                     spanItem.url = ((URLSpan) span).getURL();
                 }
 
-                spans[i] = spanItem;
+                foundSpans[i] = spanItem;
             }
 
             // Sort spans in the order they appear
-            Arrays.sort(spans, (o1, o2) -> o1.start - o2.start);
+            Arrays.sort(foundSpans, (o1, o2) -> o1.start - o2.start);
         }
     }
 }

@@ -8,12 +8,15 @@ import android.util.AttributeSet
 import android.util.Log
 import android.widget.TextView
 import com.orgzly.BuildConfig
+import com.orgzly.R
 import com.orgzly.android.ui.main.MainActivity
+import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.ui.views.style.CheckboxSpan
 import com.orgzly.android.ui.views.style.DrawerEndSpan
 import com.orgzly.android.ui.views.style.DrawerSpan
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.OrgFormatter
+
 
 /**
  * [TextView] with markup support.
@@ -22,17 +25,33 @@ import com.orgzly.android.util.OrgFormatter
  */
 class TextViewWithMarkup : TextViewFixed {
     constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+        parseAttrs(attrs)
+    }
+
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        parseAttrs(attrs)
+    }
 
     var onUserTextChangeListener: Runnable? = null
 
     private var rawText: CharSequence? = null
 
+    private var parseCheckboxes = true
+
+    private fun parseAttrs(attrs: AttributeSet?) {
+        if (attrs != null) {
+            context.styledAttributes(attrs, R.styleable.TextViewWithMarkup) { typedArray ->
+                parseCheckboxes = typedArray.getBoolean(R.styleable.TextViewWithMarkup_parse_checkboxes, true)
+            }
+        }
+    }
+
     fun setRawText(text: CharSequence) {
         rawText = text
 
-        setText(OrgFormatter.parse(text, context), BufferType.SPANNABLE)
+        setText(OrgFormatter.parse(text, context, true, parseCheckboxes), BufferType.SPANNABLE)
     }
 
     fun getRawText() : CharSequence? {

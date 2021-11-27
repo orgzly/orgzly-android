@@ -12,54 +12,54 @@ public class OrgFormatterStyleTextTest extends OrgFormatterTest {
     public void testTwoBoldNextToEachOtherWithMarks() {
         AppPreferences.styledTextWithMarks(context, true);
 
-        OrgSpannable spannable = new OrgSpannable("*a* *b*");
+        ParseResult spannable = new ParseResult("*a* *b*");
 
-        assertThat(spannable.string, is("*a* *b*"));
+        assertThat(spannable.outputString, is("*a* *b*"));
 
-        assertThat(spannable.spans.length, is(2));
+        assertThat(spannable.foundSpans.length, is(2));
 
-        assertThat(spannable.spans[0].start, is(0));
-        assertThat(spannable.spans[0].end, is(3));
+        assertThat(spannable.foundSpans[0].start, is(0));
+        assertThat(spannable.foundSpans[0].end, is(3));
 
-        assertThat(spannable.spans[1].start, is(4));
-        assertThat(spannable.spans[1].end, is(7));
+        assertThat(spannable.foundSpans[1].start, is(4));
+        assertThat(spannable.foundSpans[1].end, is(7));
     }
 
     @Test
     public void testBoldItalic() {
-        OrgSpannable spannable = new OrgSpannable("*_a_*");
+        ParseResult spannable = new ParseResult("*_a_*");
 
-        assertThat(spannable.string, is("a"));
+        assertThat(spannable.outputString, is("a"));
 
-        assertThat(spannable.spans.length, is(2));
+        assertThat(spannable.foundSpans.length, is(2));
 
-        assertThat(spannable.spans[0].start, is(0));
-        assertThat(spannable.spans[0].end, is(1));
+        assertThat(spannable.foundSpans[0].start, is(0));
+        assertThat(spannable.foundSpans[0].end, is(1));
 
-        assertThat(spannable.spans[1].start, is(0));
-        assertThat(spannable.spans[1].end, is(1));
+        assertThat(spannable.foundSpans[1].start, is(0));
+        assertThat(spannable.foundSpans[1].end, is(1));
     }
 
     @Test
     public void testBoldItalicWithMarks() {
         AppPreferences.styledTextWithMarks(context, true);
 
-        OrgSpannable spannable = new OrgSpannable("*_a_*");
+        ParseResult spannable = new ParseResult("*_a_*");
 
-        assertThat(spannable.string, is("*_a_*"));
+        assertThat(spannable.outputString, is("*_a_*"));
 
-        assertThat(spannable.spans.length, is(2));
+        assertThat(spannable.foundSpans.length, is(2));
 
-        assertThat(spannable.spans[0].start, is(0));
-        assertThat(spannable.spans[0].end, is(5));
+        assertThat(spannable.foundSpans[0].start, is(0));
+        assertThat(spannable.foundSpans[0].end, is(5));
 
-        assertThat(spannable.spans[1].start, is(0));
-        assertThat(spannable.spans[1].end, is(5));
+        assertThat(spannable.foundSpans[1].start, is(0));
+        assertThat(spannable.foundSpans[1].end, is(5));
     }
 
     @Test
     public void testMarkupWithTrailingCharacters() {
-        OrgSpannable spannable = new OrgSpannable("*a* b");
-        assertThat(spannable.string, is("a b"));
+        ParseResult spannable = new ParseResult("*a* b");
+        assertThat(spannable.outputString, is("a b"));
     }
 }

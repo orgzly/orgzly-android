@@ -14,7 +14,7 @@ import com.orgzly.R
 open class SwipeAction(val context: Context, @StringRes val res: Int) {
     private val attrs = SwipeActionAttributes.getInstance(context)
 
-    private val labelText = context.getString(res).toUpperCase()
+    private val labelText = context.getString(res).uppercase()
 
     private val margin = context.resources.getDimension(R.dimen.screen_edge)
 

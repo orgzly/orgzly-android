@@ -10,7 +10,7 @@ class WarningPeriodPickerDialog(context: Context, initialValue: String, val onSe
                 context,
                 R.string.warning_period_dialog_title,
                 R.string.warning_period_description,
-                R.array.warning_period_types,
+                null,
                 0,
                 initialValue) {
 

@@ -22,6 +22,8 @@ Toque longo no ícone abre a subárvore inteira.
 
 Se você pesquisar por notas com a etiqueta "tag1" usando a consulta "t.tag1", esta nota será incluida nos resultados da busca.
 
+*** A note that has the =ARCHIVE= tag set is grayed out :ARCHIVE:
+
 ** TODO Notas podem ter um estado
 
 Você pode configurar qualquer quantidade de estados para uso: TODO, NEXT, DONE etc.

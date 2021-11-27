@@ -22,6 +22,8 @@ Long-click the icon to unfold entire subtree.
 
 If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
 
+*** A note that has the =ARCHIVE= tag set is grayed out :ARCHIVE:
+
 ** TODO Anteckningar kan ha en status
 
 Du kan sätta upp olika status att jobba med: TODO, NEXT, DONE, osv.

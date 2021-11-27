@@ -22,6 +22,8 @@ Appuyiez longuement pour ouvrir toute la sous-arborescence.
 
 Si vous recherchez des notes avec le tag “tag1” en utilisant la requête “t.tag1”, cette note sera incluse dans les résultats de recherche.
 
+*** Une note qui a la balise =ARCHIVE= est grisée :ARCHIVE:
+
 ** TODO Les notes peuvent avoir un état
 
 Vous pouvez configurer tous les états que vous souhaitez : TODO, NEXT, DONE, etc.

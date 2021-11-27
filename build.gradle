@@ -4,40 +4,40 @@ buildscript {
 
     def versions = [:]
 
-    versions.android_gradle_plugin = '4.2.0'
+    versions.android_gradle_plugin = '7.0.3'
 
-    versions.kotlin = '1.4.31'
+    versions.kotlin = '1.6.0'
 
     versions.jetbrains_annotations = '16.0.3'
 
     versions.android_multidex = '2.0.1'
 
-    versions.android_appcompat = '1.1.0'
+    versions.android_appcompat = '1.3.0'
 
     versions.android_documentfile = '1.0.1'
     versions.android_localbroadcastmanager = '1.0.0'
 
     versions.android_cardview = '1.0.0'
-    versions.android_recyclerview = '1.0.0'
+    versions.android_recyclerview = '1.2.1'
     versions.android_viewpager = '1.0.0'
-    versions.android_constraint_layout = '2.0.0-beta4'
-    versions.android_preference = '1.1.0'
-    versions.android_material = '1.1.0'
-    versions.android_swiperefreshlayout = '1.0.0'
+    versions.android_constraint_layout = '2.0.4'
+    versions.android_preference = '1.1.1'
+    versions.android_material = '1.3.0'
+    versions.android_swiperefreshlayout = '1.1.0'
 
-    versions.android_room = '2.2.1'
+    versions.android_room = '2.3.0'
 
-    versions.android_lifecycle = '2.1.0'
+    versions.android_lifecycle = '2.2.0'
 
-    versions.android_annotation = '1.1.0'
+    versions.android_annotation = '1.2.0'
 
     versions.junit = '4.12'
 
-    versions.android_test_espresso = '3.3.0'
+    versions.android_test_espresso = '3.4.0'
 
-    versions.android_test = '1.3.0'
+    versions.android_test = '1.4.0'
 
-    versions.android_test_ext_junit = '1.1.2'
+    versions.android_test_ext_junit = '1.1.3'
 
     versions.android_test_uiautomator = '2.2.0'
 
@@ -59,14 +59,16 @@ buildscript {
 
     versions.glide = '4.10.0'
 
-    versions.sardine = '0.5'
+    versions.sardine = '0.8'
 
-    versions.jgit = '4.4.1.201607150455-r'
+    versions.okhttp_digest = '2.5'
+
+    versions.jgit = '5.13.0.202109080827-r'
 
     ext.versions = versions
 
     repositories {
-        jcenter()
+        mavenCentral()
         google()
     }
 
@@ -76,19 +78,19 @@ buildscript {
     }
 }
 
-
-plugins {
-    id "com.github.ben-manes.versions" version "0.26.0"
-}
-
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
 
         google()
 
         maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots"
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+        }
+
+        // For sardine-android
+        maven {
+            url 'https://jitpack.io'
         }
     }
 

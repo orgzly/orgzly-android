@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -89,7 +89,7 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
-        sharedMainActivityViewModel = ViewModelProviders.of(requireActivity())
+        sharedMainActivityViewModel = ViewModelProvider(requireActivity())
                 .get(SharedMainActivityViewModel::class.java)
 
         /* Would like to add items to the Options Menu.
@@ -350,7 +350,7 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         val factory = BooksViewModelFactory.getInstance(dataRepository)
-        viewModel = ViewModelProviders.of(this, factory).get(BooksViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(BooksViewModel::class.java)
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer {
             binding.fragmentBooksViewFlipper.displayedChild = when (it) {

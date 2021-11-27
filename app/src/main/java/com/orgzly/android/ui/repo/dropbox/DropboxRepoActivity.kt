@@ -13,7 +13,7 @@ import android.view.MenuItem
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
@@ -83,7 +83,7 @@ class DropboxRepoActivity : CommonActivity() {
 
         val factory = RepoViewModelFactory.getInstance(dataRepository, repoId)
 
-        viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(RepoViewModel::class.java)
 
         if (viewModel.repoId != 0L) { // Editing existing
             viewModel.loadRepoProperties()?.let { repoWithProps ->

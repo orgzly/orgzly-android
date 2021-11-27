@@ -1,6 +1,13 @@
 package com.orgzly.android.repos
 
 import android.net.Uri
+import com.burgstaller.okhttp.AuthenticationCacheInterceptor
+import com.burgstaller.okhttp.CachingAuthenticatorDecorator
+import com.burgstaller.okhttp.DispatchingAuthenticator
+import com.burgstaller.okhttp.basic.BasicAuthenticator
+import com.burgstaller.okhttp.digest.CachingAuthenticator
+import com.burgstaller.okhttp.digest.Credentials
+import com.burgstaller.okhttp.digest.DigestAuthenticator
 import com.orgzly.android.BookName
 import com.orgzly.android.util.UriUtils
 import com.thegrizzlylabs.sardineandroid.DavResource
@@ -13,41 +20,64 @@ import java.io.InputStream
 import java.security.KeyStore
 import java.security.cert.CertificateFactory
 import java.util.*
-import javax.net.ssl.*
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManagerFactory
+import javax.net.ssl.X509TrustManager
+import kotlin.time.Duration
 
 
 class WebdavRepo(
         private val repoId: Long,
         private val uri: Uri,
-        username: String,
-        password: String,
-        certificates: String? = null
+        private val username: String,
+        private val password: String,
+        private val certificates: String? = null
 ) : SyncRepo {
 
-    private val sardine = client(certificates).apply {
-        setCredentials(username, password)
+    private val sardine by lazy {
+        OkHttpSardine(okHttpClient())
     }
 
-    private fun client(certificates: String?): OkHttpSardine {
-        return if (certificates.isNullOrEmpty()) {
-            OkHttpSardine()
-        } else {
-            OkHttpSardine(okHttpClientWithTrustedCertificates(certificates))
+    private fun okHttpClient(): OkHttpClient {
+        val builder = OkHttpClient.Builder()
+
+        // Use certificate if specified
+        if (!certificates.isNullOrEmpty()) {
+            val trustManager = trustManagerForCertificates(certificates)
+
+            val sslContext = SSLContext.getInstance("TLS").apply {
+                init(null, arrayOf(trustManager), null)
+            }
+
+            val sslSocketFactory = sslContext.socketFactory
+
+            builder.sslSocketFactory(sslSocketFactory, trustManager)
         }
-    }
 
-    private fun okHttpClientWithTrustedCertificates(certificates: String): OkHttpClient {
-        val trustManager = trustManagerForCertificates(certificates)
+        val credentials = Credentials(username, password)
 
-        val sslContext = SSLContext.getInstance("TLS").apply {
-            init(null, arrayOf(trustManager), null)
-        }
+        val basicAuthenticator = BasicAuthenticator(credentials)
+        val digestAuthenticator = DigestAuthenticator(credentials)
 
-        val sslSocketFactory = sslContext.socketFactory
+        val authenticator = DispatchingAuthenticator.Builder()
+            .with("digest", digestAuthenticator)
+            .with("basic", basicAuthenticator)
+            .build()
 
-        return OkHttpClient.Builder()
-                .sslSocketFactory(sslSocketFactory, trustManager)
-                .build()
+        val authCache: Map<String, CachingAuthenticator> = ConcurrentHashMap()
+
+        builder.authenticator(CachingAuthenticatorDecorator(authenticator, authCache))
+        builder.addInterceptor(AuthenticationCacheInterceptor(authCache))
+
+        // Double the values as some users are seeing timeouts.
+        // Make configurable if needed (https://github.com/orgzly/orgzly-android/issues/870).
+        builder.connectTimeout(20, TimeUnit.SECONDS)
+        builder.readTimeout(20, TimeUnit.SECONDS)
+        builder.writeTimeout(20, TimeUnit.SECONDS)
+
+        return builder.build()
     }
 
     private fun trustManagerForCertificates(str: String): X509TrustManager {

@@ -90,10 +90,10 @@ abstract class NotesFragment : Fragment(), TimestampDialogFragment.OnDateTimeSet
 
     protected fun openNoteStateDialog(listener: Listener, noteIds: Set<Long>, currentState: String?) {
         dialog = NoteStateDialog.show(
-                context!!,
-                currentState,
-                { state -> listener.onStateChangeRequest(noteIds, state) },
-                { listener.onStateChangeRequest(noteIds, null) })
+            requireContext(),
+            currentState,
+            { state -> listener.onStateChangeRequest(noteIds, state) },
+            { listener.onStateChangeRequest(noteIds, null) })
     }
 
     protected fun displayTimestampDialog(id: Int, noteIds: Set<Long>) {
