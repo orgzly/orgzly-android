@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="sync">Senkronize et</string>
+    <string name="sync">Senkronizasyon</string>
     <string name="settings">Ayarlar</string>
     <string name="ok">Tamam</string>
     <string name="yes">Evet</string>
@@ -16,18 +16,17 @@
     <string name="add">Ekle</string>
     <string name="not_now">Şimdi değil</string>
     <string name="save">Kaydet</string>
-    <string name="discard">At-iptal et</string>
+    <string name="discard">Vazgeç</string>
     <string name="remove_notebook_link">Bağlantıyı kaldır</string>
-    <string name="browse">Gözat</string>
+    <string name="browse">Araştır</string>
     <string name="dropbox">Dropbox</string>
-    <string name="view">View</string>
+    <string name="view">Gör</string>
     <string name="edit">Düzenle</string>
     <string name="edit_note">Notu düzenle</string>
     <string name="delete">Sil</string>
-    <string name="delete_with_quoted_argument">Delete “%s”</string>
+    <string name="delete_with_quoted_argument">Sil \"%s\"</string>
     <string name="name">İsim</string>
-    <string name="value">Değer</string>
-    <string name="query">Sorgula</string>
+    <string name="query">Sorgu</string>
     <string name="done">Uygula</string>
     <string name="mark_as_done">Tamamlandı olarak işaretle</string>
     <string name="mark_as_done_with_repeater">%s \'yi yeniden planlayın</string>
@@ -36,7 +35,7 @@
     <string name="import_">İçeri al</string>
     <!-- Reserved keyword -->
     <string name="export">Dşarı Aktar</string>
-    <string name="overwrite">Overwrite</string>
+    <string name="overwrite">Üzerine yaz</string>
     <string name="imported">İçeri alındı</string>
     <string name="created">Oluştur</string>
     <string name="states">Durum</string>
@@ -52,13 +51,13 @@
     <string name="time">Zaman</string>
     <string name="repeater">Tekrarlayıcı</string>
     <string name="state">Durum</string>
-    <string name="priority">Priority</string>
-    <string name="nothing">Nothing</string>
-    <string name="open">Open</string>
-    <string name="focus">Focus</string>
+    <string name="priority">Öncelik</string>
+    <string name="nothing">Hiçbir şey</string>
+    <string name="open">Aç</string>
+    <string name="focus">Odak</string>
     <string name="widget">Widget</string>
-    <string name="history">History</string>
-    <string name="event">Event</string>
+    <string name="history">Geçmiş</string>
+    <string name="event">Etkinlik</string>
     <plurals name="notes_cut">
         <item quantity="one">Notu kes</item>
         <item quantity="other">Kes <b>%d</b> notları</item>
@@ -66,7 +65,7 @@
     <string name="no_notes_cut">Notlar kesilmedi</string>
     <plurals name="notes_copied">
         <item quantity="one">Note copied</item>
-        <item quantity="other">Copied <b>%d</b> notes</item>
+        <item quantity="other"><b>%d</b> not kopyalandı</item>
     </plurals>
     <plurals name="notes_pasted">
         <item quantity="one">Not yapıştırıldı</item>
@@ -103,7 +102,7 @@
     <string name="books_context_menu_item_force_load">Yüklemeye Zorla</string>
     <string name="move">Taşı</string>
     <string name="cut">Kes</string>
-    <string name="copy">Copy</string>
+    <string name="copy">Kopyala</string>
     <string name="paste">Yapıştır</string>
     <string name="heads_action_menu_item_paste_above">Üstüne Yapıştır</string>
     <string name="heads_action_menu_item_paste_under">Altına Yapıştır</string>
@@ -171,9 +170,13 @@
     <string name="directory">Dizin</string>
     <string name="fragment_repo_dropbox_directory_desc">Dropbox içindeki Dizin (Örneğin. “/Documents/Orgzly”)</string>
     <string name="directory_uri">URI dizini</string>
-    <string name="git_url_hint">Remote address (e.g. git@github.com:orgzly/orgzly-android.git)</string>
-    <string name="git_directory_hint">Directory location (e.g. “file:/sdcard/orgzly”)</string>
-    <string name="git_ssh_key_hint">SSH key location (e.g. “file:/sdcard/id_rsa”)</string>
+    <string name="git_clone_progress">Cloning repository</string>
+    <string name="git_verifying_settings">Ensuring repository settings will work.</string>
+    <string name="git_url_hint">Remote URL (e.g. git@github.com:orgzly/orgzly-android.git)</string>
+    <string name="git_directory_hint">Directory location (e.g. “/sdcard/orgzly”)</string>
+    <string name="git_ssh_key_hint">SSH key location (e.g. “/sdcard/id_rsa”)</string>
+    <string name="git_https_username_hint">Username</string>
+    <string name="git_https_password_hint">Password</string>
     <string name="git_author_hint">Author (e.g. John Doe)</string>
     <string name="git_email_hint">Email (e.g. john@email.com)</string>
     <string name="git_branch_hint">Branch (e.g. master)</string>
@@ -506,6 +509,8 @@
     <string name="display_inline_images_summary">Display images in notes</string>
     <string name="scale_down_to_width">Scale down to width</string>
     <string name="scale_down_to_width_summary">Scale down image to specified width</string>
+    <string name="file_absolute_root">Root for absolute links (e.g. file:/readme.txt)</string>
+    <string name="file_relative_root">Root for relative links (e.g. file:readme.txt)</string>
     <string name="argument_used">%s used</string>
     <string name="argument_detected">%s detected</string>
     <string name="argument_selected">%s selected</string>
@@ -556,4 +561,6 @@
     <string name="overdue">Overdue</string>
     <string name="help">Help</string>
     <string name="content">Content</string>
+    <string name="prepend">Prepend</string>
+    <string name="insert_new_note_at_beginning">Insert new note at beginning</string>
 </resources>

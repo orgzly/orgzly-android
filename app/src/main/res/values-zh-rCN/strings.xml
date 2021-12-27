@@ -26,7 +26,6 @@
     <string name="delete">删除</string>
     <string name="delete_with_quoted_argument">删除 “%s”</string>
     <string name="name">名称</string>
-    <string name="value">值</string>
     <string name="query">查询</string>
     <string name="done">完成</string>
     <string name="mark_as_done">标记为完成</string>
@@ -168,9 +167,13 @@
     <string name="directory">目录</string>
     <string name="fragment_repo_dropbox_directory_desc">Dropbox中的目录 (例如 “/Documents/Orgzly”)</string>
     <string name="directory_uri">目录 URI</string>
+    <string name="git_clone_progress">克隆存储库</string>
+    <string name="git_verifying_settings">确保存储库设置工作。</string>
     <string name="git_url_hint">远程地址（例如 git@github.com:orgzly/orgzly-android.git）</string>
     <string name="git_directory_hint">目录位置（例如 “file:/sdcard/orgzly”）</string>
     <string name="git_ssh_key_hint">SSH 密钥位置（例如 “file:/sdcard/id_rsa”）</string>
+    <string name="git_https_username_hint">用户名</string>
+    <string name="git_https_password_hint">密码</string>
     <string name="git_author_hint">作者（例如 John Doe）</string>
     <string name="git_email_hint">电子邮件（例如 john@email.com）</string>
     <string name="git_branch_hint">分支（例如 master）</string>
@@ -497,6 +500,8 @@
     <string name="display_inline_images_summary">在笔记中显示图片</string>
     <string name="scale_down_to_width">按比例缩小到一定宽度</string>
     <string name="scale_down_to_width_summary">按比例缩小图片到指定宽度</string>
+    <string name="file_absolute_root">绝对链接的根目录（例如：file:/readme.txt）</string>
+    <string name="file_relative_root">相对链接的根目录（例如：file:readme.txt）</string>
     <string name="argument_used">已使用：%s</string>
     <string name="argument_detected">检测到 %s</string>
     <string name="argument_selected">已选择 %s</string>
@@ -545,4 +550,6 @@
     <string name="overdue">过期</string>
     <string name="help">帮助</string>
     <string name="content">内容</string>
+    <string name="prepend">前缀</string>
+    <string name="insert_new_note_at_beginning">在开头插入新笔记</string>
 </resources>

@@ -1,0 +1,94 @@
+Bem-vindo ao Orgzly!
+
+* Notas
+** Clique em uma nota para abri-la
+** Clique e segure em uma nota para selecioná-la
+
+Você pode selecionar múltiplas notas.
+
+** Deslize a nota para direita para abrir um menu rápido
+
+Deslize para a esquerda para abrir um menu diferente.
+
+** Oculte uma nota que contenha sub-notas clicando no ícone ao lado dela
+
+Segure no ícone para expandir a sub-árvore inteira.
+
+*** Não há um limite de níveis que você pode ter
+**** Use isso para organizar melhor as suas anotações
+
+** Notas podem ter tags :tag1:tag2:
+*** Sub-notas herdam as tags :tag3:
+
+Se você pesquisar por notas com a tag "tag1" usando a consulta "t.tag1", esta nota será incluída nos resultados da pesquisa.
+
+*** Uma nota que contém a tag =ARCHIVE= fica acinzentada :ARCHIVE:
+
+** TODO Notas podem ter um estado
+
+Você pode configurar quantos estados quiser: TODO, NEXT, DONE, etc.
+
+*** Existem dois /tipos/ de estados: a-fazer (todo) e concluído (done)
+
+*** DONE Isto é uma nota com o tipo de estado concluído (done)
+CLOSED: [2018-01-24 Wed 17:00]
+
+** Uma nota pode ter um horário agendado
+SCHEDULED: <2015-02-20 Fri 15:15>
+
+*** Horários podem ter um repetidor
+SCHEDULED: <2015-02-16 Mon .+2d>
+
+** Você também pode definir um prazo limite
+DEADLINE: <2015-02-20 Fri>
+
+** Lembretes para agendamento e horário do prazo limite são suportados
+
+Eles estão desativados por padrão e precisam ser ativados nas Configurações.
+
+** [#A] Notas podem ter prioridade
+
+Você pode alterar o número de prioridades nas Configurações. Você também pode alterar a prioridade padrão - definindo prioridade para as notas que não possuem.
+
+** Notas podem conter links
+
+Discar um número de telefone (tel:555-0199), enviar SMS (sms:555-0199), escrever e-mail (mailto:support@orgzly.com) ou visitar uma página da web ([[http://www.orgzly.com][Orgzly.com]]).
+
+Você também pode criar links para uma outra nota ou caderno dentro do app.
+
+Consulte http://www.orgzly.com/help#links para obter mais informações.
+
+** Ênfase tipográfica básica é suportada
+
+Você pode deixar as palavras *negrito*, /itálico/, _sublinhado_, =textuais=, ~código~ e +riscado+.
+
+** Checklists podem ser criados
+
+- [X] Tarefa 1
+- [ ] Tarefa 2
+- [ ] Tarefa 3
+
+Clique na caixa de seleção para marcá-lo. Tecle enter no final da linha para criar um novo item.
+
+* Pesquisa
+** Existem muitos operadores de pesquisa suportados
+
+Você pode buscar notas por estado, tag, horário agendado, prazo, etc.
+
+Acesse http://www.orgzly.com/help#search para aprender mais.
+
+** Pesquisas podem ser salvas para acesso rápido
+
+Teste as pesquisas de exemplo na gaveta de navegação e observe o que as pesquisas fazem.
+
+Você pode criar suas próprias pesquisas e salvá-las na gaveta de navegação em "Pesquisas".
+
+* Sincronizando
+
+** Cadernos podem ser salvos como arquivos de texto simples
+
+Arquivos são formatados usando o "Modo Org".
+
+** Tipo de localização (repositório)
+
+Você pode manter os cadernos sincronizados usando um diretório no seu dispositivo móvel, cartão SD ou Dropbox.

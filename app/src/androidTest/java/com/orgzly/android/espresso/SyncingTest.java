@@ -6,6 +6,7 @@ import android.os.SystemClock;
 
 import androidx.test.core.app.ActivityScenario;
 
+import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.OrgzlyTest;
@@ -14,7 +15,6 @@ import com.orgzly.android.repos.RepoType;
 import com.orgzly.android.sync.BookSyncStatus;
 import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.main.MainActivity;
-import com.orgzly.test.BuildConfig;
 
 import org.junit.Assert;
 import org.junit.Assume;

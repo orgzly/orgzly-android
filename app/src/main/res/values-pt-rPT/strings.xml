@@ -26,7 +26,6 @@
     <string name="delete">Eliminar</string>
     <string name="delete_with_quoted_argument">Eliminar \"%s\"</string>
     <string name="name">Nome</string>
-    <string name="value">Valor</string>
     <string name="query">Consulta</string>
     <string name="done">Feito</string>
     <string name="mark_as_done">Marcar como feito</string>
@@ -171,9 +170,13 @@
     <string name="directory">Pasta</string>
     <string name="fragment_repo_dropbox_directory_desc">Pasta dentro do Dropbox (ex: “/Documents/Orgzly”)</string>
     <string name="directory_uri">URI da pasta</string>
+    <string name="git_clone_progress">Cloning repository</string>
+    <string name="git_verifying_settings">Ensuring repository settings will work.</string>
     <string name="git_url_hint">Endereço remoto (ex: git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Local da pasta (ex: \"file:/sdcard/orgzly\")</string>
     <string name="git_ssh_key_hint">Local da chave SSH (ex: “file:/sdcard/id_rsa”)</string>
+    <string name="git_https_username_hint">Username</string>
+    <string name="git_https_password_hint">Password</string>
     <string name="git_author_hint">Autor (ex: John Doe)</string>
     <string name="git_email_hint">E-mail (ex. john@email.com)</string>
     <string name="git_branch_hint">Ramo (ex: master)</string>
@@ -392,7 +395,7 @@
     <string name="pref_title_summary_reminders_for_deadline_times">Display notification for notes with deadline time</string>
     <string name="pref_title_reminders_for_event_times">Eventos</string>
     <string name="pref_title_summary_reminders_for_event_times">Display notification for notes with event time</string>
-    <string name="pref_title_reminders_sound">Sound</string>
+    <string name="pref_title_reminders_sound">Som</string>
     <string name="pref_title_reminders_vibrate">Vibração</string>
     <string name="pref_title_reminders_led">Claro</string>
     <string name="pref_title_snooze_time">Tempo de soneca (minutos)</string>
@@ -498,7 +501,7 @@
     <string name="show_all">Show all</string>
     <string name="always_show_set">Always show set</string>
     <string name="show_selected">Show selected</string>
-    <string name="hide_all">Hide all</string>
+    <string name="hide_all">Ocultar tudo</string>
     <string name="external_file_no_app_found">No application found to open this file</string>
     <string name="failed_to_open_linked_file_with_reason">Failed to open file: %s</string>
     <string name="images">Imagens</string>
@@ -506,6 +509,8 @@
     <string name="display_inline_images_summary">Display images in notes</string>
     <string name="scale_down_to_width">Scale down to width</string>
     <string name="scale_down_to_width_summary">Scale down image to specified width</string>
+    <string name="file_absolute_root">Root for absolute links (e.g. file:/readme.txt)</string>
+    <string name="file_relative_root">Root for relative links (e.g. file:readme.txt)</string>
     <string name="argument_used">%s used</string>
     <string name="argument_detected">%s detected</string>
     <string name="argument_selected">%s selected</string>
@@ -556,4 +561,6 @@
     <string name="overdue">Em atraso</string>
     <string name="help">Help</string>
     <string name="content">Content</string>
+    <string name="prepend">Prepend</string>
+    <string name="insert_new_note_at_beginning">Insert new note at beginning</string>
 </resources>

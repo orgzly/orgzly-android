@@ -1,5 +1,6 @@
 package com.orgzly.android.ui.main
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -37,6 +38,9 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
             val selected: Int)
 
     val setBookLinkRequestEvent: SingleLiveEvent<BookLinkOptions> = SingleLiveEvent()
+
+    val savedSearchedExportEvent: SingleLiveEvent<Int> = SingleLiveEvent()
+    val savedSearchedImportEvent: SingleLiveEvent<Int> = SingleLiveEvent()
 
     init {
         // Observe parameters, run query when they change
@@ -76,17 +80,21 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
             catchAndPostError {
                 val result = UseCaseRunner.run(useCase)
 
-                val noteIdBookId = result.userData as NoteDao.NoteIdBookId
+                if (result.userData == null) {
+                    openNoteWithPropertyRequestEvent.postValue(Pair(useCase, result))
+                } else {
+                    val noteIdBookId = result.userData as NoteDao.NoteIdBookId
 
-                when (AppPreferences.linkTarget(App.getAppContext())) {
-                    "note_details" ->
-                        openNoteWithPropertyRequestEvent.postValue(Pair(useCase, result))
+                    when (AppPreferences.linkTarget(App.getAppContext())) {
+                        "note_details" ->
+                            openNoteWithPropertyRequestEvent.postValue(Pair(useCase, result))
 
-                    "book_and_sparse_tree" ->
-                        UseCaseRunner.run(BookSparseTreeForNote(noteIdBookId.noteId))
+                        "book_and_sparse_tree" ->
+                            UseCaseRunner.run(BookSparseTreeForNote(noteIdBookId.noteId))
 
-                    "book_and_scroll" ->
-                        UseCaseRunner.run(BookScrollToNote(noteIdBookId.noteId))
+                        "book_and_scroll" ->
+                            UseCaseRunner.run(BookScrollToNote(noteIdBookId.noteId))
+                    }
                 }
             }
         }
@@ -128,6 +136,24 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
                 }
 
                 setBookLinkRequestEvent.postValue(options)
+            }
+        }
+    }
+
+    fun exportSavedSearches(uri: Uri) {
+        App.EXECUTORS.diskIO().execute {
+            catchAndPostError {
+                val result = UseCaseRunner.run(SavedSearchExport(uri))
+                savedSearchedExportEvent.postValue(result.userData as Int)
+            }
+        }
+    }
+
+    fun importSavedSearches(uri: Uri) {
+        App.EXECUTORS.diskIO().execute {
+            catchAndPostError {
+                val result = UseCaseRunner.run(SavedSearchImport(uri))
+                savedSearchedImportEvent.postValue(result.userData as Int)
             }
         }
     }

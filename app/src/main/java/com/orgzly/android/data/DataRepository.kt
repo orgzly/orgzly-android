@@ -1915,7 +1915,7 @@ class DataRepository @Inject constructor(
     }
 
     fun findNoteHavingProperty(name: String, value: String): NoteDao.NoteIdBookId? {
-        return db.note().firstNoteHavingPropertyLowerCase(name.toLowerCase(), value.toLowerCase())
+        return db.note().firstNoteHavingPropertyLowerCase(name.lowercase(), value.lowercase())
     }
 
     /*
@@ -1977,12 +1977,12 @@ class DataRepository @Inject constructor(
         }
     }
 
-    fun exportSavedSearches() {
-        FileSavedSearchStore(context, this).exportSearches()
+    fun exportSavedSearches(uri: Uri?): Int {
+        return FileSavedSearchStore(context, this).exportSearches(uri)
     }
 
-    fun importSavedSearches(uri: Uri) {
-        FileSavedSearchStore(context, this).importSearches(uri)
+    fun importSavedSearches(uri: Uri): Int {
+        return FileSavedSearchStore(context, this).importSearches(uri)
     }
 
 

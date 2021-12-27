@@ -33,6 +33,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
+                        android:imeOptions="actionNext"
                         android:hint="@string/git_url_hint"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -70,6 +71,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/activity_repo_git_ssh_auth_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -97,6 +99,45 @@
                             android:inputType="text" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/activity_repo_git_https_auth_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/activity_repo_git_https_username_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_repo_git_https_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/git_https_username_hint"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/activity_repo_git_https_password_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_repo_git_https_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/git_auth_https_password_hint"
+                        android:inputType="textPassword" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 

@@ -1,23 +1,17 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 
 android {
-    dexOptions {
-        maxProcessCount 4
-        javaMaxHeapSize "2g"
-    }
-
-    compileSdkVersion 28
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 16 // Jelly Bean (4.1)
-        targetSdkVersion 28 // Android Pie (9)
+        targetSdkVersion 30 // Android 11
         applicationId "com.orgzly"
-        versionCode 155
-        versionName "1.8.4"
+        versionCode 158
+        versionName "1.8.5"
 
         testInstrumentationRunner "com.orgzly.android.OrgzlyTestRunner"
         // testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -26,8 +20,6 @@ android {
 
         buildConfigField "String", "DROPBOX_APP_KEY", gradle.ext.appProperties.getProperty("dropbox.app_key", '""')
         resValue "string", "dropbox_app_key_schema", gradle.ext.appProperties.getProperty("dropbox.app_key_schema", '')
-
-        buildConfigField "boolean", "IS_GIT_ENABLED", gradle.ext.appProperties.getProperty("git.enabled", 'false')
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -42,7 +34,8 @@ android {
     }
 
     buildFeatures {
-        dataBinding = true
+        viewBinding true
+        dataBinding true
     }
 
 //    testOptions {
@@ -101,15 +94,18 @@ android {
          * javax.servlet.http. Referenced from com.dropbox.core.DbxStandardSessionStore.
          */
         disable 'InvalidPackage'
+
+        checkDependencies true
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
+        exclude 'plugin.properties'
     }
 }
 
@@ -132,7 +128,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$versions.android_recyclerview"
     implementation "androidx.viewpager:viewpager:$versions.android_viewpager"
     implementation "androidx.constraintlayout:constraintlayout:$versions.android_constraint_layout"
-    implementation "androidx.preference:preference:$versions.android_preference"
+    implementation "androidx.preference:preference-ktx:$versions.android_preference"
     implementation "com.google.android.material:material:$versions.android_material"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$versions.android_swiperefreshlayout"
 
@@ -179,14 +175,20 @@ dependencies {
 
     implementation "com.github.bumptech.glide:glide:$versions.glide"
 
-    implementation("com.thegrizzlylabs.sardine-android:sardine-android:$versions.sardine") {
+    implementation("com.github.thegrizzlylabs:sardine-android:$versions.sardine") {
         exclude group: 'xpp3', module: 'xpp3'
     }
 
-    implementation("org.eclipse.jgit:org.eclipse.jgit:$versions.jgit") {
-        // Resolves DuplicatePlatformClasses lint error
-        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    constraints {
+        implementation('com.squareup.okhttp3:okhttp:4.10.0-RC1') {
+            because 'https://github.com/orgzly/orgzly-android/issues/880'
+        }
     }
+
+    implementation "io.github.rburgst:okhttp-digest:$versions.okhttp_digest"
+
+    implementation "org.eclipse.jgit:org.eclipse.jgit:$versions.jgit"
+    implementation "org.eclipse.jgit:org.eclipse.jgit.ssh.jsch:$versions.jgit"
 }
 
 repositories {

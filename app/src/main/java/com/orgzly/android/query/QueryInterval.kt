@@ -20,7 +20,7 @@ class QueryInterval(val none: Boolean = false, val now: Boolean = false) : OrgIn
     companion object {
         private val REGEX = Regex("^([-+]?\\d+)([hdwmy])$")
 
-        fun parse(str: String): QueryInterval? = when (str.toLowerCase()) {
+        fun parse(str: String): QueryInterval? = when (str.lowercase()) {
             "none", "no" -> {
                 QueryInterval(none = true)
             }

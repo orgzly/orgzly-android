@@ -39,7 +39,7 @@ class RefileViewModel(
             RefileLocation.fromJson(it)
         }
 
-        val item = if (location != null) {
+        val item = if (location?.type != null) {
             replayUntilNoteId(location)
         } else {
             HOME

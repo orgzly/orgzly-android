@@ -148,6 +148,7 @@ class SyncService : Service() {
         return capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
     }
 
+    @Suppress("DEPRECATION")
     private fun haveNetworkConnectionPreM(cm: ConnectivityManager): Boolean {
         val networkInfo = cm.activeNetworkInfo
 
@@ -269,10 +270,28 @@ class SyncService : Service() {
             //                SystemClock.sleep(1000 - nowMsPart);
             //            }
 
+            /* If there are namesakes in Git repos with conflict status, make
+             * sure to sync them first, so that any conflict branches are
+             * created as early as possible. Otherwise, we risk committing
+             * changes on master which we cannot see on the conflict branch.
+             */
+            val orderedNamesakes = LinkedHashMap<String, BookNamesake>()
+            val lowPriorityNamesakes = LinkedHashMap<String, BookNamesake>()
+            for (namesake in namesakes.values) {
+                if (namesake.rooks.isNotEmpty() &&
+                        namesake.rooks[0].repoType == RepoType.GIT &&
+                        namesake.status == BookSyncStatus.CONFLICT_BOTH_BOOK_AND_ROOK_MODIFIED) {
+                    orderedNamesakes[namesake.name] = namesake
+                } else {
+                    lowPriorityNamesakes[namesake.name] = namesake
+                }
+            }
+            orderedNamesakes.putAll(lowPriorityNamesakes)
+
             /*
              * Update books' statuses, before starting to sync them.
              */
-            for (namesake in namesakes.values) {
+            for (namesake in orderedNamesakes.values) {
                 dataRepository.setBookLastActionAndSyncStatus(namesake.book.book.id, BookAction.forNow(
                         BookAction.Type.PROGRESS, getString(R.string.syncing_in_progress)))
             }
@@ -281,7 +300,7 @@ class SyncService : Service() {
              * Start syncing name by name.
              */
             var curr = 0
-            for (namesake in namesakes.values) {
+            for (namesake in orderedNamesakes.values) {
                 /* If task has been canceled, just mark the remaining books as such. */
                 if (isCancelled) {
                     dataRepository.setBookLastActionAndSyncStatus(
@@ -296,7 +315,7 @@ class SyncService : Service() {
                         val action = syncNamesake(dataRepository, namesake)
                         dataRepository.setBookLastActionAndSyncStatus(
                                 namesake.book.book.id,
-                                action!!,
+                                action,
                                 namesake.status.toString())
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -314,6 +333,12 @@ class SyncService : Service() {
                 }
 
                 curr++
+            }
+
+            for (repo in repos) {
+                if (repo is TwoWaySyncRepo) {
+                    repo.tryPushIfHeadDiffersFromRemote()
+                }
             }
 
             syncStatus.set(SyncStatus.Type.FINISHED, null, 0, 0)
@@ -434,7 +459,7 @@ class SyncService : Service() {
          */
         @Throws(Exception::class)
         @JvmStatic
-        fun syncNamesake(dataRepository: DataRepository, namesake: BookNamesake): BookAction? {
+        fun syncNamesake(dataRepository: DataRepository, namesake: BookNamesake): BookAction {
             val repoEntity: Repo?
             val repoUrl: String
             val fileName: String
@@ -447,10 +472,13 @@ class SyncService : Service() {
                     val repo = dataRepository.getRepoInstance(
                             rook.repoId, rook.repoType, rook.repoUri.toString())
                     if (repo is TwoWaySyncRepo) {
-                        handleTwoWaySync(dataRepository, repo as TwoWaySyncRepo, namesake)
-                        return BookAction.forNow(
-                                BookAction.Type.INFO,
-                                namesake.status.msg(repo.uri.toString()))
+                        return if (handleTwoWaySync(dataRepository, repo as TwoWaySyncRepo, namesake)) {
+                            BookAction.forNow(
+                                    BookAction.Type.INFO,
+                                    namesake.status.msg(repo.uri.toString()))
+                        } else {
+                            throw Exception("Merge conflict; saved to temporary branch.")
+                        }
                     }
                 }
             }
@@ -519,14 +547,17 @@ class SyncService : Service() {
         }
 
         @Throws(IOException::class)
-        private fun handleTwoWaySync(dataRepository: DataRepository, repo: TwoWaySyncRepo, namesake: BookNamesake) {
+        private fun handleTwoWaySync(dataRepository: DataRepository, repo: TwoWaySyncRepo, namesake: BookNamesake): Boolean {
             val (book, _, _, currentRook) = namesake.book
             val someRook = currentRook ?: namesake.rooks[0]
             var newRook = currentRook
+            var onMainBranch = true
             val dbFile = dataRepository.getTempBookFile()
             try {
                 NotesOrgExporter(dataRepository).exportBook(book, dbFile)
-                val (newRook1, loadFile) = repo.syncBook(someRook.uri, currentRook!!, dbFile)
+                val (newRook1, onMainBranch1, loadFile) =
+                        repo.syncBook(someRook.uri, currentRook, dbFile)
+                onMainBranch = onMainBranch1
                 // We only need to write it if syncback is needed
                 if (loadFile != null) {
                     newRook = newRook1
@@ -548,6 +579,8 @@ class SyncService : Service() {
             }
 
             dataRepository.updateBookLinkAndSync(book.id, newRook!!)
+
+            return onMainBranch;
         }
     }
 }

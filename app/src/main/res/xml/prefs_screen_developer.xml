@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/developer_options">
+
+    <SwitchPreference
+        android:key="@string/pref_key_git_is_enabled"
+        android:title="@string/git_repository_type"
+        android:summary="@string/in_development"
+        android:defaultValue="@bool/pref_default_git_is_enabled" />
+
+</androidx.preference.PreferenceScreen>

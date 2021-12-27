@@ -143,19 +143,15 @@ object ActivityUtils {
                 PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    @JvmStatic
     fun keepScreenOnToggle(activity: Activity?, item: MenuItem): AlertDialog? {
         activity ?: return null
 
-        val flags = activity.window.attributes.flags
-        val keepScreenOnEnabled = flags and WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON != 0
-
-        if (!keepScreenOnEnabled) {
+        if (!isKeepScreenOn(activity)) {
             return AlertDialog.Builder(activity)
                     .setTitle(R.string.keep_screen_on)
                     .setMessage(R.string.keep_screen_on_desc)
                     .setPositiveButton(android.R.string.yes) { dialog, _ ->
-                        activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                        keepScreenOnSet(activity)
                         item.isChecked = true
                         dialog.dismiss()
                     }
@@ -164,29 +160,34 @@ object ActivityUtils {
                     }
                     .show()
         } else {
-            activity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            keepScreenOnClear(activity)
             item.isChecked = false
             return null
         }
     }
 
-    @JvmStatic
     fun keepScreenOnUpdateMenuItem(activity: Activity?, menu: Menu, item: MenuItem?) {
         if (activity != null && item != null) {
             if (AppPreferences.keepScreenOnMenuItem(activity)) {
-                val flags = activity.window.attributes.flags
-                val keepScreenOnEnabled = flags and WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON != 0
-                item.isChecked = keepScreenOnEnabled
-
+                item.isChecked = isKeepScreenOn(activity)
             } else {
                 menu.removeItem(item.itemId)
             }
         }
     }
 
-    @JvmStatic
     fun keepScreenOnClear(activity: Activity?) {
         activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    private fun keepScreenOnSet(activity: Activity) {
+        activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    private fun isKeepScreenOn(activity: Activity): Boolean {
+        val flags = activity.window.attributes.flags
+        return flags and WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON != 0
+
     }
 
     fun distributeToolbarItems(activity: Activity?, toolbar: Toolbar) {
@@ -205,7 +206,12 @@ object ActivityUtils {
                 if (childView is ViewGroup) {
                     val innerChildCount = childView.childCount
 
-                    val itemWidth = screenWidth / innerChildCount
+                    /*
+                     * Use 1 less pixel for item width to avoid exception in tests:
+                     * Caused by: java.lang.RuntimeException: Action will not be performed because the target view does not match one or more of the following constraints:
+                     * at least 90 percent of the view's area is displayed to the user.
+                     */
+                    val itemWidth = screenWidth / innerChildCount - 1
 
                     for (j in 0 until innerChildCount) {
                         val grandChild = childView.getChildAt(j)

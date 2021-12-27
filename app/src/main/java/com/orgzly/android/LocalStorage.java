@@ -1,7 +1,9 @@
 package com.orgzly.android;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import com.orgzly.BuildConfig;
@@ -74,6 +76,13 @@ public class LocalStorage {
         }
 
         return file;
+    }
+
+    /**
+     * File in Download/ directory.
+     */
+    public File downloadsDirectory(String fileName) throws IOException {
+        return new File(downloadsDirectory(), fileName);
     }
 
     private File externalCacheDir(String child) {

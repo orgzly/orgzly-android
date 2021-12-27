@@ -26,7 +26,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.material.navigation.NavigationView;
@@ -93,7 +92,6 @@ import com.orgzly.android.usecase.NoteUpdateClockingState;
 import com.orgzly.android.usecase.SavedSearchCreate;
 import com.orgzly.android.usecase.SavedSearchDelete;
 import com.orgzly.android.usecase.SavedSearchExport;
-import com.orgzly.android.usecase.SavedSearchImport;
 import com.orgzly.android.usecase.SavedSearchMoveDown;
 import com.orgzly.android.usecase.SavedSearchMoveUp;
 import com.orgzly.android.usecase.SavedSearchUpdate;
@@ -102,7 +100,6 @@ import com.orgzly.android.usecase.UseCaseResult;
 import com.orgzly.android.usecase.UseCaseRunner;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
-import com.orgzly.android.util.MiscUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 
 import org.jetbrains.annotations.NotNull;
@@ -165,12 +162,13 @@ public class MainActivity extends CommonActivity
 
         setContentView(R.layout.activity_main);
 
-        sharedMainActivityViewModel = ViewModelProviders.of(this).get(SharedMainActivityViewModel.class);
+        sharedMainActivityViewModel = new ViewModelProvider(this)
+                .get(SharedMainActivityViewModel.class);
 
         ViewModelProvider.Factory factory =
                 MainActivityViewModelFactory.Companion.getInstance(dataRepository);
 
-        viewModel = ViewModelProviders.of(this, factory).get(MainActivityViewModel.class);
+        viewModel = new ViewModelProvider(this, factory).get(MainActivityViewModel.class);
 
         setupActionBar();
 
@@ -188,12 +186,6 @@ public class MainActivity extends CommonActivity
 
         activityForResult = new ActivityForResult(this) {
             @Override
-            public void onBookImport(@NotNull Uri uri) {
-                runnableOnResumeFragments = () ->
-                        importChosenBook(uri);
-            }
-
-            @Override
             public void onBookExport(@NotNull Uri uri, long bookId) {
                 runnableOnResumeFragments = () ->
                         mSyncFragment.run(new BookExportToUri(uri, bookId) {
@@ -206,9 +198,19 @@ public class MainActivity extends CommonActivity
             }
 
             @Override
-            public void onSearchQueriesImport(@NotNull Uri uri) {
+            public void onBookImport(@NotNull Uri uri) {
                 runnableOnResumeFragments = () ->
-                        mSyncFragment.run(new SavedSearchImport(uri));
+                        importChosenBook(uri);
+            }
+
+            @Override
+            public void onSearchQueriesImport(@NotNull Uri uri) {
+                viewModel.importSavedSearches(uri);
+            }
+
+            @Override
+            public void onSearchQueriesExport(@NotNull Uri uri) {
+                viewModel.exportSavedSearches(uri);
             }
         };
     }
@@ -437,6 +439,14 @@ public class MainActivity extends CommonActivity
             }
         });
 
+        viewModel.getSavedSearchedExportEvent().observeSingle(this, count -> {
+            showSnackbar(getResources().getQuantityString(R.plurals.exported_searches, count, count));
+        });
+
+        viewModel.getSavedSearchedImportEvent().observeSingle(this, count -> {
+            showSnackbar(getResources().getQuantityString(R.plurals.imported_searches, count, count));
+
+        });
         viewModel.getErrorEvent().observeSingle(this, error -> {
             if (error != null) {
                 showSnackbar(error.getLocalizedMessage());
@@ -594,21 +604,6 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onAttachFragment(Fragment fragment) {
-        super.onAttachFragment(fragment);
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, fragment);
-
-//        if (BuildConfig.LOG_DEBUG) {
-//            fragment.getLifecycle().addObserver((LifecycleEventObserver) this::logLifecycleEvent);
-//        }
-    }
-
-    private void logLifecycleEvent(LifecycleOwner source, Lifecycle.Event event) {
-        LogUtils.d(TAG, source.getClass().getSimpleName(), event);
-    }
-
-    @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
 
@@ -734,6 +729,8 @@ public class MainActivity extends CommonActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         activityForResult.onResult(requestCode, resultCode, data);
     }
@@ -898,7 +895,7 @@ public class MainActivity extends CommonActivity
     @Override
     public void onBookExportRequest(@NotNull Book book, @NotNull BookFormat format) {
         // For scoped storage
-//        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
 //            String defaultFileName = BookName.fileName(book.getName(), format);
 //            activityForResult.startBookExportFileChooser(book.getId(), defaultFileName);
 //
@@ -1151,9 +1148,14 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onSavedSearchesExportRequest(int title, @NonNull String message) {
-        runWithPermission(
-                AppPermissions.Usage.SAVED_SEARCHES_EXPORT_IMPORT,
-                () -> mSyncFragment.run(new SavedSearchExport()));
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            activityForResult.startSavedSearchesExportFileChooser();
+
+        } else {
+            runWithPermission(
+                    AppPermissions.Usage.SAVED_SEARCHES_EXPORT_IMPORT,
+                    () -> mSyncFragment.run(new SavedSearchExport()));
+        }
     }
 
     @Override

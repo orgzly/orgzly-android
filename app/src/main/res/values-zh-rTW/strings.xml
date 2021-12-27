@@ -26,7 +26,6 @@
     <string name="delete">刪除</string>
     <string name="delete_with_quoted_argument">刪除 \"%s\"</string>
     <string name="name">名稱</string>
-    <string name="value">數值</string>
     <string name="query">查詢</string>
     <string name="done">完成</string>
     <string name="mark_as_done">標記為已完成</string>
@@ -168,9 +167,13 @@
     <string name="directory">資料夾</string>
     <string name="fragment_repo_dropbox_directory_desc">Dropbox 內的資料夾 (例如 “/Documents/Orgzly”)</string>
     <string name="directory_uri">資料夾 URI</string>
+    <string name="git_clone_progress">複製資料庫</string>
+    <string name="git_verifying_settings">確保資料庫設定起作用</string>
     <string name="git_url_hint">Remote 遠端位址 (如 git@github:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">目錄位址 (如 \"file:/sdcard/orgzly\")</string>
     <string name="git_ssh_key_hint">SSH 金鑰位址 (如 \"file:/sdcard/id_rsa\")</string>
+    <string name="git_https_username_hint">使用者名稱</string>
+    <string name="git_https_password_hint">密碼</string>
     <string name="git_author_hint">作者 (如 無名氏)</string>
     <string name="git_email_hint">電子郵件 (例如 john@email.com)</string>
     <string name="git_branch_hint">Branch 分支 (如 master)</string>
@@ -497,6 +500,8 @@
     <string name="display_inline_images_summary">在筆記中顯示圖像</string>
     <string name="scale_down_to_width">縮放至與寬度相符</string>
     <string name="scale_down_to_width_summary">將圖像縮小到指定的寬度</string>
+    <string name="file_absolute_root">絕對連結的根目錄 (e.g. file:/readme.txt)</string>
+    <string name="file_relative_root">相對連結的根目錄 (例如 file:readme.txt)</string>
     <string name="argument_used">%s 已使用</string>
     <string name="argument_detected">偵測到 %s</string>
     <string name="argument_selected">已選取 %s</string>
@@ -545,4 +550,6 @@
     <string name="overdue">逾期</string>
     <string name="help">幫助</string>
     <string name="content">内容</string>
+    <string name="prepend">前引</string>
+    <string name="insert_new_note_at_beginning">在開頭插入新筆記</string>
 </resources>

@@ -22,6 +22,8 @@ Lang klikken op het pictogram om volledig te ontvouwen.
 
 Als u notities zoekt met tag "tag1" met "t.tag1" zoekopdracht, zal deze notitie worden opgenomen in zoekresultaten.
 
+*** Een notitie welke de =ARCHIVE= tag gezet heeft, wordt uitgegrijst :ARCHIVE:
+
 ** TODO Een notitie kan een status hebben
 
 Je kunt zo veel statussen configureren als je wilt: TODO, NEXT, DONE, etc.

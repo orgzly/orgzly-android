@@ -10,7 +10,7 @@ import android.view.*
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -99,7 +99,7 @@ class BookFragment :
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
-        sharedMainActivityViewModel = ViewModelProviders.of(requireActivity())
+        sharedMainActivityViewModel = ViewModelProvider(requireActivity())
                 .get(SharedMainActivityViewModel::class.java)
 
         /* Would like to add items to the Options Menu.
@@ -110,7 +110,7 @@ class BookFragment :
         parseArguments()
 
         val factory = BookViewModelFactory.forBook(dataRepository, mBookId)
-        viewModel = ViewModelProviders.of(this, factory).get(BookViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(BookViewModel::class.java)
 
         if (savedInstanceState != null && savedInstanceState.getBoolean("actionModeMove", false)) {
             mActionModeTag = "M"

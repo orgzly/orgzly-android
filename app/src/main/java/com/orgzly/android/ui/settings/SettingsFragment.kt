@@ -187,7 +187,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
      * Called when a shared preference is modified in any way.
      * Used to update AppPreferences' static values and do any required post-settings-change work.
      */
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, sharedPreferences, key)
 
         val activity = activity as? CommonActivity ?: return
@@ -400,6 +400,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                 "prefs_screen_org_file_format" to R.xml.prefs_screen_org_file_format, // Sub-screen
                 "prefs_screen_org_mode_tags_indent" to R.xml.prefs_screen_org_mode_tags_indent, // Sub-screen
                 "prefs_screen_widget" to R.xml.prefs_screen_widget, // Sub-screen
+                "prefs_screen_developer" to R.xml.prefs_screen_developer, // Sub-screen
                 "prefs_screen_app" to R.xml.prefs_screen_app
         )
 

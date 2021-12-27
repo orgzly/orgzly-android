@@ -22,6 +22,8 @@ Alt not etiketleri devralır :tag3:
 
 If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
 
+*** A note that has the =ARCHIVE= tag set is grayed out :ARCHIVE:
+
 ** TODO Notlar bir durum belirtebilir
 
 Ayarlardan TODO, NEXT, DONE gibi istediğiniz kadar durum yapılandırabilirsiniz.

@@ -20,7 +20,7 @@ open class DottedQueryParser : QueryParser() {
             },
 
             ConditionMatch("""^(\.)?it\.(todo|done|none)""") { match ->
-                val stateType = StateType.valueOf(match.groupValues[2].toUpperCase())
+                val stateType = StateType.valueOf(match.groupValues[2].uppercase())
                 Condition.HasStateType(stateType, match.groupValues[1].isNotEmpty())
             },
 
@@ -36,8 +36,8 @@ open class DottedQueryParser : QueryParser() {
                 Condition.HasTag(unQuote(match.groupValues[2]), match.groupValues[1].isNotEmpty())
             },
 
-            ConditionMatch("""^tn\.(.+)""") { match ->
-                Condition.HasOwnTag(unQuote(match.groupValues[1]))
+            ConditionMatch("""^(\.)?tn\.(.+)""") { match ->
+                Condition.HasOwnTag(unQuote(match.groupValues[2]), match.groupValues[1].isNotEmpty())
             },
 
             ConditionMatch("""^(e|s|d|c|cr)(?:\.(eq|ne|lt|le|gt|ge))?\.(.+)""") { match ->

@@ -22,6 +22,8 @@ Long-click the icon to unfold entire subtree.
 
 If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
 
+*** A note that has the =ARCHIVE= tag set is grayed out :ARCHIVE:
+
 ** TODO 메모에 처리 상태를 설정할 수 있습니다.
 
 처리상태: TODO, NEXT, DONE, etc.

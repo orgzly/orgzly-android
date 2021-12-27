@@ -633,6 +633,25 @@ public class AppPreferences {
     }
 
     /*
+     * File relative path.
+     */
+
+    /** Root for file:/xxx links */
+    public static String fileAbsoluteRoot(Context context) {
+        return getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_file_absolute_root),
+                context.getResources().getString(R.string.pref_default_file_absolute_root));
+    }
+
+    /** Root for file:xxx links */
+    public static String fileRelativeRoot(Context context) {
+        return getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_file_relative_root),
+                Environment.getExternalStorageDirectory().getPath()
+        );
+    }
+
+    /*
      * Note's metadata visibility
      */
 
@@ -794,6 +813,12 @@ public class AppPreferences {
     /*
      * Git Sync
      */
+
+    public static boolean gitIsEnabled(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_git_is_enabled),
+                context.getResources().getBoolean(R.bool.pref_default_git_is_enabled));
+    }
 
     public static String gitAuthor(Context context) {
         return getStateSharedPreferences(context).getString("pref_key_git_author", null);

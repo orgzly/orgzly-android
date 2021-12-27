@@ -22,6 +22,8 @@ Haga clic largo en el icono para desplegar subárbol completo.
 
 Si busca por notas con la etiqueta "etiqueta1" usando la búsqueda "t.etiqueta1", esta nota se incluirá en los resultados de búsqueda.
 
+*** Una nota que tiene la etiqueta =ARCHIVE= se pone grisácea :ARCHIVE:
+
 ** TODO Una nota puede tener un estado
 
 Puede configurar cualquier número de estados a utilizar: TODO, NEXT, DONE, etc.

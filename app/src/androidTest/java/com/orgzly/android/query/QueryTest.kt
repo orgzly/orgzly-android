@@ -164,6 +164,12 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             expectedSelectionArgs = listOf("%tag%", "%tag%")
                     ),
                     Parameter(
+                            queryString = ".tn.tag",
+                            expectedQueryString = ".tn.tag",
+                            expectedSqlSelection = "(NOT((COALESCE(tags, '') LIKE ?)))",
+                            expectedSelectionArgs = listOf("%tag%")
+                    ),
+                    Parameter(
                             queryString = "i.todo (b.\"book(1) name\" or b.book2)",
                             expectedQueryString = "i.todo (b.\"book(1) name\" or b.book2)",
                             expectedSqlSelection = "(COALESCE(state, '') = ? AND (book_name = ? OR book_name = ?))",
@@ -172,27 +178,27 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                     Parameter(
                             queryString = "s.le.2w",
                             expectedQueryString = "s.2w",
-                            expectedSqlSelection = "((scheduled_is_active = 1 AND (scheduled_time_timestamp != 0 AND scheduled_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 14+1) + ")))"
+                            expectedSqlSelection = "((scheduled_is_active = 1 AND scheduled_time_timestamp != 0 AND scheduled_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 14+1) + "))"
                     ),
                     Parameter(
                             queryString = "s.le.3d",
                             expectedQueryString = "s.3d",
-                            expectedSqlSelection = "((scheduled_is_active = 1 AND (scheduled_time_timestamp != 0 AND scheduled_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3+1) + ")))"
+                            expectedSqlSelection = "((scheduled_is_active = 1 AND scheduled_time_timestamp != 0 AND scheduled_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3+1) + "))"
                     ),
                     Parameter(
                             queryString = "s.le.2h",
                             expectedQueryString = "s.2h",
-                            expectedSqlSelection = "((scheduled_is_active = 1 AND (scheduled_time_timestamp != 0 AND scheduled_time_timestamp < " + TimeUtils.timeFromNow(Calendar.HOUR_OF_DAY, 2+1) + ")))"
+                            expectedSqlSelection = "((scheduled_is_active = 1 AND scheduled_time_timestamp != 0 AND scheduled_time_timestamp < " + TimeUtils.timeFromNow(Calendar.HOUR_OF_DAY, 2+1) + "))"
                     ),
                     Parameter(
                             queryString = "s.le.+2h",
                             expectedQueryString = "s.2h",
-                            expectedSqlSelection = "((scheduled_is_active = 1 AND (scheduled_time_timestamp != 0 AND scheduled_time_timestamp < " + TimeUtils.timeFromNow(Calendar.HOUR_OF_DAY, 2+1) + ")))"
+                            expectedSqlSelection = "((scheduled_is_active = 1 AND scheduled_time_timestamp != 0 AND scheduled_time_timestamp < " + TimeUtils.timeFromNow(Calendar.HOUR_OF_DAY, 2+1) + "))"
                     ),
                     Parameter(
                             queryString = "d.tom",
                             expectedQueryString = "d.tomorrow",
-                            expectedSqlSelection = "((deadline_is_active = 1 AND (deadline_time_timestamp != 0 AND deadline_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 1+1) + ")))"
+                            expectedSqlSelection = "((deadline_is_active = 1 AND deadline_time_timestamp != 0 AND deadline_time_timestamp < " + TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 1+1) + "))"
                     ),
                     Parameter(
                             queryString = "c.eq.today",
@@ -272,12 +278,14 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                     Parameter(
                             queryString = "s.ge.3d",
                             expectedQueryString = "s.ge.3d",
-                            expectedSqlSelection = "((scheduled_is_active = 1 AND (scheduled_time_timestamp != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3)} <= scheduled_time_timestamp)))"
+                            expectedSqlSelection = "((scheduled_is_active = 1 AND scheduled_time_timestamp != 0 AND ${TimeUtils.timeFromNow(Calendar.DAY_OF_MONTH, 3)} <= scheduled_time_timestamp))"
                     ),
                     Parameter(
                             queryString = "((i.todo s.no) or i.later) o.state",
                             expectedQueryString = "(i.todo s.none or i.later) o.state",
-                            expectedQuerySortOrders = listOf(SortOrder.State())
+                            expectedQuerySortOrders = listOf(SortOrder.State()),
+                            expectedSqlSelection = "(((COALESCE(state, '') = ? AND scheduled_time_timestamp IS NULL) OR COALESCE(state, '') = ?))",
+                            expectedSelectionArgs = listOf("TODO", "LATER")
                     ),
                     Parameter(
                             queryString = "o.title",
@@ -286,7 +294,12 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
                             expectedSelectionArgs = listOf(),
                             expectedSqlOrder = "title, lft",
                             expectedQuerySortOrders = listOf(SortOrder.Title())
-                    )
+                    ),
+                    Parameter(
+                            queryString = "s.no",
+                            expectedQueryString = "s.none",
+                            expectedSqlSelection = "(scheduled_time_timestamp IS NULL)"
+                    ),
             )
         }
     }

@@ -27,6 +27,7 @@ class TimePreferenceFragment : PreferenceDialogFragmentCompat() {
 
             setIs24HourView(is24hour)
 
+            @Suppress("DEPRECATION")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 hour = hours
                 minute = minutes
@@ -39,11 +40,14 @@ class TimePreferenceFragment : PreferenceDialogFragmentCompat() {
 
     override fun onDialogClosed(positiveResult: Boolean) {
         if (positiveResult) {
+            @Suppress("DEPRECATION")
             val hours = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 timePicker.hour
             } else {
                 timePicker.currentHour
             }
+
+            @Suppress("DEPRECATION")
             val minutes = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 timePicker.minute
             } else {

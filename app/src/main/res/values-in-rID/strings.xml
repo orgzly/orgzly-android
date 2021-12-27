@@ -26,7 +26,6 @@
     <string name="delete">Hapus</string>
     <string name="delete_with_quoted_argument">Hapus \" %s\"</string>
     <string name="name">Nama</string>
-    <string name="value">Nilai</string>
     <string name="query">Permintaan</string>
     <string name="done">Selesai</string>
     <string name="mark_as_done">Tandai sudah selesai</string>
@@ -168,9 +167,13 @@
     <string name="directory">Direktori</string>
     <string name="fragment_repo_dropbox_directory_desc">Direktori di dalam DropBox (e.g. “/Documents/Orgzly”)</string>
     <string name="directory_uri">Direktori URI</string>
-    <string name="git_url_hint">Remote address (e.g. git@github.com:orgzly/orgzly-android.git)</string>
-    <string name="git_directory_hint">Directory location (e.g. “file:/sdcard/orgzly”)</string>
-    <string name="git_ssh_key_hint">SSH key location (e.g. “file:/sdcard/id_rsa”)</string>
+    <string name="git_clone_progress">Cloning repository</string>
+    <string name="git_verifying_settings">Ensuring repository settings will work.</string>
+    <string name="git_url_hint">Remote URL (e.g. git@github.com:orgzly/orgzly-android.git)</string>
+    <string name="git_directory_hint">Directory location (e.g. “/sdcard/orgzly”)</string>
+    <string name="git_ssh_key_hint">SSH key location (e.g. “/sdcard/id_rsa”)</string>
+    <string name="git_https_username_hint">Username</string>
+    <string name="git_https_password_hint">Password</string>
     <string name="git_author_hint">Author (e.g. John Doe)</string>
     <string name="git_email_hint">Email (e.g. john@email.com)</string>
     <string name="git_branch_hint">Branch (e.g. master)</string>
@@ -497,6 +500,8 @@
     <string name="display_inline_images_summary">Display images in notes</string>
     <string name="scale_down_to_width">Scale down to width</string>
     <string name="scale_down_to_width_summary">Scale down image to specified width</string>
+    <string name="file_absolute_root">Root for absolute links (e.g. file:/readme.txt)</string>
+    <string name="file_relative_root">Root for relative links (e.g. file:readme.txt)</string>
     <string name="argument_used">%s used</string>
     <string name="argument_detected">%s detected</string>
     <string name="argument_selected">%s selected</string>
@@ -545,4 +550,6 @@
     <string name="overdue">Overdue</string>
     <string name="help">Help</string>
     <string name="content">Content</string>
+    <string name="prepend">Prepend</string>
+    <string name="insert_new_note_at_beginning">Insert new note at beginning</string>
 </resources>

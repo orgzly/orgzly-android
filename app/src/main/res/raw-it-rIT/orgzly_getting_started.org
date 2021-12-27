@@ -22,6 +22,8 @@ Fare clic sull'icona per dispiegare l'intero sotto-albero.
 
 Se si cerca note con tag “tag1” utilizzando la query “t.tag1”, questa nota sarà inclusa nei risultati di ricerca.
 
+*** A note that has the =ARCHIVE= tag set is grayed out :ARCHIVE:
+
 ** TODO La nota può avere uno stato
 
 È possibile configurare qualsiasi numero di stati da usare: TODO, NEXT, DONE, ecc.
@@ -35,7 +37,7 @@ CLOSED: [2018-01-24 Mer 17:00]
 SCHEDULED: <2015-02-20 Ven 15:15>
 
 *** Gli orari possono avere una ripetizione
-SCHEDULED: <2015-02-16 Mon .+2d>
+SCHEDULED: <2015-02-16 Lun .+2d>
 
 ** Puoi anche stabilire una scadenza
 DEADLINE: <2015-02-20 Ven>

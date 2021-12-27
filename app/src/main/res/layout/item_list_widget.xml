@@ -6,8 +6,6 @@
     android:id="@+id/item_list_widget_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
     android:orientation="horizontal"
     android:descendantFocusability="blocksDescendants">
 
@@ -17,6 +15,8 @@
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
         android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingStart="8dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:layout_weight="1">
@@ -196,8 +196,8 @@
         android:minWidth="0dp"
         android:paddingTop="@dimen/widget_padding"
         android:paddingBottom="0dp"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:src="@drawable/outline_check_circle_black_24" />

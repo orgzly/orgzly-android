@@ -22,6 +22,8 @@ Kliknutí a podržení ikony rozvine celý úsek.
 
 Při hledání poznámek se štítkem "štítek1" a použijete "t.štítek1", bude tato poznámka zahrnuta do výsledků hledání.
 
+*** Poznámka s nastaveným =ARCHIVE= štítkem je zašedlá :ARCHIVE:
+
 ** TODO Poznámka může mít stav
 
 Lze nastavit množství stavů: TODO, NEXT, DONE, atd.

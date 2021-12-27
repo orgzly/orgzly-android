@@ -26,7 +26,6 @@
     <string name="delete">Cancella</string>
     <string name="delete_with_quoted_argument">Elimina \"%s\"</string>
     <string name="name">Nome</string>
-    <string name="value">Valore</string>
     <string name="query">Ricerca</string>
     <string name="done">Completato</string>
     <string name="mark_as_done">Contrassegna come completato</string>
@@ -171,9 +170,13 @@
     <string name="directory">Directory</string>
     <string name="fragment_repo_dropbox_directory_desc">La directory all\'interno di Dropbox (es. “/Documenti/Orgzly”)</string>
     <string name="directory_uri">Directory dell\'URL</string>
+    <string name="git_clone_progress">Cloning repository</string>
+    <string name="git_verifying_settings">Ensuring repository settings will work.</string>
     <string name="git_url_hint">Indirizzo remoto (es. git@github.com:orgzly / orgzly-android.git)</string>
     <string name="git_directory_hint">Percorso directory (es. \"file:/sdcard/orgzly\")</string>
     <string name="git_ssh_key_hint">Posizione della chiave SSH (es. “file:/sdcard/id_rsa”)</string>
+    <string name="git_https_username_hint">Username</string>
+    <string name="git_https_password_hint">Password</string>
     <string name="git_author_hint">Autore (es. Sergio Rossi)</string>
     <string name="git_email_hint">E-mail (es. sergio@email.com)</string>
     <string name="git_branch_hint">Ramo (es. master)</string>
@@ -328,11 +331,11 @@
     <!-- ++ -->
     <string name="repeater_description_restart">Aggiungi periodo all\'orario corrente</string>
     <!-- .+ -->
-    <string name="delay_dialog_title">Delay</string>
+    <string name="delay_dialog_title">Posticipa</string>
     <string name="delay_description">Ritarda la visualizzazione dell\'attività nell\'agenda</string>
     <string name="delay_description_affects_all">Si applica a tutti gli eventi</string>
     <string name="delay_description_affects_first">Influenza solo la prima occorrenza programmata</string>
-    <string name="warning_period_dialog_title">Warning period</string>
+    <string name="warning_period_dialog_title">Anticipa avviso</string>
     <string name="warning_period_description">Segnala le scadenze imminenti o mancate</string>
     <string name="displayed_book_details_local_mtime">Ora di modifica locale</string>
     <string name="displayed_book_details_link_url">Collegamento URL</string>
@@ -360,7 +363,7 @@
     <string name="notebooks_sort_order_modification_time">Ora modifica</string>
     <plurals name="delete_note_or_notes_with_count_question">
         <item quantity="one">Elimina nota?</item>
-        <item quantity="other">Delete <b>%d</b> notes?</item>
+        <item quantity="other">Elimina <b>%d</b> note?</item>
     </plurals>
     <!-- Unused -->
     <string name="delete_note">Elimina nota</string>
@@ -448,7 +451,7 @@
     </plurals>
     <plurals name="found_number_of_notebooks">
         <item quantity="one">Trovato <b>%d</b> taccuino</item>
-        <item quantity="other">Found <b>%d</b> notebooks</item>
+        <item quantity="other">Trovati <b>%d</b> taccuini</item>
     </plurals>
     <string name="content_line_count_displayed">Mostra il conteggio della linea del contenuto</string>
     <string name="content_line_count_displayed_summary">Mostra il conteggio della linea quando il contenuto non è mostrato</string>
@@ -506,6 +509,8 @@
     <string name="display_inline_images_summary">Visualizzare le immagini nelle note</string>
     <string name="scale_down_to_width">Scalare alla larghezza</string>
     <string name="scale_down_to_width_summary">Scalare l\'immagine alla larghezza specificata</string>
+    <string name="file_absolute_root">Root for absolute links (e.g. file:/readme.txt)</string>
+    <string name="file_relative_root">Root for relative links (e.g. file:readme.txt)</string>
     <string name="argument_used">%s usati</string>
     <string name="argument_detected">%s rilevato</string>
     <string name="argument_selected">%s selezionati</string>
@@ -522,14 +527,14 @@
     <string name="notification_default_priority">Predefinito</string>
     <string name="notification_low_priority">Bassa</string>
     <string name="notification_minimum_priority">Minima</string>
-    <string name="breadcrumbs_target">Breadcrumbs target</string>
+    <string name="breadcrumbs_target">Collegamento rapido</string>
     <string name="link_target">Link di destinazione</string>
     <string name="note_details">Dettagli nota</string>
     <string name="notebook_and_scroll_to_note">Taccuino (scorri alla nota)</string>
     <string name="notebook_and_focus_on_note">Taccuino (focus sulla nota)</string>
     <plurals name="refile_notes">
-        <item quantity="one">Refile note</item>
-        <item quantity="other">Refile <b>%d</b> notes</item>
+        <item quantity="one">Sposta nota</item>
+        <item quantity="other">Sposta <b>%d</b> note</item>
     </plurals>
     <string name="display_checkmarks">Visualizza checkmarks</string>
     <string name="display_checkmarks_summary">Consenti di segnare le note come Done</string>
@@ -537,23 +542,25 @@
     <string name="note_details_opening_mode">Modalità di apertura</string>
     <string name="cleartext_traffic">Traffico non criptato</string>
     <string name="cleartext_traffic_message">Sei sicuro di voler usare questo URL?</string>
-    <string name="credentials_in_url_not_supported">Passing credentials in URL is not supported</string>
+    <string name="credentials_in_url_not_supported">Gli URL contenenti credenziali non sono supportati</string>
     <string name="access_token">Token di accesso</string>
     <string name="trusted_certificates">Certificati di sistema affidabili</string>
-    <string name="add_trusted_certificates_optional">Add trusted certificates (optional)</string>
-    <string name="edit_trusted_certificates">Edit trusted certificates</string>
-    <string name="this_action_cannot_be_undone">This action cannot be undone.</string>
+    <string name="add_trusted_certificates_optional">Aggiungi certificati attendibili (facoltativo)</string>
+    <string name="edit_trusted_certificates">Modifica certificati attendibili</string>
+    <string name="this_action_cannot_be_undone">L\'operazione non può essere annullata.</string>
     <plurals name="paste_note_or_notes_with_count">
         <item quantity="one">Incolla nota</item>
-        <item quantity="other">Paste <b>%d</b> notes</item>
+        <item quantity="other">Incolla <b>%d</b> note</item>
     </plurals>
     <string name="timestamp_dialog_day">Giorno</string>
     <string name="timestamp_dialog_time">Ora</string>
-    <string name="timestamp_dialog_end_time">End time</string>
-    <string name="timestamp_dialog_repeater">Repeater</string>
-    <string name="timestamp_dialog_delay">Delay</string>
-    <string name="timestamp_dialog_warning_period">Warning period</string>
+    <string name="timestamp_dialog_end_time">Fine</string>
+    <string name="timestamp_dialog_repeater">Ripeti</string>
+    <string name="timestamp_dialog_delay">Posticipa</string>
+    <string name="timestamp_dialog_warning_period">Anticipa avviso</string>
     <string name="overdue">Scaduto</string>
-    <string name="help">Help</string>
-    <string name="content">Content</string>
+    <string name="help">Aiuto</string>
+    <string name="content">Contenuto</string>
+    <string name="prepend">Prepend</string>
+    <string name="insert_new_note_at_beginning">Insert new note at beginning</string>
 </resources>

@@ -26,7 +26,6 @@
     <string name="delete">삭제</string>
     <string name="delete_with_quoted_argument">\"%s\" 삭제</string>
     <string name="name">이름</string>
-    <string name="value">값</string>
     <string name="query">질의</string>
     <string name="done">완료</string>
     <string name="mark_as_done">완료로 표시</string>
@@ -168,9 +167,13 @@
     <string name="directory">디렉토리</string>
     <string name="fragment_repo_dropbox_directory_desc">Dropbox 디렉터리 (예: \"/ Documents/Orgzly\")</string>
     <string name="directory_uri">디렉터리 URI</string>
+    <string name="git_clone_progress">Cloning repository</string>
+    <string name="git_verifying_settings">Ensuring repository settings will work.</string>
     <string name="git_url_hint">외부 주소 (예. git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">디렉터리 위치 (예: \"file:/sdcard/orgzly\")</string>
     <string name="git_ssh_key_hint">SSH 키 위치 (예: \"file:/sdcard/id_rsa\")</string>
+    <string name="git_https_username_hint">Username</string>
+    <string name="git_https_password_hint">Password</string>
     <string name="git_author_hint">저자 (예. 홍길동)</string>
     <string name="git_email_hint">이메일 (예: john@email.com)</string>
     <string name="git_branch_hint">지점 (예: 본점)</string>
@@ -498,6 +501,8 @@
     <string name="display_inline_images_summary">메모에 이미지 보여주기</string>
     <string name="scale_down_to_width">창의 가로 크기에 폭 맞춤</string>
     <string name="scale_down_to_width_summary">지정된 너비로 이미지 맞춤</string>
+    <string name="file_absolute_root">Root for absolute links (e.g. file:/readme.txt)</string>
+    <string name="file_relative_root">Root for relative links (e.g. file:readme.txt)</string>
     <string name="argument_used">%s 사용됨</string>
     <string name="argument_detected">%s 감지됨</string>
     <string name="argument_selected">%s 선택됨</string>
@@ -546,4 +551,6 @@
     <string name="overdue">Overdue</string>
     <string name="help">Help</string>
     <string name="content">Content</string>
+    <string name="prepend">Prepend</string>
+    <string name="insert_new_note_at_beginning">Insert new note at beginning</string>
 </resources>

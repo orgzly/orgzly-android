@@ -63,7 +63,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
         setupFoldingButtons(holder, noteView.note)
 
-        setupAlpha(holder, noteView.note)
+        setupAlpha(holder, noteView)
     }
 
     private fun setupBookName(holder: NoteItemViewHolder, noteView: NoteView) {
@@ -199,10 +199,17 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
                 noteView.closedRangeString)
     }
 
-    /** Set alpha for done items. */
-    private fun setupAlpha(holder: NoteItemViewHolder, note: Note) {
+    /** Set alpha for done and archived items. */
+    private fun setupAlpha(holder: NoteItemViewHolder, noteView: NoteView) {
+        val state = noteView.note.state
+        val tags = noteView.note.getTagsList()
+        val inheritedTags = noteView.getInheritedTagsList()
+
+        val isDone = state != null && AppPreferences.doneKeywordsSet(context).contains(state)
+        val isArchived = tags.contains(ARCHIVE_TAG) || inheritedTags.contains(ARCHIVE_TAG)
+
         holder.binding.alpha =
-                if (note.state != null && AppPreferences.doneKeywordsSet(context).contains(note.state)) {
+                if (isDone || isArchived) {
                     0.45f
                 } else {
                     1.0f
@@ -383,6 +390,8 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     }
 
     companion object {
+        const val ARCHIVE_TAG = "ARCHIVE"
+
         /**
          * Setup margins or padding for different list density settings.
          */

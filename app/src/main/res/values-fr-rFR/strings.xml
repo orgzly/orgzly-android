@@ -26,7 +26,6 @@
     <string name="delete">Supprimer</string>
     <string name="delete_with_quoted_argument">Supprimer “%s”</string>
     <string name="name">Nom</string>
-    <string name="value">Valeur</string>
     <string name="query">Requête</string>
     <string name="done">Fini</string>
     <string name="mark_as_done">Marquer comme fait</string>
@@ -171,9 +170,13 @@
     <string name="directory">Dossier</string>
     <string name="fragment_repo_dropbox_directory_desc">Dossier à l’intérieur de Dropbox (par exemple « / Documents/Orgzly »)</string>
     <string name="directory_uri">URI du répertoire</string>
+    <string name="git_clone_progress">Cloning repository</string>
+    <string name="git_verifying_settings">Ensuring repository settings will work.</string>
     <string name="git_url_hint">Adresse distante (par exemple : git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Emplacement du dossier (par exemple : file:/sdcard/orgzly)</string>
     <string name="git_ssh_key_hint">Emplacement de la clé SSH (par exemple : file:/sdcard/id_rsa)</string>
+    <string name="git_https_username_hint">Nom d\'utilisateur</string>
+    <string name="git_https_password_hint">Mot de passe</string>
     <string name="git_author_hint">Auteur (par exemple : Jean Dupont)</string>
     <string name="git_email_hint">Courriel (par exemple : jean@dupont.fr)</string>
     <string name="git_branch_hint">Branche (par exemple : master)</string>
@@ -292,7 +295,7 @@
     <string name="connecting">Connexion en cours…</string>
     <string name="no_connection">Aucune connexion</string>
     <string name="connection_successful">Connexion réussie</string>
-    <string name="last_sync_with_argument">Dernière synchronisation : %s</string>
+    <string name="last_sync_with_argument">Dernière synchronisation: %s</string>
     <string name="force_loading_from_uri">Chargement forcé de %s…</string>
     <string name="force_loaded_from_uri">%s chargé de manière forcée</string>
     <string name="force_saving_to_uri">Sauvegarde forcée de %s…</string>
@@ -506,6 +509,8 @@
     <string name="display_inline_images_summary">Afficher les images dans les notes</string>
     <string name="scale_down_to_width">Réduire à la largeur</string>
     <string name="scale_down_to_width_summary">Réduire l\'image pour qu\'elle fasse la largeur spécifiée</string>
+    <string name="file_absolute_root">Root for absolute links (e.g. file:/readme.txt)</string>
+    <string name="file_relative_root">Root for relative links (e.g. file:readme.txt)</string>
     <string name="argument_used">%s utilisé</string>
     <string name="argument_detected">%s détecté</string>
     <string name="argument_selected">%s sélectionné</string>
@@ -535,7 +540,7 @@
     <string name="display_checkmarks_summary">Permet de marquer les notes comme terminées</string>
     <string name="last_used">Dernier utilisé</string>
     <string name="note_details_opening_mode">Mode d’ouverture</string>
-    <string name="cleartext_traffic">Cleartext traffic</string>
+    <string name="cleartext_traffic">Communication non-cryptée</string>
     <string name="cleartext_traffic_message">Êtes-vous sûr de vouloir utiliser cette URL ?</string>
     <string name="credentials_in_url_not_supported">La transmission des identifiants par URL n\'est pas pris en charge</string>
     <string name="access_token">Jeton d\'accès</string>
@@ -556,4 +561,6 @@
     <string name="overdue">En retard</string>
     <string name="help">Aide</string>
     <string name="content">Contenu</string>
+    <string name="prepend">Prepend</string>
+    <string name="insert_new_note_at_beginning">Insérer une nouvelle note au début</string>
 </resources>

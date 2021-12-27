@@ -19,7 +19,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
@@ -125,7 +125,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
-        sharedMainActivityViewModel = ViewModelProviders.of(requireActivity())
+        sharedMainActivityViewModel = ViewModelProvider(requireActivity())
                 .get(SharedMainActivityViewModel::class.java)
 
         val factory = NoteViewModelFactory.getInstance(
@@ -136,7 +136,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 initialTitle,
                 initialContent)
 
-        viewModel = ViewModelProviders.of(this, factory).get(NoteViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(NoteViewModel::class.java)
 
         setHasOptionsMenu(true)
 
@@ -430,7 +430,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         // Title
         binding.fragmentNoteTitle.setText(payload.title)
-        binding.fragmentNoteTitleView.setRawText(payload.title ?: "")
+        binding.fragmentNoteTitleView.setRawText(payload.title)
 
         // Tags
         if (!payload.tags.isEmpty()) {
@@ -650,10 +650,10 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     override fun onPause() {
         super.onPause()
 
-        if (dialog != null) {
-            dialog?.dismiss()
-            dialog = null
-        }
+        dialog?.dismiss()
+        dialog = null
+
+        ActivityUtils.keepScreenOnClear(activity)
     }
 
     override fun onDestroyView() {
@@ -742,7 +742,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             }
 
             R.id.fragment_note_state_button -> {
-                val states = NoteStates.fromPreferences(context!!)
+                val states = NoteStates.fromPreferences(requireContext())
 
                 val keywords = states.array
 
@@ -772,7 +772,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             }
 
             R.id.fragment_note_priority_button -> {
-                val priorities = NotePriorities.fromPreferences(context!!)
+                val priorities = NotePriorities.fromPreferences(requireContext())
 
                 val keywords = priorities.array
 
@@ -896,6 +896,11 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         inflater.inflate(R.menu.note_actions, menu)
 
+        ActivityUtils.keepScreenOnUpdateMenuItem(
+                activity,
+                menu,
+                menu.findItem(R.id.keep_screen_on))
+
         // Remove search item
         menu.removeItem(R.id.activity_action_search)
 
@@ -939,6 +944,11 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         when (item.itemId) {
             R.id.done -> {
                 userSave()
+                return true
+            }
+
+            R.id.keep_screen_on -> {
+                dialog = ActivityUtils.keepScreenOnToggle(activity, item)
                 return true
             }
 

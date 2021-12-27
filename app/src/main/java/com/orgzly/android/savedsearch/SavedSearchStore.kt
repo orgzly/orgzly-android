@@ -3,7 +3,7 @@ package com.orgzly.android.savedsearch
 import android.net.Uri
 
 interface SavedSearchStore {
-    fun importSearches(uri: Uri)
+    fun importSearches(uri: Uri): Int
 
-    fun exportSearches()
+    fun exportSearches(uri: Uri?): Int
 }

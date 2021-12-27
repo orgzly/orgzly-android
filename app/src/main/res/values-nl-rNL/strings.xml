@@ -26,7 +26,6 @@
     <string name="delete">Verwijder</string>
     <string name="delete_with_quoted_argument">Verwijder “%s”</string>
     <string name="name">Naam</string>
-    <string name="value">Waarde</string>
     <string name="query">Zoekopdracht</string>
     <string name="done">Gedaan</string>
     <string name="mark_as_done">Markeer als gedaan</string>
@@ -171,9 +170,13 @@
     <string name="directory">Map</string>
     <string name="fragment_repo_dropbox_directory_desc">Map in Dropbox (bijvoorbeeld: \"/Documenten/Orgzly\")</string>
     <string name="directory_uri">Map URI</string>
+    <string name="git_clone_progress">Repository wordt gekloond</string>
+    <string name="git_verifying_settings">Controleren dat repository instellingen werken.</string>
     <string name="git_url_hint">Extern adres (bijv. git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Locatie van map (bijv. \"file:/sdcard/orgzly\")</string>
     <string name="git_ssh_key_hint">SSH-sleutellocatie (bijv. “file:/sdcard/id_rsa”)</string>
+    <string name="git_https_username_hint">Gebruikersnaam</string>
+    <string name="git_https_password_hint">Wachtwoord</string>
     <string name="git_author_hint">Auteur (bijv. John Doe)</string>
     <string name="git_email_hint">E-mail (bijv. john@email.com)</string>
     <string name="git_branch_hint">Branch (bijv. master)</string>
@@ -506,6 +509,8 @@
     <string name="display_inline_images_summary">Toon afbeeldingen in notities</string>
     <string name="scale_down_to_width">Schalen naar breedte</string>
     <string name="scale_down_to_width_summary">Afbeelding schalen naar opgegeven breedte</string>
+    <string name="file_absolute_root">Root voor absolute links (bijv. file:/readme.txt)</string>
+    <string name="file_relative_root">Root voor relatieve links (bijv. file:readme.txt)</string>
     <string name="argument_used">%s in gebruik</string>
     <string name="argument_detected">%s gedetecteerd</string>
     <string name="argument_selected">%s geselecteerd</string>
@@ -556,4 +561,6 @@
     <string name="overdue">Achterstallig</string>
     <string name="help">Hulp</string>
     <string name="content">Inhoud</string>
+    <string name="prepend">Voorvoegen</string>
+    <string name="insert_new_note_at_beginning">Voeg nieuwe notitie toe aan het begin</string>
 </resources>

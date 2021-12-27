@@ -187,7 +187,7 @@ class SqliteQueryBuilder(val context: Context) {
             }
 
             is Condition.HasState -> {
-                arguments.add(expr.state.toUpperCase())
+                arguments.add(expr.state.uppercase())
                 not(expr.not, "COALESCE(state, '') = ?")
             }
 
@@ -226,30 +226,30 @@ class SqliteQueryBuilder(val context: Context) {
 
             is Condition.HasOwnTag -> {
                 arguments.add("%${expr.tag}%")
-                "tags LIKE ?"
+                not(expr.not, "(COALESCE(tags, '') LIKE ?)")
             }
 
             is Condition.Event -> {
-                toInterval("event_timestamp", expr.interval, expr.relation)
+                toInterval("event_timestamp", null, expr.interval, expr.relation)
             }
 
             is Condition.Scheduled -> {
                 hasScheduledCondition = true
-                "(scheduled_is_active = 1 AND ${toInterval("scheduled_time_timestamp", expr.interval, expr.relation)})"
+                toInterval("scheduled_time_timestamp", "scheduled_is_active", expr.interval, expr.relation)
             }
 
             is Condition.Deadline -> {
                 hasDeadlineCondition = true
-                "(deadline_is_active = 1 AND ${toInterval("deadline_time_timestamp", expr.interval, expr.relation)})"
+                toInterval("deadline_time_timestamp", "deadline_is_active", expr.interval, expr.relation)
             }
 
             is Condition.Created -> {
                 hasCreatedCondition = true
-                toInterval("created_at", expr.interval, expr.relation)
+                toInterval("created_at", null, expr.interval, expr.relation)
             }
 
             is Condition.Closed -> {
-                toInterval("closed_time_timestamp", expr.interval, expr.relation)
+                toInterval("closed_time_timestamp", null, expr.interval, expr.relation)
             }
 
             is Condition.HasText -> {
@@ -264,7 +264,7 @@ class SqliteQueryBuilder(val context: Context) {
         }
     }
 
-    private fun toInterval(column: String, interval: QueryInterval, relation: Relation): String {
+    private fun toInterval(column: String, isActiveColumn: String?, interval: QueryInterval, relation: Relation): String {
         if (interval.none) {
             return "$column IS NULL"
         }
@@ -284,7 +284,13 @@ class SqliteQueryBuilder(val context: Context) {
             Relation.GE -> "$timeFromNow <= $column"
         }
 
-        return "($column != 0 AND $cond)"
+        val activeOnly = if (isActiveColumn != null) {
+            "$isActiveColumn = 1 AND "
+        } else {
+            ""
+        }
+
+        return "($activeOnly$column != 0 AND $cond)"
     }
 
     /*
