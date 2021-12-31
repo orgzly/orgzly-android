@@ -4,12 +4,14 @@ package com.orgzly.android.ui.books
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
@@ -20,6 +22,7 @@ import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.BookFormat
+import com.orgzly.android.BookName
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.BookView
@@ -33,6 +36,7 @@ import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.setup
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.usecase.BookDelete
+import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.databinding.DialogBookDeleteBinding
@@ -239,7 +243,29 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
             actionMode = null
             sharedMainActivityViewModel.unlockDrawer()
         }
+    }
 
+    private val createDocumentForExportLauncher =
+        registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri: Uri ->
+            requireContext().contentResolver.openOutputStream(uri).let { stream ->
+                if (stream != null) {
+                    viewModel.exportBook(uri, stream)
+                } else {
+                    Log.e(TAG, "Failed to open output stream for notebook export")
+                }
+            }
+        }
+
+    private fun exportBook(book: Book, format: BookFormat) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            val defaultFileName = BookName.fileName(book.name, format)
+            createDocumentForExportLauncher.launch(defaultFileName)
+
+        } else {
+            (requireActivity() as CommonActivity).runWithPermission(AppPermissions.Usage.BOOK_EXPORT) {
+                viewModel.exportBook()
+            }
+        }
     }
 
     private fun deleteBookDialog(book: BookView) {
@@ -371,25 +397,31 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
             actionMode?.invalidate()
         })
 
-        viewModel.bookDeleteRequestEvent.observeSingle(viewLifecycleOwner, Observer { bookView ->
+
+        viewModel.bookToDeleteEvent.observeSingle(viewLifecycleOwner, Observer { bookView ->
             if (bookView != null) {
                 deleteBookDialog(bookView)
             }
         })
 
-        viewModel.bookRenameRequestEvent.observeSingle(viewLifecycleOwner, Observer { bookView ->
+        viewModel.bookToRenameEvent.observeSingle(viewLifecycleOwner, Observer { bookView ->
             if (bookView != null) {
                 renameBookDialog(bookView)
             }
         })
 
-        viewModel.bookExportRequestEvent.observeSingle(viewLifecycleOwner, Observer { (book, format) ->
-            listener?.onBookExportRequest(book, format)
+        viewModel.bookToExportEvent.observeSingle(viewLifecycleOwner, Observer { (book, format) ->
+            exportBook(book, format)
+        })
+
+        viewModel.bookExportedEvent.observeSingle(viewLifecycleOwner, Observer { location ->
+            CommonActivity.showSnackbar(context, resources.getString(R.string.book_exported, location))
         })
 
         viewModel.bookDeletedEvent.observeSingle(viewLifecycleOwner, Observer {
             CommonActivity.showSnackbar(context, R.string.message_book_deleted)
         })
+
 
         viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->
             if (error is BookDelete.NotFound) {
@@ -503,8 +535,6 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
         fun onForceSaveRequest(bookId: Long)
 
         fun onForceLoadRequest(bookId: Long)
-
-        fun onBookExportRequest(book: Book, format: BookFormat)
 
         fun onBookImportRequest()
     }

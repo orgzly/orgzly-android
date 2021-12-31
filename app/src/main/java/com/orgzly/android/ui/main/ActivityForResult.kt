@@ -15,26 +15,6 @@ import com.orgzly.android.util.LogUtils
 
 
 abstract class ActivityForResult(val activity: ComponentActivity) {
-
-    // TODO: Persist as Orgzly might be closed while called activity is running
-    private val userData = mutableMapOf<String, Any>()
-
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    fun startBookExportFileChooser(bookId: Long, defaultFileName: String) {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "text/*"
-            putExtra(Intent.EXTRA_TITLE, defaultFileName)
-        }
-
-        userData.apply {
-            clear()
-            set(ARG_BOOK_ID, bookId)
-        }
-
-        activity.startActivityForResult(intent, REQUEST_CODE_BOOK_EXPORT)
-    }
-
     @TargetApi(Build.VERSION_CODES.KITKAT)
     fun startSavedSearchesExportFileChooser() {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
@@ -79,12 +59,6 @@ abstract class ActivityForResult(val activity: ComponentActivity) {
         }
 
         when (requestCode) {
-            REQUEST_CODE_BOOK_EXPORT -> {
-                intent.data?.let { uri ->
-                    onBookExport(uri, userData[ARG_BOOK_ID] as Long)
-                }
-            }
-
             REQUEST_CODE_BOOK_IMPORT -> {
                 intent.data?.let { uri ->
                     onBookImport(uri)
@@ -109,7 +83,6 @@ abstract class ActivityForResult(val activity: ComponentActivity) {
         }
     }
 
-    abstract fun onBookExport(uri: Uri, bookId: Long)
     abstract fun onBookImport(uri: Uri)
     abstract fun onSearchQueriesExport(uri: Uri)
     abstract fun onSearchQueriesImport(uri: Uri)
@@ -117,7 +90,6 @@ abstract class ActivityForResult(val activity: ComponentActivity) {
     companion object {
         private val TAG = ActivityForResult::class.java.name
 
-        const val REQUEST_CODE_BOOK_EXPORT = 1
         const val REQUEST_CODE_BOOK_IMPORT = 2
         const val REQUEST_CODE_SAVED_SEARCHES_EXPORT = 3
         const val REQUEST_CODE_SAVED_SEARCHES_IMPORT = 4
