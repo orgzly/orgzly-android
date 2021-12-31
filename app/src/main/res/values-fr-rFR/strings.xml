@@ -16,7 +16,7 @@
     <string name="add">Ajouter</string>
     <string name="not_now">Plus tard</string>
     <string name="save">Sauvegarder</string>
-    <string name="discard">Jeter</string>
+    <string name="discard">Ignorer</string>
     <string name="remove_notebook_link">Supprimer le lien</string>
     <string name="browse">Parcourir</string>
     <string name="dropbox">Dropbox</string>
@@ -170,8 +170,8 @@
     <string name="directory">Dossier</string>
     <string name="fragment_repo_dropbox_directory_desc">Dossier à l’intérieur de Dropbox (par exemple « / Documents/Orgzly »)</string>
     <string name="directory_uri">URI du répertoire</string>
-    <string name="git_clone_progress">Cloning repository</string>
-    <string name="git_verifying_settings">Ensuring repository settings will work.</string>
+    <string name="git_clone_progress">Cloner le dépôt</string>
+    <string name="git_verifying_settings">S\'assurer que les paramètres du dépôt fonctionnent.</string>
     <string name="git_url_hint">Adresse distante (par exemple : git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Emplacement du dossier (par exemple : file:/sdcard/orgzly)</string>
     <string name="git_ssh_key_hint">Emplacement de la clé SSH (par exemple : file:/sdcard/id_rsa)</string>
@@ -295,7 +295,7 @@
     <string name="connecting">Connexion en cours…</string>
     <string name="no_connection">Aucune connexion</string>
     <string name="connection_successful">Connexion réussie</string>
-    <string name="last_sync_with_argument">Dernière synchronisation: %s</string>
+    <string name="last_sync_with_argument">Dernière synchro. : %s</string>
     <string name="force_loading_from_uri">Chargement forcé de %s…</string>
     <string name="force_loaded_from_uri">%s chargé de manière forcée</string>
     <string name="force_saving_to_uri">Sauvegarde forcée de %s…</string>
@@ -389,7 +389,7 @@
     <string name="show_sync_notifications_title">Échec de synchronisation</string>
     <string name="show_sync_notifications_summary">Affiche une notification si la synchronisation échoue</string>
     <string name="prefs_title_reminders">Rappels</string>
-    <string name="pref_title_reminders_for_scheduled_times">Plannifié</string>
+    <string name="pref_title_reminders_for_scheduled_times">Planifié</string>
     <string name="pref_title_summary_reminders_for_scheduled_times">Afficher une notification pour les notes planifiées</string>
     <string name="pref_title_reminders_for_deadline_times">Échéances</string>
     <string name="pref_title_summary_reminders_for_deadline_times">Afficher une notification pour les notes avec échéance</string>
@@ -509,8 +509,8 @@
     <string name="display_inline_images_summary">Afficher les images dans les notes</string>
     <string name="scale_down_to_width">Réduire à la largeur</string>
     <string name="scale_down_to_width_summary">Réduire l\'image pour qu\'elle fasse la largeur spécifiée</string>
-    <string name="file_absolute_root">Root for absolute links (e.g. file:/readme.txt)</string>
-    <string name="file_relative_root">Root for relative links (e.g. file:readme.txt)</string>
+    <string name="file_absolute_root">Racine des liens absolus (par ex. fichier:/readme.txt)</string>
+    <string name="file_relative_root">Racine des liens relatifs (par ex. fichier:readme.txt)</string>
     <string name="argument_used">%s utilisé</string>
     <string name="argument_detected">%s détecté</string>
     <string name="argument_selected">%s sélectionné</string>

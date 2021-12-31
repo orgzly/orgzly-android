@@ -1,23 +1,23 @@
 Orgzly'e Hoşgeldiniz!
 
 * Notlar
-** Click on the note to open it
-** Click and hold the note to select it
+** Açmak için nota tıklayın
+** Notu seçmek için tıklayın ve basılı tutun
 
 Birden fazla not seçebilirsiniz.
 
-** Fling note right to open its quick-menu
+** Hızlı menüyü açmak için notu sağa kaydırın
 
-Fling it left to open a different menu.
+Farklı bir menüye ulaşmak için notu sola kaydırın.
 
 ** Bir notun alt notlarını yanındaki simgeye tıklayarak gizleyebilirsiniz
 
-Long-click the icon to unfold entire subtree.
+Tüm alt ağacı açmak için simgeye uzun tıklayın.
 
 *** Sahip olabileceğiniz seviyelerin sınırı yoktur
 Notlarınızı daha iyi düzenlemek için bunu kullanın
 
-** Not etiketleri olabilir :etiket1:tag2:
+** Notların etiketleri olabilir :tag1:tag2:
 Alt not etiketleri devralır :tag3:
 
 If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
@@ -31,13 +31,13 @@ Ayarlardan TODO, NEXT, DONE gibi istediğiniz kadar durum yapılandırabilirsini
 *** İki tür durum vardır: to-do ve done
 
 *** DONE bu /done/ durumda bir nottur
-CLOSED: [2018-01-24 Çarş. 17:00]
+CLOSED: [2021-07-20 Sal. 11:10]
 
 ** Notların yapılması için bir zaman belirlenebilir
 SCHEDULED: <2015-02-20 Cuma 15:15>
 
 Belirlenen zamanlara tekrarlayıcı ekleyebilirsiniz
-SCHEDULED: <2015-02-16 Mon .+2d>
+SCHEDULED: <2015-02-16 Pzt. .+1d>
 
 ** Notlara son teslim tarihi de ekleyebilirsiniz
 DEADLINE: <2015-02-20 Cuma>
@@ -50,25 +50,25 @@ Hatırlatıcılar başlangıçta devredışı olacak şekilde tanımlandılar ve
 
 Önceliklerin numarasını ayarlardan değiştirebilirsiniz. You can also change default priority - assumed priority for notes without one set.
 
-** Note can include links
+** Not bağlantılar içerebilir
 
-Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[http://www.orgzly.com][Orgzly.com]]).
+Bir telefon numarası çevirin (tel:555-0199), SMS gönderin (sms:555-0199), e-posta oluşturun (mailto:support@orgzly.com) veya bir web sayfasını ziyaret edin ([[http://www.orgzly.com][Orgzly.com]]).
 
-You can also link to another note or notebook within the app.
+Ayrıca uygulama içinde başka bir nota veya not defterine bağlantı verebilirsiniz.
 
-See http://www.orgzly.com/help#links for more information.
+Daha fazla bilgi için http://www.orgzly.com/help#links adresine bakın.
 
 ** Temel yazı karakteri önemi desteklenmektedir
 
 Kelimeleri * kalın *, / italik /, _altıçizili_, = kelimesi kelimesine =, ~ kod ~ ve + doğrudan vurgulama + yapabilirsiniz.
 
-** Checkbox list is available
+** Onay kutusu listesi kullanılabilir
 
-- [X] Task 1
-- [ ] Task 2
-- [ ] Task 3
+- [X] Görev 1
+- [ ] Görev 2
+- [ ] Görev 3
 
-Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
+Değiştirmek için onay kutusunu tıklayın. Yeni bir öğe oluşturmak için satırın sonundaki yeni satır düğmesine tıklayın.
 
 * Arama
 ** Birçok arama operatörü desteklenmektedir

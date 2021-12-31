@@ -147,7 +147,7 @@
     <string name="notes_update_needed_dialog_message">Обновить заметки, чтобы отразить изменения?</string>
     <string name="updating_notes">Обновление заметок…</string>
     <string name="failure">Ой-ой</string>
-    <string name="no_notes_found_after_search">Ваш запрос не соответствует заметкам</string>
+    <string name="no_notes_found_after_search">По вашему запросу заметок не найдено</string>
     <string name="today">Сегодня</string>
     <string name="tomorrow">Завтра</string>
     <string name="next_week">Следующая неделя</string>
