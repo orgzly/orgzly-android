@@ -18,8 +18,31 @@
             android:id="@+id/dialog_whats_new_intro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/space_between_content_areas"
             android:text="@string/whats_new_intro"/>
+
+
+
+        <TextView
+            style="@style/WhatsNewNotice"
+            android:text="@string/target_11_warning" />
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.8.6-beta.1"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Target Android 11" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="New “System” color scheme" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="WebDAV sync fixes and digest authentication support" />
+
 
 
         <TextView

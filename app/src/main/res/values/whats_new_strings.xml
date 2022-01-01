@@ -25,4 +25,6 @@
         <a href="https://crowdin.com/project/orgzly">translate</a>
         the app on Crowdin.
     ]]></string>
+
+    <string name="target_11_warning">If you encounter any permission issues due to Android\'s new scoped storage please let us know.</string>
 </resources>
