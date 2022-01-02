@@ -1,9 +1,13 @@
 package com.orgzly.android.ui.repos
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
@@ -28,6 +32,7 @@ import com.orgzly.android.ui.repo.webdav.WebdavRepoActivity
 import com.orgzly.android.ui.showSnackbar
 import com.orgzly.databinding.ActivityReposBinding
 import javax.inject.Inject
+
 
 /**
  * List of user-configured repositories.
@@ -220,14 +225,18 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             }
 
             R.id.repos_options_menu_item_new_git -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    GitRepoActivity.start(this)
-                } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
+                    val uri = Uri.parse("package:" + BuildConfig.APPLICATION_ID)
+                    startActivity(
+                        Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri))
+                } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Show explanation why possibly, if ActivityCompat.shouldShowRequestPermissionRationale() says so?
                     ActivityCompat.requestPermissions(
                         this,
                         arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                         ACTIVITY_REQUEST_CODE_FOR_READ_WRITE_EXTERNAL_STORAGE)
+                } else {
+                    GitRepoActivity.start(this)
                 }
                 return
             }
