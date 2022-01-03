@@ -4,7 +4,6 @@ package com.orgzly.android.ui.books
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -245,21 +244,19 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
         }
     }
 
-    private val createDocumentForExportLauncher =
-        registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri: Uri ->
-            requireContext().contentResolver.openOutputStream(uri).let { stream ->
-                if (stream != null) {
-                    viewModel.exportBook(uri, stream)
-                } else {
-                    Log.e(TAG, "Failed to open output stream for notebook export")
-                }
+    private val pickFileForBookExport =
+        registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
+            if (uri != null) {
+                viewModel.exportBook(uri)
+            } else {
+                Log.w(TAG, "Export file not selected")
             }
         }
 
     private fun exportBook(book: Book, format: BookFormat) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             val defaultFileName = BookName.fileName(book.name, format)
-            createDocumentForExportLauncher.launch(defaultFileName)
+            pickFileForBookExport.launch(defaultFileName)
 
         } else {
             (requireActivity() as CommonActivity).runWithPermission(AppPermissions.Usage.BOOK_EXPORT) {
