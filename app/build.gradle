@@ -4,11 +4,11 @@ apply plugin: 'kotlin-kapt'
 
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 16 // Jelly Bean (4.1)
-        targetSdkVersion 30 // Android 11
+        targetSdkVersion 31 // Android 12
         applicationId "com.orgzly"
         versionCode 161
         versionName "1.8.6"

@@ -6,13 +6,13 @@ buildscript {
 
     versions.android_gradle_plugin = '7.0.4'
 
-    versions.kotlin = '1.6.0'
+    versions.kotlin = '1.6.10'
 
-    versions.jetbrains_annotations = '16.0.3'
+    versions.jetbrains_annotations = '23.0.0'
 
     versions.android_multidex = '2.0.1'
 
-    versions.android_appcompat = '1.3.0'
+    versions.android_appcompat = '1.4.0'
 
     versions.android_documentfile = '1.0.1'
     versions.android_localbroadcastmanager = '1.0.0'
@@ -20,18 +20,18 @@ buildscript {
     versions.android_cardview = '1.0.0'
     versions.android_recyclerview = '1.2.1'
     versions.android_viewpager = '1.0.0'
-    versions.android_constraint_layout = '2.0.4'
+    versions.android_constraint_layout = '2.1.2'
     versions.android_preference = '1.1.1'
-    versions.android_material = '1.3.0'
+    versions.android_material = '1.4.0'
     versions.android_swiperefreshlayout = '1.1.0'
 
-    versions.android_room = '2.3.0'
+    versions.android_room = '2.4.0'
 
     versions.android_lifecycle = '2.2.0'
 
-    versions.android_annotation = '1.2.0'
+    versions.android_annotation = '1.3.0'
 
-    versions.junit = '4.12'
+    versions.junit = '4.13.2'
 
     versions.android_test_espresso = '3.4.0'
 
@@ -45,23 +45,23 @@ buildscript {
 
     versions.loremipsum = '1.0'
 
-    versions.dagger = '2.24'
+    versions.dagger = '2.40.5'
 
-    versions.gson = '2.8.6'
+    versions.gson = '2.8.9'
 
-    versions.dropbox_core_sdk = '3.1.1'
+    versions.dropbox_core_sdk = '5.1.1'
 
     versions.juniversalchardet = '1.0.3'
 
     versions.evernote_android_job = '1.4.2'
 
-    versions.joda_time = '2.10.4'
+    versions.joda_time = '2.10.13'
 
-    versions.glide = '4.10.0'
+    versions.glide = '4.12.0'
 
     versions.sardine = '0.8'
 
-    versions.okhttp_digest = '2.5'
+    versions.okhttp_digest = '2.6'
 
     versions.jgit = '5.13.0.202109080827-r'
 
