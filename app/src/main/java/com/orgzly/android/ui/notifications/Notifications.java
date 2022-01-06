@@ -22,6 +22,7 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.main.MainActivity;
 import com.orgzly.android.ui.share.ShareActivity;
+import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 
 import static com.orgzly.android.NewNoteBroadcastReceiver.NOTE_TITLE;
@@ -58,7 +59,10 @@ public class Notifications {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             PendingIntent newNotePendingIntent = PendingIntent.getBroadcast(
-                    context, 0, new Intent(context, NewNoteBroadcastReceiver.class), 0);
+                    context,
+                    0,
+                    new Intent(context, NewNoteBroadcastReceiver.class),
+                    ActivityUtils.pendingIntentFlagUpdateCurrent(0));
 
             RemoteInput remoteInput = new RemoteInput.Builder(NOTE_TITLE)
                     .setLabel(context.getString(R.string.quick_note))
@@ -74,7 +78,10 @@ public class Notifications {
 
         /* Add open action */
         PendingIntent openAppPendingIntent = PendingIntent.getActivity(
-                context, 0, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                context,
+                0,
+                new Intent(context, MainActivity.class),
+                ActivityUtils.pendingIntentFlagUpdateCurrent());
         builder.addAction(
                 R.drawable.ic_open_in_new_white_24dp,
                 context.getString(R.string.open),
@@ -84,7 +91,10 @@ public class Notifications {
         Intent syncIntent = new Intent(context, SyncService.class);
         syncIntent.setAction(AppIntent.ACTION_SYNC_START);
         PendingIntent syncPendingIntent = PendingIntent.getService(
-                context, 0, syncIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                context,
+                0,
+                syncIntent,
+                ActivityUtils.pendingIntentFlagUpdateCurrent());
         builder.addAction(
                     R.drawable.ic_sync_white_24dp,
                     context.getString(R.string.sync),
@@ -124,7 +134,10 @@ public class Notifications {
 
     public static Notification createSyncInProgressNotification(Context context) {
         PendingIntent openAppPendingIntent = PendingIntent.getActivity(
-                context, 0, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                context,
+                0,
+                new Intent(context, MainActivity.class),
+                ActivityUtils.pendingIntentFlagUpdateCurrent());
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.SYNC_PROGRESS)
                 .setOngoing(true)

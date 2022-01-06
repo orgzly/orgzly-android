@@ -29,6 +29,7 @@ import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.main.SyncFragment;
 import com.orgzly.android.ui.note.NoteFragment;
+import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.usecase.UseCase;
 import com.orgzly.android.usecase.UseCaseResult;
 import com.orgzly.android.util.LogUtils;
@@ -250,8 +251,9 @@ public class ShareActivity extends CommonActivity
         // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);
 
-        // return PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        return stackBuilder.getPendingIntent(
+                0,
+                ActivityUtils.pendingIntentFlagUpdateCurrent());
     }
 
     /**

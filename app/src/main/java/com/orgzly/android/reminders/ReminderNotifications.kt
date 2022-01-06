@@ -16,6 +16,7 @@ import com.orgzly.android.NotificationChannels
 import com.orgzly.android.db.dao.ReminderTimeDao
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.notifications.Notifications
+import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.ActivityUtils.mainActivityPendingIntent
 import com.orgzly.android.util.OrgFormatter
 import com.orgzly.android.util.UserTimeFormatter
@@ -162,7 +163,10 @@ object ReminderNotifications {
         }
 
         return PendingIntent.getBroadcast(
-                context, noteId.toInt(), intent,PendingIntent.FLAG_UPDATE_CURRENT)
+            context,
+            noteId.toInt(),
+            intent,
+            ActivityUtils.pendingIntentFlagUpdateCurrent())
     }
 
     private fun reminderSnoozePendingIntent(
@@ -179,6 +183,9 @@ object ReminderNotifications {
         }
 
         return PendingIntent.getBroadcast(
-                context, noteId.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            context,
+            noteId.toInt(),
+            intent,
+            ActivityUtils.pendingIntentFlagUpdateCurrent())
     }
 }

@@ -17,6 +17,7 @@ import com.orgzly.android.db.entity.BookView;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.sync.SyncStatus;
 import com.orgzly.android.ui.main.MainActivity;
+import com.orgzly.android.ui.util.ActivityUtils;
 
 import java.util.List;
 
@@ -58,7 +59,10 @@ public class SyncStatusBroadcastReceiver extends BroadcastReceiver {
 
     private void createSyncFailedNotification(Context context, SyncStatus status) {
         PendingIntent openAppPendingIntent = PendingIntent.getActivity(
-                context, 0, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                context,
+                0,
+                new Intent(context, MainActivity.class),
+                ActivityUtils.pendingIntentFlagUpdateCurrent());
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.SYNC_FAILED)
                 .setAutoCancel(true)

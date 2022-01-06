@@ -7,6 +7,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Handler
 import android.util.DisplayMetrics
 import android.util.Log
@@ -137,10 +138,10 @@ object ActivityUtils {
         intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId)
 
         return PendingIntent.getActivity(
-                context,
-                noteId.toInt(),
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT)
+            context,
+            noteId.toInt(),
+            intent,
+            pendingIntentFlagUpdateCurrent())
     }
 
     fun keepScreenOnToggle(activity: Activity?, item: MenuItem): AlertDialog? {
@@ -222,6 +223,16 @@ object ActivityUtils {
                     }
                 }
             }
+        }
+    }
+
+    @JvmStatic
+    @JvmOverloads
+    fun pendingIntentFlagUpdateCurrent(flags: Int = PendingIntent.FLAG_UPDATE_CURRENT): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            flags or PendingIntent.FLAG_IMMUTABLE
+        } else {
+            flags
         }
     }
 }
