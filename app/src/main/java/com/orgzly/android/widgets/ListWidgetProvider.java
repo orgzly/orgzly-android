@@ -98,7 +98,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
                         context,
                         0,
                         onClickIntent,
-                        ActivityUtils.pendingIntentFlagUpdateCurrent());
+                        ActivityUtils.mutable(PendingIntent.FLAG_UPDATE_CURRENT));
 
                 remoteViews.setPendingIntentTemplate(R.id.list_widget_list_view, onClickPendingIntent);
 
@@ -115,7 +115,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
                                 context,
                                 0,
                                 openIntent,
-                                ActivityUtils.pendingIntentFlagUpdateCurrent()));
+                                ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT)));
 
                 Intent selectionIntent = new Intent(context, ListWidgetSelectionActivity.class);
                 selectionIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
@@ -125,7 +125,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
                         PendingIntent.getActivity(context,
                                 0,
                                 selectionIntent,
-                                ActivityUtils.pendingIntentFlagUpdateCurrent()));
+                                ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT)));
 
                 remoteViews.setTextViewText(
                         R.id.list_widget_header_selection,
@@ -225,7 +225,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
                 context,
                 0,
                 intent,
-                ActivityUtils.pendingIntentFlagUpdateCurrent());
+                ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT));
     }
 
     private void setSelectionFromIntent(Context context, Intent intent) {
@@ -290,7 +290,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         App.appComponent.inject(this);
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent, intent.getExtras());
 
         if (AppIntent.ACTION_UPDATE_LIST_WIDGET.equals(intent.getAction())) {
             updateListContents(context);

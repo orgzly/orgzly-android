@@ -62,7 +62,7 @@ public class SyncStatusBroadcastReceiver extends BroadcastReceiver {
                 context,
                 0,
                 new Intent(context, MainActivity.class),
-                ActivityUtils.pendingIntentFlagUpdateCurrent());
+                ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT));
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.SYNC_FAILED)
                 .setAutoCancel(true)

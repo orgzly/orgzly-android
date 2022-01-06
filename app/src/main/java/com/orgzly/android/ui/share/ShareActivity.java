@@ -253,7 +253,7 @@ public class ShareActivity extends CommonActivity
 
         return stackBuilder.getPendingIntent(
                 0,
-                ActivityUtils.pendingIntentFlagUpdateCurrent());
+                ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT));
     }
 
     /**

@@ -62,7 +62,7 @@ public class Notifications {
                     context,
                     0,
                     new Intent(context, NewNoteBroadcastReceiver.class),
-                    ActivityUtils.pendingIntentFlagUpdateCurrent(0));
+                    ActivityUtils.immutable(0));
 
             RemoteInput remoteInput = new RemoteInput.Builder(NOTE_TITLE)
                     .setLabel(context.getString(R.string.quick_note))
@@ -81,7 +81,7 @@ public class Notifications {
                 context,
                 0,
                 new Intent(context, MainActivity.class),
-                ActivityUtils.pendingIntentFlagUpdateCurrent());
+                ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT));
         builder.addAction(
                 R.drawable.ic_open_in_new_white_24dp,
                 context.getString(R.string.open),
@@ -94,7 +94,7 @@ public class Notifications {
                 context,
                 0,
                 syncIntent,
-                ActivityUtils.pendingIntentFlagUpdateCurrent());
+                ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT));
         builder.addAction(
                     R.drawable.ic_sync_white_24dp,
                     context.getString(R.string.sync),
@@ -137,7 +137,7 @@ public class Notifications {
                 context,
                 0,
                 new Intent(context, MainActivity.class),
-                ActivityUtils.pendingIntentFlagUpdateCurrent());
+                ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT));
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.SYNC_PROGRESS)
                 .setOngoing(true)

@@ -166,7 +166,7 @@ object ReminderNotifications {
             context,
             noteId.toInt(),
             intent,
-            ActivityUtils.pendingIntentFlagUpdateCurrent())
+            ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT))
     }
 
     private fun reminderSnoozePendingIntent(
@@ -186,6 +186,6 @@ object ReminderNotifications {
             context,
             noteId.toInt(),
             intent,
-            ActivityUtils.pendingIntentFlagUpdateCurrent())
+            ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT))
     }
 }

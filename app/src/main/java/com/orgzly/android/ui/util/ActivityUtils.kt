@@ -141,7 +141,7 @@ object ActivityUtils {
             context,
             noteId.toInt(),
             intent,
-            pendingIntentFlagUpdateCurrent())
+            immutable(PendingIntent.FLAG_UPDATE_CURRENT))
     }
 
     fun keepScreenOnToggle(activity: Activity?, item: MenuItem): AlertDialog? {
@@ -227,10 +227,18 @@ object ActivityUtils {
     }
 
     @JvmStatic
-    @JvmOverloads
-    fun pendingIntentFlagUpdateCurrent(flags: Int = PendingIntent.FLAG_UPDATE_CURRENT): Int {
+    fun immutable(flags: Int): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             flags or PendingIntent.FLAG_IMMUTABLE
+        } else {
+            flags
+        }
+    }
+
+    @JvmStatic
+    fun mutable(flags: Int): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            flags or PendingIntent.FLAG_MUTABLE
         } else {
             flags
         }
