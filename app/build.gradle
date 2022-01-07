@@ -167,8 +167,6 @@ dependencies {
 
     implementation "com.googlecode.juniversalchardet:juniversalchardet:$versions.juniversalchardet"
 
-    implementation "com.evernote:android-job:$versions.evernote_android_job"
-
     implementation "joda-time:joda-time:$versions.joda_time"
 
     implementation "com.github.bumptech.glide:glide:$versions.glide"

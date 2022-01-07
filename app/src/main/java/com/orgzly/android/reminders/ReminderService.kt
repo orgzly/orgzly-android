@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.JobIntentService
-import com.evernote.android.job.JobManager
 import com.orgzly.BuildConfig
 import com.orgzly.android.App
 import com.orgzly.android.AppIntent
@@ -49,23 +48,23 @@ class ReminderService : JobIntentService() {
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "$event Now:$now $lastRun")
 
-        ReminderJob.cancelAll()
+        ReminderAlarmManager.cancelAll(this)
 
         when (event) {
             Event.DATA_CHANGED -> {
                 // Only schedule the next job below
             }
 
-            Event.JOB_TRIGGERED ->
-                onJobTriggered(now, lastRun)
+            Event.TRIGGERED ->
+                onReminderTriggered(now, lastRun)
 
-            Event.SNOOZE_JOB_TRIGGERED -> {
+            Event.SNOOZE_ENDED -> {
                 val noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0)
                 val noteTimeType = intent.getIntExtra(AppIntent.EXTRA_NOTE_TIME_TYPE, 0)
                 val timestamp = intent.getLongExtra(AppIntent.EXTRA_SNOOZE_TIMESTAMP, 0)
 
                 if (noteId > 0) {
-                    onSnoozeTriggered(this, noteId, noteTimeType, timestamp)
+                    onSnoozeEnded(this, noteId, noteTimeType, timestamp)
                 }
             }
         }
@@ -108,31 +107,26 @@ class ReminderService : JobIntentService() {
             val firstNote = notes[0]
 
             // Schedule *in* exactMs
-            var exactMs = firstNote.runTime.millis - now.millis
-            if (exactMs < 0) {
-                exactMs = 1
+            var inMs = firstNote.runTime.millis - now.millis
+            if (inMs < 0) {
+                inMs = 1
             }
 
-            val jobId = ReminderJob.scheduleJob(exactMs)
+            ReminderAlarmManager.cancelAll(this)
+            ReminderAlarmManager.scheduleNextReminder(this, inMs)
 
-            logForDebuggingScheduled(jobId, exactMs, firstNote.payload.title)
+            logForDebuggingScheduled(inMs, firstNote.payload.title)
 
         } else {
             logAction("No notes found")
         }
     }
 
-    private fun logForDebuggingScheduled(jobId: Int, exactMs: Long, title: String) {
-        val jobRequest = JobManager.instance().getJobRequest(jobId)
-        val runTime = jobRequest.scheduledAt + jobRequest.startMs
-        val jobRunTimeString = DateTime(runTime).toString()
-
+    private fun logForDebuggingScheduled(exactMs: Long, title: String) {
         val log = String.format(
                 Locale.getDefault(),
-                "#%d in %d sec (%s) for note \"%s\"",
-                jobId,
+                "In %d sec for note \"%s\"",
                 exactMs / 1000,
-                jobRunTimeString,
                 title)
 
         logAction(log)
@@ -141,7 +135,7 @@ class ReminderService : JobIntentService() {
     /**
      * Display reminders for all notes with times between previous run and now.
      */
-    private fun onJobTriggered(now: DateTime, lastRun: LastRun?) {
+    private fun onReminderTriggered(now: DateTime, lastRun: LastRun?) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         val msg = if (lastRun != null) {
@@ -163,7 +157,7 @@ class ReminderService : JobIntentService() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, msg)
     }
 
-    private fun onSnoozeTriggered(context: Context, noteId: Long, noteTimeType: Int, timestamp: Long) {
+    private fun onSnoozeEnded(context: Context, noteId: Long, noteTimeType: Int, timestamp: Long) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp)
 
         val reminders = mutableListOf<NoteReminder>()
@@ -219,8 +213,8 @@ class ReminderService : JobIntentService() {
 
     private enum class Event {
         DATA_CHANGED,
-        JOB_TRIGGERED,
-        SNOOZE_JOB_TRIGGERED
+        TRIGGERED,
+        SNOOZE_ENDED
     }
 
     companion object {
@@ -315,7 +309,7 @@ class ReminderService : JobIntentService() {
         /**
          * Notify reminder service about changes that might affect scheduling of reminders.
          */
-        fun notifyForDataChanged(context: Context) {
+        fun notifyDataSetChanged(context: Context) {
             val intent = Intent(context, ReminderService::class.java).apply {
                 putExtra(AppIntent.EXTRA_REMINDER_EVENT, Event.DATA_CHANGED.name)
             }
@@ -327,23 +321,23 @@ class ReminderService : JobIntentService() {
          * Notify ReminderService about the triggered job.
          */
         @JvmStatic
-        fun notifyForJobTriggered(context: Context) {
+        fun reminderTriggered(context: Context) {
             val intent = Intent(context, ReminderService::class.java).apply {
-                putExtra(AppIntent.EXTRA_REMINDER_EVENT, Event.JOB_TRIGGERED.name)
+                putExtra(AppIntent.EXTRA_REMINDER_EVENT, Event.TRIGGERED.name)
             }
 
             enqueueWork(context, intent)
         }
 
         /**
-         * Notify ReminderService about the triggered snooze job.
+         * Notify ReminderService about the snooze ended job.
          */
         @JvmStatic
-        fun notifyForSnoozeTriggered(context: Context, noteId: Long, noteTimeType: Int, timestamp: Long) {
+        fun snoozeEnded(context: Context, noteId: Long, noteTimeType: Int, timestamp: Long) {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp)
 
             val intent = Intent(context, ReminderService::class.java).apply {
-                putExtra(AppIntent.EXTRA_REMINDER_EVENT, Event.SNOOZE_JOB_TRIGGERED.name)
+                putExtra(AppIntent.EXTRA_REMINDER_EVENT, Event.SNOOZE_ENDED.name)
                 putExtra(AppIntent.EXTRA_NOTE_ID, noteId)
                 putExtra(AppIntent.EXTRA_NOTE_TIME_TYPE, noteTimeType)
                 putExtra(AppIntent.EXTRA_SNOOZE_TIMESTAMP, timestamp)

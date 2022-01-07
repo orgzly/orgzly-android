@@ -9,7 +9,10 @@ public class AppIntent {
     public static final String ACTION_UPDATING_NOTES_ENDED = "com.orgzly.intent.action.UPDATING_NOTES_ENDED";
 
     public static final String ACTION_NOTE_MARK_AS_DONE = "com.orgzly.intent.action.NOTE_MARK_AS_DONE";
-    public static final String ACTION_REMINDER_SNOOZE_REQUEST = "com.orgzly.intent.action.REMINDER_SNOOZE_REQUEST";
+
+    public static final String ACTION_REMINDER_TRIGGERED = "com.orgzly.intent.action.REMINDER_TRIGGERED";
+    public static final String ACTION_REMINDER_SNOOZE_REQUESTED = "com.orgzly.intent.action.REMINDER_SNOOZE_REQUESTED";
+    public static final String ACTION_REMINDER_SNOOZE_ENDED = "com.orgzly.intent.action.REMINDER_SNOOZE_ENDED";
 
     public static final String ACTION_SYNC_STATUS = "com.orgzly.intent.action.SYNC_STATUS";
     public static final String ACTION_SYNC_START = "com.orgzly.intent.action.SYNC_START";

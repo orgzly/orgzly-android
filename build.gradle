@@ -53,8 +53,6 @@ buildscript {
 
     versions.juniversalchardet = '1.0.3'
 
-    versions.evernote_android_job = '1.4.2'
-
     versions.joda_time = '2.10.13'
 
     versions.glide = '4.12.0'

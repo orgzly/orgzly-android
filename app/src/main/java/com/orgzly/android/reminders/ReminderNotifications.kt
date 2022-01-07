@@ -174,7 +174,7 @@ object ReminderNotifications {
     ): PendingIntent {
 
         val intent = Intent(context, NotificationBroadcastReceiver::class.java).apply {
-            action = AppIntent.ACTION_REMINDER_SNOOZE_REQUEST
+            action = AppIntent.ACTION_REMINDER_SNOOZE_REQUESTED
             putExtra(AppIntent.EXTRA_NOTE_ID, noteId)
             putExtra(AppIntent.EXTRA_NOTE_TIME_TYPE, noteTimeType)
             putExtra(AppIntent.EXTRA_SNOOZE_TIMESTAMP, timestamp)

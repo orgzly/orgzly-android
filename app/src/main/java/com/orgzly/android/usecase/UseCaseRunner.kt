@@ -40,8 +40,8 @@ object UseCaseRunner {
         }
 
         if (result.modifiesLocalData) {
-            ReminderService.notifyForDataChanged(App.getAppContext())
-            ListWidgetProvider.notifyDataChanged(App.getAppContext())
+            ReminderService.notifyDataSetChanged(App.getAppContext())
+            ListWidgetProvider.notifyDataSetChanged(App.getAppContext())
         }
 
         if (result.modifiesListWidget) {

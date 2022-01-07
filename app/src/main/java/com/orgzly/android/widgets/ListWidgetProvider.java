@@ -45,7 +45,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
     @Inject
     DataRepository dataRepository;
 
-    public static void notifyDataChanged(Context context) {
+    public static void notifyDataSetChanged(Context context) {
         Intent intent = new Intent(context, ListWidgetProvider.class);
         intent.setAction(AppIntent.ACTION_UPDATE_LIST_WIDGET);
         context.sendBroadcast(intent);

@@ -7,7 +7,7 @@ import android.os.Build;
 import android.service.notification.StatusBarNotification;
 
 import com.orgzly.BuildConfig;
-import com.orgzly.android.reminders.SnoozeJob;
+import com.orgzly.android.reminders.ReminderAlarmManager;
 import com.orgzly.android.ui.notifications.Notifications;
 import com.orgzly.android.usecase.NoteUpdateStateDone;
 import com.orgzly.android.usecase.UseCaseRunner;
@@ -42,13 +42,13 @@ public class NotificationActionService extends JobIntentService {
                 throw new IllegalArgumentException("Missing note ID");
             }
 
-        } else if (AppIntent.ACTION_REMINDER_SNOOZE_REQUEST.equals(intent.getAction())) {
+        } else if (AppIntent.ACTION_REMINDER_SNOOZE_REQUESTED.equals(intent.getAction())) {
             long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0);
             int noteTimeType = intent.getIntExtra(AppIntent.EXTRA_NOTE_TIME_TYPE, 0);
             long timestamp = intent.getLongExtra(AppIntent.EXTRA_SNOOZE_TIMESTAMP, 0);
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
             if (noteId > 0) {
-                SnoozeJob.scheduleJob(this, noteId, noteTimeType, timestamp);
+                ReminderAlarmManager.scheduleSnoozeEnd(this, noteId, noteTimeType, timestamp);
             } else {
                 throw new IllegalArgumentException("Missing note id");
             }
