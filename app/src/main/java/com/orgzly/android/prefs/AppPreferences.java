@@ -913,7 +913,7 @@ public class AppPreferences {
     }
 
     /*
-     * ReminderService
+     * ReminderWorker
      */
 
     public static void reminderLastRunForScheduled(Context context, long value) {

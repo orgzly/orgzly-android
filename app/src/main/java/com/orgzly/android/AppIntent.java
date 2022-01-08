@@ -10,6 +10,7 @@ public class AppIntent {
 
     public static final String ACTION_NOTE_MARK_AS_DONE = "com.orgzly.intent.action.NOTE_MARK_AS_DONE";
 
+    public static final String ACTION_REMINDER_DATA_CHANGED = "com.orgzly.intent.action.REMINDER_DATA_CHANGED";
     public static final String ACTION_REMINDER_TRIGGERED = "com.orgzly.intent.action.REMINDER_TRIGGERED";
     public static final String ACTION_REMINDER_SNOOZE_REQUESTED = "com.orgzly.intent.action.REMINDER_SNOOZE_REQUESTED";
     public static final String ACTION_REMINDER_SNOOZE_ENDED = "com.orgzly.intent.action.REMINDER_SNOOZE_ENDED";

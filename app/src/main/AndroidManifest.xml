@@ -182,7 +182,7 @@
             android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <service
-            android:name=".android.reminders.ReminderService"
+            android:name=".android.reminders.NoteReminders"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <service
@@ -229,7 +229,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".android.reminders.ReminderAlarmManager" android:exported="false">
+        <receiver android:name=".android.reminders.RemindersBroadcastReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>

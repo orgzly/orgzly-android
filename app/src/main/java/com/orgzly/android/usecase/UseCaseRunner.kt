@@ -3,7 +3,7 @@ package com.orgzly.android.usecase
 import com.orgzly.BuildConfig
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
-import com.orgzly.android.reminders.ReminderService
+import com.orgzly.android.reminders.RemindersScheduler
 import com.orgzly.android.sync.AutoSync
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.widgets.ListWidgetProvider
@@ -40,7 +40,7 @@ object UseCaseRunner {
         }
 
         if (result.modifiesLocalData) {
-            ReminderService.notifyDataSetChanged(App.getAppContext())
+            RemindersScheduler.notifyDataSetChanged(App.getAppContext())
             ListWidgetProvider.notifyDataSetChanged(App.getAppContext())
         }
 

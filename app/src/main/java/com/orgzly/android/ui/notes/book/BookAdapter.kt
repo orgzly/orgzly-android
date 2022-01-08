@@ -71,8 +71,6 @@ class BookAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
-
         return when (viewType) {
             R.layout.item_head_book_preface -> {
                 val binding = ItemHeadBookPrefaceBinding.inflate(

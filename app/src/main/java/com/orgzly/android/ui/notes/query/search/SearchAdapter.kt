@@ -38,8 +38,6 @@ class SearchAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
-
         val binding = ItemHeadBinding.inflate(LayoutInflater.from(context), parent, false)
 
         NoteItemViewBinder.setupSpacingForDensitySetting(context, binding)

@@ -6,15 +6,15 @@ import android.content.Intent;
 import android.os.Build;
 import android.service.notification.StatusBarNotification;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
+
 import com.orgzly.BuildConfig;
-import com.orgzly.android.reminders.ReminderAlarmManager;
+import com.orgzly.android.reminders.RemindersScheduler;
 import com.orgzly.android.ui.notifications.Notifications;
 import com.orgzly.android.usecase.NoteUpdateStateDone;
 import com.orgzly.android.usecase.UseCaseRunner;
 import com.orgzly.android.util.LogUtils;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.JobIntentService;
 
 public class NotificationActionService extends JobIntentService {
     public static final String TAG = NotificationActionService.class.getName();
@@ -48,7 +48,7 @@ public class NotificationActionService extends JobIntentService {
             long timestamp = intent.getLongExtra(AppIntent.EXTRA_SNOOZE_TIMESTAMP, 0);
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, noteId, timestamp);
             if (noteId > 0) {
-                ReminderAlarmManager.scheduleSnoozeEnd(this, noteId, noteTimeType, timestamp);
+                RemindersScheduler.scheduleSnoozeEnd(this, noteId, noteTimeType, timestamp);
             } else {
                 throw new IllegalArgumentException("Missing note id");
             }

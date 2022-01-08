@@ -13,7 +13,7 @@ import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
 import com.orgzly.android.prefs.*
-import com.orgzly.android.reminders.ReminderService
+import com.orgzly.android.reminders.RemindersScheduler
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.NoteStates
 import com.orgzly.android.ui.notifications.Notifications
@@ -297,7 +297,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
          * - Changing states or priorities can affect the displayed data
          * - Enabling or disabling reminders needs to trigger reminder service notification
          */
-        ReminderService.notifyDataSetChanged(requireContext())
+        RemindersScheduler.notifyDataSetChanged(requireContext())
         ListWidgetProvider.notifyDataSetChanged(requireContext())
     }
 

@@ -21,7 +21,7 @@ import com.orgzly.android.ui.util.ActivityUtils.mainActivityPendingIntent
 import com.orgzly.android.util.OrgFormatter
 import com.orgzly.android.util.UserTimeFormatter
 
-object ReminderNotifications {
+object RemindersNotifications {
     val VIBRATION_PATTERN = longArrayOf(500, 50, 50, 300)
 
     private val LIGHTS = Triple(Color.BLUE, 1000, 5000)

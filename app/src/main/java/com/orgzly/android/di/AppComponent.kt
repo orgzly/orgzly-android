@@ -3,11 +3,11 @@ package com.orgzly.android.di
 import com.orgzly.android.ChooserShareTargetService
 import com.orgzly.android.NewNoteBroadcastReceiver
 import com.orgzly.android.TimeChangeBroadcastReceiver
-import com.orgzly.android.data.DataRepository
 import com.orgzly.android.di.module.ApplicationModule
 import com.orgzly.android.di.module.DataModule
 import com.orgzly.android.di.module.DatabaseModule
-import com.orgzly.android.reminders.ReminderService
+import com.orgzly.android.reminders.RemindersBroadcastReceiver
+import com.orgzly.android.reminders.NoteReminders
 import com.orgzly.android.sync.SyncService
 import com.orgzly.android.ui.BookChooserActivity
 import com.orgzly.android.ui.TemplateChooserActivity
@@ -75,7 +75,7 @@ interface AppComponent {
 
     fun inject(arg: SyncService)
     fun inject(arg: SyncStatusBroadcastReceiver)
-    fun inject(arg: ReminderService)
+    fun inject(arg: NoteReminders)
     fun inject(arg: UseCaseRunner.Factory)
     fun inject(arg: ChooserShareTargetService)
     fun inject(arg: UseCaseService)
@@ -83,4 +83,5 @@ interface AppComponent {
     fun inject(arg: ListWidgetProvider)
     fun inject(arg: NewNoteBroadcastReceiver)
     fun inject(arg: TimeChangeBroadcastReceiver)
+    fun inject(arg: RemindersBroadcastReceiver)
 }
