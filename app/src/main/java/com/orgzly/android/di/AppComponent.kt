@@ -32,7 +32,7 @@ import com.orgzly.android.ui.savedsearches.SavedSearchesFragment
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.share.ShareActivity
 import com.orgzly.android.usecase.UseCaseRunner
-import com.orgzly.android.usecase.UseCaseService
+import com.orgzly.android.usecase.UseCaseWorker
 import com.orgzly.android.widgets.ListWidgetProvider
 import com.orgzly.android.widgets.ListWidgetSelectionActivity
 import com.orgzly.android.widgets.ListWidgetService
@@ -78,7 +78,7 @@ interface AppComponent {
     fun inject(arg: NoteReminders)
     fun inject(arg: UseCaseRunner.Factory)
     fun inject(arg: ChooserShareTargetService)
-    fun inject(arg: UseCaseService)
+    fun inject(arg: UseCaseWorker)
     fun inject(arg: ListWidgetService)
     fun inject(arg: ListWidgetProvider)
     fun inject(arg: NewNoteBroadcastReceiver)

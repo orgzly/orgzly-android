@@ -14,7 +14,7 @@ class NoteReparseStateAndTitles : UseCase() {
         )
     }
 
-    override fun toIntent(): Intent {
-        return Intent(AppIntent.ACTION_REPARSE_NOTES)
+    override fun toAction(): String {
+        return AppIntent.ACTION_REPARSE_NOTES
     }
 }

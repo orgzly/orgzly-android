@@ -55,10 +55,4 @@ object UseCaseRunner {
 
         return result
     }
-
-    @JvmStatic
-    fun enqueue(action: UseCase) {
-        val context = App.getAppContext()
-        UseCaseService.enqueueWork(context, action.toIntent())
-    }
 }

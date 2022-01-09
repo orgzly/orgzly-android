@@ -14,7 +14,7 @@ class BookImportGettingStarted : UseCase() {
         )
     }
 
-    override fun toIntent(): Intent {
-        return Intent(AppIntent.ACTION_IMPORT_GETTING_STARTED_NOTEBOOK)
+    override fun toAction(): String {
+        return AppIntent.ACTION_IMPORT_GETTING_STARTED_NOTEBOOK
     }
 }

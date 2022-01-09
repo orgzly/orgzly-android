@@ -14,7 +14,7 @@ class NoteSyncCreatedAtTimeWithProperty : UseCase() {
         )
     }
 
-    override fun toIntent(): Intent {
-        return Intent(AppIntent.ACTION_SYNC_CREATED_AT_WITH_PROPERTY)
+    override fun toAction(): String {
+        return AppIntent.ACTION_SYNC_CREATED_AT_WITH_PROPERTY
     }
 }

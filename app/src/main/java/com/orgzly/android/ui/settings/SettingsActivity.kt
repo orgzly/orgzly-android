@@ -7,10 +7,7 @@ import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.settings.SettingsFragment.Listener
-import com.orgzly.android.usecase.BookImportGettingStarted
-import com.orgzly.android.usecase.DatabaseClear
-import com.orgzly.android.usecase.UseCase
-import com.orgzly.android.usecase.UseCaseRunner
+import com.orgzly.android.usecase.*
 
 
 class SettingsActivity : CommonActivity(), Listener {
@@ -23,7 +20,7 @@ class SettingsActivity : CommonActivity(), Listener {
                 .setTitle(R.string.notes_update_needed_dialog_title)
                 .setMessage(R.string.notes_update_needed_dialog_message)
                 .setPositiveButton(R.string.yes) { _, _ ->
-                    UseCaseRunner.enqueue(action)
+                    UseCaseWorker.schedule(this, action)
                 }
                 .setNegativeButton(R.string.not_now, null)
                 .show()
@@ -50,7 +47,7 @@ class SettingsActivity : CommonActivity(), Listener {
     }
 
     override fun onGettingStartedNotebookReloadRequest() {
-        UseCaseRunner.enqueue(BookImportGettingStarted())
+        UseCaseWorker.schedule(this, BookImportGettingStarted())
     }
 
     override fun onPreferenceScreen(resource: String) {

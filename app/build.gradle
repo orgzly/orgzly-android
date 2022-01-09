@@ -140,6 +140,8 @@ dependencies {
 
     androidTestImplementation "androidx.annotation:annotation:$versions.android_annotation"
 
+    implementation "androidx.work:work-runtime-ktx:$versions.android_workmanager"
+
     testImplementation "junit:junit:$versions.junit"
 
     // AndroidX Test

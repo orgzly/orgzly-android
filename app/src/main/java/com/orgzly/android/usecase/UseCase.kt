@@ -6,8 +6,8 @@ import com.orgzly.android.data.DataRepository
 abstract class UseCase {
     abstract fun run(dataRepository: DataRepository): UseCaseResult
 
-    open fun toIntent(): Intent {
-        throw NotImplementedError("No intent")
+    open fun toAction(): String {
+        throw NotImplementedError("No action")
     }
 
     companion object {

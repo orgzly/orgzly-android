@@ -23,8 +23,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -68,7 +66,6 @@ import com.orgzly.android.ui.settings.SettingsActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.usecase.BookCreate;
 import com.orgzly.android.usecase.BookExport;
-import com.orgzly.android.usecase.BookExportToUri;
 import com.orgzly.android.usecase.BookForceLoad;
 import com.orgzly.android.usecase.BookForceSave;
 import com.orgzly.android.usecase.BookImportFromUri;
@@ -96,7 +93,7 @@ import com.orgzly.android.usecase.SavedSearchMoveUp;
 import com.orgzly.android.usecase.SavedSearchUpdate;
 import com.orgzly.android.usecase.UseCase;
 import com.orgzly.android.usecase.UseCaseResult;
-import com.orgzly.android.usecase.UseCaseRunner;
+import com.orgzly.android.usecase.UseCaseWorker;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.org.datetime.OrgDateTime;
@@ -520,7 +517,7 @@ public class MainActivity extends CommonActivity
         if (isNewVersion) {
             /* Import Getting Started notebook. */
             if (!AppPreferences.isGettingStartedNotebookLoaded(this)) {
-                UseCaseRunner.enqueue(new BookImportGettingStarted());
+                UseCaseWorker.schedule(this, new BookImportGettingStarted());
             }
 
             /* Open drawer for the first time user. */
