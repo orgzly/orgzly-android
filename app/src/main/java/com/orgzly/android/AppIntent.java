@@ -27,6 +27,7 @@ public class AppIntent {
     public static final String ACTION_IMPORT_GETTING_STARTED_NOTEBOOK = "com.orgzly.intent.action.IMPORT_GETTING_STARTED_NOTEBOOK";
     public static final String ACTION_REPARSE_NOTES = "com.orgzly.intent.action.REPARSE_NOTES";
     public static final String ACTION_SYNC_CREATED_AT_WITH_PROPERTY = "com.orgzly.intent.action.SYNC_CREATED_AT_WITH_PROPERTY";
+    public static final String ACTION_UPDATE_TIMESTAMPS = "com.orgzly.intent.action.UPDATE_TIMESTAMPS";
 
     public static final String ACTION_OPEN_NOTE = "com.orgzly.intent.action.OPEN_NOTE";
     public static final String ACTION_FOLLOW_LINK_TO_NOTE_WITH_PROPERTY = "com.orgzly.intent.action.FOLLOW_LINK_TO_NOTE_WITH_PROPERTY";

@@ -1,8 +1,9 @@
 package com.orgzly.android.usecase
 
+import com.orgzly.android.AppIntent
 import com.orgzly.android.data.DataRepository
 
-class TimestampRefresh : UseCase() {
+class TimestampUpdate : UseCase() {
     override fun run(dataRepository: DataRepository): UseCaseResult {
         dataRepository.updateTimestamps()
 
@@ -10,4 +11,9 @@ class TimestampRefresh : UseCase() {
                 modifiesLocalData = true
         )
     }
+
+    override fun toAction(): String {
+        return AppIntent.ACTION_UPDATE_TIMESTAMPS
+    }
+
 }

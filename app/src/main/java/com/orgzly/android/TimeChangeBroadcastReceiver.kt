@@ -3,12 +3,10 @@ package com.orgzly.android
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.ACTION_TIMEZONE_CHANGED
-import android.content.Intent.ACTION_TIME_CHANGED
 import com.orgzly.BuildConfig
 import com.orgzly.android.data.DataRepository
-import com.orgzly.android.usecase.TimestampRefresh
-import com.orgzly.android.usecase.UseCaseRunner
+import com.orgzly.android.usecase.TimestampUpdate
+import com.orgzly.android.usecase.UseCaseWorker
 import com.orgzly.android.util.LogUtils
 import javax.inject.Inject
 
@@ -23,14 +21,10 @@ class TimeChangeBroadcastReceiver : BroadcastReceiver() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent)
 
         when (intent.action) {
-            ACTION_TIME_CHANGED -> onTimeChange()
-            ACTION_TIMEZONE_CHANGED -> onTimezoneChange()
-        }
-    }
-
-    private fun onTimezoneChange() {
-        App.EXECUTORS.diskIO().execute {
-            UseCaseRunner.run(TimestampRefresh())
+            Intent.ACTION_TIMEZONE_CHANGED,
+            Intent.ACTION_TIME_CHANGED -> {
+                UseCaseWorker.schedule(context, TimestampUpdate())
+            }
         }
     }
 
@@ -48,8 +42,7 @@ class TimeChangeBroadcastReceiver : BroadcastReceiver() {
 //        AppPreferences.timeZone(context, currTimeZone.id)
 //    }
 
-    private fun onTimeChange() {
-    }
+
 
     companion object {
         private val TAG = TimeChangeBroadcastReceiver::class.java.name

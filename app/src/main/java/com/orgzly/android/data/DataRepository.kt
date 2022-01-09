@@ -2251,6 +2251,8 @@ class DataRepository @Inject constructor(
      * Recalculate timestamps after time zone change.
      */
     fun updateTimestamps() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+
         db.orgTimestamp().getAll().forEach {
             val timestamp = OrgDateTime.doParse(it.string).calendar.timeInMillis
             db.orgTimestamp().update(it.copy(timestamp = timestamp))

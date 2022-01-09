@@ -22,20 +22,27 @@ class UseCaseWorker(val context: Context, val params: WorkerParameters) : Worker
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, params.inputData)
 
         when (params.inputData.getString(DATA_ACTION)) {
-            AppIntent.ACTION_IMPORT_GETTING_STARTED_NOTEBOOK ->
+            AppIntent.ACTION_IMPORT_GETTING_STARTED_NOTEBOOK -> {
                 postGettingStartedImport {
                     UseCaseRunner.run(BookImportGettingStarted())
                 }
+            }
 
-            AppIntent.ACTION_REPARSE_NOTES ->
+            AppIntent.ACTION_REPARSE_NOTES -> {
                 broadcastNotesUpdate {
                     UseCaseRunner.run(NoteReparseStateAndTitles())
                 }
+            }
 
-            AppIntent.ACTION_SYNC_CREATED_AT_WITH_PROPERTY ->
+            AppIntent.ACTION_SYNC_CREATED_AT_WITH_PROPERTY -> {
                 broadcastNotesUpdate {
                     UseCaseRunner.run(NoteSyncCreatedAtTimeWithProperty())
                 }
+            }
+
+            AppIntent.ACTION_UPDATE_TIMESTAMPS -> {
+                UseCaseRunner.run(TimestampUpdate())
+            }
         }
 
         return Result.success()
