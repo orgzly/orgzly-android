@@ -5,7 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-fun BroadcastReceiver.goAsync(
+fun BroadcastReceiver.async(
     coroutineScope: CoroutineScope = GlobalScope,
     block: suspend () -> Unit
 ) {

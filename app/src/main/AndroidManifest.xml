@@ -178,10 +178,6 @@
             android:exported="true" />
 
         <service
-            android:name=".android.NotificationActionService"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
-
-        <service
             android:name=".android.ChooserShareTargetService"
             android:label="@string/share_target_service"
             android:exported="false"

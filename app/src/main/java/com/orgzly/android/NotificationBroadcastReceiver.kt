@@ -1,0 +1,77 @@
+package com.orgzly.android
+
+import android.app.NotificationManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.os.Build
+import com.orgzly.BuildConfig
+import com.orgzly.android.reminders.RemindersScheduler.scheduleSnoozeEnd
+import com.orgzly.android.ui.notifications.Notifications
+import com.orgzly.android.usecase.NoteUpdateStateDone
+import com.orgzly.android.usecase.UseCaseRunner.run
+import com.orgzly.android.util.LogUtils.d
+import com.orgzly.android.util.async
+
+class NotificationBroadcastReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+        if (BuildConfig.LOG_DEBUG) d(TAG, intent, intent.extras)
+
+        async {
+            dismissNotification(context, intent)
+
+            when (intent.action) {
+                AppIntent.ACTION_NOTE_MARK_AS_DONE -> {
+                    val noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0)
+
+                    run(NoteUpdateStateDone(noteId))
+                }
+
+                AppIntent.ACTION_REMINDER_SNOOZE_REQUESTED -> {
+                    val noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0)
+                    val noteTimeType = intent.getIntExtra(AppIntent.EXTRA_NOTE_TIME_TYPE, 0)
+                    val timestamp = intent.getLongExtra(AppIntent.EXTRA_SNOOZE_TIMESTAMP, 0)
+
+                    scheduleSnoozeEnd(context, noteId, noteTimeType, timestamp)
+                }
+            }
+        }
+    }
+
+    /**
+     * If notification ID was passed as an extra,
+     * it means this action was performed from the notification.
+     * Cancel the notification here.
+     */
+    private fun dismissNotification(context: Context, intent: Intent) {
+        val tag = intent.getStringExtra(AppIntent.EXTRA_NOTIFICATION_TAG)
+        val id = intent.getIntExtra(AppIntent.EXTRA_NOTIFICATION_ID, 0)
+
+        if (id > 0) {
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            notificationManager.cancel(tag, id)
+            cancelRemindersSummary(notificationManager)
+        }
+    }
+
+    private fun cancelRemindersSummary(notificationManager: NotificationManager) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val notifications = notificationManager.activeNotifications
+            var reminders = 0
+            for (notification in notifications) {
+                if (notification.id == Notifications.REMINDER_ID) {
+                    reminders++
+                }
+            }
+            if (reminders == 0) {
+                notificationManager.cancel(Notifications.REMINDERS_SUMMARY_ID)
+            }
+        }
+    }
+
+    companion object {
+        val TAG: String = NotificationBroadcastReceiver::class.java.name
+    }
+}

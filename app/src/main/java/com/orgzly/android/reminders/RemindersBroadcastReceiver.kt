@@ -9,7 +9,7 @@ import com.orgzly.android.AppIntent
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.util.LogUtils
-import com.orgzly.android.util.goAsync
+import com.orgzly.android.util.async
 import com.orgzly.org.datetime.OrgDateTime
 import org.joda.time.DateTime
 import java.util.*
@@ -28,7 +28,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent, intent.action, intent.extras)
 
-        goAsync {
+        async {
             val now = DateTime()
             val lastRun = LastRun.fromPreferences(context)
 

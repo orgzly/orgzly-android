@@ -18,15 +18,6 @@ import com.orgzly.android.ui.settings.SettingsFragment;
 import org.jetbrains.annotations.Nullable;
 
 public class App extends Application {
-
-    /**
-     * Job IDs for {@link androidx.core.app.JobIntentService#enqueueWork}.
-     */
-    public static final int ACTION_SERVICE_JOB_ID = 1;
-    public static final int REMINDER_SERVICE_JOB_ID = 2;
-    public static final int NOTIFICATION_SERVICE_JOB_ID = 3;
-    public static final int LAST_JOB_ID = 100;
-
     private static Context context;
 
     private static CommonActivity currentActivity;
