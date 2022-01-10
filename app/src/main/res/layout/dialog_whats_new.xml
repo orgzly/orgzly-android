@@ -28,6 +28,15 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.8.6-beta.2"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Canceled notebook export fix" />
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.8.6-beta.1"
             tools:ignore="HardcodedText" />
 
