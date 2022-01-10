@@ -10,8 +10,8 @@ android {
         minSdkVersion 16 // Jelly Bean (4.1)
         targetSdkVersion 30 // Android 11
         applicationId "com.orgzly"
-        versionCode 159
-        versionName "1.8.6-beta.1"
+        versionCode 160
+        versionName "1.8.6-beta.2"
 
         testInstrumentationRunner "com.orgzly.android.OrgzlyTestRunner"
         // testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
