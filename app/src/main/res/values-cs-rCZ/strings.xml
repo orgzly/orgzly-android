@@ -353,6 +353,7 @@
     <string name="displayed_book_details_used_encoding">Užívané kódování</string>
     <string name="displayed_book_details_last_action">Poslední akce</string>
     <string name="displayed_book_details_notes_count">Počet poznámek</string>
+    <string name="color_scheme_system">Systém</string>
     <string name="color_scheme_light">Světlé</string>
     <string name="color_scheme_dark">Tmavé</string>
     <string name="color_scheme_black">Černé</string>
@@ -444,6 +445,7 @@
     <string name="list_widget_nothing_selected">Žádné hledání není vybráno</string>
     <string name="auto_sync">Automatická synchronizace</string>
     <string name="auto_sync_experimental_summary">Použít pouze pro lokální úložiště</string>
+    <string name="auto_sync_summary">Nepodporováno pro Dropbox</string>
     <string name="auto_sync_warning">V závislosti na nastavených kritériích se synchronizace může spouštět velmi často. Při úpravě sešitu je tento celý přenášen z/do úložiště. Díky tomu mohou být některé akce opožděny po dobu trvání synchronizace.</string>
     <string name="pref_title_sync_after_note_create">Poznámka vytvořena</string>
     <string name="pref_summary_sync_after_note_create">Synchronizovat po vytvoření nové poznámky</string>
@@ -585,4 +587,7 @@
     <string name="content">Obsah</string>
     <string name="prepend">Přidat před</string>
     <string name="insert_new_note_at_beginning">Vložit novou poznámku na začátek</string>
+    <string name="developer_options">Možnosti pro vývojáře</string>
+    <string name="git_repository_type">Typ Git repozitáře</string>
+    <string name="in_development">Ve vývoji</string>
 </resources>

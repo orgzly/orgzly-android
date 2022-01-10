@@ -347,6 +347,7 @@
     <string name="displayed_book_details_used_encoding">Codifica utilizzata</string>
     <string name="displayed_book_details_last_action">Ultima azione</string>
     <string name="displayed_book_details_notes_count">Conteggio note</string>
+    <string name="color_scheme_system">System</string>
     <string name="color_scheme_light">Illuminazione</string>
     <string name="color_scheme_dark">Scuro</string>
     <string name="color_scheme_black">Nero</string>
@@ -434,6 +435,7 @@
     <string name="list_widget_nothing_selected">Nessuna ricerca selezionata</string>
     <string name="auto_sync">Sincronizzazione automatica</string>
     <string name="auto_sync_experimental_summary">Usato solo per depositi locali</string>
+    <string name="auto_sync_summary">Not supported for Dropbox</string>
     <string name="auto_sync_warning">A seconda dell\'opzioni che scegli, la sincronizzazione potrebbe essere fatta spesso. Se il taccuino è modificato, il suo intero contentuto è trasferito a o dal deposito. Alcune azioni possono ritardare la sincronizzazione mentre è in corso.</string>
     <string name="pref_title_sync_after_note_create">Nota creata</string>
     <string name="pref_summary_sync_after_note_create">Sincronizza dopo aver creato una nuova nota</string>
@@ -563,4 +565,7 @@
     <string name="content">Contenuto</string>
     <string name="prepend">Prepend</string>
     <string name="insert_new_note_at_beginning">Insert new note at beginning</string>
+    <string name="developer_options">Developer options</string>
+    <string name="git_repository_type">Git repository type</string>
+    <string name="in_development">In development</string>
 </resources>

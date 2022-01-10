@@ -344,6 +344,7 @@
     <string name="displayed_book_details_used_encoding">已使用编码</string>
     <string name="displayed_book_details_last_action">最后的操作</string>
     <string name="displayed_book_details_notes_count">笔记数量</string>
+    <string name="color_scheme_system">系统</string>
     <string name="color_scheme_light">亮</string>
     <string name="color_scheme_dark">暗</string>
     <string name="color_scheme_black">黑色</string>
@@ -429,6 +430,7 @@
     <string name="list_widget_nothing_selected">未选择搜索</string>
     <string name="auto_sync">自动同步</string>
     <string name="auto_sync_experimental_summary">仅用于本地存储库</string>
+    <string name="auto_sync_summary">不支持 Dropbox</string>
     <string name="auto_sync_warning">根据所选选项，同步可能被经常触发。如果笔记本被修改，它的全部内容会与存储库保持双向同步。当同步正在进行时，某些操作可能会被延迟。</string>
     <string name="pref_title_sync_after_note_create">笔记已创建</string>
     <string name="pref_summary_sync_after_note_create">新建笔记后同步</string>
@@ -552,4 +554,7 @@
     <string name="content">内容</string>
     <string name="prepend">前缀</string>
     <string name="insert_new_note_at_beginning">在开头插入新笔记</string>
+    <string name="developer_options">开发者选项</string>
+    <string name="git_repository_type">Git 仓库类型</string>
+    <string name="in_development">开发中</string>
 </resources>

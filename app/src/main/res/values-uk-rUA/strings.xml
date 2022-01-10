@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="sync">Синхронізувати</string>
+    <string name="sync">Синхронувати</string>
     <string name="settings">Налаштування</string>
     <string name="ok">ОК</string>
     <string name="yes">Так</string>
@@ -230,7 +230,7 @@
     <string name="invalid_url">Некоректна URL-адреса</string>
     <string name="no_notebooks">У Вас нема записників</string>
     <string name="no_notes">У записнику відсутні нотатки</string>
-    <string name="create_new_repository_for_syncing">Створити новий репозиторій для синхронізування записників</string>
+    <string name="create_new_repository_for_syncing">Створити новий репозиторій для синхронування записників</string>
     <string name="no_filters">Відсутні збережені пошукові запити</string>
     <string name="book_shortcut_label">Записник</string>
     <string name="new_note_shortcut_label">Нова нотатка</string>
@@ -353,6 +353,7 @@
     <string name="displayed_book_details_used_encoding">Використовується кодування</string>
     <string name="displayed_book_details_last_action">Остання дія</string>
     <string name="displayed_book_details_notes_count">Кількість нотаток</string>
+    <string name="color_scheme_system">Система</string>
     <string name="color_scheme_light">Світла</string>
     <string name="color_scheme_dark">Темна</string>
     <string name="color_scheme_black">Чорна</string>
@@ -444,7 +445,8 @@
     <string name="list_widget_nothing_selected">Пошук не вибрано</string>
     <string name="auto_sync">Автоматично синхронізувати</string>
     <string name="auto_sync_experimental_summary">Використовується тільки для локальних сховищ</string>
-    <string name="auto_sync_warning">В залежності від того, які параметри ви виберете, синхронізація може відбуватися часто. Якщо блокнот змінено, весь його вміст переноситься в сховище або з нього. Деякі дії можуть затриматися під час синхронизації.</string>
+    <string name="auto_sync_summary">Не підтримується Dropbox</string>
+    <string name="auto_sync_warning">В залежності від того, які параметри Ви оберете, синхронування може відбуватися часто. Якщо записник змінено, весь його вміст переноситься в сховище або з нього. Деякі дії можуть затриматися під час синхронування.</string>
     <string name="pref_title_sync_after_note_create">Нотатку створено</string>
     <string name="pref_summary_sync_after_note_create">Синхронізувати після створення нотати</string>
     <string name="pref_title_sync_after_note_update">Нотатку змінено або видалено</string>
@@ -585,4 +587,7 @@
     <string name="content">Зміст</string>
     <string name="prepend">Додати перед</string>
     <string name="insert_new_note_at_beginning">Вставити нову нотатку на початок</string>
+    <string name="developer_options">Параметри розробника</string>
+    <string name="git_repository_type">Тип git-репозиторію</string>
+    <string name="in_development">У розробці</string>
 </resources>
