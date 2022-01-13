@@ -110,8 +110,6 @@ android {
 dependencies {
     implementation orgJavaLocation()
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
-
     implementation "org.jetbrains:annotations:$versions.jetbrains_annotations"
 
     implementation "androidx.multidex:multidex:$versions.android_multidex"
