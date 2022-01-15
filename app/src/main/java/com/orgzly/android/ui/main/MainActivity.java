@@ -101,7 +101,6 @@ import com.orgzly.org.datetime.OrgDateTime;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -345,50 +344,41 @@ public class MainActivity extends CommonActivity
             }
         });
 
-        viewModel.getOpenNoteWithPropertyRequestEvent().observeSingle(this, pair -> {
-            if (pair != null) {
-                UseCase action = pair.getFirst();
-                UseCaseResult result = pair.getSecond();
+        viewModel.getNavigationActions().observeSingle(this, action -> {
+            if (action instanceof MainNavigationAction.OpenBook) {
+                MainNavigationAction.OpenBook openBookAction =
+                        (MainNavigationAction.OpenBook) action;
 
-                if (action instanceof NoteFindWithProperty) {
-                    NoteFindWithProperty thisAction = (NoteFindWithProperty) action;
+                DisplayManager.displayBook(
+                        getSupportFragmentManager(),
+                        openBookAction.getBookId(),
+                        0);
 
-                    if (result.getUserData() != null) {
-                        NoteDao.NoteIdBookId note = (NoteDao.NoteIdBookId) result.getUserData();
-                        DisplayManager.displayExistingNote(
-                                getSupportFragmentManager(), note.getBookId(), note.getNoteId());
+            } else if (action instanceof MainNavigationAction.OpenBookFocusNote) {
+                MainNavigationAction.OpenBookFocusNote openBookFocusNoteAction =
+                        (MainNavigationAction.OpenBookFocusNote) action;
 
-                    } else {
-                        showSnackbar(getString(
-                                R.string.no_such_link_target,
-                                thisAction.getName(),
-                                thisAction.getValue()));
-                    }
-                }
+                DisplayManager.displayBook(
+                        getSupportFragmentManager(),
+                        openBookFocusNoteAction.getBookId(),
+                        openBookFocusNoteAction.getNoteId());
+
+            } else if (action instanceof MainNavigationAction.OpenNote) {
+                MainNavigationAction.OpenNote openNoteAction =
+                        (MainNavigationAction.OpenNote) action;
+
+                DisplayManager.displayExistingNote(
+                        getSupportFragmentManager(),
+                        openNoteAction.getBookId(),
+                        openNoteAction.getNoteId());
+
+            } else if (action instanceof MainNavigationAction.OpenFile) {
+                MainNavigationAction.OpenFile openFileAction =
+                        (MainNavigationAction.OpenFile) action;
+
+                openFileIfExists(openFileAction.getFile());
             }
         });
-
-        viewModel.getOpenFileLinkRequestEvent().observeSingle(this, result -> {
-            if (result != null && result.getUserData() != null) {
-                Object userData = result.getUserData();
-
-                if (userData instanceof Book) {
-                    Book book = (Book) userData;
-                    Intent intent = new Intent(AppIntent.ACTION_OPEN_BOOK);
-                    intent.putExtra(AppIntent.EXTRA_BOOK_ID, book.getId());
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-
-                    if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "sending intent", intent);
-
-                } else if (userData instanceof File) {
-                    File file = (File) userData;
-                    openFileIfExists(file);
-                }
-            }
-        });
-
-        viewModel.getOpenNoteRequestEvent().observeSingle(this, note ->
-                MainActivity.openSpecificNote(note.getPosition().getBookId(), note.getId()));
 
         viewModel.getSetBookLinkRequestEvent().observeSingle(this, result -> {
             Book book = result.getBook();

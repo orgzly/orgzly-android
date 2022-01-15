@@ -5,31 +5,32 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.orgzly.BuildConfig
+import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.dao.NoteDao
-import com.orgzly.android.db.entity.*
+import com.orgzly.android.db.entity.Book
+import com.orgzly.android.db.entity.BookView
+import com.orgzly.android.db.entity.Repo
+import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent
 import com.orgzly.android.usecase.*
 import com.orgzly.android.util.LogUtils
-import java.lang.IllegalStateException
+import java.io.File
 
 class MainActivityViewModel(private val dataRepository: DataRepository) : CommonViewModel() {
     private val booksParams = MutableLiveData<String>()
 
-    private val booksSubject: LiveData<List<BookView>>
+    private val booksSubject: LiveData<List<BookView>> = Transformations.switchMap(booksParams) {
+        dataRepository.getBooksLiveData()
+    }
 
     private val savedSearches: LiveData<List<SavedSearch>> by lazy {
         dataRepository.getSavedSearchesLiveData()
     }
-
-    val openFileLinkRequestEvent: SingleLiveEvent<UseCaseResult> = SingleLiveEvent()
-
-    val openNoteWithPropertyRequestEvent: SingleLiveEvent<Pair<UseCase, UseCaseResult>> = SingleLiveEvent()
-
-    val openNoteRequestEvent: SingleLiveEvent<Note> = SingleLiveEvent()
 
     data class BookLinkOptions(
             val book: Book,
@@ -42,13 +43,7 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
     val savedSearchedExportEvent: SingleLiveEvent<Int> = SingleLiveEvent()
     val savedSearchedImportEvent: SingleLiveEvent<Int> = SingleLiveEvent()
 
-    init {
-        // Observe parameters, run query when they change
-        booksSubject = Transformations.switchMap(booksParams) {
-            dataRepository.getBooksLiveData()
-        }
-    }
-
+    val navigationActions: SingleLiveEvent<MainNavigationAction> = SingleLiveEvent()
 
     /* Triggers querying only if parameters changed. */
     fun refresh(sortOrder: String) {
@@ -67,8 +62,14 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
     fun followLinkToFile(path: String) {
         App.EXECUTORS.diskIO().execute {
             catchAndPostError {
-                val result = UseCaseRunner.run(LinkFindTarget(path))
-                openFileLinkRequestEvent.postValue(result)
+                val result = UseCaseRunner.run(LinkFindTarget(path)).userData
+
+                if (result is File) {
+                    navigationActions.postValue(MainNavigationAction.OpenFile(result))
+
+                } else if (result is Book) {
+                    navigationActions.postValue(MainNavigationAction.OpenBook(result.id))
+                }
             }
         }
     }
@@ -81,13 +82,16 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
                 val result = UseCaseRunner.run(useCase)
 
                 if (result.userData == null) {
-                    openNoteWithPropertyRequestEvent.postValue(Pair(useCase, result))
+                    CommonActivity.showSnackbar(App.getAppContext(), App.getAppContext().getString(
+                        R.string.no_such_link_target, name, value))
+
                 } else {
                     val noteIdBookId = result.userData as NoteDao.NoteIdBookId
 
                     when (AppPreferences.linkTarget(App.getAppContext())) {
                         "note_details" ->
-                            openNoteWithPropertyRequestEvent.postValue(Pair(useCase, result))
+                            navigationActions.postValue(
+                                MainNavigationAction.OpenNote(noteIdBookId.bookId, noteIdBookId.noteId))
 
                         "book_and_sparse_tree" ->
                             UseCaseRunner.run(BookSparseTreeForNote(noteIdBookId.noteId))
@@ -103,7 +107,8 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
     fun openNote(noteId: Long) {
         App.EXECUTORS.diskIO().execute {
             dataRepository.getNote(noteId)?.let { note ->
-                openNoteRequestEvent.postValue(note)
+                navigationActions.postValue(
+                    MainNavigationAction.OpenNote(note.position.bookId, note.id))
             }
         }
     }
@@ -161,4 +166,11 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
     companion object {
         private val TAG = MainActivityViewModel::class.java.name
     }
+}
+
+sealed class MainNavigationAction {
+    data class OpenBook(val bookId: Long) : MainNavigationAction()
+    data class OpenBookFocusNote(val bookId: Long, val noteId: Long, val foldRest: Boolean) : MainNavigationAction()
+    data class OpenNote(val bookId: Long, val noteId: Long) : MainNavigationAction()
+    data class OpenFile(val file: File) : MainNavigationAction()
 }

@@ -14,7 +14,7 @@ class NoteViewModelFactory(
         private val content: String?
 ) : ViewModelProvider.Factory {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return NoteViewModel(dataRepository, bookId, noteId, place, title, content) as T
     }
