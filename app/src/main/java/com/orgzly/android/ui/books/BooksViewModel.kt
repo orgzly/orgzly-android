@@ -89,6 +89,22 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
         }
     }
 
+    fun forceSaveBookRequest(bookId: Long) {
+        App.EXECUTORS.diskIO().execute {
+            catchAndPostError {
+                UseCaseRunner.run(BookForceSave(bookId))
+            }
+        }
+    }
+
+    fun forceLoadBookRequest(bookId: Long) {
+        App.EXECUTORS.diskIO().execute {
+            catchAndPostError {
+                UseCaseRunner.run(BookForceLoad(bookId))
+            }
+        }
+    }
+
     // User requested notebook export
     fun exportBookRequest(bookId: Long, format: BookFormat) {
         App.EXECUTORS.diskIO().execute {

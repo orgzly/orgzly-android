@@ -43,6 +43,7 @@ import com.orgzly.databinding.DialogBookRenameBinding
 import com.orgzly.databinding.FragmentBooksBinding
 import javax.inject.Inject
 
+
 /**
  * Displays all notebooks.
  * Allows creating new, deleting, renaming, setting links etc.
@@ -185,11 +186,25 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
                     }
 
                     R.id.books_context_menu_force_save -> {
-                        listener?.onForceSaveRequest(bookId)
+                        dialog = AlertDialog.Builder(context)
+                            .setTitle(R.string.books_context_menu_item_force_save)
+                            .setMessage(R.string.overwrite_remote_notebook_question)
+                            .setPositiveButton(R.string.overwrite) { _, _ ->
+                                viewModel.forceSaveBookRequest(bookId)
+                            }
+                            .setNegativeButton(R.string.cancel, null)
+                            .show()
                     }
 
                     R.id.books_context_menu_force_load -> {
-                        listener?.onForceLoadRequest(bookId)
+                        dialog = AlertDialog.Builder(context)
+                            .setTitle(R.string.books_context_menu_item_force_load)
+                            .setMessage(R.string.overwrite_local_notebook_question)
+                            .setPositiveButton(R.string.overwrite) { _, _ ->
+                                viewModel.forceLoadBookRequest(bookId)
+                            }
+                            .setNegativeButton(R.string.cancel, null)
+                            .show()
                     }
 
                     R.id.books_context_menu_export -> {
@@ -528,10 +543,6 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
         fun onBookClicked(bookId: Long)
 
         fun onBookLinkSetRequest(bookId: Long)
-
-        fun onForceSaveRequest(bookId: Long)
-
-        fun onForceLoadRequest(bookId: Long)
 
         fun onBookImportRequest()
     }

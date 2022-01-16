@@ -125,14 +125,6 @@ public class BookChooserActivity extends CommonActivity
     }
 
     @Override
-    public void onForceSaveRequest(long bookId) {
-    }
-
-    @Override
-    public void onForceLoadRequest(long bookId) {
-    }
-
-    @Override
     public void onBookImportRequest() {
     }
 }

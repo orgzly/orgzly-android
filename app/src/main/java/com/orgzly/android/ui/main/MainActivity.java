@@ -35,7 +35,6 @@ import com.orgzly.android.AppIntent;
 import com.orgzly.android.BookFormat;
 import com.orgzly.android.BookName;
 import com.orgzly.android.db.NotesClipboard;
-import com.orgzly.android.db.dao.NoteDao;
 import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.db.entity.Note;
 import com.orgzly.android.db.entity.Repo;
@@ -66,8 +65,6 @@ import com.orgzly.android.ui.settings.SettingsActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.usecase.BookCreate;
 import com.orgzly.android.usecase.BookExport;
-import com.orgzly.android.usecase.BookForceLoad;
-import com.orgzly.android.usecase.BookForceSave;
 import com.orgzly.android.usecase.BookImportFromUri;
 import com.orgzly.android.usecase.BookImportGettingStarted;
 import com.orgzly.android.usecase.BookLinkUpdate;
@@ -77,7 +74,6 @@ import com.orgzly.android.usecase.NoteCopy;
 import com.orgzly.android.usecase.NoteCut;
 import com.orgzly.android.usecase.NoteDelete;
 import com.orgzly.android.usecase.NoteDemote;
-import com.orgzly.android.usecase.NoteFindWithProperty;
 import com.orgzly.android.usecase.NoteMove;
 import com.orgzly.android.usecase.NotePaste;
 import com.orgzly.android.usecase.NotePromote;
@@ -839,28 +835,6 @@ public class MainActivity extends CommonActivity
     @Override
     public void onBookLinkSetRequest(final long bookId) {
         viewModel.setBookLink(bookId);
-    }
-
-    @Override
-    public void onForceSaveRequest(long bookId) {
-        dialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.books_context_menu_item_force_save)
-                .setMessage(R.string.overwrite_remote_notebook_question)
-                .setPositiveButton(R.string.overwrite, (dialog, which) ->
-                        mSyncFragment.run(new BookForceSave(bookId)))
-                .setNegativeButton(R.string.cancel, null)
-                .show();
-    }
-
-    @Override
-    public void onForceLoadRequest(long bookId) {
-        dialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.books_context_menu_item_force_load)
-                .setMessage(R.string.overwrite_local_notebook_question)
-                .setPositiveButton(R.string.overwrite, (dialog, which) ->
-                        mSyncFragment.run(new BookForceLoad(bookId)))
-                .setNegativeButton(R.string.cancel, null)
-                .show();
     }
 
     @Override
