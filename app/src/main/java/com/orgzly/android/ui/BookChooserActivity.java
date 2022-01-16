@@ -133,10 +133,6 @@ public class BookChooserActivity extends CommonActivity
     }
 
     @Override
-    public void onBookExportRequest(@NotNull Book book, @NotNull BookFormat format) {
-    }
-
-    @Override
     public void onBookImportRequest() {
     }
 }

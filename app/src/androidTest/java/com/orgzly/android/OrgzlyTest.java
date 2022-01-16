@@ -1,11 +1,13 @@
 package com.orgzly.android;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 
 import com.orgzly.R;
 import com.orgzly.android.data.DataRepository;
@@ -52,9 +54,14 @@ public class OrgzlyTest {
     private OrgzlyDatabase database;
 
     @Rule
-    public GrantPermissionRule mRuntimePermissionRule = GrantPermissionRule.grant(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    public GrantPermissionRule grantPermissionRule;
+
+    public OrgzlyTest() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            this.grantPermissionRule =
+                    GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -172,4 +179,7 @@ public class OrgzlyTest {
         f.setAccessible(true);
         return (Intent) f.get(activity);
     }
+
+    // @Category
+    public interface Permissions {}
 }

@@ -1,17 +1,5 @@
 package com.orgzly.android.espresso;
 
-import androidx.test.core.app.ActivityScenario;
-
-import com.orgzly.BuildConfig;
-import com.orgzly.R;
-import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.ui.repos.ReposActivity;
-
-import org.junit.Assume;
-import org.junit.Test;
-
-import java.io.File;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
@@ -22,6 +10,19 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.onListItem;
 import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
 import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
+
+import androidx.test.core.app.ActivityScenario;
+
+import com.orgzly.BuildConfig;
+import com.orgzly.R;
+import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.ui.repos.ReposActivity;
+
+import org.junit.Assume;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+import java.io.File;
 
 public class ReposActivityTest extends OrgzlyTest {
     @Test
@@ -76,11 +77,13 @@ public class ReposActivityTest extends OrgzlyTest {
         onView(withId(R.id.activity_repo_dropbox_directory)).check(matches(withText(localDir)));
     }
 
+    @Category(OrgzlyTest.Permissions.class)
     @Test
     public void testCreateRepoWithExistingUrl() {
         ActivityScenario.launch(ReposActivity.class);
 
         String url = "file:" + context.getExternalCacheDir().getAbsolutePath();
+        // file:/storage/emulated/0/Android/data/com.orgzly/cache
 
         onView(withId(R.id.activity_repos_directory)).perform(scrollTo(), click());
         onView(withId(R.id.activity_repo_directory)).perform(replaceTextCloseKeyboard(url));

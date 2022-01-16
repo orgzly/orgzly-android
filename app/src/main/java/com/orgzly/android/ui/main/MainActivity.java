@@ -185,18 +185,6 @@ public class MainActivity extends CommonActivity
 
         activityForResult = new ActivityForResult(this) {
             @Override
-            public void onBookExport(@NotNull Uri uri, long bookId) {
-                runnableOnResumeFragments = () ->
-                        mSyncFragment.run(new BookExportToUri(uri, bookId) {
-                            @NotNull
-                            @Override
-                            public OutputStream getStream(@NotNull Uri uri) throws IOException {
-                                return getOutputStream(uri);
-                            }
-                        });
-            }
-
-            @Override
             public void onBookImport(@NotNull Uri uri) {
                 runnableOnResumeFragments = () ->
                         importChosenBook(uri);
@@ -888,23 +876,6 @@ public class MainActivity extends CommonActivity
                 .show();
     }
 
-    /**
-     * Callback from {@link BooksFragment}.
-     */
-    @Override
-    public void onBookExportRequest(@NotNull Book book, @NotNull BookFormat format) {
-        // For scoped storage
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-//            String defaultFileName = BookName.fileName(book.getName(), format);
-//            activityForResult.startBookExportFileChooser(book.getId(), defaultFileName);
-//
-//        } else {
-            runWithPermission(
-                    AppPermissions.Usage.BOOK_EXPORT,
-                    () -> mSyncFragment.run(new BookExport(book.getId())));
-//        }
-    }
-
     @Override
     public void onBookImportRequest() {
         activityForResult.startBookImportFileChooser();
@@ -1176,13 +1147,7 @@ public class MainActivity extends CommonActivity
      */
     @Override
     public void onSuccess(UseCase action, UseCaseResult result) {
-        if (action instanceof BookExport) {
-            showSnackbar(getString(R.string.book_exported, (File) result.getUserData()));
-
-        } else if (action instanceof BookExportToUri) {
-            showSnackbar(getString(R.string.book_exported, (Uri) result.getUserData()));
-
-        } else if (action instanceof NoteCut) {
+        if (action instanceof NoteCut) {
             NotesClipboard clipboard = (NotesClipboard) result.getUserData();
 
             if (clipboard != null) {
