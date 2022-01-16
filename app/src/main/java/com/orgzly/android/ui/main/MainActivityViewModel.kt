@@ -11,7 +11,6 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.dao.NoteDao
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.BookView
-import com.orgzly.android.db.entity.Repo
 import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.CommonActivity
@@ -31,14 +30,6 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
     private val savedSearches: LiveData<List<SavedSearch>> by lazy {
         dataRepository.getSavedSearchesLiveData()
     }
-
-    data class BookLinkOptions(
-            val book: Book,
-            val links: List<Repo>,
-            val urls: Array<CharSequence>,
-            val selected: Int)
-
-    val setBookLinkRequestEvent: SingleLiveEvent<BookLinkOptions> = SingleLiveEvent()
 
     val savedSearchedExportEvent: SingleLiveEvent<Int> = SingleLiveEvent()
     val savedSearchedImportEvent: SingleLiveEvent<Int> = SingleLiveEvent()
@@ -109,38 +100,6 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
             dataRepository.getNote(noteId)?.let { note ->
                 navigationActions.postValue(
                     MainNavigationAction.OpenNote(note.position.bookId, note.id))
-            }
-        }
-    }
-
-    fun setBookLink(bookId: Long) {
-        App.EXECUTORS.diskIO().execute {
-            val bookView = dataRepository.getBookView(bookId)
-
-            if (bookView == null) {
-                errorEvent.postValue(IllegalStateException("Book not found"))
-
-            } else {
-                val repos = dataRepository.getRepos()
-
-                val options = if (repos.isEmpty()) {
-                    BookLinkOptions(bookView.book, emptyList(), emptyArray(), -1)
-
-                } else {
-                    val currentLink = bookView.linkRepo
-
-                    val selectedLink = repos.indexOfFirst {
-                        it.url == currentLink?.url
-                    }
-
-                    BookLinkOptions(
-                            bookView.book,
-                            repos,
-                            repos.map { it.url }.toTypedArray(),
-                            selectedLink)
-                }
-
-                setBookLinkRequestEvent.postValue(options)
             }
         }
     }

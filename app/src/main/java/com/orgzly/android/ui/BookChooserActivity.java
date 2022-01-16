@@ -121,10 +121,6 @@ public class BookChooserActivity extends CommonActivity
     }
 
     @Override
-    public void onBookLinkSetRequest(long bookId) {
-    }
-
-    @Override
     public void onBookImportRequest() {
     }
 }

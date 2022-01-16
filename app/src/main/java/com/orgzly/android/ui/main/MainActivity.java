@@ -340,6 +340,18 @@ public class MainActivity extends CommonActivity
             }
         });
 
+        sharedMainActivityViewModel.getSnackbarWithReposLink().observeSingle(this, message -> {
+            View view = findViewById(R.id.main_content);
+            if (view != null) {
+                showSnackbar(Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.repositories, v -> {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setClass(MainActivity.this, ReposActivity.class);
+                            startActivity(intent);
+                        }));
+            }
+        });
+
         viewModel.getNavigationActions().observeSingle(this, action -> {
             if (action instanceof MainNavigationAction.OpenBook) {
                 MainNavigationAction.OpenBook openBookAction =
@@ -373,39 +385,6 @@ public class MainActivity extends CommonActivity
                         (MainNavigationAction.OpenFile) action;
 
                 openFileIfExists(openFileAction.getFile());
-            }
-        });
-
-        viewModel.getSetBookLinkRequestEvent().observeSingle(this, result -> {
-            Book book = result.getBook();
-            List<Repo> links = result.getLinks();
-            CharSequence[] urls = result.getUrls();
-            int checked = result.getSelected();
-
-            if (links.isEmpty()) {
-                showSnackbarWithReposLink(getString(R.string.no_repos));
-
-            } else {
-                ArrayAdapter<Repo> adapter = new ArrayAdapter<>(
-                        this, R.layout.item_repo, R.id.item_repo_url);
-                adapter.addAll(links);
-
-
-
-                dialog = new AlertDialog.Builder(this)
-                        .setTitle(R.string.book_link)
-                        .setSingleChoiceItems(
-                                urls, checked, (d, which) -> {
-                                    mSyncFragment.run(new BookLinkUpdate(book.getId(), links.get(which)));
-                                    dialog.dismiss();
-                                    dialog = null;
-                                })
-
-                        .setNeutralButton(R.string.remove_notebook_link, (dialog, which) -> {
-                            mSyncFragment.run(new BookLinkUpdate(book.getId()));
-                        })
-                        .setNegativeButton(R.string.cancel, null)
-                        .show();
             }
         });
 
@@ -833,11 +812,6 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
-    public void onBookLinkSetRequest(final long bookId) {
-        viewModel.setBookLink(bookId);
-    }
-
-    @Override
     public void onBookImportRequest() {
         activityForResult.startBookImportFileChooser();
     }
@@ -862,23 +836,8 @@ public class MainActivity extends CommonActivity
     @Override
     public void onSyncFinished(String msg) {
         if (msg != null) {
-            showSnackbarWithReposLink(getString(R.string.sync_with_argument, msg));
-        }
-    }
-
-    /**
-     * Display snackbar and include link to repositories.
-     */
-    private void showSnackbarWithReposLink(String msg) {
-        View view = findViewById(R.id.main_content);
-
-        if (view != null) {
-            showSnackbar(Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
-                    .setAction(R.string.repositories, v -> {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setClass(MainActivity.this, ReposActivity.class);
-                        startActivity(intent);
-                    }));
+            sharedMainActivityViewModel.showSnackbarWithReposLink(
+                    getString(R.string.sync_with_argument, msg));
         }
     }
 

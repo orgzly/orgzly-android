@@ -2,11 +2,26 @@ package com.orgzly.android.ui.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.orgzly.android.ui.SingleLiveEvent
 
 class SharedMainActivityViewModel : ViewModel() {
-    val drawerLockState: MutableLiveData<Boolean> = MutableLiveData()
+    data class FragmentState(
+        val tag: String,
+        val title: CharSequence?,
+        val subTitle: CharSequence?,
+        val selectionCount: Int)
 
     val fragmentState: MutableLiveData<FragmentState> = MutableLiveData()
+
+    fun setFragment(
+        tag: String,
+        title: CharSequence?,
+        subTitle: CharSequence?,
+        selectionCount: Int) {
+        fragmentState.value = FragmentState(tag, title, subTitle, selectionCount)
+    }
+
+    val drawerLockState: MutableLiveData<Boolean> = MutableLiveData()
 
     fun lockDrawer() {
         drawerLockState.value = true
@@ -16,17 +31,9 @@ class SharedMainActivityViewModel : ViewModel() {
         drawerLockState.value = false
     }
 
-    fun setFragment(
-            tag: String,
-            title: CharSequence?,
-            subTitle: CharSequence?,
-            selectionCount: Int) {
-        fragmentState.value = FragmentState(tag, title, subTitle, selectionCount)
-    }
+    val snackbarWithReposLink: SingleLiveEvent<String> = SingleLiveEvent()
 
-    data class FragmentState(
-            val tag: String,
-            val title: CharSequence?,
-            val subTitle: CharSequence?,
-            val selectionCount: Int)
+    fun showSnackbarWithReposLink(message: String) {
+        snackbarWithReposLink.postValue(message)
+    }
 }

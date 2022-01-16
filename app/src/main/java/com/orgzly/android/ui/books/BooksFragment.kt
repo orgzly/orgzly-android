@@ -42,6 +42,12 @@ import com.orgzly.databinding.DialogBookDeleteBinding
 import com.orgzly.databinding.DialogBookRenameBinding
 import com.orgzly.databinding.FragmentBooksBinding
 import javax.inject.Inject
+import com.orgzly.android.usecase.BookLinkUpdate
+
+import android.widget.ArrayAdapter
+
+import com.orgzly.android.db.entity.Repo
+import com.orgzly.android.ui.books.BooksViewModel.BookLinkOptions
 
 
 /**
@@ -182,7 +188,7 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
                     }
 
                     R.id.books_context_menu_set_link -> {
-                        listener?.onBookLinkSetRequest(bookId)
+                        viewModel.setBookLinkRequest(bookId)
                     }
 
                     R.id.books_context_menu_force_save -> {
@@ -434,6 +440,25 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
             CommonActivity.showSnackbar(context, R.string.message_book_deleted)
         })
 
+        viewModel.setBookLinkRequestEvent.observeSingle(this, { (book, links, urls, checked) ->
+                if (links.isEmpty()) {
+                    sharedMainActivityViewModel.showSnackbarWithReposLink(getString(R.string.no_repos))
+
+                } else {
+                    dialog = AlertDialog.Builder(context)
+                        .setTitle(R.string.book_link)
+                        .setSingleChoiceItems(urls.toTypedArray(), checked) { _: DialogInterface, which: Int ->
+                            viewModel.setBookLink(book.id, links[which])
+                            dialog?.dismiss()
+                            dialog = null
+                        }
+                        .setNeutralButton(R.string.remove_notebook_link) { dialog, which ->
+                            viewModel.setBookLink(book.id)
+                        }
+                        .setNegativeButton(R.string.cancel, null)
+                        .show()
+                }
+            })
 
         viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->
             if (error is BookDelete.NotFound) {
@@ -541,8 +566,6 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
          * @param bookId
          */
         fun onBookClicked(bookId: Long)
-
-        fun onBookLinkSetRequest(bookId: Long)
 
         fun onBookImportRequest()
     }

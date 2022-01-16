@@ -1,6 +1,5 @@
 package com.orgzly.android.ui.books
 
-import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -10,14 +9,12 @@ import com.orgzly.android.BookFormat
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.BookView
+import com.orgzly.android.db.entity.Repo
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent
 import com.orgzly.android.usecase.*
 import com.orgzly.android.util.LogUtils
 import java.io.File
-import java.io.OutputStream
-import androidx.documentfile.provider.DocumentFile
-import javax.inject.Inject
 
 
 class BooksViewModel(private val dataRepository: DataRepository) : CommonViewModel() {
@@ -31,6 +28,8 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
     val bookToRenameEvent: SingleLiveEvent<BookView> = SingleLiveEvent()
     val bookToExportEvent: SingleLiveEvent<Pair<Book, BookFormat>> = SingleLiveEvent()
     val bookExportedEvent: SingleLiveEvent<String> = SingleLiveEvent()
+    val setBookLinkRequestEvent: SingleLiveEvent<BookLinkOptions> = SingleLiveEvent()
+
 
     enum class ViewState {
         LOADING,
@@ -85,6 +84,45 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
         App.EXECUTORS.diskIO().execute {
             catchAndPostError {
                 UseCaseRunner.run(BookRename(book, name))
+            }
+        }
+    }
+
+    data class BookLinkOptions(
+        val book: Book, val links: List<Repo>, val urls: List<String>, val selected: Int)
+
+    fun setBookLinkRequest(bookId: Long) {
+        App.EXECUTORS.diskIO().execute {
+            val bookView = dataRepository.getBookView(bookId)
+
+            if (bookView == null) {
+                errorEvent.postValue(IllegalStateException("Book not found"))
+
+            } else {
+                val repos = dataRepository.getRepos()
+
+                val options = if (repos.isEmpty()) {
+                    BookLinkOptions(bookView.book, emptyList(), emptyList(), -1)
+
+                } else {
+                    val currentLink = bookView.linkRepo
+
+                    val selectedLink = repos.indexOfFirst {
+                        it.url == currentLink?.url
+                    }
+
+                    BookLinkOptions(bookView.book, repos, repos.map { it.url }, selectedLink)
+                }
+
+                setBookLinkRequestEvent.postValue(options)
+            }
+        }
+    }
+
+    fun setBookLink(bookId: Long, repo: Repo? = null) {
+        App.EXECUTORS.diskIO().execute {
+            catchAndPostError {
+                UseCaseRunner.run(BookLinkUpdate(bookId, repo))
             }
         }
     }
