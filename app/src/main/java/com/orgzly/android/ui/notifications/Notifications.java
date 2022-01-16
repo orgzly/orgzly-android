@@ -43,7 +43,7 @@ public class Notifications {
 
         PendingIntent resultPendingIntent = ShareActivity.createNewNoteIntent(context, null);
 
-        /* Build notification */
+        // Build notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.ONGOING)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_logo_for_notification)
@@ -51,7 +51,6 @@ public class Notifications {
                 .setContentText(context.getString(R.string.tap_to_create_new_note))
                 .setColor(ContextCompat.getColor(context, R.color.notification))
                 .setContentIntent(resultPendingIntent);
-
 
         builder.setPriority(
                 getNotificationPriority(
@@ -62,13 +61,13 @@ public class Notifications {
                     context,
                     0,
                     new Intent(context, NewNoteBroadcastReceiver.class),
-                    ActivityUtils.immutable(0));
+                    ActivityUtils.mutable(0));
 
             RemoteInput remoteInput = new RemoteInput.Builder(NOTE_TITLE)
                     .setLabel(context.getString(R.string.quick_note))
                     .build();
 
-            /* Add new note action */
+            // Add new note action
             NotificationCompat.Action action = new NotificationCompat.Action.Builder(
                     R.drawable.ic_add_white_24dp, context.getString(R.string.quick_note), newNotePendingIntent)
                     .addRemoteInput(remoteInput)
@@ -76,25 +75,25 @@ public class Notifications {
             builder.addAction(action);
         }
 
-        /* Add open action */
+        // Add open action
         PendingIntent openAppPendingIntent = PendingIntent.getActivity(
                 context,
                 0,
                 new Intent(context, MainActivity.class),
-                ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT));
+                ActivityUtils.mutable(PendingIntent.FLAG_UPDATE_CURRENT));
         builder.addAction(
                 R.drawable.ic_open_in_new_white_24dp,
                 context.getString(R.string.open),
                 openAppPendingIntent);
 
-        /* Add sync action */
+        // Add sync action
         Intent syncIntent = new Intent(context, SyncService.class);
         syncIntent.setAction(AppIntent.ACTION_SYNC_START);
         PendingIntent syncPendingIntent = PendingIntent.getService(
                 context,
                 0,
                 syncIntent,
-                ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT));
+                ActivityUtils.mutable(PendingIntent.FLAG_UPDATE_CURRENT));
         builder.addAction(
                     R.drawable.ic_sync_white_24dp,
                     context.getString(R.string.sync),
