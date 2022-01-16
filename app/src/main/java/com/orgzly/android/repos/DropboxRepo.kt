@@ -5,8 +5,8 @@ import android.net.Uri
 import kotlin.Throws
 import com.orgzly.android.util.UriUtils
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.IOException
-import java.lang.UnsupportedOperationException
 
 class DropboxRepo(repoWithProps: RepoWithProps, context: Context?) : SyncRepo {
     private val repoUri: Uri
@@ -40,7 +40,12 @@ class DropboxRepo(repoWithProps: RepoWithProps, context: Context?) : SyncRepo {
 
     @Throws(IOException::class)
     override fun storeFile(file: File, pathInRepo: String, fileName: String): VersionedRook {
-        throw UnsupportedOperationException()
+        if (file == null || !file.exists()) {
+            throw FileNotFoundException("File $file does not exist")
+        }
+
+        val folderUri = Uri.withAppendedPath(uri, pathInRepo)
+        return client.upload(file, folderUri, fileName)
     }
 
     @Throws(IOException::class)
