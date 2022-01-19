@@ -1,12 +1,12 @@
 Bienvenue dans Orgzly!
 
 * Notes
-** Cliquez sur une note pour l’ouvrir
+** Cliquez sur la note pour l’ouvrir
 ** Cliquez et restez appuyé·e sur la note pour la sélectionner
 
 Vous pouvez sélectionner plusieurs notes.
 
-** Appuyez et glissez rapidement sur une note vers la droite pour ouvrir son menu rapide
+** Appuyez et glissez rapidement une note vers la droite pour ouvrir son menu rapide
 
 ** Appuyez et glissez rapidement vers la gauche pour ouvrir un autre menu.
 

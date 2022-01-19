@@ -344,6 +344,7 @@
     <string name="displayed_book_details_used_encoding">使用されたエンコーディング</string>
     <string name="displayed_book_details_last_action">最後のアクション</string>
     <string name="displayed_book_details_notes_count">メモの数</string>
+    <string name="color_scheme_system">システム</string>
     <string name="color_scheme_light">ライト</string>
     <string name="color_scheme_dark">ダーク</string>
     <string name="color_scheme_black">ブラック</string>
@@ -429,6 +430,7 @@
     <string name="list_widget_nothing_selected">検索が選択されていません</string>
     <string name="auto_sync">自動同期</string>
     <string name="auto_sync_experimental_summary">ローカルリポジトリのみに使用</string>
+    <string name="auto_sync_summary">Dropboxではサポートされていません</string>
     <string name="auto_sync_warning">選択したオプションによっては、同期はしばしば発生します。メモ帳を変更した場合、コンテンツ全体がリポジトリに転送されます。同期中に、特定のアクションが遅れる可能性があります。</string>
     <string name="pref_title_sync_after_note_create">メモの作成</string>
     <string name="pref_summary_sync_after_note_create">新規メモが作成されたあとに同期する</string>
@@ -552,4 +554,7 @@
     <string name="content">内容</string>
     <string name="prepend">先頭に追加</string>
     <string name="insert_new_note_at_beginning">最初に新しいメモを挿入</string>
+    <string name="developer_options">開発者オプション</string>
+    <string name="git_repository_type">リポジトリの種類</string>
+    <string name="in_development">開発中</string>
 </resources>

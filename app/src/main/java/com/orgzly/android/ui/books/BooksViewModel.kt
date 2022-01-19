@@ -1,5 +1,6 @@
 package com.orgzly.android.ui.books
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -15,6 +16,8 @@ import com.orgzly.android.usecase.*
 import com.orgzly.android.util.LogUtils
 import java.io.File
 import java.io.OutputStream
+import androidx.documentfile.provider.DocumentFile
+import javax.inject.Inject
 
 
 class BooksViewModel(private val dataRepository: DataRepository) : CommonViewModel() {
@@ -109,13 +112,19 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
         }
     }
 
-    fun exportBook(uri: Uri, stream: OutputStream) {
+    fun exportBook(uri: Uri) {
         val (book, format) = lastBook.value ?: return
 
         App.EXECUTORS.diskIO().execute {
             catchAndPostError {
-                UseCaseRunner.run(BookExportToUri(book.id, stream, format))
-                bookExportedEvent.postValue(uri.toString()) // TODO: User-friendly url or directory
+                App.getAppContext().contentResolver.openOutputStream(uri).let { stream ->
+                    if (stream != null) {
+                        UseCaseRunner.run(BookExportToUri(book.id, stream, format))
+                        bookExportedEvent.postValue(uri.toString())
+                    } else {
+                        errorEvent.postValue(Throwable("Failed to open output stream"))
+                    }
+                }
             }
         }
     }

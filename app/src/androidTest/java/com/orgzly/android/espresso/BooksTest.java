@@ -34,6 +34,8 @@ import android.content.Intent;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.intent.Intents;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.uiautomator.UiDevice;
 
 import com.orgzly.R;
 import com.orgzly.android.BookFormat;
@@ -41,6 +43,7 @@ import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -128,6 +131,25 @@ public class BooksTest extends OrgzlyTest {
 
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.edit_book_preface)).check(doesNotExist());
+    }
+
+    @Test
+    @Ignore("Debugging")
+    public void testJustExport() {
+        onBook(0).perform(longClick());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.export)).perform(click());
+        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).pressEnter();
+    }
+
+    @Test
+    public void testCancelExportFileSelection() {
+        onBook(0).perform(longClick());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.export)).perform(click());
+        for (int i = 1; i < 10; i++) {
+            UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).pressBack();
+        }
     }
 
     @Test

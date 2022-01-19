@@ -147,7 +147,7 @@
     <string name="notes_update_needed_dialog_message">Обновить заметки, чтобы отразить изменения?</string>
     <string name="updating_notes">Обновление заметок…</string>
     <string name="failure">Ой-ой</string>
-    <string name="no_notes_found_after_search">Ваш запрос не соответствует заметкам</string>
+    <string name="no_notes_found_after_search">По вашему запросу заметок не найдено</string>
     <string name="today">Сегодня</string>
     <string name="tomorrow">Завтра</string>
     <string name="next_week">Следующая неделя</string>
@@ -353,6 +353,7 @@
     <string name="displayed_book_details_used_encoding">Используемая кодировка</string>
     <string name="displayed_book_details_last_action">Последнее действие</string>
     <string name="displayed_book_details_notes_count">Количество заметок</string>
+    <string name="color_scheme_system">Системная</string>
     <string name="color_scheme_light">Светлая</string>
     <string name="color_scheme_dark">Тёмная</string>
     <string name="color_scheme_black">Чёрная</string>
@@ -444,6 +445,7 @@
     <string name="list_widget_nothing_selected">Поиск не выбран</string>
     <string name="auto_sync">Автосинхронизация</string>
     <string name="auto_sync_experimental_summary">Используется только для локальных хранилищ</string>
+    <string name="auto_sync_summary">Не поддерживается для Dropbox</string>
     <string name="auto_sync_warning">В зависимости от того, какие параметры вы выберете, синхронизация может быть вызвана часто. Если блокнот изменён, все его содержимое переносится в хранилище или из него. Некоторые действия могут задерживаться на время синхронизации.</string>
     <string name="pref_title_sync_after_note_create">Заметка создана</string>
     <string name="pref_summary_sync_after_note_create">Синхронизировать после создания заметки</string>
@@ -585,4 +587,7 @@
     <string name="content">Описание</string>
     <string name="prepend">Добавить</string>
     <string name="insert_new_note_at_beginning">Вставить новую заметку в начало</string>
+    <string name="developer_options">Для разработчиков</string>
+    <string name="git_repository_type">Тип git-репозитория</string>
+    <string name="in_development">В разработке</string>
 </resources>

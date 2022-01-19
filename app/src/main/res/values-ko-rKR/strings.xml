@@ -344,6 +344,7 @@
     <string name="displayed_book_details_used_encoding">인코딩 사용</string>
     <string name="displayed_book_details_last_action">최근 작업</string>
     <string name="displayed_book_details_notes_count">메모 개수</string>
+    <string name="color_scheme_system">System</string>
     <string name="color_scheme_light">밝은</string>
     <string name="color_scheme_dark">어두운</string>
     <string name="color_scheme_black">검은</string>
@@ -429,6 +430,7 @@
     <string name="list_widget_nothing_selected">선택된 검색 없음</string>
     <string name="auto_sync">자동 동기화</string>
     <string name="auto_sync_experimental_summary">핸드폰 저장소만 사용</string>
+    <string name="auto_sync_summary">Not supported for Dropbox</string>
     <string name="auto_sync_warning">선택한 옵션에 따라 자주 동기화가 될 수 있습니다. 메모장을 수정하면 관련 메모 전체가 저장소로 또는 저장소에서 전송됩니다.
 동기화 중에는 일부 작업이 지연될 수 있습니다.</string>
     <string name="pref_title_sync_after_note_create">메모 작성</string>
@@ -553,4 +555,7 @@
     <string name="content">Content</string>
     <string name="prepend">Prepend</string>
     <string name="insert_new_note_at_beginning">Insert new note at beginning</string>
+    <string name="developer_options">Developer options</string>
+    <string name="git_repository_type">Git repository type</string>
+    <string name="in_development">In development</string>
 </resources>
