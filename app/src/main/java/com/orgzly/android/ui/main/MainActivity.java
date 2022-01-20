@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -37,7 +36,6 @@ import com.orgzly.android.BookName;
 import com.orgzly.android.db.NotesClipboard;
 import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.db.entity.Note;
-import com.orgzly.android.db.entity.Repo;
 import com.orgzly.android.db.entity.SavedSearch;
 import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.query.Condition;
@@ -67,7 +65,6 @@ import com.orgzly.android.usecase.BookCreate;
 import com.orgzly.android.usecase.BookExport;
 import com.orgzly.android.usecase.BookImportFromUri;
 import com.orgzly.android.usecase.BookImportGettingStarted;
-import com.orgzly.android.usecase.BookLinkUpdate;
 import com.orgzly.android.usecase.BookSparseTreeForNote;
 import com.orgzly.android.usecase.BookUpdatePreface;
 import com.orgzly.android.usecase.NoteCopy;
@@ -99,7 +96,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 import java.util.Set;
 
 public class MainActivity extends CommonActivity
