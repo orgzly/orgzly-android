@@ -29,7 +29,7 @@ class NoteViewModel(
         private var noteId: Long,
         private val place: Place?,
         private val title: String?,
-        private val content: String?
+        internal val content: String?
 ) : CommonViewModel() {
 
     enum class ViewEditMode {
@@ -60,7 +60,7 @@ class NoteViewModel(
     val noteDeleteRequest: SingleLiveEvent<Int> = SingleLiveEvent()
     val bookChangeRequestEvent: SingleLiveEvent<List<BookView>> = SingleLiveEvent()
 
-    var notePayload: NotePayload? = null
+    internal var notePayload: NotePayload? = null
 
     private var originalHash: Long = 0L
 
@@ -263,7 +263,7 @@ class NoteViewModel(
         }
     }
 
-    private fun updateNote(postSave: ((note: Note) -> Unit)?) {
+    internal fun updateNote(postSave: ((note: Note) -> Unit)?) {
         notePayload?.let { payload ->
             App.EXECUTORS.diskIO().execute {
                 catchAndPostError {

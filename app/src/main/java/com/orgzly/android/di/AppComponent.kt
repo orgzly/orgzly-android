@@ -13,6 +13,7 @@ import com.orgzly.android.ui.BookChooserActivity
 import com.orgzly.android.ui.TemplateChooserActivity
 import com.orgzly.android.ui.books.BooksFragment
 import com.orgzly.android.ui.main.MainActivity
+import com.orgzly.android.ui.note.EditTableFragment
 import com.orgzly.android.ui.note.NoteFragment
 import com.orgzly.android.ui.notes.NotesFragment
 import com.orgzly.android.ui.notes.book.BookFragment
@@ -68,6 +69,7 @@ interface AppComponent {
     fun inject(arg: SearchFragment)
     fun inject(arg: AgendaFragment)
     fun inject(arg: NoteFragment)
+    fun inject(arg: EditTableFragment)
     fun inject(arg: SavedSearchesFragment)
     fun inject(arg: SavedSearchFragment)
     fun inject(arg: RefileFragment)

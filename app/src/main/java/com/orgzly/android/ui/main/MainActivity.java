@@ -606,6 +606,7 @@ public class MainActivity extends CommonActivity
 
         LocalBroadcastManager bm = LocalBroadcastManager.getInstance(this);
         bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_NOTE));
+        bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_EDIT_TABLE));
         bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_FOLLOW_LINK_TO_NOTE_WITH_PROPERTY));
         bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_FOLLOW_LINK_TO_FILE));
         bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_SAVED_SEARCHES));
@@ -1215,11 +1216,29 @@ public class MainActivity extends CommonActivity
         viewModel.openNote(noteId);
     }
 
+    public void editTableOfView(View view) {
+        editTable(
+                (long) view.getTag(AppIntent.EXTRA_BOOK_ID.hashCode()),
+                (long) view.getTag(AppIntent.EXTRA_NOTE_ID.hashCode()),
+                (int) view.getTag(AppIntent.EXTRA_TABLE_START_OFFSET.hashCode()),
+                (int) view.getTag(AppIntent.EXTRA_TABLE_END_OFFSET.hashCode())
+        );
+    }
+
     // TODO: Consider creating NavigationBroadcastReceiver
     public static void openSpecificNote(long bookId, long noteId) {
         Intent intent = new Intent(AppIntent.ACTION_OPEN_NOTE);
         intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId);
         intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
+        LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
+    }
+
+    public static void editTable(long bookId, long noteId, int tableStartOffset, int tableEndOffset) {
+        Intent intent = new Intent(AppIntent.ACTION_EDIT_TABLE);
+        intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId);
+        intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
+        intent.putExtra(AppIntent.EXTRA_TABLE_START_OFFSET, tableStartOffset);
+        intent.putExtra(AppIntent.EXTRA_TABLE_END_OFFSET, tableEndOffset);
         LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
     }
 
@@ -1252,6 +1271,15 @@ public class MainActivity extends CommonActivity
                     long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0);
                     long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0);
                     DisplayManager.displayExistingNote(getSupportFragmentManager(), bookId, noteId);
+                    break;
+                }
+
+                case AppIntent.ACTION_EDIT_TABLE: {
+                    long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, -1);
+                    long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, -1);
+                    int tableStartOffset = intent.getIntExtra(AppIntent.EXTRA_TABLE_START_OFFSET, -1);
+                    int tableEndOffset = intent.getIntExtra(AppIntent.EXTRA_TABLE_END_OFFSET, -1);
+                    DisplayManager.displayEditTable(getSupportFragmentManager(), bookId, noteId, tableStartOffset, tableEndOffset);
                     break;
                 }
 

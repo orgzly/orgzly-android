@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="tableViewModel"
+            type="com.orgzly.android.ui.note.TableViewModel" />
+    </data>
+
+        <HorizontalScrollView
+            android:id="@+id/edit_table_inner_scroll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal|vertical">
+
+                <EditText
+                    android:id="@+id/tableContentEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:typeface="monospace"
+                    android:inputType="textMultiLine"
+                    android:text="@={tableViewModel.tableView}"
+                    android:importantForAutofill="no" />
+
+        </HorizontalScrollView>
+
+</layout>

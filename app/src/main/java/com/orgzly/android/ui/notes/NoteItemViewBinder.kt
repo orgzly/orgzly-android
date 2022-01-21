@@ -1,15 +1,17 @@
 package com.orgzly.android.ui.notes
 
 import android.content.Context
-import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.orgzly.R
 import com.orgzly.android.App
+import com.orgzly.android.AppIntent
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
@@ -17,6 +19,7 @@ import com.orgzly.android.ui.ImageLoader
 import com.orgzly.android.ui.TimeType
 import com.orgzly.android.ui.util.TitleGenerator
 import com.orgzly.android.ui.util.styledAttributes
+import com.orgzly.android.ui.views.TextViewWithMarkup
 import com.orgzly.android.usecase.NoteToggleFolding
 import com.orgzly.android.usecase.NoteToggleFoldingSubtree
 import com.orgzly.android.usecase.NoteUpdateContent
@@ -109,35 +112,68 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     }
 
     private fun setupContent(holder: NoteItemViewHolder, note: Note) {
-        holder.binding.itemHeadContent.text = note.content
 
         if (note.hasContent() && titleGenerator.shouldDisplayContent(note)) {
-            if (AppPreferences.isFontMonospaced(context)) {
-                holder.binding.itemHeadContent.typeface = Typeface.MONOSPACE
-            }
 
-            holder.binding.itemHeadContent.setRawText(note.content as CharSequence)
+            // this is absolutely not the place to split the note, but doing it here for PoC
+            val alternatingTableAndTextContent: List<NoteContent> = NoteContent.parse(note.content!!)
 
-            /* If content changes (for example by toggling the checkbox), update the note. */
-            holder.binding.itemHeadContent.onUserTextChangeListener = Runnable {
-                if (holder.binding.itemHeadContent.getRawText() != null) {
-                    val useCase = NoteUpdateContent(
-                            note.position.bookId,
-                            note.id,
-                            holder.binding.itemHeadContent.getRawText()?.toString())
+            val linearLayout = holder.itemView.findViewById<LinearLayout>(R.id.item_head_content_list)
 
-                    App.EXECUTORS.diskIO().execute {
-                        UseCaseRunner.run(useCase)
+            linearLayout.removeAllViews()
+
+            val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+            alternatingTableAndTextContent.forEach { noteContent ->
+                when (noteContent.textType) {
+                    NoteContent.TextType.TABLE -> {
+
+                        val noteContentSectionTableTextView = layoutInflater.inflate(R.layout.item_note_content_section_table, linearLayout, false)
+
+                        val tableTextView = noteContentSectionTableTextView.findViewById<TextView>(R.id.note_content_section_table_text)
+                        tableTextView.text = noteContent.text
+
+                        tableTextView.setTag(AppIntent.EXTRA_BOOK_ID.hashCode(), note.position.bookId)
+                        tableTextView.setTag(AppIntent.EXTRA_NOTE_ID.hashCode(), note.id)
+                        tableTextView.setTag(AppIntent.EXTRA_TABLE_START_OFFSET.hashCode(), noteContent.startOffset)
+                        tableTextView.setTag(AppIntent.EXTRA_TABLE_END_OFFSET.hashCode(), noteContent.endOffset)
+
+                        linearLayout.addView(noteContentSectionTableTextView)
+                    }
+                    NoteContent.TextType.TEXT ->  {
+
+                        val layout = layoutInflater.inflate(R.layout.item_note_content_section_text, linearLayout, false)
+
+                        val textView = layout.findViewById<TextViewWithMarkup>(R.id.note_content_section_text)
+
+                        textView.setRawText(noteContent.text)
+
+                        linearLayout.addView(layout)
+
+                        /* If content changes (for example by toggling the checkbox), update the note. */
+                        textView.onUserTextChangeListener = Runnable {
+                            if (textView.getRawText() != null) {
+                                val useCase = NoteUpdateContent(
+                                        note.position.bookId,
+                                        note.id,
+                                        textView.getRawText()?.toString())
+
+                                App.EXECUTORS.diskIO().execute {
+                                    UseCaseRunner.run(useCase)
+                                }
+                            }
+                        }
+
+                        ImageLoader.loadImages(textView)
                     }
                 }
+
             }
 
-            ImageLoader.loadImages(holder.binding.itemHeadContent)
-
-            holder.binding.itemHeadContent.visibility = View.VISIBLE
+            holder.binding.itemHeadContentList.visibility = View.VISIBLE
 
         } else {
-            holder.binding.itemHeadContent.visibility = View.GONE
+            holder.binding.itemHeadContentList.visibility = View.GONE
         }
     }
 
@@ -425,7 +461,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
                     binding.itemHeadEventIcon,
                     binding.itemHeadClosedIcon,
                     binding.itemHeadClosedText,
-                    binding.itemHeadContent)
+                    binding.itemHeadContentList)
 
             for (view in views) {
                 (view.layoutParams as ConstraintLayout.LayoutParams).apply {
