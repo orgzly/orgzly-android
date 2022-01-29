@@ -26,10 +26,6 @@ abstract class ActivityForResult(val activity: ComponentActivity) {
         activity.startActivityForResult(intent, REQUEST_CODE_SAVED_SEARCHES_EXPORT)
     }
 
-    fun startBookImportFileChooser() {
-        startFileChooser(R.string.import_org_file, REQUEST_CODE_BOOK_IMPORT)
-    }
-
     fun startSavedSearchesImportFileChooser() {
         startFileChooser(R.string.import_, REQUEST_CODE_SAVED_SEARCHES_IMPORT)
     }
@@ -59,12 +55,6 @@ abstract class ActivityForResult(val activity: ComponentActivity) {
         }
 
         when (requestCode) {
-            REQUEST_CODE_BOOK_IMPORT -> {
-                intent.data?.let { uri ->
-                    onBookImport(uri)
-                }
-            }
-
             REQUEST_CODE_SAVED_SEARCHES_EXPORT -> {
                 intent.data?.let { uri ->
                     onSearchQueriesExport(uri)
@@ -83,17 +73,13 @@ abstract class ActivityForResult(val activity: ComponentActivity) {
         }
     }
 
-    abstract fun onBookImport(uri: Uri)
     abstract fun onSearchQueriesExport(uri: Uri)
     abstract fun onSearchQueriesImport(uri: Uri)
 
     companion object {
         private val TAG = ActivityForResult::class.java.name
 
-        const val REQUEST_CODE_BOOK_IMPORT = 2
         const val REQUEST_CODE_SAVED_SEARCHES_EXPORT = 3
         const val REQUEST_CODE_SAVED_SEARCHES_IMPORT = 4
-
-        const val ARG_BOOK_ID = "bookId"
     }
 }

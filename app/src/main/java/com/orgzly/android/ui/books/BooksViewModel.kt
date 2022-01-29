@@ -183,6 +183,22 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
         }
     }
 
+    fun createBook(name: String) {
+        App.EXECUTORS.diskIO().execute {
+            catchAndPostError {
+                UseCaseRunner.run(BookCreate(name))
+            }
+        }
+    }
+
+    fun importBook(uri: Uri, bookName: String) {
+        App.EXECUTORS.diskIO().execute {
+            catchAndPostError {
+                UseCaseRunner.run(BookImportFromUri(bookName, BookFormat.ORG, uri))
+            }
+        }
+    }
+
     companion object {
         private val TAG = BooksViewModel::class.java.name
     }

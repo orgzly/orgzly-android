@@ -115,12 +115,4 @@ public class BookChooserActivity extends CommonActivity
     private IconCompat createIcon() {
         return IconCompat.createWithResource(this, R.mipmap.cic_shortcut_notebook);
     }
-
-    @Override
-    public void onBookCreateRequest() {
-    }
-
-    @Override
-    public void onBookImportRequest() {
-    }
 }

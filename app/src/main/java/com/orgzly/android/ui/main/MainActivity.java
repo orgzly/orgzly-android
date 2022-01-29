@@ -22,6 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -107,13 +108,9 @@ public class MainActivity extends CommonActivity
         BookFragment.Listener,
         NoteFragment.Listener,
         SyncFragment.Listener,
-        SimpleOneLinerDialog.Listener,
         BookPrefaceFragment.Listener {
 
     public static final String TAG = MainActivity.class.getName();
-
-    private static final int DIALOG_NEW_BOOK = 1;
-    private static final int DIALOG_IMPORT_BOOK = 2;
 
     // TODO: Stop using SyncFragment, use ViewModel
     public SyncFragment mSyncFragment;
@@ -172,12 +169,6 @@ public class MainActivity extends CommonActivity
         }
 
         activityForResult = new ActivityForResult(this) {
-            @Override
-            public void onBookImport(@NotNull Uri uri) {
-                runnableOnResumeFragments = () ->
-                        importChosenBook(uri);
-            }
-
             @Override
             public void onSearchQueriesImport(@NotNull Uri uri) {
                 viewModel.importSavedSearches(uri);
@@ -680,35 +671,6 @@ public class MainActivity extends CommonActivity
         activityForResult.onResult(requestCode, resultCode, data);
     }
 
-    /**
-     * Display a dialog for user to enter notebook's name.
-     */
-    private void importChosenBook(Uri uri) {
-        String guessedBookName = guessBookNameFromUri(uri);
-
-        Bundle bundle = new Bundle();
-        bundle.putString("uri", uri.toString());
-
-        SimpleOneLinerDialog
-                .getInstance(DIALOG_IMPORT_BOOK, R.string.import_as, R.string.name, R.string.import_, R.string.cancel, guessedBookName, bundle)
-                .show(getSupportFragmentManager(), SimpleOneLinerDialog.FRAGMENT_TAG);
-    }
-
-    /**
-     * @return Guessed book name or {@code null} if it couldn't be guessed
-     */
-    private String guessBookNameFromUri(Uri uri) {
-        String fileName = BookName.getFileName(this, uri);
-
-        if (fileName != null && BookName.isSupportedFormatFileName(fileName)) {
-            BookName bookName = BookName.fromFileName(fileName);
-            return bookName.getName();
-
-        } else {
-            return null;
-        }
-    }
-
     @Override
     public void onNoteFocusInBookRequest(long noteId) {
         mSyncFragment.run(new BookSparseTreeForNote(noteId));
@@ -807,21 +769,6 @@ public class MainActivity extends CommonActivity
         mSyncFragment.run(new NotePaste(bookId, noteId, place));
     }
 
-    @Override
-    public void onBookImportRequest() {
-        activityForResult.startBookImportFileChooser();
-    }
-
-    /**
-     * Prompt user for book name and then create it.
-     */
-    @Override
-    public void onBookCreateRequest() {
-        SimpleOneLinerDialog
-                .getInstance(DIALOG_NEW_BOOK, R.string.new_notebook, R.string.name, R.string.create, R.string.cancel, null, null)
-                .show(getSupportFragmentManager(), SimpleOneLinerDialog.FRAGMENT_TAG);
-    }
-
     /**
      * Sync finished.
      *
@@ -893,22 +840,6 @@ public class MainActivity extends CommonActivity
     @Override
     public void onBookPrefaceEditCancelRequest() {
         popBackStackAndCloseKeyboard();
-    }
-
-    // TODO: Implement handlers when dialog is created
-    @Override
-    public void onSimpleOneLinerDialogValue(int id, String value, Bundle userData) {
-        switch (id) {
-            case DIALOG_NEW_BOOK:
-                mSyncFragment.run(new BookCreate(value));
-                break;
-
-            case DIALOG_IMPORT_BOOK:
-                Uri uri = Uri.parse(userData.getString("uri"));
-                /* We are assuming it's an Org file. */
-                mSyncFragment.run(new BookImportFromUri(value, BookFormat.ORG, uri));
-                break;
-        }
     }
 
     private Book getActiveFragmentBook() {

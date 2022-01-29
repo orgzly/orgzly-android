@@ -4,6 +4,7 @@ package com.orgzly.android.ui.books
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -13,6 +14,7 @@ import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -29,12 +31,14 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.Fab
 import com.orgzly.android.ui.OnViewHolderClickListener
+import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.setup
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.usecase.BookDelete
+import com.orgzly.android.usecase.BookImportFromUri
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
@@ -42,12 +46,6 @@ import com.orgzly.databinding.DialogBookDeleteBinding
 import com.orgzly.databinding.DialogBookRenameBinding
 import com.orgzly.databinding.FragmentBooksBinding
 import javax.inject.Inject
-import com.orgzly.android.usecase.BookLinkUpdate
-
-import android.widget.ArrayAdapter
-
-import com.orgzly.android.db.entity.Repo
-import com.orgzly.android.ui.books.BooksViewModel.BookLinkOptions
 
 
 /**
@@ -106,6 +104,19 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
          * Required (for fragments only) to receive onCreateOptionsMenu() call.
          */
         setHasOptionsMenu(withOptionsMenu)
+
+        // Result from the dialog prompting for notebook name
+        childFragmentManager.setFragmentResultListener("name-new-book", this) { _, result ->
+            val bookName = result.getString("value", "")
+            viewModel.createBook(bookName)
+        }
+
+        // Result from the dialog prompting for notebook name
+        childFragmentManager.setFragmentResultListener("name-imported-book", this) { _, result ->
+            val bookName = result.getString("value", "")
+            val uri = result.getBundle("user-data")?.getParcelable<Uri>("uri")!!
+            viewModel.importBook(uri, bookName)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -528,7 +539,7 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.books_options_menu_item_import_book -> {
-                listener?.onBookImportRequest()
+                pickFileForBookImport.launch("*/*")
                 true
             }
 
@@ -536,9 +547,36 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
         }
     }
 
+    private val pickFileForBookImport =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                val guessedBookName = guessBookNameFromUri(uri)
+                SimpleOneLinerDialog
+                    .getInstance("name-imported-book", R.string.import_as, R.string.import_, guessedBookName, bundleOf("uri" to uri))
+                    .show(childFragmentManager, SimpleOneLinerDialog.FRAGMENT_TAG)
+            } else {
+                Log.w(TAG, "Import file not selected")
+            }
+        }
+
+    /**
+     * @return Guessed book name or `null` if it couldn't be guessed
+     */
+    private fun guessBookNameFromUri(uri: Uri): String? {
+        val fileName: String = BookName.getFileName(requireContext(), uri)
+        return if (BookName.isSupportedFormatFileName(fileName)) {
+            val bookName = BookName.fromFileName(fileName)
+            bookName.name
+        } else {
+            null
+        }
+    }
+
     override fun getFabAction(): Runnable {
         return Runnable {
-            listener?.onBookCreateRequest()
+            SimpleOneLinerDialog
+                .getInstance("name-new-book", R.string.new_notebook, R.string.create, null)
+                .show(childFragmentManager, SimpleOneLinerDialog.FRAGMENT_TAG);
         }
     }
 
@@ -556,18 +594,11 @@ class BooksFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<Boo
 
     interface Listener {
         /**
-         * Request for creating new book.
-         */
-        fun onBookCreateRequest()
-
-        /**
          * Click on a book item has been performed.
          *
          * @param bookId
          */
         fun onBookClicked(bookId: Long)
-
-        fun onBookImportRequest()
     }
 
     companion object {

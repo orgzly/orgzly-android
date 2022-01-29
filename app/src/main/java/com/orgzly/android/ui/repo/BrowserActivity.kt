@@ -25,8 +25,7 @@ import java.util.*
 
 class BrowserActivity :
         CommonActivity(),
-        AdapterView.OnItemClickListener,
-        SimpleOneLinerDialog.Listener {
+        AdapterView.OnItemClickListener {
 
     private lateinit var binding: ActivityBrowserBinding
 
@@ -55,6 +54,21 @@ class BrowserActivity :
         isFileSelectable = intent.getBooleanExtra(ARG_IS_FILE_SELECTABLE, false)
 
         loadFileListFromNext(true)
+
+        supportFragmentManager.setFragmentResultListener("name-new-folder", this) { _, result ->
+            val value = result.getString("value", "")
+
+            val file = File(currentItem, value)
+
+            if (file.mkdir()) {
+                refresh()
+
+            } else {
+                val message =
+                    resources.getString(R.string.failed_creating_directory, file.toString())
+                showSnackbar(message)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -120,27 +134,8 @@ class BrowserActivity :
 
     private fun create() {
         SimpleOneLinerDialog
-                .getInstance(
-                        0,
-                        R.string.new_folder,
-                        R.string.name,
-                        R.string.create,
-                        R.string.cancel,
-                        null,
-                        null)
-                .show(supportFragmentManager, SimpleOneLinerDialog.FRAGMENT_TAG)
-    }
-
-    override fun onSimpleOneLinerDialogValue(id: Int, value: String, bundle: Bundle?) {
-        val file = File(currentItem, value)
-
-        if (file.mkdir()) {
-            refresh()
-
-        } else {
-            val message = resources.getString(R.string.failed_creating_directory, file.toString())
-            showSnackbar(message)
-        }
+            .getInstance("name-new-folder", R.string.new_folder, R.string.create, null)
+            .show(supportFragmentManager, SimpleOneLinerDialog.FRAGMENT_TAG)
     }
 
     private fun refresh() {
