@@ -81,29 +81,20 @@ android {
         }
     }
 
-    lintOptions {
-        disable 'MissingTranslation'
-        disable 'MissingQuantity'
-        disable 'ImpliedQuantity'
-
-        /*
-         * Added for:
-         * Invalid package reference in library; not included in Android:
-         * javax.servlet.http. Referenced from com.dropbox.core.DbxStandardSessionStore.
-         */
-        disable 'InvalidPackage'
-
-        checkDependencies true
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
 
     packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'plugin.properties'
+        resources {
+            excludes += ['META-INF/DEPENDENCIES', 'plugin.properties']
+        }
+    }
+
+    lint {
+        checkDependencies true
+        disable 'MissingTranslation', 'MissingQuantity', 'ImpliedQuantity', 'InvalidPackage'
     }
 }
 
