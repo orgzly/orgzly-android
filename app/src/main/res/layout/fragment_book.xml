@@ -15,7 +15,7 @@
             <ProgressBar style="@style/LoadingProgressBar" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fragment_notes_book_recycler_view"
+                android:id="@+id/fragment_book_recycler_view"
                 style="@style/FastScroll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

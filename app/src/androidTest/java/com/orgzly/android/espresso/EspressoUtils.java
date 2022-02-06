@@ -140,7 +140,7 @@ class EspressoUtils {
     }
 
     public static ViewInteraction onNotesInBook() {
-        return onView(withId(R.id.fragment_notes_book_recycler_view));
+        return onView(withId(R.id.fragment_book_recycler_view));
     }
 
     public static ViewInteraction onNoteInBook(int position) {
@@ -148,7 +148,7 @@ class EspressoUtils {
     }
 
     public static ViewInteraction onNoteInBook(int position, @IdRes int childView) {
-        return onRecyclerViewItem(R.id.fragment_notes_book_recycler_view, position, childView);
+        return onRecyclerViewItem(R.id.fragment_book_recycler_view, position, childView);
     }
 
     public static ViewInteraction onNotesInSearch() {

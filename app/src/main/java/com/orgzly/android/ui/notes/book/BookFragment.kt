@@ -33,7 +33,7 @@ import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.setup
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
-import com.orgzly.databinding.FragmentNotesBookBinding
+import com.orgzly.databinding.FragmentBookBinding
 
 
 /**
@@ -50,7 +50,7 @@ class BookFragment :
         BookAdapter.OnClickListener,
         QuickBarListener {
 
-    private lateinit var binding: FragmentNotesBookBinding
+    private lateinit var binding: FragmentBookBinding
 
     private var listener: Listener? = null
 
@@ -117,10 +117,10 @@ class BookFragment :
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
-        binding = FragmentNotesBookBinding.inflate(inflater, container, false)
+        binding = FragmentBookBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -136,7 +136,7 @@ class BookFragment :
 
         layoutManager = LinearLayoutManager(context)
 
-        binding.fragmentNotesBookRecyclerView.let { rv ->
+        binding.fragmentBookRecyclerView.let { rv ->
             rv.layoutManager = layoutManager
             rv.adapter = viewAdapter
 
@@ -414,7 +414,7 @@ class BookFragment :
                 if (id == noteId) {
                     scrollToPosition(i)
 
-                    binding.fragmentNotesBookRecyclerView.post {
+                    binding.fragmentBookRecyclerView.post {
                         spotlightScrolledToView(i)
                     }
 
